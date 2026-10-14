@@ -1,0 +1,2553 @@
+<!--
+KRALİYET AVI v3 — NASIL OYNANIR
+ 1. Sen (Avcıbaşı) + 3 bot. Her birinizin 2 GİZLİ görevi var: 1 Basit + 1 Orta/Zor. İki görevini önce Saraya teslim eden kazanır.
+ 2. Her turda 1 kart çekersin (el 6 olur) ve 1 kart oynarsın (el 5'e döner). Parlayan kartlar oynanabilir; kartı seç, sonra altta çıkan seçeneğe ya da haritada parlayan kareye dokun.
+ 3. Hareket: Yavaş 1, Normal 2, Koşu 3 (sonraki tur en fazla 1). Nehir'e giriş 2 puan, Açık Alan kart başına +1 kare. Rakibin ve canlı hayvanın içinden geçilmez.
+ 4. Av: hayvanın karesine gir, Ok At (1) / Tüfekle Vur (2, gürültülü) / Nişan Al (+1) ile vur. Son vuruşu yapan leşin sahibidir; sahibi başındayken leşe kimse dokunamaz.
+ 5. Hasat: Eti Çıkar / Derisini Yüz kartı (ya da Bıçak eşyası + herhangi bir kart atmak). Bitki: doğru karede herhangi bir aksiyon kartı. Pişirme: Mutfakta pişirme kartı VEYA ilgili eşya.
+ 6. Etkileşim: aynı karedeki rakipten Eti Çıkar/Derisini Yüz/Bıçak ile et-deri gasp edebilirsin; kurban Ok At/Tüfek/Nişan kartı atarak savunur. Hırsızlık, Tuzak, Yanlış İz, Panik, Habercisi, Yağmur ile sabote et.
+ 7. Hasar = sersemlik: o kadar tur hareket edemezsin (İlaç bir kez iptal eder). Kurt yaralanınca üstüne atılır, Ayı 2 tur sersemletir, Vaşak Derin Ormanda görünmez.
+ 8. Sis: yalnızca görüş menzilindeki hayvanları görürsün (Derin Orman 1, Orman Kenarı/Nehir 2, Açık Alan 3, Saray/Mutfak tüm harita; Dürbün +2).
+ 9. 60. tur sonunda bitmezse en çok görev adımını tamamlayan, eşitlikte Saraya en yakın olan kazanır. 20 tur takılan oyuncu için uzak köşede yeni hayvan doğar.
+10. Gizli test: URL'ye ?sim=200 ekle (isteğe bağlı &bots=hard) — 4 botla 200 oyun simüle edilir, sonuç konsola yazılır.
+SİMÜLASYON ÖZETİ: ?sim=200 (4 bot, karışık kolay/orta/zor/orta, seed 12345) → 200/200 oyun (%100) tur sınırı içinde biri tarafından bitti; ort. 30.0 tur
+  (ilk teslimat ort. 12.4. tur), takılan oyun 0, hata 0. Kazanma koltuk 1-4: 51/46/45/58. Koltuk başına kazanma: kolay %18.5, orta %26.5, zor %28.5.
+  Tek tip botlarla: hepsi kolay %98.0 (ort. 30.7 tur, 4 takılan), hepsi orta %100 (29.5), hepsi zor %99.5 (29.0). Hedef ≥%90 tutuyor; eski referans 4 kişide ~%99.
+  Kart (113), hayvan, görev (20) ve harita içeriği azaltılmadı. GDD değerleri korundu: 60 tur sınırı, 20 tur respawn, %30 boşta hareket, 1 kare kaçış.
+  Ortalama 4,5/8 görev, başka bir oyuncunun göreviyle aynı hayvanı/kaynağı paylaşıyor.
+-->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#110e0a">
+<title>Kraliyet Avı</title>
+<style>
+:root{
+  --bg:#110e0a; --bg2:#18130d; --panel:#1d1711; --panel2:#251d14; --line:#4a3a26; --line2:#6b5434;
+  --gold:#c9a227; --gold2:#e8c862; --ink:#efe3c8; --muted:#a8977a; --dim:#7a6b55;
+  --red:#b8323a; --green:#5f9a55; --parch:#e6d5ae; --parch2:#d4bd8c; --pink:#2a1c0e;
+  --c-move:#7a5a2e; --c-action:#8b2a2a; --c-item:#2f5d62; --c-trap:#4f2c62;
+  --serif: "Palatino Linotype","Book Antiqua",Palatino,Georgia,"Times New Roman",serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-tap-highlight-color:transparent}
+body{background:radial-gradient(ellipse at 50% 20%,#2a2016 0%,var(--bg) 60%,#080604 100%) fixed;overflow-x:hidden}
+button{font-family:var(--serif);cursor:pointer}
+.hidden{display:none!important}
+.btn{background:linear-gradient(#3a2c1c,#241a10);color:var(--gold2);border:1px solid var(--gold);border-radius:6px;padding:9px 16px;font-size:15px;letter-spacing:.03em;box-shadow:inset 0 1px 0 rgba(255,230,160,.15),0 2px 6px rgba(0,0,0,.5);transition:transform .12s,filter .12s}
+.btn:hover{filter:brightness(1.2)}
+.btn:active{transform:translateY(1px)}
+.btn.big{font-size:20px;padding:13px 34px}
+.btn.small{font-size:13px;padding:6px 10px}
+.btn.ghost{background:transparent;color:var(--muted);border-color:var(--line2)}
+.btn.primary{background:linear-gradient(#7a5a12,#4a360a);color:#fff3cf}
+.btn:disabled{opacity:.4;cursor:default}
+
+/* ---------- MENÜ ---------- */
+#menu{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.menu-card{width:min(560px,100%);background:linear-gradient(var(--panel2),var(--panel));border:1px solid var(--line2);border-radius:14px;padding:28px 24px;box-shadow:0 20px 60px rgba(0,0,0,.6),inset 0 0 0 4px rgba(201,162,39,.08);text-align:center}
+.crest{width:120px;height:120px;margin:0 auto 6px;display:block}
+.menu-card h1{font-size:40px;letter-spacing:.14em;margin:4px 0 2px;color:var(--gold2);text-shadow:0 2px 0 #000,0 0 22px rgba(201,162,39,.35)}
+.menu-card .sub{color:var(--muted);font-style:italic;margin-bottom:20px}
+.opt-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0;text-align:left;flex-wrap:wrap}
+.opt-row label{color:var(--ink)}
+select,input[type=text]{background:#120e09;color:var(--ink);border:1px solid var(--line2);border-radius:6px;padding:7px 9px;font-family:var(--serif);font-size:15px}
+.perbot{border-top:1px dashed var(--line);margin-top:6px;padding-top:6px}
+.menu-actions{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.rules{text-align:left;margin-top:18px;background:#15100b;border:1px solid var(--line);border-radius:8px;padding:4px 14px}
+.rules summary{cursor:pointer;color:var(--gold2);padding:8px 0}
+.rules ul{padding-left:18px;margin:6px 0 12px;color:#dccfb3;font-size:14px;line-height:1.5}
+.rules b{color:var(--gold2)}
+
+/* ---------- OYUN ---------- */
+#game{display:grid;grid-template-rows:auto 1fr auto;height:100dvh}
+.topbar{display:flex;align-items:center;gap:10px;padding:6px 12px;background:linear-gradient(#2a2016,#17120c);border-bottom:1px solid var(--line2);flex-wrap:wrap}
+.topbar .brand{font-size:18px;letter-spacing:.12em;color:var(--gold2);margin-right:auto;white-space:nowrap}
+.chip{border:1px solid var(--line2);border-radius:999px;padding:3px 10px;font-size:13px;color:var(--ink);background:#15100b;white-space:nowrap}
+.chip b{color:var(--gold2)}
+.turnchip .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px;box-shadow:0 0 0 1px #000}
+main.board{display:grid;grid-template-columns:minmax(0,1fr) 350px;min-height:0;gap:0}
+#mapBox{display:flex;align-items:center;justify-content:center;padding:10px;min-height:0;position:relative}
+#map{height:100%;max-width:100%;aspect-ratio:5/6;display:block;border-radius:10px;box-shadow:0 0 0 2px #000,0 0 0 4px var(--line2),0 18px 50px rgba(0,0,0,.7);background:#0b0907;touch-action:manipulation;user-select:none}
+#side{border-left:1px solid var(--line2);background:linear-gradient(var(--panel),#130f0a);overflow-y:auto;padding:10px 12px 18px;min-height:0}
+.sec{margin-bottom:14px}
+.sec h3{margin:0 0 6px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--line);padding-bottom:4px;display:flex;justify-content:space-between}
+.sec h3 small{color:var(--muted);letter-spacing:0;text-transform:none}
+
+/* görev parşömenleri */
+.mission{position:relative;background:linear-gradient(135deg,var(--parch),var(--parch2));color:var(--pink);border-radius:6px;padding:8px 10px 8px;margin-bottom:8px;box-shadow:inset 0 0 18px rgba(90,60,20,.45),0 2px 6px rgba(0,0,0,.5);border:1px solid #8a6d3b}
+.mission .mh{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+.mission .mn{font-weight:bold;font-size:15px}
+.mission .md{font-size:11px;border-radius:999px;padding:1px 7px;border:1px solid rgba(0,0,0,.3);white-space:nowrap}
+.mission .mf{font-style:italic;font-size:12px;opacity:.8;margin:2px 0 5px}
+.mission ol{margin:0;padding-left:0;list-style:none;font-size:13px}
+.mission li{display:flex;gap:6px;align-items:center;padding:1px 0}
+.mission li .ck{width:16px;height:16px;border-radius:50%;border:1.5px solid #6b5023;display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex:none}
+.mission li.ok{color:#2d4a1f}
+.mission li.ok .ck{background:#3f6b2b;border-color:#2c4c1e;color:#f3e7c6}
+.mission .stamp{position:absolute;right:8px;top:24px;transform:rotate(-12deg);border:3px double #9b1f1f;color:#9b1f1f;font-weight:bold;padding:2px 8px;letter-spacing:.1em;font-size:13px;background:rgba(230,213,174,.7)}
+.mission.done{opacity:.85}
+
+.status{display:flex;flex-wrap:wrap;gap:5px;font-size:12px}
+.status span{border:1px solid var(--line2);border-radius:4px;padding:2px 6px;background:#16110c}
+.status .bad{border-color:#7a2a2a;color:#f0b0a0}
+.status .good{border-color:#3d6b34;color:#bfe3a8}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.slot{border:1px dashed var(--line2);border-radius:6px;min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;color:var(--muted);text-align:center;padding:3px;background:#140f0a}
+.slot.full{border-style:solid;border-color:var(--c-item);color:var(--ink);background:linear-gradient(#1d2a2b,#141c1d)}
+.slot svg{width:26px;height:26px}
+.bag{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.good-chip{font-size:12px;border-radius:4px;padding:2px 7px;background:#2b2117;border:1px solid var(--line2)}
+.good-chip.meat{border-color:#8b3a2a}.good-chip.hide{border-color:#8b6a3a}.good-chip.by{border-color:#9a8a5a}.good-chip.plant{border-color:#3d6b34}.good-chip.dish{border-color:var(--gold);color:var(--gold2)}
+.empty{color:var(--dim);font-size:12px;font-style:italic}
+
+.rival{display:grid;grid-template-columns:30px 1fr;gap:8px;padding:6px;border:1px solid var(--line);border-radius:7px;margin-bottom:6px;background:#17120d}
+.rival.active{border-color:var(--gold);box-shadow:0 0 10px rgba(201,162,39,.35)}
+.rival .rn{font-weight:bold;font-size:14px}
+.rival .rd{font-size:11px;color:var(--muted)}
+.rival .rl{font-size:12px;color:#d8cbb0;margin-top:2px;line-height:1.35}
+.badge{width:28px;height:28px}
+.pips{letter-spacing:2px;color:var(--gold2)}
+
+#log{font-size:12.5px;line-height:1.35;max-height:260px;overflow-y:auto;background:#100c08;border:1px solid var(--line);border-radius:6px;padding:6px}
+#log div{padding:2px 0 2px 7px;border-left:3px solid transparent;margin-bottom:2px}
+#log .r{color:var(--dim);font-size:10px;margin-right:4px}
+#log .sys{color:var(--gold2);font-style:italic}
+#log .bad{color:#f0a898}#log .good{color:#b6dca0}#log .kill{color:#ffd27a}#log .steal{color:#e6a0ff}#log .warn{color:#f5c27a}#log .deliver{color:#ffe08a;font-weight:bold}#log .dim{color:var(--dim)}#log .act{color:#e8dcc0}
+
+/* ---------- ALT PANEL / EL ---------- */
+#hud{border-top:1px solid var(--line2);background:linear-gradient(#1c150e,#0e0b07);padding:6px 10px 8px}
+#prompt{min-height:22px;font-size:14px;color:var(--ink);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#prompt .who{font-weight:bold}
+#actions{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0;min-height:4px}
+#actions .btn{font-size:13px;padding:6px 10px}
+#hand{display:flex;gap:10px;overflow-x:auto;overflow-y:visible;padding:12px 4px 8px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+#hand::-webkit-scrollbar{height:6px}#hand::-webkit-scrollbar-thumb{background:var(--line2);border-radius:3px}
+.card{--tc:var(--c-move);flex:none;width:118px;height:164px;scroll-snap-align:start;border-radius:9px;position:relative;background:linear-gradient(160deg,#efe1bd,#d8c393 70%,#c9b07a);color:var(--pink);border:3px solid var(--tc);box-shadow:inset 0 0 14px rgba(90,60,20,.5),0 4px 10px rgba(0,0,0,.6);cursor:pointer;transition:transform .15s,box-shadow .15s,filter .15s;display:flex;flex-direction:column;overflow:hidden;user-select:none}
+.card.t-action{--tc:var(--c-action)}.card.t-item{--tc:var(--c-item)}.card.t-trap{--tc:var(--c-trap)}
+.card .ch{background:var(--tc);color:#f8ecd0;font-size:12px;font-weight:bold;padding:4px 6px;text-align:center;line-height:1.1;min-height:30px;display:flex;align-items:center;justify-content:center;text-shadow:0 1px 1px #000}
+.card .ca{flex:none;height:54px;display:flex;align-items:center;justify-content:center;color:var(--tc)}
+.card .ca svg{width:46px;height:46px}
+.card .cd{font-size:10.5px;line-height:1.22;padding:0 6px;flex:1;overflow:hidden}
+.card .ct{font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;text-align:center;color:#f8ecd0;background:var(--tc);padding:2px 0}
+.card.playable{box-shadow:inset 0 0 14px rgba(90,60,20,.5),0 0 0 2px var(--gold2),0 0 16px rgba(232,200,98,.55)}
+.card.sel{transform:translateY(-10px) scale(1.03);box-shadow:inset 0 0 14px rgba(90,60,20,.5),0 0 0 3px #fff3c8,0 0 24px rgba(255,220,120,.8)}
+.card.dimc{filter:grayscale(.6) brightness(.7)}
+.card.pick{animation:pickpulse 1s infinite}
+.card.new{animation:drawin .5s ease-out}
+@keyframes pickpulse{50%{box-shadow:inset 0 0 14px rgba(90,60,20,.5),0 0 0 3px #ff9a6a,0 0 18px rgba(255,120,80,.7)}}
+@keyframes drawin{from{transform:translateY(40px) rotate(6deg);opacity:0}to{transform:none;opacity:1}}
+.thinking{display:inline-block;width:14px;height:14px;border:2px solid var(--gold);border-top-color:transparent;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- HARİTA SVG ---------- */
+.tile-label{font-size:8.5px;fill:rgba(240,225,190,.55);letter-spacing:.05em;pointer-events:none}
+.fog{transition:opacity .7s ease;pointer-events:none}
+.tok{transition:transform .22s ease-in-out}
+.pawn.cur .pring{animation:pawnpulse 1.2s infinite}
+@keyframes pawnpulse{50%{stroke-width:5;stroke-opacity:.4}}
+.hl{fill:rgba(232,200,98,.12);stroke:#ffe08a;stroke-width:3;stroke-dasharray:8 5;animation:dash 1s linear infinite;pointer-events:none}
+.hl.danger{fill:rgba(220,80,60,.14);stroke:#ff8a6a}
+@keyframes dash{to{stroke-dashoffset:-26}}
+.hit{fill:transparent;cursor:pointer}
+.flame{animation:flick .35s infinite alternate;transform-origin:50% 100%}
+@keyframes flick{from{transform:scaleY(1)}to{transform:scaleY(1.18) skewX(4deg)}}
+.fxtext{font-weight:bold;font-size:20px;paint-order:stroke;stroke:#000;stroke-width:4px;animation:rise 1.2s ease-out forwards;pointer-events:none}
+@keyframes rise{from{transform:translateY(0);opacity:1}to{transform:translateY(-38px);opacity:0}}
+.fxburst{animation:burst .8s ease-out forwards;pointer-events:none;transform-box:fill-box;transform-origin:center}
+@keyframes burst{from{transform:scale(.2);opacity:1}to{transform:scale(2.4);opacity:0}}
+.fxline{stroke-dasharray:6 4;animation:fadeout .6s forwards;pointer-events:none}
+@keyframes fadeout{to{opacity:0}}
+.water{animation:wave 4s linear infinite}
+@keyframes wave{to{transform:translateX(-20px)}}
+
+/* ---------- MODAL / TOAST ---------- */
+#modal{position:fixed;inset:0;background:rgba(5,3,2,.72);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.mbox{width:min(520px,100%);max-height:90dvh;overflow:auto;background:linear-gradient(var(--panel2),var(--panel));border:1px solid var(--gold);border-radius:12px;padding:18px;box-shadow:0 20px 60px #000}
+.mbox h2{margin:0 0 8px;color:var(--gold2);font-size:22px}
+.mbox p{color:#dccfb3}
+.mbox .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.mbox .cards{display:flex;gap:8px;overflow-x:auto;padding:10px 2px}
+#toast{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:40;pointer-events:none;display:flex;flex-direction:column;gap:6px;align-items:center;width:max-content;max-width:92vw}
+.toast{background:linear-gradient(#3a2b18,#20170d);border:1px solid var(--gold);color:var(--gold2);padding:9px 18px;border-radius:8px;font-size:16px;box-shadow:0 8px 30px rgba(0,0,0,.7);animation:toastin 2.4s ease forwards;text-align:center}
+@keyframes toastin{0%{opacity:0;transform:translateY(-10px)}10%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0}}
+
+/* ---------- BİTİŞ ---------- */
+#end{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.end-card{width:min(860px,100%);background:linear-gradient(var(--panel2),var(--panel));border:1px solid var(--gold);border-radius:14px;padding:24px;box-shadow:0 20px 60px #000;text-align:center}
+.end-card h1{color:var(--gold2);letter-spacing:.12em;margin:4px 0}
+.end-card .why{color:var(--muted);font-style:italic}
+.tbl-wrap{overflow-x:auto;margin-top:16px}
+table.sum{width:100%;border-collapse:collapse;font-size:13.5px;text-align:left}
+table.sum th{color:var(--gold);font-weight:normal;border-bottom:1px solid var(--line2);padding:6px;white-space:nowrap}
+table.sum td{border-bottom:1px solid var(--line);padding:6px;vertical-align:top}
+table.sum tr.win td{background:rgba(201,162,39,.1)}
+#simOverlay{position:fixed;inset:0;background:rgba(5,3,2,.92);z-index:80;display:flex;align-items:center;justify-content:center;padding:16px}
+#simOverlay pre{white-space:pre-wrap;color:var(--gold2);font-size:14px;max-width:760px;background:#140f0a;border:1px solid var(--gold);border-radius:10px;padding:18px}
+
+#chipRound.flash{animation:chipflash 1s ease}
+@keyframes chipflash{30%{background:#5a4210;border-color:var(--gold2);box-shadow:0 0 14px rgba(232,200,98,.6)}}
+/* ---------- RESPONSIVE ---------- */
+@media (min-width: 901px) and (max-height: 860px){
+  .card{width:100px;height:132px}
+  .card .ch{font-size:11px;min-height:24px;padding:3px 5px}
+  .card .ca{height:36px}.card .ca svg{width:32px;height:32px}
+  .card .cd{font-size:9.5px}
+  #hand{padding:8px 4px 4px}
+  #actions{margin:4px 0}
+  .topbar{padding:4px 12px}
+}
+@media (max-width: 900px){
+  #game{height:auto;min-height:100dvh;display:flex;flex-direction:column}
+  .topbar{position:sticky;top:0;z-index:20}
+  .topbar .brand{font-size:15px}
+  main.board{display:contents}
+  #mapBox{padding:8px 0 4px;order:1}
+  #map{width:min(100%,560px);height:auto;max-height:none}
+  #hud{position:sticky;bottom:0;z-index:20;box-shadow:0 -8px 20px rgba(0,0,0,.6);order:2}
+  #side{border-left:none;border-top:1px solid var(--line2);order:3;overflow:visible}
+  .card{width:96px;height:136px}
+  .card .ch{font-size:11px;min-height:26px}
+  .card .ca{height:40px}.card .ca svg{width:36px;height:36px}
+  .card .cd{font-size:9.5px}
+  #log{max-height:200px}
+}
+@media (max-width: 420px){
+  .chip{font-size:12px;padding:2px 7px}
+  .menu-card h1{font-size:30px}
+}
+
+</style>
+</head>
+<body>
+<div id="app">
+  <section id="menu">
+    <div class="menu-card">
+      <svg class="crest" id="crest" viewBox="0 0 120 120" aria-hidden="true"></svg>
+      <h1>KRALİYET AVI</h1>
+      <div class="sub">Sarayın hizmetkârları, kralın gizli istekleri, karanlık ormanlar.</div>
+      <div class="opt-row"><label for="optName">Adın</label><input type="text" id="optName" maxlength="16" placeholder="Avcıbaşı"></div>
+      <div class="opt-row"><label for="optDiff">Bot zorluğu (hepsi)</label>
+        <select id="optDiff"><option value="easy">Kolay</option><option value="medium" selected>Orta</option><option value="hard">Zor</option><option value="custom">Bot başına seç…</option></select></div>
+      <div id="perBot" class="perbot hidden"></div>
+      <div class="opt-row"><label for="optSeed">Tohum (boş = rastgele)</label><input type="text" id="optSeed" inputmode="numeric" placeholder="örn. 1453" size="10"></div>
+      <div class="opt-row"><label for="optSound">Ses efektleri</label><select id="optSound"><option value="1">Açık</option><option value="0">Kapalı</option></select></div>
+      <div class="menu-actions"><button class="btn big primary" id="btnStart">Ava Başla</button></div>
+      <details class="rules">
+        <summary>Kısa kurallar</summary>
+        <ul>
+          <li><b>Amaç:</b> 2 gizli görevini (1 Basit + 1 Orta/Zor) tamamla ve Saraya <b>teslim et</b>. İkisini önce teslim eden kazanır.</li>
+          <li><b>Tur:</b> 1 kart çek, 1 kart oyna. El hep 5 karttır. Eşyalar envantere (3 yuva) gider.</li>
+          <li><b>Hareket:</b> Nehir yavaşlatır (+1), Açık Alan hızlandırır (+1). Rakiplerin ve hayvanların içinden geçemezsin.</li>
+          <li><b>Av:</b> Hayvanın karesine gir ve vur. Komşu karede oyuncu gören av kaçar, yarı canın altındaki hayvan her zaman kaçmaya çalışır. <b>Son vuruş leşi sahiplenir.</b></li>
+          <li><b>Hasat ve pişirme:</b> Et/deri/yan ürün için kart ya da Bıçak; mutfakta pişirme kartı ya da ilgili eşya yeter. Bitki için doğru karede herhangi bir aksiyon kartı yeter.</li>
+          <li><b>Rekabet:</b> Aynı karedeki rakipten et/deri gasp edilebilir (saldırı kartıyla savunulur). Hırsızlık, tuzak, Yanlış İz, Panik, Habercisi ve Yağmur rakipleri yavaşlatır.</li>
+          <li><b>Sis:</b> Görüş kare türüne bağlı. Vaşak Derin Ormanda görünmez. Kartal %50 yuvadadır, yuvadayken tırmanırsan kovalanırsın.</li>
+          <li><b>Süre:</b> 60 tur. Bitmezse en çok görev adımı tamamlayan kazanır. Kimse göremeyen hayvanlar zamanla oyunculara doğru göç eder.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+  <section id="game" class="hidden">
+    <header class="topbar">
+      <span class="brand">KRALİYET AVI</span>
+      <span class="chip" id="chipRound">Tur <b>1</b>/60</span>
+      <span class="chip turnchip" id="chipTurn"></span>
+      <button class="btn small ghost" id="btnSpeed" title="Bot hızını değiştir">Hız 1×</button>
+      <button class="btn small ghost" id="btnSound" title="Sesi aç/kapat">Ses: Açık</button>
+      <button class="btn small ghost" id="btnMenu">Menü</button>
+    </header>
+    <main class="board">
+      <div id="mapBox"><svg id="map" viewBox="0 0 500 600" role="img" aria-label="Av haritası"></svg></div>
+      <aside id="side">
+        <div class="sec"><h3>Gizli Görevlerin <small id="misProg"></small></h3><div id="missions"></div></div>
+        <div class="sec"><h3>Durum</h3><div class="status" id="status"></div></div>
+        <div class="sec"><h3>Envanter <small>3 yuva</small></h3><div class="slots" id="slots"></div><div class="bag" id="bag"></div></div>
+        <div class="sec"><h3>Rakipler</h3><div id="rivals"></div></div>
+        <div class="sec"><h3>Av Günlüğü</h3><div id="log"></div></div>
+      </aside>
+    </main>
+    <footer id="hud">
+      <div id="prompt"></div>
+      <div id="actions"></div>
+      <div id="hand"></div>
+    </footer>
+  </section>
+
+  <section id="end" class="hidden">
+    <div class="end-card" id="endCard"></div>
+  </section>
+</div>
+<div id="modal" class="hidden"><div class="mbox" id="mbox"></div></div>
+<div id="toast"></div>
+
+<script>
+globalThis.ROYALHUNT = { data: {"animals":{"_meta":{"schema":"royal-hunt-animals-v1","totalAnimals":10,"totalSpawn":16},"animals":[{"id":"deer","name":"Geyik","name_en":"Deer","hp":2,"speed":2,"attack":0,"attackDamage":0,"spawnZone":"DEEP_FOREST","spawnCount":3,"rarity":"common","yields":{"meat":1,"hide":1,"byproduct":{"id":"antler","name":"Boynuz"}},"behavior":{"fleeDistance":1,"fleeChanceIdle":0.3,"specialRule":"Komşu karede oyuncu varsa 1 kare kaçar"}},{"id":"rabbit","name":"Tavşan","name_en":"Rabbit","hp":2,"speed":2,"attack":0,"attackDamage":0,"spawnZone":"FOREST_EDGE","spawnCount":3,"rarity":"common","yields":{"meat":1,"hide":1,"byproduct":{"id":"ear","name":"Kulak"}},"behavior":{"fleeDistance":1,"fleeChanceIdle":0.3,"specialRule":"Komşu karede oyuncu yoksa sabit durur"}},{"id":"fox","name":"Tilki","name_en":"Fox","hp":2,"speed":2,"attack":0,"attackDamage":0,"spawnZone":"FOREST_EDGE","spawnCount":1,"rarity":"medium","yields":{"meat":0,"hide":1,"byproduct":{"id":"tail","name":"Kuyruk"}},"behavior":{"fleeDistance":1,"fleeChanceIdle":0.3,"specialRule":"Tuzaklı kareye girmez — sezer","avoidsTrap":true}},{"id":"bear","name":"Ayı","name_en":"Bear","hp":4,"speed":1,"attack":1,"attackDamage":2,"attackEffect":"stun","attackStunTurns":2,"spawnZone":"DEEP_FOREST","spawnCount":1,"rarity":"medium","yields":{"meat":1,"hide":1,"byproduct":{"id":"claw","name":"Pençe"}},"behavior":{"fleeDistance":1,"fleeChanceIdle":0.3,"specialRule":"Saldırıda oyuncu 2 tur sersem kalır; İlaç iptal eder"}},{"id":"boar","name":"Yaban Domuzu","name_en":"Wild Boar","hp":4,"speed":1,"attack":1,"attackDamage":1,"attackEffect":"splash","attackSplashDamage":1,"spawnZone":"DEEP_FOREST","spawnCount":1,"rarity":"medium","yields":{"meat":1,"hide":1,"byproduct":{"id":"tusk","name":"Diş"}},"behavior":{"fleeDistance":1,"fleeChanceIdle":0.3,"specialRule":"Öldürülünce komşu karelere 1 hasar sıçratır; İlaç ile engellenebilir","deathSplash":true}},{"id":"wolf","name":"Kurt","name_en":"Wolf","hp":3,"speed":2,"attack":1,"attackDamage":1,"attackEffect":"chase","spawnZone":"FOREST_EDGE","spawnCount":1,"rarity":"medium","yields":{"meat":1,"hide":1,"byproduct":null},"behavior":{"fleeDistance":1,"fleeChanceIdle":0.3,"specialRule":"Hasar alınca oyuncuya 1 adım yaklaşır","counterCharge":true}},{"id":"lynx","name":"Vaşak","name_en":"Lynx","hp":3,"speed":2,"attack":1,"attackDamage":1,"spawnZone":"DEEP_FOREST","spawnCount":1,"rarity":"rare","yields":{"meat":0,"hide":1,"byproduct":null},"behavior":{"fleeDistance":1,"fleeChanceIdle":0.3,"specialRule":"Derin Ormanda gizlidir; aynı kareye girilince görünür olur","stealthInDeepForest":true}},{"id":"eagle","name":"Kartal","name_en":"Eagle","hp":2,"speed":0,"attack":0,"attackDamage":0,"spawnZone":"EAGLE_NEST","spawnCount":2,"rarity":"rare","yields":{"meat":0,"hide":0,"byproduct":{"id":"feather","name":"Tüy"}},"behavior":{"fleeDistance":0,"fleeChanceIdle":0,"specialRule":"Yuvada sabit bekler; her tur %50 yuvada %50 avda olur","nestChance":0.5,"climbRequired":true}},{"id":"red_deer","name":"Geyik Geyiği","name_en":"Red Deer","hp":3,"speed":1,"attack":0,"attackDamage":0,"spawnZone":"DEEP_FOREST","spawnCount":1,"rarity":"rare","yields":{"meat":2,"hide":1,"byproduct":{"id":"antler_dust","name":"Boynuz Tozu"}},"behavior":{"fleeDistance":1,"fleeChanceIdle":0.3,"specialRule":"Öldürülünce 2 porsiyon et bırakır","doubleMeat":true}},{"id":"badger","name":"Porsuk","name_en":"Badger","hp":2,"speed":1,"attack":0,"attackDamage":0,"spawnZone":"RIVER","spawnCount":1,"rarity":"rare","yields":{"meat":1,"hide":0,"byproduct":{"id":"bile","name":"Safra Kesesi"}},"behavior":{"fleeDistance":1,"fleeChanceIdle":0.3,"specialRule":"Yalnızca Nehir Kenarı karelerinde spawn olur"}}]},"cards":{"_meta":{"schema":"royal-hunt-cards-v1","totalCards":113,"note":"Görev kartları ayrı dosyada (missions.json). Eşyalar envantere gider, diğerleri çöpe. Toplam: Hareket:32+Aksiyon:43+Eşya:24+Tuzak:14=113"},"cardTypes":{"move":{"label":"Hareket","total":32,"goesTo":"discard"},"action":{"label":"Aksiyon","total":43,"goesTo":"discard","note":"Cook kartları (pot/roast/grill) ve Tırman dahil gerçek toplam"},"item":{"label":"Eşya","total":24,"goesTo":"inventory","inventorySlots":3,"note":"Ekstra Mermi istisnası: tek kullanım sonra çöpe"},"trap":{"label":"Tuzak / Olay","total":14,"goesTo":"discard"}},"cards":[{"id":"move_slow","type":"move","count":10,"name":"Yavaş İlerleme","moveValue":1,"penalty":false,"desc":"1 kare hareket et."},{"id":"move_normal","type":"move","count":12,"name":"Normal Yürüyüş","moveValue":2,"penalty":false,"desc":"2 kare hareket et."},{"id":"move_run","type":"move","count":6,"name":"Koşu","moveValue":3,"penalty":true,"desc":"3 kare hareket et. Sonraki turunda yalnızca 1 kare hareket edebilirsin.","penaltyNextTurnMaxMove":1},{"id":"move_retreat","type":"move","count":4,"name":"Geri Çekil","moveValue":-2,"safe":true,"desc":"2 kare geri git. Bu hareket Tuzak karelerini tetiklemez."},{"id":"action_shoot","type":"action","count":10,"name":"Ok At","damage":1,"desc":"Aynı karedeki hayvana 1 hasar ver."},{"id":"action_aim","type":"action","count":6,"name":"Nişan Al","aimBonus":1,"desc":"Sonraki saldırı kartına +1 hasar bonusu ekler. Bonus birikmez."},{"id":"action_rifle","type":"action","count":5,"name":"Tüfekle Vur","damage":2,"noise":true,"desc":"Aynı karedeki hayvana 2 hasar ver. Ses çıkar: aynı veya komşu karedeki oyuncu 1 kare kaçmak zorunda kalır.","noiseRange":1},{"id":"action_skin","type":"action","count":5,"name":"Derisini Yüz","desc":"Aynı karedeki ölü hayvanın derisini al. Bıçak eşyası varsa bu kart gerekmez."},{"id":"action_butcher","type":"action","count":5,"name":"Eti Çıkar","desc":"Aynı karedeki ölü hayvanın etini al. Bıçak eşyası varsa bu kart gerekmez."},{"id":"action_cook_pot","type":"action","count":3,"name":"Pişir — Tencere","cookMethod":"pot","desc":"Mutfak karesinde eti haşlama/çorbaya çevir. Tencere eşyası VEYA bu kart yeterlidir.","requiresKitchen":true},{"id":"action_cook_roast","type":"action","count":3,"name":"Pişir — Rosto","cookMethod":"roast","desc":"Mutfak karesinde eti rostoya çevir. Fırın Anahtarı eşyası VEYA bu kart yeterlidir.","requiresKitchen":true},{"id":"action_cook_grill","type":"action","count":3,"name":"Pişir — Izgara","cookMethod":"grill","desc":"Mutfak karesinde eti ızgaraya çevir. Izgara Aleti eşyası VEYA bu kart yeterlidir.","requiresKitchen":true},{"id":"action_climb","type":"action","count":3,"name":"Tırman","desc":"Kartal Yuvası karesinde tüy almak için tırman. Kartal yuvadaysa 1 tur kaybeder, önceki kareye dönersin.","requiresTile":"EAGLE_NEST"},{"id":"item_binoculars","type":"item","count":3,"name":"Dürbün","desc":"Kendi turunda 2 kare ötedeki kareleri gizlice görebilirsin.","visBonus":2},{"id":"item_knife","type":"item","count":4,"name":"Bıçak","desc":"Derisini Yüz veya Eti Çıkar kartı olmadan hasat yapabilirsin."},{"id":"item_oven_key","type":"item","count":4,"name":"Fırın Anahtarı","desc":"Pişir — Rosto kartı olmadan mutfakta rosto yapabilirsin.","unlocksCook":"roast"},{"id":"item_grill","type":"item","count":4,"name":"Izgara Aleti","desc":"Pişir — Izgara kartı olmadan mutfakta ızgara yapabilirsin.","unlocksCook":"grill"},{"id":"item_pot","type":"item","count":4,"name":"Tencere","desc":"Pişir — Tencere kartı olmadan mutfakta haşlama yapabilirsin.","unlocksCook":"pot"},{"id":"item_medicine","type":"item","count":3,"name":"İlaç","desc":"Hayvan saldırısı veya tuzak hasarını bir kez iptal eder; sonra çöpe gider.","singleUse":true},{"id":"item_ammo","type":"item","count":2,"name":"Ekstra Mermi","desc":"Ok At kartı olmadan hayvana 2 hasar ver. Tek kullanım; kullandıktan sonra çöpe gider.","singleUse":true,"damage":2},{"id":"trap_set","type":"trap","count":4,"name":"Tuzak Kur","desc":"Bir kareyi seçerek gizlice tuzak yerleştir. Üzerine basan rakip 2 tur sersem kalır ve hareket edemez.","effect":"placeOnTile","stunTurns":2},{"id":"trap_mislead","type":"trap","count":3,"name":"Yanlış İz","desc":"Hedef bir rakibi 3 kare geri gönder. Harita sınırına çarparsa o kadar geri gider.","effect":"pushBack","pushDistance":3},{"id":"trap_herald","type":"trap","count":2,"name":"Kral'ın Habercisi","desc":"Tüm oyuncular elinden 1 kart seçip çöpe atar.","effect":"allDiscardOne"},{"id":"trap_rain","type":"trap","count":1,"name":"Sağanak Yağmur","desc":"Bu tur kimse hareket edemez. Aksiyon ve Eşya kartları yine oynanabilir.","effect":"noMoveThisTurn"},{"id":"trap_steal","type":"trap","count":2,"name":"Hırsızlık","desc":"Komşu karedeki bir rakibin envanterinden 1 eşya seçerek çal.","effect":"stealInventory","range":1},{"id":"trap_panic","type":"trap","count":2,"name":"Panik","desc":"Hedef rakip elindeki kartları karıştırıp 2 tanesini rastgele çöpe atar.","effect":"randomDiscard","discardCount":2}]},"missions":{"_meta":{"schema":"royal-hunt-missions-v1","totalMissions":20,"selectionRule":"Oyun başında her oyuncu 3 kart çeker, 1'ini seçer, 2'sini geri koyar.","stepTypes":{"kill:<animalId>":"Belirtilen hayvanı avla (öldür)","take:meat":"Ölü hayvandan et çıkar (Bıçak veya Eti Çıkar kartı gerekir)","take:hide":"Ölü hayvandan deri al (Bıçak veya Derisini Yüz kartı gerekir)","take:byproduct":"Ölü hayvandan yan ürün al (Bıçak veya ilgili aksiyon kartı gerekir)","take:feather":"Kartal yuvasından tüy al (Tırman kartı; kartal yoksa başarılı)","collect:herb":"Nehir Kenarı karesinde şifalı ot topla (herhangi aksiyon kartı)","collect:mushroom":"Derin Orman karesinde zehirli mantar topla (herhangi aksiyon kartı)","collect:spice":"Açık Alan karesinde yabani baharat topla (herhangi aksiyon kartı)","collect:resin":"Orman Kenarı karesinde reçine topla (herhangi aksiyon kartı)","cook:roast":"Mutfakta rosto yap (Fırın Anahtarı eşyası VEYA Pişir-Rosto kartı)","cook:grill":"Mutfakta ızgara yap (Izgara Aleti eşyası VEYA Pişir-Izgara kartı)","cook:pot":"Mutfakta haşlama/çorba yap (Tencere eşyası VEYA Pişir-Tencere kartı)","deliver":"Saray karesine gel ve teslim et — kazandın!"}},"difficulties":{"easy":{"label":"Basit","stepCount":3,"color":"#D6E8D0"},"medium":{"label":"Orta","stepCount":4,"color":"#F5E6C0"},"hard":{"label":"Zor","stepCount":5,"color":"#F0D6D6"}},"missions":[{"id":1,"name":"Kral'ın Rostosu","flavour":"Kralımız akşam yemeği için geyik rostosu istiyor. Acele et!","difficulty":"medium","steps":["kill:deer","take:meat","cook:roast","deliver"],"primaryAnimal":"deer","primaryResource":"meat","cookMethod":"roast","requiredItems":["oven_key"],"conflictsWith":[2,11,17],"cooperatesWith":[5,14,19]},{"id":2,"name":"Kraliçe'nin Izgarası","flavour":"Kraliçe ızgara geyik eti aşerdi. Durumu hassas, gecikmek olmaz.","difficulty":"medium","steps":["kill:deer","take:meat","cook:grill","deliver"],"primaryAnimal":"deer","primaryResource":"meat","cookMethod":"grill","requiredItems":["grill"],"conflictsWith":[1,11,17],"cooperatesWith":[5,14,19]},{"id":3,"name":"Vezirin Ziyafeti","flavour":"Vezir önemli bir misafir ağırlıyor. Domuz güveci şart.","difficulty":"medium","steps":["kill:boar","take:meat","cook:pot","deliver"],"primaryAnimal":"boar","primaryResource":"meat","cookMethod":"pot","requiredItems":["pot"],"conflictsWith":[13],"cooperatesWith":[]},{"id":4,"name":"Saray Çorbası","flavour":"Saray hekimi hasta çocuklar için tavşan çorbası istedi.","difficulty":"medium","steps":["kill:rabbit","take:meat","cook:pot","deliver"],"primaryAnimal":"rabbit","primaryResource":"meat","cookMethod":"pot","requiredItems":["pot"],"conflictsWith":[15],"cooperatesWith":[]},{"id":5,"name":"Misafir Halısı","flavour":"Yabancı elçiye geyik derisinden yapılmış bir halı hediye edilecek.","difficulty":"easy","steps":["kill:deer","take:hide","deliver"],"primaryAnimal":"deer","primaryResource":"hide","cookMethod":null,"requiredItems":[],"conflictsWith":[],"cooperatesWith":[1,2,11,14,17,19]},{"id":6,"name":"Kral'ın Posteki","flavour":"Kral taht odasına ayı posteki istiyor. Büyük bir av olmalı.","difficulty":"easy","steps":["kill:bear","take:hide","deliver"],"primaryAnimal":"bear","primaryResource":"hide","cookMethod":null,"requiredItems":[],"conflictsWith":[20],"cooperatesWith":[19]},{"id":7,"name":"Prensesin Kürk Mantesi","flavour":"Prenses kış için tilki kürkünden manto istiyor.","difficulty":"easy","steps":["kill:fox","take:hide","deliver"],"primaryAnimal":"fox","primaryResource":"hide","cookMethod":null,"requiredItems":[],"conflictsWith":[],"cooperatesWith":[12,14,18]},{"id":8,"name":"Muhafız Pelerini","flavour":"Baş muhafız yağmurlu devriyelere dayanıklı kurt derisi pelerin istiyor.","difficulty":"easy","steps":["kill:wolf","take:hide","deliver"],"primaryAnimal":"wolf","primaryResource":"hide","cookMethod":null,"requiredItems":[],"conflictsWith":[],"cooperatesWith":[]},{"id":9,"name":"Gece Avcısı Kıyafeti","flavour":"Saray casusları gece operasyonu için vaşak derisi kıyafet istiyor.","difficulty":"easy","steps":["kill:lynx","take:hide","deliver"],"primaryAnimal":"lynx","primaryResource":"hide","cookMethod":null,"requiredItems":[],"conflictsWith":[],"cooperatesWith":[]},{"id":10,"name":"Hekimin Panzehiri","flavour":"Saray hekimi acil panzehir istiyor. Her iki malzeme de lazım.","difficulty":"easy","steps":["collect:herb","collect:mushroom","deliver"],"primaryAnimal":null,"primaryResource":"plant","cookMethod":null,"requiredItems":[],"conflictsWith":[12,16],"cooperatesWith":[11,17,18]},{"id":11,"name":"Baş Aşçı Tarifi","flavour":"Baş aşçı baharlı geyik güvecini yalnızca özel günlerde pişirir. Bugün özel gün.","difficulty":"hard","steps":["collect:spice","kill:deer","take:meat","cook:pot","deliver"],"primaryAnimal":"deer","primaryResource":"meat","cookMethod":"pot","requiredItems":["pot"],"conflictsWith":[1,2,17],"cooperatesWith":[5,14,19]},{"id":12,"name":"Cadı Kazanı","flavour":"Saray büyücüsü üç nadir malzeme istiyor. Sormayın, bilmemek daha iyidir.","difficulty":"medium","steps":["collect:mushroom","collect:resin","take:feather","deliver"],"primaryAnimal":"eagle","primaryResource":"feather","cookMethod":null,"requiredItems":[],"conflictsWith":[10,15],"cooperatesWith":[7]},{"id":13,"name":"Prensin Kılıç Sapı","flavour":"Prens kılıcına yaban domuzu dişinden sap istiyor.","difficulty":"easy","steps":["kill:boar","take:byproduct","deliver"],"primaryAnimal":"boar","primaryResource":"byproduct","cookMethod":null,"requiredItems":[],"conflictsWith":[],"cooperatesWith":[3]},{"id":14,"name":"Saray Süsü","flavour":"Büyük salon için tilki kuyruğu ve geyik boynuzundan dekorasyon lazım.","difficulty":"hard","steps":["kill:fox","take:byproduct","kill:deer","take:byproduct","deliver"],"primaryAnimal":"fox","primaryResource":"byproduct","cookMethod":null,"requiredItems":[],"conflictsWith":[],"cooperatesWith":[7,1,2,5,11,17,19]},{"id":15,"name":"Şans Tılsımı","flavour":"Ordumuz sefere çıkmadan önce şans tılsımı lazım. Tavşan ve kartal seçkin malzeme.","difficulty":"medium","steps":["kill:rabbit","take:byproduct","take:feather","deliver"],"primaryAnimal":"rabbit","primaryResource":"byproduct","cookMethod":null,"requiredItems":[],"conflictsWith":[4,12],"cooperatesWith":[]},{"id":16,"name":"Hekimin Özel İlacı","flavour":"Saray hekimi porsuk safra kesesi ile şifalı ottan nadir bir ilaç yapacak.","difficulty":"medium","steps":["kill:badger","take:byproduct","collect:herb","deliver"],"primaryAnimal":"badger","primaryResource":"byproduct","cookMethod":null,"requiredItems":[],"conflictsWith":[10],"cooperatesWith":[]},{"id":17,"name":"Büyük Şölen","flavour":"Kral baharlı rosto istiyor — büyük şölen için en özel tarif.","difficulty":"hard","steps":["kill:deer","take:meat","collect:spice","cook:roast","deliver"],"primaryAnimal":"deer","primaryResource":"meat","cookMethod":"roast","requiredItems":["oven_key"],"conflictsWith":[1,2,11],"cooperatesWith":[5,14,19]},{"id":18,"name":"Elçiye Hediye Sepeti","flavour":"Komşu krallığın elçisine tilki kuyruğu ve şifalı ot içeren hoş bir sepet hazırlanacak.","difficulty":"medium","steps":["kill:fox","take:byproduct","collect:herb","deliver"],"primaryAnimal":"fox","primaryResource":"byproduct","cookMethod":null,"requiredItems":[],"conflictsWith":[],"cooperatesWith":[7,12,10]},{"id":19,"name":"Büyük Trophé","flavour":"Kral avlanma odasına iki nadir hayvanın hatırasını istiyor.","difficulty":"medium","steps":["kill:bear","take:byproduct","kill:red_deer","deliver"],"primaryAnimal":"bear","primaryResource":"byproduct","cookMethod":null,"requiredItems":[],"conflictsWith":[],"cooperatesWith":[6,5,14]},{"id":20,"name":"Sarayın En Değerli Avı","flavour":"Kral hem ayı eti hem de postekisini istiyor. Aynı hayvandan, aynı anda.","difficulty":"medium","steps":["kill:bear","take:meat","take:hide","deliver"],"primaryAnimal":"bear","primaryResource":"both","cookMethod":null,"requiredItems":[],"conflictsWith":[6],"cooperatesWith":[]}]},"map":{"_meta":{"schema":"royal-hunt-map-v1","gridWidth":5,"gridHeight":6,"totalTiles":30,"note":"Sabit kareler her oyunda aynı konumdadır. Kalan 24 kare rastgele dağıtılır."},"tileTypes":{"PALACE":{"id":"PALACE","name":"Saray","name_en":"Palace","count":1,"fixedPosition":[2,2],"vision":99,"moveCost":1,"moveBonus":0,"color":"#8B6914","desc":"Teslim noktası. Oyunun başlangıç ve bitiş merkezi.","actions":["deliver"],"spawnAnimals":[]},"DEEP_FOREST":{"id":"DEEP_FOREST","name":"Derin Orman","name_en":"Deep Forest","count":8,"fixedPosition":null,"vision":1,"moveCost":1,"moveBonus":0,"color":"#1A3C2A","desc":"Görüş sadece komşu kareler. Hayvan spawn bölgesi. Vaşak burada gizlenir.","actions":["attack","aim","skin","butcher","collect:mushroom"],"spawnAnimals":["deer","bear","boar","lynx","red_deer"]},"FOREST_EDGE":{"id":"FOREST_EDGE","name":"Orman Kenarı","name_en":"Forest Edge","count":6,"fixedPosition":null,"vision":2,"moveCost":1,"moveBonus":0,"color":"#2E6B3E","desc":"Bitki toplama alanı (mantar, reçine). Orta görüş.","actions":["attack","aim","skin","butcher","collect:resin","collect:mushroom"],"spawnAnimals":["rabbit","fox","wolf"]},"OPEN":{"id":"OPEN","name":"Açık Alan","name_en":"Open Field","count":5,"fixedPosition":null,"vision":3,"moveCost":0,"moveBonus":1,"color":"#C8E6A0","desc":"Hareket +1 bonus. Tam görüş. Baharat toplama noktası.","actions":["attack","aim","collect:spice"],"spawnAnimals":[]},"RIVER":{"id":"RIVER","name":"Nehir Kenarı","name_en":"Riverbank","count":4,"fixedPosition":null,"vision":2,"moveCost":2,"moveBonus":0,"color":"#4A90D9","desc":"Geçiş maliyeti +1. Şifalı ot toplama. Porsuk spawn noktası.","actions":["attack","aim","skin","butcher","collect:herb"],"spawnAnimals":["badger"]},"EAGLE_NEST":{"id":"EAGLE_NEST","name":"Kartal Yuvası","name_en":"Eagle Nest","count":2,"fixedPosition":[[0,0],[0,4]],"vision":2,"moveCost":1,"moveBonus":0,"color":"#2B4F8C","desc":"Sabit köşe kareleri. Tırman aksiyonuyla tüy alınır. %50 kartal burada.","actions":["climb"],"spawnAnimals":["eagle"]},"KITCHEN":{"id":"KITCHEN","name":"Mutfak","name_en":"Kitchen","count":2,"fixedPosition":[[1,2],[3,2]],"vision":99,"moveCost":1,"moveBonus":0,"color":"#8B4513","desc":"Sabit, Saraya komşu. Pişirme yalnızca bu karede yapılabilir.","actions":["cook:roast","cook:grill","cook:pot"],"spawnAnimals":[]},"TRAP_ZONE":{"id":"TRAP_ZONE","name":"Tuzak Bölgesi","name_en":"Trap Zone","count":1,"fixedPosition":null,"vision":1,"moveCost":1,"moveBonus":0,"color":"#6B2B2B","desc":"Başta gizlidir. Üzerine basılınca aktif olur ve hasar verir.","actions":[],"spawnAnimals":[],"hiddenUntilStepped":true,"trapEffect":{"damage":1,"stunTurns":1}}},"gridRules":{"fixedTiles":[{"tileType":"PALACE","position":[2,2],"note":"Merkez kare, her zaman sabit"},{"tileType":"EAGLE_NEST","position":[0,0],"note":"Sol üst köşe"},{"tileType":"EAGLE_NEST","position":[0,4],"note":"Sağ üst köşe"},{"tileType":"KITCHEN","position":[1,2],"note":"Saraya üstten komşu"},{"tileType":"KITCHEN","position":[3,2],"note":"Saraya alttan komşu"}],"randomRules":["Kalan 24 kare her oyun başında karılır","DEEP_FOREST kareleri birbirine komşu olmalıdır (izole ada oluşamaz)","RIVER kareleri en az 2'si yan yana gelir","TRAP_ZONE kareyi Saray veya Mutfak'a komşu koyma"],"playerStartPositions":{"2p":[[1,2],[3,2]],"3p":[[1,2],[3,2],[2,1]],"4p":[[1,2],[3,2],[2,1],[2,3]],"note":"Oyuncular Saray'a komşu karelerden başlar. 2p için üst/alt seçilir."}},"movementRules":{"directions":["up","down","left","right"],"diagonal":false,"riverPenalty":1,"openFieldBonus":1,"blockedByPlayer":true,"blockedByLiveAnimal":true,"retreatCardIgnoresTrap":true},"exampleGrid":{"note":"Örnek yerleşim — her oyun farklı oluşur","grid":[["EAGLE_NEST","DEEP_FOREST","FOREST_EDGE","DEEP_FOREST","EAGLE_NEST"],["DEEP_FOREST","OPEN","KITCHEN","OPEN","FOREST_EDGE"],["RIVER","FOREST_EDGE","PALACE","KITCHEN","RIVER"],["DEEP_FOREST","OPEN","FOREST_EDGE","OPEN","DEEP_FOREST"],["FOREST_EDGE","RIVER","DEEP_FOREST","RIVER","FOREST_EDGE"],["DEEP_FOREST","FOREST_EDGE","OPEN","DEEP_FOREST","TRAP_ZONE"]]}},"rules":{"_meta":{"schema":"royal-hunt-rules-v3","source":"rules.json teslim edilmedi; değerler GDD v2.0'dan derlendi, v3 ekleri işaretlidir","gddVersion":"2.0"},"players":4,"handSize":5,"drawPerTurn":1,"inventorySlots":3,"turnLimit":60,"respawnStuckTurns":20,"missionsPerPlayer":2,"win":"v3: iki görevini önce teslim eden kazanır; tur sınırında en çok görev adımı, eşitlikte Saraya en yakın (Manhattan)","animal":{"fleeDistance":1,"idleMoveChance":0.3,"woundedFleeAlways":true,"woundedBreakChance":0.5,"slowFleeChance":0.5,"migrate":true,"migrateAfterUnseen":2},"plants":{"regrowTurns":6},"feather":{"perNest":1,"regrowTurns":8},"carcassDecayTurns":15,"mission":{"minConflictMissions":3,"maxConflictMissions":6},"damage":"Oyuncunun can değeri yoktur: alınan her hasar puanı 1 tur sersemlik (hareket edememe) demektir. İlaç bir kez iptal eder.","theft":"v3: aynı karedeki rakipten Eti Çıkar (et/yemek) veya Derisini Yüz (deri/yan ürün) ya da Bıçak ile gasp; kurban elinden Ok At/Tüfekle Vur/Nişan Al atarak savunabilir. Hırsızlık kartı: aynı/komşu karede eşya veya ganimet çalar, savunulamaz.","carcass":"v3: son vuruşu yapan leşin sahibidir; sahibi leşin başındayken başkası hasat edemez."},"project":{"_meta":{"schema":"royal-hunt-project-v1","studio":"Aygforge Studios","game":"Royal Hunt — Kraliyet Avı","namespace":"globalThis.ROYALHUNT","stack":"Phaser 3 + Electron + Vite","devMethod":"Vibecoding — Cursor IDE + Claude","gddVersion":"2.0","simVersion":"2.0 (600 oyun test edildi)"},"projectStructure":{"src/":{"main.js":"Electron main process — pencere ayarları","preload.js":"Electron preload — güvenli IPC köprüsü","index.html":"Phaser canvas host","game/":{"RoyalHunt.js":"globalThis.ROYALHUNT namespace init — tüm modülleri birleştirir","scenes/":{"Boot.js":"Asset yükleme, JSON şemalarını çek","MainMenu.js":"Ana menü — Yeni Oyun, Lobiye Katıl, Ayarlar","Lobby.js":"Steam Lobby — host/join, oyuncu listesi","Game.js":"Ana oyun sahnesi — harita, kartlar, hayvanlar","EndScreen.js":"Kazanan ekranı / beraberlik"},"modules/":{"MapModule.js":"Grid oluşturma, kare render, fog of war","DeckModule.js":"Deste, el, çek/oyna/çöp döngüsü","AnimalModule.js":"Hayvan spawn, hareket AI, saldırı/hasat","MissionModule.js":"Görev seçimi, adım takibi, teslim","PlayerModule.js":"Oyuncu durumu, envanter, sersemlik","TurnModule.js":"Sıra yönetimi, tur sayacı, limit","RespawnModule.js":"Tıkanma tespiti, hayvan respawn","NetworkModule.js":"Steam P2P sync, lobby, disconnect"},"data/":{"animals.json":"10 hayvan tanımı","cards.json":"104 kart tanımı","missions.json":"20 görev kartı","map.json":"Harita kare türleri ve kurallar","rules.json":"Oyun mekanikleri ve parametreler"}}},"electron/":{"main.js":"Electron entry — Steamworks entegrasyonu"},"vite.config.js":"Build konfigürasyonu"},"namespaceModules":{"ROYALHUNT.Map":"Harita durumu ve grid işlemleri","ROYALHUNT.Deck":"Deste ve el yönetimi","ROYALHUNT.Animals":"Hayvan durumu ve AI","ROYALHUNT.Mission":"Görev takibi","ROYALHUNT.Player":"Oyuncu durumu","ROYALHUNT.Turn":"Tur yönetimi","ROYALHUNT.Respawn":"Respawn sistemi","ROYALHUNT.Net":"Ağ katmanı"},"developmentPhases":[{"phase":1,"name":"Veri Katmanı","status":"TAMAMLANDI","deliverables":["animals.json — 10 hayvan tanımı","cards.json — 104 kart tanımı","missions.json — 20 görev kartı","map.json — harita kare türleri ve kurallar","rules.json — tüm oyun mekanikleri ve parametreler","project.json — proje yapısı ve namespace"],"notes":"Kart toplamı 113 (Hareket:32 Aksiyon:43 Eşya:24 Tuzak:14). Spawn: 15 hayvan."},{"phase":2,"name":"Harita Motoru","status":"SIRADA","deliverables":["5×6 grid render (Phaser 3 tilemaps)","Kare türlerine göre renk/sprite","Rastgele dağıtım kuralları uygulaması","Fog of war (RenderTexture maske)","Görüş menzili hesabı"]},{"phase":3,"name":"Kart Motoru","status":"BEKLIYOR","deliverables":["Deste shuffle ve dağıtım","El render (5 kart)","Çek / oyna döngüsü","Çöp destesi döngüsü","Envanter (3 slot)"]},{"phase":4,"name":"Hayvan Sistemi","status":"BEKLIYOR","deliverables":["Spawn noktası dağıtımı","Hareket AI (kaç / bekle / saldır)","Saldırı ve sersemlik efekti","Hasat aksiyonları (et, deri, yan ürün)","Respawn mekaniği"]},{"phase":5,"name":"Görev Motoru","status":"BEKLIYOR","deliverables":["Gizli görev seçimi (draft)","Adım takibi ve sıra zorunluluğu","Teslim aksiyonu ve kazanma kontrolü","60 tur limiti ve beraberlik çözümü"]},{"phase":6,"name":"Oyuncu & Envanter","status":"BEKLIYOR","deliverables":["El kartları UI","3 slot envanter UI","Tuzak yerleştirme","Sersemlik göstergesi"]},{"phase":7,"name":"Görüş Sistemi","status":"BEKLIYOR","deliverables":["Fog of war render","Dürbün +2 bonus","Vaşak gizliliği","Kartal %50 yuvada/avda"]},{"phase":8,"name":"Hotseat Test","status":"BEKLIYOR","deliverables":["Aynı ekranda sırayla oynama","Tüm mekaniklerin elle testi","Denge ayarı"]},{"phase":9,"name":"Steam Entegrasyonu","status":"BEKLIYOR","deliverables":["Electron build konfigürasyonu","Steamworks SDK bağlantısı","Lobby oluşturma / katılma"]},{"phase":10,"name":"Multiplayer","status":"BEKLIYOR","deliverables":["P2P state sync","Host/join akışı","Disconnect toleransı","2–4 oyuncu testi"]}],"crossGameEasterEggs":{"note":"Aygforge Studios cross-promo — diğer oyunlarla bağ","planned":["Kartal yuvası animasyonunda Chrono Smuggler logosu","Saray koridorunda Faro (DMT karakteri) portresi","Don Zıpırleone figürini — gizli eşya kartı (koleksiyon)","Tarçın ve Zıpır memorial — saray köpek/kedi görseli"]}}}, state: null, modules: {} };
+
+</script>
+<script>
+/* =====================================================================
+   ÇEKİRDEK — RNG, Map, Deck, Animal, Mission, Player, Engine, Turn, Bot, Sim
+   (DOM bağımsız: tarayıcıda ve Node'da aynı şekilde çalışır)
+   ===================================================================== */
+(function (G) {
+'use strict';
+const RH = G.ROYALHUNT;
+const D = RH.data;
+const M = RH.modules;
+const R = D.rules;
+
+/* ---------------- RNG (seed'lenebilir, mulberry32) ---------------- */
+function makeRng(seed) {
+  let a = seed >>> 0;
+  const f = function () {
+    a = (a + 0x6D2B79F5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  f.int = n => Math.floor(f() * n);
+  f.pick = arr => arr[Math.floor(f() * arr.length)];
+  f.shuffle = arr => { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(f() * (i + 1)); const t = arr[i]; arr[i] = arr[j]; arr[j] = t; } return arr; };
+  f.chance = p => f() < p;
+  return f;
+}
+M.RNG = { make: makeRng };
+
+/* ---------------- Sabitler ve tablolar ---------------- */
+const W = D.map._meta.gridWidth, H = D.map._meta.gridHeight, N = W * H;
+const idx = (r, c) => r * W + c;
+const rowOf = i => Math.floor(i / W), colOf = i => i % W;
+const man = (a, b) => Math.abs(rowOf(a) - rowOf(b)) + Math.abs(colOf(a) - colOf(b));
+const NB = [];
+for (let i = 0; i < N; i++) {
+  const r = rowOf(i), c = colOf(i), l = [];
+  if (r > 0) l.push(i - W); if (r < H - 1) l.push(i + W);
+  if (c > 0) l.push(i - 1); if (c < W - 1) l.push(i + 1);
+  NB.push(l);
+}
+const TT = D.map.tileTypes;
+const ANIM = {}; D.animals.animals.forEach(a => { ANIM[a.id] = a; });
+const CARD = {}; D.cards.cards.forEach(c => { CARD[c.id] = c; });
+const MIS = {}; D.missions.missions.forEach(m => { MIS[m.id] = m; });
+const PALACE = idx(TT.PALACE.fixedPosition[0], TT.PALACE.fixedPosition[1]);
+const PLANT_NAMES = { herb: 'Şifalı Ot', mushroom: 'Zehirli Mantar', spice: 'Yabani Baharat', resin: 'Reçine' };
+const COOK_NAMES = { roast: 'Rostosu', grill: 'Izgarası', pot: 'Haşlaması' };
+const COOK_LABEL = { roast: 'Rosto', grill: 'Izgara', pot: 'Tencere' };
+const COOK_ITEM = { roast: 'item_oven_key', grill: 'item_grill', pot: 'item_pot' };
+const COOK_CARD = { roast: 'action_cook_roast', grill: 'action_cook_grill', pot: 'action_cook_pot' };
+const DEFENSE_CARDS = ['action_shoot', 'action_rifle', 'action_aim'];
+const PART_OF = { meat: 'meat', hide: 'hide', byproduct: 'by' };
+
+/* Hangi karede hangi bitki? (map.json actions alanından türetilir) */
+const PLANTS_BY_TILE = {};
+for (const k in TT) {
+  PLANTS_BY_TILE[k] = (TT[k].actions || []).filter(a => a.startsWith('collect:')).map(a => a.split(':')[1]);
+}
+
+
+/* Türkçe ek uyumu (kesme işaretli özel adlar için) */
+const TR = {
+  low: w => w.toLocaleLowerCase('tr'),
+  lastV: w => { const m = TR.low(w).match(/[aeıioöuü](?=[^aeıioöuü]*$)/); return m ? m[0] : 'e'; },
+  endsV: w => /[aeıioöuü]$/.test(TR.low(w)),
+  two: w => ('aıou'.indexOf(TR.lastV(w)) >= 0 ? 'a' : 'e'),
+  four: w => ({ a: 'ı', ı: 'ı', e: 'i', i: 'i', o: 'u', u: 'u', ö: 'ü', ü: 'ü' }[TR.lastV(w)]),
+  dat: w => w + "'" + (TR.endsV(w) ? 'y' : '') + TR.two(w),
+  gen: w => w + "'" + (TR.endsV(w) ? 'n' : '') + TR.four(w) + 'n',
+  acc: w => w + "'" + (TR.endsV(w) ? 'y' : '') + TR.four(w),
+  abl: w => w + "'" + (/[fstkçşhp]$/.test(TR.low(w)) ? 't' : 'd') + TR.two(w) + 'n'
+};
+M.TR = TR;
+
+M.Const = { W, H, N, idx, rowOf, colOf, man, NB, TT, ANIM, CARD, MIS, PALACE, PLANT_NAMES, COOK_NAMES, COOK_LABEL, COOK_ITEM, COOK_CARD, DEFENSE_CARDS };
+
+/* ======================= MAP ======================= */
+const MapM = {
+  generate(rng) {
+    const fixed = D.map.gridRules.fixedTiles;
+    const counts = {};
+    for (const k in TT) counts[k] = TT[k].count;
+    fixed.forEach(f => { counts[f.tileType]--; });
+    for (let t = 0; t < 20000; t++) {
+      const g = new Array(N).fill(null);
+      fixed.forEach(f => { g[idx(f.position[0], f.position[1])] = f.tileType; });
+      const free = [];
+      for (let i = 0; i < N; i++) if (!g[i]) free.push(i);
+      // Derin Orman: birbirine bağlı tek parça (izole ada yok)
+      const df = counts.DEEP_FOREST;
+      const blob = [rng.pick(free)], inb = new Set(blob);
+      while (blob.length < df) {
+        const fr = [];
+        blob.forEach(b => NB[b].forEach(n => { if (!g[n] && !inb.has(n) && fr.indexOf(n) < 0) fr.push(n); }));
+        if (!fr.length) break;
+        const n = rng.pick(fr); blob.push(n); inb.add(n);
+      }
+      if (blob.length < df) continue;
+      blob.forEach(i => { g[i] = 'DEEP_FOREST'; });
+      const bag = [];
+      for (const k in counts) { if (k === 'DEEP_FOREST') continue; for (let j = 0; j < counts[k]; j++) bag.push(k); }
+      // map.json adetleri 29'a toplanıyor (30 kare var). GDD örnek gridinde 7 Orman Kenarı
+      // bulunduğundan eksik kare(ler) Orman Kenarı ile tamamlanır.
+      while (bag.length < free.length - blob.length) bag.push('FOREST_EDGE');
+      rng.shuffle(bag);
+      let k = 0;
+      for (let i = 0; i < N; i++) if (!g[i]) g[i] = bag[k++];
+      if (MapM.valid(g)) return g;
+    }
+    throw new Error('Harita üretilemedi');
+  },
+  valid(g) {
+    const rivers = [];
+    g.forEach((t, i) => { if (t === 'RIVER') rivers.push(i); });
+    if (rivers.length >= 2 && !rivers.some(a => NB[a].some(b => g[b] === 'RIVER'))) return false;
+    const trap = g.indexOf('TRAP_ZONE');
+    if (trap >= 0 && (NB[trap].some(b => g[b] === 'PALACE' || g[b] === 'KITCHEN'))) return false;
+    const starts = D.map.gridRules.playerStartPositions['4p'].map(p => idx(p[0], p[1]));
+    if (starts.indexOf(trap) >= 0) return false;
+    const df = [];
+    g.forEach((t, i) => { if (t === 'DEEP_FOREST') df.push(i); });
+    if (df.length) {
+      const seen = new Set([df[0]]), st = [df[0]];
+      while (st.length) { const u = st.pop(); NB[u].forEach(v => { if (g[v] === 'DEEP_FOREST' && !seen.has(v)) { seen.add(v); st.push(v); } }); }
+      if (seen.size !== df.length) return false;
+    }
+    return true;
+  },
+  /* Statik ağırlıklı mesafe tablosu (Nehir'e giriş 2) — botların planlaması için */
+  distTable(g) {
+    const all = [];
+    for (let s = 0; s < N; s++) {
+      const d = new Array(N).fill(Infinity), done = new Array(N).fill(false);
+      d[s] = 0;
+      for (let it = 0; it < N; it++) {
+        let u = -1, best = Infinity;
+        for (let i = 0; i < N; i++) if (!done[i] && d[i] < best) { best = d[i]; u = i; }
+        if (u < 0) break;
+        done[u] = true;
+        for (const v of NB[u]) { const c = g[v] === 'RIVER' ? 2 : 1; if (d[u] + c < d[v]) d[v] = d[u] + c; }
+      }
+      all.push(d);
+    }
+    return all;
+  },
+  visionRange(state, p) {
+    const t = state.grid[p.tile];
+    let v = TT[t].vision;
+    if (v >= 99) return 99;
+    if (Player.hasItem(p, 'item_binoculars')) v += CARD.item_binoculars.visBonus;
+    return v;
+  },
+  visible(state, p) {
+    const v = MapM.visionRange(state, p), out = new Array(N);
+    for (let i = 0; i < N; i++) out[i] = v >= 99 || man(p.tile, i) <= v;
+    return out;
+  },
+  /* Oyuncuya görünen kare türü (gizli Tuzak Bölgesi açılana kadar Orman Kenarı gibi görünür) */
+  shownType(state, i) {
+    const t = state.grid[i];
+    if (t === 'TRAP_ZONE' && !state.trapZoneRevealed) return 'FOREST_EDGE';
+    return t;
+  }
+};
+M.Map = MapM;
+
+/* ======================= DECK ======================= */
+const Deck = {
+  build(rng) {
+    let uid = 1;
+    const deck = [];
+    D.cards.cards.forEach(c => { for (let k = 0; k < c.count; k++) deck.push({ uid: uid++, id: c.id }); });
+    return rng.shuffle(deck);
+  },
+  draw(state, p) {
+    if (!state.deck.length) {
+      if (!state.discard.length) return null;
+      state.deck = state.rng.shuffle(state.discard);
+      state.discard = [];
+      Engine.log(state, null, 'Deste bitti — çöp destesi karıştırılıp yeni deste yapıldı.', 'sys');
+    }
+    const c = state.deck.pop();
+    p.hand.push(c);
+    return c;
+  },
+  toDiscard(state, card) { if (card) state.discard.push(card); },
+  takeFromHand(p, uid) {
+    const i = p.hand.findIndex(c => c.uid === uid);
+    if (i < 0) return null;
+    return p.hand.splice(i, 1)[0];
+  }
+};
+M.Deck = Deck;
+
+/* ======================= PLAYER ======================= */
+const Player = {
+  create(i, cfg, start) {
+    return {
+      id: i, name: cfg.name, title: cfg.title, color: cfg.color, bot: cfg.bot || null,
+      tile: start, trail: [start], hand: [], items: [], bag: [], missions: [],
+      stun: 0, stunnedNow: false, rainedNow: false, runNext: false, runCap: false, aim: 0,
+      kills: new Set(), best: 0, stuck: 0,
+      stats: { kills: 0, harvest: 0, robbed: 0, lost: 0, sabotage: 0, cooked: 0, collected: 0, delivered: 0, hurt: 0, moves: 0, shots: 0 },
+      mem: { animals: {}, carc: {}, seen: new Array(N).fill(-99) },
+      goal: null, goalAge: 0
+    };
+  },
+  hasItem(p, id) { return p.items.some(c => c.id === id); },
+  trailPush(p, t) { if (p.trail[p.trail.length - 1] !== t) p.trail.push(t); if (p.trail.length > 14) p.trail.shift(); },
+  trailBack(p, k) {
+    if (p.trail.length < 2) return null;
+    const kk = Math.min(k, p.trail.length - 1);
+    return p.trail[p.trail.length - 1 - kk];
+  },
+  pushBack(p, k) {
+    if (p.trail.length < 2) return 0;
+    const kk = Math.min(k, p.trail.length - 1);
+    p.trail.length = p.trail.length - kk;
+    p.tile = p.trail[p.trail.length - 1];
+    return kk;
+  }
+};
+M.Player = Player;
+
+/* ======================= ANIMAL ======================= */
+const AnimalM = {
+  create(state, sp, tile) {
+    const d = ANIM[sp];
+    const a = { uid: state.nextUid++, sp, tile, hp: d.hp, maxHp: d.hp, alive: true,
+      inNest: sp === 'eagle' ? state.rng() < d.behavior.nestChance : false, unseen: 0, hold: false };
+    state.animals.push(a);
+    return a;
+  },
+  spawnAll(state) {
+    for (const d of D.animals.animals) {
+      for (let k = 0; k < d.spawnCount; k++) {
+        const tiles = [];
+        state.grid.forEach((t, i) => { if (t === d.spawnZone) tiles.push(i); });
+        let free;
+        if (d.id === 'eagle') free = tiles.filter(i => !state.animals.some(a => a.alive && a.sp === 'eagle' && a.tile === i));
+        else free = tiles.filter(i => !state.animals.some(a => a.alive && a.sp !== 'eagle' && a.tile === i) && !state.players.some(p => p.tile === i));
+        const pool = free.length ? free : tiles;
+        AnimalM.create(state, d.id, state.rng.pick(pool));
+      }
+    }
+  },
+  at(state, tile) { return state.animals.filter(a => a.alive && a.tile === tile && (a.sp !== 'eagle' || a.inNest)); },
+  canSee(state, p, a, vis) {
+    if (!a.alive) return false;
+    if (a.sp === 'eagle' && !a.inNest) return false;
+    if (!vis[a.tile]) return false;
+    if (ANIM[a.sp].behavior.stealthInDeepForest && state.grid[a.tile] === 'DEEP_FOREST' && p.tile !== a.tile) return false;
+    return true;
+  },
+  legalTile(state, a, t) {
+    const ty = state.grid[t];
+    if (ty === 'PALACE' || ty === 'KITCHEN' || ty === 'EAGLE_NEST') return false;
+    if (state.players.some(p => p.tile === t)) return false;
+    if (state.animals.some(b => b !== a && b.alive && b.sp !== 'eagle' && b.tile === t)) return false;
+    if (ANIM[a.sp].behavior.avoidsTrap && (state.traps.some(x => x.tile === t) || ty === 'TRAP_ZONE')) return false;
+    return true;
+  },
+  nearestPlayerDist(state, t) { let m = 99; for (const p of state.players) { const d = man(p.tile, t); if (d < m) m = d; } return m; },
+  flee(state, a) {
+    const opts = NB[a.tile].filter(t => AnimalM.legalTile(state, a, t));
+    if (!opts.length) return null;
+    let best = -1, cand = [];
+    for (const t of opts) { const d = AnimalM.nearestPlayerDist(state, t); if (d > best) { best = d; cand = [t]; } else if (d === best) cand.push(t); }
+    return state.rng.pick(cand);
+  },
+  toward(state, a) {
+    const cur = AnimalM.nearestPlayerDist(state, a.tile);
+    const opts = NB[a.tile].filter(t => AnimalM.legalTile(state, a, t) && AnimalM.nearestPlayerDist(state, t) < cur && AnimalM.nearestPlayerDist(state, t) >= 2);
+    return opts.length ? state.rng.pick(opts) : null;
+  },
+  /* Tur sonu hayvan fazı */
+  phase(state) {
+    const rng = state.rng, moves = [], A = R.animal;
+    const list = rng.shuffle(state.animals.filter(a => a.alive));
+    for (const a of list) {
+      const d = ANIM[a.sp], b = d.behavior;
+      if (a.sp === 'eagle') { a.inNest = rng() < b.nestChance; continue; }
+      if (a.hold) { a.hold = false; continue; }
+      const same = state.players.some(p => p.tile === a.tile);
+      const near = state.players.some(p => man(p.tile, a.tile) === 1);
+      const wounded = a.hp <= a.maxHp / 2;
+      const fleeP = d.speed >= 2 ? 1 : A.slowFleeChance;   // hız 1 olanlar her tur kaçamaz
+      let to = null, why = '';
+      if (same) {
+        if (wounded && rng() < A.woundedBreakChance * fleeP) { to = AnimalM.flee(state, a); why = 'flee'; }
+      } else if (wounded) {
+        if (rng() < fleeP) { to = AnimalM.flee(state, a); why = 'flee'; }
+      } else if (near) {
+        if (d.attack === 0 && rng() < fleeP * b.fleeDistance) { to = AnimalM.flee(state, a); why = 'flee'; }
+      } else if (A.migrate && a.unseen >= A.migrateAfterUnseen) {
+        to = AnimalM.toward(state, a); why = 'migrate';
+        if (to != null) a.unseen = 0;
+      } else if (a.sp !== 'rabbit' && rng() < b.fleeChanceIdle) {
+        const o = NB[a.tile].filter(t => AnimalM.legalTile(state, a, t));
+        if (o.length) { to = rng.pick(o); why = 'idle'; }
+      }
+      if (to != null) { moves.push({ uid: a.uid, from: a.tile, to, why }); a.tile = to; }
+    }
+    const vis = state.players.map(p => MapM.visible(state, p));
+    for (const a of state.animals) {
+      if (!a.alive || a.sp === 'eagle') continue;
+      const seen = state.players.some((p, i) => AnimalM.canSee(state, p, a, vis[i]));
+      a.unseen = seen ? 0 : a.unseen + 1;
+    }
+    return moves;
+  }
+};
+M.Animal = AnimalM;
+
+/* ======================= MISSION ======================= */
+const Mission = {
+  def(id) { return MIS[id]; },
+  keys(id) {
+    const k = new Set();
+    MIS[id].steps.forEach(s => {
+      const [t, a] = s.split(':');
+      if (t === 'kill' || t === 'collect') k.add(a);
+      if (t === 'take' && a === 'feather') k.add('eagle');
+    });
+    return k;
+  },
+  conflictCount(assign) {
+    let cnt = 0;
+    assign.forEach((ms, i) => ms.forEach(id => {
+      const k = Mission.keys(id);
+      if (assign.some((o, j) => j !== i && o.some(id2 => [...Mission.keys(id2)].some(x => k.has(x))))) cnt++;
+    }));
+    return cnt;
+  },
+  deal(state) {
+    const rng = state.rng;
+    const easy = D.missions.missions.filter(m => m.difficulty === 'easy').map(m => m.id);
+    const rest = D.missions.missions.filter(m => m.difficulty !== 'easy').map(m => m.id);
+    let assign = null;
+    for (let t = 0; t < 3000; t++) {
+      const e = rng.shuffle(easy.slice()), o = rng.shuffle(rest.slice());
+      const a = state.players.map((p, i) => [e[i], o[i]]);
+      const c = Mission.conflictCount(a);
+      assign = a;
+      if (c >= R.mission.minConflictMissions && c <= R.mission.maxConflictMissions) break;
+    }
+    state.players.forEach((p, i) => { p.missions = assign[i].map(id => ({ id, delivered: false })); });
+    state.conflict = Mission.conflictCount(assign);
+  },
+  stepLabel(step, last) {
+    const [t, a] = step.split(':');
+    switch (t) {
+      case 'kill': return ANIM[a].name + ' avla';
+      case 'take':
+        if (a === 'meat') return 'Etini çıkar';
+        if (a === 'hide') return 'Derisini yüz';
+        if (a === 'feather') return 'Kartal tüyü al';
+        if (a === 'byproduct') { const bp = last && ANIM[last].yields.byproduct; return (bp ? bp.name : 'Yan ürün') + ' al'; }
+        return a;
+      case 'collect': return PLANT_NAMES[a] + ' topla';
+      case 'cook': return (a === 'roast' ? 'Fırında rosto yap' : a === 'grill' ? 'Izgarada pişir' : 'Tencerede pişir');
+      case 'deliver': return 'Saraya teslim et';
+    }
+    return step;
+  },
+  stepLabels(id) {
+    let last = null;
+    return MIS[id].steps.map(s => { const [t, a] = s.split(':'); if (t === 'kill') last = a; return Mission.stepLabel(s, last); });
+  },
+  /* Sahiplik tabanlı değerlendirme; iki görev aynı malı paylaşamaz (rezervasyon) */
+  evaluate(state, p) {
+    const used = new Set();
+    return p.missions.map(pm => Mission.evalOne(pm, p, used));
+  },
+  evalOne(pm, p, used) {
+    const def = MIS[pm.id], steps = def.steps, bag = p.bag;
+    if (pm.delivered) return { sat: steps.map(() => true), done: steps.length, total: steps.length, ready: false, delivered: true, reserve: [] };
+    const reserve = [], sat = [];
+    let last = null;
+    const find = pred => { for (let i = 0; i < bag.length; i++) if (!used.has(i) && reserve.indexOf(i) < 0 && pred(bag[i])) return i; return -1; };
+    const cookStep = steps.find(s => s.startsWith('cook:'));
+    const cookM = cookStep ? cookStep.split(':')[1] : null;
+    for (let s = 0; s < steps.length; s++) {
+      const [t, arg] = steps[s].split(':');
+      let ok = false;
+      if (t === 'kill') {
+        last = arg;
+        ok = p.kills.has(arg) || bag.some((it, i) => !used.has(i) && it.sp === arg);
+      } else if (t === 'take') {
+        let i = -1;
+        if (arg === 'feather') i = find(it => it.k === 'by' && it.by === 'feather');
+        else if (arg === 'meat') {
+          i = find(it => it.k === 'meat' && it.sp === last);
+          if (i < 0 && cookM && bag.some((it, j) => !used.has(j) && it.k === 'dish' && it.sp === last && it.method === cookM)) ok = true;
+        } else if (arg === 'hide') i = find(it => it.k === 'hide' && it.sp === last);
+        else if (arg === 'byproduct') i = find(it => it.k === 'by' && it.sp === last);
+        if (i >= 0) { ok = true; reserve.push(i); }
+      } else if (t === 'collect') {
+        const i = find(it => it.k === 'plant' && it.plant === arg);
+        if (i >= 0) { ok = true; reserve.push(i); }
+      } else if (t === 'cook') {
+        const i = find(it => it.k === 'dish' && it.method === arg && it.sp === last);
+        if (i >= 0) {
+          ok = true;
+          // pişmiş yemek bulunduysa, et adımının ayırdığı çiğ eti serbest bırak
+          const mi = reserve.findIndex(j => bag[j].k === 'meat' && bag[j].sp === last);
+          if (mi >= 0) reserve.splice(mi, 1);
+          reserve.push(i);
+        }
+      }
+      sat.push(ok);
+    }
+    reserve.forEach(i => used.add(i));
+    const done = sat.filter(Boolean).length;
+    return { sat, done, total: steps.length, ready: done === steps.length - 1 && !sat[steps.length - 1], delivered: false, reserve };
+  },
+  score(state, p) {
+    return Mission.evaluate(state, p).reduce((s, r) => s + r.done, 0);
+  }
+};
+M.Mission = Mission;
+
+/* ======================= ENGINE (kurallar) ======================= */
+const Engine = {
+  log(state, pid, text, cls) {
+    if (state.quiet) return;
+    state.log.push({ r: state.round, pid, text, cls: cls || '' });
+    if (state.log.length > 400) state.log.shift();
+  },
+  fx(state, e) { if (!state.quiet) state.fx.push(e); },
+  pname(state, pid) { return state.players[pid].name; },
+  itemName(it) {
+    switch (it.k) {
+      case 'meat': return ANIM[it.sp].name + ' Eti';
+      case 'hide': return ANIM[it.sp].name + ' Derisi';
+      case 'by': return it.name;
+      case 'plant': return PLANT_NAMES[it.plant];
+      case 'dish': return ANIM[it.sp].name + ' ' + COOK_NAMES[it.method];
+    }
+    return '?';
+  },
+  carcAccessible(state, p, c) {
+    if (c.owner === p.id) return true;
+    return !state.players.some(q => q.id === c.owner && q.tile === c.tile);
+  },
+  carcHas(c, part) { return part === 'meat' ? c.meat > 0 : part === 'hide' ? c.hide > 0 : !!c.by; },
+  plantsAt(state, t) {
+    const pl = state.plants[t];
+    if (!pl) return [];
+    return Object.keys(pl).filter(k => state.round >= pl[k]);
+  },
+  rawMeatSpecies(p) { const s = []; p.bag.forEach(it => { if (it.k === 'meat' && s.indexOf(it.sp) < 0) s.push(it.sp); }); return s; },
+  robbable(it, cardId) {
+    if (cardId === 'action_butcher') return it.k === 'meat' || it.k === 'dish';
+    if (cardId === 'action_skin') return it.k === 'hide' || it.k === 'by';
+    return it.k === 'meat' || it.k === 'hide' || it.k === 'by' || it.k === 'dish';
+  },
+
+  /* Hareket kartı için ulaşılabilir kareler (yol ile). Nehir'e giriş 2 puan
+     (1 puanla girilebilir ama hareket orada biter); Açık Alan kart başına +1 bonus. */
+  reachable(state, p, pts, vis) {
+    const g = state.grid, start = p.tile;
+    const startOpen = g[start] === 'OPEN';
+    const k0 = start * 2 + (startOpen ? 1 : 0);
+    const best = new Map([[k0, pts + (startOpen ? 1 : 0)]]);
+    const prev = new Map();
+    const q = [k0];
+    const blocks = t => {
+      if (t === start) return false;
+      const ty = g[t];
+      if (ty !== 'PALACE' && ty !== 'KITCHEN' && state.players.some(o => o !== p && o.tile === t)) return true;
+      if (state.animals.some(a => a.alive && a.tile === t && a.sp !== 'eagle' && AnimalM.canSee(state, p, a, vis))) return true;
+      if (state.trapZoneRevealed && ty === 'TRAP_ZONE') return true;
+      return false;
+    };
+    while (q.length) {
+      let bi = 0;
+      for (let i = 1; i < q.length; i++) if (best.get(q[i]) > best.get(q[bi])) bi = i;
+      const k = q.splice(bi, 1)[0];
+      const u = k >> 1, bu = k & 1, r = best.get(k);
+      if (r <= 0 || blocks(u)) continue;
+      for (const v of NB[u]) {
+        let cost = g[v] === 'RIVER' ? 2 : 1, nb = bu;
+        if (g[v] === 'OPEN' && !bu) { cost = 0; nb = 1; }
+        let nr = r - cost;
+        if (nr < 0) { if (g[v] === 'RIVER') nr = 0; else continue; }
+        const nk = v * 2 + nb;
+        if (!best.has(nk) || best.get(nk) < nr) { best.set(nk, nr); prev.set(nk, k); q.push(nk); }
+      }
+    }
+    const res = new Map();
+    for (const [k] of best) {
+      const t = k >> 1;
+      if (t === start || res.has(t)) continue;
+      const path = [];
+      let c = k;
+      while (c !== k0 && c !== undefined) { path.unshift(c >> 1); c = prev.get(c); }
+      res.set(t, path);
+    }
+    return res;
+  },
+
+  observe(state, p) {
+    const vis = MapM.visible(state, p), mem = p.mem;
+    for (let t = 0; t < N; t++) if (vis[t]) mem.seen[t] = state.round;
+    for (const uid in mem.animals) { const m = mem.animals[uid]; if (vis[m.tile]) delete mem.animals[uid]; }
+    for (const a of state.animals) if (AnimalM.canSee(state, p, a, vis) || (a.alive && a.sp === 'eagle' && vis[a.tile])) mem.animals[a.uid] = { sp: a.sp, tile: a.tile, round: state.round };
+    for (const uid in mem.carc) { const m = mem.carc[uid]; if (vis[m.tile]) delete mem.carc[uid]; }
+    for (const c of state.carcasses) if (vis[c.tile]) mem.carc[c.uid] = { sp: c.sp, tile: c.tile, round: state.round };
+    return vis;
+  },
+
+  hurt(state, p, amount, src) {
+    const mi = p.items.findIndex(c => c.id === 'item_medicine');
+    if (mi >= 0) {
+      Deck.toDiscard(state, p.items.splice(mi, 1)[0]);
+      Engine.log(state, p.id, `${p.name}: İlaç, ${src} etkisini iptal etti.`, 'good');
+      Engine.fx(state, { type: 'medicine', pid: p.id, tile: p.tile });
+      return false;
+    }
+    p.stun = Math.max(p.stun, amount);
+    p.stats.hurt++;
+    Engine.log(state, p.id, `${p.name} ${src} yüzünden ${amount} tur sersem kaldı.`, 'bad');
+    Engine.fx(state, { type: 'hurt', pid: p.id, tile: p.tile, amount });
+    return true;
+  },
+
+  executeMove(state, p, path, safe) {
+    const g = state.grid, stepped = [];
+    for (let i = 0; i < path.length; i++) {
+      const t = path[i];
+      p.tile = t; Player.trailPush(p, t); stepped.push(t);
+      if (!safe) {
+        const ti = state.traps.findIndex(x => x.tile === t && x.owner !== p.id);
+        if (ti >= 0) {
+          const trap = state.traps.splice(ti, 1)[0];
+          const owner = state.players[trap.owner];
+          owner.stats.sabotage++;
+          Engine.log(state, p.id, `${p.name} ${TR.gen(owner.name)} kurduğu tuzağa bastı!`, 'bad');
+          Engine.fx(state, { type: 'trap', tile: t, pid: p.id });
+          Engine.hurt(state, p, CARD.trap_set.stunTurns, 'tuzak');
+          break;
+        }
+        if (g[t] === 'TRAP_ZONE') {
+          const first = !state.trapZoneRevealed;
+          state.trapZoneRevealed = true;
+          Engine.log(state, p.id, first ? `${p.name} gizli Tuzak Bölgesi'ne bastı — bölge açığa çıktı!` : `${p.name} Tuzak Bölgesi'ne girdi.`, 'bad');
+          Engine.fx(state, { type: 'trap', tile: t, pid: p.id, zone: true });
+          const te = TT.TRAP_ZONE.trapEffect;
+          Engine.hurt(state, p, Math.max(te.damage, te.stunTurns), 'Tuzak Bölgesi');
+          break;
+        }
+      }
+      if (i < path.length - 1 && state.animals.some(a => a.alive && a.tile === t && a.sp === 'lynx')) {
+        Engine.log(state, p.id, `${p.name} çalılıkta gizlenen bir vaşağa rastladı!`, 'bad');
+        break;
+      }
+    }
+    p.stats.moves++;
+    Engine.fx(state, { type: 'move', pid: p.id, path: stepped });
+    if (!safe) Engine.arrivalAttacks(state, p);
+    Engine.observe(state, p);
+  },
+
+  arrivalAttacks(state, p) {
+    for (const a of AnimalM.at(state, p.tile)) {
+      const d = ANIM[a.sp];
+      if (!d.attack || a.sp === 'eagle') continue;
+      Engine.fx(state, { type: 'attack', uid: a.uid, tile: p.tile, pid: p.id });
+      Engine.log(state, p.id, `${d.name} ${TR.dat(p.name)} saldırdı!`, 'bad');
+      Engine.hurt(state, p, d.attackStunTurns || d.attackDamage, d.name + ' saldırısı');
+    }
+  },
+
+  noise(state, p) {
+    for (const q of state.players) {
+      if (q === p || man(q.tile, p.tile) > CARD.action_rifle.noiseRange) continue;
+      const cand = NB[q.tile].filter(t => !state.animals.some(a => a.alive && a.sp !== 'eagle' && a.tile === t));
+      if (!cand.length) continue;
+      let best = -1, pick = [];
+      cand.forEach(t => { const d = man(t, p.tile); if (d > best) { best = d; pick = [t]; } else if (d === best) pick.push(t); });
+      const to = state.rng.pick(pick);
+      const from = q.tile;
+      q.tile = to; Player.trailPush(q, to);
+      Engine.fx(state, { type: 'move', pid: q.id, path: [to], from });
+      Engine.log(state, q.id, `Tüfek sesi! ${q.name} 1 kare kaçmak zorunda kaldı.`, 'warn');
+    }
+  },
+
+  kill(state, p, a) {
+    a.alive = false;
+    const d = ANIM[a.sp], y = d.yields;
+    const c = { uid: state.nextUid++, sp: a.sp, tile: a.tile, owner: p.id, meat: y.meat, hide: y.hide,
+      by: y.byproduct ? { id: y.byproduct.id, name: y.byproduct.name } : null, age: 0 };
+    state.carcasses.push(c);
+    p.kills.add(a.sp);
+    p.stats.kills++;
+    Engine.log(state, p.id, `${p.name} bir ${d.name} avladı! Leş onun.`, 'kill');
+    Engine.fx(state, { type: 'kill', uid: a.uid, tile: a.tile, pid: p.id });
+    if (d.behavior.deathSplash) {
+      for (const q of state.players) if (man(q.tile, a.tile) === 1) Engine.hurt(state, q, d.attackSplashDamage || 1, 'domuzun can çekişmesi');
+    }
+  },
+
+  /* ---------- Seçenek listesi (insan arayüzü ve botlar aynı listeyi kullanır) ---------- */
+  listOptions(state, p) {
+    const opts = [], g = state.grid, ty = g[p.tile];
+    const vis = MapM.visible(state, p);
+    const canMove = !p.stunnedNow && !p.rainedNow;
+    const animalsHere = AnimalM.at(state, p.tile).filter(a => AnimalM.canSee(state, p, a, vis));
+    const carcHere = state.carcasses.filter(c => c.tile === p.tile && Engine.carcAccessible(state, p, c));
+    const rivals = state.players.filter(q => q !== p);
+    const rivalsHere = rivals.filter(q => q.tile === p.tile);
+    const plantsHere = Engine.plantsAt(state, p.tile);
+    const readyAny = Mission.evaluate(state, p).some(r => r.ready);
+    const reachCache = {};
+    for (const card of p.hand) {
+      const d = CARD[card.id], cu = card.uid;
+      if (d.type === 'move') {
+        if (canMove) {
+          if (d.id === 'move_retreat') {
+            for (let k = 1; k <= 2; k++) {
+              const t = Player.trailBack(p, k);
+              if (t != null && t !== p.tile && !opts.some(o => o.card === cu && o.tile === t)) opts.push({ kind: 'move', card: cu, tile: t, safe: true, back: k });
+            }
+          } else {
+            let pts = d.moveValue;
+            if (p.runCap) pts = Math.min(pts, CARD.move_run.penaltyNextTurnMaxMove);
+            const reach = reachCache[pts] || (reachCache[pts] = Engine.reachable(state, p, pts, vis));
+            for (const [t, path] of reach) opts.push({ kind: 'move', card: cu, tile: t, path, run: !!d.penalty });
+          }
+        }
+      } else if (d.type === 'action') {
+        if (d.damage) animalsHere.forEach(a => opts.push({ kind: 'shoot', card: cu, animal: a.uid, dmg: d.damage, noise: !!d.noise }));
+        if (d.aimBonus && p.aim === 0) opts.push({ kind: 'aim', card: cu });
+        if (d.id === 'action_skin' || d.id === 'action_butcher') {
+          const parts = d.id === 'action_skin' ? ['hide', 'by'] : ['meat', 'by'];
+          carcHere.forEach(c => parts.forEach(pt => { if (Engine.carcHas(c, pt)) opts.push({ kind: 'harvest', card: cu, carcass: c.uid, part: pt }); }));
+          rivalsHere.forEach(q => q.bag.forEach((it, i) => { if (Engine.robbable(it, d.id)) opts.push({ kind: 'rob', card: cu, target: q.id, bagIdx: i }); }));
+        }
+        if (d.cookMethod && ty === 'KITCHEN') Engine.rawMeatSpecies(p).forEach(sp => opts.push({ kind: 'cook', card: cu, method: d.cookMethod, sp }));
+        if (d.id === 'action_climb' && ty === 'EAGLE_NEST' && state.round >= state.nests[p.tile]) opts.push({ kind: 'climb', card: cu });
+        plantsHere.forEach(pl => opts.push({ kind: 'collect', card: cu, plant: pl }));
+      } else if (d.type === 'item') {
+        if (p.items.length < R.inventorySlots) opts.push({ kind: 'equip', card: cu });
+        else p.items.forEach((it, i) => opts.push({ kind: 'equip', card: cu, drop: i }));
+      } else if (d.type === 'trap') {
+        switch (d.effect) {
+          case 'placeOnTile':
+            [p.tile].concat(NB[p.tile]).forEach(t => {
+              if (g[t] === 'PALACE' || g[t] === 'KITCHEN') return;
+              if (state.traps.some(x => x.tile === t)) return;
+              opts.push({ kind: 'trap', card: cu, tile: t });
+            });
+            break;
+          case 'pushBack': rivals.forEach(q => { if (q.trail.length > 1) opts.push({ kind: 'mislead', card: cu, target: q.id }); }); break;
+          case 'allDiscardOne': opts.push({ kind: 'herald', card: cu }); break;
+          case 'noMoveThisTurn': opts.push({ kind: 'rain', card: cu }); break;
+          case 'stealInventory':
+            rivals.forEach(q => {
+              if (man(q.tile, p.tile) > d.range) return;
+              if (p.items.length < R.inventorySlots) q.items.forEach((it, i) => opts.push({ kind: 'steal', card: cu, target: q.id, inv: i }));
+              q.bag.forEach((it, i) => opts.push({ kind: 'steal', card: cu, target: q.id, bagIdx: i }));
+            });
+            break;
+          case 'randomDiscard': rivals.forEach(q => { if (q.hand.length) opts.push({ kind: 'panic', card: cu, target: q.id }); }); break;
+        }
+      }
+      opts.push({ kind: 'discard', card: cu });
+    }
+    /* Genel aksiyonlar: elden herhangi bir kart atılarak yapılır */
+    if (p.hand.length) {
+      if (ty === 'PALACE' && readyAny) opts.push({ kind: 'deliver', card: null });
+      if (Player.hasItem(p, 'item_knife')) {
+        carcHere.forEach(c => ['meat', 'hide', 'by'].forEach(pt => { if (Engine.carcHas(c, pt)) opts.push({ kind: 'harvest', card: null, carcass: c.uid, part: pt, knife: true }); }));
+        rivalsHere.forEach(q => q.bag.forEach((it, i) => { if (Engine.robbable(it, null)) opts.push({ kind: 'rob', card: null, target: q.id, bagIdx: i, knife: true }); }));
+      }
+      if (ty === 'KITCHEN') ['roast', 'grill', 'pot'].forEach(m => { if (Player.hasItem(p, COOK_ITEM[m])) Engine.rawMeatSpecies(p).forEach(sp => opts.push({ kind: 'cook', card: null, method: m, sp, tool: true })); });
+      if (Player.hasItem(p, 'item_ammo')) animalsHere.forEach(a => opts.push({ kind: 'shoot', card: null, animal: a.uid, dmg: CARD.item_ammo.damage, ammo: true }));
+    }
+    return opts;
+  },
+
+  /* Savunma: rakip "et/deri gaspı" yaparken kurban elinden bir saldırı kartı atabilir */
+  defenseCards(p) { return p.hand.filter(c => DEFENSE_CARDS.indexOf(c.id) >= 0); },
+
+  apply(state, p, opt, extra) {
+    extra = extra || {};
+    state.fx = [];
+    let card = null;
+    if (opt.card != null) card = Deck.takeFromHand(p, opt.card);
+    else if (extra.discard != null) { const dc = Deck.takeFromHand(p, extra.discard); Deck.toDiscard(state, dc); }
+    const cname = card ? CARD[card.id].name : '';
+    const g = state.grid;
+    switch (opt.kind) {
+      case 'move': {
+        if (opt.safe) {
+          const from = p.tile;
+          Player.pushBack(p, opt.back);
+          Engine.fx(state, { type: 'move', pid: p.id, path: [p.tile], from });
+          Engine.log(state, p.id, `${p.name} geri çekildi.`);
+          Engine.observe(state, p);
+        } else {
+          if (opt.run) p.runNext = true;
+          Engine.log(state, p.id, `${p.name} ${cname} oynadı.`);
+          Engine.executeMove(state, p, opt.path, false);
+        }
+        break;
+      }
+      case 'shoot': {
+        const a = state.animals.find(x => x.uid === opt.animal);
+        const dmg = opt.dmg + p.aim;
+        p.aim = 0;
+        p.stats.shots++;
+        if (opt.ammo) { const ai = p.items.findIndex(c => c.id === 'item_ammo'); Deck.toDiscard(state, p.items.splice(ai, 1)[0]); }
+        a.hp -= dmg;
+        Engine.fx(state, { type: 'shot', pid: p.id, uid: a.uid, tile: a.tile, dmg, rifle: !!opt.noise || !!opt.ammo });
+        Engine.log(state, p.id, `${p.name} ${TR.dat(ANIM[a.sp].name)} ${opt.ammo ? 'Ekstra Mermi ile' : cname + ' ile'} ${dmg} hasar verdi.`, 'act');
+        if (a.hp <= 0) Engine.kill(state, p, a);
+        else if (ANIM[a.sp].behavior.counterCharge) {
+          a.hold = true;
+          Engine.log(state, p.id, `Yaralı ${ANIM[a.sp].name} kaçmak yerine ${TR.gen(p.name)} üstüne atıldı!`, 'bad');
+          Engine.fx(state, { type: 'attack', uid: a.uid, tile: a.tile, pid: p.id });
+          Engine.hurt(state, p, ANIM[a.sp].attackDamage, ANIM[a.sp].name + ' saldırısı');
+        }
+        if (opt.noise) Engine.noise(state, p);
+        break;
+      }
+      case 'aim':
+        p.aim = CARD.action_aim.aimBonus;
+        Engine.log(state, p.id, `${p.name} nişan aldı (+1 hasar).`);
+        Engine.fx(state, { type: 'aim', pid: p.id, tile: p.tile });
+        break;
+      case 'harvest': {
+        const c = state.carcasses.find(x => x.uid === opt.carcass);
+        let it;
+        if (opt.part === 'meat') { c.meat--; it = { k: 'meat', sp: c.sp }; }
+        else if (opt.part === 'hide') { c.hide--; it = { k: 'hide', sp: c.sp }; }
+        else { it = { k: 'by', sp: c.sp, by: c.by.id, name: c.by.name }; c.by = null; }
+        p.bag.push(it);
+        p.stats.harvest++;
+        if (c.owner !== p.id) p.kills.add(c.sp);
+        Engine.log(state, p.id, `${p.name} leşten ${Engine.itemName(it)} aldı${opt.knife ? ' (Bıçak)' : ''}.`, 'act');
+        Engine.fx(state, { type: 'harvest', pid: p.id, tile: c.tile, text: Engine.itemName(it) });
+        if (c.meat <= 0 && c.hide <= 0 && !c.by) state.carcasses.splice(state.carcasses.indexOf(c), 1);
+        break;
+      }
+      case 'rob': {
+        const q = state.players[opt.target];
+        const it = q.bag[opt.bagIdx];
+        if (extra.defend != null) {
+          const dc = Deck.takeFromHand(q, extra.defend);
+          Deck.toDiscard(state, dc);
+          Engine.log(state, q.id, `${q.name} ${CARD[dc.id].name} kartıyla ${TR.gen(p.name)} gasp girişimini püskürttü!`, 'warn');
+          Engine.fx(state, { type: 'block', pid: q.id, tile: q.tile });
+        } else {
+          q.bag.splice(opt.bagIdx, 1);
+          p.bag.push(it);
+          p.stats.robbed++; q.stats.lost++;
+          Engine.log(state, p.id, `${p.name}, ${TR.gen(q.name)} elinden ${Engine.itemName(it)} kaptı!`, 'steal');
+          Engine.fx(state, { type: 'steal', from: q.id, to: p.id, tile: p.tile, text: Engine.itemName(it) });
+        }
+        break;
+      }
+      case 'cook': {
+        const i = p.bag.findIndex(it => it.k === 'meat' && it.sp === opt.sp);
+        p.bag.splice(i, 1);
+        const dish = { k: 'dish', sp: opt.sp, method: opt.method };
+        p.bag.push(dish);
+        p.stats.cooked++;
+        Engine.log(state, p.id, `${p.name} mutfakta ${Engine.itemName(dish)} hazırladı${opt.tool ? ' (eşya ile)' : ''}.`, 'act');
+        Engine.fx(state, { type: 'cook', pid: p.id, tile: p.tile });
+        break;
+      }
+      case 'collect': {
+        state.plants[p.tile][opt.plant] = state.round + R.plants.regrowTurns;
+        const it = { k: 'plant', plant: opt.plant };
+        p.bag.push(it);
+        p.stats.collected++;
+        Engine.log(state, p.id, `${p.name} ${PLANT_NAMES[opt.plant]} topladı.`, 'act');
+        Engine.fx(state, { type: 'harvest', pid: p.id, tile: p.tile, text: PLANT_NAMES[opt.plant] });
+        break;
+      }
+      case 'climb': {
+        const eagle = state.animals.find(a => a.alive && a.sp === 'eagle' && a.tile === p.tile);
+        if (eagle && eagle.inNest) {
+          Engine.log(state, p.id, `${p.name} tırmandı ama kartal yuvadaydı! Kovalandı, bir tur kaybetti.`, 'bad');
+          Engine.fx(state, { type: 'attack', uid: eagle.uid, tile: p.tile, pid: p.id });
+          const from = p.tile;
+          Player.pushBack(p, 1);
+          Engine.fx(state, { type: 'move', pid: p.id, path: [p.tile], from });
+          p.stun = Math.max(p.stun, 1);
+        } else {
+          state.nests[p.tile] = state.round + R.feather.regrowTurns;
+          const it = { k: 'by', sp: 'eagle', by: 'feather', name: 'Kartal Tüyü' };
+          p.bag.push(it);
+          p.stats.collected++;
+          Engine.log(state, p.id, `${p.name} yuvaya tırmanıp Kartal Tüyü aldı.`, 'act');
+          Engine.fx(state, { type: 'harvest', pid: p.id, tile: p.tile, text: 'Kartal Tüyü' });
+        }
+        break;
+      }
+      case 'deliver': {
+        const ev = Mission.evaluate(state, p);
+        const rem = [];
+        ev.forEach((r, i) => {
+          if (!r.ready) return;
+          p.missions[i].delivered = true;
+          p.stats.delivered++;
+          r.reserve.forEach(j => rem.push(j));
+          Engine.log(state, p.id, `${p.name} "${MIS[p.missions[i].id].name}" görevini Saraya teslim etti!`, 'deliver');
+        });
+        rem.sort((a, b) => b - a).forEach(j => p.bag.splice(j, 1));
+        Engine.fx(state, { type: 'deliver', pid: p.id, tile: p.tile });
+        if (p.missions.every(m => m.delivered)) {
+          state.over = true; state.winners = [p.id]; state.endReason = 'deliver';
+          Engine.log(state, p.id, `${p.name} iki görevini de tamamladı ve oyunu kazandı!`, 'deliver');
+        }
+        break;
+      }
+      case 'equip': {
+        if (opt.drop != null) { const old = p.items.splice(opt.drop, 1)[0]; Deck.toDiscard(state, old); }
+        p.items.push(card);
+        card = null; // envantere gitti
+        Engine.log(state, p.id, `${p.name} envanterine ${cname} ekledi.`);
+        Engine.fx(state, { type: 'equip', pid: p.id, tile: p.tile });
+        break;
+      }
+      case 'trap':
+        state.traps.push({ tile: opt.tile, owner: p.id });
+        Engine.log(state, p.id, `${p.name} gizlice bir yere tuzak kurdu.`, 'warn');
+        Engine.fx(state, { type: 'trapset', pid: p.id, tile: opt.tile });
+        break;
+      case 'mislead': {
+        const q = state.players[opt.target];
+        const from = q.tile;
+        const k = Player.pushBack(q, CARD.trap_mislead.pushDistance);
+        p.stats.sabotage++;
+        Engine.log(state, p.id, `${p.name}, Yanlış İz ile ${TR.acc(q.name)} ${k} kare geri gönderdi!`, 'warn');
+        Engine.fx(state, { type: 'move', pid: q.id, path: [q.tile], from, push: true });
+        break;
+      }
+      case 'panic': {
+        const q = state.players[opt.target];
+        const n = Math.min(CARD.trap_panic.discardCount, q.hand.length);
+        state.rng.shuffle(q.hand);
+        for (let i = 0; i < n; i++) Deck.toDiscard(state, q.hand.pop());
+        p.stats.sabotage++;
+        Engine.log(state, p.id, `${p.name} Panik yarattı: ${q.name} elinden ${n} kart kaybetti!`, 'warn');
+        Engine.fx(state, { type: 'panic', pid: q.id, tile: q.tile });
+        break;
+      }
+      case 'herald': {
+        const ch = extra.heraldChoices || {};
+        for (const q of state.players) {
+          if (!q.hand.length) continue;
+          let uid = ch[q.id];
+          if (uid == null || !q.hand.some(c => c.uid === uid)) uid = q.hand[0].uid;
+          Deck.toDiscard(state, Deck.takeFromHand(q, uid));
+        }
+        Engine.log(state, p.id, `${p.name}: "Kral'ın Habercisi!" Herkes elinden bir kart attı.`, 'warn');
+        Engine.fx(state, { type: 'herald', pid: p.id, tile: PALACE });
+        break;
+      }
+      case 'rain':
+        state.rainTurns = state.players.length - 1;
+        Engine.log(state, p.id, `${p.name} Sağanak Yağmur oynadı: bu tur kimse hareket edemez.`, 'warn');
+        Engine.fx(state, { type: 'rain' });
+        break;
+      case 'steal': {
+        const q = state.players[opt.target];
+        let name;
+        if (opt.inv != null) { const it = q.items.splice(opt.inv, 1)[0]; p.items.push(it); name = CARD[it.id].name; }
+        else { const it = q.bag.splice(opt.bagIdx, 1)[0]; p.bag.push(it); name = Engine.itemName(it); }
+        p.stats.robbed++; q.stats.lost++; p.stats.sabotage++;
+        Engine.log(state, p.id, `${p.name} Hırsızlık ile ${TR.abl(q.name)} ${name} çaldı!`, 'steal');
+        Engine.fx(state, { type: 'steal', from: q.id, to: p.id, tile: q.tile, text: name });
+        break;
+      }
+      case 'discard':
+        Engine.log(state, p.id, `${p.name} bir kart attı (pas).`, 'dim');
+        break;
+    }
+    if (card) Deck.toDiscard(state, card);
+    return state.fx;
+  }
+};
+M.Engine = Engine;
+
+/* ======================= TURN ======================= */
+const PLAYER_CFG = [
+  { name: 'Sen', title: 'Avcıbaşı', color: '#b8323a', badge: 'A' },
+  { name: 'Kilerci Bey', title: 'Kilerci', color: '#3a64b8', badge: 'K' },
+  { name: 'Mabeyinci', title: 'Mabeyinci', color: '#8e4fb8', badge: 'M' },
+  { name: 'Seyis Başı', title: 'Seyis Başı', color: '#d08a2a', badge: 'S' }
+];
+const Turn = {
+  PLAYER_CFG,
+  newGame(opts) {
+    opts = opts || {};
+    const seed = opts.seed != null ? opts.seed >>> 0 : (Math.random() * 4294967296) >>> 0;
+    const rng = makeRng(seed);
+    const grid = MapM.generate(rng);
+    const starts = D.map.gridRules.playerStartPositions['4p'].map(p => idx(p[0], p[1]));
+    const bots = opts.bots || [null, 'medium', 'medium', 'medium'];
+    const state = {
+      seed, rng, grid, round: 1, turnPos: 0, order: [], nextUid: 1000,
+      players: [], animals: [], carcasses: [], traps: [], log: [], fx: [],
+      deck: [], discard: [], plants: {}, nests: {}, rainTurns: 0, trapZoneRevealed: false,
+      over: false, winners: [], endReason: null, quiet: !!opts.quiet, respawns: 0, conflict: 0
+    };
+    state.dist = MapM.distTable(grid);
+    for (let i = 0; i < 4; i++) {
+      const cfg = Object.assign({}, PLAYER_CFG[i], { bot: bots[i] });
+      if (cfg.bot) cfg.name = PLAYER_CFG[i].title + (i === 0 ? '' : '');
+      if (i === 0 && !bots[0]) cfg.name = opts.humanName || 'Sen';
+      state.players.push(Player.create(i, cfg, starts[i]));
+    }
+    grid.forEach((t, i) => {
+      const pl = PLANTS_BY_TILE[t];
+      if (pl && pl.length) { state.plants[i] = {}; pl.forEach(k => { state.plants[i][k] = 0; }); }
+      if (t === 'EAGLE_NEST') state.nests[i] = 0;
+    });
+    state.deck = Deck.build(rng);
+    for (let k = 0; k < R.handSize; k++) state.players.forEach(p => Deck.draw(state, p));
+    AnimalM.spawnAll(state);
+    Mission.deal(state);
+    const first = rng.int(4);
+    state.order = [0, 1, 2, 3].map(k => (first + k) % 4);
+    state.players.forEach(p => Engine.observe(state, p));
+    Engine.log(state, null, `Av başladı. Tur sırası: ${state.order.map(i => state.players[i].name).join(' → ')}.`, 'sys');
+    return state;
+  },
+  current(state) { return state.players[state.order[state.turnPos]]; },
+  beginTurn(state) {
+    const p = Turn.current(state);
+    p.stunnedNow = p.stun > 0;
+    if (p.stun > 0) p.stun--;
+    p.rainedNow = state.rainTurns > 0;
+    if (state.rainTurns > 0) state.rainTurns--;
+    p.runCap = p.runNext; p.runNext = false;
+    let guard = 0;
+    while (p.hand.length < R.handSize + R.drawPerTurn && guard++ < 10) { if (!Deck.draw(state, p)) break; }
+    Engine.observe(state, p);
+    return p;
+  },
+  endTurn(state) {
+    if (state.over) return null;
+    state.turnPos++;
+    if (state.turnPos >= state.order.length) { state.turnPos = 0; return Turn.endRound(state); }
+    return null;
+  },
+  endRound(state) {
+    const moves = AnimalM.phase(state);
+    for (let i = state.carcasses.length - 1; i >= 0; i--) {
+      const c = state.carcasses[i];
+      if (++c.age > R.carcassDecayTurns) { state.carcasses.splice(i, 1); Engine.log(state, null, `Bir ${ANIM[c.sp].name} leşi çürüyüp kayboldu.`, 'dim'); }
+    }
+    const spawns = Turn.respawnCheck(state);
+    state.round++;
+    if (state.round > R.turnLimit) Turn.finishByLimit(state);
+    return { moves, spawns };
+  },
+  respawnCheck(state) {
+    const spawns = [];
+    for (const p of state.players) {
+      const prog = Mission.score(state, p);
+      if (prog > p.best) { p.best = prog; p.stuck = 0; } else p.stuck++;
+      if (p.stuck < R.respawnStuckTurns) continue;
+      p.stuck = 0;
+      const ev = Mission.evaluate(state, p);
+      const need = [];
+      p.missions.forEach((pm, mi) => {
+        if (pm.delivered) return;
+        let last = null;
+        MIS[pm.id].steps.forEach((s, si) => {
+          const [t, a] = s.split(':');
+          if (t === 'kill') last = a;
+          if (ev[mi].sat[si]) return;
+          if (t === 'kill') need.push(a);
+          else if (t === 'take' && a === 'feather') need.push('eagle');
+          else if (t === 'take' && last) need.push(last);
+        });
+      });
+      if (!need.length) continue;
+      need.sort((a, b) => state.animals.filter(x => x.alive && x.sp === a).length - state.animals.filter(x => x.alive && x.sp === b).length);
+      const sp = need[0];
+      if (sp === 'eagle') {
+        for (const k in state.nests) state.nests[k] = Math.min(state.nests[k], state.round);
+        Engine.log(state, p.id, `Doğanın Armağanı: kartal yuvalarında yeni tüyler belirdi.`, 'sys');
+        spawns.push({ sp, tile: null });
+        continue;
+      }
+      const corners = [0, W - 1, N - W, N - 1];
+      const dummy = { sp, uid: -1 };
+      const cand = [];
+      for (let t = 0; t < N; t++) if (AnimalM.legalTile(state, dummy, t)) cand.push(t);
+      if (!cand.length) continue;
+      cand.sort((a, b) => {
+        const ca = Math.min(...corners.map(c => man(a, c))), cb = Math.min(...corners.map(c => man(b, c)));
+        return (man(b, p.tile) - cb * 1.5) - (man(a, p.tile) - ca * 1.5);
+      });
+      const a = AnimalM.create(state, sp, cand[0]);
+      state.respawns++;
+      Engine.log(state, null, `Doğanın Armağanı: haritanın uzak bir köşesinde yeni bir ${ANIM[sp].name} göründü.`, 'sys');
+      spawns.push({ sp, tile: a.tile, uid: a.uid });
+    }
+    return spawns;
+  },
+  finishByLimit(state) {
+    state.over = true;
+    state.endReason = 'limit';
+    const sc = state.players.map(p => ({ p, s: Mission.score(state, p), d: man(p.tile, PALACE) }));
+    sc.sort((a, b) => b.s - a.s || a.d - b.d);
+    const top = sc.filter(x => x.s === sc[0].s && x.d === sc[0].d);
+    state.winners = top.map(x => x.p.id);
+    Engine.log(state, null, `${R.turnLimit}. tur bitti. En çok görev adımını tamamlayan: ${top.map(x => x.p.name).join(', ')}.`, 'deliver');
+  },
+  /* Senkron tur (simülasyon ve botlar için) */
+  playBotTurn(state) {
+    const p = Turn.beginTurn(state);
+    const dec = Bot.decide(state, p);
+    Bot.resolveReactionsSync(state, p, dec);
+    Engine.apply(state, p, dec.opt, dec.extra);
+    return Turn.endTurn(state);
+  }
+};
+M.Turn = Turn;
+
+/* ======================= BOT ======================= */
+const Bot = {
+  /* Görevlerden somut iş listesi */
+  tasks(state, p, ev) {
+    const tasks = [];
+    const add = t => { const ex = tasks.find(x => x.key === t.key); if (ex) { ex.count++; ex.prog = Math.max(ex.prog, t.prog); } else { t.count = 1; tasks.push(t); } };
+    p.missions.forEach((pm, mi) => {
+      if (pm.delivered) return;
+      const r = ev[mi], def = MIS[pm.id];
+      if (r.ready) { add({ key: 'deliver', kind: 'deliver', prog: r.done + 2 }); return; }
+      let last = null;
+      def.steps.forEach((s, si) => {
+        const [t, arg] = s.split(':');
+        if (t === 'kill') last = arg;
+        if (r.sat[si]) return;
+        if (t === 'kill') {
+          const nx = def.steps[si + 1];
+          let part = 'any';
+          if (nx && nx.startsWith('take:') && !r.sat[si + 1] && nx !== 'take:feather') part = PART_OF[nx.split(':')[1]];
+          add({ key: 'hunt:' + arg + ':' + part, kind: 'hunt', sp: arg, part, prog: r.done });
+        } else if (t === 'take') {
+          if (arg === 'feather') add({ key: 'feather', kind: 'feather', prog: r.done });
+          else add({ key: 'hunt:' + last + ':' + PART_OF[arg], kind: 'hunt', sp: last, part: PART_OF[arg], prog: r.done });
+        } else if (t === 'collect') add({ key: 'plant:' + arg, kind: 'plant', plant: arg, prog: r.done });
+        else if (t === 'cook') {
+          if (p.bag.some(it => it.k === 'meat' && it.sp === last)) add({ key: 'cook:' + arg + ':' + last, kind: 'cook', method: arg, sp: last, prog: r.done });
+        }
+      });
+    });
+    return tasks;
+  },
+  wantsItem(ctx, it) {
+    for (const t of ctx.tasks) {
+      if (t.kind === 'hunt' && it.sp === t.sp && (t.part === 'any' || t.part === it.k || (t.part === 'meat' && it.k === 'dish'))) {
+        if (it.k === 'dish') { if (ctx.dishWants.some(w => w.sp === it.sp && w.method === it.method)) return true; continue; }
+        return true;
+      }
+      if (t.kind === 'plant' && it.k === 'plant' && it.plant === t.plant) return true;
+      if (t.kind === 'feather' && it.k === 'by' && it.by === 'feather') return true;
+    }
+    if (it.k === 'dish' && ctx.dishWants.some(w => w.sp === it.sp && w.method === it.method)) return true;
+    return false;
+  },
+  wantsPart(ctx, sp, part) {
+    for (const t of ctx.tasks) {
+      if (t.kind === 'hunt' && t.sp === sp && (t.part === 'any' || t.part === part)) return true;
+      if (t.kind === 'feather' && sp === 'eagle' && part === 'by') return true;
+    }
+    return false;
+  },
+  context(state, p) {
+    const vis = MapM.visible(state, p);
+    const ev = Mission.evaluate(state, p);
+    const tasks = Bot.tasks(state, p, ev);
+    const dishWants = [];
+    p.missions.forEach((pm, mi) => {
+      if (pm.delivered) return;
+      let last = null;
+      MIS[pm.id].steps.forEach((s, si) => { const [t, a] = s.split(':'); if (t === 'kill') last = a; if (t === 'cook' && !ev[mi].sat[si]) dishWants.push({ sp: last, method: a }); });
+    });
+    const ctx = { vis, ev, tasks, dishWants, diff: p.bot || 'medium' };
+    ctx.huntSp = new Set(tasks.filter(t => t.kind === 'hunt').map(t => t.sp));
+    if (tasks.some(t => t.kind === 'feather')) ctx.huntSp.add('eagle');
+    ctx.needHarvest = tasks.some(t => t.kind === 'hunt' || t.kind === 'feather');
+    ctx.needCook = new Set(dishWants.map(w => w.method));
+    ctx.needFeather = tasks.some(t => t.kind === 'feather');
+    ctx.needPlant = tasks.some(t => t.kind === 'plant');
+    // hedef seçimi
+    const dist = state.dist[p.tile];
+    let best = null;
+    const cands = [];
+    for (const t of tasks) {
+      const r = Bot.resolve(state, p, t, ctx);
+      if (!r) continue;
+      let cost = r.cost;
+      if (ctx.diff === 'hard') cost -= 1.2 * t.prog + 1.5 * (t.count - 1);
+      else if (ctx.diff === 'medium') cost -= 0.5 * t.prog;
+      cands.push({ task: t, tile: r.tile, cost, info: r });
+    }
+    cands.sort((a, b) => a.cost - b.cost);
+    if (ctx.diff === 'easy') {
+      // kolay bot: hedefe yapışır, ara sıra rastgele hedef seçer
+      const prev = p.goal && cands.find(c => c.task.key === p.goal.key);
+      p.goalAge++;
+      if (prev && p.goalAge < 6) best = prev;
+      else { best = cands.length ? (state.rng() < 0.3 ? state.rng.pick(cands) : cands[0]) : null; p.goalAge = 0; }
+    } else best = cands[0] || null;
+    if (best) { p.goal = { key: best.task.key, tile: best.tile, kind: best.task.kind }; ctx.goal = best.tile; ctx.goalTask = best.task; ctx.goalInfo = best.info; }
+    else { p.goal = null; ctx.goal = PALACE; ctx.goalTask = null; }
+    ctx.dist = dist;
+    return ctx;
+  },
+  resolve(state, p, task, ctx) {
+    const dist = state.dist[p.tile];
+    const nearest = tiles => { let b = null; for (const t of tiles) if (!b || dist[t] < dist[b]) b = t; return b; };
+    switch (task.kind) {
+      case 'deliver': return { tile: PALACE, cost: dist[PALACE] - 3 };
+      case 'cook': {
+        const ks = []; state.grid.forEach((t, i) => { if (t === 'KITCHEN') ks.push(i); });
+        const k = nearest(ks);
+        const feasible = Player.hasItem(p, COOK_ITEM[task.method]) || p.hand.some(c => c.id === COOK_CARD[task.method]);
+        return { tile: k, cost: dist[k] + (feasible ? 0 : 7) };
+      }
+      case 'plant': {
+        const ts = [];
+        for (const t in state.plants) if (state.plants[t][task.plant] != null && state.round >= state.plants[t][task.plant] && !(state.trapZoneRevealed && state.grid[t] === 'TRAP_ZONE')) ts.push(+t);
+        if (!ts.length) return null;
+        const t = nearest(ts);
+        return { tile: t, cost: dist[t] + 1 };
+      }
+      case 'feather': {
+        const ts = Object.keys(state.nests).map(Number).filter(t => state.round >= state.nests[t]);
+        const hasClimb = p.hand.some(c => c.id === 'action_climb');
+        // kartal leşi (tüy) varsa
+        for (const uid in p.mem.carc) { const c = state.carcasses.find(x => x.uid === +uid); if (c && c.sp === 'eagle' && c.by && Engine.carcAccessible(state, p, c)) return { tile: c.tile, cost: dist[c.tile] }; }
+        if (!ts.length) return null;
+        const t = nearest(ts);
+        return { tile: t, cost: dist[t] + (hasClimb ? 1 : 4) };
+      }
+      case 'hunt': {
+        let best = null;
+        const consider = (tile, cost, kind) => { if (!best || cost < best.cost) best = { tile, cost, kind }; };
+        for (const uid in p.mem.carc) {
+          const c = state.carcasses.find(x => x.uid === +uid);
+          if (!c || c.sp !== task.sp) continue;
+          if (!Engine.carcAccessible(state, p, c) && !(c.owner !== p.id && dist[c.tile] > 2)) continue;
+          const has = task.part === 'any' ? (c.meat > 0 || c.hide > 0 || c.by) : Engine.carcHas(c, task.part);
+          if (has) consider(c.tile, dist[c.tile] + 1 + (c.owner !== p.id && !Engine.carcAccessible(state, p, c) ? 3 : 0), 'carcass');
+        }
+        for (const uid in p.mem.animals) {
+          const m = p.mem.animals[uid];
+          if (m.sp !== task.sp) continue;
+          const a = state.animals.find(x => x.uid === +uid);
+          if (!a || !a.alive) { delete p.mem.animals[uid]; continue; }
+          consider(m.tile, dist[m.tile] + 2 + Math.min(3, a.hp) + (state.round - m.round) * 0.5, 'animal');
+        }
+        if (ctx.diff !== 'easy') {
+          for (const q of state.players) {
+            if (q === p) continue;
+            if (q.bag.some(it => it.sp === task.sp && (task.part === 'any' || it.k === task.part || (task.part === 'meat' && it.k === 'dish')))) {
+              const canRob = Player.hasItem(p, 'item_knife') || p.hand.some(c => c.id === 'action_skin' || c.id === 'action_butcher' || c.id === 'trap_steal');
+              consider(q.tile, dist[q.tile] + (canRob ? 3 : 8), 'rival');
+            }
+          }
+        }
+        if (!best || best.cost > 10) {
+          const zone = ANIM[task.sp].spawnZone;
+          let et = null, es = -1e9;
+          for (let t = 0; t < N; t++) {
+            if (state.grid[t] !== zone && !(zone !== 'EAGLE_NEST' && state.grid[t] !== 'PALACE' && state.grid[t] !== 'KITCHEN' && state.round - p.mem.seen[t] > 6)) continue;
+            const stale = Math.min(12, state.round - p.mem.seen[t]);
+            const sc = stale * (state.grid[t] === zone ? 1.5 : 0.6) - 1.3 * dist[t] - (t === p.tile ? 50 : 0);
+            if (sc > es) { es = sc; et = t; }
+          }
+          if (et != null) consider(et, dist[et] + 8, 'explore');
+        }
+        return best;
+      }
+    }
+    return null;
+  },
+  /* Kartın bot için değeri (el yönetimi) */
+  cardUse(state, p, card, ctx) {
+    const id = card.id, hunting = ctx.huntSp.size > 0, knife = Player.hasItem(p, 'item_knife');
+    const trapBase = { easy: 1, medium: 2.5, hard: 3.5 }[ctx.diff];
+    let v = 1;
+    switch (id) {
+      case 'move_normal': v = 6; break;
+      case 'move_run': v = 5; break;
+      case 'move_slow': v = 4; break;
+      case 'move_retreat': v = 1.5; break;
+      case 'action_shoot': v = hunting ? 7 : 2.5; break;
+      case 'action_rifle': v = hunting ? 8 : 3; break;
+      case 'action_aim': v = hunting ? 4 : 1; break;
+      case 'action_skin': case 'action_butcher': v = ctx.needHarvest && !knife ? 7 : 2.5; break;
+      case 'action_cook_pot': case 'action_cook_roast': case 'action_cook_grill': {
+        const m = CARD[id].cookMethod;
+        v = ctx.needCook.has(m) && !Player.hasItem(p, COOK_ITEM[m]) ? 9 : 1; break;
+      }
+      case 'action_climb': v = ctx.needFeather ? 8 : 0.5; break;
+      case 'item_knife': v = knife ? 0.5 : (ctx.needHarvest ? 7 : 3); break;
+      case 'item_oven_key': case 'item_grill': case 'item_pot': {
+        const m = CARD[id].unlocksCook;
+        v = Player.hasItem(p, id) ? 0.5 : (ctx.needCook.has(m) ? 7.5 : 1.5); break;
+      }
+      case 'item_binoculars': v = Player.hasItem(p, id) ? 0.5 : 3; break;
+      case 'item_medicine': v = 3.5; break;
+      case 'item_ammo': v = hunting ? 6 : 2; break;
+      case 'trap_herald': v = trapBase * 0.6; break;
+      case 'trap_rain': v = trapBase * 0.4; break;
+      default: v = trapBase;
+    }
+    if (CARD[id].type === 'action' && ctx.needPlant) v = Math.max(v, 4);
+    return v;
+  },
+  worstCard(state, p, ctx, exclude) {
+    let w = null, wv = 1e9;
+    for (const c of p.hand) { if (exclude && exclude.indexOf(c.uid) >= 0) continue; const v = Bot.cardUse(state, p, c, ctx) + (ctx.diff === 'easy' ? state.rng() * 4 : 0); if (v < wv) { wv = v; w = c; } }
+    return w;
+  },
+  threat(state, p, q, ctx) {
+    const delivered = q.missions.filter(m => m.delivered).length;
+    let t = delivered * 6;
+    q.bag.forEach(it => { t += it.k === 'dish' ? 3 : 1.5; });
+    if (ctx.diff === 'hard') {
+      // davranıştan çıkarım: eşyalı ve saraya yaklaşan rakip tehlikelidir
+      const dp = man(q.tile, PALACE);
+      if (q.bag.length && dp <= 2) t += 3;
+      t += Math.min(3, q.stats.kills * 0.7);
+      if (q.lastPalDist != null && dp < q.lastPalDist && q.bag.length) t += 2;
+    }
+    return t;
+  },
+  score(state, p, o, ctx) {
+    const diff = ctx.diff, dist = state.dist, goal = ctx.goal;
+    const useOf = c => Bot.cardUse(state, p, c, ctx);
+    const cardObj = o.card != null ? p.hand.find(c => c.uid === o.card) : null;
+    const costCard = cardObj ? useOf(cardObj) : (p.hand.length ? Math.min(...p.hand.map(useOf)) : 0);
+    const sabMul = diff === 'easy' ? 0.3 : diff === 'medium' ? 0.8 : 1.15;
+    const rivals = state.players.filter(q => q !== p);
+    const thr = q => Bot.threat(state, p, q, ctx);
+    const maxThr = rivals.length ? Math.max(...rivals.map(thr)) : 0;
+    const V = t => goal == null ? 0 : -12 * dist[t][goal] + (t === goal ? 60 : 0);
+    let s = 0;
+    switch (o.kind) {
+      case 'deliver': s = 1000; break;
+      case 'harvest': {
+        const c = state.carcasses.find(x => x.uid === o.carcass);
+        s = Bot.wantsPart(ctx, c.sp, o.part) ? 500 : (diff === 'hard' ? 4 : -30);
+        break;
+      }
+      case 'rob': {
+        const q = state.players[o.target], it = q.bag[o.bagIdx];
+        if (Bot.wantsItem(ctx, it)) s = 450;
+        else s = diff === 'hard' ? 20 + 3 * thr(q) : diff === 'medium' ? 10 + thr(q) : -20;
+        break;
+      }
+      case 'shoot': {
+        const a = state.animals.find(x => x.uid === o.animal);
+        if (ctx.huntSp.has(a.sp)) {
+          const dmg = o.dmg + p.aim;
+          s = dmg >= a.hp ? 380 : 290 + dmg * 10;
+          if (o.ammo) s -= 5;
+        } else s = -15;
+        break;
+      }
+      case 'aim': {
+        const vis = ctx.vis;
+        const tgt = AnimalM.at(state, p.tile).find(a => ctx.huntSp.has(a.sp) && AnimalM.canSee(state, p, a, vis));
+        if (tgt) {
+          const dmgs = p.hand.filter(c => c.uid !== o.card && CARD[c.id].damage).map(c => CARD[c.id].damage);
+          if (Player.hasItem(p, 'item_ammo')) dmgs.push(2);
+          const bestD = dmgs.length ? Math.max(...dmgs) : 0;
+          s = bestD && bestD < tgt.hp && bestD + 1 >= tgt.hp ? 340 : bestD ? 200 : 20;
+        } else s = -10;
+        break;
+      }
+      case 'cook': s = ctx.dishWants.some(w => w.sp === o.sp && w.method === o.method) ? 400 : -50; break;
+      case 'collect': s = ctx.tasks.some(t => t.kind === 'plant' && t.plant === o.plant) ? 350 : -30; break;
+      case 'climb': {
+        const eagle = state.animals.find(a => a.alive && a.sp === 'eagle' && a.tile === p.tile);
+        s = ctx.needFeather ? (eagle && eagle.inNest ? -40 : 350) : -40;
+        break;
+      }
+      case 'equip': {
+        const u = useOf(cardObj);
+        s = u >= 5 ? 45 + u * 3 : 10 + u * 3;
+        if (cardObj.id === 'item_knife' && ctx.needHarvest && !p.hand.some(c => c.id === 'action_skin' || c.id === 'action_butcher')) s += 30;
+        if (o.drop != null) s -= useOf(p.items[o.drop]) * 7;
+        if (diff === 'hard' && dist[p.tile][goal] >= 4) s += 8;
+        break;
+      }
+      case 'move': {
+        s = 50 + V(o.tile) - V(p.tile);
+        if (o.safe) s -= 6;
+        if (o.run) s -= 5;
+        const here = state.animals.filter(a => a.alive && a.sp !== 'eagle' && a.tile === o.tile && (AnimalM.canSee(state, p, a, ctx.vis)));
+        here.forEach(a => { if (!ctx.huntSp.has(a.sp) && ANIM[a.sp].attack) s -= ANIM[a.sp].attackDamage * 18; });
+        if (ctx.goalInfo && ctx.goalInfo.kind === 'animal' && o.tile !== goal && man(o.tile, goal) === 1) s -= 8;
+        if (state.trapZoneRevealed && state.grid[o.tile] === 'TRAP_ZONE') s -= 40;
+        if (state.traps.some(x => x.tile === o.tile && x.owner === p.id)) s -= 30;
+        if (diff === 'easy') s += state.rng() * 10;
+        break;
+      }
+      case 'trap': {
+        const g = state.grid;
+        const hot = NB[o.tile].some(t => g[t] === 'PALACE' || g[t] === 'KITCHEN') || state.carcasses.some(c => c.tile === o.tile);
+        s = (hot ? 34 : 14) * sabMul;
+        if (o.tile === p.tile) s -= 10;
+        break;
+      }
+      case 'mislead': {
+        const t = thr(state.players[o.target]);
+        s = diff === 'easy' ? 8 : (t >= 5 ? 35 + 5 * t : 8) * sabMul;
+        if (diff === 'hard') { const q = state.players[o.target]; if (man(q.tile, PALACE) <= 2 && q.bag.length) s += 25; }
+        break;
+      }
+      case 'panic': {
+        const t = thr(state.players[o.target]);
+        s = (18 + 3 * t) * sabMul;
+        if (diff === 'hard' && t < maxThr) s -= 10;
+        break;
+      }
+      case 'herald': {
+        const handVal = p.hand.reduce((a, c) => a + useOf(c), 0);
+        s = (12 + (handVal < 22 ? 12 : 0)) * sabMul;
+        break;
+      }
+      case 'rain': {
+        const near = rivals.some(q => thr(q) >= 7 && man(q.tile, PALACE) <= 3);
+        s = goal != null && p.tile === goal && near ? 70 * sabMul : -20;
+        break;
+      }
+      case 'steal': {
+        const q = state.players[o.target];
+        if (o.inv != null) { const it = q.items[o.inv]; s = 20 + useOf(it) * 6; }
+        else {
+          const it = q.bag[o.bagIdx];
+          s = Bot.wantsItem(ctx, it) ? 420 : (diff === 'easy' ? 5 : (25 + 3 * thr(q)) * sabMul);
+        }
+        break;
+      }
+      case 'discard': s = 20 - 3 * costCard; if (diff === 'easy') s += state.rng() * 8; break;
+    }
+    if (o.kind !== 'discard') s -= 2 * costCard;
+    return s;
+  },
+  decide(state, p) {
+    const ctx = Bot.context(state, p);
+    const opts = Engine.listOptions(state, p);
+    let scored = opts.map(o => ({ o, s: Bot.score(state, p, o, ctx) }));
+    if (ctx.diff === 'easy') scored.forEach(x => { x.s += state.rng() * 25; });
+    scored.sort((a, b) => b.s - a.s);
+    let pick = scored[0];
+    if (ctx.diff === 'easy' && scored.length > 2 && state.rng() < 0.12) pick = scored[1 + state.rng.int(Math.min(4, scored.length - 1))];
+    const extra = {};
+    if (pick.o.card == null) extra.discard = Bot.worstCard(state, p, ctx).uid;
+    // hard bot: rakibin saraya mesafesini takip eder (davranış okuma)
+    state.players.forEach(q => { q.lastPalDist = man(q.tile, PALACE); });
+    return { opt: pick.o, extra, ctx };
+  },
+  defend(state, victim, item) {
+    const cards = Engine.defenseCards(victim);
+    if (!cards.length) return null;
+    const ctx = Bot.context(state, victim);
+    const diff = victim.bot || 'medium';
+    const wanted = Bot.wantsItem(ctx, item);
+    let yes;
+    if (diff === 'easy') yes = state.rng() < 0.5;
+    else if (diff === 'medium') yes = wanted || item.k === 'dish';
+    else yes = true;
+    if (!yes) return null;
+    let w = null, wv = 1e9;
+    cards.forEach(c => { const v = Bot.cardUse(state, victim, c, ctx); if (v < wv) { wv = v; w = c; } });
+    return w.uid;
+  },
+  heraldChoice(state, q) {
+    const ctx = Bot.context(state, q);
+    const w = Bot.worstCard(state, q, ctx);
+    return w ? w.uid : null;
+  },
+  resolveReactionsSync(state, p, dec) {
+    const o = dec.opt;
+    if (o.kind === 'rob') {
+      const q = state.players[o.target];
+      const d = Bot.defend(state, q, q.bag[o.bagIdx]);
+      if (d != null) dec.extra.defend = d;
+    }
+    if (o.kind === 'herald') {
+      dec.extra.heraldChoices = {};
+      state.players.forEach(q => {
+        if (q === p) { const ctx = Bot.context(state, p); const w = Bot.worstCard(state, p, ctx, [o.card]); if (w) dec.extra.heraldChoices[q.id] = w.uid; }
+        else dec.extra.heraldChoices[q.id] = Bot.heraldChoice(state, q);
+      });
+    }
+  }
+};
+M.Bot = Bot;
+
+/* ======================= SIM (?sim=N) ======================= */
+const Sim = {
+  run(n, opts) {
+    opts = opts || {};
+    const mix = opts.bots ? [opts.bots, opts.bots, opts.bots, opts.bots] : ['easy', 'medium', 'hard', 'medium'];
+    const res = { games: n, finished: 0, limit: 0, errors: 0, rounds: [], winsBySeat: [0, 0, 0, 0], winsByDiff: { easy: 0, medium: 0, hard: 0 }, seatsByDiff: { easy: 0, medium: 0, hard: 0 }, respawns: 0, delivered: 0, conflicts: 0, missionWins: {}, firstDeliveryRound: [] };
+    const t0 = Date.now();
+    for (let gi = 0; gi < n; gi++) {
+      const bots = mix.map((_, i) => mix[(i + gi) % 4]);
+      bots.forEach(b => { res.seatsByDiff[b]++; });
+      let state;
+      try {
+        state = Turn.newGame({ seed: (opts.seed || 12345) + gi * 7919, bots, quiet: true });
+        res.conflicts += state.conflict;
+        let guard = 0, firstDel = null;
+        while (!state.over && guard++ < 4 * (R.turnLimit + 2)) {
+          Turn.playBotTurn(state);
+          if (firstDel == null && state.players.some(p => p.stats.delivered > 0)) firstDel = state.round;
+        }
+        if (firstDel != null) res.firstDeliveryRound.push(firstDel);
+        res.rounds.push(Math.min(state.round, R.turnLimit));
+        res.respawns += state.respawns;
+        state.players.forEach(p => { res.delivered += p.stats.delivered; });
+        if (state.endReason === 'deliver') {
+          res.finished++;
+          const w = state.winners[0];
+          res.winsBySeat[w]++;
+          res.winsByDiff[bots[w]]++;
+          state.players[w].missions.forEach(m => { res.missionWins[m.id] = (res.missionWins[m.id] || 0) + 1; });
+        } else res.limit++;
+      } catch (e) {
+        res.errors++;
+        if (res.errors < 4) console.error('Simülasyon hatası (oyun ' + gi + '):', e);
+      }
+    }
+    const avg = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0;
+    res.avgRounds = avg(res.rounds);
+    res.completionRate = res.finished / n;
+    res.avgFirstDelivery = avg(res.firstDeliveryRound);
+    res.ms = Date.now() - t0;
+    return res;
+  },
+  report(res) {
+    const pct = x => (100 * x).toFixed(1) + '%';
+    const lines = [
+      `=== KRALİYET AVI v3 — SİMÜLASYON (${res.games} oyun, 4 bot) ===`,
+      `Tur sınırı içinde biri tarafından bitirilen: ${res.finished}/${res.games} (${pct(res.completionRate)})`,
+      `Ortalama tur sayısı: ${res.avgRounds.toFixed(1)} | İlk teslimat ort. turu: ${res.avgFirstDelivery.toFixed(1)}`,
+      `Takılan (tur sınırına dayanan) oyun: ${res.limit} | Hata: ${res.errors}`,
+      `Kazanma (koltuk 1-4): ${res.winsBySeat.join(' / ')}`,
+      `Kazanma (zorluk): kolay ${res.winsByDiff.easy} · orta ${res.winsByDiff.medium} · zor ${res.winsByDiff.hard}  (koltuk sayısı: ${res.seatsByDiff.easy}/${res.seatsByDiff.medium}/${res.seatsByDiff.hard})`,
+      `Respawn toplamı: ${res.respawns} | Teslim edilen görev: ${res.delivered} | Ort. çakışan görev: ${(res.conflicts / res.games).toFixed(2)}/8`,
+      `Süre: ${res.ms} ms`
+    ];
+    return lines.join('\n');
+  }
+};
+M.Sim = Sim;
+
+})(globalThis);
+
+</script>
+<script>
+/* =====================================================================
+   UI — harita (SVG), kartlar, paneller, animasyon, ses, kontrolcü
+   ===================================================================== */
+(function (G) {
+'use strict';
+if (typeof document === 'undefined') return;
+const RH = G.ROYALHUNT, M = RH.modules, D = RH.data, R = D.rules;
+const { Turn, Engine, Bot, Mission, Animal, Player, Const: C, Sim } = M;
+const MapM = M.Map;
+const { N, rowOf, colOf, man, NB, TT, ANIM, CARD, MIS, PALACE } = C;
+const $ = s => document.querySelector(s);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const DIFF_TR = { easy: 'Kolay', medium: 'Orta', hard: 'Zor' };
+const TS = 100;
+
+const UI = M.UI = { st: null, speed: 1, human: 0, sel: null, mode: null, pendingOpt: null, resolver: null, settings: null, gen: 0, lastHand: [], tilesKey: '' };
+
+/* ======================= SES (WebAudio) ======================= */
+const Sound = {
+  ctx: null, on: true,
+  init() { if (!this.ctx) { try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { this.ctx = null; } } if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); },
+  tone(f, dur, type, vol, when, slide) {
+    if (!this.on || !this.ctx) return;
+    const t = this.ctx.currentTime + (when || 0);
+    const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+    o.type = type || 'sine';
+    o.frequency.setValueAtTime(f, t);
+    if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, f + slide), t + dur);
+    g.gain.setValueAtTime(vol || 0.12, t);
+    g.gain.exponentialRampToValueAtTime(0.0008, t + dur);
+    o.connect(g); g.connect(this.ctx.destination);
+    o.start(t); o.stop(t + dur + 0.03);
+  },
+  noise(dur, vol, when, freq) {
+    if (!this.on || !this.ctx) return;
+    const t = this.ctx.currentTime + (when || 0), sr = this.ctx.sampleRate;
+    const buf = this.ctx.createBuffer(1, Math.max(1, Math.floor(sr * dur)), sr), d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+    const src = this.ctx.createBufferSource(), f = this.ctx.createBiquadFilter(), g = this.ctx.createGain();
+    src.buffer = buf; f.type = 'bandpass'; f.frequency.value = freq || 1200; f.Q.value = 0.8;
+    g.gain.setValueAtTime(vol || 0.2, t);
+    src.connect(f); f.connect(g); g.connect(this.ctx.destination);
+    src.start(t);
+  },
+  play(n) {
+    if (!this.on || !this.ctx) return;
+    switch (n) {
+      case 'card': this.tone(540, 0.07, 'triangle', 0.07); break;
+      case 'step': this.tone(150 + Math.random() * 40, 0.05, 'sine', 0.07); break;
+      case 'shot': this.noise(0.1, 0.25, 0, 2400); this.tone(420, 0.12, 'triangle', 0.05, 0, -250); break;
+      case 'rifle': this.noise(0.45, 0.45, 0, 500); this.tone(90, 0.3, 'square', 0.06, 0, -40); break;
+      case 'hit': this.tone(150, 0.18, 'sawtooth', 0.09, 0, -70); break;
+      case 'kill': this.tone(196, 0.25, 'sine', 0.15); this.tone(98, 0.6, 'sine', 0.18, 0.12, -30); break;
+      case 'steal': this.tone(700, 0.18, 'triangle', 0.08, 0, 700); this.tone(1100, 0.12, 'sine', 0.05, 0.1); break;
+      case 'deliver': [523, 659, 784, 1047].forEach((f, i) => this.tone(f, 0.35, 'triangle', 0.09, i * 0.11)); break;
+      case 'win': [392, 523, 659, 784, 1047, 784, 1047].forEach((f, i) => this.tone(f, 0.4, 'triangle', 0.1, i * 0.14)); break;
+      case 'trap': this.noise(0.07, 0.35, 0, 3200); this.tone(85, 0.25, 'square', 0.08); break;
+      case 'turn': this.tone(660, 0.3, 'sine', 0.07); this.tone(990, 0.35, 'sine', 0.05, 0.1); break;
+      case 'bad': this.tone(220, 0.3, 'sawtooth', 0.07, 0, -110); break;
+      case 'cook': this.noise(0.5, 0.08, 0, 1600); this.tone(330, 0.2, 'triangle', 0.05, 0.2); break;
+      case 'good': this.tone(600, 0.15, 'sine', 0.07); this.tone(900, 0.2, 'sine', 0.06, 0.08); break;
+      case 'rain': for (let i = 0; i < 6; i++) this.noise(0.25, 0.06, i * 0.12, 5000); break;
+    }
+  }
+};
+UI.Sound = Sound;
+
+/* ======================= SİLÜETLER VE İKONLAR ======================= */
+const O = 'stroke="#140c05" stroke-width="1.2" stroke-linejoin="round"';
+const SIL = {
+  deer: `<g ${O}><path d="M12 31 L6 26" stroke="#a8733f" stroke-width="3"/><path d="M17 39 L16 57 M22 40 L23 57 M41 39 L42 57 M46 37 L48 57" stroke="#7d5028" stroke-width="3.2" stroke-linecap="round"/><path d="M12 31 Q28 22 44 27 L47 17 Q49 12 54 13 L59 16 L57 20 L52 21 L51 31 Q48 41 39 41 L19 41 Q10 39 12 31Z" fill="#a8733f"/><path d="M50 14 L46 5 M48 9 L43 7 M54 13 L57 4 M55.5 8 L60 6" stroke="#ecdcb4" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="13" cy="31" rx="3" ry="2.5" fill="#f2e6cc" stroke="none"/><circle cx="54" cy="16" r="1" fill="#000" stroke="none"/></g>`,
+  red_deer: `<g ${O}><path d="M16 41 L15 58 M21 42 L22 58 M41 41 L42 58 M46 39 L48 58" stroke="#4e200f" stroke-width="3.6" stroke-linecap="round"/><path d="M8 32 Q26 20 44 25 L47 14 Q49 9 55 10 L60 13 L58 18 L53 19 L52 31 Q49 43 38 43 L17 43 Q6 41 8 32Z" fill="#7d3a22"/><path d="M45 25 Q47 31 52 31" fill="none" stroke="#4a1e10" stroke-width="3"/><path d="M50 11 L45 2 M48 7 L42 5 M46 4 L43 1 M55 10 L59 1 M57 6 L62 4 M58 3 L61 0" stroke="#f0e2bc" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="55" cy="13" r="1" fill="#000" stroke="none"/></g>`,
+  rabbit: `<g ${O}><path d="M22 52 L34 53" stroke="#7e6a4e" stroke-width="4" stroke-linecap="round"/><ellipse cx="28" cy="42" rx="15" ry="11" fill="#b4a084"/><circle cx="13" cy="40" r="3.5" fill="#f3ead8"/><ellipse cx="42" cy="15" rx="3" ry="11" fill="#b4a084" transform="rotate(-12 42 15)"/><ellipse cx="48" cy="16" rx="3" ry="10" fill="#b4a084" transform="rotate(14 48 16)"/><ellipse cx="42" cy="15" rx="1.2" ry="7" fill="#e7b8a8" stroke="none" transform="rotate(-12 42 15)"/><circle cx="43" cy="32" r="8" fill="#b4a084"/><circle cx="46" cy="30" r="1.2" fill="#000" stroke="none"/></g>`,
+  fox: `<g ${O}><path d="M18 36 Q4 34 3 22 Q12 28 22 33Z" fill="#d0682a"/><path d="M3 22 Q2 27 7 29 Q6 25 3 22Z" fill="#f4ecdc"/><path d="M20 41 L19 54 M25 42 L25 54 M40 41 L41 54 M44 40 L46 54" stroke="#2e1a0c" stroke-width="2.6" stroke-linecap="round"/><path d="M18 34 Q30 28 42 31 L47 26 L49 18 L53 25 L61 30 L52 34 Q46 42 38 42 L22 42 Q15 40 18 34Z" fill="#d0682a"/><path d="M52 34 Q50 38 45 39 L47 33Z" fill="#f4ecdc"/><path d="M47 26 L49 18 L52 24Z" fill="#8a3a14"/><circle cx="53" cy="28" r="1" fill="#000" stroke="none"/></g>`,
+  wolf: `<g ${O}><path d="M14 34 Q4 38 5 47 Q11 41 17 37Z" fill="#6f7377"/><path d="M18 41 L17 56 M23 42 L23 56 M41 41 L42 56 M46 40 L48 56" stroke="#44474b" stroke-width="3" stroke-linecap="round"/><path d="M14 33 Q28 25 42 28 L47 21 L49 13 L52 20 L55 20 L62 27 L56 31 L52 31 Q50 42 40 43 L20 43 Q12 41 14 33Z" fill="#7d8186"/><path d="M22 42 Q32 45 40 42" stroke="#c4c7cb" stroke-width="2" fill="none"/><path d="M47 21 L49 13 L52 20Z" fill="#505357"/><circle cx="55" cy="24" r="1.2" fill="#ffd24a" stroke="none"/></g>`,
+  bear: `<g ${O}><path d="M16 40 L16 56 M24 42 L24 56 M40 42 L41 56 M47 40 L48 56" stroke="#2e1c10" stroke-width="6" stroke-linecap="round"/><path d="M8 38 Q8 24 24 22 Q36 18 44 26 L50 26 Q60 27 61 34 L57 37 L50 37 Q46 46 36 46 L16 46 Q8 46 8 38Z" fill="#4a2f1c"/><circle cx="48" cy="24" r="3.2" fill="#3a2414"/><circle cx="60" cy="33.5" r="1.4" fill="#111" stroke="none"/><circle cx="53" cy="29" r="1" fill="#e8d8b0" stroke="none"/></g>`,
+  boar: `<g ${O}><path d="M18 42 L18 55 M24 43 L24 55 M40 43 L40 55 M45 42 L46 55" stroke="#2a2018" stroke-width="4" stroke-linecap="round"/><path d="M10 34 q-4 -2 -2 -5" stroke="#5b4a3c" fill="none" stroke-width="2"/><path d="M10 38 Q10 26 26 24 Q40 22 46 28 L56 31 L60 36 L56 39 L48 39 Q44 46 34 46 L18 46 Q10 45 10 38Z" fill="#5b4a3c"/><path d="M22 25 L24 19 L27 24 L29 18 L32 24 L35 19 L37 25 L40 20 L42 26" fill="none" stroke="#241a12" stroke-width="2"/><path d="M44 27 L46 21 L49 28Z" fill="#3e3228"/><path d="M55 38 Q57 32 52 31" fill="none" stroke="#f2ead6" stroke-width="2.4"/><circle cx="50" cy="31" r="1" fill="#000" stroke="none"/></g>`,
+  lynx: `<g ${O}><path d="M18 40 L17 56 M23 41 L23 56 M41 40 L42 56 M46 39 L47 56" stroke="#6d5030" stroke-width="3.4" stroke-linecap="round"/><path d="M12 34 Q26 26 42 28 L46 22 L50 22 L54 24 L59 30 L54 33 L50 33 Q48 42 40 42 L20 42 Q12 40 12 34Z" fill="#b08a5a"/><path d="M12 33 L7 31 L8 36Z" fill="#2b2015"/><path d="M46 23 L44 13 L49 21 M51 22 L53 12 L54 23" stroke="#1c140c" stroke-width="1.8" fill="none"/><g fill="#6d4f2c" stroke="none"><circle cx="22" cy="34" r="1.8"/><circle cx="28" cy="31" r="1.6"/><circle cx="34" cy="35" r="1.8"/><circle cx="26" cy="38" r="1.5"/><circle cx="39" cy="32" r="1.6"/></g><circle cx="53" cy="27" r="1.1" fill="#9be05a" stroke="none"/></g>`,
+  badger: `<g ${O}><path d="M18 44 L18 55 M24 45 L24 55 M38 45 L38 55 M43 44 L44 55" stroke="#1d1d1d" stroke-width="4" stroke-linecap="round"/><path d="M8 42 Q10 32 26 31 Q40 30 46 35 L58 40 L56 43 L46 44 Q42 48 32 48 L16 48 Q8 47 8 42Z" fill="#707070"/><path d="M44 34 L58 40 L56 43 L46 44Z" fill="#f2f2f2"/><path d="M46 36 L57 40.5" stroke="#111" stroke-width="2.6"/><path d="M45 41 L55 42.5" stroke="#111" stroke-width="1.6"/></g>`,
+  eagle: `<g ${O}><path d="M32 30 L4 18 L10 26 L2 28 L12 32 L6 36 L20 36 L28 40Z" fill="#4a3520"/><path d="M32 30 L60 18 L54 26 L62 28 L52 32 L58 36 L44 36 L36 40Z" fill="#4a3520"/><path d="M28 48 L32 58 L36 48Z" fill="#f2efe6"/><ellipse cx="32" cy="38" rx="7" ry="12" fill="#3a2816"/><circle cx="32" cy="24" r="6" fill="#f2efe6"/><path d="M32 25 L36 29 L31 29Z" fill="#e8b520"/><circle cx="30.5" cy="23" r="1" fill="#000" stroke="none"/></g>`
+};
+UI.SIL = SIL;
+
+const ic = (body, extra) => `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" ${extra || ''}>${body}</svg>`;
+const fp = (x, y, r) => `<g transform="translate(${x} ${y}) rotate(${r || 0})"><ellipse cx="0" cy="4" rx="4.5" ry="7" fill="currentColor" stroke="none"/><circle cx="-3.5" cy="-6" r="1.6" fill="currentColor" stroke="none"/><circle cx="0" cy="-7.5" r="1.6" fill="currentColor" stroke="none"/><circle cx="3.5" cy="-6" r="1.6" fill="currentColor" stroke="none"/></g>`;
+const ICON = {
+  move_slow: ic(fp(24, 26, 8)),
+  move_normal: ic(fp(16, 30, -10) + fp(31, 18, 12)),
+  move_run: ic(fp(28, 22, 30) + '<path d="M4 18h10M2 26h12M6 34h9"/>'),
+  move_retreat: ic('<path d="M36 36a13 13 0 1 0-22-12"/><path d="M8 18l6 7 7-6"/>'),
+  action_shoot: ic('<path d="M15 5c15 7 15 31 0 38"/><path d="M15 5v38" stroke-width="1.4"/><path d="M6 24h34"/><path d="M34 19l7 5-7 5"/><path d="M6 24l-2-3M6 24l-2 3"/>'),
+  action_aim: ic('<circle cx="24" cy="24" r="14"/><circle cx="24" cy="24" r="5"/><path d="M24 4v8M24 36v8M4 24h8M36 24h8"/>'),
+  action_rifle: ic('<path d="M3 31l29-12 10 1-2 6-28 10z"/><path d="M13 30l3 9"/><path d="M38 20l6-5"/>'),
+  action_skin: ic('<path d="M15 9l4 6h10l4-6 5 8-4 6 3 13-6 5H17l-6-5 3-13-4-6z"/>'),
+  action_butcher: ic('<path d="M8 13h24v15H8z"/><path d="M32 20h11"/><circle cx="13" cy="18" r="1.5" fill="currentColor"/>'),
+  action_cook_pot: ic('<path d="M10 20h28l-3 14H13z"/><path d="M7 20h34"/><path d="M18 42c0-3 3-3 3-6M26 42c0-3 3-3 3-6"/><path d="M18 14c0-3 3-3 3-6M27 14c0-3 3-3 3-6"/>'),
+  action_cook_roast: ic('<path d="M8 40V22a16 16 0 0 1 32 0v18z"/><path d="M8 40h32"/><path d="M20 38c-4-4 0-8 2-12 1 4 6 6 2 12M28 38c-2-3 1-5 2-7 1 3 3 4 1 7"/>'),
+  action_cook_grill: ic('<rect x="8" y="12" width="32" height="18" rx="3"/><path d="M14 12v18M20 12v18M26 12v18M32 12v18"/><path d="M14 30l-4 12M34 30l4 12"/>'),
+  action_climb: ic('<path d="M4 42l14-26 8 12 6-8 12 22z"/><path d="M30 8c-6 6 2 10-4 16"/><circle cx="30" cy="7" r="2"/>'),
+  item_binoculars: ic('<circle cx="14" cy="30" r="8"/><circle cx="34" cy="30" r="8"/><path d="M14 22l2-10h6v10M34 22l-2-10h-6v10M22 24h4"/>'),
+  item_knife: ic('<path d="M6 40l22-22c6-6 12-8 14-10-2 8-6 14-12 20l-6 1z"/><path d="M6 40l6-2-4-4z" fill="currentColor"/>'),
+  item_oven_key: ic('<circle cx="14" cy="24" r="8"/><circle cx="14" cy="24" r="3"/><path d="M22 24h20M36 24v6M41 24v5"/>'),
+  item_grill: ic('<path d="M10 40l18-18"/><rect x="24" y="6" width="16" height="16" rx="2" transform="rotate(45 32 14)"/><path d="M28 10l8 8M32 6l6 6"/>'),
+  item_pot: ic('<path d="M8 18h32v16a6 6 0 0 1-6 6H14a6 6 0 0 1-6-6z"/><path d="M4 22h4M40 22h4M18 12h12"/>'),
+  item_medicine: ic('<path d="M18 6h12M20 6v8l-8 12v14h24V26l-8-12V6"/><path d="M24 26v10M19 31h10"/>'),
+  item_ammo: ic('<path d="M12 40V20c0-6 3-10 4-12 1 2 4 6 4 12v20zM28 40V20c0-6 3-10 4-12 1 2 4 6 4 12v20z"/><path d="M12 32h8M28 32h8"/>'),
+  trap_set: ic('<path d="M6 30a18 18 0 0 1 36 0"/><path d="M6 30l4-6 4 6 4-6 4 6 4-6 4 6 4-6 4 6 4-6"/><path d="M4 30h40"/><circle cx="24" cy="38" r="3"/>'),
+  trap_mislead: ic(fp(14, 30, -20) + '<path d="M28 14a6 6 0 1 1 8 6c-2 1-3 2-3 5"/><circle cx="33" cy="32" r="1.5" fill="currentColor"/>'),
+  trap_herald: ic('<path d="M6 20v8l6 1 20 9V11L12 19z"/><path d="M12 29l3 10h5l-2-9"/><path d="M38 18c3 3 3 9 0 12"/>'),
+  trap_rain: ic('<path d="M14 26a8 8 0 0 1 2-16 11 11 0 0 1 20 3 7 7 0 0 1 0 13z"/><path d="M16 32l-3 8M25 32l-3 8M34 32l-3 8"/>'),
+  trap_steal: ic('<path d="M10 28V16a3 3 0 0 1 6 0v8M16 22V12a3 3 0 0 1 6 0v10M22 22V13a3 3 0 0 1 6 0v11M28 24v-6a3 3 0 0 1 6 0v12c0 8-5 12-12 12-6 0-10-4-12-10l-3-6a3 3 0 0 1 5-3l4 5"/>'),
+  trap_panic: ic('<path d="M24 4l5 9 10-3-3 10 9 5-9 5 3 10-10-3-5 9-5-9-10 3 3-10-9-5 9-5-3-10 10 3z"/><path d="M24 16v10"/><circle cx="24" cy="31" r="1.5" fill="currentColor"/>')
+};
+UI.ICON = ICON;
+const TYPE_TR = { move: 'Hareket', action: 'Aksiyon', item: 'Eşya', trap: 'Tuzak / Olay' };
+
+const PLANT_ICON = {
+  herb: '<path d="M0 6 Q-6 0 0 -7 Q6 0 0 6Z" fill="#6fbf5a" stroke="#1b3a12" stroke-width="1"/><path d="M0 6 V-4" stroke="#1b3a12" stroke-width="0.8"/>',
+  mushroom: '<rect x="-1.6" y="0" width="3.2" height="6" fill="#efe4cc" stroke="#3a2a1a" stroke-width="0.6"/><path d="M-7 1 Q0 -10 7 1Z" fill="#c4372e" stroke="#3a1010" stroke-width="0.8"/><circle cx="-2.5" cy="-2" r="1" fill="#fff"/><circle cx="2" cy="-3" r="0.9" fill="#fff"/>',
+  spice: '<circle cx="-3" cy="2" r="2.6" fill="#d9822b" stroke="#4a2408" stroke-width="0.6"/><circle cx="3" cy="2" r="2.6" fill="#c0601e" stroke="#4a2408" stroke-width="0.6"/><circle cx="0" cy="-3" r="2.6" fill="#e6a23c" stroke="#4a2408" stroke-width="0.6"/>',
+  resin: '<path d="M0 -7 Q6 2 0 6 Q-6 2 0 -7Z" fill="#e0a12a" stroke="#5a3a08" stroke-width="0.8"/><circle cx="-1.5" cy="1" r="1.2" fill="#fff3c0"/>'
+};
+
+/* ======================= HARİTA ÇİZİMİ ======================= */
+function prand(i, k) { const x = Math.sin((i + 1) * 12.9898 + k * 78.233 + (UI.st ? UI.st.seed % 997 : 0)) * 43758.5453; return x - Math.floor(x); }
+function pine(x, y, s, c1, c2) {
+  return `<g transform="translate(${x.toFixed(1)},${y.toFixed(1)}) scale(${s.toFixed(2)})"><rect x="-1.6" y="7" width="3.2" height="6" fill="#2b1d10"/><path d="M0 -15 L9 1 L4 1 L11 9 L-11 9 L-4 1 L-9 1Z" fill="${c1}" stroke="${c2}" stroke-width="0.9"/></g>`;
+}
+function tuft(x, y, c) { return `<path d="M${x} ${y} l-2.5 -6 M${x} ${y} l0 -7 M${x} ${y} l2.5 -6" stroke="${c}" stroke-width="1.2" fill="none"/>`; }
+function tileArt(type, i) {
+  let s = '';
+  const r = k => prand(i, k);
+  switch (type) {
+    case 'DEEP_FOREST': {
+      s += `<rect width="100" height="100" fill="url(#gDF)"/>`;
+      const trees = [];
+      for (let k = 0; k < 8; k++) trees.push([8 + r(k) * 84, 12 + r(k + 20) * 78, 0.85 + r(k + 40) * 0.5]);
+      trees.sort((a, b) => a[1] - b[1]).forEach(t => { s += pine(t[0], t[1], t[2], t[2] > 1.1 ? '#163a22' : '#0f2a18', '#2c5a37'); });
+      break;
+    }
+    case 'FOREST_EDGE': {
+      s += `<rect width="100" height="100" fill="url(#gFE)"/>`;
+      for (let k = 0; k < 7; k++) s += tuft(8 + r(k) * 84, 20 + r(k + 9) * 75, '#6f9b4f');
+      const trees = [];
+      for (let k = 0; k < 3; k++) trees.push([12 + r(k + 30) * 76, 18 + r(k + 50) * 66, 0.8 + r(k + 70) * 0.35]);
+      trees.sort((a, b) => a[1] - b[1]).forEach(t => { s += pine(t[0], t[1], t[2], '#1f4a2a', '#3d7246'); });
+      s += `<circle cx="${20 + r(90) * 60}" cy="${70 + r(91) * 20}" r="5" fill="#2e5a2a"/>`;
+      break;
+    }
+    case 'OPEN': {
+      s += `<rect width="100" height="100" fill="url(#gOP)"/>`;
+      for (let k = 0; k < 14; k++) s += tuft(6 + r(k) * 88, 12 + r(k + 15) * 84, k % 3 ? '#a7a85a' : '#c9a227');
+      for (let k = 0; k < 6; k++) s += `<circle cx="${(r(k + 60) * 100).toFixed(1)}" cy="${(r(k + 70) * 100).toFixed(1)}" r="1.3" fill="#e8c862" opacity=".6"/>`;
+      break;
+    }
+    case 'RIVER': {
+      s += `<rect width="100" height="100" fill="url(#gRV)"/>`;
+      s += `<rect width="100" height="9" fill="#2a4a2a" opacity=".8"/><rect y="91" width="100" height="9" fill="#2a4a2a" opacity=".8"/>`;
+      for (let k = 0; k < 4; k++) {
+        const y = 22 + k * 18 + r(k) * 4;
+        s += `<path class="water" d="M-20 ${y} q5 -4 10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0" stroke="${k % 2 ? '#5f8fbc' : '#86b0d6'}" stroke-width="1.6" fill="none" opacity=".75" style="animation-duration:${3 + k}s"/>`;
+      }
+      s += `<path d="M6 92 l2 -8 M10 92 l0 -9 M88 10 l2 -7 M92 10 l0 -8" stroke="#6f9b4f" stroke-width="1.3"/>`;
+      break;
+    }
+    case 'EAGLE_NEST': {
+      s += `<rect width="100" height="100" fill="url(#gST)"/>`;
+      s += `<path d="M0 100 L0 60 L18 40 L34 55 L52 22 L70 48 L84 36 L100 58 L100 100Z" fill="#3c4046" stroke="#22252a" stroke-width="1.2"/>`;
+      s += `<path d="M52 22 L60 34 L48 38Z" fill="#6a6f76"/><path d="M18 40 L24 50 L12 52Z" fill="#5b6067"/>`;
+      s += `<ellipse cx="52" cy="24" rx="15" ry="5" fill="#5a3c1e" stroke="#2a1a0a"/><path d="M38 23 L66 26 M40 26 L64 22 M42 21 L62 27" stroke="#8a6232" stroke-width="1.2"/>`;
+      break;
+    }
+    case 'KITCHEN': {
+      s += `<rect width="100" height="100" fill="#3a2614"/>`;
+      for (let k = 0; k < 6; k++) s += `<path d="M0 ${k * 17 + 8} H100" stroke="#4e3420" stroke-width="1.4"/><path d="M${(k * 37) % 100} ${k * 17 + 8} v17" stroke="#2a1a0c" stroke-width="1"/>`;
+      s += `<path d="M24 74 V44 Q50 20 76 44 V74Z" fill="#5f574e" stroke="#2a2420" stroke-width="2"/><path d="M33 74 V50 Q50 34 67 50 V74Z" fill="#140c06"/>`;
+      s += `<g class="flame" style="transform-origin:50px 72px"><path d="M40 74 Q38 62 46 56 Q46 64 50 62 Q50 52 56 50 Q54 60 60 64 Q62 70 58 74Z" fill="#e8742a"/><path d="M45 74 Q45 66 50 62 Q52 68 55 70 Q56 72 54 74Z" fill="#ffd25a"/></g>`;
+      s += `<ellipse cx="50" cy="84" rx="16" ry="5" fill="#1a1a1a"/><path d="M36 82 Q50 96 64 82Z" fill="#222" stroke="#000"/>`;
+      break;
+    }
+    case 'PALACE': {
+      s += `<rect width="100" height="100" fill="url(#gPA)"/>`;
+      for (let k = 0; k < 10; k++) s += `<rect x="${(r(k) * 88).toFixed(1)}" y="${(r(k + 11) * 88).toFixed(1)}" width="10" height="7" rx="1.5" fill="#5a5146" opacity=".55"/>`;
+      s += `<g stroke="#c9a227" stroke-width="1.6" fill="#241e17"><path d="M22 82 V46 H30 V40 H34 V46 H40 V32 H44 V26 H56 V32 H60 V46 H66 V40 H70 V46 H78 V82Z"/></g>`;
+      s += `<path d="M45 82 V66 Q50 58 55 66 V82Z" fill="#c9a227" opacity=".85"/>`;
+      s += `<path d="M50 26 V12" stroke="#c9a227" stroke-width="1.5"/><path d="M50 12 L62 15 L50 19Z" fill="#a3312f"/>`;
+      s += `<path d="M42 22 L46 14 L50 20 L54 14 L58 22Z" fill="#e8c862" stroke="#6b5010" stroke-width=".8" transform="translate(0,-10) scale(1)" opacity="0"/>`;
+      break;
+    }
+    case 'TRAP_ZONE': {
+      s += `<rect width="100" height="100" fill="#351212"/>`;
+      for (let k = 0; k < 9; k++) { const x = 10 + (k % 3) * 32 + r(k) * 8, y = 26 + Math.floor(k / 3) * 26; s += `<path d="M${x} ${y} l5 -14 l5 14Z" fill="#7a2b2b" stroke="#200808"/>`; }
+      s += `<text x="50" y="58" text-anchor="middle" font-size="30" fill="#ff8a6a" opacity=".55">!</text>`;
+      break;
+    }
+  }
+  return s;
+}
+const MAP_DEFS = `
+<defs>
+  <linearGradient id="gDF" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c3a24"/><stop offset="1" stop-color="#10251a"/></linearGradient>
+  <linearGradient id="gFE" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#355f37"/><stop offset="1" stop-color="#26472b"/></linearGradient>
+  <linearGradient id="gOP" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c7d43"/><stop offset="1" stop-color="#5f6233"/></linearGradient>
+  <linearGradient id="gRV" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a5378"/><stop offset=".5" stop-color="#21466b"/><stop offset="1" stop-color="#2a5378"/></linearGradient>
+  <linearGradient id="gST" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#595e66"/><stop offset="1" stop-color="#3a3d42"/></linearGradient>
+  <radialGradient id="gPA"><stop offset="0" stop-color="#6d6356"/><stop offset="1" stop-color="#433b31"/></radialGradient>
+  <radialGradient id="vign" cx="50%" cy="50%" r="75%"><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient>
+  <pattern id="grain" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="1" cy="2" r=".6" fill="#000" opacity=".25"/><circle cx="5" cy="5" r=".5" fill="#fff" opacity=".06"/></pattern>
+  <clipPath id="tileClip"><rect width="100" height="100"/></clipPath>
+  <clipPath id="mapClip"><rect width="500" height="600" rx="10"/></clipPath>
+  <filter id="fogBlur" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="7"/></filter>
+  <filter id="glow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>`;
+
+function buildMapSkeleton() {
+  const svg = $('#map');
+  svg.innerHTML = MAP_DEFS + '<g id="L-tiles" clip-path="url(#mapClip)"></g><g id="L-marks"></g><g id="L-animals"></g><g id="L-fog" clip-path="url(#mapClip)"><g filter="url(#fogBlur)" id="L-fogi"></g></g><rect width="500" height="600" fill="url(#vign)" pointer-events="none"/><g id="L-hl"></g><g id="L-pawns"></g><g id="L-fx"></g><g id="L-hit"></g>';
+  let fog = '', hit = '';
+  for (let i = 0; i < N; i++) {
+    const x = colOf(i) * TS, y = rowOf(i) * TS;
+    fog += `<rect class="fog" id="fog-${i}" x="${x - 6}" y="${y - 6}" width="${TS + 12}" height="${TS + 12}" fill="#06050a" opacity="0.9"/>`;
+    hit += `<rect class="hit" data-t="${i}" x="${x}" y="${y}" width="${TS}" height="${TS}"/>`;
+  }
+  $('#L-fogi').innerHTML = fog;
+  $('#L-hit').innerHTML = hit;
+  $('#L-hit').addEventListener('click', e => { const t = e.target.getAttribute('data-t'); if (t != null) onTileClick(+t); });
+  UI.tilesKey = '';
+}
+function renderTiles() {
+  const st = UI.st;
+  const key = st.seed + ':' + st.trapZoneRevealed;
+  if (UI.tilesKey === key) return;
+  UI.tilesKey = key;
+  let s = '';
+  for (let i = 0; i < N; i++) {
+    const x = colOf(i) * TS, y = rowOf(i) * TS, t = MapM.shownType(st, i);
+    s += `<g transform="translate(${x},${y})"><g clip-path="url(#tileClip)">${tileArt(t, i)}<rect width="100" height="100" fill="url(#grain)"/></g><rect x=".75" y=".75" width="98.5" height="98.5" fill="none" stroke="rgba(0,0,0,.6)" stroke-width="1.5"/><rect x="2.5" y="2.5" width="95" height="95" fill="none" stroke="rgba(255,235,180,.07)"/><text class="tile-label" x="5" y="96">${esc(TT[t].name)}</text></g>`;
+  }
+  $('#L-tiles').innerHTML = s;
+}
+const PAWN_SLOT = [[24, 78], [76, 78], [24, 24], [76, 24]];
+function pawnXY(pid, tile) { return [colOf(tile) * TS + PAWN_SLOT[pid][0], rowOf(tile) * TS + PAWN_SLOT[pid][1]]; }
+function centerXY(tile) { return [colOf(tile) * TS + 50, rowOf(tile) * TS + 50]; }
+function setT(node, x, y) { node.style.transform = `translate(${x}px,${y}px)`; }
+
+function humanP() { return UI.st.players[UI.human]; }
+function humanVis() { return MapM.visible(UI.st, humanP()); }
+
+function renderMap() {
+  const st = UI.st, hp = humanP(), vis = humanVis();
+  renderTiles();
+  // fog
+  for (let i = 0; i < N; i++) {
+    const f = document.getElementById('fog-' + i);
+    const op = vis[i] ? 0 : (hp.mem.seen[i] >= 0 ? 0.5 : 0.88);
+    if (f.getAttribute('opacity') !== String(op)) f.setAttribute('opacity', op);
+  }
+  // işaretler: bitkiler, yuvalar, leşler, tuzaklar
+  let m = '';
+  for (let i = 0; i < N; i++) {
+    const [x, y] = [colOf(i) * TS, rowOf(i) * TS];
+    if (hp.mem.seen[i] < 0) continue;
+    const pls = Engine.plantsAt(st, i);
+    pls.forEach((pl, k) => { m += `<g transform="translate(${x + 50 + (k - (pls.length - 1) / 2) * 16},${y + 13})"><title>${esc(C.PLANT_NAMES[pl])}</title>${PLANT_ICON[pl]}</g>`; });
+    if (st.nests[i] != null && st.round >= st.nests[i]) m += `<g transform="translate(${x + 50},${y + 12})"><title>Tüy hazır</title><path d="M-8 6 Q0 -10 10 -8 Q4 0 -8 6Z" fill="#f2efe6" stroke="#5a4a30" stroke-width=".8"/><path d="M-8 6 L6 -6" stroke="#5a4a30" stroke-width=".7"/></g>`;
+  }
+  st.carcasses.forEach(c => {
+    if (!vis[c.tile]) return;
+    const [x, y] = [colOf(c.tile) * TS + 50, rowOf(c.tile) * TS + 82];
+    const owner = st.players[c.owner];
+    const parts = [c.meat ? 'Et×' + c.meat : '', c.hide ? 'Deri' : '', c.by ? c.by.name : ''].filter(Boolean).join(' · ');
+    m += `<g transform="translate(${x},${y})"><title>${esc(ANIM[c.sp].name)} leşi (${esc(owner.name)}) — ${esc(parts)}</title><ellipse rx="17" ry="8" fill="rgba(40,8,8,.75)" stroke="${owner.color}" stroke-width="2"/><path d="M-9 -3 L9 3 M-9 3 L9 -3" stroke="#efe4cc" stroke-width="2.4" stroke-linecap="round"/><circle cx="-10" cy="-3" r="1.8" fill="#efe4cc"/><circle cx="10" cy="3" r="1.8" fill="#efe4cc"/><text y="-10" text-anchor="middle" font-size="8" fill="#f0d8a8" paint-order="stroke" stroke="#000" stroke-width="2.5">${esc(parts)}</text></g>`;
+  });
+  st.traps.forEach(t => {
+    if (t.owner !== UI.human) return;
+    const [x, y] = [colOf(t.tile) * TS + 12, rowOf(t.tile) * TS + 50];
+    m += `<g transform="translate(${x},${y})" opacity=".9"><title>Senin tuzağın</title><path d="M-8 3 A8 8 0 0 1 8 3 L5 -1 L2 3 L-1 -1 L-4 3 L-6 -1Z" fill="#7a2b2b" stroke="#ffb0a0" stroke-width="1"/></g>`;
+  });
+  $('#L-marks').innerHTML = m;
+  // hayvanlar (kalıcı düğümler → yumuşak hareket)
+  const layer = $('#L-animals');
+  const keep = new Set();
+  const byTile = {};
+  st.animals.forEach(a => {
+    if (!Animal.canSee(st, hp, a, vis)) return;
+    keep.add('an-' + a.uid);
+    const k = (byTile[a.tile] = (byTile[a.tile] || 0) + 1) - 1;
+    let node = document.getElementById('an-' + a.uid);
+    if (!node) {
+      node = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      node.setAttribute('id', 'an-' + a.uid);
+      node.setAttribute('class', 'tok animal');
+      layer.appendChild(node);
+      const [x0, y0] = centerXY(a.tile); setT(node, x0, y0 - 2);
+      node.style.opacity = '0';
+      requestAnimationFrame(() => { node.style.transition = 'transform .45s ease, opacity .5s'; node.style.opacity = '1'; });
+    }
+    let pips = '';
+    for (let h = 0; h < a.maxHp; h++) pips += `<rect x="${-a.maxHp * 3.5 + h * 7}" y="20" width="5.5" height="4" rx="1" fill="${h < a.hp ? '#e04a3a' : '#3a2a22'}" stroke="#000" stroke-width=".6"/>`;
+    const html = `<title>${esc(ANIM[a.sp].name)} — Can ${a.hp}/${a.maxHp}${ANIM[a.sp].attack ? ' — saldırgan' : ''}</title><circle r="18" fill="rgba(12,9,6,.72)" stroke="${ANIM[a.sp].attack ? '#c24a3a' : '#c9a227'}" stroke-opacity=".85" stroke-width="1.4"/><g transform="translate(-17,-18) scale(.53)">${SIL[a.sp]}</g>${pips}`;
+    if (node._h !== html) { node.innerHTML = html; node._h = html; }
+    const [x, y] = centerXY(a.tile);
+    setT(node, x + (k ? 16 : 0) * (k % 2 ? 1 : -1), y - 4 - (k ? 8 : 0));
+  });
+  [...layer.children].forEach(n => { if (!keep.has(n.id)) { n.style.opacity = '0'; setTimeout(() => n.remove(), 450); n.id = 'gone-' + Math.random(); } });
+  // piyonlar
+  const pl = $('#L-pawns');
+  const cur = Turn.current(st);
+  st.players.forEach(p => {
+    let node = document.getElementById('pw-' + p.id);
+    if (!node) {
+      node = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      node.setAttribute('id', 'pw-' + p.id);
+      pl.appendChild(node);
+      const [x0, y0] = pawnXY(p.id, p.tile); setT(node, x0, y0);
+    }
+    node.setAttribute('class', 'tok pawn' + (p === cur && !st.over ? ' cur' : ''));
+    const stun = p.stun > 0 ? `<g transform="translate(0,-22)"><text text-anchor="middle" font-size="11" fill="#ffd27a" paint-order="stroke" stroke="#000" stroke-width="2.5">✶ ${p.stun}</text></g>` : '';
+    const crown = p.id === UI.human ? '<path d="M-7 -15 L-5 -21 L-2 -17 L0 -22 L2 -17 L5 -21 L7 -15Z" fill="#e8c862" stroke="#5a4008" stroke-width=".8"/>' : '';
+    const html = `<title>${esc(p.name)} (${esc(p.title)})</title><ellipse cy="13" rx="12" ry="4" fill="rgba(0,0,0,.55)"/><circle class="pring" r="15" fill="none" stroke="${p.color}" stroke-width="2.5"/><path d="M-11 -12 H11 V0 Q11 10 0 15 Q-11 10 -11 0 Z" fill="${p.color}" stroke="#e8c862" stroke-width="1.6"/><text y="4" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff6dc" paint-order="stroke" stroke="rgba(0,0,0,.6)" stroke-width="2">${esc(Turn.PLAYER_CFG[p.id].badge)}</text>${crown}${stun}`;
+    if (node._h !== html) { node.innerHTML = html; node._h = html; }
+    if (!node._anim) { const [x, y] = pawnXY(p.id, p.tile); setT(node, x, y); }
+  });
+  renderHighlights();
+}
+
+function renderHighlights() {
+  const hl = $('#L-hl');
+  let s = '';
+  const tiles = currentTileTargets();
+  tiles.forEach(t => {
+    const st = UI.st;
+    const danger = (st.trapZoneRevealed && st.grid[t] === 'TRAP_ZONE') || st.animals.some(a => a.alive && a.tile === t && ANIM[a.sp].attack && a.sp !== 'eagle' && Animal.canSee(st, humanP(), a, humanVis()));
+    s += `<rect class="hl${danger ? ' danger' : ''}" x="${colOf(t) * TS + 4}" y="${rowOf(t) * TS + 4}" width="${TS - 8}" height="${TS - 8}" rx="8"/>`;
+  });
+  hl.innerHTML = s;
+}
+
+/* ======================= FX ======================= */
+function fxText(tile, text, color, dy) {
+  const [x, y] = centerXY(tile);
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  g.setAttribute('x', x); g.setAttribute('y', y - 20 + (dy || 0));
+  g.setAttribute('text-anchor', 'middle'); g.setAttribute('class', 'fxtext'); g.setAttribute('fill', color || '#fff');
+  g.style.fontSize = text.length > 10 ? '13px' : '19px';
+  g.textContent = text;
+  $('#L-fx').appendChild(g);
+  setTimeout(() => g.remove(), 1300);
+}
+function fxBurst(tile, color, r) {
+  const [x, y] = centerXY(tile);
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  g.setAttribute('cx', x); g.setAttribute('cy', y); g.setAttribute('r', r || 16);
+  g.setAttribute('fill', 'none'); g.setAttribute('stroke', color || '#ffd27a'); g.setAttribute('stroke-width', '4');
+  g.setAttribute('class', 'fxburst');
+  $('#L-fx').appendChild(g);
+  setTimeout(() => g.remove(), 900);
+}
+function fxLine(a, b, color) {
+  const [x1, y1] = centerXY(a), [x2, y2] = centerXY(b);
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  g.setAttribute('x1', x1); g.setAttribute('y1', y1); g.setAttribute('x2', x2); g.setAttribute('y2', y2);
+  g.setAttribute('stroke', color || '#fff'); g.setAttribute('stroke-width', '3'); g.setAttribute('class', 'fxline');
+  $('#L-fx').appendChild(g);
+  setTimeout(() => g.remove(), 700);
+}
+function toast(text, ms) {
+  const box = $('#toast');
+  while (box.children.length >= 3) box.firstChild.remove();
+  ms = Math.max(1200, (ms || 2400) / Math.sqrt(UI.speed));
+  const d = document.createElement('div');
+  d.className = 'toast';
+  d.textContent = text;
+  d.style.animationDuration = ms + 'ms';
+  box.appendChild(d);
+  setTimeout(() => d.remove(), ms);
+}
+const stepMs = () => 190 / UI.speed;
+const botDelay = () => 520 / UI.speed;
+
+async function animatePawn(pid, path) {
+  const node = document.getElementById('pw-' + pid);
+  if (!node) return;
+  node._anim = true;
+  for (const t of path) {
+    const [x, y] = pawnXY(pid, t);
+    setT(node, x, y);
+    Sound.play('step');
+    await sleep(stepMs());
+  }
+  node._anim = false;
+}
+async function playFx(list) {
+  const st = UI.st;
+  for (const e of list) {
+    switch (e.type) {
+      case 'move': await animatePawn(e.pid, e.path); if (e.push) { fxText(st.players[e.pid].tile, 'Geri!', '#f5c27a'); if (e.pid === UI.human) toast('Yanlış İz! 3 kare geri gönderildin.'); } break;
+      case 'shot': {
+        const p = st.players[e.pid];
+        Sound.play(e.rifle ? 'rifle' : 'shot');
+        fxBurst(e.tile, e.rifle ? '#ffb347' : '#ffe08a', 10);
+        fxText(e.tile, '−' + e.dmg, '#ff6a5a');
+        if (p.tile !== e.tile) fxLine(p.tile, e.tile, '#ffe08a');
+        await sleep(320 / UI.speed);
+        renderMap();
+        break;
+      }
+      case 'kill': Sound.play('kill'); fxBurst(e.tile, '#e8c862', 22); fxText(e.tile, 'Avlandı!', '#ffd27a', -14); await sleep(380 / UI.speed); break;
+      case 'attack': Sound.play('hit'); fxBurst(e.tile, '#e04a3a', 18); await sleep(200 / UI.speed); break;
+      case 'hurt': Sound.play('bad'); fxText(e.tile, 'Sersem ' + e.amount, '#ffb0a0', 16); if (e.pid === UI.human) toast(`${e.amount} tur sersem kalacaksın.`); await sleep(250 / UI.speed); break;
+      case 'medicine': Sound.play('good'); fxText(e.tile, 'İlaç!', '#bfe3a8', 16); break;
+      case 'harvest': Sound.play('good'); fxText(e.tile, '+' + e.text, '#bfe3a8'); await sleep(260 / UI.speed); break;
+      case 'steal': Sound.play('steal'); fxLine(st.players[e.from].tile, st.players[e.to].tile, '#e6a0ff'); fxBurst(e.tile, '#c070ff', 14); fxText(e.tile, 'Kaptı: ' + e.text, '#e6a0ff'); if (e.from === UI.human) toast(`${st.players[e.to].name} senden ${e.text} aldı!`); await sleep(420 / UI.speed); break;
+      case 'block': Sound.play('hit'); fxText(e.tile, 'Savundu!', '#f5c27a'); await sleep(300 / UI.speed); break;
+      case 'cook': Sound.play('cook'); fxBurst(e.tile, '#ff8a3a', 20); fxText(e.tile, 'Pişti!', '#ffb36a'); await sleep(320 / UI.speed); break;
+      case 'deliver': Sound.play('deliver'); fxBurst(PALACE, '#e8c862', 24); setTimeout(() => fxBurst(PALACE, '#fff3c8', 30), 180); fxText(PALACE, 'Teslim!', '#ffe08a'); toast(`${st.players[e.pid].name} Saraya teslimat yaptı!`); await sleep(500 / UI.speed); break;
+      case 'trap': Sound.play('trap'); fxBurst(e.tile, '#ff4a3a', 20); fxText(e.tile, e.zone ? 'Tuzak Bölgesi!' : 'Tuzak!', '#ff8a6a'); UI.tilesKey = ''; await sleep(320 / UI.speed); break;
+      case 'trapset': if (e.pid === UI.human) fxText(e.tile, 'Tuzak kuruldu', '#ffb0a0'); Sound.play('card'); break;
+      case 'aim': fxText(e.tile, 'Nişan +1', '#ffe08a'); break;
+      case 'equip': Sound.play('card'); break;
+      case 'panic': Sound.play('bad'); fxText(e.tile, 'Panik!', '#f5c27a'); toast(e.pid === UI.human ? 'Panik! Elinden 2 kart düştü.' : `${st.players[e.pid].name} paniğe kapıldı!`); break;
+      case 'herald': Sound.play('turn'); toast("Kral'ın Habercisi: herkes bir kart atar!"); break;
+      case 'rain': Sound.play('rain'); toast('Sağanak yağmur! Bu tur kimse hareket edemez.'); break;
+    }
+  }
+}
+
+/* ======================= PANELLER ======================= */
+function cardHTML(card, cls) {
+  const d = CARD[card.id];
+  return `<div class="card t-${d.type} ${cls || ''}" data-uid="${card.uid}" title="${esc(d.name)}: ${esc(d.desc)}"><div class="ch">${esc(d.name)}</div><div class="ca">${ICON[d.id] || ''}</div><div class="cd">${esc(d.desc)}</div><div class="ct">${TYPE_TR[d.type]}</div></div>`;
+}
+function badgeSVG(p) {
+  return `<svg class="badge" viewBox="-14 -16 28 34"><path d="M-11 -12 H11 V0 Q11 10 0 15 Q-11 10 -11 0 Z" fill="${p.color}" stroke="#e8c862" stroke-width="1.6"/><text y="4" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff6dc">${esc(Turn.PLAYER_CFG[p.id].badge)}</text></svg>`;
+}
+function goodChip(it) { return `<span class="good-chip ${it.k}">${esc(Engine.itemName(it))}</span>`; }
+
+function renderSide() {
+  const st = UI.st, hp = humanP();
+  const ev = Mission.evaluate(st, hp);
+  const diffs = D.missions.difficulties;
+  $('#missions').innerHTML = hp.missions.map((pm, i) => {
+    const m = MIS[pm.id], r = ev[i], dl = diffs[m.difficulty];
+    const labels = Mission.stepLabels(pm.id);
+    return `<div class="mission${pm.delivered ? ' done' : ''}"><div class="mh"><span class="mn">${esc(m.name)}</span><span class="md" style="background:${dl.color}">${esc(dl.label)}</span></div><div class="mf">${esc(m.flavour)}</div><ol>${labels.map((l, k) => `<li class="${r.sat[k] ? 'ok' : ''}"><span class="ck">${r.sat[k] ? '✓' : k + 1}</span>${esc(l)}</li>`).join('')}</ol>${pm.delivered ? '<div class="stamp">TESLİM EDİLDİ</div>' : (r.ready ? '<div class="stamp" style="color:#1f6b1f;border-color:#1f6b1f">HAZIR</div>' : '')}</div>`;
+  }).join('');
+  const tot = ev.reduce((a, r) => a + r.done, 0), all = ev.reduce((a, r) => a + r.total, 0);
+  $('#misProg').textContent = `${tot}/${all} adım`;
+  const stt = [];
+  if (hp.stun > 0) stt.push(`<span class="bad">Sersem: ${hp.stun} tur</span>`);
+  if (hp.stunnedNow && Turn.current(st) === hp) stt.push('<span class="bad">Bu tur hareket edemezsin</span>');
+  if (st.rainTurns > 0 || (hp.rainedNow && Turn.current(st) === hp)) stt.push('<span class="bad">Sağanak yağmur</span>');
+  if (hp.aim) stt.push(`<span class="good">Nişan +${hp.aim}</span>`);
+  if (hp.runCap && Turn.current(st) === hp) stt.push('<span class="bad">Koşu yorgunluğu: maks. 1 kare</span>');
+  if (hp.runNext) stt.push('<span class="bad">Sonraki tur maks. 1 kare</span>');
+  stt.push(`<span>Kare: ${esc(TT[MapM.shownType(st, hp.tile)].name)}</span>`);
+  stt.push(`<span>Görüş: ${MapM.visionRange(st, hp) >= 99 ? 'tüm harita' : MapM.visionRange(st, hp) + ' kare'}</span>`);
+  stt.push(`<span>Deste: ${st.deck.length} · Çöp: ${st.discard.length}</span>`);
+  $('#status').innerHTML = stt.join('');
+  let slots = '';
+  for (let k = 0; k < R.inventorySlots; k++) {
+    const it = hp.items[k];
+    slots += it ? `<div class="slot full" title="${esc(CARD[it.id].desc)}">${ICON[it.id]}${esc(CARD[it.id].name)}</div>` : '<div class="slot">boş</div>';
+  }
+  $('#slots').innerHTML = slots;
+  $('#bag').innerHTML = hp.bag.length ? '<span class="empty" style="width:100%">Çanta:</span>' + hp.bag.map(goodChip).join('') : '<span class="empty">Çanta boş — ganimet yok.</span>';
+  const cur = Turn.current(st);
+  $('#rivals').innerHTML = st.players.filter(p => p.id !== UI.human).map(p => {
+    const del = p.missions.map(m => m.delivered ? '●' : '○').join('');
+    const items = p.items.length ? p.items.map(c => CARD[c.id].name).join(', ') : '—';
+    const bag = p.bag.length ? p.bag.map(it => Engine.itemName(it)).join(', ') : '—';
+    const flags = [p.stun ? `<span style="color:#f0a898">Sersem ${p.stun}</span>` : '', st.carcasses.some(c => c.owner === p.id) ? 'Leş sahibi' : ''].filter(Boolean).join(' · ');
+    return `<div class="rival${p === cur && !st.over ? ' active' : ''}">${badgeSVG(p)}<div><div class="rn" style="color:${p.color}">${esc(p.name)} <span class="rd">· ${DIFF_TR[p.bot] || ''} bot</span></div><div class="rl">Görevler: <span class="pips">${del}</span> (gizli) · El: ${p.hand.length}<br>Eşya: ${esc(items)}<br>Ganimet: ${esc(bag)}${flags ? '<br>' + flags : ''}</div></div></div>`;
+  }).join('');
+  const lg = $('#log');
+  const atBottom = lg.scrollTop + lg.clientHeight >= lg.scrollHeight - 30;
+  lg.innerHTML = st.log.slice(-90).map(e => {
+    const col = e.pid != null ? st.players[e.pid].color : 'transparent';
+    return `<div class="${e.cls}" style="border-left-color:${col}"><span class="r">T${e.r}</span>${esc(e.text)}</div>`;
+  }).join('');
+  if (atBottom || UI.forceLog) { lg.scrollTop = lg.scrollHeight; UI.forceLog = false; }
+  $('#chipRound').innerHTML = `Tur <b>${Math.min(st.round, R.turnLimit)}</b>/${R.turnLimit} · kalan ${Math.max(0, R.turnLimit - st.round)}`;
+  $('#chipTurn').innerHTML = st.over ? 'Av bitti' : `<span class="dot" style="background:${cur.color}"></span>Sıra: <b style="color:${cur.color}">${esc(cur.name)}</b>`;
+}
+
+/* ---------- seçenekler ve el ---------- */
+function myTurn() { const st = UI.st; return st && !st.over && UI.resolver && Turn.current(st).id === UI.human; }
+function allOptions() { return myTurn() ? Engine.listOptions(UI.st, humanP()) : []; }
+function optsForCard(uid) { return allOptions().filter(o => o.card === uid); }
+function currentTileTargets() {
+  if (!myTurn() || UI.sel == null) return [];
+  const s = new Set();
+  optsForCard(UI.sel).forEach(o => { if ((o.kind === 'move' || o.kind === 'trap') && o.tile != null) s.add(o.tile); });
+  return [...s];
+}
+function optLabel(o) {
+  const st = UI.st, p = humanP();
+  switch (o.kind) {
+    case 'shoot': { const a = st.animals.find(x => x.uid === o.animal); return `${o.ammo ? 'Ekstra Mermi' : 'Vur'}: ${ANIM[a.sp].name} (${o.dmg + p.aim} hasar, can ${a.hp})`; }
+    case 'aim': return 'Nişan Al (+1 hasar)';
+    case 'harvest': { const c = st.carcasses.find(x => x.uid === o.carcass); const nm = o.part === 'meat' ? ANIM[c.sp].name + ' Eti' : o.part === 'hide' ? ANIM[c.sp].name + ' Derisi' : c.by.name; return `${o.knife ? 'Bıçakla al' : 'Leşten al'}: ${nm}`; }
+    case 'rob': { const q = st.players[o.target]; return `${o.knife ? 'Bıçakla gasp' : 'Gasp'}: ${q.name} → ${Engine.itemName(q.bag[o.bagIdx])}`; }
+    case 'cook': return `${o.tool ? 'Eşyayla pişir' : 'Pişir'}: ${ANIM[o.sp].name} ${C.COOK_NAMES[o.method]}`;
+    case 'collect': return `Topla: ${C.PLANT_NAMES[o.plant]}`;
+    case 'climb': return 'Tırman (Kartal Tüyü al)';
+    case 'equip': return o.drop != null ? `Envantere koy, ${CARD[p.items[o.drop].id].name} bırak` : 'Envantere koy';
+    case 'mislead': return `Yanlış İz → ${st.players[o.target].name}`;
+    case 'panic': return `Panik → ${st.players[o.target].name}`;
+    case 'herald': return "Oyna: Kral'ın Habercisi";
+    case 'rain': return 'Oyna: Sağanak Yağmur';
+    case 'steal': { const q = st.players[o.target]; return `Çal: ${q.name} → ${o.inv != null ? CARD[q.items[o.inv].id].name : Engine.itemName(q.bag[o.bagIdx])}`; }
+    case 'deliver': return 'Saraya Teslim Et';
+    case 'discard': return 'Kartı at (pas)';
+  }
+  return o.kind;
+}
+function renderHand() {
+  const st = UI.st, hp = humanP();
+  const mine = myTurn();
+  const all = mine ? allOptions() : [];
+  const newOnes = hp.hand.filter(c => UI.lastHand.indexOf(c.uid) < 0).map(c => c.uid);
+  UI.lastHand = hp.hand.map(c => c.uid);
+  $('#hand').innerHTML = hp.hand.map(c => {
+    let cls = '';
+    if (mine) {
+      const playable = all.some(o => o.card === c.uid && o.kind !== 'discard');
+      if (UI.mode === 'pickDiscard') cls = 'pick';
+      else if (UI.sel === c.uid) cls = 'sel';
+      else cls = playable ? 'playable' : 'dimc';
+    }
+    if (newOnes.indexOf(c.uid) >= 0) cls += ' new';
+    return cardHTML(c, cls);
+  }).join('');
+}
+function renderActions() {
+  const st = UI.st, p = humanP(), cur = Turn.current(st);
+  const pr = $('#prompt'), ac = $('#actions');
+  ac.innerHTML = '';
+  const btn = (label, fn, cls) => { const b = document.createElement('button'); b.className = 'btn ' + (cls || ''); b.textContent = label; b.onclick = fn; ac.appendChild(b); return b; };
+  if (st.over) { pr.innerHTML = 'Av sona erdi.'; return; }
+  if (!myTurn()) {
+    pr.innerHTML = `<span class="thinking"></span><span class="who" style="color:${cur.color}">${esc(cur.name)}</span> hamlesini düşünüyor…`;
+    return;
+  }
+  const notes = [];
+  if (p.stunnedNow) notes.push('Sersemsin: bu tur hareket edemezsin.');
+  if (p.rainedNow) notes.push('Sağanak yağmur: bu tur kimse hareket edemez.');
+  if (p.runCap) notes.push('Koşu yorgunluğu: en fazla 1 kare.');
+  if (UI.mode === 'pickDiscard') {
+    pr.innerHTML = `<b style="color:var(--gold2)">${esc(optLabel(UI.pendingOpt))}</b> — bunun için elinden atılacak kartı seç.`;
+    btn('Vazgeç', () => { UI.mode = null; UI.pendingOpt = null; refresh(); }, 'ghost');
+    return;
+  }
+  if (UI.sel != null) {
+    const card = p.hand.find(c => c.uid === UI.sel);
+    const opts = optsForCard(UI.sel);
+    const tileOpts = opts.filter(o => o.kind === 'move' || o.kind === 'trap');
+    pr.innerHTML = `<b style="color:var(--gold2)">${esc(CARD[card.id].name)}</b> — ${tileOpts.length ? 'haritada parlayan kareye dokun' : (opts.length > 1 ? 'ne yapacağını seç' : 'bu kartla şu an yapılacak bir şey yok')}. ${notes.join(' ')}`;
+    opts.filter(o => o.kind !== 'move' && o.kind !== 'trap' && o.kind !== 'discard').forEach(o => btn(optLabel(o), () => finalize(o), 'primary'));
+    btn('Kartı at (pas)', () => finalize(opts.find(o => o.kind === 'discard')), 'ghost');
+    btn('Vazgeç', () => { UI.sel = null; refresh(); }, 'ghost');
+    return;
+  }
+  const gen = allOptions().filter(o => o.card == null);
+  pr.innerHTML = `<b style="color:var(--gold2)">Sıra sende.</b> Parlayan bir kart seç${gen.length ? ' ya da eşya aksiyonu kullan' : ''}. ${notes.join(' ')}`;
+  gen.forEach(o => btn(optLabel(o) + ' (kart atarak)', () => { UI.mode = 'pickDiscard'; UI.pendingOpt = o; refresh(); }, o.kind === 'deliver' ? 'primary' : ''));
+}
+function refresh() { renderMap(); renderSide(); renderHand(); renderActions(); }
+UI.refresh = refresh;
+
+function finalize(opt, extra) {
+  if (!UI.resolver || !opt) return;
+  const r = UI.resolver;
+  UI.resolver = null; UI.sel = null; UI.mode = null; UI.pendingOpt = null;
+  Sound.play('card');
+  r({ opt, extra: extra || {} });
+}
+function onCardClick(uid) {
+  if (!myTurn()) return;
+  Sound.init();
+  if (UI.mode === 'pickDiscard') { finalize(UI.pendingOpt, { discard: uid }); return; }
+  UI.sel = UI.sel === uid ? null : uid;
+  Sound.play('card');
+  refresh();
+  if (UI.sel != null && window.matchMedia('(max-width:900px)').matches && currentTileTargets().length) {
+    $('#map').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+function onTileClick(t) {
+  const st = UI.st;
+  if (!st) return;
+  if (myTurn() && UI.sel != null) {
+    const o = optsForCard(UI.sel).find(x => (x.kind === 'move' || x.kind === 'trap') && x.tile === t);
+    if (o) { finalize(o); return; }
+  }
+  const ty = MapM.shownType(st, t);
+  const seen = humanP().mem.seen[t] >= 0;
+  const pls = seen ? Engine.plantsAt(st, t).map(k => C.PLANT_NAMES[k]) : [];
+  const info = seen ? `${TT[ty].name}: ${TT[ty].desc}${pls.length ? ' Bitki: ' + pls.join(', ') + '.' : ''}` : 'Keşfedilmemiş kare.';
+  if (!myTurn() || UI.sel == null) toast(info, 2600);
+}
+
+/* ======================= MODAL ======================= */
+function modal(html) { $('#mbox').innerHTML = html; $('#modal').classList.remove('hidden'); }
+function closeModal() { $('#modal').classList.add('hidden'); $('#mbox').innerHTML = ''; }
+function askDefense(thief, victim, item, cards) {
+  return new Promise(res => {
+    Sound.play('bad');
+    modal(`<h2>Gasp girişimi!</h2><p><b style="color:${thief.color}">${esc(thief.name)}</b>, çantandaki <b>${esc(Engine.itemName(item))}</b> ganimetini kapmaya çalışıyor. Elinden bir saldırı kartı atarak püskürtebilirsin.</p><div class="row" id="defBtns"></div>`);
+    const box = $('#defBtns');
+    const seen = new Set();
+    cards.filter(c => !seen.has(c.id) && seen.add(c.id)).forEach(c => { const b = document.createElement('button'); b.className = 'btn primary'; b.textContent = CARD[c.id].name + ' ile savun'; b.onclick = () => { closeModal(); res(c.uid); }; box.appendChild(b); });
+    const n = document.createElement('button'); n.className = 'btn ghost'; n.textContent = 'Bırak, alsın'; n.onclick = () => { closeModal(); res(null); }; box.appendChild(n);
+  });
+}
+function askHerald(p, exclude) {
+  return new Promise(res => {
+    const cards = p.hand.filter(c => c.uid !== exclude);
+    if (!cards.length) { res(null); return; }
+    modal(`<h2>Kral'ın Habercisi</h2><p>Saraydan emir geldi: elinden atacağın bir kartı seç.</p><div class="cards" id="hCards">${cards.map(c => cardHTML(c, 'playable')).join('')}</div>`);
+    $('#hCards').onclick = e => { const el = e.target.closest('.card'); if (!el) return; closeModal(); res(+el.dataset.uid); };
+  });
+}
+function confirmBox(title, text, yes) {
+  modal(`<h2>${esc(title)}</h2><p>${esc(text)}</p><div class="row"><button class="btn primary" id="cYes">Evet</button><button class="btn ghost" id="cNo">Hayır</button></div>`);
+  $('#cYes').onclick = () => { closeModal(); yes(); };
+  $('#cNo').onclick = closeModal;
+}
+
+async function resolveReactions(st, p, dec) {
+  const o = dec.opt;
+  if (o.kind === 'rob') {
+    const q = st.players[o.target];
+    if (q.bot) { const d = Bot.defend(st, q, q.bag[o.bagIdx]); if (d != null) dec.extra.defend = d; }
+    else {
+      const cards = Engine.defenseCards(q);
+      if (cards.length) { const d = await askDefense(p, q, q.bag[o.bagIdx], cards); if (d != null) dec.extra.defend = d; }
+    }
+  }
+  if (o.kind === 'herald') {
+    dec.extra.heraldChoices = {};
+    for (const q of st.players) {
+      if (q.bot) {
+        if (q === p) { const ctx = Bot.context(st, p); const w = Bot.worstCard(st, p, ctx, [o.card]); if (w) dec.extra.heraldChoices[q.id] = w.uid; }
+        else dec.extra.heraldChoices[q.id] = Bot.heraldChoice(st, q);
+      } else {
+        const uid = await askHerald(q, q === p ? o.card : null);
+        if (uid != null) dec.extra.heraldChoices[q.id] = uid;
+      }
+    }
+  }
+}
+
+/* ======================= OYUN DÖNGÜSÜ ======================= */
+function humanTurn() {
+  return new Promise(res => { UI.resolver = res; UI.sel = null; UI.mode = null; refresh(); });
+}
+async function loop(gen) {
+  const st = UI.st;
+  let lastRound = st.round;
+  while (!st.over && gen === UI.gen) {
+    const p = Turn.beginTurn(st);
+    refresh();
+    let dec;
+    if (p.bot) {
+      await sleep(botDelay());
+      if (gen !== UI.gen) return;
+      dec = Bot.decide(st, p);
+    } else {
+      Sound.play('turn');
+      if (p.stunnedNow) toast('Sersemsin — bu tur hareket edemezsin.');
+      dec = await humanTurn();
+      if (gen !== UI.gen) return;
+    }
+    await resolveReactions(st, p, dec);
+    if (gen !== UI.gen) return;
+    const fx = Engine.apply(st, p, dec.opt, dec.extra).slice();
+    UI.forceLog = true;
+    renderSide();
+    await playFx(fx);
+    if (gen !== UI.gen) return;
+    const rr = Turn.endTurn(st);
+    refresh();
+    if (rr) {
+      if (rr.spawns.length) { Sound.play('good'); toast('Doğanın Armağanı: yeni bir av belirdi.'); }
+      await sleep(350 / UI.speed);
+      if (!st.over && st.round !== lastRound) { lastRound = st.round; const ch = $('#chipRound'); ch.classList.remove('flash'); void ch.offsetWidth; ch.classList.add('flash'); if (st.round === R.turnLimit - 9 || st.round === R.turnLimit) toast(st.round === R.turnLimit ? 'Son tur!' : 'Son 10 tur!'); }
+    }
+  }
+  if (gen === UI.gen) { await sleep(600); showEnd(); }
+}
+
+/* ======================= EKRANLAR ======================= */
+function show(id) { ['#menu', '#game', '#end'].forEach(s => $(s).classList.toggle('hidden', s !== id)); }
+function readSettings() {
+  const d = $('#optDiff').value;
+  let bots;
+  if (d === 'custom') bots = [null].concat([1, 2, 3].map(i => $('#pb' + i).value));
+  else bots = [null, d, d, d];
+  const seedTxt = $('#optSeed').value.trim();
+  const seed = seedTxt ? (parseInt(seedTxt, 10) || [...seedTxt].reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7)) : undefined;
+  return { bots, seed, name: $('#optName').value.trim() || 'Avcıbaşı' };
+}
+function startGame(settings) {
+  UI.settings = settings;
+  UI.gen++;
+  closeModal();
+  const st = Turn.newGame({ seed: settings.seed, bots: settings.bots, humanName: settings.name });
+  RH.state = UI.st = st;
+  UI.human = 0; UI.sel = null; UI.mode = null; UI.resolver = null; UI.lastHand = [];
+  $('#toast').innerHTML = '';
+  buildMapSkeleton();
+  show('#game');
+  refresh();
+  const hp = humanP();
+  toast(`Görevlerin: ${hp.missions.map(m => MIS[m.id].name).join(' + ')}`, 3600);
+  loop(UI.gen);
+}
+function showEnd() {
+  const st = UI.st;
+  $('#toast').innerHTML = '';
+  const winners = st.winners.map(i => st.players[i]);
+  const youWon = st.winners.indexOf(UI.human) >= 0;
+  Sound.play(youWon ? 'win' : 'bad');
+  const why = st.endReason === 'deliver'
+    ? `${winners[0].name}, iki gizli görevini de Saraya teslim ederek ${Math.min(st.round, R.turnLimit)}. turda avı kazandı.`
+    : `${R.turnLimit} tur doldu. En çok görev adımını tamamlayan${winners.length > 1 ? 'lar' : ''} kazandı.`;
+  const rows = st.players.map(p => {
+    const ev = Mission.evaluate(st, p);
+    const mis = p.missions.map((pm, i) => `${pm.delivered ? '✓' : '✗'} ${esc(MIS[pm.id].name)} <small>(${ev[i].done}/${ev[i].total})</small>`).join('<br>');
+    const s = p.stats;
+    return `<tr class="${st.winners.indexOf(p.id) >= 0 ? 'win' : ''}"><td><b style="color:${p.color}">${esc(p.name)}</b><br><small>${esc(p.title)}${p.bot ? ' · ' + DIFF_TR[p.bot] + ' bot' : ''}</small></td><td>${mis}</td><td>${s.kills}</td><td>${s.harvest + s.collected}</td><td>${s.cooked}</td><td>${s.robbed}/${s.lost}</td><td>${s.sabotage}</td><td>${s.hurt}</td></tr>`;
+  }).join('');
+  $('#endCard').innerHTML = `<svg class="crest" viewBox="0 0 120 120">${crestSVG()}</svg><h1>${youWon ? 'ZAFER' : 'AV SONA ERDİ'}</h1><h2 style="color:${winners[0] ? winners[0].color : '#fff'};margin:4px 0">${winners.map(w => esc(w.name)).join(' & ')} ${winners.length > 1 ? 'kazandı' : 'kazandı'}</h2><div class="why">${esc(why)}</div><div class="tbl-wrap"><table class="sum"><thead><tr><th>Avcı</th><th>Gizli görevler</th><th>Av</th><th>Hasat/Toplama</th><th>Pişirme</th><th>Gasp/Kayıp</th><th>Sabotaj</th><th>Sersemlik</th></tr></thead><tbody>${rows}</tbody></table></div><div class="menu-actions"><button class="btn big primary" id="btnAgain">Yeniden Oyna</button><button class="btn ghost" id="btnHome">Ana Menü</button></div>`;
+  $('#btnAgain').onclick = () => startGame(Object.assign({}, UI.settings, { seed: undefined }));
+  $('#btnHome').onclick = () => show('#menu');
+  show('#end');
+}
+function crestSVG() {
+  return `<defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2a14"/><stop offset="1" stop-color="#1a120a"/></linearGradient></defs>
+  <path d="M60 8 L102 22 V58 Q102 92 60 112 Q18 92 18 58 V22Z" fill="url(#cg)" stroke="#c9a227" stroke-width="3"/>
+  <path d="M30 96 L90 30 M90 96 L30 30" stroke="#8a6a2a" stroke-width="3"/><path d="M86 30 L94 26 L90 34Z M34 30 L26 26 L30 34Z" fill="#c9a227"/>
+  <g transform="translate(28,36) scale(1)">${SIL.red_deer}</g>
+  <path d="M44 22 L48 10 L54 18 L60 6 L66 18 L72 10 L76 22Z" fill="#e8c862" stroke="#6b5010" stroke-width="1.2"/>`;
+}
+
+/* ======================= BAŞLATMA ======================= */
+function init() {
+  $('#crest').innerHTML = crestSVG();
+  const pb = $('#perBot');
+  pb.innerHTML = [1, 2, 3].map(i => `<div class="opt-row"><label for="pb${i}" style="color:${Turn.PLAYER_CFG[i].color}">${Turn.PLAYER_CFG[i].title}</label><select id="pb${i}"><option value="easy">Kolay</option><option value="medium" ${i === 2 ? 'selected' : ''}>Orta</option><option value="hard" ${i === 3 ? 'selected' : ''}>Zor</option></select></div>`).join('');
+  $('#optDiff').onchange = () => pb.classList.toggle('hidden', $('#optDiff').value !== 'custom');
+  $('#optSound').onchange = () => { Sound.on = $('#optSound').value === '1'; updateSoundBtn(); };
+  $('#btnStart').onclick = () => { Sound.init(); Sound.on = $('#optSound').value === '1'; updateSoundBtn(); startGame(readSettings()); };
+  $('#btnSpeed').onclick = () => { UI.speed = UI.speed === 1 ? 2 : UI.speed === 2 ? 4 : 1; $('#btnSpeed').textContent = 'Hız ' + UI.speed + '×'; };
+  $('#btnSound').onclick = () => { Sound.init(); Sound.on = !Sound.on; $('#optSound').value = Sound.on ? '1' : '0'; updateSoundBtn(); };
+  $('#btnMenu').onclick = () => confirmBox('Menüye dön', 'Bu av yarıda bırakılsın mı?', () => { UI.gen++; UI.resolver = null; show('#menu'); });
+  $('#hand').addEventListener('click', e => { const c = e.target.closest('.card'); if (c) onCardClick(+c.dataset.uid); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { if (!$('#modal').classList.contains('hidden')) return; UI.sel = null; UI.mode = null; if (UI.st) refresh(); }
+  });
+  $('#modal').addEventListener('click', e => { if (e.target.id === 'modal' && $('#cNo')) closeModal(); });
+  // gizli test modu
+  const qs = new URLSearchParams(location.search);
+  if (qs.has('sim')) {
+    const n = Math.max(1, parseInt(qs.get('sim'), 10) || 200);
+    const ov = document.createElement('div');
+    ov.id = 'simOverlay';
+    ov.innerHTML = `<pre>Simülasyon çalışıyor: ${n} oyun, 4 bot… (sonuç konsola da yazılır)</pre>`;
+    document.body.appendChild(ov);
+    setTimeout(() => {
+      const res = Sim.run(n, { bots: qs.get('bots') || undefined, seed: qs.get('seed') ? +qs.get('seed') : undefined });
+      const rep = Sim.report(res);
+      console.log(rep);
+      console.table({ 'Tamamlama oranı': (100 * res.completionRate).toFixed(1) + '%', 'Ortalama tur': res.avgRounds.toFixed(1), 'Takılan oyun': res.limit, 'Hata': res.errors });
+      console.table(res.winsByDiff);
+      RH.lastSim = res;
+      ov.innerHTML = `<div><pre>${esc(rep)}\n\n(Ayrıntılar konsolda: ROYALHUNT.lastSim)</pre><div style="text-align:center;margin-top:10px"><button class="btn" id="simClose">Menüye geç</button></div></div>`;
+      $('#simClose').onclick = () => ov.remove();
+    }, 60);
+  }
+}
+function updateSoundBtn() { $('#btnSound').textContent = 'Ses: ' + (Sound.on ? 'Açık' : 'Kapalı'); }
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})(globalThis);
+
+</script>
+</body>
+</html>
