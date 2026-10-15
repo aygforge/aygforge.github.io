@@ -1,0 +1,9 @@
+{
+  "name": "buyuk-emu-savasi-short",
+  "private": true,
+  "description": "Bu Gerçekten Yaşandı — Büyük Emu Savaşı (1932) vertical short renderer",
+  "dependencies": {
+    "@fontsource/kalam": "^5.3.0",
+    "@napi-rs/canvas": "^1.0.11"
+  }
+}
