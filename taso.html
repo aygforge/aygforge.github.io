@@ -3,12 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#17110c">
 <title>Taso Savaşları</title>
 <style>
   /* itch.io iframe ve cihaz tam ekranında kalan tüm alanı kullan. */
   html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: #17110c; overflow: hidden; overscroll-behavior: none; }
   body { position: fixed; inset: 0; }
-  canvas { display: block; position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; user-select: none; -webkit-user-select: none; outline: none; }
+  canvas { display: block; position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; outline: none; }
 </style>
 </head>
 <body>
@@ -40,14 +44,17 @@ const CONFIG = {
   PACK_SIZE: 5,
   START_COINS: 100,
   START_FREE_PACKS: 2,
-  DAILY_ALLOWANCE: 50,
+  DAILY_ALLOWANCE: 30,
   ODDS: { normal: 0.85, parlak: 0.12, holo: 0.03 },   // slot başına nadirlik olasılığı
   LEGENDARY_PER_PACK: 0.005,                           // paket başına efsanevi şansı (~%0.5)
   HOLO_PITY_PACKS: 10,                                  // bu kadar paket üst üste holosuz geçerse sıradaki pakette holo garanti
   MISSING_BOOST: 2.5,                                   // sahip olunmayan tasolara ek ağırlık (tamamlanma oranıyla büyür)
-  SELL_PRICE: { normal: 10, parlak: 40, holo: 120, efsanevi: 500 },
+  SELL_PRICE: { normal: 5, parlak: 20, holo: 60, efsanevi: 250 },
   SERIES_REWARD: 2000,                                  // Seri 1 albümü tamamlanınca
-  BOT_REWARDS: [40, 70, 100],                           // bot zorluğuna göre galibiyet ödülü
+  BOT_REWARDS: [40, 70, 100],                           // her botu İLK yenişte ödül
+  BOT_REPEAT_REWARDS: [10, 18, 28],                     // sonraki galibiyetlerde (aynı botu kasıp paket yağdırmasın)
+  DAILY_MATCH_COIN_CAP: 200,                            // bir günde maç galibiyetlerinden tam alınabilecek coin
+  DAILY_CAP_RATE: 0.25,                                 // sınır dolunca maç ödülleri bu oranda verilir
 
   // --- Nadirliğe göre fiziksel çarpanlar ---
   WEIGHT:    { normal: 1.0, parlak: 1.15, holo: 1.3, efsanevi: 1.5 },
@@ -73,7 +80,7 @@ const CONFIG = {
   // --- Büyük Turnuva (16 kişilik eleme) ---
   TOUR_SIZE: 16,
   TOUR_TOWER: 10,        // turnuva maçlarında kişi başı kule tasosu
-  TOUR_REWARDS: [3, 2, 1], // 1., 2., 3. olana turnuva paketi
+  TOUR_REWARDS: [2, 1, 1], // 1., 2., 3. olana turnuva paketi
   TOUR_TIER_WEIGHTS: { kolay: 0.3, orta: 0.35, zor: 0.25, usta: 0.1 },
   TOUR_ODDS: { normal: 0.6, parlak: 0.28, holo: 0.1 }, // turnuva paketi slot olasılıkları (en az 1 parlak garanti)
   TOUR_LEGENDARY_PER_PACK: 0.02,
@@ -97,20 +104,20 @@ const CONFIG = {
   TEK_EXTRA: 5,            // beraberlikte ek kule
   TEK_PLAYER_SHARE: 0.5,   // kulelerdeki tasoların yarısı senin koleksiyonundan (hiçbiri el değiştirmez)
   TEK_MIN_TASOS: 6,
-  TEK_REWARDS: { kolay: 40, orta: 60, zor: 90, usta: 130 },
-  TEK_DRAW_REWARD: 15,
+  TEK_REWARDS: { kolay: 15, orta: 25, zor: 35, usta: 50 },
+  TEK_DRAW_REWARD: 5,
 
   // --- Mahalle Ligi (10 kişi, 9 hafta, herkes herkesle bir kez) ---
   LEAGUE_SIZE: 10,
   LEAGUE_WIN_PTS: 3,
-  LEAGUE_WIN_COINS: 25,    // her lig galibiyetine
+  LEAGUE_WIN_COINS: 15,    // her lig galibiyetine
   LEAGUE_TIERS: ['kolay', 'kolay', 'orta', 'orta', 'orta', 'zor', 'zor', 'zor', 'usta'],
   LEAGUE_PRIZES: [
-    { coins: 300, tour: 2, title: 'Lig Şampiyonu' },
-    { coins: 150, tour: 1 },
-    { coins: 100, free: 1 },
+    { coins: 150, tour: 1, title: 'Lig Şampiyonu' },
+    { coins: 80, free: 1 },
+    { coins: 50 },
   ],
-  LEAGUE_PRIZE_REST: { coins: 40 },
+  LEAGUE_PRIZE_REST: { coins: 20 },
 
   // --- Vuruş fiziği (2D simülasyon + katman hesabı) ---
   PHYS: {
@@ -239,29 +246,63 @@ const Input = {
   x: -1000, y: -1000, down: false, pressed: false, released: false,
   downX: -1000, downY: -1000, click: null, wheel: 0, rclick: false,
   keys: {}, hit: {},
+  // Dokunmatik: her parmak ayrı izlenir (maçta bir parmakla nişan, öbürüyle VUR düğmesi)
+  touch: !!(window.matchMedia && matchMedia('(pointer: coarse)').matches), touches: new Map(), tStart: [], tEnd: [], lift: false, fsTried: false,
   local(e) {
     const r = canvas.getBoundingClientRect();
     return { x: (e.clientX - r.left) / (r.width || 1) * CONFIG.W, y: (e.clientY - r.top) / (r.height || 1) * CONFIG.H };
   },
-  endFrame() { this.pressed = false; this.released = false; this.click = null; this.wheel = 0; this.rclick = false; this.hit = {}; },
+  endFrame() {
+    this.pressed = false; this.released = false; this.click = null; this.wheel = 0; this.rclick = false; this.hit = {};
+    this.tStart = []; this.tEnd = [];
+    if (this.lift && !this.down) { this.x = this.y = -1000; } // parmak kalkınca düğmeler "üstünde" kalmasın
+    this.lift = false;
+  },
   key(code) { return !!this.hit[code]; },
+  // Telefonda ilk dokunuşta tam ekran + yatay kilit dener (desteklenmezse sessizce geçer)
+  goFull() {
+    if (this.fsTried) return; this.fsTried = true;
+    try {
+      const el = document.documentElement, req = el.requestFullscreen || el.webkitRequestFullscreen;
+      if (!req || document.fullscreenElement || document.webkitFullscreenElement) return;
+      const p = req.call(el, { navigationUI: 'hide' });
+      const lock = () => { try { if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(() => {}); } catch (e) { /* yok say */ } };
+      if (p && p.then) p.then(lock, () => {}); else lock();
+    } catch (e) { /* yok say */ }
+  },
 };
-window.addEventListener('pointermove', (e) => { const p = Input.local(e); Input.x = p.x; Input.y = p.y; });
+const isTouchPtr = (e) => e.pointerType === 'touch' || e.pointerType === 'pen';
+window.addEventListener('pointermove', (e) => {
+  const p = Input.local(e), t = Input.touches.get(e.pointerId);
+  if (t) { t.x = p.x; t.y = p.y; }
+  if (!isTouchPtr(e) || e.isPrimary) { Input.x = p.x; Input.y = p.y; }
+});
 canvas.addEventListener('pointerdown', (e) => {
   SFX.init(); SFX.resume();
-  const p = Input.local(e); Input.x = p.x; Input.y = p.y;
+  const p = Input.local(e), touch = isTouchPtr(e);
+  Input.touch = touch;
+  if (touch) { Input.touches.set(e.pointerId, { x: p.x, y: p.y, sx: p.x, sy: p.y }); Input.tStart.push(e.pointerId); Input.goFull(); }
+  try { canvas.setPointerCapture(e.pointerId); } catch (_) { /* yok say */ }
+  if (touch && !e.isPrimary) return; // ikinci parmak menü tıklaması sayılmaz
+  Input.x = p.x; Input.y = p.y;
   if (e.button === 2) { Input.rclick = true; return; }
   if (e.button !== 0) return;
   Input.down = true; Input.pressed = true; Input.downX = p.x; Input.downY = p.y;
-  try { canvas.setPointerCapture(e.pointerId); } catch (_) { /* yok say */ }
   try { canvas.focus({ preventScroll: true }); } catch (_) { /* yok say */ }
 });
+const endTouch = (e, cancel) => {
+  if (!Input.touches.has(e.pointerId)) return;
+  const p = Input.local(e); Input.touches.delete(e.pointerId); Input.tEnd.push({ id: e.pointerId, x: p.x, y: p.y, cancel });
+};
 window.addEventListener('pointerup', (e) => {
+  endTouch(e, false);
   if (e.button !== 0) return;
+  if (isTouchPtr(e) && !e.isPrimary) return;
   const p = Input.local(e); Input.x = p.x; Input.y = p.y;
   if (Input.down) { Input.down = false; Input.released = true; Input.click = { x: p.x, y: p.y, dx: Input.downX, dy: Input.downY }; }
+  if (isTouchPtr(e)) Input.lift = true;
 });
-window.addEventListener('pointercancel', () => { Input.down = false; });
+window.addEventListener('pointercancel', (e) => { endTouch(e, true); if (!isTouchPtr(e) || e.isPrimary) Input.down = false; });
 canvas.addEventListener('wheel', (e) => { Input.wheel += Math.sign(e.deltaY); e.preventDefault(); }, { passive: false });
 canvas.addEventListener('contextmenu', (e) => e.preventDefault());
 window.addEventListener('keydown', (e) => {
@@ -271,7 +312,7 @@ window.addEventListener('keydown', (e) => {
   if (e.code === 'Space') e.preventDefault();
 });
 window.addEventListener('keyup', (e) => { Input.keys[e.code] = false; });
-window.addEventListener('blur', () => { Input.down = false; Input.keys = {}; });
+window.addEventListener('blur', () => { Input.down = false; Input.keys = {}; Input.touches.clear(); });
 
 // =====================================================================
 // AUDIO — tüm sesler WebAudio ile sentezlenir
@@ -437,6 +478,7 @@ const SAVE = {
       league: null, leagueHist: [], leagueStats: { seasons: 0, titles: 0, best: 0, unbeaten: 0 },
       cups: [],                                  // kupa dolabı: {kind:'league'|'tour', place, date, season?}
       pvp: { name: '', look: null, played: 0, won: 0, lost: 0, tasosWon: 0, tasosLost: 0 }, // arkadaşla oynama
+      dayCoins: { d: '', n: 0 },                 // bugün maç galibiyetlerinden kazanılan coin (günlük sınır)
     };
   },
   freshStats() {
@@ -468,6 +510,7 @@ const SAVE = {
       st.pvp = Object.assign(this.fresh().pvp, d.pvp && typeof d.pvp === 'object' ? d.pvp : {});
       st.pvp.name = typeof st.pvp.name === 'string' ? st.pvp.name.slice(0, 16) : '';
       if (!st.pvp.look || typeof st.pvp.look !== 'object') st.pvp.look = null;
+      st.dayCoins = d.dayCoins && typeof d.dayCoins === 'object' && typeof d.dayCoins.d === 'string' ? { d: d.dayCoins.d, n: Math.max(0, d.dayCoins.n | 0) } : { d: '', n: 0 };
       st.missionStats = Object.assign(this.fresh().missionStats, d.missionStats || {});
       if (ds.revealed == null) st.stats.revealed = st.stats.flips | 0;  // eski kayıttan türet
       if (ds.kkTaken == null) st.stats.kkTaken = st.kkStats.won | 0;
@@ -841,6 +884,17 @@ const ECON = {
     return { items, pity, kind };
   },
   pityLeft() { return Math.max(0, CONFIG.HOLO_PITY_PACKS - S.packsSinceHolo); },
+  // Bot galibiyet ödülü: ilk yeniş tam, sonrakiler düşük
+  botReward(i) { return ((S.botWins[i] | 0) > 0 ? CONFIG.BOT_REPEAT_REWARDS : CONFIG.BOT_REWARDS)[i] | 0; },
+  // Maç galibiyeti coinleri günlük sınırdan geçer: sınır dolunca ödül azalır (art arda maçla paket yağmasın)
+  matchCoins(base) {
+    base = base | 0; if (base <= 0) return 0;
+    const today = U.todayStr(); if (!S.dayCoins || S.dayCoins.d !== today) S.dayCoins = { d: today, n: 0 };
+    const full = Math.min(base, Math.max(0, CONFIG.DAILY_MATCH_COIN_CAP - S.dayCoins.n)), rest = base - full;
+    S.dayCoins.n += full;
+    if (rest > 0) Toast.show('Günlük maç ödülü sınırı doldu: yarına kadar ödüller azaldı.', '#ffe08a', 3.5);
+    return full + Math.max(rest > 0 ? 1 : 0, Math.round(rest * CONFIG.DAILY_CAP_RATE));
+  },
   checkDaily() {
     const today = U.todayStr();
     if (S.lastDaily !== today) {
@@ -1680,8 +1734,8 @@ const UI = {
   hover(x, y, w, h) { return !this.blocked && U.inRect(Input.x, Input.y, x, y, w, h); },
   clickRect(x, y, w, h) {
     if (this.blocked || !Input.click) return false;
-    const c = Input.click;
-    if (U.inRect(c.x, c.y, x, y, w, h) && U.inRect(c.dx, c.dy, x, y, w, h)) { Input.click = null; return true; }
+    const c = Input.click, pd = Input.touch ? 6 : 0;
+    if (U.inRect(c.x, c.y, x - pd, y - pd, w + 2 * pd, h + 2 * pd) && U.inRect(c.dx, c.dy, x - pd, y - pd, w + 2 * pd, h + 2 * pd)) { Input.click = null; return true; }
     return false;
   },
   // Tıklanabilir alan (çizimsiz). {hover, clicked}
@@ -2328,7 +2382,7 @@ const MatchScene = {
   dustCol() { const c = VENUES[this.venue].dust; return `rgb(${c[0]},${c[1]},${c[2]})`; },
   beginTurn() {
     this.charging = false; this.phaseT = 0;
-    if (this.shooter === 'p') { this.phase = 'aim'; this.aimT = 0; }
+    if (this.shooter === 'p') { this.phase = 'aim'; this.aimT = 0; this.aimId = this.fireId = null; this.tTilt = null; this.tCancel = false; if (this.tower.length || !this.tAim) this.tAim = this.defaultAim(); }
     else if (this.net) { this.phase = 'netAim'; this.netShow = false; this.netPow = 0; this.charging = false; this.botTarget = null; }
     else {
       this.phase = 'botThink';
@@ -2346,6 +2400,7 @@ const MatchScene = {
   },
   updateAim(dt) {
     if (this.net) this.sendAim(dt);
+    if (Input.touch) { this.updateAimTouch(dt); return; }
     if (!this.charging) {
       const mouseStart = Input.pressed && this.inTable(Input.x, Input.y) && !this.overHud(Input.x, Input.y);
       const keyStart = Input.key('Space') && this.inTable(Input.x, Input.y);
@@ -2362,13 +2417,71 @@ const MatchScene = {
     }
   },
   overHud(x, y) { return U.inRect(x, y, 1140, 600, 140, 120) || U.inRect(x, y, 0, 600, 150, 120); },
+  // ------------------ Dokunmatik nişan (telefon) ------------------
+  // Bir parmakla masada sürükle: nişan dairesi parmağın altında değil, kaydırdığın kadar hareket eder
+  // (kısa dokunuş = nişanı oraya taşı). Sağ alttaki VUR'a basılı tut: güç çubuğu ayrı yerde salınır;
+  // basılıyken parmağını kaydırırsan eğimli vurursun, çok uzağa kaydırırsan vuruş iptal olur.
+  fireBtn() { return { x: 1040, y: 610, r: 62 }; },
+  defaultAim() {
+    if (!this.tower.length) return { x: this.T.x, y: this.T.y };
+    const top = this.tower[this.tower.length - 1], hb = PHYSICS.towerBase(this.tower, this.tower.length - 1);
+    return { x: this.T.x + top.jx, y: this.T.y + top.jy - hb };
+  },
+  updateAimTouch(dt) {
+    const F = this.fireBtn(), B = CONFIG.TABLE, now = performance.now();
+    if (!this.tAim) this.tAim = this.defaultAim();
+    for (const id of Input.tStart) {
+      const p = Input.touches.get(id); if (!p || UI.blocked || this.charging) continue;
+      if (U.dist(p.x, p.y, F.x, F.y) < F.r + 18) {
+        this.charging = true; this.chargeT = 0; this.fireId = id; this.aim = { x: this.tAim.x, y: this.tAim.y }; this.tTilt = { tilt: 0, dir: null }; this.tCancel = false;
+        SFX.tone(320, 0.06, { type: 'triangle', vol: 0.05 });
+      } else if (p.y > 100 && !this.overHud(p.x, p.y)) { this.aimId = id; this.aimLast = { x: p.x, y: p.y }; this.aimT0 = now; this.aimMoved = 0; }
+    }
+    if (this.aimId != null && !this.charging) {
+      const p = Input.touches.get(this.aimId);
+      if (p) {
+        const dx = p.x - this.aimLast.x, dy = p.y - this.aimLast.y;
+        this.tAim.x = U.clamp(this.tAim.x + dx, B.x0 + 10, B.x1 - 10); this.tAim.y = U.clamp(this.tAim.y + dy, B.y0 + 10, B.y1 - 10);
+        this.aimMoved += Math.hypot(dx, dy); this.aimLast = { x: p.x, y: p.y };
+      }
+    }
+    if (this.charging) {
+      this.chargeT += dt;
+      const p = Input.touches.get(this.fireId);
+      if (p) { const dx = p.x - p.sx, dy = p.y - p.sy; this.tCancel = Math.hypot(dx, dy) > 230; this.tTilt = this.tCancel ? { tilt: 0, dir: null } : this.tiltOf(dx, dy); }
+    }
+    for (const e of Input.tEnd) {
+      if (e.id === this.aimId) {
+        if (!this.charging && this.aimMoved < 14 && now - this.aimT0 < 300 && this.inTable(e.x, e.y) && U.dist(e.x, e.y, F.x, F.y) > F.r + 18) this.tAim = { x: e.x, y: e.y };
+        this.aimId = null;
+      }
+      if (e.id === this.fireId && this.charging) {
+        const cancel = e.cancel || this.tCancel; this.fireId = null; this.charging = false; this.tCancel = false;
+        if (cancel) Toast.show('Vuruş iptal');
+        else if (this.chargeT >= 0.08) this.fire('p', this.aim.x, this.aim.y, this.powerAt(this.chargeT), this.tTilt || { tilt: 0, dir: null });
+      }
+    }
+  },
+  drawFireButton(g) {
+    const F = this.fireBtn(), ch = this.charging, pulse = ch ? 1 : 1 + Math.sin(this.time * 4) * 0.04;
+    g.save(); g.translate(F.x, F.y); g.scale(pulse, pulse);
+    g.globalAlpha = ch ? 0.95 : 0.82;
+    if (ch) { g.shadowColor = this.tCancel ? '#ff5a4a' : '#ffd23f'; g.shadowBlur = 26; }
+    g.beginPath(); g.arc(0, 0, F.r, 0, TAU); g.fillStyle = this.tCancel ? '#e9a59c' : ch ? '#ffb347' : '#ff8a3d'; g.fill();
+    g.shadowBlur = 0; g.lineWidth = 4; g.strokeStyle = INK; g.stroke();
+    g.beginPath(); g.arc(0, 0, F.r - 9, 0, TAU); g.lineWidth = 2; g.strokeStyle = 'rgba(255,255,255,0.55)'; g.stroke();
+    txt(g, this.tCancel ? 'İPTAL' : 'VUR!', 0, 2, { size: this.tCancel ? 26 : 32, align: 'center', font: FONT_FUN, color: '#fff', stroke: INK, sw: 6 });
+    g.restore();
+    if (!ch) txt(g, 'basılı tut', F.x, F.y + F.r + 14, { size: 13, align: 'center', color: '#fff', stroke: INK, sw: 3 });
+    else txt(g, this.tCancel ? 'bırakırsan iptal' : 'kaydır: eğim', F.x, F.y + F.r + 14, { size: 13, align: 'center', color: '#fff', stroke: INK, sw: 3 });
+  },
   // ------------------ Arkadaşla (ağ) maçı ------------------
   // Atışı yapan telefon nişanı canlı yayınlar; izleyen telefon rakip imlecini ve güç çubuğunu görür
   sendAim(dt) {
     this.aimT -= dt; if (this.aimT > 0) return; this.aimT = 0.07;
-    const ch = this.charging, ax = ch ? this.aim.x : Input.x, ay = ch ? this.aim.y : Input.y;
-    const show = ch || (this.inTable(Input.x, Input.y) && !this.overHud(Input.x, Input.y));
-    const tl = ch ? this.tiltOf(Input.x - this.aim.x, Input.y - this.aim.y) : { tilt: 0, dir: null };
+    const ch = this.charging, tch = Input.touch && this.tAim, ax = ch ? this.aim.x : tch ? this.tAim.x : Input.x, ay = ch ? this.aim.y : tch ? this.tAim.y : Input.y;
+    const show = ch || !!tch || (this.inTable(Input.x, Input.y) && !this.overHud(Input.x, Input.y));
+    const tl = ch ? (Input.touch ? this.tTilt || { tilt: 0, dir: null } : this.tiltOf(Input.x - this.aim.x, Input.y - this.aim.y)) : { tilt: 0, dir: null };
     NET.send({ t: 'aim', x: Math.round(ax), y: Math.round(ay), s: show ? 1 : 0, c: ch ? 1 : 0, p: ch ? +this.powerAt(this.chargeT).toFixed(3) : 0, tl: +tl.tilt.toFixed(2), td: tl.dir });
   },
   updateNetAim(dt) {
@@ -2716,7 +2829,7 @@ const MatchScene = {
   finishTek() {
     if (this.finished) return; this.finished = true;
     const P = this.tekBase.p, B = this.tekBase.b, win = P > B, draw = P === B;
-    const reward = win ? (CONFIG.TEK_REWARDS[this.bot.tier] || 50) : draw ? CONFIG.TEK_DRAW_REWARD : 0;
+    const reward = ECON.matchCoins(win ? (CONFIG.TEK_REWARDS[this.bot.tier] || 25) : draw ? CONFIG.TEK_DRAW_REWARD : 0);
     this.creditTasos();
     if (win) S.stats.wins++;
     S.coins += reward; S.stats.coinsEarned += reward;
@@ -2728,7 +2841,7 @@ const MatchScene = {
   },
   finishMatch() {
     if (this.finished) return; this.finished = true;
-    const win = this.roundWins.p > this.roundWins.b, reward = win && this.mode === 'normal' ? CONFIG.BOT_REWARDS[this.botIndex] : win && this.mode === 'league' ? CONFIG.LEAGUE_WIN_COINS : 0;
+    const win = this.roundWins.p > this.roundWins.b, reward = ECON.matchCoins(win && this.mode === 'normal' ? ECON.botReward(this.botIndex) : win && this.mode === 'league' ? CONFIG.LEAGUE_WIN_COINS : 0);
     this.creditTasos();
     const best = this.bestFlipped();
     if (this.mode === 'tour') {
@@ -2828,6 +2941,7 @@ const MatchScene = {
     this.drawSides(g);
     this.drawHUD(g);
     this.drawAim(g);
+    if (Input.touch && this.phase === 'aim' && !Modal.active()) this.drawFireButton(g);
     this.drawBanner(g);
     this.drawWxCard(g);
     if (this.tutorial && this.phase === 'aim' && !this.charging) this.drawTutorial(g);
@@ -2984,7 +3098,8 @@ const MatchScene = {
     const R = CONFIG.PHYS.TASO_R;
     let ax, ay, show = false, col = '#fff', isBot = false;
     if (this.phase === 'aim' && !Modal.active()) {
-      if (this.charging) { ax = this.aim.x; ay = this.aim.y; show = true; }
+      if (Input.touch) { const a = this.charging ? this.aim : this.tAim; if (a) { ax = a.x; ay = a.y; show = true; } }
+      else if (this.charging) { ax = this.aim.x; ay = this.aim.y; show = true; }
       else if (this.inTable(Input.x, Input.y) && !this.overHud(Input.x, Input.y)) { ax = Input.x; ay = Input.y; show = true; Game.cursor = 'none'; }
     } else if (this.phase === 'netAim') {
       ax = this.botAim.x; ay = this.botAim.y; show = this.netShow; isBot = true; col = '#ffb3a8';
@@ -3021,7 +3136,7 @@ const MatchScene = {
       // eğim oku: fare nişandan uzaklaştıkça eğim artar
       let tl = { tilt: 0, dir: null };
       if (isBot) { if (this.botTarget && this.botTarget.tilt) tl = { tilt: this.botTarget.tilt, dir: this.botTarget.dir }; }
-      else tl = this.tiltOf(Input.x - ax, Input.y - ay);
+      else tl = Input.touch ? this.tTilt || { tilt: 0, dir: null } : this.tiltOf(Input.x - ax, Input.y - ay);
       if (tl.tilt > 0) {
         const L = R + 30 + tl.tilt * 80, hx = ax + tl.dir.x * L, hy = ay + tl.dir.y * L, col = isBot ? '#ffb3a8' : '#9cc6ff';
         const tx = ax + tl.dir.x * (R + 4), ty = ay + tl.dir.y * (R + 4), a = Math.atan2(-tl.dir.y, -tl.dir.x);
@@ -3031,12 +3146,13 @@ const MatchScene = {
         g.fillStyle = col; g.fill(); g.lineWidth = 2.5; g.strokeStyle = INK; g.stroke();
         g.restore();
         if (!isBot) txt(g, 'EĞİM ' + Math.round(tl.tilt * 100), hx + tl.dir.x * 18, hy + tl.dir.y * 18, { size: 14, align: 'center', color: '#9cc6ff', stroke: INK, sw: 4 });
-      } else if (!isBot) txt(g, 'dik vuruş (çekersen eğimli)', ax, ay + R + 18, { size: 12, align: 'center', color: 'rgba(255,255,255,0.8)', stroke: INK, sw: 3 });
-      this.drawPowerBar(g, ax, ay, power);
+      } else if (!isBot) txt(g, Input.touch ? 'dik vuruş (VUR\'dan kaydırırsan eğimli)' : 'dik vuruş (çekersen eğimli)', ax, ay + R + 18, { size: 12, align: 'center', color: 'rgba(255,255,255,0.8)', stroke: INK, sw: 3 });
+      if (Input.touch && !isBot) { const F = this.fireBtn(); this.drawPowerBar(g, 0, 0, power, { x: F.x - 11, y: F.y - F.r - 182 }); } // parmağın altında kalmasın
+      else this.drawPowerBar(g, ax, ay, power);
     }
   },
-  drawPowerBar(g, ax, ay, v) {
-    const w = 20, h = 140, x = U.clamp(ax + 52, 160, CONFIG.W - 180), y = U.clamp(ay - h / 2, 112, CONFIG.H - h - 12);
+  drawPowerBar(g, ax, ay, v, at) {
+    const w = 20, h = 140, x = at ? at.x : U.clamp(ax + 52, 160, CONFIG.W - 180), y = at ? at.y : U.clamp(ay - h / 2, 112, CONFIG.H - h - 12);
     g.save();
     g.fillStyle = 'rgba(0,0,0,0.35)'; g.beginPath(); rrectPath(g, x + 3, y + 4, w, h, 8); g.fill();
     g.beginPath(); rrectPath(g, x, y, w, h, 8); g.fillStyle = '#2a1d18'; g.fill();
@@ -3060,6 +3176,13 @@ const MatchScene = {
   drawTutorial(g) {
     const x = 320, y = 598, w = 640, h = 98;
     panel(g, x, y, w, h, { fill: 'rgba(255,248,230,0.95)' });
+    if (Input.touch) {
+      txt(g, 'TASOLAR TERS DİZİLİR: YÜZÜNÜ AÇAN ALIR!', x + w / 2, y + 18, { size: 16, align: 'center', color: '#a8432f' });
+      txt(g, '1) Masada parmağını sürükle: nişan dairesi kayar (kısa dokunuş oraya taşır)', x + w / 2, y + 42, { size: 14, align: 'center', weight: 'normal', maxW: w - 24 });
+      txt(g, '2) Sağdaki VUR\'a basılı tut, güç çubuğu salınır  3) Doğru anda bırak!', x + w / 2, y + 62, { size: 14, align: 'center', weight: 'normal', maxW: w - 24 });
+      txt(g, 'VUR basılıyken parmağını kaydırırsan EĞİMLİ vurursun. Kenara vurmak daha çok çevirir.', x + w / 2, y + 82, { size: 13, align: 'center', weight: 'normal', color: '#5a3b1e', maxW: w - 24 });
+      return;
+    }
     txt(g, 'TASOLAR TERS DİZİLİR: YÜZÜNÜ AÇAN ALIR!', x + w / 2, y + 18, { size: 16, align: 'center', color: '#a8432f' });
     txt(g, '1) Nişan al   2) Basılı tut, güç çubuğu salınır   3) Doğru anda bırak!  Kenara vurmak daha çok çevirir.', x + w / 2, y + 42, { size: 14, align: 'center', weight: 'normal', maxW: w - 24 });
     txt(g, 'Basılıyken fareyi çekersen EĞİMLİ vurursun: merkez de döner ama derin kombo zorlaşır.', x + w / 2, y + 62, { size: 13, align: 'center', weight: 'normal', color: '#5a3b1e', maxW: w - 24 });
@@ -3703,7 +3826,7 @@ const OpponentScene = {
       drawStars(g, x + w / 2 - 23, y + 352, b.stars, 3, 11);
       txt(g, ['Kolay', 'Orta', 'Zor'][i], x + w / 2, y + 376, { size: 14, align: 'center', color: '#7a5a3a' });
       wrapText(g, b.desc, x + w / 2, y + 394, w - 60, 22, { size: 16, align: 'center', color: '#3a2a1c' });
-      txt(g, 'Galibiyet ödülü:', x + 40, y + 474, { size: 16, weight: 'normal' }); drawCoin(g, x + w - 110, y + 474, 10); txt(g, '+' + CONFIG.BOT_REWARDS[i], x + w - 40, y + 475, { size: 18, align: 'right', color: '#8a5d00' });
+      txt(g, 'Galibiyet ödülü:', x + 40, y + 474, { size: 16, weight: 'normal' }); drawCoin(g, x + w - 110, y + 474, 10); txt(g, '+' + ECON.botReward(i), x + w - 40, y + 475, { size: 18, align: 'right', color: '#8a5d00' });
       txt(g, 'Yendiğin: ' + S.botWins[i] + ' kez', x + 40, y + 502, { size: 15, weight: 'normal', color: '#7a5a3a' });
       txt(g, 'Slammer: ' + defOf(b.slammer).name, x + w - 40, y + 502, { size: 14, align: 'right', weight: 'normal', color: '#7a5a3a' });
       if (unlocked) { if (UI.button(g, x + 40, y + h - 76, w - 80, 56, 'Meydan Oku!', { color: '#8fd16a', glow: i === S.botsBeaten && i < BOTS.length ? '#9df08f' : null })) Game.goto('select', { bot: i }); }
@@ -3805,7 +3928,7 @@ const SelectScene = {
     if (bot) {
       drawKid(g, bot.look || bot.key, rx + 60, ry + 64, 34, 'idle', this.t);
       txt(g, bot.name, rx + 110, ry + 50, { size: 21, font: FONT_FUN, maxW: 240 });
-      txt(g, K === 'pvp' ? (NET.oppReady ? 'Hazır!' : 'Taso seçiyor...') : K === 'normal' ? VENUES[bot.venue].name + ' • ödül +' + CONFIG.BOT_REWARDS[this.bot] : (bot.tierLabel || '') + ' • ' + VENUES[vIdx].name, rx + 110, ry + 80, { size: 14, color: '#7a5a3a', weight: 'normal', maxW: 240 });
+      txt(g, K === 'pvp' ? (NET.oppReady ? 'Hazır!' : 'Taso seçiyor...') : K === 'normal' ? VENUES[bot.venue].name + ' • ödül +' + ECON.botReward(this.bot) : (bot.tierLabel || '') + ' • ' + VENUES[vIdx].name, rx + 110, ry + 80, { size: 14, color: '#7a5a3a', weight: 'normal', maxW: 240 });
       wrapText(g, '"' + bot.lines.start[0] + '"', rx + rw / 2, ry + 120, rw - 50, 20, { size: 15, align: 'center', color: '#5a3b1e', font: FONT_FUN });
     } else {
       drawTrophy(g, rx + 64, ry + 66, 34);
@@ -3849,7 +3972,7 @@ const SelectScene = {
     panel(g, 18, 86, 862, 432, { fill: 'rgba(251,243,223,0.95)', r: 10 });
     const word = KK ? 'Kese' : K === 'tour' ? 'Kadro' : 'Kule';
     txt(g, this.mode === 'tower' ? word + ' için ' + size + ' taso seç' : 'Şimdi slammer\'ını seç', 40, 110, { size: 20, font: FONT_FUN, color: this.mode === 'tower' ? '#2f62b8' : '#a8432f' });
-    txt(g, '(sağ tık: doğrudan slammer)', 860, 110, { size: 13, align: 'right', color: '#7a5a3a', weight: 'normal' });
+    if (!Input.touch) txt(g, '(sağ tık: doğrudan slammer)', 860, 110, { size: 13, align: 'right', color: '#7a5a3a', weight: 'normal' });
     const per = 30, pages = Math.max(1, Math.ceil(el.length / per));
     if (Input.wheel && UI.hover(18, 86, 862, 432)) this.page += Input.wheel;
     this.page = U.clamp(this.page, 0, pages - 1);
@@ -4064,7 +4187,7 @@ const ModeScene = {
       drawKid(g, 'tuna', cx - 64, y + 92, 24, 'idle', t); drawKid(g, 'selim', cx + 64, y + 92, 24, 'idle', t + 1); drawKid(g, 'kerem', cx, y + 84, 30, 'happy', t + 2);
       desc('Tuna, Kerem ve Selim Abi seni bekliyor. Her rakibi yenince sıradakinin kapısı açılır.', cx, y + 212);
       this.info(g, cx, y + 314, 'Kaybedince hiçbir şey kaybetmezsin.', '#2e8b3a', { weight: 'bold' });
-      this.info(g, cx, y + 336, 'Ödül: 40 / 70 / 100 coin', '#8a5d00', { weight: 'bold' });
+      this.info(g, cx, y + 336, 'İlk galibiyet: ' + CONFIG.BOT_REWARDS.join(' / ') + ' coin', '#8a5d00', { weight: 'bold' });
       txt(g, 'Yendiğin: ' + Math.min(S.botsBeaten, BOTS.length) + ' / ' + BOTS.length, cx, y + 380, { size: 17, align: 'center', font: FONT_FUN });
       if (btn(x, y, h, 'Rakipler', { color: '#8fd16a' })) Game.goto('opponents');
     });
@@ -4076,7 +4199,7 @@ const ModeScene = {
       });
       desc('5, 10 ve 15 tasoluk üç kule, herkese her kulede tek vuruş! 30 tasodan en çok açan kazanır. Beraberlikte ek kule.', cx, y + 212);
       this.info(g, cx, y + 314, 'Taso el değiştirmez.', '#2e8b3a', { weight: 'bold' });
-      this.info(g, cx, y + 336, 'Ödül: 40 – 130 coin', '#8a5d00', { weight: 'bold' });
+      this.info(g, cx, y + 336, 'Ödül: ' + Math.min(...Object.values(CONFIG.TEK_REWARDS)) + ' – ' + Math.max(...Object.values(CONFIG.TEK_REWARDS)) + ' coin', '#8a5d00', { weight: 'bold' });
       const ts = S.tekStats; txt(g, 'Kazandığın: ' + ts.won + '  •  Rekor: ' + ts.best, cx, y + 380, { size: 15, align: 'center', font: FONT_FUN });
       const ok = play >= CONFIG.TEK_MIN_TASOS;
       this.info(g, cx, y + 410, 'Gerekli: ' + CONFIG.TEK_MIN_TASOS + ' oynanabilir taso (sende ' + play + ')', ok ? '#2e8b3a' : '#c0392b');
@@ -4098,7 +4221,7 @@ const ModeScene = {
         txt(g, 'Sezon bitti!', cx, y + 330, { size: 16, align: 'center', font: FONT_FUN, color: '#6d3fc4' });
         if (btn(x, y, h, 'Sonuçlar', { color: '#b58cff', glow: '#d9b8ff' })) Game.goto('league');
       } else {
-        this.info(g, cx, y + 314, 'Şampiyona: 2 turnuva paketi + 300 coin', '#8a5d00', { weight: 'bold' });
+        this.info(g, cx, y + 314, 'Şampiyona: ' + CONFIG.LEAGUE_PRIZES[0].tour + ' turnuva paketi + ' + CONFIG.LEAGUE_PRIZES[0].coins + ' coin', '#8a5d00', { weight: 'bold' });
         const ls = S.leagueStats; txt(g, 'Şampiyonluk: ' + ls.titles + '  •  Sezon: ' + ls.seasons, cx, y + 352, { size: 15, align: 'center', font: FONT_FUN });
         const ok = play >= CONFIG.TOWER_PER_PLAYER + 1;
         this.info(g, cx, y + 410, 'Gerekli: ' + (CONFIG.TOWER_PER_PLAYER + 1) + ' oynanabilir taso (sende ' + play + ')', ok ? '#2e8b3a' : '#c0392b');
@@ -4123,7 +4246,7 @@ const ModeScene = {
     this.card(g, 4, '#ffe07a', 'Büyük Turnuva', (x, y, w, h, cx) => {
       drawTrophy(g, cx, y + 86, 50);
       desc('16 kişilik eleme. 10 taso + 1 slammer\'lık kadronla katıl, kazandıkça üst tura çık. Elenirsen tason gitmez.', cx, y + 212);
-      this.info(g, cx, y + 314, 'İlk 3: 3 / 2 / 1 turnuva paketi', '#8a5d00', { weight: 'bold' });
+      this.info(g, cx, y + 314, 'İlk 3: ' + CONFIG.TOUR_REWARDS.join(' / ') + ' turnuva paketi', '#8a5d00', { weight: 'bold' });
       this.info(g, cx, y + 336, 'Kupa: ' + S.tourStats.trophies + '  •  En iyi: ' + (S.tourStats.best ? S.tourStats.best + '.' : '—'));
       const T = S.tour;
       if (T && !T.done) {
@@ -4755,23 +4878,23 @@ function grantReward(rw) {
 // ---------------------------------------------------------------------
 const playableN = () => INV.playable().length;
 const MISSION_TYPES = {
-  flips: { ev: 'shot', t: [10, 15, 20], r: [40, 60, 80], w: 3, text: (n) => 'Maçlarda toplam ' + n + ' taso aç', inc: (d) => d.n },
-  wins: { ev: 'match', t: [1, 2, 3], r: [40, 70, 100], w: 3, text: (n) => (n === 1 ? 'Herhangi bir maç kazan' : n + ' maç kazan'), inc: (d) => (d.win ? 1 : 0) },
-  big: { ev: 'shot', t: [3, 4], r: [60, 100], w: 2, text: (n) => 'Tek vuruşta ' + n + ' taso aç', set: (d, m) => (d.n >= m.target ? m.target : null) },
-  rare: { ev: 'shot', t: [1, 2], r: [50, 80], w: 2, text: (n) => (n === 1 ? 'Bir Parlak (ya da daha nadir) taso aç' : n + ' Parlak ya da daha nadir taso aç'), inc: (d) => d.rare },
-  holo: { ev: 'shot', t: [1], r: [120], w: 1, text: () => 'Maçta bir Holo ya da Efsanevi taso aç', inc: (d) => d.holo },
-  tilt: { ev: 'shot', t: [3, 5], r: [50, 70], w: 2, text: (n) => 'Eğimli vuruşlarla ' + n + ' taso aç', inc: (d) => (d.tilt ? d.n : 0) },
-  clean: { ev: 'match', t: [1], r: [70], w: 2, text: () => 'Bir maçı 2-0 kazan', inc: (d) => (d.clean ? 1 : 0) },
-  bot: { ev: 'match', t: [1], r: [40, 60, 90], w: 3, text: (n, m) => TR.acc(BOTS[m.bi].short) + ' yen', inc: (d, m) => (d.win && d.mode === 'normal' && d.botIndex === m.bi ? 1 : 0) },
-  selim20: { ev: 'match', t: [1], r: [130], w: 1, req: () => S.botsBeaten >= 2, text: () => 'Selim Abi\'yi 2-0 yen', inc: (d) => (d.mode === 'normal' && d.botIndex === 2 && d.clean ? 1 : 0) },
-  tekwin: { ev: 'match', t: [1], r: [70], w: 2, req: () => playableN() >= CONFIG.TEK_MIN_TASOS, text: () => 'Tek Atış Kapışması kazan', inc: (d) => (d.mode === 'tek' && d.win ? 1 : 0) },
-  tekflips: { ev: 'match', t: [7, 9], r: [60, 90], w: 1, req: () => playableN() >= CONFIG.TEK_MIN_TASOS, text: (n) => 'Bir Tek Atış maçında ' + n + ' taso aç', set: (d, m) => (d.mode === 'tek' && d.totalP >= m.target ? m.target : null) },
-  league: { ev: 'match', t: [1], r: [50], w: 2, req: () => playableN() >= CONFIG.TOWER_PER_PLAYER + 1, text: () => 'Mahalle Ligi\'nde bir maç oyna', inc: (d) => (d.mode === 'league' ? 1 : 0) },
-  kk: { ev: 'kk_take', t: [2, 3], r: [70, 100], w: 1, req: () => playableN() >= CONFIG.KK_MIN_TASOS, text: (n) => 'Kıran Kırana\'da rakipten ' + n + ' taso kazan', inc: () => 1 },
-  tour: { ev: 'match', t: [1], r: [60], w: 1, req: () => !!(S.tour && !S.tour.done) || playableN() >= CONFIG.TOUR_TOWER + 1, text: () => 'Büyük Turnuva\'da bir maç kazan', inc: (d) => (d.mode === 'tour' && d.win ? 1 : 0) },
-  pack: { ev: 'pack', t: [1], r: [30], w: 1, chore: true, text: () => 'Bakkaldan bir paket aç', inc: () => 1 },
-  sell: { ev: 'sell', t: [3], r: [30], w: 1, chore: true, req: () => DEFS.reduce((s, d) => s + INV.sellableCount(d.id), 0) >= 3, text: (n) => 'Bakkala ' + n + ' kopya sat', inc: (d) => d.n || 1 },
-  display: { ev: 'display', t: [1], r: [30], w: 1, chore: true, req: () => { const disp = INV.displayedSet(); return S.inv.some((i) => !disp.has(i.id)); }, text: () => 'Albüme yeni bir taso sergile', inc: (d) => (d.fresh ? 1 : 0) },
+  flips: { ev: 'shot', t: [10, 15, 20], r: [25, 35, 50], w: 3, text: (n) => 'Maçlarda toplam ' + n + ' taso aç', inc: (d) => d.n },
+  wins: { ev: 'match', t: [1, 2, 3], r: [25, 40, 60], w: 3, text: (n) => (n === 1 ? 'Herhangi bir maç kazan' : n + ' maç kazan'), inc: (d) => (d.win ? 1 : 0) },
+  big: { ev: 'shot', t: [3, 4], r: [35, 60], w: 2, text: (n) => 'Tek vuruşta ' + n + ' taso aç', set: (d, m) => (d.n >= m.target ? m.target : null) },
+  rare: { ev: 'shot', t: [1, 2], r: [30, 50], w: 2, text: (n) => (n === 1 ? 'Bir Parlak (ya da daha nadir) taso aç' : n + ' Parlak ya da daha nadir taso aç'), inc: (d) => d.rare },
+  holo: { ev: 'shot', t: [1], r: [70], w: 1, text: () => 'Maçta bir Holo ya da Efsanevi taso aç', inc: (d) => d.holo },
+  tilt: { ev: 'shot', t: [3, 5], r: [30, 40], w: 2, text: (n) => 'Eğimli vuruşlarla ' + n + ' taso aç', inc: (d) => (d.tilt ? d.n : 0) },
+  clean: { ev: 'match', t: [1], r: [40], w: 2, text: () => 'Bir maçı 2-0 kazan', inc: (d) => (d.clean ? 1 : 0) },
+  bot: { ev: 'match', t: [1], r: [25, 35, 55], w: 3, text: (n, m) => TR.acc(BOTS[m.bi].short) + ' yen', inc: (d, m) => (d.win && d.mode === 'normal' && d.botIndex === m.bi ? 1 : 0) },
+  selim20: { ev: 'match', t: [1], r: [80], w: 1, req: () => S.botsBeaten >= 2, text: () => 'Selim Abi\'yi 2-0 yen', inc: (d) => (d.mode === 'normal' && d.botIndex === 2 && d.clean ? 1 : 0) },
+  tekwin: { ev: 'match', t: [1], r: [40], w: 2, req: () => playableN() >= CONFIG.TEK_MIN_TASOS, text: () => 'Tek Atış Kapışması kazan', inc: (d) => (d.mode === 'tek' && d.win ? 1 : 0) },
+  tekflips: { ev: 'match', t: [7, 9], r: [35, 55], w: 1, req: () => playableN() >= CONFIG.TEK_MIN_TASOS, text: (n) => 'Bir Tek Atış maçında ' + n + ' taso aç', set: (d, m) => (d.mode === 'tek' && d.totalP >= m.target ? m.target : null) },
+  league: { ev: 'match', t: [1], r: [30], w: 2, req: () => playableN() >= CONFIG.TOWER_PER_PLAYER + 1, text: () => 'Mahalle Ligi\'nde bir maç oyna', inc: (d) => (d.mode === 'league' ? 1 : 0) },
+  kk: { ev: 'kk_take', t: [2, 3], r: [40, 60], w: 1, req: () => playableN() >= CONFIG.KK_MIN_TASOS, text: (n) => 'Kıran Kırana\'da rakipten ' + n + ' taso kazan', inc: () => 1 },
+  tour: { ev: 'match', t: [1], r: [35], w: 1, req: () => !!(S.tour && !S.tour.done) || playableN() >= CONFIG.TOUR_TOWER + 1, text: () => 'Büyük Turnuva\'da bir maç kazan', inc: (d) => (d.mode === 'tour' && d.win ? 1 : 0) },
+  pack: { ev: 'pack', t: [1], r: [15], w: 1, chore: true, text: () => 'Bakkaldan bir paket aç', inc: () => 1 },
+  sell: { ev: 'sell', t: [3], r: [15], w: 1, chore: true, req: () => DEFS.reduce((s, d) => s + INV.sellableCount(d.id), 0) >= 3, text: (n) => 'Bakkala ' + n + ' kopya sat', inc: (d) => d.n || 1 },
+  display: { ev: 'display', t: [1], r: [15], w: 1, chore: true, req: () => { const disp = INV.displayedSet(); return S.inv.some((i) => !disp.has(i.id)); }, text: () => 'Albüme yeni bir taso sergile', inc: (d) => (d.fresh ? 1 : 0) },
 };
 const MISSIONS = {
   ensure() {
@@ -4840,49 +4963,49 @@ const MISSIONS = {
 const ACH_CATS = [['all', 'Tümü'], ['kol', 'Koleksiyon'], ['vur', 'Vuruş'], ['mah', 'Mahalle'], ['mod', 'Modlar'], ['ust', 'Ustalık']];
 const ACH_LIST = [
   // Koleksiyon
-  { k: 'ilk_paket', c: 'kol', name: 'İlk Paket', desc: 'Bakkaldan ilk paketini aç.', goal: 1, val: () => S.packsOpened, rw: { coins: 20 } },
-  { k: 'paket_25', c: 'kol', name: 'Bakkalın Gözdesi', desc: '25 paket aç.', goal: 25, val: () => S.packsOpened, rw: { coins: 150, title: 'Bakkalın Gözdesi' } },
-  { k: 'sahip_25', c: 'kol', name: 'Yarı Yol', desc: '25 farklı tasoya sahip ol.', goal: 25, val: () => INV.owned().size, rw: { coins: 100 } },
+  { k: 'ilk_paket', c: 'kol', name: 'İlk Paket', desc: 'Bakkaldan ilk paketini aç.', goal: 1, val: () => S.packsOpened, rw: { coins: 10 } },
+  { k: 'paket_25', c: 'kol', name: 'Bakkalın Gözdesi', desc: '25 paket aç.', goal: 25, val: () => S.packsOpened, rw: { coins: 60, title: 'Bakkalın Gözdesi' } },
+  { k: 'sahip_25', c: 'kol', name: 'Yarı Yol', desc: '25 farklı tasoya sahip ol.', goal: 25, val: () => INV.owned().size, rw: { coins: 40 } },
   { k: 'sahip_50', c: 'kol', name: 'Hepsi Bende', desc: 'Seri 1\'in 50 tasosunun hepsine sahip ol.', goal: 50, val: () => INV.owned().size, rw: { tour: 1 } },
-  { k: 'album_10', c: 'kol', name: 'Albüm Açılışı', desc: 'Albüme 10 farklı taso sergile.', goal: 10, val: () => INV.displayedSet().size, rw: { coins: 50 } },
-  { k: 'efsane_bende', c: 'kol', name: 'Efsane Bende', desc: 'Efsanevi bir tasoya sahip ol.', goal: 1, val: () => (S.inv.some((i) => defOf(i.id).rarity === 'efsanevi') ? 1 : 0), rw: { coins: 200 } },
+  { k: 'album_10', c: 'kol', name: 'Albüm Açılışı', desc: 'Albüme 10 farklı taso sergile.', goal: 10, val: () => INV.displayedSet().size, rw: { coins: 20 } },
+  { k: 'efsane_bende', c: 'kol', name: 'Efsane Bende', desc: 'Efsanevi bir tasoya sahip ol.', goal: 1, val: () => (S.inv.some((i) => defOf(i.id).rarity === 'efsanevi') ? 1 : 0), rw: { coins: 80 } },
   { k: 'seri_1', c: 'kol', name: 'Albüm Tamam', desc: 'Seri 1 albümünü tamamla.', goal: 50, val: () => INV.displayedSet().size, rw: { title: 'Mahalle Efsanesi' } },
-  { k: 'esnaf', c: 'kol', name: 'Esnaf Çocuk', desc: 'Bakkala 20 kopya sat.', goal: 20, val: () => S.stats.sold, rw: { coins: 60 } },
+  { k: 'esnaf', c: 'kol', name: 'Esnaf Çocuk', desc: 'Bakkala 20 kopya sat.', goal: 20, val: () => S.stats.sold, rw: { coins: 20 } },
   // Vuruş
-  { k: 'ilk_acilis', c: 'vur', name: 'İlk Açılış', desc: 'Maçta ilk tasonun yüzünü aç.', goal: 1, val: () => S.stats.revealed, rw: { coins: 20 } },
-  { k: 'ucleme', c: 'vur', name: 'Üçleme', desc: 'Tek vuruşta 3 taso aç.', goal: 3, val: () => S.stats.bestShot, rw: { coins: 50 } },
-  { k: 'efsane_vurus', c: 'vur', name: 'Efsane Vuruş', desc: 'Tek vuruşta 5 taso aç.', goal: 5, val: () => S.stats.bestShot, rw: { coins: 150, title: 'Tek Vuruş Ustası' } },
-  { k: 'egim_25', c: 'vur', name: 'Eğik Atışçı', desc: 'Eğimli vuruşlarla toplam 25 taso aç.', goal: 25, val: () => S.stats.tiltFlips, rw: { coins: 80 } },
-  { k: 'acilis_100', c: 'vur', name: 'Yüzlük', desc: 'Maçlarda toplam 100 taso aç.', goal: 100, val: () => S.stats.revealed, rw: { coins: 80 } },
+  { k: 'ilk_acilis', c: 'vur', name: 'İlk Açılış', desc: 'Maçta ilk tasonun yüzünü aç.', goal: 1, val: () => S.stats.revealed, rw: { coins: 10 } },
+  { k: 'ucleme', c: 'vur', name: 'Üçleme', desc: 'Tek vuruşta 3 taso aç.', goal: 3, val: () => S.stats.bestShot, rw: { coins: 20 } },
+  { k: 'efsane_vurus', c: 'vur', name: 'Efsane Vuruş', desc: 'Tek vuruşta 5 taso aç.', goal: 5, val: () => S.stats.bestShot, rw: { coins: 60, title: 'Tek Vuruş Ustası' } },
+  { k: 'egim_25', c: 'vur', name: 'Eğik Atışçı', desc: 'Eğimli vuruşlarla toplam 25 taso aç.', goal: 25, val: () => S.stats.tiltFlips, rw: { coins: 30 } },
+  { k: 'acilis_100', c: 'vur', name: 'Yüzlük', desc: 'Maçlarda toplam 100 taso aç.', goal: 100, val: () => S.stats.revealed, rw: { coins: 30 } },
   { k: 'acilis_1000', c: 'vur', name: 'Binlik', desc: 'Maçlarda toplam 1000 taso aç.', goal: 1000, val: () => S.stats.revealed, rw: { tour: 1, title: 'Taso Canavarı' } },
-  { k: 'holo_ac', c: 'vur', name: 'Gökkuşağı', desc: 'Maçta bir Holo ya da Efsanevi tasonun yüzünü aç.', goal: 1, val: () => S.stats.holoFlips, rw: { coins: 60 } },
-  { k: 'efsane_ac', c: 'vur', name: 'Altın Dokunuş', desc: 'Maçta Efsanevi bir tasonun yüzünü aç.', goal: 1, val: () => S.stats.legendFlips, rw: { coins: 150 } },
+  { k: 'holo_ac', c: 'vur', name: 'Gökkuşağı', desc: 'Maçta bir Holo ya da Efsanevi tasonun yüzünü aç.', goal: 1, val: () => S.stats.holoFlips, rw: { coins: 25 } },
+  { k: 'efsane_ac', c: 'vur', name: 'Altın Dokunuş', desc: 'Maçta Efsanevi bir tasonun yüzünü aç.', goal: 1, val: () => S.stats.legendFlips, rw: { coins: 60 } },
   // Mahalle
-  { k: 'tuna', c: 'mah', name: 'Sabır Taşı', desc: 'Temkinli Tuna\'yı yen.', goal: 1, val: () => S.botWins[0], rw: { coins: 30 } },
-  { k: 'kerem', c: 'mah', name: 'Güç Her Şey Değil', desc: 'Kaba Kuvvet Kerem\'i yen.', goal: 1, val: () => S.botWins[1], rw: { coins: 50 } },
-  { k: 'selim', c: 'mah', name: 'Abiyi Yendin', desc: 'Selim Abi\'yi yen.', goal: 1, val: () => S.botWins[2], rw: { coins: 100, title: 'Mahallenin Abisi' } },
-  { k: 'selim20', c: 'mah', name: 'Temiz Galibiyet', desc: 'Selim Abi\'yi 2-0 yen.', goal: 1, val: () => S.stats.selimClean, rw: { coins: 120 } },
-  { k: 'mac_50', c: 'mah', name: 'Mahalle Gediklisi', desc: '50 maç oyna.', goal: 50, val: () => S.stats.matches, rw: { coins: 100 } },
-  { k: 'dort_hava', c: 'mah', name: 'Dört Mevsim', desc: 'Güneşli, rüzgârlı, yağmurlu ve sıcak havada birer maç kazan.', goal: 4, val: () => WEATHER_ORDER.filter((k) => (S.stats.weatherWins[k] | 0) > 0).length, rw: { coins: 120, title: 'Her Havada Oynar' } },
-  { k: 'uc_mekan', c: 'mah', name: 'Mahalle Turu', desc: 'Toprak, beton ve asfalt zeminde birer maç kazan.', goal: 3, val: () => S.stats.venueWins.filter((v) => v > 0).length, rw: { coins: 60 } },
+  { k: 'tuna', c: 'mah', name: 'Sabır Taşı', desc: 'Temkinli Tuna\'yı yen.', goal: 1, val: () => S.botWins[0], rw: { coins: 15 } },
+  { k: 'kerem', c: 'mah', name: 'Güç Her Şey Değil', desc: 'Kaba Kuvvet Kerem\'i yen.', goal: 1, val: () => S.botWins[1], rw: { coins: 20 } },
+  { k: 'selim', c: 'mah', name: 'Abiyi Yendin', desc: 'Selim Abi\'yi yen.', goal: 1, val: () => S.botWins[2], rw: { coins: 40, title: 'Mahallenin Abisi' } },
+  { k: 'selim20', c: 'mah', name: 'Temiz Galibiyet', desc: 'Selim Abi\'yi 2-0 yen.', goal: 1, val: () => S.stats.selimClean, rw: { coins: 50 } },
+  { k: 'mac_50', c: 'mah', name: 'Mahalle Gediklisi', desc: '50 maç oyna.', goal: 50, val: () => S.stats.matches, rw: { coins: 40 } },
+  { k: 'dort_hava', c: 'mah', name: 'Dört Mevsim', desc: 'Güneşli, rüzgârlı, yağmurlu ve sıcak havada birer maç kazan.', goal: 4, val: () => WEATHER_ORDER.filter((k) => (S.stats.weatherWins[k] | 0) > 0).length, rw: { coins: 50, title: 'Her Havada Oynar' } },
+  { k: 'uc_mekan', c: 'mah', name: 'Mahalle Turu', desc: 'Toprak, beton ve asfalt zeminde birer maç kazan.', goal: 3, val: () => S.stats.venueWins.filter((v) => v > 0).length, rw: { coins: 25 } },
   // Modlar
-  { k: 'kk_ilk', c: 'mod', name: 'Kıran Kırana', desc: 'Kıran Kırana\'da rakibinden bir taso kazan.', goal: 1, val: () => S.stats.kkTaken, rw: { coins: 40 } },
-  { k: 'kk_temiz', c: 'mod', name: 'Keseyi Boşalt', desc: 'Kıran Kırana\'da bir rakibin kesesini boşalt.', goal: 1, val: () => S.stats.kkCleaned, rw: { coins: 150, title: 'Kıran Kırana Ustası' } },
-  { k: 'geri_al', c: 'mod', name: 'Hesap Kapandı', desc: 'Bir rakibe kaptırdığın tasoyu geri al.', goal: 1, val: () => S.stats.recovered, rw: { coins: 80 } },
-  { k: 'tur_kursu', c: 'mod', name: 'Kürsüde', desc: 'Büyük Turnuva\'da ilk 3\'e gir.', goal: 1, val: () => S.stats.tourPodium, rw: { coins: 80 } },
+  { k: 'kk_ilk', c: 'mod', name: 'Kıran Kırana', desc: 'Kıran Kırana\'da rakibinden bir taso kazan.', goal: 1, val: () => S.stats.kkTaken, rw: { coins: 15 } },
+  { k: 'kk_temiz', c: 'mod', name: 'Keseyi Boşalt', desc: 'Kıran Kırana\'da bir rakibin kesesini boşalt.', goal: 1, val: () => S.stats.kkCleaned, rw: { coins: 60, title: 'Kıran Kırana Ustası' } },
+  { k: 'geri_al', c: 'mod', name: 'Hesap Kapandı', desc: 'Bir rakibe kaptırdığın tasoyu geri al.', goal: 1, val: () => S.stats.recovered, rw: { coins: 30 } },
+  { k: 'tur_kursu', c: 'mod', name: 'Kürsüde', desc: 'Büyük Turnuva\'da ilk 3\'e gir.', goal: 1, val: () => S.stats.tourPodium, rw: { coins: 30 } },
   { k: 'tur_sampiyon', c: 'mod', name: 'Turnuva Şampiyonu', desc: 'Büyük Turnuva\'yı kazan.', goal: 1, val: () => S.tourStats.trophies, rw: { tour: 1, title: 'Turnuva Şampiyonu' } },
-  { k: 'tek_ilk', c: 'mod', name: 'Tek Atış', desc: 'Tek Atış Kapışması kazan.', goal: 1, val: () => S.tekStats.won, rw: { coins: 50 } },
-  { k: 'tek_usta', c: 'mod', name: 'Keskin Nişancı', desc: 'Bir Tek Atış maçında 10 taso aç.', goal: 10, val: () => S.tekStats.best, rw: { coins: 150, title: 'Keskin Nişancı' } },
-  { k: 'lig_ilk', c: 'mod', name: 'Lig Maceracısı', desc: 'Bir Mahalle Ligi sezonunu tamamla.', goal: 1, val: () => S.leagueStats.seasons, rw: { coins: 100 } },
+  { k: 'tek_ilk', c: 'mod', name: 'Tek Atış', desc: 'Tek Atış Kapışması kazan.', goal: 1, val: () => S.tekStats.won, rw: { coins: 20 } },
+  { k: 'tek_usta', c: 'mod', name: 'Keskin Nişancı', desc: 'Bir Tek Atış maçında 10 taso aç.', goal: 10, val: () => S.tekStats.best, rw: { coins: 60, title: 'Keskin Nişancı' } },
+  { k: 'lig_ilk', c: 'mod', name: 'Lig Maceracısı', desc: 'Bir Mahalle Ligi sezonunu tamamla.', goal: 1, val: () => S.leagueStats.seasons, rw: { coins: 40 } },
   { k: 'lig_sampiyon', c: 'mod', name: 'Ligin Kralı', desc: 'Mahalle Ligi\'nde şampiyon ol.', goal: 1, val: () => S.leagueStats.titles, rw: { tour: 1 } },
-  { k: 'lig_yenilmez', c: 'mod', name: 'Yenilmez', desc: 'Bir lig sezonunu hiç yenilmeden bitir.', goal: 1, val: () => S.leagueStats.unbeaten, rw: { coins: 300, title: 'Yenilmez' } },
+  { k: 'lig_yenilmez', c: 'mod', name: 'Yenilmez', desc: 'Bir lig sezonunu hiç yenilmeden bitir.', goal: 1, val: () => S.leagueStats.unbeaten, rw: { coins: 120, title: 'Yenilmez' } },
   // Ustalık ve görevler
-  { k: 'usta_bronz', c: 'ust', name: 'Bronz Bilek', desc: 'Bir tason Bronz Usta olsun (10 açılış).', goal: CONFIG.MASTERY[0], val: () => MASTERY.bestX(), rw: { coins: 40, title: 'Bronz Bilek' } },
-  { k: 'usta_gumus', c: 'ust', name: 'Gümüş Bilek', desc: 'Bir tason Gümüş Usta olsun (50 açılış).', goal: CONFIG.MASTERY[1], val: () => MASTERY.bestX(), rw: { coins: 100, title: 'Gümüş Bilek' } },
+  { k: 'usta_bronz', c: 'ust', name: 'Bronz Bilek', desc: 'Bir tason Bronz Usta olsun (10 açılış).', goal: CONFIG.MASTERY[0], val: () => MASTERY.bestX(), rw: { coins: 15, title: 'Bronz Bilek' } },
+  { k: 'usta_gumus', c: 'ust', name: 'Gümüş Bilek', desc: 'Bir tason Gümüş Usta olsun (50 açılış).', goal: CONFIG.MASTERY[1], val: () => MASTERY.bestX(), rw: { coins: 40, title: 'Gümüş Bilek' } },
   { k: 'usta_altin', c: 'ust', name: 'Altın Bilek', desc: 'Bir tason Altın Usta olsun (150 açılış).', goal: CONFIG.MASTERY[2], val: () => MASTERY.bestX(), rw: { tour: 1, title: 'Altın Bilek' } },
   { k: 'usta_efsane', c: 'ust', name: 'Efsane Bilek', desc: 'Bir tason Efsane Usta olsun (300 açılış).', goal: CONFIG.MASTERY[3], val: () => MASTERY.bestX(), rw: { tour: 2, title: 'Efsane Bilek' } },
-  { k: 'gorev_10', c: 'ust', name: 'Mahallenin Yardımcısı', desc: '10 günlük görev tamamla.', goal: 10, val: () => S.missionStats.done, rw: { coins: 100 } },
-  { k: 'gorev_tam', c: 'ust', name: 'Tam Gün', desc: 'Bir günün üç görevini de bitir.', goal: 1, val: () => S.missionStats.fullDays, rw: { coins: 50 } },
+  { k: 'gorev_10', c: 'ust', name: 'Mahallenin Yardımcısı', desc: '10 günlük görev tamamla.', goal: 10, val: () => S.missionStats.done, rw: { coins: 40 } },
+  { k: 'gorev_tam', c: 'ust', name: 'Tam Gün', desc: 'Bir günün üç görevini de bitir.', goal: 1, val: () => S.missionStats.fullDays, rw: { coins: 20 } },
 ];
 const ACH = {
   done(k) { return !!S.ach[k]; },
@@ -5149,7 +5272,7 @@ const TekScene = {
     const ts = S.tekStats;
     txt(g, 'Oynadığın ' + ts.played + '  •  Galibiyet ' + ts.won + '  •  Beraberlik ' + ts.draws + '  •  Rekorun ' + ts.best + ' açılış', 324, 584, { size: 14, align: 'center', color: '#7a5a3a', weight: 'normal' });
     if (ts.streak > 1) txt(g, ts.streak + ' maçlık galibiyet serisi!', 324, 608, { size: 15, align: 'center', font: FONT_FUN, color: '#2e8b3a' });
-    txt(g, 'Ödüller: Kolay 40 • Orta 60 • Zor 90 • Usta 130 coin  (beraberlik ' + CONFIG.TEK_DRAW_REWARD + ')', 324, 640, { size: 13, align: 'center', color: '#8a5d00' });
+    txt(g, 'Ödüller: Kolay ' + CONFIG.TEK_REWARDS.kolay + ' • Orta ' + CONFIG.TEK_REWARDS.orta + ' • Zor ' + CONFIG.TEK_REWARDS.zor + ' • Usta ' + CONFIG.TEK_REWARDS.usta + ' coin  (beraberlik ' + CONFIG.TEK_DRAW_REWARD + ')', 324, 640, { size: 13, align: 'center', color: '#8a5d00' });
     // rakip
     panel(g, 644, 86, 612, 616, { fill: '#fdf8ea' });
     txt(g, 'RAKİP ZORLUĞU', 950, 116, { size: 18, align: 'center', font: FONT_FUN, color: '#a8432f' });
@@ -5789,7 +5912,23 @@ const Game = {
     // Taso yüzlerini ve mekânları arka planda azar azar hazırla (ilk açılışta takılma olmasın)
     if (this.prep < DEFS.length) { faceOf(DEFS[this.prep++]); if (this.prep < DEFS.length) faceOf(DEFS[this.prep++]); }
     else if (this.prep < DEFS.length + VENUES.length) { venueBg(this.prep - DEFS.length); this.prep++; }
+    if (this.portrait()) return; // dikeyde oyun bekler (arkadaşla bağlantı canlı kalır)
     if (this.scene && this.scene.update && this.fadeDir !== 1) this.scene.update(dt);
+  },
+  // Telefon dikey tutulunca oyun durur ve "yan çevir" uyarısı çıkar
+  portrait() { return Input.touch && View.height > View.width * 1.05; },
+  drawRotate(g) { // ekran piksellerinde çizilir (1280x720 esnetmesi yazıyı bozmasın)
+    g.save(); g.setTransform(canvas.width / View.width, 0, 0, canvas.height / View.height, 0, 0);
+    const W = View.width, H = View.height, k = Math.min(W / 400, H / 720);
+    g.fillStyle = '#17110c'; g.fillRect(0, 0, W, H);
+    const a = (Math.sin(this.time * 2) * 0.5 - 0.5) * Math.PI / 2;
+    g.translate(W / 2, H * 0.4); g.rotate(a);
+    g.beginPath(); rrectPath(g, -42 * k, -76 * k, 84 * k, 152 * k, 14 * k); g.fillStyle = '#3a2a1c'; g.fill(); g.lineWidth = 5 * k; g.strokeStyle = '#ffe7b0'; g.stroke();
+    g.beginPath(); rrectPath(g, -32 * k, -60 * k, 64 * k, 120 * k, 5 * k); g.fillStyle = '#7cc4e0'; g.fill();
+    g.setTransform(canvas.width / View.width, 0, 0, canvas.height / View.height, 0, 0);
+    txt(g, 'TELEFONUNU YAN ÇEVİR', W / 2, H * 0.66, { size: Math.round(30 * k), align: 'center', font: FONT_FUN, color: '#ffd23f', stroke: INK, sw: 6, maxW: W - 30 });
+    txt(g, 'Taso Savaşları yatay ekranda oynanır', W / 2, H * 0.66 + 44 * k, { size: Math.round(17 * k), align: 'center', color: '#ffe7b0', maxW: W - 30 });
+    g.restore();
   },
   draw() {
     View.begin();
@@ -5802,6 +5941,7 @@ const Game = {
     if (Celebrate.active()) Celebrate.draw(g); else if (Modal.active()) Modal.draw(g);
     if (!Celebrate.active() && !Modal.active()) Notify.draw(g);
     Toast.draw(g);
+    if (this.portrait()) this.drawRotate(g);
     if (this.fade > 0) { g.fillStyle = `rgba(15,10,6,${this.fade})`; g.fillRect(0, 0, CONFIG.W, CONFIG.H); }
     const cur = UI.hoverAny ? 'pointer' : this.cursor;
     if (canvas.style.cursor !== cur) canvas.style.cursor = cur;
