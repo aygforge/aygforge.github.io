@@ -2419,7 +2419,7 @@ const MatchScene = {
   dustCol() { const c = VENUES[this.venue].dust; return `rgb(${c[0]},${c[1]},${c[2]})`; },
   beginTurn() {
     this.charging = false; this.phaseT = 0;
-    if (this.shooter === 'p') { this.phase = 'aim'; this.aimT = 0; this.aimId = this.fireId = null; this.tTilt = null; this.tCancel = false; if (this.tower.length || !this.tAim) this.tAim = this.defaultAim(); }
+    if (this.shooter === 'p') { this.phase = 'aim'; this.aimT = 0; }
     else if (this.net) { this.phase = 'netAim'; this.netShow = false; this.netPow = 0; this.charging = false; this.botTarget = null; }
     else {
       this.phase = 'botThink';
@@ -2437,7 +2437,6 @@ const MatchScene = {
   },
   updateAim(dt) {
     if (this.net) this.sendAim(dt);
-    if (Input.touch) { this.updateAimTouch(dt); return; }
     if (!this.charging) {
       const mouseStart = Input.pressed && this.inTable(Input.x, Input.y) && !this.overHud(Input.x, Input.y);
       const keyStart = Input.key('Space') && this.inTable(Input.x, Input.y);
@@ -2454,71 +2453,13 @@ const MatchScene = {
     }
   },
   overHud(x, y) { return U.inRect(x, y, 1140, 600, 140, 120) || U.inRect(x, y, 0, 600, 150, 120); },
-  // ------------------ Dokunmatik nişan (telefon) ------------------
-  // Bir parmakla masada sürükle: nişan dairesi parmağın altında değil, kaydırdığın kadar hareket eder
-  // (kısa dokunuş = nişanı oraya taşı). Sağ alttaki VUR'a basılı tut: güç çubuğu ayrı yerde salınır;
-  // basılıyken parmağını kaydırırsan eğimli vurursun, çok uzağa kaydırırsan vuruş iptal olur.
-  fireBtn() { return { x: 1040, y: 610, r: 62 }; },
-  defaultAim() {
-    if (!this.tower.length) return { x: this.T.x, y: this.T.y };
-    const top = this.tower[this.tower.length - 1], hb = PHYSICS.towerBase(this.tower, this.tower.length - 1);
-    return { x: this.T.x + top.jx, y: this.T.y + top.jy - hb };
-  },
-  updateAimTouch(dt) {
-    const F = this.fireBtn(), B = CONFIG.TABLE, now = performance.now();
-    if (!this.tAim) this.tAim = this.defaultAim();
-    for (const id of Input.tStart) {
-      const p = Input.touches.get(id); if (!p || UI.blocked || this.charging) continue;
-      if (U.dist(p.x, p.y, F.x, F.y) < F.r + 18) {
-        this.charging = true; this.chargeT = 0; this.fireId = id; this.aim = { x: this.tAim.x, y: this.tAim.y }; this.tTilt = { tilt: 0, dir: null }; this.tCancel = false;
-        SFX.tone(320, 0.06, { type: 'triangle', vol: 0.05 });
-      } else if (p.y > 100 && !this.overHud(p.x, p.y)) { this.aimId = id; this.aimLast = { x: p.x, y: p.y }; this.aimT0 = now; this.aimMoved = 0; }
-    }
-    if (this.aimId != null && !this.charging) {
-      const p = Input.touches.get(this.aimId);
-      if (p) {
-        const dx = p.x - this.aimLast.x, dy = p.y - this.aimLast.y;
-        this.tAim.x = U.clamp(this.tAim.x + dx, B.x0 + 10, B.x1 - 10); this.tAim.y = U.clamp(this.tAim.y + dy, B.y0 + 10, B.y1 - 10);
-        this.aimMoved += Math.hypot(dx, dy); this.aimLast = { x: p.x, y: p.y };
-      }
-    }
-    if (this.charging) {
-      this.chargeT += dt;
-      const p = Input.touches.get(this.fireId);
-      if (p) { const dx = p.x - p.sx, dy = p.y - p.sy; this.tCancel = Math.hypot(dx, dy) > 230; this.tTilt = this.tCancel ? { tilt: 0, dir: null } : this.tiltOf(dx, dy); }
-    }
-    for (const e of Input.tEnd) {
-      if (e.id === this.aimId) {
-        if (!this.charging && this.aimMoved < 14 && now - this.aimT0 < 300 && this.inTable(e.x, e.y) && U.dist(e.x, e.y, F.x, F.y) > F.r + 18) this.tAim = { x: e.x, y: e.y };
-        this.aimId = null;
-      }
-      if (e.id === this.fireId && this.charging) {
-        const cancel = e.cancel || this.tCancel; this.fireId = null; this.charging = false; this.tCancel = false;
-        if (cancel) Toast.show('Vuruş iptal');
-        else if (this.chargeT >= 0.08) this.fire('p', this.aim.x, this.aim.y, this.powerAt(this.chargeT), this.tTilt || { tilt: 0, dir: null });
-      }
-    }
-  },
-  drawFireButton(g) {
-    const F = this.fireBtn(), ch = this.charging, pulse = ch ? 1 : 1 + Math.sin(this.time * 4) * 0.04;
-    g.save(); g.translate(F.x, F.y); g.scale(pulse, pulse);
-    g.globalAlpha = ch ? 0.95 : 0.82;
-    if (ch) { g.shadowColor = this.tCancel ? '#ff5a4a' : '#ffd23f'; g.shadowBlur = 26; }
-    g.beginPath(); g.arc(0, 0, F.r, 0, TAU); g.fillStyle = this.tCancel ? '#e9a59c' : ch ? '#ffb347' : '#ff8a3d'; g.fill();
-    g.shadowBlur = 0; g.lineWidth = 4; g.strokeStyle = INK; g.stroke();
-    g.beginPath(); g.arc(0, 0, F.r - 9, 0, TAU); g.lineWidth = 2; g.strokeStyle = 'rgba(255,255,255,0.55)'; g.stroke();
-    txt(g, this.tCancel ? 'İPTAL' : 'VUR!', 0, 2, { size: this.tCancel ? 26 : 32, align: 'center', font: FONT_FUN, color: '#fff', stroke: INK, sw: 6 });
-    g.restore();
-    if (!ch) txt(g, 'basılı tut', F.x, F.y + F.r + 14, { size: 13, align: 'center', color: '#fff', stroke: INK, sw: 3 });
-    else txt(g, this.tCancel ? 'bırakırsan iptal' : 'kaydır: eğim', F.x, F.y + F.r + 14, { size: 13, align: 'center', color: '#fff', stroke: INK, sw: 3 });
-  },
   // ------------------ Arkadaşla (ağ) maçı ------------------
   // Atışı yapan telefon nişanı canlı yayınlar; izleyen telefon rakip imlecini ve güç çubuğunu görür
   sendAim(dt) {
     this.aimT -= dt; if (this.aimT > 0) return; this.aimT = 0.07;
-    const ch = this.charging, tch = Input.touch && this.tAim, ax = ch ? this.aim.x : tch ? this.tAim.x : Input.x, ay = ch ? this.aim.y : tch ? this.tAim.y : Input.y;
-    const show = ch || !!tch || (this.inTable(Input.x, Input.y) && !this.overHud(Input.x, Input.y));
-    const tl = ch ? (Input.touch ? this.tTilt || { tilt: 0, dir: null } : this.tiltOf(Input.x - this.aim.x, Input.y - this.aim.y)) : { tilt: 0, dir: null };
+    const ch = this.charging, ax = ch ? this.aim.x : Input.x, ay = ch ? this.aim.y : Input.y;
+    const show = ch || (this.inTable(Input.x, Input.y) && !this.overHud(Input.x, Input.y));
+    const tl = ch ? this.tiltOf(Input.x - this.aim.x, Input.y - this.aim.y) : { tilt: 0, dir: null };
     NET.send({ t: 'aim', x: Math.round(ax), y: Math.round(ay), s: show ? 1 : 0, c: ch ? 1 : 0, p: ch ? +this.powerAt(this.chargeT).toFixed(3) : 0, tl: +tl.tilt.toFixed(2), td: tl.dir });
   },
   updateNetAim(dt) {
@@ -2978,7 +2919,6 @@ const MatchScene = {
     this.drawSides(g);
     this.drawHUD(g);
     this.drawAim(g);
-    if (Input.touch && this.phase === 'aim' && !Modal.active()) this.drawFireButton(g);
     this.drawBanner(g);
     this.drawWxCard(g);
     if (this.tutorial && this.phase === 'aim' && !this.charging) this.drawTutorial(g);
@@ -3136,8 +3076,7 @@ const MatchScene = {
     const R = CONFIG.PHYS.TASO_R;
     let ax, ay, show = false, col = '#fff', isBot = false;
     if (this.phase === 'aim' && !Modal.active()) {
-      if (Input.touch) { const a = this.charging ? this.aim : this.tAim; if (a) { ax = a.x; ay = a.y; show = true; } }
-      else if (this.charging) { ax = this.aim.x; ay = this.aim.y; show = true; }
+      if (this.charging) { ax = this.aim.x; ay = this.aim.y; show = true; }
       else if (this.inTable(Input.x, Input.y) && !this.overHud(Input.x, Input.y)) { ax = Input.x; ay = Input.y; show = true; Game.cursor = 'none'; }
     } else if (this.phase === 'netAim') {
       ax = this.botAim.x; ay = this.botAim.y; show = this.netShow; isBot = true; col = '#ffb3a8';
@@ -3174,7 +3113,7 @@ const MatchScene = {
       // eğim oku: fare nişandan uzaklaştıkça eğim artar
       let tl = { tilt: 0, dir: null };
       if (isBot) { if (this.botTarget && this.botTarget.tilt) tl = { tilt: this.botTarget.tilt, dir: this.botTarget.dir }; }
-      else tl = Input.touch ? this.tTilt || { tilt: 0, dir: null } : this.tiltOf(Input.x - ax, Input.y - ay);
+      else tl = this.tiltOf(Input.x - ax, Input.y - ay);
       if (tl.tilt > 0) {
         const L = R + 30 + tl.tilt * 80, hx = ax + tl.dir.x * L, hy = ay + tl.dir.y * L, col = isBot ? '#ffb3a8' : '#9cc6ff';
         const tx = ax + tl.dir.x * (R + 4), ty = ay + tl.dir.y * (R + 4), a = Math.atan2(-tl.dir.y, -tl.dir.x);
@@ -3184,8 +3123,8 @@ const MatchScene = {
         g.fillStyle = col; g.fill(); g.lineWidth = 2.5; g.strokeStyle = INK; g.stroke();
         g.restore();
         if (!isBot) txt(g, 'EĞİM ' + Math.round(tl.tilt * 100), hx + tl.dir.x * 18, hy + tl.dir.y * 18, { size: 14, align: 'center', color: '#9cc6ff', stroke: INK, sw: 4 });
-      } else if (!isBot) txt(g, Input.touch ? 'dik vuruş (VUR\'dan kaydırırsan eğimli)' : 'dik vuruş (çekersen eğimli)', ax, ay + R + 18, { size: 12, align: 'center', color: 'rgba(255,255,255,0.8)', stroke: INK, sw: 3 });
-      if (Input.touch && !isBot) { const F = this.fireBtn(); this.drawPowerBar(g, 0, 0, power, { x: F.x - 11, y: F.y - F.r - 182 }); } // parmağın altında kalmasın
+      } else if (!isBot) txt(g, 'dik vuruş (çekersen eğimli)', ax, ay + R + 18, { size: 12, align: 'center', color: 'rgba(255,255,255,0.8)', stroke: INK, sw: 3 });
+      if (Input.touch && !isBot) this.drawPowerBar(g, 0, 0, power, { x: 1098, y: 530 }); // telefonda sağ altta sabit: parmağın altında kalmasın
       else this.drawPowerBar(g, ax, ay, power);
     }
   },
@@ -3214,13 +3153,6 @@ const MatchScene = {
   drawTutorial(g) {
     const x = 320, y = 598, w = 640, h = 98;
     panel(g, x, y, w, h, { fill: 'rgba(255,248,230,0.95)' });
-    if (Input.touch) {
-      txt(g, 'TASOLAR TERS DİZİLİR: YÜZÜNÜ AÇAN ALIR!', x + w / 2, y + 18, { size: 16, align: 'center', color: '#a8432f' });
-      txt(g, '1) Masada parmağını sürükle: nişan dairesi kayar (kısa dokunuş oraya taşır)', x + w / 2, y + 42, { size: 14, align: 'center', weight: 'normal', maxW: w - 24 });
-      txt(g, '2) Sağdaki VUR\'a basılı tut, güç çubuğu salınır  3) Doğru anda bırak!', x + w / 2, y + 62, { size: 14, align: 'center', weight: 'normal', maxW: w - 24 });
-      txt(g, 'VUR basılıyken parmağını kaydırırsan EĞİMLİ vurursun. Kenara vurmak daha çok çevirir.', x + w / 2, y + 82, { size: 13, align: 'center', weight: 'normal', color: '#5a3b1e', maxW: w - 24 });
-      return;
-    }
     txt(g, 'TASOLAR TERS DİZİLİR: YÜZÜNÜ AÇAN ALIR!', x + w / 2, y + 18, { size: 16, align: 'center', color: '#a8432f' });
     txt(g, '1) Nişan al   2) Basılı tut, güç çubuğu salınır   3) Doğru anda bırak!  Kenara vurmak daha çok çevirir.', x + w / 2, y + 42, { size: 14, align: 'center', weight: 'normal', maxW: w - 24 });
     txt(g, 'Basılıyken fareyi çekersen EĞİMLİ vurursun: merkez de döner ama derin kombo zorlaşır.', x + w / 2, y + 62, { size: 13, align: 'center', weight: 'normal', color: '#5a3b1e', maxW: w - 24 });
