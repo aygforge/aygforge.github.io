@@ -2309,6 +2309,7 @@ const MatchScene = {
     this.botDefs = this.net ? [] : p.botPile ? p.botPile.map((e) => ({ def: defOf(e.id), bid: e.bid, orig: e.orig || null })) : this.makeBotTower(this.perSide).map((def) => ({ def, bid: null, orig: null }));
     this.botSlamDef = defOf(this.bot.slammer);
     this.shotsMax = this.perSide >= CONFIG.BIG_TOWER_FROM ? CONFIG.SHOTS_BIG_TOWER : CONFIG.SHOTS_PER_ROUND;
+    if (this.mode === 'kk' || this.mode === 'pvp') this.shotsMax = Infinity; // Kıran Kırana: masada taso kalmayana kadar sırayla vurulur
     this.roundsToWin = CONFIG.ROUNDS_TO_WIN;
     this.stageLabel = p.stageLabel || ''; this.kkRound = p.kkRound || 1;
     this.T = { x: CONFIG.TABLE.cx, y: CONFIG.TABLE.cy };
@@ -2541,15 +2542,22 @@ const MatchScene = {
     }
     SAVE.save();
   },
+  // Sonuç: o maçta en çok taso toplayan kazanır (kendi tasoların dahil)
+  pvpResult() {
+    const board = this.sideKeys.map((k) => ({ key: k, name: this.nameOf(k), score: this.scores[k] | 0, me: k === 'p', gone: !!this.gone[k] })).sort((a, b) => b.score - a.score || (a.me ? -1 : b.me ? 1 : 0));
+    const best = board[0].score, mine = this.scores.p | 0, tops = board.filter((x) => x.score === best).length;
+    return { res: mine < best ? 'lose' : tops > 1 ? 'draw' : 'win', board };
+  },
   finishPVP(left) {
     if (this.finished) return; this.finished = true;
     this.playerTower.forEach((inst) => { const i = INV.byUid(inst.u); if (i) i.m++; });
     const sl = INV.byUid(this.slamInst.u); if (sl) { sl.m++; MASTERY.award(sl, this.total.p); }
     S.stats.flips += this.total.p; S.stats.matches++; S.tutorial = false;
     const ps = S.pvp, won = PVP.won.length, lost = PVP.lost.length;
-    ps.played++; ps.tasosWon += won; ps.tasosLost += lost; if (won > lost) ps.won++; else if (lost > won) ps.lost++;
+    const rs = this.pvpResult();
+    ps.played++; ps.tasosWon += won; ps.tasosLost += lost; if (rs.res === 'win') ps.won++; else if (rs.res === 'lose') ps.lost++;
     SAVE.save();
-    Game.goto('friend', { done: { won: PVP.won.slice(), lost: PVP.lost.slice(), left: !!left, opp: this.sideKeys.filter((k) => k !== 'p').map((k) => this.nameOf(k)).join(', ') } });
+    Game.goto('friend', { done: { won: PVP.won.slice(), lost: PVP.lost.slice(), left: !!left, res: rs.res, board: rs.board.map((x) => ({ name: x.me ? 'Sen' : x.name, score: x.score, me: x.me, gone: x.gone })), opp: this.sideKeys.filter((k) => k !== 'p').map((k) => this.nameOf(k)).join(', ') } });
   },
   netMsg(m) {
     if (m.t === 'aim') {
@@ -2786,17 +2794,19 @@ const MatchScene = {
       return;
     }
     if (this.net) {
-      const nw = PVP.won.length, nl = PVP.lost.length;
-      this.roundResult = nw > nl ? 'p' : nl > nw ? 'b' : null;
-      this.banner = { text: nw > nl ? 'KAZANDIN!' : nl > nw ? 'KAYBETTİN' : 'BERABERE', sub: '+' + nw + ' taso kazandın  •  -' + nl + ' taso kaybettin', t: 0, life: 2.3, color: nw >= nl ? '#9df08f' : '#ff9a8a' };
-      if (nw > nl) SFX.roundWin(); else if (nl > nw) SFX.tone(330, 0.3, { type: 'triangle', vol: 0.1, slide: 220 });
+      const r = this.pvpResult(), top = r.board[0];
+      this.roundResult = r.res === 'win' ? 'p' : r.res === 'lose' ? top.key : null;
+      const sub = 'Topladığın ' + this.scores.p + ' taso' + (r.res === 'lose' ? '  •  ' + top.name + ' ' + top.score : r.res === 'draw' ? '  •  eşitlik' : '') + '   (+' + PVP.won.length + ' / -' + PVP.lost.length + ')';
+      this.banner = { text: r.res === 'win' ? 'KAZANDIN!' : r.res === 'lose' ? 'KAYBETTİN' : 'BERABERE', sub, t: 0, life: 2.6, color: r.res === 'lose' ? '#ff9a8a' : '#9df08f' };
+      if (r.res === 'win') SFX.roundWin(); else if (r.res === 'lose') SFX.tone(330, 0.3, { type: 'triangle', vol: 0.1, slide: 220 });
       return;
     }
     if (this.mode === 'kk') {
       const kk = S.kk || { roundWon: [], roundLost: [] }, nw = kk.roundWon.length, nl = kk.roundLost.length;
-      this.roundResult = nw > nl ? 'p' : nl > nw ? 'b' : null;
-      this.banner = { text: 'TUR BİTTİ', sub: '+' + nw + ' taso kazandın  •  -' + nl + ' taso kaybettin', t: 0, life: 2.3, color: nw >= nl ? '#9df08f' : '#ff9a8a' };
-      if (nw > nl) SFX.roundWin(); else if (nl > nw) SFX.tone(330, 0.3, { type: 'triangle', vol: 0.1, slide: 220 });
+      this.roundResult = p > b ? 'p' : b > p ? 'b' : null; // kazanan: bu turda toplam toplanan taso
+      if (S.kk) S.kk.lastScore = { p, b };
+      this.banner = { text: p > b ? 'TURU KAZANDIN!' : b > p ? U.upper(this.bot.short) + ' TURU ALDI' : 'BERABERE', sub: 'Topladığın ' + p + '  •  ' + this.bot.short + ' ' + b + '   (+' + nw + ' / -' + nl + ' taso)', t: 0, life: 2.6, color: p >= b ? '#9df08f' : '#ff9a8a' };
+      if (p > b) SFX.roundWin(); else if (b > p) SFX.tone(330, 0.3, { type: 'triangle', vol: 0.1, slide: 220 });
       return;
     }
     if (!w) { this.roundResult = null; this.banner = { text: 'Kimse deviremedi!', sub: 'Bu tur tekrar oynanacak.', t: 0, life: 2.3, color: '#ffe7b0' }; return; }
@@ -3059,7 +3069,8 @@ const MatchScene = {
       g.restore();
       drawKid(g, o.look, x0 + 26, y0 + 26, 13, cur ? 'talk' : 'idle', this.time);
       txt(g, o.short, x0 + 46, y0 + 22, { size: 16, font: FONT_FUN, color: shade(o.col, 0.45), maxW: 98 });
-      for (let i = 0; i < this.shotsMax; i++) {
+      if (!isFinite(this.shotsMax)) txt(g, 'Atış: ' + this.shots[k], x0 + 46, y0 + 44, { size: 13, color: 'rgba(255,231,176,0.8)' });
+      else for (let i = 0; i < this.shotsMax; i++) {
         const filled = !gone && i < this.shotsMax - this.shots[k];
         g.save(); g.beginPath(); g.arc(x0 + 54 + i * 15, y0 + 44, 5.5, 0, TAU); g.fillStyle = filled ? o.col : 'rgba(255,255,255,0.1)'; g.fill(); g.lineWidth = 1.5; g.strokeStyle = filled ? '#fff' : 'rgba(255,255,255,0.25)'; g.stroke(); g.restore();
       }
@@ -3098,7 +3109,8 @@ const MatchScene = {
     else if (kk) txt(g, 'Kesende ' + (S.kk ? S.kk.pile.length : 0), 96 + pnw + 14, 27, { size: 15, color: '#ffe7b0' });
     else if (tek) txt(g, 'tek vuruş', 96 + pnw + 14, 27, { size: 14, color: '#ffe7b0' });
     else drawStars(g, 96 + pnw + 22, 27, this.roundWins.p, this.roundsToWin, 10, '#ffc928', 'rgba(255,255,255,0.12)');
-    for (let i = 0; i < SH; i++) this.drawShotPip(g, 104 + i * 26, 66, i < SH - this.shots.p, PLAYER_COL);
+    if (!isFinite(SH)) txt(g, 'Atış: ' + this.shots.p, 96, 66, { size: 15, color: 'rgba(255,231,176,0.8)' });
+    else for (let i = 0; i < SH; i++) this.drawShotPip(g, 104 + i * 26, 66, i < SH - this.shots.p, PLAYER_COL);
     // bot
     if (this.multi) this.drawOppsHud(g); else {
     const bx = CONFIG.W - 52, bm = this.speech ? 'talk' : (this.roundResult === 'b' && this.phase === 'roundEnd' ? 'happy' : 'idle');
@@ -3108,7 +3120,8 @@ const MatchScene = {
     else if (kk) txt(g, 'Kesesinde ' + (S.kk ? S.kk.botPile.length : 0), CONFIG.W - 96 - bnw - 14, 27, { size: 15, color: '#ffe7b0', align: 'right' });
     else if (tek) txt(g, this.bot.tierLabel || '', CONFIG.W - 96 - bnw - 14, 27, { size: 14, color: '#ffe7b0', align: 'right' });
     else drawStars(g, CONFIG.W - 96 - bnw - 22 - 23 * (this.roundsToWin - 1), 27, this.roundWins.b, this.roundsToWin, 10, '#ffc928', 'rgba(255,255,255,0.12)');
-    for (let i = 0; i < SH; i++) this.drawShotPip(g, CONFIG.W - 104 - i * 26, 66, i < SH - this.shots.b, BOT_COL);
+    if (!isFinite(SH)) txt(g, 'Atış: ' + this.shots.b, CONFIG.W - 96, 66, { size: 15, align: 'right', color: 'rgba(255,231,176,0.8)' });
+    else for (let i = 0; i < SH; i++) this.drawShotPip(g, CONFIG.W - 104 - i * 26, 66, i < SH - this.shots.b, BOT_COL);
     }
     // orta
     const rn = Math.min(CONFIG.ROUNDS, this.roundWins.p + this.roundWins.b + (this.phase === 'roundEnd' && this.roundResult ? 0 : 1));
@@ -4288,7 +4301,7 @@ const ModeScene = {
     this.card(g, 3, '#ffab92', 'Kıran Kırana', (x, y, w, h, cx) => {
       drawTaso(g, DEFS[6], cx - 42, y + 86, 36, { rot: -0.4, th: 4, shadow: true }); drawTaso(g, DEFS[29], cx + 42, y + 86, 36, { rot: 0.4, th: 4, shadow: true });
       txt(g, 'VS', cx, y + 88, { size: 30, align: 'center', font: FONT_FUN, color: '#fff', stroke: INK, sw: 6 });
-      desc('Devirdiğin taso senin, devrilen tason onun! 10\'a 10 oynarsın; her tur kuleye kaçar taso konacağını pazarlık edersiniz.', cx, y + 212);
+      desc('Devirdiğin taso senin, devrilen tason onun! Masada taso kalmayana kadar vurursunuz; çok toplayan turu alır.', cx, y + 212);
       const okc = play >= CONFIG.KK_MIN_TASOS && stake >= CONFIG.KK_STAKE + 1;
       this.info(g, cx, y + 314, 'Tasolar gerçekten el değiştirir!', '#c0392b', { weight: 'bold' });
       this.info(g, cx, y + 336, 'Kazanılan ' + S.kkStats.won + ' • Kaybedilen ' + S.kkStats.lost);
@@ -4435,7 +4448,7 @@ const KKScene = {
     if (d.ok) { this.accepted = 1.0; SFX.coin(); } else SFX.error();
   },
   roundReaction() {
-    const kk = S.kk, w = kk.roundWon.length, l = kk.roundLost.length;
+    const kk = S.kk, ls = kk.lastScore, w = ls ? ls.p : kk.roundWon.length, l = ls ? ls.b : kk.roundLost.length;
     this.reply = { text: l > w ? U.pick(GENERIC_LINES.kkWinning) : w > l ? U.pick(GENERIC_LINES.kkLosing) : 'Berabere gibi... Devam mı?', t: 0 };
   },
   endSession(reason) {
@@ -5901,7 +5914,7 @@ const PvpScene = {
     this.t = 0; this.code = ''; this.done = null; this.msg = ''; PVP.me();
     if (p.done) { // maç bitti: oda açık kalır, rövanş istenebilir
       this.view = 'done'; this.done = p.done;
-      const w = p.done.won.length, l = p.done.lost.length; if (w > l) SFX.win(); else if (l > w) SFX.lose();
+      if (p.done.res === 'win') SFX.win(); else if (p.done.res === 'lose') SFX.lose();
       return;
     }
     NET.leave();
@@ -5954,9 +5967,9 @@ const PvpScene = {
   },
   draw(g) {
     g.drawImage(streetBg(), 0, 0); g.fillStyle = 'rgba(20,12,6,0.62)'; g.fillRect(0, 0, CONFIG.W, CONFIG.H);
-    const d = this.done, dw = d ? d.won.length : 0, dl = d ? d.lost.length : 0;
-    const titles = { home: 'ARKADAŞLA OYNA', host: 'ODA KURULUYOR', lobby: 'ODA', join: 'ODAYA KATIL', connecting: 'BAĞLANIYOR', error: 'OLMADI', done: dw > dl ? 'KAZANDIN!' : dl > dw ? 'KAYBETTİN' : 'MAÇ BİTTİ' };
-    const subs = { home: '2-4 kişi, farklı telefonlardan Kıran Kırana: devirdiğin taso senin!', host: 'Lütfen bekle...', lobby: NET.isHost() ? 'Herkes gelince BAŞLA de (en fazla ' + NET.MAX + ' kişi)' : 'Kurucunun başlatması bekleniyor', join: 'Arkadaşının verdiği kodu yaz', connecting: 'Lütfen bekle...', error: '', done: 'Tasolar el değiştirdi ve kaydedildi' };
+    const d = this.done, res = d ? d.res : null;
+    const titles = { home: 'ARKADAŞLA OYNA', host: 'ODA KURULUYOR', lobby: 'ODA', join: 'ODAYA KATIL', connecting: 'BAĞLANIYOR', error: 'OLMADI', done: res === 'win' ? 'KAZANDIN!' : res === 'lose' ? 'KAYBETTİN' : 'MAÇ BİTTİ' };
+    const subs = { home: '2-4 kişi, farklı telefonlardan Kıran Kırana: en çok taso toplayan kazanır!', host: 'Lütfen bekle...', lobby: NET.isHost() ? 'Herkes gelince BAŞLA de (en fazla ' + NET.MAX + ' kişi)' : 'Kurucunun başlatması bekleniyor', join: 'Arkadaşının verdiği kodu yaz', connecting: 'Lütfen bekle...', error: '', done: 'En çok taso toplayan kazanır • tasolar el değiştirdi ve kaydedildi' };
     if (UI.header(g, titles[this.view] || 'ARKADAŞLA OYNA', { sub: subs[this.view] })) this.back();
     if (this.view === 'home') this.drawHome(g);
     else if (this.view === 'host') this.drawOpening(g);
@@ -5986,7 +5999,7 @@ const PvpScene = {
     if (!enough) wrapText(g, 'En az ' + need + ' taso lazım (' + CONFIG.KK_STAKE + ' kese + 1 slammer). Albümdekiler ve turnuva kadrosu sayılmaz.', 250, 636, 340, 17, { size: 13, align: 'center', color: '#c0392b' });
     panel(g, 480, 100, 750, 590, { fill: '#fbf1dc' });
     txt(g, 'NASIL OYNANIR?', 855, 138, { size: 26, align: 'center', font: FONT_FUN });
-    wrapText(g, '1) Biriniz ODA KUR der ve 5 haneli kodu ya da davet linkini arkadaşlarına yollar.\n2) En fazla 3 arkadaşın ODAYA KATIL deyip kodu girer (ya da linke tıklar).\n3) Herkes gelince kurucu BAŞLA der; herkes 10 taso + 1 slammer seçer.\n4) Kıran Kırana kuralları: yüzünü açtığın taso SENİN olur, devrilen tason devirenin!\nSlammer\'ın asla gitmez. Albümdeki tasolar güvende.', 520, 168, 670, 30, { size: 19, color: '#3a2a1c' });
+    wrapText(g, '1) Biriniz ODA KUR der ve 5 haneli kodu ya da davet linkini arkadaşlarına yollar.\n2) En fazla 3 arkadaşın ODAYA KATIL deyip kodu girer (ya da linke tıklar).\n3) Herkes gelince kurucu BAŞLA der; herkes 10 taso + 1 slammer seçer.\n4) Masada taso kalmayana kadar sırayla vurursunuz. Yüzünü açtığın taso SENİN olur; en çok taso toplayan kazanır!\nSlammer\'ın asla gitmez. Albümdeki tasolar güvende.', 520, 168, 670, 30, { size: 19, color: '#3a2a1c' });
     wrapText(g, 'İpucu: Maç bitene kadar oyundan çıkma ya da başka uygulamaya geçme; bağlantı kopabilir. Telefonların internete bağlı olması yeter.', 520, 396, 670, 22, { size: 15, color: '#7a5a3a' });
     if (!NET.available()) wrapText(g, 'Bağlantı kütüphanesi yüklenemedi. İnternet bağlantını kontrol edip sayfayı yenile.', 520, 450, 670, 22, { size: 16, color: '#c0392b' });
     const dis = { disabled: !ok, onDisabled: () => Toast.show(!enough ? 'En az ' + need + ' oynanabilir taso lazım.' : 'Bağlantı kütüphanesi yüklenemedi.', '#ffb3a8') };
@@ -6063,13 +6076,22 @@ const PvpScene = {
   drawDone(g) {
     const d = this.done, w = d.won.length, l = d.lost.length, open = NET.connected(), n = NET.players.length;
     panel(g, 150, 100, 980, 590, { fill: '#fbf1dc' });
-    const head = w > l ? 'KAZANDIN!' : l > w ? 'KAYBETTİN' : 'BERABERE';
-    txt(g, head, 640, 152, { size: 56, align: 'center', font: FONT_FUN, color: w > l ? '#2e8b3a' : l > w ? '#c0392b' : '#8a5d00', stroke: INK, sw: 8 });
-    txt(g, (d.left ? 'Maç yarıda kaldı • ' : 'Rakip: ') + d.opp, 640, 204, { size: 18, align: 'center', color: '#7a5a3a', maxW: 900 });
-    txt(g, '+' + w + ' taso kazandın', 190, 252, { size: 24, font: FONT_FUN, color: '#2e8b3a' });
-    if (w) tasoRow(g, d.won, 214, 312, 24, 52, 16, { glow: 'rgba(143,209,106,0.6)', col: INK }); else txt(g, 'Hiç taso alamadın.', 190, 306, { size: 17, weight: 'normal', color: '#7a5a3a' });
-    txt(g, '-' + l + ' taso kaybettin', 190, 382, { size: 24, font: FONT_FUN, color: '#c0392b' });
-    if (l) tasoRow(g, d.lost, 214, 442, 24, 52, 16, { glow: 'rgba(232,87,74,0.6)', col: INK }); else txt(g, 'Hiç taso kaybetmedin.', 190, 436, { size: 17, weight: 'normal', color: '#7a5a3a' });
+    const res = d.res || (w > l ? 'win' : l > w ? 'lose' : 'draw'), head = res === 'win' ? 'KAZANDIN!' : res === 'lose' ? 'KAYBETTİN' : 'BERABERE';
+    txt(g, head, 640, 148, { size: 54, align: 'center', font: FONT_FUN, color: res === 'win' ? '#2e8b3a' : res === 'lose' ? '#c0392b' : '#8a5d00', stroke: INK, sw: 8 });
+    if (d.left) txt(g, 'Maç yarıda kaldı', 640, 190, { size: 16, align: 'center', color: '#7a5a3a' });
+    // sıralama: o maçta toplanan taso sayısı
+    const bd = d.board || [], bw = 210, bx0 = 640 - (bd.length * bw + (bd.length - 1) * 12) / 2;
+    bd.forEach((r, i) => {
+      const x = bx0 + i * (bw + 12), y = 204;
+      g.save(); g.beginPath(); rrectPath(g, x, y, bw, 52, 10); g.fillStyle = r.me ? '#e8f1ff' : i === 0 ? '#fff3bf' : '#fffdf3'; g.fill(); g.lineWidth = r.me ? 3 : 2; g.strokeStyle = r.me ? '#3d8bfd' : 'rgba(90,59,30,0.6)'; g.stroke(); g.restore();
+      txt(g, (i + 1) + '.', x + 14, y + 27, { size: 20, font: FONT_FUN, color: i === 0 ? '#c9971a' : '#7a5a3a' });
+      txt(g, r.name + (r.gone ? ' (ayrıldı)' : ''), x + 44, y + 27, { size: 17, maxW: bw - 100, color: INK });
+      txt(g, r.score + ' taso', x + bw - 12, y + 27, { size: 17, align: 'right', color: '#2f62b8' });
+    });
+    txt(g, '+' + w + ' taso kazandın', 190, 290, { size: 22, font: FONT_FUN, color: '#2e8b3a' });
+    if (w) tasoRow(g, d.won, 214, 340, 22, 48, 18, { glow: 'rgba(143,209,106,0.6)', col: INK }); else txt(g, 'Rakiplerinden taso alamadın.', 190, 334, { size: 16, weight: 'normal', color: '#7a5a3a' });
+    txt(g, '-' + l + ' taso kaybettin', 190, 396, { size: 22, font: FONT_FUN, color: '#c0392b' });
+    if (l) tasoRow(g, d.lost, 214, 446, 22, 48, 18, { glow: 'rgba(232,87,74,0.6)', col: INK }); else txt(g, 'Hiç taso kaybetmedin.', 190, 440, { size: 16, weight: 'normal', color: '#7a5a3a' });
     txt(g, open ? 'Odada ' + n + ' kişi var: rövanş oynayabilirsiniz!' : 'Odada senden başka kimse kalmadı.', 640, 520, { size: 18, align: 'center', color: open ? '#2f62b8' : '#c0392b' });
     if (UI.button(g, 330, 560, 300, 80, 'Rövanş!', { color: '#ff8a6a', size: 34, disabled: !open, glow: open ? '#ffb3a8' : null, onDisabled: () => Toast.show('Odada başka kimse yok.', '#ffb3a8') })) Game.goto('select', { kind: 'pvp' });
     if (UI.button(g, 660, 560, 300, 80, 'Çık', { color: '#e9d8b4', size: 32 })) { NET.leave(); Game.goto('modes'); }
