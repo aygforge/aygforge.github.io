@@ -2298,8 +2298,8 @@ const MatchScene = {
     // 'normal' | 'kk' (kıran kırana) | 'tour' (turnuva) | 'tek' (tek atış kapışması) | 'league' (mahalle ligi)
     this.mode = p.mode || 'normal';
     this.botIndex = p.bot;
-    this.net = p.mode === 'pvp'; if (this.net) PVP.begin(p);
-    this.bot = this.net ? PVP.botFor(p) : p.opp ? OPP.bot(p.opp) : BOTS[p.bot];
+    this.net = p.mode === 'pvp'; this.multi = false; this.opps = null; this.keyOf = null; this.slotOf = null; if (this.net) PVP.begin(p);
+    this.bot = this.net ? PVP.setup(this, p) : p.opp ? OPP.bot(p.opp) : BOTS[p.bot];
     this.venue = p.venue != null ? p.venue : this.bot.venue;
     this.wx = p.weather || rollWeather();                 // hava her maç yeniden belirlenir
     this.env = PHYSICS.envOf(this.venue, this.wx);
@@ -2314,13 +2314,14 @@ const MatchScene = {
     this.T = { x: CONFIG.TABLE.cx, y: CONFIG.TABLE.cy };
     this.roundWins = { p: 0, b: 0 }; this.roundIndex = 0;
     this.total = { p: 0, b: 0 }; this.flipLog = {}; this.bestShot = { p: 0, b: 0 };
+    if (this.net) { this.total = this.sideMap(0); this.bestShot = this.sideMap(0); }
     this.fx = new Particles(); this.events = [];
     this.shake = 0; this.hitstop = 0; this.slowmo = 0; this.flash = 0; this.acc = 0; this.time = 0;
     this.finished = false; this.speech = null; this.banner = null; this.piles = null;
     this.tutorial = !!S.tutorial;
     this.botAim = { x: this.T.x, y: CONFIG.TABLE.y0 + 40 };
     this.shotNo = 0; this.netShow = false; this.netPow = 0; this.netTarget = null; this.pendingShot = null; this.netResult = null; this.aimT = 0; this.lostShown = false;
-    this.botSlamInst = this.net ? p.oppSlam : null;
+    this.botSlamInst = this.net ? this.opps.b.slamInst : null;
     if (this.mode === 'tek') this.setupTek();
     this.say(p.introLine || U.pick(this.bot.lines.start), p.introLine ? 3.2 : 2.4);
     this.startRound();
@@ -2357,21 +2358,29 @@ const MatchScene = {
     while (out.length < n) out.push(U.pick(seriesDefs(1).filter((d) => d.rarity === 'normal')));
     return out.slice(0, n);
   },
-  say(text, life = 2) { this.speech = { text, t: 0, life }; },
+  say(text, life = 2) { if (this.multi) return; this.speech = { text, t: 0, life }; }, // çok kişide konuşma balonu yok
+  // --- taraf yardımcıları: sen 'p'; bota karşı rakip 'b'; arkadaşla maçta rakipler 'b', 'c', 'd' ---
+  sideMap(v) { const o = {}; (this.sideKeys || ['p', 'b']).forEach((k) => { o[k] = typeof v === 'function' ? v() : v; }); return o; },
+  nameOf(k) { return k === 'p' ? 'Sen' : this.opps && this.opps[k] ? this.opps[k].short : this.bot.short; },
+  slamDefOf(k) { return k === 'p' ? this.slamDef : this.opps && this.opps[k] ? this.opps[k].slamDef : this.botSlamDef; },
+  slamInstOf(k) { return k === 'p' ? this.slamInst : this.opps && this.opps[k] ? this.opps[k].slamInst : this.botSlamInst; },
+  colOf(k) { return k === 'p' ? PLAYER_COL : this.opps && this.opps[k] ? this.opps[k].col : BOT_COL; },
+  cardY(k) { return 100 + ['b', 'c', 'd'].indexOf(k) * 189; }, // çok kişide sağ paneldeki rakip kartı
   startRound() {
     this.roundIndex++;
     const tek = this.mode === 'tek';
     this.scores = { p: 0, b: 0 }; this.shots = { p: 0, b: 0 }; this.lastFlipper = null;
     if (!tek || !this.piles) this.piles = { p: [], b: [] }; // tek atışta açılanlar birikerek kalır
+    if (this.net) { this.scores = this.sideMap(0); this.shots = this.sideMap(0); this.piles = this.sideMap(() => []); }
     const list = [];
     if (tek) {
       this.shooter = this.tekShooter(); this.tekStageFirst = this.shooter;
       this.tekEntries(this.tekStage).forEach((e) => list.push(PHYSICS.makeTaso(e.def, e.owner, e.uid || null)));
       this.tekCurSize = list.length;
     } else if (this.net) {
-      this.shooter = this.params.first;
+      this.shooter = this.keyOf[this.params.first] || 'p';
       this.params.canon.forEach((c, k) => { // iki telefonda aynı sıra: önce kurucunun, sonra katılanın tasoları
-        const mine = c.side === this.params.role, t = PHYSICS.makeTaso(defOf(c.snap.id), mine ? 'p' : 'b', mine ? c.snap.u : null);
+        const mine = c.side === this.params.role, t = PHYSICS.makeTaso(defOf(c.snap.id), this.keyOf[c.side], mine ? c.snap.u : null);
         t.k = k; if (!mine) { t.orig = c.snap; t.bid = k; }
         list.push(t);
       });
@@ -2388,7 +2397,7 @@ const MatchScene = {
     this.tasos = list; this.tower = [];
     this.phase = 'build'; this.phaseT = 0; this.slam = null; this.charging = false; this.shot = null; this.collecting = [];
     const rn = this.roundWins.p + this.roundWins.b + 1;
-    const first = this.shooter === 'p' ? 'İlk vuruş senin!' : 'İlk vuruş ' + TR.loc(this.bot.short);
+    const first = this.shooter === 'p' ? 'İlk vuruş senin!' : 'İlk vuruş ' + TR.loc(this.nameOf(this.shooter));
     if (tek) {
       const st = this.tekStage, behind = st === 2 && this.tekBase.p !== this.tekBase.b, who = this.shooter === 'p' ? 'İlk vuruş senin!' : 'İlk vuruş ' + TR.loc(this.bot.short) + '!';
       const sub = st === 0 ? 'Yazı tura: ' + who + ' Herkese tek vuruş.' : behind ? 'Geride olan önce vurur: ' + who : who;
@@ -2460,7 +2469,7 @@ const MatchScene = {
     const ch = this.charging, ax = ch ? this.aim.x : Input.x, ay = ch ? this.aim.y : Input.y;
     const show = ch || (this.inTable(Input.x, Input.y) && !this.overHud(Input.x, Input.y));
     const tl = ch ? this.tiltOf(Input.x - this.aim.x, Input.y - this.aim.y) : { tilt: 0, dir: null };
-    NET.send({ t: 'aim', x: Math.round(ax), y: Math.round(ay), s: show ? 1 : 0, c: ch ? 1 : 0, p: ch ? +this.powerAt(this.chargeT).toFixed(3) : 0, tl: +tl.tilt.toFixed(2), td: tl.dir });
+    NET.send({ t: 'aim', from: NET.slot, x: Math.round(ax), y: Math.round(ay), s: show ? 1 : 0, c: ch ? 1 : 0, p: ch ? +this.powerAt(this.chargeT).toFixed(3) : 0, tl: +tl.tilt.toFixed(2), td: tl.dir });
   },
   updateNetAim(dt) {
     this.phaseT += dt;
@@ -2472,20 +2481,25 @@ const MatchScene = {
   startRemoteShot(m) {
     const num = [m.ix, m.iy, m.power, m.hz, m.tilt].every(Number.isFinite);
     if (!num || !m.dir || !Number.isFinite(m.dir.x) || !Number.isFinite(m.dir.y)) return;
-    const T = this.T, tilt = U.clamp(m.tilt, 0, 1), power = U.clamp(m.power, 0, 1), def = this.botSlamDef, B = CONFIG.TABLE;
+    if (m.from !== this.slotOf[this.shooter] || this.gone[this.shooter]) return; // sırası olmayan atış yok sayılır
+    const T = this.T, tilt = U.clamp(m.tilt, 0, 1), power = U.clamp(m.power, 0, 1), def = this.slamDefOf(this.shooter), B = CONFIG.TABLE;
     const ix = U.clamp(m.ix, B.x0, B.x1), iy = U.clamp(m.iy, B.y0, B.y1), dir = { x: m.dir.x, y: m.dir.y };
     let fromX = U.lerp(ix, T.x, 0.3), fromY = -160;
     if (tilt > 0) { fromX = ix - dir.x * 560; fromY = iy - dir.y * 560; }
-    this.shotNo = m.no; this.shots.b++; this.charging = false;
-    this.shot = { who: 'b', ix, iy, ax: m.ax, ay: m.ay, power, slW: def.weight, def, hz: m.hz, t: 0, dur: 0.17 + 0.12 * (1 - power), fromX, fromY, fromZ: 380 - 200 * tilt, tilt, dir, seed: m.seed | 0, no: m.no };
+    const who = this.shooter;
+    this.shotNo = m.no; this.shots[who]++; this.charging = false;
+    this.shot = { who, ix, iy, ax: m.ax, ay: m.ay, power, slW: def.weight, def, hz: m.hz, t: 0, dur: 0.17 + 0.12 * (1 - power), fromX, fromY, fromZ: 380 - 200 * tilt, tilt, dir, seed: m.seed | 0, no: m.no };
     this.phase = 'throw'; this.phaseT = 0;
     SFX.whoosh();
   },
   // İzleyen telefon kendi simülasyonu bitince atıcının sonucunu bekler; sonra kesin konumlar uygulanır
   updateNetWait(dt) {
     this.phaseT += dt;
+    if (this.gone[this.shot.who]) { // atan oyuncu sonuç göndermeden ayrıldı: bu vuruş kimseye taso kazandırmaz
+      this.tasos.forEach((t) => { if (t.state === 'rest') t.faceUp = false; }); this.netResult = null; this.beginCollect(); return;
+    }
     const r = this.netResult;
-    if (r && r.no === this.shotNo) { this.netResult = null; this.applyResult(r); this.beginCollect(); return; }
+    if (r && r.no === this.shotNo && r.from === this.slotOf[this.shot.who]) { this.netResult = null; this.applyResult(r); this.beginCollect(); return; }
     if (this.phaseT > 20) this.onNetLost('timeout');
   },
   sendResult() {
@@ -2494,13 +2508,13 @@ const MatchScene = {
       if (t.state === 'tower') ts.push({ k: t.k, s: 1 });
       else if (t.state === 'rest') ts.push({ k: t.k, s: 0, x: +t.x.toFixed(2), y: +t.y.toFixed(2), f: t.faceUp ? 1 : 0 });
     }
-    NET.send({ t: 'result', no: this.shotNo, ts });
+    NET.send({ t: 'result', from: NET.slot, no: this.shotNo, ts });
   },
   applyResult(r) {
     const byK = new Map(this.tasos.map((t) => [t.k, t]));
     let diff = 0;
     for (const e of r.ts) {
-      const t = byK.get(e.k); if (!t) continue;
+      const t = byK.get(e.k); if (!t || t.state === 'gone') continue;
       if (e.s === 1) { if (t.state !== 'tower') diff++; t.state = 'tower'; t.faceUp = false; t.z = 0; t.vx = t.vy = t.vz = 0; t.flipping = false; t.ang = 0; t.angTarget = 0; }
       else {
         if (t.state !== 'rest' || !!t.faceUp !== !!e.f || Math.hypot(t.x - e.x, t.y - e.y) > 3) diff++;
@@ -2512,16 +2526,16 @@ const MatchScene = {
   },
   // Devrilen taso o anda devirene geçer ve kaydedilir (iki telefon da aynı sonucu uygular)
   pvpTransfer(t, who, tp) {
-    if (t.owner === 'p' && who === 'b') {
+    if (t.owner === 'p' && who !== 'p') {
       const inst = INV.byUid(t.uid), snap = inst ? INV.snap(inst) : (t.orig || null);
       if (inst) INV.remove(inst);
       t.orig = snap; t.uid = null; PVP.lost.push(t.def.id);
-      this.fx.text(tp.x, tp.y - 84, 'Gitti!', { size: 24, color: '#ff8a7a', life: 1.1 });
+      this.fx.text(tp.x, tp.y - 84, this.multi ? TR.dat(this.nameOf(who)) + ' gitti!' : 'Gitti!', { size: 24, color: '#ff8a7a', life: 1.1 });
       SFX.tone(260, 0.25, { type: 'triangle', vol: 0.09, slide: 180 });
-    } else if (t.owner === 'b' && who === 'p') {
+    } else if (t.owner !== 'p' && who === 'p') {
       const sn = t.orig, inst = INV.add(t.def.id);
       if (sn) { inst.m = sn.m | 0; inst.f = sn.f | 0; inst.x = sn.x | 0; } // önceki sahibinin hatırası taso ile birlikte gelir
-      inst.o = TR.abl(this.bot.short) + ' kazanıldı';
+      inst.o = TR.abl(this.nameOf(t.owner)) + ' kazanıldı';
       t.uid = inst.u; t.orig = null; PVP.won.push(t.def.id);
       this.fx.text(tp.x, tp.y - 84, 'Senin oldu!', { size: 22, color: '#ffd23f', life: 1.1 }); SFX.coin();
     }
@@ -2535,11 +2549,11 @@ const MatchScene = {
     const ps = S.pvp, won = PVP.won.length, lost = PVP.lost.length;
     ps.played++; ps.tasosWon += won; ps.tasosLost += lost; if (won > lost) ps.won++; else if (lost > won) ps.lost++;
     SAVE.save();
-    Game.goto('friend', { done: { won: PVP.won.slice(), lost: PVP.lost.slice(), left: !!left, opp: this.bot.short } });
+    Game.goto('friend', { done: { won: PVP.won.slice(), lost: PVP.lost.slice(), left: !!left, opp: this.sideKeys.filter((k) => k !== 'p').map((k) => this.nameOf(k)).join(', ') } });
   },
   netMsg(m) {
     if (m.t === 'aim') {
-      if (this.phase !== 'netAim') return;
+      if (this.phase !== 'netAim' || m.from !== this.slotOf[this.shooter]) return;
       this.netTarget = { x: +m.x || 0, y: +m.y || 0 }; this.netShow = !!m.s; this.charging = !!m.c; this.netPow = U.clamp(+m.p || 0, 0, 1);
       this.botTarget = m.tl > 0 && m.td ? { tilt: +m.tl, dir: { x: +m.td.x || 0, y: +m.td.y || 0 } } : null;
     } else if (m.t === 'shot') this.pendingShot = m;
@@ -2547,8 +2561,18 @@ const MatchScene = {
   },
   onNetLost(reason) {
     if (!this.net || this.finished || this.lostShown) return; this.lostShown = true;
-    const bye = reason === 'bye';
-    Modal.alert(bye ? 'Arkadaşın ayrıldı' : 'Bağlantı koptu', (bye ? 'Arkadaşın maçtan çıktı.' : 'Arkadaşınla bağlantı kesildi.') + ' Şu ana kadar el değiştiren tasolar kayıtlı.', { onOk: () => this.finishPVP(true) });
+    const title = reason === 'host' ? 'Kurucu ayrıldı' : reason === 'alone' ? (this.multi ? 'Herkes ayrıldı' : 'Arkadaşın ayrıldı') : 'Bağlantı koptu';
+    const text = reason === 'host' ? 'Odayı kuran oyuncu çıktı, oda kapandı.' : reason === 'alone' ? 'Masada senden başka kimse kalmadı.' : 'Bağlantı kesildi.';
+    Modal.alert(title, text + ' Şu ana kadar el değiştiren tasolar kayıtlı.', { onOk: () => this.finishPVP(true) });
+  },
+  // Bir rakip maçtan çıktı: tasoları masadan kalkar, sırası atlanır
+  playerLeft(slot) {
+    const k = this.keyOf && this.keyOf[slot]; if (!k || k === 'p' || this.gone[k] || this.finished) return;
+    this.gone[k] = true;
+    for (const t of this.tasos) if (t.owner === k && (t.state === 'tower' || t.state === 'rest' || t.state === 'move' || t.state === 'building')) t.state = 'gone';
+    this.tower = this.tower.filter((t) => t.state === 'tower');
+    if (this.sideKeys.every((x) => x === 'p' || this.gone[x])) { this.onNetLost('alone'); return; }
+    if (this.shooter === k && this.phase === 'netAim') { this.charging = false; this.nextTurn(); }
   },
   updateBot(dt) {
     this.phaseT += dt;
@@ -2588,7 +2612,7 @@ const MatchScene = {
     if (this.net && who === 'p') {
       const sx = ix - fromX, sy = iy - fromY, sl = Math.hypot(sx, sy) || 1;
       this.shot.dir = { x: sx / sl, y: sy / sl }; this.shot.seed = Math.floor(Math.random() * 2147483647); this.shot.no = ++this.shotNo;
-      NET.send({ t: 'shot', no: this.shot.no, ix, iy, ax, ay, power, hz, tilt, dir: this.shot.dir, seed: this.shot.seed });
+      NET.send({ t: 'shot', from: NET.slot, no: this.shot.no, ix, iy, ax, ay, power, hz, tilt, dir: this.shot.dir, seed: this.shot.seed });
     }
     this.phase = 'throw'; this.phaseT = 0;
     SFX.whoosh();
@@ -2610,7 +2634,7 @@ const MatchScene = {
     else this.fx.burst(s.ix, s.iy + 4, Math.round(12 + 26 * E), { speed: [60, 260 * E + 80], life: [0.4, 1.0], size: [3, 9], color: [dc, 'rgba(255,245,225,0.85)', 'rgba(240,225,195,0.9)'], type: 'dust', drag: 3, flat: 0.55, grow: 16 });
     this.fx.burst(s.ix, s.iy - s.hz, Math.round(6 + 10 * E), { speed: [200, 520], life: [0.12, 0.3], size: [2, 4], color: '#fff6d8', type: 'spark', drag: 4 });
     if (s.tilt > 0.2) this.fx.burst(s.ix, s.iy + 4, Math.round(10 * s.tilt + 6), { angle: Math.atan2(dy, dx), spread: 1.1, speed: [160, 420], life: [0.3, 0.7], size: [3, 7], color: [dc, 'rgba(255,245,225,0.85)'], type: 'dust', drag: 3, flat: 0.6, grow: 10 });
-    this.slam = { def: s.def, who: s.who, x: s.ix, y: s.iy, z: s.hz, vx: U.rand(-50, 50) + (dx / dl) * 70, vy: U.rand(-30, 30) + (dy / dl) * 70, vz: 150 + 220 * s.power, rot: Math.random() * TAU, rotV: U.gauss() * 4, state: 'bounce', inst: s.who === 'p' ? this.slamInst : this.botSlamInst };
+    this.slam = { def: s.def, who: s.who, x: s.ix, y: s.iy, z: s.hz, vx: U.rand(-50, 50) + (dx / dl) * 70, vy: U.rand(-30, 30) + (dy / dl) * 70, vz: 150 + 220 * s.power, rot: Math.random() * TAU, rotV: U.gauss() * 4, state: 'bounce', inst: this.slamInstOf(s.who) };
     this.phase = 'sim'; this.phaseT = 0; this.acc = 0;
   },
   updateSlam(dt) {
@@ -2653,11 +2677,14 @@ const MatchScene = {
     const settled = PHYSICS.settled(this) && (!this.slam || this.slam.done);
     if ((settled && this.phaseT > 0.3) || this.phaseT > 6) {
       if (!settled) PHYSICS.forceSettle(this);
-      if (this.net && this.shot.who === 'b') { this.phase = 'netWait'; this.phaseT = 0; return; } // atıcının kesin sonucu gelince devam
+      if (this.net && this.shot.who !== 'p') { this.phase = 'netWait'; this.phaseT = 0; return; } // atıcının kesin sonucu gelince devam
       this.beginCollect();
     }
   },
-  pilePos(side, idx) { return { x: side === 'p' ? 75 : 1205, y: 520 - idx * 7 }; },
+  pilePos(side, idx) {
+    if (this.multi && side !== 'p') return { x: 1170, y: this.cardY(side) + 158 - Math.min(idx, 14) * 2.5 };
+    return { x: side === 'p' ? 75 : 1205, y: 520 - idx * 7 };
+  },
   beginCollect() {
     const who = this.shot.who; if (this.net && who === 'p') this.sendResult();
     const flipped = this.tasos.filter((t) => t.state === 'rest' && t.faceUp); // yüzü açılan taso çevirenin olur
@@ -2706,7 +2733,7 @@ const MatchScene = {
     }
     if (!busy && this.phaseT > 0.45) this.nextTurn();
   },
-  slamHome(side) { return { x: side === 'p' ? 75 : 1205, y: 628 }; },
+  slamHome(side) { return this.multi && side !== 'p' ? { x: 1244, y: this.cardY(side) + 154 } : { x: side === 'p' ? 75 : 1205, y: 628 }; },
   // Kıran kırana: devrilen taso o anda devirene geçer ve kaydedilir (sekme kapansa bile geçerli)
   kkTransfer(t, who, tp) {
     const kk = S.kk; if (!kk) return;
@@ -2735,6 +2762,13 @@ const MatchScene = {
   },
   nextTurn() {
     const left = this.tasos.filter((t) => t.state === 'tower' || t.state === 'rest').length, SH = this.shotsMax;
+    if (this.net) { // oda sırasıyla döner; hakkı biten ya da ayrılan atlanır
+      const ord = this.turnOrder, can = (k) => !this.gone[k] && this.shots[k] < SH;
+      if (left === 0 || !ord.some(can)) return this.endRound();
+      const i = ord.indexOf(this.shooter);
+      for (let n = 1; n <= ord.length; n++) { const k = ord[(i + n) % ord.length]; if (can(k)) { this.shooter = k; break; } }
+      return this.beginTurn();
+    }
     if (left === 0 || (this.shots.p >= SH && this.shots.b >= SH)) return this.endRound();
     const other = this.shooter === 'p' ? 'b' : 'p';
     if (this.shots[other] < SH) this.shooter = other;
@@ -2891,7 +2925,7 @@ const MatchScene = {
   },
   askQuit() {
     this.charging = false; delete Input.hit.Escape;
-    if (this.net) Modal.confirm('Maçı bırakıyor musun?', 'Şu ana kadar el değiştiren tasolar değişmiş kalır. Arkadaşına haber verilir.', () => { NET.send({ t: 'bye' }); this.finishPVP(true); }, { yes: 'Pes Et' });
+    if (this.net) Modal.confirm('Maçı bırakıyor musun?', 'Şu ana kadar el değiştiren tasolar değişmiş kalır.' + (NET.isHost() ? ' Odayı sen kurdun: çıkarsan oda herkes için kapanır.' : ' Arkadaşlarına haber verilir.'), () => { NET.leave(); this.finishPVP(true); }, { yes: 'Pes Et' });
     else if (this.mode === 'kk') Modal.confirm('Çekiliyor musun?', 'Bu tura kadar devrilen tasolar sahiplerine geçti. Kalanlar geri döner ve kıran kırana biter.', () => this.finishKK(true), { yes: 'Çekil' });
     else if (this.mode === 'tour') Modal.confirm('Maçı bırakıyor musun?', 'Bırakırsan turnuvadan elenirsin. Tasoların sende kalır.', () => { if (this.finished) return; this.finished = true; TOUR.recordPlayer(false); SAVE.save(); Game.goto('tour'); }, { yes: 'Pes Et' });
     else if (this.mode === 'league') Modal.confirm('Hükmen yenilgi mi?', 'Bırakırsan bu haftanın maçı 0-2 yenilgi sayılır, lig devam eder. Tasoların sende kalır.', () => { if (this.finished) return; this.finished = true; LEAGUE.recordPlayer(false, { p: 0, b: 2 }, this.total, this.bestShot.p, this.slamInst.u); SAVE.save(); Game.goto('league', { weekDone: true }); }, { yes: 'Pes Et' });
@@ -2952,7 +2986,7 @@ const MatchScene = {
     const R = CONFIG.PHYS.TASO_R, T = this.T;
     const ground = [], air = [];
     for (const t of this.tasos) {
-      if (t.state === 'scored' || t.state === 'tower') continue;
+      if (t.state === 'scored' || t.state === 'tower' || t.state === 'gone') continue;
       if (t.state === 'building' && this.phaseT < t.buildAt) continue;
       if ((t.z || 0) > 0.5 || t.state === 'collect' || t.state === 'building') air.push(t); else ground.push(t);
     }
@@ -2981,16 +3015,16 @@ const MatchScene = {
     for (const t of air) this.drawTaso3D(g, t);
     if (this.slam) {
       const s = this.slam, sc = 1 + Math.min(0.5, s.z / 900);
-      drawTaso(g, s.def, s.x, s.y - s.z, R * 1.04 * sc, { rot: s.rot, inst: s.inst, th: CONFIG.PHYS.LAYER_PX * s.def.thick * 1.2, owner: s.who === 'p' ? PLAYER_COL : BOT_COL });
+      drawTaso(g, s.def, s.x, s.y - s.z, R * 1.04 * sc, { rot: s.rot, inst: s.inst, th: CONFIG.PHYS.LAYER_PX * s.def.thick * 1.2, owner: this.colOf(s.who) });
     }
     if (this.phase === 'throw') {
       const s = this.shot, k = U.easeIn(s.t / s.dur), x = U.lerp(s.fromX, s.ix, k), y = U.lerp(s.fromY, s.iy, k), z = U.lerp(s.fromZ, s.hz, k), sc = 1 + z / 500;
       const tAx = s.tilt ? Math.atan2(s.fromY - s.iy, s.fromX - s.ix) : Math.PI / 2, tFl = s.tilt ? 0.3 + 0.75 * s.tilt : (1 - k) * 0.9;
-      drawTaso(g, s.def, x, y - z, R * 1.04 * sc, { rot: k * 9, axis: tAx, flip: tFl, inst: s.who === 'p' ? this.slamInst : this.botSlamInst, th: 4 * sc });
+      drawTaso(g, s.def, x, y - z, R * 1.04 * sc, { rot: k * 9, axis: tAx, flip: tFl, inst: this.slamInstOf(s.who), th: 4 * sc });
     }
   },
   drawSides(g) {
-    for (const side of ['p', 'b']) {
+    for (const side of this.multi ? ['p'] : ['p', 'b']) {
       const x0 = side === 'p' ? 0 : 1130, cx = x0 + 75, col = side === 'p' ? PLAYER_COL : BOT_COL;
       g.save(); g.fillStyle = 'rgba(25,16,10,0.55)'; g.fillRect(x0, 100, 150, 620); g.fillStyle = col; g.globalAlpha = 0.8; g.fillRect(side === 'p' ? 146 : 1130, 100, 4, 620); g.restore();
       const tek = this.mode === 'tek';
@@ -3003,13 +3037,56 @@ const MatchScene = {
       // slammer yeri
       const home = this.slamHome(side), inUse = (this.slam && this.slam.who === side) || (this.phase === 'throw' && this.shot.who === side);
       txt(g, 'SLAMMER', cx, 584, { size: 13, align: 'center', color: '#ffe7b0' });
-      if (!inUse) drawTaso(g, side === 'p' ? this.slamDef : this.botSlamDef, home.x, home.y, CONFIG.PHYS.TASO_R * 1.04, { inst: side === 'p' ? this.slamInst : this.botSlamInst, shadow: true, th: 4 });
+      if (!inUse) drawTaso(g, this.slamDefOf(side), home.x, home.y, CONFIG.PHYS.TASO_R * 1.04, { inst: this.slamInstOf(side), shadow: true, th: 4 });
       else { g.save(); g.setLineDash([5, 5]); g.strokeStyle = 'rgba(255,231,176,0.4)'; g.lineWidth = 2; g.beginPath(); g.arc(home.x, home.y, 30, 0, TAU); g.stroke(); g.restore(); }
     }
+    if (this.multi) this.drawOppCards(g);
     UI.coinBadge(g, 146, 676);
     if (UI.button(g, 1136, 674, 70, 36, 'Pes Et', { color: '#e9d8b4', size: 15 })) this.askQuit();
     UI.fullToggle(g, 1210, 675, 34);
     UI.soundToggle(g, 1245, 675, 34);
+  },
+  // 3-4 kişide sağ panel: her rakibe bir kart (ad, kalan vuruş, topladığı, yığını, slammer'ı)
+  drawOppCards(g) {
+    g.save(); g.fillStyle = 'rgba(25,16,10,0.55)'; g.fillRect(1130, 100, 150, 620); g.restore();
+    for (const k of this.sideKeys) {
+      if (k === 'p') continue;
+      const o = this.opps[k], y0 = this.cardY(k), x0 = 1130, h = 185, cur = this.shooter === k && this.phase !== 'roundEnd' && this.phase !== 'build', gone = this.gone[k];
+      g.save();
+      g.fillStyle = cur ? 'rgba(255,231,176,0.16)' : 'rgba(0,0,0,0.12)'; g.fillRect(x0 + 4, y0 + 2, 146, h);
+      g.fillStyle = o.col; g.globalAlpha = 0.85; g.fillRect(x0, y0 + 2, 4, h);
+      if (cur) { g.globalAlpha = 1; g.strokeStyle = o.col; g.lineWidth = 3; g.strokeRect(x0 + 6, y0 + 4, 142, h - 4); }
+      g.restore();
+      drawKid(g, o.look, x0 + 26, y0 + 26, 13, cur ? 'talk' : 'idle', this.time);
+      txt(g, o.short, x0 + 46, y0 + 22, { size: 16, font: FONT_FUN, color: shade(o.col, 0.45), maxW: 98 });
+      for (let i = 0; i < this.shotsMax; i++) {
+        const filled = !gone && i < this.shotsMax - this.shots[k];
+        g.save(); g.beginPath(); g.arc(x0 + 54 + i * 15, y0 + 44, 5.5, 0, TAU); g.fillStyle = filled ? o.col : 'rgba(255,255,255,0.1)'; g.fill(); g.lineWidth = 1.5; g.strokeStyle = filled ? '#fff' : 'rgba(255,255,255,0.25)'; g.stroke(); g.restore();
+      }
+      txt(g, 'TOPLADIĞI', x0 + 14, y0 + 78, { size: 12, color: '#ffe7b0' });
+      txt(g, String(this.scores[k]), x0 + 140, y0 + 78, { size: 26, align: 'right', font: FONT_FUN, color: '#fff', stroke: INK, sw: 4 });
+      const pile = this.piles[k], from = Math.max(0, pile.length - 15);
+      pile.slice(from).forEach((t, i) => { const p = this.pilePos(k, i); drawTaso(g, t.def, p.x, p.y, 20, { rot: t.rot, th: 2.5, fx: false }); });
+      const home = this.slamHome(k), inUse = (this.slam && this.slam.who === k) || (this.phase === 'throw' && this.shot.who === k);
+      if (!inUse) drawTaso(g, o.slamDef, home.x, home.y, 22, { inst: o.slamInst, shadow: true, th: 3 });
+      else { g.save(); g.setLineDash([4, 4]); g.strokeStyle = 'rgba(255,231,176,0.4)'; g.lineWidth = 2; g.beginPath(); g.arc(home.x, home.y, 20, 0, TAU); g.stroke(); g.restore(); }
+      if (gone) {
+        g.save(); g.fillStyle = 'rgba(15,10,6,0.72)'; g.fillRect(x0 + 4, y0 + 2, 146, h); g.restore();
+        txt(g, 'AYRILDI', x0 + 77, y0 + h / 2, { size: 22, align: 'center', font: FONT_FUN, color: '#ffb3a8', stroke: INK, sw: 4 });
+      }
+    }
+  },
+  // 3-4 kişide üst şerit: rakiplerin küçük resimleri, sırası gelen vurgulu
+  drawOppsHud(g) {
+    const ks = this.sideKeys.filter((k) => k !== 'p');
+    ks.forEach((k, i) => {
+      const o = this.opps[k], x = CONFIG.W - 46 - (ks.length - 1 - i) * 92, cur = this.shooter === k && this.phase !== 'roundEnd' && this.phase !== 'build';
+      if (cur) { g.save(); g.beginPath(); g.arc(x, 40, 30, 0, TAU); g.fillStyle = 'rgba(255,231,176,0.18)'; g.fill(); g.lineWidth = 3; g.strokeStyle = o.col; g.stroke(); g.restore(); }
+      g.save(); if (this.gone[k]) g.globalAlpha = 0.35;
+      drawKid(g, o.look, x, 38, 17, cur ? 'talk' : 'idle', this.time + i);
+      g.restore();
+      txt(g, o.short, x, 86, { size: 13, align: 'center', color: shade(o.col, 0.45), maxW: 86 });
+    });
   },
   drawHUD(g) {
     g.save(); const gr = g.createLinearGradient(0, 0, 0, 100); gr.addColorStop(0, 'rgba(25,16,10,0.92)'); gr.addColorStop(1, 'rgba(25,16,10,0.75)'); g.fillStyle = gr; g.fillRect(0, 0, CONFIG.W, 100); g.restore();
@@ -3023,6 +3100,7 @@ const MatchScene = {
     else drawStars(g, 96 + pnw + 22, 27, this.roundWins.p, this.roundsToWin, 10, '#ffc928', 'rgba(255,255,255,0.12)');
     for (let i = 0; i < SH; i++) this.drawShotPip(g, 104 + i * 26, 66, i < SH - this.shots.p, PLAYER_COL);
     // bot
+    if (this.multi) this.drawOppsHud(g); else {
     const bx = CONFIG.W - 52, bm = this.speech ? 'talk' : (this.roundResult === 'b' && this.phase === 'roundEnd' ? 'happy' : 'idle');
     drawKid(g, this.bot.look || this.bot.key, bx, 44, 24, bm, this.time);
     const bnw = txt(g, U.upper(this.bot.short), CONFIG.W - 96, 26, { size: 24, font: FONT_FUN, color: '#ffc2b8', align: 'right' });
@@ -3031,14 +3109,15 @@ const MatchScene = {
     else if (tek) txt(g, this.bot.tierLabel || '', CONFIG.W - 96 - bnw - 14, 27, { size: 14, color: '#ffe7b0', align: 'right' });
     else drawStars(g, CONFIG.W - 96 - bnw - 22 - 23 * (this.roundsToWin - 1), 27, this.roundWins.b, this.roundsToWin, 10, '#ffc928', 'rgba(255,255,255,0.12)');
     for (let i = 0; i < SH; i++) this.drawShotPip(g, CONFIG.W - 104 - i * 26, 66, i < SH - this.shots.b, BOT_COL);
+    }
     // orta
     const rn = Math.min(CONFIG.ROUNDS, this.roundWins.p + this.roundWins.b + (this.phase === 'roundEnd' && this.roundResult ? 0 : 1));
-    const head = this.net ? 'ARKADAŞLA KIRAN KIRANA' : kk ? 'KIRAN KIRANA • TUR ' + this.kkRound : tek ? 'TEK ATIŞ • ' + this.tekName() + ' (' + this.tekCurSize + ' TASO)' : this.mode === 'tour' ? U.upper(this.stageLabel) + ' • TUR ' + rn + ' / ' + CONFIG.ROUNDS : this.mode === 'league' ? 'LİG • ' + U.upper(this.stageLabel) + ' • TUR ' + rn + ' / ' + CONFIG.ROUNDS : 'TUR ' + rn + ' / ' + CONFIG.ROUNDS;
+    const head = this.net ? 'ARKADAŞLA KIRAN KIRANA' + (this.multi ? ' • ' + this.sideKeys.length + ' KİŞİ' : '') : kk ? 'KIRAN KIRANA • TUR ' + this.kkRound : tek ? 'TEK ATIŞ • ' + this.tekName() + ' (' + this.tekCurSize + ' TASO)' : this.mode === 'tour' ? U.upper(this.stageLabel) + ' • TUR ' + rn + ' / ' + CONFIG.ROUNDS : this.mode === 'league' ? 'LİG • ' + U.upper(this.stageLabel) + ' • TUR ' + rn + ' / ' + CONFIG.ROUNDS : 'TUR ' + rn + ' / ' + CONFIG.ROUNDS;
     txt(g, head, 640, 22, { size: 18, align: 'center', color: kk || this.net ? '#ffb3a8' : tek ? '#9cc6ff' : this.mode === 'tour' ? '#ffd23f' : this.mode === 'league' ? '#d8b8ff' : '#ffe7b0' });
     this.drawWxChip(g);
     let turnTxt = '', tc = '#fff';
     if (this.phase === 'aim' || (this.phase === 'throw' && this.shot.who === 'p')) { turnTxt = 'Sıra sende!'; tc = '#9cc6ff'; }
-    else if (this.phase.startsWith('bot') || this.phase === 'netAim' || (this.phase === 'throw' && this.shot.who === 'b')) { turnTxt = 'Sıra ' + TR.loc(this.bot.short); tc = '#ffb3a8'; }
+    else if (this.phase.startsWith('bot') || this.phase === 'netAim' || (this.phase === 'throw' && this.shot.who === 'b')) { const sk = this.phase === 'throw' ? this.shot.who : this.shooter; turnTxt = 'Sıra ' + TR.loc(this.nameOf(sk)); tc = this.net ? shade(this.colOf(sk), 0.45) : '#ffb3a8'; }
     else if (this.phase === 'build') turnTxt = 'Kule kuruluyor...';
     else if (this.phase === 'sim' || this.phase === 'collect') turnTxt = '...';
     const pulse = this.phase === 'aim' ? 1 + Math.sin(this.time * 6) * 0.05 : 1;
@@ -3093,7 +3172,7 @@ const MatchScene = {
     if (!isBot && edgeHint != null) col = edgeHint < 0.3 ? '#ffffff' : edgeHint < 0.6 ? '#ffe28a' : '#ffaa3d';
     const power = this.phase === 'netAim' ? (this.charging ? this.netPow : 0) : this.charging ? this.powerAt(this.chargeT) : 0, dev = this.charging ? PHYSICS.deviation(power) * 0.9 : 0;
     g.save();
-    g.globalAlpha = 0.25; drawTaso(g, isBot ? this.botSlamDef : this.slamDef, ax, ay, R * 1.04, { fx: false, th: 0 }); g.globalAlpha = 1;
+    g.globalAlpha = 0.25; drawTaso(g, isBot ? this.slamDefOf(this.phase === 'netAim' ? this.shooter : 'b') : this.slamDef, ax, ay, R * 1.04, { fx: false, th: 0 }); g.globalAlpha = 1;
     g.strokeStyle = col; g.lineWidth = 2.5; g.setLineDash([7, 5]); g.lineDashOffset = -this.time * 20;
     g.beginPath(); g.arc(ax, ay, R * 1.04, 0, TAU); g.stroke(); g.setLineDash([]);
     g.lineWidth = 2; g.beginPath(); g.moveTo(ax - 10, ay); g.lineTo(ax + 10, ay); g.moveTo(ax, ay - 10); g.lineTo(ax, ay + 10); g.stroke();
@@ -3848,16 +3927,17 @@ const SelectScene = {
     SFX.click();
   },
   back() {
-    if (this.kind === 'pvp') { Modal.confirm('Odadan çıkılsın mı?', 'Arkadaşınla bağlantı kapanır.', () => { NET.leave(); Game.goto('friend'); }, { yes: 'Çık' }); return; }
+    if (this.kind === 'pvp') { Modal.confirm('Odadan çıkılsın mı?', NET.isHost() ? 'Odayı sen kurdun: çıkarsan oda herkes için kapanır.' : 'Odadan ayrılırsın.', () => { NET.leave(); Game.goto('friend'); }, { yes: 'Çık' }); return; }
     Game.goto({ kk: 'kk', tour: 'tour', league: 'league', tek: 'tek' }[this.kind] || 'opponents');
   },
   onNetLost(reason) {
     if (this.kind !== 'pvp') return;
-    Modal.alert(reason === 'bye' ? 'Arkadaşın ayrıldı' : 'Bağlantı koptu', reason === 'bye' ? 'Arkadaşın odadan çıktı.' : 'Arkadaşınla bağlantı kesildi.', { onOk: () => { NET.leave(); Game.goto('friend'); } });
+    const title = reason === 'host' ? 'Kurucu ayrıldı' : reason === 'alone' ? 'Odada kimse kalmadı' : 'Bağlantı koptu';
+    Modal.alert(title, reason === 'host' ? 'Odayı kuran oyuncu çıktı, oda kapandı.' : reason === 'alone' ? 'Senden başka herkes odadan çıktı.' : 'Bağlantı kesildi.', { onOk: () => { NET.leave(); Game.goto('friend'); } });
   },
   start() {
     if (this.kind === 'pvp') {
-      if (NET.state !== 'open') { Toast.show('Arkadaşınla bağlantı yok.', '#ffb3a8'); return; }
+      if (!NET.connected()) { Toast.show('Odada başka kimse yok.', '#ffb3a8'); return; }
       S.lastBig = this.tower.map((i) => i.u); S.lastBigSlammer = this.slammer.u; SAVE.save();
       NET.sendReady(this.tower, this.slammer); this.waiting = true; return;
     }
@@ -3874,14 +3954,20 @@ const SelectScene = {
   },
   drawWaiting(g) {
     deskHeaderBg(g);
-    UI.header(g, 'HAZIRSIN!', { sub: 'Arkadaşının da hazır olması bekleniyor', back: false });
+    UI.header(g, 'HAZIRSIN!', { sub: 'Herkesin hazır olması bekleniyor', back: false });
     panel(g, 240, 150, 800, 480, { fill: '#fdeee8' });
     txt(g, 'Keseni koydun', 640, 200, { size: 30, align: 'center', font: FONT_FUN, color: '#a8432f' });
     this.tower.forEach((inst, i) => drawTaso(g, defOf(inst.id), 330 + i * 68, 290, 28, { inst, shadow: true, th: 4 }));
-    if (this.slammer) { txt(g, 'SLAMMER', 640, 356, { size: 15, align: 'center', color: '#a8432f' }); drawTaso(g, defOf(this.slammer.id), 640, 412, 40, { inst: this.slammer, shadow: true, th: 6 }); }
-    const o = NET.opp ? NET.opp.name : 'Arkadaşın', dots = '.'.repeat(1 + Math.floor(this.t * 2) % 3);
-    txt(g, NET.oppReady ? o + ' hazır! Maç başlıyor...' : o + ' taso seçiyor' + dots, 640, 488, { size: 24, align: 'center', font: FONT_FUN, color: NET.oppReady ? '#2e8b3a' : '#2f62b8', maxW: 700 });
-    if (UI.button(g, 540, 534, 200, 54, 'Vazgeç', { color: '#e9d8b4', size: 24 })) { NET.leave(); Game.goto('friend'); }
+    if (this.slammer) { txt(g, 'SLAMMER', 640, 342, { size: 15, align: 'center', color: '#a8432f' }); drawTaso(g, defOf(this.slammer.id), 640, 388, 34, { inst: this.slammer, shadow: true, th: 6 }); }
+    const dots = '.'.repeat(1 + Math.floor(this.t * 2) % 3), pl = NET.players, rd = NET.readySlots, wait = pl.filter((p) => p.slot !== NET.slot && !rd.includes(p.slot));
+    pl.forEach((p, i) => { // herkesin durumu
+      const x = 640 + (i - (pl.length - 1) / 2) * 180, ok = p.slot === NET.slot || rd.includes(p.slot);
+      drawKid(g, (p.slot === NET.slot ? PVP.me().look : p.look) || 'kerem', x, 462, 16, ok ? 'happy' : 'idle', this.t + i);
+      txt(g, p.slot === NET.slot ? 'Sen' : p.name, x, 506, { size: 15, align: 'center', maxW: 170 });
+      txt(g, ok ? 'HAZIR' : 'seçiyor' + dots, x, 524, { size: 13, align: 'center', color: ok ? '#2e8b3a' : '#2f62b8' });
+    });
+    txt(g, wait.length ? 'Diğerleri taso seçiyor...' : 'Herkes hazır! Maç başlıyor...', 640, 548, { size: 18, align: 'center', font: FONT_FUN, color: wait.length ? '#2f62b8' : '#2e8b3a' });
+    if (UI.button(g, 540, 568, 200, 50, 'Vazgeç', { color: '#e9d8b4', size: 24 })) { NET.leave(); Game.goto('friend'); }
   },
   draw(g) {
     if (this.waiting) { this.drawWaiting(g); return; }
@@ -3898,7 +3984,7 @@ const SelectScene = {
     if (bot) {
       drawKid(g, bot.look || bot.key, rx + 60, ry + 64, 34, 'idle', this.t);
       txt(g, bot.name, rx + 110, ry + 50, { size: 21, font: FONT_FUN, maxW: 240 });
-      txt(g, K === 'pvp' ? (NET.oppReady ? 'Hazır!' : 'Taso seçiyor...') : K === 'normal' ? VENUES[bot.venue].name + ' • ödül +' + ECON.botReward(this.bot) : (bot.tierLabel || '') + ' • ' + VENUES[vIdx].name, rx + 110, ry + 80, { size: 14, color: '#7a5a3a', weight: 'normal', maxW: 240 });
+      txt(g, K === 'pvp' ? 'Hazır: ' + NET.readySlots.filter((s) => s !== NET.slot).length + ' / ' + NET.others().length : K === 'normal' ? VENUES[bot.venue].name + ' • ödül +' + ECON.botReward(this.bot) : (bot.tierLabel || '') + ' • ' + VENUES[vIdx].name, rx + 110, ry + 80, { size: 14, color: '#7a5a3a', weight: 'normal', maxW: 240 });
       wrapText(g, '"' + bot.lines.start[0] + '"', rx + rw / 2, ry + 120, rw - 50, 20, { size: 15, align: 'center', color: '#5a3b1e', font: FONT_FUN });
     } else {
       drawTrophy(g, rx + 64, ry + 66, 34);
@@ -5524,16 +5610,21 @@ const LeagueScene = {
 };
 
 // =====================================================================
-// ARKADAŞLA OYNA — PeerJS (WebRTC) ile farklı telefonlar arasında Kıran Kırana
-//   Kurucu 5 haneli bir oda kodu üretir; arkadaşı kodu (ya da davet linkini) kullanarak bağlanır.
-//   Kıran Kırana kuralları: yüzünü açtığın taso senin, devrilen tason onun. İkisi de kendi
-//   koleksiyonundan 10 taso + 1 slammer seçer. Fizik ortak tohumla iki telefonda da oynar;
-//   atışı yapan telefon bitince kesin konumları gönderir, böylece iki taraf hep aynı sonucu görür.
+// ARKADAŞLA OYNA — PeerJS (WebRTC) ile 2-4 kişilik Kıran Kırana
+//   Kurucu 5 haneli bir oda kodu üretir; kodu (ya da davet linkini) kullanan en fazla 3 arkadaşı
+//   katılır. Kurucu BAŞLA diyene kadar oda açıktır, sonra kilitlenir. Yıldız bağlantı: herkes
+//   kurucuya bağlanır, kurucu mesajları diğerlerine iletir. Kıran Kırana kuralları: yüzünü
+//   açtığın taso senin, devrilen tason devirenin. Herkes kendi koleksiyonundan 10 taso + 1
+//   slammer seçer. Fizik ortak tohumla her telefonda oynar; atışı yapan telefon bitince kesin
+//   konumları gönderir, böylece herkes hep aynı sonucu görür.
 // =====================================================================
+const cleanName = (s) => String(s || 'Arkadaş').replace(/\s+/g, ' ').trim().slice(0, 16) || 'Arkadaş';
+const cleanLook = (lk) => (lk && typeof lk === 'object' && typeof lk.shirt === 'string' ? lk : null);
 const NET = {
-  PFX: 'tasosavaslari-', state: 'idle', role: null, code: '', err: '', opp: null, myReady: null, oppReady: null,
-  early: [], peer: null, conn: null, lastRx: 0, lastPing: 0, t0: 0,
-  // state: idle | opening | waiting (kurucu bekliyor) | connecting | open | closed | error
+  PFX: 'tasosavaslari-', MAX: 4,
+  // state: idle | opening (kurucu oda açıyor) | connecting (misafir bağlanıyor) | open (odadayız) | closed | error
+  state: 'idle', role: null, code: '', err: '', slot: 0, players: [], locked: false, readySlots: [],
+  ready: {}, myReady: null, early: [], peer: null, conn: null, links: [], lastRx: 0, lastPing: 0, t0: 0,
   available() { return typeof globalThis.Peer === 'function'; },
   opts() {
     return Object.assign({
@@ -5551,132 +5642,221 @@ const NET = {
     if (t === 'browser-incompatible') return 'Tarayıcın bu bağlantı türünü desteklemiyor. Güncel Chrome ya da Safari dene.';
     return 'Bağlantı hatası' + (t ? ' (' + t + ')' : '') + '. Tekrar dene.';
   },
-  // Açık bağlantıyı bırakır (karşıya haber verir) ve her şeyi sıfırlar
+  connected() { return this.state === 'open' && this.players.length >= 2; },
+  others() { return this.players.filter((p) => p.slot !== this.slot); },
+  player(slot) { return this.players.find((p) => p.slot === slot) || null; },
+  isHost() { return this.role === 'h'; },
+  clearRoom() {
+    this.role = null; this.code = ''; this.err = ''; this.slot = 0; this.players = []; this.locked = false; this.readySlots = [];
+    this.ready = {}; this.myReady = null; this.early = []; this.links = []; this.conn = null; this.peer = null;
+  },
+  closeAll(c, links, p, delay) {
+    setTimeout(() => {
+      try { if (c) c.close(); } catch (e) { /* yok say */ }
+      links.forEach((l) => { try { l.c.close(); } catch (e) { /* yok say */ } });
+      try { if (p) p.destroy(); } catch (e) { /* yok say */ }
+    }, delay);
+  },
+  // Odadan çık (diğerlerine haber verir) ve her şeyi sıfırla
   leave() {
-    const c = this.conn, p = this.peer, was = this.state;
-    this.state = 'idle'; this.conn = null; this.peer = null; this.role = null; this.code = ''; this.err = ''; this.opp = null; this.myReady = this.oppReady = null; this.early = [];
-    if (c && was === 'open') { try { c.send({ t: 'bye' }); } catch (e) { /* yok say */ } }
-    setTimeout(() => { try { if (c) c.close(); } catch (e) { /* yok say */ } try { if (p) p.destroy(); } catch (e) { /* yok say */ } }, 250);
+    const c = this.conn, p = this.peer, ls = this.links.slice(), was = this.state;
+    this.state = 'idle'; this.clearRoom();
+    if (was === 'open') { try { if (c) c.send({ t: 'bye' }); } catch (e) { /* yok say */ } ls.forEach((l) => { try { l.c.send({ t: 'bye' }); } catch (e) { /* yok say */ } }); }
+    this.closeAll(c, ls, p, 250);
   },
   fail(msg) {
-    const c = this.conn, p = this.peer;
-    this.state = 'error'; this.err = msg; this.conn = null; this.peer = null;
-    try { if (c) c.close(); } catch (e) { /* yok say */ } try { if (p) p.destroy(); } catch (e) { /* yok say */ }
+    const c = this.conn, p = this.peer, ls = this.links.slice();
+    this.clearRoom(); this.state = 'error'; this.err = msg;
+    this.closeAll(c, ls, p, 0);
   },
-  // Odayı kur: boş bir kod bulunana kadar dener
+  // ------------------------------------------------------------- kurucu
   host() {
-    this.leave(); this.role = 'h'; this.state = 'opening'; this.t0 = performance.now();
+    this.leave(); this.role = 'h'; this.slot = 0; this.state = 'opening'; this.t0 = performance.now();
     if (!this.available()) { this.fail('Bağlantı kütüphanesi (PeerJS) yüklenemedi. İnternet bağlantını kontrol edip sayfayı yenile.'); return; }
     const attempt = (n) => {
       const code = String(U.randInt(10000, 99999));
       let peer;
       try { peer = new Peer(this.PFX + code, this.opts()); } catch (e) { this.fail('Bağlantı başlatılamadı.'); return; }
       this.peer = peer;
-      peer.on('open', () => { if (this.peer !== peer) return; this.code = code; this.state = 'waiting'; });
-      peer.on('connection', (c) => { if (this.peer !== peer || this.conn) { try { c.close(); } catch (e) { /* yok say */ } return; } this.attach(c); });
-      peer.on('disconnected', () => { if (this.peer === peer && !this.conn) { try { peer.reconnect(); } catch (e) { /* yok say */ } } });
+      peer.on('open', () => {
+        if (this.peer !== peer) return;
+        const me = PVP.me(); this.code = code; this.state = 'open'; this.players = [{ slot: 0, name: me.name, look: me.look }];
+      });
+      peer.on('connection', (c) => { if (this.peer !== peer) { try { c.close(); } catch (e) { /* yok say */ } return; } this.accept(c); });
+      peer.on('disconnected', () => { if (this.peer === peer && !this.locked) { try { peer.reconnect(); } catch (e) { /* yok say */ } } });
       peer.on('error', (e) => {
         if (this.peer !== peer) return;
         if (e && e.type === 'unavailable-id' && n < 6) { try { peer.destroy(); } catch (x) { /* yok say */ } attempt(n + 1); return; }
-        if (this.state === 'open') return; // oyun sırasında sinyal sunucusu hatası bağlantıyı bozmaz
+        if (this.state === 'open') return; // oda açıkken sinyal sunucusu hatası oyunu bozmaz
         this.fail(this.errText(e));
       });
     };
     attempt(0);
   },
-  // Koda bağlan
+  // Yeni misafir: oda doluysa ya da oyun başladıysa geri çevrilir
+  accept(c) {
+    const ok = () => {
+      if (this.state !== 'open' || !this.isHost()) { try { c.close(); } catch (e) { /* yok say */ } return; }
+      if (this.locked || this.players.length >= this.MAX) {
+        try { c.send({ t: this.locked ? 'started' : 'full' }); } catch (e) { /* yok say */ }
+        setTimeout(() => { try { c.close(); } catch (e) { /* yok say */ } }, 400); return;
+      }
+      let slot = 1; while (this.players.some((p) => p.slot === slot)) slot++;
+      const link = { c, slot, lastRx: performance.now() };
+      this.links.push(link);
+      this.players.push({ slot, name: 'Arkadaş', look: null }); this.players.sort((a, b) => a.slot - b.slot);
+      c.on('data', (m) => { if (this.links.includes(link)) this.onHostData(link, m); });
+      c.on('close', () => this.dropLink(link, 'close'));
+      c.on('error', () => this.dropLink(link, 'error'));
+      this.sendTo(link, { t: 'welcome', slot, code: this.code });
+      this.broadcastRoster();
+      SFX.tone(660, 0.12, { type: 'triangle', vol: 0.07 });
+    };
+    if (c.open) ok(); else c.on('open', ok);
+  },
+  sendTo(link, m) { try { if (link.c.open) link.c.send(m); } catch (e) { /* yok say */ } },
+  broadcast(m, except) { this.links.forEach((l) => { if (l !== except) this.sendTo(l, m); }); },
+  broadcastRoster() { this.broadcast({ t: 'roster', players: this.players, locked: this.locked }); },
+  broadcastReady() { this.readySlots = Object.keys(this.ready).map(Number); this.broadcast({ t: 'rstate', slots: this.readySlots }); },
+  onHostData(link, m) {
+    if (!m || typeof m !== 'object') return;
+    link.lastRx = performance.now();
+    switch (m.t) {
+      case 'hello': { const pl = this.player(link.slot); if (pl) { pl.name = cleanName(m.name); pl.look = cleanLook(m.look); } this.broadcastRoster(); break; }
+      case 'ready': if (this.locked && this.validPack(m)) { this.ready[link.slot] = m; this.broadcastReady(); this.checkStart(); } break;
+      case 'bye': this.dropLink(link, 'bye'); break;
+      case 'aim': case 'shot': case 'result': m.from = link.slot; this.broadcast(m, link); this.deliver(m); break; // diğerlerine ilet
+      default: break;
+    }
+  },
+  // Bir misafir gitti: herkese bildir; tek kalındıysa oyun biter
+  dropLink(link, reason) {
+    const i = this.links.indexOf(link); if (i < 0) return;
+    this.links.splice(i, 1); try { link.c.close(); } catch (e) { /* yok say */ }
+    this.broadcast({ t: 'left', slot: link.slot });
+    this.playerGone(link.slot, reason);
+    this.broadcastRoster();
+    if (this.locked) { this.broadcastReady(); this.checkStart(); }
+  },
+  // Kurucu BAŞLA dedi: oda kilitlenir, herkes taso seçimine geçer
+  startGame() {
+    if (!this.isHost() || this.state !== 'open' || this.players.length < 2) return;
+    this.locked = true; this.ready = {}; this.readySlots = [];
+    this.broadcast({ t: 'go' }); this.broadcastRoster();
+    Game.goto('select', { kind: 'pvp' });
+  },
+  // Herkes hazırsa hava, zemin, kule tohumu ve ilk atıcı belirlenir, maç başlar
+  checkStart() {
+    if (!this.isHost() || this.state !== 'open' || !this.locked || this.players.length < 2) return;
+    if (!this.players.every((p) => this.ready[p.slot])) return;
+    const packs = {}; this.players.forEach((p) => { packs[p.slot] = this.ready[p.slot]; });
+    const setup = { venue: U.randInt(0, VENUES.length - 1), wx: rollWeather(), seed: Math.floor(Math.random() * 2147483647), first: U.pick(this.players).slot };
+    this.ready = {}; this.readySlots = [];
+    this.broadcast({ t: 'start', setup, packs }); this.beginMatch(setup, packs);
+  },
+  // ------------------------------------------------------------- misafir
   join(code) {
     this.leave(); this.role = 'g'; this.state = 'connecting'; this.code = String(code); this.t0 = performance.now();
     if (!this.available()) { this.fail('Bağlantı kütüphanesi (PeerJS) yüklenemedi. İnternet bağlantını kontrol edip sayfayı yenile.'); return; }
     let peer;
     try { peer = new Peer(this.opts()); } catch (e) { this.fail('Bağlantı başlatılamadı.'); return; }
     this.peer = peer;
-    peer.on('open', () => { if (this.peer !== peer) return; this.attach(peer.connect(this.PFX + this.code, { reliable: true, serialization: 'json' })); });
+    peer.on('open', () => {
+      if (this.peer !== peer) return;
+      const c = peer.connect(this.PFX + this.code, { reliable: true, serialization: 'json' });
+      this.conn = c;
+      c.on('open', () => { if (this.conn !== c) return; this.lastRx = performance.now(); this.lastPing = 0; const me = PVP.me(); c.send({ t: 'hello', name: me.name, look: me.look }); });
+      c.on('data', (m) => { if (this.conn === c) this.onGuestData(m); });
+      c.on('close', () => { if (this.conn === c) this.lost('close'); });
+      c.on('error', () => { if (this.conn === c) this.lost('error'); });
+    });
     peer.on('error', (e) => { if (this.peer !== peer || this.state === 'open') return; this.fail(this.errText(e)); });
   },
-  attach(c) {
-    this.conn = c;
-    const onOpen = () => {
-      if (this.conn !== c) return;
-      this.state = 'open'; this.lastRx = performance.now(); this.lastPing = 0;
-      const me = PVP.me(); this.send({ t: 'hello', name: me.name, look: me.look });
-    };
-    if (c.open) onOpen(); else c.on('open', onOpen);
-    c.on('data', (m) => { if (this.conn === c) this.onData(m); });
-    c.on('close', () => { if (this.conn === c) this.lost('close'); });
-    c.on('error', () => { if (this.conn === c) this.lost('error'); });
+  onGuestData(m) {
+    if (!m || typeof m !== 'object') return;
+    this.lastRx = performance.now();
+    switch (m.t) {
+      case 'welcome': this.slot = m.slot | 0; this.state = 'open'; this.lastPing = 0; break;
+      case 'roster':
+        if (Array.isArray(m.players)) this.players = m.players.slice(0, this.MAX).map((p) => ({ slot: p.slot | 0, name: cleanName(p.name), look: cleanLook(p.look) }));
+        this.locked = !!m.locked; break;
+      case 'rstate': this.readySlots = Array.isArray(m.slots) ? m.slots.map(Number) : []; break;
+      case 'go': this.locked = true; this.readySlots = []; this.myReady = null; Game.goto('select', { kind: 'pvp' }); break;
+      case 'start': this.beginMatch(m.setup, m.packs); break;
+      case 'full': this.fail('Oda dolu: en fazla ' + this.MAX + ' kişi oynayabilir.'); break;
+      case 'started': this.fail('Bu odada oyun başladı, artık girilemez. Arkadaşından yeni bir oda kurmasını iste.'); break;
+      case 'left': this.playerGone(m.slot | 0, 'bye'); break;
+      case 'bye': this.lost('host'); break;
+      case 'aim': case 'shot': case 'result': this.deliver(m); break;
+      default: break;
+    }
   },
-  send(m) { try { if (this.conn && this.conn.open) this.conn.send(m); } catch (e) { /* yok say */ } },
+  // ------------------------------------------------------------- ortak
+  send(m) {
+    if (this.isHost()) { this.broadcast(m); return; }
+    try { if (this.conn && this.conn.open) this.conn.send(m); } catch (e) { /* yok say */ }
+  },
+  deliver(m) { if (Game.sceneName === 'match' && MatchScene.net) MatchScene.netMsg(m); else { this.early.push(m); if (this.early.length > 60) this.early.shift(); } },
+  drainEarly() { const q = this.early; this.early = []; q.forEach((m) => MatchScene.netMsg(m)); },
+  // Biri odadan çıktı (herkeste aynı)
+  playerGone(slot, reason) {
+    const pl = this.player(slot); if (!pl || slot === this.slot) return;
+    this.players = this.players.filter((p) => p.slot !== slot); delete this.ready[slot]; this.readySlots = this.readySlots.filter((s) => s !== slot);
+    if (Game.sceneName !== 'friend' || this.locked) Toast.show(pl.name + ' odadan ayrıldı.', '#ffb3a8');
+    if (Game.sceneName === 'match' && MatchScene.net) MatchScene.playerLeft(slot);
+    else if (this.locked && this.players.length < 2) { const sc = Game.scene; if (sc && sc.onNetLost) sc.onNetLost('alone'); }
+  },
+  // Kurucuyla bağlantı koptu (misafir) — oda bitti
   lost(reason) {
     if (this.state === 'closed' || this.state === 'idle' || this.state === 'error') return;
     this.state = 'closed';
     try { if (this.conn) this.conn.close(); } catch (e) { /* yok say */ }
+    this.players = this.players.filter((p) => p.slot === this.slot);
     const sc = Game.scene; if (sc && sc.onNetLost) sc.onNetLost(reason);
   },
   // Gerçek saatle çalışır: sekme arka plandayken de (setInterval) ping gider, kare hızı düşse de zaman aşımı şaşmaz
   tick() {
     const now = performance.now();
     if (this.state === 'opening' || this.state === 'connecting') {
-      if (now - this.t0 > 20000) this.fail(this.state === 'opening' ? 'Bağlantı sunucusuna ulaşılamadı. İnternet bağlantını kontrol edip tekrar dene.' : 'Arkadaşına bağlanılamadı. Kodu kontrol et; iki telefon da internete bağlı ve oyun açık olmalı.');
+      if (now - this.t0 > 20000) this.fail(this.state === 'opening' ? 'Bağlantı sunucusuna ulaşılamadı. İnternet bağlantını kontrol edip tekrar dene.' : 'Odaya bağlanılamadı. Kodu kontrol et; telefonlar internete bağlı ve kurucunun oyunu açık olmalı.');
       return;
     }
     if (this.state !== 'open') return;
     if (now - this.lastPing > 2000) { this.lastPing = now; this.send({ t: 'p' }); }
-    if (now - this.lastRx > 20000) this.lost('timeout');
+    if (this.isHost()) this.links.slice().forEach((l) => { if (now - l.lastRx > 20000) this.dropLink(l, 'timeout'); });
+    else if (now - this.lastRx > 20000) this.lost('timeout');
   },
   update() { this.tick(); },
   validPack(m) {
     const ok = (s) => s && typeof s === 'object' && DEFS[(s.id | 0) - 1] && (s.u | 0) > 0;
     return m && Array.isArray(m.tower) && m.tower.length === CONFIG.KK_STAKE && m.tower.every(ok) && ok(m.slam);
   },
-  onData(m) {
-    if (!m || typeof m !== 'object') return;
-    this.lastRx = performance.now();
-    switch (m.t) {
-      case 'hello': {
-        const lk = m.look && typeof m.look === 'object' && typeof m.look.shirt === 'string' ? m.look : null;
-        this.opp = { name: String(m.name || 'Arkadaşın').slice(0, 16), look: lk };
-        break;
-      }
-      case 'ready': if (this.validPack(m)) { this.oppReady = m; this.checkStart(); } break;
-      case 'start': if (this.role === 'g') this.beginMatch(m.setup); break;
-      case 'bye': this.lost('bye'); break;
-      case 'aim': case 'shot': case 'result':
-        if (Game.sceneName === 'match' && MatchScene.net) MatchScene.netMsg(m);
-        else { this.early.push(m); if (this.early.length > 40) this.early.shift(); }
-        break;
-      default: break;
-    }
-  },
-  drainEarly() { const q = this.early; this.early = []; q.forEach((m) => MatchScene.netMsg(m)); },
-  // Seçilen 10 taso + slammer'ı rakibe bildir
+  // Seçilen 10 taso + slammer'ı bildir
   sendReady(tower, slammer) {
     const pack = { t: 'ready', tower: tower.map((i) => INV.snap(i)), slam: INV.snap(slammer) };
-    this.myReady = pack; this.send(pack); this.checkStart();
+    this.myReady = pack;
+    if (this.isHost()) { this.ready[this.slot] = pack; this.broadcastReady(); this.checkStart(); }
+    else this.send(pack);
   },
-  // Kurucu: iki taraf da hazırsa hava, zemin, kule tohumu ve ilk atıcıyı belirleyip maçı başlatır
-  checkStart() {
-    if (this.role !== 'h' || !this.myReady || !this.oppReady || this.state !== 'open') return;
-    const setup = { venue: U.randInt(0, VENUES.length - 1), wx: rollWeather(), seed: Math.floor(Math.random() * 2147483647), first: Math.random() < 0.5 ? 'h' : 'g' };
-    this.send({ t: 'start', setup }); this.beginMatch(setup);
-  },
-  beginMatch(setup) {
-    const me = this.myReady, op = this.oppReady;
-    if (!me || !op || !setup || typeof setup !== 'object') return;
-    const hostP = this.role === 'h' ? me : op, guestP = this.role === 'h' ? op : me;
-    const canon = hostP.tower.map((s) => ({ side: 'h', snap: s })).concat(guestP.tower.map((s) => ({ side: 'g', snap: s })));
-    const insts = me.tower.map((s) => INV.byUid(s.u)).filter(Boolean), sl = INV.byUid(me.slam.u);
-    this.myReady = this.oppReady = null; this.early = [];
-    if (insts.length !== me.tower.length || !sl) { Toast.show('Tasolar hazırlanamadı, tekrar dene.', '#ffb3a8'); this.leave(); Game.goto('friend'); return; }
+  beginMatch(setup, packs) {
+    if (!setup || typeof setup !== 'object' || !packs || typeof packs !== 'object') return;
+    const slots = Object.keys(packs).map(Number).filter((s) => this.validPack(packs[s])).sort((a, b) => a - b);
+    const mine = packs[this.slot];
+    if (!mine || slots.length < 2 || !slots.includes(this.slot)) return;
+    const canon = []; slots.forEach((s) => packs[s].tower.forEach((snap) => canon.push({ side: s, snap })));
+    const insts = mine.tower.map((s) => INV.byUid(s.u)).filter(Boolean), sl = INV.byUid(mine.slam.u);
+    this.myReady = null; this.readySlots = []; this.early = [];
+    if (insts.length !== mine.tower.length || !sl) { Toast.show('Tasolar hazırlanamadı, tekrar dene.', '#ffb3a8'); this.leave(); Game.goto('friend'); return; }
     const venue = ((setup.venue | 0) % VENUES.length + VENUES.length) % VENUES.length, wx = setup.wx && WEATHERS[setup.wx.key] ? setup.wx : { key: 'gunes' };
-    Game.goto('match', { mode: 'pvp', role: this.role, canon, seed: setup.seed | 0, first: setup.first === this.role ? 'p' : 'b', venue, weather: wx,
-      tower: insts, slammer: sl, oppName: this.opp ? this.opp.name : 'Arkadaşın', oppLook: this.opp && this.opp.look, oppSlam: op.slam });
+    const players = slots.map((s) => { const p = this.player(s); return { slot: s, name: p ? p.name : 'Arkadaş', look: p ? p.look : null, slam: packs[s].slam }; });
+    Game.goto('match', { mode: 'pvp', role: this.slot, canon, seed: setup.seed | 0, first: slots.includes(setup.first) ? setup.first : slots[0], order: slots, players, venue, weather: wx, tower: insts, slammer: sl });
   },
 };
 
 // Arkadaşla maçın yerel durumu (kazanılan / giden tasolar) ve rakip nesneleri
 const PVP = {
   won: [], lost: [],
+  COLS: ['#ff5a4a', '#5cc95c', '#c07cff'], // rakip renkleri (sen hep mavisin)
   begin() { this.won = []; this.lost = []; },
   me() { // oyuncunun lobi adı ve görünümü (bir kez üretilir, kayda yazılır)
     const p = S.pvp;
@@ -5684,10 +5864,24 @@ const PVP = {
     if (!p.look) p.look = OPP.look(Math.random() < 0.5, null);
     return p;
   },
-  selectBot() { const o = NET.opp || {}; return { key: 'friend', name: o.name || 'Arkadaşın', short: o.name || 'Arkadaşın', look: o.look || 'kerem', venue: 0, lines: { start: ['Seninle kapışmaya hazırım!'] } }; },
-  botFor(p) {
-    const name = p.oppName || 'Arkadaşın';
-    return { key: 'friend', name, short: name, look: p.oppLook || 'kerem', tier: 'orta', tierLabel: 'Arkadaşın', venue: p.venue, slammer: p.oppSlam.id, style: 'net', stars: 0,
+  selectBot() {
+    const o = NET.others(), names = o.map((p) => p.name);
+    return { key: 'friend', name: names.join(', ') || 'Arkadaşın', short: names[0] || 'Arkadaşın', look: (o[0] && o[0].look) || 'kerem', venue: 0,
+      lines: { start: [o.length > 1 ? o.length + ' rakibin var. Bol şans!' : 'Seninle kapışmaya hazırım!'] } };
+  },
+  // Maç sahnesine rakipleri kur: sen 'p', rakipler oda sırasıyla 'b', 'c', 'd'
+  setup(m, p) {
+    const others = p.players.filter((x) => x.slot !== p.role).sort((a, b) => a.slot - b.slot), keys = ['b', 'c', 'd'];
+    m.opps = {}; m.keyOf = { [p.role]: 'p' }; m.slotOf = { p: p.role }; m.gone = {};
+    others.forEach((o, i) => {
+      const k = keys[i]; m.keyOf[o.slot] = k; m.slotOf[k] = o.slot;
+      m.opps[k] = { slot: o.slot, name: o.name, short: o.name, look: o.look || ['kerem', 'tuna', 'selim'][i], slamDef: defOf(o.slam.id), slamInst: o.slam, col: this.COLS[i] };
+    });
+    m.sideKeys = ['p'].concat(others.map((o, i) => keys[i]));
+    m.turnOrder = p.order.map((s) => m.keyOf[s]).filter(Boolean);
+    m.multi = others.length > 1;
+    const b = m.opps.b;
+    return { key: 'friend', name: b.name, short: b.short, look: b.look, tier: 'orta', tierLabel: 'Arkadaşın', venue: p.venue, slammer: b.slamDef.id, style: 'net', stars: 0,
       lines: { start: ['Hadi başlayalım!'], shot: ['Geliyorum!'], good: ['Süper vuruş!', 'Hah!'], bad: ['Olmadı...', 'Eyvah!'], hurt: ['Ouch!', 'Vay be!'] }, desc: 'Gerçek bir rakip!' };
   },
 };
@@ -5699,13 +5893,13 @@ function spinner(g, x, y, r, t) {
 }
 
 // ---------------------------------------------------------------------
-// ARKADAŞLA OYNA — lobi: oda kur / odaya katıl / maç sonu
+// ARKADAŞLA OYNA — lobi: oda kur / odaya katıl / 4 kişilik oda / maç sonu
 // ---------------------------------------------------------------------
 const PvpScene = {
   toastY: 84,
   enter(p) {
     this.t = 0; this.code = ''; this.done = null; this.msg = ''; PVP.me();
-    if (p.done) { // maç bitti: bağlantı açık kalır, rövanş istenebilir
+    if (p.done) { // maç bitti: oda açık kalır, rövanş istenebilir
       this.view = 'done'; this.done = p.done;
       const w = p.done.won.length, l = p.done.lost.length; if (w > l) SFX.win(); else if (l > w) SFX.lose();
       return;
@@ -5725,19 +5919,16 @@ const PvpScene = {
       if (Input.key('Enter') && this.code.length === 5) this.connect();
     }
     if (this.view === 'host' || this.view === 'connecting') {
-      if (NET.state === 'open') { this.view = 'wait'; Game.goto('select', { kind: 'pvp' }); }
+      if (NET.state === 'open') { this.view = 'lobby'; SFX.coin(); }
       else if (NET.state === 'error') { this.view = 'error'; this.msg = NET.err; }
-    }
+    } else if (this.view === 'lobby' && NET.state === 'error') { this.view = 'error'; this.msg = NET.err; }
   },
   onNetLost(reason) {
-    if (this.view === 'done') { Toast.show(reason === 'bye' ? 'Arkadaşın odadan ayrıldı.' : 'Bağlantı koptu.', '#ffb3a8'); return; }
-    if (this.view === 'host' || this.view === 'connecting') { this.view = 'error'; this.msg = 'Bağlantı koptu. Tekrar dene.'; }
+    if (this.view === 'done') { Toast.show(reason === 'host' ? 'Kurucu odayı kapattı.' : 'Bağlantı koptu.', '#ffb3a8'); return; }
+    if (this.view === 'host' || this.view === 'connecting' || this.view === 'lobby') { this.view = 'error'; this.msg = reason === 'host' ? 'Kurucu odayı kapattı.' : 'Bağlantı koptu. Tekrar dene.'; }
   },
   press(d) { if (this.code.length < 5) { this.code += d; SFX.click(); } },
-  connect() {
-    if (this.code.length !== 5) return;
-    this.view = 'connecting'; NET.join(this.code);
-  },
+  connect() { if (this.code.length !== 5) return; this.view = 'connecting'; NET.join(this.code); },
   startHost() { this.view = 'host'; NET.host(); },
   rename() {
     let v = null;
@@ -5763,11 +5954,13 @@ const PvpScene = {
   },
   draw(g) {
     g.drawImage(streetBg(), 0, 0); g.fillStyle = 'rgba(20,12,6,0.62)'; g.fillRect(0, 0, CONFIG.W, CONFIG.H);
-    const titles = { home: 'ARKADAŞLA OYNA', host: 'ODA KURULDU', join: 'ODAYA KATIL', connecting: 'BAĞLANIYOR', wait: 'ARKADAŞLA OYNA', error: 'OLMADI', done: this.done && this.done.won.length > this.done.lost.length ? 'KAZANDIN!' : this.done && this.done.lost.length > this.done.won.length ? 'KAYBETTİN' : 'MAÇ BİTTİ' };
-    const subs = { home: 'Farklı telefonlardan Kıran Kırana: devirdiğin taso senin!', host: 'Arkadaşın bu kodla katılabilir', join: 'Arkadaşının verdiği kodu yaz', connecting: 'Lütfen bekle...', wait: '', error: '', done: 'Tasolar el değiştirdi ve kaydedildi' };
+    const d = this.done, dw = d ? d.won.length : 0, dl = d ? d.lost.length : 0;
+    const titles = { home: 'ARKADAŞLA OYNA', host: 'ODA KURULUYOR', lobby: 'ODA', join: 'ODAYA KATIL', connecting: 'BAĞLANIYOR', error: 'OLMADI', done: dw > dl ? 'KAZANDIN!' : dl > dw ? 'KAYBETTİN' : 'MAÇ BİTTİ' };
+    const subs = { home: '2-4 kişi, farklı telefonlardan Kıran Kırana: devirdiğin taso senin!', host: 'Lütfen bekle...', lobby: NET.isHost() ? 'Herkes gelince BAŞLA de (en fazla ' + NET.MAX + ' kişi)' : 'Kurucunun başlatması bekleniyor', join: 'Arkadaşının verdiği kodu yaz', connecting: 'Lütfen bekle...', error: '', done: 'Tasolar el değiştirdi ve kaydedildi' };
     if (UI.header(g, titles[this.view] || 'ARKADAŞLA OYNA', { sub: subs[this.view] })) this.back();
     if (this.view === 'home') this.drawHome(g);
-    else if (this.view === 'host') this.drawHost(g);
+    else if (this.view === 'host') this.drawOpening(g);
+    else if (this.view === 'lobby') this.drawLobby(g);
     else if (this.view === 'join') this.drawJoin(g);
     else if (this.view === 'connecting') this.drawConnecting(g);
     else if (this.view === 'error') this.drawError(g);
@@ -5793,28 +5986,52 @@ const PvpScene = {
     if (!enough) wrapText(g, 'En az ' + need + ' taso lazım (' + CONFIG.KK_STAKE + ' kese + 1 slammer). Albümdekiler ve turnuva kadrosu sayılmaz.', 250, 636, 340, 17, { size: 13, align: 'center', color: '#c0392b' });
     panel(g, 480, 100, 750, 590, { fill: '#fbf1dc' });
     txt(g, 'NASIL OYNANIR?', 855, 138, { size: 26, align: 'center', font: FONT_FUN });
-    wrapText(g, '1) Biriniz ODA KUR der ve 5 haneli kodu ya da davet linkini arkadaşına yollar.\n2) Arkadaşın ODAYA KATIL deyip kodu girer (ya da linke tıklar).\n3) İkiniz de koleksiyonundan 10 taso + 1 slammer seçersiniz.\n4) Kıran Kırana kuralları: yüzünü açtığın taso SENİN olur, devrilen tason onun!\nSlammer\'ın asla gitmez. Albümdeki tasolar güvende.', 520, 168, 670, 30, { size: 19, color: '#3a2a1c' });
-    wrapText(g, 'İpucu: Maç bitene kadar oyundan çıkma ya da başka uygulamaya geçme; bağlantı kopabilir. İki telefonun da internete bağlı olması yeter.', 520, 396, 670, 22, { size: 15, color: '#7a5a3a' });
+    wrapText(g, '1) Biriniz ODA KUR der ve 5 haneli kodu ya da davet linkini arkadaşlarına yollar.\n2) En fazla 3 arkadaşın ODAYA KATIL deyip kodu girer (ya da linke tıklar).\n3) Herkes gelince kurucu BAŞLA der; herkes 10 taso + 1 slammer seçer.\n4) Kıran Kırana kuralları: yüzünü açtığın taso SENİN olur, devrilen tason devirenin!\nSlammer\'ın asla gitmez. Albümdeki tasolar güvende.', 520, 168, 670, 30, { size: 19, color: '#3a2a1c' });
+    wrapText(g, 'İpucu: Maç bitene kadar oyundan çıkma ya da başka uygulamaya geçme; bağlantı kopabilir. Telefonların internete bağlı olması yeter.', 520, 396, 670, 22, { size: 15, color: '#7a5a3a' });
     if (!NET.available()) wrapText(g, 'Bağlantı kütüphanesi yüklenemedi. İnternet bağlantını kontrol edip sayfayı yenile.', 520, 450, 670, 22, { size: 16, color: '#c0392b' });
     const dis = { disabled: !ok, onDisabled: () => Toast.show(!enough ? 'En az ' + need + ' oynanabilir taso lazım.' : 'Bağlantı kütüphanesi yüklenemedi.', '#ffb3a8') };
-    if (UI.button(g, 520, 500, 320, 110, 'ODA KUR', Object.assign({ color: '#8fd16a', sub: 'Kodu arkadaşına ver', size: 36, glow: ok ? '#9df08f' : null }, dis))) this.startHost();
+    if (UI.button(g, 520, 500, 320, 110, 'ODA KUR', Object.assign({ color: '#8fd16a', sub: 'Kodu arkadaşlarına ver', size: 36, glow: ok ? '#9df08f' : null }, dis))) this.startHost();
     if (UI.button(g, 870, 500, 320, 110, 'ODAYA KATIL', Object.assign({ color: '#7fb6ff', sub: 'Arkadaşının kodunu gir', size: 34 }, dis))) { this.code = ''; this.view = 'join'; }
   },
-  drawHost(g) {
-    panel(g, 240, 100, 800, 590, { fill: '#fbf1dc' });
-    if (NET.state === 'opening') {
-      spinner(g, 640, 300, 40, this.t); txt(g, 'Oda kuruluyor...', 640, 390, { size: 26, align: 'center', font: FONT_FUN });
-    } else {
-      txt(g, 'ODA KODU', 640, 140, { size: 24, align: 'center', font: FONT_FUN, color: '#a8432f' });
-      this.codeBoxes(g, 170, NET.code, true);
-      wrapText(g, 'Arkadaşın ana menüden ARKADAŞLA OYNA > ODAYA KATIL diyip bu kodu girsin. Ya da linki gönder; açınca kendiliğinden bağlanır.', 640, 300, 640, 26, { size: 19, align: 'center', color: '#3a2a1c', base: 'top' });
-      if (UI.button(g, 300, 400, 330, 66, 'Linki Paylaş', { color: '#7fb6ff', size: 26 })) this.share();
-      if (UI.button(g, 650, 400, 330, 66, 'Linki Kopyala', { color: '#f2b544', size: 26 })) this.copy(this.link());
-      const dots = '.'.repeat(1 + Math.floor(this.t * 2) % 3);
-      txt(g, 'Arkadaşın bekleniyor' + dots, 640, 520, { size: 24, align: 'center', font: FONT_FUN, color: '#2f62b8' });
-      txt(g, 'Arkadaşın bağlanana kadar bu ekranda kal.', 640, 556, { size: 15, align: 'center', weight: 'normal', color: '#7a5a3a' });
+  drawOpening(g) {
+    panel(g, 340, 200, 600, 300, { fill: '#fbf1dc' });
+    spinner(g, 640, 300, 38, this.t);
+    txt(g, 'Oda kuruluyor...', 640, 384, { size: 26, align: 'center', font: FONT_FUN });
+    if (UI.button(g, 540, 430, 200, 50, 'İptal', { color: '#e9d8b4', size: 22 })) { NET.leave(); this.view = 'home'; }
+  },
+  // Oda: kod, paylaş, 4 oyuncu yeri, kurucuda BAŞLA
+  drawLobby(g) {
+    const host = NET.isHost(), pl = NET.players, n = pl.length;
+    panel(g, 140, 90, 1000, 610, { fill: '#fbf1dc' });
+    txt(g, 'ODA KODU', 640, 116, { size: 20, align: 'center', font: FONT_FUN, color: '#a8432f' });
+    this.codeBoxes(g, 132, NET.code, false);
+    if (UI.button(g, 370, 228, 260, 48, 'Linki Paylaş', { color: '#7fb6ff', size: 22 })) this.share();
+    if (UI.button(g, 650, 228, 260, 48, 'Linki Kopyala', { color: '#f2b544', size: 22 })) this.copy(this.link());
+    const cw = 220, ch = 214, gap = 18, x0 = 640 - (4 * cw + 3 * gap) / 2, y = 296;
+    for (let i = 0; i < NET.MAX; i++) {
+      const x = x0 + i * (cw + gap), p = pl[i];
+      if (p) {
+        const me = p.slot === NET.slot;
+        panel(g, x, y, cw, ch, { fill: me ? '#e8f1ff' : '#fffdf3', r: 12, lw: me ? 4 : 3, stroke: me ? '#3d8bfd' : '#5a3b1e' });
+        drawKid(g, (me ? PVP.me().look : p.look) || 'kerem', x + cw / 2, y + 74, 34, 'idle', this.t + i);
+        txt(g, p.name, x + cw / 2, y + 160, { size: 22, align: 'center', font: FONT_FUN, maxW: cw - 20 });
+        const tag = (p.slot === 0 ? 'KURUCU' : '') + (me ? (p.slot === 0 ? ' • ' : '') + 'SEN' : '');
+        if (tag) txt(g, tag, x + cw / 2, y + 190, { size: 14, align: 'center', color: me ? '#2f62b8' : '#a8432f' });
+      } else {
+        g.save(); g.beginPath(); rrectPath(g, x, y, cw, ch, 12); g.fillStyle = 'rgba(255,255,255,0.35)'; g.fill(); g.setLineDash([8, 6]); g.lineWidth = 3; g.strokeStyle = 'rgba(90,59,30,0.45)'; g.stroke(); g.restore();
+        txt(g, 'Boş yer', x + cw / 2, y + ch / 2 - 8, { size: 20, align: 'center', font: FONT_FUN, color: 'rgba(90,59,30,0.55)' });
+        txt(g, 'kodu bekliyor', x + cw / 2, y + ch / 2 + 20, { size: 14, align: 'center', weight: 'normal', color: 'rgba(90,59,30,0.55)' });
+      }
     }
-    if (UI.button(g, 540, 610, 200, 56, 'İptal', { color: '#e9d8b4', size: 24 })) { NET.leave(); this.view = 'home'; }
+    const dots = '.'.repeat(1 + Math.floor(this.t * 2) % 3);
+    if (host) {
+      txt(g, n < 2 ? 'Arkadaşların bekleniyor' + dots : n + ' kişisiniz. Herkes geldiyse başlayabilirsin!', 640, 540, { size: 19, align: 'center', color: '#2f62b8', maxW: 900 });
+      if (UI.button(g, 660, 572, 300, 84, 'BAŞLA!', { color: '#8fd16a', size: 38, disabled: n < 2, glow: n >= 2 ? '#9df08f' : null, onDisabled: () => Toast.show('En az bir arkadaşın katılmalı.', '#ffb3a8') })) NET.startGame();
+      if (UI.button(g, 320, 586, 280, 58, 'Odayı Kapat', { color: '#e9d8b4', size: 22 })) { NET.leave(); this.view = 'home'; }
+    } else {
+      txt(g, 'Kurucunun BAŞLA demesi bekleniyor' + dots, 640, 556, { size: 22, align: 'center', font: FONT_FUN, color: '#2f62b8' });
+      if (UI.button(g, 520, 600, 240, 56, 'Odadan Çık', { color: '#e9d8b4', size: 22 })) { NET.leave(); this.view = 'home'; }
+    }
   },
   drawJoin(g) {
     panel(g, 300, 100, 680, 600, { fill: '#fbf1dc' });
@@ -5833,7 +6050,7 @@ const PvpScene = {
   drawConnecting(g) {
     panel(g, 340, 200, 600, 300, { fill: '#fbf1dc' });
     spinner(g, 640, 300, 38, this.t);
-    txt(g, 'Arkadaşına bağlanılıyor...', 640, 384, { size: 26, align: 'center', font: FONT_FUN, maxW: 540 });
+    txt(g, 'Odaya bağlanılıyor...', 640, 384, { size: 26, align: 'center', font: FONT_FUN, maxW: 540 });
     txt(g, 'Kod: ' + NET.code, 640, 420, { size: 18, align: 'center', color: '#7a5a3a' });
     if (UI.button(g, 540, 440, 200, 46, 'İptal', { color: '#e9d8b4', size: 22 })) { NET.leave(); this.view = 'home'; }
   },
@@ -5844,17 +6061,17 @@ const PvpScene = {
     if (UI.button(g, 540, 410, 200, 60, 'Geri Dön', { color: '#f2b544', size: 26 })) { NET.leave(); this.view = 'home'; }
   },
   drawDone(g) {
-    const d = this.done, w = d.won.length, l = d.lost.length, open = NET.state === 'open';
+    const d = this.done, w = d.won.length, l = d.lost.length, open = NET.connected(), n = NET.players.length;
     panel(g, 150, 100, 980, 590, { fill: '#fbf1dc' });
     const head = w > l ? 'KAZANDIN!' : l > w ? 'KAYBETTİN' : 'BERABERE';
     txt(g, head, 640, 152, { size: 56, align: 'center', font: FONT_FUN, color: w > l ? '#2e8b3a' : l > w ? '#c0392b' : '#8a5d00', stroke: INK, sw: 8 });
-    txt(g, d.left ? 'Maç yarıda kaldı • ' + d.opp : 'Rakip: ' + d.opp, 640, 204, { size: 18, align: 'center', color: '#7a5a3a' });
+    txt(g, (d.left ? 'Maç yarıda kaldı • ' : 'Rakip: ') + d.opp, 640, 204, { size: 18, align: 'center', color: '#7a5a3a', maxW: 900 });
     txt(g, '+' + w + ' taso kazandın', 190, 252, { size: 24, font: FONT_FUN, color: '#2e8b3a' });
     if (w) tasoRow(g, d.won, 214, 312, 24, 52, 16, { glow: 'rgba(143,209,106,0.6)', col: INK }); else txt(g, 'Hiç taso alamadın.', 190, 306, { size: 17, weight: 'normal', color: '#7a5a3a' });
     txt(g, '-' + l + ' taso kaybettin', 190, 382, { size: 24, font: FONT_FUN, color: '#c0392b' });
     if (l) tasoRow(g, d.lost, 214, 442, 24, 52, 16, { glow: 'rgba(232,87,74,0.6)', col: INK }); else txt(g, 'Hiç taso kaybetmedin.', 190, 436, { size: 17, weight: 'normal', color: '#7a5a3a' });
-    txt(g, open ? 'Arkadaşın hâlâ odada: rövanş oynayabilirsiniz!' : 'Arkadaşın odadan ayrıldı.', 640, 520, { size: 18, align: 'center', color: open ? '#2f62b8' : '#c0392b' });
-    if (UI.button(g, 330, 560, 300, 80, 'Rövanş!', { color: '#ff8a6a', size: 34, disabled: !open, glow: open ? '#ffb3a8' : null, onDisabled: () => Toast.show('Arkadaşın odadan ayrıldı.', '#ffb3a8') })) Game.goto('select', { kind: 'pvp' });
+    txt(g, open ? 'Odada ' + n + ' kişi var: rövanş oynayabilirsiniz!' : 'Odada senden başka kimse kalmadı.', 640, 520, { size: 18, align: 'center', color: open ? '#2f62b8' : '#c0392b' });
+    if (UI.button(g, 330, 560, 300, 80, 'Rövanş!', { color: '#ff8a6a', size: 34, disabled: !open, glow: open ? '#ffb3a8' : null, onDisabled: () => Toast.show('Odada başka kimse yok.', '#ffb3a8') })) Game.goto('select', { kind: 'pvp' });
     if (UI.button(g, 660, 560, 300, 80, 'Çık', { color: '#e9d8b4', size: 32 })) { NET.leave(); Game.goto('modes'); }
   },
 };
