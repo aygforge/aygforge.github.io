@@ -299,7 +299,11 @@ window.addEventListener('pointerup', (e) => {
   if (e.button !== 0) return;
   if (isTouchPtr(e) && !e.isPrimary) return;
   const p = Input.local(e); Input.x = p.x; Input.y = p.y;
-  if (Input.down) { Input.down = false; Input.released = true; Input.click = { x: p.x, y: p.y, dx: Input.downX, dy: Input.downY }; }
+  if (Input.down) {
+    Input.down = false; Input.released = true; Input.click = { x: p.x, y: p.y, dx: Input.downX, dy: Input.downY };
+    const pd = Input.touch ? 6 : 0, inR = (r, x, y) => U.inRect(x, y, r.x - pd, r.y - pd, r.w + 2 * pd, r.h + 2 * pd);
+    if (UI.fsRects.some((r) => inR(r, p.x, p.y) && inR(r, Input.downX, Input.downY))) UI.toggleFull();
+  }
   if (isTouchPtr(e)) Input.lift = true;
 });
 window.addEventListener('pointercancel', (e) => { endTouch(e, true); if (!isTouchPtr(e) || e.isPrimary) Input.down = false; });
@@ -1803,6 +1807,39 @@ const UI = {
     g.restore();
     if (a.clicked) { S.sound = !S.sound; SFX.setEnabled(S.sound); SAVE.save(); SFX.click(); }
   },
+  // Tam ekran düğmesi. Tarayıcılar tam ekranı yalnızca dokunuş/tıklama anında açtığı için asıl geçiş
+  // pointerup olayında yapılır (fsRects son çizilen düğme alanlarıdır); burada sadece çizilir.
+  fsRects: [],
+  isFull() { return !!(document.fullscreenElement || document.webkitFullscreenElement); },
+  toggleFull() {
+    const d = document, el = d.documentElement;
+    try {
+      if (this.isFull()) { const ex = d.exitFullscreen || d.webkitExitFullscreen; if (ex) { const p = ex.call(d); if (p && p.catch) p.catch(() => {}); } return; }
+      const req = el.requestFullscreen || el.webkitRequestFullscreen;
+      if (!req) { Toast.show('Bu tarayıcı tam ekranı desteklemiyor. iPhone\'da: Paylaş > Ana Ekrana Ekle', '#ffe08a', 4); return; }
+      Input.fsTried = true;
+      const p = req.call(el, { navigationUI: 'hide' });
+      const lock = () => { try { if (Input.touch && screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(() => {}); } catch (e) { /* yok say */ } };
+      if (p && p.then) p.then(lock, () => Toast.show('Tam ekran açılamadı.', '#ffb3a8')); else lock();
+    } catch (e) { Toast.show('Tam ekran açılamadı.', '#ffb3a8'); }
+  },
+  fullToggle(g, x, y, size = 40) {
+    const a = this.area(x, y, size, size), full = this.isFull();
+    if (!this.blocked) this.fsRects.push({ x, y, w: size, h: size });
+    g.save(); g.translate(x + size / 2, y + size / 2);
+    g.fillStyle = 'rgba(0,0,0,0.3)'; g.beginPath(); g.arc(2, 4, size / 2, 0, TAU); g.fill();
+    g.beginPath(); g.arc(0, 0, size / 2, 0, TAU); g.fillStyle = a.hover ? '#fff' : '#fff6dd'; g.fill(); g.lineWidth = 3; g.strokeStyle = INK; g.stroke();
+    const k = size / 40, d = 11 * k, l = 6 * k, n = 3 * k;
+    g.strokeStyle = INK; g.lineWidth = 3 * k; g.lineCap = 'round'; g.lineJoin = 'round';
+    for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
+      g.beginPath();
+      if (!full) { g.moveTo(sx * d, sy * (d - l)); g.lineTo(sx * d, sy * d); g.lineTo(sx * (d - l), sy * d); } // dışa açılan köşeler: tam ekrana geç
+      else { g.moveTo(sx * (n + l), sy * n); g.lineTo(sx * n, sy * n); g.lineTo(sx * n, sy * (n + l)); }   // içe dönük köşeler: tam ekrandan çık
+      g.stroke();
+    }
+    g.restore();
+    if (a.clicked) SFX.click();
+  },
   backButton(g, x = 18, y = 14) {
     const clicked = this.button(g, x, y, 110, 42, '‹ Geri', { color: '#e9d8b4', size: 20 });
     return clicked || (!this.blocked && Input.key('Escape'));
@@ -1814,7 +1851,7 @@ const UI = {
     txt(g, title, CONFIG.W / 2, 36, { size: 32, align: 'center', font: FONT_FUN, color: '#ffe7b0', stroke: INK, sw: 6, maxW: 620 });
     if (o.sub) txt(g, o.sub, CONFIG.W / 2, 62, { size: 13, align: 'center', color: 'rgba(255,231,176,0.8)' });
     this.soundToggle(g, CONFIG.W - 58, 15);
-    this.coinBadge(g, CONFIG.W - 70, 15);
+    this.fullToggle(g, this.coinBadge(g, CONFIG.W - 70, 15) - 50, 15);
     return o.back === false ? false : this.backButton(g);
   },
 };
@@ -3030,8 +3067,9 @@ const MatchScene = {
       else { g.save(); g.setLineDash([5, 5]); g.strokeStyle = 'rgba(255,231,176,0.4)'; g.lineWidth = 2; g.beginPath(); g.arc(home.x, home.y, 30, 0, TAU); g.stroke(); g.restore(); }
     }
     UI.coinBadge(g, 146, 676);
-    if (UI.button(g, 1142, 672, 86, 38, 'Pes Et', { color: '#e9d8b4', size: 17 })) this.askQuit();
-    UI.soundToggle(g, 1234, 672, 38);
+    if (UI.button(g, 1136, 674, 70, 36, 'Pes Et', { color: '#e9d8b4', size: 15 })) this.askQuit();
+    UI.fullToggle(g, 1210, 675, 34);
+    UI.soundToggle(g, 1245, 675, 34);
   },
   drawHUD(g) {
     g.save(); const gr = g.createLinearGradient(0, 0, 0, 100); gr.addColorStop(0, 'rgba(25,16,10,0.92)'); gr.addColorStop(1, 'rgba(25,16,10,0.75)'); g.fillStyle = gr; g.fillRect(0, 0, CONFIG.W, 100); g.restore();
@@ -3329,7 +3367,7 @@ const MenuScene = {
     if (shop.clicked) { SFX.click(); Game.goto('bakkal'); }
     // sağ üst
     UI.soundToggle(g, CONFIG.W - 58, 15);
-    UI.coinBadge(g, CONFIG.W - 70, 15);
+    UI.fullToggle(g, UI.coinBadge(g, CONFIG.W - 70, 15) - 50, 15);
     if (S.title) { g.save(); g.beginPath(); rrectPath(g, CONFIG.W - 262, 62, 244, 30, 15); g.fillStyle = '#ffd23f'; g.fill(); g.lineWidth = 2.5; g.strokeStyle = INK; g.stroke(); g.restore(); txt(g, '★ ' + S.title + ' ★', CONFIG.W - 140, 78, { size: 16, align: 'center', font: FONT_FUN }); }
     // ipucu
     const ti = (this.tipI + Math.floor(t / 7)) % TIPS.length;
@@ -3442,7 +3480,7 @@ const ShopScene = {
     this.fx.draw(g);
     if (UI.backButton(g)) Game.goto('menu');
     UI.soundToggle(g, CONFIG.W - 58, 15);
-    UI.coinBadge(g, CONFIG.W - 70, 15);
+    UI.fullToggle(g, UI.coinBadge(g, CONFIG.W - 70, 15) - 50, 15);
   },
 };
 
@@ -3574,7 +3612,7 @@ const PackScene = {
       if (UI.button(g, 640 + 120, 262, 210, 64, 'Bakkala Dön', { color: '#e9d8b4' })) Game.goto('bakkal');
     }
     UI.soundToggle(g, CONFIG.W - 58, 15);
-    UI.coinBadge(g, CONFIG.W - 70, 15);
+    UI.fullToggle(g, UI.coinBadge(g, CONFIG.W - 70, 15) - 50, 15);
     if (this.phase === 'done' && UI.backButton(g)) Game.goto('bakkal');
   },
   newTag(g, x, y, s) {
@@ -4126,7 +4164,7 @@ const ResultsScene = {
       if (UI.button(g, 640 + bw / 2 + 20, by, bw, 64, 'Ana Menü', { color: '#e9d8b4' })) Game.goto('menu');
     }
     UI.soundToggle(g, CONFIG.W - 58, 15);
-    UI.coinBadge(g, CONFIG.W - 70, 15);
+    UI.fullToggle(g, UI.coinBadge(g, CONFIG.W - 70, 15) - 50, 15);
   },
 };
 
@@ -5933,7 +5971,7 @@ const Game = {
   draw() {
     View.begin();
     const g = ctx;
-    UI.hoverAny = false; this.cursor = 'default';
+    UI.hoverAny = false; UI.fsRects = []; this.cursor = 'default';
     UI.blocked = Modal.active() || Celebrate.active() || this.fadeDir !== 0;
     g.save(); if (this.scene) this.scene.draw(g); g.restore();
     UI.blocked = this.fadeDir !== 0;
