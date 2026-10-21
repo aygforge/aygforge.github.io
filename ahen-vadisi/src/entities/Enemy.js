@@ -69,8 +69,8 @@ export class Enemy {
     }
     this.container = c;
     this.animKey = key;
-    // V2 yaratıkları: ayrı darbe alma ve ölüm animasyonu
-    this.hasHurt = !this.pack && scene.anims.exists(key + '_hurt');
+    // ayrı darbe alma animasyonu: V2 procedural yaratıklar ve hurt şeridi olan hazır paketler (sıçan, yarasa…)
+    this.hasHurt = scene.anims.exists(key + '_hurt');
     this.hurtUntil = 0;
     this.behavior = makeBossBehavior(this);
     this.drawBar();

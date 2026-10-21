@@ -1,5 +1,11 @@
 # Değişiklik Günlüğü
 
+## 2.0.1
+- Çayır Sıçanı ve Mağara Yarasası artık LuizMelo "Monsters Creatures Fantasy 2" paketinin Rat / Bat animasyonlarıyla
+  çizilir (bekleme, koşma/uçma, ısırma/saldırı, darbe alma, ölüm). Statlar ve davranışlar değişmedi.
+- Hazır sprite paketli yaratıklar da ayrı darbe alma animasyonunu oynatır.
+- `tools/import-sprites.py` artık klasörde bulunmayan paketlerin önceki çıktısını korur (paketler tek tek eklenebilir).
+
 ## 2.0.0 — Kül ve Ayaz Genişlemesi
 
 V1 projesinin üzerine geliştirildi; V1 kayıtları, karakterleri, eşyaları, haritaları ve görevleri korunur.

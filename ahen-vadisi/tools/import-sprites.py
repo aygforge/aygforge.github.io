@@ -3,7 +3,9 @@
 
 Kullanım:  python3 tools/import-sprites.py <ham_paketler_klasörü>
 
-Klasörde LuizMelo paketleri açılmış olmalı (Fantasy_Warrior/, Wizard_Pack/, EVil_Wizard_2/ ...).
+Klasörde LuizMelo paketleri açılmış olmalı (Fantasy_Warrior/, Wizard_Pack/, EVil_Wizard_2/,
+"Monsters Creatures Fantasy 2/" ...). Klasörde bulunmayan paketlerin önceki çıktısı korunur
+(yalnız mevcut paketler yeniden işlenir; spritePacks.js birleştirilerek yazılır).
 Her paket için:
   * tüm karelerin ortak dolu alanı bulunur ve kareler buna kırpılır (gereksiz boşluk atılır),
   * karakter hedef oyun boyuna ölçeklenir (küçültmede BOX, büyütmede en yakın piksel),
@@ -13,6 +15,7 @@ Her paket için:
 """
 import json
 import os
+import re
 import shutil
 import sys
 from PIL import Image
@@ -35,6 +38,20 @@ PACKS = {
         'anims': {'idle': ('Idle', 8, -1), 'walk': ('Run', 13, -1), 'atk': ('Attack1', 18, 0), 'atk2': ('Attack2', 18, 0),
                   'cast': ('Attack2', 18, 0), 'hurt': ('Hit', 12, 0), 'die': ('Death', 10, 0)},
     },
+    # Monsters Creatures Fantasy 2 (LuizMelo): Çayır Sıçanı ve Mağara Yarasası
+    'mon_meadow_rat': {
+        'name': 'Monsters Creatures Fantasy 2 — Rat (LuizMelo)', 'dir': 'Monsters Creatures Fantasy 2/Rat', 'frame': (70, 70),
+        'height': 20, 'license': None,
+        'anims': {'idle': ('idle', 9, -1), 'walk': ('run', 12, -1), 'atk': ('attack_bite', 20, 0),
+                  'hurt': ('hurt', 12, 0), 'die': ('rat-death', 10, 0)},
+    },
+    'mon_cave_bat': {
+        'name': 'Monsters Creatures Fantasy 2 — Bat (LuizMelo)', 'dir': 'Monsters Creatures Fantasy 2/Bat', 'frame': (87, 87),
+        'height': 40, 'license': None,
+        # yarasa hep uçar: bekleme ve yürüme aynı kanat çırpma şeridi (farklı hız)
+        'anims': {'idle': ('fly', 11, -1), 'walk': ('fly', 15, -1), 'atk': ('attack', 20, 0),
+                  'hurt': ('hurt', 12, 0), 'die': ('death', 9, 0)},
+    },
     'mon_ore_priest': {
         'name': 'Evil Wizard 2 (LuizMelo, CC0)', 'dir': 'EVil_Wizard_2/EVil Wizard 2/Sprites', 'frame': (250, 250),
         'height': 72, 'license': 'EVil_Wizard_2/EVil Wizard 2/License.txt',
@@ -54,8 +71,16 @@ def union(boxes):
     return (min(b[0] for b in boxes), min(b[1] for b in boxes), max(b[2] for b in boxes), max(b[3] for b in boxes))
 
 
+def load_existing():
+    if not os.path.exists(OUT_JS):
+        return {}
+    txt = open(OUT_JS, encoding='utf-8').read()
+    m = re.search(r'SPRITE_PACKS = (\{.*\});', txt, re.S)
+    return json.loads(m.group(1)) if m else {}
+
+
 def main(src):
-    meta = {}
+    meta = load_existing()
     credits = []
     for pid, p in PACKS.items():
         base = os.path.join(src, p['dir'])
@@ -64,6 +89,8 @@ def main(src):
             continue
         fw, fh = p['frame']
         raw = {a: frames_of(os.path.join(base, f + '.png'), fw, fh) for a, (f, _, _) in p['anims'].items()}
+        # tamamen boş kareleri at (bazı şeritlerin sonunda boş kare olabilir)
+        raw = {a: [fr for fr in frs if fr.getbbox()] or frs[:1] for a, frs in raw.items()}
         u = union([fr.getbbox() for frs in raw.values() for fr in frs])
         idle = union([fr.getbbox() for fr in raw['idle']])
         scale = p['height'] / (idle[3] - idle[1])
@@ -97,7 +124,8 @@ def main(src):
     with open(OUT_JS, 'w', encoding='utf-8') as fh:
         fh.write('// OTOMATİK ÜRETİLDİ: tools/import-sprites.py — elle düzenlemeyin.\n')
         fh.write('// Hazır sprite paketleri (public/sprites/<id>/<anim>.png). ox/oy: ayak noktası (orijin).\n')
-        fh.write('export const SPRITE_PACKS = ' + json.dumps(meta, ensure_ascii=False, indent=2) + ';\n')
+        order = [k for k in PACKS if k in meta] + [k for k in meta if k not in PACKS]
+        fh.write('export const SPRITE_PACKS = ' + json.dumps({k: meta[k] for k in order}, ensure_ascii=False, indent=2) + ';\n')
     print('yazıldı:', os.path.relpath(OUT_JS, ROOT))
 
 

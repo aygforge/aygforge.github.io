@@ -317,7 +317,8 @@ try {
     p.target = es[0]; p.cooldowns.blade_rain = 0; p.gcd = 0; p.busy = 0; a.char.mp = 999;
     const hp0 = es.map((e) => e.hp);
     const ok = p.useSkill(3);
-    await new Promise((r) => setTimeout(r, 700));
+    const c0 = w.clock, t0 = performance.now();
+    while (w.clock - c0 < 800 && performance.now() - t0 < 8000) await new Promise((r) => setTimeout(r, 50));
     return { ok, hit: es.filter((e, i) => e.dead || e.hp < hp0[i]).length };
   });
   record('Kılıç Yağmuru önündeki alanda birden çok hedefe vurur', rain.ok && rain.hit >= 2, JSON.stringify(rain));
@@ -341,8 +342,10 @@ try {
       const all = w.enemies.filter((e) => !e.dead);
       const hp0 = all.map((e) => e.hp);
       const ok = p.useSkill(3);
-      await new Promise((r) => setTimeout(r, 900));
-      return { ok, hit: all.filter((e, i) => e.dead || e.hp < hp0[i]).length };
+      // sıçramalar sahne saatiyle zamanlanır; yavaş (yazılımsal GPU) karelerde gerçek süreye değil sahne süresine göre bekle
+      const c0 = w.clock, t0 = performance.now();
+      while (w.clock - c0 < 900 && performance.now() - t0 < 8000) await new Promise((r) => setTimeout(r, 50));
+      return { ok, hit: all.filter((e, i) => e.dead || e.hp < hp0[i]).length, pos: es.map((e) => [Math.round(e.x - p.x), Math.round(e.y - p.y), e.tpl.id, e.dead]) };
     });
     record('Zincir Yıldırım ilk hedeften sonra sıçrar (≥3 hedef)', chain.ok && chain.hit >= 3, JSON.stringify(chain));
     await pm.screenshot({ path: join(shots, 'v2-mage-chain.png') });

@@ -235,7 +235,7 @@ const SERVICES = {
     const kills = app.char.record.killsByEnemy;
     return h('div', { class: 'list' }, Object.values(ENEMIES).filter((e) => ['normal', 'elite', 'boss'].includes(e.kind) && !e.variantOf).map((e) => h('div', { class: 'li' },
       h('div', { class: 'grow' }, h('b', { class: e.kind === 'boss' ? 'r-L' : e.kind === 'elite' ? 'r-E' : '' }, `${e.name} · Lv.${e.level}`),
-        h('div', { class: 'tiny muted' }, `${zone[e.id] || ''} · HP ${fmt(e.hp)} · ATK ${e.atk} · DEF ${e.def}/${e.mdef} · ${e.exp} EXP · ${e.dmgType === 'magic' ? 'büyü' : 'fiziksel'} · ${({ passive: 'pasif', aggressive: 'agresif', pack: 'sürü çağırır', ranged: 'menzilli', tank: 'tank', elite: 'elit', boss_alpha: 'boss', boss_golem: 'boss' })[e.ai]}`),
+        h('div', { class: 'tiny muted' }, `${zone[e.id] || ''} · HP ${fmt(e.hp)} · ATK ${e.atk} · DEF ${e.def}/${e.mdef} · ${e.exp} EXP · ${e.dmgType === 'magic' ? 'büyü' : 'fiziksel'} · ${({ passive: 'pasif', aggressive: 'agresif', pack: 'sürü çağırır', ranged: 'menzilli', tank: 'tank', elite: 'elit', boss_alpha: 'boss', boss_golem: 'boss', boss_ash: 'boss', boss_frost: 'boss' })[e.ai]}`),
         h('div', { class: 'tiny' }, `Öldürülen: ${kills[e.id] || 0}`)))));
   },
 

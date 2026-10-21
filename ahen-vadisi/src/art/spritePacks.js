@@ -91,6 +91,76 @@ export const SPRITE_PACKS = {
     },
     "credit": "Wizard Pack (LuizMelo)"
   },
+  "mon_meadow_rat": {
+    "w": 59,
+    "h": 22,
+    "body": 20,
+    "ox": 0.5424,
+    "oy": 1.0,
+    "anims": {
+      "idle": {
+        "frames": 10,
+        "fps": 9,
+        "repeat": -1
+      },
+      "walk": {
+        "frames": 8,
+        "fps": 12,
+        "repeat": -1
+      },
+      "atk": {
+        "frames": 12,
+        "fps": 20,
+        "repeat": 0
+      },
+      "hurt": {
+        "frames": 3,
+        "fps": 12,
+        "repeat": 0
+      },
+      "die": {
+        "frames": 6,
+        "fps": 10,
+        "repeat": 0
+      }
+    },
+    "credit": "Monsters Creatures Fantasy 2 — Rat (LuizMelo)"
+  },
+  "mon_cave_bat": {
+    "w": 52,
+    "h": 40,
+    "body": 40,
+    "ox": 0.4653,
+    "oy": 1.0,
+    "anims": {
+      "idle": {
+        "frames": 11,
+        "fps": 11,
+        "repeat": -1
+      },
+      "walk": {
+        "frames": 11,
+        "fps": 15,
+        "repeat": -1
+      },
+      "atk": {
+        "frames": 11,
+        "fps": 20,
+        "repeat": 0
+      },
+      "hurt": {
+        "frames": 3,
+        "fps": 12,
+        "repeat": 0
+      },
+      "die": {
+        "frames": 4,
+        "fps": 9,
+        "repeat": 0
+      }
+    },
+    "credit": "Monsters Creatures Fantasy 2 — Bat (LuizMelo)"
+  },
   "mon_ore_priest": {
     "w": 117,
     "h": 107,
