@@ -1,14 +1,15 @@
 # Değişiklik Günlüğü
 
-## 2.0.1
+## 2.0.1 — Görsel güncelleme (hazır sprite ve ikon paketleri)
 - Çayır Sıçanı ve Mağara Yarasası artık LuizMelo "Monsters Creatures Fantasy 2" paketinin Rat / Bat animasyonlarıyla
   çizilir (bekleme, koşma/uçma, ısırma/saldırı, darbe alma, ölüm). Statlar ve davranışlar değişmedi.
 - Hazır sprite paketli yaratıklar da ayrı darbe alma animasyonunu oynatır.
 - `tools/import-sprites.py` artık klasörde bulunmayan paketlerin önceki çıktısını korur (paketler tek tek eklenebilir).
 - Orman Yağmacısı (Bandits — Light Bandit) ve Boz Kurt/Sürü Kurdu (Skullwolf) hazır sprite paketleriyle çizilir.
 - LuizMelo Monster Creatures Fantasy: Kazmacı Goblin = Goblin, Diken Kökçüsü = Mushroom, Çürük Muhafız = Skeleton,
-  Kızıl Damar Gözcüsü ve Güçlendirilmiş Gözcü = kızıla boyanmış Flying Eye (havada süzülür). Bataklık Balçığı (eski adı Bataklık Sülüğü; materyali Balçık Özü) = MCF2 Slime,
-  Kızıl Akrep = kızıla boyanmış "Scorpian". Statlar ve davranışlar değişmedi.
+  Kızıl Damar Gözcüsü ve Güçlendirilmiş Gözcü = kızıla boyanmış Flying Eye (havada süzülür). Bataklık Balçığı
+  (eski adı Bataklık Sülüğü; materyali Balçık Özü) = MCF2 Slime, Kızıl Akrep = kızıla boyanmış "Scorpian".
+  Statlar ve davranışlar değişmedi; eski kayıtlar etkilenmez.
 - `tools/import-sprites.py`: şeritten kare seçme (`strip` + `frames`) ve renk tonu çevirme (`hue`) seçenekleri.
 - Silah, zırh, başlık, bot, yüzük ve iksir ikonları Clockwork Raven Studios ikon paketlerinden alındı.
 - Kalkan, odak/ayna/küre, eldiven, kolye/madalyon, 47 materyal ve 18 beceri ikonu (aktif + pasif + ustalık; HUD düğmeleri
