@@ -1,6 +1,7 @@
 // Görsel geri bildirim: hasar sayıları, efekt sprite'ları, telegraflar, ekran sarsıntısı.
 import Phaser from 'phaser';
 import { app } from '../core/app.js';
+import { TG_SQUASH } from '../data/constants.js';
 
 const DEPTH_FX = 60000;
 const DEPTH_TEXT = 70000;
@@ -74,9 +75,9 @@ export class FX {
     const D = 40;
     if (shape.kind === 'circle' || shape.kind === 'ring') {
       const tex = shape.kind === 'ring' ? 'tg_ring' : 'tg_circle';
-      const base = sc.add.image(shape.x, shape.y, tex).setDepth(D).setTint(color).setDisplaySize(shape.r * 2, shape.r * 2 * 0.75);
+      const base = sc.add.image(shape.x, shape.y, tex).setDepth(D).setTint(color).setDisplaySize(shape.r * 2, shape.r * 2 * TG_SQUASH);
       const fill = sc.add.image(shape.x, shape.y, 'tg_fill').setDepth(D).setTint(color).setDisplaySize(1, 1).setAlpha(0.6);
-      sc.tweens.add({ targets: fill, displayWidth: shape.r * 2, displayHeight: shape.r * 2 * 0.75, duration, ease: 'Linear' });
+      sc.tweens.add({ targets: fill, displayWidth: shape.r * 2, displayHeight: shape.r * 2 * TG_SQUASH, duration, ease: 'Linear' });
       g.push(base, fill);
     } else if (shape.kind === 'rect') {
       const base = sc.add.image(shape.x, shape.y, 'tg_rect').setOrigin(0, 0.5).setDepth(D).setTint(color).setRotation(shape.angle).setDisplaySize(shape.len, shape.width);

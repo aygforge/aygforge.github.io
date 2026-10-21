@@ -32,6 +32,7 @@ export const MP_REGEN_IDLE = 0.02;
 export const POTION_CD = 10;
 export const GLOBAL_SKILL_CD = 0.5;
 
+export const TG_SQUASH = 0.75;          // daire telegraflarının dikey basıklığı (çizim = isabet alanı)
 export const PLAYER_SPEED_TILES = 3.6;  // tile / sn
 export const DEATH_DURABILITY_LOSS = 10;
 export const DURABILITY_WARN = 20;

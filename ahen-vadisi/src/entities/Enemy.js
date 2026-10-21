@@ -1,7 +1,7 @@
 // Düşman varlığı: durum makinesi (boşta/kovala/saldır/dön), aggro, leash, menzilli kaçış, sürü çağırma,
 // elit yetenekleri (telegraflı) ve boss davranış bağlantısı.
 import Phaser from 'phaser';
-import { TILE } from '../data/constants.js';
+import { TILE, TG_SQUASH } from '../data/constants.js';
 import { sound } from '../audio/sound.js';
 import { makeBossBehavior } from './bosses.js';
 
@@ -322,7 +322,7 @@ export class Enemy {
         sc.fx.sprite('slash', this.x, this.y - 10, { scale: 2.6 });
         sc.fx.sprite('slash', this.x, this.y - 10, { scale: 2.6, rotation: Math.PI });
         sound.play('swing');
-        if (!p.dead && Math.hypot(p.x - this.x, p.y - this.y) <= r) sc.combat.enemyHitsPlayer(this, { coef: 1.5, label: 'Kasırga' });
+        if (!p.dead && inTelegraphCircle(p.x, p.y, this.x, this.y, r)) sc.combat.enemyHitsPlayer(this, { coef: 1.5, label: 'Kasırga' });
       } };
     } else if (ab === 'crystal_beam' && dP < 8 * TILE) {
       this.abilityCd = 8;
@@ -376,6 +376,12 @@ export class Enemy {
   destroy() {
     this.container.destroy();
   }
+}
+
+// Daire telegrafları perspektif için dikeyde basık çizilir; isabet testi görünen elipsin aynısıdır
+export function inTelegraphCircle(px, py, cx, cy, r) {
+  const dx = (px - cx) / r, dy = (py - cy) / (r * TG_SQUASH);
+  return dx * dx + dy * dy <= 1;
 }
 
 export function pointInBeam(px, py, ox, oy, ang, len, w) {

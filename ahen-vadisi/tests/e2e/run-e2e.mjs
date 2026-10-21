@@ -225,11 +225,12 @@ try {
     const loop = window.__AHEN.game.loop;
     const frames = [];
     let last = performance.now();
-    const t0 = last;
+    const t0 = last, s0 = window.__AHEN.world.steps;
     while (performance.now() - t0 < 4000) { await new Promise((r) => requestAnimationFrame(r)); const n = performance.now(); frames.push(n - last); last = n; const a = window.__AHEN; a.char.hp = a.stats().maxHp; }
     const avg = 1000 / (frames.reduce((a, b) => a + b, 0) / frames.length);
     const mem = performance.memory ? performance.memory.usedJSHeapSize / 1048576 : null;
-    return { label, fps: +avg.toFixed(1), phaserFps: +loop.actualFps.toFixed(1), memMB: mem && +mem.toFixed(1), enemies: window.__AHEN.world.enemies.filter((e) => !e.dead).length };
+    const stepFps = (window.__AHEN.world.steps - s0) / ((performance.now() - t0) / 1000);
+    return { label, fps: +avg.toFixed(1), stepFps: +stepFps.toFixed(1), phaserFps: +loop.actualFps.toFixed(1), memMB: mem && +mem.toFixed(1), enemies: window.__AHEN.world.enemies.filter((e) => !e.dead).length };
   }, label);
   const p1 = await perf('orman normal');
   await ev(page, () => { const w = window.__AHEN.world, p = w.player; for (let i = 0; i < 30; i++) { const a = i / 30 * Math.PI * 2; const x = p.x + Math.cos(a) * 160, y = p.y + Math.sin(a) * 120; if (!w.grid.blockedAt(x, y)) w.spawner.spawnEnemy('gray_wolf', x, y); } });
@@ -237,7 +238,8 @@ try {
   await ev(page, () => { const a = window.__AHEN; a.setSettings({ lowPerf: true }); });
   const p3 = await perf('düşük performans modu (30 FPS sınırı)');
   await ev(page, () => { const a = window.__AHEN; a.setSettings({ lowPerf: false }); });
-  for (const r of [p1, p2, p3]) record(`Performans: ${r.label}`, r.fps > 10, `ölçülen ${r.fps} FPS · Phaser ${r.phaserFps} · ${r.enemies} yaratık · bellek ${r.memMB} MB (SwiftShader yazılım GPU)`);
+  for (const r of [p1, p2]) record(`Performans: ${r.label}`, r.stepFps > 10, `oyun adımı ${r.stepFps}/sn · ekran ${r.fps} FPS · ${r.enemies} yaratık · bellek ${r.memMB} MB (SwiftShader yazılım GPU)`);
+  record(`Performans: ${p3.label}`, p3.stepFps <= 32 && p3.stepFps > 10, `oyun adımı ${p3.stepFps}/sn (sınır 30) · ekran ${p3.fps} FPS`);
   results.perf = [p1, p2, p3];
 
   // ------------------------------------------------------------------ 6) Dungeon: Golem, tek loot, tekrar giriş
@@ -245,7 +247,7 @@ try {
   await waitMap(page, 'dungeon');
   const run1 = await ev(page, () => window.__AHEN.char.dungeon.runId);
   const pg = await perf('dungeon');
-  record(`Performans: ${pg.label}`, pg.fps > 10, `${pg.fps} FPS · ${pg.enemies} yaratık`);
+  record(`Performans: ${pg.label}`, pg.stepFps > 10, `oyun adımı ${pg.stepFps}/sn · ekran ${pg.fps} FPS · ${pg.enemies} yaratık`);
   await ev(page, async () => {
     const a = window.__AHEN, w = a.world;
     const g = w.enemies.find((e) => e.tpl.id === 'mine_golem');

@@ -49,12 +49,15 @@ makine okunur sonuç: `tests/e2e/report.json`.
 
 ### Performans (SwiftShader yazılım GPU, 844×390)
 
-| Senaryo | Ölçülen FPS | Yaratık | JS bellek |
+| Senaryo | Oyun adımı / sn | Yaratık | JS bellek |
 |---|---|---|---|
-| Orman, normal yoğunluk | 41–45 | 28 | ~69–78 MB |
-| Orman + 30 saldırgan kurt | 37–41 | 58 | ~69–78 MB |
-| Düşük performans modu (30 FPS sınırı) | sınır uygulanıyor | 58 | — |
-| Derin Ocak (karanlık + ışıklar) | ~31 | 20 | — |
+| Orman, normal yoğunluk | ~38–45 | 28 | ~35–65 MB |
+| Orman + 30 saldırgan kurt | ~37–41 | 52 | ~35–65 MB |
+| Düşük performans modu (30 FPS sınırı) | 23 (ekran 57 FPS'te yenilenirken) — **sınır uygulanıyor** | 52 | — |
+| Derin Ocak (karanlık + ışıklar) | ~28–31 | 20 | — |
+
+"Oyun adımı" WorldScene.update çağrı sayısıdır (Phaser'ın `actualFps` değeri ham ekran karelerini sayar ve FPS
+sınırını göstermez; test bu yüzden adım sayacına göre yapılır).
 
 Not: Bu değerler GPU'suz sanal makinede yazılımsal render ile ölçülmüştür; donanım hızlandırmalı telefonlarda
 60 FPS hedefine ulaşılması beklenir ancak **gerçek cihazda ölçülemedi**. Oyun 60 FPS hedefler, ayarlardan
@@ -119,11 +122,37 @@ daha çok ölmesi beklenir.
 | Büyük boss gövdesi ev noktasına oturamayınca "dönüş" durumunda takılı kalıyor, iyileşiyor ve Sürü Kurtları haritada kalıcı tehlike olarak kalıyordu | Dönüşe 7 sn sınır; çağrılan yaratıklar savaş bitince dağılır; Sürü Kurdu 30 sn ömürlü |
 | Görev 15 "Mührün Gücü"nün harita işareti Maden kapısını gösteriyordu, oysa ilk hedef (Çürük Muhafız) Bataklık'ta | Hedef bazlı ipucu: işaret önce Bataklık mezarlığını, sonra Maden kapısını gösterir; tüm görevler için birim testi |
 | İki elli silah kuşanılıyken kalkan karşılaştırması sahte kazanç gösteriyordu (kalkan kuşanılamaz) | Karşılaştırma gerçek sonucu (değişiklik yok) gösterir; birim testi |
-| Kalabalık kamplarda (Yağmacı, Cevher Rahibi) uzak algılama 4–6 yaratığı aynı anda çekiyordu | Algılama yarıçapları 4–5 tile |
+| Kalabalık kamplarda (Yağmacı, Cevher Rahibi, Sis Cadısı) uzak algılama 4–6 yaratığı aynı anda çekiyordu | Algılama yarıçapları 4–5 tile |
+| **Daire telegrafları ekranda elips (dikey ×0,75) çiziliyor ama isabet testi tam daireydi** — oyuncu çizili alanın hemen üstünde/altında da vuruluyordu | İsabet testi görünen elipsle aynı (`inTelegraphCircle`; Ezici Darbe, Kristal Patlaması, Yer Sarsıntısı, Kasırga) |
 
-**Önceki tam koşu (×4 hız, zehir/ipucu düzeltmeleri dahil):** Görev 1–15 tamamlandı; Alfa Kurt Lv11'de, Mührün Gücü
-Lv18'de (oyun içi 111. dk) geçildi; Derin Ocak'a Lv19'da girildi. Ölümlerin çoğu Bataklık'taki Sis Cadısı gruplarında
-(bot savaşlar arasında dinlenmiyordu) ve dungeon'da elitten kaçma hatasında (bot hatası) oldu; bot düzeltilip yeniden koşuldu.
+**Son tam koşu (Warrior, ×4 hız):**
+
+| Aşama | Seviye | Oyun içi süre | Toplam ölüm |
+|---|---|---|---|
+| Görev 6 Terk Edilmiş Kamp | 8 | 11,6 dk | 1 |
+| Görev 7 Alfa'nın İni (Alfa Kurt) | 11 | 38,2 dk | 6 |
+| Görev 10 Sert Kabuk | 12 | 48,3 dk | 6 |
+| Görev 12 Sislerin Ardında | 15 | 83,4 dk | 17 |
+| Görev 15 Mührün Gücü (dungeon kilidi) | 18 | 110,2 dk | 19 |
+| Görev 16 Derinlere İniş (dungeon bölüm 1–3) | 19 | 129,9 dk | 26 |
+| Lv.20'ye ulaşma, görev 17 (Madenin Kalbi) alındı | 20 | 150,2 dk | 30 |
+
+Bot görev 1–16'yı tamamladı ve Lv.20'ye ulaştı. **Golem'i bu koşuda yenemedi:** bot, iksirleri bitince dungeon'dan
+çıkıp ikmal yapmayı bilmediği için kontrol noktasından iksirsiz tekrar tekrar girdi (bot eksikliği). Ölümlerin çoğu
+Cevher Rahibi (görev 11) ve Sis Cadısı (Lv.18–19 farmı) gruplarında; bunun üzerine bu menzilli yaratıkların algı
+yarıçapı tekrar düşürüldü. Oyun içi 150 dk'da Lv.20 hızı, kiting yapmayan otomatik oyuncu içindir; insan oyuncuda
+keşif, okuma ve ekonomi ile belgedeki 5–8 saatlik hedefin gerçekçiliği **ayrıca ölçülmedi**.
+
+**Hedefli Golem denemesi** (`tools/golem-trial.mjs`; Lv.20, her denemeden önce 15 Büyük HP İksiri, bot telegraflardan
+kaçar, gerçek oyun döngüsü, ×2 hız):
+
+| Sınıf / donanım | Sonuç |
+|---|---|
+| Warrior, Rare +3 (6 slot) | 1. koşu: **181 sn'de yendi** (13 iksir). Telegraf düzeltmesinden sonra 2. koşu: 1. deneme Golem %9'dayken öldü (173 sn), 2. deneme **181 sn'de yendi** (12 iksir) — belge bandı 180–300 sn ✔ |
+| Mage, Rare +0 | 3 denemede yenemedi; en iyi: Golem %54'te (71 sn). Ölümlerin çoğu Ezici Darbe (1,5 sn telegraf) — bot büyücü bu saldırıdan güvenilir kaçamıyor; Mage'in saf DPS'i Warrior'dan yüksek. **İnsan oyuncuyla Mage–Golem dengesi doğrulanmadı.** |
+
+Golem savaşı iksir tüketimi yüksek (Warrior ~12–13 Büyük HP İksiri ≈ 1.700–1.800 Gold); Golem gold/loot getirisiyle
+birlikte bir sonraki denge turunda değerlendirilmeli.
 
 ## Görsel inceleme
 
@@ -135,8 +164,9 @@ karakter/yaratık/ikon/efekt sayfaları tarayıcıda çalıştırılıp ekran g�
 - **Gerçek cihaz testi yok:** Android/iOS donanımında FPS, dokunmatik his, ses gecikmesi ve tam ekran davranışı doğrulanmadı.
   Safari/WebKit motoru ortamda bulunmadığından test edilmedi. iPhone Safari tam ekran API'sini desteklemez; oyun
   "Ana Ekrana Ekle" ipucu ve yatay çevirme ekranıyla geri düşer.
-- **Lv1→20 tam manuel oynanış (5–8 saat) gerçek zamanlı yapılmadı.** Görev zinciri, seviye ve ödüller birim testlerinde
-  olay bazlı; harita geçişleri, savaş, bosslar ve dungeon tarayıcıda geliştirici araçlarıyla hızlandırılmış senaryolarla doğrulandı.
+- **Lv1→20 tam manuel (insan) oynanış (5–8 saat) yapılmadı.** Yerine oynanış botu gerçek oyun kodu üzerinden görev
+  1–16'yı tamamlayıp Lv.20'ye ulaştı (yukarıda); Golem ayrıca hedefli denemeyle Warrior'la yenildi. Mage–Golem dengesi
+  ve görev 17–18'in bot tarafından uçtan uca oynanması doğrulanmadı (görev zinciri birim testlerinde olay bazlı tamamlanıyor).
 - **Denge:** yukarıdaki tabloda belge hedeflerinden sapmalar açıkça gösterildi; kanonik statlar korunduğu için ince ayar sonraki tura bırakıldı.
 - **Görseller procedural:** el çizimi değil; karakterler 2 yönlü (sağ/sol çevirme) çizilir. Su derin ve geçilmez.
 - **Ses:** WebAudio sentezi; basit efekt/ortam/müzik döngüleri.

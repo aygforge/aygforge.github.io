@@ -1,6 +1,6 @@
 // Otomatik üretildi — Ahen Vadisi çevrimdışı önbellek
-const CACHE = 'ahen-vadisi-d0e37537b2';
-const ASSETS = ["./","./assets/index-BKqWvc6V.css","./assets/index-CR9vtIfL.js","./assets/phaser-DXXWZowi.js","./icons/icon-192.png","./icons/icon-512-maskable.png","./icons/icon-512.png","./index.html","./manifest.webmanifest"];
+const CACHE = 'ahen-vadisi-6c928af24a';
+const ASSETS = ["./","./assets/index-BKqWvc6V.css","./assets/index-CPklxdmB.js","./assets/phaser-DXXWZowi.js","./icons/icon-192.png","./icons/icon-512-maskable.png","./icons/icon-512.png","./index.html","./manifest.webmanifest"];
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting()));
 });

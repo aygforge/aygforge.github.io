@@ -64,6 +64,7 @@ içe aktarılır; hiçbir modül onu içe aktarmadığı için üretim paketine 
 
 ```
 node tools/bot-run.mjs warrior 4 110   # sınıf, oyun hızı çarpanı, gerçek dakika sınırı
+node tools/golem-trial.mjs warrior 3 2  # hedefli Golem denemesi: sınıf, Rare +artı, hız (Lv.20, 15 Büyük HP İksiri)
 ```
 
 Bot dokunarak hedef seçer, telegraflardan kaçar, iksir/ekipman alır, ot toplayıp iksir üretir, ölünce seviye kasar ve

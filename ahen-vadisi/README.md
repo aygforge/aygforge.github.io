@@ -23,10 +23,10 @@ Gereksinim: Node.js 20.19+ (veya 22.12+).
 cd ahen-vadisi
 npm install          # bağımlılıklar (Phaser 3.90, Vite, Vitest, Playwright)
 npm run dev          # geliştirme sunucusu: http://localhost:5173  (aynı ağdaki telefondan: http://<bilgisayar-ip>:5173)
-npm test             # birim testleri (72 test; 100.000–1.000.000 loot simülasyonu dahil)
+npm test             # birim testleri (75 test; 100.000–1.000.000 loot simülasyonu dahil)
 npm run build        # üretim paketi → dist/
 npm run preview      # dist/ klasörünü yerelde sun: http://localhost:4173
-npm run test:e2e     # (önce build) tarayıcıda uçtan uca testler — 49 test
+npm run test:e2e     # (önce build) tarayıcıda uçtan uca testler — 50 test
 npm run package      # release/ altında itch.io ZIP'i ve proje arşivi
 ```
 

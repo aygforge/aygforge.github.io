@@ -4,7 +4,7 @@
 import Phaser from 'phaser';
 import { TILE } from '../data/constants.js';
 import { sound } from '../audio/sound.js';
-import { pointInBeam } from './Enemy.js';
+import { pointInBeam, inTelegraphCircle } from './Enemy.js';
 
 export function makeBossBehavior(e) {
   if (e.tpl.ai === 'boss_alpha') return alphaBehavior(e);
@@ -157,7 +157,7 @@ function golemBehavior(e) {
         e.playAnim('atk');
         sound.play('slam'); sc.fx.shake(0.01, 220);
         sc.fx.sprite('explosion', cx, cy, { scale: 1.2, tint: 0xb0a090 });
-        if (!p.dead && Math.hypot(p.x - cx, p.y - cy) <= r) {
+        if (!p.dead && inTelegraphCircle(p.x, p.y, cx, cy, r)) {
           sc.combat.enemyHitsPlayer(e, { coef: 2.2, label: 'Ezici Darbe' });
           sc.player.stun(1.0);
         }
@@ -183,7 +183,7 @@ function golemBehavior(e) {
         let hit = false;
         for (const s of spots) {
           sc.fx.sprite('ice', s.x, s.y, { scale: 1.1 });
-          if (!hit && !p.dead && Math.hypot(p.x - s.x, p.y - s.y) <= r) hit = true;
+          if (!hit && !p.dead && inTelegraphCircle(p.x, p.y, s.x, s.y, r)) hit = true;
         }
         if (hit) sc.combat.enemyHitsPlayer(e, { coef: 1.6, dmgType: 'magic', label: 'Kristal Patlaması' });
       } };
@@ -199,7 +199,7 @@ function golemBehavior(e) {
         if (e.dead) return;
         sound.play('slam'); sound.play('explosion'); sc.fx.shake(0.016, 450);
         sc.fx.burst(e.x, e.y, 0xa08060, 30, 220, 600);
-        if (!p.dead && Math.hypot(p.x - e.x, p.y - e.y) <= r) {
+        if (!p.dead && inTelegraphCircle(p.x, p.y, e.x, e.y, r)) {
           sc.combat.enemyHitsPlayer(e, { coef: 1.5, label: 'Yer Sarsıntısı' });
           sc.player.slow(0.4, 3);
         }

@@ -8,17 +8,19 @@ import { joy } from '../world/input.js';
 import { MAPS, WAYSTONES } from '../data/maps/index.js';
 import { QUESTS, QUEST_MAP, CLASS_QUESTS } from '../data/quests.js';
 import { ENEMIES } from '../data/enemies.js';
-import { ITEMS, canClassUse } from '../data/items.js';
+import { ITEMS, ITEM_LIST, canClassUse, isUpgradeable } from '../data/items.js';
 import { POTIONS } from '../data/materials.js';
 import { SKILLS, CLASS_SKILLS } from '../data/skills.js';
-import { TILE, SLOTS } from '../data/constants.js';
+import { TILE, SLOTS, cumulativeXp } from '../data/constants.js';
 import { RECIPES } from '../data/recipes.js';
 import { questStatus, isReady, objectiveDone, canInteractQuestObject } from '../systems/quests.js';
-import { statPointsFree, canRankUp } from '../systems/character.js';
+import { statPointsFree, canRankUp, gainExp } from '../systems/character.js';
 import { statsWithItem, computeStats } from '../systems/stats.js';
-import { countStack } from '../systems/inventory.js';
+import { countStack, addStack } from '../systems/inventory.js';
 import { upgradeInfo, repairAllCost, craftCheck } from '../systems/economy.js';
 import { currentStage } from '../systems/dungeon.js';
+import { createItem } from '../systems/loot.js';
+import { Rng } from '../core/rng.js';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms / (app.timeScale || 1)));
 const W = () => app.world;
@@ -235,9 +237,11 @@ async function fightLoop(e, timeout) {
   const t0 = Date.now();
   p.selectTarget(e);
   p.lastTarget = e;
+  const deaths0 = stats.deaths;
   while (!e.dead && Date.now() - t0 < timeout) {
+    if (p.dead) return false;   // ölüm: çağıran yeniden planlar (handleDeath orada)
     await handleDeath();
-    if (P() !== p || p.dead) return false;
+    if (P() !== p || p.dead || stats.deaths !== deaths0) return false;
     if (await dodge()) { p.selectTarget(e); continue; }
     const de = dangerNear(p.x, p.y, 7);
     if (de && de !== e) { log(`kaçış: ${de.tpl.name} (Lv${de.tpl.level})`); await flee(de); return false; }
@@ -245,6 +249,14 @@ async function fightLoop(e, timeout) {
     if (!hpLeft && C().hp / app.stats().maxHp < 0.22 && e.tpl.kind !== 'boss' && e.hp / e.maxHp > 0.3) { log('iksir yok, HP kritik → geri çekil'); await flee(e); return false; }
     if (!p.target) p.selectTarget(e);
     if (p.target !== e && p.target && !p.target.dead) e = p.target;
+    // Mage mesafe korur (kiting): yakın dövüşçü 2,8 tile içine girince kısa süre uzaklaş; hedef korunur
+    if (C().cls === 'mage' && (e.tpl.kind === 'boss' || e.tpl.kind === 'elite') && Math.hypot(e.x - p.x, e.y - p.y) < 2.8 * TILE) {
+      const ax = p.x - e.x, ay = p.y - e.y, n = Math.hypot(ax, ay) || 1;
+      joy.active = true; joy.x = ax / n; joy.y = ay / n;
+      await sleep(700);
+      joy.active = false; joy.x = 0; joy.y = 0;
+      continue;
+    }
     // boss savaşında yakındaki çağrıları önce temizle
     if (e.tpl.kind === 'boss') {
       const add = W().enemies.find((x) => !x.dead && x.summoned && x.tpl.ai !== 'static' && Math.hypot(x.x - p.x, x.y - p.y) < 2.5 * TILE);
@@ -601,6 +613,53 @@ export async function runStory({ maxMinutes = 600 } = {}) {
   }
   log(`BİTTİ. Ölüm: ${stats.deaths}, öldürme: ${stats.kills}, Lv ${C().level}`);
   return { log: LOG, stats, char: { level: C().level, gold: C().gold, quests: Object.keys(C().quests).length, titles: C().titles, mastery: C().mastery, legend: C().record.legendaries } };
+}
+
+// Hedefli Golem denemesi (yalnız geliştirme): belge §5'teki "Lv.20 Warrior Rare +3/+4" donanımıyla
+// gerçek savaş — bot telegraflardan kaçar, iksir kullanır; süre oyun saatiyle ölçülür.
+export async function golemTrial({ plus = 3, hpPotions = 15, maxDeaths = 3 } = {}) {
+  stopFlag = false;
+  const ch = C(), rng = new Rng(2026);
+  gainExp(ch, Math.max(0, cumulativeXp(20) - ch.exp));
+  ch.world.dungeonUnlocked = true;
+  for (const slot of SLOTS) {
+    const opts = ITEM_LIST.filter((t) => t.slot === slot && canClassUse(t, ch.cls) && t.lv <= 20 && t.allowedRarities.includes('R'));
+    if (slot === 'offhand' && ITEMS[ch.equipment.weapon?.tid]?.hand === 'two') { ch.equipment.offhand = null; continue; }
+    const pref = slot === 'weapon' ? opts.filter((t) => t.hand !== 'two') : opts;
+    const t = (pref.length ? pref : opts).sort((a, b) => b.lv - a.lv)[0];
+    if (!t) continue;
+    const it = createItem(t.id, 'R', rng);
+    if (isUpgradeable(t)) it.p = plus;
+    ch.equipment[slot] = it;
+  }
+  addStack(ch.bag, 'hp_l', hpPotions); addStack(ch.bag, 'mp_l', 10);
+  app.changed('equip');
+  await manage();
+  const gear = SLOTS.map((sl) => ch.equipment[sl] && `${ITEMS[ch.equipment[sl].tid].name}+${ch.equipment[sl].p}`).filter(Boolean).join(', ');
+  log(`Golem denemesi: Lv${ch.level} ${ch.cls} · ${gear} · HP ${app.stats().maxHp}`);
+  W().changeMap('dungeon', null, { enterDungeon: true });
+  await waitWorld('dungeon');
+  for (const st of [1, 2, 3]) { for (const e of W().enemies) if (!e.dead && e.stage === st) W().spawner.despawn(e); W().checkStageCleared(st); }
+  const cp = MAPS.dungeon.entries.checkpoint;
+  P().x = cp.x * TILE + 16; P().y = cp.y * TILE + 16;
+  const res = { attempts: [] };
+  for (let attempt = 1; attempt <= maxDeaths + 1; attempt++) {
+    await until(() => W().enemies.some((e) => !e.dead && e.tpl.id === 'mine_golem'), 30000);
+    const g = W().enemies.find((e) => !e.dead && e.tpl.id === 'mine_golem');
+    const t0 = W().clock, pot0 = countStack(C().bag, 'hp_l'), d0 = stats.deaths;
+    await goTo(Math.floor(g.x / TILE), Math.floor(g.y / TILE), 6);
+    await fight(g, 1800000);
+    const sec = Math.round((W().clock - t0) / 1000);
+    const a = { attempt, won: g.dead, sec, golemHpPct: Math.round(100 * Math.max(0, g.hp) / g.maxHp), potionsUsed: pot0 - countStack(C().bag, 'hp_l') };
+    res.attempts.push(a);
+    log(`Golem denemesi #${attempt}: ${g.dead ? 'YENİLDİ' : 'ölüm'} · ${sec} sn oyun · Golem HP %${a.golemHpPct} · iksir ${a.potionsUsed}`);
+    if (g.dead || (!P().dead && stats.deaths === d0)) break;
+    await handleDeath();
+    // her denemeden önce oyuncu gibi ikmal: iksirler yeniden tamamlanır
+    addStack(C().bag, 'hp_l', Math.max(0, hpPotions - countStack(C().bag, 'hp_l')));
+    if (attempt >= maxDeaths) break;
+  }
+  return res;
 }
 
 export function stop() { stopFlag = true; }

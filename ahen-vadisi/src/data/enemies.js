@@ -70,7 +70,7 @@ export const ENEMIES = {
   }),
   mist_witch: N({
     id: 'mist_witch', name: 'Sis Cadısı', level: 18, hp: 390, atk: 78, def: 22, mdef: 35, exp: 190,
-    species: 'humanoid', ai: 'ranged', aggro: 5, leash: 13, speed: 2.8, attackInterval: 2.1, attackRange: 5.5,
+    species: 'humanoid', ai: 'ranged', aggro: 4.5, leash: 13, speed: 2.8, attackInterval: 2.1, attackRange: 5.5,
     dmgType: 'magic', respawn: 28, radius: 0.4, sprite: 'witch', projectile: 'mist_bolt', flying: true,
     poison: { pct: 0.10, dur: 4, chance: 0.35 },
     materials: [{ id: 'toxic_crystal', w: 1 }],

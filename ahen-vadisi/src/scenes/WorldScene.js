@@ -448,6 +448,7 @@ export class WorldScene extends Phaser.Scene {
     if (this.time.timeScale !== speed) { this.time.timeScale = speed; this.tweens.timeScale = speed; this.anims.globalTimeScale = speed; }
     const dt = Math.min(0.05, delta / 1000) * speed;
     this.clock += dt * 1000;
+    this.steps = (this.steps || 0) + 1;   // oyun adımı sayacı (FPS sınırı doğrulaması)
     const ch = app.char;
     if (!ch) return;
     ch.world.activeTime += dt;

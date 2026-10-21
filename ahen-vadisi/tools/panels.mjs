@@ -1,7 +1,9 @@
 // Arayüz panellerinin ekran görüntüleri (görsel inceleme)
 import { chromium } from 'playwright';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 const url = process.argv[2] || 'http://localhost:5173/?dev=1';
-const out = '/tmp/claude-0/pn';
+const out = join(tmpdir(), 'ahen-panels');
 const b = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader'] });
 const ctx = await b.newContext({ viewport: { width: 844, height: 390 }, isMobile: true, hasTouch: true });
 const p = await ctx.newPage();
