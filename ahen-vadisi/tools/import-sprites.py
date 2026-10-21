@@ -13,6 +13,7 @@ Her paket için:
   * her animasyon public/sprites/<id>/<anim>.png yatay şeridi olarak yazılır,
   * src/art/spritePacks.js meta veri modülü üretilir.
 """
+import colorsys
 import glob
 import json
 import os
@@ -26,12 +27,13 @@ from aseprite import load as load_aseprite  # noqa: E402
 
 # Animasyon kaynağı biçimleri (PACKS[...]['anims'][ad] = (kaynak, fps, tekrar)):
 #   'Run'                                   → yatay şerit dosyası Run.png (kare boyu pack['frame'])
+#   {'strip': 'Attack3', 'frames': [0, 1, 2]} → şeritten seçilen kareler (aynı kare tekrar edebilir)
 #   {'files': 'Run/LightBandit_Run'}        → tek tek kare dosyaları LightBandit_Run_0.png, _1.png …
 #   {'ase': 'Massacre.aseprite', 'from': 1, 'to': 6}  → Aseprite karelerinin aralığı (görünür katmanlar birleşik)
 #   {'derive': 'bob' | 'flash' | 'collapse', 'of': 'idle'} → pakette olmayan animasyonu var olandan türet
 #   Her dict kaynakta 'reverse': True kareleri ters çevirir.
 # Paket seçenekleri: 'flip': True (sola bakan paketi sağa çevir), 'scale' (boy yerine sabit ölçek; tam sayıya yakın
-# ölçek piksel sanatı bozmaz), 'credit_file' (lisans/EULA dosyası, LICENSE.txt olarak kopyalanır).
+# ölçek piksel sanatı bozmaz), 'hue' (doymuş pikselleri hedef renk tonuna çevir, ör. mor akrebi kızıla), 'credit_file' (lisans/EULA dosyası, LICENSE.txt olarak kopyalanır).
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_DIR = os.path.join(ROOT, 'public', 'sprites')
@@ -82,12 +84,56 @@ PACKS = {
                   'hurt': ({'ase': 'Massacre.aseprite', 'from': 12, 'to': 15}, 14, 0),
                   'die': ({'ase': 'Massacre.aseprite', 'from': 16, 'to': 22}, 10, 0)},
     },
-    # Goblin Pack 1: Kazmacı Goblin = Goblin Barbarian (ağır satır). Pakette yalnız bekleme + saldırı var.
+    # Monster Creatures Fantasy 1.3 (LuizMelo): elimizdeki sürüm yalnız "Attack3" şeritlerini içerir; bekleme ve saldırı bu
+    # şeridin karelerinden seçilir ('frames'), yürüme/darbe/ölüm türetilir. Tam paket gelince yalnız bu tanımlar değişir.
     'mon_pick_goblin': {
-        'name': 'Goblin Pack 1 — Goblin Barbarian', 'dir': 'Goblin_Pack_1', 'frame': (80, 64), 'scale': 1.5, 'license': None,
-        'anims': {'idle': ({'ase': 'GoblinBarbarian.aseprite', 'from': 0, 'to': 5}, 6, -1),
-                  'walk': ({'derive': 'bob', 'of': 'idle'}, 10, -1),
-                  'atk': ({'ase': 'GoblinBarbarian.aseprite', 'from': 6, 'to': 9}, 10, 0),
+        'name': 'Monster Creatures Fantasy — Goblin (LuizMelo)', 'dir': 'Monster_Creatures_Fantasy/Goblin', 'frame': (150, 150),
+        'scale': 1.0, 'license': None,
+        'anims': {'idle': ({'strip': 'Attack3', 'frames': [0, 1, 2, 3, 4, 5]}, 7, -1),
+                  'walk': ({'derive': 'bob', 'of': 'idle'}, 11, -1),
+                  'atk': ({'strip': 'Attack3', 'frames': [3, 4, 5, 6, 6, 0]}, 14, 0),
+                  'hurt': ({'derive': 'flash', 'of': 'idle'}, 10, 0),
+                  'die': ({'derive': 'collapse', 'of': 'idle'}, 10, 0)},
+    },
+    'mon_thorn_rootling': {
+        'name': 'Monster Creatures Fantasy — Mushroom (LuizMelo)', 'dir': 'Monster_Creatures_Fantasy/Mushroom', 'frame': (150, 150),
+        'scale': 1.0, 'license': None,
+        'anims': {'idle': ({'strip': 'Attack3', 'frames': [0, 1, 2, 1]}, 5, -1),
+                  'walk': ({'derive': 'bob', 'of': 'idle'}, 9, -1),
+                  'atk': ({'strip': 'Attack3', 'frames': [3, 4, 5, 6, 7, 8, 9, 10]}, 16, 0),
+                  'hurt': ({'derive': 'flash', 'of': 'idle'}, 10, 0),
+                  'die': ({'derive': 'collapse', 'of': 'idle'}, 10, 0)},
+    },
+    'mon_rotten_guard': {
+        'name': 'Monster Creatures Fantasy — Skeleton (LuizMelo)', 'dir': 'Monster_Creatures_Fantasy/Skeleton', 'frame': (150, 150),
+        'scale': 1.0, 'license': None,
+        'anims': {'idle': ({'strip': 'Attack3', 'frames': [0, 1]}, 3, -1),
+                  'walk': ({'derive': 'bob', 'of': 'idle'}, 8, -1),
+                  'atk': ({'strip': 'Attack3', 'frames': [2, 3, 4, 5, 5]}, 10, 0),
+                  'hurt': ({'derive': 'flash', 'of': 'idle'}, 10, 0),
+                  'die': ({'derive': 'collapse', 'of': 'idle'}, 10, 0)},
+    },
+    # Kızıl Damar Gözcüsü (elit) = Flying Eye, kızıla boyanır; kanat çırpma bekleme, top olup atılma saldırı
+    'mon_red_vein_watcher': {
+        'name': 'Monster Creatures Fantasy — Flying Eye (LuizMelo)', 'dir': 'Monster_Creatures_Fantasy/Flying eye', 'frame': (150, 150),
+        'scale': 2.0, 'hue': '#b8303a', 'license': None,
+        'anims': {'idle': ({'strip': 'Attack3', 'frames': [4, 5, 4, 3]}, 7, -1),
+                  'walk': ({'strip': 'Attack3', 'frames': [4, 5, 4, 3]}, 11, -1),
+                  'atk': ({'strip': 'Attack3', 'frames': [3, 0, 1, 2, 0, 3]}, 12, 0),
+                  'hurt': ({'derive': 'flash', 'of': 'idle'}, 10, 0),
+                  'die': ({'derive': 'collapse', 'of': 'idle'}, 10, 0)},
+    },
+    # Monsters Creatures Fantasy 2 — Slime: Bataklık Sülüğü
+    'mon_swamp_leech': {
+        'name': 'Monsters Creatures Fantasy 2 — Slime (LuizMelo)', 'dir': 'Monsters Creatures Fantasy 2/Slime', 'frame': (156, 156),
+        'scale': 1.0, 'license': None,
+        'anims': {'idle': ('idle', 10, -1), 'walk': ('walk', 10, -1), 'atk': ('attack', 22, 0),
+                  'hurt': ('hurt', 12, 0), 'die': ('death', 12, 0)},
+    },
+    # Scorpian (32×32): Kızıl Akrep — mor akrep kızıla boyanır; pakette darbe/ölüm yok
+    'mon_crimson_scorpion': {
+        'name': 'Scorpian', 'dir': 'Scorpian', 'frame': (32, 32), 'scale': 1.5, 'hue': '#c8382a', 'license': None,
+        'anims': {'idle': ('Idel', 5, -1), 'walk': ('Walk', 9, -1), 'atk': ('Attack', 9, 0),
                   'hurt': ({'derive': 'flash', 'of': 'idle'}, 10, 0),
                   'die': ({'derive': 'collapse', 'of': 'idle'}, 10, 0)},
     },
@@ -117,7 +163,10 @@ _ase_cache = {}
 def load_source(base, spec, fw, fh):
     if isinstance(spec, str):
         return frames_of(os.path.join(base, spec + '.png'), fw, fh)
-    if 'files' in spec:
+    if 'strip' in spec:
+        allf = frames_of(os.path.join(base, spec['strip'] + '.png'), fw, fh)
+        frs = [allf[i].copy() for i in spec['frames']]
+    elif 'files' in spec:
         frs = numbered(os.path.join(base, spec['files']))
     elif 'ase' in spec:
         path = os.path.join(base, spec['ase'])
@@ -162,6 +211,23 @@ def derive(kind, src):
     raise ValueError(kind)
 
 
+def recolor(fr, color):
+    """Doymuş piksellerin tonunu hedef renge çevirir (parlaklık ve doygunluk korunur, gri/siyah dış hat değişmez)."""
+    h = color.lstrip('#')
+    th = colorsys.rgb_to_hsv(*(int(h[i:i + 2], 16) / 255 for i in (0, 2, 4)))[0]
+    px = fr.load()
+    for y in range(fr.height):
+        for x in range(fr.width):
+            r, g, b, a = px[x, y]
+            if not a:
+                continue
+            _, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
+            if s > 0.15:
+                r, g, b = (round(c * 255) for c in colorsys.hsv_to_rgb(th, s, v))
+                px[x, y] = (r, g, b, a)
+    return fr
+
+
 def union(boxes):
     boxes = [b for b in boxes if b]
     return (min(b[0] for b in boxes), min(b[1] for b in boxes), max(b[2] for b in boxes), max(b[3] for b in boxes))
@@ -191,6 +257,8 @@ def main(src):
             frs = load_source(base, spec, fw, fh)
             if p.get('flip'):
                 frs = [ImageOps.mirror(fr) for fr in frs]
+            if p.get('hue'):
+                frs = [recolor(fr, p['hue']) for fr in frs]
             # tamamen boş kareleri at (bazı şeritlerin sonunda boş kare olabilir)
             raw[a] = [fr for fr in frs if fr.getbbox()] or frs[:1]
         for a, (spec, _, _) in p['anims'].items():

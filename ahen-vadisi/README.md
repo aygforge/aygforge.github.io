@@ -9,9 +9,9 @@ Donmuş Muhafız'ı yen, zindanlara sınırsız gir ve Legendary avına çık.
 V1 kayıtları V2'de otomatik ve kayıpsız açılır (geçişten önceki kayıt `v1_backup` olarak saklanır).
 Değişiklikler: [`docs/CHANGELOG.md`](docs/CHANGELOG.md) · V2 mimarisi ve bilinen sınırlamalar: [`docs/V2_NOTLARI.md`](docs/V2_NOTLARI.md)
 
-Oyuncu karakterleri (Warrior, Mage), Cevher Rahibi, Çayır Sıçanı ve Mağara Yarasası LuizMelo'nun sprite paketleriyle çizilir
-(`public/sprites/`, kaynaklar: [`docs/CREDITS.md`](docs/CREDITS.md)). Diğer tüm görseller (V2'nin 12 yeni yaratık/elit/boss
-sprite'ı, NPC'ler, kül/kar/buz tile set'leri, efektler) ve bütün sesler **oyun açılırken kodla (procedural) üretilir**.
+Oyuncu karakterleri (Warrior, Mage) ve V1 yaratıklarının çoğu hazır sprite paketleriyle çizilir
+(`public/sprites/`, kaynaklar: [`docs/CREDITS.md`](docs/CREDITS.md)). Diğer tüm görseller (Kızıl Akrep dışındaki V2 yaratık/elit/boss
+sprite'ları, NPC'ler, kül/kar/buz tile set'leri, efektler) ve bütün sesler **oyun açılırken kodla (procedural) üretilir**.
 Eşya, materyal ve beceri ikonlarının çoğu Clockwork Raven Studios ikon paketlerinden alınır (`src/art/iconPack.js`).
 Ayarlar → "Kahraman görünümü: Ekipman görünür (piksel)" seçeneği giyilen silah/zırhı gösteren piksel kahramanı kullanır.
 Sprite paketi yüklenemezse oyun otomatik olarak procedural karaktere geri döner.

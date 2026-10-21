@@ -93,7 +93,7 @@ export const ENEMIES = {
   red_vein_watcher: {
     id: 'red_vein_watcher', normalCoef: 0.7, name: 'Kızıl Damar Gözcüsü', kind: 'elite', level: 15, hp: 2200, atk: 84, def: 40, mdef: 25, exp: 500,
     species: 'construct', ai: 'elite', aggro: 6, leash: 14, speed: 2.6, attackInterval: 1.9, attackRange: 1.8,
-    dmgType: 'phys', radius: 0.65, sprite: 'watcher', lootTable: 'elite', gold: [45, 80],
+    dmgType: 'phys', radius: 0.65, sprite: 'watcher', flying: true, lootTable: 'elite', gold: [45, 80],
     guaranteed: [{ id: 'watcher_seal', qty: [1, 1] }],
     abilities: ['crystal_beam'], materials: [{ id: 'magic_ore', w: 1 }],
   },
@@ -110,7 +110,7 @@ export const ENEMIES = {
     id: 'watcher_empowered', normalCoef: 0.7, name: 'Güçlendirilmiş Gözcü', variantOf: 'red_vein_watcher', kind: 'elite', level: 18,
     hp: 3300, atk: 100, def: 48, mdef: 30, exp: 650,
     species: 'construct', ai: 'elite', aggro: 7, leash: 16, speed: 2.7, attackInterval: 1.8, attackRange: 1.8,
-    dmgType: 'phys', radius: 0.7, sprite: 'watcher', tint: 0xff9a9a, lootTable: 'elite', gold: [60, 100],
+    dmgType: 'phys', radius: 0.7, sprite: 'watcher', packId: 'mon_red_vein_watcher', flying: true, tint: 0xff9a9a, lootTable: 'elite', gold: [60, 100],
     guaranteed: [{ id: 'watcher_seal', qty: [2, 2] }],
     abilities: ['crystal_beam'], materials: [{ id: 'magic_ore', w: 1 }],
   },
