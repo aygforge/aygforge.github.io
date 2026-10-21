@@ -57,6 +57,14 @@ görsel `src/art/*` (procedural), dünya ve arayüz bu ikisini okur. Yeni içeri
 `data/constants.js → SCHEMA_VERSION` artırın ve `save/serialize.js → migrate()` içine `if (fromVersion < N) { ... }`
 dönüşümü yazın. Doğrulama (`validateProfile`) yeni alanları kontrol etmeli. Snapshot ve checksum mekanizması değişmez.
 
+## Hazır sprite paketi ekleme
+
+1. Ham paketi bir klasöre açın; `tools/import-sprites.py` içindeki `PACKS` sözlüğüne kayıt ekleyin
+   (id: oyuncu için `hero_<sınıf>`, yaratık için `mon_<yaratık_id>`; kare boyutu, hedef boy, animasyon eşlemesi).
+2. `python3 tools/import-sprites.py <ham_klasör>` → `public/sprites/<id>/*.png` ve `src/art/spritePacks.js` üretilir.
+3. Oyuncu ve `Enemy` paketi kendiliğinden kullanır (animasyonlar: idle, walk, atk, atk2, cast, hurt, die);
+   paket yoksa procedural çizim kullanılır. Kaynağı `docs/CREDITS.md` ve Ayarlar → Emeği geçenler'e ekleyin.
+
 ## Doğrulama botu (yalnız geliştirme)
 
 `src/dev/bot.js` ana görev zincirini gerçek oyun kodu üzerinden oynayan bir test botudur (yalnız geliştirme sunucusunda `/src/dev/bot.js` olarak

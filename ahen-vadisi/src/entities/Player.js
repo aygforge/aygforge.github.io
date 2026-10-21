@@ -11,6 +11,7 @@ import { ITEMS } from '../data/items.js';
 import { POTION_LIST } from '../data/materials.js';
 import { countStack, removeStack } from '../systems/inventory.js';
 import { ensurePlayerTexture } from '../scenes/textures.js';
+import { spritePack, animDuration } from '../art/spriteRuntime.js';
 import { handAnchor } from '../art/characters.js';
 import { sound } from '../audio/sound.js';
 
@@ -62,6 +63,17 @@ export class Player {
 
   refreshLook() {
     const ch = this.char;
+    // hazır sprite paketi varsa (hero_warrior / hero_mage) onu kullan; silah/kalkan sprite'a çizili
+    this.pack = spritePack('hero_' + ch.cls);
+    if (this.pack) {
+      const p = this.pack;
+      this.texKey = p.id;
+      this.body.setTexture(`${p.id}:idle`, 0).setOrigin(p.ox, p.oy).clearTint();
+      this.body.play(p.id + '_idle');
+      this.weapon.setVisible(false); this.offhand.setVisible(false);
+      return;
+    }
+    this.body.setOrigin(0.5, 28.5 / 30);
     const key = ensurePlayerTexture(this.scene, ch.cls, ch.equipment);
     this.texKey = key;
     this.body.setTexture(key, 'idle0');
@@ -257,7 +269,8 @@ export class Player {
     this.face(t.x - this.x);
     this.lastCombatAt = this.scene.clock;
     if (st.damageType === 'phys') {
-      this.playAction('_atk', 0.3);
+      this.altSwing = !this.altSwing;
+      this.playAction('_atk', 0.3, this.altSwing ? 'atk' : 'atk2');
       this.swing = { t: 0, dur: 0.26 };
       sound.play('swing');
       this.scene.time.delayedCall(140, () => {
@@ -266,7 +279,7 @@ export class Player {
         this.scene.combat.playerNormalHit(t);
       });
     } else {
-      this.playAction('_cast', 0.25);
+      this.playAction('_cast', 0.25, 'atk');
       this.scene.time.delayedCall(120, () => {
         if (this.dead || t.dead) return;
         sound.play('bolt');
@@ -275,9 +288,20 @@ export class Player {
     }
   }
 
-  playAction(suffix, dur) {
+  // packAnim: hazır sprite paketinde oynatılacak animasyon (varsayılan: güçlü saldırı 'cast')
+  playAction(suffix, dur, packAnim = 'cast') {
+    if (this.pack) {
+      this.busy = Math.min(0.6, Math.max(dur, animDuration(this.pack.id, packAnim) * 0.85));
+      this.body.play(`${this.pack.id}_${packAnim}`, false);
+      return;
+    }
     this.busy = dur;
     this.body.play(this.texKey + suffix, true);
+  }
+
+  // hasar alınca kısa sarsılma animasyonu (yalnız boştayken; saldırıyı kesmez)
+  onHurt() {
+    if (this.pack && !this.dead && this.busy <= 0) { this.busy = Math.min(0.2, animDuration(this.pack.id, 'hurt')); this.body.play(`${this.pack.id}_hurt`, false); }
   }
 
   skillCost(id) {
@@ -573,6 +597,8 @@ export class Player {
     c.setPosition(Math.round(this.x), Math.round(this.y));
     c.setDepth(100 + this.y);
     c.scaleX = this.facing;
+    if (now < this.stunUntil) c.setAngle(Math.sin(now / 60) * 3); else if (!this.dead) c.setAngle(0);
+    if (this.pack) return;
     const frameName = this.body.frame?.name || 'idle0';
     const [hx, hy] = handAnchor(typeof frameName === 'string' ? frameName : 'idle0', true);
     const [bx, by] = handAnchor(typeof frameName === 'string' ? frameName : 'idle0', false);
@@ -591,7 +617,6 @@ export class Player {
     this.offhand.setPosition((bx - 12) * 2, (by - 28.5) * 2);
     const twoH = this.stats.twoHanded;
     this.offhand.setVisible(!!this.char.equipment.offhand && !twoH);
-    if (now < this.stunUntil) c.setAngle(Math.sin(now / 60) * 3); else c.setAngle(0);
   }
 
   die() {
@@ -599,9 +624,12 @@ export class Player {
     this.dead = true;
     this.approaching = false; this.target = null; this.interact = null; this.channel = null;
     this.poison = null; this.buffs = {};
-    this.body.stop();
-    this.scene.tweens.add({ targets: this.container, angle: this.facing > 0 ? -85 : 85, duration: 500, ease: 'Quad.in' });
-    this.body.setTint(0x806070);
+    if (this.pack) this.body.play(`${this.pack.id}_die`, false);
+    else {
+      this.body.stop();
+      this.scene.tweens.add({ targets: this.container, angle: this.facing > 0 ? -85 : 85, duration: 500, ease: 'Quad.in' });
+      this.body.setTint(0x806070);
+    }
     sound.play('death');
   }
 

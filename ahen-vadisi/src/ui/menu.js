@@ -5,6 +5,7 @@ import { app } from '../core/app.js';
 import { bus } from '../core/events.js';
 import { drawMenuScene } from '../art/scenery.js';
 import { humanSheet, playerLook } from '../art/characters.js';
+import { packPreviewCanvas } from '../art/spriteRuntime.js';
 import { CLASSES } from '../data/classes.js';
 import { MAPS } from '../data/maps/index.js';
 import { createCharacter, validateName } from '../systems/character.js';
@@ -67,7 +68,7 @@ function menuSettings() {
 }
 
 function previewCanvas(cls, equipment, scale = 4) {
-  return humanSheet(playerLook(cls, equipment))[0].toCanvas(scale);
+  return packPreviewCanvas('hero_' + cls, 30 * scale) || humanSheet(playerLook(cls, equipment))[0].toCanvas(scale);
 }
 
 export function showCharSelect(onPlay) {

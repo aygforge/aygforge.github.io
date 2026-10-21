@@ -156,7 +156,7 @@ try {
   const pos2 = await ev(page, async () => {
     const w = window.__AHEN.world, cam = w.cameras.main, r = window.__T, p = w.player;
     for (const [dx, dy] of [[64, 0], [-64, 0], [0, -64], [0, 64], [64, -64]]) if (!w.grid.blockedAt(p.x + dx, p.y + dy)) { r.x = p.x + dx; r.y = p.y + dy; break; }
-    r.state = 'idle'; r.wanderGoal = null; r.wanderTimer = 99; r.sync?.();
+    r.home = { x: r.x, y: r.y }; r.state = 'idle'; r.wanderGoal = null; r.wanderTimer = 99; r.sync?.();
     await new Promise((res) => requestAnimationFrame(() => requestAnimationFrame(res)));
     return { x: (r.x - cam.worldView.x) * cam.zoom, y: (r.y - r.height / 2 - cam.worldView.y) * cam.zoom };
   });
@@ -326,6 +326,8 @@ try {
   await page.tap('[data-testid=enter-world]');
   await waitMap(page, 'forest');
   record('Kayıttan dünyaya dönüş (aynı harita)', true);
+  const spr = await ev(page, () => { const w = window.__AHEN.world; const pr = w.spawner.spawnEnemy('ore_priest', w.player.x + 200, w.player.y); const r = { hero: w.player.pack?.id, priest: pr.pack?.id, tex: w.player.body.texture.key }; w.spawner.despawn(pr); return r; });
+  record('Hazır sprite paketleri yüklenir (Warrior: Fantasy Warrior, Cevher Rahibi: Evil Wizard 2)', spr.hero === 'hero_warrior' && spr.priest === 'mon_ore_priest' && spr.tex.startsWith('hero_warrior'), JSON.stringify(spr));
 
   // ------------------------------------------------------------------ 5) Performans: yoğunluk ve boss
   const perf = async (label) => ev(page, async (label) => {
@@ -433,6 +435,8 @@ try {
       return { dead: r.dead, mpUsed: mp0 - a.char.mp, attackDistTiles: +(maxDist / 32).toFixed(1) };
     });
     record('Mage uzaktan saldırır ve normal büyü MP harcamaz', res.dead && res.attackDistTiles > 3 && res.mpUsed <= 0, JSON.stringify(res));
+    const mpack = await ev(pm, () => window.__AHEN.world.player.pack?.id);
+    record('Mage hazır sprite paketiyle çizilir (Wizard Pack)', mpack === 'hero_mage', String(mpack));
     await pm.screenshot({ path: join(shots, 'mage-forest.png') });
     record('Konsol hatası yok (mage)', pm.errors.length === 0, pm.errors.slice(0, 2).join(' | '));
     await ctx.close();

@@ -63,7 +63,11 @@ export function settingsTab(rerender) {
     h('button', { class: 'btn red', onTap: () => ui.confirm({ title: 'Ana menü', text: 'Oyun kaydedilip ana menüye dönülecek.', ok: 'Dön', onOk: () => bus.emit('exitToMenu') }) }, 'Ana menüye dön'),
     h('span', { class: 'tiny muted grow' }, 'Ahen Vadisi V1 · Tüm ilerleme otomatik kaydedilir.'));
   void rerender;
-  return h('div', { class: 'col grow scroll' }, general, potion, backup, exit);
+  const credits = h('div', { class: 'box col small' },
+    h('b', { class: 'gold' }, 'Emeği geçenler'),
+    h('div', {}, 'Karakter ve Cevher Rahibi sprite\'ları: LuizMelo (luizmelo.itch.io) — Fantasy Warrior, Wizard Pack, Evil Wizard 2 (CC0).'),
+    h('div', { class: 'muted' }, 'Diğer tüm görseller, sesler ve müzik oyun içinde procedural olarak üretilir.'));
+  return h('div', { class: 'col grow scroll' }, general, potion, backup, credits, exit);
 }
 
 export function exportSave() {

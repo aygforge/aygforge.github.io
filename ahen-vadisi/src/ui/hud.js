@@ -7,6 +7,7 @@ import { bus } from '../core/events.js';
 import { iconURL } from '../art/icons.js';
 import { createJoystick } from './joystick.js';
 import { humanSheet, playerLook } from '../art/characters.js';
+import { packPreviewCanvas } from '../art/spriteRuntime.js';
 import { SKILLS, CLASS_SKILLS } from '../data/skills.js';
 import { POTION_LIST } from '../data/materials.js';
 import { QUEST_MAP } from '../data/quests.js';
@@ -153,7 +154,12 @@ export function createHud() {
     else xpBar.firstChild.style.width = `${(ch.exp / xpToNext(ch.level)) * 100}%`;
     lvl.textContent = ch.level;
     const lk = Object.values(ch.equipment).map((e) => e?.tid).join();
-    if (portrait.dataset.k !== lk) { portrait.dataset.k = lk; portrait.style.backgroundImage = `url(${humanSheet(playerLook(ch.cls, ch.equipment))[0].toCanvas(2).toDataURL()})`; }
+    if (portrait.dataset.k !== lk) {
+      portrait.dataset.k = lk;
+      const pc = packPreviewCanvas('hero_' + ch.cls, 80, true);
+      portrait.style.backgroundImage = `url(${(pc || humanSheet(playerLook(ch.cls, ch.equipment))[0].toCanvas(2)).toDataURL()})`;
+      portrait.classList.toggle('pk', !!pc);
+    }
     // hedef
     const t = w.player.target;
     if (t && !t.dead && t.tpl.kind !== 'boss') {

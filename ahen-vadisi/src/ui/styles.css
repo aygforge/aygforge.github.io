@@ -116,6 +116,7 @@ input.name { font: inherit; font-size: 1.1rem; padding: 10px 12px; border-radius
 .hud-tl { position: absolute; left: calc(8px + var(--sal)); top: calc(6px + var(--sat)); width: min(250px, 30vw); display: flex; flex-direction: column; gap: 4px; }
 .vit { display: flex; gap: 6px; align-items: stretch; }
 .vit .pt { width: 44px; height: 44px; border-radius: 8px; border: 2px solid var(--edge); background: #1a1418 center 2px / 40px auto no-repeat; position: relative; flex: none; image-rendering: pixelated; }
+.vit .pt.pk { background-position: center; background-size: cover; }
 .vit .pt b { position: absolute; right: -6px; bottom: -6px; background: #3a2010; border: 2px solid var(--gold); color: var(--gold2); border-radius: 10px; font-size: .72rem; padding: 0 5px; }
 .bars { flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .bar { position: relative; height: 14px; border-radius: 5px; background: rgba(10,6,10,.85); border: 1px solid #000; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }

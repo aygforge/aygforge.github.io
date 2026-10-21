@@ -160,6 +160,7 @@ export class CombatRuntime {
       sound.play('hurt');
       p.body.setTintFill(0xff4040);
       this.scene.time.delayedCall(80, () => { if (!p.dead) p.body.clearTint(); });
+      p.onHurt?.();
       p.cancelChannel();
     }
     if (ch.hp <= 0) { ch.hp = 0; this.scene.onPlayerDeath(); return; }

@@ -5,6 +5,7 @@ import { app } from '../../core/app.js';
 import { bus } from '../../core/events.js';
 import { iconURL } from '../../art/icons.js';
 import { humanSheet, playerLook } from '../../art/characters.js';
+import { packPreviewCanvas } from '../../art/spriteRuntime.js';
 import { SLOTS, SLOT_NAMES, xpToNext, MAX_LEVEL, TILE } from '../../data/constants.js';
 import { CLASSES } from '../../data/classes.js';
 import { SKILLS, CLASS_SKILLS, maxRank, rankUpCost } from '../../data/skills.js';
@@ -50,9 +51,10 @@ export function openGameMenu(tab = 'inventory') {
 }
 
 export function charPreview(ch, scale = 3) {
+  const pack = packPreviewCanvas('hero_' + ch.cls, 30 * scale);
+  if (pack) return pack;
   const pb = humanSheet(playerLook(ch.cls, ch.equipment))[0];
-  const c = pb.toCanvas(scale);
-  return c;
+  return pb.toCanvas(scale);
 }
 
 // ------------------------------------------------------------------ ENVANTER

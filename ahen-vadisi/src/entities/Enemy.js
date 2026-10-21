@@ -4,6 +4,7 @@ import Phaser from 'phaser';
 import { TILE, TG_SQUASH } from '../data/constants.js';
 import { sound } from '../audio/sound.js';
 import { makeBossBehavior } from './bosses.js';
+import { spritePack, animDuration } from '../art/spriteRuntime.js';
 
 let NEXT_ID = 1;
 const SCALE = { captain: 1.2, executioner: 1.35 };
@@ -41,18 +42,22 @@ export class Enemy {
     this.leashR = (tpl.leash || 12) * TILE;
     if (opts.leashR) this.leashR = opts.leashR;
 
-    const key = 'mon_' + tpl.sprite;
+    // hazır sprite paketi (ör. mon_ore_priest) varsa onu, yoksa procedural dokuyu kullan
+    this.pack = spritePack('mon_' + tpl.id);
+    const key = this.pack ? this.pack.id : 'mon_' + tpl.sprite;
     const c = scene.add.container(x, y);
     this.shadow = scene.add.image(0, 0, 'obj_shadow').setScale(Math.max(1, tpl.radius * 3.2), Math.max(1, tpl.radius * 2.6)).setAlpha(0.6);
-    this.sprite = scene.add.sprite(0, tpl.flying ? -8 : 0, key, 'idle0').setOrigin(0.5, 1);
-    const sc = SCALE[tpl.sprite] || 1;
-    this.sprite.setScale(sc);
+    if (this.pack) this.sprite = scene.add.sprite(0, tpl.flying ? -8 : 0, `${key}:idle`, 0).setOrigin(this.pack.ox, this.pack.oy);
+    else {
+      this.sprite = scene.add.sprite(0, tpl.flying ? -8 : 0, key, 'idle0').setOrigin(0.5, 1);
+      this.sprite.setScale(SCALE[tpl.sprite] || 1);
+    }
     if (tpl.tint) this.sprite.setTint(tpl.tint);
     this.baseTint = tpl.tint || null;
     this.sprite.play(key + '_idle');
     this.sprite.anims.setProgress(Math.random());
     c.add([this.shadow, this.sprite]);
-    this.height = this.sprite.displayHeight;
+    this.height = this.pack ? this.pack.body : this.sprite.displayHeight;
     // can çubuğu
     this.bar = scene.add.graphics();
     c.add(this.bar);
@@ -86,7 +91,9 @@ export class Enemy {
   setFacing(dx) {
     if (Math.abs(dx) < 0.5) return;
     this.facing = dx > 0 ? 1 : -1;
-    this.sprite.setFlipX(this.facing < 0);
+    // paket kareleri ayak noktasına göre hizalı: flipX görüntüyü kaydırır, orijin etrafında aynala
+    if (this.pack) this.sprite.scaleX = this.facing;
+    else this.sprite.setFlipX(this.facing < 0);
   }
 
   playAnim(name) {
@@ -365,8 +372,14 @@ export class Enemy {
     this.behavior?.onDeath?.();
     this.label?.setVisible(false);
     this.shadow.setVisible(false);
-    this.sprite.stop();
     const sc = this.scene;
+    if (this.pack) {
+      // paketin ölüm animasyonu, ardından solarak kaybolur
+      this.sprite.play(`${this.pack.id}_die`, false);
+      sc.tweens.add({ targets: this.sprite, alpha: 0, delay: animDuration(this.pack.id, 'die') * 1000, duration: 400, onComplete: () => this.destroy() });
+      return;
+    }
+    this.sprite.stop();
     sc.tweens.add({
       targets: this.sprite, angle: this.facing > 0 ? -80 : 80, alpha: 0, y: this.sprite.y + 4, duration: 550, ease: 'Quad.in',
       onComplete: () => this.destroy(),

@@ -4,8 +4,10 @@ Mobil öncelikli (yatay ekran), HTML5 tabanlı, eski usul 2D fantastik RPG. Kara
 Lv. 1–20 ilerleme döngüsü: Warrior veya Mage ile seviye kas, nadir eşya düşür, demircide +5'e kadar yükselt,
 Alfa Kurt ve Maden Golemi'ni yen, Derin Ocak'a sınırsız gir ve Legendary avına çık.
 
-Bütün görseller (karakterler, 17 yaratık/boss, NPC'ler, tile set'ler, 60 eşya ikonu, efektler) ve bütün sesler
-**oyun açılırken kodla (procedural) üretilir**; projede dışarıdan alınmış hiçbir sprite, ses veya font yoktur.
+Oyuncu karakterleri (Warrior, Mage) ve Cevher Rahibi, LuizMelo'nun CC0 sprite paketleriyle çizilir
+(`public/sprites/`, kaynaklar: [`docs/CREDITS.md`](docs/CREDITS.md)). Diğer tüm görseller (yaratıklar/bosslar, NPC'ler,
+tile set'ler, 60 eşya ikonu, efektler) ve bütün sesler **oyun açılırken kodla (procedural) üretilir**.
+Sprite paketi yüklenemezse oyun otomatik olarak procedural karaktere geri döner.
 
 ## Ekran görüntüleri
 
@@ -26,7 +28,7 @@ npm run dev          # geliştirme sunucusu: http://localhost:5173  (aynı ağda
 npm test             # birim testleri (75 test; 100.000–1.000.000 loot simülasyonu dahil)
 npm run build        # üretim paketi → dist/
 npm run preview      # dist/ klasörünü yerelde sun: http://localhost:4173
-npm run test:e2e     # (önce build) tarayıcıda uçtan uca testler — 59 test
+npm run test:e2e     # (önce build) tarayıcıda uçtan uca testler — 61 test
 npm run package      # release/ altında itch.io ZIP'i ve proje arşivi
 ```
 
