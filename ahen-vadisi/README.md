@@ -26,7 +26,7 @@ npm run dev          # geliştirme sunucusu: http://localhost:5173  (aynı ağda
 npm test             # birim testleri (75 test; 100.000–1.000.000 loot simülasyonu dahil)
 npm run build        # üretim paketi → dist/
 npm run preview      # dist/ klasörünü yerelde sun: http://localhost:4173
-npm run test:e2e     # (önce build) tarayıcıda uçtan uca testler — 54 test
+npm run test:e2e     # (önce build) tarayıcıda uçtan uca testler — 55 test
 npm run package      # release/ altında itch.io ZIP'i ve proje arşivi
 ```
 

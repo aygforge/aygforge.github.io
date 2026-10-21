@@ -230,6 +230,11 @@ try {
     await ev(page, () => { const a = window.__AHEN; a.char.level = Math.max(a.char.level, 4); a.changed('level'); });
     await page.tap('[data-testid=btn-character]').catch(() => {});
     await page.waitForSelector('[data-testid=stat-str]', { timeout: 5000 });
+    const fit = await ev(page, () => ['str', 'dex', 'int', 'vit', 'confirm'].every((k) => {
+      const el = document.querySelector(`[data-testid=stat-${k}]`), r = el.getBoundingClientRect(), box = el.closest('.box').getBoundingClientRect();
+      return r.top >= box.top && r.bottom <= Math.min(box.bottom, innerHeight);
+    }));
+    record('Karakter panelinde 4 stat ve Onayla kaydırmadan ekrana sığar', fit);
     const free0 = await ev(page, () => window.__AHEN.char.level * 3 - 3 - Object.values(window.__AHEN.char.alloc).reduce((a, b) => a + b, 0));
     const str0 = await ev(page, () => window.__AHEN.char.alloc.str);
     for (let i = 0; i < free0 + 4; i++) await page.tap('[data-testid=stat-str]', { force: true }).catch(() => {});

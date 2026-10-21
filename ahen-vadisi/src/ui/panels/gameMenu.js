@@ -117,7 +117,7 @@ function characterTab(rerender) {
   const used = () => Object.values(pend).reduce((a, b) => a + b, 0);
   // taslak artık mevcut puanı aşamaz (ör. puan başka yerde harcandıysa)
   while (used() > free) { const k = ['vit', 'int', 'dex', 'str'].find((x) => pend[x] > 0); pend[k]--; }
-  const rows = h('div', { class: 'col' });
+  const rows = h('div', { class: 'statgrid' });
   const freeEl = h('b', { class: 'gold' });
   const head = h('div', { class: 'row', style: { alignItems: 'center', flexWrap: 'wrap' } });
   const draw = () => {
@@ -129,10 +129,10 @@ function characterTab(rerender) {
       h('div', { class: 'small grow' }, 'Dağıtılabilir stat puanı: ', freeEl),
       h('button', { class: 'btn small' + (any ? '' : ' dis'), onTap: () => { for (const k in pend) pend[k] = 0; draw(); } }, 'Sıfırla'),
       h('button', { class: 'btn small green' + (any ? '' : ' dis'), 'data-testid': 'stat-confirm', onTap: () => { const d = { ...pend }; statDraft = null; act.allocate(d); rerender(); } }, 'Onayla'));
-    const names = { str: ['STR', 'Fiziksel güç'], dex: ['DEX', 'Kritik ve saldırı hızı'], int: ['INT', 'Büyü gücü, MP, MDEF'], vit: ['VIT', 'HP, DEF, MDEF'] };
+    const names = { str: ['STR', 'Fiziksel güç'], dex: ['DEX', 'Kritik, hız'], int: ['INT', 'Büyü, MP'], vit: ['VIT', 'HP, DEF'] };
     for (const k of ['str', 'dex', 'int', 'vit']) {
-      rows.appendChild(h('div', { class: 'li' },
-        h('div', { class: 'grow' }, h('b', {}, names[k][0]), ' ', h('span', { class: 'gold' }, st[k] + pend[k]), pend[k] ? h('span', { class: 'ok' }, ` (+${pend[k]})`) : null, h('div', { class: 'tiny muted' }, names[k][1])),
+      rows.appendChild(h('div', { class: 'li stat' },
+        h('div', { class: 'grow' }, h('b', {}, names[k][0]), ' ', h('span', { class: 'gold' }, st[k] + pend[k]), pend[k] ? h('span', { class: 'ok' }, ` +${pend[k]}`) : null, h('div', { class: 'tiny muted' }, names[k][1])),
         h('button', { class: 'btn small' + (pend[k] > 0 ? '' : ' dis'), onTap: () => { if (pend[k] <= 0) return; pend[k]--; draw(); } }, '−'),
         h('button', { class: 'btn small green' + (left > 0 ? '' : ' dis'), 'data-testid': 'stat-' + k, onTap: () => { if (free - used() <= 0) return; pend[k]++; draw(); } }, '+')));
     }
@@ -143,8 +143,8 @@ function characterTab(rerender) {
   const xpNeed = ch.level >= MAX_LEVEL ? '—' : `${fmt(ch.exp)} / ${fmt(xpToNext(ch.level))}`;
   return h('div', { class: 'row grow', style: { alignItems: 'stretch', minHeight: 0, flexWrap: 'wrap' } },
     h('div', { class: 'col box scroll', style: { flex: '1 1 240px' } },
-      h('div', { class: 'row' }, charPreview(ch, 2), h('div', {},
-        h('div', { style: { fontFamily: 'var(--title)', fontSize: '1.3rem', color: 'var(--gold2)' } }, ch.name),
+      h('div', { class: 'row', style: { gap: '6px' } }, Object.assign(charPreview(ch, 2), { style: 'height:48px;image-rendering:pixelated' }), h('div', { class: 'small' },
+        h('div', { style: { fontFamily: 'var(--title)', fontSize: '1.15rem', color: 'var(--gold2)', lineHeight: 1.1 } }, ch.name),
         h('div', {}, `${cls.name} (${cls.latin}) · Seviye ${ch.level}`),
         ch.titles.length ? h('div', { class: 'r-L small' }, `«${ch.titles.join(', ')}»`) : null,
         ch.mastery ? h('div', { class: 'r-E small' }, `Ustalık I: ${SKILLS[CLASS_SKILLS[ch.cls].mastery].name}`) : null)),

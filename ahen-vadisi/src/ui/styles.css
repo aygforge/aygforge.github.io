@@ -238,6 +238,12 @@ input.name { font: inherit; font-size: 1.1rem; padding: 10px 12px; border-radius
 /* listeler */
 .list { display: flex; flex-direction: column; gap: 6px; }
 .li { display: flex; gap: 8px; align-items: center; padding: 6px 8px; border-radius: 8px; background: rgba(0,0,0,.28); border: 1px solid #3a2c22; min-height: 48px; }
+/* stat dağıtımı: 4 stat 2×2 ızgarada, telefonda kaydırmadan sığar */
+.statgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.li.stat { min-height: 0; padding: 4px 6px; gap: 4px; }
+.li.stat .btn.small { min-height: 38px; min-width: 40px; padding: 4px 8px; }
+.li.stat .tiny { line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.li.stat .grow { min-width: 0; }
 .li.on { border-color: var(--gold); background: rgba(80,56,30,.4); }
 .li img { width: 36px; height: 36px; flex: none; }
 .li .grow { font-size: .88rem; }
