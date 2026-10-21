@@ -44,7 +44,7 @@ export class Enemy {
     if (opts.leashR) this.leashR = opts.leashR;
 
     // hazır sprite paketi (ör. mon_ore_priest) varsa onu, yoksa procedural dokuyu kullan
-    this.pack = spritePack('mon_' + tpl.id);
+    this.pack = spritePack(tpl.packId || 'mon_' + tpl.id);
     const key = this.pack ? this.pack.id : 'mon_' + tpl.sprite;
     const c = scene.add.container(x, y);
     this.shadow = scene.add.image(0, 0, 'obj_shadow').setScale(Math.max(1, tpl.radius * 3.2), Math.max(1, tpl.radius * 2.6)).setAlpha(0.6);

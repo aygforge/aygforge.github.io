@@ -4,3 +4,4 @@ release/
 .DS_Store
 tests/e2e/screens/
 tools/tmp/
+tools/__pycache__/

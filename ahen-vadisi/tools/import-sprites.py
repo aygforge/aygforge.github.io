@@ -13,12 +13,25 @@ Her paket için:
   * her animasyon public/sprites/<id>/<anim>.png yatay şeridi olarak yazılır,
   * src/art/spritePacks.js meta veri modülü üretilir.
 """
+import glob
 import json
 import os
 import re
 import shutil
 import sys
-from PIL import Image
+from PIL import Image, ImageOps
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from aseprite import load as load_aseprite  # noqa: E402
+
+# Animasyon kaynağı biçimleri (PACKS[...]['anims'][ad] = (kaynak, fps, tekrar)):
+#   'Run'                                   → yatay şerit dosyası Run.png (kare boyu pack['frame'])
+#   {'files': 'Run/LightBandit_Run'}        → tek tek kare dosyaları LightBandit_Run_0.png, _1.png …
+#   {'ase': 'Massacre.aseprite', 'from': 1, 'to': 6}  → Aseprite karelerinin aralığı (görünür katmanlar birleşik)
+#   {'derive': 'bob' | 'flash' | 'collapse', 'of': 'idle'} → pakette olmayan animasyonu var olandan türet
+#   Her dict kaynakta 'reverse': True kareleri ters çevirir.
+# Paket seçenekleri: 'flip': True (sola bakan paketi sağa çevir), 'scale' (boy yerine sabit ölçek; tam sayıya yakın
+# ölçek piksel sanatı bozmaz), 'credit_file' (lisans/EULA dosyası, LICENSE.txt olarak kopyalanır).
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_DIR = os.path.join(ROOT, 'public', 'sprites')
@@ -52,6 +65,32 @@ PACKS = {
         'anims': {'idle': ('fly', 11, -1), 'walk': ('fly', 15, -1), 'atk': ('attack', 20, 0),
                   'hurt': ('hurt', 12, 0), 'die': ('death', 9, 0)},
     },
+    # Bandits (Sven Thole): Orman Yağmacısı = Light Bandit. Ölüm: "Recover" (yerden kalkma) karelerinin tersi = yere düşme.
+    'mon_forest_raider': {
+        'name': 'Bandits — Light Bandit (Sven Thole)', 'dir': 'Bandits/Sprites/Light Bandit', 'frame': (48, 48),
+        'scale': 1.5, 'flip': True, 'license': 'Bandits/EULA.txt',
+        'anims': {'idle': ({'files': 'Idle/LightBandit_Idle'}, 6, -1), 'walk': ({'files': 'Run/LightBandit_Run'}, 12, -1),
+                  'atk': ({'files': 'Attack/LightBandit_Attack'}, 16, 0), 'hurt': ({'files': 'Hurt/LightBandit_Hurt'}, 10, 0),
+                  'die': ({'files': 'Recover/LightBandit_Recover', 'reverse': True}, 12, 0)},
+    },
+    # Skullwolf (Massacre): Boz Kurt. Pakette koşma yok → bekleme kareleri hafif zıplatılarak koşu üretilir.
+    'mon_gray_wolf': {
+        'name': 'Skullwolf — Massacre', 'dir': 'Skullwolf', 'frame': (64, 64), 'scale': 1.0, 'flip': True, 'license': None,
+        'anims': {'idle': ({'ase': 'Massacre.aseprite', 'from': 1, 'to': 6}, 8, -1),
+                  'walk': ({'derive': 'bob', 'of': 'idle'}, 12, -1),
+                  'atk': ({'ase': 'Massacre.aseprite', 'from': 7, 'to': 11}, 14, 0),
+                  'hurt': ({'ase': 'Massacre.aseprite', 'from': 12, 'to': 15}, 14, 0),
+                  'die': ({'ase': 'Massacre.aseprite', 'from': 16, 'to': 22}, 10, 0)},
+    },
+    # Goblin Pack 1: Kazmacı Goblin = Goblin Barbarian (ağır satır). Pakette yalnız bekleme + saldırı var.
+    'mon_pick_goblin': {
+        'name': 'Goblin Pack 1 — Goblin Barbarian', 'dir': 'Goblin_Pack_1', 'frame': (80, 64), 'scale': 1.5, 'license': None,
+        'anims': {'idle': ({'ase': 'GoblinBarbarian.aseprite', 'from': 0, 'to': 5}, 6, -1),
+                  'walk': ({'derive': 'bob', 'of': 'idle'}, 10, -1),
+                  'atk': ({'ase': 'GoblinBarbarian.aseprite', 'from': 6, 'to': 9}, 10, 0),
+                  'hurt': ({'derive': 'flash', 'of': 'idle'}, 10, 0),
+                  'die': ({'derive': 'collapse', 'of': 'idle'}, 10, 0)},
+    },
     'mon_ore_priest': {
         'name': 'Evil Wizard 2 (LuizMelo, CC0)', 'dir': 'EVil_Wizard_2/EVil Wizard 2/Sprites', 'frame': (250, 250),
         'height': 72, 'license': 'EVil_Wizard_2/EVil Wizard 2/License.txt',
@@ -64,6 +103,63 @@ PACKS = {
 def frames_of(path, fw, fh):
     im = Image.open(path).convert('RGBA')
     return [im.crop((i * fw, 0, (i + 1) * fw, fh)) for i in range(im.width // fw)]
+
+
+def numbered(prefix):
+    fs = glob.glob(prefix + '_*.png')
+    fs.sort(key=lambda f: int(re.findall(r'_(\d+)\.png$', f)[0]))
+    return [Image.open(f).convert('RGBA') for f in fs]
+
+
+_ase_cache = {}
+
+
+def load_source(base, spec, fw, fh):
+    if isinstance(spec, str):
+        return frames_of(os.path.join(base, spec + '.png'), fw, fh)
+    if 'files' in spec:
+        frs = numbered(os.path.join(base, spec['files']))
+    elif 'ase' in spec:
+        path = os.path.join(base, spec['ase'])
+        doc = _ase_cache.get(path) or _ase_cache.setdefault(path, load_aseprite(path))
+        frs = [f.copy() for f in doc['frames'][spec['from']:spec['to'] + 1]]
+    else:
+        raise ValueError(spec)
+    return frs[::-1] if spec.get('reverse') else frs
+
+
+def derive(kind, src):
+    """Pakette olmayan animasyonu var olan karelerden üret."""
+    if kind == 'bob':      # koşu: bekleme kareleri 1–2 px zıplar
+        out = []
+        for i, fr in enumerate(src):
+            dy = [0, -1, -2, -1][i % 4]
+            c = Image.new('RGBA', fr.size)
+            c.paste(fr, (0, dy), fr)
+            out.append(c)
+        return out
+    if kind == 'flash':    # darbe: beyaz silüet + geri sekme
+        fr = src[0]
+        white = Image.new('RGBA', fr.size, (255, 255, 255, 255))
+        sil = Image.new('RGBA', fr.size)
+        sil.paste(white, (0, 0), fr.getchannel('A').point(lambda v: 255 if v > 0 else 0))
+        back = Image.new('RGBA', fr.size)
+        back.paste(fr, (-2, 0), fr)
+        return [sil, back]
+    if kind == 'collapse':  # ölüm: gövde yere çöker ve solar
+        fr = src[0]
+        box = fr.getbbox()
+        out = []
+        for k, (sq, a) in enumerate([(0.85, 1.0), (0.6, 0.9), (0.35, 0.7), (0.18, 0.45)]):
+            part = fr.crop(box)
+            nh = max(1, round(part.height * sq))
+            part = part.resize((part.width + k * 2, nh), Image.NEAREST)
+            part.putalpha(part.getchannel('A').point(lambda v: int(v * a)))
+            c = Image.new('RGBA', fr.size)
+            c.paste(part, (box[0] - k, box[3] - nh), part)
+            out.append(c)
+        return out
+    raise ValueError(kind)
 
 
 def union(boxes):
@@ -88,12 +184,22 @@ def main(src):
             print(f'ATLANDI {pid}: {base} yok')
             continue
         fw, fh = p['frame']
-        raw = {a: frames_of(os.path.join(base, f + '.png'), fw, fh) for a, (f, _, _) in p['anims'].items()}
-        # tamamen boş kareleri at (bazı şeritlerin sonunda boş kare olabilir)
-        raw = {a: [fr for fr in frs if fr.getbbox()] or frs[:1] for a, frs in raw.items()}
+        raw = {}
+        for a, (spec, _, _) in p['anims'].items():
+            if isinstance(spec, dict) and 'derive' in spec:
+                continue
+            frs = load_source(base, spec, fw, fh)
+            if p.get('flip'):
+                frs = [ImageOps.mirror(fr) for fr in frs]
+            # tamamen boş kareleri at (bazı şeritlerin sonunda boş kare olabilir)
+            raw[a] = [fr for fr in frs if fr.getbbox()] or frs[:1]
+        for a, (spec, _, _) in p['anims'].items():
+            if isinstance(spec, dict) and 'derive' in spec:
+                raw[a] = derive(spec['derive'], raw[spec['of']])
         u = union([fr.getbbox() for frs in raw.values() for fr in frs])
         idle = union([fr.getbbox() for fr in raw['idle']])
-        scale = p['height'] / (idle[3] - idle[1])
+        scale = p.get('scale') or p['height'] / (idle[3] - idle[1])
+        body = round((idle[3] - idle[1]) * scale)
         cw, ch = u[2] - u[0], u[3] - u[1]
         tw, th = max(1, round(cw * scale)), max(1, round(ch * scale))
         resample = Image.BOX if scale < 1 else Image.NEAREST
@@ -112,7 +218,7 @@ def main(src):
             strip.save(os.path.join(out, a + '.png'), optimize=True)
             anims[a] = {'frames': len(frs), 'fps': fps, 'repeat': rep}
         meta[pid] = {
-            'w': tw, 'h': th, 'body': p['height'],                   # karakterin bekleme boyu (oyun pikseli)
+            'w': tw, 'h': th, 'body': body,                          # karakterin bekleme boyu (oyun pikseli)
             'ox': round(((idle[0] + idle[2]) / 2 - u[0]) / cw, 4),   # ayak noktası (yatay orta)
             'oy': round((idle[3] - u[1]) / ch, 4),                   # ayak noktası (alt)
             'anims': anims, 'credit': p['name'],

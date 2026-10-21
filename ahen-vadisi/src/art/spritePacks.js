@@ -161,6 +161,111 @@ export const SPRITE_PACKS = {
     },
     "credit": "Monsters Creatures Fantasy 2 — Bat (LuizMelo)"
   },
+  "mon_forest_raider": {
+    "w": 64,
+    "h": 70,
+    "body": 56,
+    "ox": 0.3721,
+    "oy": 0.9787,
+    "anims": {
+      "idle": {
+        "frames": 4,
+        "fps": 6,
+        "repeat": -1
+      },
+      "walk": {
+        "frames": 8,
+        "fps": 12,
+        "repeat": -1
+      },
+      "atk": {
+        "frames": 8,
+        "fps": 16,
+        "repeat": 0
+      },
+      "hurt": {
+        "frames": 2,
+        "fps": 10,
+        "repeat": 0
+      },
+      "die": {
+        "frames": 8,
+        "fps": 12,
+        "repeat": 0
+      }
+    },
+    "credit": "Bandits — Light Bandit (Sven Thole)"
+  },
+  "mon_gray_wolf": {
+    "w": 62,
+    "h": 49,
+    "body": 25,
+    "ox": 0.5081,
+    "oy": 1.0,
+    "anims": {
+      "idle": {
+        "frames": 6,
+        "fps": 8,
+        "repeat": -1
+      },
+      "walk": {
+        "frames": 6,
+        "fps": 12,
+        "repeat": -1
+      },
+      "atk": {
+        "frames": 5,
+        "fps": 14,
+        "repeat": 0
+      },
+      "hurt": {
+        "frames": 4,
+        "fps": 14,
+        "repeat": 0
+      },
+      "die": {
+        "frames": 7,
+        "fps": 10,
+        "repeat": 0
+      }
+    },
+    "credit": "Skullwolf — Massacre"
+  },
+  "mon_pick_goblin": {
+    "w": 117,
+    "h": 80,
+    "body": 70,
+    "ox": 0.4936,
+    "oy": 1.0,
+    "anims": {
+      "idle": {
+        "frames": 6,
+        "fps": 6,
+        "repeat": -1
+      },
+      "walk": {
+        "frames": 6,
+        "fps": 10,
+        "repeat": -1
+      },
+      "atk": {
+        "frames": 4,
+        "fps": 10,
+        "repeat": 0
+      },
+      "hurt": {
+        "frames": 2,
+        "fps": 10,
+        "repeat": 0
+      },
+      "die": {
+        "frames": 4,
+        "fps": 10,
+        "repeat": 0
+      }
+    },
+    "credit": "Goblin Pack 1 — Goblin Barbarian"
+  },
   "mon_ore_priest": {
     "w": 117,
     "h": 107,

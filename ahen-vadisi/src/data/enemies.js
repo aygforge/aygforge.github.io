@@ -224,7 +224,7 @@ export const ENEMIES = {
   pack_wolf: {
     id: 'pack_wolf', name: 'Sürü Kurdu', kind: 'summon', level: 9, hp: 160, atk: 18, def: 12, mdef: 10, exp: 0, lifetime: 30,
     species: 'beast', ai: 'aggressive', aggro: 12, leash: 16, speed: 3.7, attackInterval: 1.5, attackRange: 1.3,
-    dmgType: 'phys', radius: 0.45, sprite: 'wolf', tint: 0xb0a090, lootTable: null, gold: [0, 0], noReward: true,
+    dmgType: 'phys', radius: 0.45, sprite: 'wolf', packId: 'mon_gray_wolf', tint: 0xd8c8b8, lootTable: null, gold: [0, 0], noReward: true,
   },
   shield_crystal: {
     id: 'shield_crystal', name: 'Kalkan Kristali', kind: 'summon', level: 20, hp: 800, atk: 0, def: 10, mdef: 10, exp: 0,
