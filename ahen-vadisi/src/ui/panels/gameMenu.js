@@ -36,11 +36,13 @@ const TABS = [
 export function openGameMenu(tab = 'inventory') {
   let cur = tab;
   let off = null;
+  statDraft = null;
   const render = () => {
     clear(shell.body);
     shell.body.appendChild(RENDER[cur](render));
   };
-  const shell = ui.shell({ tabs: TABS, active: tab, onTab: (t) => { cur = t; render(); }, onClose: () => { off?.(); ui.closePanel(); } });
+  // sekme değişince / menü kapanınca onaylanmamış stat puanları kaybolmaz: otomatik onaylanır
+  const shell = ui.shell({ tabs: TABS, active: tab, onTab: (t) => { flushStatDraft(); cur = t; render(); }, onClose: () => { flushStatDraft(); off?.(); ui.closePanel(); } });
   ui.openPanel('menu', () => shell.el);
   off = bus.on('changed', () => { if (ui.openName === 'menu' && !ui.layers.modal.firstChild) render(); });
   bus.on('panelClose', function once() { off?.(); bus.off('panelClose', once); });
@@ -100,25 +102,40 @@ function openPending(rerender) {
 }
 
 // ------------------------------------------------------------------ KARAKTER
+// Onaylanmamış stat dağıtımı taslağı: menü yeniden çizilse de korunur
+let statDraft = null;
+function flushStatDraft() {
+  const d = statDraft;
+  statDraft = null;
+  if (d && app.char && Object.values(d).some(Boolean)) act.allocate(d);
+}
+
 function characterTab(rerender) {
   const ch = app.char, st = computeStats(ch), cls = CLASSES[ch.cls];
   const free = statPointsFree(ch);
-  const pend = { str: 0, dex: 0, int: 0, vit: 0 };
+  const pend = statDraft || (statDraft = { str: 0, dex: 0, int: 0, vit: 0 });
+  const used = () => Object.values(pend).reduce((a, b) => a + b, 0);
+  // taslak artık mevcut puanı aşamaz (ör. puan başka yerde harcandıysa)
+  while (used() > free) { const k = ['vit', 'int', 'dex', 'str'].find((x) => pend[x] > 0); pend[k]--; }
   const rows = h('div', { class: 'col' });
   const freeEl = h('b', { class: 'gold' });
+  const head = h('div', { class: 'row', style: { alignItems: 'center', flexWrap: 'wrap' } });
   const draw = () => {
-    clear(rows);
-    const left = free - Object.values(pend).reduce((a, b) => a + b, 0);
+    clear(rows); clear(head);
+    const left = free - used();
     freeEl.textContent = left;
+    const any = used() > 0;
+    head.append(
+      h('div', { class: 'small grow' }, 'Dağıtılabilir stat puanı: ', freeEl),
+      h('button', { class: 'btn small' + (any ? '' : ' dis'), onTap: () => { for (const k in pend) pend[k] = 0; draw(); } }, 'Sıfırla'),
+      h('button', { class: 'btn small green' + (any ? '' : ' dis'), 'data-testid': 'stat-confirm', onTap: () => { const d = { ...pend }; statDraft = null; act.allocate(d); rerender(); } }, 'Onayla'));
     const names = { str: ['STR', 'Fiziksel güç'], dex: ['DEX', 'Kritik ve saldırı hızı'], int: ['INT', 'Büyü gücü, MP, MDEF'], vit: ['VIT', 'HP, DEF, MDEF'] };
     for (const k of ['str', 'dex', 'int', 'vit']) {
       rows.appendChild(h('div', { class: 'li' },
         h('div', { class: 'grow' }, h('b', {}, names[k][0]), ' ', h('span', { class: 'gold' }, st[k] + pend[k]), pend[k] ? h('span', { class: 'ok' }, ` (+${pend[k]})`) : null, h('div', { class: 'tiny muted' }, names[k][1])),
-        h('button', { class: 'btn small' + (pend[k] ? '' : ' dis'), onTap: () => { pend[k]--; draw(); } }, '−'),
-        h('button', { class: 'btn small green' + (left > 0 ? '' : ' dis'), 'data-testid': 'stat-' + k, onTap: () => { pend[k]++; draw(); } }, '+')));
+        h('button', { class: 'btn small' + (pend[k] > 0 ? '' : ' dis'), onTap: () => { if (pend[k] <= 0) return; pend[k]--; draw(); } }, '−'),
+        h('button', { class: 'btn small green' + (left > 0 ? '' : ' dis'), 'data-testid': 'stat-' + k, onTap: () => { if (free - used() <= 0) return; pend[k]++; draw(); } }, '+')));
     }
-    const any = Object.values(pend).some(Boolean);
-    rows.appendChild(h('button', { class: 'btn green' + (any ? '' : ' dis'), onTap: () => { act.allocate(pend); rerender(); } }, 'Puanları onayla'));
   };
   draw();
   const line = (k, v) => h('div', { class: 'row small', style: { justifyContent: 'space-between', borderBottom: '1px solid #3a2c22', padding: '3px 0' } }, h('span', { class: 'muted' }, k), h('b', {}, v));
@@ -131,7 +148,7 @@ function characterTab(rerender) {
         h('div', {}, `${cls.name} (${cls.latin}) · Seviye ${ch.level}`),
         ch.titles.length ? h('div', { class: 'r-L small' }, `«${ch.titles.join(', ')}»`) : null,
         ch.mastery ? h('div', { class: 'r-E small' }, `Ustalık I: ${SKILLS[CLASS_SKILLS[ch.cls].mastery].name}`) : null)),
-      h('div', { class: 'small' }, 'Dağıtılabilir stat puanı: ', freeEl),
+      head,
       rows),
     h('div', { class: 'col box scroll', style: { flex: '1 1 240px' } },
       h('h3', { class: 't' }, 'Hesaplanan değerler'),

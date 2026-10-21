@@ -41,6 +41,7 @@ export function settingsTab(rerender) {
     h('span', {}, 'Düşük performans modu (30 FPS, daha az efekt)'), toggle(s.lowPerf, (v) => set({ lowPerf: v })),
     h('span', {}, 'Kamera'), select([['yakin', 'Yakın'], ['normal', 'Normal'], ['uzak', 'Uzak']], s.zoom, (v) => set({ zoom: v })),
     h('span', {}, 'Joystick boyutu'), select([['normal', 'Normal'], ['big', 'Büyük']], s.joystickSize, (v) => { set({ joystickSize: v }); bus.emit('hudRebuild'); }),
+    h('span', {}, 'Görev yön okları'), toggle(s.questGuide !== false, (v) => set({ questGuide: v })),
     h('span', {}, 'Hasar sayıları'), toggle(s.damageNumbers, (v) => set({ damageNumbers: v })),
     h('span', {}, 'Ekran sarsıntısı'), toggle(s.shake, (v) => set({ shake: v })),
     h('span', {}, 'FPS göster'), toggle(s.showFps, (v) => set({ showFps: v })),

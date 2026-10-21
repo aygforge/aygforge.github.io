@@ -27,7 +27,8 @@ export function tap(el, fn) {
   el.addEventListener('pointerup', (e) => {
     if (e.pointerId !== id) return;
     id = null;
-    if (!moved) { e.preventDefault(); fn(e); }
+    // devre dışı buton hiçbir koşulda işlem yapmaz
+    if (!moved && !el.disabled && !el.classList.contains('dis')) { e.preventDefault(); fn(e); }
   });
   el.addEventListener('pointercancel', () => { id = null; });
 }

@@ -308,18 +308,32 @@ export class PortalObj extends Base {
     this.s.setRotation(ang + Math.PI);
     this.label = scene.add.text(this.x, this.y - 22, '➜ ' + o.label, { fontFamily: 'Trebuchet MS, sans-serif', fontSize: '11px', fontStyle: 'bold', color: '#bfe6ff', stroke: '#000', strokeThickness: 3 }).setOrigin(0.5, 1).setDepth(50000);
     this.cool = 1.2;
-    this.tapRadius = 30;
-    this.interactRange = 0.9 * TILE;
+    this.tapRadius = 48;
+    this.interactRange = 1.2 * TILE;
+    // kenar geçişi: okun tam üstü değil, geçidin tamamı (kenara 2,6 tile, ok ekseninde ±3,5 tile) tetikler
+    this.edge = o.x <= 0 ? 'w' : o.x >= def.w - 1 ? 'e' : o.y <= 0 ? 'n' : o.y >= def.h - 1 ? 's' : null;
+    this.cx = ix + 0.5; this.cy = iy + 0.5;
+  }
+  inZone(p) {
+    const tx = p.x / TILE, ty = p.y / TILE, def = this.scene.mapDef;
+    if (!this.edge) return Math.hypot(tx - this.cx, ty - this.cy) < 1.6;
+    const horiz = this.edge === 'w' || this.edge === 'e';
+    const along = horiz ? Math.abs(ty - this.cy) : Math.abs(tx - this.cx);
+    const depth = { w: tx, e: def.w - tx, n: ty, s: def.h - ty }[this.edge];
+    return along <= 3.5 && depth <= 2.6;
   }
   update(dt) {
     this.cool -= dt;
     const p = this.scene.player;
     if (this.cool > 0 || p.dead) return;
-    if (Math.hypot(p.x - this.x, p.y - this.y) < 0.9 * TILE) this.trigger();
+    // bölgeden bir kez çıkılmadan yeniden tetiklenmez (ör. dungeon çıkış onayı tekrar tekrar açılmaz)
+    const inside = this.inZone(p);
+    if (!inside) this.armed = true;
+    else if (this.armed) { this.armed = false; this.trigger(); }
   }
   interact() { this.trigger(); }
   trigger() {
-    this.cool = 2;
+    this.cool = 2; this.armed = false;
     const o = this.o;
     if (o.dungeonExit) {
       bus.emit('confirm', {

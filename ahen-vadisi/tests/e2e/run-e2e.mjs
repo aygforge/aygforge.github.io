@@ -200,6 +200,58 @@ try {
   const revived = await ev(page, () => !window.__AHEN.world.player.dead && window.__AHEN.char.hp > 0);
   record('Zehirle ölüm hatasız; yeniden doğma çalışır', poisonDeath.dead && poisonDeath.poison === null && revived && page.errors.length === errs0, JSON.stringify({ ...poisonDeath, revived, errors: page.errors.slice(errs0) }));
 
+  // görev yön okları: aktif görevin hedefine giden yol üzerinde oklar
+  const guide = await ev(page, async () => {
+    const a = window.__AHEN;
+    for (const id of ['m01', 'm02']) a.char.quests[id] = { s: 'done', p: [], used: [] };
+    a.char.quests.m03 = { s: 'active', p: [0], used: [] }; a.char.tracked = 'm03'; a.changed('quest');
+    await new Promise((r) => setTimeout(r, 1200));
+    const w = a.world;
+    return { goal: w.guideGoal, arrows: w.guideArrows.filter((x) => x.visible).length, path: w.guidePath?.length || 0 };
+  });
+  record('Görev yön okları hedefe giden yol üzerinde görünür', !!guide.goal && guide.arrows >= 3 && guide.path > 0, JSON.stringify(guide));
+
+  // joystick: halkanın dışındaki çevre bölgeye dokunmak da yürütür
+  {
+    const jz = await (await page.$('[data-testid=joystick]')).boundingBox();
+    const cdp2 = await c3.newCDPSession(page);
+    const x0 = await ev(page, () => window.__AHEN.world.player.x);
+    const tx = jz.x + jz.width + 30, ty = jz.y + jz.height / 2;
+    await cdp2.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: tx, y: ty, id: 9 }] });
+    await cdp2.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: tx + 8, y: ty, id: 9 }] });
+    await page.waitForTimeout(600);
+    const x1 = await ev(page, () => window.__AHEN.world.player.x);
+    await cdp2.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    record('Joystick halkasının çevresine dokunmak da yürütür', x1 - x0 > 20, `${Math.round(x1 - x0)} px sağa`);
+  }
+
+  // stat puanı: 0'ın altına inmez, onaylanınca kaydedilir
+  {
+    await ev(page, () => { const a = window.__AHEN; a.char.level = Math.max(a.char.level, 4); a.changed('level'); });
+    await page.tap('[data-testid=btn-character]').catch(() => {});
+    await page.waitForSelector('[data-testid=stat-str]', { timeout: 5000 });
+    const free0 = await ev(page, () => window.__AHEN.char.level * 3 - 3 - Object.values(window.__AHEN.char.alloc).reduce((a, b) => a + b, 0));
+    const str0 = await ev(page, () => window.__AHEN.char.alloc.str);
+    for (let i = 0; i < free0 + 4; i++) await page.tap('[data-testid=stat-str]', { force: true }).catch(() => {});
+    const shown = await ev(page, () => document.querySelector('[data-panel] b.gold')?.textContent);
+    await page.tap('[data-testid=stat-confirm]');
+    await page.waitForTimeout(300);
+    const after = await ev(page, () => ({ str: window.__AHEN.char.alloc.str }));
+    await page.tap('.xbtn').catch(() => {});
+    await page.waitForTimeout(300);
+    record('Stat puanı 0\'ın altına inmez; onaylanınca kaydedilir', shown === '0' && after.str === str0 + free0, JSON.stringify({ free0, str0, shown, ...after }));
+  }
+
+  // harita geçişi: okun tam üstü değil, geçidin yanından da geçilir
+  {
+    await ev(page, () => { const w = window.__AHEN.world; w.player.clearTarget(); w.player.x = 2 * 32 + 16; w.player.y = 46 * 32 + 16; });
+    let crossed = true;
+    try { await waitMap(page, 'village'); } catch { crossed = false; }
+    record('Geçit okunun 2 tile yanından harita geçişi olur', crossed);
+    await ev(page, () => window.__AHEN.world.changeMap('forest', 'from_village'));
+    await waitMap(page, 'forest');
+  }
+
   // ------------------------------------------------------------------ 4) Kayıt: kapat-aç
   const before = await ev(page, async () => {
     const a = window.__AHEN;

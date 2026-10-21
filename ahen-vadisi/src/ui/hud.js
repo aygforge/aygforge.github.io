@@ -65,9 +65,11 @@ export function createHud() {
   const tr = h('div', { class: 'hud-tr' }, menuBtns, mm);
 
   // ---------------- sol alt
-  const joystick = createJoystick(app.settings.joystickSize === 'big');
+  // sol alt köşe: joystick + çevresindeki geniş dokunma bölgesi
+  const bl = h('div', { class: 'hud-bl', 'data-testid': 'joy-zone' });
+  const joystick = createJoystick(app.settings.joystickSize === 'big', bl);
+  bl.appendChild(joystick);
   const feed = h('div', { class: 'feed' });
-  const bl = h('div', { class: 'hud-bl' }, joystick);
 
   // ---------------- sağ alt aksiyonlar
   const br = h('div', { class: 'hud-br' });

@@ -26,7 +26,7 @@ npm run dev          # geliştirme sunucusu: http://localhost:5173  (aynı ağda
 npm test             # birim testleri (75 test; 100.000–1.000.000 loot simülasyonu dahil)
 npm run build        # üretim paketi → dist/
 npm run preview      # dist/ klasörünü yerelde sun: http://localhost:4173
-npm run test:e2e     # (önce build) tarayıcıda uçtan uca testler — 50 test
+npm run test:e2e     # (önce build) tarayıcıda uçtan uca testler — 54 test
 npm run package      # release/ altında itch.io ZIP'i ve proje arşivi
 ```
 
@@ -60,12 +60,15 @@ Bu depoda `ahen-vadisi/dist/` derlenmiş haliyle bulunur. Dal `main`'e birleşti
 
 | Dokunmatik (birincil) | Klavye (masaüstü) |
 |---|---|
-| Sol alt joystick: hareket (en yüksek öncelik, otomatik yaklaşmayı anında keser) | WASD / oklar |
+| Sol alt joystick: hareket (en yüksek öncelik, otomatik yaklaşmayı anında keser); halkanın çevresine dokunmak da yönlendirir | WASD / oklar |
 | Düşmana dokun: hedef seç → yol bularak yaklaş → menzilde otomatik normal saldırı | — |
 | NPC / cevher / bitki / görev nesnesine dokun: yaklaş ve etkileşim | — |
 | Sağ alt 4 beceri butonu (manuel), büyük kılıç: otomatik saldırı aç/kapa | 1–4, Boşluk |
 | HP / MP iksir butonları, hedef değiştir | Q / E, Tab |
 | Sağ üst: Çanta, Karakter, Beceriler, Görevler, Ayarlar, mini harita | I, C, K, J, Esc, M |
+
+Zemindeki altın oklar takip edilen görevin bir sonraki hedefine (başka haritadaysa oraya götüren geçide) giden
+yolu gösterir; Ayarlar → "Görev yön okları" ile kapatılabilir. Harita geçişleri geçidin tamamından yapılır.
 
 Kurallar (belge §3.1): joystick bırakılınca karakter hedefe kendiliğinden koşmaz; hedef ölünce yeni hedef
 otomatik seçilmez; erişilemeyen hedefe sonsuz koşma olmaz; duvar arkasından saldırı yapılamaz.

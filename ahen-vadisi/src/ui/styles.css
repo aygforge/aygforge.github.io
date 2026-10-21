@@ -66,7 +66,7 @@ button { font-family: var(--font); color: var(--text); }
 .btn.red { background: linear-gradient(180deg, #a83a2c, #6a2016); border-color: #4a160e; box-shadow: inset 0 1px 0 #e07060, 0 2px 0 #200a06; }
 .btn.blue { background: linear-gradient(180deg, #3a62a8, #223e70); border-color: #1a2e50; box-shadow: inset 0 1px 0 #70a0e0, 0 2px 0 #0a1020; }
 .btn.ghost { background: rgba(0,0,0,.35); border-color: #5a4a3a; box-shadow: none; }
-.btn[disabled], .btn.dis { filter: grayscale(.8) brightness(.7); pointer-events: none; }
+.btn[disabled], .btn.dis, #ui .btn[disabled], #ui .btn.dis { filter: grayscale(.8) brightness(.7); pointer-events: none; }
 .btn.small { min-height: 40px; padding: 6px 10px; font-size: .9rem; }
 .row { display: flex; gap: 8px; align-items: center; }
 .col { display: flex; flex-direction: column; gap: 8px; }
@@ -161,7 +161,9 @@ input.name { font: inherit; font-size: 1.1rem; padding: 10px 12px; border-radius
 .ibtn .badge { position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; border-radius: 9px; background: #c03a2a; color: #fff; font-size: .7rem; line-height: 18px; text-align: center; padding: 0 4px; border: 1px solid #000; }
 .ibtn .badge.p { background: #8a3ad0; }
 
-.hud-bl { position: absolute; left: calc(14px + var(--sal)); bottom: calc(12px + var(--sab)); }
+/* sol alt: görünmez geniş dokunma bölgesi (köşeye kadar + halkanın 56px çevresi); joystick aynı yerde görünür */
+.hud-bl { position: absolute; left: 0; bottom: 0; padding: 56px 56px calc(12px + var(--sab)) calc(14px + var(--sal)); pointer-events: auto; touch-action: none; }
+.joy.on { border-color: rgba(255,220,130,.8); }
 .joy { width: clamp(118px, 34vh, 160px); height: clamp(118px, 34vh, 160px); border-radius: 50%; position: relative; pointer-events: auto; touch-action: none;
   background: radial-gradient(circle, rgba(255,255,255,.08) 0 55%, rgba(255,255,255,.14) 56% 60%, rgba(0,0,0,.25) 61%); border: 2px solid rgba(232,192,96,.45); }
 .joy .knob { position: absolute; left: 50%; top: 50%; width: 44%; height: 44%; margin: -22% 0 0 -22%; border-radius: 50%;

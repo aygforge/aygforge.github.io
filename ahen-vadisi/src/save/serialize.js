@@ -33,7 +33,7 @@ export function defaultSettings() {
   return {
     sound: true, sfxVol: 0.8, musicVol: 0.45, ambientVol: 0.5, music: true,
     lowPerf: false, zoom: 'normal', damageNumbers: true, shake: true, fullscreen: true,
-    joystickSize: 'normal', showFps: false,
+    joystickSize: 'normal', showFps: false, questGuide: true,
   };
 }
 

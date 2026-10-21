@@ -11,7 +11,7 @@ makine okunur sonuç: `tests/e2e/report.json`.
 | Paket | Sonuç |
 |---|---|
 | Birim testleri (Vitest, 8 dosya) | **75 / 75 geçti** |
-| Uçtan uca testler (Playwright) | **50 / 50 geçti** |
+| Uçtan uca testler (Playwright) | **54 / 54 geçti** |
 | Üretim derlemesi (Vite) | Başarılı — toplam ~1,6 MB (Phaser 332 KB gzip, oyun 115 KB gzip) |
 
 ## Birim testleri (tests/unit)
@@ -46,6 +46,10 @@ makine okunur sonuç: `tests/e2e/report.json`.
 | PWA: servis işçisi etkin, **çevrimdışı yeniden açılış**, manifest | ✔ |
 | Mage uzaktan (>3 tile) saldırır, normal büyü MP harcamaz | ✔ |
 | Zehir tiki oyuncuyu öldürünce oyun döngüsü hatasız; ölüm penceresi ve yeniden doğma | ✔ |
+| Görev yön okları aktif görevin hedefine giden gerçek yürüme yolu üzerinde görünür | ✔ |
+| Joystick halkasının çevresine (halkanın dışına) dokunmak da yürütür | ✔ |
+| Stat puanı 0'ın altına inmez (devre dışı butona zorla dokunulsa bile); onaylanınca kaydedilir | ✔ |
+| Harita geçişi okun tam üstü değil, geçidin 2 tile yanından da olur | ✔ |
 
 ### Performans (SwiftShader yazılım GPU, 844×390)
 

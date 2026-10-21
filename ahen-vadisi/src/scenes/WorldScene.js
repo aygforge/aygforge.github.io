@@ -16,6 +16,7 @@ import { Spawner } from '../world/spawner.js';
 import { Player } from '../entities/Player.js';
 import { NpcObj, WaystoneObj, GatherObj, QuestObj, AltarObj, DungeonGateObj, PortalObj, FxObj, CheckpointObj } from '../entities/Interactables.js';
 import { onReach, onDungeonStage } from '../systems/quests.js';
+import { guideTarget, nextGateway } from '../world/questGuide.js';
 import { clearStage, respawnEntry, startOrResumeRun, exitRun } from '../systems/dungeon.js';
 import { applyDeathDurability } from '../systems/economy.js';
 import { MINIMAP_COLORS, MASS_COLORS } from '../art/tiles.js';
@@ -107,6 +108,7 @@ export class WorldScene extends Phaser.Scene {
 
     this.setupAtmosphere();
     this.setupTapInput();
+    this.setupGuide();
 
     this.autoAttack = app.settings.autoAttack !== false;
     sound.setTheme(def.theme === 'village' ? 'village' : def.theme);
@@ -215,6 +217,68 @@ export class WorldScene extends Phaser.Scene {
   }
 
   onResize() { this.applyZoom(); }
+
+  // ------------------------------------------------------------- görev yön okları
+  // Takip edilen görevin hedefine (veya oraya götüren geçide) giden gerçek yürüme yolu
+  // üzerinde, oyuncunun önünde zemine çizilen oklar.
+  setupGuide() {
+    if (!this.textures.exists('guide_arrow')) {
+      const g = this.make.graphics({ add: false });
+      const chev = (o) => [{ x: 1 + o, y: 1 }, { x: 9 + o, y: 1 }, { x: 17 + o, y: 9 }, { x: 9 + o, y: 17 }, { x: 1 + o, y: 17 }, { x: 9 + o, y: 9 }];
+      g.fillStyle(0x1a0e04, 0.85); g.fillPoints(chev(1).map((p) => ({ x: p.x, y: p.y + 1 })), true);
+      g.fillStyle(0xffd24a, 1); g.fillPoints(chev(0), true);
+      g.fillStyle(0xfff0b0, 1); g.fillPoints([{ x: 3, y: 2 }, { x: 8, y: 2 }, { x: 14, y: 8 }, { x: 9, y: 8 }], true);
+      g.generateTexture('guide_arrow', 20, 20);
+      g.destroy();
+    }
+    this.guideArrows = Array.from({ length: 7 }, () => this.add.image(0, 0, 'guide_arrow').setDepth(3).setScale(1.35).setVisible(false));
+    this.guideT = 0; this.guidePath = null; this.guideGoal = null;
+  }
+
+  updateGuide(dt) {
+    const p = this.player, arrows = this.guideArrows;
+    this.guideT -= dt;
+    if (this.guideT <= 0) {
+      this.guideT = 0.5;
+      this.guideGoal = null;
+      const tgt = app.settings.questGuide !== false && !p.dead ? guideTarget(app.char) : null;
+      if (tgt) {
+        let gx, gy, r = tgt.r;
+        if (tgt.map === this.mapId) { gx = tgt.x; gy = tgt.y; } else {
+          const gw = nextGateway(this.mapId, tgt.map);
+          if (gw) { gx = Phaser.Math.Clamp(gw.x, 1, this.mapDef.w - 2); gy = Phaser.Math.Clamp(gw.y, 1, this.mapDef.h - 2); r = 1; }
+        }
+        if (gx !== undefined && Math.hypot(p.x / TILE - gx - 0.5, p.y / TILE - gy - 0.5) > r) {
+          this.guideGoal = { x: gx * TILE + TILE / 2, y: gy * TILE + TILE / 2 };
+          this.guidePath = this.grid.findPath(p.x, p.y, this.guideGoal.x, this.guideGoal.y, 30000);
+        }
+      }
+      if (!this.guideGoal) this.guidePath = null;
+    }
+    if (!this.guideGoal) { for (const a of arrows) a.setVisible(false); return; }
+    // yol: oyuncudan başlayan çoklu çizgi (yol bulunamadıysa düz çizgi)
+    const pts = [{ x: p.x, y: p.y }];
+    const path = this.guidePath;
+    if (path && path.length) {
+      let i0 = 0, bd = Infinity;
+      for (let i = 0; i < Math.min(path.length, 14); i++) { const d = Math.hypot(path[i].x - p.x, path[i].y - p.y); if (d < bd) { bd = d; i0 = i; } }
+      for (let i = i0 + 1; i < path.length && pts.length < 16; i++) pts.push(path[i]);
+      if (i0 === path.length - 1) pts.push(path[i0]);
+    } else pts.push(this.guideGoal);
+    const pulse = this.clock / 220;
+    let seg = 0, segStart = 0;
+    for (let k = 0; k < arrows.length; k++) {
+      const want = (1.3 + k * 1.3) * TILE;
+      while (seg < pts.length - 1 && segStart + Math.hypot(pts[seg + 1].x - pts[seg].x, pts[seg + 1].y - pts[seg].y) < want) {
+        segStart += Math.hypot(pts[seg + 1].x - pts[seg].x, pts[seg + 1].y - pts[seg].y); seg++;
+      }
+      const a = arrows[k];
+      if (seg >= pts.length - 1) { a.setVisible(false); continue; }
+      const A = pts[seg], B = pts[seg + 1], L = Math.hypot(B.x - A.x, B.y - A.y) || 1, t = (want - segStart) / L;
+      a.setPosition(A.x + (B.x - A.x) * t, A.y + (B.y - A.y) * t + 6).setRotation(Math.atan2(B.y - A.y, B.x - A.x));
+      a.setAlpha((1 - k * 0.07) * (0.75 + 0.25 * Math.sin(pulse - k * 0.9))).setVisible(true);
+    }
+  }
 
   // ------------------------------------------------------------- dokunma ile hedef seçimi
   setupTapInput() {
@@ -475,6 +539,7 @@ export class WorldScene extends Phaser.Scene {
         }
       }
     }
+    this.guard('rehber', () => this.updateGuide(dt));
     this.fogT -= dt;
     if (this.fogT <= 0) { this.fogT = 0.3; if (this.fog.reveal(this.player.x, this.player.y)) bus.emit('fog'); }
 
