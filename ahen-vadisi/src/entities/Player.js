@@ -160,9 +160,12 @@ export class Player {
       moved = this.updateApproach(dt, speed);
     }
 
-    // normal saldırı döngüsü (hedef korunur; menzildeyse joystick sırasında da sürer)
-    if (this.target && sc.autoAttack && !stunned && this.busy <= 0 && this.attackTimer <= 0 && !this.channel) {
-      if (this.inAttackRange(this.target)) this.normalAttack(this.target);
+    // normal saldırı döngüsü (hedef korunur; menzildeyse joystick sırasında da sürer).
+    // Oto saldırı kapalıyken yalnız kılıç butonu: her basış bir vuruş sıraya koyar, basılı tutmak vurmayı sürdürür.
+    if (this.attackQueued && (!this.target || this.target !== this.attackQueued.t || now - this.attackQueued.at > 4000)) this.attackQueued = null;
+    const wantAttack = sc.autoAttack || this.attackHeld || this.attackQueued;
+    if (this.target && wantAttack && !stunned && this.busy <= 0 && this.attackTimer <= 0 && !this.channel) {
+      if (this.inAttackRange(this.target)) { this.normalAttack(this.target); this.attackQueued = null; }
     }
 
     // kanal (toplama / etkileşim)

@@ -11,7 +11,7 @@ makine okunur sonuç: `tests/e2e/report.json`.
 | Paket | Sonuç |
 |---|---|
 | Birim testleri (Vitest, 8 dosya) | **75 / 75 geçti** |
-| Uçtan uca testler (Playwright) | **55 / 55 geçti** |
+| Uçtan uca testler (Playwright) | **59 / 59 geçti** |
 | Üretim derlemesi (Vite) | Başarılı — toplam ~1,6 MB (Phaser 332 KB gzip, oyun 115 KB gzip) |
 
 ## Birim testleri (tests/unit)
@@ -51,6 +51,9 @@ makine okunur sonuç: `tests/e2e/report.json`.
 | Stat puanı 0'ın altına inmez (devre dışı butona zorla dokunulsa bile); onaylanınca kaydedilir | ✔ |
 | Karakter panelinde 4 stat ve Onayla butonu kaydırmadan ekrana sığar (844×390) | ✔ |
 | Harita geçişi okun tam üstü değil, geçidin 2 tile yanından da olur | ✔ |
+| Tüccar: gold ve çanta doluluğu panel başlığında her zaman görünür | ✔ |
+| Satın alma onay penceresi ister; Vazgeç ile gold değişmez, onayla düşer | ✔ |
+| Kırmızı OTO butonu kapalıyken hedef kendiliğinden vurulmaz; büyük kılıç her basışta en yakın hedefe vurur | ✔ |
 
 ### Performans (SwiftShader yazılım GPU, 844×390)
 

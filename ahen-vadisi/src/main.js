@@ -115,7 +115,8 @@ function bindGlobalKeys() {
     else if (k === 'q') p.usePotion('hp');
     else if (k === 'e') p.usePotion('mp');
     else if (k === 'tab') { e.preventDefault(); app.world.cycleTarget(); }
-    else if (k === ' ') { app.world.autoAttack = !app.world.autoAttack; app.setSettings({ autoAttack: app.world.autoAttack }); }
+    else if (k === ' ') { e.preventDefault(); app.world.attackNearest(); }
+    else if (k === 'r') { app.world.autoAttack = !app.world.autoAttack; app.setSettings({ autoAttack: app.world.autoAttack }); }
     else if (k === 'i') openPanel('inventory');
     else if (k === 'c') openPanel('character');
     else if (k === 'k') openPanel('skills');

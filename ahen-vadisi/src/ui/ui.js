@@ -43,13 +43,14 @@ export const ui = {
   isOpen() { return !!this.openName || !!this.layers.modal.firstChild; },
 
   // Panel iskeleti: başlık sekmeleri + gövde
-  shell({ tabs = [], active, onTab, title, onClose, cls = '' }) {
+  shell({ tabs = [], active, onTab, title, onClose, cls = '', extra = null }) {
     const tabBar = h('div', { class: 'tabs' });
     const body = h('div', { class: 'pb' });
     const el = h('div', { class: 'panel frame ' + cls },
       h('div', { class: 'ph' },
         title ? h('h3', { class: 't', style: { margin: '0 8px 0 4px' } }, title) : null,
         tabBar,
+        extra,
         h('button', { class: 'xbtn', onTap: () => { sound.play('click'); (onClose || (() => this.closePanel()))(); }, 'aria-label': 'Kapat' }, '×')),
       body);
     const renderTabs = (cur) => {
@@ -78,13 +79,15 @@ export const ui = {
     if (!this.layers.modal.firstChild && !this.openName) bus.emit('modal', false);
   },
 
-  confirm({ title, text, ok = 'Tamam', cancel = 'Vazgeç', onOk, danger = false }) {
+  // text: düz metin; body: isteğe bağlı ek içerik (ör. alışveriş özeti)
+  confirm({ title, text, body = null, ok = 'Tamam', cancel = 'Vazgeç', onOk, danger = false, okDisabled = false }) {
     const box = h('div', { class: 'dlg frame' },
       title ? h('h3', { class: 't' }, title) : null,
-      h('p', {}, text),
+      text ? h('p', {}, text) : null,
+      body,
       h('div', { class: 'row', style: { justifyContent: 'flex-end' } },
-        h('button', { class: 'btn ghost', onTap: () => { sound.play('click'); this.closeModal(); } }, cancel),
-        h('button', { class: 'btn ' + (danger ? 'red' : 'green'), onTap: () => { sound.play('click'); this.closeModal(); onOk?.(); } }, ok)));
+        h('button', { class: 'btn ghost', 'data-testid': 'dlg-cancel', onTap: () => { sound.play('click'); this.closeModal(); } }, cancel),
+        h('button', { class: 'btn ' + (danger ? 'red' : 'green') + (okDisabled ? ' dis' : ''), 'data-testid': 'dlg-ok', onTap: () => { sound.play('click'); this.closeModal(); onOk?.(); } }, ok)));
     this.modal(box);
   },
 

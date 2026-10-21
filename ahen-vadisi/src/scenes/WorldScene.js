@@ -328,6 +328,22 @@ export class WorldScene extends Phaser.Scene {
     return best;
   }
 
+  // Aktif saldırı (kılıç butonu): mevcut hedef yakındaysa ona, değilse en yakın düşmana bir vuruş
+  attackNearest() {
+    const p = this.player;
+    if (!p || p.dead || this.changing) return false;
+    const dist = (e) => Math.hypot(e.x - p.x, e.y - p.y);
+    let t = p.target && !p.target.dead && dist(p.target) < (app.stats().attackRange + 2.5) * TILE ? p.target : null;
+    if (!t) {
+      t = this.enemies.filter((e) => !e.dead && !e.gone && dist(e) < 9 * TILE && this.grid.los(p.x, p.y, e.x, e.y)).sort((a, b) => dist(a) - dist(b))[0];
+      if (!t) { bus.emit('toast', { text: 'Yakında düşman yok', kind: 'info', short: true }); return false; }
+    }
+    if (t !== p.target) { p.selectTarget(t); this.tapRing(t.x, t.y, 0xff5040); }
+    else if (!p.inAttackRange(t) && !p.approaching) p.startApproach();
+    p.attackQueued = { t, at: this.clock };
+    return true;
+  }
+
   cycleTarget() {
     const p = this.player;
     const list = this.enemies.filter((e) => !e.dead && e.tpl.kind !== 'dummy' && Math.hypot(e.x - p.x, e.y - p.y) < 9 * TILE && this.grid.los(p.x, p.y, e.x, e.y))

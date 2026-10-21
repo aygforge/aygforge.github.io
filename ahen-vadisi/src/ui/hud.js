@@ -73,16 +73,28 @@ export function createHud() {
 
   // ---------------- sağ alt aksiyonlar
   const br = h('div', { class: 'hud-br' });
+  // büyük kılıç: aktif saldırı — her basış en yakın düşmana bir vuruş, basılı tutmak vurmayı sürdürür
+  const release = () => { const p = app.world?.player; if (p) p.attackHeld = false; atk.classList.remove('press'); };
   const atk = h('button', { class: 'act atk', style: { backgroundImage: `url(${iconURL('ui:sword')})` }, 'data-testid': 'btn-attack',
-    onTap: () => {
-      sound.play('click');
+    onPointerdown: (e) => {
+      e.preventDefault(); sound.init();
       const w = app.world;
-      w.autoAttack = !w.autoAttack;
-      app.setSettings({ autoAttack: w.autoAttack });
-      bus.emit('toast', { text: w.autoAttack ? 'Otomatik normal saldırı: AÇIK' : 'Otomatik normal saldırı: KAPALI', kind: 'info', short: true });
-      refreshAtk();
-    } });
-  const refreshAtk = () => atk.classList.toggle('off', !(app.world?.autoAttack ?? true));
+      if (!w?.player) return;
+      atk.classList.add('press');
+      if (w.attackNearest()) w.player.attackHeld = true;
+    },
+    onPointerup: release, onPointercancel: release, onPointerleave: release });
+  // küçük kırmızı buton: otomatik normal saldırı aç/kapa
+  const toggleAuto = () => {
+    sound.play('click');
+    const w = app.world;
+    if (!w) return;
+    w.autoAttack = !w.autoAttack;
+    app.setSettings({ autoAttack: w.autoAttack });
+    bus.emit('toast', { text: w.autoAttack ? 'Otomatik saldırı: AÇIK' : 'Otomatik saldırı: KAPALI — kılıca basarak saldır', kind: 'info', short: true });
+    refreshAtk();
+  };
+  const refreshAtk = () => tgt.classList.toggle('on', !!(app.world?.autoAttack ?? true));
   const skillBtns = [0, 1, 2, 3].map((i) => {
     const cd = h('div', { class: 'cd' }), cdt = h('div', { class: 'cdt' }), lv = h('div', { class: 'lv' });
     const b = h('button', { class: 'act sk', 'data-testid': 'skill-' + i, onPointerdown: (e) => { e.preventDefault(); sound.init(); app.world?.player.useSkill(i); } }, cd, cdt, lv);
@@ -96,7 +108,7 @@ export function createHud() {
     return b;
   };
   const hpPot = potBtn('hp'), mpPot = potBtn('mp');
-  const tgt = h('button', { class: 'act tgt', style: { backgroundImage: `url(${iconURL('ui:target')})` }, 'data-testid': 'btn-target', onPointerdown: (e) => { e.preventDefault(); app.world?.cycleTarget(); } });
+  const tgt = h('button', { class: 'act tgt', style: { backgroundImage: `url(${iconURL('ui:target')})` }, 'data-testid': 'btn-auto', 'aria-label': 'Otomatik saldırı', onTap: toggleAuto }, h('span', { class: 'lbl' }, 'OTO'));
   br.append(atk, ...skillBtns, hpPot, mpPot, tgt);
 
   const layoutActions = () => {

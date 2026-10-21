@@ -177,7 +177,11 @@ input.name { font: inherit; font-size: 1.1rem; padding: 10px 12px; border-radius
 .act { position: absolute; border-radius: 50%; pointer-events: auto; border: 2px solid var(--edge); background: rgba(26,18,24,.88) center/62% no-repeat; box-shadow: 0 3px 0 #120d10; touch-action: manipulation; }
 .act:active { filter: brightness(1.35); transform: scale(.96); }
 .act.atk { width: clamp(66px, 19vh, 84px); height: clamp(66px, 19vh, 84px); right: 0; bottom: 0; border-color: #c08030; }
-.act.atk.off { filter: grayscale(1) brightness(.6); }
+.act.atk.press { filter: brightness(1.4); transform: scale(.92); border-color: #ffd070; }
+/* oto saldırı düğmesi: açıkken parlak çerçeve, kapalıyken soluk */
+.act.tgt { border-color: #8a2a20; filter: grayscale(.85) brightness(.6); }
+.act.tgt.on { filter: none; border-color: #ff7050; box-shadow: 0 0 0 2px rgba(255,90,60,.45), 0 0 10px rgba(255,80,50,.6), 0 3px 0 #120d10; }
+.act.tgt .lbl { position: absolute; left: 50%; bottom: -4px; transform: translateX(-50%); font-size: .62rem; font-weight: bold; background: #3a1010; border: 1px solid #000; border-radius: 6px; padding: 0 4px; color: #ffd0c0; }
 .act.sk { width: clamp(52px, 15vh, 64px); height: clamp(52px, 15vh, 64px); }
 .act.pot, .act.tgt { width: clamp(46px, 13vh, 54px); height: clamp(46px, 13vh, 54px); }
 .act .cd { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(rgba(0,0,0,.72) var(--p, 0%), transparent 0); }
@@ -252,9 +256,24 @@ input.name { font: inherit; font-size: 1.1rem; padding: 10px 12px; border-radius
 .mats img { width: 20px; height: 20px; }
 
 /* NPC */
-.npc-head { display: flex; gap: 10px; align-items: center; }
-.npc-head canvas { width: 54px; height: 68px; image-rendering: pixelated; background: rgba(0,0,0,.3); border-radius: 8px; border: 1px solid #4a3828; }
-.npc-head .say { font-style: italic; color: #e8dcc0; font-size: .88rem; }
+.npc-head { display: flex; gap: 8px; align-items: center; flex: none; padding: 2px 4px; }
+.npc-head canvas { width: 30px; height: 38px; image-rendering: pixelated; background: rgba(0,0,0,.3); border-radius: 6px; border: 1px solid #4a3828; flex: none; }
+.npc-head .say { font-style: italic; color: #e8dcc0; font-size: .8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* NPC başlığındaki cüzdan: her zaman görünür */
+.wallet { margin-left: auto; display: flex; gap: 6px; align-items: center; flex: none; }
+.wallet span { display: flex; align-items: center; gap: 4px; background: rgba(10,6,10,.6); border: 1px solid #6a5030; border-radius: 16px; padding: 3px 10px 3px 4px; font-size: .95rem; white-space: nowrap; }
+.wallet .wg b { color: var(--gold2); font-size: 1.05rem; }
+.wallet img { width: 22px; height: 22px; image-rendering: pixelated; }
+/* dükkân kartları: 2 sütun */
+.shopgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px; }
+.scard { display: flex; align-items: center; gap: 6px; padding: 4px 6px; border-radius: 8px; background: rgba(0,0,0,.28); border: 1px solid #3a2c22; }
+.scard.wide { margin: 2px 0; }
+.scard .si { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; }
+.scard .si b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scard img { width: 34px; height: 34px; flex: none; image-rendering: pixelated; }
+.scard .btn.small { min-height: 40px; padding: 4px 8px; flex: none; }
+.buysum { display: flex; gap: 10px; align-items: center; background: rgba(0,0,0,.3); border: 1px solid #4a3828; border-radius: 8px; padding: 8px; }
+.buysum img { width: 44px; height: 44px; image-rendering: pixelated; flex: none; }
 .svc { display: flex; flex-direction: column; gap: 6px; width: clamp(150px, 24vw, 210px); flex: none; }
 .svc .btn { text-align: left; }
 

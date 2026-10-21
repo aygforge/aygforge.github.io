@@ -35,12 +35,15 @@ export function openNpc(npcId) {
   let cur = null;
   const content = h('div', { class: 'col grow scroll', style: { minWidth: 0 } });
   const svcBox = h('div', { class: 'svc scroll' });
-  const shell = ui.shell({ title: npc.name, onClose: () => { off(); ui.closePanel(); } });
-  const portrait = npcSheet(npc.sprite)[0].toCanvas(3);
+  // başlıkta her zaman görünen cüzdan: gold + çanta doluluğu
+  const wallet = h('div', { class: 'wallet', 'data-testid': 'wallet' });
+  const shell = ui.shell({ title: npc.name, extra: wallet, onClose: () => { off(); ui.closePanel(); } });
+  const portrait = npcSheet(npc.sprite)[0].toCanvas(2);
   const say = h('div', { class: 'say' }, `"${npc.greet}"`);
   const render = () => {
+    updateWallet(wallet);
     clear(content);
-    content.appendChild(h('div', { class: 'npc-head box' }, portrait, h('div', { class: 'grow' }, h('div', { class: 'gold' }, `${npc.name} · ${npc.title}`), say)));
+    content.appendChild(h('div', { class: 'npc-head' }, portrait, h('div', { class: 'grow', style: { minWidth: 0 } }, h('div', { class: 'gold small' }, npc.title), say)));
     if (cur) content.appendChild((SERVICES[cur] || (() => h('div')))(npcId, render));
     clear(svcBox);
     for (const s of services) {
@@ -62,6 +65,30 @@ const matsView = (inputs) => h('div', { class: 'mats' }, inputs.map((m) => {
   return h('span', { class: have >= m.qty ? 'ok' : 'bad' }, img(iconURL(m.id)), `${STACKABLES[m.id].name} ${have}/${m.qty}`);
 }));
 const goldView = (g) => h('span', { class: app.char.gold >= g ? 'gold' : 'bad' }, `${fmt(g)} G`);
+
+function updateWallet(el) {
+  const ch = app.char;
+  clear(el).append(
+    h('span', { class: 'wg', title: 'Gold' }, img(iconURL('ui:gold')), h('b', { 'data-testid': 'wallet-gold' }, fmt(ch.gold))),
+    h('span', { class: 'wb', title: 'Çanta' }, img(iconURL('ui:bag')), `${ch.bag.slots.filter(Boolean).length}/${ch.bag.size}`));
+}
+
+// Satın alma onayı: ne alındığı, toplam fiyat ve alımdan sonra kalacak gold gösterilir
+function confirmBuy({ icon, name, qty = 1, price, onOk }) {
+  const ch = app.char;
+  const total = price * qty, left = ch.gold - total, can = left >= 0;
+  ui.confirm({
+    title: 'Satın alınsın mı?',
+    body: h('div', { class: 'buysum' },
+      icon ? img(icon) : null,
+      h('div', { class: 'grow' },
+        h('b', {}, qty > 1 ? `${name} ×${qty}` : name),
+        h('div', { class: 'small' }, 'Fiyat: ', h('b', { class: 'gold' }, `${fmt(total)} G`)),
+        h('div', { class: 'small muted' }, 'Gold: ', `${fmt(ch.gold)} → `, h('b', { class: can ? 'ok' : 'bad' }, can ? `${fmt(left)} G` : 'yetersiz')))),
+    ok: can ? 'Satın al' : 'Yetersiz Gold', okDisabled: !can,
+    onOk,
+  });
+}
 
 const SERVICES = {
   // ---------------------------------------------------------------- görevler
@@ -89,17 +116,21 @@ const SERVICES = {
     const ch = app.char;
     const stock = merchantStock().filter((o) => ITEMS[o.tid].cls === ch.cls || ITEMS[o.tid].cls === 'any');
     const other = merchantStock().filter((o) => !stock.includes(o));
-    const row = (o) => h('div', { class: 'li' }, img(iconURL(o.tid)),
-      h('div', { class: 'grow' }, h('b', { class: 'r-N' }, ITEMS[o.tid].name), h('div', { class: 'tiny muted' }, `${SLOT_NAMES[ITEMS[o.tid].slot]} · Lv.${ITEMS[o.tid].lv} · ${ITEMS[o.tid].cls === 'any' ? 'Her sınıf' : ITEMS[o.tid].cls === 'warrior' ? 'Savaşçı' : 'Büyücü'}`)),
-      h('button', { class: 'btn small ghost', onTap: () => ui.modal(h('div', { class: 'card frame' }, h('div', { class: 'cb' }, itemInfo({ tid: o.tid, r: 'N', b: [], p: 0, d: 100 })), h('div', { class: 'acts' }, h('button', { class: 'btn ghost', onTap: () => ui.closeModal() }, 'Kapat')))) }, 'Bilgi'),
-      h('button', { class: 'btn small green', onTap: () => { act.buyEquip(o.tid); render(); } }, goldView(o.price)));
+    const info = (o) => ui.modal(h('div', { class: 'card frame' }, h('div', { class: 'cb' }, itemInfo({ tid: o.tid, r: 'N', b: [], p: 0, d: 100 })), h('div', { class: 'acts' }, h('button', { class: 'btn ghost', onTap: () => ui.closeModal() }, 'Kapat'))));
+    // kart: simgeye/isme dokununca bilgi, fiyat butonu onay penceresiyle satın alır
+    const card = (o) => {
+      const t = ITEMS[o.tid];
+      return h('div', { class: 'scard' },
+        h('div', { class: 'si', onTap: () => info(o) }, img(iconURL(o.tid)),
+          h('div', { class: 'grow', style: { minWidth: 0 } }, h('b', { class: 'r-N' }, t.name), h('div', { class: 'tiny muted' }, `${SLOT_NAMES[t.slot]} · Lv.${t.lv}`))),
+        h('button', { class: 'btn small green', 'data-testid': 'buyeq-' + o.tid, onTap: () => confirmBuy({ icon: iconURL(o.tid), name: t.name, price: o.price, onOk: () => { act.buyEquip(o.tid); render(); } }) }, goldView(o.price)));
+    };
+    const bottle = (q) => h('button', { class: 'btn small green', onTap: () => confirmBuy({ icon: iconURL('empty_bottle'), name: 'Boş Şişe', qty: q, price: BOTTLE_PRICE, onOk: () => { act.buyBottle(q); render(); } }) }, `×${q} · ${BOTTLE_PRICE * q} G`);
     return h('div', { class: 'col' },
-      h('div', { class: 'gold' }, `Gold: ${fmt(ch.gold)}`),
-      h('div', { class: 'li' }, img(iconURL('empty_bottle')), h('div', { class: 'grow' }, h('b', {}, 'Boş Şişe'), h('div', { class: 'tiny muted' }, 'İksir üretimi için')),
-        h('button', { class: 'btn small green', onTap: () => { act.buyBottle(1); render(); } }, `×1 · ${BOTTLE_PRICE} G`),
-        h('button', { class: 'btn small green', onTap: () => { act.buyBottle(5); render(); } }, `×5 · ${BOTTLE_PRICE * 5} G`)),
-      h('h3', { class: 't' }, 'Sınıfına uygun temel ekipman'), ...stock.map(row),
-      h('h3', { class: 't' }, 'Diğer sınıf (depo için)'), ...other.map(row));
+      h('div', { class: 'shopgrid' }, ...stock.map(card)),
+      h('div', { class: 'scard wide' }, h('div', { class: 'si' }, img(iconURL('empty_bottle')), h('div', { class: 'grow' }, h('b', {}, 'Boş Şişe'), h('div', { class: 'tiny muted' }, `İksir üretimi için · Sahip: ${countStack(ch.bag, 'empty_bottle')}`))), bottle(1), bottle(5)),
+      h('div', { class: 'small muted' }, 'Diğer sınıfın ekipmanı (depo için)'),
+      h('div', { class: 'shopgrid' }, ...other.map(card)));
   },
   sell(npcId, render) {
     const ch = app.char;
@@ -111,7 +142,7 @@ const SERVICES = {
     const ch = app.char;
     const next = BAG_STEPS.find((s) => s > ch.bag.size);
     return h('div', { class: 'box col' }, h('div', {}, `Çanta: ${ch.bag.size} slot`),
-      next ? h('button', { class: 'btn green', onTap: () => { act.expandBag(); render(); } }, `${ch.bag.size} → ${next} slot (${fmt(BAG_EXPAND_COST[next])} G)`) : h('div', { class: 'ok' }, 'Çanta en büyük boyutta (48).'));
+      next ? h('button', { class: 'btn green', onTap: () => confirmBuy({ icon: iconURL('ui:bag'), name: `Çanta ${ch.bag.size} → ${next} slot`, price: BAG_EXPAND_COST[next], onOk: () => { act.expandBag(); render(); } }) }, `${ch.bag.size} → ${next} slot (${fmt(BAG_EXPAND_COST[next])} G)`) : h('div', { class: 'ok' }, 'Çanta en büyük boyutta (48).'));
   },
 
   // ---------------------------------------------------------------- demirci
@@ -175,10 +206,10 @@ const SERVICES = {
   // ---------------------------------------------------------------- şifacı
   potions(npcId, render) {
     const ch = app.char;
-    return h('div', { class: 'list' }, h('div', { class: 'gold' }, `Gold: ${fmt(ch.gold)}`), POTION_LIST.map((p) => h('div', { class: 'li' }, img(iconURL(p.id)),
-      h('div', { class: 'grow' }, h('b', {}, p.name), h('div', { class: 'tiny muted' }, `${p.desc} Sahip: ${countStack(ch.bag, p.id)}`)),
-      h('button', { class: 'btn small green', 'data-testid': 'buy-' + p.id, onTap: () => { act.buyPotion(p.id, 1); render(); } }, `×1 · ${p.buy} G`),
-      h('button', { class: 'btn small green', onTap: () => { act.buyPotion(p.id, 5); render(); } }, `×5 · ${p.buy * 5} G`))));
+    const buy = (p, q) => h('button', { class: 'btn small green', 'data-testid': q === 1 ? 'buy-' + p.id : null, onTap: () => confirmBuy({ icon: iconURL(p.id), name: p.name, qty: q, price: p.buy, onOk: () => { act.buyPotion(p.id, q); render(); } }) }, `×${q} · ${fmt(p.buy * q)} G`);
+    return h('div', { class: 'shopgrid' }, POTION_LIST.map((p) => h('div', { class: 'scard' },
+      h('div', { class: 'si' }, img(iconURL(p.id)), h('div', { class: 'grow', style: { minWidth: 0 } }, h('b', {}, p.name), h('div', { class: 'tiny muted' }, `+${p.amount} ${p.kind.toUpperCase()} · Lv.${p.lv}+ · Sahip: ${countStack(ch.bag, p.id)}`))),
+      h('div', { class: 'row', style: { gap: '4px' } }, buy(p, 1), buy(p, 5)))));
   },
 
   // ---------------------------------------------------------------- avcı
@@ -239,7 +270,7 @@ const SERVICES = {
   storage_expand(npcId, render) {
     const stg = app.profile.storage;
     return h('div', { class: 'box col' }, h('div', {}, `Depo: ${stg.size} slot`),
-      stg.size < STORAGE_MAX ? h('button', { class: 'btn green', onTap: () => { act.expandStorage(); render(); } }, `60 → 90 slot (${fmt(STORAGE_EXPAND_COST)} G)`) : h('div', { class: 'ok' }, 'Depo en büyük boyutta.'));
+      stg.size < STORAGE_MAX ? h('button', { class: 'btn green', onTap: () => confirmBuy({ icon: iconURL('ui:bag'), name: 'Ortak depo 60 → 90 slot', price: STORAGE_EXPAND_COST, onOk: () => { act.expandStorage(); render(); } }) }, `60 → 90 slot (${fmt(STORAGE_EXPAND_COST)} G)`) : h('div', { class: 'ok' }, 'Depo en büyük boyutta.'));
   },
 };
 

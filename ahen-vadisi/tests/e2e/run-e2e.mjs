@@ -152,7 +152,14 @@ try {
   const afterRelease = await ev(page, () => ({ approaching: window.__AHEN.world.player.approaching, target: window.__AHEN.world.player.target === window.__T }));
   record('Joystick bırakılınca yaklaşma kendiliğinden başlamaz; hedef korunur', !afterRelease.approaching && afterRelease.target, JSON.stringify(afterRelease));
   // tekrar dokun → yaklaş → otomatik saldırı ile öldür
-  const pos2 = await ev(page, () => { const w = window.__AHEN.world, cam = w.cameras.main, r = window.__T; return { x: (r.x - cam.worldView.x) * cam.zoom, y: (r.y - r.height / 2 - cam.worldView.y) * cam.zoom }; });
+  // sıçan dolaşıp HUD'un (joystick bölgesi vb.) altına girmiş olabilir: oyuncunun yanına, açık alana al
+  const pos2 = await ev(page, async () => {
+    const w = window.__AHEN.world, cam = w.cameras.main, r = window.__T, p = w.player;
+    for (const [dx, dy] of [[64, 0], [-64, 0], [0, -64], [0, 64], [64, -64]]) if (!w.grid.blockedAt(p.x + dx, p.y + dy)) { r.x = p.x + dx; r.y = p.y + dy; break; }
+    r.state = 'idle'; r.wanderGoal = null; r.wanderTimer = 99; r.sync?.();
+    await new Promise((res) => requestAnimationFrame(() => requestAnimationFrame(res)));
+    return { x: (r.x - cam.worldView.x) * cam.zoom, y: (r.y - r.height / 2 - cam.worldView.y) * cam.zoom };
+  });
   await page.touchscreen.tap(pos2.x, pos2.y);
   const killed = await ev(page, async () => {
     const t0 = performance.now();
@@ -253,6 +260,49 @@ try {
     let crossed = true;
     try { await waitMap(page, 'village'); } catch { crossed = false; }
     record('Geçit okunun 2 tile yanından harita geçişi olur', crossed);
+
+    // tüccar: cüzdan her zaman görünür, satın alma onay ister
+    await ev(page, () => { const a = window.__AHEN; a.char.gold = 5000; a.world.objects.find((o) => o.kind === 'npc' && o.npc.id === 'mira').interact(); });
+    await page.waitForSelector('[data-testid=svc-shop]', { timeout: 5000 });
+    await page.tap('[data-testid=svc-shop]');
+    await page.waitForTimeout(300);
+    const wallet = await ev(page, () => { const r = document.querySelector('[data-testid=wallet-gold]').getBoundingClientRect(); return { text: document.querySelector('[data-testid=wallet-gold]').textContent, inView: r.top >= 0 && r.bottom <= innerHeight && r.right <= innerWidth }; });
+    const g0 = await ev(page, () => window.__AHEN.char.gold);
+    await page.tap('[data-testid^=buyeq-]');
+    await page.waitForSelector('[data-testid=dlg-ok]', { timeout: 3000 });
+    const gAsk = await ev(page, () => window.__AHEN.char.gold);
+    await page.tap('[data-testid=dlg-cancel]');
+    await page.waitForTimeout(200);
+    const gCancel = await ev(page, () => window.__AHEN.char.gold);
+    await page.tap('[data-testid^=buyeq-]');
+    await page.waitForSelector('[data-testid=dlg-ok]', { timeout: 3000 });
+    await page.tap('[data-testid=dlg-ok]');
+    await page.waitForTimeout(300);
+    const gBuy = await ev(page, () => window.__AHEN.char.gold);
+    const wallet2 = await ev(page, () => document.querySelector('[data-testid=wallet-gold]').textContent);
+    record('Tüccar: cüzdan (gold) başlıkta görünür', wallet.inView && wallet.text === '5.000', JSON.stringify(wallet));
+    record('Satın alma onay ister; Vazgeç ile gold değişmez, onayla düşer', g0 === 5000 && gAsk === 5000 && gCancel === 5000 && gBuy < 5000 && wallet2 !== '5.000', JSON.stringify({ g0, gAsk, gCancel, gBuy, wallet2 }));
+    await page.tap('.xbtn').catch(() => {});
+    await page.waitForTimeout(300);
+
+    // aktif saldırı: oto kapalıyken kukla kendiliğinden vurulmaz; kılıca basış vurur
+    await page.tap('[data-testid=btn-auto]');
+    await page.waitForTimeout(200);
+    const atk = await ev(page, async () => {
+      const w = window.__AHEN.world, d = w.enemies.find((e) => e.tpl.kind === 'dummy' && !e.dead);
+      w.player.clearTarget(); w.player.x = d.x - 40; w.player.y = d.y; w.player.selectTarget(d);
+      const h0 = d.hp;
+      await new Promise((r) => setTimeout(r, 1500));
+      window.__DD = d;
+      return { auto: w.autoAttack, h0, idle: d.hp };
+    });
+    await page.tap('[data-testid=btn-attack]');
+    await page.waitForTimeout(1200);
+    const hit = await ev(page, () => window.__DD.hp);
+    record('Oto saldırı (kırmızı OTO) kapalıyken hedef kendiliğinden vurulmaz', atk.auto === false && atk.idle === atk.h0, JSON.stringify(atk));
+    record('Büyük kılıç aktif saldırı: basınca en yakın hedefe vurur', hit < atk.idle, `${atk.idle} → ${hit}`);
+    await page.tap('[data-testid=btn-auto]');
+    await page.waitForTimeout(200);
     await ev(page, () => window.__AHEN.world.changeMap('forest', 'from_village'));
     await waitMap(page, 'forest');
   }

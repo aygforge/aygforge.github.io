@@ -47,7 +47,7 @@ function howTo() {
     h('h3', { class: 't' }, 'Nasıl Oynanır?'),
     h('p', { class: 'small' }, '• Sol alttaki joystick ile yürü. Joystick her zaman önceliklidir ve otomatik yaklaşmayı anında durdurur.'),
     h('p', { class: 'small' }, '• Bir düşmana dokun: hedef seçilir, karakterin yaklaşır ve menzile girince normal saldırıyı otomatik sürdürür. Hedef ölünce yeni hedef otomatik seçilmez.'),
-    h('p', { class: 'small' }, '• Sağ alttaki beceri butonları manueldir; bekleme süresi ve MP harcar. Büyük kılıç butonu otomatik normal saldırıyı açar/kapatır, hedef butonu yakındaki düşmanlar arasında geçiş yapar.'),
+    h('p', { class: 'small' }, '• Sağ alttaki beceri butonları manueldir; bekleme süresi ve MP harcar. Büyük kılıç butonu aktif saldırıdır: her basışta en yakın düşmana vurursun, basılı tutunca vurmaya devam edersin. Küçük kırmızı OTO butonu otomatik normal saldırıyı açar/kapatır.'),
     h('p', { class: 'small' }, '• NPC, cevher, bitki ve görev nesnelerine dokun; karakter yaklaşıp etkileşime girer.'),
     h('p', { class: 'small' }, '• Kırmızı/turuncu yer işaretleri büyük saldırıların uyarısıdır — işaretli alandan çık!'),
     h('p', { class: 'small' }, '• Klavye: WASD/oklar hareket, 1-4 beceri, Q/E iksir, Tab hedef, Boşluk saldırı aç/kapa, I/C/K/J/M menüler.'),
