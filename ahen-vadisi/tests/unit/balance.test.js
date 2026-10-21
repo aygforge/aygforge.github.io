@@ -10,7 +10,7 @@ import { ENEMIES } from '../../src/data/enemies.js';
 import { SKILLS, CLASS_SKILLS } from '../../src/data/skills.js';
 import { cumulativeXp, MP_REGEN_COMBAT, goldRangeForLevel, expMultiplier, WARRIOR_MP_ON_HIT } from '../../src/data/constants.js';
 
-function build(cls, level, gear, plus = 0) {
+function build(cls, level, gear, plus = 0, fullSkills = false) {
   const rng = new Rng(level * 31 + (cls === 'mage' ? 7 : 0));
   const c = createCharacter({ name: 'Sim', cls, slot: 0 }, rng);
   gainExp(c, cumulativeXp(level));
@@ -18,15 +18,18 @@ function build(cls, level, gear, plus = 0) {
   if (cls === 'warrior') { c.alloc.str = Math.round(pts * 0.6); c.alloc.vit = pts - c.alloc.str; }
   else { c.alloc.int = Math.round(pts * 0.65); c.alloc.vit = pts - c.alloc.int; }
   // beceri puanları: aktif 1 ve pasif 1'e öncelik
-  const order = [...CLASS_SKILLS[cls].passives.slice(0, 1), CLASS_SKILLS[cls].actives[0], CLASS_SKILLS[cls].actives[1]];
-  let free = level - 1;
+  // V2 senaryoları: Lv.21+ oyuncu bütün puanlarını harcar (pasifler, sonra hasar becerileri)
+  const order = fullSkills
+    ? [...CLASS_SKILLS[cls].passives, ...CLASS_SKILLS[cls].actives.filter((id) => SKILLS[id].coef)]
+    : [...CLASS_SKILLS[cls].passives.slice(0, 1), CLASS_SKILLS[cls].actives[0], CLASS_SKILLS[cls].actives[1]];
+  let free = level - 1 + (fullSkills ? 2 : 0);
   for (const id of order) while (c.skills[id] && free > 0 && c.skills[id] < (SKILLS[id].kind === 'active' ? 5 : 3)) {
     const cost = SKILLS[id].kind === 'active' ? [0, 1, 1, 2, 2][c.skills[id]] : [0, 1, 2][c.skills[id]];
     if (cost > free) break;
     free -= cost; c.skills[id]++;
   }
   for (const tid of gear) {
-    const inst = createItem(tid, null, rng, { noBonus: true });
+    const inst = createItem(tid, null, rng, { noBonus: !fullSkills });   // V2 senaryoları: gerçek rastgele bonuslarla
     inst.p = ['R', 'A'].includes(tid[0]) ? 0 : plus;
     c.equipment[{ W: 'weapon', M: 'weapon', O: 'offhand', H: 'helm', C: 'chest', G: 'gloves', B: 'boots', R: 'ring', A: 'amulet' }[tid[0]]] = inst;
   }
@@ -141,6 +144,52 @@ describe('Denge simülasyonu (gerçek formüller)', () => {
     expect(Math.max(gw, gm) / Math.min(gw, gm)).toBeLessThan(2);
     expect(Math.max(aw, am) / Math.min(aw, am)).toBeLessThan(2);
     expect(gwLow).toBeGreaterThanOrEqual(gw);
+  });
+
+  it('V2: Kül Devi 3–5 dk, Donmuş Muhafız 4–6 dk (iki sınıf, gerçekçi donanım ve hareket payı)', () => {
+    // V2 senaryoları gerçek rastgele bonuslu eşyalar ve bütün beceri puanlarının harcandığı karakterlerle ölçülür.
+    // Hareket payı: telegraflardan kaçma ve yeniden konumlanma (Warrior yakın dövüş ×1,2; Mage menzil ayarı ×1,3).
+    const MOVE = { warrior: 1.2, mage: 1.3 };
+    const kwC = build('warrior', 26, ['W10', 'O07', 'H07', 'C09', 'G07', 'B03', 'R07', 'A05'], 3, true);
+    const kmC = build('mage', 26, ['M10', 'O09', 'H09', 'C11', 'G08', 'B06', 'R05', 'A05'], 2, true);
+    const fwC = build('warrior', 30, ['W12', 'O08', 'H08', 'C10', 'G07', 'B07', 'R07', 'A07'], 4, true);
+    const fmC = build('mage', 30, ['M12', 'O10', 'H10', 'C12', 'G08', 'B08', 'R08', 'A07'], 3, true);
+    // Buz Mührü fazında iki kristal kırılır (kalkan aktifken bossa hasar %80 azalır; kristaller önce kırılır)
+    const crystals = (c) => 2 * ttk(c, 'frost_seal_crystal');
+    const kw = ttk(kwC, 'ash_giant') * MOVE.warrior, km = ttk(kmC, 'ash_giant') * MOVE.mage;
+    const fw = (ttk(fwC, 'frozen_guardian') + crystals(fwC)) * MOVE.warrior, fm = (ttk(fmC, 'frozen_guardian') + crystals(fmC)) * MOVE.mage;
+    log('Warrior Lv26 Rare+3 → Kül Devi', `~${Math.round(kw)} sn (${(kw / 60).toFixed(1)} dk)`);
+    log('Mage Lv26 Rare+2 → Kül Devi', `~${Math.round(km)} sn (${(km / 60).toFixed(1)} dk)`);
+    log('Warrior Lv30 Rare/Epic+4 → Donmuş Muhafız', `~${Math.round(fw)} sn (${(fw / 60).toFixed(1)} dk)`);
+    log('Mage Lv30 Rare/Epic+3 → Donmuş Muhafız', `~${Math.round(fm)} sn (${(fm / 60).toFixed(1)} dk)`);
+    for (const v of [kw, km]) { expect(v).toBeGreaterThan(170); expect(v).toBeLessThan(310); }
+    for (const v of [fw, fm]) { expect(v).toBeGreaterThan(230); expect(v).toBeLessThan(370); }
+    expect(Math.max(kw, km) / Math.min(kw, km)).toBeLessThan(1.6);
+    expect(Math.max(fw, fm) / Math.min(fw, fm)).toBeLessThan(1.6);
+  });
+
+  it('V2 farm: öldürme süreleri, ~120 öldürme/saat bütçesi ve 20→30 toplam süre (hedef 8–12 sa)', () => {
+    // seviyeye uygun donanım: Lv.21–25 Uncommon/Rare +2, Lv.26–29 V2 Rare +3 (rastgele bonuslarla)
+    const gear = (cls, lv) => {
+      if (cls === 'warrior') return lv < 24 ? ['W09', 'O02', 'H07', 'C03', 'G03', 'B03', 'R05', 'A05'] : lv < 26 ? ['W10', 'O07', 'H07', 'C09', 'G03', 'B03', 'R07', 'A05'] : ['W12', 'O07', 'H08', 'C09', 'G07', 'B07', 'R07', 'A07'];
+      return lv < 24 ? ['M09', 'O06', 'H09', 'C07', 'G06', 'B06', 'R05', 'A05'] : lv < 26 ? ['M10', 'O09', 'H09', 'C11', 'G06', 'B06', 'R05', 'A05'] : ['M12', 'O09', 'H10', 'C11', 'G08', 'B08', 'R07', 'A07'];
+    };
+    let expFarmPerHour = 0;
+    const mobs = [['ash_imp', 21], ['ash_hunter', 23], ['crimson_scorpion', 24], ['burnt_warrior', 25], ['frost_wolf', 26], ['ice_wisp', 27], ['frost_sentinel', 28], ['snow_shaman', 29]];
+    for (const [id, lv] of mobs) {
+      const plus = lv >= 26 ? 3 : 2;
+      const w = farmTtk(build('warrior', lv, gear('warrior', lv), plus, true), id);
+      const m = farmTtk(build('mage', lv, gear('mage', lv), plus, true), id);
+      log(`V2 farm ${ENEMIES[id].name} (Lv.${lv})`, `Warrior ${w} sn · Mage ${m} sn`);
+      // 120 öldürme/saat bütçesi = 30 sn/öldürme; savaş en çok 20 sn, kalan yürüme/dinlenme
+      for (const v of [w, m]) { expect(v).toBeGreaterThan(1); expect(v).toBeLessThan(20); }
+      expFarmPerHour += 120 * ENEMIES[id].exp / mobs.length;
+    }
+    // Süre tahmini: 20→30 EXP'si (368.300) − V2 görev EXP'si (92.500) farmla; görev/zindan/boss oynanışı ~3 sa
+    const farmHours = (368300 - 92500) / expFarmPerHour;
+    log('V2 20→30 tahmini', `${farmHours.toFixed(1)} sa farm + ~3 sa görev/boss/zindan = ~${(farmHours + 3).toFixed(1)} sa`);
+    expect(farmHours + 3).toBeGreaterThan(8);
+    expect(farmHours + 3).toBeLessThan(12);
   });
 
   it('düşük seviyeli yaratıklar güçlenince kolaylaşır (gizli ölçekleme yok)', () => {

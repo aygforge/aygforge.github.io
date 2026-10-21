@@ -14,7 +14,7 @@ import { requestFullscreen } from './ui/screen.js';
 import { respawnEntry, getRun, isDungeonUnlocked, DUNGEON_INFO } from './systems/dungeon.js';
 import { MAPS } from './data/maps/index.js';
 import { sound } from './audio/sound.js';
-import { devEnabled, mountDevButton } from './dev/devpanel.js';
+import { devEnabled, mountDevButton, installDevHooks } from './dev/devpanel.js';
 
 let hud = null;
 
@@ -29,6 +29,7 @@ async function start() {
   bus.on('bootProgress', (p) => { bar.style.width = `${Math.round(p * 100)}%`; });
 
   app.dev = devEnabled();
+  if (app.dev) installDevHooks();
   try {
     await app.loadProfile();
   } catch (e) {

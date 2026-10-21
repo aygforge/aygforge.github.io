@@ -12,7 +12,7 @@ import { SKILLS, CLASS_SKILLS, maxRank, rankUpCost, MASTERY_BOOKS } from '../../
 import { ALL_QUESTS, QUEST_MAP } from '../../data/quests.js';
 import { ENEMIES } from '../../data/enemies.js';
 import { STACKABLES } from '../../data/materials.js';
-import { MAPS } from '../../data/maps/index.js';
+import { MAPS, MAP_ORDER } from '../../data/maps/index.js';
 import { computeStats } from '../../systems/stats.js';
 import { statPointsFree, skillPointsFree, canRankUp, canApplyMasteryBook } from '../../systems/character.js';
 import { countStack } from '../../systems/inventory.js';
@@ -32,6 +32,7 @@ const TABS = [
   { id: 'skills', label: 'Beceriler', icon: iconURL('ui:skills') },
   { id: 'quests', label: 'Görevler', icon: iconURL('ui:quests') },
   { id: 'map', label: 'Harita', icon: iconURL('ui:map') },
+  { id: 'history', label: 'Av Geçmişi', icon: iconURL('ui:history') },
   { id: 'settings', label: 'Ayarlar', icon: iconURL('ui:settings') },
 ];
 
@@ -265,11 +266,40 @@ function questsTab(rerender) {
     h('div', { class: 'small gold' }, 'Alınabilir'),
     ...avail.map((q) => item(q, `${npcName(q.giver)} · Lv. ${q.minLevel}+`)),
     ch.contract ? h('div', { class: 'li' }, img(iconURL('ui:target')), h('div', { class: 'grow small' }, `Av Sözleşmesi: ${ENEMIES[ch.contract.enemy].name} ${ch.contract.p}/${ch.contract.n} (Usta Avcı)`)) : null,
-    h('div', { class: 'small gold' }, `Tamamlanan (${done.length}/${ALL_QUESTS.length})`),
-    ...done.map((q) => item(q, 'Tamamlandı ✔')));
+    h('button', { class: 'btn small ghost', 'data-testid': 'quests-done-toggle', onTap: () => { showDone = !showDone; rerender(); } }, `${showDone ? '▾' : '▸'} Tamamlanan (${done.length}/${ALL_QUESTS.length})`),
+    ...(showDone ? done.map((q) => item(q, 'Tamamlandı ✔')) : []));
   const first = ALL_QUESTS.find((q) => q.id === sel) || active[0] || avail[0];
   if (first) showDetail(first); else detail.append(h('p', { class: 'muted' }, 'Görev yok.'));
   return h('div', { class: 'row grow', style: { alignItems: 'stretch', minHeight: 0 } }, listEl, detail);
+}
+
+let showDone = false;   // tamamlanan görevler listesi (mobilde kaydırmayı azaltmak için kapalı başlar)
+
+// ------------------------------------------------------------------ AV GEÇMİŞİ (V2)
+function historyTab() {
+  const ch = app.char, hs = ch.history;
+  const line = (k, v) => h('div', { class: 'row small', style: { justifyContent: 'space-between', borderBottom: '1px solid #3a2c22', padding: '3px 0' } }, h('span', { class: 'muted' }, k), h('b', {}, v));
+  if (!hs) return h('div', { class: 'box' }, 'Av Geçmişi yok.');
+  const since = new Date(hs.since).toLocaleDateString('tr-TR');
+  const bosses = Object.entries(hs.bossKills).map(([k, v]) => `${ENEMIES[k].name} ×${v}`).join(', ') || '—';
+  const dungeons = [['dungeon', 'Derin Ocak'], ['frost_temple', 'Buz Mabedi']].map(([k, n]) => `${n} ×${hs.dungeons[k] || 0}`).join(' · ');
+  const kinds = { normal: 'Yaratıklar', elite: 'Elitler', boss: 'Bosslar' };
+  const groups = Object.keys(kinds).map((kind) => {
+    const rows = Object.entries(hs.byEnemy).filter(([id]) => ENEMIES[id]?.kind === kind).sort((a, b) => b[1] - a[1]);
+    if (!rows.length) return null;
+    return h('div', { class: 'col' }, h('h3', { class: 't' }, kinds[kind]),
+      h('div', { class: 'histgrid' }, rows.map(([id, n]) => h('div', { class: 'row small' }, h('span', { class: 'grow' }, `${ENEMIES[id].name} (Lv.${ENEMIES[id].level})`), h('b', {}, fmt(n))))));
+  });
+  return h('div', { class: 'row grow', style: { alignItems: 'stretch', minHeight: 0, flexWrap: 'wrap' }, 'data-testid': 'history' },
+    h('div', { class: 'col box scroll', style: { flex: '1 1 240px' } },
+      h('h3', { class: 't' }, 'Av Geçmişi'),
+      h('div', { class: 'tiny muted' }, hs.fromV1 ? `V2'den itibaren kaydediliyor (${since}). V1 kayıtları Karakter sekmesindedir.` : `Kayıt başlangıcı: ${since}`),
+      line('Toplam öldürme', fmt(hs.kills)),
+      line('Boss zaferleri', bosses),
+      line('Bulunan Rare', fmt(hs.found.R)), line('Bulunan Epic', fmt(hs.found.E)), line('Bulunan Legendary', fmt(hs.found.L)),
+      line('Tamamlanan zindan', dungeons),
+      h('p', { class: 'tiny muted' }, 'Sayaçlar yalnız kayıt içindir; ganimet şansını hiçbir şekilde etkilemez.')),
+    h('div', { class: 'col box scroll', style: { flex: '1 1 260px' } }, groups.filter(Boolean).length ? groups : h('p', { class: 'muted small' }, 'Henüz kayıt yok. Avlandıkça burada türlere göre sayılır.')));
 }
 
 // ------------------------------------------------------------------ HARİTA
@@ -277,11 +307,11 @@ function mapTab() {
   const ch = app.char;
   let mapId = app.world?.mapId || ch.world.map;
   const wrap = h('div', { class: 'bigmap' });
-  const tabs = h('div', { class: 'col', style: { flex: 'none', width: '150px' } });
+  const tabs = h('div', { class: 'col scroll', style: { flex: 'none', width: '150px' } });
   const legend = h('div', { class: 'tiny muted' }, '● NPC  ◆ Yol Taşı / Sunak  ■ Geçit  ○ Görev bölgesi. Normal yaratıklar gösterilmez.');
   const draw = () => {
     clear(wrap); clear(tabs);
-    for (const id of ['village', 'forest', 'mine', 'swamp', 'dungeon']) {
+    for (const id of MAP_ORDER) {
       const known = !!ch.world.discovered[id] || id === app.world?.mapId;
       tabs.appendChild(h('button', { class: 'btn small' + (id === mapId ? ' blue' : '') + (known ? '' : ' dis'), onTap: () => { mapId = id; draw(); } }, MAPS[id].name));
     }
@@ -328,6 +358,7 @@ function renderBase(b, def) {
 }
 
 const RENDER = {
+  history: historyTab,
   inventory: inventoryTab,
   character: characterTab,
   skills: skillsTab,

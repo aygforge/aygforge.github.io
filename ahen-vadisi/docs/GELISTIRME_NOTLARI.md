@@ -46,16 +46,18 @@ görsel `src/art/*` (procedural), dünya ve arayüz bu ikisini okur. Yeni içeri
   Efektin savaş kodu `world/combatRuntime.js` (normal vuruş: Kızıl Hüküm örneği; büyü: Ruh Yankısı örneği).
   **Kural:** `tests/unit/loot.test.js` boss dışı her kaynakta 0 Legendary'yi doğrular.
 
-## Seviye sınırını yükseltme (Lv.21–40)
+## Seviye sınırını yükseltme (V2'de 30'a yükseltildi; Lv.31–40 için)
 
-- `data/constants.js → MAX_LEVEL`; `xpToNext` formülü genel; `RESET_COST` aralıkları.
+- `data/constants.js → MAX_LEVEL`; `xpToNext` formülü genel; `RESET_COST` aralıkları. V2 örneği: `docs/V2_NOTLARI.md`.
 - Beceri rank dizileri ve `ACTIVE_RANK_COST` uzatılabilir; `skillPointsTotal` seviye-1 + sınıf görevleri.
 - Yükseltme +9 için `UPGRADE_STEPS` tablosuna kademeler ve `isUpgradeable`/doğrulama sınırları (`save/serialize.js` p ≤ 5).
 
 ## Kayıt şeması geçişleri
 
 `data/constants.js → SCHEMA_VERSION` artırın ve `save/serialize.js → migrate()` içine `if (fromVersion < N) { ... }`
-dönüşümü yazın. Doğrulama (`validateProfile`) yeni alanları kontrol etmeli. Snapshot ve checksum mekanizması değişmez.
+dönüşümü yazın (V2 örneği: `ensureV2Fields` — yalnız eksik alanları ekler, idempotenttir). Doğrulama (`validateProfile`)
+yeni alanları kontrol etmeli. Depo, eski sürüm kaydını ilk açılışta `v<N>_backup` anahtarına bir kez kopyalar.
+Snapshot ve checksum mekanizması değişmez.
 
 ## Hazır sprite paketi ekleme
 

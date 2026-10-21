@@ -178,6 +178,7 @@ const UI_ART = {
   char: (pb) => { pb.disc(8, 5, 3, '#e8b890'); pb.poly([[3, 15], [4, 9], [12, 9], [13, 15]], '#5a7aaa'); },
   skills: (pb) => { pb.rect(2, 2, 12, 12, '#6a3a8a'); pb.rect(3, 3, 10, 10, '#8a5aaa'); pb.vline(8, 3, 12, '#4a2a6a'); pb.disc(8, 8, 2, '#ffe060'); },
   quests: (pb) => { pb.rect(3, 2, 10, 12, '#e8dcb8'); pb.hline(5, 11, 5, '#6a5a3a'); pb.hline(5, 10, 8, '#6a5a3a'); pb.hline(5, 11, 11, '#6a5a3a'); pb.rect(2, 1, 12, 2, '#c0a878'); pb.rect(2, 13, 12, 2, '#c0a878'); },
+  history: (pb) => { pb.rect(2, 2, 12, 12, '#5a3a2a'); pb.rect(3, 3, 10, 10, '#8a6a4a'); pb.disc(8, 7, 3, '#e8e0cc'); pb.set(7, 7, '#2a2426'); pb.set(9, 7, '#2a2426'); pb.rect(7, 9, 3, 1, '#d0c8b4'); pb.line(4, 12, 12, 12, '#ffd060'); },
   map: (pb) => { pb.poly([[1, 3], [6, 1], [10, 3], [15, 1], [15, 13], [10, 15], [6, 13], [1, 15]], '#d8c898'); pb.line(6, 1, 6, 13, '#a89868'); pb.line(10, 3, 10, 15, '#a89868'); pb.set(12, 6, '#e04848'); pb.set(4, 9, '#3a8a3a'); },
   settings: (pb) => { pb.disc(8, 8, 6, '#8a8a96'); for (let k = 0; k < 8; k++) { const t = k / 8 * Math.PI * 2; pb.rect(8 + Math.cos(t) * 6 - 1, 8 + Math.sin(t) * 6 - 1, 2, 2, '#8a8a96'); } pb.disc(8, 8, 2.5, '#2a2a32'); },
   gold: (pb) => { pb.disc(8, 8, 6, '#c89a20'); pb.disc(8, 8, 4.5, '#f0c840'); pb.vline(8, 5, 11, '#c89a20'); pb.set(6, 6, '#fff0a0'); },

@@ -8,3 +8,7 @@
 
 Sprite'lar `tools/import-sprites.py` ile kırpılıp oyun boyuna ölçeklenmiştir (ham paketler repoda tutulmaz).
 Diğer tüm görseller, sesler ve müzik oyun içinde procedural olarak üretilir.
+
+**V2.0 (Kül ve Ayaz):** Yeni üçüncü taraf varlık eklenmedi. 12 yeni yaratık/elit/boss sprite'ı, 4 yeni NPC, kül/kar/buz
+tile set'leri, 30 eşya ikonu, 18 materyal ikonu, 2 beceri ikonu ve efektleri, müzik ve ortam sesleri oyun içinde procedural
+olarak üretilir (`src/art/monstersV2.js`, `src/art/tiles.js`, `src/art/objects.js`, `src/art/icons.js`, `src/audio/sound.js`).

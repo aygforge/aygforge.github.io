@@ -335,3 +335,7 @@ select.sel { font: inherit; min-height: 40px; background: #1a1418; color: var(--
 .barslot.sel { border-color: #ffd060; box-shadow: 0 0 8px #ffd06088; }
 .row.wrap { flex-wrap: wrap; gap: 6px; align-items: center; }
 .row.wrap .btn img { width: 20px; height: 20px; image-rendering: pixelated; vertical-align: middle; margin-right: 4px; }
+.histgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 2px 14px; }
+.histgrid .row { border-bottom: 1px solid #3a2c22; padding: 2px 0; }
+/* kaydırılabilir sütunlarda öğeler sıkışmaz (uzun beceri kartları taşmasın) */
+.col.scroll > *, .list.scroll > * { flex-shrink: 0; }

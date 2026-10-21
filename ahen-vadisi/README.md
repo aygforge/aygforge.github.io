@@ -1,12 +1,18 @@
-# AHEN VADİSİ — V1
+# AHEN VADİSİ — V2.0 «Kül ve Ayaz»
 
 Mobil öncelikli (yatay ekran), HTML5 tabanlı, eski usul 2D fantastik RPG. Karaağaç Köyü'nden Derin Ocak'a uzanan
-Lv. 1–20 ilerleme döngüsü: Warrior veya Mage ile seviye kas, nadir eşya düşür, demircide +5'e kadar yükselt,
-Alfa Kurt ve Maden Golemi'ni yen, Derin Ocak'a sınırsız gir ve Legendary avına çık.
+Lv. 1–20 ilerleme döngüsü (V1) ve onun üzerine kurulan **V2.0 Kül ve Ayaz Genişlemesi (Lv. 21–30)**: Kırık Damar
+Madeni'nin doğusunda açılan göçükten Kül Yaylaları'na, oradan Ayaz Geçidi'ne ve Buz Mabedi zindanına uzanan yeni hikâye.
+Warrior veya Mage ile seviye kas, nadir eşya düşür, demircide +5'e kadar yükselt, Alfa Kurt, Maden Golemi, Kül Devi ve
+Donmuş Muhafız'ı yen, zindanlara sınırsız gir ve Legendary avına çık.
+
+V1 kayıtları V2'de otomatik ve kayıpsız açılır (geçişten önceki kayıt `v1_backup` olarak saklanır).
+Değişiklikler: [`docs/CHANGELOG.md`](docs/CHANGELOG.md) · V2 mimarisi ve bilinen sınırlamalar: [`docs/V2_NOTLARI.md`](docs/V2_NOTLARI.md)
 
 Oyuncu karakterleri (Warrior, Mage) ve Cevher Rahibi, LuizMelo'nun CC0 sprite paketleriyle çizilir
-(`public/sprites/`, kaynaklar: [`docs/CREDITS.md`](docs/CREDITS.md)). Diğer tüm görseller (yaratıklar/bosslar, NPC'ler,
-tile set'ler, 60 eşya ikonu, efektler) ve bütün sesler **oyun açılırken kodla (procedural) üretilir**.
+(`public/sprites/`, kaynaklar: [`docs/CREDITS.md`](docs/CREDITS.md)). Diğer tüm görseller (V2'nin 12 yeni yaratık/elit/boss
+sprite'ı, NPC'ler, kül/kar/buz tile set'leri, 90 eşya ikonu, efektler) ve bütün sesler **oyun açılırken kodla (procedural) üretilir**.
+Ayarlar → "Kahraman görünümü: Ekipman görünür (piksel)" seçeneği giyilen silah/zırhı gösteren piksel kahramanı kullanır.
 Sprite paketi yüklenemezse oyun otomatik olarak procedural karaktere geri döner.
 
 ## Ekran görüntüleri
@@ -16,6 +22,9 @@ Sprite paketi yüklenemezse oyun otomatik olarak procedural karaktere geri döne
 | ![Köy HUD](docs/ekran/hud-844x390.png) | ![Orman](docs/ekran/forest-control.png) |
 | ![Maden Golemi](docs/ekran/golem-fight.png) | ![Demirci](docs/ekran/demirci.png) |
 | ![Envanter](docs/ekran/inventory-844x390.png) | ![Eşya kartı](docs/ekran/esya-karti.png) |
+| ![Kül Yaylaları](docs/ekran/v2-ash.png) | ![Kül Devi](docs/ekran/v2-ash-giant.png) |
+| ![Ayaz Geçidi](docs/ekran/v2-frost.png) | ![Buz Mabedi](docs/ekran/v2-temple.png) |
+| ![Beceri çubuğu](docs/ekran/v2-skills.png) | ![Av Geçmişi](docs/ekran/v2-history.png) |
 
 ## Hızlı başlangıç
 
@@ -25,10 +34,10 @@ Gereksinim: Node.js 20.19+ (veya 22.12+).
 cd ahen-vadisi
 npm install          # bağımlılıklar (Phaser 3.90, Vite, Vitest, Playwright)
 npm run dev          # geliştirme sunucusu: http://localhost:5173  (aynı ağdaki telefondan: http://<bilgisayar-ip>:5173)
-npm test             # birim testleri (75 test; 100.000–1.000.000 loot simülasyonu dahil)
+npm test             # birim testleri (103 test; 100.000–1.000.000 loot simülasyonu dahil)
 npm run build        # üretim paketi → dist/
 npm run preview      # dist/ klasörünü yerelde sun: http://localhost:4173
-npm run test:e2e     # (önce build) tarayıcıda uçtan uca testler — 61 test
+npm run test:e2e     # (önce build) tarayıcıda uçtan uca testler — V1 regresyonu + V2 senaryoları
 npm run package      # release/ altında itch.io ZIP'i ve proje arşivi
 ```
 
@@ -67,7 +76,7 @@ Bu depoda `ahen-vadisi/dist/` derlenmiş haliyle bulunur. Dal `main`'e birleşti
 | NPC / cevher / bitki / görev nesnesine dokun: yaklaş ve etkileşim | — |
 | Büyük kılıç: aktif saldırı — her basış en yakın düşmana bir vuruş, basılı tutunca vurmaya devam | Boşluk |
 | Küçük kırmızı "OTO" butonu: otomatik normal saldırı aç/kapa | R |
-| Sağ alt 4 beceri butonu (manuel) | 1–4 |
+| Sağ alt 4 beceri butonu (manuel; hangi 4 aktif becerinin duracağı Beceriler ekranında seçilir) | 1–4 |
 | HP / MP iksir butonları; hedef değiştir (klavye) | Q / E, Tab |
 | Sağ üst: Çanta, Karakter, Beceriler, Görevler, Ayarlar, mini harita | I, C, K, J, Esc, M |
 
@@ -79,15 +88,22 @@ otomatik seçilmez; erişilemeyen hedefe sonsuz koşma olmaz; duvar arkasından 
 
 ## İçerik özeti
 
-- **Sınıflar:** Warrior (Savaşçı), Mage (Büyücü) — 4 aktif, 3 pasif, Lv.20 Ustalık I; 21 beceri puanı; 57 stat puanı.
+- **Sınıflar:** Warrior (Savaşçı), Mage (Büyücü) — 5 aktif (Lv.25: Kılıç Yağmuru / Zincir Yıldırım), 3 pasif, Lv.20 Ustalık I,
+  4 düğmelik beceri çubuğu, Lv.30 Ustalık Kitapları; Lv.30'da 31 beceri puanı, 87 stat puanı.
 - **Dünya:** Karaağaç Köyü (64×48), Fısıldayan Orman (120×88), Kırık Damar Madeni (104×78), Sis Bataklığı (112×80),
-  Derin Ocak dungeon'ı (104×80, 4 bölüm). Her açık bölgede 4 farm kampı, elit, sunak/yol taşı, toplama düğümleri.
-- **Yaratıklar:** 12 normal, 3 elit, 2 boss (Alfa Kurt, Maden Golemi) — telegraflı büyük saldırılar, aşamalar, Kristal Kalkanı.
-- **Eşyalar:** 60 ekipman şablonu (14 N / 15 U / 18 R / 11 E / 2 L), rastgele bonuslar, +5 yükseltme, dayanıklılık, kilit.
-- **Hardcore loot:** Legendary yalnızca Maden Golemi'nin %0,4 boss çekilişinden; pity/garanti/craft/sandık yok.
-- **Ekonomi:** Tek para Gold; 6 iksir, 20 tarif, tamir, parçalama, çanta/depo genişletme, ortak depo, yol taşı seyahati.
-- **Görevler:** 18 ana + 8 yan görev (26), 2 sınıf görevi, tekrarlanabilir Av Sözleşmeleri.
-- **Kayıt:** 3 karakter yuvası, IndexedDB + atomik yazım, 2 önceki sağlam snapshot, checksum, JSON yedek dışa/içe aktarma.
+  Derin Ocak dungeon'ı (104×80, 4 bölüm); **V2:** Kül Yaylaları (112×80, Lv.20–25), Ayaz Geçidi (116×88, Lv.25–30),
+  Buz Mabedi dungeon'ı (100×76, 4 bölüm, Mühür Galerisi). Her açık bölgede 4 farm kampı, elit, yol taşı, toplama düğümleri;
+  V2 bölgelerinde güvenli kamp, NPC'ler, 2'şer gizli sandık.
+- **Yaratıklar:** 20 normal, 5 elit, 4 boss (Alfa Kurt, Maden Golemi, Kül Devi, Donmuş Muhafız) — telegraflı büyük saldırılar,
+  aşamalar, kalkan kristalleri, yer tehlikeleri, yardımcı çağırma.
+- **Eşyalar:** 90 ekipman şablonu (V1: 14 N / 15 U / 18 R / 11 E / 2 L; V2: 4 U / 15 R / 9 E / 2 L), rastgele bonuslar, +5 yükseltme.
+- **Hardcore loot:** Legendary yalnızca Maden Golemi ve Donmuş Muhafız'ın %0,4 boss çekilişinden; pity/garanti/craft/sandık yok.
+- **Ekonomi:** Tek para Gold; 8 iksir, 35 tarif (V2 materyalleri V1 materyalleriyle birlikte kullanılır), tamir, parçalama,
+  çanta/depo genişletme, ortak depo, yol taşı seyahati.
+- **Görevler:** 28 ana + 12 yan görev (40), 2 sınıf görevi, tekrarlanabilir Av Sözleşmeleri.
+- **Av Geçmişi:** türe göre öldürme, boss zaferleri, bulunan Rare/Epic/Legendary, tamamlanan zindanlar (ganimeti etkilemez).
+- **Kayıt:** 3 karakter yuvası, IndexedDB + atomik yazım, 2 önceki sağlam snapshot, checksum, JSON yedek dışa/içe aktarma,
+  sürümlü şema geçişi (V1 → V2) ve geçiş öncesi yedek. PWA: yeni sürüm hazır olunca "kaydet ve yenile" bildirimi.
 
 ## Proje yapısı
 
@@ -98,8 +114,8 @@ ahen-vadisi/
 ├─ src/
 │  ├─ main.js              önyükleme, Phaser yapılandırması, yaşam döngüsü (arka plan kaydı)
 │  ├─ core/                app (profil, kayıt zamanlaması, stat önbelleği), olay yolu, RNG
-│  ├─ data/                MERKEZİ VERİ: sabitler, sınıflar, beceriler, yaratıklar, 60 eşya, materyaller,
-│  │                       tarifler, loot oranları, NPC'ler, görevler, 5 harita tanımı
+│  ├─ data/                MERKEZİ VERİ: sabitler, sınıflar, beceriler, yaratıklar, 90 eşya, materyaller,
+│  │                       tarifler, loot oranları, NPC'ler, görevler, 8 harita tanımı
 │  ├─ systems/             SAF OYUN MANTIĞI (Node'da test edilir): stats, combat, loot, inventory,
 │  │                       economy (alım/satım/craft/yükseltme/tamir), quests, rewards, dungeon, character
 │  ├─ save/                şema/doğrulama/checksum + IndexedDB deposu (snapshot, localStorage yedeği)

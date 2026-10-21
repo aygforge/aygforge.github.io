@@ -1,3 +1,64 @@
+# Ahen Vadisi — Test Raporu
+
+## V2.0 «Kül ve Ayaz» (21 Ekim 2026)
+
+Ortam V1 ile aynı (Linux, Node 22, Playwright headless Chromium, yazılımsal WebGL). Gerçek Android/iOS cihazında test
+**yapılamadı**. Komutlar: `npm test` · `npm run build && npm run test:e2e` (V1 regresyonu + V2 senaryoları).
+
+| Paket | Sonuç |
+|---|---|
+| Birim testleri (Vitest, 9 dosya) | **103 / 103 geçti** (V1'in 75 testi V2 için güncellendi + 23 V2 testi + 5 V2 denge/veri testi) |
+| V1 uçtan uca regresyon (`run-e2e.mjs`) | **61 / 61 geçti** — V1 kontrolleri, kayıt, PWA, Derin Ocak ve Golem değişmeden çalışıyor |
+| V2 uçtan uca (`run-e2e-v2.mjs`) | **32 / 32 geçti** |
+| Üretim derlemesi | Başarılı |
+
+### V2 birim testleri (`tests/unit/v2.test.js` ve güncellenen dosyalar)
+
+| Alan | Doğrulanan |
+|---|---|
+| Kayıt geçişi | Şema 1 zarfı açılır; seviye, gold, Legendary M08+3, görevler aynen; beceri çubuğu (V1 düzeni), Av Geçmişi (`fromV1`), koşu/kitap alanları eklenir; doğrulama geçer; V1 legendary etkisi aynı; daha yeni şema reddedilir; geçiş idempotent; depo `v1_backup`'ı bir kez yazar, sonraki açılışta yeniden yazmaz |
+| Seviye | 20→21 ve 29→30 eşikleri tam EXP ile; Lv.30 sınırı (fazla EXP 0); 87 stat, 29 (+2 sınıf görevi) beceri puanı; her seviyede HP/MP artışı; Lv.25 becerisinin açılması; EXP tablosu 19.280 … 58.610 (toplam 368.300) |
+| Haritalar | 112×80 ve 116×88 ölçüleri; 4 farm kampı (≥150 spawn hücresi), 1 elit, boss arenası, güvenli kamp, 2 gizli sandık, Yol Taşı, ≥10 toplama düğümü, NPC'ler; her girişten tüm hedeflere onarımsız erişim (V1 harita testleri V2 haritalarını da kapsar); gerçek ve çift yönlü geçitler; Maden→Kül (m27) ve Kül→Ayaz (m33) hikâye kilitleri; Buz Mabedi 4 bölüm, 3 mühür galeride, kapılar koridorları kapatır |
+| Loot | **Donmuş Muhafız 1.000.000 kesim: Legendary %0,4 toplam (4σ), Rare %30, Epic %7, kendi sınıfı %80, 1000+ kesimlik kuraklık (pity yok)**; Kül Devi 300.000 kesim: Rare %22, Epic %2, **0 Legendary**; V2 elitleri Epic havuzlu, Legendary'siz; **30 V2 eşyasının tamamı bir kaynaktan elde edilebilir**; boss kanonik havuzları belgeyle aynı; Golem Legendary/Rare havuzu V1 ile birebir aynı; Golem ve Muhafız dışında hiçbir kaynakta Legendary yok (her kaynak 100.000 öldürme); hiçbir tarif Legendary üretmez; Av Geçmişi sayaçları ganimeti etkilemez (aynı tohum → aynı sonuç) |
+| Buz Mabedi | Ayrı kilit ve koşu (V1 Derin Ocak etkilenmez); mühür bir kez sayılır; ölüm noktaları cp1/cp2/checkpoint; devam; koşu kimlikli tek boss ödülü; çıkış ve yeni koşu; "Buz Mabedinin Sırrı" kapı mührünü önce şamanlar yenilince açar |
+| Beceriler | Kılıç Yağmuru / Zincir Yıldırım belge değerleri; beceri çubuğu (4 yuva, kilitli beceri konamaz, yer değiştirme, kayıtta kalır); Ustalık Kitabı (Lv.30 + Rank 5 + kitap, her beceriye bir kez, sıfırlamada kalır) |
+| Ekonomi | Lv.21+ yükseltmeler aynı başarı oranı / daha yüksek maliyet; +3/+4 V1 materyali (Sertleştirme Taşı, Sunak Kristali) gerekir; +5 Kor Çekirdeği (Kadim Çekirdek'ten üretilir); başarısızlık eşyayı kırmaz/düşürmez; +5 sınırı; V2 tarifleri V1 materyallerini (Golem Parçası) tüketir; sınırsız gold döngüsü testi tüm 35 tarifi kapsar |
+| Denge | Aşağıdaki tablo |
+
+### V2 denge simülasyonu (gerçek stat/hasar formülleri; V2 senaryolarında rastgele bonuslu eşya ve bütün beceri puanları)
+
+| Senaryo | Sonuç | Hedef |
+|---|---|---|
+| Warrior Lv.26 Rare+3 → Kül Devi | ~4,2 dk | 3–5 dk |
+| Mage Lv.26 Rare+2 → Kül Devi | ~3,3 dk | 3–5 dk |
+| Warrior Lv.30 Rare/Epic+4 → Donmuş Muhafız (+2 kristal) | ~5,4 dk | 4–6 dk |
+| Mage Lv.30 Rare/Epic+3 → Donmuş Muhafız (+2 kristal) | ~4,0 dk | 4–6 dk |
+| V2 normal yaratık öldürme süresi (seviyeye uygun donanım) | Warrior 1,6–5,4 sn · Mage 1,5–3,3 sn | ≤ 20 sn (120 öldürme/saat bütçesi) |
+| 20→30 toplam süre | ~5,8 sa farm + ~3 sa görev/boss/zindan ≈ **8,8 sa** | 8–12 sa |
+
+Hareket payı (telegraflardan kaçma) Warrior ×1,2, Mage ×1,3 olarak modellenir; gerçek oynanışla ölçülmemiştir.
+
+### V2 uçtan uca testleri (`tests/e2e/run-e2e-v2.mjs`, gerçek oyun içinde)
+
+| Test | Sonuç |
+|---|---|
+| Tarayıcı deposuna yazılan V1 zarfı açılır, V2'ye geçer, seviye/gold korunur, V1 yedeği saklanır | ✔ |
+| Lv.20→26 gerçek EXP ile; V1 finali olmadan Kül Yaylaları geçidi kapalı (uyarı); "Kırılan Ufuk" sonrası geçiş ve görev hedefleri | ✔ |
+| Kül Yaylaları: 4 yaratık + Kül Devi doğar; parçacıklar, NPC, sandık, Yol Taşı, cevher; V2 öldürme ödülleri ve Av Geçmişi | ✔ |
+| V2 sprite'larının darbe/ölüm animasyonları | ✔ |
+| Kül Devi gerçek AI ile: telegraflı saldırılar, ≤3 alev yarığı, %55'te 2 yardımcı; yardımcılar EXP vermez; ölümde tehlikeler temizlenir; yeniden doğma zamanlanır | ✔ |
+| Kül Kasabı öfke + telegraflı satır + garantili nişan; gizli sandık tek seferlik | ✔ |
+| Ayaz Geçidi: 4 yaratık, kar, mabet kapısı; Buz Gardiyanı telegrafları; mabet görev olmadan mühürlü | ✔ |
+| Buz Mabedi: bölümler, mühürsüz galeri kapanmaz, 3 mühür karşılaşması → boss kapısı; Buz Mührü + 2 kristal; ölüm → boss tam can, bölümler korunur; tek boss ödülü; ikinci ödül yok; gönüllü çıkış | ✔ |
+| Beceri çubuğu UI ile 5. beceri yerleşir; Ustalık Kitabı UI ile uygulanır (tam 1 kitap); Av Geçmişi ekranı | ✔ |
+| Kılıç Yağmuru çok hedef; Mage Lv.25 Zincir Yıldırım ≥3 hedefe sıçrar; iki turda da konsol hatası yok | ✔ |
+
+Performans (yazılımsal WebGL, 844×390): V1 ölçümleri değişmedi (orman ~26 FPS, dungeon ~19 FPS); V2 ekran görüntülerinde
+Kül Yaylaları ~31 FPS, Ayaz Geçidi ~19 FPS, Buz Mabedi ~20 FPS. Yalnız etkin haritanın yaratıkları güncellenir; parçacıklar
+sabit havuzdur. Gerçek telefonda ölçülmedi.
+
+---
+
 # Ahen Vadisi V1 — Test Raporu
 
 Tarih: 21 Ekim 2026 · Ortam: Linux, Node 22, Chromium 141 (Playwright 1.56, headless, mobil dokunmatik emülasyonu,

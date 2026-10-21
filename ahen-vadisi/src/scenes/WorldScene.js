@@ -51,7 +51,7 @@ export class WorldScene extends Phaser.Scene {
     this.enemies = []; this.objects = []; this.projectiles = []; this.lights = [];
     this.pathBudget = 4;
     this.clock = 0; // oyun saati (ms): duraklatmada durur, geliştirici hızlandırmasına uyar
-    this.darkness = null; this.vignette = null; this.playerLight = null; this.mists = null; this.fireflies = null;
+    this.darkness = null; this.vignette = null; this.playerLight = null; this.mists = null; this.fireflies = null; this.flakes = null;
     this.gates = null; this.changing = false;
     this.lowPerf = !!app.settings.lowPerf;
     this.reachT = 0; this.fogT = 0; this.markT = 0;
@@ -182,6 +182,36 @@ export class WorldScene extends Phaser.Scene {
         const m = this.add.image(Math.random() * def.w * TILE, Math.random() * def.h * TILE, 'fx_mist').setScale(5 + Math.random() * 3).setAlpha(0.5).setDepth(53000);
         m.vx = 6 + Math.random() * 8;
         this.mists.push(m);
+      }
+    }
+    // V2: lav ağızları ve buz kristalleri hafif ışık verir
+    {
+      let n = 0;
+      for (const st of this.built.stamps) {
+        const glow = st.name === 'lava_vent' ? 'light' : st.name === 'ice_crystal_big' && !def.dark ? 'light_blue' : null;
+        if (!glow || n++ > 50) continue;
+        const l = this.add.image(st.x * TILE + 16, st.y * TILE + 20, glow).setScale(st.name === 'lava_vent' ? 1.3 : 0.9).setAlpha(0.3).setBlendMode(Phaser.BlendModes.ADD).setDepth(55000);
+        if (st.name === 'lava_vent') l.setTint(0xff7a3a);
+        this.tweens.add({ targets: l, alpha: 0.15, yoyo: true, repeat: -1, duration: 900 + Math.random() * 700 });
+      }
+    }
+    // V2: kül / kar parçacıkları (kamera çevresinde dolaşan küçük havuz; düşük performans modunda azalır)
+    if (def.particles) {
+      const kind = def.particles;
+      const n = Math.round(({ ash: 36, snow: 54, snow_light: 22 }[kind] || 30) * (this.lowPerf ? 0.35 : 1));
+      this.flakes = [];
+      for (let i = 0; i < n; i++) {
+        const ember = kind === 'ash' && i % 6 === 0;
+        const f = this.add.image(0, 0, 'fx_px').setDepth(53500);
+        const size = kind === 'ash' ? 1 + Math.random() * 1.5 : 1 + Math.random() * 2;
+        f.setScale(size).setTint(ember ? 0xff8a3a : kind === 'ash' ? 0x9a928c : 0xffffff).setAlpha(ember ? 0.9 : 0.55 + Math.random() * 0.35);
+        if (ember) f.setBlendMode(Phaser.BlendModes.ADD);
+        f.v = kind === 'ash'
+          ? { x: 10 + Math.random() * 14, y: ember ? -(8 + Math.random() * 10) : 6 + Math.random() * 10 }
+          : { x: -8 - Math.random() * 16, y: 26 + Math.random() * 30 };
+        f.ph = Math.random() * 10;
+        f.fresh = true;
+        this.flakes.push(f);
       }
     }
     if (def.theme === 'forest' && !this.lowPerf) {
@@ -600,6 +630,18 @@ export class WorldScene extends Phaser.Scene {
         m.x += m.vx * dt;
         if (m.x > cam.right + 200) { m.x = cam.x - 200; m.y = cam.y + Math.random() * cam.height; }
         if (m.y < cam.y - 300 || m.y > cam.bottom + 300) m.y = cam.y + Math.random() * cam.height;
+      }
+    }
+    if (this.flakes) {
+      const cam = this.cameras.main.worldView;
+      for (const f of this.flakes) {
+        f.ph += dt;
+        f.x += (f.v.x + Math.sin(f.ph) * 6) * dt; f.y += f.v.y * dt;
+        if (f.fresh || f.x < cam.x - 20 || f.x > cam.right + 20 || f.y < cam.y - 20 || f.y > cam.bottom + 20) {
+          f.fresh = false;
+          f.x = cam.x + Math.random() * cam.width;
+          f.y = f.v.y > 0 ? cam.y - 10 + (Math.random() < 0.5 ? Math.random() * cam.height : 0) : cam.bottom + 10;
+        }
       }
     }
     if (this.fireflies) {
