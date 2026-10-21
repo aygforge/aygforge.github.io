@@ -5,10 +5,13 @@ import Phaser from 'phaser';
 import { TILE } from '../data/constants.js';
 import { sound } from '../audio/sound.js';
 import { pointInBeam, inTelegraphCircle } from './Enemy.js';
+import { ashGiantBehavior, frozenGuardianBehavior } from './bossesV2.js';
 
 export function makeBossBehavior(e) {
   if (e.tpl.ai === 'boss_alpha') return alphaBehavior(e);
   if (e.tpl.ai === 'boss_golem') return golemBehavior(e);
+  if (e.tpl.ai === 'boss_ash') return ashGiantBehavior(e);
+  if (e.tpl.ai === 'boss_frost') return frozenGuardianBehavior(e);
   return null;
 }
 

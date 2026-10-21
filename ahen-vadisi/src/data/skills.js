@@ -1,5 +1,7 @@
 // Beceri tablosu — belge §4.3. Rank dizileri [R1..R5] (aktif) / [R1..R3] (pasif).
-// Aktifler Lv.1/5/10/15, pasifler Lv.4/9/14'te ücretsiz Rank 1 açılır.
+// Aktifler Lv.1/5/10/15 (V2: +Lv.25), pasifler Lv.4/9/14'te ücretsiz Rank 1 açılır.
+// V2: ekranda 4 beceri düğmesi vardır; 5 aktif beceriden hangi 4'ünün kullanılacağı Beceriler ekranında seçilir.
+// V2 Ustalık Kitapları (book): Lv.30 ve Rank 5 beceriye küçük, özel bir geliştirme (rank 6 değildir).
 
 export const ACTIVE_RANK_COST = [0, 1, 1, 2, 2];   // Rank2..5 maliyeti 1/1/2/2 → 6
 export const PASSIVE_RANK_COST = [0, 1, 2];        // Rank2..3 maliyeti 1/2 → 3
@@ -32,6 +34,13 @@ export const SKILLS = {
     cd: [16, 16, 15, 15, 14], mp: [15, 16, 16, 17, 18],
     desc: (r, s) => `Hedefe atılır, ×${s.coef[r - 1].toFixed(2)} hasar ve ${s.stun[r - 1]} sn sersemletme.`,
   },
+  // V2 — Lv.25
+  blade_rain: {
+    id: 'blade_rain', cls: 'warrior', kind: 'active', slot: 4, unlock: 25,
+    name: 'Kılıç Yağmuru', target: 'front_aoe', dmg: 'phys', reach: 1.8, radius: 2.4, maxTargets: 5, castTime: 0.3,
+    coef: [1.45, 1.53, 1.62, 1.71, 1.80], cd: [18, 18, 17, 17, 16], mp: [30, 31, 33, 34, 36],
+    desc: (r, s) => `Önündeki alana kılıçlar yağdırır: en çok 5 hedefe ×${s.coef[r - 1].toFixed(2)} fiziksel hasar.`,
+  },
   // ---------------- MAGE ----------------
   fireball: {
     id: 'fireball', cls: 'mage', kind: 'active', slot: 0, unlock: 1,
@@ -58,6 +67,15 @@ export const SKILLS = {
     name: 'Meteor', target: 'ground', dmg: 'magic', range: 8, radius: 2.6, maxTargets: 5, castTime: 0.25, delay: 0.9,
     coef: [2.30, 2.44, 2.58, 2.74, 2.90], cd: [20, 20, 19, 18, 17], mp: [55, 57, 60, 63, 66],
     desc: (r, s) => `0,9 sn hazırlıktan sonra en çok 5 hedefe ×${s.coef[r - 1].toFixed(2)} büyü hasarı.`,
+  },
+
+  // V2 — Lv.25
+  chain_lightning: {
+    id: 'chain_lightning', cls: 'mage', kind: 'active', slot: 4, unlock: 25,
+    name: 'Zincir Yıldırım', target: 'single', dmg: 'magic', range: 7, castTime: 0.3,
+    jumps: 3, jumpRange: 4, falloff: 0.75,
+    coef: [1.65, 1.74, 1.84, 1.95, 2.06], cd: [16, 16, 15, 15, 14], mp: [42, 44, 46, 48, 50],
+    desc: (r, s) => `İlk hedefe ×${s.coef[r - 1].toFixed(2)} büyü hasarı; yıldırım en çok ${s.jumps} yakın hedefe sıçrar, her sıçramada hasar %25 azalır.`,
   },
 
   // ---------------- PASİFLER ----------------
@@ -105,14 +123,29 @@ export const SKILLS = {
   },
 };
 
+// Ustalık Kitabı geliştirmeleri (her beceriye bir kez; büyük DPS artışı değil)
+export const MASTERY_BOOKS = {
+  heavy_strike: { name: 'Keskin Darbe', desc: 'Ağır Darbe kritik vurduğunda ×1,5 yerine ×1,8 hasar verir.', critMult: 1.8 },
+  whirlwind: { name: 'Fırtına Kesimi', desc: 'Kasırga Kesimi hasarı +%8.', dmgMult: 1.08 },
+  iron_skin: { name: 'Çelik Deri', desc: 'Demir Deri süresi +2 sn.', durAdd: 2 },
+  war_charge: { name: 'Sarsıcı Hücum', desc: 'Savaş Hücumu sersemletmesi +0,5 sn (boss hariç).', stunAdd: 0.5 },
+  blade_rain: { name: 'Kılıç Seli', desc: 'Kılıç Yağmuru en çok 6 hedefe vurur.', targetsAdd: 1 },
+  fireball: { name: 'Yakıcı Küre', desc: 'Ateş Küresi hedefi 3 sn yakar: saniyede vuruş hasarının %8\'i.', burn: { pct: 0.08, dur: 3 } },
+  ice_blast: { name: 'Derin Ayaz', desc: 'Buz Patlaması yavaşlatması +1,5 sn sürer.', slowAdd: 1.5 },
+  mana_shield: { name: 'Mana Duvarı', desc: 'Mana Kalkanı emilimi +%5.', absorbAdd: 0.05 },
+  meteor: { name: 'Geniş Çarpma', desc: 'Meteor alanı +0,4 tile.', radiusAdd: 0.4 },
+  chain_lightning: { name: 'Fırtına Zinciri', desc: 'Zincir Yıldırım bir kez daha sıçrar.', jumpsAdd: 1 },
+};
+export const MASTERY_BOOK_LEVEL = 30;
+
 export const CLASS_SKILLS = {
   warrior: {
-    actives: ['heavy_strike', 'whirlwind', 'iron_skin', 'war_charge'],
+    actives: ['heavy_strike', 'whirlwind', 'iron_skin', 'war_charge', 'blade_rain'],
     passives: ['weapon_discipline', 'hard_skin', 'battle_rhythm'],
     mastery: 'unyielding_will',
   },
   mage: {
-    actives: ['fireball', 'ice_blast', 'mana_shield', 'meteor'],
+    actives: ['fireball', 'ice_blast', 'mana_shield', 'meteor', 'chain_lightning'],
     passives: ['elemental_mastery', 'mana_control', 'frozen_target'],
     mastery: 'arcane_resonance',
   },

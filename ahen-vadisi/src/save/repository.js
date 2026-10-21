@@ -1,6 +1,7 @@
 // SaveRepository — IndexedDB birincil saklama, tek transaction'da atomik yazım,
 // iki önceki sağlam snapshot, localStorage yedek yolu.
 import { wrap, unwrap } from './serialize.js';
+import { SCHEMA_VERSION } from '../data/constants.js';
 
 const DB_NAME = 'ahen-vadisi';
 const STORE = 'kv';
@@ -125,13 +126,31 @@ export class SaveRepository {
     return this._ls().get(key);
   }
 
-  // Yükle: ana kayıt bozuksa snapshot'lardan kurtar
+  async writeRaw(key, env) {
+    await this.open();
+    if (this.mode === 'idb') {
+      await new Promise((resolve, reject) => {
+        const tx = this.db.transaction(STORE, 'readwrite');
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+        tx.objectStore(STORE).put(env, key);
+      });
+    } else this._ls().set(key, env);
+  }
+
+  // Yükle: ana kayıt bozuksa snapshot'lardan kurtar.
+  // Eski sürüm kaydı ilk kez açılırken dokunulmamış zarf 'v<N>_backup' anahtarına bir kez kopyalanır.
   async load() {
     const tried = [];
     for (const key of ['profile', 'snap_0', 'snap_1']) {
       const env = await this.readRaw(key);
       if (!env) { tried.push({ key, msg: 'yok' }); continue; }
       const r = unwrap(env);
+      if (r.ok && env.schemaVersion < SCHEMA_VERSION) {
+        const bkey = `v${env.schemaVersion}_backup`;
+        try { if (!(await this.readRaw(bkey))) await this.writeRaw(bkey, env); } catch (e) { this.lastError = e; }
+        return { profile: r.profile, source: key, tried, savedAt: env.savedAt, migratedFrom: env.schemaVersion };
+      }
       if (r.ok) return { profile: r.profile, source: key, tried, savedAt: env.savedAt };
       tried.push({ key, msg: r.msg });
     }
@@ -140,7 +159,7 @@ export class SaveRepository {
 
   async listSnapshots() {
     const out = [];
-    for (const key of ['profile', 'snap_0', 'snap_1']) {
+    for (const key of ['profile', 'snap_0', 'snap_1', 'v1_backup']) {
       const env = await this.readRaw(key);
       if (!env) continue;
       const r = unwrap(env);

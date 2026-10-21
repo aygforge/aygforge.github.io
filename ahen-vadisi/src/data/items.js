@@ -1,4 +1,4 @@
-// 60 ekipman şablonu — belge §7. Değerler +0 sabit temel değerlerdir.
+// 60 ekipman şablonu (V1, belge §7) + 30 V2 şablonu (Kül ve Ayaz, Lv.21–30) = 90. Değerler +0 sabit temel değerlerdir.
 // base: yükseltmeden etkilenen temel değerler (atk/mag aralığı, def, mdef, focus büyü gücü)
 // fixed: sabit bonuslar (yükseltmeden etkilenmez)
 // look: procedural pixel-art parametreleri
@@ -93,6 +93,49 @@ export const ITEM_LIST = [
   A('A04', 'Ay Işığı Kolyesi', 'amulet', 'any', 11, 'E', {}, { vit: 2, hp: 25 }, ['alpha_wolf'], { type: 'amulet', chain: '#d0d8e0', gem: '#b0e0ff' }),
   A('A05', 'Zehir Kıran Muska', 'amulet', 'any', 18, 'R', {}, { poisonRes: 0.15 }, ['mist_witch'], { type: 'amulet', chain: '#4f6a52', gem: '#8be06a' }),
   A('A06', 'Kristal Kalp Kolyesi', 'amulet', 'any', 19, 'E', {}, { int: 3, mp: 35 }, ['mine_golem'], { type: 'amulet', chain: '#9aa4ad', gem: '#5ae0ff' }),
+
+  // ================================================ V2.0 — KÜL VE AYAZ (30)
+  // Warrior silahları (5)
+  W('W09', 'Kül Çeliği Kılıcı', 21, 'U', 'one', [66, 83], ['ash_imp'], { type: 'sword', blade: '#8a8480', guard: '#c85a2a', grip: '#2a2222', len: 12, gem: '#ff8a3a' }),
+  W('W10', 'Akrep Biçici', 23, 'R', 'two', [80, 103], ['crimson_scorpion', 'craft'], { type: 'machete', blade: '#c83a2a', guard: '#5a2a1a', grip: '#2a1a14', len: 14, gem: '#ffb040' }),
+  W('W11', 'Kor Kıranı', 25, 'E', 'two', [97, 125], ['ash_giant'], { type: 'maul', blade: '#3a3030', guard: '#ff7a2a', grip: '#2a1a14', len: 15, gem: '#ffd060', glow: '#ff7a2a' }, { unique: true }),
+  W('W12', 'Ayaz Keseri', 28, 'R', 'one', [111, 137], ['frost_sentinel'], { type: 'axe', blade: '#bfe8ff', guard: '#5a6a80', grip: '#2a3040', len: 13, gem: '#7ad8ff' }),
+  W('W13', 'Buzun Hükmü', 30, 'L', 'two', [148, 185], ['frozen_guardian'], { type: 'greatsword', blade: '#c8f0ff', guard: '#5a8ad0', grip: '#1a2440', len: 17, gem: '#ffffff', glow: '#7ad8ff' },
+    { unique: true, legendaryFixed: { str: 16, crit: 0.08 }, effect: 'frost_verdict' }),
+  // Mage silahları (5)
+  M('M09', 'Köz Değneği', 21, 'U', 'one', [69, 88], ['ash_imp'], { type: 'wand', shaft: '#3a2a24', head: 'flame', orb: '#ff8a3a', len: 10 }),
+  M('M10', 'Kül Runası Asası', 23, 'R', 'two', [85, 109], ['ash_hunter', 'craft'], { type: 'staff', shaft: '#4a3a34', head: 'star', orb: '#ff6a2a', len: 16 }),
+  M('M11', 'Korun Sesi', 25, 'E', 'two', [105, 132], ['ash_giant'], { type: 'staff', shaft: '#2a1a1a', head: 'flame', orb: '#ffd060', len: 17, glow: '#ff7a2a' }, { unique: true }),
+  M('M12', 'Ayaz Mührü', 28, 'R', 'one', [116, 147], ['snow_shaman'], { type: 'wand', shaft: '#d8e8f0', head: 'crystal', orb: '#9fe8ff', len: 11 }),
+  M('M13', 'Sonsuz Kış Asası', 30, 'L', 'two', [158, 196], ['frozen_guardian'], { type: 'staff', shaft: '#e0f4ff', head: 'crystal', orb: '#ffffff', len: 18, glow: '#9fe8ff' },
+    { unique: true, legendaryFixed: { int: 18, mp: 75 }, effect: 'endless_winter' }),
+  // Yardımcı el (4)
+  A('O07', 'Kül Siperi', 'offhand', 'warrior', 22, 'R', { def: 30 }, { hp: 30 }, ['burnt_warrior'], { type: 'shield', main: '#4a4040', rim: '#2a2222', boss: '#ff7a2a' }),
+  A('O08', 'Buz Kalesi Kalkanı', 'offhand', 'warrior', 27, 'E', { def: 43 }, { hp: 65 }, ['ice_warden', 'craft'], { type: 'shield', main: '#9ac8e0', rim: '#4a6a8a', boss: '#e0faff' }),
+  A('O09', 'Köz Prizması', 'offhand', 'mage', 22, 'R', { mag: 22 }, { mp: 35 }, ['ash_hunter'], { type: 'focus', main: '#5a3a2a', orb: '#ff7a2a' }),
+  A('O10', 'Ayaz Küresi', 'offhand', 'mage', 27, 'E', { mag: 33 }, { mp: 55 }, ['ice_warden', 'craft'], { type: 'mirror', main: '#c8e8f8', orb: '#7ad8ff' }),
+  // Başlık (4)
+  A('H07', 'Kül Muhafız Miğferi', 'helm', 'warrior', 22, 'U', { def: 16 }, {}, ['ash_hunter'], { type: 'greathelm', main: '#5a5050', trim: '#c85a2a' }),
+  A('H08', 'Donmuş Çelik Miğferi', 'helm', 'warrior', 28, 'R', { def: 23 }, {}, ['frost_sentinel'], { type: 'helm', main: '#a8d0e8', trim: '#4a6a8a', horn: true }),
+  A('H09', 'Köz Başlığı', 'helm', 'mage', 22, 'U', { def: 8, mdef: 14 }, {}, ['ash_imp'], { type: 'hood', main: '#5a2a1e', trim: '#ff8a3a' }),
+  A('H10', 'Ayaz Tacı', 'helm', 'mage', 28, 'R', { def: 12, mdef: 24 }, {}, ['ice_wisp'], { type: 'hat', main: '#5a8ab0', trim: '#e0faff' }),
+  // Göğüs (4)
+  A('C09', 'Kızıl Zırh', 'chest', 'warrior', 23, 'R', { def: 44 }, { hp: 35 }, ['crimson_scorpion', 'craft'], { type: 'armor', main: '#8a2a22', trim: '#e0a040', tier: 2 }),
+  A('C10', 'Donmuş Plaka', 'chest', 'warrior', 29, 'E', { def: 62 }, { hp: 70 }, ['ice_warden'], { type: 'armor', main: '#a8c8e0', trim: '#5ae0ff', tier: 4 }),
+  A('C11', 'Kül Dokuma Cübbesi', 'chest', 'mage', 23, 'R', { def: 26, mdef: 38 }, {}, ['burnt_warrior', 'craft'], { type: 'robe', main: '#4a3a3a', trim: '#ff7a2a', tier: 2 }),
+  A('C12', 'Buz İpliği Cübbesi', 'chest', 'mage', 29, 'E', { def: 33, mdef: 55 }, {}, ['ice_warden'], { type: 'robe', main: '#c8e0f0', trim: '#5a8ad0', tier: 4 }),
+  // Eldiven (2)
+  A('G07', 'Kor Eldivenleri', 'gloves', 'warrior', 26, 'R', { def: 14 }, { str: 3 }, ['burnt_warrior'], { type: 'gauntlet', main: '#5a3a30' }),
+  A('G08', 'Ayaz Parmaklıkları', 'gloves', 'mage', 26, 'R', { def: 8, mdef: 14 }, { int: 3 }, ['frost_wolf'], { type: 'gloves', main: '#a8d0e8', gem: '#7ad8ff' }),
+  // Bot (2)
+  A('B07', 'Kül İzleri', 'boots', 'warrior', 27, 'R', { def: 13 }, { vit: 3 }, ['frost_wolf'], { type: 'greaves', main: '#4a4040' }),
+  A('B08', 'Donmuş Adımlar', 'boots', 'mage', 27, 'R', { def: 9, mdef: 17 }, { mp: 35 }, ['ice_wisp'], { type: 'boots', main: '#8ab8d8' }),
+  // Yüzük (2)
+  A('R07', 'Kızıl Halka', 'ring', 'any', 24, 'R', {}, { str: 3, vit: 2 }, ['crimson_scorpion'], { type: 'ring', band: '#8a2a22', gem: '#ff6a3a' }),
+  A('R08', 'Ayaz Yüzüğü', 'ring', 'any', 29, 'E', {}, { int: 4, mp: 65 }, ['ice_warden'], { type: 'ring', band: '#c8e0f0', gem: '#7ad8ff' }),
+  // Kolye (2) — Kül Nişanı: Kül Devi; Kül Kasabı'nın Epic havuzunu da paylaşır (elit Epic havuzu boş kalmasın)
+  A('A07', 'Kül Nişanı', 'amulet', 'any', 25, 'E', {}, { hp: 70, crit: 0.03 }, ['ash_giant', 'ash_butcher'], { type: 'medal', chain: '#5a4a40', gem: '#ff7a2a' }),
+  A('A08', 'Kristal Kış Madalyonu', 'amulet', 'any', 30, 'E', {}, { mdef: 20, vit: 4 }, ['frozen_guardian'], { type: 'medal', chain: '#c8e0f0', gem: '#e0faff' }),
 ];
 
 export const ITEMS = Object.fromEntries(ITEM_LIST.map((t) => [t.id, t]));

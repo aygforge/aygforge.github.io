@@ -1,5 +1,6 @@
 // Uygulama çekirdeği: profil, aktif karakter, kayıt zamanlaması, Phaser oyunu ve arayüz bağlantısı.
 import { SaveRepository } from '../save/repository.js';
+import { setHeroGear } from '../art/spriteRuntime.js';
 import { newProfile } from '../save/serialize.js';
 import { Rng } from './rng.js';
 import { bus } from './events.js';
@@ -34,6 +35,7 @@ export const app = {
     this.profile = r.profile || newProfile();
     if (!r.profile && r.tried.some((t) => t.msg !== 'yok')) this.loadInfo.corrupt = true;
     sound.applySettings(this.profile.settings);
+    setHeroGear(this.profile.settings.heroLook === 'gear');
     return r;
   },
 
@@ -104,6 +106,7 @@ export const app = {
   setSettings(patch) {
     Object.assign(this.profile.settings, patch);
     sound.applySettings(this.profile.settings);
+    setHeroGear(this.profile.settings.heroLook === 'gear');
     bus.emit('settings', this.profile.settings);
     this.requestSave('settings');
   },

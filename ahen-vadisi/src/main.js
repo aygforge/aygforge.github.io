@@ -11,7 +11,7 @@ import { showMainMenu } from './ui/menu.js';
 import { createHud } from './ui/hud.js';
 import { bindPanelEvents, openPanel } from './ui/panels/index.js';
 import { requestFullscreen } from './ui/screen.js';
-import { respawnEntry } from './systems/dungeon.js';
+import { respawnEntry, getRun, isDungeonUnlocked, DUNGEON_INFO } from './systems/dungeon.js';
 import { MAPS } from './data/maps/index.js';
 import { sound } from './audio/sound.js';
 import { devEnabled, mountDevButton } from './dev/devpanel.js';
@@ -71,9 +71,10 @@ function enterWorld(slot) {
   sound.init();
   // istemsiz kapanmadan sonra dungeon kontrol noktasından devam
   let mapId = ch.world.map, entry = null;
-  if (mapId === 'dungeon') {
-    if (ch.dungeon && ch.world.dungeonUnlocked) entry = respawnEntry(ch);
-    else { mapId = 'mine'; entry = 'from_dungeon'; }
+  if (DUNGEON_INFO[mapId]) {
+    const back = { dungeon: ['mine', 'from_dungeon'], frost_temple: ['frost', 'from_temple'] }[mapId];
+    if (getRun(ch, mapId) && isDungeonUnlocked(ch, mapId)) entry = respawnEntry(ch, mapId);
+    else [mapId, entry] = back;
   }
   if (!MAPS[mapId]) { mapId = 'village'; entry = 'start'; }
   ui.layers.screen.innerHTML = '';
@@ -157,7 +158,27 @@ function bindLifecycle() {
 // PWA servis işçisi (HTTPS veya localhost)
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost') && !import.meta.env.DEV) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch((e) => console.warn('SW kaydı başarısız', e));
+    navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then((reg) => {
+      const offer = (w) => {
+        if (!w || !navigator.serviceWorker.controller) return;   // ilk kurulum: bildirime gerek yok
+        if (document.getElementById('update-banner')) return;
+        const b = h('button', { id: 'update-banner', class: 'btn green', 'data-testid': 'update-banner', onTap: async () => {
+          b.textContent = 'Kaydediliyor…';
+          if (app.char) await app.flushSave('update');
+          w.postMessage('SKIP_WAITING');
+        } }, 'Yeni sürüm hazır — kaydet ve yenile');
+        document.body.appendChild(b);
+      };
+      if (reg.waiting) offer(reg.waiting);
+      reg.addEventListener('updatefound', () => {
+        const w = reg.installing;
+        w?.addEventListener('statechange', () => { if (w.state === 'installed') offer(w); });
+      });
+      // açık oturumda da ara sıra güncelleme denetle
+      setInterval(() => reg.update().catch(() => {}), 30 * 60 * 1000);
+    }).catch((e) => console.warn('SW kaydı başarısız', e));
+    let reloading = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloading) { reloading = true; location.reload(); } });
   });
 }
 

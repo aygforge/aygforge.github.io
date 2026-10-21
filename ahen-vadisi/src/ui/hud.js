@@ -3,6 +3,7 @@
 import { h, clear, img, fmt } from './dom.js';
 import { ui } from './ui.js';
 import { app } from '../core/app.js';
+import { NPCS } from '../data/npcs.js';
 import { bus } from '../core/events.js';
 import { iconURL } from '../art/icons.js';
 import { createJoystick } from './joystick.js';
@@ -15,7 +16,7 @@ import { MAPS } from '../data/maps/index.js';
 import { xpToNext, MAX_LEVEL, TILE, SLOTS, DURABILITY_WARN } from '../data/constants.js';
 import { countStack } from '../systems/inventory.js';
 import { trackedQuestList } from '../systems/quests.js';
-import { currentStage } from '../systems/dungeon.js';
+import { currentStage, getRun, sealsBroken } from '../systems/dungeon.js';
 import { FOG_CELL } from '../world/fog.js';
 import { sound } from '../audio/sound.js';
 import { openPanel } from './panels/index.js';
@@ -153,7 +154,7 @@ export function createHud() {
     if (ch.level >= MAX_LEVEL) xpBar.firstChild.style.width = '100%';
     else xpBar.firstChild.style.width = `${(ch.exp / xpToNext(ch.level)) * 100}%`;
     lvl.textContent = ch.level;
-    const lk = Object.values(ch.equipment).map((e) => e?.tid).join();
+    const lk = Object.values(ch.equipment).map((e) => e?.tid).join() + (app.settings.heroLook || '');
     if (portrait.dataset.k !== lk) {
       portrait.dataset.k = lk;
       const pc = packPreviewCanvas('hero_' + ch.cls, 80, true);
@@ -178,10 +179,12 @@ export function createHud() {
       bBarFill.style.width = `${(bossE.hp / bossE.maxHp) * 100}%`;
       bBarText.textContent = `${fmt(bossE.hp)} / ${fmt(bossE.maxHp)}`;
       bShield.classList.toggle('hidden', !(bossE.reduce > 0));
-      const ticks = bossE.tpl.id === 'mine_golem' ? [70, 50, 25] : [70, 40, 25];
+      const ticks = { mine_golem: [70, 50, 25], ash_giant: [55, 30, 20], frozen_guardian: [65, 30] }[bossE.tpl.id] || [70, 40, 25];
       if (bTicks.dataset.k !== bossE.tpl.id) { clear(bTicks); ticks.forEach((tk) => bTicks.appendChild(h('b', { style: { left: tk + '%' } }))); bTicks.dataset.k = bossE.tpl.id; }
       const ph = bossE.behavior?.phase?.() || 1;
-      bPh.textContent = bossE.reduce > 0 ? 'Kristal Kalkanı aktif — kristalleri kır!' : ph >= 3 || (bossE.tpl.id === 'alpha_wolf' && ph === 2) ? 'Aşama: Son Öfke' : `Aşama ${ph}`;
+      const shieldTxt = bossE.tpl.id === 'frozen_guardian' ? 'Buz Mührü aktif — iki kristali kır!' : 'Kristal Kalkanı aktif — kristalleri kır!';
+      const furyTxt = { ash_giant: 'Aşama: Son Kor', frozen_guardian: 'Aşama III: Kışın Öfkesi' }[bossE.tpl.id] || 'Aşama: Son Öfke';
+      bPh.textContent = bossE.reduce > 0 ? shieldTxt : ph >= 3 || (bossE.tpl.id === 'alpha_wolf' && ph === 2) ? furyTxt : `Aşama ${ph}`;
     } else boss.classList.add('hidden');
     // buff
     clear(buffs);
@@ -195,7 +198,7 @@ export function createHud() {
     if (now < p.slowUntil) addBf('skill:ice_blast', (p.slowUntil - now) / 1000, '#58f');
     if (now < p.stunUntil) addBf('ui:target', (p.stunUntil - now) / 1000, '#fd0');
     // beceri butonları
-    const acts = CLASS_SKILLS[ch.cls].actives;
+    const acts = ch.skillBar || CLASS_SKILLS[ch.cls].actives;
     skillBtns.forEach((b, i) => {
       const id = acts[i], s = SKILLS[id], r = ch.skills[id] || 0;
       if (b.dataset.id !== id) { b.dataset.id = id; b.style.backgroundImage = `url(${iconURL('skill:' + id)})`; }
@@ -251,14 +254,16 @@ export function createHud() {
     tracker.classList.toggle('hidden', !tracker.firstChild);
     // dungeon
     const w = app.world;
-    if (w?.mapDef.dungeon && ch.dungeon) {
+    if (w?.mapDef.dungeon && getRun(ch, w.mapId)) {
       dungeonBar.classList.remove('hidden');
       clear(dungeonBar);
-      const st = currentStage(ch);
+      const st = currentStage(ch, w.mapId);
       const area = w.mapDef.areas.find((a) => a.stage === st);
       const left = w.enemies.filter((e) => !e.dead && e.stage === st).length;
-      dungeonBar.append(h('div', { class: 'grow' }, h('b', {}, 'Derin Ocak '), st <= 4 ? `· Bölüm ${st}/4: ${area?.name || ''} (${left} düşman)` : '· Tamamlandı!'),
-        h('button', { class: 'btn small red', onTap: () => ui.confirm({ title: 'Gönüllü çıkış', text: 'Mevcut koşu sona erer. Sonraki girişte yeni koşu başlar.', ok: 'Çık', danger: true, onOk: () => w.changeMap('mine', 'from_dungeon', { exitDungeon: true }) }) }, 'Çık'));
+      const seals = st === 3 && w.mapDef.seals ? ` · mühür ${sealsBroken(ch, w.mapId)}/${w.mapDef.seals.length}` : '';
+      const exit = w.mapDef.objects.find((o) => o.dungeonExit);
+      dungeonBar.append(h('div', { class: 'grow' }, h('b', {}, w.mapDef.name + ' '), st <= 4 ? `· Bölüm ${st}/4: ${area?.name || ''} (${left} düşman${seals})` : '· Tamamlandı!'),
+        h('button', { class: 'btn small red', onTap: () => ui.confirm({ title: 'Gönüllü çıkış', text: 'Mevcut koşu sona erer. Sonraki girişte yeni koşu başlar.', ok: 'Çık', danger: true, onOk: () => w.changeMap(exit.to, exit.entry, { exitDungeon: true }) }) }, 'Çık'));
     } else dungeonBar.classList.add('hidden');
   }
 
@@ -342,7 +347,7 @@ export function createHud() {
 }
 
 export function npcName(id) {
-  return { muhtar: 'Köy Muhtarı', boran: 'Demirci Boran', mira: 'Tüccar Mira', elin: 'Şifacı Elin', hunter: 'Usta Avcı', sage: 'Gezgin Bilge', keeper: 'Depocu' }[id] || id;
+  return NPCS[id]?.name || id;
 }
 
 function nextMainHint(ch) {

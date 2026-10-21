@@ -65,6 +65,8 @@ export const act = {
   withdraw(index) { return result(inv.moveBetween(app.profile.storage, index, app.char.bag), { okSound: 'click' }); },
   sortStorage() { return result({ ok: inv.sortContainer(app.profile.storage) }, { okText: 'Depo sıralandı', critical: false }); },
   allocate(add) { return result(chr.allocateStats(app.char, add), { okText: 'Stat puanları dağıtıldı', what: 'stats' }); },
+  setSkillBar(slot, id) { return result(chr.setSkillBar(app.char, slot, id), { okText: 'Beceri çubuğu güncellendi', what: 'stats' }); },
+  applyBook(id) { return result(chr.applyMasteryBook(app.char, id), { okText: (r) => `Ustalık Kitabı uygulandı: ${r.book.name}`, okSound: 'buff', what: 'stats' }); },
   rankUp(id) { return result(chr.rankUp(app.char, id), { okText: (r) => `Rank ${r.rank}`, okSound: 'buff', what: 'stats' }); },
   resetSkills() { return result(chr.resetSkills(app.char), { okText: (r) => `Beceriler sıfırlandı${r.cost ? ` (−${r.cost} G)` : ''}`, what: 'stats' }); },
   resetStats() { return result(chr.resetStats(app.char), { okText: (r) => `Statlar sıfırlandı${r.cost ? ` (−${r.cost} G)` : ''}`, what: 'stats' }); },

@@ -3,9 +3,13 @@ import forest from './forest.js';
 import mine from './mine.js';
 import swamp from './swamp.js';
 import dungeon from './dungeon.js';
+import ash from './ash.js';
+import frost from './frost.js';
+import frostTemple from './frostTemple.js';
 
-export const MAPS = { village, forest, mine, swamp, dungeon };
-export const MAP_ORDER = ['village', 'forest', 'mine', 'swamp', 'dungeon'];
+export const MAPS = { village, forest, mine, swamp, dungeon, ash, frost, frost_temple: frostTemple };
+export const MAP_ORDER = ['village', 'forest', 'mine', 'swamp', 'dungeon', 'ash', 'frost', 'frost_temple'];
+export const DUNGEON_MAPS = ['dungeon', 'frost_temple'];
 
 // Yol Taşı hızlı seyahat ücretleri (belge §9.5). Köy ücretsizdir.
 export const WAYSTONES = {
@@ -13,6 +17,8 @@ export const WAYSTONES = {
   ws_forest: { map: 'forest', cost: 40, name: 'Fısıldayan Orman' },
   ws_mine: { map: 'mine', cost: 80, name: 'Kırık Damar Madeni' },
   ws_swamp: { map: 'swamp', cost: 120, name: 'Sis Bataklığı' },
+  ws_ash: { map: 'ash', cost: 180, name: 'Kül Yaylaları' },
+  ws_frost: { map: 'frost', cost: 240, name: 'Ayaz Geçidi' },
 };
 
 // Elit doğma kuralı: haritadaki öldürme katkısı + aktif süre alt sınırı (bekleyerek istismar edilemez)

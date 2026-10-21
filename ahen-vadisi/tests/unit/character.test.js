@@ -97,7 +97,9 @@ describe('Seviye ve beceriler', () => {
       expect(c.level).toBe(20);
       expect(statPointsFree(c)).toBe(57);
       const cs = CLASS_SKILLS[cls];
-      for (const id of [...cs.actives, ...cs.passives]) expect(c.skills[id]).toBe(1);
+      // V1 becerileri (ilk 4 aktif + pasifler) Lv.20'de açık; V2'nin Lv.25 becerisi henüz kapalı
+      for (const id of [...cs.actives.slice(0, 4), ...cs.passives]) expect(c.skills[id]).toBe(1);
+      expect(c.skills[cs.actives[4]]).toBeUndefined();
     }
   });
   it('seviyeye göre doğru açılış', () => {
@@ -116,7 +118,7 @@ describe('Seviye ve beceriler', () => {
     c.bonusSkillPoints = 2; // Lv.10 + Lv.20 sınıf görevleri
     expect(skillPointsTotal(c)).toBe(21);
     let total = 0;
-    for (const id of [...CLASS_SKILLS.warrior.actives, ...CLASS_SKILLS.warrior.passives]) {
+    for (const id of [...CLASS_SKILLS.warrior.actives.slice(0, 4), ...CLASS_SKILLS.warrior.passives]) {
       const s = SKILLS[id];
       const max = s.kind === 'active' ? 5 : 3;
       for (let r = 2; r <= max; r++) total += s.kind === 'active' ? [0, 1, 1, 2, 2][r - 1] : [0, 1, 2][r - 1];

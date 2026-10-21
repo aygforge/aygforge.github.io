@@ -3,6 +3,11 @@
 import { SPRITE_PACKS } from './spritePacks.js';
 
 let game = null;
+// Ayarlar → "Kahraman görünümü: Ekipman görünür": hazır kahraman sprite'ı yerine giyilen
+// silah/zırhı gösteren piksel kahraman çizimi kullanılır (yaratık paketleri etkilenmez).
+let heroGear = false;
+export function setHeroGear(v) { heroGear = !!v; }
+export function heroGearMode() { return heroGear; }
 
 export function preloadSpritePacks(scene) {
   for (const [id, p] of Object.entries(SPRITE_PACKS)) {
@@ -24,6 +29,7 @@ export function registerSpritePacks(scene) {
 // Paket kullanılabilir mi (bekleme animasyonu yüklendi mi)
 export function spritePack(id) {
   const p = SPRITE_PACKS[id];
+  if (heroGear && id.startsWith('hero_')) return null;
   return p && game?.textures.exists(`${id}:idle`) ? { id, ...p } : null;
 }
 

@@ -8,13 +8,14 @@ import { humanSheet, playerLook } from '../../art/characters.js';
 import { packPreviewCanvas } from '../../art/spriteRuntime.js';
 import { SLOTS, SLOT_NAMES, xpToNext, MAX_LEVEL, TILE } from '../../data/constants.js';
 import { CLASSES } from '../../data/classes.js';
-import { SKILLS, CLASS_SKILLS, maxRank, rankUpCost } from '../../data/skills.js';
+import { SKILLS, CLASS_SKILLS, maxRank, rankUpCost, MASTERY_BOOKS } from '../../data/skills.js';
 import { ALL_QUESTS, QUEST_MAP } from '../../data/quests.js';
 import { ENEMIES } from '../../data/enemies.js';
 import { STACKABLES } from '../../data/materials.js';
 import { MAPS } from '../../data/maps/index.js';
 import { computeStats } from '../../systems/stats.js';
-import { statPointsFree, skillPointsFree, canRankUp } from '../../systems/character.js';
+import { statPointsFree, skillPointsFree, canRankUp, canApplyMasteryBook } from '../../systems/character.js';
+import { countStack } from '../../systems/inventory.js';
 import { questStatus, trackedQuestList, objectiveProgress, objectiveTarget, isReady, currentHint } from '../../systems/quests.js';
 import { gridView, itemCell, cellSize } from './grid.js';
 import { showItemCard } from './itemcard.js';
@@ -173,9 +174,36 @@ function characterTab(rerender) {
 }
 
 // ------------------------------------------------------------------ BECERİLER
+let barSel = null;   // beceri çubuğunda seçili yuva (dokun → beceri seç)
+
+function skillBarBox(rerender) {
+  const ch = app.char, cs = CLASS_SKILLS[ch.cls];
+  const bar = ch.skillBar || cs.actives.slice(0, 4);
+  const slots = bar.map((id, i) => h('button', { class: 'barslot' + (barSel === i ? ' sel' : ''), 'data-testid': 'bar-' + i, onTap: () => { barSel = barSel === i ? null : i; rerender(); } },
+    img(iconURL('skill:' + id)), h('span', { class: 'tiny' }, SKILLS[id].name)));
+  const picks = barSel === null ? null : h('div', { class: 'row wrap' }, h('span', { class: 'small muted' }, `${barSel + 1}. düğmeye:`),
+    cs.actives.filter((id) => id !== bar[barSel]).map((id) => {
+      const open = !!ch.skills[id];
+      return h('button', { class: 'btn small' + (open ? '' : ' dis'), 'data-testid': 'bar-pick-' + id, onTap: () => { act.setSkillBar(barSel, id); barSel = null; rerender(); } },
+        img(iconURL('skill:' + id)), open ? SKILLS[id].name : `${SKILLS[id].name} (Lv.${SKILLS[id].unlock})`);
+    }));
+  return h('div', { class: 'box col' },
+    h('div', { class: 'row' }, h('b', { class: 'gold' }, 'Beceri çubuğu'), h('span', { class: 'tiny muted' }, ' · Ekranda 4 düğme var. Bir yuvaya dokun, sonra yerleştireceğin beceriyi seç (yer değiştirir).')),
+    h('div', { class: 'row barslots' }, slots), picks);
+}
+
 function skillsTab(rerender) {
   const ch = app.char;
   const cs = CLASS_SKILLS[ch.cls];
+  const bookRow = (id) => {
+    const bk = MASTERY_BOOKS[id];
+    if (!bk || ch.level < 28) return null;
+    if (ch.masteryBooks?.[id]) return h('div', { class: 'tiny', style: { color: '#d8a0ff' } }, `Ustalık Kitabı: ${bk.name} — ${bk.desc}${(ch.skills[id] || 0) < 5 ? ' (Rank 5\'te etkin)' : ''}`);
+    const chk = canApplyMasteryBook(ch, id);
+    return h('div', { class: 'row', style: { gap: '6px', alignItems: 'center' } },
+      h('span', { class: 'tiny muted grow' }, `Ustalık Kitabı (Lv.30, Rank 5): ${bk.desc} · Kitap: ${countStack(ch.bag, 'mastery_book')}`),
+      h('button', { class: 'btn small' + (chk.ok ? '' : ' dis'), 'data-testid': 'book-' + id, onTap: () => ui.confirm({ title: 'Ustalık Kitabı', text: `${SKILLS[id].name}: ${bk.desc} 1 Ustalık Kitabı harcanır; her beceriye yalnız bir kez uygulanır.`, ok: 'Uygula', onOk: () => { act.applyBook(id); rerender(); } }) }, 'Uygula'));
+  };
   const card = (id) => {
     const s = SKILLS[id], r = ch.skills[id] || 0, max = maxRank(s);
     const chk = canRankUp(ch, id);
@@ -187,16 +215,18 @@ function skillsTab(rerender) {
         h('div', {}, h('b', { class: r ? 'gold' : 'muted' }, s.name), ` · ${s.kind === 'active' ? 'Aktif' : s.kind === 'passive' ? 'Pasif' : 'Ustalık'} · Rank ${r}/${max}`),
         h('div', { class: 'small' }, r ? s.desc(r, s) : `Seviye ${s.unlock}'te ${s.kind === 'mastery' ? 'Ustalık I görevi ile' : 'ücretsiz'} açılır. ${s.desc(1, s)}`),
         h('div', { class: 'tiny muted' }, extra.slice(3)),
-        next ? h('div', { class: 'tiny ok' }, `Sonraki rank: ${next} (maliyet ${rankUpCost(s, r + 1)} puan)`) : null),
+        next ? h('div', { class: 'tiny ok' }, `Sonraki rank: ${next} (maliyet ${rankUpCost(s, r + 1)} puan)`) : null,
+        s.kind === 'active' ? bookRow(id) : null),
       s.kind !== 'mastery' ? h('button', { class: 'btn small green' + (chk.ok ? '' : ' dis'), 'data-testid': 'rank-' + id, onTap: () => { act.rankUp(id); rerender(); } }, r >= max ? 'Maks.' : 'Yükselt') : null);
   };
   return h('div', { class: 'col grow scroll' },
     h('div', { class: 'row' }, h('div', { class: 'grow' }, 'Beceri puanı: ', h('b', { class: 'gold' }, skillPointsFree(ch)),
       h('span', { class: 'muted small' }, ` · Toplam ${ch.level - 1 + (ch.bonusSkillPoints || 0)} (her seviye 1, Lv.10/20 sınıf görevleri +1)`))),
+    skillBarBox(rerender),
     h('h3', { class: 't' }, 'Aktif beceriler'), cs.actives.map(card),
     h('h3', { class: 't' }, 'Pasif beceriler'), cs.passives.map(card),
     h('h3', { class: 't' }, 'Ustalık I (Lv.20)'), card(cs.mastery),
-    h('p', { class: 'tiny muted' }, 'Sıfırlama Gezgin Bilge\'dedir (Lv.1–10 ücretsiz, Lv.11–14 1.000 G, Lv.15–20 2.500 G).'));
+    h('p', { class: 'tiny muted' }, 'Sıfırlama Gezgin Bilge\'dedir (Lv.1–10 ücretsiz, Lv.11–14 1.000 G, Lv.15–20 2.500 G, Lv.21–30 5.000 G). Ustalık Kitapları sıfırlamada kaybolmaz.'));
 }
 
 // ------------------------------------------------------------------ GÖREVLER

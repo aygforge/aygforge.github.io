@@ -5,11 +5,11 @@ import { app } from '../core/app.js';
 import { bus } from '../core/events.js';
 import { playerHit, enemyHit, poisonTick } from '../systems/combat.js';
 import { applyKill } from '../systems/rewards.js';
-import { claimBossLoot, bossKillId } from '../systems/dungeon.js';
+import { claimBossLoot, bossKillId, dungeonOfBoss } from '../systems/dungeon.js';
 import { ITEMS } from '../data/items.js';
 import { STACKABLES } from '../data/materials.js';
 import { SKILLS } from '../data/skills.js';
-import { RARITY_INFO, TILE, WARRIOR_MP_ON_HIT } from '../data/constants.js';
+import { RARITY_INFO, TILE, WARRIOR_MP_ON_HIT, TG_SQUASH, CRIT_MULT } from '../data/constants.js';
 import { iconPB } from '../art/icons.js';
 import { sound } from '../audio/sound.js';
 
@@ -19,6 +19,7 @@ export class CombatRuntime {
   constructor(scene) {
     this.scene = scene;
     this.dpsLog = [];
+    this.hazards = [];
   }
 
   get rng() { return app.rng; }
@@ -53,14 +54,36 @@ export class CombatRuntime {
       sound.play('fire');
       this.applyToEnemy(t, extra, { legend: true });
     }
+    // Buzun Hükmü (V2): normal vuruşta %10, 8 sn iç bekleme, ek buz hasarı + kısa yavaşlatma (zincirlenmez)
+    if (!res.miss && st.legendaryEffect === 'frost_verdict' && !t.dead && this.scene.clock >= p.icd.frost && this.rng.float() < 0.10) {
+      p.icd.frost = this.scene.clock + 8000;
+      const extra = playerHit(st, t, { coef: 1.25, isNormal: false, dmgType: 'magic', rng: this.rng });
+      this.scene.fx.sprite('shatter', t.x, t.y - 18, { scale: 1.8 });
+      this.scene.fx.text(t.x, t.y - 64, 'Buzun Hükmü', { color: '#9fe8ff', size: 12 });
+      sound.play('ice');
+      if (t.tpl.kind !== 'boss') { t.slowUntil = this.scene.clock + 1500; t.slowPct = Math.max(t.slowPct, 0.2); }
+      this.applyToEnemy(t, extra, { legend: true });
+    }
   }
 
-  playerSkillHit(t, { coef, skill, spell = false }) {
+  playerSkillHit(t, { coef, skill, spell = false, critMult = null, burn = null }) {
     if (t.dead) return;
     const st = app.stats();
     const dmgType = SKILLS[skill]?.dmg || st.damageType;
     const res = playerHit(st, t, { coef, isNormal: false, dmgType, rng: this.rng, targetSlowed: t.isSlowed() });
+    // Ustalık Kitabı: kritik çarpanı (×1,5 → kitap değeri)
+    if (critMult && res.crit && !res.miss) res.dmg = Math.round(res.dmg * critMult / CRIT_MULT);
     this.applyToEnemy(t, res, {});
+    // Ustalık Kitabı: yanma (vuruş hasarının küçük bir yüzdesi, saniyede bir; zincirlenmez/yenilenir)
+    if (burn && !res.miss && !t.dead) {
+      const tick = Math.max(1, Math.round(res.dmg * burn.pct));
+      t.burn?.remove();
+      t.burn = this.scene.time.addEvent({ delay: 1000, repeat: burn.dur - 1, callback: () => {
+        if (t.dead) return;
+        this.scene.fx.sprite('fireball', t.x + (Math.random() - 0.5) * 10, t.y - t.height * 0.6, { scale: 0.5, life: 300 });
+        this.applyToEnemy(t, { dmg: tick, crit: false, miss: false }, { legend: false });
+      } });
+    }
     // Kadim Ruh Asası: aktif hasar büyüsünde %8, 10 sn iç bekleme; Ruh Yankısı zincirlenmez
     const p = this.scene.player;
     if (spell && st.legendaryEffect === 'spirit_echo' && !t.dead && this.scene.clock >= p.icd.spirit && this.rng.float() < 0.08) {
@@ -72,6 +95,19 @@ export class CombatRuntime {
         this.scene.fx.text(t.x, t.y - 64, 'Ruh Yankısı', { color: '#90e8ff', size: 12 });
         sound.play('ice');
         this.applyToEnemy(t, echo, { legend: true });
+      });
+    }
+    // Sonsuz Kış Asası (V2): aktif hasar büyüsünde %8, 10 sn iç bekleme, ek buz hasarı; yankı tekrar tetiklemez
+    if (spell && st.legendaryEffect === 'endless_winter' && !t.dead && this.scene.clock >= p.icd.winter && this.rng.float() < 0.08) {
+      p.icd.winter = this.scene.clock + 10000;
+      const chill = { dmg: Math.max(1, Math.round(res.dmg * 0.6)), crit: false, miss: false };
+      this.scene.time.delayedCall(200, () => {
+        if (t.dead) return;
+        this.scene.fx.sprite('shatter', t.x, t.y - 18, { scale: 2 });
+        this.scene.fx.text(t.x, t.y - 64, 'Sonsuz Kış', { color: '#c8f0ff', size: 12 });
+        sound.play('ice');
+        if (t.tpl.kind !== 'boss') { t.slowUntil = this.scene.clock + 2000; t.slowPct = Math.max(t.slowPct, 0.25); }
+        this.applyToEnemy(t, chill, { legend: true });
       });
     }
   }
@@ -126,12 +162,94 @@ export class CombatRuntime {
     sc.projectiles = sc.projectiles.filter((p) => p.alive);
   }
 
+  // Zincir Yıldırım bağlantı çizgisi (görünür sıçrama)
+  lightningLink(x0, y0, x1, y1) {
+    const sc = this.scene;
+    const g = sc.add.graphics().setDepth(59500).setBlendMode(Phaser.BlendModes.ADD);
+    const pts = [[x0, y0]];
+    const n = 6;
+    for (let i = 1; i < n; i++) {
+      const k = i / n;
+      pts.push([x0 + (x1 - x0) * k + (Math.random() - 0.5) * 14, y0 + (y1 - y0) * k + (Math.random() - 0.5) * 14]);
+    }
+    pts.push([x1, y1]);
+    g.lineStyle(4, 0x6a7aff, 0.5); g.strokePoints(pts.map(([x, y]) => ({ x, y })));
+    g.lineStyle(2, 0xe8eeff, 1); g.strokePoints(pts.map(([x, y]) => ({ x, y })));
+    sc.fx.sprite('spark', x1, y1, { scale: 1.4, tint: 0xb0c0ff });
+    sc.tweens.add({ targets: g, alpha: 0, duration: 260, delay: 80, onComplete: () => g.destroy() });
+  }
+
   stunFx(ent, sec) {
     const s = this.scene.fx.sprite('stun', 0, 0, { depth: 61000 });
     const follow = () => { if (!s.active) return; s.setPosition(ent.x, ent.y - (ent.height || 56) - 4); };
     follow();
     const ev = this.scene.time.addEvent({ delay: 30, loop: true, callback: follow });
     this.scene.time.delayedCall(sec * 1000, () => { ev.remove(); s.destroy(); });
+  }
+
+  // ------------------------------------------------------------- yer tehlikeleri (V2)
+  // Geçici alan hasarı (ateş izi, alev yarığı): telegraf alanı = isabet alanı, tik başına küçük hasar
+  groundHazard({ x, y, r, dur, tick = 0.5, coef = 0.2, src, key = 'fire_ground', label = null, warn = 0, dmgType = 'magic', tint = null }) {
+    const sc = this.scene;
+    const hz = { x, y, r, left: dur, tick, t: warn > 0 ? 0 : tick, coef, src, label, warn, dmgType, alive: true, sprites: [] };
+    if (warn > 0) sc.fx.telegraph({ kind: 'circle', x, y, r }, warn * 1000, 0xff6a1a);
+    const show = () => {
+      const s = sc.fx.sprite(key, x, y, { depth: 41, scale: (r * 2) / 64 * 2, tint });
+      s.setDisplaySize(r * 2.2, r * 2.2 * TG_SQUASH * 0.9);
+      hz.sprites.push(s);
+    };
+    if (warn > 0) sc.time.delayedCall(warn * 1000, show); else show();
+    this.hazards.push(hz);
+    return hz;
+  }
+
+  // Düşen buz kıymığı: telegraf (gecikme), sonra tek vuruş
+  fallingShard({ x, y, r, delay = 1.4, coef = 1, src }) {
+    const sc = this.scene;
+    sc.fx.telegraph({ kind: 'circle', x, y, r }, delay * 1000, 0x7ad8ff);
+    sc.time.delayedCall(delay * 1000 - 260, () => {
+      const s = sc.fx.sprite('ice_spike', x, y - 140, { depth: 59000, origin: [0.5, 1], scale: 1.4 });
+      sc.tweens.add({ targets: s, y, duration: 260, ease: 'Quad.in', onComplete: () => {
+        s.destroy();
+        sc.fx.sprite('shatter', x, y - 8, { scale: 1.6 });
+        sound.play('ice', { vol: 0.6 });
+        const p = sc.player;
+        if (!p.dead && Math.hypot((p.x - x) / r, (p.y - y) / (r * TG_SQUASH)) <= 1) this.enemyHitsPlayer(src, { coef, dmgType: 'magic', label: 'Buz Kıymığı' });
+      } });
+    });
+  }
+
+  updateHazards(dt) {
+    const p = this.scene.player;
+    for (const hz of this.hazards) {
+      if (hz.warn > 0) { hz.warn -= dt; continue; }
+      hz.left -= dt;
+      if (hz.left <= 0) { hz.alive = false; hz.sprites.forEach((s) => this.scene.tweens.add({ targets: s, alpha: 0, duration: 250, onComplete: () => s.destroy() })); continue; }
+      hz.t -= dt;
+      if (hz.t <= 0) {
+        hz.t = hz.tick;
+        if (!p.dead && Math.hypot((p.x - hz.x) / hz.r, (p.y - hz.y) / (hz.r * TG_SQUASH)) <= 1) {
+          this.enemyHitsPlayer(hz.src, { coef: hz.coef, dmgType: hz.dmgType, label: hz.label });
+          hz.label = null;   // etiket yalnız ilk tikte
+        }
+      }
+    }
+    this.hazards = this.hazards.filter((h) => h.alive);
+  }
+
+  clearHazards() {
+    for (const hz of this.hazards) hz.sprites.forEach((s) => s.destroy());
+    this.hazards = [];
+  }
+
+  // Yavaşlatma: zincirlenmez — süre uzatılmaz, en güçlü oran geçerli
+  slowPlayer(pct, sec) {
+    const p = this.scene.player;
+    if (p.dead) return;
+    const now = this.scene.clock;
+    if (now < p.slowUntil && p.slowPct >= pct) return;
+    p.slow(pct, sec);
+    this.scene.fx.text(p.x, p.y - 70, 'Yavaşladın', { color: '#9fe8ff', size: 12 });
   }
 
   // ------------------------------------------------------------- düşman → oyuncu
@@ -184,6 +302,10 @@ export class CombatRuntime {
       const orig = pr.onHit;
       pr.onHit = () => { orig(); if (Math.random() < e.tpl.poison.chance) this.poisonPlayer(e, e.tpl.poison); };
     }
+    if (e.tpl.slow) {
+      const orig = pr.onHit;
+      pr.onHit = () => { orig(); if (Math.random() < e.tpl.slow.chance) this.slowPlayer(e.tpl.slow.pct, e.tpl.slow.dur); };
+    }
   }
 
   // ------------------------------------------------------------- öldürme ve ödüller
@@ -196,9 +318,12 @@ export class CombatRuntime {
     const p = sc.player;
     if (p.target === e) { p.target = null; p.approaching = p.interact ? p.approaching : false; bus.emit('target', null); }
     let res;
-    if (e.tpl.id === 'mine_golem') {
-      const allowed = claimBossLoot(ch);
-      res = allowed ? applyKill(ch, e.tpl.id, { killId: bossKillId(ch), unique: true }, this.rng) : { duplicate: true, quest: [], levelEvents: [], items: [], pending: [], lost: [], stacks: [], lostStacks: [], exp: 0, gold: 0 };
+    const dId = dungeonOfBoss(e.tpl.id);
+    if (dId && sc.mapId === dId) {
+      // zindan bossu: koşu başına tek loot (kimlik koşuya bağlı, çift ödül yok)
+      const allowed = claimBossLoot(ch, dId);
+      res = allowed ? applyKill(ch, e.tpl.id, { killId: bossKillId(ch, dId), unique: true }, this.rng) : { duplicate: true, quest: [], levelEvents: [], items: [], pending: [], lost: [], stacks: [], lostStacks: [], exp: 0, gold: 0 };
+      if (allowed) { ch.history.dungeons[dId] = (ch.history.dungeons[dId] || 0) + 1; }
     } else if (e.tpl.kind === 'boss') {
       res = applyKill(ch, e.tpl.id, { killId: e.killId, unique: true }, this.rng);
     } else {

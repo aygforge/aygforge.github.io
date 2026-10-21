@@ -6,21 +6,28 @@ export const LOOT_TABLES = {
   elite: { N: 35, U: 25, R: 5, E: 0.75, L: 0, materialChance: 0.28, potionChance: 0.03 },
   alpha: { N: 20, U: 25, R: 18, E: 1.5, L: 0, materialChance: 0, potionChance: 0 },
   golem: { N: 0, U: 0, R: 28, E: 6, L: 0.4, materialChance: 0, potionChance: 0 },
+  // V2 bossları: kanonik Rare listesi olmayan boss Rare havuzu = bölgenin seviye aralığındaki Rare şablonlar
+  ash_giant: { N: 0, U: 0, R: 22, E: 2, L: 0, materialChance: 0, potionChance: 0 },
+  frost_keeper: { N: 0, U: 0, R: 30, E: 7, L: 0.4, materialChance: 0, potionChance: 0 },
 };
 for (const t of Object.values(LOOT_TABLES)) {
   t.none = +(100 - t.N - t.U - t.R - t.E - t.L).toFixed(4);
 }
 
-// Legendary yalnız bu tablodan çıkabilir. Değiştirilemez kural.
-export const LEGENDARY_SOURCE_TABLE = 'golem';
+// Legendary yalnız bu tablolardan çıkabilir. Değiştirilemez kural.
+// V1: Maden Golemi. V2: Donmuş Muhafız (Buz Mabedi). Elitler, normal yaratıklar, Kül Devi, sunak ve üretim asla.
+export const LEGENDARY_SOURCE_TABLES = ['golem', 'frost_keeper'];
+// Boss tabloları varyant (N/U temel şablon) üretmez; Rare havuzu seviye aralığındaki kanonik Rare'lerdir.
+// golem 13–20: V1 havuzu aynen korunur (V2 Rare'leri Golem'den düşmez).
+export const BOSS_RARE_POOL = { golem: [13, 20], ash_giant: [21, 26], frost_keeper: [26, 30] };
+// Donmuş Muhafız Epic havuzu: kanonik Kristal Kış Madalyonu + Buz Mabedi temalı (Buz Gardiyanı) Epic'ler varyant ağırlığında
+export const BOSS_EXTRA_EPIC_SOURCES = { frost_keeper: ['ice_warden'] };
 // Legendary mevcut sınıfa %80 ağırlıklı (belge §8.4)
 export const LEGENDARY_CLASS_WEIGHT = 0.8;
 
 // Varyant havuzu için seviye bandı: şablon seviyesi ∈ [kaynakLv - BAND_BELOW, kaynakLv + BAND_ABOVE]
 export const VARIANT_BAND_BELOW = 9;
 export const VARIANT_BAND_ABOVE = 1;
-// Boss Rare havuzu (kanonik Rare listesi olmayan Golem için): üst seviye Rare şablonlar
-export const GOLEM_RARE_MIN_LEVEL = 13;
 
 // Mevcut sınıf (ve her sınıf) eşyalarına ağırlık
 export const CLASS_POOL_WEIGHT = { own: 2, other: 1 };

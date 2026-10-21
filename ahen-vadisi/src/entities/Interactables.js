@@ -10,7 +10,7 @@ import { STACKABLES } from '../data/materials.js';
 import { questsForNpc, canInteractQuestObject, onInteract } from '../systems/quests.js';
 import { rollGather, rollAltar } from '../systems/loot.js';
 import { addStack, stackCapacity } from '../systems/inventory.js';
-import { canEnterDungeon } from '../systems/dungeon.js';
+import { canEnterDungeon, isDungeonUnlocked, getRun, sealsBroken, currentStage, DUNGEON_INFO } from '../systems/dungeon.js';
 import { sound } from '../audio/sound.js';
 
 class Base {
@@ -88,6 +88,14 @@ export class WaystoneObj extends Base {
       sound.play('portal');
       app.requestSave('waystone', true);
     }
+    // V2: Yol Taşı'nı etkinleştirme görev hedefi (ör. "Ayaz'a Giden Yol")
+    if (this.o.group && Math.hypot(p.x - this.x, p.y - this.y) < 3 * TILE && canInteractQuestObject(app.char, this.o.group, this.o.id)) {
+      const ups = onInteract(app.char, this.o.group, this.o.id);
+      for (const u of ups) bus.emit('questProgress', u);
+      app.changed('quest');
+      app.requestSave('questObject', true);
+      this.scene.refreshMarks();
+    }
   }
   interact() { bus.emit('openTravel', this.o.id); }
 }
@@ -98,7 +106,7 @@ export class GatherObj extends Base {
     this.kind = 'gather';
     this.mat = o.kind;
     this.name = STACKABLES[o.kind].name;
-    const ore = o.kind === 'iron_ore' || o.kind === 'hard_ore';
+    const ore = ['iron_ore', 'hard_ore', 'ash_ore', 'frost_crystal'].includes(o.kind);
     this.key = ore ? 'ore_' + o.kind : 'herb_' + o.kind;
     this.usedKey = ore ? 'ore_used' : 'herb_used';
     this.s = this.sprite(this.key, false);
@@ -116,7 +124,7 @@ export class GatherObj extends Base {
   interact(p) {
     if (this.depleted) { bus.emit('toast', { text: 'Tükenmiş, biraz bekle', kind: 'warn', short: true }); return; }
     if (stackCapacity(app.char.bag, this.mat) <= 0) { bus.emit('toast', { text: 'Çanta dolu', kind: 'warn' }); return; }
-    const ore = this.mat.includes('ore');
+    const ore = this.mat.includes('ore') || this.mat === 'frost_crystal';
     sound.play(ore ? 'mine' : 'gather');
     p.startChannel(ore ? 'Kazılıyor…' : 'Toplanıyor…', 1.2, () => {
       if (this.depleted) return;
@@ -133,21 +141,28 @@ export class GatherObj extends Base {
   }
 }
 
-const QOBJ_SPRITE = { wolf_track: 'track', hunter_cache: 'chest', purify_stone: 'purify', swamp_ruin: 'ruin', lost_miner: null };
+const QOBJ_SPRITE = {
+  wolf_track: 'track', hunter_cache: 'chest', purify_stone: 'purify', swamp_ruin: 'ruin', lost_miner: null,
+  lost_caravan: 'caravan_wreck', ember_relic: 'ember_relic', scout_tracks: 'track', lost_scout: null, winter_relic: 'winter_relic',
+};
+const QOBJ_NPC = { lost_miner: 'npc_miner', lost_scout: 'npc_scout' };
+const QOBJ_FLAT = new Set(['wolf_track', 'scout_tracks']);
 
 export class QuestObj extends Base {
   constructor(scene, o) {
     super(scene, o);
     this.kind = 'qobj';
     this.name = o.label;
-    if (o.group === 'lost_miner') {
-      this.s = scene.add.sprite(this.x, this.y, 'npc_miner', 'idle0').setOrigin(0.5, 28.5 / 30).setDepth(100 + this.y);
-      this.s.play('npc_miner_idle');
+    const npcKey = QOBJ_NPC[o.group];
+    if (npcKey) {
+      this.s = scene.add.sprite(this.x, this.y, npcKey, 'idle0').setOrigin(0.5, 28.5 / 30).setDepth(100 + this.y);
+      this.s.play(npcKey + '_idle');
       this.height = 60;
     } else {
-      this.s = this.sprite(QOBJ_SPRITE[o.group], false, o.group === 'wolf_track' ? 0.5 : 1);
-      if (o.group === 'wolf_track') this.s.setDepth(30);
-      this.height = o.group === 'wolf_track' ? 12 : 44;
+      const flat = QOBJ_FLAT.has(o.group);
+      this.s = this.sprite(QOBJ_SPRITE[o.group], false, flat ? 0.5 : 1);
+      if (flat) this.s.setDepth(30);
+      this.height = flat ? 12 : 44;
     }
     this.glow = scene.add.image(this.x, this.y - this.height / 2, 'light').setScale(0.5).setAlpha(0).setBlendMode(Phaser.BlendModes.ADD).setDepth(55000);
   }
@@ -172,6 +187,12 @@ export class QuestObj extends Base {
       if (this.o.group === 'purify_stone') { sound.play('altar'); this.scene.fx.burst(this.x, this.y - 20, 0x7af0ff, 20, 80, 800); }
       else sound.play('quest');
       if (this.o.group === 'lost_miner') bus.emit('toast', { text: 'Kadir: "Sonunda biri geldi! Kardeşime iyi olduğumu söyle."', kind: 'info' });
+      const say = {
+        lost_scout: 'Tamer: "Akrepler bacağımı zehirledi... Demre\'ye ulaşırım, sağ ol."',
+        lost_caravan: 'Enkazdan yanık bir kervan defteri çıktı: "Kızıl Yarıklar\'a sürüklendik..."',
+        ember_relic: 'Kalıntının içinde kor atıyor — sanki doğudaki kalderaya bağlı.',
+      }[this.o.group];
+      if (say) bus.emit('toast', { text: say, kind: 'info' });
       app.changed('quest');
       app.requestSave('questObject', true);
       this.scene.refreshMarks();
@@ -258,38 +279,111 @@ export class DungeonGateObj extends Base {
   constructor(scene, o) {
     super(scene, o);
     this.kind = 'gate';
-    this.name = 'Derin Ocak Kapısı';
-    this.s = this.sprite('dungeon_gate', false);
+    this.dId = o.dungeon || 'dungeon';
+    this.info = DUNGEON_INFO[this.dId];
+    this.group = o.group || this.info.gateGroup;
+    this.name = this.info.name + ' Kapısı';
+    this.s = this.sprite(this.dId === 'dungeon' ? 'dungeon_gate' : 'frost_gate', false);
     this.height = 90;
     this.tapRadius = 44;
     this.interactRange = 2.2 * TILE;
-    this.y += 0;
   }
   update() {
-    const open = app.char.world.dungeonUnlocked;
-    this.s.setFrame(open ? 1 : 0);
+    this.s.setFrame(isDungeonUnlocked(app.char, this.dId) ? 1 : 0);
   }
   interact(p) {
     const ch = app.char;
-    if (!ch.world.dungeonUnlocked && canInteractQuestObject(ch, 'dungeon_gate', this.o.id)) {
+    const name = this.info.name;
+    if (!isDungeonUnlocked(ch, this.dId) && canInteractQuestObject(ch, this.group, this.o.id)) {
       p.startChannel('Mühür etkinleştiriliyor…', 1.6, () => {
-        const ups = onInteract(ch, 'dungeon_gate', this.o.id);
+        const ups = onInteract(ch, this.group, this.o.id);
         for (const u of ups) bus.emit('questProgress', u);
         sound.play('altar');
-        this.scene.fx.burst(this.x, this.y - 40, 0xc070ff, 30, 120, 900);
-        bus.emit('toast', { text: 'Derin Ocak\'ın mührü açıldı! Artık sınırsız girebilirsin.', kind: 'ok' });
+        this.scene.fx.burst(this.x, this.y - 40, this.dId === 'dungeon' ? 0xc070ff : 0x9fe8ff, 30, 120, 900);
+        bus.emit('toast', { text: `${name} mührü açıldı! Artık sınırsız girebilirsin.`, kind: 'ok' });
         app.changed('quest');
         app.requestSave('dungeonUnlock', true);
         this.scene.refreshMarks();
       });
       return;
     }
-    const chk = canEnterDungeon(ch);
+    const chk = canEnterDungeon(ch, this.dId);
     if (!chk.ok) { bus.emit('toast', { text: chk.msg, kind: 'warn' }); return; }
+    const run = getRun(ch, this.dId);
     bus.emit('confirm', {
-      title: 'Derin Ocak', text: ch.dungeon ? 'Kaldığın koşuya devam et.' : 'Yeni bir koşu başlat. Giriş sınırsızdır; boss ödülü her koşuda bir kez çekilir.',
-      ok: 'Gir', onOk: () => this.scene.changeMap('dungeon', ch.dungeon ? null : 'entrance', { enterDungeon: true }),
+      title: name, text: run ? 'Kaldığın koşuya devam et.' : 'Yeni bir koşu başlat. Giriş sınırsızdır; boss ödülü her koşuda bir kez çekilir.',
+      ok: 'Gir', onOk: () => this.scene.changeMap(this.dId, run ? null : 'entrance', { enterDungeon: true }),
     });
+  }
+}
+
+// V2: gizli sandık — karakter başına bir kez açılır (kayıtta world.chests)
+export class ChestObj extends Base {
+  constructor(scene, o) {
+    super(scene, o);
+    this.kind = 'chest';
+    this.name = 'Gizli Sandık';
+    this.s = this.sprite('chest', false);
+    this.s.setScale(1.3);
+    this.glow = scene.add.image(this.x, this.y - 12, 'light').setScale(0.45).setAlpha(0).setBlendMode(Phaser.BlendModes.ADD).setDepth(55000);
+    this.height = 30;
+  }
+  get opened() { return !!app.char.world.chests?.[this.o.id]; }
+  update() {
+    const op = this.opened;
+    this.s.setFrame(op ? 1 : 0);
+    this.glow.setAlpha(op ? 0 : 0.25 + Math.sin(this.scene.clock / 400) * 0.1);
+  }
+  interact(p) {
+    if (this.opened) { bus.emit('toast', { text: 'Sandık boş', kind: 'info', short: true }); return; }
+    p.startChannel('Sandık açılıyor…', 1.2, () => {
+      const ch = app.char;
+      if (ch.world.chests?.[this.o.id]) return;
+      // önce yer kontrolü: hiçbir ödül kaybolmasın
+      const loot = this.o.loot.map((l) => ({ id: l.id, qty: app.rng.int(l.qty[0], l.qty[1]) }));
+      if (loot.some((l) => stackCapacity(ch.bag, l.id) < l.qty)) { bus.emit('toast', { text: 'Çantada yer aç, sonra sandığı aç', kind: 'warn' }); return; }
+      (ch.world.chests = ch.world.chests || {})[this.o.id] = Date.now();
+      const gold = app.rng.int(this.o.gold[0], this.o.gold[1]);
+      ch.gold += gold;
+      bus.emit('loot', { name: 'Gold', qty: gold, icon: 'ui:gold', r: 'U' });
+      for (const l of loot) { addStack(ch.bag, l.id, l.qty); bus.emit('loot', { name: STACKABLES[l.id].name, qty: l.qty, icon: l.id, r: 'R' }); }
+      sound.play('coin'); sound.play('drop_r');
+      this.scene.fx.lootBeam(this.x, this.y, 0xffd060);
+      bus.emit('toast', { text: 'Gizli sandık bulundu!', kind: 'level' });
+      app.changed('inventory');
+      app.requestSave('chest', true);
+    });
+  }
+}
+
+// V2: Buz Mabedi mühür taşı — dokununca kısa bir karşılaşma başlar; yaratıklar yenilince mühür kırılır
+export class SealObj extends Base {
+  constructor(scene, o) {
+    super(scene, o);
+    this.kind = 'seal';
+    this.name = o.label;
+    this.seal = scene.mapDef.seals.find((x) => x.id === o.id);
+    this.s = this.sprite('temple_seal', false);
+    this.light = scene.add.image(this.x, this.y - 30, 'light_blue').setScale(0.6).setAlpha(0.4).setBlendMode(Phaser.BlendModes.ADD).setDepth(55000);
+    this.height = 56;
+    this.interactRange = 1.8 * TILE;
+  }
+  get broken() { return !!getRun(app.char, this.scene.mapId)?.seals?.includes(this.o.id); }
+  refresh() { this.update(); }
+  update() {
+    const br = this.broken, active = this.scene.spawner?.sealWaveAlive?.(this.o.id);
+    this.s.setFrame(br ? 2 : active ? 1 : 0);
+    this.light.setVisible(!br);
+  }
+  interact() {
+    const sc = this.scene, ch = app.char;
+    if (this.broken) { bus.emit('toast', { text: `${this.name} zaten kırıldı`, kind: 'info', short: true }); return; }
+    if (currentStage(ch, sc.mapId) < 3) { bus.emit('toast', { text: 'Mühür, galeriye giden yol açılmadan uyanmaz.', kind: 'info' }); return; }
+    if (sc.spawner.sealWaveAlive(this.o.id)) { bus.emit('toast', { text: 'Mührün muhafızları hâlâ ayakta!', kind: 'warn', short: true }); return; }
+    if (sc.spawner.spawnSealWave(this.seal)) {
+      sound.play('shield');
+      bus.emit('toast', { text: `${this.name} uyandı! Muhafızlarını yen. (${sealsBroken(ch, sc.mapId)}/${sc.mapDef.seals.length})`, kind: 'elite' });
+    }
   }
 }
 
@@ -324,6 +418,8 @@ export class PortalObj extends Base {
   }
   update(dt) {
     this.cool -= dt;
+    const lk = this.locked();
+    if (lk !== this._lk) { this._lk = lk; this.s.setTint(lk ? 0x707070 : 0xffffff).setAlpha(lk ? 0.55 : 0.9); this.label.setText((lk ? '✖ ' : '➜ ') + this.o.label + (lk ? ' (kapalı)' : '')); }
     const p = this.scene.player;
     if (this.cool > 0 || p.dead) return;
     // bölgeden bir kez çıkılmadan yeniden tetiklenmez (ör. dungeon çıkış onayı tekrar tekrar açılmaz)
@@ -332,9 +428,14 @@ export class PortalObj extends Base {
     else if (this.armed) { this.armed = false; this.trigger(); }
   }
   interact() { this.trigger(); }
+  locked() {
+    const req = this.o.requires;
+    return !!(req && !app.char.quests[req.quest]);
+  }
   trigger() {
     this.cool = 2; this.armed = false;
     const o = this.o;
+    if (this.locked()) { bus.emit('toast', { text: o.requires.msg, kind: 'warn' }); return; }
     if (o.dungeonExit) {
       bus.emit('confirm', {
         title: 'Dungeon\'dan çık', text: 'Gönüllü çıkış mevcut koşuyu bitirir. Bir sonraki girişte yeni koşu başlar.',

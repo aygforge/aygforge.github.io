@@ -19,6 +19,18 @@ const TERRAIN = {
   dungeon: { base: '#4c4852', dark: '#38343e', light: '#5c5864', detail: '#2c2832' },
   plank: { base: '#8a6238', dark: '#5e4024', light: '#a07446', detail: '#4a3220' },
   sand: { base: '#c8b07e', dark: '#b09868', light: '#dcc698', detail: '#a08858' },
+  // V2 — Kül Yaylaları
+  ash: { base: '#6e6662', dark: '#5c5450', light: '#847c76', detail: '#4a4240' },
+  scorched: { base: '#463632', dark: '#382a26', light: '#5a4640', detail: '#ff6a2a' },
+  basalt: { base: '#3c3a40', dark: '#2a282e', light: '#55525a', detail: '#1e1c22' },
+  lava: { base: '#c8401a', dark: '#8a2410', light: '#ff8a2a', detail: '#ffe070' },
+  // V2 — Ayaz Geçidi / Buz Mabedi
+  snow: { base: '#dce6ee', dark: '#c4d0dc', light: '#f4f8fc', detail: '#a8b8c8' },
+  ice: { base: '#9ccbe4', dark: '#84b4d0', light: '#c8e8f8', detail: '#f0faff' },
+  frost_stone: { base: '#8a96a6', dark: '#6a7686', light: '#aab6c4', detail: '#e0eef8' },
+  frozen_water: { base: '#2c5c80', dark: '#22486a', light: '#4a80a8', detail: '#c8e8f8' },
+  temple_floor: { base: '#5a6a80', dark: '#465468', light: '#6e7e94', detail: '#34405a' },
+  ice_floor: { base: '#7aa8c8', dark: '#6290b0', light: '#a0c8e0', detail: '#e0f6ff' },
 };
 
 function drawTerrain(pb, t, v, ox = 0, oy = 0) {
@@ -86,6 +98,76 @@ function drawTerrain(pb, t, v, ox = 0, oy = 0) {
         pb.set(ox + ((r * 5 + v * 3) % 14) + 1, oy + r * 4 + 1, P.detail);
       }
       break;
+    // ---------------- V2
+    case 'ash':
+      sp(0.22, P.dark, 1); sp(0.1, P.light, 2); sp(0.03, P.detail, 3);
+      if (v === 2) pb.set(ox + 5, oy + 9, '#ff7a2a');
+      break;
+    case 'scorched':
+      sp(0.25, P.dark, 1); sp(0.08, P.light, 2);
+      if (v > 0) { pb.line(ox + 2 + v, oy + 4, ox + 7, oy + 9 + (v % 2), '#2a1c18'); pb.line(ox + 7, oy + 9, ox + 12, oy + 7 + v, '#2a1c18'); }
+      if (v >= 2) { pb.set(ox + 5, oy + 7, P.detail); pb.set(ox + 9, oy + 9, '#ffb040'); }
+      break;
+    case 'basalt': {
+      pb.rect(ox, oy, S, S, P.dark);
+      const cells = [[0, 0, 6, 6], [6, 0, 6, 5], [12, 0, 4, 7], [0, 6, 5, 5], [5, 5, 7, 6], [12, 7, 4, 5], [0, 11, 8, 5], [8, 11, 8, 5]];
+      cells.forEach(([x, y, w, h], i) => {
+        const c = [P.base, P.light, shade(P.base, -0.06), shade(P.base, 0.06)][Math.floor(hash(i, v, seed) * 4)];
+        pb.rect(ox + x, oy + y, w - 1, h - 1, c);
+        pb.hline(ox + x, ox + x + w - 2, oy + y, shade(c, 0.18));
+      });
+      break;
+    }
+    case 'lava':
+      sp(0.3, P.dark, 1); sp(0.12, P.light, 2);
+      for (let i = 0; i < 3; i++) {
+        const x = Math.floor(hash(i, v, seed) * 12), y = Math.floor(hash(v, i, seed + 1) * 14);
+        pb.hline(ox + x, ox + x + 3, oy + y, P.light); pb.set(ox + x + 1, oy + y, P.detail);
+      }
+      break;
+    case 'snow':
+      sp(0.16, P.dark, 1); sp(0.1, P.light, 2);
+      if (v === 3) { pb.set(ox + 4, oy + 6, P.detail); pb.set(ox + 11, oy + 11, P.detail); }
+      break;
+    case 'ice':
+      sp(0.12, P.dark, 1);
+      pb.line(ox + 2, oy + 3 + v, ox + 6 + v, oy + 1, P.light);
+      pb.line(ox + 9, oy + 13 - v, ox + 14, oy + 9, P.light);
+      if (v % 2) pb.set(ox + 4, oy + 3, P.detail);
+      if (v === 2) pb.line(ox + 3, oy + 10, ox + 8, oy + 12, P.dark);
+      break;
+    case 'frost_stone': {
+      pb.rect(ox, oy, S, S, P.dark);
+      const stones = [[0, 0, 8, 5], [8, 0, 8, 6], [0, 5, 6, 6], [6, 6, 6, 5], [12, 6, 4, 5], [0, 11, 7, 5], [7, 11, 9, 5]];
+      stones.forEach(([x, y, w, h], i) => {
+        const c = [P.base, P.light, shade(P.base, -0.05), shade(P.base, 0.08)][Math.floor(hash(i, v, seed) * 4)];
+        pb.rect(ox + x, oy + y, w - 1, h - 1, c);
+        pb.hline(ox + x, ox + x + w - 2, oy + y, P.detail);
+      });
+      break;
+    }
+    case 'frozen_water':
+      sp(0.12, P.dark, 1);
+      for (let i = 0; i < 2; i++) {
+        const x = Math.floor(hash(i, v, seed) * 10), y = Math.floor(hash(v, i, seed + 1) * 12);
+        pb.ellipse(ox + x + 3, oy + y + 2, 2.5, 1.2, P.light); pb.set(ox + x + 2, oy + y + 2, P.detail);
+      }
+      break;
+    case 'temple_floor':
+      pb.rect(ox, oy, S, S, P.base);
+      sp(0.12, P.dark, 1); sp(0.05, P.light, 2);
+      pb.hline(ox, ox + 15, oy + 15, P.detail); pb.vline(ox + 15, oy, oy + 15, P.detail);
+      pb.hline(ox, ox + 14, oy, shade(P.base, 0.12)); pb.vline(ox, oy, oy + 14, shade(P.base, 0.08));
+      if (v === 1) { pb.set(ox + 7, oy + 7, '#9fe8ff'); pb.set(ox + 8, oy + 8, '#9fe8ff'); }
+      if (v === 3) pb.line(ox + 3, oy + 11, ox + 9, oy + 6, P.dark);
+      break;
+    case 'ice_floor':
+      pb.rect(ox, oy, S, S, P.base);
+      sp(0.1, P.dark, 1);
+      pb.line(ox + 1, oy + 4 + v, ox + 7, oy + 1, P.light); pb.line(ox + 8, oy + 14, ox + 14, oy + 10 - v, P.light);
+      pb.hline(ox, ox + 15, oy + 15, P.dark); pb.vline(ox + 15, oy, oy + 15, P.dark);
+      if (v === 2) pb.set(ox + 10, oy + 5, P.detail);
+      break;
     default:
       sp(0.2, P.dark, 1);
   }
@@ -114,7 +196,7 @@ function drawTransition(pb, over, base, mask) {
     inside[y * S + x] = ok ? 1 : 0;
   }
   const P = TERRAIN[over], B = TERRAIN[base];
-  const isWater = over === 'water' || over === 'swamp_water';
+  const isWater = over === 'water' || over === 'swamp_water' || over === 'lava' || over === 'frozen_water';
   for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) {
     const i = y * S + x;
     if (inside[i]) {
@@ -135,6 +217,10 @@ const MASS = {
   rock_mass: { deep: '#151216', base: '#221e22', mid: '#2e292c', hi: '#8a7e78', face: '#6e625a', faceDark: '#4e443e', ground: '#2a2420' },
   swamp_mass: { deep: '#141c14', base: '#20291c', mid: '#2e3a26', hi: '#4a5a36', trunk: '#3a3024', ground: '#1a2216' },
   dungeon_mass: { deep: '#16131a', base: '#221e28', mid: '#2e2834', hi: '#6a6274', face: '#4a4252', faceDark: '#34303c', ground: '#1e1a22' },
+  // V2: bazalt yamaçlar (kor parıltılı), karlı çam ormanı, buz tapınağı duvarı
+  ash_mass: { deep: '#141012', base: '#221c1e', mid: '#2e2628', hi: '#6a5a56', face: '#4e4440', faceDark: '#342c2a', ground: '#241e1c', glow: '#ff6a2a', style: 'rock' },
+  snow_mass: { deep: '#1a2a2e', base: '#2a4048', mid: '#3a5660', hi: '#e8f2f8', trunk: '#4a3a2e', ground: '#c4d0dc', snow: true },
+  ice_mass: { deep: '#141c28', base: '#22304a', mid: '#2e405e', hi: '#a8d8f0', face: '#5a7a9a', faceDark: '#3e5878', ground: '#1e2838', style: 'brick', glow: '#9fe8ff' },
 };
 
 function canopy(pb, P, v, h = S) {
@@ -150,9 +236,15 @@ function canopy(pb, P, v, h = S) {
 
 function drawMass(pb, mass, part, v) {
   const P = MASS[mass];
-  const rocky = mass === 'rock_mass' || mass === 'dungeon_mass';
+  const rocky = mass === 'rock_mass' || mass === 'dungeon_mass' || !!P.style;
+  const brick = mass === 'dungeon_mass' || P.style === 'brick';
   if (!rocky) {
-    if (part === 'fill') { canopy(pb, P, v); return; }
+    if (part === 'fill') {
+      canopy(pb, P, v);
+      // karlı çam tepeleri
+      if (P.snow) for (let i = 0; i < 6; i++) { const cx = hash(i, v, 15) * 16, cy = hash(v, i, 16) * 16; pb.hline(cx - 2, cx + 1, cy, P.hi); pb.set(cx - 1, cy - 1, '#ffffff'); }
+      return;
+    }
     pb.rect(0, 0, S, S, P.ground);
     canopy(pb, P, v + 10, 9);
     for (let x = 0; x < S; x++) { const e = 8 + Math.floor(hash(x, v, 3) * 3); for (let y = 9; y < e; y++) pb.set(x, y, P.base); pb.set(x, e, P.deep); }
@@ -169,15 +261,16 @@ function drawMass(pb, mass, part, v) {
       if (h < 0.18) pb.set(x, y, P.mid);
       else if (h < 0.24) pb.set(x, y, P.deep);
     }
-    if (mass === 'dungeon_mass') { pb.hline(0, 15, 7, P.deep); pb.vline(v * 5 + 2, 0, 6, P.deep); pb.vline(v * 4 + 9, 8, 15, P.deep); }
+    if (brick) { pb.hline(0, 15, 7, P.deep); pb.vline(v * 5 + 2, 0, 6, P.deep); pb.vline(v * 4 + 9, 8, 15, P.deep); }
     else { pb.line(2 + v, 3, 7 + v, 8, P.deep); pb.line(10, 10 - v, 14, 13, P.deep); }
+    if (P.glow && v === 1) { pb.set(6, 6, P.glow); pb.set(7, 7, shade(P.glow, -0.3)); }
     return;
   }
   // yüz (güneye bakan duvar)
   pb.rect(0, 0, S, S, P.face);
   pb.rect(0, 0, S, 3, P.base);
   pb.hline(0, 15, 3, P.hi);
-  if (mass === 'dungeon_mass') {
+  if (brick) {
     for (let r = 0; r < 3; r++) {
       const y = 4 + r * 4;
       pb.hline(0, 15, y + 3, P.faceDark);
@@ -192,6 +285,7 @@ function drawMass(pb, mass, part, v) {
     pb.hline(0, 15, 8 + v, P.faceDark);
     pb.line(3 + v * 4, 5, 6 + v * 4, 12, P.faceDark);
   }
+  if (P.glow) { pb.set(4 + v * 6, 9, P.glow); pb.set(5 + v * 6, 10, shade(P.glow, -0.25)); if (brick) pb.hline(0, 15, 3, P.glow); }
   pb.hline(0, 15, 15, P.ground);
   pb.hline(0, 15, 14, shade(P.faceDark, -0.2));
 }
@@ -275,6 +369,46 @@ function drawDecor(pb, name) {
       break;
     case 'cobweb':
       pb.line(0, 0, 8, 8, '#c8c8d0'); pb.line(0, 8, 8, 0, '#a8a8b0'); pb.line(0, 4, 4, 0, '#b8b8c0'); pb.line(2, 6, 6, 2, '#b8b8c0');
+      break;
+    // ---------------- V2 dekorları
+    case 'embers':
+      for (let i = 0; i < 4; i++) { const x = 3 + Math.floor(h(i) * 10), y = 4 + Math.floor(h(i, 6) * 9); pb.set(x, y, i % 2 ? '#ff8a2a' : '#ffd060'); }
+      pb.set(9, 10, '#c8401a');
+      break;
+    case 'ash_pile':
+      pb.ellipse(8, 11, 5, 2.5, '#5a5250'); pb.ellipse(7, 10, 3.5, 1.8, '#8a827e'); pb.set(6, 9, '#a8a09a'); pb.set(10, 11, '#ff7a2a');
+      break;
+    case 'lava_crack':
+      pb.line(2, 5, 7, 9, '#2a1410'); pb.line(7, 9, 13, 8, '#2a1410'); pb.line(7, 9, 6, 14, '#2a1410');
+      pb.line(3, 5, 7, 8, '#ff6a1a'); pb.line(8, 9, 12, 8, '#ff8a2a'); pb.set(7, 9, '#ffe070');
+      break;
+    case 'charred_bones':
+      pb.line(4, 10, 10, 8, '#6a5e54'); pb.set(3, 10, '#8a7e74'); pb.set(11, 8, '#8a7e74'); pb.ellipse(11, 12, 2, 1.6, '#5a5048'); pb.set(10, 12, '#1a1414');
+      break;
+    case 'cinder':
+      pb.ellipse(6, 10, 2, 1.4, '#2a2224'); pb.ellipse(10, 11, 1.6, 1.1, '#3a3032'); pb.set(6, 9, '#ff6a2a'); pb.set(12, 8, '#2a2224');
+      break;
+    case 'snow_tuft':
+      for (let k = 0; k < 2; k++) { const x = 4 + Math.floor(h(k) * 8), y = 7 + Math.floor(h(k, 2) * 6); pb.ellipse(x, y, 2.5, 1.4, '#ffffff'); pb.hline(x - 2, x + 1, y + 1, '#b8c8d8'); }
+      break;
+    case 'frost_crystal_small':
+      pb.poly([[6, 12], [7, 6], [9, 12]], '#7ad8ff'); pb.vline(7, 7, 11, '#e0faff');
+      pb.poly([[9, 12], [11, 8], [12, 12]], '#a8e8ff'); pb.set(11, 9, '#ffffff');
+      break;
+    case 'ice_shards':
+      pb.line(3, 11, 6, 8, '#c8f0ff'); pb.line(8, 12, 9, 7, '#9fe0f8'); pb.line(11, 11, 13, 9, '#c8f0ff'); pb.set(9, 7, '#ffffff');
+      break;
+    case 'footprints':
+      for (let i = 0; i < 3; i++) { pb.ellipse(4 + i * 4, 6 + (i % 2) * 4, 1, 1.5, '#a8b8c8'); }
+      break;
+    case 'frozen_grass':
+      for (let k = 0; k < 2; k++) { const x = 4 + Math.floor(h(k) * 8), y = 7 + Math.floor(h(k, 2) * 6); pb.vline(x, y - 3, y, '#7a9aa0'); pb.set(x - 1, y - 2, '#9ab8c0'); pb.set(x + 1, y - 2, '#9ab8c0'); pb.set(x, y - 3, '#ffffff'); }
+      break;
+    case 'ice_crack':
+      pb.line(3, 4, 8, 8, '#e0f6ff'); pb.line(8, 8, 7, 13, '#e0f6ff'); pb.line(8, 8, 13, 9, '#c0e4f4');
+      break;
+    case 'rune_ice':
+      pb.ring(8, 8, 5, '#7ad8ff'); pb.line(8, 4, 8, 12, '#a8e8ff'); pb.line(5, 8, 11, 8, '#a8e8ff'); pb.set(8, 8, '#ffffff');
       break;
     default:
       pb.set(8, 8, '#ff00ff');
@@ -509,6 +643,120 @@ function drawStamp(name) {
     case 'sign':
       pb.rect(7, 7, 2, 9, '#6a4628'); pb.rect(2, 3, 12, 6, '#a07a48'); pb.hline(4, 11, 5, '#5a3a20'); pb.hline(4, 9, 7, '#5a3a20'); pb.outline(OUTLINE);
       break;
+    // ---------------- V2 damgaları
+    case 'charred_tree': {
+      const c = '#2a2020';
+      pb.ellipse(16, 46, 10, 2, '#140e0e', 120);
+      pb.rect(13, 20, 6, 26, c); pb.vline(13, 20, 45, '#1a1414'); pb.vline(18, 22, 44, '#3a2e2a');
+      pb.thick(15, 26, 5, 12, c, 2); pb.thick(17, 22, 27, 8, c, 2); pb.line(16, 20, 15, 2, c); pb.line(15, 8, 11, 4, c); pb.line(8, 15, 3, 13, c); pb.line(24, 11, 29, 10, c);
+      for (const [x, y] of [[14, 30], [17, 36], [15, 41], [6, 13], [25, 9]]) pb.set(x, y, '#ff6a2a');
+      pb.set(16, 34, '#ffb040');
+      pb.outline(OUTLINE);
+      break;
+    }
+    case 'basalt_rock':
+      pb.poly([[2, 30], [3, 14], [8, 6], [15, 2], [24, 5], [30, 14], [30, 30]], '#2e2c32');
+      pb.poly([[5, 26], [6, 14], [10, 8], [16, 5], [22, 8], [26, 15], [18, 22]], '#46434c');
+      for (const x of [8, 14, 20, 25]) pb.vline(x, 9 + (x % 3), 28, '#24222a');
+      pb.line(10, 10, 20, 8, '#5e5a64'); pb.set(12, 20, '#ff6a2a');
+      pb.outline(OUTLINE);
+      break;
+    case 'lava_vent':
+      pb.ellipse(8, 11, 6, 3.5, '#2a2224'); pb.ellipse(8, 10, 4, 2.2, '#c8401a'); pb.ellipse(8, 10, 2.2, 1.2, '#ffd060');
+      pb.set(7, 5, '#8a8480'); pb.set(9, 3, '#a8a09a'); pb.set(8, 7, '#ff8a2a');
+      pb.outline(OUTLINE);
+      break;
+    case 'burnt_wagon':
+      pb.rect(3, 4, 25, 8, '#2e2420'); pb.hline(3, 27, 4, '#4a3a32'); for (let x = 5; x < 27; x += 5) pb.vline(x, 1, 4, '#2a201c');
+      pb.disc(8, 13, 2.5, '#1e1a1a'); pb.disc(23, 13, 2.5, '#1e1a1a'); pb.set(8, 13, '#4a4040');
+      pb.set(12, 6, '#ff6a2a'); pb.set(20, 8, '#ffb040'); pb.line(28, 9, 31, 11, '#2e2420');
+      pb.outline(OUTLINE);
+      break;
+    case 'ash_ruin_wall':
+      pb.rect(1, 8, 30, 22, '#4e4644');
+      for (let y = 10; y < 30; y += 5) for (let x = 1 + ((y / 5) % 2) * 4; x < 31; x += 8) pb.rect(x, y, 7, 4, shade('#4e4644', (hash(x, y) - 0.5) * 0.25));
+      pb.poly([[1, 8], [6, 1], [12, 8], [22, 4], [31, 8]], '#4e4644'); pb.clear(13, 1, 7, 6);
+      pb.line(4, 14, 12, 26, '#2a2220'); pb.set(20, 16, '#ff6a2a'); pb.set(8, 22, '#c84a2a');
+      pb.outline(OUTLINE);
+      break;
+    case 'ruin_tower': {
+      pb.ellipse(16, 46, 12, 2, '#140e0e', 110);
+      pb.rect(5, 12, 22, 34, '#5a5050');
+      for (let y = 14; y < 46; y += 5) for (let x = 5 + ((y / 5) % 2) * 4; x < 27; x += 8) pb.rect(x, y, 7, 4, shade('#5a5050', (hash(x, y, 5) - 0.5) * 0.25));
+      pb.poly([[3, 12], [8, 4], [12, 10], [17, 2], [22, 9], [29, 12]], '#5a5050'); pb.rect(3, 11, 26, 3, '#6a6060');
+      pb.rect(13, 30, 6, 16, '#1a1414'); pb.ellipse(16, 30, 3, 3, '#1a1414');
+      pb.rect(9, 18, 3, 5, '#1a1414'); pb.rect(21, 20, 3, 5, '#1a1414'); pb.set(22, 22, '#ff8a2a');
+      pb.line(7, 24, 12, 40, '#2a2220');
+      pb.outline(OUTLINE);
+      break;
+    }
+    case 'obsidian_spire':
+      pb.poly([[3, 31], [6, 10], [8, 1], [11, 12], [13, 31]], '#1e1a24'); pb.poly([[6, 28], [8, 6], [9, 14], [9, 28]], '#3a3448');
+      pb.vline(8, 8, 22, '#6a5a7a'); pb.set(10, 20, '#ff6a2a'); pb.ellipse(8, 31, 6, 1.2, '#140e0e');
+      pb.outline(OUTLINE);
+      break;
+    case 'frozen_pine': {
+      pb.rect(14, 36, 4, 10, '#4a3a2e'); pb.vline(14, 36, 45, '#2e241c');
+      const layers = [[16, 4, 6], [16, 10, 9], [16, 17, 12], [16, 25, 14], [16, 33, 15]];
+      for (const [cx, y, r] of layers) {
+        pb.poly([[cx - r, y + 8], [cx, y - 2], [cx + r, y + 8]], '#2a4a4c');
+        pb.poly([[cx - r + 3, y + 6], [cx - 1, y], [cx + 2, y + 6]], '#3a6062');
+        pb.hline(cx - r + 1, cx + r - 1, y + 7, '#e8f2f8'); pb.hline(cx - r + 3, cx - 2, y + 6, '#ffffff');
+        pb.set(cx, y - 1, '#ffffff');
+      }
+      pb.ellipse(16, 46, 9, 2, '#8aa0b0', 90);
+      pb.outline(OUTLINE);
+      break;
+    }
+    case 'ice_crystal_big':
+      pb.poly([[3, 30], [6, 8], [9, 1], [11, 12], [13, 30]], '#5ab8e8'); pb.poly([[6, 28], [8, 6], [9, 3], [10, 14], [9, 28]], '#a8e8ff');
+      pb.vline(8, 7, 24, '#ffffff'); pb.poly([[10, 30], [13, 16], [15, 30]], '#7ac8f0'); pb.line(12, 18, 13, 28, '#e0faff');
+      pb.ellipse(8, 30, 7, 1.5, '#6a8aa0'); pb.outline(OUTLINE);
+      break;
+    case 'ice_boulder':
+      pb.poly([[2, 30], [4, 14], [12, 5], [22, 4], [30, 14], [30, 30]], '#8ab4cc');
+      pb.poly([[5, 26], [7, 14], [13, 8], [21, 7], [26, 15], [18, 22]], '#b8dcec');
+      pb.poly([[4, 14], [12, 5], [22, 4], [28, 10], [18, 9], [8, 13]], '#f4f8fc');
+      pb.line(18, 22, 28, 28, '#6a94ac'); pb.set(14, 12, '#ffffff');
+      pb.outline(OUTLINE);
+      break;
+    case 'frozen_statue':
+      pb.rect(3, 26, 10, 6, '#7a8a9a'); pb.rect(5, 12, 6, 14, '#a8c8dc'); pb.disc(8, 8, 3.5, '#a8c8dc');
+      pb.line(5, 14, 2, 20, '#a8c8dc'); pb.line(11, 14, 14, 6, '#a8c8dc'); pb.vline(14, 2, 8, '#c8e8f8');
+      pb.set(7, 8, '#4a6a8a'); pb.hline(4, 12, 11, '#ffffff'); pb.set(6, 5, '#ffffff'); pb.vline(10, 16, 22, '#e0f6ff');
+      pb.outline(OUTLINE);
+      break;
+    case 'ice_pillar': {
+      const c = '#6a8aa8';
+      pb.rect(3, 2, 10, 28, c); pb.rect(1, 0, 14, 4, shade(c, 0.2)); pb.rect(1, 27, 14, 5, shade(c, -0.15));
+      pb.vline(5, 4, 26, shade(c, 0.3)); pb.vline(11, 4, 26, shade(c, -0.25));
+      pb.hline(1, 14, 0, '#e8f6ff'); pb.vline(8, 6, 24, '#9fe8ff'); pb.set(8, 14, '#ffffff');
+      pb.outline(OUTLINE);
+      break;
+    }
+    case 'snow_tent': {
+      pb.poly([[2, 44], [24, 4], [46, 44]], '#6a5a4a'); pb.poly([[6, 42], [24, 8], [42, 42]], '#8a7a62');
+      pb.poly([[18, 44], [24, 22], [30, 44]], '#2a201a');
+      pb.poly([[10, 26], [24, 4], [38, 26], [30, 22], [24, 12], [17, 22]], '#f0f6fa');
+      for (let y = 14; y < 42; y += 6) pb.hline(24 - (y - 8) * 0.5, 24 + (y - 8) * 0.5, y, '#7a6a54');
+      pb.line(24, 4, 24, 0, '#4a3a2e');
+      pb.outline(OUTLINE);
+      break;
+    }
+    case 'watchtower': {
+      pb.ellipse(16, 46, 12, 2, '#8aa0b0', 100);
+      for (const x of [6, 24]) { pb.rect(x, 18, 3, 28, '#5a4632'); pb.vline(x, 18, 45, '#3a2c1e'); }
+      pb.line(7, 22, 25, 40, '#4a3a28'); pb.line(25, 22, 7, 40, '#4a3a28');
+      pb.rect(3, 12, 26, 7, '#6a5238'); pb.hline(3, 28, 12, '#8a6a48');
+      pb.poly([[1, 13], [16, 1], [31, 13]], '#4a5a6a'); pb.poly([[4, 12], [16, 3], [28, 12]], '#f0f6fa');
+      pb.rect(13, 14, 6, 4, '#1a1414'); pb.set(16, 15, '#ffb040');
+      pb.outline(OUTLINE);
+      break;
+    }
+    case 'frozen_bush':
+      pb.ellipse(8, 10, 7, 5, '#3a5a5c'); pb.ellipse(7, 9, 5, 3.5, '#4e7274'); pb.ellipse(7, 7, 5, 2, '#f0f6fa'); pb.set(11, 9, '#9fe8ff');
+      pb.outline(OUTLINE);
+      break;
     default:
       pb.rect(0, 0, pb.w, pb.h, '#ff00ff');
   }
@@ -547,5 +795,5 @@ export function buildTileset(onProgress) {
 
 // Mini harita renkleri (terrain → renk)
 export const MINIMAP_COLORS = Object.fromEntries(Object.entries(TERRAIN).map(([k, v]) => [k, v.base]));
-export const MASS_COLORS = { forest_mass: '#1e3a1a', hedge_mass: '#24461f', rock_mass: '#1c181e', swamp_mass: '#161e14', dungeon_mass: '#141118' };
+export const MASS_COLORS = { forest_mass: '#1e3a1a', hedge_mass: '#24461f', rock_mass: '#1c181e', swamp_mass: '#161e14', dungeon_mass: '#141118', ash_mass: '#1a1416', snow_mass: '#3a5058', ice_mass: '#1a2638' };
 export { mix };

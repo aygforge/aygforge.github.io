@@ -7,6 +7,7 @@ import { ELITE_RULE } from '../data/maps/index.js';
 import { TILE } from '../data/constants.js';
 import { Enemy } from '../entities/Enemy.js';
 import { Rng } from '../core/rng.js';
+import { getRun } from '../systems/dungeon.js';
 
 export class Spawner {
   constructor(scene) {
@@ -136,15 +137,16 @@ export class Spawner {
 
   // ------------------------------------------------------------- dungeon
   initDungeon() {
-    const sc = this.scene, def = sc.mapDef, run = app.char.dungeon;
+    const sc = this.scene, def = sc.mapDef, run = getRun(app.char, sc.mapId);
     const rng = new Rng(hashStr(run.runId));
+    this.sealWaves = {};
     for (const [stageStr, list] of Object.entries(def.stages)) {
       const stage = +stageStr;
       if (run.cleared.includes(stage)) continue;
       if (stage === 4) {
         if (run.bossKilled) continue;
-        const g = this.spawnEnemy('mine_golem', def.bossSpawn.x * TILE, def.bossSpawn.y * TILE, { stage, leashR: 13 * TILE });
-        this.golem = g;
+        const g = this.spawnEnemy(def.boss || 'mine_golem', def.bossSpawn.x * TILE, def.bossSpawn.y * TILE, { stage, leashR: 13 * TILE });
+        this.golem = g;   // (adı V1'den; zindanın bossu)
         continue;
       }
       const area = def.areas.find((a) => a.stage === stage);
@@ -159,6 +161,30 @@ export class Spawner {
 
   stageAlive(stage) {
     return this.scene.enemies.some((e) => !e.dead && e.stage === stage);
+  }
+
+  // Mühür Galerisi: mühür karşılaşması (yaratıklar 3. bölüme sayılır; kırılan mühür koşuda kalıcı)
+  spawnSealWave(seal) {
+    if (this.sealWaves[seal.id]?.some((e) => !e.dead)) return false;
+    const sc = this.scene;
+    const list = [];
+    let i = 0;
+    for (const [id, n] of seal.wave) for (let k = 0; k < n; k++, i++) {
+      const a = (i / 3) * Math.PI * 2 + 0.4;
+      let x = (seal.x + 0.5) * TILE + Math.cos(a) * 2.6 * TILE, y = (seal.y + 0.5) * TILE + Math.sin(a) * 2 * TILE;
+      if (sc.grid.blockedAt(x, y)) { x = (seal.x + 0.5) * TILE; y = (seal.y + 2) * TILE; }
+      const e = this.spawnEnemy(id, x, y, { stage: 3, leashR: 12 * TILE });
+      e.sealId = seal.id;
+      e.aggro(sc.player);
+      sc.fx.sprite('shatter', x, y - 20, { scale: 1.8 });
+      list.push(e);
+    }
+    this.sealWaves[seal.id] = list;
+    return true;
+  }
+
+  sealWaveAlive(sealId) {
+    return (this.sealWaves?.[sealId] || []).some((e) => !e.dead);
   }
 
   resetGolem() {

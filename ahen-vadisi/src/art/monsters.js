@@ -1,6 +1,7 @@
 // Yaratık, elit ve boss sprite'ları — her biri ayrı silüet, palet ve animasyonla procedural çizilir.
 import { PB, shade, OUTLINE, hash } from './pixel.js';
 import { drawHumanoid } from './characters.js';
+import { DESIGNS_V2, HUMANOIDS_V2, V2_EXTRA_FRAMES, V2_FR, collapse } from './monstersV2.js';
 
 export const MONSTER_FRAMES = ['idle0', 'idle1', 'walk0', 'walk1', 'walk2', 'walk3', 'atk0', 'atk1'];
 const FR = {
@@ -210,17 +211,42 @@ const HUMANOIDS = {
     extra: (pb, f, c) => { pb.set(c.hx + 2, c.hy, '#ff3030'); heldWeapon('bigaxe', '#8a909a', 10)(pb, f, c); } } },
 };
 
-const H_POSE = { idle0: 'idle0', idle1: 'idle1', walk0: 'walk0', walk1: 'walk1', walk2: 'walk2', walk3: 'walk3', atk0: 'atk0', atk1: 'atk1' };
+const H_POSE = { idle0: 'idle0', idle1: 'idle1', walk0: 'walk0', walk1: 'walk1', walk2: 'walk2', walk3: 'walk3', atk0: 'atk0', atk1: 'atk1', hurt0: 'hurt0' };
+
+// V2 tasarımları: V1 karelerine ek olarak hurt0 ve die0–die2 (ölüm kareleri son pozdan türetilir)
+function v2Sheet(D, drawFrame) {
+  const names = [...MONSTER_FRAMES, ...V2_EXTRA_FRAMES];
+  const base = {};
+  const frames = names.map((fr) => {
+    if (fr.startsWith('die')) return collapse(base.hurt0, V2_FR[fr].die, D.fx).outline(OUTLINE);
+    const pb = drawFrame(fr);
+    base[fr] = pb.clone();
+    return pb.outline(OUTLINE);
+  });
+  return { w: D.w, h: D.h, frames, names };
+}
 
 export function monsterSheet(sprite) {
   const D = DESIGNS[sprite];
   if (D) {
-    return { w: D.w, h: D.h, frames: MONSTER_FRAMES.map((fr) => { const pb = new PB(D.w, D.h); D.draw(pb, FR[fr]); pb.outline(OUTLINE); return pb; }) };
+    return { w: D.w, h: D.h, names: MONSTER_FRAMES, frames: MONSTER_FRAMES.map((fr) => { const pb = new PB(D.w, D.h); D.draw(pb, FR[fr]); pb.outline(OUTLINE); return pb; }) };
+  }
+  const D2 = DESIGNS_V2[sprite];
+  if (D2) return v2Sheet(D2, (fr) => { const pb = new PB(D2.w, D2.h); D2.draw(pb, FR[fr] || V2_FR[fr]); return pb; });
+  const H2 = HUMANOIDS_V2[sprite];
+  if (H2) {
+    return v2Sheet(H2, (fr) => {
+      const pb = new PB(H2.w, H2.h);
+      const tmp = new PB(24, 30);
+      drawHumanoid(tmp, { ...H2.look, noOutline: true }, H_POSE[fr]);
+      pb.blit(tmp, Math.floor((H2.w - 24) / 2), H2.h - 30);
+      return pb;
+    });
   }
   const H = HUMANOIDS[sprite];
   if (!H) throw new Error('sprite yok: ' + sprite);
   return {
-    w: H.w, h: H.h,
+    w: H.w, h: H.h, names: MONSTER_FRAMES,
     frames: MONSTER_FRAMES.map((fr) => {
       const pb = new PB(H.w, H.h);
       const tmp = new PB(24, 30);
@@ -231,4 +257,4 @@ export function monsterSheet(sprite) {
   };
 }
 
-export const MONSTER_SPRITES = [...Object.keys(DESIGNS), ...Object.keys(HUMANOIDS)];
+export const MONSTER_SPRITES = [...Object.keys(DESIGNS), ...Object.keys(HUMANOIDS), ...Object.keys(DESIGNS_V2), ...Object.keys(HUMANOIDS_V2)];

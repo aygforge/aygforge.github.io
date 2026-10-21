@@ -6,6 +6,7 @@ import { bus } from '../core/events.js';
 import { MAPS } from '../data/maps/index.js';
 import { TILE } from '../data/constants.js';
 import { SKILLS } from '../data/skills.js';
+import { ENEMIES } from '../data/enemies.js';
 import { buildMap } from '../world/mapBuilder.js';
 import { Grid } from '../world/grid.js';
 import { FX } from '../world/fx.js';
@@ -14,10 +15,10 @@ import { InputController } from '../world/input.js';
 import { CombatRuntime } from '../world/combatRuntime.js';
 import { Spawner } from '../world/spawner.js';
 import { Player } from '../entities/Player.js';
-import { NpcObj, WaystoneObj, GatherObj, QuestObj, AltarObj, DungeonGateObj, PortalObj, FxObj, CheckpointObj } from '../entities/Interactables.js';
+import { NpcObj, WaystoneObj, GatherObj, QuestObj, AltarObj, DungeonGateObj, PortalObj, FxObj, CheckpointObj, ChestObj, SealObj } from '../entities/Interactables.js';
 import { onReach, onDungeonStage } from '../systems/quests.js';
 import { guideTarget, nextGateway } from '../world/questGuide.js';
-import { clearStage, respawnEntry, startOrResumeRun, exitRun } from '../systems/dungeon.js';
+import { clearStage, respawnEntry, startOrResumeRun, exitRun, getRun, breakSeal, sealsBroken, DUNGEON_INFO } from '../systems/dungeon.js';
 import { applyDeathDurability } from '../systems/economy.js';
 import { MINIMAP_COLORS, MASS_COLORS } from '../art/tiles.js';
 import { sound } from '../audio/sound.js';
@@ -81,6 +82,8 @@ export class WorldScene extends Phaser.Scene {
         case 'dungeon_gate': obj = new DungeonGateObj(this, o); break;
         case 'portal': obj = new PortalObj(this, o); break;
         case 'checkpoint': obj = new CheckpointObj(this, o); break;
+        case 'chest': obj = new ChestObj(this, o); break;
+        case 'seal': obj = new SealObj(this, o); break;
         case 'fx': new FxObj(this, o); break;
         default: break;
       }
@@ -117,6 +120,7 @@ export class WorldScene extends Phaser.Scene {
       bus.on('changed', (what) => this.onChanged(what)),
       bus.on('modal', (open) => this.setModal(open)),
       bus.on('settings', (s) => { this.applyZoom(); this.applyPerf(s); }),
+      bus.on('heroLook', () => this.player?.refreshLook()),
     ];
     this.events.once('shutdown', () => { this.offs.forEach((f) => f()); this.scale.off('resize', this.onResize, this); });
     this.applyPerf(app.settings);
@@ -357,7 +361,7 @@ export class WorldScene extends Phaser.Scene {
 
   // ------------------------------------------------------------- dungeon kapıları
   setupGates() {
-    const run = app.char.dungeon;
+    const run = getRun(app.char, this.mapId);
     this.gates = [];
     for (const g of this.mapDef.gates) {
       const open = run?.cleared.includes(g.opensAfter);
@@ -384,19 +388,42 @@ export class WorldScene extends Phaser.Scene {
     }
   }
 
+  // Mühür karşılaşması bitti mi? Biten karşılaşmanın mührü kırılır.
+  checkSeals() {
+    const ch = app.char, def = this.mapDef;
+    for (const seal of def.seals || []) {
+      const wave = this.spawner.sealWaves?.[seal.id];
+      if (!wave || !wave.length || this.spawner.sealWaveAlive(seal.id)) continue;
+      this.spawner.sealWaves[seal.id] = [];
+      if (breakSeal(ch, this.mapId, seal.id)) {
+        sound.play('altar');
+        const n = sealsBroken(ch, this.mapId);
+        bus.emit('toast', { text: `${seal.name} kırıldı (${n}/${def.seals.length})`, kind: n >= def.seals.length ? 'elite' : 'ok' });
+        this.objects.find((o) => o.o?.id === seal.id)?.refresh?.();
+        app.requestSave('seal', true);
+      }
+    }
+  }
+
   checkStageCleared(stage) {
+    if (stage === 3 && this.mapDef.seals) this.checkSeals();
     if (this.spawner.stageAlive(stage)) return;
     const ch = app.char;
-    if (!clearStage(ch, stage)) return;
+    if (stage === 3 && this.mapDef.seals && sealsBroken(ch, this.mapId) < this.mapDef.seals.length) {
+      if (!this._sealHint) { this._sealHint = true; bus.emit('toast', { text: 'Galeri sessiz... Boss kapısını açmak için üç mührü de kır.', kind: 'info' }); }
+      return;
+    }
+    if (!clearStage(ch, stage, this.mapId)) return;
     this.openGates(stage);
     const area = this.mapDef.areas.find((a) => a.stage === stage);
-    const ups = onDungeonStage(ch, stage);
+    const ups = onDungeonStage(ch, stage, this.mapId);
     ups.forEach((u) => bus.emit('questProgress', u));
     if (stage === 4) {
       sound.play('victory');
       this.cameras.main.flash(600, 255, 230, 160);
-      bus.emit('toast', { text: 'MADEN GOLEMİ YENİLDİ! Derin Ocak temizlendi.', kind: 'elite' });
-      bus.emit('bossDefeated', 'mine_golem');
+      const boss = this.mapDef.boss || 'mine_golem';
+      bus.emit('toast', { text: `${ENEMIES[boss].name.toLocaleUpperCase('tr-TR')} YENİLDİ! ${this.mapDef.name} temizlendi.`, kind: 'elite' });
+      bus.emit('bossDefeated', boss);
     } else {
       bus.emit('toast', { text: `Bölüm temizlendi: ${area?.name || stage}. Kapı açıldı!`, kind: 'ok' });
     }
@@ -409,9 +436,9 @@ export class WorldScene extends Phaser.Scene {
     if (this.changing) return;
     const ch = app.char;
     this.changing = true;
-    if (opts.exitDungeon) exitRun(ch);
-    if (opts.enterDungeon) startOrResumeRun(ch);
-    if (mapId === 'dungeon' && !entry) entry = respawnEntry(ch);
+    if (opts.exitDungeon) exitRun(ch, this.mapId);
+    if (opts.enterDungeon) startOrResumeRun(ch, mapId);
+    if (DUNGEON_INFO[mapId] && !entry) entry = respawnEntry(ch, mapId);
     const e = MAPS[mapId].entries[entry] || MAPS[mapId].entries.respawn;
     this.syncToChar();
     ch.world.map = mapId; ch.world.x = e.x; ch.world.y = e.y;
@@ -453,7 +480,8 @@ export class WorldScene extends Phaser.Scene {
     const ch = app.char;
     const st = app.stats();
     let entry;
-    if (this.mapDef.dungeon) { entry = respawnEntry(ch); this.spawner.resetGolem(); }
+    this.combat.clearHazards();
+    if (this.mapDef.dungeon) { entry = respawnEntry(ch, this.mapId); this.spawner.resetGolem(); }
     else entry = 'respawn';
     const e = this.mapDef.entries[entry] || this.mapDef.entries.respawn;
     this.player.x = e.x * TILE + TILE / 2; this.player.y = e.y * TILE + TILE / 2;
@@ -479,7 +507,11 @@ export class WorldScene extends Phaser.Scene {
     this.fx.levelUp(p.x, p.y);
     sound.play('levelup');
     bus.emit('toast', { text: `Seviye ${ev.level}! +3 stat, +1 beceri puanı`, kind: 'level' });
-    for (const id of ev.unlocked) bus.emit('toast', { text: `Yeni beceri: ${SKILLS[id].name}`, kind: 'level' });
+    for (const id of ev.unlocked) {
+      bus.emit('toast', { text: `Yeni beceri: ${SKILLS[id].name}`, kind: 'level' });
+      if (SKILLS[id].kind === 'active' && !app.char.skillBar?.includes(id)) bus.emit('toast', { text: 'Beceriler ekranından beceri çubuğuna yerleştirebilirsin (4 düğme).', kind: 'info' });
+    }
+    if (ev.level === 30) bus.emit('toast', { text: 'Seviye 30! Ustalık Kitapları artık Rank 5 becerilere uygulanabilir.', kind: 'elite' });
     app.changed('level');
     this.refreshMarks();
   }
@@ -542,6 +574,7 @@ export class WorldScene extends Phaser.Scene {
     this.enemies = this.enemies.filter((e) => !e.dead || e.container.active);
     for (const o of this.objects) this.guard(o.kind || 'nesne', () => o.update(dt));
     this.guard('mermi', () => this.combat.updateProjectiles(dt));
+    this.guard('tehlike', () => this.combat.updateHazards(dt));
     this.guard('spawn', () => this.spawner.update(dt));
 
     this.reachT -= dt;

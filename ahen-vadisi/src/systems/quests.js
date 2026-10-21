@@ -4,6 +4,7 @@ import { ENEMIES } from '../data/enemies.js';
 import { STACKABLES } from '../data/materials.js';
 import { countStack, removeStack, stackCapacity, addStack } from './inventory.js';
 import { gainExp } from './character.js';
+import { DUNGEON_INFO, unlockDungeon } from './dungeon.js';
 
 export function questState(char, qid) {
   return char.quests[qid] || null;
@@ -124,7 +125,8 @@ export function onInteract(char, group, objId) {
       st.used.push(objId);
       st.p[i]++;
       updates.push({ q, i, label: o.label, p: st.p[i], n: o.count });
-      if (q.unlocksDungeon && group === 'dungeon_gate') char.world.dungeonUnlocked = true;
+      const dId = q.unlocksDungeon === true ? 'dungeon' : q.unlocksDungeon;
+      if (dId && group === DUNGEON_INFO[dId].gateGroup) unlockDungeon(char, dId);
     });
   }
   return updates;
@@ -141,12 +143,12 @@ export function canInteractQuestObject(char, group, objId) {
   return false;
 }
 
-export function onDungeonStage(char, stage) {
+export function onDungeonStage(char, stage, mapId = 'dungeon') {
   const updates = [];
   for (const q of activeQuests(char)) {
     const st = char.quests[q.id];
     q.objectives.forEach((o, i) => {
-      if (o.type === 'dungeon' && stage >= o.stage && !st.p[i]) {
+      if (o.type === 'dungeon' && (o.dungeon || 'dungeon') === mapId && stage >= o.stage && !st.p[i]) {
         st.p[i] = 1;
         updates.push({ q, i, label: o.label, p: 1, n: 1 });
       }
@@ -176,7 +178,7 @@ export function turnInQuest(char, qid, npcId) {
   if (q.skillPoint) char.bonusSkillPoints = (char.bonusSkillPoints || 0) + q.skillPoint;
   if (q.mastery) char.mastery = true;
   if (q.title && !char.titles.includes(q.title)) char.titles.push(q.title);
-  if (q.unlocksDungeon) char.world.dungeonUnlocked = true;
+  if (q.unlocksDungeon) unlockDungeon(char, q.unlocksDungeon === true ? 'dungeon' : q.unlocksDungeon);
   const exp = gainExp(char, q.exp);
   return { ok: true, q, exp: q.exp, gold: q.gold, items: q.rewardItems, levelEvents: exp.events };
 }

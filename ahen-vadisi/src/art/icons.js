@@ -111,11 +111,15 @@ function stackIcon(st) {
     case 'claw': for (let i = 0; i < 3; i++) { pb.line(3 + i * 4, 13, 6 + i * 4, 3, c); pb.line(4 + i * 4, 13, 7 + i * 4, 4, shade(c, -0.3)); } break;
     case 'vial': case 'potion': {
       const size = L.size ?? 1;
-      const r = 3 + size;
-      pb.rect(6, 1, 4, 3, '#d8d0c0'); pb.rect(6, 1, 4, 1, '#8a6238');
+      const r = Math.min(5.5, 3 + size);
+      pb.rect(6, 1, 4, 3, '#d8d0c0'); pb.rect(6, 1, 4, 1, size >= 3 ? '#e0b040' : '#8a6238');
       pb.disc(8, 10, r, '#c8e0e8'); pb.disc(8, 10.5, r - 1, c); pb.set(6, 8, '#ffffff'); pb.set(6, 9, shade(c, 0.5));
       break;
     }
+    case 'book':
+      pb.rect(3, 2, 10, 12, shade(c, -0.25)); pb.rect(4, 2, 9, 11, c); pb.rect(4, 12, 9, 2, '#f0e8d0');
+      pb.vline(4, 2, 13, shade(c, -0.45)); pb.disc(9, 7, 2.2, '#ffd060'); pb.set(9, 7, '#ffffff'); pb.hline(6, 12, 4, shade(c, 0.35));
+      break;
     case 'bottle': pb.rect(6, 1, 4, 3, '#d8d0c0'); pb.disc(8, 10, 4.5, '#c8e0e8'); pb.disc(8, 10, 3.5, '#e8f4f8'); pb.set(6, 8, '#ffffff'); break;
     case 'log': pb.rect(1, 6, 13, 6, c); pb.ellipse(14, 9, 2, 3, '#c09a68'); pb.hline(2, 12, 8, shade(c, 0.2)); break;
     case 'cloth': pb.poly([[2, 4], [13, 2], [14, 12], [3, 14]], c); pb.line(3, 8, 13, 7, shade(c, -0.25)); pb.line(5, 4, 6, 13, shade(c, 0.2)); break;
@@ -141,6 +145,16 @@ function stackIcon(st) {
 }
 
 const SKILL_ART = {
+  // V2
+  blade_rain: (pb) => {
+    pb.rect(0, 0, 16, 5, '#3a3050');
+    for (const [x, y] of [[3, 3], [8, 1], [12, 4], [6, 8], [11, 9]]) { pb.vline(x, y, y + 5, '#e0e8f0'); pb.set(x, y + 6, '#c0a040'); pb.set(x, y - 1, '#ffffff'); }
+    pb.hline(1, 14, 15, '#8a7a6a');
+  },
+  chain_lightning: (pb) => {
+    pb.line(1, 3, 6, 7, '#e0e8ff'); pb.line(6, 7, 4, 10, '#e0e8ff'); pb.line(4, 10, 10, 9, '#9ab0ff'); pb.line(10, 9, 14, 14, '#e0e8ff');
+    for (const [x, y] of [[6, 7], [10, 9], [14, 14]]) { pb.disc(x, y, 1.5, '#6a7aff'); pb.set(x, y, '#ffffff'); }
+  },
   heavy_strike: (pb) => { pb.line(3, 13, 12, 4, '#d0d8e0'); pb.line(4, 13, 13, 4, '#ffffff'); pb.line(2, 11, 5, 14, '#8a6238'); pb.disc(12, 4, 3, '#ffd060', 200); },
   whirlwind: (pb) => { for (let t = 0; t < 12; t += 0.1) pb.set(8 + Math.cos(t) * t * 0.55, 8 + Math.sin(t) * t * 0.55, t > 8 ? '#ffffff' : '#a0c0e0'); },
   iron_skin: (pb) => { pb.poly([[2, 2], [14, 2], [14, 8], [8, 15], [2, 8]], '#8a929c'); pb.poly([[4, 4], [8, 4], [8, 12], [4, 8]], '#b0b8c4'); },

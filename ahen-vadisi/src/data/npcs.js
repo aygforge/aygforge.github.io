@@ -35,5 +35,26 @@ export const NPCS = {
     services: ['storage', 'storage_expand'],
     greet: 'Bu depo bütün karakterlerine açıktır. Eşyalarını güvenle bırakabilirsin.',
   },
+  // ---------------- V2: Kor Kampı (Kül Yaylaları) ve Ayaz Konağı (Ayaz Geçidi)
+  demre: {
+    id: 'demre', name: 'Kâşif Demre', title: 'Kor Kampı', sprite: 'npc_demre', region: 'ash',
+    services: ['quests'],
+    greet: 'Göçükten geçen ilk kişi sen misin? Bu yaylalar küle bulanmış ama içinde hâlâ kor var.',
+  },
+  yaren: {
+    id: 'yaren', name: 'Seyyar Demirci Yaren', title: 'Kor Kampı', sprite: 'npc_yaren', region: 'ash',
+    services: ['quests', 'upgrade', 'craft_blacksmith', 'repair', 'potions', 'sell'],
+    greet: 'Kül Çeliği ateşe dayanır. Örsümü buraya taşıdım; köye dönmene gerek yok.',
+  },
+  ilgar: {
+    id: 'ilgar', name: 'Komutan İlgar', title: 'Ayaz Konağı', sprite: 'npc_ilgar', region: 'frost',
+    services: ['quests'],
+    greet: 'Mabedin mühürleri çatlıyor. Burada nöbet tutan son birlik biziz.',
+  },
+  sena: {
+    id: 'sena', name: 'Avcı Sena', title: 'Ayaz Konağı', sprite: 'npc_sena', region: 'frost',
+    services: ['quests', 'potions', 'sell', 'repair', 'contracts'],
+    greet: 'Karda iz sürmek sabır ister. İksir ve sözleşme bende.',
+  },
 };
 export const NPC_IDS = Object.keys(NPCS);

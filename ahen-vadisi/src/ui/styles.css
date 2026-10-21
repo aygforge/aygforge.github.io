@@ -325,3 +325,13 @@ select.sel { font: inherit; min-height: 40px; background: #1a1418; color: var(--
   .hud-tc { width: 30vw; }
 }
 @media (min-width: 761px) { .menubtns .more { display: none; } }
+
+/* V2: güncelleme bildirimi (servis işçisi yeni sürümü indirdiğinde) */
+#update-banner { position: fixed; z-index: 9999; top: max(8px, env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); pointer-events: auto; font-size: .9rem; min-height: 40px; }
+/* V2: beceri çubuğu düzenleme */
+.barslots { gap: 6px; flex-wrap: wrap; }
+.barslot { display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 64px; min-height: 58px; padding: 4px; border-radius: 8px; border: 2px solid #5a4a3a; background: rgba(0,0,0,.35); color: #e8dcc0; }
+.barslot img { width: 32px; height: 32px; image-rendering: pixelated; }
+.barslot.sel { border-color: #ffd060; box-shadow: 0 0 8px #ffd06088; }
+.row.wrap { flex-wrap: wrap; gap: 6px; align-items: center; }
+.row.wrap .btn img { width: 20px; height: 20px; image-rendering: pixelated; vertical-align: middle; margin-right: 4px; }

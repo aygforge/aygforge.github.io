@@ -32,6 +32,28 @@ export const MATERIAL_LIST = [
   mat('alpha_claw', 'Alfa Pençesi', 60, { type: 'claw', c: '#efe6cf' }, 'Alfa Kurt ganimeti (garantili).'),
   mat('golem_shard', 'Golem Parçası', 90, { type: 'shard', c: '#8a8a96', s: '#5ae0ff' }, 'Maden Golemi ganimeti (garantili).'),
   mat('ancient_core', 'Kadim Çekirdek', 150, { type: 'core', c: '#ffcf5a' }, 'Maden Golemi %25. +4→+5 yükseltmesi için.'),
+  // V2 — Kül Yaylaları
+  mat('ash_dust', 'Kül Tozu', 6, { type: 'dust', c: '#8a8480' }, 'Kül Cininden. Büyük iksirler ve Kül Çeliği için.'),
+  mat('crimson_hide', 'Kızıl Deri', 7, { type: 'cloth', c: '#9a3a2a' }, 'Kül Avcısından. Kül Runası Asası ve Kızıl Zırh üretiminde.'),
+  mat('scorpion_stinger', 'Akrep İğnesi', 8, { type: 'tooth', c: '#d04a2a' }, 'Kızıl Akrepten. Akrep Biçici ve Panzehirli iksir için.'),
+  mat('burnt_chain', 'Yanık Zincir', 9, { type: 'scrap', c: '#5a4a44' }, 'Yanık Savaşçıdan. Kül Çeliği ve zırh üretiminde.'),
+  mat('ash_ore', 'Kül Cevheri', 5, { type: 'ore', c: '#4a4040', s: '#ff7a2a' }, 'Kül Yaylalarında toplanır. 2 cevher + 1 Demir = Kül Çeliği.'),
+  // V2 — Ayaz Geçidi
+  mat('frost_pelt', 'Ayaz Postu', 9, { type: 'fur', c: '#d8e8f0' }, 'Ayaz Kurdundan. Buz Kalesi Kalkanı ve sözleşmeler için.'),
+  mat('pure_ice', 'Saf Buz Tanesi', 10, { type: 'crystal', c: '#9fe8ff' }, 'Buz Ruhçuktan. Ayaz Özü ve MP iksiri için.'),
+  mat('ice_armor_shard', 'Buz Zırh Parçası', 11, { type: 'plate', c: '#a8c8e0' }, 'Buz Zırhlı Nöbetçiden. Buz Kalesi Kalkanı ve Ayaz Küresi.'),
+  mat('snow_seal', 'Kar Mührü', 12, { type: 'seal', c: '#c8e8ff' }, 'Kar Şamanından. Ayaz Küresi ve Ustalık Kitabı üretiminde.'),
+  mat('frost_crystal', 'Ayaz Kristali', 6, { type: 'crystal', c: '#7ad8ff' }, 'Ayaz Geçidinde toplanır. 2 kristal + 1 Sunak Tozu = Ayaz Özü.'),
+  // V2 — elit / boss
+  mat('butcher_mark', 'Kül Kasabı Nişanı', 70, { type: 'badge', c: '#c85a2a' }, 'Kül Kasabından (garantili).'),
+  mat('warden_seal', 'Buz Gardiyanı Mührü', 95, { type: 'seal', c: '#7ad8ff' }, 'Buz Gardiyanından (garantili).'),
+  mat('giant_ember', 'Dev Kor Parçası', 120, { type: 'shard', c: '#4a3a34', s: '#ff8a3a' }, 'Kül Devi ganimeti (garantili). Kor Çekirdeği üretiminde.'),
+  mat('frozen_core', 'Donmuş Çekirdek', 200, { type: 'core', c: '#9fe8ff' }, 'Donmuş Muhafız ganimeti (garantili). Kor Çekirdeği üretiminde.'),
+  // V2 — işlenmiş
+  mat('ash_steel', 'Kül Çeliği', 12, { type: 'ingot', c: '#6a5a54' }, 'Lv.21+ eşyaların +1/+2 yükseltmesi için.'),
+  mat('frost_essence', 'Ayaz Özü', 35, { type: 'essence', c: '#7ad8ff' }, 'Lv.21+ eşyaların +3/+4 yükseltmesi için.'),
+  mat('ember_core', 'Kor Çekirdeği', 220, { type: 'core', c: '#ff8a3a' }, 'Lv.21+ Rare/Epic/Legendary eşyaların +4→+5 yükseltmesi için.'),
+  mat('mastery_book', 'Ustalık Kitabı', 150, { type: 'book', c: '#c070ff' }, 'Lv.30 ve Rank 5 bir becerinin küçük özel geliştirmesini açar (Beceriler ekranı). Her beceriye bir kez.'),
   // Sunak / işlenmiş
   mat('altar_dust', 'Sunak Tozu', 8, { type: 'dust', c: '#c8b0ff' }, 'Sunak tamamlamaktan. 4 toz + 1 Zehirli Kristal = Sunak Kristali.'),
   mat('altar_crystal', 'Sunak Kristali', 40, { type: 'crystal', c: '#c070ff' }, '+3→+4 yükseltmesi için.'),
@@ -52,6 +74,9 @@ export const POTION_LIST = [
   { id: 'mp_s', name: 'Küçük MP İksiri', cat: 'potion', kind: 'mp', lv: 1, amount: 45, buy: 30, sell: 6, look: { type: 'potion', c: '#4878e0', size: 0 } },
   { id: 'mp_m', name: 'Orta MP İksiri', cat: 'potion', kind: 'mp', lv: 8, amount: 110, buy: 75, sell: 15, look: { type: 'potion', c: '#4878e0', size: 1 } },
   { id: 'mp_l', name: 'Büyük MP İksiri', cat: 'potion', kind: 'mp', lv: 15, amount: 190, buy: 145, sell: 29, look: { type: 'potion', c: '#4878e0', size: 2 } },
+  // V2: Lv.22+ yoğun iksirler (Kül/Ayaz bölgeleri)
+  { id: 'hp_xl', name: 'Yoğun HP İksiri', cat: 'potion', kind: 'hp', lv: 22, amount: 420, buy: 230, sell: 46, look: { type: 'potion', c: '#ff5a3a', size: 3 } },
+  { id: 'mp_xl', name: 'Yoğun MP İksiri', cat: 'potion', kind: 'mp', lv: 22, amount: 320, buy: 235, sell: 47, look: { type: 'potion', c: '#5ab0ff', size: 3 } },
 ];
 for (const p of POTION_LIST) p.desc = `+${p.amount} ${p.kind.toUpperCase()} anında. Bekleme ${10} sn. Seviye ${p.lv}+.`;
 

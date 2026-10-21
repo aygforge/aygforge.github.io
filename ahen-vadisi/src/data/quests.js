@@ -1,4 +1,4 @@
-// 18 ana hikâye + 8 yan görev — belge §6.1 / §6.2. Ayrıca Gezgin Bilge sınıf görevleri (Lv.10 / Lv.20)
+// 18 ana hikâye + 8 yan görev — belge §6.1 / §6.2. V2: +10 ana (m27–m36) + 4 yan (s09–s12) = 40 tek seferlik görev. Ayrıca Gezgin Bilge sınıf görevleri (Lv.10 / Lv.20)
 // Görev hedef tipleri:
 //  kill     { enemy | enemies[], count, minLevel? }
 //  qitem    { item, name, from[], chance, count }   (görev nesnesi; nadir ekipman RNG'sinden bağımsız)
@@ -129,6 +129,91 @@ export const QUESTS = [
       { type: 'kill', enemy: 'swamp_executioner', count: 1, label: 'Bataklık Celladı\'nı yen' },
     ],
     exp: 1800, gold: 500, hint: { map: 'swamp', x: 86, y: 62, r: 10 } }),
+
+  // ============================================================ V2.0 — KÜL VE AYAZ: ANA HİKÂYE (10)
+  // V2 hikâyesi V1 finalinden (m18) sonra Karaağaç'ta başlar; Kül Yaylaları geçidi m27 alınmadan açılmaz.
+  Q({ id: 'm27', main: true, order: 27, name: 'Kırılan Ufuk', giver: 'muhtar', turnIn: 'demre', minLevel: 20, rec: '20', prereq: ['m18'],
+    text: 'Golem düştüğünden beri madenin doğusundaki kaya duvarı çatırdıyor; göçükten sıcak kül rüzgârı esiyor. Geçidi incele ve öteye geç. Orada bir kâşif kampı kurulmuş olmalı.',
+    objectives: [
+      { type: 'reach', loc: 'loc_broken_horizon', label: 'Madendeki doğu göçüğünü incele', hint: { map: 'mine', x: 98, y: 30, r: 3 } },
+      { type: 'reach', loc: 'loc_ash_entrance', after: [0], label: 'Göçüğün ötesine geç', hint: { map: 'ash', x: 6, y: 40, r: 5 } },
+    ],
+    exp: 2500, gold: 600, rewardItems: [{ id: 'hp_xl', qty: 3 }, { id: 'mp_xl', qty: 3 }], hint: { map: 'mine', x: 98, y: 30, r: 3 } }),
+  Q({ id: 'm28', main: true, order: 28, name: 'Külün İlk İzleri', giver: 'demre', turnIn: 'demre', minLevel: 20, rec: '21', prereq: ['m27'],
+    text: 'Küllü Düzlük\'te kor ruhları dolaşıyor: Kül Cinleri. Kampa yaklaşmadan önce sayılarını azalt.',
+    objectives: [{ type: 'kill', enemy: 'ash_imp', count: 12, label: 'Kül Cini yen' }],
+    exp: 3500, gold: 700, hint: { map: 'ash', x: 30, y: 20, r: 10 } }),
+  Q({ id: 'm29', main: true, order: 29, name: 'Kayıp Kervan', giver: 'demre', turnIn: 'demre', minLevel: 21, rec: '22–23', prereq: ['m28'],
+    text: 'Karaağaç\'a erzak getiren kervan Yanmış Kervan Yolu\'nda kayboldu. Kül Avcılarını dağıt ve kervanın enkazını bul.',
+    objectives: [
+      { type: 'kill', enemy: 'ash_hunter', count: 10, label: 'Kül Avcısı yen' },
+      { type: 'interact', group: 'lost_caravan', count: 1, label: 'Kervanın enkazını bul' },
+    ],
+    exp: 4500, gold: 800, rewardItems: [{ id: 'ash_steel', qty: 2 }], hint: { map: 'ash', x: 60, y: 16, r: 9 } }),
+  Q({ id: 'm30', main: true, order: 30, name: 'Zehirli Pençeler', giver: 'demre', turnIn: 'demre', minLevel: 22, rec: '23–24', prereq: ['m29'],
+    text: 'Kervanın izleri Akrep Yarıkları\'na iniyor. Kızıl Akrepler yarıklardan taşıyor; yolu temizle.',
+    objectives: [{ type: 'kill', enemy: 'crimson_scorpion', count: 12, label: 'Kızıl Akrep yen' }],
+    exp: 5500, gold: 900, rewardItems: [{ id: 'hp_xl', qty: 3 }], hint: { map: 'ash', x: 34, y: 62, r: 10 } }),
+  Q({ id: 'm31', main: true, order: 31, name: 'Korun Kalbi', giver: 'demre', turnIn: 'demre', minLevel: 23, rec: '24–25', prereq: ['m30'],
+    text: 'Kızıl Harabeler\'de yanık savaşçılar eski bir kalıntıyı koruyor. Onları yen ve kalıntıyı incele.',
+    objectives: [
+      { type: 'kill', enemy: 'burnt_warrior', count: 10, label: 'Yanık Savaşçı yen' },
+      { type: 'interact', group: 'ember_relic', count: 1, label: 'Kor Kalıntısı\'nı incele' },
+    ],
+    exp: 6500, gold: 1000, rewardItems: [{ id: 'altar_dust', qty: 3 }], hint: { map: 'ash', x: 80, y: 58, r: 10 } }),
+  Q({ id: 'm32', main: true, order: 32, name: 'Kül Devi\'nin Çöküşü', giver: 'demre', turnIn: 'demre', minLevel: 24, rec: '25–26', prereq: ['m31'],
+    text: 'Kalıntı, Kor Kalderası\'nda uyanan Kül Devi\'ni besliyor. Telegraflara dikkat et: kor yumrukları ve alev yarıkları kaçınılabilir. Devi yen.',
+    objectives: [{ type: 'kill', enemy: 'ash_giant', count: 1, label: 'Kül Devi\'ni yen' }],
+    exp: 7500, gold: 1500, rewardItems: [{ id: 'frost_essence', qty: 1 }], hint: { map: 'ash', x: 94, y: 22, r: 9 } }),
+  Q({ id: 'm33', main: true, order: 33, name: 'Ayaz\'a Giden Yol', giver: 'demre', turnIn: 'ilgar', minLevel: 25, rec: '25–26', prereq: ['m32'],
+    text: 'Devin düşüşüyle doğu geçidindeki kar fırtınası dindi. Ayaz Geçidi\'ne ulaş ve Ayaz Konağı\'ndaki Yol Taşı\'nı etkinleştir; Komutan İlgar seni bekliyor.',
+    objectives: [
+      { type: 'reach', loc: 'loc_frost_entrance', label: 'Ayaz Geçidi\'ne ulaş', hint: { map: 'frost', x: 6, y: 70, r: 5 } },
+      { type: 'interact', group: 'ws_frost', count: 1, after: [0], label: 'Ayaz Konağı Yol Taşı\'nı etkinleştir', hint: { map: 'frost', x: 20, y: 68, r: 3 } },
+    ],
+    exp: 8500, gold: 1100, hint: { map: 'ash', x: 106, y: 44, r: 4 } }),
+  Q({ id: 'm34', main: true, order: 34, name: 'Kırık Buz Mührü', giver: 'ilgar', turnIn: 'ilgar', minLevel: 26, rec: '27–28', prereq: ['m33'],
+    text: 'Mabedin buz mühürleri çatladı; Kristal Vadisi\'ndeki ruhçuklar ve Donuk Karakol\'un nöbetçileri kontrolden çıktı. İkisini de yen.',
+    objectives: [
+      { type: 'kill', enemy: 'ice_wisp', count: 10, label: 'Buz Ruhçuk yen', hint: { map: 'frost', x: 28, y: 24, r: 10 } },
+      { type: 'kill', enemy: 'frost_sentinel', count: 8, label: 'Buz Zırhlı Nöbetçi yen', hint: { map: 'frost', x: 78, y: 64, r: 10 } },
+    ],
+    exp: 10000, gold: 1300, rewardItems: [{ id: 'hp_xl', qty: 4 }], hint: { map: 'frost', x: 28, y: 24, r: 10 } }),
+  Q({ id: 'm35', main: true, order: 35, name: 'Buz Mabedinin Sırrı', giver: 'ilgar', turnIn: 'ilgar', minLevel: 27, rec: '28–29', prereq: ['m34'],
+    text: 'Kar Şamanları mabedin giriş mührünü besliyor. Şamanları dağıt, ardından Buz Mabedi kapısındaki mührü kır.',
+    objectives: [
+      { type: 'kill', enemy: 'snow_shaman', count: 6, label: 'Kar Şamanı yen', hint: { map: 'frost', x: 82, y: 26, r: 10 } },
+      { type: 'interact', group: 'frost_gate', count: 1, after: [0], label: 'Buz Mabedi giriş mührünü kır' },
+    ],
+    exp: 11000, gold: 1500, unlocksDungeon: 'frost_temple', hint: { map: 'frost', x: 104, y: 6, r: 5 } }),
+  Q({ id: 'm36', main: true, order: 36, name: 'Donmuş Muhafız', giver: 'ilgar', turnIn: 'ilgar', minLevel: 28, rec: '29–30', prereq: ['m35'],
+    text: 'Mabedin kalbinde Donmuş Muhafız uyanıyor. Mühür Galerisi\'nin üç mührünü kır ve Muhafız\'ı yen.',
+    objectives: [{ type: 'kill', enemy: 'frozen_guardian', count: 1, label: 'Donmuş Muhafız\'ı yen' }],
+    exp: 11000, gold: 2500, title: 'Ayazın Kıranı', hint: { map: 'frost_temple', x: 84, y: 16, r: 10 } }),
+
+  // ============================================================ V2.0 — YAN GÖREVLER (4)
+  Q({ id: 's09', main: false, name: 'Kül Madencisi', giver: 'yaren', turnIn: 'yaren', minLevel: 21, rec: '21–22', prereq: ['m27'],
+    text: 'Kül Cevheri demirle karışınca Kül Çeliği olur. Yaylalardaki damarlardan 10 Kül Cevheri getir.',
+    objectives: [{ type: 'deliver', item: 'ash_ore', count: 10, label: 'Kül Cevheri getir' }],
+    exp: 4000, gold: 700, rewardItems: [{ id: 'ash_steel', qty: 3 }], hint: { map: 'ash', x: 40, y: 34, r: 20 } }),
+  Q({ id: 's10', main: false, name: 'Kayıp Gözcü', giver: 'demre', turnIn: 'demre', minLevel: 23, rec: '23–24', prereq: ['m28'],
+    text: 'Gözcümüz Tamer güneye keşfe çıktı ve dönmedi. İzlerini takip et ve onu bul.',
+    objectives: [
+      { type: 'interact', group: 'scout_tracks', count: 2, label: 'Gözcünün izlerini takip et' },
+      { type: 'interact', group: 'lost_scout', count: 1, after: [0], label: 'Yaralı gözcüyü bul' },
+    ],
+    exp: 5000, gold: 900, rewardItems: [{ id: 'hp_xl', qty: 2 }], hint: { map: 'ash', x: 50, y: 58, r: 14 } }),
+  Q({ id: 's11', main: false, name: 'Ayaz Avcısı', giver: 'sena', turnIn: 'sena', minLevel: 26, rec: '26–28', prereq: ['m33'],
+    text: 'Sürüler ve şamanlar konağın erzak yolunu kesiyor. Ayaz Kurtlarını ve Kar Şamanlarını avla.',
+    objectives: [
+      { type: 'kill', enemy: 'frost_wolf', count: 12, label: 'Ayaz Kurdu avla', hint: { map: 'frost', x: 38, y: 60, r: 10 } },
+      { type: 'kill', enemy: 'snow_shaman', count: 6, label: 'Kar Şamanı yen', hint: { map: 'frost', x: 82, y: 26, r: 10 } },
+    ],
+    exp: 6000, gold: 1100, rewardItems: [{ id: 'frost_essence', qty: 1 }], hint: { map: 'frost', x: 38, y: 60, r: 10 } }),
+  Q({ id: 's12', main: false, name: 'Donmuş Hatıralar', giver: 'sena', turnIn: 'sena', minLevel: 27, rec: '27–29', prereq: ['m33'],
+    text: 'Geçitte donmuş eski yolcuların hatıraları kar altında kaldı. Dördünü bul; ailelerine ulaştıralım.',
+    objectives: [{ type: 'interact', group: 'winter_relic', count: 4, label: 'Donmuş hatırayı bul' }],
+    exp: 7000, gold: 1300, rewardItems: [{ id: 'altar_crystal', qty: 1 }], hint: { map: 'frost', x: 60, y: 50, r: 30 } }),
 ];
 
 // ---------------------------------------------------------------- Sınıf görevleri (Gezgin Bilge)

@@ -1,7 +1,7 @@
 // Procedural sanatı Phaser doku yöneticisine kaydeder; animasyonları oluşturur.
 import { buildTileset } from '../art/tiles.js';
 import { humanSheet, playerLook, lookKey, npcSheet, NPC_LOOKS, weaponSprite, offhandSprite, HUMAN_FRAMES, HUMAN_W, HUMAN_H } from '../art/characters.js';
-import { monsterSheet, MONSTER_SPRITES, MONSTER_FRAMES } from '../art/monsters.js';
+import { monsterSheet, MONSTER_SPRITES } from '../art/monsters.js';
 import { OBJECT_SPRITES, EFFECT_SPRITES, makeSoftCircle, makeVignette, makeTelegraphTex } from '../art/objects.js';
 import { ITEM_LIST } from '../data/items.js';
 import { ART_SCALE } from '../data/constants.js';
@@ -46,10 +46,14 @@ export function registerAll(scene, onProgress = () => {}) {
   for (const s of MONSTER_SPRITES) {
     const key = 'mon_' + s;
     const sheet = monsterSheet(s);
-    addSheet(scene, key, sheet.frames, ART_SCALE, MONSTER_FRAMES);
+    addSheet(scene, key, sheet.frames, ART_SCALE, sheet.names);
     anim(scene, key + '_idle', key, ['idle0', 'idle1'], 3);
     anim(scene, key + '_walk', key, ['walk0', 'walk1', 'walk2', 'walk3'], 8);
     anim(scene, key + '_atk', key, ['atk0', 'atk1'], 7, 0);
+    if (sheet.names.includes('die0')) {
+      anim(scene, key + '_hurt', key, ['hurt0'], 6, 0);
+      anim(scene, key + '_die', key, ['hurt0', 'die0', 'die1', 'die2'], 8, 0);
+    }
   }
   onProgress(0.65);
   for (const k of Object.keys(NPC_LOOKS)) {
@@ -76,7 +80,7 @@ export function registerAll(scene, onProgress = () => {}) {
   for (const [k, fn] of Object.entries(EFFECT_SPRITES)) {
     const pbs = fn();
     addSheet(scene, 'fx_' + k, pbs);
-    if (pbs.length > 1) anim(scene, 'fx_' + k + '_a', 'fx_' + k, pbs.map((_, i) => i), { slash: 24, spark: 20, explosion: 14, ice: 14, levelup: 10, crimson: 14, spirit: 14 }[k] || 8, ['slash', 'spark', 'explosion', 'ice', 'crimson', 'spirit', 'heal'].includes(k) ? 0 : -1);
+    if (pbs.length > 1) anim(scene, 'fx_' + k + '_a', 'fx_' + k, pbs.map((_, i) => i), { slash: 24, spark: 20, explosion: 14, ice: 14, levelup: 10, crimson: 14, spirit: 14, ash_puff: 12, shatter: 14, chain: 20, fire_ground: 9 }[k] || 8, ['slash', 'spark', 'explosion', 'ice', 'crimson', 'spirit', 'heal', 'ash_puff', 'shatter'].includes(k) ? 0 : -1);
   }
   onProgress(0.9);
   const canv = (key, c) => { if (!scene.textures.exists(key)) scene.textures.addCanvas(key, c); };

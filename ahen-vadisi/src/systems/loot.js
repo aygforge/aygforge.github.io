@@ -1,11 +1,11 @@
 // LootService — belge §8. Sıra: nadirlik çekilişi (tek) → uygun havuz → rastgele bonus.
-// Legendary yalnızca 'golem' tablosundan gelir; boş havuz uygunsuz eşya üretmez.
+// Legendary yalnızca 'golem' (V1) ve 'frost_keeper' (V2) tablolarından gelir; boş havuz uygunsuz eşya üretmez.
 import { ITEMS, ITEM_LIST, canClassUse } from '../data/items.js';
 import { ENEMIES } from '../data/enemies.js';
 import { MATERIALS, POTION_LIST } from '../data/materials.js';
 import {
-  LOOT_TABLES, LEGENDARY_SOURCE_TABLE, LEGENDARY_CLASS_WEIGHT, VARIANT_BAND_BELOW, VARIANT_BAND_ABOVE,
-  GOLEM_RARE_MIN_LEVEL, CLASS_POOL_WEIGHT, CANONICAL_WEIGHT, BONUS_TYPES,
+  LOOT_TABLES, LEGENDARY_SOURCE_TABLES, LEGENDARY_CLASS_WEIGHT, VARIANT_BAND_BELOW, VARIANT_BAND_ABOVE,
+  BOSS_RARE_POOL, BOSS_EXTRA_EPIC_SOURCES, CLASS_POOL_WEIGHT, CANONICAL_WEIGHT, BONUS_TYPES,
 } from '../data/loot.js';
 import { RARITY_INFO, SPECIES } from '../data/constants.js';
 import { makeUid } from '../core/rng.js';
@@ -28,9 +28,10 @@ export function buildPool(enemyId, rarity) {
   const e = ENEMIES[src];
   const table = e.lootTable;
   const out = [];
+  const bossPool = BOSS_RARE_POOL[table];
   if (rarity === 'L') {
-    // Sıfır tolerans: Legendary yalnız Golem tablosu ve kanonik kaynağı Golem olan L eşyalar
-    if (table === LEGENDARY_SOURCE_TABLE) {
+    // Sıfır tolerans: Legendary yalnız izinli boss tabloları ve kanonik kaynağı o boss olan L eşyalar
+    if (LEGENDARY_SOURCE_TABLES.includes(table)) {
       for (const t of ITEM_LIST) if (t.rarity === 'L' && t.sources.includes(src)) out.push({ tid: t.id, canonical: true });
     }
   } else {
@@ -41,11 +42,16 @@ export function buildPool(enemyId, rarity) {
       // Varyant: kanonik N/U temel şablonlar, kaynak seviye bandında, N/U/R olarak
       if (t.allowedRarities.length === 1 || !t.allowedRarities.includes(rarity)) continue;
       const lvOk = t.lv >= e.level - VARIANT_BAND_BELOW && t.lv <= e.level + VARIANT_BAND_ABOVE;
-      if (lvOk && table !== 'golem') out.push({ tid: t.id, canonical: false });
+      if (lvOk && !bossPool) out.push({ tid: t.id, canonical: false });
     }
-    // Golem Rare havuzu: kanonik üst seviye Rare şablonlar
-    if (table === 'golem' && rarity === 'R') {
-      for (const t of ITEM_LIST) if (t.rarity === 'R' && t.lv >= GOLEM_RARE_MIN_LEVEL) out.push({ tid: t.id, canonical: false });
+    // Boss Rare havuzu: bölge seviye aralığındaki kanonik Rare şablonlar
+    if (bossPool && rarity === 'R') {
+      for (const t of ITEM_LIST) if (t.rarity === 'R' && t.lv >= bossPool[0] && t.lv <= bossPool[1]) out.push({ tid: t.id, canonical: false });
+    }
+    if (rarity === 'E') {
+      for (const extra of BOSS_EXTRA_EPIC_SOURCES[table] || []) {
+        for (const t of ITEM_LIST) if (t.rarity === 'E' && t.sources.includes(extra) && !out.some((o) => o.tid === t.id)) out.push({ tid: t.id, canonical: false });
+      }
     }
   }
   poolCache.set(key, out);
@@ -102,7 +108,8 @@ export function rollBonuses(t, rarity, rng) {
     const isPct = BONUS_TYPES[type].fmt === 'pct';
     const v = rng.int(lo, hi);
     const b = { t: type, v: isPct ? v / 100 : v };
-    if (type === 'species') b.s = rng.pick(Object.keys(SPECIES));
+    // 'Element' türü V2 yaratıklarıyla geldi: yalnız Lv.21+ eşyalarda çıkar (V1 eşya havuzu aynı kalır)
+    if (type === 'species') b.s = rng.pick(Object.keys(SPECIES).filter((k) => k !== 'elemental' || t.lv > 20));
     out.push(b);
   }
   return out;

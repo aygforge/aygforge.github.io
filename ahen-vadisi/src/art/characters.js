@@ -18,6 +18,7 @@ const POSES = {
   atk2: { bob: 1, lb: -1, lf: 2, hb: [9, 18], hf: [18, 19], lean: 1 },
   cast0: { bob: 0, lb: 0, lf: 1, hb: [9, 16], hf: [18, 13], lean: 0 },
   cast1: { bob: -1, lb: 0, lf: 1, hb: [7, 11], hf: [18, 10], lean: 0 },
+  hurt0: { bob: 0, lb: 1, lf: -1, hb: [8, 17], hf: [14, 17], lean: -1 },   // V2 yaratıkları: darbe alma
 };
 export function handAnchor(frame, front = true) {
   const p = POSES[frame] || POSES.idle0;
@@ -187,6 +188,12 @@ export const NPC_LOOKS = {
   npc_sage: { skin: '#e0b898', hair: '#c8c8d0', beard: '#d8d8e0', top: '#3a4a8a', topTrim: '#c0a060', robe: true, hat: 'wizard', hatColor: '#5a3a7a', cane: true },
   npc_keeper: { skin: '#e0a888', hair: '#5a3a2a', hairStyle: 'bald', mustache: '#5a3a2a', top: '#8a5a32', topTrim: '#5a3a20', build: 'big', keys: true },
   npc_miner: { skin: '#d8a078', hair: '#4a3020', beard: '#4a3020', top: '#4a5a7a', pants: '#3a3a4a', hat: 'minerhelm' },
+  // V2
+  npc_demre: { skin: '#c89070', hair: '#2a1a14', hairStyle: 'long', top: '#8a5a2a', topTrim: '#e0a040', pants: '#4a3a2a', boots: '#2a1e16', hat: 'scarf', hatColor: '#c85a2a', cane: true, tier: 1 },
+  npc_yaren: { skin: '#e0a880', hair: '#6a2a1a', hairStyle: 'braid', top: '#5a4a44', sleeve: '#e0a880', apron: '#4a3a2e', pants: '#3a3030', glove: '#3a2a20' },
+  npc_ilgar: { skin: '#d8b090', beard: '#8a8a90', helm: { type: 'greathelm', main: '#a8c8dc', trim: '#5a7a9a' }, top: '#4a6a8a', topTrim: '#e0f0ff', cape: '#3a5a7a', tier: 2, pants: '#2e3a4a' },
+  npc_scout: { skin: '#d0a080', hair: '#3a2a1a', top: '#6a5a3a', topTrim: '#3a3020', pants: '#4a4030', bow: true, tier: 1, sleeve: '#8a3a2a' },
+  npc_sena: { skin: '#f0c8a8', helm: { type: 'hood', main: '#e8eef4', trim: '#7a8a9a' }, top: '#8a9aa8', topTrim: '#e8eef4', pants: '#5a6a7a', bow: true, tier: 1 },
 };
 
 export function npcSheet(key) {

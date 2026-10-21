@@ -92,7 +92,14 @@ export function showItemCard(inst, loc, ctx = 'normal', after = () => {}) {
       acts.push(h('button', { class: 'btn ghost', onTap: () => { act.lock(inst.uid); done(); } }, inst.lock ? 'Kilidi aç' : 'Kilitle ★'));
     }
     if (ctx === 'shop') {
-      if (inst.r !== 'L') acts.push(h('button', { class: 'btn' + (inst.lock ? ' dis' : ''), onTap: () => { act.sell(loc.index); done(); } }, `Sat (+${itemSellPrice(inst)} G)`));
+      // V2 eşya koruması: Rare/Epic ya da yükseltilmiş eşya satılmadan önce ayrıca onay istenir
+      const risky = t && (inst.r === 'R' || inst.r === 'E' || inst.p > 0);
+      const doSell = () => { act.sell(loc.index); done(); };
+      if (inst.r !== 'L') acts.push(h('button', { class: 'btn' + (inst.lock ? ' dis' : ''), 'data-testid': 'sell-btn', onTap: () => (risky ? ui.confirm({
+        title: 'Değerli eşya satılsın mı?', danger: true, ok: 'Sat',
+        text: `${t.name}${inst.p ? ` +${inst.p}` : ''} (${RARITY_INFO[inst.r].name}) ${itemSellPrice(inst)} Gold'a satılacak. Satılan eşya geri alınamaz.`,
+        onOk: doSell,
+      }) : doSell()) }, `Sat (+${itemSellPrice(inst)} G)`));
     }
     if (ctx === 'storage') acts.push(h('button', { class: 'btn blue', onTap: () => { act.deposit(loc.index); done(); } }, 'Depoya koy'));
     if (t && inst.r !== 'L' && ctx !== 'storage') {

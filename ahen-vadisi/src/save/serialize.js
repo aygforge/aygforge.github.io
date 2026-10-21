@@ -6,6 +6,8 @@ import { CLASSES } from '../data/classes.js';
 import { MAPS } from '../data/maps/index.js';
 import { makeContainer } from '../systems/inventory.js';
 import { makeUid } from '../core/rng.js';
+import { ensureV2Fields } from '../systems/character.js';
+import { CLASS_SKILLS } from '../data/skills.js';
 
 export const APP_ID = 'ahen-vadisi';
 
@@ -33,7 +35,7 @@ export function defaultSettings() {
   return {
     sound: true, sfxVol: 0.8, musicVol: 0.45, ambientVol: 0.5, music: true,
     lowPerf: false, zoom: 'normal', damageNumbers: true, shake: true, fullscreen: true,
-    joystickSize: 'normal', showFps: false, questGuide: true,
+    joystickSize: 'normal', showFps: false, questGuide: true, heroLook: 'sprite',
   };
 }
 
@@ -64,8 +66,14 @@ export function unwrap(env) {
 
 export function migrate(profile, fromVersion) {
   if (fromVersion > SCHEMA_VERSION) return { ok: false, msg: 'Kayıt daha yeni bir oyun sürümünden' };
-  // V1: geçiş gerekmez. Gelecek sürümler: if (fromVersion < 2) { ... }
+  if (!isNum(fromVersion) || fromVersion < 1) return { ok: false, msg: 'Kayıt sürümü okunamadı' };
   profile.settings = { ...defaultSettings(), ...(profile.settings || {}) };
+  // V1 → V2: karakterlere yeni alanlar eklenir (beceri çubuğu, Av Geçmişi, zindan koşuları, dünya bayrakları).
+  // Hiçbir V1 alanı silinmez ya da değiştirilmez; geçişten önceki kayıt depoda 'v1_backup' olarak saklanır.
+  if (Array.isArray(profile.characters)) {
+    for (const ch of profile.characters) if (ch && CLASS_SKILLS[ch.cls]) ensureV2Fields(ch, false);
+  }
+  if (fromVersion < 2) profile.migratedFrom = fromVersion;
   profile.schemaVersion = SCHEMA_VERSION;
   return { ok: true, profile };
 }
@@ -106,6 +114,10 @@ export function validateChar(ch, errors, where = 'karakter') {
   if (!Array.isArray(ch.pending)) errors.push(`${where}: bekleyen`);
   else ch.pending.forEach((p, i) => validateItem(p, errors, `${where}.bekleyen[${i}]`));
   if (!ch.world || !MAPS[ch.world.map]) errors.push(`${where}: dünya`);
+  if (ch.skillBar !== undefined) {
+    const acts = CLASS_SKILLS[ch.cls]?.actives || [];
+    if (!Array.isArray(ch.skillBar) || ch.skillBar.length !== 4 || ch.skillBar.some((id) => !acts.includes(id)) || new Set(ch.skillBar).size !== 4) errors.push(`${where}: beceri çubuğu`);
+  }
   // benzersiz uid
   const seen = new Set();
   const all = [...(ch.bag?.slots || []), ...Object.values(ch.equipment || {}), ...(ch.pending || [])].filter(Boolean);

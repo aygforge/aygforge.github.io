@@ -41,6 +41,7 @@ export function settingsTab(rerender) {
     h('span', {}, 'Düşük performans modu (30 FPS, daha az efekt)'), toggle(s.lowPerf, (v) => set({ lowPerf: v })),
     h('span', {}, 'Kamera'), select([['yakin', 'Yakın'], ['normal', 'Normal'], ['uzak', 'Uzak']], s.zoom, (v) => set({ zoom: v })),
     h('span', {}, 'Joystick boyutu'), select([['normal', 'Normal'], ['big', 'Büyük']], s.joystickSize, (v) => { set({ joystickSize: v }); bus.emit('hudRebuild'); }),
+    h('span', {}, 'Kahraman görünümü'), select([['sprite', 'Animasyonlu sprite'], ['gear', 'Ekipman görünür (piksel)']], s.heroLook || 'sprite', (v) => { set({ heroLook: v }); bus.emit('heroLook'); }),
     h('span', {}, 'Görev yön okları'), toggle(s.questGuide !== false, (v) => set({ questGuide: v })),
     h('span', {}, 'Hasar sayıları'), toggle(s.damageNumbers, (v) => set({ damageNumbers: v })),
     h('span', {}, 'Ekran sarsıntısı'), toggle(s.shake, (v) => set({ shake: v })),
@@ -108,7 +109,7 @@ export function importSave() {
 
 async function snapshots() {
   const list = await app.repo.listSnapshots();
-  const names = { profile: 'Güncel kayıt', snap_0: 'Önceki sağlam kayıt 1', snap_1: 'Önceki sağlam kayıt 2' };
+  const names = { profile: 'Güncel kayıt', snap_0: 'Önceki sağlam kayıt 1', snap_1: 'Önceki sağlam kayıt 2', v1_backup: 'V1 yedeği (V2 geçişinden önce)' };
   const box = h('div', { class: 'dlg frame' }, h('h3', { class: 't' }, 'Kayıt kurtarma'),
     h('p', { class: 'small muted' }, 'Oyun, son iki sağlam kaydı otomatik saklar. Bir sorun olursa önceki kayda dönebilirsin.'),
     h('div', { class: 'list' }, list.map((s) => h('div', { class: 'li' },

@@ -124,6 +124,54 @@ export const OBJECT_SPRITES = {
     pb.ellipse(5, 4, 3.5, 3, c); pb.clear(3, 4, 2, 2); pb.rect(5, 6, 2, 2, c); pb.rect(5, 9, 2, 2, c);
     pb.clear(2, 3, 2, 3); pb.rect(2, 2, 2, 2, c);
   }),
+  // ---------------- V2 nesneleri
+  ore_ash_ore: () => frames(1, 20, 16, (pb) => {
+    pb.poly([[1, 15], [3, 5], [9, 1], [16, 3], [19, 15]], '#2e2a2e'); pb.poly([[4, 13], [5, 6], [9, 3], [14, 5], [16, 13]], '#443e42');
+    for (const [x, y] of [[7, 7], [12, 9], [9, 11], [14, 6]]) { pb.set(x, y, '#ff7a2a'); pb.set(x + 1, y, '#ffb040'); }
+  }),
+  ore_frost_crystal: () => frames(1, 20, 16, (pb) => {
+    pb.ellipse(10, 14, 8, 2, '#8aa0b0');
+    pb.poly([[4, 14], [6, 5], [8, 1], [10, 6], [11, 14]], '#5ab8e8'); pb.vline(7, 4, 12, '#e0faff');
+    pb.poly([[10, 14], [13, 6], [15, 3], [16, 8], [17, 14]], '#9fe0f8'); pb.set(15, 5, '#ffffff');
+  }),
+  caravan_wreck: () => frames(2, 32, 20, (pb, i) => {
+    pb.rect(3, 6, 24, 9, '#3a2e28'); pb.hline(3, 26, 6, '#5a4638'); for (let x = 5; x < 27; x += 5) pb.vline(x, 2, 6, '#2e2420');
+    pb.disc(8, 16, 3, '#1e1a1a'); pb.ellipse(23, 17, 3, 2, '#1e1a1a');
+    pb.rect(12, 9, 6, 4, i ? '#f0d060' : '#6a4a2a'); pb.set(20, 9, '#ff6a2a'); pb.line(27, 12, 31, 15, '#3a2e28');
+  }),
+  ember_relic: () => frames(2, 18, 24, (pb, i) => {
+    pb.ellipse(9, 22, 8, 2, '#1a1414');
+    pb.rect(4, 14, 10, 8, '#3a3034'); pb.rect(3, 13, 12, 2, '#4e4448');
+    pb.disc(9, 8, 4.5, i ? '#ffd060' : '#c84a1a'); pb.disc(9, 8, 2.5, i ? '#ffffff' : '#ff8a2a'); pb.ring(9, 8, 5, '#5a4a40');
+  }),
+  winter_relic: () => frames(2, 14, 14, (pb, i) => {
+    pb.ellipse(7, 11, 6, 2.5, '#e8f2f8'); pb.rect(3, 6, 8, 5, '#7a6a5a'); pb.hline(3, 10, 6, '#9a8a7a');
+    pb.set(7, 8, i ? '#f0d060' : '#c8b080'); pb.hline(2, 11, 10, '#ffffff');
+  }),
+  temple_seal: () => frames(3, 24, 30, (pb, i) => {
+    pb.ellipse(12, 28, 10, 2, '#34405a');
+    pb.rect(5, 12, 14, 16, '#5a6a80'); pb.rect(4, 10, 16, 3, '#7a8aa0'); pb.hline(4, 19, 10, '#a8c0d8');
+    const c = i === 0 ? '#7ad8ff' : i === 1 ? '#ffffff' : '#3a4a5a';
+    pb.ring(12, 19, 5, c); pb.line(12, 14, 12, 24, c); pb.line(7, 19, 17, 19, c);
+    if (i < 2) { pb.poly([[9, 10], [12, 1], [15, 10]], '#9fe8ff'); pb.vline(12, 3, 9, '#ffffff'); }
+    else { pb.poly([[9, 10], [10, 6], [12, 8], [14, 5], [15, 10]], '#5a7a9a'); pb.line(8, 14, 16, 26, '#2a3444'); }
+  }),
+  frost_gate: () => frames(2, 48, 48, (pb, i) => {
+    pb.rect(2, 8, 44, 40, '#4a6a8a'); pb.poly([[2, 10], [24, 0], [46, 10]], '#6a8aa8'); pb.hline(4, 44, 9, '#e8f6ff');
+    pb.rect(10, 16, 28, 32, i ? '#0a1420' : '#2a3e56');
+    if (!i) { for (let x = 12; x < 38; x += 6) pb.vline(x, 16, 47, '#9fc8e8'); pb.hline(10, 37, 30, '#9fc8e8');
+      pb.disc(24, 30, 6, '#3a6a9a'); pb.ring(24, 30, 6, '#9fe8ff'); pb.set(24, 30, '#ffffff'); }
+    else { pb.disc(24, 34, 9, '#14243a'); pb.disc(24, 34, 5, '#2a5a8a'); }
+    for (let y = 12; y < 46; y += 6) { pb.rect(3, y, 6, 4, '#5a7a9a'); pb.rect(39, y, 6, 4, '#5a7a9a'); }
+    pb.poly([[6, 8], [8, 14], [10, 8]], '#e0faff'); pb.poly([[38, 8], [40, 15], [42, 8]], '#e0faff');
+    pb.set(24, 4, '#9fe8ff');
+  }),
+  lava_pool: () => frames(3, 32, 18, (pb, i) => {
+    pb.ellipse(16, 9, 15, 8, '#2a1410'); pb.ellipse(16, 9, 13, 6.5, '#c8401a');
+    for (let k = 0; k < 5; k++) pb.ellipse(6 + k * 5, 7 + ((k + i) % 3), 2, 1, '#ff8a2a');
+    pb.set(10 + i * 4, 8, '#ffe070');
+  }, false),
+
 };
 
 // -------------------------------------------------------------- efektler
@@ -202,6 +250,21 @@ export const EFFECT_SPRITES = {
   soft: () => frames(1, 16, 16, (pb) => { for (let r = 8; r > 0; r--) pb.disc(8, 8, r, '#ffffff', Math.round(255 * (1 - r / 8) * 0.9)); }, false),
   mist: () => frames(1, 48, 24, (pb) => { for (let k = 0; k < 6; k++) pb.ellipse(10 + k * 6, 12 + Math.sin(k) * 3, 10, 6, '#c8d8d0', 22); }, false),
   firefly: () => frames(2, 4, 4, (pb, i) => { pb.rect(1, 1, 2, 2, i ? '#f0ff90' : '#c0e060'); }, false),
+  // ---------------- V2 efektleri
+  ember_bolt: () => frames(2, 12, 10, (pb, i) => { pb.disc(7, 5, 3.5, '#e04a1a'); pb.disc(7, 5, 2, '#ffd060'); pb.set(2 + i, 5, '#ff8a2a'); pb.set(1, 4 + i, '#8a8480'); }, false),
+  frost_bolt: () => frames(2, 12, 10, (pb, i) => { pb.poly([[1, 5], [7, 2], [11, 5], [7, 8]], '#7ad8ff'); pb.line(3, 5, 10, 5, '#ffffff'); pb.set(1 + i, 4, '#c8f0ff'); }, false),
+  chain: () => frames(3, 16, 16, (pb, i) => { pb.line(0, 8, 5, 4 + i, '#e0e8ff'); pb.line(5, 4 + i, 10, 12 - i, '#9ab0ff'); pb.line(10, 12 - i, 15, 8, '#e0e8ff'); pb.set(5, 4 + i, '#ffffff'); }, false),
+  blade: () => frames(1, 10, 22, (pb) => { pb.rect(4, 0, 2, 14, '#d8e0e8'); pb.vline(4, 0, 13, '#ffffff'); pb.rect(1, 14, 8, 2, '#c0a040'); pb.rect(4, 16, 2, 5, '#5a3a20'); pb.poly([[4, 0], [5, -2], [6, 0]], '#ffffff'); }),
+  fire_ground: () => frames(3, 32, 16, (pb, i) => {
+    pb.ellipse(16, 10, 15, 5, '#5a1a0a', 200); pb.ellipse(16, 10, 12, 3.5, '#c8401a', 220);
+    for (let k = 0; k < 6; k++) { const x = 4 + k * 5, h = 3 + ((k + i) % 3) * 2; pb.poly([[x - 2, 10], [x, 10 - h], [x + 2, 10]], k % 2 ? '#ff8a2a' : '#ffd060'); }
+  }, false),
+  ice_spike: () => frames(1, 16, 30, (pb) => {
+    pb.poly([[3, 0], [8, 29], [13, 0]], '#7ad8ff'); pb.poly([[6, 0], [8, 22], [10, 0]], '#e0faff'); pb.outline('#2a4a6a');
+  }, false),
+  ash_puff: () => frames(3, 24, 24, (pb, i) => { for (let k = 0; k < 7; k++) { const t = k / 7 * Math.PI * 2; const r = 3 + i * 3; pb.disc(12 + Math.cos(t) * r, 12 + Math.sin(t) * r * 0.7, 3 - i * 0.6, k % 2 ? '#8a8480' : '#5a5250', 200 - i * 50); } if (i === 0) pb.set(12, 12, '#ff7a2a'); }, false),
+  shatter: () => frames(3, 28, 28, (pb, i) => { for (let k = 0; k < 9; k++) { const t = k / 9 * Math.PI * 2 + k; const r = 2 + i * 4 + hash(k, 2) * 3; const x = 14 + Math.cos(t) * r, y = 14 + Math.sin(t) * r; pb.poly([[x - 1.5, y + 1.5], [x, y - 2.5], [x + 1.5, y + 1.5]], k % 2 ? '#c8f0ff' : '#7ad8ff'); } }, false),
+  frost_mark: () => frames(2, 20, 10, (pb, i) => { pb.ring(10, 5, 4 + i, '#9fe8ff'); pb.set(10, 5, '#ffffff'); pb.set(5, 5, '#e0faff'); pb.set(15, 5, '#e0faff'); }, false),
 };
 
 // Telegraf şekilleri ve ışık dokuları canvas ile (yumuşak kenarlı)

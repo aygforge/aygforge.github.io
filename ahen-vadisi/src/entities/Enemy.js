@@ -5,9 +5,10 @@ import { TILE, TG_SQUASH } from '../data/constants.js';
 import { sound } from '../audio/sound.js';
 import { makeBossBehavior } from './bosses.js';
 import { spritePack, animDuration } from '../art/spriteRuntime.js';
+import { V2_SCALE } from '../art/monstersV2.js';
 
 let NEXT_ID = 1;
-const SCALE = { captain: 1.2, executioner: 1.35 };
+const SCALE = { captain: 1.2, executioner: 1.35, ...V2_SCALE };
 
 export class Enemy {
   constructor(scene, tpl, x, y, opts = {}) {
@@ -68,6 +69,9 @@ export class Enemy {
     }
     this.container = c;
     this.animKey = key;
+    // V2 yaratıkları: ayrı darbe alma ve ölüm animasyonu
+    this.hasHurt = !this.pack && scene.anims.exists(key + '_hurt');
+    this.hurtUntil = 0;
     this.behavior = makeBossBehavior(this);
     this.drawBar();
   }
@@ -97,6 +101,7 @@ export class Enemy {
   }
 
   playAnim(name) {
+    if (name !== 'atk' && this.scene.clock < this.hurtUntil) return;
     const k = this.animKey + '_' + name;
     if (this.sprite.anims.currentAnim?.key !== k || (name === 'atk')) this.sprite.play(k, name !== 'atk');
   }
@@ -129,6 +134,10 @@ export class Enemy {
   onDamaged() {
     this.lastHitAt = this.scene.clock;
     if (this.state === 'idle') this.aggro(this.scene.player);
+    if (this.hasHurt && !this.windup && !this.casting && this.tpl.kind !== 'boss') {
+      this.sprite.play(this.animKey + '_hurt');
+      this.hurtUntil = this.scene.clock + 180;
+    }
     this.sprite.setTintFill(0xffffff);
     this.scene.time.delayedCall(70, () => { if (!this.dead) { this.sprite.clearTint(); if (this.baseTint) this.sprite.setTint(this.baseTint); if (this.furyTint) this.sprite.setTint(this.furyTint); } });
     if (this.tpl.kind !== 'boss' && this.tpl.ai !== 'static') {
@@ -305,6 +314,7 @@ export class Enemy {
           if (this.distTo(p) <= this.tileRange * 1.25 + p.radius && this.canSee(p)) {
             sc.combat.enemyHitsPlayer(this, { coef: this.tpl.normalCoef ?? 1, isNormal: true });
             if (this.tpl.poison && Math.random() < this.tpl.poison.chance) sc.combat.poisonPlayer(this, this.tpl.poison);
+            if (this.tpl.slow && Math.random() < this.tpl.slow.chance) sc.combat.slowPlayer(this.tpl.slow.pct, this.tpl.slow.dur);
           }
         },
       };
@@ -314,6 +324,15 @@ export class Enemy {
   // --------------------------------------------------------------- elit yetenekleri (telegraflı)
   updateAbility(dt, p, dP) {
     if (this.tpl.kind !== 'elite' || !this.tpl.abilities) return;
+    // Öfke (Kül Kasabı): düşük canda daha hızlı saldırır ve koşar
+    const en = this.tpl.enrage;
+    if (en && !this.enraged && this.hp < this.maxHp * en.below) {
+      this.enraged = true;
+      this.atkMult = en.atkSpd; this.speedMult = en.speed;
+      this.furyTint = 0xff8a6a; this.sprite.setTint(this.furyTint);
+      this.scene.fx.text(this.x, this.y - this.height - 10, 'ÖFKE!', { color: '#ff8a4a', size: 16 });
+      sound.play('roar');
+    }
     this.abilityCd -= dt;
     if (this.abilityCd > 0) return;
     const ab = this.tpl.abilities[0];
@@ -361,6 +380,54 @@ export class Enemy {
           sc.combat.poisonPlayer(this, this.tpl.poison);
         }
       } };
+    } else if (ab === 'butcher_cleave' && dP < 4.2 * TILE) {
+      // geniş ön yarım ay kesik + arkasında kısa süreli ateş izi
+      this.abilityCd = this.enraged ? 7 : 9;
+      const ang = Math.atan2(p.y - this.y, p.x - this.x), r = 3.8 * TILE, dur = this.enraged ? 1250 : 1450;
+      const half = Math.PI / 3;   // tg_cone dokusunun açısı (çizim = isabet alanı)
+      sc.fx.telegraph({ kind: 'cone', x: this.x, y: this.y - 6, r, angle: ang }, dur);
+      sound.play('warn');
+      this.casting = { t: dur / 1000, fn: () => {
+        if (this.dead) return;
+        this.playAnim('atk');
+        sc.fx.sprite('slash', this.x + Math.cos(ang) * 34, this.y - 10 + Math.sin(ang) * 34, { scale: 3.4, rotation: ang, tint: 0xffa060 });
+        sound.play('slam'); sc.fx.shake(0.007, 180);
+        const dx = p.x - this.x, dy = p.y - this.y, d = Math.hypot(dx, dy);
+        const da = Math.abs(Phaser.Math.Angle.Wrap(Math.atan2(dy, dx) - ang));
+        if (!p.dead && d <= r && da <= half) sc.combat.enemyHitsPlayer(this, { coef: 1.9, label: 'Kasap Satırı' });
+        // ateş izi: kesik yönünde 3 kısa alev (2,5 sn, sn başına küçük hasar)
+        for (let i = 1; i <= 3; i++) {
+          const fx = this.x + Math.cos(ang) * i * TILE * 1.1, fy = this.y + Math.sin(ang) * i * TILE * 1.1;
+          sc.combat.groundHazard({ x: fx, y: fy, r: 0.75 * TILE, dur: 2.5, tick: 0.5, coef: 0.18, src: this, key: 'fire_ground', label: 'Ateş izi' });
+        }
+      } };
+    } else if (ab === 'ice_slam' && dP < 7 * TILE) {
+      // yakında: buz yere vuruşu (çember, kısa yavaşlatma); uzakta: oyuncunun üstüne düşen buz kıymıkları
+      this.abilityCd = 8.5;
+      if (dP < 3.2 * TILE) {
+        const r = 3 * TILE, dur = 1500;
+        sc.fx.telegraph({ kind: 'circle', x: this.x, y: this.y, r }, dur);
+        sound.play('warn');
+        this.casting = { t: dur / 1000, fn: () => {
+          if (this.dead) return;
+          this.playAnim('atk');
+          sc.fx.sprite('shatter', this.x, this.y - 6, { scale: 3.2 });
+          sound.play('slam'); sc.fx.shake(0.008, 200);
+          if (!p.dead && inTelegraphCircle(p.x, p.y, this.x, this.y, r)) {
+            sc.combat.enemyHitsPlayer(this, { coef: 1.8, label: 'Buz Vuruşu' });
+            sc.combat.slowPlayer(0.35, 1.5);
+          }
+        } };
+      } else {
+        sound.play('warn');
+        this.playAnim('atk');
+        const shards = [[0, 0], [1.4, 0.6], [-1.3, 0.7]];
+        for (const [ox, oy] of shards) {
+          const tx = p.x + ox * TILE, ty = p.y + oy * TILE;
+          sc.combat.fallingShard({ x: tx, y: ty, r: 0.95 * TILE, delay: 1.4, coef: 1.1, src: this });
+        }
+        this.casting = { t: 0.6, fn: () => {} };
+      }
     } else {
       this.abilityCd = 1.5;
     }
@@ -373,6 +440,15 @@ export class Enemy {
     this.label?.setVisible(false);
     this.shadow.setVisible(false);
     const sc = this.scene;
+    if (this.tpl.deathFx === 'ash') sc.fx.sprite('ash_puff', this.x, this.y - 12, { scale: Math.max(1.5, this.radius / 10) });
+    else if (this.tpl.deathFx === 'ice') sc.fx.sprite('shatter', this.x, this.y - 12, { scale: Math.max(1.5, this.radius / 10) });
+    if (!this.pack && sc.anims.exists(this.animKey + '_die')) {
+      // V2: kendi ölüm animasyonu (küle/buza dağılma), ardından solma
+      this.hurtUntil = 0;
+      this.sprite.play(this.animKey + '_die');
+      sc.tweens.add({ targets: this.sprite, alpha: 0, delay: 520, duration: 380, onComplete: () => this.destroy() });
+      return;
+    }
     if (this.pack) {
       // paketin ölüm animasyonu, ardından solarak kaybolur
       this.sprite.play(`${this.pack.id}_die`, false);

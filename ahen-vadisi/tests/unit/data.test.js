@@ -9,16 +9,36 @@ import { MAPS } from '../../src/data/maps/index.js';
 import { LOOT_TABLES } from '../../src/data/loot.js';
 import { xpToNext, cumulativeXp } from '../../src/data/constants.js';
 
+const V1_ITEMS = ITEM_LIST.filter((t) => t.lv <= 20);
+const V1_QUESTS = QUESTS.filter((q) => (q.main && q.order <= 18) || ['s01', 's02', 's03', 's04', 's05', 's06', 's07', 's08'].includes(q.id));
+const V1_NPCS = ['muhtar', 'boran', 'mira', 'elin', 'hunter', 'sage', 'keeper'];
+
 describe('Veri tabloları', () => {
-  it('tam 60 eşya şablonu, nadirlik sayımı 14/15/18/11/2', () => {
-    expect(ITEM_LIST.length).toBe(60);
+  it('V1: 60 eşya şablonu aynen korunur, nadirlik sayımı 14/15/18/11/2', () => {
+    expect(V1_ITEMS.length).toBe(60);
     const c = { N: 0, U: 0, R: 0, E: 0, L: 0 };
-    for (const t of ITEM_LIST) c[t.rarity]++;
+    for (const t of V1_ITEMS) c[t.rarity]++;
     expect(c).toEqual({ N: 14, U: 15, R: 18, E: 11, L: 2 });
     const slots = {};
-    for (const t of ITEM_LIST) slots[t.slot] = (slots[t.slot] || 0) + 1;
+    for (const t of V1_ITEMS) slots[t.slot] = (slots[t.slot] || 0) + 1;
     expect(slots).toEqual({ weapon: 16, offhand: 6, helm: 6, chest: 8, gloves: 6, boots: 6, ring: 6, amulet: 6 });
-    expect(new Set(ITEM_LIST.map((t) => t.id)).size).toBe(60);
+    // V1 legendary değerleri değişmedi
+    expect(ITEMS.W08).toMatchObject({ lv: 20, base: { atkMin: 90, atkMax: 115 }, legendaryFixed: { str: 14, crit: 0.08 }, effect: 'crimson_strike' });
+    expect(ITEMS.M08).toMatchObject({ lv: 20, base: { magMin: 97, magMax: 123 }, legendaryFixed: { int: 16, mp: 60 }, effect: 'spirit_echo' });
+  });
+  it('V2: 30 yeni şablon (toplam 90), kimlikler benzersiz, Lv.21–30', () => {
+    expect(ITEM_LIST.length).toBe(90);
+    expect(new Set(ITEM_LIST.map((t) => t.id)).size).toBe(90);
+    const v2 = ITEM_LIST.filter((t) => t.lv > 20);
+    expect(v2.length).toBe(30);
+    const c = { N: 0, U: 0, R: 0, E: 0, L: 0 };
+    for (const t of v2) c[t.rarity]++;
+    expect(c).toEqual({ N: 0, U: 4, R: 15, E: 9, L: 2 });
+    expect(ITEMS.W13).toMatchObject({ name: 'Buzun Hükmü', lv: 30, rarity: 'L', hand: 'two', base: { atkMin: 148, atkMax: 185 }, legendaryFixed: { str: 16, crit: 0.08 }, effect: 'frost_verdict', sources: ['frozen_guardian'] });
+    expect(ITEMS.M13).toMatchObject({ name: 'Sonsuz Kış Asası', lv: 30, rarity: 'L', base: { magMin: 158, magMax: 196 }, legendaryFixed: { int: 18, mp: 75 }, effect: 'endless_winter', sources: ['frozen_guardian'] });
+    expect(ITEMS.O08).toMatchObject({ base: { def: 43 }, fixed: { hp: 65 } });
+    expect(ITEMS.A07).toMatchObject({ fixed: { hp: 70, crit: 0.03 } });
+    expect(ITEMS.A08).toMatchObject({ fixed: { mdef: 20, vit: 4 } });
   });
   it('her oynanabilir sınıf için her slotta en az bir eşya var', () => {
     for (const cls of ['warrior', 'mage']) {
@@ -27,10 +47,17 @@ describe('Veri tabloları', () => {
       }
     }
   });
-  it('12 normal, 3 elit, 2 boss', () => {
-    expect(NORMAL_IDS.length).toBe(12);
-    expect(ELITE_IDS.length).toBe(3);
-    expect(BOSS_IDS.length).toBe(2);
+  it('V1 12 normal, 3 elit, 2 boss + V2 8 normal, 2 elit, 2 boss', () => {
+    expect(NORMAL_IDS.length).toBe(20);
+    expect(ELITE_IDS.length).toBe(5);
+    expect(BOSS_IDS.length).toBe(4);
+    const v2 = { ash_imp: [21, 670, 105, 54, 45, 250], ash_hunter: [23, 770, 120, 60, 48, 300], crimson_scorpion: [24, 930, 125, 75, 43, 340],
+      burnt_warrior: [25, 1050, 142, 70, 58, 390], frost_wolf: [26, 1100, 148, 72, 65, 410], ice_wisp: [27, 850, 153, 46, 76, 450],
+      frost_sentinel: [28, 1450, 184, 95, 72, 500], snow_shaman: [29, 1200, 190, 65, 97, 550], ash_butcher: [25, 5800, 170, 82, 65, 950],
+      ice_warden: [29, 8500, 225, 110, 95, 1600] };
+    for (const [id, [level, hp, atk, def, mdef, exp]] of Object.entries(v2)) expect(ENEMIES[id], id).toMatchObject({ level, hp, atk, def, mdef, exp });
+    expect(ENEMIES.ash_giant).toMatchObject({ level: 26, hp: 35000, atk: 250, def: 110, mdef: 100 });
+    expect(ENEMIES.frozen_guardian).toMatchObject({ level: 30, hp: 55000, atk: 310, def: 150, mdef: 130 });
   });
   it('belge stat değerleri (örnekler)', () => {
     expect(ENEMIES.meadow_rat).toMatchObject({ level: 2, hp: 32, atk: 8, def: 2, mdef: 2, exp: 12 });
@@ -46,7 +73,9 @@ describe('Veri tabloları', () => {
     expect(LOOT_TABLES.normal.R).toBe(0.25);
     expect(LOOT_TABLES.elite.E).toBe(0.75);
     expect(LOOT_TABLES.golem.L).toBe(0.4);
-    for (const [k, t] of Object.entries(LOOT_TABLES)) if (k !== 'golem') expect(t.L).toBe(0);
+    expect(LOOT_TABLES.ash_giant).toMatchObject({ R: 22, E: 2, L: 0 });
+    expect(LOOT_TABLES.frost_keeper).toMatchObject({ R: 30, E: 7, L: 0.4 });
+    for (const [k, t] of Object.entries(LOOT_TABLES)) if (k !== 'golem' && k !== 'frost_keeper') expect(t.L).toBe(0);
   });
   it('tarif girdi/çıktıları tanımlı ID', () => {
     for (const r of RECIPES) {
@@ -54,13 +83,31 @@ describe('Veri tabloları', () => {
       for (const i of r.inputs) expect(!!STACKABLES[i.id]).toBe(true);
     }
   });
-  it('EXP tablosu: Lv1→20 toplam 88.150', () => {
+  it('EXP tablosu: Lv1→20 toplam 88.150 (V1 aynı)', () => {
     expect(xpToNext(1)).toBe(80);
     expect(xpToNext(19)).toBe(16540);
     expect(cumulativeXp(20)).toBe(88150);
   });
-  it('18 ana + 8 yan = 26 görev; EXP 16.550 + 5.500, Gold 5.365 + 1.590', () => {
-    const main = QUESTS.filter((q) => q.main), side = QUESTS.filter((q) => !q.main);
+  it('V2 EXP tablosu: 20→30 belge değerleri, toplam 368.300; Lv.30 sınır', () => {
+    const want = [19280, 22310, 25640, 29280, 33260, 37580, 42260, 47320, 52760, 58610];
+    expect([20, 21, 22, 23, 24, 25, 26, 27, 28, 29].map(xpToNext)).toEqual(want);
+    expect(want.reduce((a, b) => a + b, 0)).toBe(368300);
+    expect(cumulativeXp(30) - cumulativeXp(20)).toBe(368300);
+    expect(xpToNext(30)).toBe(Infinity);
+  });
+  it('V2 görevleri: 10 ana + 4 yan, toplam 40 tek seferlik; EXP 70.500 + 22.000', () => {
+    expect(QUESTS.length).toBe(40);
+    const v2 = QUESTS.filter((q) => !V1_QUESTS.includes(q));
+    expect(v2.filter((q) => q.main).length).toBe(10);
+    expect(v2.filter((q) => !q.main).length).toBe(4);
+    expect(v2.filter((q) => q.main).reduce((a, q) => a + q.exp, 0)).toBe(70500);
+    expect(v2.filter((q) => !q.main).reduce((a, q) => a + q.exp, 0)).toBe(22000);
+    // V2 hikâyesi V1 finalinden sonra başlar
+    expect(v2.find((q) => q.id === 'm27').prereq).toEqual(['m18']);
+    for (const q of v2) for (const r of q.rewardItems) expect(STACKABLES[r.id]).toBeTruthy(); // garantili güçlü ekipman ödülü yok
+  });
+  it('18 ana + 8 yan = 26 görev (V1); EXP 16.550 + 5.500, Gold 5.365 + 1.590', () => {
+    const main = V1_QUESTS.filter((q) => q.main), side = V1_QUESTS.filter((q) => !q.main);
     expect(main.length).toBe(18);
     expect(side.length).toBe(8);
     expect(main.reduce((a, q) => a + q.exp, 0)).toBe(16550);
@@ -92,8 +139,10 @@ describe('Veri tabloları', () => {
       for (const r of q.rewardItems) expect(STACKABLES[r.id]).toBeTruthy();
     }
   });
-  it('köyde 7 NPC haritaya yerleşik', () => {
+  it('köyde 7 NPC haritaya yerleşik; V2 NPC\'leri kamplarda', () => {
     const npcs = MAPS.village.objects.filter((o) => o.type === 'npc').map((o) => o.npc);
-    expect(npcs.sort()).toEqual(Object.keys(NPCS).sort());
+    expect(npcs.sort()).toEqual([...V1_NPCS].sort());
+    const placed = Object.values(MAPS).flatMap((m) => m.objects.filter((o) => o.type === 'npc').map((o) => o.npc));
+    for (const id of Object.keys(NPCS)) expect(placed, id).toContain(id);
   });
 });

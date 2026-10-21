@@ -1,11 +1,14 @@
 // Ahen Vadisi — merkezi sabitler. Tüm modüller değerleri buradan okur.
 
 export const GAME_TITLE = 'Ahen Vadisi';
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;      // V1 = 1, V2.0 (Kül ve Ayaz) = 2
+export const GAME_VERSION = '2.0.0';
 
 export const TILE = 32;          // dünya pikseli / tile
 export const ART_SCALE = 2;      // 1 sanat pikseli = 2 dünya pikseli
-export const MAX_LEVEL = 20;
+export const MAX_LEVEL = 30;
+export const V1_MAX_LEVEL = 20;      // V1 hikâye sonu (V2 içeriği bunun üzerine kurulur)
+export const SKILL_BAR_SIZE = 4;     // ekrandaki aktif beceri düğmesi sayısı
 export const STAT_POINTS_PER_LEVEL = 3;
 export const CHAR_SLOTS = 3;
 
@@ -55,10 +58,11 @@ export const SLOT_NAMES = {
 
 export const SPECIES = {
   beast: 'Hayvan', plant: 'Bitki', humanoid: 'İnsansı', insect: 'Böcek',
-  undead: 'Ölümsüz', construct: 'Yapı',
+  undead: 'Ölümsüz', construct: 'Yapı', elemental: 'Element',
 };
 
 // Sonraki seviye için EXP = en yakın 10'a yuvarlanan (80 + 2.4 L^3)
+// V2: aynı formül 20→30 için 19280 … 58610 değerlerini verir (toplam 368.300; birim testte sabitlenmiştir).
 export function xpToNext(level) {
   if (level >= MAX_LEVEL) return Infinity;
   return Math.round((80 + 2.4 * level ** 3) / 10) * 10;
@@ -86,7 +90,9 @@ export function goldRangeForLevel(lv) {
   if (lv < 5) return [1, 3];
   if (lv < 10) return [3, 6];
   if (lv < 15) return [7, 10];
-  return [11, 16];
+  if (lv < 21) return [11, 16];
+  if (lv < 25) return [16, 23];
+  return [20, 29];
 }
 
-export const RESET_COST = (level) => (level <= 10 ? 0 : level <= 14 ? 1000 : 2500);
+export const RESET_COST = (level) => (level <= 10 ? 0 : level <= 14 ? 1000 : level <= 20 ? 2500 : 5000);

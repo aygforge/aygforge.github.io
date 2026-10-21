@@ -24,6 +24,8 @@ export default {
     { pts: [[52, 34], [66, 26], [78, 22], [92, 30]], w: 4 },
     { pts: [[66, 48], [64, 64], [60, 77]], w: 4 },
     { pts: [[30, 60], [46, 66], [64, 64]], w: 3 },
+    // V2: Kırılan Ufuk — Golem'in düşüşüyle açılan doğu göçüğü (Kül Yaylaları'na)
+    { pts: [[92, 30], [98, 30], [103, 30]], w: 3 },
   ],
   stamps: [
     { s: 'cart', x: 20, y: 25 }, { s: 'support', x: 13, y: 37 }, { s: 'support', x: 17, y: 37 },
@@ -47,6 +49,8 @@ export default {
   objects: [
     { type: 'portal', id: 'm_to_forest', x: 0, y: 40, to: 'forest', entry: 'from_mine', label: 'Fısıldayan Orman' },
     { type: 'portal', id: 'm_to_swamp', x: 60, y: 77, to: 'swamp', entry: 'from_mine', label: 'Sis Bataklığı' },
+    { type: 'portal', id: 'm_to_ash', x: 103, y: 30, to: 'ash', entry: 'from_mine', label: 'Kül Yaylaları',
+      requires: { quest: 'm27', msg: 'Göçük taşları yolu tıkıyor. Vadi kurtulduktan sonra Karaağaç Muhtarı bu geçidi soruşturmanı isteyecek.' } },
     { type: 'dungeon_gate', id: 'dungeon_gate', group: 'dungeon_gate', x: 52, y: 4, to: 'dungeon', entry: 'entrance', label: 'Derin Ocak' },
     { type: 'waystone', id: 'ws_mine', x: 8, y: 36 },
     ...ironVeins.map(([x, y], i) => ({ type: 'gather', id: `iron_v${i}`, kind: 'iron_ore', x, y, clear: 0.6 })),
@@ -59,10 +63,12 @@ export default {
     from_forest: { x: 3, y: 40 },
     from_swamp: { x: 60, y: 74 },
     from_dungeon: { x: 52, y: 8 },
+    from_ash: { x: 100, y: 30 },
     waystone: { x: 8, y: 38 },
     respawn: { x: 8, y: 38 },
   },
   locations: [
     { id: 'loc_mine_entrance', name: 'Kırık Damar Madeni girişi', x: 6, y: 40, r: 4 },
+    { id: 'loc_broken_horizon', name: 'Doğu göçüğü', x: 98, y: 30, r: 3 },
   ],
 };

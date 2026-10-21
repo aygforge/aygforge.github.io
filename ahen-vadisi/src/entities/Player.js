@@ -6,7 +6,7 @@ import Phaser from 'phaser';
 import { app } from '../core/app.js';
 import { bus } from '../core/events.js';
 import { TILE, PLAYER_SPEED_TILES, POTION_CD, REGEN_DELAY, REGEN_HP_PCT, MP_REGEN_COMBAT, MP_REGEN_IDLE } from '../data/constants.js';
-import { SKILLS, CLASS_SKILLS } from '../data/skills.js';
+import { SKILLS, CLASS_SKILLS, MASTERY_BOOKS } from '../data/skills.js';
 import { ITEMS } from '../data/items.js';
 import { POTION_LIST } from '../data/materials.js';
 import { countStack, removeStack } from '../systems/inventory.js';
@@ -38,7 +38,7 @@ export class Player {
     this.potionCd = { hp: 0, mp: 0 };
     this.buffs = {};        // ironSkin, manaShield, will, resonance: { until, value }
     this.castLog = [];
-    this.icd = { crimson: 0, spirit: 0, will: 0, resonance: 0 };
+    this.icd = { crimson: 0, spirit: 0, will: 0, resonance: 0, frost: 0, winter: 0 };
     this.lastHurtAt = -99999; this.lastCombatAt = -99999;
     this.stunUntil = 0; this.slowUntil = 0; this.slowPct = 0;
     this.poison = null;
@@ -52,7 +52,9 @@ export class Player {
     this.body = scene.add.sprite(0, 0, 'fx_px').setOrigin(0.5, 28.5 / 30);
     this.weapon = scene.add.image(0, 0, 'fx_px').setVisible(false);
     this.aura = scene.add.sprite(0, 6, 'fx_aura_iron', 0).setOrigin(0.5, 1).setVisible(false).setBlendMode(Phaser.BlendModes.ADD);
-    c.add([this.shadow, this.offhand, this.body, this.weapon, this.aura]);
+    // hazır sprite modunda giyilen en iyi silahın nadirliği ayak altında hafif bir halka olarak görünür
+    this.gearGlow = scene.add.ellipse(0, 1, 44, 14, 0xffffff, 0.3).setBlendMode(Phaser.BlendModes.ADD).setVisible(false);
+    c.add([this.shadow, this.gearGlow, this.offhand, this.body, this.weapon, this.aura]);
     this.container = c;
     this.refreshLook();
   }
@@ -71,8 +73,13 @@ export class Player {
       this.body.setTexture(`${p.id}:idle`, 0).setOrigin(p.ox, p.oy).clearTint();
       this.body.play(p.id + '_idle');
       this.weapon.setVisible(false); this.offhand.setVisible(false);
+      const r = ch.equipment.weapon?.r;
+      const col = { R: 0x4f9bff, E: 0xc070ff, L: 0xff9b2e }[r];
+      this.gearGlow.setVisible(!!col);
+      if (col) this.gearGlow.setFillStyle(col, r === 'L' ? 0.42 : 0.3);
       return;
     }
+    this.gearGlow.setVisible(false);
     this.body.setOrigin(0.5, 28.5 / 30);
     const key = ensurePlayerTexture(this.scene, ch.cls, ch.equipment);
     this.texKey = key;
@@ -314,8 +321,9 @@ export class Player {
   useSkill(slot) {
     const sc = this.scene;
     const ch = this.char;
-    const id = CLASS_SKILLS[ch.cls].actives[slot];
+    const id = (ch.skillBar || CLASS_SKILLS[ch.cls].actives)[slot];
     const s = SKILLS[id];
+    if (!s) return false;
     const rank = ch.skills[id] || 0;
     const fail = (m) => { bus.emit('toast', { text: m, kind: 'warn', short: true }); sound.play('error'); return false; };
     if (this.dead) return false;
@@ -359,9 +367,15 @@ export class Player {
     return { ex, ey };
   }
 
+  // Ustalık Kitabı etkin mi (kitap uygulanmış ve beceri Rank 5)
+  book(id) {
+    return this.char.masteryBooks?.[id] && (this.char.skills[id] || 0) >= 5 ? MASTERY_BOOKS[id] : null;
+  }
+
   execSkill(id, s, rank, t) {
     const sc = this.scene;
-    const coef = s.coef ? s.coef[rank - 1] : 1;
+    const bk = this.book(id);
+    const coef = (s.coef ? s.coef[rank - 1] : 1) * (bk?.dmgMult || 1);
     switch (id) {
       case 'heavy_strike':
         this.playAction('_atk', 0.35);
@@ -370,10 +384,59 @@ export class Player {
         sc.time.delayedCall(150, () => {
           if (this.dead || t.dead) return;
           sc.fx.sprite('slash', t.x, t.y - 16, { scale: 1.6, rotation: this.facing > 0 ? 0 : Math.PI });
-          sc.combat.playerSkillHit(t, { coef, skill: id });
+          sc.combat.playerSkillHit(t, { coef, skill: id, critMult: bk?.critMult });
           sc.fx.shake(0.003, 90);
         });
         break;
+      case 'blade_rain': {
+        // önündeki alana (hedef varsa ona doğru) kılıç yağmuru
+        this.playAction('_cast', 0.4);
+        const ang = t ? Math.atan2(t.y - this.y, t.x - this.x) : (this.facing > 0 ? 0 : Math.PI);
+        const reach = Math.min(s.reach * TILE, t ? Math.hypot(t.x - this.x, t.y - this.y) : s.reach * TILE);
+        const cx = this.x + Math.cos(ang) * reach, cy = this.y + Math.sin(ang) * reach;
+        const r = s.radius * TILE;
+        sound.play('swing');
+        for (let i = 0; i < 9; i++) {
+          const a = Math.random() * Math.PI * 2, d = Math.random() * r * 0.8;
+          const bx = cx + Math.cos(a) * d, by = cy + Math.sin(a) * d * 0.75;
+          const bl = sc.fx.sprite('blade', bx, by - 150, { depth: 59000, origin: [0.5, 1], scale: 1.6 });
+          sc.tweens.add({ targets: bl, y: by, duration: 200, delay: i * 35, ease: 'Quad.in', onComplete: () => { sc.fx.sprite('spark', bx, by - 6, { scale: 1.2 }); sc.tweens.add({ targets: bl, alpha: 0, duration: 200, onComplete: () => bl.destroy() }); } });
+        }
+        sc.time.delayedCall(280, () => {
+          if (this.dead) return;
+          sound.play('hit'); sc.fx.shake(0.004, 120);
+          const hits = sc.combat.enemiesInRadius(cx, cy, r, s.maxTargets + (bk?.targetsAdd || 0), true);
+          hits.forEach((e) => sc.combat.playerSkillHit(e, { coef, skill: id }));
+        });
+        break;
+      }
+      case 'chain_lightning': {
+        this.playAction('_cast', 0.35);
+        const jumps = s.jumps + (bk?.jumpsAdd || 0);
+        sc.time.delayedCall(140, () => {
+          if (this.dead || t.dead) return;
+          sound.play('bolt');
+          const chain = [t];
+          let cur = t;
+          for (let j = 0; j < jumps; j++) {
+            const nx = sc.enemies.filter((e) => !e.dead && !chain.includes(e) && e.tpl.ai !== 'static' && Math.hypot(e.x - cur.x, e.y - cur.y) <= s.jumpRange * TILE)
+              .sort((a, b) => Math.hypot(a.x - cur.x, a.y - cur.y) - Math.hypot(b.x - cur.x, b.y - cur.y))[0];
+            if (!nx) break;
+            chain.push(nx); cur = nx;
+          }
+          let from = this;
+          chain.forEach((e, i) => {
+            const fx = from.x, fy = from.y - (from === this ? 40 : from.height * 0.5);
+            sc.time.delayedCall(i * 110, () => {
+              sc.combat.lightningLink(fx, fy, e.x, e.y - e.height * 0.5);
+              if (e.dead) return;
+              sc.combat.playerSkillHit(e, { coef: coef * s.falloff ** i, skill: id, spell: i === 0 });
+            });
+            from = e;
+          });
+        });
+        break;
+      }
       case 'whirlwind':
         this.playAction('_atk', 0.4);
         this.swing = { t: 0, dur: 0.38, spin: true };
@@ -388,7 +451,7 @@ export class Player {
         break;
       case 'iron_skin':
         this.playAction('_cast', 0.25);
-        this.buffs.ironSkin = { until: sc.clock + s.dur[rank - 1] * 1000, value: s.reduce[rank - 1] };
+        this.buffs.ironSkin = { until: sc.clock + (s.dur[rank - 1] + (bk?.durAdd || 0)) * 1000, value: s.reduce[rank - 1] };
         sound.play('shield');
         break;
       case 'war_charge': {
@@ -403,8 +466,9 @@ export class Player {
             if (this.dead || t.dead) return;
             sc.fx.sprite('spark', t.x, t.y - 16, { scale: 2.5 });
             sc.combat.playerSkillHit(t, { coef, skill: id });
-            t.stunUntil = sc.clock + s.stun[rank - 1] * 1000;
-            sc.combat.stunFx(t, s.stun[rank - 1]);
+            const stun = s.stun[rank - 1] + (t.tpl.kind === 'boss' ? 0 : (bk?.stunAdd || 0));
+            t.stunUntil = sc.clock + stun * 1000;
+            sc.combat.stunFx(t, stun);
             sc.fx.shake(0.005, 140);
           },
         });
@@ -418,7 +482,7 @@ export class Player {
           sound.play('fire');
           sc.combat.projectile(this, t, 'fireball', 460, () => {
             sc.fx.sprite('explosion', t.x, t.y - 14, { scale: 0.6 });
-            sc.combat.playerSkillHit(t, { coef, skill: id, spell: true });
+            sc.combat.playerSkillHit(t, { coef, skill: id, spell: true, burn: bk?.burn });
           });
         });
         break;
@@ -432,22 +496,23 @@ export class Player {
           const hits = sc.combat.enemiesInRadius(cx, cy, s.radius * TILE, s.maxTargets, true, t ? { x: cx, y: cy } : null);
           hits.forEach((e, i) => {
             sc.combat.playerSkillHit(e, { coef, skill: id, spell: i === 0 });
-            e.slowUntil = sc.clock + s.slowDur * 1000; e.slowPct = s.slow[rank - 1];
+            const slowDur = s.slowDur + (bk?.slowAdd || 0);
+            e.slowUntil = sc.clock + slowDur * 1000; e.slowPct = s.slow[rank - 1];
             if (!e.dead) e.sprite.setTint(0xa0d8ff);
-            sc.time.delayedCall(s.slowDur * 1000, () => { if (!e.dead && !e.isSlowed()) { e.sprite.clearTint(); if (e.baseTint) e.sprite.setTint(e.baseTint); if (e.furyTint) e.sprite.setTint(e.furyTint); } });
+            sc.time.delayedCall(slowDur * 1000, () => { if (!e.dead && !e.isSlowed()) { e.sprite.clearTint(); if (e.baseTint) e.sprite.setTint(e.baseTint); if (e.furyTint) e.sprite.setTint(e.furyTint); } });
           });
         });
         break;
       }
       case 'mana_shield':
         this.playAction('_cast', 0.25);
-        this.buffs.manaShield = { until: sc.clock + s.dur[rank - 1] * 1000, value: s.absorb[rank - 1] };
+        this.buffs.manaShield = { until: sc.clock + s.dur[rank - 1] * 1000, value: s.absorb[rank - 1] + (bk?.absorbAdd || 0) };
         sound.play('shield');
         break;
       case 'meteor': {
         this.playAction('_cast', 0.45);
         const tx = t.x, ty = t.y;
-        const r = s.radius * TILE;
+        const r = (s.radius + (bk?.radiusAdd || 0)) * TILE;
         sc.fx.telegraph({ kind: 'circle', x: tx, y: ty, r }, s.delay * 1000, 0xffa040);
         const m = sc.fx.sprite('meteor', tx + 60, ty - 220, { scale: 2 });
         sc.tweens.add({ targets: m, x: tx, y: ty - 20, duration: s.delay * 1000, ease: 'Quad.in', onComplete: () => m.destroy() });

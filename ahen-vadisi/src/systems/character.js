@@ -1,8 +1,9 @@
 // Karakter oluşturma, EXP/seviye, stat dağıtma, beceri rankları ve sıfırlamalar.
 import { CLASSES } from '../data/classes.js';
 import { ITEMS } from '../data/items.js';
-import { SKILLS, CLASS_SKILLS, maxRank, rankUpCost } from '../data/skills.js';
-import { MAX_LEVEL, STAT_POINTS_PER_LEVEL, BAG_START, SLOTS, xpToNext, RESET_COST, SCHEMA_VERSION } from '../data/constants.js';
+import { SKILLS, CLASS_SKILLS, maxRank, rankUpCost, MASTERY_BOOKS, MASTERY_BOOK_LEVEL } from '../data/skills.js';
+import { countStack, removeStack } from './inventory.js';
+import { MAX_LEVEL, STAT_POINTS_PER_LEVEL, BAG_START, SLOTS, xpToNext, RESET_COST, SCHEMA_VERSION, SKILL_BAR_SIZE } from '../data/constants.js';
 import { MAPS } from '../data/maps/index.js';
 import { makeContainer } from './inventory.js';
 import { createItem } from './loot.js';
@@ -44,6 +45,7 @@ export function createCharacter({ name, cls, slot }, rng) {
     titles: [],
     createdAt: Date.now(), updatedAt: Date.now(),
   };
+  ensureV2Fields(char, true);
   for (const tid of c.starterKit) {
     const inst = createItem(tid, null, rng, { noBonus: true, src: 'starter' });
     char.equipment[ITEMS[tid].slot] = inst;
@@ -55,6 +57,63 @@ export function createCharacter({ name, cls, slot }, rng) {
   return char;
 }
 
+// V2 alanları: yeni karakterde boş başlar; V1 kaydından geçişte (migrate) eksik olanlar eklenir.
+// Var olan V1 verisine (seviye, eşya, görev, kayıtlar) dokunulmaz.
+export function newHistory(fromV1 = false) {
+  return { since: Date.now(), fromV1, kills: 0, byEnemy: {}, bossKills: {}, found: { R: 0, E: 0, L: 0 }, dungeons: {} };
+}
+
+export function ensureV2Fields(char, fresh = false) {
+  if (!Array.isArray(char.skillBar)) char.skillBar = defaultSkillBar(char);
+  if (!char.masteryBooks || typeof char.masteryBooks !== 'object') char.masteryBooks = {};
+  if (!char.history || typeof char.history !== 'object') char.history = newHistory(!fresh);
+  if (!char.runs || typeof char.runs !== 'object') char.runs = {};
+  const w = char.world;
+  if (w) {
+    if (!w.flags || typeof w.flags !== 'object') w.flags = {};
+    if (!w.chests || typeof w.chests !== 'object') w.chests = {};
+  }
+  char.v = SCHEMA_VERSION;
+  return char;
+}
+
+// Varsayılan beceri çubuğu: V1 düzeni (ilk 4 aktif). 5. aktif açılınca Beceriler ekranından değiştirilir.
+export function defaultSkillBar(char) {
+  return CLASS_SKILLS[char.cls].actives.slice(0, SKILL_BAR_SIZE);
+}
+
+export function setSkillBar(char, slot, id) {
+  const cs = CLASS_SKILLS[char.cls];
+  if (slot < 0 || slot >= SKILL_BAR_SIZE) return { ok: false, msg: 'Geçersiz yuva' };
+  if (!cs.actives.includes(id)) return { ok: false, msg: 'Geçersiz beceri' };
+  if (!char.skills[id]) return { ok: false, msg: `Seviye ${SKILLS[id].unlock}'te açılır` };
+  const bar = char.skillBar.slice();
+  const prev = bar.indexOf(id);
+  if (prev >= 0) bar[prev] = bar[slot];        // yer değiştir
+  bar[slot] = id;
+  char.skillBar = bar;
+  return { ok: true };
+}
+
+// ------------------------------------------------------------------ Ustalık Kitapları (V2)
+export function canApplyMasteryBook(char, id) {
+  const s = SKILLS[id];
+  if (!s || s.cls !== char.cls || s.kind !== 'active' || !MASTERY_BOOKS[id]) return { ok: false, msg: 'Geçersiz beceri' };
+  if (char.level < MASTERY_BOOK_LEVEL) return { ok: false, msg: `Seviye ${MASTERY_BOOK_LEVEL} gerekli` };
+  if ((char.skills[id] || 0) < maxRank(s)) return { ok: false, msg: 'Beceri Rank 5 olmalı' };
+  if (char.masteryBooks?.[id]) return { ok: false, msg: 'Bu beceriye zaten kitap uygulandı' };
+  if (countStack(char.bag, 'mastery_book') < 1) return { ok: false, msg: 'Ustalık Kitabı yok' };
+  return { ok: true };
+}
+
+export function applyMasteryBook(char, id) {
+  const chk = canApplyMasteryBook(char, id);
+  if (!chk.ok) return chk;
+  removeStack(char.bag, 'mastery_book', 1);
+  char.masteryBooks = char.masteryBooks || {};
+  char.masteryBooks[id] = true;
+  return { ok: true, book: MASTERY_BOOKS[id] };
+}
 
 // ------------------------------------------------------------------ EXP / seviye
 export function gainExp(char, amount) {
