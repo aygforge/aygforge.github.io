@@ -3,6 +3,24 @@ import { PB, shade, OUTLINE } from './pixel.js';
 import { ITEMS } from '../data/items.js';
 import { STACKABLES } from '../data/materials.js';
 import { offhandSprite } from './characters.js';
+import { ICON_PACK, ICON_PALETTE, ICON_INDEX_WIDTH } from './iconPack.js';
+
+// Hazır ikon paketi (Clockwork Raven Studios, 16×16): eşleşen eşya/iksir bu ikonla çizilir, diğerleri procedural
+let packPalette = null;
+function packIcon(key) {
+  const data = ICON_PACK[key];
+  if (!data) return null;
+  if (!packPalette) {
+    packPalette = ICON_PALETTE.map((h) => {
+      const v = parseInt(h, 16) >>> 0;
+      const r = v >>> 24, g = (v >>> 16) & 255, b = (v >>> 8) & 255, a = v & 255;
+      return ((a << 24) | (b << 16) | (g << 8) | r) >>> 0;
+    });
+  }
+  const pb = new PB(16, 16);
+  for (let i = 0; i < 256; i++) pb.d[i] = packPalette[parseInt(data.substr(i * ICON_INDEX_WIDTH, ICON_INDEX_WIDTH), 16)];
+  return pb;
+}
 
 const cache = new Map();
 
@@ -196,6 +214,8 @@ const UI_ART = {
 };
 
 export function iconPB(key) {
+  const packed = packIcon(key);
+  if (packed) return packed;   // paket ikonlarının kendi dış hattı var
   let pb = null;
   if (key.startsWith('skill:')) { pb = new PB(16, 16); pb.rect(0, 0, 16, 16, '#1e1a28'); (SKILL_ART[key.slice(6)] || (() => {}))(pb); }
   else if (key.startsWith('ui:')) { pb = new PB(16, 16); (UI_ART[key.slice(3)] || (() => pb.rect(4, 4, 8, 8, '#f0f')))(pb); }

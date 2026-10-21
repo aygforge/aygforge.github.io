@@ -21,6 +21,13 @@ const rows = [];
 if (what === 'monsters') {
   const ids = (process.argv[5] || 'ash_imp,ash_hunter,crimson_scorpion,burnt_warrior,frost_wolf,ice_wisp,frost_sentinel,snow_shaman,ash_butcher,ice_warden,ash_giant,frozen_guardian,frost_crystal').split(',');
   for (const id of ids) rows.push(monsterSheet(id).frames);
+} else if (what === 'icons') {
+  // eşya ve iksir ikonları (hazır paket + procedural), 15'erli satırlar
+  const { iconPB } = await import('../src/art/icons.js');
+  const { ITEM_LIST } = await import('../src/data/items.js');
+  const { POTION_LIST } = await import('../src/data/materials.js');
+  const keys = [...ITEM_LIST.map((t) => t.id), ...POTION_LIST.map((p) => p.id)];
+  for (let i = 0; i < keys.length; i += 15) rows.push(keys.slice(i, i + 15).map((k) => iconPB(k)));
 } else {
   const { TILE_DEFS } = await import('../src/world/tileRegistry.js');
   const tiles = await import('../src/art/tiles.js');
