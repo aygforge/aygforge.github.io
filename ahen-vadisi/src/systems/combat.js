@@ -1,0 +1,76 @@
+// Savaş matematiği — belge §4.2. Hasar tek bir yerde, tek sırayla hesaplanır:
+// ham güç → beceri katsayısı → savunma → tür bonusu/direnç/azaltma → (normal vuruş) ±%5 → kritik ×1,5 → min 1 → yuvarlama
+import { CRIT_MULT, NORMAL_VARIANCE } from '../data/constants.js';
+
+export function defenseFactor(defense) {
+  return 100 / (100 + Math.max(0, defense));
+}
+
+export function computeHit({ power, coef = 1, defense = 0, mult = 1, reduce = 0, isNormal = false, critChance = 0, rng, canCrit = true }) {
+  let d = power * coef * defenseFactor(defense);
+  d *= mult * (1 - Math.min(0.9, reduce));
+  if (isNormal) d *= 1 + (rng.float() * 2 - 1) * NORMAL_VARIANCE;
+  let crit = false;
+  if (canCrit && critChance > 0 && rng.float() < critChance) {
+    crit = true;
+    d *= CRIT_MULT;
+  }
+  return { dmg: Math.max(1, Math.round(d)), crit };
+}
+
+// Normal saldırı isabeti: aynı seviyede %97, seviye farkı ile değişir
+export function hitChance(attLv, defLv) {
+  return Math.max(0.8, Math.min(0.99, 0.97 + 0.02 * (attLv - defLv)));
+}
+
+// Oyuncu → düşman
+// opts: { coef, isNormal, skillHit (aktif skill: ıskalama yok), targetSlowed, rng }
+export function playerHit(stats, enemy, opts) {
+  const { rng } = opts;
+  if (opts.isNormal && rng.float() > hitChance(stats.level, enemy.level)) return { dmg: 0, miss: true, crit: false };
+  const magic = (opts.dmgType || stats.damageType) === 'magic';
+  const defense = magic ? enemy.mdef : enemy.def;
+  let mult = stats.dmgMult;
+  if (enemy.species && stats.species[enemy.species]) mult += stats.species[enemy.species];
+  if (opts.targetSlowed && stats.slowedDmg) mult += stats.slowedDmg;
+  if (opts.extraMult) mult *= opts.extraMult;
+  const r = computeHit({
+    power: opts.power ?? stats.power, coef: opts.coef ?? 1, defense, mult, reduce: enemy.reduce || 0,
+    isNormal: !!opts.isNormal, critChance: stats.critChance, rng,
+  });
+  return { ...r, miss: false };
+}
+
+// Düşman → oyuncu. buffs: { reduce (Demir Deri), manaShield (oran), willReduce, willDef }
+export function enemyHit(enemy, pStats, opts) {
+  const { rng } = opts;
+  if (opts.isNormal && rng.float() > hitChance(enemy.level, pStats.level)) return { dmg: 0, miss: true, mpDmg: 0 };
+  const magic = (opts.dmgType || enemy.dmgType) === 'magic';
+  let defense = magic ? pStats.mdef : pStats.def;
+  const buffs = opts.buffs || {};
+  if (buffs.willDef) defense *= 1 + buffs.willDef;
+  const reduce = 1 - (1 - (buffs.reduce || 0)) * (1 - (buffs.willReduce || 0));
+  const r = computeHit({
+    power: enemy.atk, coef: opts.coef ?? 1, defense, mult: opts.mult ?? 1, reduce,
+    isNormal: !!opts.isNormal, critChance: 0, rng, canCrit: false,
+  });
+  let dmg = r.dmg, mpDmg = 0;
+  if (buffs.manaShield && opts.currentMp > 0) {
+    mpDmg = Math.min(opts.currentMp, Math.round(dmg * buffs.manaShield));
+    dmg -= mpDmg;
+  }
+  return { dmg: Math.max(0, dmg), mpDmg, miss: false };
+}
+
+// Zehir: saniyelik hasar (ATK yüzdesi), direnç ile azalır
+export function poisonTick(enemyAtk, pct, poisonRes) {
+  return Math.max(1, Math.round(enemyAtk * pct * (1 - poisonRes)));
+}
+
+// Basit DPS tahmini (geliştirici paneli ve denge testleri için)
+export function estimateNormalDps(stats, enemy) {
+  const magic = stats.damageType === 'magic';
+  const per = stats.power * defenseFactor(magic ? enemy.mdef : enemy.def) * stats.dmgMult;
+  const critAvg = 1 + stats.critChance * 0.5;
+  return (per * critAvg * hitChance(stats.level, enemy.level)) / stats.attackInterval;
+}

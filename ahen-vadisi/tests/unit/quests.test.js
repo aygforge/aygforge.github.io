@@ -1,0 +1,132 @@
+import { describe, it, expect } from 'vitest';
+import { Rng } from '../../src/core/rng.js';
+import { createCharacter, gainExp } from '../../src/systems/character.js';
+import { QUESTS, CLASS_QUESTS, QUEST_MAP } from '../../src/data/quests.js';
+import * as qs from '../../src/systems/quests.js';
+import { addStack } from '../../src/systems/inventory.js';
+import { applyKill } from '../../src/systems/rewards.js';
+import * as dg from '../../src/systems/dungeon.js';
+import { MAPS } from '../../src/data/maps/index.js';
+import { cumulativeXp } from '../../src/data/constants.js';
+
+const rng = new Rng(4);
+
+// Bir görevi gerçek olaylarla (öldürme/ulaşma/etkileşim/teslim) tamamla
+function complete(c, q) {
+  for (let i = 0; i < q.objectives.length; i++) {
+    const o = q.objectives[i];
+    let guard = 0;
+    while (!qs.objectiveDone(c, q, i) && guard++ < 5000) {
+      if (o.type === 'kill') qs.onKill(c, o.enemy || 'rotten_guard', rng);
+      else if (o.type === 'qitem') qs.onKill(c, o.from[0], rng);
+      else if (o.type === 'reach') qs.onReach(c, o.loc);
+      else if (o.type === 'interact') {
+        const objs = Object.values(MAPS).flatMap((m) => m.objects).filter((x) => x.group === o.group);
+        for (const ob of objs) qs.onInteract(c, o.group, ob.id);
+      } else if (o.type === 'deliver') addStack(c.bag, o.item, o.count);
+      else if (o.type === 'dungeon') qs.onDungeonStage(c, o.stage);
+      else if (o.type === 'talk') break;
+    }
+  }
+}
+
+describe('Görevler', () => {
+  it('26 görevin tamamı sırayla alınabilir, tamamlanabilir, ödülü bir kez verilir', () => {
+    for (const cls of ['warrior', 'mage']) {
+      const c = createCharacter({ name: 'Görevci', cls, slot: 0 }, rng);
+      let gold = c.gold;
+      const order = [...QUESTS.filter((q) => q.main), ...QUESTS.filter((q) => !q.main), ...CLASS_QUESTS];
+      for (const q of order) {
+        if (c.level < q.minLevel) gainExp(c, cumulativeXp(q.minLevel) - cumulativeXp(c.level) - c.exp);
+        expect(qs.questStatus(c, q), q.id).toBe('available');
+        expect(qs.acceptQuest(c, q.id).ok).toBe(true);
+        expect(qs.turnInQuest(c, q.id, q.turnIn).ok).toBe(q.objectives.every((o) => o.type === 'talk'));
+        if (qs.questState(c, q.id).s === 'done') continue;
+        complete(c, q);
+        expect(qs.isReady(c, q), q.id).toBe(true);
+        const g0 = c.gold;
+        const r = qs.turnInQuest(c, q.id, q.turnIn);
+        expect(r.ok, q.id + ' ' + r.msg).toBe(true);
+        expect(c.gold).toBe(g0 + q.gold);
+        expect(qs.turnInQuest(c, q.id, q.turnIn).ok).toBe(false); // tekrar ödül yok
+        expect(qs.acceptQuest(c, q.id).ok).toBe(false);
+      }
+      expect(c.world.dungeonUnlocked).toBe(true);
+      expect(c.titles).toContain('Vadinin Koruyucusu');
+      expect(c.bonusSkillPoints).toBe(2);
+      expect(c.mastery).toBe(true);
+    }
+  });
+  it('ön koşul ve seviye kilidi', () => {
+    const c = createCharacter({ name: 'Kilit', cls: 'mage', slot: 0 }, rng);
+    expect(qs.questStatus(c, QUEST_MAP.m02)).toBe('locked');
+    expect(qs.questStatus(c, QUEST_MAP.s01)).toBe('lowlevel');
+  });
+  it('Boz Kurt öldürünce sayaç artar, yanlış yaratık artırmaz', () => {
+    const c = createCharacter({ name: 'Kurtçu', cls: 'warrior', slot: 0 }, rng);
+    c.quests.m04 = { s: 'active', p: [0, 0], used: [] };
+    applyKill(c, 'meadow_rat', {}, rng);
+    expect(c.quests.m04.p[0]).toBe(0);
+    applyKill(c, 'gray_wolf', {}, rng);
+    expect(c.quests.m04.p[0]).toBe(1);
+  });
+  it('aynı görev nesnesi iki kez sayılmaz; "after" sırası', () => {
+    const c = createCharacter({ name: 'Sıra', cls: 'warrior', slot: 0 }, rng);
+    c.quests.m15 = { s: 'active', p: [0, 0], used: [] };
+    qs.onInteract(c, 'dungeon_gate', 'dungeon_gate');
+    expect(c.quests.m15.p[1]).toBe(0);
+    for (let i = 0; i < 5; i++) qs.onKill(c, 'rotten_guard', rng);
+    qs.onInteract(c, 'dungeon_gate', 'dungeon_gate');
+    qs.onInteract(c, 'dungeon_gate', 'dungeon_gate');
+    expect(c.quests.m15.p[1]).toBe(1);
+    expect(c.world.dungeonUnlocked).toBe(true);
+  });
+  it('Av Sözleşmeleri ayrı ve tekrarlanabilir', () => {
+    const c = createCharacter({ name: 'Avcı', cls: 'warrior', slot: 0 }, rng);
+    gainExp(c, cumulativeXp(5));
+    expect(qs.contractOffers(c).length).toBe(0);
+    c.quests.s01 = { s: 'done', p: [8], used: [] };
+    const offers = qs.contractOffers(c);
+    expect(offers.length).toBeGreaterThan(0);
+    for (let round = 0; round < 3; round++) {
+      expect(qs.acceptContract(c, 'gray_wolf').ok).toBe(true);
+      for (let i = 0; i < 12; i++) qs.onKill(c, 'gray_wolf', rng);
+      expect(qs.claimContract(c).ok).toBe(true);
+      expect(qs.claimContract(c).ok).toBe(false);
+    }
+    expect(c.contractsDone).toBe(3);
+  });
+});
+
+describe('Dungeon', () => {
+  it('kilit, koşu, kontrol noktası, tek boss loot\'u, gönüllü çıkış', () => {
+    const c = createCharacter({ name: 'Ocak', cls: 'mage', slot: 0 }, rng);
+    expect(dg.canEnterDungeon(c).ok).toBe(false);
+    c.world.dungeonUnlocked = true;
+    const r1 = dg.startOrResumeRun(c);
+    expect(r1.resumed).toBe(false);
+    dg.clearStage(c, 1); dg.clearStage(c, 2);
+    expect(dg.respawnEntry(c)).toBe('cp2');
+    dg.clearStage(c, 3);
+    expect(dg.respawnEntry(c)).toBe('checkpoint');
+    // istemsiz kapanma → devam
+    const saved = JSON.parse(JSON.stringify(c));
+    expect(dg.startOrResumeRun(saved).resumed).toBe(true);
+    expect(saved.dungeon.cleared).toEqual([1, 2, 3]);
+    // boss loot bir kez
+    const killId = dg.bossKillId(c);
+    expect(dg.claimBossLoot(c)).toBe(true);
+    const a = applyKill(c, 'mine_golem', { killId, unique: true }, rng);
+    expect(dg.claimBossLoot(c)).toBe(false);
+    const b = applyKill(c, 'mine_golem', { killId, unique: true }, rng);
+    expect(a.duplicate).toBe(false);
+    expect(b.duplicate).toBe(true);
+    expect(b.gold).toBe(0);
+    // gönüllü çıkış → yeni koşu → yeni boss loot hakkı
+    dg.exitRun(c);
+    const r2 = dg.startOrResumeRun(c);
+    expect(r2.resumed).toBe(false);
+    expect(r2.run.runId).not.toBe(r1.run.runId);
+    expect(dg.claimBossLoot(c)).toBe(true);
+  });
+});

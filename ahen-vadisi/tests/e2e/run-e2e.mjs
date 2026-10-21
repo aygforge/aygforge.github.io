@@ -1,0 +1,324 @@
+// Tarayıcı otomasyonu ile uçtan uca testler (Playwright + Chromium, mobil dokunmatik emülasyonu).
+// Kullanım: npm run build && npm run test:e2e
+// Not: Headless Chromium yazılımsal WebGL (SwiftShader) kullanır; FPS değerleri gerçek telefondan düşüktür.
+import { chromium } from 'playwright';
+import { spawn } from 'node:child_process';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const here = dirname(fileURLToPath(import.meta.url));
+const root = join(here, '..', '..');
+const shots = join(here, 'screens');
+mkdirSync(shots, { recursive: true });
+const PORT = 4173;
+const BASE = `http://localhost:${PORT}/`;
+const results = [];
+const record = (name, ok, info = '') => { results.push({ name, ok, info }); console.log(`${ok ? '✔' : '✘'} ${name}${info ? ' — ' + info : ''}`); };
+
+const server = spawn('npx', ['vite', 'preview', '--port', String(PORT), '--strictPort'], { cwd: root, stdio: 'pipe' });
+await new Promise((res) => { server.stdout.on('data', (d) => { if (String(d).includes(String(PORT))) res(); }); setTimeout(res, 6000); });
+
+const browser = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader'] });
+
+async function newPage(w, h, dev = true) {
+  const ctx = await browser.newContext({ viewport: { width: w, height: h }, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
+  const page = await ctx.newPage();
+  page.errors = [];
+  page.on('pageerror', (e) => page.errors.push(e.message));
+  page.on('console', (m) => { if (m.type() === 'error') page.errors.push(m.text()); });
+  await page.goto(BASE + (dev ? '?dev=1' : ''));
+  await page.waitForSelector('[data-testid=menu-play]', { timeout: 40000 });
+  return { ctx, page };
+}
+
+async function createChar(page, cls, name) {
+  await page.tap('[data-testid=menu-play]');
+  await page.waitForTimeout(250);
+  const create = await page.$('[data-testid=create-char]');
+  if (!create) { // ilk boş yuvayı seç
+    for (let i = 0; i < 3; i++) {
+      await page.tap(`[data-testid=slot-${i}]`);
+      if (await page.$('[data-testid=create-char]')) break;
+    }
+  }
+  await page.tap('[data-testid=create-char]');
+  await page.tap(`[data-testid=class-${cls}]`);
+  await page.fill('[data-testid=name-input]', name);
+  await page.tap('[data-testid=create-confirm]');
+  await page.waitForFunction(() => window.__AHEN?.world?.player, null, { timeout: 20000 });
+  await page.waitForTimeout(800);
+}
+
+const ev = (page, fn, arg) => page.evaluate(fn, arg);
+const waitMap = (page, id) => page.waitForFunction((id) => window.__AHEN.world?.mapId === id && window.__AHEN.world.player && !window.__AHEN.world.changing, id, { timeout: 20000 }).then(() => page.waitForTimeout(700));
+
+// Yuvarlak aksiyon butonları (border-radius: 50%) daire olarak, diğerleri dikdörtgen olarak sınanır
+function overlap(a, b) {
+  const round = (x) => x.s === '.act' || x.s === '.joy';
+  if (round(a) && round(b)) {
+    const d = Math.hypot((a.left + a.right) / 2 - (b.left + b.right) / 2, (a.top + a.bottom) / 2 - (b.top + b.bottom) / 2);
+    return d < (a.w + b.w) / 2 - 1;
+  }
+  return !(a.right <= b.left + 1 || b.right <= a.left + 1 || a.bottom <= b.top + 1 || b.bottom <= a.top + 1);
+}
+
+try {
+  // ------------------------------------------------------------------ 1) Mobil arayüz: 16:9, 19.5:9, 20:9
+  for (const [w, h, label] of [[640, 360, '16:9'], [780, 360, '19.5:9'], [800, 360, '20:9'], [844, 390, '19.5:9 (iPhone 14)'], [915, 412, '20:9 (Android)']]) {
+    const { ctx, page } = await newPage(w, h);
+    await createChar(page, 'warrior', `Ui${w}`);
+    const boxes = await page.evaluate(() => {
+      const q = (s) => [...document.querySelectorAll(s)].filter((e) => e.offsetParent !== null).map((e) => { const r = e.getBoundingClientRect(); return { s, left: r.left, top: r.top, right: r.right, bottom: r.bottom, w: r.width, h: r.height }; });
+      return [...q('.joy'), ...q('.act'), ...q('.ibtn'), ...q('.mm'), ...q('.hud-tl .vit'), ...q('.tracker')];
+    });
+    const off = boxes.filter((b) => b.left < 0 || b.top < 0 || b.right > w + 0.5 || b.bottom > h + 0.5);
+    const small = boxes.filter((b) => (b.s === '.act' || b.s === '.ibtn') && Math.min(b.w, b.h) < 44);
+    const interactive = boxes.filter((b) => ['.joy', '.act', '.ibtn', '.mm'].includes(b.s));
+    const overlaps = [];
+    for (let i = 0; i < interactive.length; i++) for (let j = i + 1; j < interactive.length; j++) if (overlap(interactive[i], interactive[j])) overlaps.push(`${interactive[i].s}×${interactive[j].s}`);
+    await page.screenshot({ path: join(shots, `hud-${w}x${h}.png`) });
+    record(`HUD ${label} ${w}×${h}: ekran içinde`, off.length === 0, off.map((o) => o.s).join(','));
+    record(`HUD ${label} ${w}×${h}: dokunma hedefleri ≥44px`, small.length === 0, small.map((o) => `${o.s} ${o.w}`).join(','));
+    record(`HUD ${label} ${w}×${h}: buton çakışması yok`, overlaps.length === 0, overlaps.join(', '));
+    // panel açılıp ekrana sığıyor mu
+    await page.tap('[data-testid=btn-inventory]');
+    await page.waitForTimeout(300);
+    const pan = await page.evaluate(() => { const r = document.querySelector('.panel').getBoundingClientRect(); return { l: r.left, t: r.top, r: r.right, b: r.bottom }; });
+    await page.screenshot({ path: join(shots, `inventory-${w}x${h}.png`) });
+    record(`Envanter paneli ${w}×${h} ekrana sığar`, pan.l >= 0 && pan.t >= 0 && pan.r <= w && pan.b <= h);
+    record(`Konsol hatası yok (${w}×${h})`, page.errors.length === 0, page.errors.slice(0, 2).join(' | '));
+    await ctx.close();
+  }
+
+  // ------------------------------------------------------------------ 2) Dikey ekran uyarısı
+  {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const page = await ctx.newPage();
+    await page.goto(BASE);
+    await page.waitForTimeout(1500);
+    const vis = await page.evaluate(() => getComputedStyle(document.getElementById('rotate')).display !== 'none');
+    await page.screenshot({ path: join(shots, 'portrait.png') });
+    record('Dikey ekranda "telefonu yatay çevir" ekranı', vis);
+    await ctx.close();
+  }
+
+  // ------------------------------------------------------------------ 3) Kontrol: dokun → yaklaş → saldır; joystick yaklaşmayı anında keser
+  const { ctx: c3, page } = await newPage(844, 390);
+  await createChar(page, 'warrior', 'Kontrolcü');
+  await ev(page, () => window.__AHEN.world.changeMap('forest', 'from_village'));
+  await waitMap(page, 'forest');
+  // en yakın sıçanın yakınına konumlan ve onu ekranda bul
+  const ratScreen = await ev(page, () => {
+    const w = window.__AHEN.world;
+    const rats = w.enemies.filter((e) => !e.dead && e.tpl.id === 'meadow_rat');
+    const r = rats[0];
+    w.player.x = r.x - 150; w.player.y = r.y;
+    for (const o of rats.slice(1)) { o.x += 400; o.home.x += 400; }
+    r.state = 'idle';
+    return true;
+  });
+  await page.waitForTimeout(600);
+  const pos = await ev(page, () => {
+    const w = window.__AHEN.world, cam = w.cameras.main;
+    const r = w.enemies.filter((e) => !e.dead && e.tpl.id === 'meadow_rat').sort((a, b) => Math.hypot(a.x - w.player.x, a.y - w.player.y) - Math.hypot(b.x - w.player.x, b.y - w.player.y))[0];
+    window.__T = r;
+    return { x: (r.x - cam.worldView.x) * cam.zoom, y: (r.y - r.height / 2 - cam.worldView.y) * cam.zoom };
+  });
+  void ratScreen;
+  await page.touchscreen.tap(pos.x, pos.y);
+  await page.waitForTimeout(150);
+  const afterTap = await ev(page, () => ({ target: window.__AHEN.world.player.target === window.__T, approaching: window.__AHEN.world.player.approaching }));
+  record('Düşmana dokun → hedef seçilir ve yaklaşma başlar', afterTap.target && afterTap.approaching, JSON.stringify(afterTap));
+  // joystick sürükle
+  const joy = await page.$('[data-testid=joystick]');
+  const jb = await joy.boundingBox();
+  const cdp = await c3.newCDPSession(page);
+  const touch = (type, x, y) => cdp.send('Input.dispatchTouchEvent', { type, touchPoints: type === 'touchEnd' ? [] : [{ x, y, id: 7 }] });
+  await touch('touchStart', jb.x + jb.width / 2, jb.y + jb.height / 2);
+  await touch('touchMove', jb.x + jb.width / 2 - 40, jb.y + jb.height / 2);
+  // bir sonraki birkaç karede yaklaşma iptal edilmiş olmalı
+  const cancelFrames = await ev(page, async () => {
+    for (let f = 0; f < 6; f++) {
+      await new Promise((r) => requestAnimationFrame(r));
+      if (!window.__AHEN.world.player.approaching) return f + 1;
+    }
+    return -1;
+  });
+  record('Joystick hareketi otomatik yaklaşmayı keser (≤ 2 kare)', cancelFrames > 0 && cancelFrames <= 2, `${cancelFrames}. karede`);
+  await page.waitForTimeout(400);
+  await touch('touchEnd', 0, 0);
+  await page.waitForTimeout(800);
+  const afterRelease = await ev(page, () => ({ approaching: window.__AHEN.world.player.approaching, target: window.__AHEN.world.player.target === window.__T }));
+  record('Joystick bırakılınca yaklaşma kendiliğinden başlamaz; hedef korunur', !afterRelease.approaching && afterRelease.target, JSON.stringify(afterRelease));
+  // tekrar dokun → yaklaş → otomatik saldırı ile öldür
+  const pos2 = await ev(page, () => { const w = window.__AHEN.world, cam = w.cameras.main, r = window.__T; return { x: (r.x - cam.worldView.x) * cam.zoom, y: (r.y - r.height / 2 - cam.worldView.y) * cam.zoom }; });
+  await page.touchscreen.tap(pos2.x, pos2.y);
+  const killed = await ev(page, async () => {
+    const t0 = performance.now();
+    while (performance.now() - t0 < 12000) { if (window.__T.dead) return (performance.now() - t0) / 1000; await new Promise((r) => setTimeout(r, 100)); }
+    return -1;
+  });
+  record('Menzile girince normal saldırı otomatik sürer ve hedef ölür', killed > 0, `${killed.toFixed?.(1)} sn`);
+  const afterKill = await ev(page, () => ({ target: window.__AHEN.world.player.target, approaching: window.__AHEN.world.player.approaching, kills: window.__AHEN.char.record.kills, exp: window.__AHEN.char.exp, gold: window.__AHEN.char.gold }));
+  record('Hedef ölünce yeni hedef otomatik seçilmez', afterKill.target === null && !afterKill.approaching, JSON.stringify(afterKill));
+  // duvar arkası: görüş hattı
+  const losOk = await ev(page, () => {
+    const g = window.__AHEN.world.grid;
+    // açık alanda görüş var, katı kütle içinden yok
+    let blocked = null;
+    for (let y = 5; y < g.h - 5 && !blocked; y++) for (let x = 5; x < g.w - 5; x++) if (g.opaque(x, y) && !g.opaque(x - 2, y) && !g.opaque(x + 2, y)) { blocked = [x, y]; break; }
+    const [x, y] = blocked;
+    return !g.los((x - 2) * 32 + 16, y * 32 + 16, (x + 2) * 32 + 16, y * 32 + 16);
+  });
+  record('Engelden görüş hattı geçmez (duvar arkasından saldırı yok)', losOk);
+  // erişilemeyen hedef: sonsuz koşma yok
+  const unreachable = await ev(page, async () => {
+    const w = window.__AHEN.world, p = w.player;
+    const fake = { x: 2 * 32, y: 2 * 32, radius: 10, height: 30, dead: false, kind: 'enemy', drawBar() {}, };
+    p.target = fake; p.startApproach();
+    const t0 = performance.now();
+    while (performance.now() - t0 < 14000) { if (!p.approaching) return (performance.now() - t0) / 1000; await new Promise((r) => setTimeout(r, 100)); }
+    return -1;
+  });
+  record('Erişilemeyen hedefe sonsuz koşma yok (uyarı + kilit çözülür)', unreachable > 0, `${unreachable.toFixed?.(1)} sn içinde durdu`);
+  await page.screenshot({ path: join(shots, 'forest-control.png') });
+
+  // ------------------------------------------------------------------ 4) Kayıt: kapat-aç
+  const before = await ev(page, async () => {
+    const a = window.__AHEN;
+    a.char.gold = 777; a.char.quests.m01 = { s: 'active', p: [2], used: [] };
+    await a.flushSave('test');
+    return { name: a.char.name, level: a.char.level, gold: a.char.gold, map: a.world.mapId, kills: a.char.record.kills, bag: a.char.bag.slots.filter(Boolean).length, x: Math.floor(a.world.player.x / 32) };
+  });
+  await page.reload();
+  await page.waitForSelector('[data-testid=menu-play]', { timeout: 40000 });
+  const after = await ev(page, () => { const c = window.__AHEN.profile.characters.find((x) => x?.name === 'Kontrolcü'); return { name: c.name, level: c.level, gold: c.gold, map: c.world.map, kills: c.record.kills, bag: c.bag.slots.filter(Boolean).length, q: c.quests.m01?.p[0], x: c.world.x }; });
+  record('Kapat-aç: karakter, gold, görev, harita, envanter korunur', after.gold === 777 && after.map === 'forest' && after.kills === before.kills && after.q === 2 && after.bag === before.bag, JSON.stringify(after));
+  // aynı karakterle dünyaya geri dön
+  await page.tap('[data-testid=menu-play]');
+  await page.waitForTimeout(200);
+  const slotIdx = await ev(page, () => window.__AHEN.profile.characters.findIndex((x) => x?.name === 'Kontrolcü'));
+  await page.tap(`[data-testid=slot-${slotIdx}]`);
+  await page.tap('[data-testid=enter-world]');
+  await waitMap(page, 'forest');
+  record('Kayıttan dünyaya dönüş (aynı harita)', true);
+
+  // ------------------------------------------------------------------ 5) Performans: yoğunluk ve boss
+  const perf = async (label) => ev(page, async (label) => {
+    const loop = window.__AHEN.game.loop;
+    const frames = [];
+    let last = performance.now();
+    const t0 = last;
+    while (performance.now() - t0 < 4000) { await new Promise((r) => requestAnimationFrame(r)); const n = performance.now(); frames.push(n - last); last = n; const a = window.__AHEN; a.char.hp = a.stats().maxHp; }
+    const avg = 1000 / (frames.reduce((a, b) => a + b, 0) / frames.length);
+    const mem = performance.memory ? performance.memory.usedJSHeapSize / 1048576 : null;
+    return { label, fps: +avg.toFixed(1), phaserFps: +loop.actualFps.toFixed(1), memMB: mem && +mem.toFixed(1), enemies: window.__AHEN.world.enemies.filter((e) => !e.dead).length };
+  }, label);
+  const p1 = await perf('orman normal');
+  await ev(page, () => { const w = window.__AHEN.world, p = w.player; for (let i = 0; i < 30; i++) { const a = i / 30 * Math.PI * 2; const x = p.x + Math.cos(a) * 160, y = p.y + Math.sin(a) * 120; if (!w.grid.blockedAt(x, y)) w.spawner.spawnEnemy('gray_wolf', x, y); } });
+  const p2 = await perf('orman +30 kurt (saldırgan)');
+  await ev(page, () => { const a = window.__AHEN; a.setSettings({ lowPerf: true }); });
+  const p3 = await perf('düşük performans modu (30 FPS sınırı)');
+  await ev(page, () => { const a = window.__AHEN; a.setSettings({ lowPerf: false }); });
+  for (const r of [p1, p2, p3]) record(`Performans: ${r.label}`, r.fps > 10, `ölçülen ${r.fps} FPS · Phaser ${r.phaserFps} · ${r.enemies} yaratık · bellek ${r.memMB} MB (SwiftShader yazılım GPU)`);
+  results.perf = [p1, p2, p3];
+
+  // ------------------------------------------------------------------ 6) Dungeon: Golem, tek loot, tekrar giriş
+  await ev(page, () => { const a = window.__AHEN; for (const e of a.world.enemies) if (!e.dead) a.world.spawner.despawn(e); a.char.world.dungeonUnlocked = true; a.char.level = 20; a.changed('level'); a.world.changeMap('dungeon', null, { enterDungeon: true }); });
+  await waitMap(page, 'dungeon');
+  const run1 = await ev(page, () => window.__AHEN.char.dungeon.runId);
+  const pg = await perf('dungeon');
+  record(`Performans: ${pg.label}`, pg.fps > 10, `${pg.fps} FPS · ${pg.enemies} yaratık`);
+  await ev(page, async () => {
+    const a = window.__AHEN, w = a.world;
+    const g = w.enemies.find((e) => e.tpl.id === 'mine_golem');
+    w.player.x = g.x - 140; w.player.y = g.y + 40;
+    g.aggro(w.player);
+    window.__tgSeen = false;
+    const t0 = performance.now();
+    while (performance.now() - t0 < 9000) {
+      await new Promise((r) => setTimeout(r, 100));
+      a.char.hp = a.stats().maxHp;
+      if (w.children.list.some((o) => o.texture?.key?.startsWith('tg_'))) window.__tgSeen = true;
+    }
+  });
+  await page.screenshot({ path: join(shots, 'golem-fight.png') });
+  const telegraphSeen = await ev(page, () => window.__tgSeen);
+  record('Golem büyük saldırıyı telegrafla işaretler', telegraphSeen);
+  const golemRes = await ev(page, () => {
+    const a = window.__AHEN, w = a.world;
+    const g = w.enemies.find((e) => e.tpl.id === 'mine_golem');
+    const gold0 = a.char.gold, claims0 = Object.keys(a.char.claims).length;
+    g.hp = 1;
+    w.combat.applyToEnemy(g, { dmg: 5, crit: false, miss: false });
+    const gold1 = a.char.gold, claims1 = Object.keys(a.char.claims).length;
+    // aynı koşuda ikinci boss ölümü (ör. hile/çift olay) loot vermez
+    const g2 = w.spawner.spawnEnemy('mine_golem', g.x, g.y, { stage: 4 });
+    g2.hp = 1;
+    w.combat.applyToEnemy(g2, { dmg: 5, crit: false, miss: false });
+    return { dead: g.dead, goldGained: gold1 - gold0, claims: claims1 - claims0, secondGold: a.char.gold - gold1, cleared: a.char.dungeon.cleared, lootClaimed: a.char.dungeon.bossLootClaimed };
+  });
+  record('Maden Golemi yenilebilir; bölüm 4 temizlenir', golemRes.dead && golemRes.cleared.includes(4), JSON.stringify(golemRes));
+  record('Tek boss ölümünden birden fazla loot kazanılamaz', golemRes.goldGained > 0 && golemRes.secondGold === 0 && golemRes.claims === 1);
+  await ev(page, () => window.__AHEN.world.changeMap('mine', 'from_dungeon', { exitDungeon: true }));
+  await waitMap(page, 'mine');
+  await ev(page, () => window.__AHEN.world.changeMap('dungeon', null, { enterDungeon: true }));
+  await waitMap(page, 'dungeon');
+  const run2 = await ev(page, () => ({ runId: window.__AHEN.char.dungeon.runId, golem: window.__AHEN.world.enemies.some((e) => e.tpl.id === 'mine_golem' && !e.dead), cleared: window.__AHEN.char.dungeon.cleared }));
+  record('Gönüllü çıkış koşuyu bitirir; tekrar giriş yeni koşu ve Golem', run2.runId !== run1 && run2.golem && run2.cleared.length === 0, JSON.stringify(run2));
+  record('Konsol hatası yok (kontrol/dungeon akışı)', page.errors.length === 0, page.errors.slice(0, 3).join(' | '));
+  await c3.close();
+
+  // ------------------------------------------------------------------ 6b) PWA: servis işçisi ile çevrimdışı açılış
+  {
+    const ctx = await browser.newContext({ viewport: { width: 844, height: 390 }, isMobile: true, hasTouch: true });
+    const pg = await ctx.newPage();
+    await pg.goto(BASE);
+    await pg.waitForSelector('[data-testid=menu-play]', { timeout: 40000 });
+    const swOk = await pg.evaluate(async () => { const r = await navigator.serviceWorker.ready; return !!r.active; });
+    await pg.waitForTimeout(1500);
+    await ctx.setOffline(true);
+    await pg.reload();
+    let offlineOk = false;
+    try { await pg.waitForSelector('[data-testid=menu-play]', { timeout: 30000 }); offlineOk = true; } catch { /* */ }
+    record('PWA: servis işçisi etkin', swOk);
+    record('PWA: çevrimdışı yeniden açılış', offlineOk);
+    const man = await pg.evaluate(() => document.querySelector('link[rel=manifest]')?.href);
+    record('PWA: manifest bağlı', !!man, man);
+    await ctx.close();
+  }
+
+  // ------------------------------------------------------------------ 7) Mage: uzak menzil, MP'siz normal saldırı
+  {
+    const { ctx, page: pm } = await newPage(844, 390);
+    await createChar(pm, 'mage', 'Büyücü Test');
+    await ev(pm, () => window.__AHEN.world.changeMap('forest', 'from_village'));
+    await waitMap(pm, 'forest');
+    const res = await ev(pm, async () => {
+      const a = window.__AHEN, w = a.world, p = w.player;
+      const r = w.enemies.filter((e) => !e.dead && e.tpl.id === 'meadow_rat')[0];
+      p.x = r.x - 150; p.y = r.y; r.state = 'idle';
+      await new Promise((rr) => setTimeout(rr, 300));
+      const mp0 = a.char.mp;
+      p.selectTarget(r);
+      const t0 = performance.now();
+      let maxDist = 0;
+      while (!r.dead && performance.now() - t0 < 12000) { await new Promise((rr) => setTimeout(rr, 100)); if (p.attackTimer > 0) maxDist = Math.max(maxDist, Math.hypot(r.x - p.x, r.y - p.y)); }
+      return { dead: r.dead, mpUsed: mp0 - a.char.mp, attackDistTiles: +(maxDist / 32).toFixed(1) };
+    });
+    record('Mage uzaktan saldırır ve normal büyü MP harcamaz', res.dead && res.attackDistTiles > 3 && res.mpUsed <= 0, JSON.stringify(res));
+    await pm.screenshot({ path: join(shots, 'mage-forest.png') });
+    record('Konsol hatası yok (mage)', pm.errors.length === 0, pm.errors.slice(0, 2).join(' | '));
+    await ctx.close();
+  }
+} catch (e) {
+  record('Beklenmeyen test hatası', false, e.stack);
+} finally {
+  await browser.close();
+  server.kill();
+  const passed = results.filter((r) => r.ok).length;
+  writeFileSync(join(here, 'report.json'), JSON.stringify({ date: new Date().toISOString(), passed, total: results.length, results, perf: results.perf }, null, 2));
+  console.log(`\nE2E: ${passed}/${results.length} geçti`);
+  process.exit(passed === results.length ? 0 : 1);
+}
