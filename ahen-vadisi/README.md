@@ -11,7 +11,8 @@ Değişiklikler: [`docs/CHANGELOG.md`](docs/CHANGELOG.md) · V2 mimarisi ve bili
 
 Oyuncu karakterleri (Warrior, Mage), Cevher Rahibi, Çayır Sıçanı ve Mağara Yarasası LuizMelo'nun sprite paketleriyle çizilir
 (`public/sprites/`, kaynaklar: [`docs/CREDITS.md`](docs/CREDITS.md)). Diğer tüm görseller (V2'nin 12 yeni yaratık/elit/boss
-sprite'ı, NPC'ler, kül/kar/buz tile set'leri, 90 eşya ikonu, efektler) ve bütün sesler **oyun açılırken kodla (procedural) üretilir**.
+sprite'ı, NPC'ler, kül/kar/buz tile set'leri, efektler) ve bütün sesler **oyun açılırken kodla (procedural) üretilir**.
+Eşya, materyal ve beceri ikonlarının çoğu Clockwork Raven Studios ikon paketlerinden alınır (`src/art/iconPack.js`).
 Ayarlar → "Kahraman görünümü: Ekipman görünür (piksel)" seçeneği giyilen silah/zırhı gösteren piksel kahramanı kullanır.
 Sprite paketi yüklenemezse oyun otomatik olarak procedural karaktere geri döner.
 

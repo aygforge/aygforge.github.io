@@ -6,14 +6,16 @@ Kullanım:  python3 tools/import-icons.py <paketlerin_açıldığı_klasör>
 Klasörde Clockwork Raven Studios paketleri açılmış olmalı:
   "Clockwork raven - Weapons and Potions - Free pack/icons16x16.png"            (silah + iksir, 16 sütun)
   "FREE RPG Icon Pack - 100+ Accessories and Armor - Clockwork Raven Studios/icons16x16.png"  (zırh + aksesuar)
+  "Free - Raven Fantasy Icons/Full Spritesheet/16x16.png"                       (kalkan, eldiven, kolye, materyal, beceri)
 
 Çıktı: src/art/iconPack.js — eşya kimliği → 16×16 piksel verisi (ortak palet + palet indeksi). Oyun ikonları zaten
-16×16 sanat pikseli olduğu için ölçekleme yapılmaz. Pakette karşılığı olmayan eşyalar (kalkan, odak/ayna, eldiven,
-kolye ve materyaller) procedural ikonla çizilmeye devam eder.
+16×16 sanat pikseli olduğu için ölçekleme yapılmaz. Pakette uygun karşılığı olmayanlar (mühürler, Yarasa Kanadı,
+görev eşyaları ve arayüz simgeleri) procedural ikonla çizilmeye devam eder.
 
 Renk uyarlaması ('tint'): ('metal', renk) gri/metal pikselleri renge karıştırır (ör. Kızıl Hüküm'ün kırmızı namlusu);
 ('hue', renk) doymuş pikselleri hedef renk tonuna çevirir (ör. cübbe rengi). Böylece aynı çizimi paylaşan eşyalar
-oyundaki renk kimliklerini korur.
+oyundaki renk kimliklerini korur. ('mono', renk) bütün ikonu parlaklığını koruyarak tek renge boyar (ör. mavi kalkanı
+gri demire, turuncu eldiveni deriye çevirmek için).
 """
 import colorsys
 import json
@@ -26,6 +28,7 @@ OUT_JS = os.path.join(ROOT, 'src', 'art', 'iconPack.js')
 SHEETS = {
     'wp': 'Clockwork raven - Weapons and Potions - Free pack/icons16x16.png',
     'ar': 'FREE RPG Icon Pack - 100+ Accessories and Armor - Clockwork Raven Studios/icons16x16.png',
+    'rf': 'Free - Raven Fantasy Icons/Full Spritesheet/16x16.png',
 }
 
 # eşya → (sayfa, indeks, renk uyarlaması)
@@ -57,6 +60,44 @@ MAP = {
     # ---- İksirler
     'hp_s': ('wp', 64, None), 'hp_m': ('wp', 80, None), 'hp_l': ('wp', 96, None), 'hp_xl': ('wp', 104, None),
     'mp_s': ('wp', 76, None), 'mp_m': ('wp', 92, None), 'mp_l': ('wp', 108, None), 'mp_xl': ('wp', 106, None),
+    # ---- Yan el: kalkanlar ve odak/ayna/küre (Raven Fantasy Icons)
+    'O01': ('rf', 1106, None), 'O02': ('rf', 2148, ('mono', '#8a8070')), 'O03': ('rf', 2150, ('mono', '#9a9aaa')),
+    'O04': ('rf', 1809, None), 'O05': ('rf', 1808, None), 'O06': ('rf', 2134, None),
+    'O07': ('rf', 852, None), 'O08': ('rf', 2150, None), 'O09': ('rf', 2128, None), 'O10': ('rf', 2118, None),
+    # ---- Eldiven
+    'G01': ('rf', 2055, ('mono', '#9a7a50')), 'G02': ('rf', 2055, ('mono', '#6f8a4a')), 'G03': ('rf', 2058, ('metal', '#8a9a90')),
+    'G04': ('rf', 2055, ('mono', '#e0d0a8')), 'G05': ('rf', 2170, None), 'G06': ('rf', 2168, ('hue', '#3fb0a8')),
+    'G07': ('rf', 2171, None), 'G08': ('rf', 2167, ('mono', '#a8d0e8')),
+    # ---- Kolye / madalyon
+    'A01': ('rf', 2064, None), 'A02': ('rf', 1847, None), 'A03': ('rf', 2180, None), 'A04': ('rf', 1850, ('hue', '#b0e0ff')),
+    'A05': ('rf', 2177, ('hue', '#8be06a')), 'A06': ('rf', 2181, None), 'A07': ('rf', 2182, None), 'A08': ('rf', 2179, None),
+    # ---- Materyaller
+    'small_fur': ('rf', 203, ('hue', '#a08a6a')), 'wolf_tooth': ('rf', 232, None), 'wolf_pelt': ('rf', 219, None),
+    'root_essence': ('rf', 120, None), 'hard_wood': ('rf', 108, None), 'hunter_cloth': ('rf', 104, ('mono', '#7a9a52')),
+    'healing_herb': ('rf', 240, ('hue', '#5fd068')), 'iron_scrap': ('rf', 210, None), 'iron_ore': ('rf', 192, None),
+    'hard_ore': ('rf', 208, None), 'hard_shell': ('rf', 376, None), 'magic_ore': ('rf', 192, ('hue', '#4a5ac8')),
+    'leech_essence': ('rf', 120, ('hue', '#c04040')), 'swamp_mud': ('rf', 112, ('mono', '#7a6440')), 'toxic_crystal': ('rf', 174, None),
+    'old_armor_scrap': ('rf', 2048, ('metal', '#7a8070')), 'mana_herb': ('rf', 240, ('hue', '#5aa0ff')),
+    'captain_badge': ('rf', 130, None), 'executioner_brand': ('rf', 128, ('mono', '#a04a60')), 'alpha_claw': ('rf', 231, None),
+    'golem_shard': ('rf', 212, None), 'ancient_core': ('rf', 2121, ('metal', '#ffcf5a')),
+    'ash_dust': ('rf', 209, None), 'crimson_hide': ('rf', 203, ('hue', '#a03a2a')), 'scorpion_stinger': ('rf', 229, ('hue', '#d04a2a')),
+    'burnt_chain': ('rf', 126, ('metal', '#6a5a54')), 'ash_ore': ('rf', 192, ('hue', '#ff6a2a')),
+    'frost_pelt': ('rf', 219, ('metal', '#d8e8f0')), 'pure_ice': ('rf', 173, None), 'ice_armor_shard': ('rf', 2048, ('metal', '#a8d0f0')),
+    'frost_crystal': ('rf', 2145, None), 'butcher_mark': ('rf', 128, ('hue', '#e06a2a')), 'giant_ember': ('rf', 196, None),
+    'frozen_core': ('rf', 2120, ('hue', '#7ad8ff')), 'ash_steel': ('rf', 220, ('metal', '#8a6a60')), 'frost_essence': ('rf', 169, ('hue', '#7ad8ff')),
+    'ember_core': ('rf', 2117, None), 'mastery_book': ('rf', 98, None), 'altar_dust': ('rf', 209, ('metal', '#c8b0ff')),
+    'altar_crystal': ('rf', 172, None), 'iron': ('rf', 220, None), 'hardening_stone': ('rf', 218, ('metal', '#7a9ab0')),
+    'empty_bottle': ('rf', 120, ('mono', '#e8f6fa')), 'scrap': ('rf', 194, None),
+    'weak_essence': ('rf', 166, None), 'rare_essence': ('rf', 171, None), 'epic_remnant': ('rf', 165, None),
+    # ---- Beceriler (şeffaf zeminli büyü ikonları)
+    'skill:heavy_strike': ('rf', 1043, None), 'skill:whirlwind': ('rf', 791, None), 'skill:iron_skin': ('rf', 1042, ('mono', '#a8b0bc')),
+    'skill:war_charge': ('rf', 1047, None), 'skill:blade_rain': ('rf', 1011, ('mono', '#e0e8f0')),
+    'skill:fireball': ('rf', 1000, None), 'skill:ice_blast': ('rf', 786, None), 'skill:mana_shield': ('rf', 1023, ('hue', '#4a8aff')),
+    'skill:meteor': ('rf', 762, None), 'skill:chain_lightning': ('rf', 1029, None),
+    'skill:weapon_discipline': ('rf', 919, None), 'skill:hard_skin': ('rf', 1041, ('hue', '#e04848')),
+    'skill:battle_rhythm': ('rf', 946, ('hue', '#e0a040')), 'skill:elemental_mastery': ('rf', 765, None),
+    'skill:mana_control': ('rf', 785, None), 'skill:frozen_target': ('rf', 1008, None),
+    'skill:unyielding_will': ('rf', 1042, None), 'skill:arcane_resonance': ('rf', 775, None),
 }
 
 
@@ -80,6 +121,9 @@ def tint(img, mode, color):
                     k = 0.92 if v < 0.9 else 0.4
                     sc = min(1.0, v / max(tv, 0.01))
                     r, g, b = [round(c * (1 - k) + min(255, t * sc) * k) for c, t in zip((r, g, b), (tr, tg, tb))]
+            elif mode == 'mono':        # parlaklık korunur, renk hedefe çekilir
+                lum = (0.299 * r + 0.587 * g + 0.114 * b) / max(1, 0.299 * tr + 0.587 * tg + 0.114 * tb)
+                r, g, b = [round(t * lum * 0.9 + c * 0.1) for c, t in zip((r, g, b), (tr, tg, tb))]
             elif mode == 'hue':
                 if s > 0.18:
                     r2, g2, b2 = colorsys.hsv_to_rgb(th, max(s, ts * 0.8), v)
@@ -113,7 +157,7 @@ def main(src):
     icons = {k: ''.join(format(i, f'0{width}x') for i in codes) for k, codes in icons.items()}
     with open(OUT_JS, 'w', encoding='utf-8') as fh:
         fh.write('// OTOMATİK ÜRETİLDİ: tools/import-icons.py — elle düzenlemeyin.\n')
-        fh.write('// Clockwork Raven Studios ücretsiz ikon paketlerinden seçilen 16×16 ikonlar (RGBA palet + piksel başına indeks).\n')
+        fh.write('// Clockwork Raven Studios ücretsiz ikon paketlerinden (Weapons & Potions, Accessories & Armor, Raven Fantasy Icons) seçilen 16×16 ikonlar (RGBA palet + piksel başına indeks).\n')
         fh.write(f'export const ICON_PALETTE = {json.dumps(palette)};\n')
         fh.write(f'export const ICON_INDEX_WIDTH = {width};\n')
         fh.write('export const ICON_PACK = ' + json.dumps(icons, indent=0) + ';\n')
