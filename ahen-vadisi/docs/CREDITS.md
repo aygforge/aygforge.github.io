@@ -8,8 +8,8 @@
 | Mağara Yarasası sprite'ı (`public/sprites/mon_cave_bat`) | Monsters Creatures Fantasy 2 — Bat, LuizMelo, https://luizmelo.itch.io/ | Pakette lisans dosyası yok; itch.io sayfasındaki lisans doğrulanmalı |
 | Orman Yağmacısı sprite'ı (`public/sprites/mon_forest_raider`) | Bandits — Light Bandit, Sven Thole | Sven Thole EULA (`public/sprites/mon_forest_raider/LICENSE.txt`): oyunlarda kullanım serbest, kredi verilmeli; varlıkların kendisi mağaza/dosya paylaşım sitelerinde dağıtılamaz |
 | Boz Kurt ve Sürü Kurdu sprite'ı (`public/sprites/mon_gray_wolf`) | Skullwolf ("Massacre") | Pakette lisans dosyası yok; kaynak sayfadaki lisans doğrulanmalı |
-| Kazmacı Goblin, Diken Kökçüsü, Çürük Muhafız, Kızıl Damar Gözcüsü sprite'ları (`public/sprites/mon_pick_goblin`, `mon_thorn_rootling`, `mon_rotten_guard`, `mon_red_vein_watcher`) | Monster Creatures Fantasy 1.3 — Goblin, Mushroom, Skeleton, Flying Eye, LuizMelo, https://luizmelo.itch.io/monsters-creatures-fantasy | Pakette lisans dosyası yok; itch.io sayfasındaki lisans doğrulanmalı |
-| Bataklık Sülüğü sprite'ı (`public/sprites/mon_swamp_leech`) | Monsters Creatures Fantasy 2 — Slime, LuizMelo, https://luizmelo.itch.io/ | Pakette lisans dosyası yok; itch.io sayfasındaki lisans doğrulanmalı |
+| Kazmacı Goblin, Diken Kökçüsü, Çürük Muhafız, Kızıl Damar Gözcüsü sprite'ları (`public/sprites/mon_pick_goblin`, `mon_thorn_rootling`, `mon_rotten_guard`, `mon_red_vein_watcher`) | Monsters Creatures Fantasy — Goblin, Mushroom, Skeleton, Flying Eye, LuizMelo, https://luizmelo.itch.io/monsters-creatures-fantasy | Pakette lisans dosyası yok; itch.io sayfasındaki lisans doğrulanmalı |
+| Bataklık Balçığı sprite'ı (`public/sprites/mon_swamp_leech`) | Monsters Creatures Fantasy 2 — Slime, LuizMelo, https://luizmelo.itch.io/ | Pakette lisans dosyası yok; itch.io sayfasındaki lisans doğrulanmalı |
 | Kızıl Akrep sprite'ı (`public/sprites/mon_crimson_scorpion`) | "Scorpian" (32×32, mor akrep) | Pakette lisans dosyası ve yazar bilgisi yok; kaynak sayfadaki lisans doğrulanmalı |
 | 72 eşya/iksir ikonu (`src/art/iconPack.js`) | Clockwork Raven Studios — "FREE RPG Icon Pack: 100+ Weapons and Potions" ve "100+ Accessories and Armor", https://clockworkraven.itch.io/ | Silah/iksir paketi README'si: ticari kullanım serbest, kredi zorunlu değil. Zırh/aksesuar paketinde lisans dosyası yok; itch.io sayfasından doğrulanmalı |
 | 26 kalkan/odak/eldiven/kolye, 47 materyal ve 18 beceri ikonu (`src/art/iconPack.js`) | Clockwork Raven Studios — "Free - Raven Fantasy Icons", https://clockworkraven.itch.io/ | Pakette lisans dosyası yok (yalnız teşekkür notu); itch.io sayfasındaki lisans doğrulanmalı |
@@ -18,9 +18,8 @@
 Sprite'lar `tools/import-sprites.py` ile kırpılıp oyun boyuna ölçeklenmiştir (ham paketler repoda tutulmaz; Aseprite
 dosyaları `tools/aseprite.py` ile okunur). Sola bakan paketler (Light Bandit, Skullwolf) aynalanmıştır. Pakette olmayan
 animasyonlar mevcut karelerden türetilmiştir: Light Bandit ölümü = "Recover" karelerinin tersi; Skullwolf koşusu ve
-Monster Creatures Fantasy 1.3 dosyasında yalnız "Attack3" şeritleri bulunduğundan Goblin, Mushroom, Skeleton ve
-Flying Eye'ın bekleme/saldırı kareleri bu şeritten seçilir; yürüme (zıplatma), darbe (beyaz parlama) ve ölüm (çökme) türetilir.
-Akrebin darbe/ölüm kareleri de türetilir. Flying Eye ve akrep kızıla boyanmıştır.
+Goblin, Mushroom, Skeleton ve Flying Eye paketin kendi bekleme/koşma/saldırı/darbe/ölüm şeritlerini kullanır.
+Akrebin darbe/ölüm kareleri türetilir. Flying Eye ve akrep kızıla boyanmıştır.
 Diğer tüm görseller, sesler ve müzik oyun içinde procedural olarak üretilir.
 
 **V2.0 (Kül ve Ayaz):** Yeni üçüncü taraf varlık eklenmedi. 12 yeni yaratık/elit/boss sprite'ı, 4 yeni NPC, kül/kar/buz

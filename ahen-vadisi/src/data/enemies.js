@@ -57,7 +57,7 @@ export const ENEMIES = {
     materials: [{ id: 'magic_ore', w: 1 }],
   }),
   swamp_leech: N({
-    id: 'swamp_leech', name: 'Bataklık Sülüğü', level: 15, hp: 295, atk: 55, def: 23, mdef: 18, exp: 133,
+    id: 'swamp_leech', name: 'Bataklık Balçığı', level: 15, hp: 295, atk: 55, def: 23, mdef: 18, exp: 133,
     species: 'insect', ai: 'aggressive', aggro: 4.5, leash: 11, speed: 2.6, attackInterval: 1.7, attackRange: 1.35,
     dmgType: 'phys', respawn: 24, radius: 0.45, sprite: 'leech', poison: { pct: 0.12, dur: 4, chance: 0.3 },
     materials: [{ id: 'leech_essence', w: 1 }],

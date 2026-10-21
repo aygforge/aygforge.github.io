@@ -84,44 +84,31 @@ PACKS = {
                   'hurt': ({'ase': 'Massacre.aseprite', 'from': 12, 'to': 15}, 14, 0),
                   'die': ({'ase': 'Massacre.aseprite', 'from': 16, 'to': 22}, 10, 0)},
     },
-    # Monster Creatures Fantasy 1.3 (LuizMelo): elimizdeki sürüm yalnız "Attack3" şeritlerini içerir; bekleme ve saldırı bu
-    # şeridin karelerinden seçilir ('frames'), yürüme/darbe/ölüm türetilir. Tam paket gelince yalnız bu tanımlar değişir.
+    # Monster Creatures Fantasy (LuizMelo): Kazmacı Goblin = Goblin, Diken Kökçüsü = Mushroom, Çürük Muhafız = Skeleton
     'mon_pick_goblin': {
         'name': 'Monster Creatures Fantasy — Goblin (LuizMelo)', 'dir': 'Monster_Creatures_Fantasy/Goblin', 'frame': (150, 150),
         'scale': 1.0, 'license': None,
-        'anims': {'idle': ({'strip': 'Attack3', 'frames': [0, 1, 2, 3, 4, 5]}, 7, -1),
-                  'walk': ({'derive': 'bob', 'of': 'idle'}, 11, -1),
-                  'atk': ({'strip': 'Attack3', 'frames': [3, 4, 5, 6, 6, 0]}, 14, 0),
-                  'hurt': ({'derive': 'flash', 'of': 'idle'}, 10, 0),
-                  'die': ({'derive': 'collapse', 'of': 'idle'}, 10, 0)},
+        'anims': {'idle': ('Idle', 7, -1), 'walk': ('Run', 13, -1), 'atk': ('Attack', 16, 0),
+                  'hurt': ('Take Hit', 12, 0), 'die': ('Death', 9, 0)},
     },
     'mon_thorn_rootling': {
         'name': 'Monster Creatures Fantasy — Mushroom (LuizMelo)', 'dir': 'Monster_Creatures_Fantasy/Mushroom', 'frame': (150, 150),
         'scale': 1.0, 'license': None,
-        'anims': {'idle': ({'strip': 'Attack3', 'frames': [0, 1, 2, 1]}, 5, -1),
-                  'walk': ({'derive': 'bob', 'of': 'idle'}, 9, -1),
-                  'atk': ({'strip': 'Attack3', 'frames': [3, 4, 5, 6, 7, 8, 9, 10]}, 16, 0),
-                  'hurt': ({'derive': 'flash', 'of': 'idle'}, 10, 0),
-                  'die': ({'derive': 'collapse', 'of': 'idle'}, 10, 0)},
+        'anims': {'idle': ('Idle', 6, -1), 'walk': ('Run', 11, -1), 'atk': ('Attack', 14, 0),
+                  'hurt': ('Take Hit', 12, 0), 'die': ('Death', 9, 0)},
     },
     'mon_rotten_guard': {
         'name': 'Monster Creatures Fantasy — Skeleton (LuizMelo)', 'dir': 'Monster_Creatures_Fantasy/Skeleton', 'frame': (150, 150),
         'scale': 1.0, 'license': None,
-        'anims': {'idle': ({'strip': 'Attack3', 'frames': [0, 1]}, 3, -1),
-                  'walk': ({'derive': 'bob', 'of': 'idle'}, 8, -1),
-                  'atk': ({'strip': 'Attack3', 'frames': [2, 3, 4, 5, 5]}, 10, 0),
-                  'hurt': ({'derive': 'flash', 'of': 'idle'}, 10, 0),
-                  'die': ({'derive': 'collapse', 'of': 'idle'}, 10, 0)},
+        'anims': {'idle': ('Idle', 6, -1), 'walk': ('Walk', 7, -1), 'atk': ('Attack', 13, 0),
+                  'hurt': ('Take Hit', 12, 0), 'die': ('Death', 9, 0)},
     },
-    # Kızıl Damar Gözcüsü (elit) = Flying Eye, kızıla boyanır; kanat çırpma bekleme, top olup atılma saldırı
+    # Kızıl Damar Gözcüsü (elit) = Flying Eye, kızıla boyanır; hep uçar (bekleme ve yürüme aynı kanat çırpma şeridi)
     'mon_red_vein_watcher': {
         'name': 'Monster Creatures Fantasy — Flying Eye (LuizMelo)', 'dir': 'Monster_Creatures_Fantasy/Flying eye', 'frame': (150, 150),
         'scale': 2.0, 'hue': '#b8303a', 'license': None,
-        'anims': {'idle': ({'strip': 'Attack3', 'frames': [4, 5, 4, 3]}, 7, -1),
-                  'walk': ({'strip': 'Attack3', 'frames': [4, 5, 4, 3]}, 11, -1),
-                  'atk': ({'strip': 'Attack3', 'frames': [3, 0, 1, 2, 0, 3]}, 12, 0),
-                  'hurt': ({'derive': 'flash', 'of': 'idle'}, 10, 0),
-                  'die': ({'derive': 'collapse', 'of': 'idle'}, 10, 0)},
+        'anims': {'idle': ('Flight', 10, -1), 'walk': ('Flight', 14, -1), 'atk': ('Attack', 14, 0),
+                  'hurt': ('Take Hit', 12, 0), 'die': ('Death', 9, 0)},
     },
     # Monsters Creatures Fantasy 2 — Slime: Bataklık Sülüğü
     'mon_swamp_leech': {

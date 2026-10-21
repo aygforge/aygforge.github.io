@@ -7,7 +7,7 @@
 - `tools/import-sprites.py` artık klasörde bulunmayan paketlerin önceki çıktısını korur (paketler tek tek eklenebilir).
 - Orman Yağmacısı (Bandits — Light Bandit) ve Boz Kurt/Sürü Kurdu (Skullwolf) hazır sprite paketleriyle çizilir.
 - LuizMelo Monster Creatures Fantasy: Kazmacı Goblin = Goblin, Diken Kökçüsü = Mushroom, Çürük Muhafız = Skeleton,
-  Kızıl Damar Gözcüsü ve Güçlendirilmiş Gözcü = kızıla boyanmış Flying Eye (havada süzülür). Bataklık Sülüğü = MCF2 Slime,
+  Kızıl Damar Gözcüsü ve Güçlendirilmiş Gözcü = kızıla boyanmış Flying Eye (havada süzülür). Bataklık Balçığı (eski adı Bataklık Sülüğü; materyali Balçık Özü) = MCF2 Slime,
   Kızıl Akrep = kızıla boyanmış "Scorpian". Statlar ve davranışlar değişmedi.
 - `tools/import-sprites.py`: şeritten kare seçme (`strip` + `frames`) ve renk tonu çevirme (`hue`) seçenekleri.
 - Silah, zırh, başlık, bot, yüzük ve iksir ikonları Clockwork Raven Studios ikon paketlerinden alındı.

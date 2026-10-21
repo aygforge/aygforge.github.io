@@ -232,55 +232,20 @@ export const SPRITE_PACKS = {
     "credit": "Skullwolf — Massacre"
   },
   "mon_pick_goblin": {
-    "w": 40,
-    "h": 39,
-    "body": 37,
-    "ox": 0.4625,
+    "w": 88,
+    "h": 46,
+    "body": 36,
+    "ox": 0.4943,
     "oy": 1.0,
     "anims": {
       "idle": {
-        "frames": 6,
+        "frames": 4,
         "fps": 7,
         "repeat": -1
       },
       "walk": {
-        "frames": 6,
-        "fps": 11,
-        "repeat": -1
-      },
-      "atk": {
-        "frames": 6,
-        "fps": 14,
-        "repeat": 0
-      },
-      "hurt": {
-        "frames": 2,
-        "fps": 10,
-        "repeat": 0
-      },
-      "die": {
-        "frames": 4,
-        "fps": 10,
-        "repeat": 0
-      }
-    },
-    "credit": "Monster Creatures Fantasy — Goblin (LuizMelo)"
-  },
-  "mon_thorn_rootling": {
-    "w": 51,
-    "h": 52,
-    "body": 38,
-    "ox": 0.3824,
-    "oy": 1.0,
-    "anims": {
-      "idle": {
-        "frames": 4,
-        "fps": 5,
-        "repeat": -1
-      },
-      "walk": {
-        "frames": 4,
-        "fps": 9,
+        "frames": 8,
+        "fps": 13,
         "repeat": -1
       },
       "atk": {
@@ -289,83 +254,118 @@ export const SPRITE_PACKS = {
         "repeat": 0
       },
       "hurt": {
-        "frames": 2,
-        "fps": 10,
+        "frames": 4,
+        "fps": 12,
         "repeat": 0
       },
       "die": {
         "frames": 4,
-        "fps": 10,
+        "fps": 9,
+        "repeat": 0
+      }
+    },
+    "credit": "Monster Creatures Fantasy — Goblin (LuizMelo)"
+  },
+  "mon_thorn_rootling": {
+    "w": 71,
+    "h": 45,
+    "body": 37,
+    "ox": 0.4437,
+    "oy": 1.0,
+    "anims": {
+      "idle": {
+        "frames": 4,
+        "fps": 6,
+        "repeat": -1
+      },
+      "walk": {
+        "frames": 8,
+        "fps": 11,
+        "repeat": -1
+      },
+      "atk": {
+        "frames": 8,
+        "fps": 14,
+        "repeat": 0
+      },
+      "hurt": {
+        "frames": 4,
+        "fps": 12,
+        "repeat": 0
+      },
+      "die": {
+        "frames": 4,
+        "fps": 9,
         "repeat": 0
       }
     },
     "credit": "Monster Creatures Fantasy — Mushroom (LuizMelo)"
   },
   "mon_rotten_guard": {
-    "w": 65,
-    "h": 54,
-    "body": 54,
-    "ox": 0.4615,
-    "oy": 1.0,
+    "w": 98,
+    "h": 59,
+    "body": 51,
+    "ox": 0.3316,
+    "oy": 0.9661,
     "anims": {
       "idle": {
-        "frames": 2,
-        "fps": 3,
+        "frames": 4,
+        "fps": 6,
         "repeat": -1
       },
       "walk": {
-        "frames": 2,
-        "fps": 8,
+        "frames": 4,
+        "fps": 7,
         "repeat": -1
       },
       "atk": {
-        "frames": 5,
-        "fps": 10,
+        "frames": 8,
+        "fps": 13,
         "repeat": 0
       },
       "hurt": {
-        "frames": 2,
-        "fps": 10,
+        "frames": 4,
+        "fps": 12,
         "repeat": 0
       },
       "die": {
         "frames": 4,
-        "fps": 10,
+        "fps": 9,
         "repeat": 0
       }
     },
     "credit": "Monster Creatures Fantasy — Skeleton (LuizMelo)"
   },
   "mon_red_vein_watcher": {
-    "w": 80,
-    "h": 64,
-    "body": 64,
-    "ox": 0.5125,
-    "oy": 1.0,
+    "w": 112,
+    "h": 82,
+    "body": 66,
+    "ox": 0.4821,
+    "oy": 0.8049,
     "anims": {
       "idle": {
-        "frames": 4,
-        "fps": 7,
+        "frames": 8,
+        "fps": 10,
         "repeat": -1
       },
       "walk": {
-        "frames": 4,
-        "fps": 11,
+        "frames": 8,
+        "fps": 14,
         "repeat": -1
       },
       "atk": {
-        "frames": 6,
-        "fps": 12,
+        "frames": 8,
+        "fps": 14,
         "repeat": 0
       },
       "hurt": {
-        "frames": 2,
-        "fps": 10,
+        "frames": 4,
+        "fps": 12,
         "repeat": 0
       },
       "die": {
         "frames": 4,
-        "fps": 10,
+        "fps": 9,
         "repeat": 0
       }
     },

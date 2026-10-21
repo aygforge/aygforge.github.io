@@ -20,7 +20,7 @@ export const MATERIAL_LIST = [
   mat('hard_shell', 'Sert Kabuk', 4, { type: 'shell', c: '#6a7480' }, 'Demir Kabuklu Böcekten. Sertleştirme Taşı ve Madenci Zırhı.'),
   mat('magic_ore', 'Büyülü Cevher', 5, { type: 'ore', c: '#3a4a8a', s: '#7ab8ff' }, 'Cevher Rahibinden. Büyük MP iksiri ve Cevher Cübbesi.'),
   // Bataklık
-  mat('leech_essence', 'Sülük Özü', 4, { type: 'vial', c: '#b04a4a' }, 'Bataklık Sülüğünden. Orta/Büyük HP iksiri.'),
+  mat('leech_essence', 'Balçık Özü', 4, { type: 'vial', c: '#b04a4a' }, 'Bataklık Balçığından. Orta/Büyük HP iksiri.'),
   mat('swamp_mud', 'Bataklık Çamuru', 4, { type: 'blob', c: '#5a4a32' }, 'Çamur Cücesinden. Tüccara satılabilir.'),
   mat('toxic_crystal', 'Zehirli Kristal', 6, { type: 'crystal', c: '#7ad050' }, 'Sis Cadısından. Sunak Kristali üretiminde.'),
   mat('old_armor_scrap', 'Eski Zırh Parçası', 6, { type: 'plate', c: '#7a8070' }, 'Çürük Muhafızdan. Tüccara satılabilir.'),

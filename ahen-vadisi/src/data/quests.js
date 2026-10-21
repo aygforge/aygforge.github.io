@@ -66,7 +66,7 @@ export const QUESTS = [
     objectives: [{ type: 'reach', loc: 'loc_swamp_entrance', label: 'Sis Bataklığı\'na ulaş' }],
     exp: 1350, gold: 300, hint: { map: 'swamp', x: 56, y: 6, r: 5 } }),
   Q({ id: 'm13', main: true, order: 13, name: 'Zehirli Öz', giver: 'muhtar', turnIn: 'muhtar', minLevel: 15, rec: '16–17', prereq: ['m12'],
-    text: 'Bataklık sularını zehirleyen özü incelemeliyiz. Sülüklerden Zehirli Öz topla.',
+    text: 'Bataklık sularını zehirleyen özü incelemeliyiz. Balçıklardan Zehirli Öz topla.',
     objectives: [{ type: 'qitem', item: 'q_toxic_essence', name: 'Zehirli Öz', from: ['swamp_leech'], chance: 0.5, count: 6, label: 'Zehirli Öz topla' }],
     exp: 1500, gold: 350, hint: { map: 'swamp', x: 26, y: 26, r: 9 } }),
   Q({ id: 'm14', main: true, order: 14, name: 'Kirlenmiş Sular', giver: 'muhtar', turnIn: 'muhtar', minLevel: 16, rec: '17–18', prereq: ['m13'],
