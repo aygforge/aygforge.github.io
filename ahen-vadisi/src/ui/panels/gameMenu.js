@@ -14,7 +14,7 @@ import { STACKABLES } from '../../data/materials.js';
 import { MAPS } from '../../data/maps/index.js';
 import { computeStats } from '../../systems/stats.js';
 import { statPointsFree, skillPointsFree, canRankUp } from '../../systems/character.js';
-import { questStatus, trackedQuestList, objectiveProgress, objectiveTarget, isReady } from '../../systems/quests.js';
+import { questStatus, trackedQuestList, objectiveProgress, objectiveTarget, isReady, currentHint } from '../../systems/quests.js';
 import { gridView, itemCell, cellSize } from './grid.js';
 import { showItemCard } from './itemcard.js';
 import { act } from '../actions.js';
@@ -196,7 +196,7 @@ function questsTab(rerender) {
       h('div', { class: 'small' }, q.objectives.map((o, i) => h('div', { class: objectiveProgress(ch, q, i) >= objectiveTarget(o) ? 'ok' : '' },
         `• ${o.label}${o.type === 'talk' ? '' : ` ${Math.min(objectiveProgress(ch, q, i), objectiveTarget(o))}/${objectiveTarget(o)}`}`))),
       h('div', { class: 'small gold', style: { marginTop: '6px' } }, `Ödül: ${q.exp ? fmt(q.exp) + ' EXP · ' : ''}${fmt(q.gold)} Gold${q.rewardItems.length ? ' · ' + q.rewardItems.map((r) => `${STACKABLES[r.id].name} ×${r.qty}`).join(', ') : ''}${q.title ? ` · Unvan: ${q.title}` : ''}${q.skillPoint ? ' · +1 beceri puanı' : ''}`),
-      q.hint ? h('div', { class: 'tiny muted' }, `Bölge: ${MAPS[q.hint.map].name}`) : null,
+      currentHint(ch, q) ? h('div', { class: 'tiny muted' }, `Bölge: ${MAPS[currentHint(ch, q).map].name}`) : null,
       st === 'active' ? h('div', { class: 'row', style: { marginTop: '8px' } },
         h('button', { class: 'btn small', onTap: () => { ch.tracked = q.id; app.changed('quest'); rerender(); } }, ch.tracked === q.id ? 'Takip ediliyor' : 'Takip et'),
         isReady(ch, q) ? h('span', { class: 'ok small' }, `Teslim: ${npcName(q.turnIn)}`) : null,

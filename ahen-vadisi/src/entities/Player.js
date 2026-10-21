@@ -127,7 +127,8 @@ export class Player {
   update(dt) {
     if (this.dead) return;
     const sc = this.scene;
-    const now = sc.time.now;
+    const now = sc.clock;
+    this._dt = dt;
     const st = this.stats;
     for (const k of Object.keys(this.cooldowns)) this.cooldowns[k] = Math.max(0, this.cooldowns[k] - dt);
     this.potionCd.hp = Math.max(0, this.potionCd.hp - dt);
@@ -251,7 +252,7 @@ export class Player {
     const st = this.stats;
     this.attackTimer = st.attackInterval;
     this.face(t.x - this.x);
-    this.lastCombatAt = this.scene.time.now;
+    this.lastCombatAt = this.scene.clock;
     if (st.damageType === 'phys') {
       this.playAction('_atk', 0.3);
       this.swing = { t: 0, dur: 0.26 };
@@ -279,7 +280,7 @@ export class Player {
   skillCost(id) {
     const s = SKILLS[id], r = this.char.skills[id];
     let c = s.mp[r - 1] * (1 - this.stats.costRed);
-    if (this.buffs.resonance && this.scene.time.now < this.buffs.resonance.until) c *= 0.5;
+    if (this.buffs.resonance && this.scene.clock < this.buffs.resonance.until) c *= 0.5;
     return Math.round(c);
   }
 
@@ -292,7 +293,7 @@ export class Player {
     const fail = (m) => { bus.emit('toast', { text: m, kind: 'warn', short: true }); sound.play('error'); return false; };
     if (this.dead) return false;
     if (!rank) return fail(`${s.name} Lv.${s.unlock}'te açılır`);
-    if (sc.time.now < this.stunUntil) return fail('Sersemledin!');
+    if (sc.clock < this.stunUntil) return fail('Sersemledin!');
     if (this.cooldowns[id] > 0) return fail(`${s.name} hazır değil`);
     if (this.gcd > 0 || this.busy > 0.05) return false;
     const cost = this.skillCost(id);
@@ -314,7 +315,7 @@ export class Player {
     ch.mp -= cost;
     this.cooldowns[id] = s.cd[rank - 1];
     this.gcd = 0.5;
-    this.lastCombatAt = sc.time.now;
+    this.lastCombatAt = sc.clock;
     if (t) this.face(t.x - this.x);
     this.execSkill(id, s, rank, t);
     if (ch.cls === 'mage' && s.dmg) this.trackResonance();
@@ -360,7 +361,7 @@ export class Player {
         break;
       case 'iron_skin':
         this.playAction('_cast', 0.25);
-        this.buffs.ironSkin = { until: sc.time.now + s.dur[rank - 1] * 1000, value: s.reduce[rank - 1] };
+        this.buffs.ironSkin = { until: sc.clock + s.dur[rank - 1] * 1000, value: s.reduce[rank - 1] };
         sound.play('shield');
         break;
       case 'war_charge': {
@@ -369,13 +370,13 @@ export class Player {
         this.playAction('_atk', 0.35);
         sc.tweens.add({
           targets: this, x: line.ex, y: line.ey, duration: 180, ease: 'Quad.in',
-          onUpdate: () => this.syncVisual(sc.time.now),
+          onUpdate: () => this.syncVisual(sc.clock),
           onComplete: () => {
             this.dashing = false;
             if (this.dead || t.dead) return;
             sc.fx.sprite('spark', t.x, t.y - 16, { scale: 2.5 });
             sc.combat.playerSkillHit(t, { coef, skill: id });
-            t.stunUntil = sc.time.now + s.stun[rank - 1] * 1000;
+            t.stunUntil = sc.clock + s.stun[rank - 1] * 1000;
             sc.combat.stunFx(t, s.stun[rank - 1]);
             sc.fx.shake(0.005, 140);
           },
@@ -404,7 +405,7 @@ export class Player {
           const hits = sc.combat.enemiesInRadius(cx, cy, s.radius * TILE, s.maxTargets, true, t ? { x: cx, y: cy } : null);
           hits.forEach((e, i) => {
             sc.combat.playerSkillHit(e, { coef, skill: id, spell: i === 0 });
-            e.slowUntil = sc.time.now + s.slowDur * 1000; e.slowPct = s.slow[rank - 1];
+            e.slowUntil = sc.clock + s.slowDur * 1000; e.slowPct = s.slow[rank - 1];
             if (!e.dead) e.sprite.setTint(0xa0d8ff);
             sc.time.delayedCall(s.slowDur * 1000, () => { if (!e.dead && !e.isSlowed()) { e.sprite.clearTint(); if (e.baseTint) e.sprite.setTint(e.baseTint); if (e.furyTint) e.sprite.setTint(e.furyTint); } });
           });
@@ -413,7 +414,7 @@ export class Player {
       }
       case 'mana_shield':
         this.playAction('_cast', 0.25);
-        this.buffs.manaShield = { until: sc.time.now + s.dur[rank - 1] * 1000, value: s.absorb[rank - 1] };
+        this.buffs.manaShield = { until: sc.clock + s.dur[rank - 1] * 1000, value: s.absorb[rank - 1] };
         sound.play('shield');
         break;
       case 'meteor': {
@@ -438,7 +439,7 @@ export class Player {
 
   trackResonance() {
     if (!this.char.mastery) return;
-    const now = this.scene.time.now;
+    const now = this.scene.clock;
     this.castLog = this.castLog.filter((t) => now - t < 6000);
     this.castLog.push(now);
     if (this.castLog.length >= 3 && now >= this.icd.resonance) {
@@ -486,11 +487,14 @@ export class Player {
     if (this.poison) {
       this.poison.tick -= dt;
       if (this.poison.tick <= 0) {
-        this.poison.tick = 1;
-        this.poison.left -= 1;
-        this.scene.combat.damagePlayerRaw(this.poison.dmg, { poison: true });
+        const pz = this.poison;
+        pz.tick = 1;
+        pz.left -= 1;
+        if (pz.left <= 0) this.poison = null;
         this.scene.fx.sprite('poison', this.x, this.y - 40, {});
-        if (this.poison.left <= 0) this.poison = null;
+        // zehir öldürürse die() durumu temizler; bu karede başka durum okunmaz
+        this.scene.combat.damagePlayerRaw(pz.dmg, { poison: true });
+        if (this.dead) return;
       }
     }
     // otomatik iksir (yalnız iksir tüketir; otomatik savaş değildir)
@@ -513,7 +517,7 @@ export class Player {
   }
 
   buffState() {
-    const now = this.scene.time.now;
+    const now = this.scene.clock;
     const on = (k) => this.buffs[k] && now < this.buffs[k].until;
     return {
       reduce: on('ironSkin') ? this.buffs.ironSkin.value : 0,
@@ -526,7 +530,7 @@ export class Player {
   // Sarsılmaz İrade (Lv.20 ustalık)
   checkWill() {
     if (!this.char.mastery || this.char.cls !== 'warrior') return;
-    const now = this.scene.time.now;
+    const now = this.scene.clock;
     if (this.char.hp / this.stats.maxHp < 0.3 && now >= this.icd.will) {
       this.icd.will = now + 45000;
       this.buffs.will = { until: now + 6000, value: 0.3 };
@@ -536,13 +540,13 @@ export class Player {
   }
 
   stun(sec) {
-    this.stunUntil = this.scene.time.now + sec * 1000;
+    this.stunUntil = this.scene.clock + sec * 1000;
     this.scene.combat.stunFx(this, sec);
     this.cancelChannel();
   }
 
   slow(pct, sec) {
-    this.slowPct = pct; this.slowUntil = this.scene.time.now + sec * 1000;
+    this.slowPct = pct; this.slowUntil = this.scene.clock + sec * 1000;
     this.body.setTint(0xa0c8ff);
     this.scene.time.delayedCall(sec * 1000, () => this.body.clearTint());
   }
@@ -574,7 +578,7 @@ export class Player {
     const cls = this.char.cls;
     let ang = cls === 'warrior' ? 0.45 : -0.1;
     if (this.swing) {
-      this.swing.t += this.scene.game.loop.delta / 1000;
+      this.swing.t += this._dt || 0.016;
       const k = Math.min(1, this.swing.t / this.swing.dur);
       ang = this.swing.spin ? -1.6 + k * Math.PI * 2 : -1.9 + k * 3.2;
       if (k >= 1) this.swing = null;

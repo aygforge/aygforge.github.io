@@ -219,10 +219,17 @@ export function cancelContract(char) {
   return { ok: true };
 }
 
+// Görevin şu anki ipucu: ilk tamamlanmamış hedefin kendi ipucu, yoksa görevin genel ipucu
+export function currentHint(char, q) {
+  const i = q.objectives.findIndex((o, k) => !objectiveDone(char, q, k));
+  return (i >= 0 && q.objectives[i].hint) || q.hint || null;
+}
+
 export function trackedQuestList(char) {
   return activeQuests(char).map((q) => ({
     q,
     ready: isReady(char, q),
+    hint: currentHint(char, q),
     objectives: q.objectives.map((o, i) => ({ label: o.label, p: objectiveProgress(char, q, i), n: objectiveTarget(o), type: o.type })),
   }));
 }

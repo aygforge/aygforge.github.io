@@ -48,6 +48,7 @@ export class WorldScene extends Phaser.Scene {
     this.inputCtl = new InputController(this);
     this.enemies = []; this.objects = []; this.projectiles = []; this.lights = [];
     this.pathBudget = 4;
+    this.clock = 0; // oyun saati (ms): duraklatmada durur, geliştirici hızlandırmasına uyar
     this.darkness = null; this.vignette = null; this.playerLight = null; this.mists = null; this.fireflies = null;
     this.gates = null; this.changing = false;
     this.lowPerf = !!app.settings.lowPerf;
@@ -434,22 +435,33 @@ export class WorldScene extends Phaser.Scene {
     this.minimapImage = c;
   }
 
+  guard(label, fn) {
+    try { fn(); } catch (err) {
+      this.guardErrors = this.guardErrors || {};
+      if (!this.guardErrors[label]) { this.guardErrors[label] = true; console.error(`[Ahen] güncelleme hatası (${label}):`, err); }
+    }
+  }
+
   // ------------------------------------------------------------- ana döngü
   update(time, delta) {
-    const dt = Math.min(0.05, delta / 1000);
+    const speed = app.dev ? (app.timeScale || 1) : 1;
+    if (this.time.timeScale !== speed) { this.time.timeScale = speed; this.tweens.timeScale = speed; this.anims.globalTimeScale = speed; }
+    const dt = Math.min(0.05, delta / 1000) * speed;
+    this.clock += dt * 1000;
     const ch = app.char;
     if (!ch) return;
     ch.world.activeTime += dt;
     ch.record.playTime += dt;
     this.pathBudget = 4;
 
-    this.player.update(dt);
-    for (const e of this.enemies) e.update(dt);
+    // Tek bir varlıktaki beklenmeyen hata tüm oyun döngüsünü dondurmasın (hata konsola raporlanır)
+    this.guard('oyuncu', () => this.player.update(dt));
+    for (const e of this.enemies) this.guard(e.tpl.id, () => e.update(dt));
     this.separate();
     this.enemies = this.enemies.filter((e) => !e.dead || e.container.active);
-    for (const o of this.objects) o.update(dt);
-    this.combat.updateProjectiles(dt);
-    this.spawner.update(dt);
+    for (const o of this.objects) this.guard(o.kind || 'nesne', () => o.update(dt));
+    this.guard('mermi', () => this.combat.updateProjectiles(dt));
+    this.guard('spawn', () => this.spawner.update(dt));
 
     this.reachT -= dt;
     if (this.reachT <= 0) {

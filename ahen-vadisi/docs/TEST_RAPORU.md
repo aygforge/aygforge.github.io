@@ -10,8 +10,8 @@ makine okunur sonuç: `tests/e2e/report.json`.
 
 | Paket | Sonuç |
 |---|---|
-| Birim testleri (Vitest, 8 dosya) | **72 / 72 geçti** |
-| Uçtan uca testler (Playwright) | **49 / 49 geçti** |
+| Birim testleri (Vitest, 8 dosya) | **75 / 75 geçti** |
+| Uçtan uca testler (Playwright) | **50 / 50 geçti** |
 | Üretim derlemesi (Vite) | Başarılı — toplam ~1,6 MB (Phaser 332 KB gzip, oyun 115 KB gzip) |
 
 ## Birim testleri (tests/unit)
@@ -25,7 +25,7 @@ makine okunur sonuç: `tests/e2e/report.json`.
 | Loot RNG | Boz Kurt **200.000** öldürme: N/U/R oranları (%0,25 Rare dahil) 4σ içinde; Gözcü **150.000**: Epic %0,75; Maden Golemi **1.000.000** kesim: Legendary %0,397 (beklenen %0,4), Rare %28, Epic %6, sınıf ağırlığı %80; en uzun Legendary kuraklığı 2.492 kesim (pity yok); **Golem dışındaki her kaynak 100.000 öldürme: 0 Legendary**; havuzlar boş değil ve seviye uygun; bonus sayısı/aralık/tekrarsızlık/sınıf-slot uygunluğu (20.000 eşya); materyal %28; Kadim Çekirdek %25 |
 | Envanter/ekonomi | 36 slot; çift el yardımcı eli kapatır; sınıf/seviye kontrolü; çanta doluyken Rare+ bekleyen ganimete gider; istif/sıralama; ortak depo aktarımı; alım/satım; Legendary satılamaz/parçalanamaz; kilitli eşya; crafting'in tek seferlik ve eksik materyalde hiç değişmemesi; 20 tarifin tamamı; **sınırsız gold döngüsü yok** (al→sat, craft→sat, al→parçala→sat, craft→parçala); tamir ve ölüm dayanıklılığı; çanta 36→42→48, depo 60→90 |
 | Demirci | +1..+5 başarı oranları 20.000'er deneme (±%1,5); başarısızlıkta eşya kırılmaz/silinmez/seviye düşmez; materyal+gold tüketimi; maliyet çarpanları; yüzük/kolye yükseltilmez; N/U +5 için 3 Sunak Kristali |
-| Görevler | 26 görevin + 2 sınıf görevinin her iki sınıfla gerçek olaylarla (öldürme, ulaşma, etkileşim, teslim, dungeon) alınıp tamamlanması; ödülün bir kez verilmesi; ön koşul ve seviye kilitleri; yanlış yaratık sayacı artırmaz; aynı nesne iki kez sayılmaz; Av Sözleşmeleri ayrı ve tekrarlanabilir |
+| Görevler | Her hedefin harita işaretinin hedefin yapılabildiği haritayı göstermesi (çok haritalı görevde ipucu ilerler); 26 görevin + 2 sınıf görevinin her iki sınıfla gerçek olaylarla (öldürme, ulaşma, etkileşim, teslim, dungeon) alınıp tamamlanması; ödülün bir kez verilmesi; ön koşul ve seviye kilitleri; yanlış yaratık sayacı artırmaz; aynı nesne iki kez sayılmaz; Av Sözleşmeleri ayrı ve tekrarlanabilir |
 | Dungeon | Kilit; koşu; kontrol noktaları; istemsiz kapanmada devam; tek boss loot'u (aynı killId ikinci kez ödül vermez); gönüllü çıkış ve yeni koşu |
 | Kayıt | IndexedDB (fake-indexeddb) kapat-aç; checksum bozulunca snapshot'tan kurtarma; JSON dışa/içe aktarma, sürüm ve bütünlük kontrolü; geçersiz veri reddi (bilinmeyen eşya, çift uid); simüle edilmiş yazma hatası ve sonraki başarılı kayıt |
 | Denge simülasyonu | Aşağıdaki tablo |
@@ -45,6 +45,7 @@ makine okunur sonuç: `tests/e2e/report.json`.
 | Golem büyük saldırıyı telegrafla işaretler; Golem yenilir, bölüm 4 temizlenir; tek ölümden tek loot; gönüllü çıkış → yeni koşu ve yeni Golem | ✔ |
 | PWA: servis işçisi etkin, **çevrimdışı yeniden açılış**, manifest | ✔ |
 | Mage uzaktan (>3 tile) saldırır, normal büyü MP harcamaz | ✔ |
+| Zehir tiki oyuncuyu öldürünce oyun döngüsü hatasız; ölüm penceresi ve yeniden doğma | ✔ |
 
 ### Performans (SwiftShader yazılım GPU, 844×390)
 
@@ -76,13 +77,53 @@ Normal yaratıklarda 12 ardışık öldürme (aralarda 2 sn yürüme) ortalamas�
 | Mage Lv20 Rare +0 → Maden Golemi | 153 sn | 180–300 sn |
 | Lv18–20 brüt farm geliri (120 öldürme/sa, iksir ve tamir öncesi) | ~1.800 G/sa | 900–1.400 net |
 
+Hayatta kalma (yalnız düşmanın telegrafsız normal saldırıları, iksirsiz, oyuncu hiç kaçmadan):
+
+| Senaryo | Ölüm süresi |
+|---|---|
+| Warrior / Mage Lv10 → Kazmacı Goblin | 28,4 / 15,6 sn |
+| Warrior Lv10 → Haydut Kaptanı (elit) | 28,8 sn |
+| Warrior / Mage Lv11 → Alfa Kurt | 43,1 / 24,3 sn |
+| Warrior / Mage Lv20 → Maden Golemi | 42 / 21,9 sn |
+| Warrior Lv19 → Çürük Muhafız | 30,2 sn |
+
 Değerlendirme: Yaratık HP/ATK/DEF değerleri ve hasar formülleri belgedeki kanonik değerlerdir ve değiştirilmedi.
 Bu değerlerle beceri patlaması (ilk 0,5 sn'de iki beceri + normal vuruş) erken/orta seviye normal yaratıkları hedeften
 hızlı öldürüyor. Yalnız normal saldırı ve Uncommon/Normal ekipmanla süreler belge bandına (≈4–6 sn) giriyor.
 Golem süreleri hedef aralıkta. Simülasyon üzerine yapılan V1 denge ayarları (belgede sabitlenmemiş parametreler):
 aktif beceri rank artışı ~%6/rank, Warrior MP maliyetleri düşürüldü, Mage maliyetleri artırıldı, savaş içi MP
-yenilenmesi %0,8/sn ve Warrior "Savaş Nefesi" (isabetli normal vuruş +2 MP). Sonraki denge turu için öneri:
+yenilenmesi %0,8/sn ve Warrior "Savaş Nefesi" (isabetli normal vuruş +2 MP).
+
+Oynanış botu (aşağıda) bulguları üzerine yapılan ek ayarlar — **kanonik ATK değerleri değiştirilmedi**, yalnız
+belgede sabitlenmemiş "telegrafsız normal saldırı katsayısı" eklendi: elitler ×0,7, Alfa Kurt ×0,35 (saldırı aralığı
+2,0 sn), Maden Golemi ×0,5. Telegraflı büyük saldırılar (Yırtıcı Atılım ×1,8, Ezici Darbe ×2,2 vb.) tam güçte kaldı;
+böylece hasarın çoğu kaçınılabilir saldırılardan gelir (belge §5: "boss hasarı kaçınılmaz tek vuruş ölümüne dönüşmemeli").
+Alfa'nın çağırdığı Sürü Kurdu HP 160 / ATK 18'e indirildi ve 30 sn ömürlü yapıldı (belgede statı yok). Sürü uyarısı en yakın 2 boştaki
+aynı tür yaratıkla, 5 tile ile sınırlandı; Yağmacı/Goblin/Yarasa/Cüce/Cevher Rahibi/Sis Cadısı algılama yarıçapları 4–5 tile'a düşürüldü. Sonraki denge turu için öneri:
 normal/elit yaratık HP'lerinde ×1,5–1,8 artış veya Lv.1–12 aralığında beceri katsayılarının yumuşatılması.
+
+## Oynanış botu (src/dev/bot.js · tools/bot-run.mjs)
+
+Ana görev zincirini gerçek oyun kodu ve gerçek dokunmatik hedefleme API'si üzerinden oynayan bir Warrior botu
+(Chromium + SwiftShader, oyun hızı ×4). Bot görev alır/teslim eder, hedefe dokunur, becerileri kullanır, telegraf
+alanlarından kaçar, iksir/ekipman alır, çöpü parçalayıp Avcı Palası üretir, ot toplayıp iksir yapar, çok ölünce
+seviye kasar ve her ölümde son 20 sn'nin hasar kaynaklarını yazar. Bot kiting yapmaz; bu yüzden insan oyuncudan
+daha çok ölmesi beklenir.
+
+**Bot sayesinde bulunup düzeltilen hatalar**
+
+| Bulgu | Düzeltme |
+|---|---|
+| **Zehir tiki oyuncuyu öldürünce oyun döngüsü çöküyordu** (`poison.left` null) — oyun tamamen donuyordu | Sıra düzeltildi; e2e testi eklendi (zehirle ölüm → hatasız yeniden doğma); ayrıca dünya döngüsü varlık bazında korumalı: beklenmeyen bir hata konsola raporlanır ama oyunu dondurmaz |
+| Elit sayacı haritadaki **tüm** öldürmeleri sayıyordu; Haydut Kaptanı (Lv10) görev 6'dan önce kampta beliriyordu | Belgedeki "alan-kesim katkısı" kuralı: yalnız elitin kendi kampındaki öldürmeler sayılır |
+| Büyük boss gövdesi ev noktasına oturamayınca "dönüş" durumunda takılı kalıyor, iyileşiyor ve Sürü Kurtları haritada kalıcı tehlike olarak kalıyordu | Dönüşe 7 sn sınır; çağrılan yaratıklar savaş bitince dağılır; Sürü Kurdu 30 sn ömürlü |
+| Görev 15 "Mührün Gücü"nün harita işareti Maden kapısını gösteriyordu, oysa ilk hedef (Çürük Muhafız) Bataklık'ta | Hedef bazlı ipucu: işaret önce Bataklık mezarlığını, sonra Maden kapısını gösterir; tüm görevler için birim testi |
+| İki elli silah kuşanılıyken kalkan karşılaştırması sahte kazanç gösteriyordu (kalkan kuşanılamaz) | Karşılaştırma gerçek sonucu (değişiklik yok) gösterir; birim testi |
+| Kalabalık kamplarda (Yağmacı, Cevher Rahibi) uzak algılama 4–6 yaratığı aynı anda çekiyordu | Algılama yarıçapları 4–5 tile |
+
+**Önceki tam koşu (×4 hız, zehir/ipucu düzeltmeleri dahil):** Görev 1–15 tamamlandı; Alfa Kurt Lv11'de, Mührün Gücü
+Lv18'de (oyun içi 111. dk) geçildi; Derin Ocak'a Lv19'da girildi. Ölümlerin çoğu Bataklık'taki Sis Cadısı gruplarında
+(bot savaşlar arasında dinlenmiyordu) ve dungeon'da elitten kaçma hatasında (bot hatası) oldu; bot düzeltilip yeniden koşuldu.
 
 ## Görsel inceleme
 

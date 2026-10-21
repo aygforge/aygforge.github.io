@@ -24,13 +24,13 @@ export class CombatRuntime {
   get rng() { return app.rng; }
 
   logDps(dmg) {
-    const now = this.scene.time.now;
+    const now = this.scene.clock;
     this.dpsLog.push([now, dmg]);
     while (this.dpsLog.length && now - this.dpsLog[0][0] > 10000) this.dpsLog.shift();
   }
   dps() {
     if (!this.dpsLog.length) return 0;
-    const now = this.scene.time.now;
+    const now = this.scene.clock;
     const span = Math.max(1, (now - this.dpsLog[0][0]) / 1000);
     return this.dpsLog.reduce((a, [, d]) => a + d, 0) / span;
   }
@@ -45,8 +45,8 @@ export class CombatRuntime {
     if (!res.miss && st.cls === 'warrior') app.char.mp = Math.min(st.maxMp, app.char.mp + WARRIOR_MP_ON_HIT);
     // Kızıl Hüküm: normal vuruşta %10, 8 sn iç bekleme, ek ateş hasarı (büyü savunmasına karşı)
     const p = this.scene.player;
-    if (!res.miss && st.legendaryEffect === 'crimson_strike' && !t.dead && this.scene.time.now >= p.icd.crimson && this.rng.float() < 0.10) {
-      p.icd.crimson = this.scene.time.now + 8000;
+    if (!res.miss && st.legendaryEffect === 'crimson_strike' && !t.dead && this.scene.clock >= p.icd.crimson && this.rng.float() < 0.10) {
+      p.icd.crimson = this.scene.clock + 8000;
       const extra = playerHit(st, t, { coef: 1.2, isNormal: false, dmgType: 'magic', rng: this.rng });
       this.scene.fx.sprite('crimson', t.x, t.y - 18, { scale: 2, blend: Phaser.BlendModes.ADD });
       this.scene.fx.text(t.x, t.y - 64, 'Kızıl Darbe', { color: '#ff6a40', size: 12 });
@@ -63,8 +63,8 @@ export class CombatRuntime {
     this.applyToEnemy(t, res, {});
     // Kadim Ruh Asası: aktif hasar büyüsünde %8, 10 sn iç bekleme; Ruh Yankısı zincirlenmez
     const p = this.scene.player;
-    if (spell && st.legendaryEffect === 'spirit_echo' && !t.dead && this.scene.time.now >= p.icd.spirit && this.rng.float() < 0.08) {
-      p.icd.spirit = this.scene.time.now + 10000;
+    if (spell && st.legendaryEffect === 'spirit_echo' && !t.dead && this.scene.clock >= p.icd.spirit && this.rng.float() < 0.08) {
+      p.icd.spirit = this.scene.clock + 10000;
       const echo = { dmg: Math.max(1, Math.round(res.dmg * 0.6)), crit: false, miss: false };
       this.scene.time.delayedCall(220, () => {
         if (t.dead) return;
@@ -85,7 +85,7 @@ export class CombatRuntime {
     if (res.crit) { sound.play('crit'); fx.sprite('spark', t.x, t.y - t.height / 2, { scale: 1.6 }); fx.shake(0.0025, 70); }
     else { sound.play('hit'); if (normal) fx.sprite('spark', t.x + (Math.random() - 0.5) * 8, t.y - t.height / 2, { scale: 1 }); }
     t.onDamaged();
-    this.scene.player.lastCombatAt = this.scene.time.now;
+    this.scene.player.lastCombatAt = this.scene.clock;
     if (t.hp <= 0) this.killEnemy(t);
     bus.emit('enemyHp', t);
   }
@@ -143,6 +143,9 @@ export class CombatRuntime {
     if (res.miss) { this.scene.fx.damage(p.x, p.y - 56, 0, { miss: true }); return; }
     if (res.mpDmg) { app.char.mp -= res.mpDmg; this.scene.fx.text(p.x + 14, p.y - 56, `-${res.mpDmg} MP`, { color: '#7ab0ff', size: 12 }); }
     if (label) this.scene.fx.text(p.x, p.y - 80, label, { color: '#ffb060', size: 12, rise: 16 });
+    // son alınan hasarlar (ölüm ekranı/geliştirici analizi için kısa halka)
+    (this.hurtLog || (this.hurtLog = [])).push({ src: e.tpl.id, label: label || 'normal', dmg: res.dmg, t: this.scene.clock });
+    if (this.hurtLog.length > 40) this.hurtLog.shift();
     this.damagePlayerRaw(res.dmg, {});
   }
 
@@ -151,7 +154,7 @@ export class CombatRuntime {
     const ch = app.char;
     if (p.dead) return;
     ch.hp -= dmg;
-    p.lastHurtAt = this.scene.time.now;
+    p.lastHurtAt = this.scene.clock;
     this.scene.fx.damage(p.x, p.y - 56, dmg, { toPlayer: true });
     if (!poison) {
       sound.play('hurt');
@@ -174,7 +177,7 @@ export class CombatRuntime {
 
   enemyProjectile(e, p, key) {
     sound.play('bolt', { vol: 0.6 });
-    const pr = this.projectile(e, p, key, 300, () => this.enemyHitsPlayer(e, { coef: 1, isNormal: true }));
+    const pr = this.projectile(e, p, key, 300, () => this.enemyHitsPlayer(e, { coef: e.tpl.normalCoef ?? 1, isNormal: true }));
     pr.s.setPosition(e.x + e.facing * 10, e.y - e.height * 0.6);
     if (e.tpl.poison) {
       const orig = pr.onHit;

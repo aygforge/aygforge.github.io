@@ -81,6 +81,12 @@ describe('Statlar ve formüller', () => {
     const s = statsWithItem(c, steel);
     expect(s.physPower - computeStats(c).physPower).toBeCloseTo(32.5 - 6, 5);
   });
+  it('iki elli silah kuşanılıyken kalkan karşılaştırması kazanç göstermez (kuşanılamaz)', () => {
+    const c = mk('warrior'); c.level = 10;
+    c.equipment.weapon = createItem('W02', 'N', new Rng(3)); c.equipment.offhand = null;
+    const shield = createItem('O01', 'N', new Rng(4));
+    expect(statsWithItem(c, shield)).toEqual(computeStats(c));
+  });
 });
 
 describe('Seviye ve beceriler', () => {

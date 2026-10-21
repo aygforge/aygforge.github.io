@@ -165,7 +165,7 @@ export function createHud() {
     } else boss.classList.add('hidden');
     // buff
     clear(buffs);
-    const now = w.time.now;
+    const now = w.clock;
     const addBf = (icon, sec, tint) => buffs.appendChild(h('div', { class: 'bf', style: { backgroundImage: `url(${iconURL(icon)})`, borderColor: tint || '#000' } }, h('em', {}, sec > 0 ? Math.ceil(sec) : '')));
     for (const [k, b] of Object.entries(p.buffs)) {
       const icon = { ironSkin: 'skill:iron_skin', manaShield: 'skill:mana_shield', will: 'skill:unyielding_will', resonance: 'skill:arcane_resonance' }[k];
@@ -349,7 +349,7 @@ export function drawMarkers(ctx, w, tf, k, mini) {
   // görev ipucu alanı
   const tracked = trackedQuestList(ch);
   for (const t of tracked) {
-    const hnt = t.q.hint;
+    const hnt = t.hint;
     if (!hnt || hnt.map !== def.id || t.ready) continue;
     const [sx, sy] = tf(hnt.x, hnt.y);
     ctx.fillStyle = 'rgba(255,220,90,0.18)'; ctx.strokeStyle = 'rgba(255,220,90,0.8)'; ctx.lineWidth = 1;

@@ -1,7 +1,7 @@
 {
-  "date": "2026-10-21T07:37:05.886Z",
-  "passed": 49,
-  "total": 49,
+  "date": "2026-10-21T11:43:20.161Z",
+  "passed": 50,
+  "total": 50,
   "results": [
     {
       "name": "HUD 16:9 640×360: ekran içinde",
@@ -151,7 +151,7 @@
     {
       "name": "Menzile girince normal saldırı otomatik sürer ve hedef ölür",
       "ok": true,
-      "info": "2.0 sn"
+      "info": "4.3 sn"
     },
     {
       "name": "Hedef ölünce yeni hedef otomatik seçilmez",
@@ -169,9 +169,14 @@
       "info": "0.1 sn içinde durdu"
     },
     {
+      "name": "Zehirle ölüm hatasız; yeniden doğma çalışır",
+      "ok": true,
+      "info": "{\"dead\":true,\"poison\":null,\"revived\":true,\"errors\":[]}"
+    },
+    {
       "name": "Kapat-aç: karakter, gold, görev, harita, envanter korunur",
       "ok": true,
-      "info": "{\"name\":\"Kontrolcü\",\"level\":1,\"gold\":777,\"map\":\"forest\",\"kills\":1,\"bag\":1,\"q\":2,\"x\":19}"
+      "info": "{\"name\":\"Kontrolcü\",\"level\":1,\"gold\":777,\"map\":\"forest\",\"kills\":1,\"bag\":0,\"q\":2,\"x\":8}"
     },
     {
       "name": "Kayıttan dünyaya dönüş (aynı harita)",
@@ -181,22 +186,22 @@
     {
       "name": "Performans: orman normal",
       "ok": true,
-      "info": "ölçülen 41.7 FPS · Phaser 45.8 · 28 yaratık · bellek 77.6 MB (SwiftShader yazılım GPU)"
+      "info": "ölçülen 23.4 FPS · Phaser 33.3 · 28 yaratık · bellek 77.6 MB (SwiftShader yazılım GPU)"
     },
     {
       "name": "Performans: orman +30 kurt (saldırgan)",
       "ok": true,
-      "info": "ölçülen 40.3 FPS · Phaser 42.1 · 55 yaratık · bellek 77.6 MB (SwiftShader yazılım GPU)"
+      "info": "ölçülen 20 FPS · Phaser 25 · 52 yaratık · bellek 77.6 MB (SwiftShader yazılım GPU)"
     },
     {
       "name": "Performans: düşük performans modu (30 FPS sınırı)",
       "ok": true,
-      "info": "ölçülen 58.6 FPS · Phaser 52.4 · 55 yaratık · bellek 77.6 MB (SwiftShader yazılım GPU)"
+      "info": "ölçülen 19.2 FPS · Phaser 20.8 · 52 yaratık · bellek 77.6 MB (SwiftShader yazılım GPU)"
     },
     {
       "name": "Performans: dungeon",
       "ok": true,
-      "info": "31.7 FPS · 20 yaratık"
+      "info": "17.7 FPS · 20 yaratık"
     },
     {
       "name": "Golem büyük saldırıyı telegrafla işaretler",
@@ -206,7 +211,7 @@
     {
       "name": "Maden Golemi yenilebilir; bölüm 4 temizlenir",
       "ok": true,
-      "info": "{\"dead\":true,\"goldGained\":255,\"claims\":1,\"secondGold\":0,\"cleared\":[4],\"lootClaimed\":true}"
+      "info": "{\"dead\":true,\"goldGained\":233,\"claims\":1,\"secondGold\":0,\"cleared\":[4],\"lootClaimed\":true}"
     },
     {
       "name": "Tek boss ölümünden birden fazla loot kazanılamaz",
@@ -216,7 +221,7 @@
     {
       "name": "Gönüllü çıkış koşuyu bitirir; tekrar giriş yeni koşu ve Golem",
       "ok": true,
-      "info": "{\"runId\":\"runmvhstzoe315ckohj1\",\"golem\":true,\"cleared\":[]}"
+      "info": "{\"runId\":\"runmvi1mmg03188ga3m1\",\"golem\":true,\"cleared\":[]}"
     },
     {
       "name": "Konsol hatası yok (kontrol/dungeon akışı)",
@@ -241,7 +246,7 @@
     {
       "name": "Mage uzaktan saldırır ve normal büyü MP harcamaz",
       "ok": true,
-      "info": "{\"dead\":true,\"mpUsed\":0,\"attackDistTiles\":3.8}"
+      "info": "{\"dead\":true,\"mpUsed\":0,\"attackDistTiles\":4.8}"
     },
     {
       "name": "Konsol hatası yok (mage)",
@@ -252,24 +257,24 @@
   "perf": [
     {
       "label": "orman normal",
-      "fps": 41.7,
-      "phaserFps": 45.8,
+      "fps": 23.4,
+      "phaserFps": 33.3,
       "memMB": 77.6,
       "enemies": 28
     },
     {
       "label": "orman +30 kurt (saldırgan)",
-      "fps": 40.3,
-      "phaserFps": 42.1,
+      "fps": 20,
+      "phaserFps": 25,
       "memMB": 77.6,
-      "enemies": 55
+      "enemies": 52
     },
     {
       "label": "düşük performans modu (30 FPS sınırı)",
-      "fps": 58.6,
-      "phaserFps": 52.4,
+      "fps": 19.2,
+      "phaserFps": 20.8,
       "memMB": 77.6,
-      "enemies": 55
+      "enemies": 52
     }
   ]
 }

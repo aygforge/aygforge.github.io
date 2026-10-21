@@ -115,6 +115,8 @@ export function computeStats(char, overrideEquipment = null) {
 // Bir eşya kuşanılırsa statlar nasıl değişir? (karşılaştırma ekranı gerçek motordan hesaplar)
 export function statsWithItem(char, inst) {
   const t = ITEMS[inst.tid];
+  // iki elli silahla yardımcı el kuşanılamaz: karşılaştırma gerçek sonucu (değişiklik yok) göstermeli
+  if (t.slot === 'offhand' && ITEMS[char.equipment.weapon?.tid]?.hand === 'two') return computeStats(char);
   const eq = { ...char.equipment, [t.slot]: inst };
   if (t.slot === 'weapon' && t.hand === 'two') eq.offhand = null;
   return computeStats(char, eq);

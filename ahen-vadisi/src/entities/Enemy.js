@@ -95,13 +95,13 @@ export class Enemy {
   }
 
   speed() {
-    const now = this.scene.time.now;
+    const now = this.scene.clock;
     let s = this.tpl.speed * TILE * this.speedMult;
     if (now < this.slowUntil) s *= 1 - this.slowPct;
     return s;
   }
 
-  isSlowed() { return this.scene.time.now < this.slowUntil; }
+  isSlowed() { return this.scene.clock < this.slowUntil; }
 
   distTo(p) { return Math.hypot(p.x - this.x, p.y - this.y); }
 
@@ -110,15 +110,17 @@ export class Enemy {
   aggro(p, alertPack = true) {
     if (this.dead || this.state === 'return' || this.tpl.ai === 'static') return;
     if (this.state === 'idle') { this.state = 'chase'; this.engaged = true; }
+    // Sürü çağırma: yakındaki (5 tile) en çok 2 aynı tür yardımcı
     if (alertPack && (this.tpl.ai === 'pack')) {
-      for (const e of this.scene.enemies) {
-        if (e !== this && !e.dead && e.tpl.id === this.tpl.id && e.state === 'idle' && e.distTo(this) < 6 * TILE) e.aggro(p, false);
-      }
+      const near = this.scene.enemies
+        .filter((e) => e !== this && !e.dead && e.tpl.id === this.tpl.id && e.state === 'idle' && e.distTo(this) < 5 * TILE)
+        .sort((a, b) => a.distTo(this) - b.distTo(this)).slice(0, 2);
+      for (const e of near) e.aggro(p, false);
     }
   }
 
   onDamaged() {
-    this.lastHitAt = this.scene.time.now;
+    this.lastHitAt = this.scene.clock;
     if (this.state === 'idle') this.aggro(this.scene.player);
     this.sprite.setTintFill(0xffffff);
     this.scene.time.delayedCall(70, () => { if (!this.dead) { this.sprite.clearTint(); if (this.baseTint) this.sprite.setTint(this.baseTint); if (this.furyTint) this.sprite.setTint(this.furyTint); } });
@@ -135,7 +137,7 @@ export class Enemy {
     if (this.dead) return;
     const sc = this.scene;
     const p = sc.player;
-    const now = sc.time.now;
+    const now = sc.clock;
     if (this.behavior?.update(dt, p)) { this.sync(); return; }
     if (now < this.stunUntil) { this.sync(); return; }
     if (this.windup) {
@@ -153,6 +155,11 @@ export class Enemy {
     const dHome = Math.hypot(this.x - this.home.x, this.y - this.home.y);
 
     if (ai === 'static') { this.sync(); return; }
+    // süreli çağrılar (Sürü Kurdu) ömrü dolunca dağılır
+    if (this.summoned && this.tpl.lifetime) {
+      this.age = (this.age || 0) + dt;
+      if (this.age > this.tpl.lifetime) { sc.fx.burst(this.x, this.y - 10, 0xb0a090, 10, 80, 400); sc.spawner.despawn(this); return; }
+    }
 
     switch (this.state) {
       case 'idle': {
@@ -199,8 +206,14 @@ export class Enemy {
         break;
       }
       case 'return': {
-        const done = Math.hypot(this.home.x - this.x, this.home.y - this.y) < 8;
+        // çağrılan yaratıklar (Sürü Kurdu vb.) savaş bitince dağılır; haritada kalıcı tehlike bırakmaz
+        if (this.summoned && this.tpl.ai !== 'static') { sc.spawner.despawn(this); return; }
+        // büyük gövdeler ev noktasına tam oturamayabilir: 7 sn sonra eve yerleştir (sonsuz dönüş yok)
+        this.returnT = (this.returnT || 0) + dt;
+        if (this.returnT > 7) { this.x = this.home.x; this.y = this.home.y; }
+        const done = Math.hypot(this.home.x - this.x, this.home.y - this.y) < Math.max(8, this.radius);
         if (done) {
+          this.returnT = 0;
           this.state = 'idle'; this.hp = this.maxHp; this.engaged = false; this.path = null;
           this.behavior?.reset?.();
           this.drawBar();
@@ -226,6 +239,7 @@ export class Enemy {
 
   startReturn() {
     this.state = 'return';
+    this.returnT = 0;
     this.casting = null; this.windup = null;
     this.path = null;
     this.engaged = false;
@@ -282,7 +296,7 @@ export class Enemy {
         t: 0.28, fn: () => {
           if (this.dead || p.dead) return;
           if (this.distTo(p) <= this.tileRange * 1.25 + p.radius && this.canSee(p)) {
-            sc.combat.enemyHitsPlayer(this, { coef: 1, isNormal: true });
+            sc.combat.enemyHitsPlayer(this, { coef: this.tpl.normalCoef ?? 1, isNormal: true });
             if (this.tpl.poison && Math.random() < this.tpl.poison.chance) sc.combat.poisonPlayer(this, this.tpl.poison);
           }
         },

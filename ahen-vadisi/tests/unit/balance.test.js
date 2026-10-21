@@ -162,5 +162,29 @@ describe('Denge simülasyonu (gerçek formüller)', () => {
     expect(expMultiplier(20, 9)).toBe(0.1);
   });
 
+  it('hayatta kalma: telegrafsız normal saldırılara karşı iksirsiz ölüm süresi', () => {
+    const surv = (c, id) => {
+      const st = computeStats(c), e = ENEMIES[id];
+      const def = e.dmgType === 'magic' ? st.mdef : st.def;
+      const dps = (e.atk * (e.normalCoef ?? 1) * 100 / (100 + def)) / e.attackInterval;
+      return +(st.maxHp / dps).toFixed(1);
+    };
+    const rows = [
+      ['warrior', 10, ['W02', 'O01', 'H02', 'C02', 'G01', 'B02'], 'pick_goblin', 15],
+      ['mage', 10, ['M02', 'O05', 'H05', 'C06', 'G04', 'B05'], 'pick_goblin', 10],
+      ['warrior', 10, ['W02', 'H02', 'C02', 'G02', 'B02'], 'bandit_captain', 12],
+      ['warrior', 11, ['W02', 'H02', 'C02', 'G02', 'B02'], 'alpha_wolf', 12],
+      ['mage', 11, ['M02', 'O05', 'H05', 'C06', 'G05', 'B05'], 'alpha_wolf', 8],
+      ['warrior', 20, ['W06', 'O02', 'H03', 'C03', 'G03', 'B03'], 'mine_golem', 15],
+      ['mage', 20, ['M06', 'O06', 'H06', 'C07', 'G06', 'B06'], 'mine_golem', 8],
+      ['warrior', 19, ['W06', 'O02', 'H03', 'C03', 'G03', 'B03'], 'rotten_guard', 20],
+    ];
+    for (const [cls, lv, gear, id, min] of rows) {
+      const t = surv(build(cls, lv, gear, 2), id);
+      log(`hayatta kalma ${cls} Lv${lv} vs ${ENEMIES[id].name} (yalnız normal saldırı, iksirsiz)`, `${t} sn`);
+      expect(t, `${cls} ${id}`).toBeGreaterThan(min);
+    }
+  });
+
   it('rapor', () => { console.log('\n=== DENGE RAPORU ===\n' + report.join('\n')); expect(report.length).toBeGreaterThan(5); });
 });

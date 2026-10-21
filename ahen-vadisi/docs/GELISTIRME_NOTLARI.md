@@ -35,7 +35,8 @@ görsel `src/art/*` (procedural), dünya ve arayüz bu ikisini okur. Yeni içeri
 2. Görsel: `art/monsters.js → DESIGNS` (özel çizim) veya `HUMANOIDS` (insansı tabanlı) içine `sprite` anahtarı.
 3. Elit yeteneği: `entities/Enemy.js → updateAbility` içine yeni bir telegraflı dal. Boss: `entities/bosses.js` içinde
    `makeBossBehavior` + davranış nesnesi (`update`, `reset`, `onDeath`, `phase`).
-4. Haritada bir alanın `spawns`, `elite` veya `boss` alanına ekleyin.
+4. Haritada bir alanın `spawns`, `elite` veya `boss` alanına ekleyin. Elit, yalnız **kendi kampındaki** normal yaratık
+   öldürmeleri `ELITE_RULE.killsNeeded` (25) sayısına ulaşınca ve son elit ölümünden `minActiveSec` (120 sn aktif oyun) geçince doğar.
 
 ## Yeni eşyalar
 
@@ -55,6 +56,19 @@ görsel `src/art/*` (procedural), dünya ve arayüz bu ikisini okur. Yeni içeri
 
 `data/constants.js → SCHEMA_VERSION` artırın ve `save/serialize.js → migrate()` içine `if (fromVersion < N) { ... }`
 dönüşümü yazın. Doğrulama (`validateProfile`) yeni alanları kontrol etmeli. Snapshot ve checksum mekanizması değişmez.
+
+## Doğrulama botu (yalnız geliştirme)
+
+`src/dev/bot.js` ana görev zincirini gerçek oyun kodu üzerinden oynayan bir test botudur (yalnız geliştirme sunucusunda `/src/dev/bot.js` olarak
+içe aktarılır; hiçbir modül onu içe aktarmadığı için üretim paketine girmez). `npm run dev` açıkken:
+
+```
+node tools/bot-run.mjs warrior 4 110   # sınıf, oyun hızı çarpanı, gerçek dakika sınırı
+```
+
+Bot dokunarak hedef seçer, telegraflardan kaçar, iksir/ekipman alır, ot toplayıp iksir üretir, ölünce seviye kasar ve
+her ölümde son 20 sn'deki hasar kaynaklarını yazar (`ÖLÜM #n … son20sn={…}`). Denge değişikliğinden sonra
+çalıştırıp ölüm noktalarına bakın. Bot oynanışı insan oyuncunun yerini tutmaz (kaçma/kiting yapmaz).
 
 ## Sabit kurallar (değiştirilmemeli)
 

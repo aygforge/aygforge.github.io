@@ -81,6 +81,31 @@ describe('Görevler', () => {
     expect(c.quests.m15.p[1]).toBe(1);
     expect(c.world.dungeonUnlocked).toBe(true);
   });
+  it('her hedefin ipucu (harita işareti) hedefin yapılabildiği haritayı gösterir', () => {
+    const mapsOfEnemy = (id) => Object.values(MAPS).filter((d) => d.areas.some((a) => (a.spawns || []).some((s) => s.enemy === id) || a.elite === id || a.boss === id) || (d.stages && Object.values(d.stages).some((st) => st.some?.(([e]) => e === id)))).map((d) => d.id);
+    const bad = [];
+    for (const q of [...QUESTS, ...CLASS_QUESTS]) {
+      q.objectives.forEach((o, i) => {
+        const hint = o.hint || q.hint;
+        if (!hint || o.type === 'talk' || o.type === 'deliver' || o.type === 'dungeon') return;
+        let maps = [];
+        if (o.type === 'kill') maps = o.enemy ? mapsOfEnemy(o.enemy) : [hint.map];
+        else if (o.type === 'qitem') maps = o.from.flatMap(mapsOfEnemy);
+        else if (o.type === 'interact') maps = Object.values(MAPS).filter((d) => d.objects.some((x) => x.group === o.group)).map((d) => d.id);
+        else if (o.type === 'reach') maps = Object.values(MAPS).filter((d) => (d.locations || []).some((l) => l.id === o.loc)).map((d) => d.id);
+        if (o.enemy === 'mine_golem' || o.enemy === 'training_dummy') return;
+        if (!maps.includes(hint.map)) bad.push(`${q.id}#${i} ${hint.map} ∉ [${maps}]`);
+      });
+    }
+    expect(bad).toEqual([]);
+    // çok haritalı görevde ipucu ilerledikçe değişir (Mührün Gücü: Bataklık → Maden kapısı)
+    const ch = createCharacter({ name: 'İpucu', cls: 'warrior', slot: 0 }, new Rng(5));
+    const m15 = QUEST_MAP.m15;
+    expect(qs.currentHint(ch, m15).map).toBe('swamp');
+    ch.quests.m15 = { s: 'active', p: [5, 0] };
+    expect(qs.currentHint(ch, m15).map).toBe('mine');
+  });
+
   it('Av Sözleşmeleri ayrı ve tekrarlanabilir', () => {
     const c = createCharacter({ name: 'Avcı', cls: 'warrior', slot: 0 }, rng);
     gainExp(c, cumulativeXp(5));

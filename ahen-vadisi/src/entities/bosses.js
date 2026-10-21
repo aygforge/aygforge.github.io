@@ -108,7 +108,7 @@ function golemBehavior(e) {
       const sc = e.scene;
       if (e.state !== 'chase' && e.state !== 'attack') return false;
       const hpp = e.hp / e.maxHp;
-      const now = sc.time.now;
+      const now = sc.clock;
       if (!b.shieldDone && hpp < 0.5) {
         b.shieldDone = true;
         e.reduce = 0.85;

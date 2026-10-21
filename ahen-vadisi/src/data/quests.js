@@ -76,7 +76,7 @@ export const QUESTS = [
   Q({ id: 'm15', main: true, order: 15, name: 'Mührün Gücü', giver: 'muhtar', turnIn: 'muhtar', minLevel: 17, rec: '18–19', prereq: ['m14'],
     text: 'Mühür, ölümsüz muhafızların enerjisiyle yeniden bağlanabilir. Çürük Muhafızları yen, ardından madendeki Derin Ocak kapısında mührü etkinleştir.',
     objectives: [
-      { type: 'kill', enemy: 'rotten_guard', count: 5, label: 'Çürük Muhafız yen' },
+      { type: 'kill', enemy: 'rotten_guard', count: 5, label: 'Çürük Muhafız yen', hint: { map: 'swamp', x: 86, y: 62, r: 10 } },
       { type: 'interact', group: 'dungeon_gate', count: 1, after: [0], label: 'Derin Ocak kapısını aç' },
     ],
     exp: 2000, gold: 500, unlocksDungeon: true, hint: { map: 'mine', x: 52, y: 6, r: 5 } }),

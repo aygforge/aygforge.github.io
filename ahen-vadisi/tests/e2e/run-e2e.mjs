@@ -184,6 +184,22 @@ try {
   record('Erişilemeyen hedefe sonsuz koşma yok (uyarı + kilit çözülür)', unreachable > 0, `${unreachable.toFixed?.(1)} sn içinde durdu`);
   await page.screenshot({ path: join(shots, 'forest-control.png') });
 
+  // zehirle ölüm (zehir tiki öldürünce oyun döngüsü hata vermemeli) ve yeniden doğma
+  const errs0 = page.errors.length;
+  const poisonDeath = await ev(page, async () => {
+    const a = window.__AHEN, p = a.world.player;
+    p.clearTarget();
+    a.char.hp = 3; p.poison = { dmg: 10, left: 3, tick: 0.05 };
+    const t0 = performance.now();
+    while (performance.now() - t0 < 3000 && !p.dead) await new Promise((r) => setTimeout(r, 50));
+    return { dead: p.dead, poison: p.poison };
+  });
+  await page.waitForSelector('[data-testid=respawn]', { timeout: 5000 });
+  await page.tap('[data-testid=respawn]');
+  await page.waitForTimeout(600);
+  const revived = await ev(page, () => !window.__AHEN.world.player.dead && window.__AHEN.char.hp > 0);
+  record('Zehirle ölüm hatasız; yeniden doğma çalışır', poisonDeath.dead && poisonDeath.poison === null && revived && page.errors.length === errs0, JSON.stringify({ ...poisonDeath, revived, errors: page.errors.slice(errs0) }));
+
   // ------------------------------------------------------------------ 4) Kayıt: kapat-aç
   const before = await ev(page, async () => {
     const a = window.__AHEN;

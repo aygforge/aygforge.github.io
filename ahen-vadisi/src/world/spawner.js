@@ -118,7 +118,8 @@ export class Spawner {
       const base = e.tpl.respawn || 20;
       ref.respawnAt = this.now + base * (0.8 + Math.random() * 0.4);
     }
-    if (e.tpl.kind === 'normal' && this.elites.length) {
+    // Elit katkısı yalnız elitin kendi kampındaki öldürmelerden gelir (belge: alan-kesim katkısı)
+    if (e.tpl.kind === 'normal' && ref && this.elites.some((el) => el.area === ref.area)) {
       const st = this.world.elite[mapId] || (this.world.elite[mapId] = { kills: 0, lastDeath: -1e9 });
       st.kills++;
     }

@@ -157,7 +157,7 @@ export class QuestObj extends Base {
   }
   update(dt) {
     const active = canInteractQuestObject(app.char, this.o.group, this.o.id);
-    this.glow.setAlpha(active ? 0.35 + Math.sin(this.scene.time.now / 300) * 0.15 : 0);
+    this.glow.setAlpha(active ? 0.35 + Math.sin(this.scene.clock / 300) * 0.15 : 0);
     const done = this.isDone();
     if (this.s.texture.key.startsWith('obj_')) this.s.setFrame(done ? 1 : 0);
   }
