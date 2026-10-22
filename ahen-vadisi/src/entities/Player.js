@@ -451,6 +451,35 @@ export class Player {
           hits.forEach((e) => sc.combat.playerSkillHit(e, { coef, skill: id }));
         });
         break;
+      case 'iron_fury':
+        // Sarsılmaz Öfke: fiziksel hasar artışı + küçük hasar azaltma (toplam azaltma %60 sınırında)
+        this.playAction('_cast', 0.25);
+        this.buffs.fury = { until: sc.clock + s.dur[rank - 1] * 1000, value: s.reduce[rank - 1], dmg: s.dmgUp[rank - 1] };
+        sc.fx.sprite('aura_will', this.x, this.y - 20, { scale: 1.6, tint: 0xff6a3a });
+        sc.fx.text(this.x, this.y - 70, 'Sarsılmaz Öfke!', { color: '#ff8a5a', size: 13 });
+        sound.play('roar', { vol: 0.5 });
+        break;
+      case 'time_freeze': {
+        // Donmuş Zaman: çevredeki en çok 5 düşmana hasar + yavaşlatma; bosslarda kısa ve zayıf (faz/telegrafı durdurmaz)
+        this.playAction('_cast', 0.35);
+        sc.time.delayedCall(150, () => {
+          if (this.dead) return;
+          sound.play('ice');
+          sc.fx.sprite('ice', this.x, this.y - 10, { scale: 3.2 });
+          sc.fx.telegraph({ kind: 'ring', x: this.x, y: this.y, r: s.radius * TILE }, 260, 0x9ad8ff);
+          const hits = sc.combat.enemiesInRadius(this.x, this.y, s.radius * TILE, s.maxTargets, true);
+          hits.forEach((e, i) => {
+            sc.combat.playerSkillHit(e, { coef, skill: id, spell: i === 0 });
+            if (e.dead || e.tpl.ai === 'static') return;
+            const boss = e.tpl.kind === 'boss';
+            const pct = boss ? s.bossSlow : s.slow, dur = boss ? s.bossSlowDur : s.slowDur;
+            if (sc.clock >= e.slowUntil || e.slowPct <= pct) { e.slowUntil = sc.clock + dur * 1000; e.slowPct = pct; }
+            e.sprite.setTint(0x9ad8ff);
+            sc.time.delayedCall(dur * 1000, () => { if (!e.dead && !e.isSlowed()) { e.sprite.clearTint(); if (e.baseTint) e.sprite.setTint(e.baseTint); if (e.furyTint) e.sprite.setTint(e.furyTint); } });
+          });
+        });
+        break;
+      }
       case 'iron_skin':
         this.playAction('_cast', 0.25);
         this.buffs.ironSkin = { until: sc.clock + (s.dur[rank - 1] + (bk?.durAdd || 0)) * 1000, value: s.reduce[rank - 1] };
@@ -628,6 +657,12 @@ export class Player {
     return { ok: true };
   }
 
+  // V3 Sarsılmaz Öfke: fiziksel hasar çarpanı (normal vuruş + fiziksel beceri)
+  dmgBuffMult(dmgType) {
+    const f = this.buffs.fury;
+    return f && this.scene.clock < f.until && dmgType === 'phys' ? 1 + f.dmg : 1;
+  }
+
   // ---------------------------------------------------------------- can, mana, buff
   updateVitals(dt, now, st) {
     const ch = this.char;
@@ -667,7 +702,7 @@ export class Player {
       if (now >= b.until) { delete this.buffs[k]; continue; }
       if (k === 'ironSkin') auraKey = 'aura_iron';
       if (k === 'manaShield') auraKey = 'aura_mana';
-      if (k === 'will') auraKey = 'aura_will';
+      if (k === 'will' || k === 'fury') auraKey = 'aura_will';
     }
     if (auraKey) {
       if (!this.aura.visible || this.aura.texture.key !== 'fx_' + auraKey) { this.aura.setVisible(true); this.aura.play('fx_' + auraKey + '_a'); }
@@ -682,6 +717,8 @@ export class Player {
       manaShield: on('manaShield') ? this.buffs.manaShield.value : 0,
       willDef: on('will') ? 0.3 : 0,
       willReduce: on('will') ? 0.15 : 0,
+      furyReduce: on('fury') ? this.buffs.fury.value : 0,
+      passiveReduce: this.stats?.passiveReduce || 0,
       curse: on('curse') ? this.buffs.curse.value : 0,
     };
   }

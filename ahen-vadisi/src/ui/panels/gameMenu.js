@@ -168,7 +168,8 @@ function characterTab(rerender) {
         h('div', { style: { fontFamily: 'var(--title)', fontSize: '1.15rem', color: 'var(--gold2)', lineHeight: 1.1 } }, ch.name),
         h('div', {}, `${cls.name} (${cls.latin}) · Seviye ${ch.level}`),
         ch.titles.length ? h('div', { class: 'r-L small' }, `«${ch.titles.join(', ')}»`) : null,
-        ch.mastery ? h('div', { class: 'r-E small' }, `Ustalık I: ${SKILLS[CLASS_SKILLS[ch.cls].mastery].name}`) : null)),
+        ch.mastery ? h('div', { class: 'r-E small' }, `Ustalık I: ${SKILLS[CLASS_SKILLS[ch.cls].mastery].name}`) : null,
+        ch.mastery2 ? h('div', { class: 'r-L small' }, `Ustalık II: ${SKILLS[CLASS_SKILLS[ch.cls].mastery2].name}`) : null)),
       head,
       rows,
       statResetBox(rerender)),
@@ -224,19 +225,20 @@ function skillsTab(rerender) {
       h('button', { class: 'btn small' + (chk.ok ? '' : ' dis'), 'data-testid': 'book-' + id, onTap: () => ui.confirm({ title: 'Ustalık Kitabı', text: `${SKILLS[id].name}: ${bk.desc} 1 Ustalık Kitabı harcanır; her beceriye yalnız bir kez uygulanır.`, ok: 'Uygula', onOk: () => { act.applyBook(id); rerender(); } }) }, 'Uygula'));
   };
   const card = (id) => {
-    const s = SKILLS[id], r = ch.skills[id] || 0, max = maxRank(s);
+    const s = SKILLS[id], r = s.kind === 'mastery2' ? (ch.mastery2 ? 1 : 0) : ch.skills[id] || 0, max = maxRank(s);
+    const mk = s.kind === 'mastery' || s.kind === 'mastery2';
     const chk = canRankUp(ch, id);
     const next = r && r < max ? s.desc(r + 1, s) : null;
     const extra = s.kind === 'active' && r ? ` · MP ${s.mp[r - 1]} · Bekleme ${s.cd[r - 1]} sn${s.range ? ` · Menzil ${s.range} tile` : ''}` : '';
     return h('div', { class: 'li', style: { alignItems: 'flex-start' } },
       img(iconURL('skill:' + id)),
       h('div', { class: 'grow' },
-        h('div', {}, h('b', { class: r ? 'gold' : 'muted' }, s.name), ` · ${s.kind === 'active' ? 'Aktif' : s.kind === 'passive' ? 'Pasif' : 'Ustalık'} · Rank ${r}/${max}`),
-        h('div', { class: 'small' }, r ? s.desc(r, s) : `Seviye ${s.unlock}'te ${s.kind === 'mastery' ? 'Ustalık I görevi ile' : 'ücretsiz'} açılır. ${s.desc(1, s)}`),
+        h('div', {}, h('b', { class: r ? 'gold' : 'muted' }, s.name), ` · ${s.kind === 'active' ? 'Aktif' : s.kind === 'passive' ? 'Pasif' : s.kind === 'mastery2' ? 'Ustalık II' : 'Ustalık'} · Rank ${r}/${max}`),
+        h('div', { class: 'small' }, r ? s.desc(r, s) : `Seviye ${s.unlock}'te ${s.kind === 'mastery' ? 'Ustalık I görevi ile' : s.kind === 'mastery2' ? 'ana hikâye bitince Gezgin Bilge\'nin Ustalık II görevi ile' : 'ücretsiz'} açılır. ${s.desc(1, s)}`),
         h('div', { class: 'tiny muted' }, extra.slice(3)),
         next ? h('div', { class: 'tiny ok' }, `Sonraki rank: ${next} (maliyet ${rankUpCost(s, r + 1)} puan)`) : null,
         s.kind === 'active' ? bookRow(id) : null),
-      s.kind !== 'mastery' ? h('button', { class: 'btn small green' + (chk.ok ? '' : ' dis'), 'data-testid': 'rank-' + id, onTap: () => { act.rankUp(id); rerender(); } }, r >= max ? 'Maks.' : 'Yükselt') : null);
+      !mk ? h('button', { class: 'btn small green' + (chk.ok ? '' : ' dis'), 'data-testid': 'rank-' + id, onTap: () => { act.rankUp(id); rerender(); } }, r >= max ? 'Maks.' : 'Yükselt') : null);
   };
   return h('div', { class: 'col grow scroll' },
     h('div', { class: 'row' }, h('div', { class: 'grow' }, 'Beceri puanı: ', h('b', { class: 'gold' }, skillPointsFree(ch)),
@@ -245,7 +247,8 @@ function skillsTab(rerender) {
     h('h3', { class: 't' }, 'Aktif beceriler'), cs.actives.map(card),
     h('h3', { class: 't' }, 'Pasif beceriler'), cs.passives.map(card),
     h('h3', { class: 't' }, 'Ustalık I (Lv.20)'), card(cs.mastery),
-    h('p', { class: 'tiny muted' }, 'Sıfırlama Gezgin Bilge\'dedir (Lv.1–10 ücretsiz, Lv.11–14 1.000 G, Lv.15–20 2.500 G, Lv.21–30 5.000 G). Ustalık Kitapları sıfırlamada kaybolmaz.'));
+    h('h3', { class: 't' }, 'Ustalık II (Lv.40)'), card(cs.mastery2),
+    h('p', { class: 'tiny muted' }, 'Sıfırlama Gezgin Bilge\'dedir (Lv.1–10 ücretsiz, Lv.11–14 1.000 G, Lv.15–20 2.500 G, Lv.21–30 5.000 G, Lv.31–40 7.500 G). Ustalık Kitapları ve Ustalık II sıfırlamada kaybolmaz.'));
 }
 
 // ------------------------------------------------------------------ GÖREVLER

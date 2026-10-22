@@ -1,6 +1,7 @@
 // Beceri tablosu — belge §4.3. Rank dizileri [R1..R5] (aktif) / [R1..R3] (pasif).
 // Aktifler Lv.1/5/10/15 (V2: +Lv.25), pasifler Lv.4/9/14'te ücretsiz Rank 1 açılır.
 // V2: ekranda 4 beceri düğmesi vardır; 5 aktif beceriden hangi 4'ünün kullanılacağı Beceriler ekranında seçilir.
+// V3: Lv.35'te 6. aktif beceri; düğme sayısı yine 4 (kuşanma düzeni kayıtta). Lv.40 Ustalık II pasifleri (sınıf görevi).
 // V2 Ustalık Kitapları (book): Lv.30 ve Rank 5 beceriye küçük, özel bir geliştirme (rank 6 değildir).
 
 export const ACTIVE_RANK_COST = [0, 1, 1, 2, 2];   // Rank2..5 maliyeti 1/1/2/2 → 6
@@ -41,6 +42,14 @@ export const SKILLS = {
     coef: [1.45, 1.53, 1.62, 1.71, 1.80], cd: [18, 18, 17, 17, 16], mp: [30, 31, 33, 34, 36],
     desc: (r, s) => `Önündeki alana kılıçlar yağdırır: en çok 5 hedefe ×${s.coef[r - 1].toFixed(2)} fiziksel hasar.`,
   },
+  // V3 — Lv.35. Hasar artışı yalnız fiziksel hasara; azaltma diğer savunmalarla çarpımsal ve toplam %60 sınırına tabi.
+  iron_fury: {
+    id: 'iron_fury', cls: 'warrior', kind: 'active', slot: 5, unlock: 35,
+    name: 'Sarsılmaz Öfke', target: 'self', castTime: 0.2,
+    dmgUp: [0.15, 0.15, 0.15, 0.15, 0.15], reduce: [0.10, 0.10, 0.10, 0.10, 0.10], dur: [7, 7, 7.5, 7.5, 8],
+    cd: [30, 30, 29, 29, 28], mp: [40, 40, 41, 41, 42],
+    desc: (r, s) => `${s.dur[r - 1]} sn boyunca fiziksel hasar +%${Math.round(s.dmgUp[r - 1] * 100)}, alınan hasar −%${Math.round(s.reduce[r - 1] * 100)}.`,
+  },
   // ---------------- MAGE ----------------
   fireball: {
     id: 'fireball', cls: 'mage', kind: 'active', slot: 0, unlock: 1,
@@ -76,6 +85,15 @@ export const SKILLS = {
     jumps: 3, jumpRange: 4, falloff: 0.75,
     coef: [1.65, 1.74, 1.84, 1.95, 2.06], cd: [16, 16, 15, 15, 14], mp: [42, 44, 46, 48, 50],
     desc: (r, s) => `İlk hedefe ×${s.coef[r - 1].toFixed(2)} büyü hasarı; yıldırım en çok ${s.jumps} yakın hedefe sıçrar, her sıçramada hasar %25 azalır.`,
+  },
+
+  // V3 — Lv.35. Normal/elit yaratıkları güçlü yavaşlatır; bosslarda kısa ve zayıf (faz/özel saldırıyı durdurmaz).
+  time_freeze: {
+    id: 'time_freeze', cls: 'mage', kind: 'active', slot: 5, unlock: 35,
+    name: 'Donmuş Zaman', target: 'self_aoe', dmg: 'magic', radius: 3.2, maxTargets: 5, castTime: 0.3,
+    coef: [1.40, 1.47, 1.54, 1.62, 1.70], slow: 0.55, slowDur: 3, bossSlow: 0.2, bossSlowDur: 1.2,
+    cd: [28, 28, 27, 27, 26], mp: [70, 71, 73, 74, 76],
+    desc: (r, s) => `Çevrendeki en çok 5 düşmana ×${s.coef[r - 1].toFixed(2)} büyü hasarı; normal düşmanlar %55 yavaşlar (3 sn), bosslarda %20 (1,2 sn).`,
   },
 
   // ---------------- PASİFLER ----------------
@@ -121,6 +139,17 @@ export const SKILLS = {
     chain: 3, window: 6, dur: 5, costRed: 0.5, icd: 20,
     desc: () => '6 sn içinde ardışık 3 büyüden sonra 5 sn boyunca beceri MP maliyeti %50 azalır (20 sn bekleme).',
   },
+  // ---------------- USTALIK II (V3: Lv.40 + ana hikâye, Gezgin Bilge'nin sınıf görevi) ----------------
+  war_legacy: {
+    id: 'war_legacy', cls: 'warrior', kind: 'mastery2', unlock: 40, name: 'Savaşın Mirası',
+    physDmg: 0.05, hpPct: 0.05, reduce: 0.04,
+    desc: () => 'Fiziksel hasar +%5, maks. HP +%5, alınan hasar −%4 (toplam azaltma üst sınırı %60).',
+  },
+  arcane_lore: {
+    id: 'arcane_lore', cls: 'mage', kind: 'mastery2', unlock: 40, name: 'Kadim Büyü Bilgisi',
+    magicDmg: 0.05, costRed: 0.08, mpPct: 0.05,
+    desc: () => 'Büyü hasarı +%5, beceri MP maliyeti −%8, maks. MP +%5.',
+  },
 };
 
 // Ustalık Kitabı geliştirmeleri (her beceriye bir kez; büyük DPS artışı değil)
@@ -140,14 +169,16 @@ export const MASTERY_BOOK_LEVEL = 30;
 
 export const CLASS_SKILLS = {
   warrior: {
-    actives: ['heavy_strike', 'whirlwind', 'iron_skin', 'war_charge', 'blade_rain'],
+    actives: ['heavy_strike', 'whirlwind', 'iron_skin', 'war_charge', 'blade_rain', 'iron_fury'],
     passives: ['weapon_discipline', 'hard_skin', 'battle_rhythm'],
     mastery: 'unyielding_will',
+    mastery2: 'war_legacy',
   },
   mage: {
-    actives: ['fireball', 'ice_blast', 'mana_shield', 'meteor', 'chain_lightning'],
+    actives: ['fireball', 'ice_blast', 'mana_shield', 'meteor', 'chain_lightning', 'time_freeze'],
     passives: ['elemental_mastery', 'mana_control', 'frozen_target'],
     mastery: 'arcane_resonance',
+    mastery2: 'arcane_lore',
   },
 };
 

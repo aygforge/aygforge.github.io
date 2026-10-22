@@ -1,4 +1,5 @@
-// 18 ana hikâye + 8 yan görev — belge §6.1 / §6.2. V2: +10 ana (m27–m36) + 4 yan (s09–s12) = 40 tek seferlik görev. Ayrıca Gezgin Bilge sınıf görevleri (Lv.10 / Lv.20)
+// 18 ana hikâye + 8 yan görev — belge §6.1 / §6.2. V2: +10 ana (m27–m36) + 4 yan (s09–s12) = 40 tek seferlik görev.
+// V3: +24 erken yan görev (s13–s36), +10 ana (m37–m46), +6 yan (s37–s42) = 80. Ayrıca Gezgin Bilge sınıf görevleri (Lv.10 / Lv.20 / Lv.40 Ustalık II)
 // Görev hedef tipleri:
 //  kill     { enemy | enemies[], count, minLevel? }
 //  qitem    { item, name, from[], chance, count }   (görev nesnesi; nadir ekipman RNG'sinden bağımsız)
@@ -347,6 +348,95 @@ export const QUESTS = [
     text: 'Keşif ekibim mabet kapısına ulaşmak istiyor ama yol kurt ve şaman dolu. Onlara eşlik et; yalnız sen yanındayken ilerlerler.',
     objectives: [{ type: 'escort', event: 'expedition', label: 'Keşif ekibini mabet girişine ulaştır' }],
     exp: 11000, gold: 1700, rewardItems: [{ id: 'mp_xl', qty: 3 }, { id: 'altar_crystal', qty: 1 }], hint: { map: 'frost', x: 21, y: 62, r: 3 } }),
+
+  // ============================================================ V3.0 — KAYIP KRALLIĞIN MİRASI: ANA HİKÂYE (10, Lv.30–40, 212.000 EXP)
+  // Ödüller: EXP, gold, iksir ve materyal. Görevler ekipman (özellikle Rare/Epic/Legendary) vermez.
+  Q({ id: 'm37', main: true, order: 37, name: 'Mührün Ardındaki Yol', giver: 'kaya', turnIn: 'seher', minLevel: 30, rec: '30', prereq: ['m36'], region: 'dead',
+    text: 'Muhafız düştü; buzun altındaki eski kraliyet yolu artık açık. Ayaz Geçidi\'nin doğusundan Ölü Krallık\'a geç ve oradaki Rahibe Seher\'i bul.',
+    objectives: [{ type: 'reach', loc: 'loc_dead_entrance', label: 'Ölü Krallık\'a ulaş', hint: { map: 'dead_kingdom', x: 8, y: 44, r: 5 } }],
+    exp: 11000, gold: 1800, rewardItems: [{ id: 'hp_xxl', qty: 3 }], hint: { map: 'frost', x: 112, y: 42, r: 4 } }),
+  Q({ id: 'm38', main: true, order: 38, name: 'Sessiz Evler', giver: 'seher', turnIn: 'seher', minLevel: 31, rec: '31', prereq: ['m37'], region: 'dead',
+    text: 'Sisli Meydan\'ın çevresindeki dört evin halkı bir gecede kayboldu. Her evi araştır; neyin peşinden gittiklerini bulmalıyız.',
+    objectives: [{ type: 'interact', group: 'silent_house', count: 4, label: 'Terk edilmiş evi araştır' }],
+    exp: 13000, gold: 1900, rewardItems: [{ id: 'mp_xxl', qty: 3 }], hint: { map: 'dead_kingdom', x: 58, y: 44, r: 10 } }),
+  Q({ id: 'm39', main: true, order: 39, name: 'Mezarların Nöbeti', giver: 'hamit', turnIn: 'hamit', minLevel: 32, rec: '32', prereq: ['m38'], region: 'dead',
+    text: 'Harap Garnizon\'un lanetli muhafızları hâlâ nöbet tutuyor ve mezarlığa giden yolu kesiyorlar. Onları temizle.',
+    objectives: [{ type: 'kill', enemy: 'cursed_guard', count: 14, label: 'Lanetli Muhafız yen' }],
+    exp: 15000, gold: 2000, rewardItems: [{ id: 'hp_xxl', qty: 3 }, { id: 'dark_steel', qty: 2 }], hint: { map: 'dead_kingdom', x: 80, y: 62, r: 10 } }),
+  Q({ id: 'm40', main: true, order: 40, name: 'Kaybolan Tacın İzleri', giver: 'seher', turnIn: 'seher', minLevel: 33, rec: '33', prereq: ['m39'], region: 'dead',
+    text: 'Kral\'ın tacı onunla birlikte kayboldu. Okçu mevziinde, sessiz şapelde ve garnizonda kraliyet ipuçları olmalı. Üçünü de bul.',
+    objectives: [{ type: 'interact', group: 'royal_clue', count: 3, label: 'Kraliyet ipucunu bul' }],
+    exp: 18000, gold: 2100, rewardItems: [{ id: 'mp_xxl', qty: 3 }, { id: 'royal_ink', qty: 1 }], hint: { map: 'dead_kingdom', x: 60, y: 42, r: 30 } }),
+  Q({ id: 'm41', main: true, order: 41, name: 'Komutanın Laneti', giver: 'hamit', turnIn: 'hamit', minLevel: 34, rec: '34–35', prereq: ['m40'], region: 'dead',
+    text: 'Mezar Komutanı yeminini bozmadı; ölüler onun emriyle uyanıyor. Komutanın Mezarı\'nda onu yen. Bayrağını kır, çağırdığı askerlere dikkat et.',
+    objectives: [{ type: 'kill', enemy: 'grave_commander', count: 1, label: 'Mezar Komutanı\'nı yen' }],
+    exp: 20000, gold: 2400, rewardItems: [{ id: 'hp_xxl', qty: 4 }], hint: { map: 'dead_kingdom', x: 104, y: 72, r: 9 } }),
+  Q({ id: 'm42', main: true, order: 42, name: 'Siyah Kapının Anahtarı', giver: 'seher', turnIn: 'eren', minLevel: 35, rec: '35', prereq: ['m41'], region: 'dead',
+    text: 'Komutan\'ın arması Siyah Kapı\'nın anahtarıdır. Armayı kapının kilidine yerleştir ve Kara Taht\'a geç; orada son nöbetçi Muhafız Eren seni bekliyor.',
+    objectives: [
+      { type: 'interact', group: 'black_gate_lock', count: 1, mode: 'activate', channel: 3, consume: [{ id: 'commander_crest', qty: 1 }], setFlag: 'black_gate_open',
+        label: 'Siyah Kapı\'yı Komutan Arması ile aç', hint: { map: 'dead_kingdom', x: 112, y: 33, r: 3 } },
+      { type: 'reach', loc: 'loc_throne_entrance', after: [0], label: 'Kara Taht\'a geç', hint: { map: 'black_throne', x: 8, y: 60, r: 5 } },
+    ],
+    exp: 22000, gold: 2600, rewardItems: [{ id: 'mp_xxl', qty: 4 }], hint: { map: 'dead_kingdom', x: 112, y: 33, r: 3 } }),
+  Q({ id: 'm43', main: true, order: 43, name: 'Tahtın Suskunları', giver: 'eren', turnIn: 'veysel', minLevel: 36, rec: '36', prereq: ['m42'], region: 'throne',
+    text: 'Kraliyet Avlusu\'ndaki dört heykel tahtın son günlerini anlatıyor. Heykelleri araştır; Kara Nöbet Avlusu\'nun obsidyen nöbetçileri de yolunu kesecek.',
+    objectives: [
+      { type: 'interact', group: 'silent_statue', count: 4, label: 'Suskun heykeli araştır', hint: { map: 'black_throne', x: 62, y: 47, r: 7 } },
+      { type: 'kill', enemy: 'obsidian_sentinel', count: 12, label: 'Obsidyen Nöbetçi yen', hint: { map: 'black_throne', x: 36, y: 74, r: 10 } },
+    ],
+    exp: 24000, gold: 2800, rewardItems: [{ id: 'hp_xxl', qty: 4 }, { id: 'soul_essence', qty: 1 }], hint: { map: 'black_throne', x: 62, y: 47, r: 7 } }),
+  Q({ id: 'm44', main: true, order: 44, name: 'Kanlı Yemin', giver: 'veysel', turnIn: 'eren', minLevel: 37, rec: '37', prereq: ['m43'], region: 'throne',
+    text: 'Üç kraliyet mührü çatladı. Her birini 2 Kara Çelik ile onar; onarılan mühür tahtın muhafızlarını uyandıracak — mühürleri koru.',
+    objectives: [
+      { type: 'interact', group: 'royal_seal', count: 3, mode: 'repair', channel: 3, consume: [{ id: 'dark_steel', qty: 2 }], label: 'Kraliyet mührünü onar (2 Kara Çelik)',
+        hint: { map: 'black_throne', x: 62, y: 46, r: 40 } },
+      { type: 'defend', event: 'def_rs_west', after: [0], label: 'Batı mührünü koru', hint: { map: 'black_throne', x: 32, y: 28, r: 3 } },
+      { type: 'defend', event: 'def_rs_south', after: [0], label: 'Güney mührünü koru', hint: { map: 'black_throne', x: 60, y: 72, r: 3 } },
+      { type: 'defend', event: 'def_rs_east', after: [0], label: 'Doğu mührünü koru', hint: { map: 'black_throne', x: 102, y: 28, r: 3 } },
+    ],
+    exp: 26000, gold: 3000, rewardItems: [{ id: 'mp_xxl', qty: 4 }, { id: 'dark_steel', qty: 3 }], hint: { map: 'black_throne', x: 62, y: 46, r: 40 } }),
+  Q({ id: 'm45', main: true, order: 45, name: 'Karanlık Mahzene İniş', giver: 'eren', turnIn: 'eren', minLevel: 38, rec: '38', prereq: ['m44'], region: 'throne',
+    text: 'Mühürler tuttu; Taht Basamakları\'ndaki Karanlık Mahzen kapısı artık açılabilir. Kapı mührünü etkinleştir ve mahzenin ilk üç bölümünü temizle.',
+    objectives: [
+      { type: 'interact', group: 'crypt_gate', count: 1, label: 'Karanlık Mahzen kapı mührünü etkinleştir', hint: { map: 'black_throne', x: 108, y: 42, r: 3 } },
+      { type: 'dungeon', dungeon: 'dark_crypt', stage: 3, after: [0], label: 'Karanlık Mahzen\'in ilk üç bölümünü temizle', hint: { map: 'dark_crypt', x: 50, y: 33, r: 11 } },
+    ],
+    exp: 29000, gold: 3300, unlocksDungeon: 'dark_crypt', rewardItems: [{ id: 'hp_xxl', qty: 5 }], hint: { map: 'black_throne', x: 108, y: 42, r: 3 } }),
+  Q({ id: 'm46', main: true, order: 46, name: 'Kayıp Kral', giver: 'veysel', turnIn: 'veysel', minLevel: 39, rec: '39–40', prereq: ['m45'], region: 'throne',
+    text: 'Kayıp Kral tahtında bekliyor. Kırık tacın kalkanını iki kadim mühürle besliyor; mühürleri kır, Son Hüküm\'de güvenli boşlukları kolla ve krallığın lanetini bitir.',
+    objectives: [{ type: 'kill', enemy: 'lost_king', count: 1, label: 'Kayıp Kral\'ı yen' }],
+    exp: 34000, gold: 5000, title: 'Kayıp Tahtın Varisi', rewardItems: [{ id: 'mp_xxl', qty: 5 }, { id: 'hp_xxl', qty: 5 }], hint: { map: 'dark_crypt', x: 84, y: 16, r: 10 } }),
+
+  // ============================================================ V3.0 — YAN GÖREVLER (6, Lv.31–39, 39.000 EXP)
+  Q({ id: 's37', main: false, name: 'Ölülerin Kayıtları', giver: 'hamit', turnIn: 'hamit', minLevel: 31, rec: '31', prereq: ['m37'], region: 'dead',
+    text: 'Krallığın kayıt defterleri dağıldı. Haritanın dört bir yanındaki beş eski kaydı bul; ölülerin adları unutulmasın.',
+    objectives: [{ type: 'interact', group: 'old_record', count: 5, label: 'Eski kaydı bul' }],
+    exp: 4000, gold: 900, rewardItems: [{ id: 'hp_xxl', qty: 2 }, { id: 'grave_dust', qty: 3 }], hint: { map: 'dead_kingdom', x: 60, y: 44, r: 40 } }),
+  Q({ id: 's38', main: false, name: 'Kırık Sembol', giver: 'seher', turnIn: 'seher', minLevel: 32, rec: '32', prereq: ['m38'], region: 'dead',
+    text: 'Şapelin kutsal sembolü kırıldı. Kefen Parçası, Yas Otu ve Arındırma Tuzu ile tezgâhımda Arındırılmış Sembol üret ve bana getir.',
+    objectives: [
+      { type: 'craft', recipe: 'r_holy_symbol', count: 1, at: 'seher', label: 'Arındırılmış Sembol üret', hint: { map: 'dead_kingdom', x: 38, y: 64, r: 12 } },
+      { type: 'deliver', item: 'holy_symbol', count: 1, after: [0], label: 'Sembolü Seher\'e teslim et' },
+    ],
+    exp: 5000, gold: 1000, rewardItems: [{ id: 'cleansing_salve', qty: 3 }, { id: 'mp_xxl', qty: 2 }], hint: { map: 'dead_kingdom', x: 16, y: 39, r: 3 } }),
+  Q({ id: 's39', main: false, name: 'Gecikmiş Haber', giver: 'lale', turnIn: 'seher', minLevel: 34, rec: '34', prereq: ['m37'], region: 'dead',
+    giveOnAccept: [{ id: 'q_urgent_letter', qty: 1 }],
+    text: 'Bu mektup yıllar önce Ölü Krallık\'a gönderilecekti; yol kapanınca bende kaldı. Rahibe Seher\'e ulaştır — artık yol açık.',
+    objectives: [{ type: 'deliver', item: 'q_urgent_letter', count: 1, label: 'Mektubu Rahibe Seher\'e ulaştır' }],
+    exp: 6000, gold: 1200, rewardItems: [{ id: 'scout_compass', qty: 2 }, { id: 'return_scroll', qty: 1 }], hint: { map: 'dead_kingdom', x: 16, y: 39, r: 3 } }),
+  Q({ id: 's40', main: false, name: 'Kapının Son Nöbeti', giver: 'eren', turnIn: 'eren', minLevel: 36, rec: '36', prereq: ['m42'], region: 'throne',
+    text: 'Yaralı muhafızım Selim yeminini işaret taşına kazımak istiyor. Ona eşlik et; yalnız sen yanındayken ilerler, pusuda durur.',
+    objectives: [{ type: 'escort', event: 'last_guard', label: 'Muhafız Selim\'i işaret taşına ulaştır' }],
+    exp: 7000, gold: 1300, rewardItems: [{ id: 'hp_xxl', qty: 3 }, { id: 'obsidian_ore', qty: 4 }], hint: { map: 'black_throne', x: 22, y: 55, r: 3 } }),
+  Q({ id: 's41', main: false, name: 'Küllü Antlaşma', giver: 'veysel', turnIn: 'veysel', minLevel: 38, rec: '38', prereq: ['m43'], region: 'throne',
+    text: 'Taht ile Kül halkı arasındaki antlaşma üç tablete yazıldı. Kraliyet Mürekkebi ile her birinin solmuş yazısını yeniden çıkar.',
+    objectives: [{ type: 'interact', group: 'ash_tablet', count: 3, mode: 'write', channel: 2.5, consume: [{ id: 'royal_ink', qty: 1 }], label: 'Antlaşma tabletini araştır (Kraliyet Mürekkebi)' }],
+    exp: 8000, gold: 1500, rewardItems: [{ id: 'soul_essence', qty: 2 }, { id: 'mp_xxl', qty: 3 }], hint: { map: 'black_throne', x: 80, y: 62, r: 40 } }),
+  Q({ id: 's42', main: false, name: 'Tahtın Kayıp Hazinesi', giver: 'veysel', turnIn: 'veysel', minLevel: 39, rec: '39', prereq: ['m45'], region: 'throne',
+    text: 'Kronikler, Sessiz Zindan\'ın bir yan koridorunda saklı bir kraliyet sandığından söz ediyor. Karanlık Mahzen\'de bul ve envanter defterini getir.',
+    objectives: [{ type: 'interact', group: 'crypt_treasure', count: 1, mode: 'dig', channel: 2, label: 'Saklı kraliyet sandığını bul', hint: { map: 'dark_crypt', x: 47, y: 72, r: 4 } }],
+    exp: 9000, gold: 4000, rewardItems: [{ id: 'throne_core', qty: 1 }, { id: 'hp_xxl', qty: 3 }], hint: { map: 'dark_crypt', x: 47, y: 72, r: 4 } }),
 ];
 
 // ---------------------------------------------------------------- Sınıf görevleri (Gezgin Bilge)
@@ -363,6 +453,24 @@ export const CLASS_QUESTS = [
       { type: 'kill', enemy: 'swamp_executioner', count: 1, label: 'Bataklık Celladı\'nı yen' },
     ],
     exp: 0, gold: 0, skillPoint: 1, mastery: true }),
+  // V3 Ustalık II (Lv.40 + ana hikâye). Sınıfa özel; ödül küçük bir pasif (yeni sınıf değildir).
+  Q({ id: 'c40w', classQuest: true, cls: 'warrior', name: 'Ustalık II: Savaşın Mirası', giver: 'sage', turnIn: 'sage', minLevel: 40, rec: '40', prereq: ['c20', 'm46'], region: 'throne',
+    text: 'Bir savaşçının mirası, en güçlü düşmanlarla sınanır. Mezar Komutanı ve Obsidyen Celladı\'nı yen, sonra Kraliyet Avlusu\'ndaki anıta yemin et.',
+    objectives: [
+      { type: 'kill', enemy: 'grave_commander', count: 1, label: 'Mezar Komutanı\'nı yen', hint: { map: 'dead_kingdom', x: 104, y: 72, r: 9 } },
+      { type: 'kill', enemy: 'obsidian_executioner', count: 1, label: 'Obsidyen Celladı\'nı yen', hint: { map: 'black_throne', x: 82, y: 66, r: 10 } },
+      { type: 'kill', enemy: 'throne_executioner', count: 10, label: 'Taht Celladı yen', hint: { map: 'black_throne', x: 82, y: 66, r: 10 } },
+      { type: 'interact', group: 'royal_monument', count: 1, mode: 'activate', channel: 3, after: [0, 1, 2], label: 'Kraliyet anıtına yemin et', hint: { map: 'black_throne', x: 62, y: 42, r: 3 } },
+    ],
+    exp: 0, gold: 0, mastery2: true }),
+  Q({ id: 'c40m', classQuest: true, cls: 'mage', name: 'Ustalık II: Kadim Büyü Bilgisi', giver: 'sage', turnIn: 'sage', minLevel: 40, rec: '40', prereq: ['c20', 'm46'], region: 'throne',
+    text: 'Kadim büyü, ruh kristallerinde saklıdır. 8 Ruh Kristali topla, Hiçlik Mabedi\'ndeki üç büyü mührünü etkinleştir ve uyanan Kadim Gölge\'yi yen.',
+    objectives: [
+      { type: 'deliver', item: 'soul_crystal', count: 8, label: 'Ruh Kristali topla', hint: { map: 'black_throne', x: 62, y: 46, r: 40 } },
+      { type: 'interact', group: 'arcane_seal', count: 3, mode: 'activate', channel: 2.5, label: 'Büyü mührünü etkinleştir', hint: { map: 'black_throne', x: 84, y: 24, r: 6 } },
+      { type: 'kill', enemy: 'arcane_shade', count: 1, after: [1], spawn: { map: 'black_throne', x: 84, y: 24 }, label: 'Kadim Gölge\'yi yen', hint: { map: 'black_throne', x: 84, y: 24, r: 4 } },
+    ],
+    exp: 0, gold: 0, mastery2: true }),
 ];
 
 export const ALL_QUESTS = [...QUESTS, ...CLASS_QUESTS];

@@ -111,7 +111,7 @@ Object.assign(NPCS, {
   },
   seher: {
     id: 'seher', name: 'Rahibe Seher', title: 'Yas Şapeli', sprite: 'npc_seher', region: 'dead',
-    services: ['quests', 'potions', 'supplies'],
+    services: ['quests', 'potions', 'craft_alchemy', 'supplies'],
     greet: 'Bu krallığın ölüleri uyuyamıyor. Lanet, kayıp tacın etrafında dönüyor.',
   },
   hamit: {

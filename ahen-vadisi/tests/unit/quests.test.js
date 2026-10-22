@@ -30,7 +30,7 @@ function complete(c, q) {
       else if (o.type === 'visit') { for (const m of o.takes || []) if (!countStack(c.bag, m.id)) addStack(c.bag, m.id, m.qty); qs.onTalk(c, o.npc); }
       else if (o.type === 'craft') qs.onCraft(c, o.recipe, null, 1);
       else if (o.type === 'escort' || o.type === 'defend') qs.onEventComplete(c, o.type, o.event);
-      else if (o.type === 'dungeon') qs.onDungeonStage(c, o.stage);
+      else if (o.type === 'dungeon') qs.onDungeonStage(c, o.stage, o.dungeon || 'dungeon');
       else if (o.type === 'talk') break;
     }
   }
@@ -46,7 +46,9 @@ describe('Görevler', () => {
         if (c.level < q.minLevel) gainExp(c, cumulativeXp(q.minLevel) - cumulativeXp(c.level) - c.exp);
         expect(qs.questStatus(c, q), q.id).toBe('available');
         expect(qs.acceptQuest(c, q.id).ok).toBe(true);
-        expect(qs.turnInQuest(c, q.id, q.turnIn).ok).toBe(q.objectives.every((o) => o.type === 'talk'));
+        // yalnız konuşma ya da kabulde verilen eşyayı başka NPC'ye götürme (ör. Gecikmiş Haber) görevleri hemen teslim edilebilir
+        const carry = (o) => o.type === 'deliver' && (q.giveOnAccept || []).some((g) => g.id === o.item);
+        expect(qs.turnInQuest(c, q.id, q.turnIn).ok, q.id).toBe(q.objectives.every((o) => o.type === 'talk' || carry(o)));
         if (qs.questState(c, q.id).s === 'done') continue;
         complete(c, q);
         expect(qs.isReady(c, q), q.id).toBe(true);

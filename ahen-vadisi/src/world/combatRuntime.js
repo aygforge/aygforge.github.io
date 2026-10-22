@@ -40,7 +40,7 @@ export class CombatRuntime {
   playerNormalHit(t) {
     if (t.dead) return;
     const st = app.stats();
-    const res = playerHit(st, t, { isNormal: true, rng: this.rng, targetSlowed: t.isSlowed() });
+    const res = playerHit(st, t, { isNormal: true, rng: this.rng, targetSlowed: t.isSlowed(), extraMult: this.scene.player.dmgBuffMult(st.damageType) });
     this.applyToEnemy(t, res, { normal: true });
     // Savaş Nefesi: Warrior'ın isabetli normal vuruşu MP yeniler
     if (!res.miss && st.cls === 'warrior') app.char.mp = Math.min(st.maxMp, app.char.mp + WARRIOR_MP_ON_HIT);
@@ -79,7 +79,7 @@ export class CombatRuntime {
     if (t.dead) return;
     const st = app.stats();
     const dmgType = SKILLS[skill]?.dmg || st.damageType;
-    const res = playerHit(st, t, { coef, isNormal: false, dmgType, rng: this.rng, targetSlowed: t.isSlowed() });
+    const res = playerHit(st, t, { coef, isNormal: false, dmgType, rng: this.rng, targetSlowed: t.isSlowed(), extraMult: this.scene.player.dmgBuffMult(dmgType) });
     // Ustalık Kitabı: kritik çarpanı (×1,5 → kitap değeri)
     if (critMult && res.crit && !res.miss) res.dmg = Math.round(res.dmg * critMult / CRIT_MULT);
     this.applyToEnemy(t, res, {});

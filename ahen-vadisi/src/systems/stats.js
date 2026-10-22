@@ -85,9 +85,11 @@ export function computeStats(char, overrideEquipment = null) {
   const costRed = passiveValue(char, 'mana_control', 'costRed');
   const slowedDmg = passiveValue(char, 'frozen_target', 'slowedDmg');
   const pCrit = passiveValue(char, 'frozen_target', 'crit');
+  // V3 Ustalık II (küçük, dengeli; yeni sınıf değildir)
+  const m2 = char.mastery2 ? SKILLS[CLASS_SKILLS[char.cls]?.mastery2] : null;
 
-  const maxHp = Math.round((cls.hp(L, attr.vit) + hpFlat) * (1 + hpPct));
-  const maxMp = Math.round((cls.mp(L, attr.int) + mpFlat) * (1 + mpPct));
+  const maxHp = Math.round((cls.hp(L, attr.vit) + hpFlat) * (1 + hpPct + (m2?.hpPct || 0)));
+  const maxMp = Math.round((cls.mp(L, attr.int) + mpFlat) * (1 + mpPct + (m2?.mpPct || 0)));
   const physPower = weaponPhys + 1.2 * attr.str + 0.35 * L;
   const magicPower = weaponMag + 1.5 * attr.int + 0.3 * L;
   const def = (armorDef + 0.75 * attr.vit + 0.3 * L) * (1 + defPct);
@@ -104,8 +106,9 @@ export function computeStats(char, overrideEquipment = null) {
     damageType: cls.damageType,
     critChance, atkSpeed, attackInterval,
     attackRange: cls.attackRange,
-    dmgMult: cls.damageType === 'phys' ? 1 + physDmg : 1 + magicDmg,
-    slowedDmg, costRed, poisonRes: Math.min(0.75, poisonRes), species,
+    dmgMult: cls.damageType === 'phys' ? 1 + physDmg + (m2?.physDmg || 0) : 1 + magicDmg + (m2?.magicDmg || 0),
+    slowedDmg, costRed: costRed + (m2?.costRed || 0), poisonRes: Math.min(0.75, poisonRes), species,
+    passiveReduce: m2?.reduce || 0,
     legendaryEffect,
     weaponTpl, twoHanded: weaponTpl?.hand === 'two',
     physRange: [physMin, physMax],

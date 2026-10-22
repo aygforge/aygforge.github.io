@@ -18,7 +18,7 @@ export function bindPanelEvents() {
   bus.on('openNpc', (id) => openNpc(id));
   bus.on('openTravel', (id) => openTravel(id));
   bus.on('playerDied', (info) => showDeath(info));
-  bus.on('storyComplete', () => showStoryEnd());
+  bus.on('storyComplete', (part) => showStoryEnd(part));
 }
 
 // fromId: dokunulan Yol Taşı; { scroll: true }: Dönüş Parşömeni (ücretsiz, parşömen seçimde tüketilir)
@@ -49,11 +49,14 @@ function showDeath(info) {
   }, 900);
 }
 
-function showStoryEnd() {
+function showStoryEnd(part) {
+  const v3 = part === 'v3';
   const box = h('div', { class: 'dlg frame', style: { textAlign: 'center' } },
-    h('h3', { class: 't', style: { fontSize: '1.5rem' } }, 'Vadinin Koruyucusu'),
-    h('p', {}, 'Maden Golemi sustu, sisler dağıldı ve Karaağaç yeniden huzura kavuştu. Ahen Vadisi seni asla unutmayacak.'),
-    h('p', { class: 'small gold' }, 'Ana hikâye tamamlandı! Derin Ocak\'a sınırsız girebilir, Legendary avına devam edebilirsin.'),
+    h('h3', { class: 't', style: { fontSize: '1.5rem' } }, v3 ? 'Kayıp Tahtın Varisi' : 'Vadinin Koruyucusu'),
+    h('p', {}, v3 ? 'Kayıp Kral düştü; kırık taç sustu ve Ölü Krallık\'ın ölüleri sonunda uykuya döndü. Kara Taht artık boş — ve hür.'
+      : 'Maden Golemi sustu, sisler dağıldı ve Karaağaç yeniden huzura kavuştu. Ahen Vadisi seni asla unutmayacak.'),
+    h('p', { class: 'small gold' }, v3 ? 'V3 ana hikâyesi tamamlandı! Lv.40\'ta Gezgin Bilge\'nin Ustalık II görevi açılır; Karanlık Mahzen\'e sınırsız girebilirsin.'
+      : 'Ana hikâye tamamlandı! Derin Ocak\'a sınırsız girebilir, Legendary avına devam edebilirsin.'),
     h('button', { class: 'btn green', onTap: () => ui.closeModal() }, 'Maceraya devam'));
   sound.play('victory');
   ui.modal(box);

@@ -108,6 +108,11 @@ export default {
       route: [[30, 52], [46, 48], [58, 50], [62, 58]],
       ambushes: [{ at: 0.35, wave: [['shadow_hunter', 2]], say: 'Gölge Avcıları muhafızın peşinde!' },
         { at: 0.75, wave: [['obsidian_sentinel', 1], ['void_priest', 1]], say: 'Taht nöbetçileri yolu kesti!' }] },
+    // Ustalık II: Savaşçının kraliyet anıtı ve büyücünün üç büyü mührü
+    { type: 'qobj', group: 'royal_monument', id: 'monument', x: 62, y: 42, label: 'Kraliyet anıtı', sprite: 'marker_stone', say: 'Yeminin taşa işlendi. Savaşın mirası artık senin.' },
+    { type: 'qobj', group: 'arcane_seal', id: 'as1', x: 81, y: 21, label: 'Büyü mührü', sprite: 'royal_seal', say: 'Mühür uğulduyor.' },
+    { type: 'qobj', group: 'arcane_seal', id: 'as2', x: 87, y: 21, label: 'Büyü mührü', sprite: 'royal_seal', say: 'İkinci mühür yanıt veriyor.' },
+    { type: 'qobj', group: 'arcane_seal', id: 'as3', x: 84, y: 27, label: 'Büyü mührü', sprite: 'royal_seal', say: 'Üç mühür birleşti — mabedin ortasında bir gölge uyanıyor!' },
     { type: 'qobj', group: 'marker_stone', id: 'marker', x: 64, y: 60, label: 'İşaret taşı', sprite: 'marker_stone', say: 'Eski muhafız yemini taşa kazınmış.' },
     // Küllü Antlaşma (s41)
     { type: 'qobj', group: 'ash_tablet', id: 'tab1', x: 44, y: 36, label: 'Antlaşma tableti', sprite: 'stone_tablet', say: '"Kül halkı ile Taht arasında: ateş yakılmayacak, kılıç çekilmeyecek."' },

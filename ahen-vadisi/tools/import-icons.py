@@ -121,6 +121,8 @@ MAP = {
     'skill:battle_rhythm': ('rf', 946, ('hue', '#e0a040')), 'skill:elemental_mastery': ('rf', 765, None),
     'skill:mana_control': ('rf', 785, None), 'skill:frozen_target': ('rf', 1008, None),
     'skill:unyielding_will': ('rf', 1042, None), 'skill:arcane_resonance': ('rf', 775, None),
+    'skill:iron_fury': ('rf', 1043, ('hue', '#ff5a3a')), 'skill:time_freeze': ('rf', 786, ('mono', '#c8ecff')),
+    'skill:war_legacy': ('rf', 919, ('hue', '#c8a050')), 'skill:arcane_lore': ('rf', 775, ('hue', '#e0a0ff')),
 }
 
 

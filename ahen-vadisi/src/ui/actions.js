@@ -109,6 +109,7 @@ export const act = {
       app.changed('quest');
       app.requestSave('questDone', true);
       if (r.q.id === 'm18') bus.emit('storyComplete');
+      if (r.q.id === 'm46') bus.emit('storyComplete', 'v3');
     } else result(r);
     return r;
   },

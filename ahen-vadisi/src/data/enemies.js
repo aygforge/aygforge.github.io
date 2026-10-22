@@ -357,6 +357,13 @@ export const ENEMIES = {
     species: 'beast', ai: 'aggressive', aggro: 6, leash: 14, speed: 3.4, attackInterval: 1.4, attackRange: 1.35,
     dmgType: 'phys', radius: 0.5, sprite: 'wolf', tint: 0xe0a088, lootTable: null, gold: [0, 0],
   },
+  // Ustalık II (Mage): büyü mühürleri etkinleşince Hiçlik Mabedi'nde uyanan güçlü görev karşılaşması
+  arcane_shade: {
+    id: 'arcane_shade', name: 'Kadim Gölge', kind: 'hunt', level: 40, hp: 16000, atk: 380, def: 150, mdef: 200, exp: 3000,
+    species: 'humanoid', ai: 'ranged', aggro: 8, leash: 16, speed: 2.8, attackInterval: 2.0, attackRange: 6,
+    dmgType: 'magic', radius: 0.5, sprite: 'void_priest', tint: 0x9ad8ff, projectile: 'void_bolt', flying: true, deathFx: 'void',
+    abilities: ['void_ward'], normalCoef: 0.8, lootTable: null, gold: [0, 0],
+  },
   training_dummy: {
     id: 'training_dummy', name: 'Saman Kukla', kind: 'dummy', level: 1, hp: 40, atk: 0, def: 0, mdef: 0, exp: 0,
     species: 'construct', ai: 'static', aggro: 0, leash: 0, speed: 0, attackInterval: 99, attackRange: 0,
