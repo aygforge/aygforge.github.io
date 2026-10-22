@@ -176,7 +176,7 @@ export function toggleLock(char, uid) {
   return { ok: true, lock: it.lock };
 }
 
-const CAT_ORDER = { weapon: 0, offhand: 1, helm: 2, chest: 3, gloves: 4, boots: 5, ring: 6, amulet: 7, potion: 8, material: 9 };
+const CAT_ORDER = { weapon: 0, offhand: 1, helm: 2, chest: 3, gloves: 4, boots: 5, ring: 6, amulet: 7, potion: 8, usable: 9, material: 10, quest: 11 };
 export function sortContainer(c) {
   const items = c.slots.filter(Boolean);
   // önce istifleri birleştir
@@ -198,7 +198,7 @@ export function sortContainer(c) {
   const key = (s) => {
     if (s.q !== undefined) {
       const st = STACKABLES[s.tid];
-      return [CAT_ORDER[st.cat], 0, 0, st.name];
+      return [CAT_ORDER[st.cat] ?? 12, 0, 0, st.name];
     }
     const t = ITEMS[s.tid];
     return [CAT_ORDER[t.slot], -RARITIES.indexOf(s.r), -t.lv, t.name];

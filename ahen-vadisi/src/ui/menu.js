@@ -10,7 +10,7 @@ import { CLASSES } from '../data/classes.js';
 import { MAPS } from '../data/maps/index.js';
 import { createCharacter, validateName } from '../systems/character.js';
 import { computeStats } from '../systems/stats.js';
-import { exportSave, importSave } from './panels/settings.js';
+import { exportSave, importSave, showRecovery, copyBackupCode, pasteBackupCode, snapshots, findLost } from './panels/settings.js';
 import { sound } from '../audio/sound.js';
 import { isIOS, isStandalone } from './screen.js';
 
@@ -29,17 +29,51 @@ export function showMainMenu(onPlay) {
     h('button', { class: 'btn green', 'data-testid': 'menu-play', onTap: () => { sound.init(); sound.play('click'); showCharSelect(onPlay); } }, hasChars ? 'Oyna' : 'Yeni Oyun'),
     h('button', { class: 'btn', onTap: () => { sound.init(); howTo(); } }, 'Nasıl Oynanır?'),
     h('button', { class: 'btn', onTap: () => { sound.init(); menuSettings(); } }, 'Ayarlar ve Yedek'));
-  const scr = h('div', { class: 'screen', id: 'menu' }, bg, box, h('div', { class: 'ver' }, 'V1.0 · Procedural pixel art & ses · Çevrimdışı oynanabilir'));
+  const scr = h('div', { class: 'screen', id: 'menu' }, bg, box, h('div', { class: 'ver' }, `V${__GAME_VERSION__} · Procedural pixel art & ses · Çevrimdışı oynanabilir`));
   ui.layers.screen.appendChild(scr);
   sound.setTheme('menu');
-  if (app.loadInfo?.source && app.loadInfo.source !== 'profile') {
-    ui.alert('Kayıt kurtarıldı', 'Ana kayıt okunamadı; önceki sağlam kayıttan kurtarıldı. İlerlemenin bir kısmı geri alınmış olabilir.');
-  } else if (app.loadInfo?.corrupt) {
-    ui.alert('Kayıt okunamadı', 'Kayıt dosyası bozuk görünüyor ve kurtarılamadı. Bir JSON yedeğin varsa Ayarlar ve Yedek menüsünden içe aktarabilirsin.');
-  }
+  saveNotices();
   if (isIOS() && !isStandalone() && !sessionStorage.getItem('iosHint')) {
     try { sessionStorage.setItem('iosHint', '1'); } catch { /* */ }
     bus.emit('toast', { text: 'iPhone: Tam ekran için Paylaş → "Ana Ekrana Ekle"' });
+  }
+}
+
+// Kayıt durumu bildirimleri (oturum başına bir kez): daha yeni sürüm, okuma hatası, kurtarma/onarım, kayıp karakter, yedek hatırlatma
+let noticesShown = false;
+function saveNotices() {
+  if (noticesShown) return;
+  noticesShown = true;
+  const li = app.loadInfo || {};
+  if (li.newer) {
+    ui.modal(h('div', { class: 'dlg frame' }, h('h3', { class: 't' }, 'Oyunun yeni sürümü var'),
+      h('p', { class: 'small' }, 'Bu cihazdaki kayıt oyunun daha yeni bir sürümüyle yapılmış; açtığın sayfa eski (önbellekteki) sürüm. Kaydın korunuyor — bu sürüm ona dokunmaz.'),
+      h('p', { class: 'small gold' }, 'Sayfayı yenile (itch.io\'da sayfayı yeniden yükle). Gerekirse tarayıcı önbelleğini temizlemeden yalnızca sayfayı yenilemen yeterli.'),
+      h('div', { class: 'row', style: { justifyContent: 'flex-end' } }, h('button', { class: 'btn green', onTap: () => location.reload() }, 'Sayfayı yenile'))), { dismiss: false });
+    return;
+  }
+  if (li.error) {
+    ui.modal(h('div', { class: 'dlg frame' }, h('h3', { class: 't' }, 'Kayıt okunamadı'),
+      h('p', { class: 'small' }, `Tarayıcı depolamasına şu an erişilemedi (${String(li.error?.message || li.error)}). Kaydının üzerine yazılmaması için oyun kayıt yapmadan açıldı.`),
+      h('p', { class: 'small' }, 'Önce sayfayı yenilemeyi dene. Yeni bir oyuna yine de başlamak istersen kayıt açılır (eski veri kurtarma kopyalarında saklanmaya devam eder).'),
+      h('div', { class: 'row', style: { justifyContent: 'flex-end', flexWrap: 'wrap' } },
+        h('button', { class: 'btn', onTap: () => location.reload() }, 'Sayfayı yenile'),
+        h('button', { class: 'btn red', onTap: () => { app.repo.readOnly = false; ui.closeModal(); } }, 'Yine de kaydı aç'))), { dismiss: false });
+    return;
+  }
+  if (li.repaired) {
+    ui.alert('Kayıt onarıldı', `Kaydında küçük bir tutarsızlık bulundu ve onarıldı; karakterlerin korunuyor. Onarılmadan önceki kopya ayrıca saklandı. (${(li.fixes || []).slice(0, 3).join('; ')})`);
+  } else if (li.source && li.source !== 'profile' && li.source !== 'mirror') {
+    ui.alert('Kayıt kurtarıldı', 'Ana kayıt okunamadı; en yeni sağlam kopyadan kurtarıldı. İlerlemenin son birkaç dakikası geri alınmış olabilir.');
+  } else if (li.corrupt) {
+    ui.alert('Kayıt okunamadı', 'Kayıt okunamadı ama silinmedi: ham kopyası kurtarma kaydı olarak saklandı. Bir yedeğin varsa Ayarlar ve Yedek → "Yedeği içe aktar" ile yükleyebilirsin.');
+  }
+  const dismissed = new Set(app.profile.recoverDismissed || []);
+  const rec = (li.recoverable || []).filter((x) => x.char.level >= 2 && !dismissed.has(`${x.char.id}:${x.char.level}`));
+  if (rec.length) {
+    setTimeout(() => showRecovery(rec, { auto: true }), li.repaired || li.corrupt ? 600 : 0);
+  } else if (app.profile.characters.some(Boolean) && Date.now() - (app.profile.lastExportAt || 0) > 3 * 86400000) {
+    bus.emit('toast', { text: 'İpucu: İlerlemeni korumak için ara sıra Ayarlar ve Yedek → "Yedek kodunu kopyala".', kind: 'info' });
   }
 }
 
@@ -58,12 +92,14 @@ function howTo() {
 
 function menuSettings() {
   const s = app.settings;
-  ui.modal(h('div', { class: 'dlg frame' },
+  ui.modal(h('div', { class: 'dlg frame scroll', style: { maxHeight: '92vh' } },
     h('h3', { class: 't' }, 'Ayarlar ve Yedek'),
     h('div', { class: 'row' }, h('span', { class: 'grow' }, 'Ses'), h('button', { class: 'btn small', onTap: (e) => { app.setSettings({ sound: !app.settings.sound }); e.target.textContent = app.settings.sound ? 'Açık' : 'Kapalı'; } }, s.sound ? 'Açık' : 'Kapalı')),
     h('div', { class: 'row' }, h('span', { class: 'grow' }, 'Müzik'), h('button', { class: 'btn small', onTap: (e) => { app.setSettings({ music: !app.settings.music }); e.target.textContent = app.settings.music ? 'Açık' : 'Kapalı'; } }, s.music ? 'Açık' : 'Kapalı')),
     h('div', { class: 'row' }, h('span', { class: 'grow' }, 'Düşük performans (30 FPS)'), h('button', { class: 'btn small', onTap: (e) => { app.setSettings({ lowPerf: !app.settings.lowPerf }); e.target.textContent = app.settings.lowPerf ? 'Açık' : 'Kapalı'; } }, s.lowPerf ? 'Açık' : 'Kapalı')),
-    h('div', { class: 'row' }, h('button', { class: 'btn small', onTap: () => exportSave() }, 'Yedeği dışa aktar'), h('button', { class: 'btn small', onTap: () => importSave() }, 'Yedeği içe aktar')),
+    h('div', { class: 'row', style: { flexWrap: 'wrap' } }, h('button', { class: 'btn small green', 'data-testid': 'menu-copy-code', onTap: () => copyBackupCode() }, 'Yedek kodunu kopyala'), h('button', { class: 'btn small', 'data-testid': 'menu-paste-code', onTap: () => pasteBackupCode() }, 'Yedek kodu yapıştır')),
+    h('div', { class: 'row', style: { flexWrap: 'wrap' } }, h('button', { class: 'btn small', onTap: () => exportSave() }, 'Yedek dosyası indir'), h('button', { class: 'btn small', onTap: () => importSave() }, 'Yedek dosyası yükle')),
+    h('div', { class: 'row', style: { flexWrap: 'wrap' } }, h('button', { class: 'btn small', onTap: () => snapshots() }, 'Önceki kayıtlar'), h('button', { class: 'btn small', 'data-testid': 'menu-find-lost', onTap: () => findLost() }, 'Kayıp karakter ara')),
     h('button', { class: 'btn', onTap: () => ui.closeModal() }, 'Kapat')));
 }
 
@@ -112,6 +148,8 @@ function deleteChar(i, render) {
       h('button', { class: 'btn ghost', onTap: () => ui.closeModal() }, 'Vazgeç'),
       h('button', { class: 'btn red', onTap: async () => {
         if (input.value.trim() !== c.name) { bus.emit('toast', { text: 'İsim eşleşmedi', kind: 'warn' }); return; }
+        // bilinçli silme kaydedilir: kurtarma listesi ve ilerleme koruması bu karakteri geri getirmeye çalışmaz
+        app.profile.deletedChars = [...new Set([...(app.profile.deletedChars || []), c.id])];
         app.profile.characters[i] = null;
         await app.flushSave('delete');
         ui.closeModal(); render();

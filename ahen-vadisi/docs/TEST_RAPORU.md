@@ -1,5 +1,30 @@
 # Ahen Vadisi — Test Raporu
 
+## 3.0.1 — Kayıt sağlamlaştırma (22 Ekim 2026)
+
+Komutlar: `npm test` · `npm run build && npm run test:e2e:save`. Gerçek telefon / gerçek itch.io sayfasında test **yapılamadı**;
+tarayıcı testleri yerel önizleme sunucusunda headless Chromium ile yapıldı.
+
+| Paket | Sonuç |
+|---|---|
+| Birim testleri (Vitest, 12 dosya) | **150 / 150 geçti** (+21 kayıt sağlamlığı testi: `tests/unit/saveRobust.test.js`). Vitest bir kez, ağır denge simülasyonu sırasında iç "onTaskUpdate" zaman aşımı uyarısı verdi; bütün testler geçti |
+| Kayıt uçtan uca (`run-e2e-save.mjs`, yeni) | **14 / 14 geçti** |
+| V3 uçtan uca (`run-e2e-v3.mjs`) | **37 / 37 geçti** |
+| V1 uçtan uca (`run-e2e.mjs`) | 60 / 61 — düşen tek kontrol "Performans: dungeon" (yazılımsal WebGL'de 8,8 FPS; ortam yükü) |
+| V2 uçtan uca (`run-e2e-v2.mjs`) | 29–30 / 32 — "Kırılan Ufuk geçiş hedefi", "Buz Gardiyanı telegrafı" (ve bir koşuda "Kül Kasabı telegrafı") zamanlama kontrolleri. **Aynı kontroller değişiklik öncesi 3.0.0 koduyla da aynı ortamda düştü** (karşılaştırma koşusu: 30/32); kayıt değişikliğiyle ilgisizler |
+
+Kayıt uçtan uca testi gerçek tarayıcı depolamasında şunları doğrular: iki karakterli profil her kayıtta localStorage aynasına
+da yazılır · tek bozuk eşyalı kayıt sıfırlanmadan onarılarak açılır, oyuncuya bildirilir, ham kopyası `rescue_*`'da kalır ·
+IndexedDB veritabanı tamamen silinince karakterler aynadan geri gelir · karakteri eksik daha yeni bir kayıt açılınca "Kayıp
+karakter bulundu" penceresi çıkar, "Geri yükle" karakteri profile koyar ve kaydeder · bilinçli silinen karakter kayıp sayılmaz ·
+yedek kodu üretilir; IndexedDB ve localStorage tamamen silindikten sonra kod yapıştırılarak profil aynen döner · daha yeni
+sürüm kaydı eski sürümde açılınca uyarı gösterilir ve kayıt (IndexedDB + ayna) üzerine yazılmaz · sayfa hatası yok.
+
+Birim testleri ayrıca: meta alanı olmayan 3.0.0 zarfları, eski localStorage modu anahtarı, V1/V2 şema geçişleri (mevcut
+testler) aynen açılır; yükleme hiçbir eski anahtarı silmez; ilerleme koruması kopyası, oturum geçmişi, anlık görüntüye dönüş
+öncesi kurtarma kopyası, çift uid onarımı, checksum'ı tutmayan ama okunabilen kaydın kurtarılması, daha yeni şema yedeğinin
+reddi.
+
 ## V3.0 «Kayıp Krallığın Mirası» (22 Ekim 2026)
 
 Ortam önceki sürümlerle aynı (Linux, Node 22, Playwright headless Chromium, yazılımsal WebGL). Gerçek Android/iOS

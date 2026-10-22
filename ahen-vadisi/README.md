@@ -112,7 +112,8 @@ otomatik seçilmez; erişilemeyen hedefe sonsuz koşma olmaz; duvar arkasından 
 - **Görevler:** 80 tek seferlik ana/yan görev (refakat, savunma, iz sürme, üretim, onarım/arındırma, özel av), 4 sınıf görevi,
   tekrarlanabilir Av Sözleşmeleri; görev günlüğünde kategori/bölge filtresi ve 3 görev takibi.
 - **Av Geçmişi:** türe göre öldürme, boss zaferleri, bulunan Rare/Epic/Legendary, tamamlanan zindanlar (ganimeti etkilemez).
-- **Kayıt:** 3 karakter yuvası, IndexedDB + atomik yazım, 2 önceki sağlam snapshot, checksum, JSON yedek dışa/içe aktarma,
+- **Kayıt:** 3 karakter yuvası, IndexedDB + localStorage aynası (çift yazım), önceki sağlam kayıtlar + kayıt geçmişi, checksum,
+  bozuk kayıt onarımı, kayıp karakter kurtarma, yedek kodu (kopyala/yapıştır) ve JSON yedek dışa/içe aktarma,
   sürümlü şema geçişi (V1 → V2 → V3) ve geçiş öncesi yedek. PWA: yeni sürüm hazır olunca "kaydet ve yenile" bildirimi.
 
 ## Proje yapısı

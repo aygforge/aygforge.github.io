@@ -79,3 +79,7 @@ belgede kaldı; yalnız aşağıdakiler hedef sürelere çekildi:
 - **NPC'lerin dallanan diyalog ağacı yoktur;** karşılama cümlesi, görev metni ve teslim/ziyaret konuşmalarıyla anlatılır.
 - **Headless test ortamı** yazılımsal WebGL kullanır; e2e FPS değerleri (≈20–35) gerçek telefondan düşüktür.
 - itch.io iframe'inde servis işçisi tarayıcıya göre kayıt olmayabilir; oyun yine çalışır (V2 notu).
+- **Kayıt tarayıcıda tutulur (3.0.1 notu).** Oyun kaydı IndexedDB + localStorage'da birkaç kopya halinde saklar ve bozuk ya da
+  eksik kopyalardan kendini kurtarır; ancak tarayıcı site verisini tamamen silerse (geçmiş/önbellek temizleme, gizli sekme,
+  Safari'nin uzun süre ziyaret edilmeyen sitelerin verisini silmesi, itch.io iframe'inde üçüncü taraf depolama kısıtları)
+  bütün kopyalar birlikte gider. Bu durumda ilerleme yalnız **yedek kodu / yedek dosyası** ile geri getirilebilir.

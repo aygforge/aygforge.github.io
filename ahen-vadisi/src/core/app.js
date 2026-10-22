@@ -1,7 +1,7 @@
 // Uygulama çekirdeği: profil, aktif karakter, kayıt zamanlaması, Phaser oyunu ve arayüz bağlantısı.
 import { SaveRepository } from '../save/repository.js';
 import { setHeroGear } from '../art/spriteRuntime.js';
-import { newProfile } from '../save/serialize.js';
+import { newProfile, validateProfile, repairProfile } from '../save/serialize.js';
 import { Rng } from './rng.js';
 import { bus } from './events.js';
 import { computeStats } from '../systems/stats.js';
@@ -29,14 +29,44 @@ export const app = {
   get settings() { return this.profile?.settings || {}; },
 
   async loadProfile() {
-    await this.repo.open();
-    const r = await this.repo.load();
+    let r;
+    try {
+      await this.repo.open();
+      r = await this.repo.load();
+    } catch (e) {
+      // beklenmeyen okuma hatası: kayıt silinmesin diye depo salt okunur başlar (oyuncu isterse açabilir)
+      console.error('Kayıt okunamadı', e);
+      this.repo.readOnly = true;
+      r = { profile: null, source: null, tried: [{ key: 'profile', msg: String(e?.message || e) }], error: e, recoverable: [] };
+    }
     this.loadInfo = r;
     this.profile = r.profile || newProfile();
+    if (!Array.isArray(this.profile.deletedChars)) this.profile.deletedChars = [];
     if (!r.profile && r.tried.some((t) => t.msg !== 'yok')) this.loadInfo.corrupt = true;
     sound.applySettings(this.profile.settings);
     setHeroGear(this.profile.settings.heroLook === 'gear');
+    // tarayıcıdan kalıcı depolama iste (depolama baskısında otomatik silinmeye karşı)
+    this.repo.persist().then(() => bus.emit('storageStatus')).catch(() => {});
     return r;
+  },
+
+  // Kurtarılabilir karakteri (başka bir kayıt kopyasında bulunan) profile geri koy. Aynı karakterin daha düşük seviyeli
+  // hali varsa onun yerine geçer; yoksa ilk boş yuvaya yerleşir. Ortak depo değişmez.
+  async recoverCharacter(entry) {
+    const chars = this.profile.characters;
+    const copy = JSON.parse(JSON.stringify(entry.char));
+    let slot = chars.findIndex((c) => c && c.id === copy.id);
+    if (slot < 0) slot = chars.findIndex((c) => !c);
+    if (slot < 0) return { ok: false, msg: 'Boş karakter yuvası yok. Önce bir yuvayı boşalt.' };
+    if (this.char && chars[slot] === this.char) return { ok: false, msg: 'Oynadığın karakterin yerine geri yüklenemez; ana menüden dene.' };
+    copy.slot = slot;
+    chars[slot] = copy;
+    // geri gelen karakterin eşya kimlikleri ortak depodakilerle çakışabilir: profil doğrulanır, gerekirse onarılır
+    if (!validateProfile(this.profile).ok) repairProfile(this.profile);
+    this.profile.deletedChars = (this.profile.deletedChars || []).filter((id) => id !== copy.id);
+    if (this.loadInfo?.recoverable) this.loadInfo.recoverable = this.loadInfo.recoverable.filter((x) => x.char.id !== copy.id);
+    await this.flushSave('recover');
+    return { ok: !this.save.error, slot, msg: this.save.error?.message };
   },
 
   // ---------------------------------------------------------------- statlar (tek yetkili hesap + önbellek)
@@ -75,6 +105,7 @@ export const app = {
 
   async flushSave(reason = 'auto') {
     if (this.save.timer) { clearTimeout(this.save.timer); this.save.timer = null; }
+    if (this.repo.readOnly) return;   // daha yeni sürüm kaydı ya da okunamayan depo: üzerine yazılmaz
     if (this.save.inFlight) { this.save.again = true; return; }
     this.save.inFlight = true;
     try {

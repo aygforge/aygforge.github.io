@@ -1,9 +1,10 @@
 // Ayarlar + otomatik iksir + kayıt yedekleme / geri yükleme
-import { h, clear } from '../dom.js';
+import { h, clear, fmt } from '../dom.js';
 import { ui } from '../ui.js';
 import { app } from '../../core/app.js';
 import { bus } from '../../core/events.js';
-import { exportJson, importJson } from '../../save/serialize.js';
+import { exportJson, encodeBackupCode, decodeBackupCode, wrap } from '../../save/serialize.js';
+import { CLASSES } from '../../data/classes.js';
 import { sound } from '../../audio/sound.js';
 import { requestFullscreen } from '../screen.js';
 
@@ -29,7 +30,12 @@ export function settingsTab(rerender) {
   const ap = ch?.autoPotion;
   const saveInfo = h('div', { class: 'small muted' });
   const updInfo = () => {
-    saveInfo.textContent = app.save.error ? `Son kayıt HATALI: ${app.save.error.message}` : app.save.lastAt ? `Son kayıt: ${new Date(app.save.lastAt).toLocaleTimeString('tr-TR')} · depolama: ${app.repo.mode === 'idb' ? 'IndexedDB' : app.repo.mode}` : 'Henüz kaydedilmedi';
+    const r = app.repo;
+    const where = r.mode === 'idb' ? (r.useMirror ? 'IndexedDB + yedek ayna' : 'IndexedDB') : r.mode === 'local' ? 'localStorage' : 'yalnız bellek (kalıcı değil!)';
+    const pers = r.persisted === true ? 'kalıcı depolama: açık' : r.persisted === false ? 'kalıcı depolama: tarayıcı izin vermedi' : 'kalıcı depolama: desteklenmiyor';
+    saveInfo.textContent = r.readOnly ? 'Kayıt salt okunur (daha yeni sürüm kaydı ya da okuma hatası) — sayfayı yenile.'
+      : app.save.error ? `Son kayıt HATALI: ${app.save.error.message}`
+      : app.save.lastAt ? `Son kayıt: ${new Date(app.save.lastAt).toLocaleTimeString('tr-TR')} · ${where}${r.degraded ? ' (IndexedDB yazılamadı, ayna kullanıldı)' : ''} · ${pers}` : `Henüz kaydedilmedi · ${where} · ${pers}`;
   };
   updInfo();
   const general = h('div', { class: 'set box' },
@@ -51,18 +57,23 @@ export function settingsTab(rerender) {
     h('span', { class: 'gold' }, 'Otomatik iksir'), h('span', { class: 'tiny muted' }, 'Yalnız iksir içer; savaşmaz.'),
     h('span', {}, 'HP iksiri, HP şu yüzdenin altına inince'), h('div', { class: 'row' }, toggle(ap.hpOn, (v) => { ap.hpOn = v; app.requestSave('settings'); }, 'auto-hp'), select([20, 30, 35, 40, 50, 60].map((x) => [String(x), '%' + x]), String(ap.hpPct), (v) => { ap.hpPct = +v; app.requestSave('settings'); })),
     h('span', {}, 'MP iksiri, MP şu yüzdenin altına inince'), h('div', { class: 'row' }, toggle(ap.mpOn, (v) => { ap.mpOn = v; app.requestSave('settings'); }), select([15, 25, 35, 50].map((x) => [String(x), '%' + x]), String(ap.mpPct), (v) => { ap.mpPct = +v; app.requestSave('settings'); }))) : null;
+  const lastExp = app.profile.lastExportAt ? `Son yedek: ${new Date(app.profile.lastExportAt).toLocaleString('tr-TR')}.` : 'Henüz yedek alınmadı.';
   const backup = h('div', { class: 'col box' },
     h('h3', { class: 't' }, 'Kayıt ve yedekleme'),
     saveInfo,
     h('div', { class: 'row', style: { flexWrap: 'wrap' } },
-      h('button', { class: 'btn green small', onTap: async () => { await app.flushSave('manual'); updInfo(); bus.emit('toast', { text: 'Oyun kaydedildi', kind: 'ok' }); } }, 'Şimdi kaydet'),
-      h('button', { class: 'btn small', 'data-testid': 'export', onTap: () => exportSave() }, 'Yedeği dışa aktar (JSON)'),
-      h('button', { class: 'btn small', onTap: () => importSave() }, 'Yedeği içe aktar'),
-      h('button', { class: 'btn small', onTap: () => snapshots() }, 'Önceki kayıtlar')),
-    h('p', { class: 'tiny muted' }, 'Tarayıcı verileri silinirse yerel kayıt kaybolabilir. Düzenli olarak JSON yedeği almanı öneririz.'));
+      h('button', { class: 'btn green small', onTap: async () => { await app.flushSave('manual'); updInfo(); bus.emit('toast', { text: app.save.error ? 'Kayıt yapılamadı' : 'Oyun kaydedildi', kind: app.save.error ? 'warn' : 'ok' }); } }, 'Şimdi kaydet'),
+      h('button', { class: 'btn small green', 'data-testid': 'copy-code', onTap: () => copyBackupCode() }, 'Yedek kodunu kopyala'),
+      h('button', { class: 'btn small', 'data-testid': 'paste-code', onTap: () => pasteBackupCode() }, 'Yedek kodu yapıştır')),
+    h('div', { class: 'row', style: { flexWrap: 'wrap' } },
+      h('button', { class: 'btn small', 'data-testid': 'export', onTap: () => exportSave() }, 'Yedek dosyası indir (JSON)'),
+      h('button', { class: 'btn small', onTap: () => importSave() }, 'Yedek dosyası yükle'),
+      h('button', { class: 'btn small', onTap: () => snapshots() }, 'Önceki kayıtlar'),
+      h('button', { class: 'btn small', 'data-testid': 'find-lost', onTap: () => findLost() }, 'Kayıp karakter ara')),
+    h('p', { class: 'tiny muted' }, `${lastExp} Oyun kaydı bu cihazda birkaç kopya halinde tutar; ama tarayıcı site verilerini silerse (geçmiş/önbellek temizleme, gizli sekme, uzun süre girmeme) hepsi gider. Yedek kodunu ara sıra kopyalayıp bir nota ya da kendine mesaja yapıştırman ilerlemeni garanti altına alır; başka cihazda da aynı kodla devam edebilirsin.`));
   const exit = h('div', { class: 'row box' },
     h('button', { class: 'btn red', onTap: () => ui.confirm({ title: 'Ana menü', text: 'Oyun kaydedilip ana menüye dönülecek.', ok: 'Dön', onOk: () => bus.emit('exitToMenu') }) }, 'Ana menüye dön'),
-    h('span', { class: 'tiny muted grow' }, 'Ahen Vadisi V1 · Tüm ilerleme otomatik kaydedilir.'));
+    h('span', { class: 'tiny muted grow' }, `Ahen Vadisi V${__GAME_VERSION__} · Tüm ilerleme otomatik kaydedilir.`));
   void rerender;
   const credits = h('div', { class: 'box col small' },
     h('b', { class: 'gold' }, 'Emeği geçenler'),
@@ -71,8 +82,13 @@ export function settingsTab(rerender) {
   return h('div', { class: 'col grow scroll' }, general, potion, backup, credits, exit);
 }
 
+function markExported() {
+  app.profile.lastExportAt = Date.now();
+  return app.flushSave('export');
+}
+
 export function exportSave() {
-  app.flushSave('export').then(() => {
+  markExported().then(() => {
     const text = exportJson(app.profile);
     const blob = new Blob([text], { type: 'application/json' });
     const a = document.createElement('a');
@@ -85,37 +101,125 @@ export function exportSave() {
   });
 }
 
+// Mevcut profili, üzerine yazmadan önce kurtarma kopyası olarak saklayıp yenisiyle değiştirir.
+async function replaceProfile(profile, tag) {
+  try { await app.repo.writeRaw(`rescue_${Date.now()}_before_${tag}`, wrap(app.profile)); } catch { /* */ }
+  app.repo.readOnly = false;
+  app.profile = profile;
+  await app.repo.save(app.profile, { forceSnapshot: true });
+  bus.emit('profileReplaced');
+}
+
+function confirmImport(r, tag) {
+  if (!r.ok) { ui.alert('İçe aktarma başarısız', r.msg); return; }
+  const names = r.profile.characters.filter(Boolean).map((c) => `${c.name} Lv.${c.level}`).join(', ') || 'karakter yok';
+  ui.confirm({
+    title: 'Yedeği yükle', danger: true, ok: 'Yükle',
+    text: `Bu cihazdaki profil yedekteki profille değiştirilecek: ${names}. (Şu anki profilin ayrıca bir kurtarma kopyası saklanır.) Emin misin?`,
+    onOk: () => replaceProfile(r.profile, tag),
+  });
+}
+
 export function importSave() {
   const inp = document.createElement('input');
-  inp.type = 'file'; inp.accept = 'application/json,.json';
+  inp.type = 'file'; inp.accept = 'application/json,.json,.txt';
   inp.onchange = async () => {
     const f = inp.files?.[0];
     if (!f) return;
-    const text = await f.text();
-    const r = importJson(text);
-    if (!r.ok) { ui.alert('İçe aktarma başarısız', r.msg); return; }
-    ui.confirm({
-      title: 'Yedeği yükle', danger: true, ok: 'Yükle',
-      text: `Mevcut profil bu yedekle değiştirilecek: ${r.profile.characters.filter(Boolean).map((c) => `${c.name} Lv.${c.level}`).join(', ') || 'karakter yok'}. Emin misin?`,
-      onOk: async () => {
-        app.profile = r.profile;
-        await app.repo.save(app.profile, { forceSnapshot: true });
-        bus.emit('profileReplaced');
-      },
-    });
+    confirmImport(await decodeBackupCode(await f.text()), 'import');
   };
   inp.click();
 }
 
-async function snapshots() {
+export async function copyBackupCode() {
+  await markExported();
+  const code = await encodeBackupCode(app.profile);
+  let copied = false;
+  try { await navigator.clipboard.writeText(code); copied = true; } catch { /* itch iframe vb.: elle kopyalama */ }
+  const ta = h('textarea', { readonly: true, rows: 5, 'data-testid': 'code-output', style: { width: '100%', fontSize: '10px', wordBreak: 'break-all' } });
+  ta.value = code;
+  const copyBtn = h('button', { class: 'btn small', onTap: () => {
+    ta.focus(); ta.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch { /* */ }
+    bus.emit('toast', { text: ok ? 'Kod kopyalandı' : 'Kodu seçip elle kopyala', kind: ok ? 'ok' : 'info' });
+  } }, 'Tekrar kopyala');
+  ui.modal(h('div', { class: 'dlg frame' }, h('h3', { class: 't' }, 'Yedek kodu'),
+    h('p', { class: 'small' }, copied ? 'Kod panoya kopyalandı. Bir nota ya da kendine mesaja yapıştırıp sakla.' : 'Kodu seç ve kopyala; bir nota ya da kendine mesaja yapıştırıp sakla.'),
+    ta,
+    h('p', { class: 'tiny muted' }, `Bütün karakterlerin, ortak depo ve ayarlar bu koddadır (${fmt(code.length)} karakter). Geri yüklemek için: Ayarlar ve Yedek → "Yedek kodu yapıştır".`),
+    h('div', { class: 'row', style: { justifyContent: 'flex-end' } }, copyBtn, h('button', { class: 'btn', onTap: () => ui.closeModal() }, 'Tamam'))));
+  setTimeout(() => { ta.focus(); ta.select(); }, 50);
+}
+
+export function pasteBackupCode() {
+  const ta = h('textarea', { rows: 5, placeholder: 'AHV1 ile başlayan yedek kodunu buraya yapıştır', 'data-testid': 'code-input', style: { width: '100%', fontSize: '10px' } });
+  ui.modal(h('div', { class: 'dlg frame' }, h('h3', { class: 't' }, 'Yedek kodunu yükle'), ta,
+    h('div', { class: 'row', style: { justifyContent: 'flex-end' } },
+      h('button', { class: 'btn ghost', onTap: () => ui.closeModal() }, 'Vazgeç'),
+      h('button', { class: 'btn green', 'data-testid': 'code-ok', onTap: async () => {
+        const r = await decodeBackupCode(ta.value);
+        if (!r.ok) { bus.emit('toast', { text: r.msg, kind: 'warn' }); return; }
+        ui.closeModal();
+        confirmImport(r, 'code');
+      } }, 'Devam'))));
+  setTimeout(() => ta.focus(), 50);
+}
+
+const SNAP_NAMES = {
+  profile: 'Güncel kayıt', mirror: 'Yedek ayna (localStorage)', snap_0: 'Önceki sağlam kayıt 1', snap_1: 'Önceki sağlam kayıt 2',
+  v2_backup: 'V2 yedeği (V3 geçişinden önce)', v1_backup: 'V1 yedeği (V2 geçişinden önce)',
+};
+function snapName(s) {
+  if (s.key.startsWith('hist_')) return 'Oturum geçmişi';
+  if (s.key.startsWith('rescue_')) return 'Kurtarma kopyası';
+  if (s.src === 'ls' && s.key !== 'mirror') return `Eski yerel kayıt (${SNAP_NAMES[s.key] || s.key})`;
+  return SNAP_NAMES[s.key] || s.key;
+}
+
+export async function snapshots() {
   const list = await app.repo.listSnapshots();
-  const names = { profile: 'Güncel kayıt', snap_0: 'Önceki sağlam kayıt 1', snap_1: 'Önceki sağlam kayıt 2', v2_backup: 'V2 yedeği (V3 geçişinden önce)', v1_backup: 'V1 yedeği (V2 geçişinden önce)' };
-  const box = h('div', { class: 'dlg frame' }, h('h3', { class: 't' }, 'Kayıt kurtarma'),
-    h('p', { class: 'small muted' }, 'Oyun, son iki sağlam kaydı otomatik saklar. Bir sorun olursa önceki kayda dönebilirsin.'),
+  const box = h('div', { class: 'dlg frame scroll', style: { maxHeight: '90vh' } }, h('h3', { class: 't' }, 'Kayıt kurtarma'),
+    h('p', { class: 'small muted' }, 'Oyun kaydını birkaç kopya halinde saklar (önceki sağlam kayıtlar, oturum geçmişi, yedek ayna, kurtarma kopyaları). Bir sorun olursa birine dönebilirsin; şu anki ilerleme de ayrıca saklanır.'),
     h('div', { class: 'list' }, list.map((s) => h('div', { class: 'li' },
-      h('div', { class: 'grow small' }, h('b', {}, names[s.key]), h('div', { class: 'tiny muted' }, `${new Date(s.savedAt).toLocaleString('tr-TR')} · ${s.ok ? s.chars.join(', ') || 'karakter yok' : 'BOZUK: ' + s.msg}`)),
-      s.key !== 'profile' && s.ok ? h('button', { class: 'btn small', onTap: () => ui.confirm({ title: 'Geri yükle', danger: true, text: 'Bu kayıt geri yüklenecek. Güncel ilerleme önceki kayıtlara taşınır.', ok: 'Geri yükle', onOk: async () => { const r = await app.repo.restoreSnapshot(s.key); if (r.ok) { app.profile = r.profile; bus.emit('profileReplaced'); } } }) }, 'Geri yükle') : null))),
+      h('div', { class: 'grow small' }, h('b', {}, snapName(s)), h('div', { class: 'tiny muted' }, `${s.savedAt ? new Date(s.savedAt).toLocaleString('tr-TR') : '?'} · ${s.ok ? (s.chars.join(', ') || 'karakter yok') + (s.repaired ? ' (onarılarak)' : '') : 'OKUNAMADI: ' + s.msg}`)),
+      !(s.key === 'profile' && s.src === 'idb') && s.ok ? h('button', { class: 'btn small', onTap: () => ui.confirm({ title: 'Geri yükle', danger: true, text: 'Bu kayıt geri yüklenecek. Şu anki ilerleme ayrıca bir kurtarma kopyası olarak saklanır.', ok: 'Geri yükle', onOk: async () => { const r = await app.repo.restoreSnapshot(s.key, s.src); if (r.ok) { app.profile = r.profile; bus.emit('profileReplaced'); } else ui.alert('Geri yüklenemedi', r.msg || ''); } }) }, 'Geri yükle') : null))),
     h('div', { class: 'row', style: { justifyContent: 'flex-end' } }, h('button', { class: 'btn ghost', onTap: () => ui.closeModal() }, 'Kapat')));
   ui.modal(box);
   void clear;
+}
+
+export async function findLost() {
+  const all = await app.repo.candidates();
+  const list = app.repo._recoverable(all, app.profile);
+  if (!list.length) { ui.alert('Kayıp karakter yok', 'Bu cihazdaki kayıt kopyalarında, şu anki profilde olmayan ya da daha ileri bir karakter bulunamadı.'); return; }
+  showRecovery(list);
+}
+
+// Başka bir kayıt kopyasında bulunan (bu profilde olmayan ya da daha ileri) karakterleri geri getirme penceresi
+// auto: açılışta kendiliğinden gösterildi; 'Kapat' bu karakter/seviye kopyalarını bir daha kendiliğinden göstermez
+// (Ayarlar → "Kayıp karakter ara" her zaman hepsini listeler)
+export function showRecovery(list, { auto = false } = {}) {
+  const rows = list.map((x) => {
+    const c = x.char;
+    const btn = h('button', { class: 'btn small green', onTap: async () => {
+      if (btn.classList.contains('dis')) return;
+      const r = await app.recoverCharacter(x);
+      if (r.ok) { btn.textContent = 'Geri yüklendi ✔'; btn.classList.add('dis'); bus.emit('toast', { text: `${c.name} geri yüklendi`, kind: 'ok' }); }
+      else bus.emit('toast', { text: r.msg || 'Geri yüklenemedi', kind: 'warn' });
+    } }, x.replaces ? 'Bu ilerlemeyi geri yükle' : 'Geri yükle');
+    return h('div', { class: 'li' }, h('div', { class: 'grow small' }, h('b', {}, `${c.name} — ${CLASSES[c.cls]?.name || c.cls} Lv.${c.level}`),
+      h('div', { class: 'tiny muted' }, `${x.savedAt ? new Date(x.savedAt).toLocaleString('tr-TR') : ''} · ${fmt(c.gold || 0)} Gold${x.replaces ? ' · şu anki halinden daha ileri' : ''}`)), btn);
+  });
+  ui.modal(h('div', { class: 'dlg frame scroll', style: { maxHeight: '90vh' } }, h('h3', { class: 't' }, 'Kayıp karakter bulundu'),
+    h('p', { class: 'small' }, 'Cihazdaki eski kayıt kopyalarında bu profilde olmayan ya da daha ileri karakterler var. Geri yüklemek istediklerini seç (boş yuvaya ya da aynı karakterin yerine geçer).'),
+    h('div', { class: 'list' }, rows),
+    h('div', { class: 'row', style: { justifyContent: 'flex-end' } }, h('button', { class: 'btn ghost', 'data-testid': 'recovery-close', onTap: () => {
+      ui.closeModal();
+      if (auto) {
+        app.profile.recoverDismissed = [...new Set([...(app.profile.recoverDismissed || []), ...list.map((x) => `${x.char.id}:${x.char.level}`)])];
+        app.requestSave('recoverDismiss');
+      }
+      bus.emit('charsChanged');
+    } }, 'Kapat'))));
 }

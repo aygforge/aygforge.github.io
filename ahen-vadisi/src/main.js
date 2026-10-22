@@ -62,6 +62,7 @@ async function start() {
   app.startPeriodicSave();
   bus.on('exitToMenu', exitToMenu);
   bus.on('profileReplaced', () => { exitToMenu(true); });
+  bus.on('charsChanged', () => { if (!app.char && document.getElementById('menu')) showMainMenu(enterWorld); });
   bus.on('hudRebuild', () => { if (hud) { hud.destroy(); hud = createHud(); ui.layers.hud.appendChild(hud.el); } });
 }
 

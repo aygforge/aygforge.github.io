@@ -1,5 +1,40 @@
 # Değişiklik Günlüğü
 
+## 3.0.1 — Kayıt sağlamlaştırma
+Oyuncu bildirimi: itch.io sürümü aralıklarla oynanırken bir süre sonra karakterlerin silinip profilin sıfırlanması.
+**Mevcut kayıtlar aynen açılır** — şema değişmedi (3), hiçbir eski anahtar silinmez ya da dönüştürülmez; 3.0.0 ve öncesinin
+bütün kayıtları (IndexedDB `profile` / `snap_*` / `v1_backup` / `v2_backup`, localStorage modu) okunmaya devam eder.
+
+**Bulunan nedenler**
+- Kayıttaki *tek bir* alan doğrulamayı geçemezse (ör. tek bir eşya) bütün profil reddediliyor, oyun boş profille açılıyordu;
+  ardından otomatik kayıtlar önce ana kaydın, birkaç dakika içinde iki yedeğin de üzerine boş profil yazıyordu.
+- IndexedDB o an açılamazsa (itch.io iframe'i, gizlilik ayarı, geçici hata) oyun boş localStorage'a düşüyor ve orada
+  sıfırdan başlıyordu; asıl kayıt IndexedDB'de dururken yeni ilerleme ayrı bir yere yazılıyordu.
+- Önbellekte kalan eski sürüm, daha yeni sürümün kaydını "okunamaz" sayıp sıfırlıyor ve üzerine yazabiliyordu.
+- Mobil Safari'de arka plandan dönünce kopan IndexedDB bağlantısı kayıtların sessizce başarısız olmasına yol açabiliyordu.
+- Tarayıcının site verisini silmesi (önbellek temizleme, gizli sekme, depolama baskısı, Safari'nin 7 günlük kuralı) kodla
+  engellenemez — bunun için yedek kodu eklendi.
+
+**Değişiklikler**
+- **Onarım:** doğrulamayı geçemeyen kayıt artık atılmaz; yalnız sorunlu alan onarılır (bilinmeyen eşya çıkarılır, çift uid
+  yenilenir, sayı sınırları, konum, beceri çubuğu, konteyner boyutu). Onarılmadan önceki ham kopya `rescue_*` olarak saklanır,
+  oyuncuya bildirilir.
+- **Çift yazım:** her kayıt IndexedDB'ye ve localStorage aynasına yazılır; yüklemede bütün kopyalar karşılaştırılır,
+  en yeni sağlam olan seçilir. Karaktersiz bir kopya, karakterli bir kopyanın yerine kendiliğinden geçmez.
+- **İlerleme koruması:** bir kayıt önceki kayıttaki bir karakteri kaybettirecekse (bilinçli silme hariç) önceki kayıt ayrıca
+  saklanır. Oturum başı ve 15 dakikada bir 5'li kayıt geçmişi (`hist_*`).
+- **Kayıp karakter kurtarma:** açılışta, cihazdaki kopyalarda bulunup profilde olmayan (ya da daha ileri) karakterler
+  listelenir, tek dokunuşla geri yüklenir. Ayarlar → "Kayıp karakter ara" ile istenildiğinde de aranır.
+- **Daha yeni sürüm kaydı** salt okunur açılır ve üzerine yazılmaz; oyuncuya sayfayı yenilemesi söylenir.
+- **Yedek kodu:** Ayarlar ve Yedek → "Yedek kodunu kopyala / yapıştır" (sıkıştırılmış metin; itch.io'da dosya indirme
+  engellense de çalışır, başka cihaza taşınabilir). JSON dosyası yedeği de sürüyor. Karakteri olan ve 3 gündür yedek
+  almamış oyuncuya nazik hatırlatma.
+- IndexedDB bağlantısı koparsa yeniden açılır; tarayıcıdan kalıcı depolama izni istenir (`navigator.storage.persist`).
+- Ayarlar'da kayıt durumu satırı (son kayıt, depolama, kalıcı depolama), genişletilmiş "Önceki kayıtlar" listesi; yedek
+  yükleme / geri dönme öncesinde mevcut profil kurtarma kopyasına alınır.
+- Küçük düzeltme: çanta sıralamasında kullanılabilir eşya ve görev eşyası kategorileri tanımsızdı.
+- Ana menüdeki sürüm yazısı güncel sürümü gösterir.
+
 ## 3.0.0 — «Kayıp Krallığın Mirası» (Lv. 31–40)
 Ayrıntılar, denge tablosu ve bilinen sınırlamalar: [`V3_NOTLARI.md`](V3_NOTLARI.md).
 
