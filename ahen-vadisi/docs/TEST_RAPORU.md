@@ -1,5 +1,45 @@
 # Ahen Vadisi — Test Raporu
 
+## V3.0 «Kayıp Krallığın Mirası» (22 Ekim 2026)
+
+Ortam önceki sürümlerle aynı (Linux, Node 22, Playwright headless Chromium, yazılımsal WebGL). Gerçek Android/iOS
+cihazında test **yapılamadı**. Komutlar: `npm test` · `npm run build && npm run test:e2e` (V1 + V2 regresyonu + V3).
+
+| Paket | Sonuç |
+|---|---|
+| Birim testleri (Vitest, 11 dosya) | **129 / 129 geçti** (V1/V2 testleri V3 verisine göre güncellendi; +19 V3 içerik/kayıt testi, +6 V3 denge testi) |
+| V1 uçtan uca regresyon (`run-e2e.mjs`) | **61 / 61 geçti** |
+| V2 uçtan uca regresyon (`run-e2e-v2.mjs`) | **32 / 32 geçti** (V1 kaydı artık doğrudan şema 3'e geçer) |
+| V3 uçtan uca (`run-e2e-v3.mjs`) | **37 / 37 geçti** |
+| Üretim derlemesi | Başarılı; servis işçisi sürümü 3.0.0 |
+
+### V3 birim testleri (`tests/unit/v3.test.js`, `tests/unit/v3balance.test.js`)
+
+| Alan | Doğrulanan |
+|---|---|
+| Kayıt | Şema 2 Lv.30 zarfı kayıpsız açılır (seviye, EXP, gold, statlar, Legendary +4, beceri çubuğu, görevler, koşular, bayraklar); V3 alanları eklenir; `v2_backup` bir kez yazılır ve geri yüklenebilir; görev durumları aynen kalır, yeni görevler yapılmamış görünür |
+| Seviye | 30→40 EXP tablosu (64.880 … 142.450, toplam 1.006.820); 30→31 ve 39→40 geçişleri; Lv.40 sınırı; her seviyede +3 stat / +1 beceri |
+| Görevler | 80 tek seferlik görev; V3 ana 212.000, V3 yan 39.000, erken yan 44.260 EXP; ödüller ekipman içermez; 13 NPC doğru haritada ve görev verir; kademeli açılış; bütün görevler (ana, yan, sınıf) iki sınıf için programatik olarak alınır, tamamlanır, ödül bir kez verilir; üretim görevi yalnız gerçek üretimle; aynı araştırma nesnesi iki kez sayılmaz; Siyah Kapı arması tüketilir ve bayrak açılır; olay hedefleri bir kez sayılır |
+| İçerik | 8 normal / 2 elit / 2 boss statları ve doğma haritaları; 126 eşya; **36 V3 eşyasının her biri bir loot havuzundan ya da tariften elde edilir**; Komutan'ın 2 özel Epic silahı |
+| Loot | Legendary yalnız Golem, Donmuş Muhafız, Kayıp Kral havuzlarında (%0,4); Golem/Muhafız havuzları değişmedi; diğer her kaynak 100.000 öldürmede 0 Legendary; hiçbir tarif Legendary üretmez; Kırık Taç Parçası yalnız işleme/Epic tariflerinde; kullanım eşyası etkileri ganimeti değiştirmez (aynı tohum → aynı sonuç) |
+| Haritalar | Her portalın hedef haritası ve girişi var; kilitler gerçek görev/bayrağa bağlı; V3 haritaları onarımsız erişilebilir; 120×88 / 124×92; 2'şer gizli sandık; Karanlık Mahzen 4 bölüm, 2 mekanizma, 3 mühür, kontrol noktaları |
+| Beceriler / ekonomi | Sarsılmaz Öfke / Donmuş Zaman belge değerleri; 6 aktif / 4 düğme, eski çubuk korunur; Ustalık II sınıfa özel ve Lv.40 + hikâyeye bağlı; Lv.31+ yükseltme V3 materyalleri, +5 sınırı, başarısızlıkta kırılma yok; hasar azaltma %60 sınırı |
+| Denge | Bkz. [`V3_NOTLARI.md`](V3_NOTLARI.md): normal 3,9–11,8 sn, elit 49–69 sn, Komutan 4,0–4,9 dk, Kral 5,4–5,8 dk, 30→40 ≈10,4 sa |
+
+### V3 uçtan uca (gerçek tarayıcı, 844×390 mobil yatay)
+
+V2 kaydı gerçek IndexedDB'den V3'e geçer; Ayaz → Ölü Krallık kilidi ve geçişi; Ölü Krallık yaratıkları, NPC'leri,
+parçacıkları, sandık ve toplama düğümleri; gerçek öldürme EXP'siyle 30→31; Mezar Büyücüsü laneti; Kefen Avcısı öfkesi ve
+garantili damgası; Mezar Komutanı çağrıları (ödülsüz), bayrağı, Son Nöbet'i ve garantili arması; Siyah Kapı (arma tüketimi)
+ve Kara Taht geçişi; refakat (uzaktayken durur, yakındayken takılmadan ulaşır, pusular ödülsüz); savunma (başarısızlıkta
+yeniden denenir, başarı bir kez sayılır, dalgalar ödülsüz); Sarsılmaz Öfke'nin çubuğa yerleştirilmesi ve etkisi; Karanlık
+Mahzen (mekanizmalar, mühür karşılaşmaları, Kral'ın üç fazı, ölümde sıfırlanma, tek ödül); kapat-aç kalıcılığı; Donmuş Zaman
+(normal %55 / boss %20); kullanım eşyaları (tüketim ve savaş kontrolü, Dönüş Parşömeni seyahati); görev günlüğü filtreleri
+ve HUD'da 3 takip; PWA 3.0.0 önbelleği ve çevrimdışı açılış. Konsol hatası yok.
+
+Not: e2e savaşları geliştirici kancalarıyla hızlandırılır (hasar doğrudan uygulanır); fazlar, çağrılar ve olaylar gerçek
+oyun döngüsünde çalışır.
+
 ## V2.0 «Kül ve Ayaz» (21 Ekim 2026)
 
 Ortam V1 ile aynı (Linux, Node 22, Playwright headless Chromium, yazılımsal WebGL). Gerçek Android/iOS cihazında test
