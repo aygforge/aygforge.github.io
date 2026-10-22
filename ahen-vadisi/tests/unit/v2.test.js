@@ -45,8 +45,8 @@ function v1Envelope() {
 }
 
 describe('V2 kayıt geçişi', () => {
-  it('şema 2; V1 zarfı açılır, hiçbir V1 verisi değişmez, V2 alanları eklenir', () => {
-    expect(SCHEMA_VERSION).toBe(2);
+  it('V1 zarfı (şema 1) güncel şemaya açılır, hiçbir V1 verisi değişmez, V2 alanları eklenir', () => {
+    expect(SCHEMA_VERSION).toBe(3);
     const { env, c } = v1Envelope();
     const r = unwrap(env);
     expect(r.ok, r.msg).toBe(true);
@@ -57,16 +57,16 @@ describe('V2 kayıt geçişi', () => {
     expect(m.skillBar).toEqual(CLASS_SKILLS.mage.actives.slice(0, 4));
     expect(m.history).toMatchObject({ fromV1: true, kills: 0 });
     expect(m.runs).toEqual({}); expect(m.masteryBooks).toEqual({});
-    expect(r.profile.schemaVersion).toBe(2);
+    expect(r.profile.schemaVersion).toBe(SCHEMA_VERSION);
     expect(validateProfile(r.profile).ok).toBe(true);
     // V1 legendary etkisi ve değerleri aynı
     expect(computeStats(m).legendaryEffect).toBe('spirit_echo');
   });
   it('daha yeni sürüm kaydı reddedilir; geçiş tekrarlanabilir (idempotent)', () => {
-    expect(migrate(newProfile(), 3).ok).toBe(false);
+    expect(migrate(newProfile(), SCHEMA_VERSION + 1).ok).toBe(false);
     const { env } = v1Envelope();
     const a = unwrap(env).profile;
-    const b = migrate(JSON.parse(JSON.stringify(a)), 2).profile;
+    const b = migrate(JSON.parse(JSON.stringify(a)), SCHEMA_VERSION).profile;
     expect(b.characters[1]).toEqual(a.characters[1]);
   });
   it('depo: eski sürüm ilk açılışta v1_backup olarak bir kez saklanır', async () => {
@@ -86,7 +86,7 @@ describe('V2 kayıt geçişi', () => {
 });
 
 describe('V2 seviye 21–30', () => {
-  it('20→21 ve 29→30 geçişi, Lv.30 sınırı; birikmiş EXP geriye dönük verilmez', () => {
+  it('20→21 ve 29→30 geçişi; Lv.20 sınırında biriken EXP geriye dönük verilmez (V3: Lv.30 artık sınır değil)', () => {
     const c = mk();
     gainExp(c, cumulativeXp(20));
     expect(c.level).toBe(20);
@@ -98,8 +98,7 @@ describe('V2 seviye 21–30', () => {
     gainExp(c, cumulativeXp(30) - cumulativeXp(21));
     expect(c.level).toBe(30);
     expect(c.exp).toBe(0);
-    expect(gainExp(c, 999999).gained).toBe(0);
-    expect(c.level).toBe(MAX_LEVEL);
+    expect(MAX_LEVEL).toBe(40);
     expect(statPointsFree(c)).toBe(STAT_POINTS_PER_LEVEL * 29);
     expect(skillPointsTotal(c)).toBe(29);
   });

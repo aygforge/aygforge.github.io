@@ -68,12 +68,13 @@ export function migrate(profile, fromVersion) {
   if (fromVersion > SCHEMA_VERSION) return { ok: false, msg: 'Kayıt daha yeni bir oyun sürümünden' };
   if (!isNum(fromVersion) || fromVersion < 1) return { ok: false, msg: 'Kayıt sürümü okunamadı' };
   profile.settings = { ...defaultSettings(), ...(profile.settings || {}) };
-  // V1 → V2: karakterlere yeni alanlar eklenir (beceri çubuğu, Av Geçmişi, zindan koşuları, dünya bayrakları).
-  // Hiçbir V1 alanı silinmez ya da değiştirilmez; geçişten önceki kayıt depoda 'v1_backup' olarak saklanır.
+  // V1 → V2 → V3: karakterlere yalnız yeni alanlar eklenir (beceri çubuğu, Av Geçmişi, zindan koşuları, dünya bayrakları;
+  // V3: görev takip listesi, Ustalık II, kullanım eşyası etkileri). Hiçbir eski alan silinmez ya da değiştirilmez;
+  // geçişten önceki kayıt depoda 'v<N>_backup' olarak bir kez saklanır (geri dönüş için).
   if (Array.isArray(profile.characters)) {
     for (const ch of profile.characters) if (ch && CLASS_SKILLS[ch.cls]) ensureV2Fields(ch, false);
   }
-  if (fromVersion < 2) profile.migratedFrom = fromVersion;
+  if (fromVersion < SCHEMA_VERSION) profile.migratedFrom = fromVersion;
   profile.schemaVersion = SCHEMA_VERSION;
   return { ok: true, profile };
 }

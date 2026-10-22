@@ -159,7 +159,7 @@ export class SaveRepository {
 
   async listSnapshots() {
     const out = [];
-    for (const key of ['profile', 'snap_0', 'snap_1', 'v1_backup']) {
+    for (const key of ['profile', 'snap_0', 'snap_1', 'v2_backup', 'v1_backup']) {
       const env = await this.readRaw(key);
       if (!env) continue;
       const r = unwrap(env);

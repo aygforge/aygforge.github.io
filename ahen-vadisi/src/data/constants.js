@@ -1,12 +1,13 @@
 // Ahen Vadisi — merkezi sabitler. Tüm modüller değerleri buradan okur.
 
 export const GAME_TITLE = 'Ahen Vadisi';
-export const SCHEMA_VERSION = 2;      // V1 = 1, V2.0 (Kül ve Ayaz) = 2
-export const GAME_VERSION = '2.0.2';
+export const SCHEMA_VERSION = 3;      // V1 = 1, V2.0 (Kül ve Ayaz) = 2, V3.0 (Kayıp Krallığın Mirası) = 3
+export const GAME_VERSION = '3.0.0';
 
 export const TILE = 32;          // dünya pikseli / tile
 export const ART_SCALE = 2;      // 1 sanat pikseli = 2 dünya pikseli
-export const MAX_LEVEL = 30;
+export const MAX_LEVEL = 40;
+export const V2_MAX_LEVEL = 30;      // V2 hikâye sonu (V3 içeriği bunun üzerine kurulur)
 export const V1_MAX_LEVEL = 20;      // V1 hikâye sonu (V2 içeriği bunun üzerine kurulur)
 export const SKILL_BAR_SIZE = 4;     // ekrandaki aktif beceri düğmesi sayısı
 export const STAT_POINTS_PER_LEVEL = 3;
@@ -63,6 +64,7 @@ export const SPECIES = {
 
 // Sonraki seviye için EXP = en yakın 10'a yuvarlanan (80 + 2.4 L^3)
 // V2: aynı formül 20→30 için 19280 … 58610 değerlerini verir (toplam 368.300; birim testte sabitlenmiştir).
+// V3: aynı formül 30→40 için 64880 … 142450 değerlerini verir (toplam 1.006.820; birim testte sabitlenmiştir).
 export function xpToNext(level) {
   if (level >= MAX_LEVEL) return Infinity;
   return Math.round((80 + 2.4 * level ** 3) / 10) * 10;
@@ -92,9 +94,11 @@ export function goldRangeForLevel(lv) {
   if (lv < 15) return [7, 10];
   if (lv < 21) return [11, 16];
   if (lv < 25) return [16, 23];
-  return [20, 29];
+  if (lv < 31) return [20, 29];
+  if (lv < 36) return [26, 38];   // V3: Ölü Krallık
+  return [32, 46];                // V3: Kara Taht
 }
 
-export const RESET_COST = (level) => (level <= 10 ? 0 : level <= 14 ? 1000 : level <= 20 ? 2500 : 5000);
+export const RESET_COST = (level) => (level <= 10 ? 0 : level <= 14 ? 1000 : level <= 20 ? 2500 : level <= 30 ? 5000 : 7500);
 // Stat sıfırlama: karakter başına ilk sıfırlama ücretsiz, sonrakiler seviyeye göre (Lv.5 375 · Lv.10 1.000 · Lv.20 3.000 · Lv.30 6.000)
 export const STAT_RESET_COST = (level) => 50 * level + 5 * level * level;

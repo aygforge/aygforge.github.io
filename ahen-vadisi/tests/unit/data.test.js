@@ -88,12 +88,12 @@ describe('Veri tabloları', () => {
     expect(xpToNext(19)).toBe(16540);
     expect(cumulativeXp(20)).toBe(88150);
   });
-  it('V2 EXP tablosu: 20→30 belge değerleri, toplam 368.300; Lv.30 sınır', () => {
+  it('V2 EXP tablosu: 20→30 belge değerleri, toplam 368.300 (V3: 30→40 ayrıca test edilir)', () => {
     const want = [19280, 22310, 25640, 29280, 33260, 37580, 42260, 47320, 52760, 58610];
     expect([20, 21, 22, 23, 24, 25, 26, 27, 28, 29].map(xpToNext)).toEqual(want);
     expect(want.reduce((a, b) => a + b, 0)).toBe(368300);
     expect(cumulativeXp(30) - cumulativeXp(20)).toBe(368300);
-    expect(xpToNext(30)).toBe(Infinity);
+    expect(xpToNext(40)).toBe(Infinity);
   });
   it('V2 görevleri: 10 ana + 4 yan, toplam 40 tek seferlik; EXP 70.500 + 22.000', () => {
     expect(QUESTS.length).toBe(40);

@@ -109,7 +109,7 @@ export function importSave() {
 
 async function snapshots() {
   const list = await app.repo.listSnapshots();
-  const names = { profile: 'Güncel kayıt', snap_0: 'Önceki sağlam kayıt 1', snap_1: 'Önceki sağlam kayıt 2', v1_backup: 'V1 yedeği (V2 geçişinden önce)' };
+  const names = { profile: 'Güncel kayıt', snap_0: 'Önceki sağlam kayıt 1', snap_1: 'Önceki sağlam kayıt 2', v2_backup: 'V2 yedeği (V3 geçişinden önce)', v1_backup: 'V1 yedeği (V2 geçişinden önce)' };
   const box = h('div', { class: 'dlg frame' }, h('h3', { class: 't' }, 'Kayıt kurtarma'),
     h('p', { class: 'small muted' }, 'Oyun, son iki sağlam kaydı otomatik saklar. Bir sorun olursa önceki kayda dönebilirsin.'),
     h('div', { class: 'list' }, list.map((s) => h('div', { class: 'li' },

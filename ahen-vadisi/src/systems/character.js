@@ -64,17 +64,32 @@ export function newHistory(fromV1 = false) {
 }
 
 export function ensureV2Fields(char, fresh = false) {
+  ensureV3Fields(char);
   if (!Array.isArray(char.skillBar)) char.skillBar = defaultSkillBar(char);
   if (!char.masteryBooks || typeof char.masteryBooks !== 'object') char.masteryBooks = {};
   if (!char.history || typeof char.history !== 'object') char.history = newHistory(!fresh);
   if (!char.runs || typeof char.runs !== 'object') char.runs = {};
-  if (typeof char.statResets !== 'number') char.statResets = 0;
   const w = char.world;
   if (w) {
     if (!w.flags || typeof w.flags !== 'object') w.flags = {};
     if (!w.chests || typeof w.chests !== 'object') w.chests = {};
   }
   char.v = SCHEMA_VERSION;
+  return char;
+}
+
+// V3 alanları (şema 3): görev takip listesi (en çok 3), Ustalık II, stat sıfırlama sayacı, kullanım eşyası etkileri.
+// Yalnız eksik alan eklenir; görev durumları ve diğer veriler olduğu gibi kalır (yeni görevler "yapılmamış" görünür).
+export function ensureV3Fields(char) {
+  if (!Array.isArray(char.tracking)) char.tracking = char.tracked ? [char.tracked] : [];
+  char.tracking = char.tracking.filter((id, i, a) => typeof id === 'string' && a.indexOf(id) === i).slice(0, 3);
+  if (typeof char.mastery2 !== 'boolean') char.mastery2 = false;
+  if (typeof char.statResets !== 'number') char.statResets = 0;
+  if (!char.effects || typeof char.effects !== 'object') char.effects = {};
+  if (char.world) {
+    if (!char.world.flags || typeof char.world.flags !== 'object') char.world.flags = {};
+    if (!char.world.chests || typeof char.world.chests !== 'object') char.world.chests = {};
+  }
   return char;
 }
 
