@@ -46,7 +46,7 @@ function v1Envelope() {
 
 describe('V2 kayıt geçişi', () => {
   it('V1 zarfı (şema 1) güncel şemaya açılır, hiçbir V1 verisi değişmez, V2 alanları eklenir', () => {
-    expect(SCHEMA_VERSION).toBe(3);
+    expect(SCHEMA_VERSION).toBeGreaterThanOrEqual(3);   // V4: şema 4 (V1 zarfı doğrudan güncel şemaya açılır)
     const { env, c } = v1Envelope();
     const r = unwrap(env);
     expect(r.ok, r.msg).toBe(true);
@@ -98,7 +98,7 @@ describe('V2 seviye 21–30', () => {
     gainExp(c, cumulativeXp(30) - cumulativeXp(21));
     expect(c.level).toBe(30);
     expect(c.exp).toBe(0);
-    expect(MAX_LEVEL).toBe(40);
+    expect(MAX_LEVEL).toBeGreaterThanOrEqual(40);       // V4: 50
     expect(statPointsFree(c)).toBe(STAT_POINTS_PER_LEVEL * 29);
     expect(skillPointsTotal(c)).toBe(29);
   });

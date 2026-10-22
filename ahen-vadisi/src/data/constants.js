@@ -1,17 +1,19 @@
 // Ahen Vadisi — merkezi sabitler. Tüm modüller değerleri buradan okur.
 
 export const GAME_TITLE = 'Ahen Vadisi';
-export const SCHEMA_VERSION = 3;      // V1 = 1, V2.0 (Kül ve Ayaz) = 2, V3.0 (Kayıp Krallığın Mirası) = 3
-export const GAME_VERSION = '3.0.0';
+export const SCHEMA_VERSION = 4;      // V1 = 1, V2.0 (Kül ve Ayaz) = 2, V3.0 (Kayıp Krallığın Mirası) = 3, V4.0 (Gökyarık) = 4
+export const GAME_VERSION = '4.0.0';
 
 export const TILE = 32;          // dünya pikseli / tile
 export const ART_SCALE = 2;      // 1 sanat pikseli = 2 dünya pikseli
-export const MAX_LEVEL = 40;
+export const MAX_LEVEL = 50;
+export const V3_MAX_LEVEL = 40;      // V3 hikâye sonu (V4 içeriği bunun üzerine kurulur)
 export const V2_MAX_LEVEL = 30;      // V2 hikâye sonu (V3 içeriği bunun üzerine kurulur)
 export const V1_MAX_LEVEL = 20;      // V1 hikâye sonu (V2 içeriği bunun üzerine kurulur)
 export const SKILL_BAR_SIZE = 4;     // ekrandaki aktif beceri düğmesi sayısı
 export const STAT_POINTS_PER_LEVEL = 3;
-export const CHAR_SLOTS = 3;
+export const CHAR_SLOTS = 5;          // V4: 3 → 5 (eski üç yuva aynı sırada korunur)
+export const V3_CHAR_SLOTS = 3;
 
 export const BAG_START = 36;
 export const BAG_STEPS = [36, 42, 48];
@@ -66,6 +68,7 @@ export const SPECIES = {
 // Sonraki seviye için EXP = en yakın 10'a yuvarlanan (80 + 2.4 L^3)
 // V2: aynı formül 20→30 için 19280 … 58610 değerlerini verir (toplam 368.300; birim testte sabitlenmiştir).
 // V3: aynı formül 30→40 için 64880 … 142450 değerlerini verir (toplam 1.006.820; birim testte sabitlenmiştir).
+// V4: aynı formül 40→50 için 153680 … 282440 değerlerini verir (toplam 2.142.150; birim testte sabitlenmiştir).
 export function xpToNext(level) {
   if (level >= MAX_LEVEL) return Infinity;
   return Math.round((80 + 2.4 * level ** 3) / 10) * 10;
@@ -97,9 +100,11 @@ export function goldRangeForLevel(lv) {
   if (lv < 25) return [16, 23];
   if (lv < 31) return [20, 29];
   if (lv < 36) return [26, 38];   // V3: Ölü Krallık
-  return [32, 46];                // V3: Kara Taht
+  if (lv < 41) return [32, 46];   // V3: Kara Taht
+  if (lv < 46) return [40, 56];   // V4: Gökyarık Ovası
+  return [48, 66];                // V4: Yıldız Mezarı / Gökyarık Mabedi
 }
 
-export const RESET_COST = (level) => (level <= 10 ? 0 : level <= 14 ? 1000 : level <= 20 ? 2500 : level <= 30 ? 5000 : 7500);
+export const RESET_COST = (level) => (level <= 10 ? 0 : level <= 14 ? 1000 : level <= 20 ? 2500 : level <= 30 ? 5000 : level <= 40 ? 7500 : 10000);
 // Stat sıfırlama: karakter başına ilk sıfırlama ücretsiz, sonrakiler seviyeye göre (Lv.5 375 · Lv.10 1.000 · Lv.20 3.000 · Lv.30 6.000)
 export const STAT_RESET_COST = (level) => 50 * level + 5 * level * level;

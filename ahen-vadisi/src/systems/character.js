@@ -80,7 +80,20 @@ export function ensureV2Fields(char, fresh = false) {
 
 // V3 alanları (şema 3): görev takip listesi (en çok 3), Ustalık II, stat sıfırlama sayacı, kullanım eşyası etkileri.
 // Yalnız eksik alan eklenir; görev durumları ve diğer veriler olduğu gibi kalır (yeni görevler "yapılmamış" görünür).
+// V4 alanları (şema 4): Ustalık III ve yardımcı (iskelet) çağırma durumu. Kayda yalnız güvenli veri yazılır:
+// { main: true, hpPct } — canlı Phaser nesnesi ya da varlık referansı asla. Geçersiz değer temizlenir.
+export function ensureV4Fields(char) {
+  if (typeof char.mastery3 !== 'boolean') char.mastery3 = false;
+  const m = char.minion;
+  if (m !== null && m !== undefined && !(typeof m === 'object' && m.main === true && typeof m.hpPct === 'number')) char.minion = null;
+  if (char.minion === undefined) char.minion = null;
+  if (char.minion && char.cls !== 'necromancer') char.minion = null;
+  if (char.minion) char.minion.hpPct = Math.min(1, Math.max(0.05, char.minion.hpPct));
+  return char;
+}
+
 export function ensureV3Fields(char) {
+  ensureV4Fields(char);
   if (!Array.isArray(char.tracking)) char.tracking = char.tracked ? [char.tracked] : [];
   char.tracking = char.tracking.filter((id, i, a) => typeof id === 'string' && a.indexOf(id) === i).slice(0, 3);
   if (typeof char.mastery2 !== 'boolean') char.mastery2 = false;

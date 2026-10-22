@@ -40,7 +40,7 @@ export function v2Envelope() {
 
 describe('V3 kayıt geçişi', () => {
   it('şema 3; Lv.30 V2 karakteri hiçbir veri kaybetmeden açılır, V3 alanları eklenir', () => {
-    expect(SCHEMA_VERSION).toBe(3);
+    expect(SCHEMA_VERSION).toBeGreaterThanOrEqual(3);   // V4: şema 4
     const { env, c } = v2Envelope();
     const r = unwrap(env);
     expect(r.ok, r.msg).toBe(true);
@@ -88,8 +88,8 @@ describe('V3 seviye 31–40', () => {
     expect([30, 31, 32, 33, 34, 35, 36, 37, 38, 39].map(xpToNext)).toEqual(want);
     expect(want.reduce((a, b) => a + b, 0)).toBe(1006820);
     expect(cumulativeXp(40) - cumulativeXp(30)).toBe(1006820);
-    expect(xpToNext(40)).toBe(Infinity);
-    expect(MAX_LEVEL).toBe(40);
+    expect(xpToNext(40)).toBe(153680);                 // V4: sınır 50 (aynı kübik formül)
+    expect(MAX_LEVEL).toBe(50);
   });
   it('kayıtlı Lv.30 karakter 31\'e ilerler; 39→40 geçişi ve Lv.40 sınırı; her seviyede +3 stat / +1 beceri', () => {
     const m = unwrap(v2Envelope().env).profile.characters[0];
@@ -104,8 +104,7 @@ describe('V3 seviye 31–40', () => {
     gainExp(m, xpToNext(39));
     expect(m.level).toBe(40);
     expect(m.exp).toBe(0);
-    expect(gainExp(m, 500000).gained).toBe(0);
-    expect(m.level).toBe(40);
+    // V4: Lv.40 artık sınır değil; seviye ilerlemesi ve puanlar aynı kurala uyar
     expect(statPointsFree(m)).toBe(STAT_POINTS_PER_LEVEL * 39 - 87);
     expect(skillPointsTotal(m)).toBe(39 + (m.bonusSkillPoints || 0));
   });
@@ -305,7 +304,7 @@ describe('V3 içerik', () => {
     expect(SKILLS.iron_fury.dmgUp[0]).toBe(0.15); expect(SKILLS.iron_fury.reduce[0]).toBe(0.10);
     expect(SKILLS.time_freeze).toMatchObject({ unlock: 35, maxTargets: 5, slow: 0.55, slowDur: 3 });
     expect(SKILLS.time_freeze.coef[0]).toBe(1.40); expect(SKILLS.time_freeze.cd[0]).toBe(28); expect(SKILLS.time_freeze.mp[0]).toBe(70);
-    for (const cls of ['warrior', 'mage']) expect(CLASS_SKILLS[cls].actives.length).toBe(6);
+    for (const cls of ['warrior', 'mage']) expect(CLASS_SKILLS[cls].actives.length).toBeGreaterThanOrEqual(6);   // V4: 7
     const c = mk('warrior', 'Ofke');
     const bar0 = c.skillBar.slice();
     gainExp(c, cumulativeXp(35));
@@ -313,7 +312,7 @@ describe('V3 içerik', () => {
     expect(c.skillBar).toEqual(bar0);                         // çubuk kendiliğinden değişmez
     expect(setSkillBar(c, 3, 'iron_fury').ok).toBe(true);
     expect(c.skillBar.length).toBe(4);
-    expect(validateProfile({ ...newProfile(), characters: [c, null, null] }).ok ?? true).toBeTruthy();
+    expect(validateProfile({ ...newProfile(), characters: [c, null, null, null, null] }).ok ?? true).toBeTruthy();   // V4: 5 yuva
   });
 
   it('Ustalık II: Lv.40 + ana hikâye; sınıfa özel görev; pasif küçük ve dengeli', () => {

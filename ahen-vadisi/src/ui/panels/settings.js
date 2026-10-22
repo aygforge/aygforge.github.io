@@ -28,16 +28,6 @@ export function settingsTab(rerender) {
   const set = (patch) => app.setSettings(patch);
   const ch = app.char;
   const ap = ch?.autoPotion;
-  const saveInfo = h('div', { class: 'small muted' });
-  const updInfo = () => {
-    const r = app.repo;
-    const where = r.mode === 'idb' ? (r.useMirror ? 'IndexedDB + yedek ayna' : 'IndexedDB') : r.mode === 'local' ? 'localStorage' : 'yalnız bellek (kalıcı değil!)';
-    const pers = r.persisted === true ? 'kalıcı depolama: açık' : r.persisted === false ? 'kalıcı depolama: tarayıcı izin vermedi' : 'kalıcı depolama: desteklenmiyor';
-    saveInfo.textContent = r.readOnly ? 'Kayıt salt okunur (daha yeni sürüm kaydı ya da okuma hatası) — sayfayı yenile.'
-      : app.save.error ? `Son kayıt HATALI: ${app.save.error.message}`
-      : app.save.lastAt ? `Son kayıt: ${new Date(app.save.lastAt).toLocaleTimeString('tr-TR')} · ${where}${r.degraded ? ' (IndexedDB yazılamadı, ayna kullanıldı)' : ''} · ${pers}` : `Henüz kaydedilmedi · ${where} · ${pers}`;
-  };
-  updInfo();
   const general = h('div', { class: 'set box' },
     h('span', {}, 'Ses'), toggle(s.sound, (v) => set({ sound: v }), 'set-sound'),
     h('span', {}, 'Müzik'), toggle(s.music, (v) => set({ music: v })),
@@ -57,29 +47,68 @@ export function settingsTab(rerender) {
     h('span', { class: 'gold' }, 'Otomatik iksir'), h('span', { class: 'tiny muted' }, 'Yalnız iksir içer; savaşmaz.'),
     h('span', {}, 'HP iksiri, HP şu yüzdenin altına inince'), h('div', { class: 'row' }, toggle(ap.hpOn, (v) => { ap.hpOn = v; app.requestSave('settings'); }, 'auto-hp'), select([20, 30, 35, 40, 50, 60].map((x) => [String(x), '%' + x]), String(ap.hpPct), (v) => { ap.hpPct = +v; app.requestSave('settings'); })),
     h('span', {}, 'MP iksiri, MP şu yüzdenin altına inince'), h('div', { class: 'row' }, toggle(ap.mpOn, (v) => { ap.mpOn = v; app.requestSave('settings'); }), select([15, 25, 35, 50].map((x) => [String(x), '%' + x]), String(ap.mpPct), (v) => { ap.mpPct = +v; app.requestSave('settings'); }))) : null;
-  const lastExp = app.profile.lastExportAt ? `Son yedek: ${new Date(app.profile.lastExportAt).toLocaleString('tr-TR')}.` : 'Henüz yedek alınmadı.';
-  const backup = h('div', { class: 'col box' },
-    h('h3', { class: 't' }, 'Kayıt ve yedekleme'),
-    saveInfo,
-    h('div', { class: 'row', style: { flexWrap: 'wrap' } },
-      h('button', { class: 'btn green small', onTap: async () => { await app.flushSave('manual'); updInfo(); bus.emit('toast', { text: app.save.error ? 'Kayıt yapılamadı' : 'Oyun kaydedildi', kind: app.save.error ? 'warn' : 'ok' }); } }, 'Şimdi kaydet'),
-      h('button', { class: 'btn small green', 'data-testid': 'copy-code', onTap: () => copyBackupCode() }, 'Yedek kodunu kopyala'),
-      h('button', { class: 'btn small', 'data-testid': 'paste-code', onTap: () => pasteBackupCode() }, 'Yedek kodu yapıştır')),
-    h('div', { class: 'row', style: { flexWrap: 'wrap' } },
-      h('button', { class: 'btn small', 'data-testid': 'export', onTap: () => exportSave() }, 'Yedek dosyası indir (JSON)'),
-      h('button', { class: 'btn small', onTap: () => importSave() }, 'Yedek dosyası yükle'),
-      h('button', { class: 'btn small', onTap: () => snapshots() }, 'Önceki kayıtlar'),
-      h('button', { class: 'btn small', 'data-testid': 'find-lost', onTap: () => findLost() }, 'Kayıp karakter ara')),
-    h('p', { class: 'tiny muted' }, `${lastExp} Oyun kaydı bu cihazda birkaç kopya halinde tutar; ama tarayıcı site verilerini silerse (geçmiş/önbellek temizleme, gizli sekme, uzun süre girmeme) hepsi gider. Yedek kodunu ara sıra kopyalayıp bir nota ya da kendine mesaja yapıştırman ilerlemeni garanti altına alır; başka cihazda da aynı kodla devam edebilirsin.`));
+  const backup = saveSafetyBox();
   const exit = h('div', { class: 'row box' },
     h('button', { class: 'btn red', onTap: () => ui.confirm({ title: 'Ana menü', text: 'Oyun kaydedilip ana menüye dönülecek.', ok: 'Dön', onOk: () => bus.emit('exitToMenu') }) }, 'Ana menüye dön'),
-    h('span', { class: 'tiny muted grow' }, `Ahen Vadisi V${__GAME_VERSION__} · Tüm ilerleme otomatik kaydedilir.`));
+    h('span', { class: 'tiny muted grow' }, `Ahen Vadisi V${__GAME_VERSION__} · İlerleme otomatik kaydedilir (durum: Kayıt Güvenliği).`));
   void rerender;
   const credits = h('div', { class: 'box col small' },
     h('b', { class: 'gold' }, 'Emeği geçenler'),
     h('div', {}, 'Karakter ve Cevher Rahibi sprite\'ları: LuizMelo (luizmelo.itch.io) — Fantasy Warrior, Wizard Pack, Evil Wizard 2 (CC0).'),
     h('div', { class: 'muted' }, 'Diğer tüm görseller, sesler ve müzik oyun içinde procedural olarak üretilir.'));
   return h('div', { class: 'col grow scroll' }, general, potion, backup, credits, exit);
+}
+
+// ------------------------------------------------------------------ Kayıt Güvenliği (oyun içi ve ana menü)
+const fmtTime = (t) => (t ? new Date(t).toLocaleString('tr-TR') : '—');
+export function saveStatusRows() {
+  const r = app.repo, info = r.storageInfo();
+  const tech = info.mode === 'idb' ? (r.useMirror ? 'IndexedDB (birincil) + localStorage aynası' : 'IndexedDB')
+    : info.mode === 'local' ? 'localStorage (IndexedDB açılamadı)' : info.mode === 'memory' ? 'YALNIZ GEÇİCİ BELLEK' : 'açılmadı';
+  const pers = info.persisted === true ? 'açık (tarayıcı bu siteyi otomatik silmez)' : info.persisted === false ? 'tarayıcı izin vermedi' : 'tarayıcı desteklemiyor';
+  const w = info.lastWrite;
+  const lastLine = !w ? 'Bu oturumda henüz kayıt yapılmadı'
+    : w.persistent ? `${fmtTime(w.persistentAt)} (${[w.idb && 'IndexedDB', w.mirror && 'ayna', w.local && 'localStorage'].filter(Boolean).join(' + ')})`
+    : 'KALICI KAYIT YAPILAMADI — yalnız geçici bellekte';
+  const rows = [
+    ['Son başarılı kalıcı kayıt', lastLine, w && !w.persistent ? 'r-warn' : ''],
+    ['Kayıt teknolojisi', tech, info.mode === 'memory' ? 'r-warn' : ''],
+    ['Kalıcı depolama izni', pers, ''],
+    ['Son yedek (kod/dosya)', app.profile.lastExportAt ? fmtTime(app.profile.lastExportAt) : 'henüz alınmadı', app.profile.lastExportAt ? '' : 'r-warn'],
+  ];
+  if (info.openError) rows.push(['Depolama hatası', info.openError.text, 'r-warn']);
+  if (r.readOnly) rows.push(['Durum', 'Salt okunur — kaydın üzerine yazılmıyor (sayfayı yenile)', 'r-warn']);
+  if (app.save.error) rows.push(['Son kayıt denemesi', `HATALI: ${app.save.error.message}`, 'r-warn']);
+  if (info.degraded && w?.persistent) rows.push(['Uyarı', 'IndexedDB yazılamadı; kayıt yalnız aynaya (localStorage) gitti', 'r-warn']);
+  return rows;
+}
+
+export function saveSafetyBox() {
+  const statusEl = h('div', { class: 'col', 'data-testid': 'save-status' });
+  const render = () => {
+    clear(statusEl);
+    for (const [k, v, cls] of saveStatusRows()) statusEl.append(h('div', { class: 'row small' }, h('span', { class: 'muted', style: { minWidth: '150px' } }, k), h('b', { class: cls === 'r-warn' ? 'warn' : '' }, v)));
+  };
+  render();
+  const memoryOnly = app.repo.storageInfo().memoryOnly;
+  return h('div', { class: 'col box', 'data-testid': 'save-safety' },
+    h('h3', { class: 't' }, 'Kayıt Güvenliği'),
+    memoryOnly ? h('p', { class: 'small warn' }, 'Kayıt yalnız geçici bellekte tutuluyor: tarayıcı sekmesi kapanınca ilerleme kaybolur. Hemen "Yedek kodunu kopyala" ile yedek al.') : null,
+    statusEl,
+    h('div', { class: 'row', style: { flexWrap: 'wrap' } },
+      h('button', { class: 'btn green small', onTap: async () => {
+        await app.flushSave('manual'); render();
+        const ok = !app.save.error && app.save.persistent;
+        bus.emit('toast', { text: ok ? 'Oyun kalıcı olarak kaydedildi' : app.repo.readOnly ? 'Salt okunur: kayıt yapılmadı' : 'Kalıcı kayıt doğrulanamadı — yedek al', kind: ok ? 'ok' : 'warn' });
+      } }, 'Şimdi kaydet'),
+      h('button', { class: 'btn small green', 'data-testid': 'copy-code', onTap: () => copyBackupCode() }, 'Yedek kodunu kopyala'),
+      h('button', { class: 'btn small', 'data-testid': 'paste-code', onTap: () => pasteBackupCode() }, 'Yedek kodu yapıştır')),
+    h('div', { class: 'row', style: { flexWrap: 'wrap' } },
+      h('button', { class: 'btn small', 'data-testid': 'export', onTap: () => exportSave() }, 'Yedeği dışa aktar (JSON)'),
+      h('button', { class: 'btn small', onTap: () => importSave() }, 'Yedeği içe aktar'),
+      h('button', { class: 'btn small', 'data-testid': 'snapshots', onTap: () => snapshots() }, 'Önceki kayıtlar'),
+      h('button', { class: 'btn small', 'data-testid': 'find-lost', onTap: () => findLost() }, 'Kayıp karakter ara')),
+    h('p', { class: 'tiny muted' }, 'Kayıt bu tarayıcıda, bu sitenin deposunda tutulur (çevrimiçi kayıt yoktur). itch.io gibi gömülü sayfalarda ya da Brave/Safari gibi gizlilik ayarı sıkı tarayıcılarda depolama silinebilir veya farklı bir adrese bağlanabilir. Yedek kodunu ara sıra kopyalayıp bir nota ya da kendine mesaja yapıştır: başka tarayıcıda ya da cihazda da aynı kodla devam edebilirsin.'));
 }
 
 function markExported() {

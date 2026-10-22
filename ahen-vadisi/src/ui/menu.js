@@ -10,7 +10,7 @@ import { CLASSES } from '../data/classes.js';
 import { MAPS } from '../data/maps/index.js';
 import { createCharacter, validateName } from '../systems/character.js';
 import { computeStats } from '../systems/stats.js';
-import { exportSave, importSave, showRecovery, copyBackupCode, pasteBackupCode, snapshots, findLost } from './panels/settings.js';
+import { importSave, showRecovery, copyBackupCode, pasteBackupCode, snapshots, saveSafetyBox } from './panels/settings.js';
 import { sound } from '../audio/sound.js';
 import { isIOS, isStandalone } from './screen.js';
 
@@ -53,13 +53,21 @@ function saveNotices() {
     return;
   }
   if (li.error) {
-    ui.modal(h('div', { class: 'dlg frame' }, h('h3', { class: 't' }, 'Kayıt okunamadı'),
-      h('p', { class: 'small' }, `Tarayıcı depolamasına şu an erişilemedi (${String(li.error?.message || li.error)}). Kaydının üzerine yazılmaması için oyun kayıt yapmadan açıldı.`),
-      h('p', { class: 'small' }, 'Önce sayfayı yenilemeyi dene. Yeni bir oyuna yine de başlamak istersen kayıt açılır (eski veri kurtarma kopyalarında saklanmaya devam eder).'),
+    const kind = li.errorKind?.text || String(li.error?.message || li.error);
+    ui.modal(h('div', { class: 'dlg frame scroll', style: { maxHeight: '92vh' }, 'data-testid': 'storage-error' }, h('h3', { class: 't' }, 'Kayıt deposu okunamadı'),
+      h('p', { class: 'small' }, `Hata türü: ${kind}.`),
+      h('p', { class: 'small' }, 'Bu, karakterlerinin silindiği anlamına gelmez. Kaydının üzerine yanlışlıkla boş bir profil yazılmaması için oyun şu an KAYIT YAPMADAN açıldı.'),
+      h('p', { class: 'small' }, 'Önce sayfayı yenile. Olmazsa yedek kodunu/dosyanı yükleyebilir ya da bu cihazdaki önceki kayıt kopyalarına bakabilirsin. Yeni bir oyuna başlamak istersen kaydı açabilirsin; eski veri kurtarma kopyalarında kalmaya devam eder.'),
       h('div', { class: 'row', style: { justifyContent: 'flex-end', flexWrap: 'wrap' } },
-        h('button', { class: 'btn', onTap: () => location.reload() }, 'Sayfayı yenile'),
+        h('button', { class: 'btn green', onTap: () => location.reload() }, 'Sayfayı yenile'),
+        h('button', { class: 'btn', onTap: () => pasteBackupCode() }, 'Yedek kodu yapıştır'),
+        h('button', { class: 'btn', onTap: () => importSave() }, 'Yedek dosyası yükle'),
+        h('button', { class: 'btn', onTap: () => snapshots() }, 'Önceki kayıtlar'),
         h('button', { class: 'btn red', onTap: () => { app.repo.readOnly = false; ui.closeModal(); } }, 'Yine de kaydı aç'))), { dismiss: false });
     return;
+  }
+  if (li.storageError) {
+    ui.alert('IndexedDB açılamadı', `${li.storageError.text}. Karakterlerin yedek aynadan (localStorage) yüklendi; kayıtlar şimdilik oraya yazılıyor. Ayarlar → Kayıt Güvenliği'nden yedek kodu almanı öneririz.`);
   }
   if (li.repaired) {
     ui.alert('Kayıt onarıldı', `Kaydında küçük bir tutarsızlık bulundu ve onarıldı; karakterlerin korunuyor. Onarılmadan önceki kopya ayrıca saklandı. (${(li.fixes || []).slice(0, 3).join('; ')})`);
@@ -72,9 +80,24 @@ function saveNotices() {
   const rec = (li.recoverable || []).filter((x) => x.char.level >= 2 && !dismissed.has(`${x.char.id}:${x.char.level}`));
   if (rec.length) {
     setTimeout(() => showRecovery(rec, { auto: true }), li.repaired || li.corrupt ? 600 : 0);
+  } else if (app.profile.characters.some(Boolean) && !app.profile.notices?.v4backup) {
+    v4BackupNotice();
   } else if (app.profile.characters.some(Boolean) && Date.now() - (app.profile.lastExportAt || 0) > 3 * 86400000) {
     bus.emit('toast', { text: 'İpucu: İlerlemeni korumak için ara sıra Ayarlar ve Yedek → "Yedek kodunu kopyala".', kind: 'info' });
   }
+}
+
+// V4 ilk girişte bir kez: kısa yedek hatırlatması (oynanışı kesmez; kapatılabilir, bir daha gösterilmez)
+function v4BackupNotice() {
+  app.profile.notices = app.profile.notices || {};
+  app.profile.notices.v4backup = Date.now();
+  app.requestSave('notice');
+  ui.modal(h('div', { class: 'dlg frame', 'data-testid': 'v4-notice' }, h('h3', { class: 't' }, 'Gökyarık güncellemesi'),
+    h('p', { class: 'small' }, 'Karakterlerin, eşyaların ve ilerlemen aynen korunuyor. Artık 5 karakter yuvası, Okçu ve Ölü Çağıran sınıfları ve Lv.50 içeriği var.'),
+    h('p', { class: 'small gold' }, 'Kaydın bu tarayıcıda tutulur. İlerlemeni güvenceye almak için şimdi bir yedek kodu almanı öneririz.'),
+    h('div', { class: 'row', style: { justifyContent: 'flex-end', flexWrap: 'wrap' } },
+      h('button', { class: 'btn ghost', 'data-testid': 'v4-later', onTap: () => ui.closeModal() }, 'Daha sonra'),
+      h('button', { class: 'btn green', onTap: () => { ui.closeModal(); copyBackupCode(); } }, 'Yedek kodunu kopyala'))));
 }
 
 function howTo() {
@@ -86,7 +109,7 @@ function howTo() {
     h('p', { class: 'small' }, '• NPC, cevher, bitki ve görev nesnelerine dokun; karakter yaklaşıp etkileşime girer.'),
     h('p', { class: 'small' }, '• Kırmızı/turuncu yer işaretleri büyük saldırıların uyarısıdır — işaretli alandan çık!'),
     h('p', { class: 'small' }, '• Klavye: WASD/oklar hareket, 1-4 beceri, Q/E iksir, Tab hedef, Boşluk saldırı aç/kapa, I/C/K/J/M menüler.'),
-    h('p', { class: 'small' }, '• Oyun otomatik kaydedilir. Ayarlar\'dan JSON yedek alabilirsin.'),
+    h('p', { class: 'small' }, '• Oyun otomatik kaydedilir (tarayıcıda). Ayarlar → Kayıt Güvenliği\'nden yedek kodu ya da JSON yedek alabilirsin.'),
     h('button', { class: 'btn', onTap: () => ui.closeModal() }, 'Anladım')));
 }
 
@@ -97,9 +120,7 @@ function menuSettings() {
     h('div', { class: 'row' }, h('span', { class: 'grow' }, 'Ses'), h('button', { class: 'btn small', onTap: (e) => { app.setSettings({ sound: !app.settings.sound }); e.target.textContent = app.settings.sound ? 'Açık' : 'Kapalı'; } }, s.sound ? 'Açık' : 'Kapalı')),
     h('div', { class: 'row' }, h('span', { class: 'grow' }, 'Müzik'), h('button', { class: 'btn small', onTap: (e) => { app.setSettings({ music: !app.settings.music }); e.target.textContent = app.settings.music ? 'Açık' : 'Kapalı'; } }, s.music ? 'Açık' : 'Kapalı')),
     h('div', { class: 'row' }, h('span', { class: 'grow' }, 'Düşük performans (30 FPS)'), h('button', { class: 'btn small', onTap: (e) => { app.setSettings({ lowPerf: !app.settings.lowPerf }); e.target.textContent = app.settings.lowPerf ? 'Açık' : 'Kapalı'; } }, s.lowPerf ? 'Açık' : 'Kapalı')),
-    h('div', { class: 'row', style: { flexWrap: 'wrap' } }, h('button', { class: 'btn small green', 'data-testid': 'menu-copy-code', onTap: () => copyBackupCode() }, 'Yedek kodunu kopyala'), h('button', { class: 'btn small', 'data-testid': 'menu-paste-code', onTap: () => pasteBackupCode() }, 'Yedek kodu yapıştır')),
-    h('div', { class: 'row', style: { flexWrap: 'wrap' } }, h('button', { class: 'btn small', onTap: () => exportSave() }, 'Yedek dosyası indir'), h('button', { class: 'btn small', onTap: () => importSave() }, 'Yedek dosyası yükle')),
-    h('div', { class: 'row', style: { flexWrap: 'wrap' } }, h('button', { class: 'btn small', onTap: () => snapshots() }, 'Önceki kayıtlar'), h('button', { class: 'btn small', 'data-testid': 'menu-find-lost', onTap: () => findLost() }, 'Kayıp karakter ara')),
+    saveSafetyBox(),
     h('button', { class: 'btn', onTap: () => ui.closeModal() }, 'Kapat')));
 }
 

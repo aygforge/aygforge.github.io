@@ -343,3 +343,4 @@ select.sel { font: inherit; min-height: 40px; background: #1a1418; color: var(--
 /* kaydırılabilir sütunlarda öğeler sıkışmaz (uzun beceri kartları taşmasın) */
 .col.scroll > *, .list.scroll > * { flex-shrink: 0; }
 select.sel { font: inherit; font-size: .9rem; background: #120e14; color: var(--text); border: 2px solid var(--edge); border-radius: 8px; padding: 4px 8px; }
+.warn { color: #ffb070; } b.warn { color: #ffb070; }

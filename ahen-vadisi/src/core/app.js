@@ -39,8 +39,12 @@ export const app = {
       this.repo.readOnly = true;
       r = { profile: null, source: null, tried: [{ key: 'profile', msg: String(e?.message || e) }], error: e, recoverable: [] };
     }
+    // Kayıt veritabanı açılamadı ve hiçbir kopya okunamadı: bu "karakter yok" demek değildir. Boş profil eski kaydın
+    // üzerine yazılmasın diye depo salt okunur başlar; oyuncuya hata türü, yedek/kurtarma seçenekleri gösterilir.
+    if (!r.profile && r.storageError && !r.error) { this.repo.readOnly = true; r.error = new Error(r.storageError.text); r.errorKind = r.storageError; }
     this.loadInfo = r;
     this.profile = r.profile || newProfile();
+    if (!this.profile.notices || typeof this.profile.notices !== 'object') this.profile.notices = {};
     if (!Array.isArray(this.profile.deletedChars)) this.profile.deletedChars = [];
     if (!r.profile && r.tried.some((t) => t.msg !== 'yok')) this.loadInfo.corrupt = true;
     sound.applySettings(this.profile.settings);
@@ -113,6 +117,12 @@ export const app = {
       if (this.char) this.char.updatedAt = Date.now();
       await this.repo.save(this.profile);
       this.save.lastAt = Date.now();
+      // kalıcı yazım doğrulanmadıysa (yalnız geçici bellek) "kaydedildi" denmez
+      this.save.persistent = !!this.repo.lastWrite?.persistent;
+      if (!this.save.persistent && !this.save.warnedMemory) {
+        this.save.warnedMemory = true;
+        bus.emit('toast', { text: 'Dikkat: kayıt yalnız geçici bellekte! Tarayıcı kapanınca kaybolur — Ayarlar → Kayıt Güvenliği.', kind: 'warn' });
+      }
       this.save.count++;
       if (this.save.error) bus.emit('toast', { text: 'Kayıt yeniden başarılı.', kind: 'ok' });
       this.save.error = null;

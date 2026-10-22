@@ -25,6 +25,7 @@ export function newProfile() {
     schemaVersion: SCHEMA_VERSION,
     profileId: makeUid('p'),
     characters: new Array(CHAR_SLOTS).fill(null),
+    deletedChars: [],
     storage: makeContainer(STORAGE_START),
     settings: defaultSettings(),
     commit: 0,
@@ -74,12 +75,16 @@ export function migrate(profile, fromVersion) {
   if (fromVersion > SCHEMA_VERSION) return { ok: false, msg: 'Kayıt daha yeni bir oyun sürümünden' };
   if (!isNum(fromVersion) || fromVersion < 1) return { ok: false, msg: 'Kayıt sürümü okunamadı' };
   profile.settings = { ...defaultSettings(), ...(profile.settings || {}) };
-  // V1 → V2 → V3: karakterlere yalnız yeni alanlar eklenir (beceri çubuğu, Av Geçmişi, zindan koşuları, dünya bayrakları;
-  // V3: görev takip listesi, Ustalık II, kullanım eşyası etkileri). Hiçbir eski alan silinmez ya da değiştirilmez;
+  // V1 → V2 → V3 → V4: karakterlere yalnız yeni alanlar eklenir (beceri çubuğu, Av Geçmişi, zindan koşuları, dünya bayrakları;
+  // V3: görev takip listesi, Ustalık II, kullanım eşyası etkileri; V4: Ustalık III, yardımcı çağırma durumu). Hiçbir eski alan silinmez ya da değiştirilmez;
   // geçişten önceki kayıt depoda 'v<N>_backup' olarak bir kez saklanır (geri dönüş için).
   if (Array.isArray(profile.characters)) {
     for (const ch of profile.characters) if (ch && CLASS_SKILLS[ch.cls]) ensureV2Fields(ch, false);
+    // V4: karakter yuvaları 3 → 5. Eski yuvalar aynı sırada ve aynı kimlikle kalır; yeni yuvalar boş eklenir.
+    // (Doğrulama 5 yuva bekler; bu genişletme doğrulamadan ÖNCE yapılır — eski kayıt asla reddedilmez.)
+    while (profile.characters.length < CHAR_SLOTS) profile.characters.push(null);
   }
+  if (!Array.isArray(profile.deletedChars)) profile.deletedChars = [];
   if (fromVersion < SCHEMA_VERSION) profile.migratedFrom = fromVersion;
   profile.schemaVersion = SCHEMA_VERSION;
   return { ok: true, profile };

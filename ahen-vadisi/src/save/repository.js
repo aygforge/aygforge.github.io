@@ -51,6 +51,18 @@ export function losesProgress(prevMeta, nextMeta) {
   return false;
 }
 
+// Depolama hatasının oyuncuya gösterilecek türü
+export function errorKind(e) {
+  const name = e?.name || '';
+  const msg = String(e?.message || e || '');
+  if (name === 'QuotaExceededError' || /quota/i.test(msg)) return { code: 'quota', text: 'Depolama alanı dolu (tarayıcı kotası)' };
+  if (name === 'SecurityError' || /security|denied|not allowed|insecure/i.test(msg)) return { code: 'blocked', text: 'Tarayıcı bu sayfanın kayıt depolamasını engelliyor (gizli sekme, çerez/site verisi engeli ya da üçüncü taraf iframe kısıtı)' };
+  if (name === 'InvalidStateError' || /closing|closed|connection/i.test(msg)) return { code: 'closed', text: 'Kayıt veritabanı bağlantısı kapandı' };
+  if (/blocked/i.test(msg)) return { code: 'busy', text: 'Kayıt veritabanı başka bir sekmede kullanımda' };
+  if (/IndexedDB yok/i.test(msg)) return { code: 'missing', text: 'Bu tarayıcıda IndexedDB yok' };
+  return { code: 'unknown', text: `Depolama hatası: ${msg || name || 'bilinmiyor'}` };
+}
+
 export class SaveRepository {
   constructor(idb = (typeof indexedDB !== 'undefined' ? indexedDB : null)) {
     this.idb = idb;
@@ -65,6 +77,19 @@ export class SaveRepository {
     this.persisted = null;               // navigator.storage.persist sonucu
     this.mem = {};
     this.useMirror = true;
+    this.lastWrite = null;               // { at, idb, mirror, local, persistent } — son yazımın gerçekten nereye gittiği
+    this.openError = null;               // IndexedDB açılamadıysa hata (kullanıcıya türüyle bildirilir)
+  }
+
+  // Kayıt teknolojisi özeti (Kayıt Güvenliği ekranı)
+  storageInfo() {
+    const w = this.lastWrite;
+    return {
+      mode: this.mode, readOnly: this.readOnly, degraded: this.degraded, persisted: this.persisted,
+      openError: this.openError ? errorKind(this.openError) : null,
+      lastPersistentAt: w?.persistentAt || null, lastWrite: w,
+      memoryOnly: this.mode === 'memory' || (w && !w.persistent),
+    };
   }
 
   // ------------------------------------------------------------------ bağlantı
@@ -83,9 +108,11 @@ export class SaveRepository {
         this.db.onclose = () => { this.db = null; };
         this.db.onversionchange = () => { try { this.db?.close(); } catch { /* */ } this.db = null; };
         this.mode = 'idb';
+        this.openError = null;
         return this.mode;
       } catch (e) {
         this.lastError = e;
+        this.openError = e;
         this.db = null;
       }
     }
@@ -228,6 +255,9 @@ export class SaveRepository {
     }
     const mirrored = this._writeMirror(env);
     this.degraded = !idbOk;
+    const local = !idbOk && this.mode === 'local';
+    const persistent = idbOk || mirrored || local;
+    this.lastWrite = { at: now, idb: idbOk, mirror: mirrored, local, persistent, persistentAt: persistent ? now : this.lastWrite?.persistentAt || null };
     if (!idbOk && !mirrored && this.mode !== 'local' && this.mode !== 'memory') throw this.lastError || new Error('Kayıt yazılamadı');
     if (doSnap) this.lastSnapshotAt = now;
     if (doHist) this.lastHistoryAt = now;
@@ -297,6 +327,7 @@ export class SaveRepository {
     let all;
     try { all = await this.candidates(); } catch (e) { this.lastError = e; all = []; }
     const tried = [];
+    const storageError = this.idb && !this.db && this.openError ? errorKind(this.openError) : null;
     const newer = all.filter((c) => c.res.newer && (c.key === 'profile' || c.key === 'mirror'));
     if (newer.length) {
       this.readOnly = true;
@@ -323,7 +354,7 @@ export class SaveRepository {
       for (const c of live) {
         try { await this.writeRaw(`rescue_${Date.now()}_${c.src}_${c.key}`, c.env); } catch { /* */ }
       }
-      return { profile: null, source: null, tried, recoverable: this._recoverable(all, null) };
+      return { profile: null, source: null, tried, storageError, recoverable: this._recoverable(all, null) };
     }
     const env = best.env;
     const r = best.res;
@@ -339,7 +370,7 @@ export class SaveRepository {
       source: best.key === 'mirror' && best.src === 'ls' ? 'mirror' : best.key,
       sourceStore: best.src,
       tried, savedAt: env.savedAt,
-      repaired: !!r.repaired, fixes: r.fixes || [],
+      repaired: !!r.repaired, fixes: r.fixes || [], storageError,
       recoverable: this._recoverable(all, r.profile),
     };
     if (env.schemaVersion < SCHEMA_VERSION) out.migratedFrom = env.schemaVersion;
