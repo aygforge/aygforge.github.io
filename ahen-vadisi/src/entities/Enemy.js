@@ -381,7 +381,7 @@ export class Enemy {
   // --------------------------------------------------------------- elit yetenekleri (telegraflı)
   updateAbility(dt, p, dP) {
     if (!this.tpl.abilities) return;
-    if (this.tpl.kind === 'normal') { this.updateNormalAbility(dt, p, dP); return; }
+    if (this.tpl.kind === 'normal' || this.tpl.kind === 'hunt') { this.updateNormalAbility(dt, p, dP); return; }
     if (this.tpl.kind !== 'elite') return;
     // Öfke (Kül Kasabı): düşük canda daha hızlı saldırır ve koşar
     const en = this.tpl.enrage;

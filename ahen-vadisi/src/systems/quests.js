@@ -323,6 +323,7 @@ export function turnInQuest(char, qid, npcId) {
   if (q.skillPoint) char.bonusSkillPoints = (char.bonusSkillPoints || 0) + q.skillPoint;
   if (q.mastery) char.mastery = true;
   if (q.mastery2) char.mastery2 = true;
+  if (q.mastery3) char.mastery3 = true;
   if (q.title && !char.titles.includes(q.title)) char.titles.push(q.title);
   if (q.unlocksDungeon) unlockDungeon(char, q.unlocksDungeon === true ? 'dungeon' : q.unlocksDungeon);
   const exp = gainExp(char, q.exp);
@@ -389,8 +390,10 @@ export function trackedQuestList(char) {
 export const QUEST_REGIONS = [
   ['village', 'Köy'], ['forest', 'Orman'], ['mine', 'Maden'], ['swamp', 'Bataklık'],
   ['ash', 'Kül Yaylaları'], ['frost', 'Ayaz Geçidi'], ['dead', 'Ölü Krallık'], ['throne', 'Kara Taht'],
+  ['rift', 'Gökyarık Ovası'], ['star', 'Yıldız Mezarı'],
 ];
-const MAP_REGION = { village: 'village', forest: 'forest', mine: 'mine', dungeon: 'mine', swamp: 'swamp', ash: 'ash', frost: 'frost', frost_temple: 'frost', dead_kingdom: 'dead', black_throne: 'throne', dark_crypt: 'throne' };
+const MAP_REGION = { village: 'village', forest: 'forest', mine: 'mine', dungeon: 'mine', swamp: 'swamp', ash: 'ash', frost: 'frost', frost_temple: 'frost', dead_kingdom: 'dead', black_throne: 'throne', dark_crypt: 'throne',
+  sky_rift: 'rift', star_grave: 'star', astral_sanctum: 'star' };
 export function questRegion(q) {
   if (q.region) return q.region;
   const h = q.hint || q.objectives.find((o) => o.hint)?.hint;

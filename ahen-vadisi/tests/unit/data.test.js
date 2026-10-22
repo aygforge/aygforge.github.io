@@ -143,7 +143,7 @@ describe('Veri tabloları', () => {
         }
         if (o.type === 'deliver') expect(STACKABLES[o.item]).toBeTruthy();
         if (o.type === 'talk' || o.type === 'visit') expect(NPCS[o.npc]).toBeTruthy();
-        if (o.type === 'craft') expect(RECIPES.some((r) => r.id === o.recipe), o.recipe).toBe(true);
+        if (o.type === 'craft') expect(RECIPES.some((r) => r.id === o.recipe || (o.item && r.out.id === o.item)), o.recipe || o.item).toBe(true);
         if (o.type === 'escort' || o.type === 'defend') {
           const kind = o.type === 'escort' ? 'escort' : 'defense';
           expect(Object.values(MAPS).flatMap((m) => m.objects).filter((x) => x.type === kind && x.id === o.event).length, o.event).toBe(1);
@@ -153,9 +153,9 @@ describe('Veri tabloları', () => {
       for (const r of q.rewardItems) expect(STACKABLES[r.id]).toBeTruthy();
     }
   });
-  it('köyde 7 V1 NPC\'si yerinde (+3 V3 NPC\'si); bütün NPC\'ler haritaya yerleşik', () => {
+  it('köyde 7 V1 NPC\'si yerinde (+3 V3, +2 V4 NPC\'si); bütün NPC\'ler haritaya yerleşik', () => {
     const npcs = MAPS.village.objects.filter((o) => o.type === 'npc').map((o) => o.npc);
-    expect(npcs.sort()).toEqual([...V1_NPCS, 'rauf', 'lale', 'nisa'].sort());
+    expect(npcs.sort()).toEqual([...V1_NPCS, 'rauf', 'lale', 'nisa', 'duru', 'selim'].sort());
     const placed = Object.values(MAPS).flatMap((m) => m.objects.filter((o) => o.type === 'npc').map((o) => o.npc));
     for (const id of Object.keys(NPCS)) expect(placed, id).toContain(id);
   });

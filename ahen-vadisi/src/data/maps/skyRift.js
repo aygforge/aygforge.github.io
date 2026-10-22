@@ -111,6 +111,8 @@ export default {
       route: [[34, 42], [48, 40], [62, 37], [80, 36], [100, 34]],
       ambushes: [{ at: 0.35, wave: [['lightning_raider', 2]], say: 'Şimşek Yağmacıları kervanın peşinde!' },
         { at: 0.75, wave: [['storm_hound', 2], ['rift_wing', 1]], say: 'Fırtına sürüsü yolu kesti!' }] },
+    // Düşen Yıldız (m53): geçidin fırtına perdesi
+    { type: 'qobj', group: 'star_veil', id: 'star_veil', x: 118, y: 30, label: 'Fırtına perdesi mührü', sprite: 'royal_seal', say: 'Perde yırtıldı; doğudan soğuk, yıldız tozu kokan bir rüzgâr esiyor.' },
     ...stormOre.map(([x, y], i) => ({ type: 'gather', id: `storm_ore${i}`, kind: 'storm_ore', x, y, clear: 0.6 })),
     ...starFlower.map(([x, y], i) => ({ type: 'gather', id: `star_flower_r${i}`, kind: 'star_flower', x, y, clear: 0.6 })),
     { type: 'chest', id: 'chest_rift_nw', x: 8, y: 8, gold: [1600, 2000], loot: [{ id: 'lightning_shard', qty: [2, 3] }, { id: 'hp_star', qty: [2, 2] }] },

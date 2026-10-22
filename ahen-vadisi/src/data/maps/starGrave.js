@@ -94,6 +94,8 @@ export default {
     { type: 'defense', id: 'def_astral', x: 62, y: 44, name: 'Yıldız Avlusu sunağı', sprite: 'royal_seal', hp: 18000, ring: [5, 7],
       intro: 'Yıldız Avlusu sunağını koru! Astral yaratıklar ışığı yutmaya geliyor.',
       waves: [[['star_parasite', 2], ['astral_hunter', 1]], [['void_armor', 1], ['star_oracle', 1], ['star_parasite', 1]]] },
+    // Ustalık III: gök yemin taşı (dört sınıf)
+    { type: 'qobj', group: 'sky_oath', id: 'sky_oath', x: 66, y: 42, label: 'Gök yemin taşı', sprite: 'marker_stone', say: 'Taş ışıdı; adın yıldızların arasına yazıldı.' },
     // Eski Kâhin (s50): kâhinin üç yazıtı
     { type: 'qobj', group: 'oracle_script', id: 'os1', x: 80, y: 20, label: 'Kâhin yazıtı', sprite: 'stone_tablet', say: '"Yıldızları saydık; biri eksikti."' },
     { type: 'qobj', group: 'oracle_script', id: 'os2', x: 92, y: 20, label: 'Kâhin yazıtı', sprite: 'stone_tablet', say: '"Eksik yıldız düşmedi; indirildi ve zincirlendi."' },

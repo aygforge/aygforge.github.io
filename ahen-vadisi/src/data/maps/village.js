@@ -63,6 +63,9 @@ export default {
     { type: 'npc', npc: 'hunter', x: 54, y: 22 },
     { type: 'npc', npc: 'sage', x: 12, y: 21 },
     { type: 'npc', npc: 'keeper', x: 43, y: 40 },
+    // V4: Okçu ve Ölü Çağıran ustaları (eski NPC konumları değişmedi)
+    { type: 'npc', npc: 'duru', x: 58, y: 27 },
+    { type: 'npc', npc: 'selim', x: 8, y: 34 },
     // V3 NPC'leri ve görev nesneleri
     { type: 'npc', npc: 'rauf', x: 51, y: 30 },
     { type: 'npc', npc: 'lale', x: 8, y: 27 },

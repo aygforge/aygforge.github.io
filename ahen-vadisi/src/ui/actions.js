@@ -102,6 +102,7 @@ export const act = {
       if (r.q.title) bus.emit('toast', { text: `Unvan kazanıldı: ${r.q.title}`, kind: 'elite' });
       if (r.q.mastery) bus.emit('toast', { text: 'Ustalık I açıldı!', kind: 'elite' });
       if (r.q.mastery2) bus.emit('toast', { text: 'Ustalık II açıldı!', kind: 'elite' });
+      if (r.q.mastery3) bus.emit('toast', { text: 'Ustalık III açıldı!', kind: 'elite' });
       if (r.q.skillPoint) bus.emit('toast', { text: '+1 beceri puanı', kind: 'level' });
       for (const ev of r.levelEvents) app.world?.onLevelUp(ev);
       if (app.char.tracked === id) app.char.tracked = null;

@@ -293,7 +293,7 @@ function questsTab(rerender) {
       h('div', { class: 'small' }, q.objectives.map((o, i) => h('div', { class: objectiveProgress(ch, q, i) >= objectiveTarget(o) ? 'ok' : '' },
         `• ${o.label}${o.type === 'talk' ? '' : ` ${Math.min(objectiveProgress(ch, q, i), objectiveTarget(o))}/${objectiveTarget(o)}`}`))),
       helps.length ? h('div', { class: 'tiny', style: { color: '#9ad0ff', marginTop: '4px' } }, helps.map((k) => h('div', {}, 'ⓘ ' + OBJECTIVE_HELP[k]))) : null,
-      h('div', { class: 'small gold', style: { marginTop: '6px' } }, `Ödül: ${q.exp ? fmt(q.exp) + ' EXP · ' : ''}${q.gold ? fmt(q.gold) + ' Gold' : ''}${q.rewardItems.length ? ' · ' + q.rewardItems.map((r) => `${STACKABLES[r.id].name} ×${r.qty}`).join(', ') : ''}${q.title ? ` · Unvan: ${q.title}` : ''}${q.skillPoint ? ' · +1 beceri puanı' : ''}${q.mastery2 ? ' · Ustalık II pasifi' : ''}`),
+      h('div', { class: 'small gold', style: { marginTop: '6px' } }, `Ödül: ${q.exp ? fmt(q.exp) + ' EXP · ' : ''}${q.gold ? fmt(q.gold) + ' Gold' : ''}${q.rewardItems.length ? ' · ' + q.rewardItems.map((r) => `${STACKABLES[r.id].name} ×${r.qty}`).join(', ') : ''}${q.title ? ` · Unvan: ${q.title}` : ''}${q.skillPoint ? ' · +1 beceri puanı' : ''}${q.mastery2 ? ' · Ustalık II pasifi' : ''}${q.mastery3 ? ' · Ustalık III pasifi' : ''}`),
       hint ? h('div', { class: 'tiny muted' }, `Yaklaşık konum: ${MAPS[hint.map].name} — haritada sarı alan`) : null,
       st === 'active' ? h('div', { class: 'row', style: { marginTop: '8px' } },
         h('button', { class: 'btn small' + (tracked ? ' green' : ''), 'data-testid': 'track-' + q.id, onTap: () => { act.track(q.id); rerender(); } }, tracked ? `★ Takipte (${tracking.length}/3)` : `☆ Takip et (${tracking.length}/3)`),

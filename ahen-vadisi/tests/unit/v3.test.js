@@ -135,9 +135,10 @@ const V3_MAIN = ['m37', 'm38', 'm39', 'm40', 'm41', 'm42', 'm43', 'm44', 'm45', 
 const V3_SIDE = ['s37', 's38', 's39', 's40', 's41', 's42'];
 
 describe('V3 içerik', () => {
-  it('80 tek seferlik ana/yan görev; V3 ana 212.000, V3 yan 39.000, erken yan 44.260 EXP; görevler ekipman vermez', () => {
-    expect(QUESTS.length).toBe(80);
-    expect(new Set(QUESTS.map((q) => q.id)).size).toBe(80);
+  // V4: +12 ana +10 yan = 102 (V3'ün 80 görevi ve kimlikleri değişmeden)
+  it('80 V3 görevi korunur (V4 ile 102); V3 ana 212.000, V3 yan 39.000, erken yan 44.260 EXP; görevler ekipman vermez', () => {
+    expect(QUESTS.length).toBe(102);
+    expect(new Set(QUESTS.map((q) => q.id)).size).toBe(102);
     const sum = (ids) => ids.reduce((a, id) => a + QUEST_MAP[id].exp, 0);
     expect(sum(V3_MAIN)).toBe(212000);
     expect(sum(V3_SIDE)).toBe(39000);

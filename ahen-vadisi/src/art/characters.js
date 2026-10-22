@@ -211,6 +211,12 @@ export const NPC_LOOKS = {
   npc_hamit: { skin: '#c8a888', hair: '#b0b0b0', beard: '#c0c0c0', helm: { type: 'hood', main: '#4a4a52', trim: '#2a2a32' }, top: '#5a5a5a', topTrim: '#8a8a8a', robe: true, cane: true },
   npc_eren: { skin: '#d8b090', helm: { type: 'greathelm', main: '#3a3a44', trim: '#8a6ac0' }, top: '#2e2e3a', topTrim: '#a080e0', cape: '#4a2a6a', tier: 3, pants: '#22222c' },
   npc_veysel: { skin: '#e0c0a0', hair: '#8a8a8a', beard: '#9a9a9a', top: '#6a2a2a', topTrim: '#e0c060', robe: true, hat: 'wizard', hatColor: '#4a1a1a' },
+  // V4
+  npc_duru: { skin: '#e8c0a0', hair: '#6a3a1a', hairStyle: 'braid', helm: { type: 'hood', main: '#4a6a3a', trim: '#c8a050' }, top: '#5a7a3a', topTrim: '#c8a050', pants: '#4a4030', bow: true, tier: 2, cape: '#3a5a2a' },
+  npc_selim: { skin: '#d8c0b0', hair: '#2a2a32', beard: '#3a3a42', helm: { type: 'hood', main: '#2a2434', trim: '#7ae0c0' }, top: '#3a3046', topTrim: '#7ae0c0', robe: true, cane: true },
+  npc_atlas: { skin: '#c89070', hair: '#3a2a1a', beard: '#3a2a1a', top: '#5a5a6a', topTrim: '#9ad0ff', pants: '#3a3a44', boots: '#2a2a30', hat: 'scarf', hatColor: '#4a6a8a', cape: '#3a4a5a', tier: 2, bow: true },
+  npc_leyla: { skin: '#f0d0b8', hair: '#1a1a2a', hairStyle: 'long', top: '#2a2a5a', topTrim: '#fff0c0', robe: true, hat: 'wizard', hatColor: '#3a3a7a' },
+  npc_tufan: { skin: '#c8a080', beard: '#b0b0b8', helm: { type: 'greathelm', main: '#5a6a9a', trim: '#fff0c0' }, top: '#3a4466', topTrim: '#9ab4ff', cape: '#2a3058', tier: 3, pants: '#22283c' },
   // V3 görev olayı karakterleri
   npc_expedition: { skin: '#d8a888', helm: { type: 'hood', main: '#7a8a9a', trim: '#e8eef4' }, top: '#5a6a7a', topTrim: '#c8d8e8', pants: '#3a4a5a', bow: true, tier: 1 },
   npc_guard: { skin: '#d0a888', helm: { type: 'greathelm', main: '#4a4a54', trim: '#9a8ac0' }, top: '#3a3a46', topTrim: '#9a8ac0', tier: 2, pants: '#2a2a34' },

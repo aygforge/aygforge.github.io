@@ -119,6 +119,13 @@ export default {
     { type: 'qobj', group: 'arcane_seal', id: 'as1', x: 81, y: 21, label: 'Büyü mührü', sprite: 'royal_seal', say: 'Mühür uğulduyor.' },
     { type: 'qobj', group: 'arcane_seal', id: 'as2', x: 87, y: 21, label: 'Büyü mührü', sprite: 'royal_seal', say: 'İkinci mühür yanıt veriyor.' },
     { type: 'qobj', group: 'arcane_seal', id: 'as3', x: 84, y: 27, label: 'Büyü mührü', sprite: 'royal_seal', say: 'Üç mühür birleşti — mabedin ortasında bir gölge uyanıyor!' },
+    // V4 Ustalık II: Okçunun üç gözcü direği ve Ölü Çağıran'ın üç ruh sunağı
+    { type: 'qobj', group: 'hunter_post', id: 'hp1', x: 36, y: 26, label: 'Gözcü direği', sprite: 'marker_stone', say: 'Okun direğe saplandı; geçit seni tanıyor.' },
+    { type: 'qobj', group: 'hunter_post', id: 'hp2', x: 44, y: 26, label: 'Gözcü direği', sprite: 'marker_stone', say: 'İkinci işaret de yerinde.' },
+    { type: 'qobj', group: 'hunter_post', id: 'hp3', x: 40, y: 31, label: 'Gözcü direği', sprite: 'marker_stone', say: 'Üç işaret tamam. Avcının mirası artık senin.' },
+    { type: 'qobj', group: 'soul_altar', id: 'sa1', x: 77, y: 63, label: 'Ruh sunağı', sprite: 'royal_seal', say: 'Sunak fısıldamaya başladı.' },
+    { type: 'qobj', group: 'soul_altar', id: 'sa2', x: 87, y: 63, label: 'Ruh sunağı', sprite: 'royal_seal', say: 'İkinci sunak cevap veriyor.' },
+    { type: 'qobj', group: 'soul_altar', id: 'sa3', x: 82, y: 61, label: 'Ruh sunağı', sprite: 'royal_seal', say: 'Üç sunak birleşti — meydanda kemikler bir araya geliyor!' },
     { type: 'qobj', group: 'marker_stone', id: 'marker', x: 64, y: 60, label: 'İşaret taşı', sprite: 'marker_stone', say: 'Eski muhafız yemini taşa kazınmış.' },
     // Küllü Antlaşma (s41)
     { type: 'qobj', group: 'ash_tablet', id: 'tab1', x: 44, y: 36, label: 'Antlaşma tableti', sprite: 'stone_tablet', say: '"Kül halkı ile Taht arasında: ateş yakılmayacak, kılıç çekilmeyecek."' },

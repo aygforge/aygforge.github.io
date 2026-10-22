@@ -28,7 +28,7 @@ function complete(c, q) {
         }
       } else if (o.type === 'deliver') addStack(c.bag, o.item, o.count);
       else if (o.type === 'visit') { for (const m of o.takes || []) if (!countStack(c.bag, m.id)) addStack(c.bag, m.id, m.qty); qs.onTalk(c, o.npc); }
-      else if (o.type === 'craft') qs.onCraft(c, o.recipe, null, 1);
+      else if (o.type === 'craft') qs.onCraft(c, o.recipe, o.item || null, 1);
       else if (o.type === 'escort' || o.type === 'defend') qs.onEventComplete(c, o.type, o.event);
       else if (o.type === 'dungeon') qs.onDungeonStage(c, o.stage, o.dungeon || 'dungeon');
       else if (o.type === 'talk') break;
@@ -38,7 +38,8 @@ function complete(c, q) {
 
 describe('Görevler', () => {
   it('bütün görevler (ana, yan, sınıf) sırayla alınabilir, tamamlanabilir, ödülü bir kez verilir', () => {
-    for (const cls of ['warrior', 'mage']) {
+    // V4: dört sınıf; her sınıf yalnız kendi sınıf/rehber görevlerini görür
+    for (const cls of ['warrior', 'mage', 'archer', 'necromancer']) {
       const c = createCharacter({ name: 'Görevci', cls, slot: 0 }, rng);
       let gold = c.gold;
       const order = [...QUESTS.filter((q) => q.main), ...QUESTS.filter((q) => !q.main), ...CLASS_QUESTS.filter((q) => !q.cls || q.cls === cls)];
@@ -58,8 +59,14 @@ describe('Görevler', () => {
         expect(c.gold).toBe(g0 + q.gold);
         expect(qs.turnInQuest(c, q.id, q.turnIn).ok).toBe(false); // tekrar ödül yok
         expect(qs.acceptQuest(c, q.id).ok).toBe(false);
+        // ödül iksir/materyalleri çantayı doldurmasın (sonraki görevlerin ödül yeri)
+        c.bag.slots.fill(null);
       }
       expect(c.world.dungeonUnlocked).toBe(true);
+      expect(dg.isDungeonUnlocked(c, 'astral_sanctum')).toBe(true);
+      expect(c.world.flags.sky_rift_open && c.world.flags.star_grave_open).toBe(true);
+      expect(c.titles).toContain('Göğün Bekçisi');
+      expect(c.mastery2 && c.mastery3).toBe(true);
       expect(c.titles).toContain('Vadinin Koruyucusu');
       expect(c.bonusSkillPoints).toBe(2);
       expect(c.mastery).toBe(true);

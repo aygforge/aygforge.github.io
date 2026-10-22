@@ -471,6 +471,26 @@ export const ENEMIES = {
     dmgType: 'magic', radius: 0.5, sprite: 'void_priest', tint: 0x9ad8ff, projectile: 'void_bolt', flying: true, deathFx: 'void',
     abilities: ['void_ward'], normalCoef: 0.8, lootTable: null, gold: [0, 0],
   },
+  // V4 görev avları (ekipman düşürmez; EXP verir)
+  oracle_shade: {
+    id: 'oracle_shade', name: 'Eski Kâhinin Gölgesi', kind: 'hunt', level: 47, hp: 30000, atk: 600, def: 220, mdef: 300, exp: 5000,
+    species: 'humanoid', ai: 'ranged', aggro: 8, leash: 16, speed: 2.6, attackInterval: 2.2, attackRange: 6,
+    dmgType: 'magic', radius: 0.5, sprite: 'star_oracle', tint: 0xc0b0ff, projectile: 'star_bolt', flying: true, deathFx: 'astral',
+    abilities: ['star_fall'], normalCoef: 0.8, lootTable: null, gold: [0, 0],
+  },
+  fallen_observer: {
+    id: 'fallen_observer', name: 'Kayıp Gözlemci', kind: 'hunt', level: 48, hp: 32000, atk: 640, def: 240, mdef: 240, exp: 5400,
+    species: 'humanoid', ai: 'ranged', aggro: 8, leash: 16, speed: 3.0, attackInterval: 2.0, attackRange: 6.5,
+    dmgType: 'phys', radius: 0.5, sprite: 'astral_hunter', tint: 0x8ab4ff, projectile: 'astral_arrow', deathFx: 'astral',
+    normalCoef: 0.8, lootTable: null, gold: [0, 0],
+  },
+  // Ustalık II (Ölü Çağıran): ruh sunakları etkinleşince Kara Taht'ta uyanan görev karşılaşması
+  bone_herald: {
+    id: 'bone_herald', name: 'Kemik Habercisi', kind: 'hunt', level: 40, hp: 16000, atk: 380, def: 170, mdef: 170, exp: 3000,
+    species: 'undead', ai: 'aggressive', aggro: 8, leash: 16, speed: 2.6, attackInterval: 1.9, attackRange: 1.6,
+    dmgType: 'phys', radius: 0.55, sprite: 'cursed_guard', tint: 0x7ae0c0, deathFx: 'bone',
+    abilities: ['heavy_slam'], normalCoef: 0.8, lootTable: null, gold: [0, 0],
+  },
   training_dummy: {
     id: 'training_dummy', name: 'Saman Kukla', kind: 'dummy', level: 1, hp: 40, atk: 0, def: 0, mdef: 0, exp: 0,
     species: 'construct', ai: 'static', aggro: 0, leash: 0, speed: 0, attackInterval: 99, attackRange: 0,

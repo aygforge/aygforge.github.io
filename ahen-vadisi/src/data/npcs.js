@@ -129,6 +129,32 @@ Object.assign(NPCS, {
     services: ['quests', 'sell'],
     greet: 'Kayıp Kral\'ın son yılı hiçbir kitapta yazmaz. Ben yazacağım — sen yaşarsan.',
   },
+  // ---------------- V4: köyün yeni ustaları, Gökyarık Ovası ve Yıldız Mezarı
+  duru: {
+    id: 'duru', name: 'Usta Okçu Duru', title: 'Okçu talimgâhı', sprite: 'npc_duru',
+    services: ['quests', 'class_quests', 'repair'],
+    greet: 'Yayı germek kolay, oku bırakmayı bilmek zor. Rüzgârı dinle, sonra nişan al.',
+  },
+  selim: {
+    id: 'selim', name: 'Ruhbilge Selim', title: 'Köyün sessiz köşesi', sprite: 'npc_selim',
+    services: ['quests', 'class_quests', 'potions'],
+    greet: 'Ölüler kimseye ait değildir; yalnızca bir süre yardımlarını ödünç alırız. Bunu unutma.',
+  },
+  atlas: {
+    id: 'atlas', name: 'İzci Atlas', title: 'Keşif Kampı', sprite: 'npc_atlas', region: 'rift',
+    services: ['quests', 'upgrade', 'craft_blacksmith', 'repair', 'potions', 'sell'],
+    greet: 'Bu ovada fırtına hiç dinmiyor. Kampı ayakta tutan şey çelik ve inat.',
+  },
+  leyla: {
+    id: 'leyla', name: 'Yıldız Yorumcusu Leyla', title: 'Gözlemci Kampı', sprite: 'npc_leyla', region: 'star',
+    services: ['quests', 'potions', 'craft_healer', 'sell', 'contracts'],
+    greet: 'Yıldızlar düşmez — düşürülür. Bu mezarın her taşı bir hikâye anlatıyor.',
+  },
+  tufan: {
+    id: 'tufan', name: 'Gökyarık Bekçisi Tufan', title: 'Mabet Basamakları', sprite: 'npc_tufan', region: 'star',
+    services: ['quests', 'upgrade', 'craft_blacksmith', 'repair'],
+    greet: 'Mabedin kapısını yüzyıllardır bekliyorum. İçeridekinin uyanmasını değil, sonsuza dek uyumasını istiyorum.',
+  },
 });
 
 // V3 tedarik dükkânları (kullanım eşyaları, istiflenebilir)
