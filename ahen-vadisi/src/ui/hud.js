@@ -116,7 +116,7 @@ export function createHud() {
   const layoutActions = () => {
     const H = window.innerHeight;
     const u = Math.max(0.85, Math.min(1.15, H / 400));
-    const A = Math.round(Math.max(64, 76 * u)), S = Math.round(Math.max(48, 56 * u)), P = Math.round(Math.max(46, 50 * u));
+    const A = Math.round(Math.max(80, 98 * u)), S = Math.round(Math.max(48, 56 * u)), P = Math.round(Math.max(46, 50 * u));
     const set = (b, size, ang, r) => {
       const rad = ang * Math.PI / 180;
       const right = A / 2 - r * Math.cos(rad) - size / 2;

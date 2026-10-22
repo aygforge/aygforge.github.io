@@ -64,12 +64,13 @@ export const act = {
   deposit(index) { return result(inv.moveBetween(app.char.bag, index, app.profile.storage), { okSound: 'click' }); },
   withdraw(index) { return result(inv.moveBetween(app.profile.storage, index, app.char.bag), { okSound: 'click' }); },
   sortStorage() { return result({ ok: inv.sortContainer(app.profile.storage) }, { okText: 'Depo sıralandı', critical: false }); },
+  moveSlot(from, to) { return result(inv.moveSlot(app.char.bag, from, to), { what: 'inventory', critical: false, failSound: null }); },
   allocate(add) { return result(chr.allocateStats(app.char, add), { okText: 'Stat puanları dağıtıldı', what: 'stats' }); },
   setSkillBar(slot, id) { return result(chr.setSkillBar(app.char, slot, id), { okText: 'Beceri çubuğu güncellendi', what: 'stats' }); },
   applyBook(id) { return result(chr.applyMasteryBook(app.char, id), { okText: (r) => `Ustalık Kitabı uygulandı: ${r.book.name}`, okSound: 'buff', what: 'stats' }); },
   rankUp(id) { return result(chr.rankUp(app.char, id), { okText: (r) => `Rank ${r.rank}`, okSound: 'buff', what: 'stats' }); },
   resetSkills() { return result(chr.resetSkills(app.char), { okText: (r) => `Beceriler sıfırlandı${r.cost ? ` (−${r.cost} G)` : ''}`, what: 'stats' }); },
-  resetStats() { return result(chr.resetStats(app.char), { okText: (r) => `Statlar sıfırlandı${r.cost ? ` (−${r.cost} G)` : ''}`, what: 'stats' }); },
+  resetStats() { return result(chr.resetStats(app.char), { okText: (r) => `Statlar sıfırlandı: ${r.free} puan dağıtılabilir${r.cost ? ` (−${r.cost.toLocaleString('tr-TR')} G)` : ' (ücretsiz)'}`, what: 'stats' }); },
   acceptQuest(id) {
     const r = qs.acceptQuest(app.char, id);
     if (r.ok) { app.char.tracked = id; sound.play('click'); bus.emit('toast', { text: `Görev alındı: ${r.q.name}`, kind: 'ok' }); app.changed('quest'); app.requestSave('quest', true); }

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { Rng } from '../../src/core/rng.js';
-import { createCharacter, gainExp, skillPointsTotal, skillPointsFree, rankUp, canRankUp, allocateStats, statPointsFree, resetSkills, resetStats } from '../../src/systems/character.js';
+import { createCharacter, gainExp, skillPointsTotal, skillPointsFree, rankUp, canRankUp, allocateStats, statPointsFree, resetSkills, resetStats, statResetCost } from '../../src/systems/character.js';
 import { computeStats, statsWithItem } from '../../src/systems/stats.js';
 import { computeHit, playerHit, enemyHit, hitChance } from '../../src/systems/combat.js';
 import { createItem } from '../../src/systems/loot.js';
@@ -138,12 +138,23 @@ describe('Seviye ve beceriler', () => {
     gainExp(c, cumulativeXp(12));
     expect(allocateStats(c, { str: 10, vit: 5 }).ok).toBe(true);
     expect(allocateStats(c, { str: 100 }).ok).toBe(false);
-    c.gold = 999;
-    expect(resetStats(c).ok).toBe(false); // 1000 gerekli
+    // ilk stat sıfırlama ücretsiz, bütün puanlar geri gelir
+    c.gold = 0;
+    expect(statResetCost(c)).toBe(0);
+    expect(resetStats(c).ok).toBe(true);
+    expect(c.gold).toBe(0);
+    expect(c.statResets).toBe(1);
+    expect(statPointsFree(c)).toBe(33);
+    // sonrakiler seviyeye göre ücretli (Lv.12: 50·12 + 5·144 = 1320)
+    expect(allocateStats(c, { dex: 33 }).ok).toBe(true);
+    expect(statResetCost(c)).toBe(1320);
+    c.gold = 1319;
+    expect(resetStats(c).ok).toBe(false);
     c.gold = 1500;
     expect(resetStats(c).ok).toBe(true);
-    expect(c.gold).toBe(500);
+    expect(c.gold).toBe(180);
     expect(statPointsFree(c)).toBe(33);
+    expect(resetStats(c).ok).toBe(false); // dağıtılmış puan yok
     rankUp(c, 'heavy_strike');
     c.gold = 2000;
     expect(resetSkills(c).ok).toBe(true);

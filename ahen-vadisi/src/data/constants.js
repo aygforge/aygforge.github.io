@@ -2,7 +2,7 @@
 
 export const GAME_TITLE = 'Ahen Vadisi';
 export const SCHEMA_VERSION = 2;      // V1 = 1, V2.0 (Kül ve Ayaz) = 2
-export const GAME_VERSION = '2.0.1';
+export const GAME_VERSION = '2.0.2';
 
 export const TILE = 32;          // dünya pikseli / tile
 export const ART_SCALE = 2;      // 1 sanat pikseli = 2 dünya pikseli
@@ -96,3 +96,5 @@ export function goldRangeForLevel(lv) {
 }
 
 export const RESET_COST = (level) => (level <= 10 ? 0 : level <= 14 ? 1000 : level <= 20 ? 2500 : 5000);
+// Stat sıfırlama: karakter başına ilk sıfırlama ücretsiz, sonrakiler seviyeye göre (Lv.5 375 · Lv.10 1.000 · Lv.20 3.000 · Lv.30 6.000)
+export const STAT_RESET_COST = (level) => 50 * level + 5 * level * level;

@@ -14,7 +14,7 @@ import { ENEMIES } from '../../data/enemies.js';
 import { STACKABLES } from '../../data/materials.js';
 import { MAPS, MAP_ORDER } from '../../data/maps/index.js';
 import { computeStats } from '../../systems/stats.js';
-import { statPointsFree, skillPointsFree, canRankUp, canApplyMasteryBook } from '../../systems/character.js';
+import { statPointsFree, statPointsSpent, statResetCost, skillPointsFree, canRankUp, canApplyMasteryBook } from '../../systems/character.js';
 import { countStack } from '../../systems/inventory.js';
 import { questStatus, trackedQuestList, objectiveProgress, objectiveTarget, isReady, currentHint } from '../../systems/quests.js';
 import { gridView, itemCell, cellSize } from './grid.js';
@@ -89,7 +89,8 @@ function inventoryTab(rerender) {
     h('button', { class: 'btn small', onTap: () => { act.sort(); rerender(); } }, 'Sırala'));
   bagHead.querySelector('img').style.cssText = 'width:20px;height:20px;vertical-align:middle';
   const cols = Math.max(5, Math.min(8, Math.floor((window.innerWidth * 0.55) / (cs + 4))));
-  const grid = gridView(ch.bag, { cols, cell: cs, onTap: (it, i) => showItemCard(it, { where: 'bag', index: i }, 'normal', rerender) });
+  const grid = gridView(ch.bag, { cols, cell: cs, onTap: (it, i) => showItemCard(it, { where: 'bag', index: i }, 'normal', rerender),
+    onMove: (from, to) => { act.moveSlot(from, to); rerender(); } });
   const right = h('div', { class: 'col grow' }, bagHead, h('div', { class: 'scroll grow' }, grid));
   return h('div', { class: 'row grow', style: { alignItems: 'stretch', minHeight: 0 } }, left, right);
 }
@@ -114,6 +115,22 @@ function flushStatDraft() {
   if (d && app.char && Object.values(d).some(Boolean)) act.allocate(d);
 }
 
+// Statları tamamen sıfırla: dağıtılmış bütün puanlar geri gelir. İlk sıfırlama ücretsiz, sonrakiler seviyeye göre Gold.
+function statResetBox(rerender) {
+  const ch = app.char;
+  const spent = statPointsSpent(ch), cost = statResetCost(ch);
+  const price = cost ? h('span', { class: ch.gold >= cost ? 'gold' : 'bad' }, `${fmt(cost)} G`) : h('span', { class: 'ok' }, 'Ücretsiz (ilk sıfırlama)');
+  const can = spent > 0 && ch.gold >= cost;
+  return h('div', { class: 'li', style: { flexWrap: 'wrap', gap: '6px', marginTop: '6px' } },
+    h('div', { class: 'grow tiny' }, h('div', {}, `Statları tamamen sıfırla · dağıtılmış ${spent} puan geri gelir`), h('div', {}, 'Ücret: ', price)),
+    h('button', { class: 'btn small red' + (can ? '' : ' dis'), 'data-testid': 'stat-reset', onTap: () => {
+      if (!spent) return bus.emit('toast', { text: 'Sıfırlanacak stat puanı yok', kind: 'info', short: true });
+      ui.confirm({ title: 'Statları sıfırla', danger: true,
+        text: `Dağıttığın ${spent} stat puanı geri gelecek ve istediğin gibi yeniden dağıtabileceksin. ${cost ? `Ücret: ${fmt(cost)} Gold.` : 'İlk sıfırlama ücretsiz; sonrakiler seviyene göre Gold tutar.'}`,
+        ok: 'Sıfırla', onOk: () => { statDraft = null; act.resetStats(); rerender(); } });
+    } }, 'Statları sıfırla'));
+}
+
 function characterTab(rerender) {
   const ch = app.char, st = computeStats(ch), cls = CLASSES[ch.cls];
   const free = statPointsFree(ch);
@@ -131,7 +148,7 @@ function characterTab(rerender) {
     const any = used() > 0;
     head.append(
       h('div', { class: 'small grow' }, 'Dağıtılabilir stat puanı: ', freeEl),
-      h('button', { class: 'btn small' + (any ? '' : ' dis'), onTap: () => { for (const k in pend) pend[k] = 0; draw(); } }, 'Sıfırla'),
+      h('button', { class: 'btn small' + (any ? '' : ' dis'), onTap: () => { for (const k in pend) pend[k] = 0; draw(); } }, 'Geri al'),
       h('button', { class: 'btn small green' + (any ? '' : ' dis'), 'data-testid': 'stat-confirm', onTap: () => { const d = { ...pend }; statDraft = null; act.allocate(d); rerender(); } }, 'Onayla'));
     const names = { str: ['STR', 'Fiziksel güç'], dex: ['DEX', 'Kritik, hız'], int: ['INT', 'Büyü, MP'], vit: ['VIT', 'HP, DEF'] };
     for (const k of ['str', 'dex', 'int', 'vit']) {
@@ -153,7 +170,8 @@ function characterTab(rerender) {
         ch.titles.length ? h('div', { class: 'r-L small' }, `«${ch.titles.join(', ')}»`) : null,
         ch.mastery ? h('div', { class: 'r-E small' }, `Ustalık I: ${SKILLS[CLASS_SKILLS[ch.cls].mastery].name}`) : null)),
       head,
-      rows),
+      rows,
+      statResetBox(rerender)),
     h('div', { class: 'col box scroll', style: { flex: '1 1 240px' } },
       h('h3', { class: 't' }, 'Hesaplanan değerler'),
       line('EXP', xpNeed),

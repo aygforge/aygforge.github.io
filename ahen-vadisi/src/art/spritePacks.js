@@ -196,41 +196,6 @@ export const SPRITE_PACKS = {
     },
     "credit": "Bandits — Light Bandit (Sven Thole)"
   },
-  "mon_gray_wolf": {
-    "w": 62,
-    "h": 49,
-    "body": 25,
-    "ox": 0.5081,
-    "oy": 1.0,
-    "anims": {
-      "idle": {
-        "frames": 6,
-        "fps": 8,
-        "repeat": -1
-      },
-      "walk": {
-        "frames": 6,
-        "fps": 12,
-        "repeat": -1
-      },
-      "atk": {
-        "frames": 5,
-        "fps": 14,
-        "repeat": 0
-      },
-      "hurt": {
-        "frames": 4,
-        "fps": 14,
-        "repeat": 0
-      },
-      "die": {
-        "frames": 7,
-        "fps": 10,
-        "repeat": 0
-      }
-    },
-    "credit": "Skullwolf — Massacre"
-  },
   "mon_pick_goblin": {
     "w": 88,
     "h": 46,

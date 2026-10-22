@@ -16,7 +16,7 @@ import { RARITY_INFO, SLOTS, SLOT_NAMES, RESET_COST, BAG_STEPS, STORAGE_MAX } fr
 import { questsForNpc, contractOffers, isReady } from '../../systems/quests.js';
 import { merchantStock, upgradeInfo, repairAllCost, repairCost, craftCheck, BOTTLE_PRICE, BAG_EXPAND_COST, STORAGE_EXPAND_COST, itemSellPrice } from '../../systems/economy.js';
 import { countStack } from '../../systems/inventory.js';
-import { skillPointsSpent, statPointsSpent } from '../../systems/character.js';
+import { skillPointsSpent, statPointsSpent, statResetCost } from '../../systems/character.js';
 import { gridView, itemCell, cellSize } from './grid.js';
 import { showItemCard, itemInfo } from './itemcard.js';
 import { act } from '../actions.js';
@@ -249,9 +249,9 @@ const SERVICES = {
   },
   reset_stats(npcId, render) {
     const ch = app.char;
-    const cost = RESET_COST(ch.level);
-    return h('div', { class: 'box col' }, h('div', {}, `Dağıtılmış stat puanı: ${statPointsSpent(ch)}.`),
-      h('div', {}, 'Ücret: ', cost ? goldView(cost) : h('span', { class: 'ok' }, 'Ücretsiz (Lv.1–10)')),
+    const cost = statResetCost(ch);
+    return h('div', { class: 'box col' }, h('div', {}, `Dağıtılmış stat puanı: ${statPointsSpent(ch)}. Bütün puanlar geri gelir ve yeniden dağıtılabilir (Karakter ekranından da yapılabilir).`),
+      h('div', {}, 'Ücret: ', cost ? goldView(cost) : h('span', { class: 'ok' }, 'Ücretsiz (ilk sıfırlama)')),
       h('button', { class: 'btn red', onTap: () => ui.confirm({ title: 'Stat sıfırla', danger: true, text: 'Emin misin?', ok: 'Sıfırla', onOk: () => { act.resetStats(); render(); } }) }, 'Statları sıfırla'));
   },
 

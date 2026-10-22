@@ -2,6 +2,7 @@
 import { PB, shade, OUTLINE, hash } from './pixel.js';
 import { drawHumanoid } from './characters.js';
 import { DESIGNS_V2, HUMANOIDS_V2, V2_EXTRA_FRAMES, V2_FR, collapse } from './monstersV2.js';
+import { WOLF_VARIANTS, wolfSheet } from './wolf.js';
 
 export const MONSTER_FRAMES = ['idle0', 'idle1', 'walk0', 'walk1', 'walk2', 'walk3', 'atk0', 'atk1'];
 const FR = {
@@ -47,16 +48,7 @@ const DESIGNS = {
   rat: { w: 18, h: 12, draw: (pb, f) => quadruped(pb, f, {
     bodyX: 8, bodyY: 7, bodyW: 10, bodyH: 6, legW: 1, legH: 3, headR: 3, headOff: 0, snout: 1.5, ears: 2,
     body: '#8a7a68', belly: '#c8b8a0', tail: 6, tailColor: '#d8a0a0', tailW: 1, whisker: true, eye: '#2a1010' }) },
-  wolf: { w: 28, h: 18, draw: (pb, f) => quadruped(pb, f, {
-    bodyX: 12, bodyY: 9, bodyW: 16, bodyH: 8, legW: 2, legH: 6, headR: 4, headOff: 1, snout: 2.5, ears: 3,
-    body: '#7a7670', belly: '#b8b0a4', tail: 6, tailW: 3, teeth: true, eye: '#e0c040' }) },
-  alpha: { w: 46, h: 30, draw: (pb, f) => {
-    quadruped(pb, f, {
-      bodyX: 20, bodyY: 15, bodyW: 28, bodyH: 14, legW: 4, legH: 10, headR: 7, headOff: 1, snout: 4, ears: 5,
-      body: '#4a4650', mane: '#2e2a34', belly: '#7a7480', tail: 10, tailW: 5, teeth: true, eye: '#ff3a2a', eyeGlow: '#ffa060' });
-    for (let i = 0; i < 6; i++) pb.line(12 + i * 3, 9 + f.bob * 0.5, 13 + i * 3, 6 + f.bob * 0.5, '#2e2a34');
-    pb.line(16, 14, 22, 18, '#8a2a2a'); pb.line(18, 13, 24, 17, '#8a2a2a');
-  } },
+  // wolf / alpha: ./wolf.js (eklemli bacaklı kurt çizimi)
   rootling: { w: 22, h: 24, draw: (pb, f) => {
     const sw = f.atk === 2 ? 3 : f.atk === 1 ? -2 : 0;
     const by = 8 + f.bob;
@@ -227,6 +219,7 @@ function v2Sheet(D, drawFrame) {
 }
 
 export function monsterSheet(sprite) {
+  if (WOLF_VARIANTS[sprite]) return wolfSheet(sprite);
   const D = DESIGNS[sprite];
   if (D) {
     return { w: D.w, h: D.h, names: MONSTER_FRAMES, frames: MONSTER_FRAMES.map((fr) => { const pb = new PB(D.w, D.h); D.draw(pb, FR[fr]); pb.outline(OUTLINE); return pb; }) };
@@ -257,4 +250,4 @@ export function monsterSheet(sprite) {
   };
 }
 
-export const MONSTER_SPRITES = [...Object.keys(DESIGNS), ...Object.keys(HUMANOIDS), ...Object.keys(DESIGNS_V2), ...Object.keys(HUMANOIDS_V2)];
+export const MONSTER_SPRITES = [...Object.keys(WOLF_VARIANTS), ...Object.keys(DESIGNS), ...Object.keys(HUMANOIDS), ...Object.keys(DESIGNS_V2), ...Object.keys(HUMANOIDS_V2)];

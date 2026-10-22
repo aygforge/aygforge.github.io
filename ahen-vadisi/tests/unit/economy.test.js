@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { Rng } from '../../src/core/rng.js';
 import { createCharacter, gainExp } from '../../src/systems/character.js';
-import { addStack, countStack, addItem, equipFromBag, unequip, firstFree, sortContainer, makeContainer, moveBetween, claimPending } from '../../src/systems/inventory.js';
+import { addStack, countStack, addItem, equipFromBag, unequip, firstFree, sortContainer, makeContainer, moveBetween, moveSlot, claimPending } from '../../src/systems/inventory.js';
 import * as eco from '../../src/systems/economy.js';
 import { createItem } from '../../src/systems/loot.js';
 import { RECIPES } from '../../src/data/recipes.js';
@@ -206,5 +206,27 @@ describe('Demirci', () => {
     expect(eco.upgradeInfo(ring).ok).toBe(false);
     const u = createItem('W02', 'U', rng); u.p = 4;
     expect(eco.upgradeInfo(u).mats).toEqual([{ id: 'altar_crystal', qty: 3 }]);
+  });
+});
+
+describe('Çantada sürükle-bırak (moveSlot)', () => {
+  it('boş yuvaya taşır, dolu yuvada yer değiştirir, aynı istifi birleştirir', () => {
+    const c = makeContainer(6);
+    addStack(c, 'iron_ore', 5);          // 0
+    addStack(c, 'wolf_tooth', 3);        // 1
+    expect(moveSlot(c, 0, 4).ok).toBe(true);
+    expect(c.slots[0]).toBe(null);
+    expect(c.slots[4].tid).toBe('iron_ore');
+    expect(moveSlot(c, 1, 4).swapped).toBe(true);
+    expect(c.slots[4].tid).toBe('wolf_tooth');
+    expect(c.slots[1].tid).toBe('iron_ore');
+    // aynı tür istif birleşir, 99'u aşan kısım yerinde kalır
+    c.slots[2] = { uid: 'x', tid: 'iron_ore', q: 97 };
+    expect(moveSlot(c, 1, 2).merged).toBe(2);
+    expect(c.slots[2].q).toBe(99);
+    expect(c.slots[1].q).toBe(3);
+    expect(countStack(c, 'iron_ore')).toBe(102);
+    expect(moveSlot(c, 3, 5).ok).toBe(false);   // boş yuvadan taşıma yok
+    expect(moveSlot(c, 2, 2).ok).toBe(false);
   });
 });

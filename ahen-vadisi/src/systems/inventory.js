@@ -217,6 +217,23 @@ export function sortContainer(c) {
   return true;
 }
 
+// Aynı konteyner içinde yuva değiştirme (sürükle-bırak): boş yuvaya taşır, aynı istiflenebilir eşyayı birleştirir
+// (sığmayan kısım yerinde kalır), dolu yuvada iki eşyanın yerini değiştirir.
+export function moveSlot(c, from, to) {
+  if (from === to || from < 0 || to < 0 || from >= c.size || to >= c.size) return { ok: false };
+  const a = c.slots[from], b = c.slots[to];
+  if (!a) return { ok: false };
+  if (b && a.q !== undefined && b.q !== undefined && a.tid === b.tid && b.q < MAX_STACK) {
+    const n = Math.min(a.q, MAX_STACK - b.q);
+    b.q += n; a.q -= n;
+    if (a.q <= 0) c.slots[from] = null;
+    return { ok: true, merged: n };
+  }
+  c.slots[to] = a;
+  c.slots[from] = b || null;
+  return { ok: true, swapped: !!b };
+}
+
 // Konteynerler arası taşıma (çanta ↔ depo)
 export function moveBetween(from, index, to) {
   const s = from.slots[index];

@@ -3,7 +3,7 @@ import { CLASSES } from '../data/classes.js';
 import { ITEMS } from '../data/items.js';
 import { SKILLS, CLASS_SKILLS, maxRank, rankUpCost, MASTERY_BOOKS, MASTERY_BOOK_LEVEL } from '../data/skills.js';
 import { countStack, removeStack } from './inventory.js';
-import { MAX_LEVEL, STAT_POINTS_PER_LEVEL, BAG_START, SLOTS, xpToNext, RESET_COST, SCHEMA_VERSION, SKILL_BAR_SIZE } from '../data/constants.js';
+import { MAX_LEVEL, STAT_POINTS_PER_LEVEL, BAG_START, SLOTS, xpToNext, RESET_COST, STAT_RESET_COST, SCHEMA_VERSION, SKILL_BAR_SIZE } from '../data/constants.js';
 import { MAPS } from '../data/maps/index.js';
 import { makeContainer } from './inventory.js';
 import { createItem } from './loot.js';
@@ -68,6 +68,7 @@ export function ensureV2Fields(char, fresh = false) {
   if (!char.masteryBooks || typeof char.masteryBooks !== 'object') char.masteryBooks = {};
   if (!char.history || typeof char.history !== 'object') char.history = newHistory(!fresh);
   if (!char.runs || typeof char.runs !== 'object') char.runs = {};
+  if (typeof char.statResets !== 'number') char.statResets = 0;
   const w = char.world;
   if (w) {
     if (!w.flags || typeof w.flags !== 'object') w.flags = {};
@@ -203,16 +204,23 @@ export function resetSkills(char) {
   return { ok: true, cost };
 }
 
+// Stat sıfırlama: dağıtılmış bütün puanlar iade edilir (seviyeye göre toplanan puanların hepsi yeniden dağıtılabilir).
+// İlk sıfırlama ücretsizdir; sonrakiler STAT_RESET_COST(seviye) Gold.
+export function statResetCost(char) {
+  return (char.statResets || 0) === 0 ? 0 : STAT_RESET_COST(char.level);
+}
+
 export function resetStats(char) {
-  const cost = RESET_COST(char.level);
+  const cost = statResetCost(char);
+  if (statPointsSpent(char) === 0) return { ok: false, msg: 'Sıfırlanacak stat puanı yok' };
   if (char.gold < cost) return { ok: false, msg: `${cost} Gold gerekli` };
-  if (statPointsSpent(char) === 0) return { ok: false, msg: 'Sıfırlanacak puan yok' };
   char.gold -= cost;
+  char.statResets = (char.statResets || 0) + 1;
   char.alloc = { str: 0, dex: 0, int: 0, vit: 0 };
   const st = computeStats(char);
   char.hp = Math.min(char.hp, st.maxHp);
   char.mp = Math.min(char.mp, st.maxMp);
-  return { ok: true, cost };
+  return { ok: true, cost, free: statPointsFree(char) };
 }
 
 export function clampVitals(char) {

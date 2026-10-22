@@ -46,33 +46,6 @@ export function collapse(src, k, fx = 'ash') {
 }
 
 // --------------------------------------------------------------- yardımcılar
-function quad(pb, f, P) {
-  const lunge = f.atk === 2 ? 2 : f.atk === 1 ? -1 : 0;
-  const recoil = f.hurt ? -2 : 0;
-  const by = P.bodyY + f.bob * 0.5 + (f.hurt ? 1 : 0);
-  const bx = P.bodyX + lunge + recoil;
-  const legs = [[bx - P.bodyW * 0.36, 0, true], [bx + P.bodyW * 0.3, 2, true], [bx - P.bodyW * 0.24, 1, false], [bx + P.bodyW * 0.4, 3, false]];
-  for (const [lx, ph, back] of legs) {
-    const o = f.step ? [0, 1, 0, -1][(f.step + ph) % 4] : 0;
-    const col = back ? shade(P.body, -0.3) : shade(P.body, -0.1);
-    pb.rect(Math.round(lx + o), Math.round(by + P.bodyH * 0.4), P.legW, P.legH, col);
-    pb.rect(Math.round(lx + o), Math.round(by + P.bodyH * 0.4 + P.legH - 1), P.legW + 1, 1, shade(col, -0.35));
-  }
-  pb.thick(bx - P.bodyW / 2, by - 1, bx - P.bodyW / 2 - P.tail, by - 4 + f.bob, P.tailColor || P.body, P.tailW || 3);
-  pb.ellipse(bx, by, P.bodyW / 2, P.bodyH / 2, P.body);
-  pb.ellipse(bx - 1, by - P.bodyH * 0.2, P.bodyW / 2 - 2, P.bodyH / 4, shade(P.body, 0.15));
-  pb.ellipse(bx + 1, by + P.bodyH * 0.25, P.bodyW / 3, P.bodyH / 5, P.belly);
-  pb.ellipse(bx + P.bodyW * 0.28, by - 1, P.bodyH * 0.6, P.bodyH * 0.62, P.mane);
-  const hx = bx + P.bodyW / 2 + 1 + (f.atk === 2 ? 2 : 0), hy = by - P.bodyH * 0.25 + (f.atk === 1 ? -1 : 0) + (f.hurt ? -1 : 0);
-  pb.ellipse(hx, hy, P.headR, P.headR * 0.85, P.head);
-  pb.ellipse(hx + P.headR * 0.9, hy + P.headR * 0.25, P.snout, P.snout * 0.65, shade(P.head, 0.1));
-  pb.set(hx + P.headR * 0.9 + P.snout, hy + P.headR * 0.2, '#1a1418');
-  pb.poly([[hx - 2, hy - P.headR + 1], [hx - 1, hy - P.headR - P.ears], [hx + 1, hy - P.headR + 1]], shade(P.head, -0.15));
-  pb.set(hx + 1, hy - 1, f.hurt ? '#ffffff' : P.eye); pb.set(hx + 2, hy - 1, P.eyeGlow);
-  if (f.atk === 2) pb.hline(hx + P.headR * 0.5, hx + P.headR * 0.9 + P.snout, hy + P.headR * 0.6, '#f0ece0');
-  return { bx, by, hx, hy };
-}
-
 function held(kind, color, len = 8) {
   return (pb, f, ctx) => {
     const [hx, hy] = f.hf;
@@ -157,17 +130,7 @@ export const DESIGNS_V2 = {
   } },
 
   // Ayaz Kurdu: buz dikenli sırt, kırağı yele, mavi parıltılı gözler
-  frost_wolf: { w: 34, h: 22, fx: 'ice', draw: (pb, f) => {
-    const r = quad(pb, f, {
-      bodyX: 14, bodyY: 11, bodyW: 18, bodyH: 9, legW: 2, legH: 6, headR: 4.4, snout: 2.8, ears: 3,
-      body: '#b8ccd8', head: '#c8dce8', belly: '#f0f6fa', mane: '#e8f2f8', tail: 7, tailW: 3, tailColor: '#d8e8f0',
-      eye: '#1a2a40', eyeGlow: '#7ad8ff' });
-    for (let i = 0; i < 5; i++) {
-      const x = r.bx - 7 + i * 3.4, y = r.by - 4;
-      pb.poly([[x - 1.5, y + 1], [x, y - 3 - (i % 2) * 2], [x + 1.5, y + 1]], '#7ad8ff'); pb.set(x, y - 1, '#ffffff');
-    }
-    if (f.atk === 2) { pb.disc(r.hx + 8, r.hy + 1, 2, '#e0faff', 200); pb.set(r.hx + 10, r.hy, '#ffffff'); }
-  } },
+  // frost_wolf: ./wolf.js
 
   // Buz Ruhçuk: kristal çekirdek, yörüngede buz kıymıkları
   ice_wisp: { w: 22, h: 26, fx: 'ice', draw: (pb, f) => {

@@ -75,15 +75,6 @@ PACKS = {
                   'atk': ({'files': 'Attack/LightBandit_Attack'}, 16, 0), 'hurt': ({'files': 'Hurt/LightBandit_Hurt'}, 10, 0),
                   'die': ({'files': 'Recover/LightBandit_Recover', 'reverse': True}, 12, 0)},
     },
-    # Skullwolf (Massacre): Boz Kurt. Pakette koşma yok → bekleme kareleri hafif zıplatılarak koşu üretilir.
-    'mon_gray_wolf': {
-        'name': 'Skullwolf — Massacre', 'dir': 'Skullwolf', 'frame': (64, 64), 'scale': 1.0, 'flip': True, 'license': None,
-        'anims': {'idle': ({'ase': 'Massacre.aseprite', 'from': 1, 'to': 6}, 8, -1),
-                  'walk': ({'derive': 'bob', 'of': 'idle'}, 12, -1),
-                  'atk': ({'ase': 'Massacre.aseprite', 'from': 7, 'to': 11}, 14, 0),
-                  'hurt': ({'ase': 'Massacre.aseprite', 'from': 12, 'to': 15}, 14, 0),
-                  'die': ({'ase': 'Massacre.aseprite', 'from': 16, 'to': 22}, 10, 0)},
-    },
     # Monster Creatures Fantasy (LuizMelo): Kazmacı Goblin = Goblin, Diken Kökçüsü = Mushroom, Çürük Muhafız = Skeleton
     'mon_pick_goblin': {
         'name': 'Monster Creatures Fantasy — Goblin (LuizMelo)', 'dir': 'Monster_Creatures_Fantasy/Goblin', 'frame': (150, 150),

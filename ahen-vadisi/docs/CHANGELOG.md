@@ -1,5 +1,18 @@
 # Değişiklik Günlüğü
 
+## 2.0.2
+- **Yeni kurt çizimi:** Boz Kurt, Sürü Kurdu, Alfa Kurt ve Ayaz Kurdu eklemli bacaklarla yeniden çizildi
+  (`src/art/wolf.js`): 4 karelik bekleme (nefes, kuyruk, kulak), 6 karelik tırıs koşusu (çapraz bacak çiftleri),
+  çömel → sıçra → ısır → toparlan saldırısı, darbe alma ve yan yatarak ölüm. Yürüme animasyonu olmayan Skullwolf paketi kaldırıldı.
+- **Çantada sürükle-bırak:** eşyayı basılı tutup (farede hafifçe sürükleyip) başka yuvaya bırak; dolu yuvada yer
+  değiştirir, aynı istifler birleşir. Kısa dokunma eşya kartını açmaya devam eder, basılı tutmadan kaydırma listeyi kaydırır.
+- **Ekran ortasındaki karartı giderildi:** karanlık/vinyet katmanı kamera yakınlaştırması 1'in altındayken (telefonda,
+  "uzak" görüşte) ekranı tam kaplamıyor, ortada dikdörtgen bırakıyordu; artık yakınlaştırmaya göre boyutlanır.
+- **Stat sıfırlama Karakter ekranında:** dağıtılmış bütün puanlar geri gelir ve yeniden dağıtılabilir. Karakter başına
+  ilk sıfırlama ücretsiz, sonrakiler seviyeye göre (Lv.5 375 · Lv.10 1.000 · Lv.20 3.000 · Lv.30 6.000 Gold).
+  Gezgin Bilge'deki stat sıfırlama da aynı kuralı kullanır. Taslağı temizleyen düğmenin adı "Geri al" oldu.
+- **Daha büyük saldırı (kılıç) düğmesi:** ekran yüksekliğine göre ~80–113 px (önceden ~64–87 px).
+
 ## 2.0.1 — Görsel güncelleme (hazır sprite ve ikon paketleri)
 - Çayır Sıçanı ve Mağara Yarasası artık LuizMelo "Monsters Creatures Fantasy 2" paketinin Rat / Bat animasyonlarıyla
   çizilir (bekleme, koşma/uçma, ısırma/saldırı, darbe alma, ölüm). Statlar ve davranışlar değişmedi.

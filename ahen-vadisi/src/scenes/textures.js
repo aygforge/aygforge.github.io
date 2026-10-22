@@ -47,6 +47,10 @@ export function registerAll(scene, onProgress = () => {}) {
     const key = 'mon_' + s;
     const sheet = monsterSheet(s);
     addSheet(scene, key, sheet.frames, ART_SCALE, sheet.names);
+    if (sheet.anims) {   // kendi animasyon tablosu olan çizimler (kurtlar)
+      for (const [a, d] of Object.entries(sheet.anims)) anim(scene, key + '_' + a, key, d.frames, d.fps, d.repeat ?? -1);
+      continue;
+    }
     anim(scene, key + '_idle', key, ['idle0', 'idle1'], 3);
     anim(scene, key + '_walk', key, ['walk0', 'walk1', 'walk2', 'walk3'], 8);
     anim(scene, key + '_atk', key, ['atk0', 'atk1'], 7, 0);

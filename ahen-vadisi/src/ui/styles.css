@@ -177,7 +177,7 @@ input.name { font: inherit; font-size: 1.1rem; padding: 10px 12px; border-radius
 .hud-br { position: absolute; right: calc(10px + var(--sar)); bottom: calc(10px + var(--sab)); width: clamp(220px, 58vh, 290px); height: clamp(200px, 54vh, 260px); }
 .act { position: absolute; border-radius: 50%; pointer-events: auto; border: 2px solid var(--edge); background: rgba(26,18,24,.88) center/62% no-repeat; box-shadow: 0 3px 0 #120d10; touch-action: manipulation; }
 .act:active { filter: brightness(1.35); transform: scale(.96); }
-.act.atk { width: clamp(66px, 19vh, 84px); height: clamp(66px, 19vh, 84px); right: 0; bottom: 0; border-color: #c08030; }
+.act.atk { width: clamp(80px, 25vh, 104px); height: clamp(80px, 25vh, 104px); right: 0; bottom: 0; border-color: #c08030; }
 .act.atk.press { filter: brightness(1.4); transform: scale(.92); border-color: #ffd070; }
 /* oto saldırı düğmesi: açıkken parlak çerçeve, kapalıyken soluk */
 .act.tgt { border-color: #8a2a20; filter: grayscale(.85) brightness(.6); }
@@ -219,6 +219,9 @@ input.name { font: inherit; font-size: 1.1rem; padding: 10px 12px; border-radius
 .cell .lk { position: absolute; right: 1px; top: 1px; width: 12px; height: 12px; background: center/12px no-repeat; }
 .cell .dur { position: absolute; left: 3px; right: 3px; bottom: 2px; height: 3px; background: #300; }
 .cell .dur i { display: block; height: 100%; background: #6c6; }
+.cell.drag-src { opacity: .35; }
+.cell.drop { border-color: #ffd070 !important; box-shadow: 0 0 0 2px rgba(255,208,112,.55); }
+.drag-ghost { position: fixed; z-index: 9999; pointer-events: none; opacity: .92; transform: scale(1.12); box-shadow: 0 6px 14px rgba(0,0,0,.6); }
 .cell.sel { outline: 2px solid var(--gold2); }
 .cell.eq { width: 52px; height: 52px; }
 .cell .sl { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: .6rem; color: #6a5a4a; text-align: center; }

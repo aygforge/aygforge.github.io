@@ -227,9 +227,13 @@ export class WorldScene extends Phaser.Scene {
   }
 
   layoutOverlays() {
+    // scrollFactor 0 nesneleri de kamera yakınlaştırmasıyla merkez etrafında ölçeklenir: yakınlaştırma 1'in altındayken
+    // ekran boyutundaki katman ortada küçük bir dikdörtgen olarak kalır. Boyut 1/zoom ile büyütülüp ortalanır.
+    const z = this.cameras.main.zoom || 1;
     const w = this.scale.width, h = this.scale.height;
-    if (this.darkness) this.darkness.setSize(w, h);
-    if (this.vignette) this.vignette.setDisplaySize(w, h);
+    const vw = w / z, vh = h / z, x = (w - vw) / 2, y = (h - vh) / 2;
+    if (this.darkness) this.darkness.setPosition(x, y).setSize(vw, vh);
+    if (this.vignette) this.vignette.setPosition(x, y).setDisplaySize(vw, vh);
   }
 
   applyZoom() {
