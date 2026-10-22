@@ -19,6 +19,9 @@ const DISSOLVE = {
   // V3
   bone: ['#e0d8c4', '#a8a090', '#8a8494', '#5a5466'],
   void: ['#a070e0', '#5a3a7a', '#e0c8ff', '#2a1a3a'],
+  // V4
+  storm: ['#ffe070', '#9ad0ff', '#ffffff', '#3a4a6a'],
+  astral: ['#b0a0ff', '#ffe8a0', '#e0d8ff', '#2a2450'],
 };
 
 // Ölüm: gövde yere çöker (dikey basıklık) ve pikseller tema parçacıklarına dağılır

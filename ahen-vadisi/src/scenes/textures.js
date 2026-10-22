@@ -33,6 +33,7 @@ export function ensurePlayerTexture(scene, cls, equipment) {
     anim(scene, key + '_walk', key, ['walk0', 'walk1', 'walk2', 'walk3'], 9);
     anim(scene, key + '_atk', key, ['atk0', 'atk1', 'atk2'], 12, 0);
     anim(scene, key + '_cast', key, ['cast0', 'cast1'], 8, 0);
+    anim(scene, key + '_hurt', key, ['hurt0'], 6, 0);
   }
   return key;
 }

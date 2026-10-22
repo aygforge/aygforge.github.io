@@ -8,9 +8,11 @@ export const TERRAINS = [
   'ash', 'scorched', 'basalt', 'lava', 'snow', 'ice', 'frost_stone', 'frozen_water', 'temple_floor', 'ice_floor',
   // V3: Ölü Krallık / Kara Taht / Karanlık Mahzen
   'dead_grass', 'grave_soil', 'ruin_cobble', 'void_pool', 'obsidian', 'royal_floor', 'crypt_floor',
+  // V4: Gökyarık Ovası / Yıldız Mezarı / Gökyarık Mabedi
+  'storm_steppe', 'cracked_road', 'storm_rock', 'star_dust', 'astral_stone', 'sky_void', 'sanctum_floor',
 ];
 export const TERRAIN_VARIANTS = 4;
-export const WATER_TERRAINS = new Set(['water', 'swamp_water', 'lava', 'frozen_water', 'void_pool']);
+export const WATER_TERRAINS = new Set(['water', 'swamp_water', 'lava', 'frozen_water', 'void_pool', 'sky_void']);
 
 // Geçiş çiftleri (üst terrain / taban terrain) — 4-bit maske ile 15 kenar varyantı
 export const TRANSITIONS = [
@@ -26,9 +28,14 @@ export const TRANSITIONS = [
   ['snow', 'dead_grass'], ['frost_stone', 'dead_grass'],
   ['royal_floor', 'obsidian'], ['ruin_cobble', 'obsidian'], ['grave_soil', 'obsidian'], ['void_pool', 'obsidian'], ['royal_floor', 'ruin_cobble'], ['dead_grass', 'obsidian'],
   ['royal_floor', 'crypt_floor'], ['void_pool', 'crypt_floor'], ['grave_soil', 'crypt_floor'],
+  // V4
+  ['cracked_road', 'storm_steppe'], ['storm_rock', 'storm_steppe'], ['sky_void', 'storm_steppe'], ['astral_stone', 'storm_steppe'],
+  ['astral_stone', 'star_dust'], ['sky_void', 'star_dust'], ['cracked_road', 'star_dust'], ['storm_rock', 'star_dust'],
+  ['astral_stone', 'sanctum_floor'], ['sky_void', 'sanctum_floor'], ['star_dust', 'sanctum_floor'],
 ];
 
-export const MASSES = ['forest_mass', 'rock_mass', 'swamp_mass', 'dungeon_mass', 'hedge_mass', 'ash_mass', 'snow_mass', 'ice_mass', 'dead_mass', 'obsidian_mass', 'crypt_mass'];
+export const MASSES = ['forest_mass', 'rock_mass', 'swamp_mass', 'dungeon_mass', 'hedge_mass', 'ash_mass', 'snow_mass', 'ice_mass', 'dead_mass', 'obsidian_mass', 'crypt_mass',
+  'storm_mass', 'star_mass', 'sanctum_mass'];
 export const MASS_FILL_VARIANTS = 3;
 export const MASS_FACE_VARIANTS = 2;
 
@@ -40,6 +47,8 @@ export const DECOR = [
   'embers', 'ash_pile', 'lava_crack', 'charred_bones', 'cinder', 'snow_tuft', 'frost_crystal_small', 'ice_shards', 'footprints', 'frozen_grass', 'ice_crack', 'rune_ice',
   // V3
   'dead_tuft', 'bone_pile', 'cursed_rune', 'grave_candle', 'obsidian_shards', 'void_crack', 'fog_wisp',
+  // V4
+  'dry_grass', 'storm_crack', 'storm_shard', 'star_glint', 'astral_rune', 'meteor_pebble',
 ];
 
 // Damga (stamp): çok tile'lı nesneler. upper satırları varlıkların üstünde çizilir,
@@ -112,6 +121,16 @@ export const STAMPS = {
   throne_banner: { w: 1, h: 2, upper: [0], solid: [1] },
   bone_heap: { w: 1, h: 1, upper: [], solid: [0] },
   coffin: { w: 2, h: 1, upper: [], solid: [0] },
+  // V4
+  stone_column: { w: 1, h: 3, upper: [0, 1], solid: [2] },
+  storm_crystal_big: { w: 1, h: 2, upper: [0], solid: [1] },
+  charged_ruin: { w: 2, h: 2, upper: [0], solid: [1] },
+  fallen_star: { w: 2, h: 2, upper: [0], solid: [1] },
+  astro_dome: { w: 3, h: 3, upper: [0, 1], solid: [2] },
+  star_altar: { w: 2, h: 2, upper: [0], solid: [1] },
+  astral_pillar: { w: 1, h: 2, upper: [0], solid: [1] },
+  broken_bridge: { w: 2, h: 1, upper: [], solid: [0] },
+  storm_tent: { w: 3, h: 3, upper: [0, 1], solid: [2] },
 };
 
 const defs = [];

@@ -141,7 +141,7 @@ export function computeStats(char, overrideEquipment = null) {
 }
 
 // İskelet yardımcı katsayıları (denge: tests/unit/v4balance.test.js — katkı ≈ sınıf hasarının %25–35'i)
-export const MINION = { hp: 0.55, def: 0.9, power: 0.42, attackInterval: 1.4, range: 1.35, speed: 3.9, followDist: 2.2, leash: 10 };
+export const MINION = { hp: 0.55, def: 0.9, power: 0.6, attackInterval: 1.4, range: 1.35, speed: 3.9, followDist: 2.2, leash: 10 };
 
 // Bir eşya kuşanılırsa statlar nasıl değişir? (karşılaştırma ekranı gerçek motordan hesaplar)
 export function statsWithItem(char, inst) {

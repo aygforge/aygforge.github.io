@@ -445,6 +445,17 @@ export const EFFECT_SPRITES = {
   // V3
   bone_arrow: () => frames(2, 14, 8, (pb, i) => { pb.hline(1, 10, 4, '#d8d0bc'); pb.poly([[10, 2], [13, 4], [10, 6]], '#e8e0cc'); pb.line(1, 2 + i, 3, 4, '#a070e0'); pb.line(1, 6 - i, 3, 4, '#a070e0'); }, false),
   void_bolt: () => frames(2, 12, 12, (pb, i) => { pb.disc(7, 6, 4, '#3a1e5a'); pb.disc(7, 6, 2.4, '#a070e0'); pb.set(7, 6, '#ffffff'); pb.set(2 + i, 5, '#7a4ac0'); pb.set(1, 7 - i, '#5a3a7a'); }, false),
+  // V4: ok, ruh mermisi, avcı işareti ve Gökyarık düşman mermileri
+  arrow: () => frames(1, 18, 6, (pb) => { pb.hline(2, 14, 3, '#c8a878'); pb.poly([[14, 1], [17, 3], [14, 5]], '#e0e4ea'); pb.line(0, 1, 3, 3, '#f0f0f0'); pb.line(0, 5, 3, 3, '#f0f0f0'); pb.set(1, 2, '#c84a3a'); pb.set(1, 4, '#c84a3a'); }, false),
+  soul_bolt: () => frames(2, 14, 10, (pb, i) => { pb.disc(9, 5, 3.4, '#2a5a3e'); pb.disc(9, 5, 2, '#9ae0b0'); pb.set(9, 5, '#ffffff'); pb.set(4 - i, 4, '#6ad08a'); pb.set(2, 6 - i, '#3a7a5a'); pb.set(5, 6, '#9ae0b0'); }, false),
+  mark: () => frames(2, 12, 12, (pb, i) => { pb.ring(6, 6, 4.5 - i * 0.5, '#ffd060'); pb.vline(6, 0, 3, '#ffd060'); pb.vline(6, 9, 11, '#ffd060'); pb.hline(0, 3, 6, '#ffd060'); pb.hline(9, 11, 6, '#ffd060'); pb.set(6, 6, '#ff6a4a'); }, false),
+  storm_bolt: () => frames(2, 14, 10, (pb, i) => { pb.line(1, 5, 5, 2 + i, '#ffe070'); pb.line(5, 2 + i, 8, 7 - i, '#ffffff'); pb.line(8, 7 - i, 13, 5, '#ffe070'); pb.disc(11, 5, 2, '#9ad0ff'); }, false),
+  astral_arrow: () => frames(2, 16, 8, (pb, i) => { pb.hline(1, 12, 4, '#b0a0ff'); pb.poly([[12, 2], [15, 4], [12, 6]], '#ffffff'); pb.set(2 + i, 3, '#e0d8ff'); pb.set(1, 5 - i, '#7a6ad0'); }, false),
+  star_bolt: () => frames(2, 12, 12, (pb, i) => { pb.disc(6, 6, 3.6, '#5a4a9a'); pb.disc(6, 6, 2.2, '#ffe8a0'); pb.set(6, 1 + i, '#ffffff'); pb.set(1 + i, 6, '#ffffff'); pb.set(10 - i, 6, '#ffe8a0'); }, false),
+  storm_ground: () => frames(3, 32, 16, (pb, i) => {
+    pb.ellipse(16, 10, 15, 5, '#101a30', 200); pb.ellipse(16, 10, 12, 3.5, '#2a4a8a', 220);
+    for (let k = 0; k < 5; k++) { const x = 4 + k * 6; pb.line(x, 10, x + 2, 6 - ((k + i) % 3), (k + i) % 2 ? '#ffe070' : '#9ad0ff'); pb.line(x + 2, 6 - ((k + i) % 3), x + 1, 3, '#ffffff'); }
+  }, false),
   void_ground: () => frames(3, 32, 16, (pb, i) => {
     pb.ellipse(16, 10, 15, 5, '#140a1e', 210); pb.ellipse(16, 10, 12, 3.5, '#3a1e5a', 220);
     for (let k = 0; k < 6; k++) { const x = 4 + k * 5, h = 2 + ((k + i) % 3) * 2; pb.poly([[x - 1.5, 10], [x, 10 - h], [x + 1.5, 10]], k % 2 ? '#a070e0' : '#e0c8ff'); }

@@ -7,7 +7,7 @@ import { ELITE_RULE } from '../data/maps/index.js';
 import { TILE } from '../data/constants.js';
 import { Enemy } from '../entities/Enemy.js';
 import { Rng } from '../core/rng.js';
-import { getRun } from '../systems/dungeon.js';
+import { getRun, bossStage } from '../systems/dungeon.js';
 import { huntSpawns } from '../systems/quests.js';
 
 export class Spawner {
@@ -167,7 +167,7 @@ export class Spawner {
     for (const [stageStr, list] of Object.entries(def.stages)) {
       const stage = +stageStr;
       if (run.cleared.includes(stage)) continue;
-      if (stage === 4) {
+      if (stage === bossStage(sc.mapId)) {
         if (run.bossKilled) continue;
         const g = this.spawnEnemy(def.boss || 'mine_golem', def.bossSpawn.x * TILE, def.bossSpawn.y * TILE, { stage, leashR: 13 * TILE });
         this.golem = g;   // (adı V1'den; zindanın bossu)

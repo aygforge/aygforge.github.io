@@ -250,7 +250,7 @@ async function fightLoop(e, timeout) {
     if (!p.target) p.selectTarget(e);
     if (p.target !== e && p.target && !p.target.dead) e = p.target;
     // Mage mesafe korur (kiting): yakın dövüşçü 2,8 tile içine girince kısa süre uzaklaş; hedef korunur
-    if (C().cls === 'mage' && (e.tpl.kind === 'boss' || e.tpl.kind === 'elite') && Math.hypot(e.x - p.x, e.y - p.y) < 2.8 * TILE) {
+    if (C().cls !== 'warrior' && (e.tpl.kind === 'boss' || e.tpl.kind === 'elite') && Math.hypot(e.x - p.x, e.y - p.y) < 2.8 * TILE) {
       const ax = p.x - e.x, ay = p.y - e.y, n = Math.hypot(ax, ay) || 1;
       joy.active = true; joy.x = ax / n; joy.y = ay / n;
       await sleep(700);
@@ -313,15 +313,18 @@ async function manage() {
   // stat puanları
   const free = statPointsFree(ch);
   if (free > 0) {
-    const main = ch.cls === 'warrior' ? 'str' : 'int';
+    const main = { warrior: 'str', mage: 'int', archer: 'dex', necromancer: 'int' }[ch.cls];
     const a = { str: 0, dex: 0, int: 0, vit: 0 };
     a[main] = Math.ceil(free * 0.65); a.vit = free - a[main];
     act.allocate(a);
   }
   // beceriler
-  const order = ch.cls === 'warrior'
-    ? ['heavy_strike', 'weapon_discipline', 'whirlwind', 'hard_skin', 'iron_skin', 'heavy_strike', 'battle_rhythm', 'war_charge']
-    : ['fireball', 'elemental_mastery', 'ice_blast', 'mana_control', 'mana_shield', 'meteor', 'frozen_target'];
+  const order = {
+    warrior: ['heavy_strike', 'weapon_discipline', 'whirlwind', 'hard_skin', 'iron_skin', 'heavy_strike', 'battle_rhythm', 'war_charge'],
+    mage: ['fireball', 'elemental_mastery', 'ice_blast', 'mana_control', 'mana_shield', 'meteor', 'frozen_target'],
+    archer: ['aimed_shot', 'sharpshooter', 'multi_shot', 'agile_reflex', 'piercing_arrow', 'hunter_instinct', 'agile_step'],
+    necromancer: ['soul_arrow', 'dark_knowledge', 'summon_skeleton', 'bone_bond', 'life_drain', 'soul_harvest', 'curse_seal'],
+  }[ch.cls];
   for (let k = 0; k < 3; k++) for (const id of order) if (canRankUp(ch, id).ok) act.rankUp(id);
   // ekipman
   if (ch.pending.length) act.claimPending();
@@ -360,7 +363,7 @@ async function townRun() {
   await goToNpc('elin');
   const hpBest = ['hp_l', 'hp_m', 'hp_s'].find((id) => POTIONS[id].lv <= ch.level);
   const mpBest = ['mp_l', 'mp_m', 'mp_s'].find((id) => POTIONS[id].lv <= ch.level);
-  const wantHp = ch.cls === 'warrior' ? 16 : 12, wantMp = ch.cls === 'warrior' ? 6 : 10;
+  const wantHp = ch.cls === 'warrior' ? 16 : 12, wantMp = ch.cls === 'warrior' ? 6 : ch.cls === 'archer' ? 8 : 10;
   const buy = (id, want, share) => { const n = Math.max(0, want - countStack(ch.bag, id)); const afford = Math.floor((ch.gold * share) / POTIONS[id].buy); const q = Math.min(n, afford); if (q > 0) act.buyPotion(id, q); };
   // iksir ekipmandan önce gelir; pahalı iksire yetmiyorsa küçük iksir
   buy(Math.floor((ch.gold * 0.6) / POTIONS[hpBest].buy) >= 6 ? hpBest : 'hp_s', wantHp, 0.6);

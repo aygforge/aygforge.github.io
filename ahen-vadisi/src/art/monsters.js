@@ -3,6 +3,7 @@ import { PB, shade, OUTLINE, hash } from './pixel.js';
 import { drawHumanoid } from './characters.js';
 import { DESIGNS_V2, HUMANOIDS_V2, V2_EXTRA_FRAMES, V2_FR, collapse } from './monstersV2.js';
 import { DESIGNS_V3, HUMANOIDS_V3 } from './monstersV3.js';
+import { DESIGNS_V4, HUMANOIDS_V4 } from './monstersV4.js';
 import { WOLF_VARIANTS, wolfSheet } from './wolf.js';
 
 export const MONSTER_FRAMES = ['idle0', 'idle1', 'walk0', 'walk1', 'walk2', 'walk3', 'atk0', 'atk1'];
@@ -225,9 +226,9 @@ export function monsterSheet(sprite) {
   if (D) {
     return { w: D.w, h: D.h, names: MONSTER_FRAMES, frames: MONSTER_FRAMES.map((fr) => { const pb = new PB(D.w, D.h); D.draw(pb, FR[fr]); pb.outline(OUTLINE); return pb; }) };
   }
-  const D2 = DESIGNS_V2[sprite] || DESIGNS_V3[sprite];
+  const D2 = DESIGNS_V2[sprite] || DESIGNS_V3[sprite] || DESIGNS_V4[sprite];
   if (D2) return v2Sheet(D2, (fr) => { const pb = new PB(D2.w, D2.h); D2.draw(pb, FR[fr] || V2_FR[fr]); return pb; });
-  const H2 = HUMANOIDS_V2[sprite] || HUMANOIDS_V3[sprite];
+  const H2 = HUMANOIDS_V2[sprite] || HUMANOIDS_V3[sprite] || HUMANOIDS_V4[sprite];
   if (H2) {
     return v2Sheet(H2, (fr) => {
       const pb = new PB(H2.w, H2.h);
@@ -251,4 +252,4 @@ export function monsterSheet(sprite) {
   };
 }
 
-export const MONSTER_SPRITES = [...Object.keys(WOLF_VARIANTS), ...Object.keys(DESIGNS), ...Object.keys(HUMANOIDS), ...Object.keys(DESIGNS_V2), ...Object.keys(HUMANOIDS_V2), ...Object.keys(DESIGNS_V3), ...Object.keys(HUMANOIDS_V3)];
+export const MONSTER_SPRITES = [...Object.keys(WOLF_VARIANTS), ...Object.keys(DESIGNS), ...Object.keys(HUMANOIDS), ...Object.keys(DESIGNS_V2), ...Object.keys(HUMANOIDS_V2), ...Object.keys(DESIGNS_V3), ...Object.keys(HUMANOIDS_V3), ...Object.keys(DESIGNS_V4), ...Object.keys(HUMANOIDS_V4)];

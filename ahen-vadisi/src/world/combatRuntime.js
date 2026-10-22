@@ -15,6 +15,20 @@ import { sound } from '../audio/sound.js';
 
 const RARITY_TINT = { N: 0xd6d2c4, U: 0x5fd068, R: 0x4f9bff, E: 0xc070ff, L: 0xff9b2e };
 
+// V4 Legendary etkileri (belge: Legendary oranları değişmez; etkiler eski silahlarla aynı ölçekte, zincirlenmez)
+export const LEGEND_PROCS = {
+  ore_volley: { on: 'normal', chance: 0.10, icd: 8, coef: 1.2, label: 'Cevher Oku', color: '#90e8ff', fx: 'shatter', tint: 0x5ae0ff, sound: 'ice' },
+  frost_hunt: { on: 'normal', chance: 0.10, icd: 8, coef: 1.25, label: 'Ayaz Avı', color: '#c8f0ff', fx: 'shatter', tint: 0xc8f0ff, sound: 'ice', slow: { pct: 0.2, dur: 1.5 } },
+  king_hunt: { on: 'normal', chance: 0.10, icd: 8, coef: 1.3, label: 'Kralın Avı', color: '#e0c8ff', fx: 'shatter', tint: 0xa070e0 },
+  storm_oath: { on: 'normal', chance: 0.10, icd: 8, coef: 1.35, label: 'Fırtına Yemini', color: '#fff0a0', fx: 'shatter', tint: 0x9ad0ff },
+  sky_verdict: { on: 'normal', chance: 0.10, icd: 8, coef: 1.35, label: 'Göğün Hükmü', color: '#e8f0ff', fx: 'shatter', tint: 0xe8f0ff },
+  mine_souls: { on: 'spell', chance: 0.08, icd: 10, pct: 0.6, label: 'Maden Ruhları', color: '#90e8ff', fx: 'spirit', tint: 0x5ae0ff, sound: 'ice' },
+  frozen_bones: { on: 'spell', chance: 0.08, icd: 10, pct: 0.6, label: 'Donmuş Kemikler', color: '#c8f0ff', fx: 'shatter', tint: 0xc8f0ff, sound: 'ice', slow: { pct: 0.25, dur: 2 } },
+  lost_souls: { on: 'spell', chance: 0.09, icd: 10, pct: 0.65, label: 'Kayıp Ruhlar', color: '#e0c8ff', fx: 'spirit', tint: 0xc080ff },
+  last_call: { on: 'spell', chance: 0.09, icd: 10, pct: 0.7, label: 'Son Çağrı', color: '#d0c8ff', fx: 'spirit', tint: 0xb0a0ff },
+  astral_doom: { on: 'spell', chance: 0.09, icd: 10, pct: 0.7, label: 'Astral Kıyamet', color: '#fff4c0', fx: 'spirit', tint: 0xffe8a0 },
+};
+
 export class CombatRuntime {
   constructor(scene) {
     this.scene = scene;
@@ -37,13 +51,22 @@ export class CombatRuntime {
   }
 
   // ------------------------------------------------------------- oyuncu → düşman
+  // V4 Avcı İşareti: işaretli hedefe okçunun hasarı artar
+  markBonus(t) {
+    return t.mark && this.scene.clock < t.mark.until ? t.mark.bonus : 0;
+  }
+
   playerNormalHit(t) {
     if (t.dead) return;
     const st = app.stats();
-    const res = playerHit(st, t, { isNormal: true, rng: this.rng, targetSlowed: t.isSlowed(), extraMult: this.scene.player.dmgBuffMult(st.damageType) });
+    const res = playerHit(st, t, { isNormal: true, rng: this.rng, targetSlowed: t.isSlowed(), extraMult: this.scene.player.dmgBuffMult(st.damageType), markBonus: this.markBonus(t) });
     this.applyToEnemy(t, res, { normal: true });
     // Savaş Nefesi: Warrior'ın isabetli normal vuruşu MP yeniler
     if (!res.miss && st.cls === 'warrior') app.char.mp = Math.min(st.maxMp, app.char.mp + WARRIOR_MP_ON_HIT);
+    // V4 Ruh Hasadı: Ölü Çağıran'ın kendi isabetli normal vuruşu MP yeniler (iskeletinki sayılmaz)
+    if (!res.miss && st.mpOnHit) app.char.mp = Math.min(st.maxMp, app.char.mp + st.mpOnHit);
+    if (res.crit) this.scene.player.onCrit?.();
+    if (!res.miss && !t.dead) this.legendProc(st, t, 'normal', res);
     // Kızıl Hüküm: normal vuruşta %10, 8 sn iç bekleme, ek ateş hasarı (büyü savunmasına karşı)
     const p = this.scene.player;
     if (!res.miss && st.legendaryEffect === 'crimson_strike' && !t.dead && this.scene.clock >= p.icd.crimson && this.rng.float() < 0.10) {
@@ -75,14 +98,16 @@ export class CombatRuntime {
     }
   }
 
-  playerSkillHit(t, { coef, skill, spell = false, critMult = null, burn = null }) {
-    if (t.dead) return;
+  playerSkillHit(t, { coef, skill, spell = false, critMult = null, burn = null, defIgnore = 0 }) {
+    if (t.dead) return null;
     const st = app.stats();
     const dmgType = SKILLS[skill]?.dmg || st.damageType;
-    const res = playerHit(st, t, { coef, isNormal: false, dmgType, rng: this.rng, targetSlowed: t.isSlowed(), extraMult: this.scene.player.dmgBuffMult(dmgType) });
+    const res = playerHit(st, t, { coef, isNormal: false, dmgType, rng: this.rng, targetSlowed: t.isSlowed(), extraMult: this.scene.player.dmgBuffMult(dmgType), defIgnore, markBonus: this.markBonus(t) });
     // Ustalık Kitabı: kritik çarpanı (×1,5 → kitap değeri)
     if (critMult && res.crit && !res.miss) res.dmg = Math.round(res.dmg * critMult / CRIT_MULT);
     this.applyToEnemy(t, res, {});
+    if (res.crit) this.scene.player.onCrit?.();
+    if (spell && !res.miss && !t.dead) this.legendProc(st, t, 'spell', res);
     // Ustalık Kitabı: yanma (vuruş hasarının küçük bir yüzdesi, saniyede bir; zincirlenmez/yenilenir)
     if (burn && !res.miss && !t.dead) {
       const tick = Math.max(1, Math.round(res.dmg * burn.pct));
@@ -131,11 +156,58 @@ export class CombatRuntime {
         this.applyToEnemy(t, soul, { legend: true });
       });
     }
+    return res;
   }
 
-  applyToEnemy(t, res, { normal = false, legend = false } = {}) {
+  // V4 Legendary etkileri (dört yeni sınıf silahı + W/M Lv.50): tek tablo, iç bekleme ve zincirlenmezlik eski etkilerle aynı.
+  //  normal: normal vuruşta şans → ek hasar (büyü savunmasına karşı); spell: aktif hasar büyüsünde şans → yankı (vuruşun yüzdesi)
+  legendProc(st, t, on, res) {
+    const L = LEGEND_PROCS[st.legendaryEffect];
+    if (!L || L.on !== on) return;
+    const p = this.scene.player, now = this.scene.clock;
+    if (now < (p.icd[st.legendaryEffect] || 0) || this.rng.float() >= L.chance) return;
+    p.icd[st.legendaryEffect] = now + L.icd * 1000;
+    const extra = on === 'normal'
+      ? playerHit(st, t, { coef: L.coef, isNormal: false, dmgType: 'magic', rng: this.rng })
+      : { dmg: Math.max(1, Math.round(res.dmg * L.pct)), crit: false, miss: false };
+    this.scene.time.delayedCall(on === 'normal' ? 0 : 200, () => {
+      if (t.dead) return;
+      this.scene.fx.sprite(L.fx, t.x, t.y - 18, { scale: 2, blend: Phaser.BlendModes.ADD, tint: L.tint });
+      this.scene.fx.text(t.x, t.y - 64, L.label, { color: L.color, size: 12 });
+      sound.play(L.sound || 'bolt');
+      if (L.slow && t.tpl.kind !== 'boss') { t.slowUntil = this.scene.clock + L.slow.dur * 1000; t.slowPct = Math.max(t.slowPct, L.slow.pct); }
+      this.applyToEnemy(t, extra, { legend: true });
+    });
+  }
+
+  // ------------------------------------------------------------- iskelet (V4) → düşman
+  // Tek öldürme yolu: applyToEnemy → killEnemy. EXP/ganimet/görev sayacı oyuncuya bir kez; iskelet ayrıca ödül üretmez.
+  minionHit(t, m) {
+    if (t.dead || m.dead) return;
+    const ms = { power: m.power, damageType: 'phys', dmgMult: 1, species: {}, critChance: m.critChance, level: m.level, slowedDmg: 0 };
+    const res = playerHit(ms, t, { isNormal: true, rng: this.rng, dmgType: 'phys' });
+    m.scene.fx.sprite('slash', t.x, t.y - 14, { scale: 0.9, tint: 0xd8f0d0 });
+    this.applyToEnemy(t, res, { normal: true, fromMinion: true });
+    // normal yaratık kısa süre iskelete yönelebilir; elit daha seyrek; boss asla (mekanikleri iskeletle atlatılamaz)
+    if (!res.miss && !t.dead && t.tpl.ai !== 'static') {
+      const k = t.tpl.kind;
+      const chance = k === 'normal' || k === 'hunt' ? 0.45 : k === 'elite' ? 0.2 : 0;
+      if (chance && this.rng.float() < chance) { t.taunt = m; t.tauntUntil = this.scene.clock + 3000; }
+    }
+  }
+
+  // düşman → iskelet (savunma formülü; kaçınma/lanet yok)
+  enemyHitsMinion(e, m, { coef = 1 } = {}) {
+    if (m.dead) return;
+    const magic = e.dmgType === 'magic';
+    const weaken = e.weakenUntil > this.scene.clock ? e.weakenPct : 0;
+    const dmg = e.atk * coef * (100 / (100 + Math.max(0, magic ? m.mdef : m.def))) * (1 - weaken);
+    m.takeHit(dmg);
+  }
+
+  applyToEnemy(t, res, { normal = false, legend = false, fromMinion = false } = {}) {
     const fx = this.scene.fx;
-    if (res.miss) { fx.damage(t.x, t.y - t.height, 0, { miss: true }); sound.play('miss'); return; }
+    if (res.miss) { fx.damage(t.x, t.y - t.height, 0, { miss: true }); if (!fromMinion) sound.play('miss'); return; }
     t.hp -= res.dmg;
     this.logDps(res.dmg);
     fx.damage(t.x, t.y - t.height, res.dmg, { crit: res.crit, kind: legend ? 'legend' : '' });
@@ -155,10 +227,11 @@ export class CombatRuntime {
       .slice(0, max);
   }
 
-  projectile(from, to, key, speed, onHit) {
+  // blockable (V4 ok/ruh mermisi): mermi her karede duvar kontrolü yapar; görüşü kapatan karoya çarpınca kırılır
+  projectile(from, to, key, speed, onHit, { blockable = false, tint = null, scale = 1 } = {}) {
     const sc = this.scene;
-    const s = sc.fx.sprite(key, from.x + from.facing * 16, from.y - 30, { depth: 59000 });
-    const proj = { s, to, speed, onHit, alive: true };
+    const s = sc.fx.sprite(key, from.x + from.facing * 16, from.y - 30, { depth: 59000, tint, scale });
+    const proj = { s, to, speed, onHit, alive: true, blockable };
     sc.projectiles.push(proj);
     return proj;
   }
@@ -178,6 +251,14 @@ export class CombatRuntime {
         if (!(pr.to.dead)) pr.onHit();
       } else {
         pr.s.x += dx / d * step; pr.s.y += dy / d * step;
+        if (pr.blockable) {
+          const tx0 = Math.floor(pr.s.x / TILE), ty0 = Math.floor((pr.s.y + 22) / TILE);
+          const ttx = Math.floor(pr.to.x / TILE), tty = Math.floor(pr.to.y / TILE);
+          if ((tx0 !== ttx || ty0 !== tty) && sc.grid.opaque(tx0, ty0)) {
+            pr.alive = false; pr.s.destroy();
+            sc.fx.sprite('spark', pr.s.x, pr.s.y, { scale: 0.8 });
+          }
+        }
       }
     }
     sc.projectiles = sc.projectiles.filter((p) => p.alive);
@@ -293,8 +374,9 @@ export class CombatRuntime {
     const p = this.scene.player;
     if (p.dead) return;
     const st = app.stats();
-    const res = enemyHit(e, st, { coef, isNormal, dmgType, rng: this.rng, buffs: p.buffState(), currentMp: app.char.mp });
-    if (res.miss) { this.scene.fx.damage(p.x, p.y - 56, 0, { miss: true }); return; }
+    const weaken = e.weakenUntil > this.scene.clock ? e.weakenPct : 0;
+    const res = enemyHit(e, st, { coef, isNormal, dmgType, rng: this.rng, buffs: p.buffState(), currentMp: app.char.mp, weaken });
+    if (res.miss) { this.scene.fx.damage(p.x, p.y - 56, 0, { miss: true, evaded: res.evaded }); return; }
     if (res.mpDmg) { app.char.mp -= res.mpDmg; this.scene.fx.text(p.x + 14, p.y - 56, `-${res.mpDmg} MP`, { color: '#7ab0ff', size: 12 }); }
     if (label) this.scene.fx.text(p.x, p.y - 80, label, { color: '#ffb060', size: 12, rise: 16 });
     // son alınan hasarlar (ölüm ekranı/geliştirici analizi için kısa halka)

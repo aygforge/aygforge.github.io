@@ -15,6 +15,9 @@ import { spritePack, animDuration } from '../art/spriteRuntime.js';
 import { handAnchor } from '../art/characters.js';
 import { sound } from '../audio/sound.js';
 import { guideTarget } from '../world/questGuide.js';
+import { execSkillV4, fireArrow } from './playerV4.js';
+import { CLASSES } from '../data/classes.js';
+import { ATKSPD_CAP } from '../data/constants.js';
 
 const INTERACT_RANGE = 1.5 * TILE;
 const APPROACH_TIMEOUT = 10;
@@ -164,7 +167,9 @@ export class Player {
     const joy = Math.hypot(vec.x, vec.y) > 0.18;
     const stunned = now < this.stunUntil;
     let moved = false;
-    let speed = PLAYER_SPEED_TILES * TILE * (now < this.slowUntil ? 1 - this.slowPct : 1);
+    // V4: Çevik Refleks (pasif) ve Çevik Adım (buff) hareket hızı
+    const agile = this.buffs.agile && now < this.buffs.agile.until ? this.buffs.agile.value : 0;
+    let speed = PLAYER_SPEED_TILES * TILE * (now < this.slowUntil ? 1 - this.slowPct : 1) * (1 + (st.moveSpd || 0) + agile);
 
     if (joy) {
       // Joystick en yüksek önceliktir: otomatik yaklaşma derhal iptal
@@ -273,10 +278,28 @@ export class Player {
   // ---------------------------------------------------------------- saldırılar
   normalAttack(t) {
     const st = this.stats;
-    this.attackTimer = st.attackInterval;
+    // V4 Rüzgâr Ritmi (Okçu Ustalık I): kısa süreli saldırı hızı; toplam üst sınır %35 korunur
+    const wr = this.buffs.windRhythm && this.scene.clock < this.buffs.windRhythm.until ? this.buffs.windRhythm.value : 0;
+    this.attackTimer = wr ? CLASSES[st.cls].attackInterval / (1 + Math.min(ATKSPD_CAP, st.atkSpeed + wr)) : st.attackInterval;
     this.face(t.x - this.x);
     this.lastCombatAt = this.scene.clock;
-    if (st.damageType === 'phys') {
+    if (st.ranged) {
+      // V4 Okçu: yay çekme + görünür ok mermisi (duvara çarpan ok kırılır; ok tüketilmez)
+      this.playAction('_cast', 0.28, 'atk');
+      this.scene.time.delayedCall(130, () => {
+        if (this.dead || t.dead) return;
+        sound.play('swing', { vol: 0.45 });
+        fireArrow(this, t, () => this.scene.combat.playerNormalHit(t));
+      });
+    } else if (st.cls === 'necromancer') {
+      // V4 Ruh Mermisi: MP harcamaz, büyü hasarı
+      this.playAction('_cast', 0.25, 'atk');
+      this.scene.time.delayedCall(120, () => {
+        if (this.dead || t.dead) return;
+        sound.play('bolt', { vol: 0.5 });
+        this.scene.combat.projectile(this, t, 'soul_bolt', 470, () => this.scene.combat.playerNormalHit(t), { blockable: true });
+      });
+    } else if (st.damageType === 'phys') {
       this.altSwing = !this.altSwing;
       this.playAction('_atk', 0.3, this.altSwing ? 'atk' : 'atk2');
       this.swing = { t: 0, dur: 0.26 };
@@ -311,6 +334,7 @@ export class Player {
   onHurt() {
     if (this.buffs.ration) { delete this.buffs.ration; this.scene.fx.text(this.x, this.y - 70, 'Erzak yarıda kaldı', { color: '#c8a060', size: 11 }); }
     if (this.pack && !this.dead && this.busy <= 0) { this.busy = Math.min(0.2, animDuration(this.pack.id, 'hurt')); this.body.play(`${this.pack.id}_hurt`, false); }
+    else if (!this.pack && !this.dead && this.busy <= 0 && this.scene.anims.exists(this.texKey + '_hurt')) { this.busy = 0.14; this.body.play(this.texKey + '_hurt', true); }
   }
 
   skillCost(id) {
@@ -344,7 +368,7 @@ export class Player {
       if (dist > rangePx) return fail('Menzil dışında');
       if (!los) return fail('Görüş engelli');
     }
-    if (id === 'meteor' && !t) return fail('Hedef yok');
+    if ((id === 'meteor' || id === 'soul_apocalypse' || id === 'astral_burst') && !t) return fail('Hedef yok');
     if (s.target === 'ground' && t && (dist > rangePx || !los)) return fail(dist > rangePx ? 'Menzil dışında' : 'Görüş engelli');
     if (id === 'war_charge' && !this.chargeLine(t)) return fail('Atılma yolu kapalı');
 
@@ -356,6 +380,7 @@ export class Player {
     if (t) this.face(t.x - this.x);
     this.execSkill(id, s, rank, t);
     if (ch.cls === 'mage' && s.dmg) this.trackResonance();
+    if (ch.cls === 'necromancer') sc.minions?.refreshStats();
     bus.emit('skillUsed', id);
     return true;
   }
@@ -466,7 +491,7 @@ export class Player {
           if (this.dead) return;
           sound.play('ice');
           sc.fx.sprite('ice', this.x, this.y - 10, { scale: 3.2 });
-          sc.fx.telegraph({ kind: 'ring', x: this.x, y: this.y, r: s.radius * TILE }, 260, 0x9ad8ff);
+          sc.fx.telegraph({ kind: 'ring', x: this.x, y: this.y, r: s.radius * TILE }, 260, 0x9ad8ff, { friendly: true });
           const hits = sc.combat.enemiesInRadius(this.x, this.y, s.radius * TILE, s.maxTargets, true);
           hits.forEach((e, i) => {
             sc.combat.playerSkillHit(e, { coef, skill: id, spell: i === 0 });
@@ -544,7 +569,7 @@ export class Player {
         this.playAction('_cast', 0.45);
         const tx = t.x, ty = t.y;
         const r = (s.radius + (bk?.radiusAdd || 0)) * TILE;
-        sc.fx.telegraph({ kind: 'circle', x: tx, y: ty, r }, s.delay * 1000, 0xffa040);
+        sc.fx.telegraph({ kind: 'circle', x: tx, y: ty, r }, s.delay * 1000, 0xffa040, { friendly: true });
         const m = sc.fx.sprite('meteor', tx + 60, ty - 220, { scale: 2 });
         sc.tweens.add({ targets: m, x: tx, y: ty - 20, duration: s.delay * 1000, ease: 'Quad.in', onComplete: () => m.destroy() });
         sc.time.delayedCall(s.delay * 1000, () => {
@@ -556,8 +581,20 @@ export class Player {
         });
         break;
       }
-      default: break;
+      default:
+        execSkillV4(this, id, s, rank, t, coef, bk);
+        break;
     }
+  }
+
+  // V4 Rüzgâr Ritmi: kritik vuruştan sonra kısa saldırı hızı (12 sn iç bekleme)
+  onCrit() {
+    if (!this.char.mastery || this.char.cls !== 'archer') return;
+    const now = this.scene.clock, m = SKILLS.wind_rhythm;
+    if (now < (this.icd.wind || 0)) return;
+    this.icd.wind = now + m.icd * 1000;
+    this.buffs.windRhythm = { until: now + m.dur * 1000, value: m.atkSpd };
+    this.scene.fx.text(this.x, this.y - 70, 'Rüzgâr Ritmi!', { color: '#9ae0ff', size: 13 });
   }
 
   trackResonance() {
@@ -703,6 +740,8 @@ export class Player {
       if (k === 'ironSkin') auraKey = 'aura_iron';
       if (k === 'manaShield') auraKey = 'aura_mana';
       if (k === 'will' || k === 'fury') auraKey = 'aura_will';
+      if (k === 'boneArmor') auraKey = 'aura_iron';
+      if (k === 'agile' && !auraKey) auraKey = 'aura_mana';
     }
     if (auraKey) {
       if (!this.aura.visible || this.aura.texture.key !== 'fx_' + auraKey) { this.aura.setVisible(true); this.aura.play('fx_' + auraKey + '_a'); }
@@ -720,17 +759,32 @@ export class Player {
       furyReduce: on('fury') ? this.buffs.fury.value : 0,
       passiveReduce: this.stats?.passiveReduce || 0,
       curse: on('curse') ? this.buffs.curse.value : 0,
+      evade: on('agile') ? this.buffs.agile.evade : 0,
+      boneReduce: on('boneArmor') ? this.buffs.boneArmor.value : 0,
     };
   }
 
   // Sarsılmaz İrade (Lv.20 ustalık)
   checkWill() {
+    if (this.char.mastery && this.char.cls === 'necromancer') { this.checkBoneArmor(); return; }
     if (!this.char.mastery || this.char.cls !== 'warrior') return;
     const now = this.scene.clock;
     if (this.char.hp / this.stats.maxHp < 0.3 && now >= this.icd.will) {
       this.icd.will = now + 45000;
       this.buffs.will = { until: now + 6000, value: 0.3 };
       this.scene.fx.text(this.x, this.y - 70, 'Sarsılmaz İrade!', { color: '#ffd060', size: 14 });
+      sound.play('buff');
+    }
+  }
+
+  // V4 Kemik Zırh (Ölü Çağıran Ustalık I)
+  checkBoneArmor() {
+    const now = this.scene.clock, m = SKILLS.bone_armor;
+    if (this.char.hp / this.stats.maxHp < m.threshold && now >= (this.icd.bone || 0)) {
+      this.icd.bone = now + m.icd * 1000;
+      this.buffs.boneArmor = { until: now + m.dur * 1000, value: m.reduce };
+      this.scene.minions?.alive.forEach((mn) => mn.heal(m.minionHeal));
+      this.scene.fx.text(this.x, this.y - 70, 'Kemik Zırh!', { color: '#e0d8c4', size: 14 });
       sound.play('buff');
     }
   }
@@ -774,13 +828,13 @@ export class Player {
     const ox = (hx - 12) * 2, oy = (hy - 28.5) * 2;
     this.weapon.setPosition(ox, oy);
     const cls = this.char.cls;
-    let ang = cls === 'warrior' ? 0.45 : -0.1;
+    let ang = cls === 'warrior' ? 0.45 : cls === 'archer' ? 0 : -0.1;
     if (this.swing) {
       this.swing.t += this._dt || 0.016;
       const k = Math.min(1, this.swing.t / this.swing.dur);
       ang = this.swing.spin ? -1.6 + k * Math.PI * 2 : -1.9 + k * 3.2;
       if (k >= 1) this.swing = null;
-    } else if (typeof frameName === 'string' && frameName.startsWith('cast')) ang = cls === 'mage' ? -0.35 : 0.2;
+    } else if (typeof frameName === 'string' && frameName.startsWith('cast')) ang = cls === 'mage' || cls === 'necromancer' ? -0.35 : cls === 'archer' ? -1.35 : 0.2;
     this.weapon.setRotation(ang);
     this.weapon.setDepth(1);
     this.offhand.setPosition((bx - 12) * 2, (by - 28.5) * 2);
@@ -793,6 +847,7 @@ export class Player {
     this.dead = true;
     this.approaching = false; this.target = null; this.interact = null; this.channel = null;
     this.poison = null; this.buffs = {};
+    this.scene.minions?.clearAll();
     if (this.pack) this.body.play(`${this.pack.id}_die`, false);
     else {
       this.body.stop();

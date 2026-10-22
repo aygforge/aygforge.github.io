@@ -3,7 +3,7 @@ import { PB, shade, OUTLINE } from './pixel.js';
 import { ITEMS } from '../data/items.js';
 
 export const HUMAN_W = 24, HUMAN_H = 30;
-export const HUMAN_FRAMES = ['idle0', 'idle1', 'walk0', 'walk1', 'walk2', 'walk3', 'atk0', 'atk1', 'atk2', 'cast0', 'cast1'];
+export const HUMAN_FRAMES = ['idle0', 'idle1', 'walk0', 'walk1', 'walk2', 'walk3', 'atk0', 'atk1', 'atk2', 'cast0', 'cast1', 'hurt0'];
 
 // Kare pozları: el konumu (silah tutma noktası) ve vücut hareketi
 const POSES = {
@@ -148,6 +148,9 @@ export function drawHumanoid(pb, o, frameName) {
 const BASE = {
   warrior: { skin: '#e8b890', hair: '#6a3e22', top: '#9a8a6a', pants: '#4a4060', boots: '#4a3424' },
   mage: { skin: '#f0c8a0', hair: '#2e2a3a', hairStyle: 'long', top: '#5a5a8a', pants: '#3a3a5a', boots: '#3a2a3a', robe: true, belt: false },
+  // V4: Okçu — hafif deri, kapişon, pelerin; Ölü Çağıran — koyu ritüel cübbe, soluk ten, yeşil ruh süsleri
+  archer: { skin: '#e0b088', hair: '#7a4a22', hairStyle: 'braid', top: '#6a5a3a', topTrim: '#3e5a2e', pants: '#4a4030', boots: '#4a3424', cape: '#3e5a2e', tier: 1 },
+  necromancer: { skin: '#d8ccc0', hair: '#1e1e24', hairStyle: 'long', top: '#2a2a30', topTrim: '#6ad08a', pants: '#22222a', boots: '#1e1a1e', robe: true, belt: false, cape: '#1a2a20' },
 };
 
 export function playerLook(cls, equipment) {
@@ -158,7 +161,7 @@ export function playerLook(cls, equipment) {
   const bootsI = equipment?.boots ? ITEMS[equipment.boots.tid] : null;
   if (chest) {
     o.top = chest.look.main; o.topTrim = chest.look.trim; o.tier = chest.look.tier;
-    if (cls === 'warrior') o.sleeve = shade(chest.look.main, -0.1);
+    if (cls === 'warrior' || cls === 'archer') o.sleeve = shade(chest.look.main, -0.1);
   }
   if (helm) o.helm = helm.look;
   if (gloves) o.glove = gloves.look.main;
@@ -226,7 +229,7 @@ export function npcSheet(key) {
 export function weaponSprite(tid) {
   const t = ITEMS[tid];
   const L = t.look;
-  const len = L.len;
+  const len = L.len ?? 12;          // V4 kitaplarda uzunluk yok
   const W = 14, H = len + 9;
   const pb = new PB(W, H);
   const cx = 7;
@@ -273,6 +276,30 @@ export function weaponSprite(tid) {
       if (L.head === 'flame') { pb.ring(cx, oy, 3.5, '#f0d080'); pb.disc(cx, oy, 2, L.orb); pb.set(cx, oy - 4, '#ffffff'); pb.set(cx - 2, oy - 4, L.orb); pb.set(cx + 2, oy - 5, L.orb); }
       break;
     }
+    case 'bow': {
+      // V4 yay: dikey yay gövdesi + kiriş; kabza ortada
+      const wood = L.wood, mid = gy - Math.floor(len / 2) + 2;
+      for (let i = 0; i <= len; i++) {
+        const y = gy - len + i + 2, k = (i / len) * 2 - 1;
+        const x = cx + 2 - Math.round((1 - k * k) * 4);
+        pb.set(x, y, wood); pb.set(x + 1, y, shade(wood, -0.25));
+      }
+      pb.vline(cx + 3, gy - len + 2, gy + 2, L.string);
+      pb.rect(cx - 2, mid - 1, 2, 4, L.grip || shade(wood, -0.35));
+      if (L.gem) pb.set(cx - 2, mid, L.gem);
+      if (L.glow) { pb.set(cx + 2, gy - len + 2, L.glow); pb.set(cx + 2, gy + 2, L.glow); }
+      return (pb.outline(OUTLINE), { pb, ox: cx - 1, oy: mid + 1 });
+    }
+    case 'tome': {
+      // V4 büyü kitabı / grimuar: elde tutulan kalın kitap
+      const bw = L.big ? 9 : 7, bh = L.big ? 10 : 8, x0 = cx - 3, y0 = gy - bh;
+      pb.rect(x0, y0, bw, bh, L.cover); pb.vline(x0, y0, y0 + bh - 1, shade(L.cover, -0.3));
+      pb.rect(x0 + bw - 2, y0 + 1, 1, bh - 2, L.page);
+      pb.rect(x0 + 2, y0 + 2, bw - 5, 2, shade(L.cover, 0.25));
+      if (L.gem) { pb.set(x0 + Math.floor(bw / 2), y0 + Math.floor(bh / 2) + 1, L.gem); pb.set(x0 + Math.floor(bw / 2) - 1, y0 + Math.floor(bh / 2) + 1, shade(L.gem, -0.3)); }
+      if (L.glow) pb.set(x0 + bw - 1, y0 - 1, L.glow);
+      return (pb.outline(OUTLINE), { pb, ox: cx, oy: gy - 2 });
+    }
     default:
       pb.rect(cx - 1, 0, 2, H, '#ff00ff');
   }
@@ -291,6 +318,14 @@ export function offhandSprite(tid) {
     pb.disc(6, 6, 3.5, L.orb); pb.disc(5, 5, 1.5, shade(L.orb, 0.5)); pb.ring(6, 6, 4.5, L.main);
   } else if (L.type === 'mirror') {
     pb.ellipse(6, 5, 3.5, 4.5, L.main); pb.ellipse(6, 5, 2.5, 3.5, L.orb); pb.set(5, 3, '#ffffff'); pb.rect(5, 9, 2, 3, '#8a7a6a');
+  } else if (L.type === 'quiver') {
+    // V4 sadak: sırta asılı ok kılıfı, uçta tüyler
+    pb.poly([[3, 3], [8, 2], [9, 11], [4, 11]], L.main); pb.vline(4, 4, 10, shade(L.main, -0.3)); pb.hline(4, 8, 6, shade(L.main, 0.3));
+    pb.line(4, 3, 3, 0, L.fletch); pb.line(6, 2, 6, 0, L.fletch); pb.line(8, 2, 9, 0, L.fletch);
+  } else if (L.type === 'talisman') {
+    // V4 kemik tılsımı / mühür: zincirli küçük kemik ve taş
+    pb.line(6, 0, 6, 3, '#8a8478'); pb.ellipse(6, 7, 3.5, 3, L.main); pb.disc(6, 7, 1.6, L.orb); pb.set(5, 6, '#ffffff');
+    pb.set(2, 9, L.main); pb.set(10, 9, L.main); pb.line(3, 10, 9, 10, shade(L.main, -0.2));
   }
   pb.outline(OUTLINE);
   return { pb, ox: 6, oy: 6 };

@@ -1,4 +1,4 @@
-// Zindan koşu durumu (Derin Ocak — V1, Buz Mabedi — V2). Giriş sınırsız; enerji/bilet yok.
+// Zindan koşu durumu (Derin Ocak — V1, Buz Mabedi — V2, Karanlık Mahzen — V3, Gökyarık Mabedi — V4). Giriş sınırsız; enerji/bilet yok.
 // - Ölüm: en yakın kontrol noktası, boss sıfırlanır (tam can), temizlenen bölümler korunur
 // - Gönüllü çıkış: koşu biter
 // - İstemsiz kapanma: kayıtlı koşu ve kontrol noktasından devam
@@ -10,7 +10,14 @@ export const DUNGEON_INFO = {
   dungeon: { name: 'Derin Ocak', boss: 'mine_golem', gateGroup: 'dungeon_gate', lockMsg: 'Derin Ocak mühürlü. "Mührün Gücü" görevini tamamla.' },
   frost_temple: { name: 'Buz Mabedi', boss: 'frozen_guardian', gateGroup: 'frost_gate', lockMsg: 'Buz Mabedi mühürlü. "Buz Mabedinin Sırrı" görevini tamamla.', seals: 3 },
   dark_crypt: { name: 'Karanlık Mahzen', boss: 'lost_king', gateGroup: 'crypt_gate', lockMsg: 'Karanlık Mahzen mühürlü. "Karanlık Mahzene İniş" görevini al ve kapı mührünü etkinleştir.', seals: 5 },
+  // V4: beş bölümlü (5. bölüm boss); kontrol noktaları cp1–cp3 + checkpoint (boss öncesi)
+  astral_sanctum: { name: 'Gökyarık Mabedi', boss: 'sky_prisoner', gateGroup: 'sanctum_gate', lockMsg: 'Gökyarık Mabedi mühürlü. "Mabet Mühürleri" görevinde girişteki mühürleri çöz.', seals: 6, bossStage: 5 },
 };
+
+// Boss bölümü (V1–V3 zindanları: 4)
+export function bossStage(mapId = 'dungeon') {
+  return DUNGEON_INFO[mapId]?.bossStage || 4;
+}
 
 export function isDungeonUnlocked(char, mapId = 'dungeon') {
   if (mapId === 'dungeon') return !!char.world.dungeonUnlocked;
@@ -60,8 +67,9 @@ export function clearStage(char, stage, mapId = 'dungeon') {
 export function currentStage(char, mapId = 'dungeon') {
   const d = getRun(char, mapId);
   if (!d) return 1;
-  for (let s = 1; s <= 4; s++) if (!d.cleared.includes(s)) return s;
-  return 5;
+  const last = bossStage(mapId);
+  for (let s = 1; s <= last; s++) if (!d.cleared.includes(s)) return s;
+  return last + 1;
 }
 
 // Mühür Galerisi: kırılan mühür kaydı (aynı mühür iki kez sayılmaz)
@@ -82,9 +90,9 @@ export function sealsBroken(char, mapId) {
 export function respawnEntry(char, mapId = 'dungeon') {
   const d = getRun(char, mapId);
   if (!d) return 'entrance';
-  if (d.cleared.includes(3)) return 'checkpoint';
-  if (d.cleared.includes(2)) return 'cp2';
-  if (d.cleared.includes(1)) return 'cp1';
+  const last = bossStage(mapId);
+  if (d.cleared.includes(last - 1)) return 'checkpoint';
+  for (let k = last - 2; k >= 1; k--) if (d.cleared.includes(k)) return `cp${k}`;
   return 'entrance';
 }
 

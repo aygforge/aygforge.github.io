@@ -279,7 +279,7 @@ export const ENEMIES = {
   // variantAbove: Lv.41+ temel (N/U) şablonlar Lv.45'te olduğundan varyant bandının üst sınırı +4 (oranlar değişmez)
   storm_hound: N({
     variantAbove: 4,
-    id: 'storm_hound', name: 'Fırtına Tazısı', level: 41, hp: 4200, atk: 420, def: 200, mdef: 190, exp: 1600,
+    id: 'storm_hound', name: 'Fırtına Tazısı', level: 41, hp: 3300, atk: 420, def: 170, mdef: 160, exp: 1600,
     species: 'beast', ai: 'pack', aggro: 5.5, leash: 13, speed: 4.0, attackInterval: 1.5, attackRange: 1.35,
     dmgType: 'phys', respawn: 24, radius: 0.5, sprite: 'storm_hound', deathFx: 'storm',
     abilities: ['storm_pounce'],
@@ -287,7 +287,7 @@ export const ENEMIES = {
   }),
   rift_wing: N({
     variantAbove: 4,
-    id: 'rift_wing', name: 'Çatlak Kanat', level: 42, hp: 3900, atk: 450, def: 180, mdef: 230, exp: 1800,
+    id: 'rift_wing', name: 'Çatlak Kanat', level: 42, hp: 3100, atk: 450, def: 150, mdef: 200, exp: 1800,
     species: 'elemental', ai: 'ranged', aggro: 6.5, leash: 14, speed: 3.2, attackInterval: 2.1, attackRange: 6,
     dmgType: 'magic', respawn: 26, radius: 0.45, sprite: 'rift_wing', projectile: 'storm_bolt', flying: true, deathFx: 'storm',
     abilities: ['rift_strike'],
@@ -295,7 +295,7 @@ export const ENEMIES = {
   }),
   lightning_raider: N({
     variantAbove: 4,
-    id: 'lightning_raider', name: 'Şimşek Yağmacısı', level: 43, hp: 5200, atk: 480, def: 240, mdef: 210, exp: 2050,
+    id: 'lightning_raider', name: 'Şimşek Yağmacısı', level: 43, hp: 3700, atk: 480, def: 185, mdef: 175, exp: 2050,
     species: 'humanoid', ai: 'skirmish', aggro: 6, leash: 14, speed: 3.7, attackInterval: 1.7, attackRange: 1.45,
     dmgType: 'phys', respawn: 26, radius: 0.46, sprite: 'lightning_raider', deathFx: 'storm',
     abilities: ['shadow_dash'],
@@ -303,33 +303,33 @@ export const ENEMIES = {
   }),
   thunder_golem: N({
     variantAbove: 4,
-    id: 'thunder_golem', name: 'Gökgürültüsü Golemi', level: 44, hp: 6500, atk: 520, def: 310, mdef: 250, exp: 2350,
+    id: 'thunder_golem', name: 'Gökgürültüsü Golemi', level: 44, hp: 4300, atk: 520, def: 235, mdef: 195, exp: 2350,
     species: 'construct', ai: 'tank', aggro: 4, leash: 11, speed: 1.9, attackInterval: 2.6, attackRange: 1.75,
     dmgType: 'phys', respawn: 30, radius: 0.64, sprite: 'thunder_golem', deathFx: 'storm',
     abilities: ['heavy_slam'],
     materials: [{ id: 'meteor_dust', w: 1 }],
   }),
   star_parasite: N({
-    id: 'star_parasite', name: 'Yıldız Paraziti', level: 46, hp: 5900, atk: 550, def: 240, mdef: 300, exp: 2700,
+    id: 'star_parasite', name: 'Yıldız Paraziti', level: 46, hp: 4100, atk: 550, def: 190, mdef: 235, exp: 2700,
     species: 'insect', ai: 'aggressive', aggro: 5.5, leash: 13, speed: 4.2, attackInterval: 1.4, attackRange: 1.3,
     dmgType: 'phys', respawn: 24, radius: 0.42, sprite: 'star_parasite', deathFx: 'astral',
     materials: [{ id: 'star_essence', w: 1 }],
   }),
   astral_hunter: N({
-    id: 'astral_hunter', name: 'Astral Avcı', level: 47, hp: 6700, atk: 580, def: 270, mdef: 290, exp: 3050,
+    id: 'astral_hunter', name: 'Astral Avcı', level: 47, hp: 4500, atk: 580, def: 210, mdef: 230, exp: 3050,
     species: 'humanoid', ai: 'ranged', aggro: 7, leash: 15, speed: 3.0, attackInterval: 2.0, attackRange: 6.5,
     dmgType: 'phys', respawn: 28, radius: 0.44, sprite: 'astral_hunter', projectile: 'astral_arrow', deathFx: 'astral',
     materials: [{ id: 'astral_hide', w: 1 }],
   }),
   void_armor: N({
-    id: 'void_armor', name: 'Boşluk Zırhlısı', level: 48, hp: 8900, atk: 625, def: 360, mdef: 320, exp: 3500,
+    id: 'void_armor', name: 'Boşluk Zırhlısı', level: 48, hp: 5400, atk: 625, def: 260, mdef: 245, exp: 3500,
     species: 'construct', ai: 'tank', aggro: 4, leash: 11, speed: 2.0, attackInterval: 2.6, attackRange: 1.8,
     dmgType: 'phys', respawn: 30, radius: 0.62, sprite: 'void_armor', deathFx: 'void',
     abilities: ['void_ward'],
     materials: [{ id: 'void_plate', w: 1 }],
   }),
   star_oracle: N({
-    id: 'star_oracle', name: 'Yıldız Kâhini', level: 49, hp: 7800, atk: 660, def: 280, mdef: 410, exp: 4000,
+    id: 'star_oracle', name: 'Yıldız Kâhini', level: 49, hp: 4900, atk: 660, def: 215, mdef: 300, exp: 4000,
     species: 'humanoid', ai: 'ranged', aggro: 7, leash: 15, speed: 2.6, attackInterval: 2.3, attackRange: 6,
     dmgType: 'magic', respawn: 30, radius: 0.44, sprite: 'star_oracle', projectile: 'star_bolt', flying: true, deathFx: 'astral',
     abilities: ['star_fall'],

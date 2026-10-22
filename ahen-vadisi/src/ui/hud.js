@@ -16,7 +16,7 @@ import { MAPS } from '../data/maps/index.js';
 import { xpToNext, MAX_LEVEL, TILE, SLOTS, DURABILITY_WARN } from '../data/constants.js';
 import { countStack } from '../systems/inventory.js';
 import { trackedQuestList, npcQuestMark } from '../systems/quests.js';
-import { currentStage, getRun } from '../systems/dungeon.js';
+import { currentStage, getRun, bossStage } from '../systems/dungeon.js';
 import { FOG_CELL } from '../world/fog.js';
 import { sound } from '../audio/sound.js';
 import { openPanel } from './panels/index.js';
@@ -31,9 +31,11 @@ export function createHud() {
   const mpBar = h('div', { class: 'bar mp' }, h('i'), h('span'));
   const xpBar = h('div', { class: 'bar xp' }, h('i'));
   const buffs = h('div', { class: 'buffs' });
+  // V4 Ölü Çağıran: iskelet yardımcı HP ve geçici iskeletin kalan süresi (ayrı yönetim paneli yok)
+  const minionsEl = h('div', { class: 'minions hidden', 'data-testid': 'minion-hud' });
   const tracker = h('div', { class: 'tracker ia', onTap: () => openPanel('quests') });
   const dungeonBar = h('div', { class: 'dungeonbar hidden' });
-  const tl = h('div', { class: 'hud-tl' }, h('div', { class: 'vit' }, portrait, h('div', { class: 'bars' }, hpBar, mpBar, xpBar)), buffs, dungeonBar, tracker);
+  const tl = h('div', { class: 'hud-tl' }, h('div', { class: 'vit' }, portrait, h('div', { class: 'bars' }, hpBar, mpBar, xpBar)), minionsEl, buffs, dungeonBar, tracker);
 
   // ---------------- üst orta
   const tName = h('span'), tLv = h('span', { class: 'muted' });
@@ -77,7 +79,8 @@ export function createHud() {
   const br = h('div', { class: 'hud-br' });
   // büyük kılıç: aktif saldırı — her basış en yakın düşmana bir vuruş, basılı tutmak vurmayı sürdürür
   const release = () => { const p = app.world?.player; if (p) p.attackHeld = false; atk.classList.remove('press'); };
-  const atk = h('button', { class: 'act atk', style: { backgroundImage: `url(${iconURL('ui:sword')})` }, 'data-testid': 'btn-attack',
+  const atkIcon = { archer: 'ui:bow', necromancer: 'ui:soul', mage: 'ui:sword' }[app.char?.cls] || 'ui:sword';
+  const atk = h('button', { class: 'act atk', style: { backgroundImage: `url(${iconURL(atkIcon)})` }, 'data-testid': 'btn-attack',
     onPointerdown: (e) => {
       e.preventDefault(); sound.init();
       const w = app.world;
@@ -179,19 +182,35 @@ export function createHud() {
       bBarFill.style.width = `${(bossE.hp / bossE.maxHp) * 100}%`;
       bBarText.textContent = `${fmt(bossE.hp)} / ${fmt(bossE.maxHp)}`;
       bShield.classList.toggle('hidden', !(bossE.reduce > 0));
-      const ticks = { mine_golem: [70, 50, 25], ash_giant: [55, 30, 20], frozen_guardian: [65, 30] }[bossE.tpl.id] || [70, 40, 25];
+      const ticks = { mine_golem: [70, 50, 25], ash_giant: [55, 30, 20], frozen_guardian: [65, 30], lost_king: [65, 30], storm_tyrant: [60, 25], sky_prisoner: [65, 30] }[bossE.tpl.id] || [70, 40, 25];
       if (bTicks.dataset.k !== bossE.tpl.id) { clear(bTicks); ticks.forEach((tk) => bTicks.appendChild(h('b', { style: { left: tk + '%' } }))); bTicks.dataset.k = bossE.tpl.id; }
       const ph = bossE.behavior?.phase?.() || 1;
-      const shieldTxt = bossE.tpl.id === 'frozen_guardian' ? 'Buz Mührü aktif — iki kristali kır!' : 'Kristal Kalkanı aktif — kristalleri kır!';
-      const furyTxt = { ash_giant: 'Aşama: Son Kor', frozen_guardian: 'Aşama III: Kışın Öfkesi' }[bossE.tpl.id] || 'Aşama: Son Öfke';
+      const shieldTxt = { frozen_guardian: 'Buz Mührü aktif — iki kristali kır!', lost_king: 'Kırık Taç — iki kadim mührü kır!', storm_tyrant: 'Enerji Kristalleri — kristalleri kır, savunması düşsün!', sky_prisoner: 'Kırılan Mühürler — iki gök mührünü kır!' }[bossE.tpl.id] || 'Kristal Kalkanı aktif — kristalleri kır!';
+      const furyTxt = { ash_giant: 'Aşama: Son Kor', frozen_guardian: 'Aşama III: Kışın Öfkesi', lost_king: 'Aşama III: Son Hüküm', storm_tyrant: 'Aşama: Son Gök Gürültüsü', sky_prisoner: 'Aşama III: Yıldızların Sonu' }[bossE.tpl.id] || 'Aşama: Son Öfke';
       bPh.textContent = bossE.reduce > 0 ? shieldTxt : ph >= 3 || (bossE.tpl.id === 'alpha_wolf' && ph === 2) ? furyTxt : `Aşama ${ph}`;
     } else boss.classList.add('hidden');
+    // V4 iskeletler
+    const mins = ch.cls === 'necromancer' && w.minions ? w.minions.alive : [];
+    minionsEl.classList.toggle('hidden', !mins.length);
+    if (mins.length) {
+      const k = mins.map((m) => `${Math.round(m.hp / m.maxHp * 20)}:${m.temp ? Math.ceil((m.temp - w.clock) / 1000) : ''}`).join('|');
+      if (minionsEl.dataset.k !== k) {
+        minionsEl.dataset.k = k;
+        clear(minionsEl);
+        for (const m of mins) {
+          minionsEl.appendChild(h('div', { class: 'mn' + (m.temp ? ' tmp' : '') },
+            h('span', { class: 'tiny' }, m.temp ? `İskelet (${Math.max(0, Math.ceil((m.temp - w.clock) / 1000))} sn)` : 'İskelet'),
+            h('div', { class: 'mbar' }, h('i', { style: { width: `${Math.max(0, m.hp / m.maxHp) * 100}%` } }))));
+        }
+      }
+    } else minionsEl.dataset.k = '';
     // buff
     clear(buffs);
     const now = w.clock;
     const addBf = (icon, sec, tint) => buffs.appendChild(h('div', { class: 'bf', style: { backgroundImage: `url(${iconURL(icon)})`, borderColor: tint || '#000' } }, h('em', {}, sec > 0 ? Math.ceil(sec) : '')));
     for (const [k, b] of Object.entries(p.buffs)) {
-      const icon = { ironSkin: 'skill:iron_skin', manaShield: 'skill:mana_shield', will: 'skill:unyielding_will', resonance: 'skill:arcane_resonance' }[k];
+      const icon = { ironSkin: 'skill:iron_skin', manaShield: 'skill:mana_shield', will: 'skill:unyielding_will', resonance: 'skill:arcane_resonance',
+        fury: 'skill:iron_fury', agile: 'skill:agile_step', windRhythm: 'skill:wind_rhythm', boneArmor: 'skill:bone_armor', curse: 'skill:curse_seal' }[k];
       if (icon) addBf(icon, (b.until - now) / 1000);
     }
     if (p.poison) addBf('toxic_crystal', p.poison.left, '#5f5');
@@ -266,11 +285,12 @@ export function createHud() {
       const st = currentStage(ch, w.mapId);
       const area = w.mapDef.areas.find((a) => a.stage === st);
       const left = w.enemies.filter((e) => !e.dead && e.stage === st).length;
-      const sc = w.mapDef.seals && st <= 4 ? w.sealCount(st) : null;
+      const nSt = bossStage(w.mapId);
+      const sc = w.mapDef.seals && st <= nSt ? w.sealCount(st) : null;
       const lever = w.mapDef.seals?.some((s) => (s.stage || 3) === st && s.kind === 'lever');
       const seals = sc?.total ? ` · ${lever ? 'mekanizma' : 'mühür'} ${sc.n}/${sc.total}` : '';
       const exit = w.mapDef.objects.find((o) => o.dungeonExit);
-      dungeonBar.append(h('div', { class: 'grow' }, h('b', {}, w.mapDef.name + ' '), st <= 4 ? `· Bölüm ${st}/4: ${area?.name || ''} (${left} düşman${seals})` : '· Tamamlandı!'),
+      dungeonBar.append(h('div', { class: 'grow' }, h('b', {}, w.mapDef.name + ' '), st <= nSt ? `· Bölüm ${st}/${nSt}: ${area?.name || ''} (${left} düşman${seals})` : '· Tamamlandı!'),
         h('button', { class: 'btn small red', onTap: () => ui.confirm({ title: 'Gönüllü çıkış', text: 'Mevcut koşu sona erer. Sonraki girişte yeni koşu başlar.', ok: 'Çık', danger: true, onOk: () => w.changeMap(exit.to, exit.entry, { exitDungeon: true }) }) }, 'Çık'));
     } else dungeonBar.classList.add('hidden');
   }

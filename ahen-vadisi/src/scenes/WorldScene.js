@@ -1,5 +1,6 @@
 // WorldManager: tilemap katmanları, varlıklar, kamera, dokunma girdisi, harita geçişleri,
 // dungeon kapıları/bölümleri, ölüm-yeniden doğma, keşif ve aktif oyun süresi.
+import { MinionManager } from '../world/minions.js';
 import Phaser from 'phaser';
 import { app } from '../core/app.js';
 import { bus } from '../core/events.js';
@@ -19,7 +20,7 @@ import { NpcObj, WaystoneObj, GatherObj, QuestObj, AltarObj, DungeonGateObj, Por
 import { EscortObj, DefenseObj } from '../world/questEvents.js';
 import { onReach, onDungeonStage } from '../systems/quests.js';
 import { guideTarget, nextGateway } from '../world/questGuide.js';
-import { clearStage, respawnEntry, startOrResumeRun, exitRun, getRun, breakSeal, DUNGEON_INFO } from '../systems/dungeon.js';
+import { clearStage, respawnEntry, startOrResumeRun, exitRun, getRun, breakSeal, DUNGEON_INFO, bossStage } from '../systems/dungeon.js';
 import { applyDeathDurability } from '../systems/economy.js';
 import { MINIMAP_COLORS, MASS_COLORS } from '../art/tiles.js';
 import { sound } from '../audio/sound.js';
@@ -96,6 +97,9 @@ export class WorldScene extends Phaser.Scene {
     if (def.dungeon) this.setupGates();
     this.spawner = new Spawner(this);
     this.spawner.init();
+    // V4: Ölü Çağıran iskeletleri (kayıttaki güvenli durumdan tek ana iskelet; çoğalma yok)
+    this.minions = new MinionManager(this);
+    this.minions.restore();
 
     // keşif
     this.fog = new Fog(this.mapId, def.w, def.h, ch.world.discovered[this.mapId]);
@@ -449,7 +453,7 @@ export class WorldScene extends Phaser.Scene {
 
   // Bir bölümün mühür/mekanizma sayısı (Buz Mabedi: yalnız 3. bölüm; Karanlık Mahzen: 2. bölüm mekanizmaları + 3. bölüm mühürleri)
   sealCount(stage) {
-    const list = (this.mapDef.seals || []).filter((s) => (s.stage || 3) === stage);
+    const list = (this.mapDef.seals || []).filter((s) => (s.stage || 3) === stage && s.kind !== 'decoy');
     const run = getRun(app.char, this.mapId);
     return { n: list.filter((s) => run?.seals?.includes(s.id)).length, total: list.length };
   }
@@ -464,7 +468,8 @@ export class WorldScene extends Phaser.Scene {
       if (!this._sealHint[stage]) {
         this._sealHint[stage] = true;
         const lever = this.mapDef.seals.some((s) => (s.stage || 3) === stage && s.kind === 'lever');
-        bus.emit('toast', { text: lever ? `Zindan sessiz... Kapıyı açmak için ${sc.total} mekanizmayı da etkinleştir.` : `Galeri sessiz... Boss kapısını açmak için ${sc.total} mührü de kır.`, kind: 'info' });
+        const last = stage === bossStage(this.mapId) - 1;
+        bus.emit('toast', { text: lever ? `Bölüm sessiz... Kapıyı açmak için ${sc.total} mekanizmayı da etkinleştir.` : `Galeri sessiz... ${last ? 'Boss kapısını' : 'Kapıyı'} açmak için ${sc.total} mührü de kır.`, kind: 'info' });
       }
       return;
     }
@@ -473,7 +478,7 @@ export class WorldScene extends Phaser.Scene {
     const area = this.mapDef.areas.find((a) => a.stage === stage);
     const ups = onDungeonStage(ch, stage, this.mapId);
     ups.forEach((u) => bus.emit('questProgress', u));
-    if (stage === 4) {
+    if (stage === bossStage(this.mapId)) {
       sound.play('victory');
       this.cameras.main.flash(600, 255, 230, 160);
       const boss = this.mapDef.boss || 'mine_golem';
@@ -516,6 +521,7 @@ export class WorldScene extends Phaser.Scene {
     ch.world.map = this.mapId;
     ch.world.x = Math.floor(this.player.x / TILE);
     ch.world.y = Math.floor(this.player.y / TILE);
+    this.minions?.persist();
     if (this.fog?.dirty) { ch.world.discovered[this.mapId] = this.fog.encode(); this.fog.dirty = false; }
   }
 
@@ -549,7 +555,7 @@ export class WorldScene extends Phaser.Scene {
 
   // ------------------------------------------------------------- olaylar
   onChanged(what) {
-    if (['equip', 'inventory', 'stats', 'level', 'upgrade', 'repair', 'death'].includes(what)) this.player.refreshLook();
+    if (['equip', 'inventory', 'stats', 'level', 'upgrade', 'repair', 'death'].includes(what)) { this.player.refreshLook(); this.minions?.refreshStats(); }
     if (['quest', 'level', 'kill', 'inventory'].includes(what)) this.refreshMarks();
   }
 
@@ -625,6 +631,7 @@ export class WorldScene extends Phaser.Scene {
     // Tek bir varlıktaki beklenmeyen hata tüm oyun döngüsünü dondurmasın (hata konsola raporlanır)
     this.guard('oyuncu', () => this.player.update(dt));
     for (const e of this.enemies) this.guard(e.tpl.id, () => e.update(dt));
+    this.guard('iskelet', () => this.minions.update(dt));
     this.separate();
     this.enemies = this.enemies.filter((e) => !e.dead || e.container.active);
     for (const o of this.objects) this.guard(o.kind || 'nesne', () => o.update(dt));

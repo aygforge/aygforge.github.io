@@ -28,8 +28,10 @@ export class FX {
     });
   }
 
-  damage(x, y, dmg, { crit = false, toPlayer = false, miss = false, kind = '' } = {}) {
+  damage(x, y, dmg, { crit = false, toPlayer = false, miss = false, kind = '', small = false, evaded = false } = {}) {
+    if (evaded) return this.text(x, y, 'Kaçındın', { color: '#9ae0ff', size: 12 });
     if (miss) return this.text(x, y, 'Iska', { color: '#b8b8c0', size: 12 });
+    if (toPlayer && small) return this.text(x, y, `-${dmg}`, { color: '#ffa090', size: 11, rise: 20 });
     if (toPlayer) return this.text(x, y, `-${dmg}`, { color: '#ff5a4a', size: 15 });
     if (kind === 'legend') return this.text(x, y - 10, `${dmg}`, { color: '#ffa040', size: 20, rise: 40, dur: 1100 });
     if (crit) {
@@ -69,8 +71,10 @@ export class FX {
 
   // Telegraf: büyük saldırılar 1,2–1,8 sn önceden şekil+renk+animasyonla işaretlenir
   // shape: { kind:'circle', x, y, r } | { kind:'rect', x, y, len, width, angle } | { kind:'cone', x, y, r, angle } | { kind:'ring', x, y, r }
-  telegraph(shape, duration, color = 0xff3a2a) {
+  // friendly: oyuncunun kendi uyarısı (Meteor vb.). Düşman telegrafları bittiğinde içindeki iskeletlere hasar verir (V4).
+  telegraph(shape, duration, color = 0xff3a2a, { friendly = false } = {}) {
     const sc = this.scene;
+    if (!friendly && sc.minions) sc.time.delayedCall(duration, () => sc.minions?.telegraphHit(shape));
     const g = [];
     const D = 40;
     if (shape.kind === 'circle' || shape.kind === 'ring') {

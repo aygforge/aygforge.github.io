@@ -170,7 +170,8 @@ function characterTab(rerender) {
         h('div', {}, `${cls.name} (${cls.latin}) · Seviye ${ch.level}`),
         ch.titles.length ? h('div', { class: 'r-L small' }, `«${ch.titles.join(', ')}»`) : null,
         ch.mastery ? h('div', { class: 'r-E small' }, `Ustalık I: ${SKILLS[CLASS_SKILLS[ch.cls].mastery].name}`) : null,
-        ch.mastery2 ? h('div', { class: 'r-L small' }, `Ustalık II: ${SKILLS[CLASS_SKILLS[ch.cls].mastery2].name}`) : null)),
+        ch.mastery2 ? h('div', { class: 'r-L small' }, `Ustalık II: ${SKILLS[CLASS_SKILLS[ch.cls].mastery2].name}`) : null,
+        ch.mastery3 ? h('div', { class: 'r-L small' }, `Ustalık III: ${SKILLS[CLASS_SKILLS[ch.cls].mastery3].name}`) : null)),
       head,
       rows,
       statResetBox(rerender)),
@@ -184,6 +185,9 @@ function characterTab(rerender) {
       line('Kritik şansı (üst sınır %45)', pct(st.critChance)),
       line('Saldırı hızı bonusu (üst sınır %35)', pct(st.atkSpeed)),
       line('Normal saldırı aralığı', `${st.attackInterval.toFixed(2)} sn`),
+      st.evade ? line('Kaçınma (normal saldırılara, üst sınır %20)', pct(st.evade)) : null,
+      st.moveSpd ? line('Hareket hızı bonusu', '+' + pct(st.moveSpd, 0)) : null,
+      st.minion ? line('İskelet (HP / güç)', `${st.minion.maxHp} / ${st.minion.power.toFixed(1)}`) : null,
       line('Zehir direnci', pct(st.poisonRes, 0)),
       ...Object.entries(st.species).map(([k, v]) => line(`Tür hasarı: ${k}`, '+' + pct(v, 0))),
       line('Dayanıklılık', durItems.join(' · ') || '—'),
@@ -226,16 +230,16 @@ function skillsTab(rerender) {
       h('button', { class: 'btn small' + (chk.ok ? '' : ' dis'), 'data-testid': 'book-' + id, onTap: () => ui.confirm({ title: 'Ustalık Kitabı', text: `${SKILLS[id].name}: ${bk.desc} 1 Ustalık Kitabı harcanır; her beceriye yalnız bir kez uygulanır.`, ok: 'Uygula', onOk: () => { act.applyBook(id); rerender(); } }) }, 'Uygula'));
   };
   const card = (id) => {
-    const s = SKILLS[id], r = s.kind === 'mastery2' ? (ch.mastery2 ? 1 : 0) : ch.skills[id] || 0, max = maxRank(s);
-    const mk = s.kind === 'mastery' || s.kind === 'mastery2';
+    const s = SKILLS[id], r = s.kind === 'mastery2' ? (ch.mastery2 ? 1 : 0) : s.kind === 'mastery3' ? (ch.mastery3 ? 1 : 0) : ch.skills[id] || 0, max = maxRank(s);
+    const mk = s.kind === 'mastery' || s.kind === 'mastery2' || s.kind === 'mastery3';
     const chk = canRankUp(ch, id);
     const next = r && r < max ? s.desc(r + 1, s) : null;
     const extra = s.kind === 'active' && r ? ` · MP ${s.mp[r - 1]} · Bekleme ${s.cd[r - 1]} sn${s.range ? ` · Menzil ${s.range} tile` : ''}` : '';
     return h('div', { class: 'li', style: { alignItems: 'flex-start' } },
       img(iconURL('skill:' + id)),
       h('div', { class: 'grow' },
-        h('div', {}, h('b', { class: r ? 'gold' : 'muted' }, s.name), ` · ${s.kind === 'active' ? 'Aktif' : s.kind === 'passive' ? 'Pasif' : s.kind === 'mastery2' ? 'Ustalık II' : 'Ustalık'} · Rank ${r}/${max}`),
-        h('div', { class: 'small' }, r ? s.desc(r, s) : `Seviye ${s.unlock}'te ${s.kind === 'mastery' ? 'Ustalık I görevi ile' : s.kind === 'mastery2' ? 'ana hikâye bitince Gezgin Bilge\'nin Ustalık II görevi ile' : 'ücretsiz'} açılır. ${s.desc(1, s)}`),
+        h('div', {}, h('b', { class: r ? 'gold' : 'muted' }, s.name), ` · ${s.kind === 'active' ? 'Aktif' : s.kind === 'passive' ? 'Pasif' : s.kind === 'mastery2' ? 'Ustalık II' : s.kind === 'mastery3' ? 'Ustalık III' : 'Ustalık'} · Rank ${r}/${max}`),
+        h('div', { class: 'small' }, r ? s.desc(r, s) : `Seviye ${s.unlock}'te ${s.kind === 'mastery' ? 'Ustalık I görevi ile' : s.kind === 'mastery2' ? 'Kayıp Kral yenilince Ustalık II sınıf görevi ile' : s.kind === 'mastery3' ? 'Gökyarık hikâyesi bitince Ustalık III sınıf görevi ile' : 'ücretsiz'} açılır. ${s.desc(1, s)}`),
         h('div', { class: 'tiny muted' }, extra.slice(3)),
         next ? h('div', { class: 'tiny ok' }, `Sonraki rank: ${next} (maliyet ${rankUpCost(s, r + 1)} puan)`) : null,
         s.kind === 'active' ? bookRow(id) : null),
@@ -249,7 +253,8 @@ function skillsTab(rerender) {
     h('h3', { class: 't' }, 'Pasif beceriler'), cs.passives.map(card),
     h('h3', { class: 't' }, 'Ustalık I (Lv.20)'), card(cs.mastery),
     h('h3', { class: 't' }, 'Ustalık II (Lv.40)'), card(cs.mastery2),
-    h('p', { class: 'tiny muted' }, 'Sıfırlama Gezgin Bilge\'dedir (Lv.1–10 ücretsiz, Lv.11–14 1.000 G, Lv.15–20 2.500 G, Lv.21–30 5.000 G, Lv.31–40 7.500 G). Ustalık Kitapları ve Ustalık II sıfırlamada kaybolmaz.'));
+    h('h3', { class: 't' }, 'Ustalık III (Lv.50)'), card(cs.mastery3),
+    h('p', { class: 'tiny muted' }, 'Sıfırlama Gezgin Bilge\'dedir (Lv.1–10 ücretsiz, Lv.11–14 1.000 G, Lv.15–20 2.500 G, Lv.21–30 5.000 G, Lv.31–40 7.500 G, Lv.41–50 10.000 G). Ustalık Kitapları ve Ustalık II/III sıfırlamada kaybolmaz.'));
 }
 
 // ------------------------------------------------------------------ GÖREVLER

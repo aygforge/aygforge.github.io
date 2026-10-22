@@ -7,9 +7,10 @@ import { makeBossBehavior } from './bosses.js';
 import { spritePack, animDuration } from '../art/spriteRuntime.js';
 import { V2_SCALE } from '../art/monstersV2.js';
 import { V3_SCALE } from '../art/monstersV3.js';
+import { V4_SCALE } from '../art/monstersV4.js';
 
 let NEXT_ID = 1;
-const SCALE = { captain: 1.2, executioner: 1.35, ...V2_SCALE, ...V3_SCALE };
+const SCALE = { captain: 1.2, executioner: 1.35, ...V2_SCALE, ...V3_SCALE, ...V4_SCALE };
 
 export class Enemy {
   constructor(scene, tpl, x, y, opts = {}) {
@@ -209,8 +210,12 @@ export class Enemy {
         if (!pAlive || pSafe || dHome > this.leashR || (dP > (this.tpl.aggro + 9) * TILE && now - this.lastHitAt > 4000)) { this.startReturn(); break; }
         this.updateAbility(dt, p, dP);
         if (this.casting || this.windup) break;
-        const range = this.tileRange + p.radius * 0.5;
-        const see = this.canSee(p);
+        // V4: iskelet vurduysa kısa süre (3 sn) ona yönelebilir — yalnız normal saldırı; yetenekler hep oyuncuya
+        const tg = this.taunt && !this.taunt.dead && now < this.tauntUntil && this.tpl.kind !== 'boss' ? this.taunt : p;
+        if (tg === p) this.taunt = null;
+        const dT = tg === p ? dP : this.distTo(tg);
+        const range = this.tileRange + tg.radius * 0.5;
+        const see = this.canSee(tg);
         // V3 Gölge Avcısı: vurduktan sonra kısa süre geri çekilir, sonra yeniden atılır
         if (ai === 'skirmish' && now < (this.retreatUntil || 0)) {
           const a = Math.atan2(this.y - p.y, this.x - p.x);
@@ -224,19 +229,19 @@ export class Enemy {
           const ok = this.scene.grid.move(this, Math.cos(a) * this.speed() * 0.8 * dt, Math.sin(a) * this.speed() * 0.8 * dt);
           if (ok) { this.playAnim('walk'); this.setFacing(p.x - this.x); this.attackTimer -= dt * 0.5; break; }
         }
-        if (dP <= range && see) {
+        if (dT <= range && see) {
           this.state = 'attack';
-          this.setFacing(p.x - this.x);
+          this.setFacing(tg.x - this.x);
           this.attackTimer -= dt;
           if (this.attackTimer <= 0) {
             this.attackTimer = this.tpl.attackInterval * this.atkMult;
-            this.doAttack(p);
+            this.doAttack(tg);
             if (ai === 'skirmish' && Math.random() < 0.5) this.retreatUntil = now + 700 + Math.random() * 400;
           } else if (!this.sprite.anims.isPlaying || this.sprite.anims.currentAnim?.key.endsWith('_walk')) this.playAnim('idle');
         } else {
           this.state = 'chase';
           this.attackTimer = Math.max(this.attackTimer, 0.35);
-          this.chase(p, dt, see);
+          this.chase(tg, dt, see);
         }
         break;
       }
@@ -341,6 +346,16 @@ export class Enemy {
   doAttack(p) {
     const sc = this.scene;
     this.playAnim('atk');
+    if (p.kind === 'minion') {
+      // V4: iskelete normal saldırı (telegrafsız; zehir/yavaşlatma uygulanmaz)
+      const coef = this.tpl.normalCoef ?? 1;
+      this.windup = { t: this.tpl.projectile ? 0.3 : 0.28, fn: () => {
+        if (this.dead || p.dead) return;
+        if (this.tpl.projectile) sc.combat.projectile(this, p, this.tpl.projectile, 300, () => sc.combat.enemyHitsMinion(this, p, { coef }));
+        else if (this.distTo(p) <= this.tileRange * 1.25 + p.radius) sc.combat.enemyHitsMinion(this, p, { coef });
+      } };
+      return;
+    }
     if (this.tpl.projectile) {
       this.windup = {
         t: 0.3, fn: () => {
@@ -646,6 +661,8 @@ export class Enemy {
     else if (this.tpl.deathFx === 'ice') sc.fx.sprite('shatter', this.x, this.y - 12, { scale: Math.max(1.5, this.radius / 10) });
     else if (this.tpl.deathFx === 'bone') sc.fx.sprite('ash_puff', this.x, this.y - 12, { scale: Math.max(1.5, this.radius / 10), tint: 0xe0d8c4 });
     else if (this.tpl.deathFx === 'void') sc.fx.sprite('shatter', this.x, this.y - 12, { scale: Math.max(1.5, this.radius / 10), tint: 0xa070e0 });
+    else if (this.tpl.deathFx === 'storm') sc.fx.sprite('shatter', this.x, this.y - 12, { scale: Math.max(1.5, this.radius / 10), tint: 0x9ad0ff });
+    else if (this.tpl.deathFx === 'astral') sc.fx.sprite('spirit', this.x, this.y - 12, { scale: Math.max(1.5, this.radius / 10), tint: 0xb0a0ff });
     if (!this.pack && sc.anims.exists(this.animKey + '_die')) {
       // V2: kendi ölüm animasyonu (küle/buza dağılma), ardından solma
       this.hurtUntil = 0;

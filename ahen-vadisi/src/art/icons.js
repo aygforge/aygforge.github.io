@@ -63,6 +63,21 @@ function itemIcon(t) {
       if (L.head === 'root') { pb.line(hx, hy + 1, hx - 2, hy - 3, L.shaft); pb.line(hx, hy + 1, hx + 3, hy - 2, L.shaft); pb.disc(hx, hy - 1, 1.5, L.orb); }
       break;
     }
+    case 'bow': {
+      // V4 yay ikonu: çapraz yay + kiriş
+      for (let i = 0; i <= 12; i++) { const k = i / 12 * 2 - 1; const x = 2 + i, y = 13 - i - Math.round((1 - k * k) * 3); pb.set(x, y, L.wood); pb.set(x, y + 1, shade(L.wood, -0.3)); }
+      pb.line(2, 13, 14, 1, L.string);
+      pb.rect(7, 6, 2, 2, L.grip || shade(L.wood, -0.35));
+      if (L.gem) pb.set(8, 7, L.gem);
+      if (L.glow) { pb.set(2, 12, L.glow); pb.set(13, 1, L.glow); }
+      break;
+    }
+    case 'tome':
+      pb.rect(3, 2, 10, 12, L.cover); pb.vline(3, 2, 13, shade(L.cover, -0.35)); pb.rect(12, 3, 1, 10, L.page);
+      pb.rect(5, 4, 5, 2, shade(L.cover, 0.25)); pb.disc(8, 9, 1.8, L.gem); pb.set(8, 8, '#ffffff');
+      if (L.glow) { pb.set(13, 2, L.glow); pb.set(2, 14, L.glow); }
+      break;
+    case 'quiver': case 'talisman':
     case 'shield': case 'focus': case 'mirror': {
       const s = offhandSprite(t.id).pb;
       const big = new PB(16, 16);
@@ -189,6 +204,39 @@ const SKILL_ART = {
   frozen_target: (pb) => { pb.ring(8, 8, 6, '#a0e0ff', 2); pb.hline(0, 15, 8, '#e0f8ff'); pb.vline(8, 0, 15, '#e0f8ff'); pb.disc(8, 8, 1.5, '#4a8aff'); },
   unyielding_will: (pb) => { pb.poly([[2, 2], [14, 2], [14, 8], [8, 15], [2, 8]], '#e0b040'); pb.poly([[5, 5], [11, 5], [11, 8], [8, 12], [5, 8]], '#fff0a0'); },
   arcane_resonance: (pb) => { pb.ring(8, 8, 6, '#c070ff', 2); pb.poly([[8, 3], [12, 11], [4, 11]], '#e0b0ff'); pb.disc(8, 9, 1.5, '#ffffff'); },
+  // ---------------- V4: Okçu
+  aimed_shot: (pb) => { pb.ring(10, 6, 4, '#ffd060'); pb.set(10, 6, '#ff5a3a'); pb.line(1, 15, 9, 7, '#c8a878'); pb.poly([[8, 6], [11, 5], [10, 8]], '#e0e4ea'); pb.line(1, 13, 3, 15, '#f0f0f0'); },
+  multi_shot: (pb) => { for (const dy of [-4, 0, 4]) { pb.line(1, 8, 12, 8 + dy, '#c8a878'); pb.poly([[12, 7 + dy], [15, 8 + dy], [12, 9 + dy]], '#e0e4ea'); } },
+  agile_step: (pb) => { pb.poly([[3, 12], [6, 4], [9, 5], [7, 12]], '#9ae0ff'); pb.poly([[8, 13], [11, 6], [14, 7], [12, 13]], '#5ab0e0'); pb.hline(0, 4, 14, '#ffffff'); pb.hline(5, 10, 15, '#ffffff'); },
+  piercing_arrow: (pb) => { pb.line(0, 14, 13, 1, '#9ad0ff'); pb.poly([[11, 1], [15, 0], [14, 4]], '#ffffff'); pb.rect(5, 6, 2, 4, '#5a5a66'); pb.rect(8, 4, 2, 4, '#5a5a66'); pb.set(6, 8, '#ffffff'); },
+  arrow_rain: (pb) => { pb.rect(0, 0, 16, 4, '#3a4a5a'); for (const [x, y] of [[3, 4], [7, 6], [11, 3], [5, 10], [12, 9]]) { pb.vline(x, y, y + 4, '#c8a878'); pb.set(x, y + 5, '#e0e4ea'); } pb.hline(0, 15, 15, '#6a5a3a'); },
+  hunter_mark: (pb) => { pb.ring(8, 8, 6, '#ffd060', 2); pb.vline(8, 0, 4, '#ffd060'); pb.vline(8, 12, 15, '#ffd060'); pb.hline(0, 4, 8, '#ffd060'); pb.hline(12, 15, 8, '#ffd060'); pb.disc(8, 8, 1.6, '#ff5a3a'); },
+  eagle_storm: (pb) => { pb.poly([[8, 4], [1, 2], [4, 7], [8, 8], [12, 7], [15, 2]], '#e0d8c0'); pb.disc(8, 6, 2, '#8a6a3a'); pb.line(2, 15, 6, 10, '#ffe070'); pb.line(6, 10, 8, 13, '#ffe070'); pb.line(8, 13, 13, 9, '#ffe070'); },
+  sharpshooter: (pb) => { pb.ring(8, 8, 6, '#c8a878'); pb.ring(8, 8, 3, '#c8a878'); pb.disc(8, 8, 1.2, '#ff5a3a'); pb.line(13, 3, 9, 7, '#e0e4ea'); },
+  agile_reflex: (pb) => { pb.disc(6, 5, 2.5, '#e0b088'); pb.poly([[4, 8], [9, 8], [12, 14], [2, 14]], '#5a6a3a'); for (let i = 0; i < 3; i++) pb.hline(10, 15, 4 + i * 3, '#9ae0ff'); },
+  hunter_instinct: (pb) => { pb.ellipse(8, 9, 6, 4, '#8a6a3a'); pb.set(5, 8, '#ffe070'); pb.set(11, 8, '#ffe070'); pb.poly([[3, 6], [4, 1], [7, 5]], '#8a6a3a'); pb.poly([[9, 5], [12, 1], [13, 6]], '#8a6a3a'); },
+  wind_rhythm: (pb) => { for (let t = 0; t < 10; t += 0.1) pb.set(2 + t * 1.2, 8 + Math.sin(t * 1.6) * 4, '#9ae0ff'); pb.poly([[11, 3], [15, 5], [11, 7]], '#ffffff'); },
+  hunter_legacy: (pb) => { pb.poly([[2, 2], [14, 2], [14, 8], [8, 15], [2, 8]], '#5a6a3a'); pb.line(4, 12, 12, 4, '#c8a878'); pb.poly([[11, 3], [14, 2], [13, 5]], '#ffd060'); },
+  storm_eye: (pb) => { pb.ellipse(8, 8, 7, 4, '#3a4a6a'); pb.disc(8, 8, 3, '#9ad0ff'); pb.disc(8, 8, 1.4, '#ffe070'); pb.line(8, 0, 6, 3, '#ffe070'); },
+  // ---------------- V4: Ölü Çağıran
+  soul_arrow: (pb) => { pb.line(1, 14, 10, 5, '#6ad08a'); pb.disc(11, 4, 3, '#2a5a3e'); pb.disc(11, 4, 1.8, '#9ae0b0'); pb.set(11, 4, '#ffffff'); },
+  summon_skeleton: (pb) => { pb.ellipse(8, 5, 4, 4, '#e0d8c4'); pb.set(7, 5, '#8ae0a0'); pb.set(9, 5, '#8ae0a0'); for (let i = 0; i < 3; i++) pb.hline(5, 11, 10 + i * 2, '#e0d8c4'); pb.vline(8, 9, 15, '#a8a090'); },
+  curse_seal: (pb) => { pb.ring(8, 8, 6, '#a070e0', 2); pb.poly([[8, 3], [12, 12], [4, 12]], '#3a1e5a'); pb.line(4, 6, 12, 10, '#c080ff'); pb.disc(8, 9, 1.4, '#e0c8ff'); },
+  life_drain: (pb) => { pb.disc(4, 11, 3, '#e04848'); pb.line(6, 10, 12, 5, '#9ae0b0'); pb.line(6, 11, 12, 6, '#6ad08a'); pb.disc(12, 5, 3, '#2a5a3e'); pb.set(12, 5, '#ffffff'); },
+  bone_burst: (pb) => { for (let k = 0; k < 8; k++) { const t = k / 8 * Math.PI * 2; pb.line(8, 9, 8 + Math.cos(t) * 7, 9 + Math.sin(t) * 6, '#e0d8c4'); } pb.disc(8, 9, 2.4, '#8ae0a0'); },
+  army_of_dead: (pb) => { for (const x of [4, 11]) { pb.ellipse(x, 5, 3, 3, '#e0d8c4'); pb.set(x - 1, 5, '#8ae0a0'); pb.set(x + 1, 5, '#8ae0a0'); pb.vline(x, 8, 15, '#a8a090'); pb.hline(x - 2, x + 2, 10, '#e0d8c4'); } },
+  soul_apocalypse: (pb) => { pb.disc(8, 8, 7, '#1e1a3a'); pb.ring(8, 8, 6, '#b0a0ff'); for (let k = 0; k < 6; k++) { const t = k / 6 * Math.PI * 2; pb.set(8 + Math.cos(t) * 4, 8 + Math.sin(t) * 4, '#9ae0b0'); } pb.disc(8, 8, 2, '#ffffff'); },
+  dark_knowledge: (pb) => { pb.rect(3, 2, 10, 12, '#2a3a2e'); pb.rect(12, 3, 1, 10, '#e8e0c8'); pb.disc(8, 8, 2, '#8ae0a0'); pb.set(8, 8, '#ffffff'); },
+  bone_bond: (pb) => { pb.line(2, 13, 13, 2, '#e0d8c4'); pb.disc(2, 13, 1.6, '#e0d8c4'); pb.disc(13, 2, 1.6, '#e0d8c4'); pb.ring(8, 8, 5, '#6ad08a'); },
+  soul_harvest: (pb) => { pb.line(3, 14, 3, 4, '#6a5a4a'); for (let t = 0; t < 2.6; t += 0.05) pb.set(3 + Math.sin(t) * 9, 4 + (1 - Math.cos(t)) * 3, '#c8d0d8'); pb.disc(11, 11, 2.5, '#4a8aff'); pb.set(11, 11, '#ffffff'); },
+  bone_armor: (pb) => { pb.poly([[2, 2], [14, 2], [14, 8], [8, 15], [2, 8]], '#d8d0bc'); for (let i = 0; i < 3; i++) pb.hline(4, 12, 5 + i * 3, '#8a8474'); pb.set(8, 6, '#8ae0a0'); },
+  soul_lore: (pb) => { pb.ring(8, 8, 6, '#6ad08a', 2); pb.rect(5, 5, 6, 6, '#2a3a2e'); pb.set(8, 8, '#ffffff'); },
+  soul_dominion: (pb) => { pb.poly([[2, 6], [4, 2], [7, 5], [8, 1], [9, 5], [12, 2], [14, 6]], '#8ae0a0'); pb.ellipse(8, 11, 5, 4, '#e0d8c4'); pb.set(6, 11, '#2a5a3e'); pb.set(10, 11, '#2a5a3e'); },
+  // ---------------- V4: Lv.45 ve Ustalık III
+  thunder_rift: (pb) => { pb.rect(0, 12, 16, 4, '#4a4a52'); pb.line(4, 0, 7, 6, '#ffe070'); pb.line(7, 6, 5, 9, '#ffe070'); pb.line(5, 9, 9, 14, '#ffffff'); pb.line(9, 14, 12, 12, '#9ad0ff'); pb.line(2, 13, 14, 13, '#1e1a1e'); },
+  astral_burst: (pb) => { pb.disc(8, 8, 6, '#3a3466'); pb.disc(8, 8, 4, '#b0a0ff'); pb.disc(8, 8, 2, '#ffe8a0'); for (const [x, y] of [[1, 1], [14, 2], [2, 14], [14, 13]]) pb.set(x, y, '#ffffff'); },
+  sky_might: (pb) => { pb.poly([[2, 2], [14, 2], [14, 8], [8, 15], [2, 8]], '#3a4a6a'); pb.line(8, 3, 6, 8, '#ffe070'); pb.line(6, 8, 10, 8, '#ffe070'); pb.line(10, 8, 8, 13, '#ffe070'); },
+  astral_mind: (pb) => { pb.disc(8, 8, 6, '#2a2450'); pb.ring(8, 8, 6, '#b0a0ff'); pb.disc(8, 8, 2.5, '#ffe8a0'); pb.set(4, 5, '#ffffff'); pb.set(12, 11, '#ffffff'); },
 };
 
 const UI_ART = {
@@ -203,6 +251,9 @@ const UI_ART = {
   lock: (pb) => { pb.ring(8, 6, 3.5, '#a0a0aa', 2); pb.rect(3, 7, 10, 8, '#e0b040'); pb.rect(7, 9, 2, 3, '#5a3a20'); },
   star: (pb) => { pb.poly([[8, 1], [10, 6], [15, 6], [11, 9], [13, 15], [8, 11], [3, 15], [5, 9], [1, 6], [6, 6]], '#ffd040'); },
   sword: (pb) => { pb.line(3, 13, 13, 3, '#e0e8f0'); pb.line(4, 13, 14, 3, '#a0a8b0'); pb.line(2, 10, 6, 14, '#c0a040'); pb.line(1, 15, 3, 13, '#6a4628'); },
+  // V4: Okçu (yay + ok) ve Ölü Çağıran (ruh mermisi) saldırı düğmeleri
+  bow: (pb) => { for (let i = 0; i <= 12; i++) { const k = i / 12 * 2 - 1; pb.set(3 + Math.round((1 - k * k) * 4), 2 + i, '#a07446'); pb.set(4 + Math.round((1 - k * k) * 4), 2 + i, '#6a4628'); } pb.vline(3, 2, 14, '#e8e0c8'); pb.hline(3, 14, 8, '#c8a878'); pb.poly([[13, 6], [15, 8], [13, 10]], '#e0e8f0'); },
+  soul: (pb) => { pb.disc(10, 6, 4, '#2a5a3e'); pb.disc(10, 6, 2.6, '#9ae0b0'); pb.set(10, 6, '#ffffff'); pb.line(1, 15, 7, 9, '#6ad08a'); pb.line(2, 15, 8, 9, '#3a7a5a'); },
   target: (pb) => { pb.ring(8, 8, 6.5, '#ff6a4a', 2); pb.ring(8, 8, 3, '#ff6a4a'); pb.set(8, 8, '#ffffff'); pb.line(13, 2, 15, 0, '#ffffff'); },
   menu: (pb) => { pb.rect(2, 3, 12, 2, '#e8dcc0'); pb.rect(2, 7, 12, 2, '#e8dcc0'); pb.rect(2, 11, 12, 2, '#e8dcc0'); },
   storage: (pb) => { pb.rect(1, 5, 14, 10, '#8a5a32'); pb.rect(1, 3, 14, 3, '#a87040'); pb.rect(7, 7, 2, 3, '#e0c060'); },

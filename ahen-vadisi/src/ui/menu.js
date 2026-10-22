@@ -6,7 +6,8 @@ import { bus } from '../core/events.js';
 import { drawMenuScene } from '../art/scenery.js';
 import { humanSheet, playerLook } from '../art/characters.js';
 import { packPreviewCanvas } from '../art/spriteRuntime.js';
-import { CLASSES } from '../data/classes.js';
+import { CLASSES, CLASS_IDS } from '../data/classes.js';
+import { ITEMS } from '../data/items.js';
 import { MAPS } from '../data/maps/index.js';
 import { createCharacter, validateName } from '../systems/character.js';
 import { computeStats } from '../systems/stats.js';
@@ -186,18 +187,19 @@ function showCreate(slot, onPlay) {
   const err = h('div', { class: 'small bad' });
   const render = () => {
     clear(cards);
-    for (const id of ['warrior', 'mage']) {
+    // V4: dört sınıf (2×2); başlangıç donanımı ve statlar gerçek motordan
+    for (const id of CLASS_IDS) {
       const c = CLASSES[id];
-      const kit = Object.fromEntries(c.starterKit.map((tid) => [tid.startsWith('C') ? 'chest' : 'weapon', { tid }]));
-      const fake = { cls: id, level: 1, alloc: { str: 0, dex: 0, int: 0, vit: 0 }, skills: {}, equipment: { weapon: { tid: c.starterKit[0], p: 0, d: 100, b: [] }, chest: { tid: c.starterKit[1], p: 0, d: 100, b: [] } } };
+      const kit = Object.fromEntries(c.starterKit.map((tid) => [ITEMS[tid].slot, { tid, p: 0, d: 100, b: [] }]));
+      const fake = { cls: id, level: 1, alloc: { str: 0, dex: 0, int: 0, vit: 0 }, skills: {}, equipment: kit };
       const st = computeStats(fake);
       cards.appendChild(h('div', { class: 'class-card frame ia' + (cls === id ? ' sel' : ''), 'data-testid': 'class-' + id, onTap: () => { sound.play('click'); cls = id; render(); } },
         previewCanvas(id, kit, 3),
         h('div', { class: 'grow' },
-          h('div', { class: 'gold', style: { fontFamily: 'var(--title)', fontSize: '1.25rem' } }, `${c.name} `, h('span', { class: 'tiny muted' }, `(${c.latin})`)),
-          h('div', { class: 'small' }, c.desc),
+          h('div', { class: 'gold', style: { fontFamily: 'var(--title)', fontSize: '1.1rem' } }, `${c.name} `, h('span', { class: 'tiny muted' }, `(${c.latin})`)),
+          h('div', { class: 'tiny' }, c.desc),
           h('div', { class: 'tiny muted' }, `STR ${c.base.str} · DEX ${c.base.dex} · INT ${c.base.int} · VIT ${c.base.vit} · HP ${st.maxHp} · MP ${st.maxMp}`),
-          h('div', { class: 'tiny muted' }, c.suggested))));
+          cls === id ? h('div', { class: 'tiny muted' }, c.suggested) : null)));
     }
   };
   render();
@@ -217,5 +219,5 @@ function showCreate(slot, onPlay) {
     h('div', { class: 'col', style: { width: 'min(460px, 90vw)' } }, nameIn, err),
     h('div', { class: 'row' }, h('button', { class: 'btn ghost', onTap: () => showCharSelect(onPlay) }, '‹ Geri'),
       h('button', { class: 'btn green', 'data-testid': 'create-confirm', style: { minWidth: '200px' }, onTap: create }, 'Oluştur ve Başla')),
-    h('div', { class: 'tiny muted' }, 'Sabit sınıf sistemi: alt sınıf yoktur. Seviye 20\'de Ustalık I açılır.')));
+    h('div', { class: 'tiny muted' }, 'Sınıf sonradan değiştirilemez. Seviye 20\'de Ustalık I, 40\'ta Ustalık II, 50\'de Ustalık III açılır.')));
 }
