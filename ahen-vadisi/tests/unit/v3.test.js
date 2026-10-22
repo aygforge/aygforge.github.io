@@ -199,7 +199,7 @@ describe('V3 içerik', () => {
   });
 
   it('36 V3 eşyası (toplam 126) belge değerleri; hepsi bir loot havuzundan ya da tariften elde edilir', () => {
-    expect(ITEM_LIST.length).toBe(126);
+    expect(ITEM_LIST.length).toBe(210);   // V4: 126 + 84
     for (const id of V3_ITEMS) expect(ITEMS[id], id).toBeTruthy();
     expect(ITEMS.W19).toMatchObject({ rarity: 'L', lv: 40, base: { atkMin: 315, atkMax: 380 }, legendaryFixed: { str: 22, crit: 0.08 }, effect: 'kings_command' });
     expect(ITEMS.M19).toMatchObject({ rarity: 'L', lv: 40, base: { magMin: 340, magMax: 410 }, legendaryFixed: { int: 24, mp: 120 }, effect: 'eternal_verdict' });
@@ -218,10 +218,11 @@ describe('V3 içerik', () => {
 
   it('Legendary yalnız Golem, Donmuş Muhafız ve Kayıp Kral havuzlarında; oranlar korunur; tarif/görev Legendary vermez', () => {
     expect(LOOT_TABLES.golem.L).toBe(0.4); expect(LOOT_TABLES.frost_keeper.L).toBe(0.4); expect(LOOT_TABLES.lost_king.L).toBe(0.4);
-    expect(buildPool('lost_king', 'L').map((p) => p.tid).sort()).toEqual(['M19', 'W19']);
-    expect(buildPool('frozen_guardian', 'L').map((p) => p.tid).sort()).toEqual(['M13', 'W13']);
-    expect(buildPool('mine_golem', 'L').map((p) => p.tid).sort()).toEqual(['M08', 'W08']);
-    for (const e of Object.values(ENEMIES)) if (e.lootTable && !['mine_golem', 'frozen_guardian', 'lost_king'].includes(e.id)) expect(buildPool(e.id, 'L').length, e.id).toBe(0);
+    // V4: her izinli boss havuzunda dört sınıfın birer Legendary'si (eski W/M kimlikleri aynen)
+    expect(buildPool('lost_king', 'L').map((p) => p.tid).sort()).toEqual(['K13', 'M19', 'W19', 'Y13']);
+    expect(buildPool('frozen_guardian', 'L').map((p) => p.tid).sort()).toEqual(['K12', 'M13', 'W13', 'Y12']);
+    expect(buildPool('mine_golem', 'L').map((p) => p.tid).sort()).toEqual(['K11', 'M08', 'W08', 'Y11']);
+    for (const e of Object.values(ENEMIES)) if (e.lootTable && !['mine_golem', 'frozen_guardian', 'lost_king', 'sky_prisoner'].includes(e.id)) expect(buildPool(e.id, 'L').length, e.id).toBe(0);
     for (const r of RECIPES) if (ITEMS[r.out.id]) expect(ITEMS[r.out.id].rarity).not.toBe('L');
     // Kırık Taç Parçası yalnız işleme (Taht Çekirdeği) ve Epic tariflerinde
     for (const r of RECIPES.filter((x) => x.inputs.some((i) => i.id === 'crown_shard'))) {

@@ -3,7 +3,8 @@
 import { ITEMS, ITEM_LIST, MERCHANT_PRICE, isUpgradeable } from '../data/items.js';
 import { STACKABLES, POTIONS, POTION_LIST } from '../data/materials.js';
 import { RECIPE_MAP, UPGRADE_STEPS, UPGRADE_NU_FINAL, UPGRADE_SLOT_MULT, LOW_LEVEL_UPGRADE_MULT, V2_UPGRADE_MIN_LEVEL, V2_UPGRADE_GOLD_MULT, UPGRADE_STEPS_V2_MATS, UPGRADE_NU_FINAL_V2,
-  V3_UPGRADE_MIN_LEVEL, V3_UPGRADE_GOLD_MULT, UPGRADE_STEPS_V3_MATS, UPGRADE_NU_FINAL_V3 } from '../data/recipes.js';
+  V3_UPGRADE_MIN_LEVEL, V3_UPGRADE_GOLD_MULT, UPGRADE_STEPS_V3_MATS, UPGRADE_NU_FINAL_V3,
+  V4_UPGRADE_MIN_LEVEL, V4_UPGRADE_GOLD_MULT, UPGRADE_STEPS_V4_MATS, UPGRADE_NU_FINAL_V4 } from '../data/recipes.js';
 import { RARITY_INFO, BAG_STEPS, STORAGE_MAX, DEATH_DURABILITY_LOSS, SLOTS } from '../data/constants.js';
 import {
   addStack, removeStack, countStack, stackCapacity, firstFree, freeSlots, resizeContainer, hasMaterials, consumeMaterials, addItem,
@@ -190,19 +191,22 @@ export function craft(char, recipeId, rng) {
 // ------------------------------------------------------------------ Yükseltme (+0 → +5)
 export function upgradeInfo(inst) {
   const t = ITEMS[inst.tid];
-  if (!isUpgradeable(t)) return { ok: false, msg: 'Yüzük ve kolye V1\'de yükseltilmez' };
+  if (!isUpgradeable(t)) return { ok: false, msg: 'Yüzük ve kolye yükseltilmez' };
   const cur = inst.p || 0;
   if (cur >= 5) return { ok: false, msg: 'En yüksek seviye (+5)' };
   const step = UPGRADE_STEPS[cur];
-  const v3 = t.lv >= V3_UPGRADE_MIN_LEVEL;
-  const v2 = !v3 && t.lv >= V2_UPGRADE_MIN_LEVEL;
+  const v4 = t.lv >= V4_UPGRADE_MIN_LEVEL;
+  const v3 = !v4 && t.lv >= V3_UPGRADE_MIN_LEVEL;
+  const v2 = !v4 && !v3 && t.lv >= V2_UPGRADE_MIN_LEVEL;
   let gold = step.gold * RARITY_INFO[inst.r].upMult * UPGRADE_SLOT_MULT[t.slot];
   if (t.lv < 10) gold *= LOW_LEVEL_UPGRADE_MULT;
   if (v2) gold *= V2_UPGRADE_GOLD_MULT;
   if (v3) gold *= V3_UPGRADE_GOLD_MULT;
+  if (v4) gold *= V4_UPGRADE_GOLD_MULT;
   gold = Math.max(10, Math.round(gold / 10) * 10);
   const nuFinal = step.to === 5 && (inst.r === 'N' || inst.r === 'U');
-  const mats = v3 ? (nuFinal ? UPGRADE_NU_FINAL_V3 : UPGRADE_STEPS_V3_MATS[cur])
+  const mats = v4 ? (nuFinal ? UPGRADE_NU_FINAL_V4 : UPGRADE_STEPS_V4_MATS[cur])
+    : v3 ? (nuFinal ? UPGRADE_NU_FINAL_V3 : UPGRADE_STEPS_V3_MATS[cur])
     : v2 ? (nuFinal ? UPGRADE_NU_FINAL_V2 : UPGRADE_STEPS_V2_MATS[cur]) : (nuFinal ? UPGRADE_NU_FINAL : step.mats);
   return { ok: true, from: cur, to: step.to, chance: step.chance, gold, mats };
 }

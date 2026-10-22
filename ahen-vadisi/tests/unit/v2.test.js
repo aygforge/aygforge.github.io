@@ -205,17 +205,20 @@ describe('V2 loot kuralları', () => {
     for (const e of sources) for (const rar of ['N', 'U', 'R', 'E', 'L']) if (LOOT_TABLES[e.lootTable][rar]) for (const p of buildPool(e.id, rar)) obtainable.add(p.tid);
     const v2 = ITEM_LIST.filter((t) => t.lv > 20);
     for (const t of v2) expect(obtainable.has(t.id), `${t.id} ${t.name}`).toBe(true);
-    const canon = (enemy, rar) => buildPool(enemy, rar).filter((p) => p.canonical).map((p) => p.tid).sort();
+    // V4: yeni sınıf eşyaları (Y/K/…) havuzlara eklendi; eski şablonların havuzdaki yeri aynen korunur
+    const OLD = new Set(ITEM_LIST.slice(0, 126).map((t) => t.id));
+    const canon = (enemy, rar) => buildPool(enemy, rar).filter((p) => p.canonical && OLD.has(p.tid)).map((p) => p.tid).sort();
     expect(canon('ash_giant', 'E')).toEqual(['A07', 'M11', 'W11']);
     expect(canon('ice_warden', 'E')).toEqual(['C10', 'C12', 'O08', 'O10', 'R08']);
     expect(canon('frozen_guardian', 'L')).toEqual(['M13', 'W13']);
     expect(canon('frozen_guardian', 'E')).toEqual(['A08']);
   });
   it('V1 korunur: Golem Legendary/Rare havuzu V2 eşyası içermez; Legendary yalnız boss tablolarında (V3: + Kayıp Kral)', () => {
-    expect(buildPool('mine_golem', 'L').map((p) => p.tid).sort()).toEqual(['M08', 'W08']);
+    // V4: Golem Legendary havuzu dört sınıfın birer silahı (eski W08/M08 aynen)
+    expect(buildPool('mine_golem', 'L').map((p) => p.tid).sort()).toEqual(['K11', 'M08', 'W08', 'Y11']);
     for (const p of buildPool('mine_golem', 'R')) expect(ITEMS[p.tid].lv).toBeLessThanOrEqual(20);
     for (const e of Object.values(ENEMIES).filter((x) => x.lootTable)) {
-      if (e.id === 'mine_golem' || e.id === 'frozen_guardian' || e.id === 'lost_king') continue;
+      if (['mine_golem', 'frozen_guardian', 'lost_king', 'sky_prisoner'].includes(e.id)) continue;
       expect(buildPool(e.id, 'L').length, e.id).toBe(0);
     }
     // hiçbir tarif Legendary üretmez

@@ -275,6 +275,66 @@ export const ENEMIES = {
     abilities: ['void_ward'],
     materials: [{ id: 'void_crystal', w: 1 }],
   }),
+  // ---------------------------------------------------------- V4 NORMAL (8) — Gökyarık Ovası (41–44), Yıldız Mezarı (46–49)
+  // variantAbove: Lv.41+ temel (N/U) şablonlar Lv.45'te olduğundan varyant bandının üst sınırı +4 (oranlar değişmez)
+  storm_hound: N({
+    variantAbove: 4,
+    id: 'storm_hound', name: 'Fırtına Tazısı', level: 41, hp: 4200, atk: 420, def: 200, mdef: 190, exp: 1600,
+    species: 'beast', ai: 'pack', aggro: 5.5, leash: 13, speed: 4.0, attackInterval: 1.5, attackRange: 1.35,
+    dmgType: 'phys', respawn: 24, radius: 0.5, sprite: 'storm_hound', deathFx: 'storm',
+    abilities: ['storm_pounce'],
+    materials: [{ id: 'storm_pelt', w: 1 }],
+  }),
+  rift_wing: N({
+    variantAbove: 4,
+    id: 'rift_wing', name: 'Çatlak Kanat', level: 42, hp: 3900, atk: 450, def: 180, mdef: 230, exp: 1800,
+    species: 'elemental', ai: 'ranged', aggro: 6.5, leash: 14, speed: 3.2, attackInterval: 2.1, attackRange: 6,
+    dmgType: 'magic', respawn: 26, radius: 0.45, sprite: 'rift_wing', projectile: 'storm_bolt', flying: true, deathFx: 'storm',
+    abilities: ['rift_strike'],
+    materials: [{ id: 'rift_feather', w: 1 }],
+  }),
+  lightning_raider: N({
+    variantAbove: 4,
+    id: 'lightning_raider', name: 'Şimşek Yağmacısı', level: 43, hp: 5200, atk: 480, def: 240, mdef: 210, exp: 2050,
+    species: 'humanoid', ai: 'skirmish', aggro: 6, leash: 14, speed: 3.7, attackInterval: 1.7, attackRange: 1.45,
+    dmgType: 'phys', respawn: 26, radius: 0.46, sprite: 'lightning_raider', deathFx: 'storm',
+    abilities: ['shadow_dash'],
+    materials: [{ id: 'lightning_shard', w: 1 }],
+  }),
+  thunder_golem: N({
+    variantAbove: 4,
+    id: 'thunder_golem', name: 'Gökgürültüsü Golemi', level: 44, hp: 6500, atk: 520, def: 310, mdef: 250, exp: 2350,
+    species: 'construct', ai: 'tank', aggro: 4, leash: 11, speed: 1.9, attackInterval: 2.6, attackRange: 1.75,
+    dmgType: 'phys', respawn: 30, radius: 0.64, sprite: 'thunder_golem', deathFx: 'storm',
+    abilities: ['heavy_slam'],
+    materials: [{ id: 'meteor_dust', w: 1 }],
+  }),
+  star_parasite: N({
+    id: 'star_parasite', name: 'Yıldız Paraziti', level: 46, hp: 5900, atk: 550, def: 240, mdef: 300, exp: 2700,
+    species: 'insect', ai: 'aggressive', aggro: 5.5, leash: 13, speed: 4.2, attackInterval: 1.4, attackRange: 1.3,
+    dmgType: 'phys', respawn: 24, radius: 0.42, sprite: 'star_parasite', deathFx: 'astral',
+    materials: [{ id: 'star_essence', w: 1 }],
+  }),
+  astral_hunter: N({
+    id: 'astral_hunter', name: 'Astral Avcı', level: 47, hp: 6700, atk: 580, def: 270, mdef: 290, exp: 3050,
+    species: 'humanoid', ai: 'ranged', aggro: 7, leash: 15, speed: 3.0, attackInterval: 2.0, attackRange: 6.5,
+    dmgType: 'phys', respawn: 28, radius: 0.44, sprite: 'astral_hunter', projectile: 'astral_arrow', deathFx: 'astral',
+    materials: [{ id: 'astral_hide', w: 1 }],
+  }),
+  void_armor: N({
+    id: 'void_armor', name: 'Boşluk Zırhlısı', level: 48, hp: 8900, atk: 625, def: 360, mdef: 320, exp: 3500,
+    species: 'construct', ai: 'tank', aggro: 4, leash: 11, speed: 2.0, attackInterval: 2.6, attackRange: 1.8,
+    dmgType: 'phys', respawn: 30, radius: 0.62, sprite: 'void_armor', deathFx: 'void',
+    abilities: ['void_ward'],
+    materials: [{ id: 'void_plate', w: 1 }],
+  }),
+  star_oracle: N({
+    id: 'star_oracle', name: 'Yıldız Kâhini', level: 49, hp: 7800, atk: 660, def: 280, mdef: 410, exp: 4000,
+    species: 'humanoid', ai: 'ranged', aggro: 7, leash: 15, speed: 2.6, attackInterval: 2.3, attackRange: 6,
+    dmgType: 'magic', respawn: 30, radius: 0.44, sprite: 'star_oracle', projectile: 'star_bolt', flying: true, deathFx: 'astral',
+    abilities: ['star_fall'],
+    materials: [{ id: 'oracle_seal', w: 1 }],
+  }),
   // V3 elitleri: V1 kuralı (kendi kampında 25 öldürme + 120 sn aktif süre), Epic %0,75, Legendary yok
   shroud_hunter: {
     id: 'shroud_hunter', normalCoef: 0.7, name: 'Kefen Avcısı', kind: 'elite', level: 34, hp: 14000, atk: 330, def: 170, mdef: 155, exp: 2000,
@@ -294,6 +354,25 @@ export const ENEMIES = {
     abilities: ['obsidian_quake'],
     materials: [{ id: 'obsidian_shard', w: 1 }],
   },
+  // V4 elitleri: aynı doğma kuralı, Epic %0,75, Legendary yok
+  storm_executioner: {
+    id: 'storm_executioner', normalCoef: 0.7, name: 'Fırtına Celladı', kind: 'elite', level: 45, hp: 24000, atk: 730, def: 360, mdef: 310, exp: 8000,
+    species: 'humanoid', ai: 'elite', aggro: 6.5, leash: 15, speed: 2.6, attackInterval: 2.2, attackRange: 2.0,
+    dmgType: 'phys', radius: 0.8, sprite: 'storm_executioner', lootTable: 'elite', gold: [260, 400], deathFx: 'storm',
+    guaranteed: [{ id: 'storm_brand', qty: [1, 1] }],
+    extraRolls: [{ id: 'mastery_book', chance: 0.03 }],
+    abilities: ['storm_field'], enrage: { below: 0.3, atkSpd: 0.72, speed: 1.15 },
+    materials: [{ id: 'lightning_shard', w: 1 }],
+  },
+  void_warden: {
+    id: 'void_warden', normalCoef: 0.7, name: 'Hiçlik Muhafızı', kind: 'elite', level: 49, hp: 35000, atk: 880, def: 430, mdef: 400, exp: 14000,
+    species: 'construct', ai: 'elite', aggro: 6, leash: 14, speed: 2.3, attackInterval: 2.4, attackRange: 2.1,
+    dmgType: 'phys', radius: 0.85, sprite: 'void_warden', lootTable: 'elite', gold: [320, 480], deathFx: 'void',
+    guaranteed: [{ id: 'void_sigil', qty: [1, 1] }],
+    extraRolls: [{ id: 'mastery_book', chance: 0.035 }],
+    abilities: ['void_guard'],
+    materials: [{ id: 'void_plate', w: 1 }],
+  },
   // V3 bossları
   grave_commander: {
     id: 'grave_commander', normalCoef: 0.45, name: 'Mezar Komutanı', kind: 'boss', level: 35, hp: 70000, atk: 345, def: 105, mdef: 120, exp: 6500,
@@ -309,6 +388,23 @@ export const ENEMIES = {
     dmgType: 'phys', radius: 1.4, sprite: 'lost_king', lootTable: 'lost_king', gold: [700, 950], deathFx: 'void',
     guaranteed: [{ id: 'crown_shard', qty: [1, 2] }],
     extraRolls: [{ id: 'ancient_core', chance: 0.4 }, { id: 'mastery_book', chance: 0.12 }],
+  },
+
+  // V4 bossları: Fırtına Tiranı (açık dünya, Gökyarık Ovası) ve Göğün Mahkûmu (Gökyarık Mabedi, 3 aşama)
+  storm_tyrant: {
+    id: 'storm_tyrant', normalCoef: 0.45, name: 'Fırtına Tiranı', kind: 'boss', level: 45, hp: 155000, atk: 640, def: 150, mdef: 150, exp: 26000,
+    species: 'elemental', ai: 'boss_tyrant', aggro: 8, leash: 18, speed: 2.3, attackInterval: 2.3, attackRange: 2.7,
+    dmgType: 'phys', radius: 1.45, sprite: 'storm_tyrant', lootTable: 'storm_tyrant', gold: [900, 1200], deathFx: 'storm',
+    guaranteed: [{ id: 'tyrant_core', qty: [1, 1] }],
+    extraRolls: [{ id: 'ancient_core', chance: 0.4 }, { id: 'mastery_book', chance: 0.1 }],
+    respawn: 1200,
+  },
+  sky_prisoner: {
+    id: 'sky_prisoner', normalCoef: 0.45, name: 'Göğün Mahkûmu', kind: 'boss', level: 50, hp: 210000, atk: 720, def: 160, mdef: 160, exp: 45000,
+    species: 'elemental', ai: 'boss_prisoner', aggro: 10, leash: 30, speed: 2.4, attackInterval: 2.2, attackRange: 2.8,
+    dmgType: 'magic', radius: 1.5, sprite: 'sky_prisoner', lootTable: 'sky_prisoner', gold: [1200, 1600], deathFx: 'astral',
+    guaranteed: [{ id: 'prisoner_chain', qty: [1, 2] }],
+    extraRolls: [{ id: 'ancient_core', chance: 0.5 }, { id: 'mastery_book', chance: 0.15 }],
   },
 
   // ---------------------------------------------------------- YARDIMCI (sayılmaz, EXP/loot vermez)
@@ -348,6 +444,17 @@ export const ENEMIES = {
     id: 'king_seal', name: 'Kadim Mühür', kind: 'summon', level: 40, hp: 5000, atk: 0, def: 40, mdef: 40, exp: 0,
     species: 'construct', ai: 'static', aggro: 0, leash: 0, speed: 0, attackInterval: 99, attackRange: 0,
     dmgType: 'phys', radius: 0.5, sprite: 'void_seal', lootTable: null, gold: [0, 0], noReward: true, deathFx: 'void',
+  },
+  // V4 yardımcıları: Kristal Çağrısı (Fırtına Tiranı; kırılınca boss savunması azalır) ve gökyüzü mühürleri (Göğün Mahkûmu)
+  tyrant_crystal: {
+    id: 'tyrant_crystal', name: 'Enerji Kristali', kind: 'summon', level: 45, hp: 9000, atk: 0, def: 60, mdef: 60, exp: 0,
+    species: 'construct', ai: 'static', aggro: 0, leash: 0, speed: 0, attackInterval: 99, attackRange: 0,
+    dmgType: 'phys', radius: 0.5, sprite: 'storm_crystal', lootTable: null, gold: [0, 0], noReward: true, deathFx: 'storm',
+  },
+  sky_seal: {
+    id: 'sky_seal', name: 'Gök Mührü', kind: 'summon', level: 50, hp: 11000, atk: 0, def: 60, mdef: 60, exp: 0,
+    species: 'construct', ai: 'static', aggro: 0, leash: 0, speed: 0, attackInterval: 99, attackRange: 0,
+    dmgType: 'phys', radius: 0.5, sprite: 'sky_seal', lootTable: null, gold: [0, 0], noReward: true, deathFx: 'astral',
   },
   // ---------------------------------------------------------- V3: GÖREV VARYANTI AVLARI (kind 'hunt')
   // Görev sürerken haritada bir tane doğar; kalıcı boss değildir, EXP verir, ekipman/ganimet düşürmez,

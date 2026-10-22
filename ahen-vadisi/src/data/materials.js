@@ -89,6 +89,29 @@ export const MATERIAL_LIST = [
   mat('dark_steel', 'Kara Çelik', 20, { type: 'ingot', c: '#3a3644' }, 'Lv.31+ eşyaların +1/+2 yükseltmesi için.'),
   mat('soul_essence', 'Ruh Özü', 55, { type: 'essence', c: '#9ad8e8' }, 'Lv.31+ eşyaların +3/+4 yükseltmesi için.'),
   mat('throne_core', 'Taht Çekirdeği', 300, { type: 'core', c: '#c070ff' }, 'Lv.31+ Rare/Epic/Legendary eşyaların +4→+5 yükseltmesi için.'),
+  // V4 — Gökyarık Ovası
+  mat('storm_pelt', 'Fırtına Postu', 20, { type: 'fur', c: '#6a7a9a' }, 'Fırtına Tazısından. Fırtına Çeliği ve okçu zırhlarında.'),
+  mat('rift_feather', 'Çatlak Tüy', 21, { type: 'wing', c: '#8aa0d0' }, 'Çatlak Kanattan. Yay ve sadak tariflerinde.'),
+  mat('lightning_shard', 'Şimşek Parçası', 22, { type: 'shard', c: '#3a4a6a', s: '#ffe070' }, 'Şimşek Yağmacısından. Fırtına Çeliği ve Tiran Özü üretiminde.'),
+  mat('meteor_dust', 'Göktaşı Tozu', 23, { type: 'dust', c: '#9a8a7a' }, 'Gökgürültüsü Goleminden. Yıldız Özü ve zırh tariflerinde.'),
+  // V4 — Yıldız Mezarı
+  mat('star_essence', 'Yıldız Özü', 25, { type: 'essence', c: '#ffe8a0' }, 'Yıldız Parazitinden. Astral Öz ve büyü silahlarında.'),
+  mat('astral_hide', 'Astral Deri', 26, { type: 'cloth', c: '#5a6ab0' }, 'Astral Avcıdan. Okçu ve ölü çağıran zırhlarında.'),
+  mat('void_plate', 'Boşluk Zırhı Parçası', 27, { type: 'plate', c: '#3a3456' }, 'Boşluk Zırhlısından. Ağır zırh ve Gök Çekirdeği üretiminde.'),
+  mat('oracle_seal', 'Kadim Kâhin Mührü', 28, { type: 'seal', c: '#c8b0ff' }, 'Yıldız Kâhininden. Grimuar ve Gök Çekirdeği üretiminde.'),
+  // V4 — elit / boss (garantili)
+  mat('storm_brand', 'Fırtına Damgası', 180, { type: 'badge', c: '#4a6aa0' }, 'Fırtına Celladından (garantili).'),
+  mat('void_sigil', 'Hiçlik Simgesi', 240, { type: 'seal', c: '#2a2040' }, 'Hiçlik Muhafızından (garantili).'),
+  mat('tyrant_core', 'Tiran Çekirdeği', 380, { type: 'core', c: '#5a8aff' }, 'Fırtına Tiranı ganimeti (garantili). Epic üretimi ve Gök Çekirdeği için; Legendary üretim parçası değildir.'),
+  mat('prisoner_chain', 'Mahkûmun Zinciri', 450, { type: 'scrap', c: '#c8c0e0' }, 'Göğün Mahkûmu ganimeti (garantili). Epic üretimi ve Gök Çekirdeği için; Legendary üretim parçası değildir.'),
+  // V4 — toplama
+  mat('storm_ore', 'Fırtına Cevheri', 11, { type: 'ore', c: '#3a4458', s: '#9ad0ff' }, 'Gökyarık Ovası\'nda toplanır. 2 cevher + 1 Kara Çelik = Fırtına Çeliği.'),
+  mat('astral_crystal', 'Astral Kristal', 13, { type: 'crystal', c: '#b0a0ff' }, 'Yıldız Mezarı\'nda toplanır. 2 kristal + 1 Sunak Tozu = Astral Öz.'),
+  mat('star_flower', 'Yıldız Çiçeği', 9, { type: 'herb', c: '#ffe8a0' }, 'Gökyarık bölgelerinde toplanır. Yıldız iksirleri için.'),
+  // V4 — işlenmiş
+  mat('storm_steel', 'Fırtına Çeliği', 28, { type: 'ingot', c: '#4a5a7a' }, 'Lv.41+ eşyaların +1/+2 yükseltmesi için.'),
+  mat('astral_essence', 'Astral Öz', 75, { type: 'essence', c: '#b0a0ff' }, 'Lv.41+ eşyaların +3/+4 yükseltmesi için.'),
+  mat('sky_core', 'Gök Çekirdeği', 420, { type: 'core', c: '#8ab0ff' }, 'Lv.41+ Rare/Epic/Legendary eşyaların +4→+5 yükseltmesi için.'),
 ];
 
 // V3: görev eşyaları — satılamaz, parçalanamaz; görev bırakılınca geri alınır.
@@ -126,6 +149,9 @@ export const POTION_LIST = [
   // V3: Lv.32+ kadim iksirler (Ölü Krallık / Kara Taht)
   { id: 'hp_xxl', name: 'Kadim HP İksiri', cat: 'potion', kind: 'hp', lv: 32, amount: 640, buy: 380, sell: 76, look: { type: 'potion', c: '#d02a5a', size: 3 } },
   { id: 'mp_xxl', name: 'Kadim MP İksiri', cat: 'potion', kind: 'mp', lv: 32, amount: 480, buy: 390, sell: 78, look: { type: 'potion', c: '#7a5aff', size: 3 } },
+  // V4: Lv.42+ yıldız iksirleri (Gökyarık)
+  { id: 'hp_star', name: 'Yıldız HP İksiri', cat: 'potion', kind: 'hp', lv: 42, amount: 900, buy: 560, sell: 112, look: { type: 'potion', c: '#ff6a8a', size: 3 } },
+  { id: 'mp_star', name: 'Yıldız MP İksiri', cat: 'potion', kind: 'mp', lv: 42, amount: 680, buy: 570, sell: 114, look: { type: 'potion', c: '#8a9aff', size: 3 } },
 ];
 for (const p of POTION_LIST) p.desc = `+${p.amount} ${p.kind.toUpperCase()} anında. Bekleme ${10} sn. Seviye ${p.lv}+.`;
 

@@ -55,12 +55,13 @@ describe('Loot RNG', () => {
     expect(maxDry).toBeGreaterThan(1000);
     console.log('Golem 1M: L', L, 'R', R, 'E', E, 'sınıf', own, 'en uzun kuraklık', maxDry);
   });
-  it('Golem, Donmuş Muhafız ve Kayıp Kral dışındaki hiçbir kaynaktan Legendary çıkmaz (her kaynak 100.000)', () => {
+  it('Golem, Donmuş Muhafız, Kayıp Kral ve Göğün Mahkûmu dışındaki hiçbir kaynaktan Legendary çıkmaz (her kaynak 100.000)', () => {
+    const CLS = ['warrior', 'mage', 'archer', 'necromancer'];
     for (const e of sources) {
-      if (e.id === 'mine_golem' || e.id === 'frozen_guardian' || e.id === 'lost_king') continue;
+      if (['mine_golem', 'frozen_guardian', 'lost_king', 'sky_prisoner'].includes(e.id)) continue;
       const r = new Rng(e.id.length * 977);
       for (let i = 0; i < 100000; i++) {
-        const res = rollKillLoot(e.id, { cls: i % 2 ? 'mage' : 'warrior' }, r);
+        const res = rollKillLoot(e.id, { cls: CLS[i % 4] }, r);
         for (const it of res.equipment) expect(it.r).not.toBe('L');
       }
       expect(buildPool(e.id, 'L').length).toBe(0);
@@ -76,7 +77,7 @@ describe('Loot RNG', () => {
         expect(pool.length, `${e.id} ${rar}`).toBeGreaterThan(0);
         for (const p of pool) {
           const tpl = ITEMS[p.tid];
-          if (!p.canonical) expect(tpl.lv, `${e.id} ${p.tid}`).toBeLessThanOrEqual(e.level + 1);
+          if (!p.canonical) expect(tpl.lv, `${e.id} ${p.tid}`).toBeLessThanOrEqual(e.level + (e.variantAbove ?? 1));
           expect(tpl.allowedRarities.includes(rar)).toBe(true);
         }
       }

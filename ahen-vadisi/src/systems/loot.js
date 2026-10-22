@@ -41,7 +41,7 @@ export function buildPool(enemyId, rarity) {
       if (canonicalHere) { out.push({ tid: t.id, canonical: true }); continue; }
       // Varyant: kanonik N/U temel şablonlar, kaynak seviye bandında, N/U/R olarak
       if (t.allowedRarities.length === 1 || !t.allowedRarities.includes(rarity)) continue;
-      const lvOk = t.lv >= e.level - VARIANT_BAND_BELOW && t.lv <= e.level + VARIANT_BAND_ABOVE;
+      const lvOk = t.lv >= e.level - VARIANT_BAND_BELOW && t.lv <= e.level + (e.variantAbove ?? VARIANT_BAND_ABOVE);
       if (lvOk && !bossPool) out.push({ tid: t.id, canonical: false });
     }
     // Boss Rare havuzu: bölge seviye aralığındaki kanonik Rare şablonlar

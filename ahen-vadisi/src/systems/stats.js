@@ -3,7 +3,7 @@ import { CLASSES } from '../data/classes.js';
 import { ITEMS, isUpgradeable } from '../data/items.js';
 import { SKILLS, CLASS_SKILLS } from '../data/skills.js';
 import {
-  SLOTS, CRIT_BASE, CRIT_PER_DEX, CRIT_CAP, ATKSPD_PER_DEX, ATKSPD_CAP, BROKEN_PENALTY,
+  SLOTS, CRIT_BASE, CRIT_PER_DEX, CRIT_CAP, ATKSPD_PER_DEX, ATKSPD_CAP, BROKEN_PENALTY, EVADE_CAP,
 } from '../data/constants.js';
 import { UPGRADE_BONUS_PER_LEVEL } from '../data/recipes.js';
 
@@ -75,45 +75,73 @@ export function computeStats(char, overrideEquipment = null) {
     if (t.effect && slot === 'weapon') legendaryEffect = t.effect;
   }
 
-  // Pasifler
-  const physDmg = passiveValue(char, 'weapon_discipline', 'physDmg');
-  const magicDmg = passiveValue(char, 'elemental_mastery', 'magicDmg');
+  // Pasifler (sınıfa ait olmayan pasifin rankı 0'dır → katkı 0)
+  const physDmg = passiveValue(char, 'weapon_discipline', 'physDmg') + passiveValue(char, 'sharpshooter', 'physDmg');
+  const magicDmg = passiveValue(char, 'elemental_mastery', 'magicDmg') + passiveValue(char, 'dark_knowledge', 'magicDmg');
   const defPct = passiveValue(char, 'hard_skin', 'defPct');
   const hpPct = passiveValue(char, 'hard_skin', 'hpPct');
   const pAtkSpd = passiveValue(char, 'battle_rhythm', 'atkSpd');
   const mpPct = passiveValue(char, 'mana_control', 'mpPct');
   const costRed = passiveValue(char, 'mana_control', 'costRed');
   const slowedDmg = passiveValue(char, 'frozen_target', 'slowedDmg');
-  const pCrit = passiveValue(char, 'frozen_target', 'crit');
-  // V3 Ustalık II (küçük, dengeli; yeni sınıf değildir)
-  const m2 = char.mastery2 ? SKILLS[CLASS_SKILLS[char.cls]?.mastery2] : null;
+  const pCrit = passiveValue(char, 'frozen_target', 'crit') + passiveValue(char, 'hunter_instinct', 'crit');
+  const pEvade = passiveValue(char, 'agile_reflex', 'evade');
+  const moveSpd = passiveValue(char, 'agile_reflex', 'moveSpd');
+  const minionHpP = passiveValue(char, 'bone_bond', 'minionHp');
+  const minionDefP = passiveValue(char, 'bone_bond', 'minionDef');
+  const mpOnHit = passiveValue(char, 'soul_harvest', 'mpOnHit');
+  // V3 Ustalık II / V4 Ustalık III (küçük, dengeli; yeni sınıf değildir)
+  const cs = CLASS_SKILLS[char.cls];
+  const m2 = char.mastery2 ? SKILLS[cs?.mastery2] : null;
+  const m3 = char.mastery3 ? SKILLS[cs?.mastery3] : null;
+  const mv = (k) => (m2?.[k] || 0) + (m3?.[k] || 0);
 
-  const maxHp = Math.round((cls.hp(L, attr.vit) + hpFlat) * (1 + hpPct + (m2?.hpPct || 0)));
-  const maxMp = Math.round((cls.mp(L, attr.int) + mpFlat) * (1 + mpPct + (m2?.mpPct || 0)));
-  const physPower = weaponPhys + 1.2 * attr.str + 0.35 * L;
-  const magicPower = weaponMag + 1.5 * attr.int + 0.3 * L;
-  const def = (armorDef + 0.75 * attr.vit + 0.3 * L) * (1 + defPct);
+  const maxHp = Math.round((cls.hp(L, attr.vit) + hpFlat) * (1 + hpPct + mv('hpPct')));
+  const maxMp = Math.round((cls.mp(L, attr.int) + mpFlat) * (1 + mpPct + mv('mpPct')));
+  // V4: sınıfa özgü güç formülü (Okçu: DEX ağırlıklı; Ölü Çağıran: 1,35 INT). Warrior/Mage formülleri değişmedi.
+  const physPower = weaponPhys + (cls.physPower ? cls.physPower(attr, L) : 1.2 * attr.str + 0.35 * L);
+  const magicPower = weaponMag + (cls.magicPower ? cls.magicPower(attr, L) : 1.5 * attr.int + 0.3 * L);
+  const def = (armorDef + 0.75 * attr.vit + 0.3 * L) * (1 + defPct + mv('defPct'));
   const mdef = gearMdef + 0.4 * attr.int + 0.3 * attr.vit + 0.2 * L;
-  const critChance = Math.min(CRIT_CAP, CRIT_BASE + CRIT_PER_DEX * attr.dex + crit + pCrit);
+  const critChance = Math.min(CRIT_CAP, CRIT_BASE + CRIT_PER_DEX * attr.dex + crit + pCrit + mv('crit'));
   const atkSpeed = Math.min(ATKSPD_CAP, ATKSPD_PER_DEX * attr.dex + atkspd + pAtkSpd);
   const attackInterval = cls.attackInterval / (1 + atkSpeed);
+  const evade = Math.min(EVADE_CAP, pEvade + mv('evade'));
 
   const weaponTpl = eq.weapon ? ITEMS[eq.weapon.tid] : null;
-  return {
+  const phys = cls.damageType === 'phys';
+  const out = {
     cls: char.cls, level: L, ...attr,
     maxHp, maxMp, physPower, magicPower, def, mdef,
-    power: cls.damageType === 'phys' ? physPower : magicPower,
+    power: phys ? physPower : magicPower,
     damageType: cls.damageType,
+    ranged: !!cls.ranged,
     critChance, atkSpeed, attackInterval,
     attackRange: cls.attackRange,
-    dmgMult: cls.damageType === 'phys' ? 1 + physDmg + (m2?.physDmg || 0) : 1 + magicDmg + (m2?.magicDmg || 0),
-    slowedDmg, costRed: costRed + (m2?.costRed || 0), poisonRes: Math.min(0.75, poisonRes), species,
+    dmgMult: phys ? 1 + physDmg + mv('physDmg') : 1 + magicDmg + mv('magicDmg'),
+    slowedDmg, costRed: costRed + mv('costRed'), poisonRes: Math.min(0.75, poisonRes), species,
     passiveReduce: m2?.reduce || 0,
+    evade, moveSpd, mpOnHit,
     legendaryEffect,
     weaponTpl, twoHanded: weaponTpl?.hand === 'two',
     physRange: [physMin, physMax],
   };
+  // V4 Ölü Çağıran: iskelet yardımcının statları (oyuncunun seviyesi, INT ve ekipman gücüne göre)
+  if (char.cls === 'necromancer') {
+    const rank = char.skills?.summon_skeleton || 0;
+    const rankMul = rank ? SKILLS.summon_skeleton.power[rank - 1] : 1;
+    out.minion = {
+      maxHp: Math.round(maxHp * MINION.hp * (1 + minionHpP + mv('minionHp'))),
+      def: def * MINION.def * (1 + minionDefP), mdef: mdef * MINION.def * (1 + minionDefP),
+      power: magicPower * MINION.power * rankMul * (1 + mv('minionDmg')),
+      attackInterval: MINION.attackInterval, level: L, critChance: 0.05,
+    };
+  }
+  return out;
 }
+
+// İskelet yardımcı katsayıları (denge: tests/unit/v4balance.test.js — katkı ≈ sınıf hasarının %25–35'i)
+export const MINION = { hp: 0.55, def: 0.9, power: 0.42, attackInterval: 1.4, range: 1.35, speed: 3.9, followDist: 2.2, leash: 10 };
 
 // Bir eşya kuşanılırsa statlar nasıl değişir? (karşılaştırma ekranı gerçek motordan hesaplar)
 export function statsWithItem(char, inst) {
@@ -133,5 +161,5 @@ export const COMPARE_KEYS = [
 
 export function classSkillList(cls) {
   const cs = CLASS_SKILLS[cls];
-  return { actives: cs.actives.map((id) => SKILLS[id]), passives: cs.passives.map((id) => SKILLS[id]), mastery: SKILLS[cs.mastery] };
+  return { actives: cs.actives.map((id) => SKILLS[id]), passives: cs.passives.map((id) => SKILLS[id]), mastery: SKILLS[cs.mastery], mastery2: SKILLS[cs.mastery2], mastery3: SKILLS[cs.mastery3] };
 }

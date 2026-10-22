@@ -9,7 +9,9 @@ import { MAPS } from '../../src/data/maps/index.js';
 import { LOOT_TABLES } from '../../src/data/loot.js';
 import { xpToNext, cumulativeXp } from '../../src/data/constants.js';
 
-const V1_ITEMS = ITEM_LIST.filter((t) => t.lv <= 20);
+// V4: yeni sınıf eşyaları listenin sonuna eklendi; eski (V1–V3) şablonlar ilk 126 kayıttır ve aynen korunur
+const OLD_ITEMS = ITEM_LIST.slice(0, 126);
+const V1_ITEMS = OLD_ITEMS.filter((t) => t.lv <= 20);
 const V1_QUESTS = QUESTS.filter((q) => (q.main && q.order <= 18) || ['s01', 's02', 's03', 's04', 's05', 's06', 's07', 's08'].includes(q.id));
 const V1_NPCS = ['muhtar', 'boran', 'mira', 'elin', 'hunter', 'sage', 'keeper'];
 
@@ -27,9 +29,9 @@ describe('Veri tabloları', () => {
     expect(ITEMS.M08).toMatchObject({ lv: 20, base: { magMin: 97, magMax: 123 }, legendaryFixed: { int: 16, mp: 60 }, effect: 'spirit_echo' });
   });
   it('V2: 30 yeni şablon (V1+V2 = 90), kimlikler benzersiz, Lv.21–30 (V3: toplam 126 ayrıca test edilir)', () => {
-    expect(ITEM_LIST.filter((t) => t.lv <= 30).length).toBe(90);
+    expect(OLD_ITEMS.filter((t) => t.lv <= 30).length).toBe(90);
     expect(new Set(ITEM_LIST.map((t) => t.id)).size).toBe(ITEM_LIST.length);
-    const v2 = ITEM_LIST.filter((t) => t.lv > 20 && t.lv <= 30);
+    const v2 = OLD_ITEMS.filter((t) => t.lv > 20 && t.lv <= 30);
     expect(v2.length).toBe(30);
     const c = { N: 0, U: 0, R: 0, E: 0, L: 0 };
     for (const t of v2) c[t.rarity]++;
@@ -41,16 +43,16 @@ describe('Veri tabloları', () => {
     expect(ITEMS.A08).toMatchObject({ fixed: { mdef: 20, vit: 4 } });
   });
   it('her oynanabilir sınıf için her slotta en az bir eşya var', () => {
-    for (const cls of ['warrior', 'mage']) {
+    for (const cls of ['warrior', 'mage', 'archer', 'necromancer']) {
       for (const slot of ['weapon', 'offhand', 'helm', 'chest', 'gloves', 'boots', 'ring', 'amulet']) {
         expect(ITEM_LIST.some((t) => t.slot === slot && (t.cls === cls || t.cls === 'any'))).toBe(true);
       }
     }
   });
-  it('V1 12 normal, 3 elit, 2 boss + V2 8 normal, 2 elit, 2 boss (+ V3 8/2/2 → 28/7/6)', () => {
-    expect(NORMAL_IDS.length).toBe(28);
-    expect(ELITE_IDS.length).toBe(7);
-    expect(BOSS_IDS.length).toBe(6);
+  it('V1 12 normal, 3 elit, 2 boss + V2 8 normal, 2 elit, 2 boss (+ V3 8/2/2 + V4 8/2/2 → 36/9/8)', () => {
+    expect(NORMAL_IDS.length).toBe(36);
+    expect(ELITE_IDS.length).toBe(9);
+    expect(BOSS_IDS.length).toBe(8);
     const v2 = { ash_imp: [21, 670, 105, 54, 45, 250], ash_hunter: [23, 770, 120, 60, 48, 300], crimson_scorpion: [24, 930, 125, 75, 43, 340],
       burnt_warrior: [25, 1050, 142, 70, 58, 390], frost_wolf: [26, 1100, 148, 72, 65, 410], ice_wisp: [27, 850, 153, 46, 76, 450],
       frost_sentinel: [28, 1450, 184, 95, 72, 500], snow_shaman: [29, 1200, 190, 65, 97, 550], ash_butcher: [25, 5800, 170, 82, 65, 950],
@@ -77,7 +79,9 @@ describe('Veri tabloları', () => {
     expect(LOOT_TABLES.frost_keeper).toMatchObject({ R: 30, E: 7, L: 0.4 });
     expect(LOOT_TABLES.grave_commander).toMatchObject({ R: 25, E: 3, L: 0 });
     expect(LOOT_TABLES.lost_king).toMatchObject({ R: 33, E: 8, L: 0.4 });
-    for (const [k, t] of Object.entries(LOOT_TABLES)) if (k !== 'golem' && k !== 'frost_keeper' && k !== 'lost_king') expect(t.L).toBe(0);
+    expect(LOOT_TABLES.storm_tyrant).toMatchObject({ R: 26, E: 3.5, L: 0 });
+    expect(LOOT_TABLES.sky_prisoner).toMatchObject({ R: 34, E: 9, L: 0.4 });
+    for (const [k, t] of Object.entries(LOOT_TABLES)) if (!['golem', 'frost_keeper', 'lost_king', 'sky_prisoner'].includes(k)) expect(t.L).toBe(0);
   });
   it('tarif girdi/çıktıları tanımlı ID', () => {
     for (const r of RECIPES) {
@@ -95,7 +99,8 @@ describe('Veri tabloları', () => {
     expect([20, 21, 22, 23, 24, 25, 26, 27, 28, 29].map(xpToNext)).toEqual(want);
     expect(want.reduce((a, b) => a + b, 0)).toBe(368300);
     expect(cumulativeXp(30) - cumulativeXp(20)).toBe(368300);
-    expect(xpToNext(40)).toBe(Infinity);
+    expect(xpToNext(40)).toBe(153680);   // V4: sınır 50 (aynı formül)
+    expect(xpToNext(50)).toBe(Infinity);
   });
   it('V2 görevleri: 10 ana + 4 yan; EXP 70.500 + 22.000 (V3 görevleri ayrıca sayılır)', () => {
     const V2_IDS = ['m27', 'm28', 'm29', 'm30', 'm31', 'm32', 'm33', 'm34', 'm35', 'm36', 's09', 's10', 's11', 's12'];

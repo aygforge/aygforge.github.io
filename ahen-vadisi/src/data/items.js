@@ -1,4 +1,5 @@
-// 60 ekipman şablonu (V1, belge §7) + 30 V2 şablonu (Kül ve Ayaz, Lv.21–30) + 36 V3 şablonu (Lv.31–40) = 126. Değerler +0 sabit temel değerlerdir.
+// 60 ekipman şablonu (V1, belge §7) + 30 V2 şablonu (Kül ve Ayaz, Lv.21–30) + 36 V3 şablonu (Lv.31–40) = 126.
+// V4 (Gökyarık): +84 şablon = 210 (Okçu/Ölü Çağıran Lv.1–50, Warrior/Mage Lv.44–50, ortak aksesuar). Değerler +0 sabit temel değerlerdir.
 // base: yükseltmeden etkilenen temel değerler (atk/mag aralığı, def, mdef, focus büyü gücü)
 // fixed: sabit bonuslar (yükseltmeden etkilenmez)
 // look: procedural pixel-art parametreleri
@@ -11,6 +12,13 @@ const M = (id, name, lv, rarity, hand, mag, sources, look, extra = {}) => ({
 });
 const A = (id, name, slot, cls, lv, rarity, base, fixed, sources, look) => ({
   id, name, slot, cls, lv, rarity, base, fixed, sources, look,
+});
+// V4: Okçu yayı (fiziksel menzilli; sadakla birlikte kullanılır — 'bow' iki elli sayılmaz) ve Ölü Çağıran silahı (büyü gücü)
+const Y = (id, name, lv, rarity, atk, sources, look, extra = {}) => ({
+  id, name, slot: 'weapon', cls: 'archer', lv, rarity, hand: 'bow', base: { atkMin: atk[0], atkMax: atk[1] }, fixed: {}, sources, look: { type: 'bow', ...look }, ...extra,
+});
+const K = (id, name, lv, rarity, hand, mag, sources, look, extra = {}) => ({
+  id, name, slot: 'weapon', cls: 'necromancer', lv, rarity, hand, base: { magMin: mag[0], magMax: mag[1] }, fixed: {}, sources, look, ...extra,
 });
 
 export const ITEM_LIST = [
@@ -187,6 +195,118 @@ export const ITEM_LIST = [
   A('A10', 'Lanet Kıran Kolye', 'amulet', 'any', 35, 'E', {}, { crit: 0.04, mdef: 30 }, ['grave_commander', 'shroud_hunter'], { type: 'medal', chain: '#b8903a', gem: '#9ae08a' }),
   A('A11', 'Obsidyen Muska', 'amulet', 'any', 38, 'R', {}, { vit: 5, hp: 100 }, ['throne_executioner'], { type: 'amulet', chain: '#26202e', gem: '#a070e0' }),
   A('A12', 'Kayıp Taç Madalyonu', 'amulet', 'any', 40, 'E', {}, { vit: 5, mp: 100, mdef: 45 }, ['lost_king'], { type: 'medal', chain: '#c8a050', gem: '#e0c8ff' }),
+
+  // ================================================ V4.0 — GÖKYARIK (84)
+  // Okçu yayları (14): temel Lv.1/5/10/15/20/25/30/35/40/45 + boss Legendary Lv.20/30/40/50 (yalnız Legendary havuzlarından).
+  // Y10/K10 Lv.45 Uncommon temel şablondur: Gökyarık yaratıklarının N/U/R varyant havuzu bunlarla dolar.
+  Y('Y01', 'Köy Yayı', 1, 'N', [5, 8], ['starter', 'merchant'], { wood: '#8a6238', string: '#e8e0c8', len: 13 }),
+  Y('Y02', 'Avcı Yayı', 5, 'U', [14, 19], ['gray_wolf', 'craft'], { wood: '#6a4a2a', string: '#e8e0c8', len: 14, grip: '#4f6b3a' }),
+  Y('Y03', 'Maden Yayı', 10, 'R', [29, 38], ['pick_goblin'], { wood: '#5a5a66', string: '#d8d8e0', len: 14, gem: '#4f9bff' }),
+  Y('Y04', 'Kızıl Damar Yayı', 15, 'E', [47, 61], ['red_vein_watcher'], { wood: '#7a2a22', string: '#ffd0a0', len: 15, gem: '#ff6a5a' }, { unique: true }),
+  Y('Y05', 'Bataklık Yayı', 20, 'R', [60, 77], ['rotten_guard', 'craft'], { wood: '#4f6a52', string: '#c8e0c0', len: 15, gem: '#6ad08a' }),
+  Y('Y06', 'Kor Yayı', 25, 'E', [92, 118], ['ash_giant', 'ash_butcher'], { wood: '#3a2a24', string: '#ffb070', len: 16, gem: '#ff8a3a', glow: '#ff7a2a' }, { unique: true }),
+  Y('Y07', 'Ayaz Yayı', 30, 'R', [118, 150], ['snow_shaman', 'craft'], { wood: '#a8c8e0', string: '#ffffff', len: 16, gem: '#7ad8ff' }),
+  Y('Y08', 'Mezar Avcısı Yayı', 35, 'E', [185, 232], ['grave_commander', 'shroud_hunter'], { wood: '#4a4a52', string: '#e0d8c4', len: 16, gem: '#c080ff' }, { unique: true }),
+  Y('Y09', 'Obsidyen Yay', 40, 'R', [235, 290], ['void_priest'], { wood: '#26202e', string: '#c8a0ff', len: 17, gem: '#a070e0' }),
+  Y('Y10', 'Fırtına Yayı', 45, 'U', [300, 368], ['astral_hunter'], { wood: '#3a4a6a', string: '#ffe070', len: 17, gem: '#9ad0ff' }),
+  Y('Y11', 'Cevher Yayı', 20, 'L', [86, 110], ['mine_golem'], { wood: '#6e7280', string: '#b0f0ff', len: 17, gem: '#5ae0ff', glow: '#5ae0ff' },
+    { unique: true, legendaryFixed: { dex: 14, crit: 0.06 }, effect: 'ore_volley' }),
+  Y('Y12', 'Ayaz Avcısı Yayı', 30, 'L', [142, 178], ['frozen_guardian'], { wood: '#c8f0ff', string: '#ffffff', len: 18, gem: '#ffffff', glow: '#7ad8ff' },
+    { unique: true, legendaryFixed: { dex: 16, crit: 0.06 }, effect: 'frost_hunt' }),
+  Y('Y13', 'Kral Avcısı Yayı', 40, 'L', [300, 362], ['lost_king'], { wood: '#1e1428', string: '#e0c8ff', len: 18, gem: '#c8a050', glow: '#a070e0' },
+    { unique: true, legendaryFixed: { dex: 22, crit: 0.06 }, effect: 'king_hunt' }),
+  Y('Y14', 'Fırtına Yemini', 50, 'L', [432, 520], ['sky_prisoner'], { wood: '#2a3a6a', string: '#fff4b0', len: 19, gem: '#ffffff', glow: '#9ad0ff' },
+    { unique: true, legendaryFixed: { dex: 28, crit: 0.07 }, effect: 'storm_oath' }),
+
+  // Ölü Çağıran silahları (14): kemik asa, büyü kitabı, lanetli değnek, grimuar
+  K('K01', 'Çırak Kemik Asası', 1, 'N', 'two', [5, 8], ['starter', 'merchant'], { type: 'staff', shaft: '#d8d0bc', head: 'skull', orb: '#8ad0a0', len: 15 }),
+  K('K02', 'Mezar Değneği', 5, 'U', 'one', [12, 17], ['thorn_rootling', 'craft'], { type: 'wand', shaft: '#5a4a3a', head: 'skull', orb: '#9ae08a', len: 10 }),
+  K('K03', 'Ruh Kitabı', 10, 'R', 'one', [29, 38], ['cave_bat'], { type: 'tome', cover: '#3a4a3a', page: '#e8e0c8', gem: '#8ad0a0' }),
+  K('K04', 'Lanetli Grimuar', 15, 'E', 'two', [50, 63], ['red_vein_watcher'], { type: 'tome', cover: '#5a1e2a', page: '#e8d8c0', gem: '#ff6a5a', big: true }, { unique: true }),
+  K('K05', 'Bataklık Kemik Asası', 20, 'R', 'two', [62, 80], ['mist_witch', 'craft'], { type: 'staff', shaft: '#8a9a7a', head: 'skull', orb: '#6fe0c8', len: 16 }),
+  K('K06', 'Kor Grimuarı', 25, 'E', 'two', [100, 126], ['ash_giant', 'ash_butcher'], { type: 'tome', cover: '#3a2420', page: '#ffd8a0', gem: '#ff8a3a', big: true, glow: '#ff7a2a' }, { unique: true }),
+  K('K07', 'Ayaz Kemik Değneği', 30, 'R', 'one', [112, 140], ['ice_wisp', 'craft'], { type: 'wand', shaft: '#d8e8f0', head: 'skull', orb: '#9fe8ff', len: 11 }),
+  K('K08', 'Komutanın Ruh Kitabı', 35, 'E', 'two', [195, 242], ['grave_commander', 'shroud_hunter'], { type: 'tome', cover: '#4a4a52', page: '#e0d8c4', gem: '#9ad8e8', big: true }, { unique: true }),
+  K('K09', 'Hiçlik Grimuarı', 40, 'R', 'one', [215, 268], ['throne_executioner'], { type: 'tome', cover: '#1e1428', page: '#c8b8e0', gem: '#a070e0' }),
+  K('K10', 'Yıldız Kemik Asası', 45, 'U', 'two', [300, 368], ['star_oracle'], { type: 'staff', shaft: '#e8e0c8', head: 'skull', orb: '#ffe8a0', len: 17 }),
+  K('K11', 'Maden Ruhları Kitabı', 20, 'L', 'two', [92, 117], ['mine_golem'], { type: 'tome', cover: '#4a5a6a', page: '#e0f4ff', gem: '#5ae0ff', big: true, glow: '#5ae0ff' },
+    { unique: true, legendaryFixed: { int: 16, mp: 60 }, effect: 'mine_souls' }),
+  K('K12', 'Donmuş Kemikler Kitabı', 30, 'L', 'two', [150, 186], ['frozen_guardian'], { type: 'tome', cover: '#a8c8e0', page: '#ffffff', gem: '#7ad8ff', big: true, glow: '#9fe8ff' },
+    { unique: true, legendaryFixed: { int: 18, mp: 75 }, effect: 'frozen_bones' }),
+  K('K13', 'Kayıp Ruhlar Kitabı', 40, 'L', 'two', [322, 390], ['lost_king'], { type: 'tome', cover: '#26202e', page: '#e0c8ff', gem: '#c8a050', big: true, glow: '#c080ff' },
+    { unique: true, legendaryFixed: { int: 24, mp: 120 }, effect: 'lost_souls' }),
+  K('K14', 'Ruhların Son Çağrısı', 50, 'L', 'two', [460, 552], ['sky_prisoner'], { type: 'staff', shaft: '#e8e0c8', head: 'skull', orb: '#b0a0ff', len: 19, glow: '#b0a0ff' },
+    { unique: true, legendaryFixed: { int: 30, mp: 160 }, effect: 'last_call' }),
+
+  // Okçu zırhları (16): hafif deri / avcı — başlık, göğüs, eldiven, bot (Lv.1–5, ~15, ~30, ~45)
+  A('YH01', 'Avcı Başlığı', 'helm', 'archer', 1, 'N', { def: 2, mdef: 1 }, {}, ['starter', 'merchant'], { type: 'hood', main: '#5a6a3a', trim: '#3a4020' }),
+  A('YH02', 'İzci Kapişonu', 'helm', 'archer', 15, 'R', { def: 9, mdef: 4 }, {}, ['cave_bat'], { type: 'hood', main: '#4a5a3a', trim: '#c0a060' }),
+  A('YH03', 'Ayaz İzcisi Başlığı', 'helm', 'archer', 30, 'R', { def: 20, mdef: 10 }, {}, ['frost_wolf'], { type: 'hood', main: '#a8c8d8', trim: '#4a6a8a' }),
+  A('YH04', 'Fırtına Kartalı Başlığı', 'helm', 'archer', 45, 'E', { def: 40, mdef: 22 }, {}, ['storm_executioner', 'sky_prisoner'], { type: 'hood', main: '#3a4a6a', trim: '#ffe070' }),
+  A('YC01', 'Deri Yelek', 'chest', 'archer', 1, 'N', { def: 4, mdef: 1 }, {}, ['starter', 'merchant'], { type: 'armor', main: '#8a6a44', trim: '#4f6b3a', tier: 0 }),
+  A('YC02', 'İzci Yeleği', 'chest', 'archer', 15, 'R', { def: 16, mdef: 6 }, {}, ['ironshell_beetle', 'craft'], { type: 'armor', main: '#5a6a3a', trim: '#8a6a44', tier: 1 }),
+  A('YC03', 'Ayaz Avcısı Zırhı', 'chest', 'archer', 30, 'R', { def: 42, mdef: 18 }, { hp: 50 }, ['frost_sentinel', 'craft'], { type: 'armor', main: '#8ab0c8', trim: '#e0f0ff', tier: 2 }),
+  A('YC04', 'Gökyarık Avcı Zırhı', 'chest', 'archer', 45, 'E', { def: 100, mdef: 45 }, { hp: 120 }, ['storm_tyrant', 'storm_executioner'], { type: 'armor', main: '#3a4a6a', trim: '#ffe070', tier: 4 }),
+  A('YG01', 'Okçu Bilekliği', 'gloves', 'archer', 3, 'N', { def: 1 }, {}, ['merchant', 'meadow_rat'], { type: 'gloves', main: '#8a6a44' }),
+  A('YG02', 'Gergin Kiriş Eldiveni', 'gloves', 'archer', 15, 'U', { def: 4 }, { dex: 1 }, ['swamp_leech'], { type: 'gloves', main: '#5a6a3a' }),
+  A('YG03', 'Akrep Derisi Eldiven', 'gloves', 'archer', 30, 'R', { def: 11, mdef: 4 }, { dex: 3 }, ['crimson_scorpion'], { type: 'gloves', main: '#9a3a2a' }),
+  A('YG04', 'Hiçlik Avcısı Eldiveni', 'gloves', 'archer', 45, 'E', { def: 20, mdef: 10 }, { dex: 5 }, ['void_warden'], { type: 'gloves', main: '#2a2440', gem: '#b0a0ff' }),
+  A('YB01', 'Patika Çizmesi', 'boots', 'archer', 5, 'U', { def: 3 }, {}, ['gray_wolf'], { type: 'boots', main: '#6a4a2a' }),
+  A('YB02', 'Sessiz Adım Çizmesi', 'boots', 'archer', 15, 'R', { def: 6 }, { dex: 1 }, ['mud_dwarf'], { type: 'boots', main: '#4f5a3a' }),
+  A('YB03', 'Kar İzi Çizmesi', 'boots', 'archer', 30, 'R', { def: 12, mdef: 6 }, { vit: 3 }, ['ice_wisp'], { type: 'boots', main: '#8ab0c8' }),
+  A('YB04', 'Fırtına Koşucusu Çizmesi', 'boots', 'archer', 45, 'E', { def: 22, mdef: 12 }, { vit: 5 }, ['void_warden', 'craft'], { type: 'boots', main: '#3a4a6a' }),
+
+  // Ölü Çağıran zırhları (16): karanlık kumaş / ritüel
+  A('KH01', 'Ritüel Başlığı', 'helm', 'necromancer', 1, 'N', { def: 1, mdef: 2 }, {}, ['starter', 'merchant'], { type: 'hood', main: '#3a3a3a', trim: '#8ad0a0' }),
+  A('KH02', 'Mezar Kukuletası', 'helm', 'necromancer', 15, 'R', { def: 5, mdef: 9 }, {}, ['ore_priest'], { type: 'hood', main: '#2e3a2e', trim: '#9ae08a' }),
+  A('KH03', 'Kar Ruhu Başlığı', 'helm', 'necromancer', 30, 'R', { def: 12, mdef: 25 }, {}, ['snow_shaman'], { type: 'hood', main: '#c8d8e0', trim: '#5a7a9a' }),
+  A('KH04', 'Hiçlik Ritüel Tacı', 'helm', 'necromancer', 45, 'E', { def: 26, mdef: 55 }, {}, ['void_warden', 'sky_prisoner'], { type: 'hat', main: '#1e1428', trim: '#b0a0ff' }),
+  A('KC01', 'Ölü Çağıran Cübbesi', 'chest', 'necromancer', 1, 'N', { def: 2, mdef: 3 }, {}, ['starter', 'merchant'], { type: 'robe', main: '#2e3030', trim: '#8ad0a0', tier: 0 }),
+  A('KC02', 'Mezar Dokuma Cübbesi', 'chest', 'necromancer', 15, 'R', { def: 11, mdef: 17 }, {}, ['swamp_leech', 'craft'], { type: 'robe', main: '#2a3a2e', trim: '#9ae08a', tier: 1 }),
+  A('KC03', 'Donmuş Ritüel Cübbesi', 'chest', 'necromancer', 30, 'R', { def: 32, mdef: 52 }, {}, ['ice_wisp', 'craft'], { type: 'robe', main: '#3a4a5a', trim: '#9fe8ff', tier: 2 }),
+  A('KC04', 'Yıldız Ritüeli Cübbesi', 'chest', 'necromancer', 45, 'E', { def: 70, mdef: 110 }, { mp: 120 }, ['storm_tyrant', 'void_warden'], { type: 'robe', main: '#1e1a2e', trim: '#b0a0ff', tier: 4 }),
+  A('KG01', 'Kefen Sargısı', 'gloves', 'necromancer', 3, 'N', { def: 1 }, {}, ['merchant', 'meadow_rat'], { type: 'gloves', main: '#c8c0a8' }),
+  A('KG02', 'Mezar Eldiveni', 'gloves', 'necromancer', 15, 'U', { def: 2 }, { mp: 10 }, ['mud_dwarf'], { type: 'gloves', main: '#3a4a3a', gem: '#9ae08a' }),
+  A('KG03', 'Kor Ritüel Eldiveni', 'gloves', 'necromancer', 30, 'R', { def: 8, mdef: 14 }, { int: 3 }, ['burnt_warrior'], { type: 'gloves', main: '#4a3a3a', gem: '#ff8a3a' }),
+  A('KG04', 'Fırtına Ruhu Eldiveni', 'gloves', 'necromancer', 45, 'E', { def: 16, mdef: 26 }, { int: 5 }, ['storm_executioner'], { type: 'gloves', main: '#2a3450', gem: '#9ad0ff' }),
+  A('KB01', 'Mezarcı Pabucu', 'boots', 'necromancer', 5, 'U', { def: 2 }, { mp: 10 }, ['meadow_rat'], { type: 'boots', main: '#3a3a3a' }),
+  A('KB02', 'Sis Adımları', 'boots', 'necromancer', 15, 'R', { def: 4, mdef: 5 }, {}, ['cave_bat'], { type: 'boots', main: '#3a4a4a' }),
+  A('KB03', 'Ayaz Kefeni Çizmesi', 'boots', 'necromancer', 30, 'R', { def: 9, mdef: 17 }, { mp: 35 }, ['frost_wolf'], { type: 'boots', main: '#8a9aa8' }),
+  A('KB04', 'Ruh Yolcusu Çizmesi', 'boots', 'necromancer', 45, 'E', { def: 17, mdef: 32 }, { mp: 80 }, ['storm_executioner', 'craft'], { type: 'boots', main: '#2a2440' }),
+
+  // Yardımcı el (8): Okçu sadağı (yay + sadak geçerli kombinasyon), Ölü Çağıran tılsımı/odağı/mührü
+  A('YO01', 'Deri Sadak', 'offhand', 'archer', 1, 'N', { atkMin: 1, atkMax: 2 }, {}, ['merchant'], { type: 'quiver', main: '#8a6238', fletch: '#e0e0e0' }),
+  A('YO02', 'Avcı Sadağı', 'offhand', 'archer', 12, 'U', { atkMin: 4, atkMax: 6 }, { dex: 1 }, ['pick_goblin'], { type: 'quiver', main: '#5a6a3a', fletch: '#c0a060' }),
+  A('YO03', 'Kızıl Tüylü Sadak', 'offhand', 'archer', 25, 'R', { atkMin: 11, atkMax: 14 }, { crit: 0.02 }, ['ash_hunter'], { type: 'quiver', main: '#7a2a22', fletch: '#ff8a3a' }),
+  A('YO04', 'Obsidyen Sadak', 'offhand', 'archer', 40, 'E', { atkMin: 22, atkMax: 28 }, { dex: 4, crit: 0.02 }, ['obsidian_executioner', 'craft'], { type: 'quiver', main: '#26202e', fletch: '#a070e0' }),
+  A('KO01', 'Kemik Tılsımı', 'offhand', 'necromancer', 1, 'N', { mag: 3 }, {}, ['merchant'], { type: 'talisman', main: '#e8e0c8', orb: '#8ad0a0' }),
+  A('KO02', 'Ruh Odağı', 'offhand', 'necromancer', 12, 'U', { mag: 10 }, { mp: 12 }, ['cave_bat'], { type: 'focus', main: '#3a4a3a', orb: '#9ae08a' }),
+  A('KO03', 'Kor Mührü', 'offhand', 'necromancer', 25, 'R', { mag: 24 }, { mp: 40 }, ['crimson_scorpion'], { type: 'talisman', main: '#4a2a22', orb: '#ff8a3a' }),
+  A('KO04', 'Hiçlik Kemik Mührü', 'offhand', 'necromancer', 40, 'E', { mag: 58 }, { mp: 100 }, ['obsidian_executioner', 'craft'], { type: 'talisman', main: '#26202e', orb: '#a070e0' }),
+
+  // Warrior / Mage Lv.40–50 (8)
+  W('W20', 'Fırtına Çeliği Kılıcı', 44, 'R', 'one', [282, 344], ['thunder_golem'], { type: 'sword', blade: '#c8d8f0', guard: '#3a4a6a', grip: '#1e2430', len: 13, gem: '#9ad0ff' }),
+  W('W21', 'Gökyarık Baltası', 47, 'E', 'two', [372, 452], ['void_warden', 'sky_prisoner'], { type: 'axe', blade: '#b0a0ff', guard: '#2a2440', grip: '#14101a', len: 15, gem: '#ffe070', glow: '#9ad0ff' }, { unique: true }),
+  W('W22', 'Göğün Hükmü', 50, 'L', 'two', [432, 520], ['sky_prisoner'], { type: 'greatsword', blade: '#e8f0ff', guard: '#ffe070', grip: '#1e2440', len: 19, gem: '#ffffff', glow: '#9ad0ff' },
+    { unique: true, legendaryFixed: { str: 28, crit: 0.08 }, effect: 'sky_verdict' }),
+  A('C17', 'Fırtına Hükümdarı Zırhı', 'chest', 'warrior', 46, 'E', { def: 150 }, { hp: 200 }, ['storm_tyrant', 'void_warden'], { type: 'armor', main: '#3a4a6a', trim: '#ffe070', tier: 4 }),
+  M('M20', 'Çatlak Gök Değneği', 44, 'R', 'one', [296, 362], ['rift_wing'], { type: 'wand', shaft: '#3a4a6a', head: 'crystal', orb: '#9ad0ff', len: 11 }),
+  M('M21', 'Yıldız Kâhini Asası', 47, 'E', 'two', [392, 476], ['void_warden', 'sky_prisoner'], { type: 'staff', shaft: '#2a2440', head: 'star', orb: '#ffe8a0', len: 18, glow: '#b0a0ff' }, { unique: true }),
+  M('M22', 'Astral Kıyamet Asası', 50, 'L', 'two', [460, 556], ['sky_prisoner'], { type: 'staff', shaft: '#e8e0f8', head: 'star', orb: '#ffffff', len: 19, glow: '#b0a0ff' },
+    { unique: true, legendaryFixed: { int: 30, mp: 160 }, effect: 'astral_doom' }),
+  A('C18', 'Göğün Dokuma Cübbesi', 'chest', 'mage', 46, 'E', { def: 78, mdef: 120 }, { mp: 120 }, ['storm_tyrant', 'void_warden'], { type: 'robe', main: '#2a3a6a', trim: '#ffe070', tier: 4 }),
+
+  // Dört sınıfa uygun aksesuarlar (4)
+  A('R13', 'Fırtına Halkası', 'ring', 'any', 44, 'R', {}, { dex: 5, hp: 90 }, ['storm_hound'], { type: 'ring', band: '#3a4a6a', gem: '#9ad0ff' }),
+  A('R14', 'Yıldız Yüzüğü', 'ring', 'any', 49, 'E', {}, { crit: 0.04, vit: 5, mp: 90 }, ['sky_prisoner', 'void_warden'], { type: 'ring', band: '#e8e0f8', gem: '#ffe8a0' }),
+  A('A13', 'Gökyarık Tılsımı', 'amulet', 'any', 45, 'R', {}, { vit: 6, hp: 130 }, ['star_parasite'], { type: 'amulet', chain: '#3a4a6a', gem: '#b0a0ff' }),
+  A('A14', 'Mahkûmun Madalyonu', 'amulet', 'any', 50, 'E', {}, { str: 5, dex: 5, int: 5, mdef: 45 }, ['sky_prisoner'], { type: 'medal', chain: '#c8c0e0', gem: '#ffffff' }),
+
+  // İki yeni sınıfa özel ara seviye ekipman (4): Lv.28 ve Lv.43
+  A('YH05', 'Kartal Gözü Başlığı', 'helm', 'archer', 28, 'R', { def: 18, mdef: 8 }, { crit: 0.02 }, ['burnt_warrior'], { type: 'hood', main: '#7a5a32', trim: '#ffd060' }),
+  A('YC05', 'Fırtına Avcısı Yeleği', 'chest', 'archer', 43, 'E', { def: 88, mdef: 40 }, { dex: 4, hp: 90 }, ['storm_tyrant', 'craft'], { type: 'armor', main: '#4a5a7a', trim: '#9ad0ff', tier: 4 }),
+  A('KG05', 'Kemik Parmaklık', 'gloves', 'necromancer', 28, 'R', { def: 8, mdef: 12 }, { int: 3 }, ['ash_hunter'], { type: 'gloves', main: '#d8d0bc', gem: '#8ad0a0' }),
+  A('KH05', 'Ruh Tacı', 'helm', 'necromancer', 43, 'E', { def: 24, mdef: 52 }, { int: 4 }, ['storm_tyrant', 'craft'], { type: 'hat', main: '#2a2440', trim: '#9ad8e8' }),
 ];
 
 export const ITEMS = Object.fromEntries(ITEM_LIST.map((t) => [t.id, t]));
@@ -201,6 +321,11 @@ export function isTwoHanded(t) {
   return t.slot === 'weapon' && t.hand === 'two';
 }
 
+// V4: yay iki elle tutulur ama sadakla (yardımcı el) birlikte kullanılır — yalnız Okçu eşyası
+export function isBow(t) {
+  return t.slot === 'weapon' && t.hand === 'bow';
+}
+
 export function canClassUse(t, cls) {
   return t.cls === 'any' || t.cls === cls;
 }
@@ -213,3 +338,6 @@ export function isUpgradeable(t) {
 export const MERCHANT_PRICE = {
   weapon: 90, offhand: 45, helm: 35, chest: 55, gloves: 25, boots: 28, ring: 50, amulet: 50,
 };
+
+// V4: eşya sayıları (belge): 126 eski + 84 yeni = 210
+export const V4_ITEM_IDS = ITEM_LIST.slice(126).map((t) => t.id);

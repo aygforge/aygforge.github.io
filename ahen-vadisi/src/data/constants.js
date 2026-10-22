@@ -29,6 +29,7 @@ export const CRIT_MULT = 1.5;
 export const ATKSPD_PER_DEX = 0.002;
 export const ATKSPD_CAP = 0.35;
 export const NORMAL_VARIANCE = 0.05;
+export const EVADE_CAP = 0.2;           // V4 Okçu: kaçınma (yalnız telegrafsız normal saldırılara) en çok %20
 
 export const REGEN_DELAY = 5;           // sn, son hasardan sonra
 export const REGEN_HP_PCT = 0.015;      // saniyede maks HP
