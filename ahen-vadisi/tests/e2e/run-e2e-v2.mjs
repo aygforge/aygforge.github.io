@@ -72,7 +72,7 @@ try {
       const backup = await a.repo.readRaw('v1_backup');
       return { ok: !!r.profile, from: r.migratedFrom, level: c.level, gold: c.gold, bar: c.skillBar, hist: !!c.history?.fromV1, backup: backup?.schemaVersion, sv: r.profile.schemaVersion };
     });
-    record('V1 kaydı açılır ve V2\'ye geçer (seviye/gold korunur)', mig.ok && mig.from === 1 && mig.level === 20 && mig.gold === 777 && mig.sv === 2, JSON.stringify(mig));
+    record('V1 kaydı açılır ve güncel şemaya (V3) geçer (seviye/gold korunur)', mig.ok && mig.from === 1 && mig.level === 20 && mig.gold === 777 && mig.sv === 3, JSON.stringify(mig));
     record('Geçişte V1 yedeği saklanır; varsayılan 4\'lü beceri çubuğu; Av Geçmişi V2\'den başlar', mig.backup === 1 && mig.bar?.length === 4 && mig.hist, JSON.stringify(mig));
     await ctx.close();
   }

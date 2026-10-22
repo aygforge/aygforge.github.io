@@ -100,7 +100,7 @@ export default {
     { type: 'qobj', group: 'silent_statue', id: 'st_se', x: 69, y: 54, label: 'Suskun heykel', say: 'Kaidede silinmiş bir ad ve taze bir yemin: "Hüküm sonsuzdur."' },
     // Kanlı Yemin (m44): onarım + savunma
     ...ROYAL_SEALS.map((s) => ({ type: 'qobj', group: 'royal_seal', id: s.id, x: s.x, y: s.y + 2, label: s.name, sprite: 'royal_seal', say: `${s.name} onarıldı. Tahtın lanetli muhafızları uyanıyor!` })),
-    ...ROYAL_SEALS.map((s) => ({ type: 'defense', id: `def_${s.id}`, x: s.x + 2, y: s.y + 2, name: s.name, sprite: 'royal_seal', hp: 9000, ring: 9,
+    ...ROYAL_SEALS.map((s) => ({ type: 'defense', id: `def_${s.id}`, x: s.x + 2, y: s.y + 2, name: s.name, sprite: 'royal_seal', hp: 9000, ring: [5, 7],
       intro: `${s.name}nü koru! Muhafızlar mührü kırmaya çalışacak.`,
       waves: [s.wave, s.wave2] })),
     // Kapının Son Nöbeti (s40): Eren'in muhafızı işaret taşına

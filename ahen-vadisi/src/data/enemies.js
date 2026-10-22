@@ -248,7 +248,7 @@ export const ENEMIES = {
     materials: [{ id: 'grave_dust', w: 1 }],
   }),
   obsidian_sentinel: N({
-    id: 'obsidian_sentinel', name: 'Obsidyen Nöbetçi', level: 36, hp: 3000, atk: 315, def: 185, mdef: 140, exp: 1050,
+    id: 'obsidian_sentinel', name: 'Obsidyen Nöbetçi', level: 36, hp: 2600, atk: 315, def: 165, mdef: 140, exp: 1050,
     species: 'construct', ai: 'tank', aggro: 4, leash: 11, speed: 1.9, attackInterval: 2.6, attackRange: 1.7,
     dmgType: 'phys', respawn: 30, radius: 0.6, sprite: 'obsidian_sentinel', deathFx: 'void',
     abilities: ['heavy_slam'],
@@ -262,7 +262,7 @@ export const ENEMIES = {
     materials: [{ id: 'shadow_essence', w: 1 }],
   }),
   throne_executioner: N({
-    id: 'throne_executioner', name: 'Taht Celladı', level: 38, hp: 3600, atk: 370, def: 215, mdef: 160, exp: 1270,
+    id: 'throne_executioner', name: 'Taht Celladı', level: 38, hp: 3100, atk: 370, def: 185, mdef: 160, exp: 1270,
     species: 'undead', ai: 'aggressive', aggro: 4.5, leash: 12, speed: 2.3, attackInterval: 2.5, attackRange: 1.7,
     dmgType: 'phys', respawn: 30, radius: 0.56, sprite: 'throne_executioner', deathFx: 'void',
     abilities: ['throne_cleave'],
@@ -286,7 +286,7 @@ export const ENEMIES = {
     materials: [{ id: 'shroud_cloth', w: 1 }],
   },
   obsidian_executioner: {
-    id: 'obsidian_executioner', normalCoef: 0.7, name: 'Obsidyen Celladı', kind: 'elite', level: 39, hp: 23000, atk: 460, def: 245, mdef: 190, exp: 3500,
+    id: 'obsidian_executioner', normalCoef: 0.7, name: 'Obsidyen Celladı', kind: 'elite', level: 39, hp: 16000, atk: 460, def: 190, mdef: 190, exp: 3500,
     species: 'construct', ai: 'elite', aggro: 6, leash: 14, speed: 2.4, attackInterval: 2.3, attackRange: 2.0,
     dmgType: 'phys', radius: 0.8, sprite: 'obsidian_executioner', lootTable: 'elite', gold: [200, 320], deathFx: 'void',
     guaranteed: [{ id: 'executioner_seal', qty: [1, 1] }],
@@ -296,7 +296,7 @@ export const ENEMIES = {
   },
   // V3 bossları
   grave_commander: {
-    id: 'grave_commander', normalCoef: 0.45, name: 'Mezar Komutanı', kind: 'boss', level: 35, hp: 70000, atk: 345, def: 175, mdef: 150, exp: 6500,
+    id: 'grave_commander', normalCoef: 0.45, name: 'Mezar Komutanı', kind: 'boss', level: 35, hp: 70000, atk: 345, def: 105, mdef: 120, exp: 6500,
     species: 'undead', ai: 'boss_commander', aggro: 8, leash: 16, speed: 2.3, attackInterval: 2.3, attackRange: 2.6,
     dmgType: 'phys', radius: 1.4, sprite: 'grave_commander', lootTable: 'grave_commander', gold: [520, 700], deathFx: 'bone',
     guaranteed: [{ id: 'commander_crest', qty: [1, 1] }],
@@ -304,7 +304,7 @@ export const ENEMIES = {
     respawn: 900,
   },
   lost_king: {
-    id: 'lost_king', normalCoef: 0.45, name: 'Kayıp Kral', kind: 'boss', level: 40, hp: 125000, atk: 420, def: 210, mdef: 185, exp: 12000,
+    id: 'lost_king', normalCoef: 0.45, name: 'Kayıp Kral', kind: 'boss', level: 40, hp: 125000, atk: 420, def: 110, mdef: 125, exp: 12000,
     species: 'undead', ai: 'boss_king', aggro: 10, leash: 30, speed: 2.4, attackInterval: 2.2, attackRange: 2.7,
     dmgType: 'phys', radius: 1.4, sprite: 'lost_king', lootTable: 'lost_king', gold: [700, 950], deathFx: 'void',
     guaranteed: [{ id: 'crown_shard', qty: [1, 2] }],
@@ -335,17 +335,17 @@ export const ENEMIES = {
   },
   // V3 yardımcıları: Kemik Çağrısı askerleri + Lanetli Bayrak (Mezar Komutanı), kadim mühürler (Kayıp Kral)
   bone_soldier: {
-    id: 'bone_soldier', name: 'Kemik Asker', kind: 'summon', level: 34, hp: 2600, atk: 240, def: 120, mdef: 90, exp: 0, lifetime: 60,
+    id: 'bone_soldier', name: 'Kemik Asker', kind: 'summon', level: 34, hp: 1800, atk: 240, def: 120, mdef: 90, exp: 0, lifetime: 60,
     species: 'undead', ai: 'aggressive', aggro: 14, leash: 18, speed: 2.8, attackInterval: 1.8, attackRange: 1.5,
     dmgType: 'phys', radius: 0.5, sprite: 'cursed_guard', tint: 0xd8d0c0, lootTable: null, gold: [0, 0], noReward: true, deathFx: 'bone',
   },
   cursed_banner: {
-    id: 'cursed_banner', name: 'Lanetli Bayrak', kind: 'summon', level: 35, hp: 4200, atk: 0, def: 60, mdef: 60, exp: 0,
+    id: 'cursed_banner', name: 'Lanetli Bayrak', kind: 'summon', level: 35, hp: 3000, atk: 0, def: 60, mdef: 60, exp: 0,
     species: 'construct', ai: 'static', aggro: 0, leash: 0, speed: 0, attackInterval: 99, attackRange: 0,
     dmgType: 'phys', radius: 0.5, sprite: 'cursed_banner', lootTable: null, gold: [0, 0], noReward: true, deathFx: 'bone',
   },
   king_seal: {
-    id: 'king_seal', name: 'Kadim Mühür', kind: 'summon', level: 40, hp: 7500, atk: 0, def: 40, mdef: 40, exp: 0,
+    id: 'king_seal', name: 'Kadim Mühür', kind: 'summon', level: 40, hp: 5000, atk: 0, def: 40, mdef: 40, exp: 0,
     species: 'construct', ai: 'static', aggro: 0, leash: 0, speed: 0, attackInterval: 99, attackRange: 0,
     dmgType: 'phys', radius: 0.5, sprite: 'void_seal', lootTable: null, gold: [0, 0], noReward: true, deathFx: 'void',
   },

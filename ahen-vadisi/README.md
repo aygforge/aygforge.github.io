@@ -1,13 +1,15 @@
-# AHEN VADİSİ — V2.0 «Kül ve Ayaz»
+# AHEN VADİSİ — V3.0 «Kayıp Krallığın Mirası»
 
 Mobil öncelikli (yatay ekran), HTML5 tabanlı, eski usul 2D fantastik RPG. Karaağaç Köyü'nden Derin Ocak'a uzanan
-Lv. 1–20 ilerleme döngüsü (V1) ve onun üzerine kurulan **V2.0 Kül ve Ayaz Genişlemesi (Lv. 21–30)**: Kırık Damar
-Madeni'nin doğusunda açılan göçükten Kül Yaylaları'na, oradan Ayaz Geçidi'ne ve Buz Mabedi zindanına uzanan yeni hikâye.
-Warrior veya Mage ile seviye kas, nadir eşya düşür, demircide +5'e kadar yükselt, Alfa Kurt, Maden Golemi, Kül Devi ve
-Donmuş Muhafız'ı yen, zindanlara sınırsız gir ve Legendary avına çık.
+Lv. 1–20 ilerleme döngüsü (V1), **V2.0 Kül ve Ayaz (Lv. 21–30)** ve onların üzerine kurulan **V3.0 Kayıp Krallığın
+Mirası (Lv. 31–40)**: Ayaz Geçidi'nin doğusundaki eski kraliyet yolundan Ölü Krallık'a, Siyah Kapı'dan Kara Taht'a ve
+Karanlık Mahzen'de bekleyen Kayıp Kral'a uzanan hikâye. Warrior veya Mage ile seviye kas, nadir eşya düşür, demircide
++5'e kadar yükselt, Alfa Kurt, Maden Golemi, Kül Devi, Donmuş Muhafız, Mezar Komutanı ve Kayıp Kral'ı yen, zindanlara
+sınırsız gir ve Legendary avına çık.
 
-V1 kayıtları V2'de otomatik ve kayıpsız açılır (geçişten önceki kayıt `v1_backup` olarak saklanır).
-Değişiklikler: [`docs/CHANGELOG.md`](docs/CHANGELOG.md) · V2 mimarisi ve bilinen sınırlamalar: [`docs/V2_NOTLARI.md`](docs/V2_NOTLARI.md)
+V1 ve V2 kayıtları V3'te otomatik ve kayıpsız açılır (geçişten önceki kayıt `v1_backup` / `v2_backup` olarak saklanır).
+Değişiklikler: [`docs/CHANGELOG.md`](docs/CHANGELOG.md) · V3 mimarisi, denge ve bilinen sınırlamalar:
+[`docs/V3_NOTLARI.md`](docs/V3_NOTLARI.md) · V2 notları: [`docs/V2_NOTLARI.md`](docs/V2_NOTLARI.md)
 
 Oyuncu karakterleri (Warrior, Mage) ve V1 yaratıklarının çoğu hazır sprite paketleriyle çizilir
 (`public/sprites/`, kaynaklar: [`docs/CREDITS.md`](docs/CREDITS.md)). Diğer tüm görseller (Kızıl Akrep dışındaki V2 yaratık/elit/boss
@@ -26,6 +28,9 @@ Sprite paketi yüklenemezse oyun otomatik olarak procedural karaktere geri döne
 | ![Kül Yaylaları](docs/ekran/v2-ash.png) | ![Kül Devi](docs/ekran/v2-ash-giant.png) |
 | ![Ayaz Geçidi](docs/ekran/v2-frost.png) | ![Buz Mabedi](docs/ekran/v2-temple.png) |
 | ![Beceri çubuğu](docs/ekran/v2-skills.png) | ![Av Geçmişi](docs/ekran/v2-history.png) |
+| ![Ölü Krallık](docs/ekran/v3-dead-kingdom.png) | ![Mezar Komutanı](docs/ekran/v3-commander.png) |
+| ![Kara Taht](docs/ekran/v3-black-throne.png) | ![Karanlık Mahzen](docs/ekran/v3-crypt.png) |
+| ![Görev günlüğü](docs/ekran/v3-journal.png) | ![HUD takip](docs/ekran/v3-hud-tracker.png) |
 
 ## Hızlı başlangıç
 
@@ -35,10 +40,10 @@ Gereksinim: Node.js 20.19+ (veya 22.12+).
 cd ahen-vadisi
 npm install          # bağımlılıklar (Phaser 3.90, Vite, Vitest, Playwright)
 npm run dev          # geliştirme sunucusu: http://localhost:5173  (aynı ağdaki telefondan: http://<bilgisayar-ip>:5173)
-npm test             # birim testleri (103 test; 100.000–1.000.000 loot simülasyonu dahil)
+npm test             # birim testleri (V1+V2+V3; 100.000–1.000.000 loot simülasyonu ve V3 denge simülasyonu dahil)
 npm run build        # üretim paketi → dist/
 npm run preview      # dist/ klasörünü yerelde sun: http://localhost:4173
-npm run test:e2e     # (önce build) tarayıcıda uçtan uca testler — V1 regresyonu + V2 senaryoları
+npm run test:e2e     # (önce build) tarayıcıda uçtan uca testler — V1 + V2 regresyonu + V3 senaryoları
 npm run package      # release/ altında itch.io ZIP'i ve proje arşivi
 ```
 
@@ -89,22 +94,26 @@ otomatik seçilmez; erişilemeyen hedefe sonsuz koşma olmaz; duvar arkasından 
 
 ## İçerik özeti
 
-- **Sınıflar:** Warrior (Savaşçı), Mage (Büyücü) — 5 aktif (Lv.25: Kılıç Yağmuru / Zincir Yıldırım), 3 pasif, Lv.20 Ustalık I,
-  4 düğmelik beceri çubuğu, Lv.30 Ustalık Kitapları; Lv.30'da 31 beceri puanı, 87 stat puanı.
+- **Sınıflar:** Warrior (Savaşçı), Mage (Büyücü) — 6 aktif (Lv.25: Kılıç Yağmuru / Zincir Yıldırım; Lv.35: Sarsılmaz Öfke /
+  Donmuş Zaman), 3 pasif, Lv.20 Ustalık I, Lv.40 Ustalık II (Savaşın Mirası / Kadim Büyü Bilgisi), 4 düğmelik beceri çubuğu,
+  Lv.30 Ustalık Kitapları; Lv.40'ta 117 stat puanı.
 - **Dünya:** Karaağaç Köyü (64×48), Fısıldayan Orman (120×88), Kırık Damar Madeni (104×78), Sis Bataklığı (112×80),
   Derin Ocak dungeon'ı (104×80, 4 bölüm); **V2:** Kül Yaylaları (112×80, Lv.20–25), Ayaz Geçidi (116×88, Lv.25–30),
-  Buz Mabedi dungeon'ı (100×76, 4 bölüm, Mühür Galerisi). Her açık bölgede 4 farm kampı, elit, yol taşı, toplama düğümleri;
-  V2 bölgelerinde güvenli kamp, NPC'ler, 2'şer gizli sandık.
-- **Yaratıklar:** 20 normal, 5 elit, 4 boss (Alfa Kurt, Maden Golemi, Kül Devi, Donmuş Muhafız) — telegraflı büyük saldırılar,
-  aşamalar, kalkan kristalleri, yer tehlikeleri, yardımcı çağırma.
-- **Eşyalar:** 90 ekipman şablonu (V1: 14 N / 15 U / 18 R / 11 E / 2 L; V2: 4 U / 15 R / 9 E / 2 L), rastgele bonuslar, +5 yükseltme.
-- **Hardcore loot:** Legendary yalnızca Maden Golemi ve Donmuş Muhafız'ın %0,4 boss çekilişinden; pity/garanti/craft/sandık yok.
-- **Ekonomi:** Tek para Gold; 8 iksir, 35 tarif (V2 materyalleri V1 materyalleriyle birlikte kullanılır), tamir, parçalama,
+  Buz Mabedi dungeon'ı (100×76, 4 bölüm, Mühür Galerisi); **V3:** Ölü Krallık (120×88, Lv.30–35), Kara Taht (124×92, Lv.35–40),
+  Karanlık Mahzen dungeon'ı (100×76, 4 bölüm: kapı mekanizmaları + kraliyet mühürleri). Her açık bölgede 4 farm kampı, elit,
+  yol taşı, toplama düğümleri; V2/V3 bölgelerinde güvenli kamp, NPC'ler, 2'şer gizli sandık.
+- **Yaratıklar:** 28 normal, 7 elit, 6 boss (Alfa Kurt, Maden Golemi, Kül Devi, Donmuş Muhafız, Mezar Komutanı, Kayıp Kral) —
+  telegraflı büyük saldırılar, aşamalar, kalkanlar ve kırılabilir mühürler, yer tehlikeleri, yardımcı çağırma, lanet.
+- **Eşyalar:** 126 ekipman şablonu (V1 60, V2 30, V3 36), rastgele bonuslar, +5 yükseltme (başarısızlıkta eşya kırılmaz).
+- **Hardcore loot:** Legendary yalnızca Maden Golemi, Donmuş Muhafız ve Kayıp Kral'ın %0,4 boss çekilişinden;
+  pity/garanti/craft/sandık/görev yok.
+- **Ekonomi:** Tek para Gold; 10 iksir, 8 kullanım eşyası, üretim (demirci, şifacı, simya), tamir, parçalama,
   çanta/depo genişletme, ortak depo, yol taşı seyahati.
-- **Görevler:** 28 ana + 12 yan görev (40), 2 sınıf görevi, tekrarlanabilir Av Sözleşmeleri.
+- **Görevler:** 80 tek seferlik ana/yan görev (refakat, savunma, iz sürme, üretim, onarım/arındırma, özel av), 4 sınıf görevi,
+  tekrarlanabilir Av Sözleşmeleri; görev günlüğünde kategori/bölge filtresi ve 3 görev takibi.
 - **Av Geçmişi:** türe göre öldürme, boss zaferleri, bulunan Rare/Epic/Legendary, tamamlanan zindanlar (ganimeti etkilemez).
 - **Kayıt:** 3 karakter yuvası, IndexedDB + atomik yazım, 2 önceki sağlam snapshot, checksum, JSON yedek dışa/içe aktarma,
-  sürümlü şema geçişi (V1 → V2) ve geçiş öncesi yedek. PWA: yeni sürüm hazır olunca "kaydet ve yenile" bildirimi.
+  sürümlü şema geçişi (V1 → V2 → V3) ve geçiş öncesi yedek. PWA: yeni sürüm hazır olunca "kaydet ve yenile" bildirimi.
 
 ## Proje yapısı
 
@@ -115,8 +124,8 @@ ahen-vadisi/
 ├─ src/
 │  ├─ main.js              önyükleme, Phaser yapılandırması, yaşam döngüsü (arka plan kaydı)
 │  ├─ core/                app (profil, kayıt zamanlaması, stat önbelleği), olay yolu, RNG
-│  ├─ data/                MERKEZİ VERİ: sabitler, sınıflar, beceriler, yaratıklar, 90 eşya, materyaller,
-│  │                       tarifler, loot oranları, NPC'ler, görevler, 8 harita tanımı
+│  ├─ data/                MERKEZİ VERİ: sabitler, sınıflar, beceriler, yaratıklar, 126 eşya, materyaller,
+│  │                       tarifler, loot oranları, NPC'ler, görevler, 11 harita tanımı
 │  ├─ systems/             SAF OYUN MANTIĞI (Node'da test edilir): stats, combat, loot, inventory,
 │  │                       economy (alım/satım/craft/yükseltme/tamir), quests, rewards, dungeon, character
 │  ├─ save/                şema/doğrulama/checksum + IndexedDB deposu (snapshot, localStorage yedeği)

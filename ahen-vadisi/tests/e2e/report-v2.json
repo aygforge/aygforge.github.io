@@ -1,17 +1,17 @@
 {
-  "date": "2026-10-22T08:27:43.966Z",
-  "passed": 32,
+  "date": "2026-10-22T12:44:08.050Z",
+  "passed": 29,
   "total": 32,
   "results": [
     {
-      "name": "V1 kaydı açılır ve V2'ye geçer (seviye/gold korunur)",
+      "name": "V1 kaydı açılır ve güncel şemaya (V3) geçer (seviye/gold korunur)",
       "ok": true,
-      "info": "{\"ok\":true,\"from\":1,\"level\":20,\"gold\":777,\"bar\":[\"heavy_strike\",\"whirlwind\",\"iron_skin\",\"war_charge\"],\"hist\":true,\"backup\":1,\"sv\":2}"
+      "info": "{\"ok\":true,\"from\":1,\"level\":20,\"gold\":777,\"bar\":[\"heavy_strike\",\"whirlwind\",\"iron_skin\",\"war_charge\"],\"hist\":true,\"backup\":1,\"sv\":3}"
     },
     {
       "name": "Geçişte V1 yedeği saklanır; varsayılan 4'lü beceri çubuğu; Av Geçmişi V2'den başlar",
       "ok": true,
-      "info": "{\"ok\":true,\"from\":1,\"level\":20,\"gold\":777,\"bar\":[\"heavy_strike\",\"whirlwind\",\"iron_skin\",\"war_charge\"],\"hist\":true,\"backup\":1,\"sv\":2}"
+      "info": "{\"ok\":true,\"from\":1,\"level\":20,\"gold\":777,\"bar\":[\"heavy_strike\",\"whirlwind\",\"iron_skin\",\"war_charge\"],\"hist\":true,\"backup\":1,\"sv\":3}"
     },
     {
       "name": "Dev: Lv.26'ya çıkış (20→26 gerçek EXP tablosu)",
@@ -40,13 +40,13 @@
     },
     {
       "name": "\"Kırılan Ufuk\" geçiş hedefleri ilerler",
-      "ok": true,
-      "info": "{\"s\":\"active\",\"p\":[1,1],\"used\":[],\"at\":1792657582397}"
+      "ok": false,
+      "info": "{\"s\":\"active\",\"p\":[0,0],\"used\":[],\"at\":1792672950689}"
     },
     {
       "name": "V2 yaratık öldürme: EXP + Gold + Av Geçmişi sayacı",
       "ok": true,
-      "info": "{\"kills\":6,\"exp\":true,\"gold\":113,\"ids\":[\"ash_imp\",\"ash_imp\",\"ash_imp\",\"ash_imp\",\"ash_imp\",\"ash_imp\"]}"
+      "info": "{\"kills\":6,\"exp\":true,\"gold\":115,\"ids\":[\"ash_imp\",\"ash_imp\",\"ash_imp\",\"ash_imp\",\"ash_imp\",\"ash_imp\"]}"
     },
     {
       "name": "V2 sprite'ları: ayrı darbe ve ölüm animasyonları kayıtlı",
@@ -56,7 +56,7 @@
     {
       "name": "Kül Devi: telegraflı saldırılar, en çok 3 alev yarığı, %55 altında 2 yardımcı",
       "ok": true,
-      "info": "{\"cast\":true,\"maxFiss\":2,\"helpers\":2,\"phase\":2}"
+      "info": "{\"cast\":true,\"maxFiss\":0,\"helpers\":2,\"phase\":2}"
     },
     {
       "name": "Kül Devi yenilir; yardımcılar EXP vermez; tehlikeler temizlenir; yeniden doğma zamanlanır",
@@ -65,13 +65,13 @@
     },
     {
       "name": "Kül Kasabı: öfke (%30 altı), telegraflı satır, garantili nişan",
-      "ok": true,
-      "info": "{\"enr\":true,\"cast\":true,\"mark\":true}"
+      "ok": false,
+      "info": "{\"enr\":true,\"cast\":false,\"mark\":true}"
     },
     {
       "name": "Gizli sandık bir kez ödül verir",
       "ok": true,
-      "info": "{\"first\":571,\"second\":0,\"opened\":true}"
+      "info": "{\"first\":526,\"second\":0,\"opened\":true}"
     },
     {
       "name": "Ayaz Geçidi: 4 yaratık türü, kar parçacıkları, Buz Mabedi kapısı",
@@ -80,8 +80,8 @@
     },
     {
       "name": "Buz Gardiyanı: telegraflı buz vuruşu / kıymıklar",
-      "ok": true,
-      "info": "{\"cast\":true,\"slowed\":false}"
+      "ok": false,
+      "info": "{\"cast\":false,\"slowed\":false}"
     },
     {
       "name": "Buz Mabedi görev olmadan mühürlü (giriş yok)",

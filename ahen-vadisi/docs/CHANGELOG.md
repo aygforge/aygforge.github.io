@@ -1,5 +1,44 @@
 # Değişiklik Günlüğü
 
+## 3.0.0 — «Kayıp Krallığın Mirası» (Lv. 31–40)
+Ayrıntılar, denge tablosu ve bilinen sınırlamalar: [`V3_NOTLARI.md`](V3_NOTLARI.md).
+
+**Kayıt ve ilerleme**
+- Şema 3. V2 (ve V1) kayıtları otomatik, kayıpsız açılır; geçişten önceki kayıt `v2_backup` olarak saklanır ve Ayarlar →
+  Yedekler'den geri yüklenebilir. Yeni görevler "yapılmamış" görünür; hiçbir alan sıfırlanmaz.
+- Seviye sınırı 40 (30→40: 64.880 … 142.450 EXP, toplam 1.006.820). Her seviyede +3 stat, +1 beceri puanı devam eder.
+
+**Dünya** (8 → 11 harita)
+- **Ölü Krallık** (120×88, Lv.30–35): Yas Mezarlığı, Kırık Okçular Mevzii, Harap Garnizon, Sessiz Şapel; Sisli Meydan'ın
+  terk edilmiş evleri, Yas Şapeli (güvenli), Komutanın Mezarı, Siyah Kapı, 2 gizli sandık, Karanlık Cevher / Yas Otu, Yol Taşı.
+- **Kara Taht** (124×92, Lv.35–40): Kara Nöbet Avlusu, Gölgeli Geçit, Cellat Meydanı, Hiçlik Mabedi; Son Nöbet Yeri (güvenli),
+  Kraliyet Avlusu heykelleri, üç kraliyet mührü, Taht Basamakları, 2 gizli sandık, Ruh Kristali / Obsidyen Damarı, Yol Taşı.
+- **Karanlık Mahzen** (solo zindan, Lv.38–40): Kırık Taç Kapısı → Sessiz Zindan (dar koridorlar, 2 kapı mekanizması) →
+  Kraliyet Mühürleri (3 savunma karşılaşması) → Kayıp Kral'ın Tahtı. Sınırsız giriş; ölümde kontrol noktası.
+- Yeni zemin/kütle/dekor/damga çizimleri, sis ve hiçlik parçacıkları, üç yeni müzik/ortam teması.
+
+**Yaratıklar**: 8 normal (Kefen Sürüngeni, Kemik Okçu, Lanetli Muhafız, Mezar Büyücüsü, Obsidyen Nöbetçi, Gölge Avcısı,
+Taht Celladı, Hiçlik Rahibi), 2 elit (Kefen Avcısı, Obsidyen Celladı), 2 boss (Mezar Komutanı, Kayıp Kral) — her biri ayrı
+davranış ve telegraflı yeteneklerle. Lanet etkisi (kısa süreli alınan hasar artışı). Oyuncunun toplam hasar azaltması %60 ile sınırlı.
+
+**Eşyalar ve ekonomi**: 36 yeni ekipman (toplam 126); Kralın Son Emri ve Sonsuz Hüküm yalnız Kayıp Kral'ın %0,4 Legendary
+çekilişinden (pity/garanti/craft yok). Komutan'ın iki özel Epic silahı. 19 yeni materyal, Lv.31+ yükseltme kademesi
+(Kara Çelik, Ruh Özü, Taht Çekirdeği), Kadim HP/MP iksirleri, 8 kullanım eşyası (Temizleyici Merhem, Isıtıcı Tonik,
+Dönüş Parşömeni, Kamp Erzağı, Maden Lambası, İzci Pusulası, Arındırma Tuzu, Kraliyet Mürekkebi), simya ve tedarik dükkânları.
+
+**Görevler** (40 → 80 tek seferlik): 24 erken yan görev (Lv.2–30), 10 ana görev (212.000 EXP), 6 yan görev (39.000 EXP);
+yeni görev türleri: refakat, savunma, sıralı iz sürme, gerçek üretim, onarım/arındırma, özel av. 13 yeni NPC.
+Görevler ekipman vermez.
+
+**Beceriler**: Sarsılmaz Öfke (Warrior Lv.35) ve Donmuş Zaman (Mage Lv.35); 6 aktif beceri, 4 düğmelik çubuk.
+Ustalık II (Lv.40 + ana hikâye, Gezgin Bilge): Savaşın Mirası / Kadim Büyü Bilgisi.
+
+**Arayüz**: Görev günlüğü (Ana / Yan / Sınıf / Sözleşme, bölge filtresi, en çok 3 HUD takibi, tamamlananlar, hedef türü
+açıklamaları), mini haritada NPC görev işaretleri, eşya kartında "Kullan", İzci Pusulası / Maden Lambası işaretleri.
+
+**Araçlar ve testler**: `tools/map-preview.mjs`; `tests/unit/v3.test.js`, `tests/unit/v3balance.test.js`,
+`tests/e2e/run-e2e-v3.mjs`.
+
 ## 2.0.2
 - **Yeni kurt çizimi:** Boz Kurt, Sürü Kurdu, Alfa Kurt ve Ayaz Kurdu eklemli bacaklarla yeniden çizildi
   (`src/art/wolf.js`): 4 karelik bekleme (nefes, kuyruk, kulak), 6 karelik tırıs koşusu (çapraz bacak çiftleri),
