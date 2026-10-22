@@ -4,7 +4,7 @@
 // Ölü Çağıran Ruh Hasadı (vuruş başına MP) ve iskelet yardımcı (gerçek iskelet statlarıyla ayrı vuruş döngüsü).
 import { Rng } from '../../src/core/rng.js';
 import { createCharacter, gainExp } from '../../src/systems/character.js';
-import { computeStats } from '../../src/systems/stats.js';
+import { computeStats, MINION } from '../../src/systems/stats.js';
 import { playerHit, defenseFactor, hitChance } from '../../src/systems/combat.js';
 import { createItem } from '../../src/systems/loot.js';
 import { ENEMIES } from '../../src/data/enemies.js';
@@ -51,7 +51,7 @@ export function minionDps(c, enemyId) {
   if (!st.minion) return 0;
   const e = ENEMIES[enemyId];
   const m = st.minion;
-  return (m.power * defenseFactor(e.def) * (1 + m.critChance * 0.5) * hitChance(m.level, e.level)) / m.attackInterval;
+  return (m.power * defenseFactor(MINION.dmgType === 'magic' ? e.mdef : e.def) * (1 + m.critChance * 0.5) * hitChance(m.level, e.level)) / m.attackInterval;
 }
 
 export function newState(c, { minion = true, minionUptime = 1 } = {}) {
@@ -66,7 +66,7 @@ export function fight(S, enemyId) {
   const e = { ...ENEMIES[enemyId], reduce: 0 };
   let hp = e.hp, t = 0;
   const dt = 0.05;
-  const ms = st.minion ? { power: st.minion.power, damageType: 'phys', dmgMult: 1, species: {}, critChance: st.minion.critChance, level: st.minion.level, slowedDmg: 0 } : null;
+  const ms = st.minion ? { power: st.minion.power, damageType: MINION.dmgType, dmgMult: 1, species: {}, critChance: st.minion.critChance, level: st.minion.level, slowedDmg: 0 } : null;
   while (hp > 0 && t < 1500) {
     t += dt; S.t += dt; S.atk -= dt; S.gcd -= dt; S.mAtk -= dt;
     S.mp = Math.min(st.maxMp, S.mp + st.maxMp * MP_REGEN_COMBAT * dt);
@@ -95,7 +95,7 @@ export function fight(S, enemyId) {
     if (S.minion && ms && S.mAtk <= 0) {
       S.mAtk = st.minion.attackInterval;
       if (rng.float() < S.minionUptime) {
-        const h = playerHit(ms, e, { isNormal: true, rng, dmgType: 'phys' });
+        const h = playerHit(ms, e, { isNormal: true, rng, dmgType: MINION.dmgType });
         hp -= h.dmg; S.dmgMinion += h.dmg;
       }
     }

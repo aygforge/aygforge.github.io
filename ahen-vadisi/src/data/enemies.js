@@ -303,7 +303,7 @@ export const ENEMIES = {
   }),
   thunder_golem: N({
     variantAbove: 4,
-    id: 'thunder_golem', name: 'Gökgürültüsü Golemi', level: 44, hp: 4300, atk: 520, def: 235, mdef: 195, exp: 2350,
+    id: 'thunder_golem', name: 'Gökgürültüsü Golemi', level: 44, hp: 4000, atk: 520, def: 200, mdef: 185, exp: 2350,
     species: 'construct', ai: 'tank', aggro: 4, leash: 11, speed: 1.9, attackInterval: 2.6, attackRange: 1.75,
     dmgType: 'phys', respawn: 30, radius: 0.64, sprite: 'thunder_golem', deathFx: 'storm',
     abilities: ['heavy_slam'], abilityLabel: 'Gök Gürültüsü', abilityTint: 0x9ad0ff,
@@ -322,14 +322,14 @@ export const ENEMIES = {
     materials: [{ id: 'astral_hide', w: 1 }],
   }),
   void_armor: N({
-    id: 'void_armor', name: 'Boşluk Zırhlısı', level: 48, hp: 5400, atk: 625, def: 260, mdef: 245, exp: 3500,
+    id: 'void_armor', name: 'Boşluk Zırhlısı', level: 48, hp: 4800, atk: 625, def: 220, mdef: 225, exp: 3500,
     species: 'construct', ai: 'tank', aggro: 4, leash: 11, speed: 2.0, attackInterval: 2.6, attackRange: 1.8,
     dmgType: 'phys', respawn: 30, radius: 0.62, sprite: 'void_armor', deathFx: 'void',
     abilities: ['void_ward'], abilityLabel: 'Boşluk Kalkanı',
     materials: [{ id: 'void_plate', w: 1 }],
   }),
   star_oracle: N({
-    id: 'star_oracle', name: 'Yıldız Kâhini', level: 49, hp: 4900, atk: 660, def: 215, mdef: 300, exp: 4000,
+    id: 'star_oracle', name: 'Yıldız Kâhini', level: 49, hp: 4600, atk: 660, def: 215, mdef: 280, exp: 4000,
     species: 'humanoid', ai: 'ranged', aggro: 7, leash: 15, speed: 2.6, attackInterval: 2.3, attackRange: 6,
     dmgType: 'magic', respawn: 30, radius: 0.44, sprite: 'star_oracle', projectile: 'star_bolt', flying: true, deathFx: 'astral',
     abilities: ['star_fall'],
@@ -356,7 +356,7 @@ export const ENEMIES = {
   },
   // V4 elitleri: aynı doğma kuralı, Epic %0,75, Legendary yok
   storm_executioner: {
-    id: 'storm_executioner', normalCoef: 0.7, name: 'Fırtına Celladı', kind: 'elite', level: 45, hp: 24000, atk: 730, def: 360, mdef: 310, exp: 8000,
+    id: 'storm_executioner', normalCoef: 0.7, name: 'Fırtına Celladı', kind: 'elite', level: 45, hp: 24000, atk: 730, def: 220, mdef: 200, exp: 8000,
     species: 'humanoid', ai: 'elite', aggro: 6.5, leash: 15, speed: 2.6, attackInterval: 2.2, attackRange: 2.0,
     dmgType: 'phys', radius: 0.8, sprite: 'storm_executioner', lootTable: 'elite', gold: [260, 400], deathFx: 'storm',
     guaranteed: [{ id: 'storm_brand', qty: [1, 1] }],
@@ -365,7 +365,7 @@ export const ENEMIES = {
     materials: [{ id: 'lightning_shard', w: 1 }],
   },
   void_warden: {
-    id: 'void_warden', normalCoef: 0.7, name: 'Hiçlik Muhafızı', kind: 'elite', level: 49, hp: 35000, atk: 880, def: 430, mdef: 400, exp: 14000,
+    id: 'void_warden', normalCoef: 0.7, name: 'Hiçlik Muhafızı', kind: 'elite', level: 49, hp: 35000, atk: 880, def: 230, mdef: 210, exp: 14000,
     species: 'construct', ai: 'elite', aggro: 6, leash: 14, speed: 2.3, attackInterval: 2.4, attackRange: 2.1,
     dmgType: 'phys', radius: 0.85, sprite: 'void_warden', lootTable: 'elite', gold: [320, 480], deathFx: 'void',
     guaranteed: [{ id: 'void_sigil', qty: [1, 1] }],
@@ -392,7 +392,7 @@ export const ENEMIES = {
 
   // V4 bossları: Fırtına Tiranı (açık dünya, Gökyarık Ovası) ve Göğün Mahkûmu (Gökyarık Mabedi, 3 aşama)
   storm_tyrant: {
-    id: 'storm_tyrant', normalCoef: 0.45, name: 'Fırtına Tiranı', kind: 'boss', level: 45, hp: 155000, atk: 640, def: 150, mdef: 150, exp: 26000,
+    id: 'storm_tyrant', normalCoef: 0.45, name: 'Fırtına Tiranı', kind: 'boss', level: 45, hp: 155000, atk: 640, def: 105, mdef: 105, exp: 26000,
     species: 'elemental', ai: 'boss_tyrant', aggro: 8, leash: 18, speed: 2.3, attackInterval: 2.3, attackRange: 2.7,
     dmgType: 'phys', radius: 1.45, sprite: 'storm_tyrant', lootTable: 'storm_tyrant', gold: [900, 1200], deathFx: 'storm',
     guaranteed: [{ id: 'tyrant_core', qty: [1, 1] }],

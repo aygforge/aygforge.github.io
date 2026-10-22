@@ -55,7 +55,8 @@ describe('Loot RNG', () => {
     expect(maxDry).toBeGreaterThan(1000);
     console.log('Golem 1M: L', L, 'R', R, 'E', E, 'sınıf', own, 'en uzun kuraklık', maxDry);
   });
-  it('Golem, Donmuş Muhafız, Kayıp Kral ve Göğün Mahkûmu dışındaki hiçbir kaynaktan Legendary çıkmaz (her kaynak 100.000)', () => {
+  // V4: kaynak sayısı arttı (~55 sn); her kaynaktan sonra olay döngüsüne dönülür (vitest işçi RPC zaman aşımı olmasın)
+  it('Golem, Donmuş Muhafız, Kayıp Kral ve Göğün Mahkûmu dışındaki hiçbir kaynaktan Legendary çıkmaz (her kaynak 100.000)', async () => {
     const CLS = ['warrior', 'mage', 'archer', 'necromancer'];
     for (const e of sources) {
       if (['mine_golem', 'frozen_guardian', 'lost_king', 'sky_prisoner'].includes(e.id)) continue;
@@ -65,6 +66,7 @@ describe('Loot RNG', () => {
         for (const it of res.equipment) expect(it.r).not.toBe('L');
       }
       expect(buildPool(e.id, 'L').length).toBe(0);
+      await new Promise((r) => setTimeout(r, 0));
     }
   });
   it('legendary varyant üretilemez, havuzlar boş değil ve seviye-uygun', () => {

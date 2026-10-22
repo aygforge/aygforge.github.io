@@ -9,6 +9,7 @@ import { claimBossLoot, bossKillId, dungeonOfBoss } from '../systems/dungeon.js'
 import { ITEMS } from '../data/items.js';
 import { STACKABLES } from '../data/materials.js';
 import { SKILLS } from '../data/skills.js';
+import { MINION } from '../systems/stats.js';
 import { RARITY_INFO, TILE, WARRIOR_MP_ON_HIT, TG_SQUASH, CRIT_MULT } from '../data/constants.js';
 import { iconPB } from '../art/icons.js';
 import { sound } from '../audio/sound.js';
@@ -184,8 +185,9 @@ export class CombatRuntime {
   // Tek öldürme yolu: applyToEnemy → killEnemy. EXP/ganimet/görev sayacı oyuncuya bir kez; iskelet ayrıca ödül üretmez.
   minionHit(t, m) {
     if (t.dead || m.dead) return;
-    const ms = { power: m.power, damageType: 'phys', dmgMult: 1, species: {}, critChance: m.critChance, level: m.level, slowedDmg: 0 };
-    const res = playerHit(ms, t, { isNormal: true, rng: this.rng, dmgType: 'phys' });
+    // ruh bağı: iskelet hasarı Ölü Çağıran'ınki gibi büyü savunmasına göre hesaplanır (katkı yaratık türünden bağımsız ~%30)
+    const ms = { power: m.power, damageType: MINION.dmgType, dmgMult: 1, species: {}, critChance: m.critChance, level: m.level, slowedDmg: 0 };
+    const res = playerHit(ms, t, { isNormal: true, rng: this.rng, dmgType: MINION.dmgType });
     m.scene.fx.sprite('slash', t.x, t.y - 14, { scale: 0.9, tint: 0xd8f0d0 });
     this.applyToEnemy(t, res, { normal: true, fromMinion: true });
     // normal yaratık kısa süre iskelete yönelebilir; elit daha seyrek; boss asla (mekanikleri iskeletle atlatılamaz)
