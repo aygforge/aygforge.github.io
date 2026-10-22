@@ -30,6 +30,20 @@ export const RECIPES = [
   { id: 'r_c11', station: 'blacksmith', name: 'Kül Dokuma Cübbesi', out: { id: 'C11', qty: 1, equip: true }, gold: 8000, inputs: [{ id: 'ash_dust', qty: 20 }, { id: 'crimson_hide', qty: 10 }, { id: 'toxic_crystal', qty: 4 }] },
   { id: 'r_o08', station: 'blacksmith', name: 'Buz Kalesi Kalkanı', out: { id: 'O08', qty: 1, equip: true }, gold: 22000, inputs: [{ id: 'warden_seal', qty: 25 }, { id: 'ice_armor_shard', qty: 20 }, { id: 'golem_shard', qty: 4 }, { id: 'frost_essence', qty: 4 }] },
   { id: 'r_o10', station: 'blacksmith', name: 'Ayaz Küresi', out: { id: 'O10', qty: 1, equip: true }, gold: 22000, inputs: [{ id: 'warden_seal', qty: 25 }, { id: 'snow_seal', qty: 20 }, { id: 'watcher_seal', qty: 6 }, { id: 'frost_essence', qty: 4 }] },
+  // V3 işleme (Demirci / Muhafız Eren) — V1/V2 materyalleri de kullanılır (Kül Çeliği, Demir, Sunak Tozu, Kadim Çekirdek)
+  { id: 'r_dark_steel', station: 'blacksmith', name: 'Kara Çelik', out: { id: 'dark_steel', qty: 1 }, gold: 70, inputs: [{ id: 'dark_ore', qty: 2 }, { id: 'ash_steel', qty: 1 }] },
+  { id: 'r_dark_steel_metal', station: 'blacksmith', name: 'Kara Çelik (Lanetli Metalden)', out: { id: 'dark_steel', qty: 1 }, gold: 70, inputs: [{ id: 'cursed_metal', qty: 2 }, { id: 'iron', qty: 2 }] },
+  { id: 'r_soul_essence', station: 'blacksmith', name: 'Ruh Özü', out: { id: 'soul_essence', qty: 1 }, gold: 400, inputs: [{ id: 'soul_crystal', qty: 2 }, { id: 'altar_dust', qty: 1 }] },
+  { id: 'r_soul_essence_shadow', station: 'blacksmith', name: 'Ruh Özü (Gölge Özünden)', out: { id: 'soul_essence', qty: 1 }, gold: 400, inputs: [{ id: 'shadow_essence', qty: 2 }, { id: 'grave_dust', qty: 1 }, { id: 'altar_dust', qty: 1 }] },
+  { id: 'r_throne_core', station: 'blacksmith', name: 'Taht Çekirdeği', out: { id: 'throne_core', qty: 1 }, gold: 5000, inputs: [{ id: 'commander_crest', qty: 2 }, { id: 'void_crystal', qty: 3 }, { id: 'ancient_core', qty: 1 }] },
+  { id: 'r_throne_core_crown', station: 'blacksmith', name: 'Taht Çekirdeği (Kırık Taçtan)', out: { id: 'throne_core', qty: 1 }, gold: 5000, inputs: [{ id: 'crown_shard', qty: 1 }, { id: 'executioner_chain', qty: 3 }, { id: 'ancient_core', qty: 1 }] },
+  // V3 ekipman — Rare ve Epic; Legendary üretilemez (Kırık Taç Parçası yalnız Epic tariflerinde)
+  { id: 'r_w15', station: 'blacksmith', name: 'Lanet Biçici', out: { id: 'W15', qty: 1, equip: true }, gold: 16000, inputs: [{ id: 'cursed_metal', qty: 20 }, { id: 'bone_tip', qty: 10 }, { id: 'dark_steel', qty: 8 }, { id: 'hardening_stone', qty: 2 }] },
+  { id: 'r_m15', station: 'blacksmith', name: 'Kemik Asası', out: { id: 'M15', qty: 1, equip: true }, gold: 16000, inputs: [{ id: 'grave_dust', qty: 18 }, { id: 'bone_tip', qty: 12 }, { id: 'soul_crystal', qty: 6 }, { id: 'magic_ore', qty: 6 }] },
+  { id: 'r_c13', station: 'blacksmith', name: 'Yas Zırhı', out: { id: 'C13', qty: 1, equip: true }, gold: 14000, inputs: [{ id: 'cursed_metal', qty: 16 }, { id: 'dark_steel', qty: 10 }, { id: 'ash_steel', qty: 8 }] },
+  { id: 'r_c15', station: 'blacksmith', name: 'Ruh Dokuma Cübbesi', out: { id: 'C15', qty: 1, equip: true }, gold: 14000, inputs: [{ id: 'shroud_cloth', qty: 20 }, { id: 'grave_dust', qty: 10 }, { id: 'frost_essence', qty: 2 }] },
+  { id: 'r_o12', station: 'blacksmith', name: 'Obsidyen Duvarı', out: { id: 'O12', qty: 1, equip: true }, gold: 38000, inputs: [{ id: 'executioner_seal', qty: 25 }, { id: 'obsidian_shard', qty: 20 }, { id: 'obsidian_ore', qty: 10 }, { id: 'crown_shard', qty: 1 }] },
+  { id: 'r_o14', station: 'blacksmith', name: 'Hiçlik Odağı', out: { id: 'O14', qty: 1, equip: true }, gold: 38000, inputs: [{ id: 'executioner_seal', qty: 25 }, { id: 'void_crystal', qty: 18 }, { id: 'soul_essence', qty: 4 }, { id: 'crown_shard', qty: 1 }] },
   { id: 'r_w05', station: 'blacksmith', name: 'Gözcünün Baltası', out: { id: 'W05', qty: 1, equip: true }, gold: 12000, inputs: [{ id: 'watcher_seal', qty: 40 }, { id: 'hardening_stone', qty: 8 }] },
   // İksirler (Şifacı)
   { id: 'r_hp_s', station: 'healer', name: 'Küçük HP İksiri', out: { id: 'hp_s', qty: 1 }, gold: 5, inputs: [{ id: 'healing_herb', qty: 2 }, { id: 'empty_bottle', qty: 1 }] },
@@ -81,6 +95,17 @@ export const UPGRADE_STEPS_V2_MATS = [
   [{ id: 'ember_core', qty: 1 }],
 ];
 export const UPGRADE_NU_FINAL_V2 = [{ id: 'altar_crystal', qty: 3 }, { id: 'frost_essence', qty: 2 }];
+// V3: Lv.31+ eşyalar — aynı başarı oranları ve kırılmazlık; Kara Çelik / Ruh Özü / Taht Çekirdeği (V1/V2 materyalleri de kullanılır)
+export const V3_UPGRADE_MIN_LEVEL = 31;
+export const V3_UPGRADE_GOLD_MULT = 2.6;
+export const UPGRADE_STEPS_V3_MATS = [
+  [{ id: 'dark_steel', qty: 2 }],
+  [{ id: 'dark_steel', qty: 4 }],
+  [{ id: 'hardening_stone', qty: 2 }, { id: 'soul_essence', qty: 1 }],
+  [{ id: 'altar_crystal', qty: 1 }, { id: 'soul_essence', qty: 2 }],
+  [{ id: 'throne_core', qty: 1 }],
+];
+export const UPGRADE_NU_FINAL_V3 = [{ id: 'altar_crystal', qty: 3 }, { id: 'soul_essence', qty: 2 }];
 export const UPGRADE_BONUS_PER_LEVEL = 0.06; // +1 → +%6 ... +5 → +%30 (temel değere toplamsal)
 export const UPGRADE_SLOT_MULT = { weapon: 1, offhand: 0.6, helm: 0.5, chest: 0.7, gloves: 0.45, boots: 0.45 };
 export const LOW_LEVEL_UPGRADE_MULT = 0.5; // Lv.1–9 eşyalar

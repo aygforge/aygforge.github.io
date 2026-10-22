@@ -1,5 +1,5 @@
 // LootService — belge §8. Sıra: nadirlik çekilişi (tek) → uygun havuz → rastgele bonus.
-// Legendary yalnızca 'golem' (V1) ve 'frost_keeper' (V2) tablolarından gelir; boş havuz uygunsuz eşya üretmez.
+// Legendary yalnızca 'golem' (V1), 'frost_keeper' (V2) ve 'lost_king' (V3) tablolarından gelir; boş havuz uygunsuz eşya üretmez.
 import { ITEMS, ITEM_LIST, canClassUse } from '../data/items.js';
 import { ENEMIES } from '../data/enemies.js';
 import { MATERIALS, POTION_LIST } from '../data/materials.js';

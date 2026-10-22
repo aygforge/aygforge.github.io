@@ -373,14 +373,27 @@ export function drawMarkers(ctx, w, tf, k, mini) {
     else ctx.arc(sx, sy, r, 0, Math.PI * 2);
     ctx.fill(); ctx.stroke();
   };
-  // görev ipucu alanı
+  // görev ipucu alanı (V3 İzci Pusulası etkinken alan daralır ve parlar)
+  const at = ch.world.activeTime, eff = ch.effects || {};
+  const compass = at < (eff.compassUntil || 0);
   const tracked = trackedQuestList(ch);
   for (const t of tracked) {
     const hnt = t.hint;
     if (!hnt || hnt.map !== def.id || t.ready) continue;
     const [sx, sy] = tf(hnt.x, hnt.y);
-    ctx.fillStyle = 'rgba(255,220,90,0.18)'; ctx.strokeStyle = 'rgba(255,220,90,0.8)'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.arc(sx, sy, hnt.r * k, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    const r = compass ? Math.max(1.5, hnt.r * 0.45) : hnt.r;
+    ctx.fillStyle = compass ? 'rgba(140,200,255,0.25)' : 'rgba(255,220,90,0.18)';
+    ctx.strokeStyle = compass ? 'rgba(160,220,255,0.95)' : 'rgba(255,220,90,0.8)'; ctx.lineWidth = compass ? 1.5 : 1;
+    ctx.beginPath(); ctx.arc(sx, sy, r * k, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  }
+  // V3 Maden Lambası: bu haritadaki cevher ve ot düğümleri (tükenmişler soluk)
+  if (at < (eff.lampUntil || 0)) {
+    for (const o of def.objects) {
+      if (o.type !== 'gather') continue;
+      const ore = /ore|crystal/.test(o.kind);
+      const used = at < (ch.world.gatherAt?.[o.id] || 0);
+      dot(o.x, o.y, used ? '#5a5a5a' : ore ? '#9ad8e8' : '#8be06a', mini ? 2.2 : 3.2, 'd');
+    }
   }
   for (const o of def.objects) {
     if (o.type === 'npc') dot(o.x, o.y, '#ffd040', mini ? 3 : 4);

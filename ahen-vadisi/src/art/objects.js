@@ -442,6 +442,14 @@ export const EFFECT_SPRITES = {
   // ---------------- V2 efektleri
   ember_bolt: () => frames(2, 12, 10, (pb, i) => { pb.disc(7, 5, 3.5, '#e04a1a'); pb.disc(7, 5, 2, '#ffd060'); pb.set(2 + i, 5, '#ff8a2a'); pb.set(1, 4 + i, '#8a8480'); }, false),
   frost_bolt: () => frames(2, 12, 10, (pb, i) => { pb.poly([[1, 5], [7, 2], [11, 5], [7, 8]], '#7ad8ff'); pb.line(3, 5, 10, 5, '#ffffff'); pb.set(1 + i, 4, '#c8f0ff'); }, false),
+  // V3
+  bone_arrow: () => frames(2, 14, 8, (pb, i) => { pb.hline(1, 10, 4, '#d8d0bc'); pb.poly([[10, 2], [13, 4], [10, 6]], '#e8e0cc'); pb.line(1, 2 + i, 3, 4, '#a070e0'); pb.line(1, 6 - i, 3, 4, '#a070e0'); }, false),
+  void_bolt: () => frames(2, 12, 12, (pb, i) => { pb.disc(7, 6, 4, '#3a1e5a'); pb.disc(7, 6, 2.4, '#a070e0'); pb.set(7, 6, '#ffffff'); pb.set(2 + i, 5, '#7a4ac0'); pb.set(1, 7 - i, '#5a3a7a'); }, false),
+  void_ground: () => frames(3, 32, 16, (pb, i) => {
+    pb.ellipse(16, 10, 15, 5, '#140a1e', 210); pb.ellipse(16, 10, 12, 3.5, '#3a1e5a', 220);
+    for (let k = 0; k < 6; k++) { const x = 4 + k * 5, h = 2 + ((k + i) % 3) * 2; pb.poly([[x - 1.5, 10], [x, 10 - h], [x + 1.5, 10]], k % 2 ? '#a070e0' : '#e0c8ff'); }
+  }, false),
+  dark_missile: () => frames(1, 10, 20, (pb) => { pb.poly([[5, 19], [1, 8], [5, 0], [9, 8]], '#2a1a3a'); pb.poly([[5, 17], [3, 8], [5, 3], [7, 8]], '#a070e0'); pb.vline(5, 5, 14, '#e0c8ff'); }, false),
   chain: () => frames(3, 16, 16, (pb, i) => { pb.line(0, 8, 5, 4 + i, '#e0e8ff'); pb.line(5, 4 + i, 10, 12 - i, '#9ab0ff'); pb.line(10, 12 - i, 15, 8, '#e0e8ff'); pb.set(5, 4 + i, '#ffffff'); }, false),
   blade: () => frames(1, 10, 22, (pb) => { pb.rect(4, 0, 2, 14, '#d8e0e8'); pb.vline(4, 0, 13, '#ffffff'); pb.rect(1, 14, 8, 2, '#c0a040'); pb.rect(4, 16, 2, 5, '#5a3a20'); pb.poly([[4, 0], [5, -2], [6, 0]], '#ffffff'); }),
   fire_ground: () => frames(3, 32, 16, (pb, i) => {

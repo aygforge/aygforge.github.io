@@ -21,15 +21,18 @@ export function bindPanelEvents() {
   bus.on('storyComplete', () => showStoryEnd());
 }
 
-function openTravel(fromId) {
+// fromId: dokunulan Yol Taşı; { scroll: true }: Dönüş Parşömeni (ücretsiz, parşömen seçimde tüketilir)
+function openTravel(from) {
   const ch = app.char;
-  const box = h('div', { class: 'dlg frame' }, h('h3', { class: 't' }, 'Yol Taşı — Hızlı Seyahat'),
-    h('p', { class: 'small muted' }, 'Keşfettiğin Yol Taşlarının bulunduğu bölge girişine ışınlanırsın.'),
+  const scroll = typeof from === 'object' && !!from?.scroll;
+  const fromId = scroll ? null : from;
+  const box = h('div', { class: 'dlg frame' }, h('h3', { class: 't' }, scroll ? 'Dönüş Parşömeni' : 'Yol Taşı — Hızlı Seyahat'),
+    h('p', { class: 'small muted' }, scroll ? 'Keşfettiğin bir Yol Taşı\'na ücretsiz dön. Parşömen seçince tükenir.' : 'Keşfettiğin Yol Taşlarının bulunduğu bölge girişine ışınlanırsın.'),
     h('div', { class: 'list' }, Object.entries(WAYSTONES).map(([id, ws]) => {
       const known = ch.world.waystones.includes(id);
       const here = id === fromId;
-      return h('div', { class: 'li' }, h('div', { class: 'grow' }, h('b', {}, ws.name), h('div', { class: 'tiny muted' }, known ? (ws.cost ? `${ws.cost} Gold` : 'Ücretsiz') : 'Keşfedilmedi')),
-        h('button', { class: 'btn small green' + (known && !here ? '' : ' dis'), onTap: () => { ui.closeModal(); act.travel(id); } }, here ? 'Buradasın' : 'Git'));
+      return h('div', { class: 'li' }, h('div', { class: 'grow' }, h('b', {}, ws.name), h('div', { class: 'tiny muted' }, known ? (scroll || !ws.cost ? 'Ücretsiz' : `${ws.cost} Gold`) : 'Keşfedilmedi')),
+        h('button', { class: 'btn small green' + (known && !here ? '' : ' dis'), onTap: () => { ui.closeModal(); act.travel(id, { scroll }); } }, here ? 'Buradasın' : 'Git'));
     })),
     h('div', { class: 'row', style: { justifyContent: 'flex-end' } }, h('button', { class: 'btn ghost', onTap: () => ui.closeModal() }, 'Kapat')));
   ui.modal(box);

@@ -220,6 +220,97 @@ export const ENEMIES = {
     extraRolls: [{ id: 'ancient_core', chance: 0.3 }, { id: 'mastery_book', chance: 0.1 }],
   },
 
+  // ---------------------------------------------------------- V3: ÖLÜ KRALLIK (Lv.31–34) ve KARA TAHT (Lv.36–39)
+  // Statlar belge başlangıç değerleridir; öldürme süresi yalnız HP ile değil davranışla uzar (bkz. tests/unit/v3balance).
+  shroud_crawler: N({
+    id: 'shroud_crawler', name: 'Kefen Sürüngeni', level: 31, hp: 1700, atk: 220, def: 100, mdef: 95, exp: 620,
+    species: 'undead', ai: 'aggressive', aggro: 5, leash: 12, speed: 4.3, attackInterval: 1.25, attackRange: 1.3,
+    dmgType: 'phys', respawn: 22, radius: 0.48, sprite: 'shroud_crawler', deathFx: 'bone',
+    materials: [{ id: 'shroud_cloth', w: 1 }],
+  }),
+  bone_archer: N({
+    id: 'bone_archer', name: 'Kemik Okçu', level: 32, hp: 1600, atk: 245, def: 95, mdef: 130, exp: 700,
+    species: 'undead', ai: 'ranged', aggro: 6.5, leash: 14, speed: 2.8, attackInterval: 2.0, attackRange: 6,
+    dmgType: 'phys', respawn: 24, radius: 0.42, sprite: 'bone_archer', projectile: 'bone_arrow', deathFx: 'bone',
+    materials: [{ id: 'bone_tip', w: 1 }],
+  }),
+  cursed_guard: N({
+    id: 'cursed_guard', name: 'Lanetli Muhafız', level: 33, hp: 2400, atk: 270, def: 155, mdef: 115, exp: 780,
+    species: 'undead', ai: 'tank', aggro: 4, leash: 11, speed: 2.1, attackInterval: 2.2, attackRange: 1.6,
+    dmgType: 'phys', respawn: 28, radius: 0.52, sprite: 'cursed_guard', deathFx: 'bone',
+    materials: [{ id: 'cursed_metal', w: 1 }],
+  }),
+  grave_mage: N({
+    id: 'grave_mage', name: 'Mezar Büyücüsü', level: 34, hp: 1950, atk: 285, def: 105, mdef: 175, exp: 870,
+    species: 'undead', ai: 'ranged', aggro: 6, leash: 14, speed: 2.6, attackInterval: 2.3, attackRange: 5.5,
+    dmgType: 'magic', respawn: 28, radius: 0.42, sprite: 'grave_mage', projectile: 'void_bolt', deathFx: 'bone',
+    abilities: ['grave_curse'],
+    materials: [{ id: 'grave_dust', w: 1 }],
+  }),
+  obsidian_sentinel: N({
+    id: 'obsidian_sentinel', name: 'Obsidyen Nöbetçi', level: 36, hp: 3000, atk: 315, def: 185, mdef: 140, exp: 1050,
+    species: 'construct', ai: 'tank', aggro: 4, leash: 11, speed: 1.9, attackInterval: 2.6, attackRange: 1.7,
+    dmgType: 'phys', respawn: 30, radius: 0.6, sprite: 'obsidian_sentinel', deathFx: 'void',
+    abilities: ['heavy_slam'],
+    materials: [{ id: 'obsidian_shard', w: 1 }],
+  }),
+  shadow_hunter: N({
+    id: 'shadow_hunter', name: 'Gölge Avcısı', level: 37, hp: 2400, atk: 335, def: 125, mdef: 180, exp: 1150,
+    species: 'humanoid', ai: 'skirmish', aggro: 6, leash: 14, speed: 3.6, attackInterval: 1.6, attackRange: 1.4,
+    dmgType: 'phys', respawn: 26, radius: 0.44, sprite: 'shadow_hunter', deathFx: 'void',
+    abilities: ['shadow_dash'],
+    materials: [{ id: 'shadow_essence', w: 1 }],
+  }),
+  throne_executioner: N({
+    id: 'throne_executioner', name: 'Taht Celladı', level: 38, hp: 3600, atk: 370, def: 215, mdef: 160, exp: 1270,
+    species: 'undead', ai: 'aggressive', aggro: 4.5, leash: 12, speed: 2.3, attackInterval: 2.5, attackRange: 1.7,
+    dmgType: 'phys', respawn: 30, radius: 0.56, sprite: 'throne_executioner', deathFx: 'void',
+    abilities: ['throne_cleave'],
+    materials: [{ id: 'executioner_chain', w: 1 }],
+  }),
+  void_priest: N({
+    id: 'void_priest', name: 'Hiçlik Rahibi', level: 39, hp: 3000, atk: 390, def: 145, mdef: 210, exp: 1400,
+    species: 'humanoid', ai: 'ranged', aggro: 6.5, leash: 14, speed: 2.6, attackInterval: 2.2, attackRange: 6,
+    dmgType: 'magic', respawn: 30, radius: 0.42, sprite: 'void_priest', projectile: 'void_bolt', flying: true, deathFx: 'void',
+    abilities: ['void_ward'],
+    materials: [{ id: 'void_crystal', w: 1 }],
+  }),
+  // V3 elitleri: V1 kuralı (kendi kampında 25 öldürme + 120 sn aktif süre), Epic %0,75, Legendary yok
+  shroud_hunter: {
+    id: 'shroud_hunter', normalCoef: 0.7, name: 'Kefen Avcısı', kind: 'elite', level: 34, hp: 14000, atk: 330, def: 170, mdef: 155, exp: 2000,
+    species: 'undead', ai: 'elite', aggro: 7, leash: 15, speed: 3.2, attackInterval: 1.9, attackRange: 1.9,
+    dmgType: 'phys', radius: 0.72, sprite: 'shroud_hunter', lootTable: 'elite', gold: [150, 240], deathFx: 'bone',
+    guaranteed: [{ id: 'hunter_brand', qty: [1, 1] }],
+    extraRolls: [{ id: 'mastery_book', chance: 0.02 }],
+    abilities: ['shroud_dash'], enrage: { below: 0.3, atkSpd: 0.75, speed: 1.2, strong: true },
+    materials: [{ id: 'shroud_cloth', w: 1 }],
+  },
+  obsidian_executioner: {
+    id: 'obsidian_executioner', normalCoef: 0.7, name: 'Obsidyen Celladı', kind: 'elite', level: 39, hp: 23000, atk: 460, def: 245, mdef: 190, exp: 3500,
+    species: 'construct', ai: 'elite', aggro: 6, leash: 14, speed: 2.4, attackInterval: 2.3, attackRange: 2.0,
+    dmgType: 'phys', radius: 0.8, sprite: 'obsidian_executioner', lootTable: 'elite', gold: [200, 320], deathFx: 'void',
+    guaranteed: [{ id: 'executioner_seal', qty: [1, 1] }],
+    extraRolls: [{ id: 'mastery_book', chance: 0.025 }],
+    abilities: ['obsidian_quake'],
+    materials: [{ id: 'obsidian_shard', w: 1 }],
+  },
+  // V3 bossları
+  grave_commander: {
+    id: 'grave_commander', normalCoef: 0.45, name: 'Mezar Komutanı', kind: 'boss', level: 35, hp: 70000, atk: 345, def: 175, mdef: 150, exp: 6500,
+    species: 'undead', ai: 'boss_commander', aggro: 8, leash: 16, speed: 2.3, attackInterval: 2.3, attackRange: 2.6,
+    dmgType: 'phys', radius: 1.4, sprite: 'grave_commander', lootTable: 'grave_commander', gold: [520, 700], deathFx: 'bone',
+    guaranteed: [{ id: 'commander_crest', qty: [1, 1] }],
+    extraRolls: [{ id: 'ancient_core', chance: 0.3 }, { id: 'mastery_book', chance: 0.08 }],
+    respawn: 900,
+  },
+  lost_king: {
+    id: 'lost_king', normalCoef: 0.45, name: 'Kayıp Kral', kind: 'boss', level: 40, hp: 125000, atk: 420, def: 210, mdef: 185, exp: 12000,
+    species: 'undead', ai: 'boss_king', aggro: 10, leash: 30, speed: 2.4, attackInterval: 2.2, attackRange: 2.7,
+    dmgType: 'phys', radius: 1.4, sprite: 'lost_king', lootTable: 'lost_king', gold: [700, 950], deathFx: 'void',
+    guaranteed: [{ id: 'crown_shard', qty: [1, 2] }],
+    extraRolls: [{ id: 'ancient_core', chance: 0.4 }, { id: 'mastery_book', chance: 0.12 }],
+  },
+
   // ---------------------------------------------------------- YARDIMCI (sayılmaz, EXP/loot vermez)
   pack_wolf: {
     id: 'pack_wolf', name: 'Sürü Kurdu', kind: 'summon', level: 9, hp: 160, atk: 18, def: 12, mdef: 10, exp: 0, lifetime: 30,
@@ -241,6 +332,22 @@ export const ENEMIES = {
     id: 'frost_seal_crystal', name: 'Buz Mührü Kristali', kind: 'summon', level: 30, hp: 3200, atk: 0, def: 20, mdef: 20, exp: 0,
     species: 'construct', ai: 'static', aggro: 0, leash: 0, speed: 0, attackInterval: 99, attackRange: 0,
     dmgType: 'phys', radius: 0.5, sprite: 'frost_crystal', lootTable: null, gold: [0, 0], noReward: true, deathFx: 'ice',
+  },
+  // V3 yardımcıları: Kemik Çağrısı askerleri + Lanetli Bayrak (Mezar Komutanı), kadim mühürler (Kayıp Kral)
+  bone_soldier: {
+    id: 'bone_soldier', name: 'Kemik Asker', kind: 'summon', level: 34, hp: 2600, atk: 240, def: 120, mdef: 90, exp: 0, lifetime: 60,
+    species: 'undead', ai: 'aggressive', aggro: 14, leash: 18, speed: 2.8, attackInterval: 1.8, attackRange: 1.5,
+    dmgType: 'phys', radius: 0.5, sprite: 'cursed_guard', tint: 0xd8d0c0, lootTable: null, gold: [0, 0], noReward: true, deathFx: 'bone',
+  },
+  cursed_banner: {
+    id: 'cursed_banner', name: 'Lanetli Bayrak', kind: 'summon', level: 35, hp: 4200, atk: 0, def: 60, mdef: 60, exp: 0,
+    species: 'construct', ai: 'static', aggro: 0, leash: 0, speed: 0, attackInterval: 99, attackRange: 0,
+    dmgType: 'phys', radius: 0.5, sprite: 'cursed_banner', lootTable: null, gold: [0, 0], noReward: true, deathFx: 'bone',
+  },
+  king_seal: {
+    id: 'king_seal', name: 'Kadim Mühür', kind: 'summon', level: 40, hp: 7500, atk: 0, def: 40, mdef: 40, exp: 0,
+    species: 'construct', ai: 'static', aggro: 0, leash: 0, speed: 0, attackInterval: 99, attackRange: 0,
+    dmgType: 'phys', radius: 0.5, sprite: 'void_seal', lootTable: null, gold: [0, 0], noReward: true, deathFx: 'void',
   },
   // ---------------------------------------------------------- V3: GÖREV VARYANTI AVLARI (kind 'hunt')
   // Görev sürerken haritada bir tane doğar; kalıcı boss değildir, EXP verir, ekipman/ganimet düşürmez,

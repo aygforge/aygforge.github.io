@@ -52,7 +52,7 @@ export default {
   ],
   stamps: [
     // Son Nöbet Yeri
-    { s: 'throne_banner', x: 11, y: 50 }, { s: 'throne_banner', x: 21, y: 50 }, { s: 'snow_tent', x: 18, y: 59 }, { s: 'crate', x: 10, y: 59 },
+    { s: 'throne_banner', x: 11, y: 50 }, { s: 'throne_banner', x: 21, y: 50 }, { s: 'tent', x: 18, y: 59 }, { s: 'crate', x: 10, y: 59 },
     { s: 'barrel', x: 11, y: 60 }, { s: 'sign', x: 9, y: 63 },
     // Kara Nöbet Avlusu
     { s: 'obsidian_wall', x: 27, y: 67 }, { s: 'obsidian_wall', x: 44, y: 67 }, { s: 'royal_statue', x: 32, y: 80 }, { s: 'royal_statue', x: 41, y: 80 },

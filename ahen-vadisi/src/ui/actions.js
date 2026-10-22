@@ -125,12 +125,26 @@ export const act = {
     return r;
   },
   cancelContract() { return result(qs.cancelContract(app.char), { okText: 'Sözleşme iptal edildi', what: 'quest' }); },
-  travel(wsId) {
+  // V3: kullanılabilir eşya (Temizleyici Merhem, Isıtıcı Tonik, Kamp Erzağı, Maden Lambası, İzci Pusulası, Dönüş Parşömeni)
+  useItem(id) {
+    const p = app.world?.player;
+    if (!p) return { ok: false };
+    const r = p.useUsable(id);
+    if (r.ok) app.changed('inventory');
+    return r;
+  },
+  // scroll: Dönüş Parşömeni ile ücretsiz seyahat (savaş dışında; parşömen tüketilir)
+  travel(wsId, { scroll = false } = {}) {
     const ws = WAYSTONES[wsId];
     const ch = app.char;
     if (!ch.world.waystones.includes(wsId)) return result({ ok: false, msg: 'Bu Yol Taşı henüz keşfedilmedi' });
-    if (ch.gold < ws.cost) return result({ ok: false, msg: `${ws.cost} Gold gerekli` });
-    ch.gold -= ws.cost;
+    if (scroll) {
+      if (app.world?.player?.inCombat()) return result({ ok: false, msg: 'Savaş sırasında kullanılamaz' });
+      if (!inv.removeStack(ch.bag, 'return_scroll', 1)) return result({ ok: false, msg: 'Dönüş Parşömeni yok' });
+    } else {
+      if (ch.gold < ws.cost) return result({ ok: false, msg: `${ws.cost} Gold gerekli` });
+      ch.gold -= ws.cost;
+    }
     sound.play('portal');
     app.changed('inventory');
     bus.emit('closePanels');

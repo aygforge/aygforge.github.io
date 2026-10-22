@@ -211,11 +211,11 @@ describe('V2 loot kuralları', () => {
     expect(canon('frozen_guardian', 'L')).toEqual(['M13', 'W13']);
     expect(canon('frozen_guardian', 'E')).toEqual(['A08']);
   });
-  it('V1 korunur: Golem Legendary/Rare havuzu V2 eşyası içermez; Legendary yalnız iki boss tablosunda', () => {
+  it('V1 korunur: Golem Legendary/Rare havuzu V2 eşyası içermez; Legendary yalnız boss tablolarında (V3: + Kayıp Kral)', () => {
     expect(buildPool('mine_golem', 'L').map((p) => p.tid).sort()).toEqual(['M08', 'W08']);
     for (const p of buildPool('mine_golem', 'R')) expect(ITEMS[p.tid].lv).toBeLessThanOrEqual(20);
     for (const e of Object.values(ENEMIES).filter((x) => x.lootTable)) {
-      if (e.id === 'mine_golem' || e.id === 'frozen_guardian') continue;
+      if (e.id === 'mine_golem' || e.id === 'frozen_guardian' || e.id === 'lost_king') continue;
       expect(buildPool(e.id, 'L').length, e.id).toBe(0);
     }
     // hiçbir tarif Legendary üretmez

@@ -1,6 +1,6 @@
 // Savaş matematiği — belge §4.2. Hasar tek bir yerde, tek sırayla hesaplanır:
 // ham güç → beceri katsayısı → savunma → tür bonusu/direnç/azaltma → (normal vuruş) ±%5 → kritik ×1,5 → min 1 → yuvarlama
-import { CRIT_MULT, NORMAL_VARIANCE } from '../data/constants.js';
+import { CRIT_MULT, NORMAL_VARIANCE, PLAYER_DR_CAP } from '../data/constants.js';
 
 export function defenseFactor(defense) {
   return 100 / (100 + Math.max(0, defense));
@@ -41,7 +41,8 @@ export function playerHit(stats, enemy, opts) {
   return { ...r, miss: false };
 }
 
-// Düşman → oyuncu. buffs: { reduce (Demir Deri), manaShield (oran), willReduce, willDef }
+// Düşman → oyuncu. buffs: { reduce (Demir Deri), manaShield (oran), willReduce, willDef, furyReduce (V3), passiveReduce (V3),
+//   curse (V3: alınan hasar artışı) }. Toplam azaltma PLAYER_DR_CAP (%60) ile sınırlı; çarpımsal birleşir.
 export function enemyHit(enemy, pStats, opts) {
   const { rng } = opts;
   if (opts.isNormal && rng.float() > hitChance(enemy.level, pStats.level)) return { dmg: 0, miss: true, mpDmg: 0 };
@@ -49,9 +50,9 @@ export function enemyHit(enemy, pStats, opts) {
   let defense = magic ? pStats.mdef : pStats.def;
   const buffs = opts.buffs || {};
   if (buffs.willDef) defense *= 1 + buffs.willDef;
-  const reduce = 1 - (1 - (buffs.reduce || 0)) * (1 - (buffs.willReduce || 0));
+  const reduce = Math.min(PLAYER_DR_CAP, 1 - (1 - (buffs.reduce || 0)) * (1 - (buffs.willReduce || 0)) * (1 - (buffs.furyReduce || 0)) * (1 - (buffs.passiveReduce || 0)));
   const r = computeHit({
-    power: enemy.atk, coef: opts.coef ?? 1, defense, mult: opts.mult ?? 1, reduce,
+    power: enemy.atk, coef: opts.coef ?? 1, defense, mult: (opts.mult ?? 1) * (1 + (buffs.curse || 0)), reduce,
     isNormal: !!opts.isNormal, critChance: 0, rng, canCrit: false,
   });
   let dmg = r.dmg, mpDmg = 0;

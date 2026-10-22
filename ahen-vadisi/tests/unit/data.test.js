@@ -26,10 +26,10 @@ describe('Veri tabloları', () => {
     expect(ITEMS.W08).toMatchObject({ lv: 20, base: { atkMin: 90, atkMax: 115 }, legendaryFixed: { str: 14, crit: 0.08 }, effect: 'crimson_strike' });
     expect(ITEMS.M08).toMatchObject({ lv: 20, base: { magMin: 97, magMax: 123 }, legendaryFixed: { int: 16, mp: 60 }, effect: 'spirit_echo' });
   });
-  it('V2: 30 yeni şablon (toplam 90), kimlikler benzersiz, Lv.21–30', () => {
-    expect(ITEM_LIST.length).toBe(90);
-    expect(new Set(ITEM_LIST.map((t) => t.id)).size).toBe(90);
-    const v2 = ITEM_LIST.filter((t) => t.lv > 20);
+  it('V2: 30 yeni şablon (V1+V2 = 90), kimlikler benzersiz, Lv.21–30 (V3: toplam 126 ayrıca test edilir)', () => {
+    expect(ITEM_LIST.filter((t) => t.lv <= 30).length).toBe(90);
+    expect(new Set(ITEM_LIST.map((t) => t.id)).size).toBe(ITEM_LIST.length);
+    const v2 = ITEM_LIST.filter((t) => t.lv > 20 && t.lv <= 30);
     expect(v2.length).toBe(30);
     const c = { N: 0, U: 0, R: 0, E: 0, L: 0 };
     for (const t of v2) c[t.rarity]++;
@@ -47,10 +47,10 @@ describe('Veri tabloları', () => {
       }
     }
   });
-  it('V1 12 normal, 3 elit, 2 boss + V2 8 normal, 2 elit, 2 boss', () => {
-    expect(NORMAL_IDS.length).toBe(20);
-    expect(ELITE_IDS.length).toBe(5);
-    expect(BOSS_IDS.length).toBe(4);
+  it('V1 12 normal, 3 elit, 2 boss + V2 8 normal, 2 elit, 2 boss (+ V3 8/2/2 → 28/7/6)', () => {
+    expect(NORMAL_IDS.length).toBe(28);
+    expect(ELITE_IDS.length).toBe(7);
+    expect(BOSS_IDS.length).toBe(6);
     const v2 = { ash_imp: [21, 670, 105, 54, 45, 250], ash_hunter: [23, 770, 120, 60, 48, 300], crimson_scorpion: [24, 930, 125, 75, 43, 340],
       burnt_warrior: [25, 1050, 142, 70, 58, 390], frost_wolf: [26, 1100, 148, 72, 65, 410], ice_wisp: [27, 850, 153, 46, 76, 450],
       frost_sentinel: [28, 1450, 184, 95, 72, 500], snow_shaman: [29, 1200, 190, 65, 97, 550], ash_butcher: [25, 5800, 170, 82, 65, 950],
@@ -75,7 +75,9 @@ describe('Veri tabloları', () => {
     expect(LOOT_TABLES.golem.L).toBe(0.4);
     expect(LOOT_TABLES.ash_giant).toMatchObject({ R: 22, E: 2, L: 0 });
     expect(LOOT_TABLES.frost_keeper).toMatchObject({ R: 30, E: 7, L: 0.4 });
-    for (const [k, t] of Object.entries(LOOT_TABLES)) if (k !== 'golem' && k !== 'frost_keeper') expect(t.L).toBe(0);
+    expect(LOOT_TABLES.grave_commander).toMatchObject({ R: 25, E: 3, L: 0 });
+    expect(LOOT_TABLES.lost_king).toMatchObject({ R: 33, E: 8, L: 0.4 });
+    for (const [k, t] of Object.entries(LOOT_TABLES)) if (k !== 'golem' && k !== 'frost_keeper' && k !== 'lost_king') expect(t.L).toBe(0);
   });
   it('tarif girdi/çıktıları tanımlı ID', () => {
     for (const r of RECIPES) {

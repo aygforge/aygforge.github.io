@@ -8,12 +8,13 @@ import { bus } from '../core/events.js';
 import { TILE, PLAYER_SPEED_TILES, POTION_CD, REGEN_DELAY, REGEN_HP_PCT, MP_REGEN_COMBAT, MP_REGEN_IDLE } from '../data/constants.js';
 import { SKILLS, CLASS_SKILLS, MASTERY_BOOKS } from '../data/skills.js';
 import { ITEMS } from '../data/items.js';
-import { POTION_LIST } from '../data/materials.js';
+import { POTION_LIST, USABLES } from '../data/materials.js';
 import { countStack, removeStack } from '../systems/inventory.js';
 import { ensurePlayerTexture } from '../scenes/textures.js';
 import { spritePack, animDuration } from '../art/spriteRuntime.js';
 import { handAnchor } from '../art/characters.js';
 import { sound } from '../audio/sound.js';
+import { guideTarget } from '../world/questGuide.js';
 
 const INTERACT_RANGE = 1.5 * TILE;
 const APPROACH_TIMEOUT = 10;
@@ -38,7 +39,7 @@ export class Player {
     this.potionCd = { hp: 0, mp: 0 };
     this.buffs = {};        // ironSkin, manaShield, will, resonance: { until, value }
     this.castLog = [];
-    this.icd = { crimson: 0, spirit: 0, will: 0, resonance: 0, frost: 0, winter: 0 };
+    this.icd = { crimson: 0, spirit: 0, will: 0, resonance: 0, frost: 0, winter: 0, king: 0, verdict: 0 };
     this.lastHurtAt = -99999; this.lastCombatAt = -99999;
     this.stunUntil = 0; this.slowUntil = 0; this.slowPct = 0;
     this.poison = null;
@@ -306,8 +307,9 @@ export class Player {
     this.body.play(this.texKey + suffix, true);
   }
 
-  // hasar alınca kısa sarsılma animasyonu (yalnız boştayken; saldırıyı kesmez)
+  // hasar alınca kısa sarsılma animasyonu (yalnız boştayken; saldırıyı kesmez). Kamp Erzağı yenilemesi kesilir.
   onHurt() {
+    if (this.buffs.ration) { delete this.buffs.ration; this.scene.fx.text(this.x, this.y - 70, 'Erzak yarıda kaldı', { color: '#c8a060', size: 11 }); }
     if (this.pack && !this.dead && this.busy <= 0) { this.busy = Math.min(0.2, animDuration(this.pack.id, 'hurt')); this.body.play(`${this.pack.id}_hurt`, false); }
   }
 
@@ -568,9 +570,73 @@ export class Player {
     return true;
   }
 
+  // V3: savaşta mı? (son 5 sn içinde hasar aldı/verdi ya da peşinde saldırgan yaratık var)
+  inCombat() {
+    const now = this.scene.clock;
+    if (now - this.lastHurtAt < 5000 || now - this.lastCombatAt < 5000) return true;
+    return this.scene.enemies.some((e) => !e.dead && (e.state === 'chase' || e.state === 'attack') && e.tpl.ai !== 'static');
+  }
+
+  // V3: kullanılabilir eşya. Başarılıysa tam 1 adet tüketilir; hiçbiri ganimet şansını etkilemez.
+  useUsable(id) {
+    const u = USABLES[id];
+    const ch = this.char, sc = this.scene, now = sc.clock;
+    const fail = (msg) => { bus.emit('toast', { text: msg, kind: 'warn', short: true }); return { ok: false, msg }; };
+    if (!u || this.dead) return fail('Kullanılamaz');
+    if (countStack(ch.bag, id) <= 0) return fail('Çantanda yok');
+    if (u.use.kind === 'quest') return fail('Bu eşya ilgili görev nesnesine dokununca kullanılır');
+    if (!u.combatOk && this.inCombat()) return fail('Savaş sırasında kullanılamaz');
+    const eff = (ch.effects = ch.effects || {});
+    const at = ch.world.activeTime;
+    switch (u.use.kind) {
+      case 'cure_poison':
+        if (!this.poison && !this.buffs.curse) return fail('Zehir ya da lanet etkisi yok');
+        this.poison = null; delete this.buffs.curse;
+        sc.fx.sprite('heal', this.x, this.y - 30, { tint: 0x8be06a });
+        sc.fx.text(this.x, this.y - 60, 'Arındın', { color: '#8be06a', size: 12 });
+        break;
+      case 'cold_resist':
+        this.buffs.warm = { until: now + u.use.dur * 1000, value: u.use.pct };
+        sc.fx.sprite('heal', this.x, this.y - 30, { tint: 0xff8a3a });
+        sc.fx.text(this.x, this.y - 60, 'Isındın', { color: '#ffb070', size: 12 });
+        break;
+      case 'ration': {
+        const st = this.stats;
+        if (ch.hp >= st.maxHp && ch.mp >= st.maxMp) return fail('HP ve MP zaten dolu');
+        this.buffs.ration = { until: now + u.use.dur * 1000, value: u.use.pct / u.use.dur };
+        sc.fx.text(this.x, this.y - 60, 'Kamp Erzağı', { color: '#e0c080', size: 12 });
+        break;
+      }
+      case 'lamp':
+        eff.lampUntil = at + u.use.dur;
+        sc.fx.text(this.x, this.y - 60, 'Cevher ve ot düğümleri haritada', { color: '#ffd060', size: 12 });
+        break;
+      case 'compass':
+        if (!guideTarget(ch)) return fail('Takip ettiğin bir görev hedefi yok');
+        eff.compassUntil = at + u.use.dur;
+        sc.fx.text(this.x, this.y - 60, 'Pusula görev alanını daralttı', { color: '#9ad0ff', size: 12 });
+        break;
+      case 'return':
+        bus.emit('openTravel', { scroll: true });
+        return { ok: true, pending: true };   // parşömen seyahat seçilince tüketilir
+      default: return fail('Kullanılamaz');
+    }
+    removeStack(ch.bag, id, 1);
+    sound.play('potion');
+    bus.emit('changed', 'inventory');
+    app.requestSave('usable');
+    return { ok: true };
+  }
+
   // ---------------------------------------------------------------- can, mana, buff
   updateVitals(dt, now, st) {
     const ch = this.char;
+    // Kamp Erzağı: savaş dışı kısa süreli yenileme (hasar alınca kesilir)
+    if (this.buffs.ration && now < this.buffs.ration.until) {
+      const r = this.buffs.ration.value;
+      ch.hp = Math.min(st.maxHp, ch.hp + st.maxHp * r * dt);
+      ch.mp = Math.min(st.maxMp, ch.mp + st.maxMp * r * dt);
+    }
     const outOfCombat = now - this.lastHurtAt > REGEN_DELAY * 1000;
     if (outOfCombat && ch.hp < st.maxHp) ch.hp = Math.min(st.maxHp, ch.hp + st.maxHp * REGEN_HP_PCT * dt);
     const mpRate = (outOfCombat && now - this.lastCombatAt > REGEN_DELAY * 1000) ? MP_REGEN_IDLE : MP_REGEN_COMBAT;
@@ -616,6 +682,7 @@ export class Player {
       manaShield: on('manaShield') ? this.buffs.manaShield.value : 0,
       willDef: on('will') ? 0.3 : 0,
       willReduce: on('will') ? 0.15 : 0,
+      curse: on('curse') ? this.buffs.curse.value : 0,
     };
   }
 

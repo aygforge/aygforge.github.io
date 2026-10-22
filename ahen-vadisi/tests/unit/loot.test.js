@@ -55,9 +55,9 @@ describe('Loot RNG', () => {
     expect(maxDry).toBeGreaterThan(1000);
     console.log('Golem 1M: L', L, 'R', R, 'E', E, 'sınıf', own, 'en uzun kuraklık', maxDry);
   });
-  it('Golem ve Donmuş Muhafız dışındaki hiçbir kaynaktan Legendary çıkmaz (her kaynak 100.000)', () => {
+  it('Golem, Donmuş Muhafız ve Kayıp Kral dışındaki hiçbir kaynaktan Legendary çıkmaz (her kaynak 100.000)', () => {
     for (const e of sources) {
-      if (e.id === 'mine_golem' || e.id === 'frozen_guardian') continue;
+      if (e.id === 'mine_golem' || e.id === 'frozen_guardian' || e.id === 'lost_king') continue;
       const r = new Rng(e.id.length * 977);
       for (let i = 0; i < 100000; i++) {
         const res = rollKillLoot(e.id, { cls: i % 2 ? 'mage' : 'warrior' }, r);

@@ -31,7 +31,7 @@ export function itemInfo(inst) {
   if (inst.q !== undefined) {
     const s = STACKABLES[inst.tid];
     return h('div', { class: 'icard' },
-      h('div', { class: 'hd' }, img(iconURL(inst.tid)), h('div', {}, h('div', { class: 'nm' }, s.name), h('div', { class: 'muted small' }, s.cat === 'potion' ? 'İksir' : 'Materyal', ` · ${inst.q} adet`))),
+      h('div', { class: 'hd' }, img(iconURL(inst.tid)), h('div', {}, h('div', { class: 'nm' }, s.name), h('div', { class: 'muted small' }, { potion: 'İksir', usable: 'Kullanım eşyası', quest: 'Görev eşyası' }[s.cat] || 'Materyal', ` · ${inst.q} adet`))),
       h('p', { class: 'small' }, s.desc || ''),
       h('div', { class: 'small muted' }, `Satış: ${s.sell} Gold / adet`));
   }
@@ -86,6 +86,8 @@ export function showItemCard(inst, loc, ctx = 'normal', after = () => {}) {
   const acts = [];
   const done = () => { ui.closeModal(); after(); };
   if (loc.where === 'bag') {
+    const su = !t ? STACKABLES[inst.tid] : null;
+    if (su?.cat === 'usable' && su.use.kind !== 'quest') acts.push(h('button', { class: 'btn green', 'data-testid': 'use-btn', onTap: () => { const r = act.useItem(inst.tid); if (r?.ok) done(); } }, 'Kullan'));
     if (t) {
       const chk = canEquip(app.char, inst);
       acts.push(h('button', { class: 'btn green' + (chk.ok ? '' : ' dis'), onTap: () => { act.equip(loc.index); done(); } }, chk.ok ? 'Kuşan' : chk.msg));

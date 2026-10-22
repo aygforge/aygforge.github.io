@@ -1,4 +1,4 @@
-// 60 ekipman şablonu (V1, belge §7) + 30 V2 şablonu (Kül ve Ayaz, Lv.21–30) = 90. Değerler +0 sabit temel değerlerdir.
+// 60 ekipman şablonu (V1, belge §7) + 30 V2 şablonu (Kül ve Ayaz, Lv.21–30) + 36 V3 şablonu (Lv.31–40) = 126. Değerler +0 sabit temel değerlerdir.
 // base: yükseltmeden etkilenen temel değerler (atk/mag aralığı, def, mdef, focus büyü gücü)
 // fixed: sabit bonuslar (yükseltmeden etkilenmez)
 // look: procedural pixel-art parametreleri
@@ -136,6 +136,57 @@ export const ITEM_LIST = [
   // Kolye (2) — Kül Nişanı: Kül Devi; Kül Kasabı'nın Epic havuzunu da paylaşır (elit Epic havuzu boş kalmasın)
   A('A07', 'Kül Nişanı', 'amulet', 'any', 25, 'E', {}, { hp: 70, crit: 0.03 }, ['ash_giant', 'ash_butcher'], { type: 'medal', chain: '#5a4a40', gem: '#ff7a2a' }),
   A('A08', 'Kristal Kış Madalyonu', 'amulet', 'any', 30, 'E', {}, { mdef: 20, vit: 4 }, ['frozen_guardian'], { type: 'medal', chain: '#c8e0f0', gem: '#e0faff' }),
+
+  // ================================================ V3.0 — KAYIP KRALLIĞIN MİRASI (36, Lv.31–40)
+  // Kaynaklar: normal yaratık (kanonik Rare/U), elit (Epic %0,75 havuzu), boss (Komutan: 2 özel Epic silah; Kral: Epic + 2 Legendary)
+  // ve 'craft' (Demirci / Muhafız Eren). Legendary yalnız Kayıp Kral'ın Legendary havuzunda.
+  // Warrior silahları (6)
+  W('W14', 'Mezar Kılıcı', 31, 'U', 'one', [128, 157], ['shroud_crawler'], { type: 'sword', blade: '#a8a4b0', guard: '#5a5462', grip: '#2a2430', len: 12, gem: '#c080ff' }),
+  W('W15', 'Lanet Biçici', 33, 'R', 'two', [161, 202], ['cursed_guard', 'craft'], { type: 'machete', blade: '#7a8a7a', guard: '#3a3a34', grip: '#2a2420', len: 14, gem: '#9ae08a' }),
+  W('W16', 'Komutanın İnfazı', 35, 'E', 'two', [198, 247], ['grave_commander'], { type: 'greatsword', blade: '#b8b8c8', guard: '#b8903a', grip: '#2a1e24', len: 16, gem: '#c080ff' }, { unique: true }),
+  W('W17', 'Obsidyen Kılıç', 37, 'R', 'one', [210, 258], ['obsidian_sentinel'], { type: 'sword', blade: '#2a2434', guard: '#6a5a82', grip: '#14101a', len: 13, gem: '#a070e0' }),
+  W('W18', 'Gölge Satırı', 39, 'E', 'two', [265, 319], ['lost_king', 'obsidian_executioner'], { type: 'axe', blade: '#3a3446', guard: '#a070e0', grip: '#14101a', len: 15, gem: '#e0c8ff', glow: '#a070e0' }, { unique: true }),
+  W('W19', 'Kralın Son Emri', 40, 'L', 'two', [315, 380], ['lost_king'], { type: 'greatsword', blade: '#1e1428', guard: '#c8a050', grip: '#14101a', len: 18, gem: '#e0c8ff', glow: '#a070e0' },
+    { unique: true, legendaryFixed: { str: 22, crit: 0.08 }, effect: 'kings_command' }),
+  // Mage silahları (6)
+  M('M14', 'Mezar Kıvılcımı', 31, 'U', 'one', [135, 170], ['bone_archer'], { type: 'wand', shaft: '#5a5462', head: 'skull', orb: '#c080ff', len: 10 }),
+  M('M15', 'Kemik Asası', 33, 'R', 'two', [172, 211], ['grave_mage', 'craft'], { type: 'staff', shaft: '#d8d0bc', head: 'skull', orb: '#a070e0', len: 16 }),
+  M('M16', 'Ruh Zinciri Asası', 35, 'E', 'two', [215, 266], ['grave_commander'], { type: 'staff', shaft: '#4a4a52', head: 'star', orb: '#9ad8e8', len: 17, glow: '#9ad8e8' }, { unique: true }),
+  M('M17', 'Siyah Dua Değneği', 37, 'R', 'one', [225, 281], ['void_priest'], { type: 'wand', shaft: '#1e1428', head: 'orb', orb: '#a070e0', len: 11 }),
+  M('M18', 'Taht Asası', 39, 'E', 'two', [280, 341], ['lost_king', 'obsidian_executioner'], { type: 'staff', shaft: '#26202e', head: 'crystal', orb: '#e0c8ff', len: 17, glow: '#a070e0' }, { unique: true }),
+  M('M19', 'Sonsuz Hüküm', 40, 'L', 'two', [340, 410], ['lost_king'], { type: 'staff', shaft: '#c8a050', head: 'flame', orb: '#e0c8ff', len: 18, glow: '#c080ff' },
+    { unique: true, legendaryFixed: { int: 24, mp: 120 }, effect: 'eternal_verdict' }),
+  // Yardımcı el (4)
+  A('O11', 'Ölü Nöbet Kalkanı', 'offhand', 'warrior', 32, 'R', { def: 50 }, { hp: 70 }, ['cursed_guard'], { type: 'shield', main: '#5a5a52', rim: '#3a3a34', boss: '#9ae08a' }),
+  A('O12', 'Obsidyen Duvarı', 'offhand', 'warrior', 38, 'E', { def: 72 }, { hp: 110 }, ['obsidian_executioner', 'craft'], { type: 'shield', main: '#26202e', rim: '#46405a', boss: '#a070e0' }),
+  A('O13', 'Ruh Aynası', 'offhand', 'mage', 32, 'R', { mag: 40 }, { mp: 60 }, ['grave_mage'], { type: 'mirror', main: '#8a8494', orb: '#9ad8e8' }),
+  A('O14', 'Hiçlik Odağı', 'offhand', 'mage', 38, 'E', { mag: 60 }, { mp: 100 }, ['obsidian_executioner', 'craft'], { type: 'focus', main: '#1e1428', orb: '#a070e0' }),
+  // Başlık (4)
+  A('H11', 'Yas Miğferi', 'helm', 'warrior', 32, 'R', { def: 30 }, {}, ['bone_archer'], { type: 'greathelm', main: '#6a6670', trim: '#3a3446' }),
+  A('H12', 'Taht Miğferi', 'helm', 'warrior', 38, 'E', { def: 44 }, {}, ['obsidian_executioner'], { type: 'helm', main: '#26202e', trim: '#c8a050', horn: true }),
+  A('H13', 'Kefen Başlığı', 'helm', 'mage', 32, 'R', { def: 17, mdef: 32 }, {}, ['shroud_crawler'], { type: 'hood', main: '#b8b0a0', trim: '#6a6458' }),
+  A('H14', 'Gece Tacı', 'helm', 'mage', 38, 'E', { def: 23, mdef: 47 }, {}, ['obsidian_executioner'], { type: 'hat', main: '#1e1428', trim: '#c8a050' }),
+  // Göğüs (4)
+  A('C13', 'Yas Zırhı', 'chest', 'warrior', 33, 'R', { def: 80 }, { hp: 90 }, ['cursed_guard', 'craft'], { type: 'armor', main: '#4a4a52', trim: '#8a7a4a', tier: 4 }),
+  A('C14', 'Kralın Muhafız Zırhı', 'chest', 'warrior', 39, 'E', { def: 112 }, { hp: 150 }, ['lost_king', 'obsidian_executioner'], { type: 'armor', main: '#26202e', trim: '#c8a050', tier: 4 }),
+  A('C15', 'Ruh Dokuma Cübbesi', 'chest', 'mage', 33, 'R', { def: 45, mdef: 63 }, {}, ['grave_mage', 'craft'], { type: 'robe', main: '#3a2a4a', trim: '#9ad8e8', tier: 2 }),
+  A('C16', 'Kara Taht Cübbesi', 'chest', 'mage', 39, 'E', { def: 58, mdef: 90 }, {}, ['lost_king', 'obsidian_executioner'], { type: 'robe', main: '#1e1428', trim: '#c8a050', tier: 4 }),
+  // Eldiven (2)
+  A('G09', 'Mezar Eldivenleri', 'gloves', 'warrior', 36, 'R', { def: 20 }, { str: 4 }, ['obsidian_sentinel'], { type: 'gauntlet', main: '#4a4a52' }),
+  A('G10', 'Ruh Eldivenleri', 'gloves', 'mage', 36, 'R', { def: 14, mdef: 20 }, { int: 4 }, ['shadow_hunter'], { type: 'gloves', main: '#3a2a4a', gem: '#9ad8e8' }),
+  // Bot (2)
+  A('B09', 'Obsidyen Adımlar', 'boots', 'warrior', 36, 'R', { def: 19 }, { vit: 4 }, ['shadow_hunter'], { type: 'greaves', main: '#26202e' }),
+  A('B10', 'Sessiz Adımlar', 'boots', 'mage', 36, 'R', { def: 13, mdef: 25 }, { mp: 55 }, ['throne_executioner'], { type: 'boots', main: '#2a2434' }),
+  // Yüzük (4)
+  A('R09', 'Mezar Halkası', 'ring', 'any', 32, 'R', {}, { vit: 4 }, ['shroud_crawler'], { type: 'ring', band: '#6a6670', gem: '#c080ff' }),
+  A('R10', 'Komutan Yüzüğü', 'ring', 'any', 35, 'E', {}, { str: 4, dex: 4 }, ['grave_commander', 'shroud_hunter'], { type: 'ring', band: '#b8903a', gem: '#e0d8c4' }),
+  A('R11', 'Hiçlik Yüzüğü', 'ring', 'any', 37, 'R', {}, { int: 5, mp: 85 }, ['void_priest'], { type: 'ring', band: '#26202e', gem: '#a070e0' }),
+  A('R12', 'Kraliyet Yüzüğü', 'ring', 'any', 40, 'E', {}, { crit: 0.05, hp: 100 }, ['lost_king'], { type: 'ring', band: '#c8a050', gem: '#ff6a6a' }),
+  // Kolye (4)
+  A('A09', 'Yas Tılsımı', 'amulet', 'any', 32, 'R', {}, { hp: 70, mdef: 15 }, ['cursed_guard'], { type: 'amulet', chain: '#6a6670', gem: '#e0d8c4' }),
+  A('A10', 'Lanet Kıran Kolye', 'amulet', 'any', 35, 'E', {}, { crit: 0.04, mdef: 30 }, ['grave_commander', 'shroud_hunter'], { type: 'medal', chain: '#b8903a', gem: '#9ae08a' }),
+  A('A11', 'Obsidyen Muska', 'amulet', 'any', 38, 'R', {}, { vit: 5, hp: 100 }, ['throne_executioner'], { type: 'amulet', chain: '#26202e', gem: '#a070e0' }),
+  A('A12', 'Kayıp Taç Madalyonu', 'amulet', 'any', 40, 'E', {}, { vit: 5, mp: 100, mdef: 45 }, ['lost_king'], { type: 'medal', chain: '#c8a050', gem: '#e0c8ff' }),
 ];
 
 export const ITEMS = Object.fromEntries(ITEM_LIST.map((t) => [t.id, t]));

@@ -6,12 +6,15 @@ import { TILE } from '../data/constants.js';
 import { sound } from '../audio/sound.js';
 import { pointInBeam, inTelegraphCircle } from './Enemy.js';
 import { ashGiantBehavior, frozenGuardianBehavior } from './bossesV2.js';
+import { graveCommanderBehavior, lostKingBehavior } from './bossesV3.js';
 
 export function makeBossBehavior(e) {
   if (e.tpl.ai === 'boss_alpha') return alphaBehavior(e);
   if (e.tpl.ai === 'boss_golem') return golemBehavior(e);
   if (e.tpl.ai === 'boss_ash') return ashGiantBehavior(e);
   if (e.tpl.ai === 'boss_frost') return frozenGuardianBehavior(e);
+  if (e.tpl.ai === 'boss_commander') return graveCommanderBehavior(e);
+  if (e.tpl.ai === 'boss_king') return lostKingBehavior(e);
   return null;
 }
 

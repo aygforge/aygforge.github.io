@@ -6,9 +6,10 @@ import { sound } from '../audio/sound.js';
 import { makeBossBehavior } from './bosses.js';
 import { spritePack, animDuration } from '../art/spriteRuntime.js';
 import { V2_SCALE } from '../art/monstersV2.js';
+import { V3_SCALE } from '../art/monstersV3.js';
 
 let NEXT_ID = 1;
-const SCALE = { captain: 1.2, executioner: 1.35, ...V2_SCALE };
+const SCALE = { captain: 1.2, executioner: 1.35, ...V2_SCALE, ...V3_SCALE };
 
 export class Enemy {
   constructor(scene, tpl, x, y, opts = {}) {
@@ -210,6 +211,13 @@ export class Enemy {
         if (this.casting || this.windup) break;
         const range = this.tileRange + p.radius * 0.5;
         const see = this.canSee(p);
+        // V3 Gölge Avcısı: vurduktan sonra kısa süre geri çekilir, sonra yeniden atılır
+        if (ai === 'skirmish' && now < (this.retreatUntil || 0)) {
+          const a = Math.atan2(this.y - p.y, this.x - p.x);
+          const ok = this.scene.grid.move(this, Math.cos(a) * this.speed() * 1.1 * dt, Math.sin(a) * this.speed() * 1.1 * dt);
+          if (ok) { this.playAnim('walk'); this.setFacing(p.x - this.x); this.attackTimer -= dt; break; }
+          this.retreatUntil = 0;
+        }
         if (ai === 'ranged' && dP < 2.4 * TILE && see) {
           // geri çekil
           const a = Math.atan2(this.y - p.y, this.x - p.x);
@@ -223,6 +231,7 @@ export class Enemy {
           if (this.attackTimer <= 0) {
             this.attackTimer = this.tpl.attackInterval * this.atkMult;
             this.doAttack(p);
+            if (ai === 'skirmish' && Math.random() < 0.5) this.retreatUntil = now + 700 + Math.random() * 400;
           } else if (!this.sprite.anims.isPlaying || this.sprite.anims.currentAnim?.key.endsWith('_walk')) this.playAnim('idle');
         } else {
           this.state = 'chase';
@@ -355,7 +364,9 @@ export class Enemy {
 
   // --------------------------------------------------------------- elit yetenekleri (telegraflı)
   updateAbility(dt, p, dP) {
-    if (this.tpl.kind !== 'elite' || !this.tpl.abilities) return;
+    if (!this.tpl.abilities) return;
+    if (this.tpl.kind === 'normal') { this.updateNormalAbility(dt, p, dP); return; }
+    if (this.tpl.kind !== 'elite') return;
     // Öfke (Kül Kasabı): düşük canda daha hızlı saldırır ve koşar
     const en = this.tpl.enrage;
     if (en && !this.enraged && this.hp < this.maxHp * en.below) {
@@ -369,6 +380,7 @@ export class Enemy {
     if (this.abilityCd > 0) return;
     const ab = this.tpl.abilities[0];
     const sc = this.scene;
+    if (ab === 'shroud_dash' || ab === 'obsidian_quake') { this.updateEliteV3(ab, p, dP); return; }
     if (ab === 'spin_slash' && dP < 3 * TILE) {
       this.abilityCd = 9;
       const r = 2.6 * TILE, dur = 1300;
@@ -465,6 +477,164 @@ export class Enemy {
     }
   }
 
+  // ------------------------------------------------- V3 normal yaratık yetenekleri (hepsi telegraflı, ≥0,8 sn)
+  updateNormalAbility(dt, p, dP) {
+    this.abilityCd -= dt;
+    if (this.abilityCd > 0) return;
+    const sc = this.scene, ab = this.tpl.abilities[0];
+    if (ab === 'grave_curse' && dP < 6 * TILE && this.canSee(p)) {
+      // Mezar Büyücüsü: oyuncunun altına küçük alan büyüsü; isabette kısa lanet (alınan hasar +%12, 4 sn)
+      this.abilityCd = 10 + Math.random() * 2;
+      const x = p.x, y = p.y, r = 1.6 * TILE, dur = 1200;
+      sc.fx.telegraph({ kind: 'circle', x, y, r }, dur, 0xa070e0);
+      this.playAnim('atk');
+      this.casting = { t: dur / 1000, fn: () => {
+        if (this.dead) return;
+        sc.fx.sprite('spirit', x, y - 10, { scale: 1.8, tint: 0xa070e0 });
+        sound.play('bolt', { vol: 0.6 });
+        if (!p.dead && inTelegraphCircle(p.x, p.y, x, y, r)) {
+          sc.combat.enemyHitsPlayer(this, { coef: 1.1, dmgType: 'magic', label: 'Mezar Laneti' });
+          sc.combat.cursePlayer(0.12, 4);
+        }
+      } };
+    } else if (ab === 'heavy_slam' && dP < 2.6 * TILE) {
+      // Obsidyen Nöbetçi: yavaş ama ağır yer darbesi (kendi çevresinde)
+      this.abilityCd = 9 + Math.random() * 2;
+      const r = 2.2 * TILE, dur = 1300;
+      sc.fx.telegraph({ kind: 'circle', x: this.x, y: this.y, r }, dur, 0xa070e0);
+      sound.play('warn', { vol: 0.5 });
+      this.casting = { t: dur / 1000, fn: () => {
+        if (this.dead) return;
+        this.playAnim('atk');
+        sc.fx.sprite('shatter', this.x, this.y - 6, { scale: 2.4, tint: 0x8a6ab0 });
+        sound.play('slam'); sc.fx.shake(0.005, 140);
+        if (!p.dead && inTelegraphCircle(p.x, p.y, this.x, this.y, r)) sc.combat.enemyHitsPlayer(this, { coef: 1.5, label: 'Obsidyen Darbe' });
+      } };
+    } else if (ab === 'shadow_dash' && dP > 2.6 * TILE && dP < 7 * TILE && this.canSee(p)) {
+      // Gölge Avcısı: hedefe hızlı atılış (hat telegrafı), ardından geri çekilme
+      this.abilityCd = 7 + Math.random() * 2;
+      this.dashAt(p, { len: Math.min(dP + TILE, 7.5 * TILE), w: 1.1 * TILE, dur: 800, coef: 1.25, label: 'Gölge Atılışı', tint: 0xa070e0 });
+      this.retreatUntil = sc.clock + 800 + 900;
+    } else if (ab === 'throne_cleave' && dP < 3.5 * TILE) {
+      // Taht Celladı: uyarılı geniş ön yarma
+      this.abilityCd = 9 + Math.random() * 2;
+      const ang = Math.atan2(p.y - this.y, p.x - this.x), r = 3.2 * TILE, dur = 1400;
+      sc.fx.telegraph({ kind: 'cone', x: this.x, y: this.y - 6, r, angle: ang }, dur, 0xff5050);
+      sound.play('warn', { vol: 0.5 });
+      this.casting = { t: dur / 1000, fn: () => {
+        if (this.dead) return;
+        this.playAnim('atk');
+        sc.fx.sprite('slash', this.x + Math.cos(ang) * 30, this.y - 10 + Math.sin(ang) * 30, { scale: 2.8, rotation: ang, tint: 0xc8a0ff });
+        sound.play('slam'); sc.fx.shake(0.005, 140);
+        const dx = p.x - this.x, dy = p.y - this.y, d = Math.hypot(dx, dy);
+        const da = Math.abs(Phaser.Math.Angle.Wrap(Math.atan2(dy, dx) - ang));
+        if (!p.dead && d <= r && da <= Math.PI / 3) sc.combat.enemyHitsPlayer(this, { coef: 1.7, label: 'Taht Yarması' });
+      } };
+    } else if (ab === 'void_ward' && this.hp < this.maxHp * 0.85) {
+      // Hiçlik Rahibi: kısa süreli hasar azaltma (3 sn, %35) — görünür mor halka; zincirlenmez
+      this.abilityCd = 12 + Math.random() * 3;
+      this.casting = { t: 0.4, fn: () => {
+        if (this.dead) return;
+        this.reduce = 0.35;
+        this.furyTint = 0xc8a0ff; this.sprite.setTint(this.furyTint);
+        sc.fx.text(this.x, this.y - this.height - 10, 'Hiçlik Kalkanı', { color: '#c8a0ff', size: 12 });
+        sound.play('shield', { vol: 0.5 });
+        this.drawBar();
+        sc.time.delayedCall(3000, () => { if (this.dead) return; this.reduce = 0; this.furyTint = null; this.sprite.clearTint(); this.drawBar(); });
+      } };
+    } else {
+      this.abilityCd = 1.2;
+    }
+  }
+
+  // Hat telegrafı ardından düz hatta atılış; telegraf dikdörtgeni = isabet alanı
+  dashAt(p, { len, w, dur, coef, label, tint, curse = 0 }) {
+    const sc = this.scene;
+    const ang = Math.atan2(p.y - this.y, p.x - this.x), ox = this.x, oy = this.y - 10;
+    sc.fx.telegraph({ kind: 'rect', x: ox, y: oy, len, width: w, angle: ang }, dur, tint);
+    sound.play('warn', { vol: 0.5 });
+    this.setFacing(Math.cos(ang));
+    this.casting = { t: dur / 1000, fn: () => {
+      if (this.dead) return;
+      this.playAnim('atk');
+      // duvara kadar (veya hat sonuna kadar) kay
+      const steps = 12, dx = Math.cos(ang) * len / steps, dy = Math.sin(ang) * len / steps;
+      for (let i = 0; i < steps; i++) if (!sc.grid.move(this, dx, dy)) break;
+      sc.fx.sprite('slash', this.x, this.y - 12, { scale: 1.8, rotation: ang, tint });
+      sound.play('swing');
+      if (!p.dead && pointInBeam(p.x, p.y - 8, ox, oy, ang, len, w)) {
+        sc.combat.enemyHitsPlayer(this, { coef, label });
+        if (curse) sc.combat.cursePlayer(curse, 4);
+      }
+    } };
+  }
+
+  // ------------------------------------------------- V3 elit yetenekleri
+  updateEliteV3(ab, p, dP) {
+    const sc = this.scene;
+    this.v3n = (this.v3n || 0) + 1;
+    if (ab === 'shroud_dash') {
+      // Kefen Avcısı: uzaktan hızlı yaklaşma (+lanet); yakında tırpan savurması; %30 altı öfke → güçlü Kefen Biçişi
+      if (dP > 2.6 * TILE && dP < 8.5 * TILE && this.canSee(p)) {
+        this.abilityCd = this.enraged ? 6 : 8;
+        this.dashAt(p, { len: Math.min(dP + TILE, 8.5 * TILE), w: 1.3 * TILE, dur: 900, coef: 1.4, label: 'Kefen Atılışı', tint: 0xc0b8a8, curse: 0.15 });
+      } else if (dP <= 3.2 * TILE) {
+        this.abilityCd = this.enraged ? 6.5 : 9;
+        const strong = this.enraged;
+        const r = (strong ? 3 : 2.5) * TILE, dur = strong ? 1300 : 1200;
+        sc.fx.telegraph({ kind: 'circle', x: this.x, y: this.y, r }, dur, strong ? 0xff5050 : 0xc0b8a8);
+        sound.play('warn');
+        if (strong) sc.fx.text(this.x, this.y - this.height - 10, 'Kefen Biçişi!', { color: '#ff8a8a', size: 14 });
+        this.casting = { t: dur / 1000, fn: () => {
+          if (this.dead) return;
+          this.playAnim('atk');
+          sc.fx.sprite('slash', this.x, this.y - 10, { scale: 2.6 }); sc.fx.sprite('slash', this.x, this.y - 10, { scale: 2.6, rotation: Math.PI });
+          sound.play('swing');
+          if (!p.dead && inTelegraphCircle(p.x, p.y, this.x, this.y, r)) {
+            sc.combat.enemyHitsPlayer(this, { coef: strong ? 2.2 : 1.5, label: strong ? 'Kefen Biçişi' : 'Tırpan' });
+            sc.combat.cursePlayer(0.15, 4);
+          }
+        } };
+      } else this.abilityCd = 1.2;
+      return;
+    }
+    // Obsidyen Celladı: sırayla geniş alan darbesi → obsidyen kırılması (düşen parçalar) → savunma yükseltme
+    const step = this.v3n % 3;
+    if (step === 1 && dP < 4.5 * TILE) {
+      this.abilityCd = 8.5;
+      const r = 4 * TILE, dur = 1600;
+      sc.fx.telegraph({ kind: 'circle', x: this.x, y: this.y, r }, dur, 0xa070e0);
+      sound.play('warn');
+      this.casting = { t: dur / 1000, fn: () => {
+        if (this.dead) return;
+        this.playAnim('atk');
+        sc.fx.sprite('shatter', this.x, this.y - 6, { scale: 3.6, tint: 0xa070e0 });
+        sound.play('slam'); sc.fx.shake(0.009, 220);
+        if (!p.dead && inTelegraphCircle(p.x, p.y, this.x, this.y, r)) sc.combat.enemyHitsPlayer(this, { coef: 1.8, label: 'Obsidyen Sarsıntısı' });
+      } };
+    } else if (step === 2 && dP < 9 * TILE) {
+      this.abilityCd = 8;
+      sound.play('warn');
+      this.playAnim('atk');
+      sc.fx.text(this.x, this.y - this.height - 10, 'Obsidyen Kırılması', { color: '#c8a0ff', size: 13 });
+      for (const [ox, oy] of [[0, 0], [1.5, 0.7], [-1.4, 0.8], [0.2, -1.4]]) {
+        sc.combat.fallingShard({ x: p.x + ox * TILE, y: p.y + oy * TILE, r: 0.95 * TILE, delay: 1.4, coef: 1.1, src: this, dark: true, label: 'Obsidyen Parçası' });
+      }
+      this.casting = { t: 0.6, fn: () => {} };
+    } else if (step === 0) {
+      this.abilityCd = 9;
+      this.casting = { t: 0.5, fn: () => {
+        if (this.dead) return;
+        this.reduce = 0.3;
+        this.furyTint = 0xb090e0; this.sprite.setTint(this.furyTint);
+        sc.fx.text(this.x, this.y - this.height - 10, 'Obsidyen Zırh', { color: '#c8a0ff', size: 13 });
+        sound.play('shield');
+        this.drawBar();
+        sc.time.delayedCall(5000, () => { if (this.dead) return; this.reduce = 0; this.furyTint = null; this.sprite.clearTint(); this.drawBar(); });
+      } };
+    } else this.abilityCd = 1.2;
+  }
+
   die() {
     this.dead = true;
     this.bar.clear();
@@ -474,6 +644,8 @@ export class Enemy {
     const sc = this.scene;
     if (this.tpl.deathFx === 'ash') sc.fx.sprite('ash_puff', this.x, this.y - 12, { scale: Math.max(1.5, this.radius / 10) });
     else if (this.tpl.deathFx === 'ice') sc.fx.sprite('shatter', this.x, this.y - 12, { scale: Math.max(1.5, this.radius / 10) });
+    else if (this.tpl.deathFx === 'bone') sc.fx.sprite('ash_puff', this.x, this.y - 12, { scale: Math.max(1.5, this.radius / 10), tint: 0xe0d8c4 });
+    else if (this.tpl.deathFx === 'void') sc.fx.sprite('shatter', this.x, this.y - 12, { scale: Math.max(1.5, this.radius / 10), tint: 0xa070e0 });
     if (!this.pack && sc.anims.exists(this.animKey + '_die')) {
       // V2: kendi ölüm animasyonu (küle/buza dağılma), ardından solma
       this.hurtUntil = 0;

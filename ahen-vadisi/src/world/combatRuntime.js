@@ -64,6 +64,15 @@ export class CombatRuntime {
       if (t.tpl.kind !== 'boss') { t.slowUntil = this.scene.clock + 1500; t.slowPct = Math.max(t.slowPct, 0.2); }
       this.applyToEnemy(t, extra, { legend: true });
     }
+    // Kralın Son Emri (V3): normal vuruşta %10, 8 sn iç bekleme, ek karanlık hasar (büyü savunmasına karşı); zincirlenmez
+    if (!res.miss && st.legendaryEffect === 'kings_command' && !t.dead && this.scene.clock >= p.icd.king && this.rng.float() < 0.10) {
+      p.icd.king = this.scene.clock + 8000;
+      const extra = playerHit(st, t, { coef: 1.3, isNormal: false, dmgType: 'magic', rng: this.rng });
+      this.scene.fx.sprite('shatter', t.x, t.y - 18, { scale: 1.8, tint: 0xa070e0 });
+      this.scene.fx.text(t.x, t.y - 64, 'Son Emir', { color: '#c8a0ff', size: 12 });
+      sound.play('bolt');
+      this.applyToEnemy(t, extra, { legend: true });
+    }
   }
 
   playerSkillHit(t, { coef, skill, spell = false, critMult = null, burn = null }) {
@@ -108,6 +117,18 @@ export class CombatRuntime {
         sound.play('ice');
         if (t.tpl.kind !== 'boss') { t.slowUntil = this.scene.clock + 2000; t.slowPct = Math.max(t.slowPct, 0.25); }
         this.applyToEnemy(t, chill, { legend: true });
+      });
+    }
+    // Sonsuz Hüküm (V3): aktif hasar büyüsünde %9, 10 sn iç bekleme, ek ruh hasarı; yankı tekrar tetiklemez
+    if (spell && st.legendaryEffect === 'eternal_verdict' && !t.dead && this.scene.clock >= p.icd.verdict && this.rng.float() < 0.09) {
+      p.icd.verdict = this.scene.clock + 10000;
+      const soul = { dmg: Math.max(1, Math.round(res.dmg * 0.65)), crit: false, miss: false };
+      this.scene.time.delayedCall(200, () => {
+        if (t.dead) return;
+        this.scene.fx.sprite('spirit', t.x, t.y - 18, { scale: 2, blend: Phaser.BlendModes.ADD, tint: 0xc080ff });
+        this.scene.fx.text(t.x, t.y - 64, 'Sonsuz Hüküm', { color: '#e0c8ff', size: 12 });
+        sound.play('ice');
+        this.applyToEnemy(t, soul, { legend: true });
       });
     }
   }
@@ -192,7 +213,7 @@ export class CombatRuntime {
   groundHazard({ x, y, r, dur, tick = 0.5, coef = 0.2, src, key = 'fire_ground', label = null, warn = 0, dmgType = 'magic', tint = null }) {
     const sc = this.scene;
     const hz = { x, y, r, left: dur, tick, t: warn > 0 ? 0 : tick, coef, src, label, warn, dmgType, alive: true, sprites: [] };
-    if (warn > 0) sc.fx.telegraph({ kind: 'circle', x, y, r }, warn * 1000, 0xff6a1a);
+    if (warn > 0) sc.fx.telegraph({ kind: 'circle', x, y, r }, warn * 1000, key === 'void_ground' ? 0xa070e0 : 0xff6a1a);
     const show = () => {
       const s = sc.fx.sprite(key, x, y, { depth: 41, scale: (r * 2) / 64 * 2, tint });
       s.setDisplaySize(r * 2.2, r * 2.2 * TG_SQUASH * 0.9);
@@ -204,17 +225,18 @@ export class CombatRuntime {
   }
 
   // Düşen buz kıymığı: telegraf (gecikme), sonra tek vuruş
-  fallingShard({ x, y, r, delay = 1.4, coef = 1, src }) {
+  // V3: dark = true → Kayıp Kral / Obsidyen Celladı'nın kara mermisi (aynı telegraf ve isabet kuralı)
+  fallingShard({ x, y, r, delay = 1.4, coef = 1, src, dark = false, label = null }) {
     const sc = this.scene;
-    sc.fx.telegraph({ kind: 'circle', x, y, r }, delay * 1000, 0x7ad8ff);
+    sc.fx.telegraph({ kind: 'circle', x, y, r }, delay * 1000, dark ? 0xa070e0 : 0x7ad8ff);
     sc.time.delayedCall(delay * 1000 - 260, () => {
-      const s = sc.fx.sprite('ice_spike', x, y - 140, { depth: 59000, origin: [0.5, 1], scale: 1.4 });
+      const s = sc.fx.sprite(dark ? 'dark_missile' : 'ice_spike', x, y - 140, { depth: 59000, origin: [0.5, 1], scale: 1.4 });
       sc.tweens.add({ targets: s, y, duration: 260, ease: 'Quad.in', onComplete: () => {
         s.destroy();
-        sc.fx.sprite('shatter', x, y - 8, { scale: 1.6 });
-        sound.play('ice', { vol: 0.6 });
+        sc.fx.sprite('shatter', x, y - 8, { scale: 1.6, tint: dark ? 0xa070e0 : null });
+        sound.play(dark ? 'bolt' : 'ice', { vol: 0.6 });
         const p = sc.player;
-        if (!p.dead && Math.hypot((p.x - x) / r, (p.y - y) / (r * TG_SQUASH)) <= 1) this.enemyHitsPlayer(src, { coef, dmgType: 'magic', label: 'Buz Kıymığı' });
+        if (!p.dead && Math.hypot((p.x - x) / r, (p.y - y) / (r * TG_SQUASH)) <= 1) this.enemyHitsPlayer(src, { coef, dmgType: 'magic', label: label || (dark ? 'Kara Mermi' : 'Buz Kıymığı') });
       } });
     });
   }
@@ -242,11 +264,25 @@ export class CombatRuntime {
     this.hazards = [];
   }
 
+  // V3 Lanet: kısa süreli alınan hasar artışı. Zincirlenmez — süre uzatılmaz, en güçlü oran geçerli.
+  cursePlayer(pct, sec) {
+    const p = this.scene.player;
+    if (p.dead) return;
+    const now = this.scene.clock, cur = p.buffs.curse;
+    if (cur && now < cur.until && cur.value >= pct) return;
+    p.buffs.curse = { until: now + sec * 1000, value: pct };
+    this.scene.fx.text(p.x, p.y - 70, 'Lanetlendin', { color: '#c080ff', size: 12 });
+    this.scene.fx.sprite('spirit', p.x, p.y - 30, { scale: 1.4, tint: 0xa070e0 });
+  }
+
   // Yavaşlatma: zincirlenmez — süre uzatılmaz, en güçlü oran geçerli
   slowPlayer(pct, sec) {
     const p = this.scene.player;
     if (p.dead) return;
     const now = this.scene.clock;
+    // Isıtıcı Tonik: soğuk/yavaşlatma etkilerinin gücü ve süresi azalır
+    const warm = p.buffs.warm && now < p.buffs.warm.until ? p.buffs.warm.value : 0;
+    if (warm) { pct *= 1 - warm; sec *= 1 - warm; }
     if (now < p.slowUntil && p.slowPct >= pct) return;
     p.slow(pct, sec);
     this.scene.fx.text(p.x, p.y - 70, 'Yavaşladın', { color: '#9fe8ff', size: 12 });

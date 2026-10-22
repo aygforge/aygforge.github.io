@@ -9,19 +9,24 @@ export const LOOT_TABLES = {
   // V2 bossları: kanonik Rare listesi olmayan boss Rare havuzu = bölgenin seviye aralığındaki Rare şablonlar
   ash_giant: { N: 0, U: 0, R: 22, E: 2, L: 0, materialChance: 0, potionChance: 0 },
   frost_keeper: { N: 0, U: 0, R: 30, E: 7, L: 0.4, materialChance: 0, potionChance: 0 },
+  // V3 bossları (belge): Mezar Komutanı R25/E3/L0 (açık dünya), Kayıp Kral R33/E8/L0,4 (Karanlık Mahzen)
+  grave_commander: { N: 0, U: 0, R: 25, E: 3, L: 0, materialChance: 0, potionChance: 0 },
+  lost_king: { N: 0, U: 0, R: 33, E: 8, L: 0.4, materialChance: 0, potionChance: 0 },
 };
 for (const t of Object.values(LOOT_TABLES)) {
   t.none = +(100 - t.N - t.U - t.R - t.E - t.L).toFixed(4);
 }
 
 // Legendary yalnız bu tablolardan çıkabilir. Değiştirilemez kural.
-// V1: Maden Golemi. V2: Donmuş Muhafız (Buz Mabedi). Elitler, normal yaratıklar, Kül Devi, sunak ve üretim asla.
-export const LEGENDARY_SOURCE_TABLES = ['golem', 'frost_keeper'];
+// V1: Maden Golemi. V2: Donmuş Muhafız (Buz Mabedi). V3: Kayıp Kral (Karanlık Mahzen).
+// Elitler, normal yaratıklar, Kül Devi, Mezar Komutanı, sunak, görev ve üretim asla.
+export const LEGENDARY_SOURCE_TABLES = ['golem', 'frost_keeper', 'lost_king'];
 // Boss tabloları varyant (N/U temel şablon) üretmez; Rare havuzu seviye aralığındaki kanonik Rare'lerdir.
 // golem 13–20: V1 havuzu aynen korunur (V2 Rare'leri Golem'den düşmez).
-export const BOSS_RARE_POOL = { golem: [13, 20], ash_giant: [21, 26], frost_keeper: [26, 30] };
+export const BOSS_RARE_POOL = { golem: [13, 20], ash_giant: [21, 26], frost_keeper: [26, 30], grave_commander: [31, 35], lost_king: [35, 40] };
 // Donmuş Muhafız Epic havuzu: kanonik Kristal Kış Madalyonu + Buz Mabedi temalı (Buz Gardiyanı) Epic'ler varyant ağırlığında
 export const BOSS_EXTRA_EPIC_SOURCES = { frost_keeper: ['ice_warden'] };
+// V3: Mezar Komutanı'nın Epic havuzu = 2 özel silah + Komutan Yüzüğü / Lanet Kıran Kolye (kanonik); Kral'ınki kanonik listesi
 // Legendary mevcut sınıfa %80 ağırlıklı (belge §8.4)
 export const LEGENDARY_CLASS_WEIGHT = 0.8;
 
