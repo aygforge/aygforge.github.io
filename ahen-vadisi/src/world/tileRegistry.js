@@ -6,9 +6,11 @@ export const TERRAINS = [
   'cave', 'crystal_floor', 'dungeon', 'plank', 'sand',
   // V2: Kül Yaylaları / Ayaz Geçidi / Buz Mabedi
   'ash', 'scorched', 'basalt', 'lava', 'snow', 'ice', 'frost_stone', 'frozen_water', 'temple_floor', 'ice_floor',
+  // V3: Ölü Krallık / Kara Taht / Karanlık Mahzen
+  'dead_grass', 'grave_soil', 'ruin_cobble', 'void_pool', 'obsidian', 'royal_floor', 'crypt_floor',
 ];
 export const TERRAIN_VARIANTS = 4;
-export const WATER_TERRAINS = new Set(['water', 'swamp_water', 'lava', 'frozen_water']);
+export const WATER_TERRAINS = new Set(['water', 'swamp_water', 'lava', 'frozen_water', 'void_pool']);
 
 // Geçiş çiftleri (üst terrain / taban terrain) — 4-bit maske ile 15 kenar varyantı
 export const TRANSITIONS = [
@@ -19,9 +21,14 @@ export const TRANSITIONS = [
   ['scorched', 'ash'], ['basalt', 'ash'], ['lava', 'scorched'], ['lava', 'ash'], ['basalt', 'scorched'], ['dirt', 'ash'], ['ash', 'cave'],
   ['ice', 'snow'], ['frost_stone', 'snow'], ['frozen_water', 'snow'], ['frozen_water', 'ice'], ['snow', 'ash'], ['frost_stone', 'ash'],
   ['ice_floor', 'temple_floor'], ['snow', 'temple_floor'],
+  // V3
+  ['grave_soil', 'dead_grass'], ['ruin_cobble', 'dead_grass'], ['ruin_cobble', 'grave_soil'], ['void_pool', 'dead_grass'], ['void_pool', 'grave_soil'],
+  ['snow', 'dead_grass'], ['frost_stone', 'dead_grass'],
+  ['royal_floor', 'obsidian'], ['ruin_cobble', 'obsidian'], ['grave_soil', 'obsidian'], ['void_pool', 'obsidian'], ['royal_floor', 'ruin_cobble'], ['dead_grass', 'obsidian'],
+  ['royal_floor', 'crypt_floor'], ['void_pool', 'crypt_floor'], ['grave_soil', 'crypt_floor'],
 ];
 
-export const MASSES = ['forest_mass', 'rock_mass', 'swamp_mass', 'dungeon_mass', 'hedge_mass', 'ash_mass', 'snow_mass', 'ice_mass'];
+export const MASSES = ['forest_mass', 'rock_mass', 'swamp_mass', 'dungeon_mass', 'hedge_mass', 'ash_mass', 'snow_mass', 'ice_mass', 'dead_mass', 'obsidian_mass', 'crypt_mass'];
 export const MASS_FILL_VARIANTS = 3;
 export const MASS_FACE_VARIANTS = 2;
 
@@ -31,6 +38,8 @@ export const DECOR = [
   'cracks', 'moss', 'ore_specks', 'cobweb', 'fern', 'clover',
   // V2
   'embers', 'ash_pile', 'lava_crack', 'charred_bones', 'cinder', 'snow_tuft', 'frost_crystal_small', 'ice_shards', 'footprints', 'frozen_grass', 'ice_crack', 'rune_ice',
+  // V3
+  'dead_tuft', 'bone_pile', 'cursed_rune', 'grave_candle', 'obsidian_shards', 'void_crack', 'fog_wisp',
 ];
 
 // Damga (stamp): çok tile'lı nesneler. upper satırları varlıkların üstünde çizilir,
@@ -90,6 +99,19 @@ export const STAMPS = {
   snow_tent: { w: 3, h: 3, upper: [0, 1], solid: [2] },
   watchtower: { w: 2, h: 3, upper: [0, 1], solid: [2] },
   frozen_bush: { w: 1, h: 1, upper: [], solid: [0] },
+  // V3
+  ruined_house: { w: 5, h: 5, upper: [0, 1, 2], solid: [3, 4] },
+  mausoleum: { w: 3, h: 3, upper: [0, 1], solid: [2] },
+  broken_monument: { w: 2, h: 3, upper: [0, 1], solid: [2] },
+  dead_oak: { w: 2, h: 3, upper: [0, 1], solid: [2] },
+  grave_cross: { w: 1, h: 1, upper: [], solid: [0] },
+  iron_fence: { w: 1, h: 1, upper: [], solid: [0] },
+  obsidian_wall: { w: 2, h: 2, upper: [0], solid: [1] },
+  royal_statue: { w: 1, h: 2, upper: [0], solid: [1] },
+  dark_obelisk: { w: 1, h: 2, upper: [0], solid: [1] },
+  throne_banner: { w: 1, h: 2, upper: [0], solid: [1] },
+  bone_heap: { w: 1, h: 1, upper: [], solid: [0] },
+  coffin: { w: 2, h: 1, upper: [], solid: [0] },
 };
 
 const defs = [];

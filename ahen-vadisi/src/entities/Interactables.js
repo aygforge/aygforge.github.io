@@ -10,7 +10,7 @@ import { STACKABLES } from '../data/materials.js';
 import { questsForNpc, canInteractQuestObject, onInteract, interactRequirement } from '../systems/quests.js';
 import { rollGather, rollAltar } from '../systems/loot.js';
 import { addStack, stackCapacity } from '../systems/inventory.js';
-import { canEnterDungeon, isDungeonUnlocked, getRun, sealsBroken, currentStage, DUNGEON_INFO } from '../systems/dungeon.js';
+import { canEnterDungeon, isDungeonUnlocked, getRun, breakSeal, currentStage, DUNGEON_INFO } from '../systems/dungeon.js';
 import { sound } from '../audio/sound.js';
 
 class Base {
@@ -100,13 +100,16 @@ export class WaystoneObj extends Base {
   interact() { bus.emit('openTravel', this.o.id); }
 }
 
+// kazma ile toplanan düğümler (geri kalanlar ot)
+const ORE_KINDS = ['iron_ore', 'hard_ore', 'ash_ore', 'frost_crystal', 'dark_ore', 'obsidian_ore', 'soul_crystal'];
+
 export class GatherObj extends Base {
   constructor(scene, o) {
     super(scene, o);
     this.kind = 'gather';
     this.mat = o.kind;
     this.name = STACKABLES[o.kind].name;
-    const ore = ['iron_ore', 'hard_ore', 'ash_ore', 'frost_crystal'].includes(o.kind);
+    const ore = ORE_KINDS.includes(o.kind);
     this.key = ore ? 'ore_' + o.kind : 'herb_' + o.kind;
     this.usedKey = ore ? 'ore_used' : 'herb_used';
     this.s = this.sprite(this.key, false);
@@ -124,7 +127,7 @@ export class GatherObj extends Base {
   interact(p) {
     if (this.depleted) { bus.emit('toast', { text: 'Tükenmiş, biraz bekle', kind: 'warn', short: true }); return; }
     if (stackCapacity(app.char.bag, this.mat) <= 0) { bus.emit('toast', { text: 'Çanta dolu', kind: 'warn' }); return; }
-    const ore = this.mat.includes('ore') || this.mat === 'frost_crystal';
+    const ore = ORE_KINDS.includes(this.mat);
     sound.play(ore ? 'mine' : 'gather');
     p.startChannel(ore ? 'Kazılıyor…' : 'Toplanıyor…', 1.2, () => {
       if (this.depleted) return;
@@ -294,7 +297,7 @@ export class DungeonGateObj extends Base {
     this.info = DUNGEON_INFO[this.dId];
     this.group = o.group || this.info.gateGroup;
     this.name = this.info.name + ' Kapısı';
-    this.s = this.sprite(this.dId === 'dungeon' ? 'dungeon_gate' : 'frost_gate', false);
+    this.s = this.sprite({ dungeon: 'dungeon_gate', dark_crypt: 'crypt_gate' }[this.dId] || 'frost_gate', false);
     this.height = 90;
     this.tapRadius = 44;
     this.interactRange = 2.2 * TILE;
@@ -310,7 +313,7 @@ export class DungeonGateObj extends Base {
         const ups = onInteract(ch, this.group, this.o.id);
         for (const u of ups) bus.emit('questProgress', u);
         sound.play('altar');
-        this.scene.fx.burst(this.x, this.y - 40, this.dId === 'dungeon' ? 0xc070ff : 0x9fe8ff, 30, 120, 900);
+        this.scene.fx.burst(this.x, this.y - 40, this.dId === 'frost_temple' ? 0x9fe8ff : 0xc070ff, 30, 120, 900);
         bus.emit('toast', { text: `${name} mührü açıldı! Artık sınırsız girebilirsin.`, kind: 'ok' });
         app.changed('quest');
         app.requestSave('dungeonUnlock', true);
@@ -374,8 +377,11 @@ export class SealObj extends Base {
     this.kind = 'seal';
     this.name = o.label;
     this.seal = scene.mapDef.seals.find((x) => x.id === o.id);
-    this.s = this.sprite('temple_seal', false);
+    this.stage = this.seal.stage || 3;
+    this.lever = this.seal.kind === 'lever';
+    this.s = this.sprite(this.lever ? 'crypt_lever' : scene.mapId === 'dark_crypt' ? 'royal_seal_dg' : 'temple_seal', false);
     this.light = scene.add.image(this.x, this.y - 30, 'light_blue').setScale(0.6).setAlpha(0.4).setBlendMode(Phaser.BlendModes.ADD).setDepth(55000);
+    if (scene.mapId === 'dark_crypt') this.light.setTint(0xb080ff);
     this.height = 56;
     this.interactRange = 1.8 * TILE;
   }
@@ -386,14 +392,31 @@ export class SealObj extends Base {
     this.s.setFrame(br ? 2 : active ? 1 : 0);
     this.light.setVisible(!br);
   }
-  interact() {
+  interact(p) {
     const sc = this.scene, ch = app.char;
-    if (this.broken) { bus.emit('toast', { text: `${this.name} zaten kırıldı`, kind: 'info', short: true }); return; }
-    if (currentStage(ch, sc.mapId) < 3) { bus.emit('toast', { text: 'Mühür, galeriye giden yol açılmadan uyanmaz.', kind: 'info' }); return; }
+    const group = sc.mapDef.seals.filter((x) => (x.stage || 3) === this.stage);
+    const done = () => group.filter((x) => getRun(ch, sc.mapId)?.seals?.includes(x.id)).length;
+    if (this.broken) { bus.emit('toast', { text: `${this.name} zaten ${this.lever ? 'etkin' : 'kırıldı'}`, kind: 'info', short: true }); return; }
+    if (currentStage(ch, sc.mapId) < this.stage) {
+      bus.emit('toast', { text: this.lever ? 'Mekanizma, zindana giden kapı açılmadan çalışmaz.' : 'Mühür, galeriye giden yol açılmadan uyanmaz.', kind: 'info' });
+      return;
+    }
+    if (this.lever) {
+      // kapı mekanizması: kısa kanal, karşılaşma yok; ikisi birden etkinleşince bölüm kapısı açılabilir
+      p.startChannel('Mekanizma çevriliyor…', 2.2, () => {
+        if (this.broken || !breakSeal(ch, sc.mapId, this.o.id)) return;
+        sound.play('portal');
+        bus.emit('toast', { text: `${this.name} etkinleşti (${done()}/${group.length})`, kind: 'ok' });
+        this.refresh();
+        app.requestSave('seal', true);
+        sc.checkStageCleared(this.stage);
+      });
+      return;
+    }
     if (sc.spawner.sealWaveAlive(this.o.id)) { bus.emit('toast', { text: 'Mührün muhafızları hâlâ ayakta!', kind: 'warn', short: true }); return; }
     if (sc.spawner.spawnSealWave(this.seal)) {
       sound.play('shield');
-      bus.emit('toast', { text: `${this.name} uyandı! Muhafızlarını yen. (${sealsBroken(ch, sc.mapId)}/${sc.mapDef.seals.length})`, kind: 'elite' });
+      bus.emit('toast', { text: `${this.name} uyandı! Muhafızlarını yen. (${done()}/${group.length})`, kind: 'elite' });
     }
   }
 }
@@ -441,7 +464,10 @@ export class PortalObj extends Base {
   interact() { this.trigger(); }
   locked() {
     const req = this.o.requires;
-    return !!(req && !app.char.quests[req.quest]);
+    if (!req) return false;
+    if (req.quest && !app.char.quests[req.quest]) return true;
+    if (req.flag && !app.char.world.flags?.[req.flag]) return true;
+    return false;
   }
   trigger() {
     this.cool = 2; this.armed = false;

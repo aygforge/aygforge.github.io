@@ -19,6 +19,7 @@ const COL = {
   swamp_water: '#2c4838', cave: '#544a44', crystal_floor: '#3c3e56', dungeon: '#4c4852', plank: '#8a6238', sand: '#c8b07e', ash: '#6e6662',
   scorched: '#463632', basalt: '#3c3a40', lava: '#c8401a', snow: '#dce6ee', ice: '#9ccbe4', frost_stone: '#8a96a6', frozen_water: '#2c5c80',
   temple_floor: '#5a6a80', ice_floor: '#7aa8c8',
+  dead_grass: '#545a48', grave_soil: '#4a4038', ruin_cobble: '#6a6670', void_pool: '#4a2e66', obsidian: '#2a2630', royal_floor: '#4a3e52', crypt_floor: '#3e4040',
 };
 const px = (x, y, c, a = 1) => {
   if (x < 0 || y < 0 || x >= W || y >= H) return;

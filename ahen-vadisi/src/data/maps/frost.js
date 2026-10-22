@@ -30,6 +30,8 @@ export default {
     { pts: [[28, 24], [16, 14], [8, 8]], w: 2, tile: 'snow' },
     { pts: [[78, 64], [94, 74], [110, 82]], w: 2, tile: 'snow' },
     { pts: [[38, 60], [48, 74], [70, 78]], w: 2, tile: 'snow' },
+    // V3: Ölü Krallık'a giden eski kraliyet yolu (doğu)
+    { pts: [[58, 44], [76, 44], [92, 42], [106, 42], [115, 42]], w: 3, tile: 'frost_stone' },
   ],
   ponds: [
     { x: 58, y: 26, rx: 7, ry: 4.5, terrain: 'frozen_water' },
@@ -62,6 +64,8 @@ export default {
   ],
   objects: [
     { type: 'portal', id: 'fr_to_ash', x: 0, y: 70, to: 'ash', entry: 'from_frost', label: 'Kül Yaylaları' },
+    { type: 'portal', id: 'fr_to_dead', x: 115, y: 42, to: 'dead_kingdom', entry: 'from_frost', label: 'Ölü Krallık',
+      requires: { quest: 'm37', msg: 'Mühürlü eski kraliyet yolu. Donmuş Muhafız\'ın düşüşünden sonra Ayaz Konağı\'ndaki Arşivci Kaya yolu biliyor.' } },
     { type: 'dungeon_gate', id: 'frost_gate', group: 'frost_gate', x: 104, y: 4, to: 'frost_temple', entry: 'entrance', label: 'Buz Mabedi', dungeon: 'frost_temple' },
     { type: 'waystone', id: 'ws_frost', group: 'ws_frost', x: 20, y: 68 },
     { type: 'npc', npc: 'ilgar', x: 14, y: 66 },
@@ -88,6 +92,7 @@ export default {
   entries: {
     from_ash: { x: 3, y: 70 },
     from_temple: { x: 104, y: 8 },
+    from_dead: { x: 112, y: 42 },
     waystone: { x: 20, y: 70 },
     respawn: { x: 16, y: 67 },
   },

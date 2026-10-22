@@ -270,6 +270,91 @@ export const OBJECT_SPRITES = {
     pb.poly([[6, 8], [8, 14], [10, 8]], '#e0faff'); pb.poly([[38, 8], [40, 15], [42, 8]], '#e0faff');
     pb.set(24, 4, '#9fe8ff');
   }),
+  // ---------------- V3 nesneleri (0: etkin, 1: tamamlandı)
+  crypt_gate: () => frames(2, 48, 48, (pb, i) => {
+    pb.rect(2, 8, 44, 40, '#26222e'); pb.poly([[2, 10], [24, 0], [46, 10]], '#34303e'); pb.hline(4, 44, 9, '#6a5a82');
+    pb.rect(10, 16, 28, 32, i ? '#08060c' : '#1a1622');
+    if (!i) { for (let x = 12; x < 38; x += 6) pb.vline(x, 16, 47, '#4a4058'); pb.hline(10, 37, 30, '#4a4058');
+      pb.disc(24, 30, 6, '#3a1e5a'); pb.ring(24, 30, 6, '#a070e0'); pb.set(24, 30, '#e0c8ff'); }
+    else { pb.disc(24, 34, 9, '#120a1c'); pb.disc(24, 34, 5, '#3a2060'); pb.set(24, 34, '#a070e0'); }
+    for (let y = 12; y < 46; y += 6) { pb.rect(3, y, 6, 4, '#34303e'); pb.rect(39, y, 6, 4, '#34303e'); }
+    pb.poly([[18, 8], [20, 3], [22, 6], [24, 2], [26, 6], [28, 3], [30, 8]], '#c8a050');   // kırık taç
+  }),
+  royal_seal_dg: () => frames(3, 24, 30, (pb, i) => {
+    pb.ellipse(12, 28, 10, 2, '#141018');
+    pb.rect(5, 12, 14, 16, '#3a3446'); pb.rect(4, 10, 16, 3, '#5a4e66'); pb.hline(4, 19, 10, '#8a7a9a');
+    const c = i === 0 ? '#a070e0' : i === 1 ? '#ffffff' : '#2e2a38';
+    pb.ring(12, 19, 5, c); pb.line(12, 14, 12, 24, c); pb.line(7, 19, 17, 19, c);
+    if (i < 2) { pb.poly([[9, 10], [12, 1], [15, 10]], '#c0a0f0'); pb.vline(12, 3, 9, '#ffffff'); }
+    else { pb.poly([[9, 10], [10, 6], [12, 8], [14, 5], [15, 10]], '#4a4058'); pb.line(8, 14, 16, 26, '#1a1620'); }
+  }),
+  crypt_lever: () => frames(3, 20, 26, (pb, i) => {
+    pb.ellipse(10, 24, 8, 2, '#141018');
+    pb.rect(3, 12, 14, 12, '#34303e'); pb.rect(2, 10, 16, 3, '#4a4458'); pb.hline(2, 17, 10, '#6a5a82');
+    const c = i === 2 ? '#3a3448' : i === 1 ? '#ffffff' : '#a070e0';
+    pb.ring(10, 18, 3, c); pb.set(10, 18, c);
+    if (i < 2) { pb.line(10, 10, 5, 2, '#8a8494'); pb.disc(5, 2, 1.6, '#c8a050'); }
+    else { pb.line(10, 10, 15, 2, '#8a8494'); pb.disc(15, 2, 1.6, '#6a6472'); }
+  }),
+  house_door: () => frames(2, 16, 22, (pb, i) => {
+    pb.rect(2, 2, 12, 20, '#3e3228'); pb.rect(3, 3, 10, 19, i ? '#120e10' : '#5a4632');
+    if (!i) { pb.vline(8, 3, 21, '#3e3228'); pb.set(11, 12, '#c8a050'); pb.line(4, 6, 12, 18, '#2e2620'); }
+    else pb.line(4, 21, 6, 14, '#5a4632');
+  }),
+  royal_clue: () => frames(2, 16, 14, (pb, i) => {
+    pb.ellipse(8, 12, 6, 1.6, '#2a2630');
+    pb.rect(3, 6, 10, 6, i ? '#5a4e44' : '#7a5a3a'); pb.hline(3, 12, 6, '#a07a48');
+    pb.poly([[5, 6], [6, 2], [8, 4], [10, 1], [11, 6]], i ? '#7a6a40' : '#f0c850'); if (!i) pb.set(8, 3, '#ffffff');
+  }),
+  old_record: () => frames(2, 14, 12, (pb, i) => {
+    pb.poly([[1, 9], [3, 3], [12, 2], [13, 8], [4, 11]], i ? '#8a8270' : '#d8ccb0');
+    pb.hline(4, 10, 5, '#5a4e40'); pb.hline(4, 9, 7, '#5a4e40'); if (!i) pb.set(11, 4, '#8a2a2a');
+  }),
+  black_lock: () => frames(2, 20, 26, (pb, i) => {
+    pb.rect(3, 4, 14, 20, '#1e1a26'); pb.rect(4, 5, 12, 18, '#2e2a38'); pb.hline(3, 16, 4, '#6a5a82');
+    pb.ring(10, 13, 4, i ? '#c8a050' : '#7a4ac0'); pb.rect(9, 12, 2, 4, i ? '#c8a050' : '#120e18');
+    if (!i) { pb.set(10, 8, '#a070e0'); pb.set(6, 20, '#a070e0'); pb.set(14, 20, '#a070e0'); }
+  }),
+  royal_seal: () => frames(2, 24, 30, (pb, i) => {
+    pb.ellipse(12, 28, 10, 2, '#141018');
+    pb.rect(5, 12, 14, 16, '#3a3446'); pb.rect(4, 10, 16, 3, '#5a4e66'); pb.hline(4, 19, 10, '#8a7a9a');
+    const c = i ? '#c8a050' : '#5a3a7a';
+    pb.ring(12, 19, 5, c); pb.line(12, 14, 12, 24, c); pb.line(7, 19, 17, 19, c);
+    if (i) { pb.poly([[9, 10], [12, 1], [15, 10]], '#e0c070'); pb.vline(12, 3, 9, '#fff0c0'); }
+    else { pb.poly([[9, 10], [10, 6], [12, 8], [14, 5], [15, 10]], '#4a4058'); pb.line(8, 14, 16, 26, '#1a1620'); }
+  }),
+  marker_stone: () => frames(2, 16, 24, (pb, i) => {
+    pb.ellipse(8, 22, 7, 2, '#141018');
+    pb.poly([[3, 22], [4, 6], [8, 2], [12, 6], [13, 22]], '#5a5466'); pb.poly([[5, 20], [6, 7], [8, 4], [9, 20]], '#7a748a');
+    pb.hline(6, 10, 10, i ? '#c8a050' : '#3a3446'); pb.hline(6, 10, 13, i ? '#c8a050' : '#3a3446');
+  }),
+  stone_tablet: () => frames(2, 16, 18, (pb, i) => {
+    pb.ellipse(8, 16, 6, 1.6, '#141018');
+    pb.rect(3, 3, 10, 13, i ? '#5a5250' : '#7a706a'); pb.ellipse(8, 3, 5, 2, i ? '#5a5250' : '#7a706a');
+    for (let y = 5; y < 14; y += 2) pb.hline(5, 11, y, '#3e3836'); if (!i) pb.set(11, 4, '#ff8a2a');
+  }),
+  royal_chest: () => frames(2, 18, 14, (pb, i) => {
+    pb.rect(2, 5, 14, 8, '#4a2e3a'); pb.hline(2, 15, 9, '#c8a050'); pb.vline(9, 5, 12, '#c8a050');
+    if (!i) { pb.poly([[2, 5], [4, 1], [14, 1], [16, 5]], '#5e3a4a'); pb.set(9, 8, '#ffffff'); }
+    else { pb.poly([[2, 5], [3, 0], [15, 0], [16, 5]], '#2e1a24'); pb.rect(4, 3, 10, 2, '#120a10'); }
+  }),
+  ore_dark_ore: () => frames(1, 20, 16, (pb) => {
+    pb.poly([[1, 15], [3, 5], [9, 1], [16, 3], [19, 15]], '#26222c'); pb.poly([[4, 13], [5, 6], [9, 3], [14, 5], [16, 13]], '#3a3444');
+    for (const [x, y] of [[7, 7], [12, 9], [9, 11], [14, 6]]) { pb.set(x, y, '#8a6ab0'); pb.set(x + 1, y, '#c0a0f0'); }
+  }),
+  ore_obsidian_ore: () => frames(1, 20, 16, (pb) => {
+    pb.poly([[1, 15], [4, 4], [8, 1], [13, 2], [19, 15]], '#14101a'); pb.poly([[4, 13], [6, 5], [9, 3], [13, 4], [16, 13]], '#2a2434');
+    pb.line(7, 5, 11, 12, '#6a5a82'); pb.line(12, 5, 14, 10, '#4a4058'); pb.set(9, 4, '#e0c8ff');
+  }),
+  ore_soul_crystal: () => frames(1, 20, 16, (pb) => {
+    pb.ellipse(10, 14, 8, 2, '#1a1622');
+    pb.poly([[4, 14], [6, 5], [8, 1], [10, 6], [11, 14]], '#7a4ac0'); pb.vline(7, 4, 12, '#e0c8ff');
+    pb.poly([[10, 14], [13, 6], [15, 3], [16, 8], [17, 14]], '#a070e0'); pb.set(15, 5, '#ffffff');
+  }),
+  herb_mourning_herb: () => frames(1, 14, 12, (pb) => {
+    pb.ellipse(7, 8, 6, 4, '#3a3a40'); for (let i = 0; i < 5; i++) pb.line(7, 10, 2 + i * 2.5, 3 + (i % 2) * 2, '#6a6a78');
+    pb.set(4, 4, '#c8c8e0'); pb.set(10, 3, '#c8c8e0'); pb.set(7, 2, '#a070e0');
+  }),
   lava_pool: () => frames(3, 32, 18, (pb, i) => {
     pb.ellipse(16, 9, 15, 8, '#2a1410'); pb.ellipse(16, 9, 13, 6.5, '#c8401a');
     for (let k = 0; k < 5; k++) pb.ellipse(6 + k * 5, 7 + ((k + i) % 3), 2, 1, '#ff8a2a');

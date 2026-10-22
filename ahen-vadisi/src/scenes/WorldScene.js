@@ -19,7 +19,7 @@ import { NpcObj, WaystoneObj, GatherObj, QuestObj, AltarObj, DungeonGateObj, Por
 import { EscortObj, DefenseObj } from '../world/questEvents.js';
 import { onReach, onDungeonStage } from '../systems/quests.js';
 import { guideTarget, nextGateway } from '../world/questGuide.js';
-import { clearStage, respawnEntry, startOrResumeRun, exitRun, getRun, breakSeal, sealsBroken, DUNGEON_INFO } from '../systems/dungeon.js';
+import { clearStage, respawnEntry, startOrResumeRun, exitRun, getRun, breakSeal, DUNGEON_INFO } from '../systems/dungeon.js';
 import { applyDeathDurability } from '../systems/economy.js';
 import { MINIMAP_COLORS, MASS_COLORS } from '../art/tiles.js';
 import { sound } from '../audio/sound.js';
@@ -191,27 +191,32 @@ export class WorldScene extends Phaser.Scene {
     {
       let n = 0;
       for (const st of this.built.stamps) {
-        const glow = st.name === 'lava_vent' ? 'light' : st.name === 'ice_crystal_big' && !def.dark ? 'light_blue' : null;
+        const glow = st.name === 'lava_vent' ? 'light' : st.name === 'ice_crystal_big' && !def.dark ? 'light_blue' : st.name === 'dark_obelisk' ? 'light_white' : null;
         if (!glow || n++ > 50) continue;
         const l = this.add.image(st.x * TILE + 16, st.y * TILE + 20, glow).setScale(st.name === 'lava_vent' ? 1.3 : 0.9).setAlpha(0.3).setBlendMode(Phaser.BlendModes.ADD).setDepth(55000);
         if (st.name === 'lava_vent') l.setTint(0xff7a3a);
+        if (st.name === 'dark_obelisk') l.setTint(0xa070e0);
         this.tweens.add({ targets: l, alpha: 0.15, yoyo: true, repeat: -1, duration: 900 + Math.random() * 700 });
       }
     }
     // V2: kül / kar parçacıkları (kamera çevresinde dolaşan küçük havuz; düşük performans modunda azalır)
     if (def.particles) {
       const kind = def.particles;
-      const n = Math.round(({ ash: 36, snow: 54, snow_light: 22 }[kind] || 30) * (this.lowPerf ? 0.35 : 1));
+      const n = Math.round(({ ash: 36, snow: 54, snow_light: 22, gloom: 26, void: 30 }[kind] || 30) * (this.lowPerf ? 0.35 : 1));
       this.flakes = [];
       for (let i = 0; i < n; i++) {
-        const ember = kind === 'ash' && i % 6 === 0;
+        // V3: gloom = Ölü Krallık'ın ağır, yavaş süzülen kül-gri sisi; void = Kara Taht'tan yükselen mor kıvılcımlar
+        const ember = (kind === 'ash' && i % 6 === 0) || kind === 'void';
         const f = this.add.image(0, 0, 'fx_px').setDepth(53500);
-        const size = kind === 'ash' ? 1 + Math.random() * 1.5 : 1 + Math.random() * 2;
-        f.setScale(size).setTint(ember ? 0xff8a3a : kind === 'ash' ? 0x9a928c : 0xffffff).setAlpha(ember ? 0.9 : 0.55 + Math.random() * 0.35);
+        const size = kind === 'gloom' ? 2 + Math.random() * 2.5 : kind === 'ash' || kind === 'void' ? 1 + Math.random() * 1.5 : 1 + Math.random() * 2;
+        const tint = kind === 'void' ? (i % 3 ? 0x9a60e0 : 0xd0b0ff) : kind === 'gloom' ? 0x8a8a98 : ember ? 0xff8a3a : kind === 'ash' ? 0x9a928c : 0xffffff;
+        f.setScale(size).setTint(tint).setAlpha(kind === 'gloom' ? 0.18 + Math.random() * 0.18 : ember ? 0.9 : 0.55 + Math.random() * 0.35);
         if (ember) f.setBlendMode(Phaser.BlendModes.ADD);
         f.v = kind === 'ash'
           ? { x: 10 + Math.random() * 14, y: ember ? -(8 + Math.random() * 10) : 6 + Math.random() * 10 }
-          : { x: -8 - Math.random() * 16, y: 26 + Math.random() * 30 };
+          : kind === 'void' ? { x: -4 + Math.random() * 8, y: -(10 + Math.random() * 14) }
+            : kind === 'gloom' ? { x: 6 + Math.random() * 8, y: 2 + Math.random() * 4 }
+              : { x: -8 - Math.random() * 16, y: 26 + Math.random() * 30 };
         f.ph = Math.random() * 10;
         f.fresh = true;
         this.flakes.push(f);
@@ -434,20 +439,33 @@ export class WorldScene extends Phaser.Scene {
       this.spawner.sealWaves[seal.id] = [];
       if (breakSeal(ch, this.mapId, seal.id)) {
         sound.play('altar');
-        const n = sealsBroken(ch, this.mapId);
-        bus.emit('toast', { text: `${seal.name} kırıldı (${n}/${def.seals.length})`, kind: n >= def.seals.length ? 'elite' : 'ok' });
+        const { n, total } = this.sealCount(seal.stage || 3);
+        bus.emit('toast', { text: `${seal.name} kırıldı (${n}/${total})`, kind: n >= total ? 'elite' : 'ok' });
         this.objects.find((o) => o.o?.id === seal.id)?.refresh?.();
         app.requestSave('seal', true);
       }
     }
   }
 
+  // Bir bölümün mühür/mekanizma sayısı (Buz Mabedi: yalnız 3. bölüm; Karanlık Mahzen: 2. bölüm mekanizmaları + 3. bölüm mühürleri)
+  sealCount(stage) {
+    const list = (this.mapDef.seals || []).filter((s) => (s.stage || 3) === stage);
+    const run = getRun(app.char, this.mapId);
+    return { n: list.filter((s) => run?.seals?.includes(s.id)).length, total: list.length };
+  }
+
   checkStageCleared(stage) {
-    if (stage === 3 && this.mapDef.seals) this.checkSeals();
+    if (this.mapDef.seals) this.checkSeals();
     if (this.spawner.stageAlive(stage)) return;
     const ch = app.char;
-    if (stage === 3 && this.mapDef.seals && sealsBroken(ch, this.mapId) < this.mapDef.seals.length) {
-      if (!this._sealHint) { this._sealHint = true; bus.emit('toast', { text: 'Galeri sessiz... Boss kapısını açmak için üç mührü de kır.', kind: 'info' }); }
+    const sc = this.sealCount(stage);
+    if (sc.n < sc.total) {
+      this._sealHint = this._sealHint || {};
+      if (!this._sealHint[stage]) {
+        this._sealHint[stage] = true;
+        const lever = this.mapDef.seals.some((s) => (s.stage || 3) === stage && s.kind === 'lever');
+        bus.emit('toast', { text: lever ? `Zindan sessiz... Kapıyı açmak için ${sc.total} mekanizmayı da etkinleştir.` : `Galeri sessiz... Boss kapısını açmak için ${sc.total} mührü de kır.`, kind: 'info' });
+      }
       return;
     }
     if (!clearStage(ch, stage, this.mapId)) return;

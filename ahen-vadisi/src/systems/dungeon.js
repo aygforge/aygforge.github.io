@@ -9,6 +9,7 @@ import { makeUid } from '../core/rng.js';
 export const DUNGEON_INFO = {
   dungeon: { name: 'Derin Ocak', boss: 'mine_golem', gateGroup: 'dungeon_gate', lockMsg: 'Derin Ocak mühürlü. "Mührün Gücü" görevini tamamla.' },
   frost_temple: { name: 'Buz Mabedi', boss: 'frozen_guardian', gateGroup: 'frost_gate', lockMsg: 'Buz Mabedi mühürlü. "Buz Mabedinin Sırrı" görevini tamamla.', seals: 3 },
+  dark_crypt: { name: 'Karanlık Mahzen', boss: 'lost_king', gateGroup: 'crypt_gate', lockMsg: 'Karanlık Mahzen mühürlü. "Karanlık Mahzene İniş" görevini al ve kapı mührünü etkinleştir.', seals: 5 },
 };
 
 export function isDungeonUnlocked(char, mapId = 'dungeon') {

@@ -187,7 +187,7 @@ export class Spawner {
     return this.scene.enemies.some((e) => !e.dead && e.stage === stage);
   }
 
-  // Mühür Galerisi: mühür karşılaşması (yaratıklar 3. bölüme sayılır; kırılan mühür koşuda kalıcı)
+  // Mühür karşılaşması (yaratıklar mührün bölümüne — varsayılan 3 — sayılır; kırılan mühür koşuda kalıcı)
   spawnSealWave(seal) {
     if (this.sealWaves[seal.id]?.some((e) => !e.dead)) return false;
     const sc = this.scene;
@@ -197,7 +197,7 @@ export class Spawner {
       const a = (i / 3) * Math.PI * 2 + 0.4;
       let x = (seal.x + 0.5) * TILE + Math.cos(a) * 2.6 * TILE, y = (seal.y + 0.5) * TILE + Math.sin(a) * 2 * TILE;
       if (sc.grid.blockedAt(x, y)) { x = (seal.x + 0.5) * TILE; y = (seal.y + 2) * TILE; }
-      const e = this.spawnEnemy(id, x, y, { stage: 3, leashR: 12 * TILE });
+      const e = this.spawnEnemy(id, x, y, { stage: seal.stage || 3, leashR: 12 * TILE });
       e.sealId = seal.id;
       e.aggro(sc.player);
       sc.fx.sprite('shatter', x, y - 20, { scale: 1.8 });

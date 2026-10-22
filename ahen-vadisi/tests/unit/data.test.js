@@ -150,8 +150,6 @@ describe('Veri tabloları', () => {
     const npcs = MAPS.village.objects.filter((o) => o.type === 'npc').map((o) => o.npc);
     expect(npcs.sort()).toEqual([...V1_NPCS, 'rauf', 'lale', 'nisa'].sort());
     const placed = Object.values(MAPS).flatMap((m) => m.objects.filter((o) => o.type === 'npc').map((o) => o.npc));
-    // GEÇİCİ: Ölü Krallık / Kara Taht haritaları sonraki adımda eklenince bu liste boşaltılacak
-    const PENDING_MAP = ['seher', 'hamit', 'eren', 'veysel'];
-    for (const id of Object.keys(NPCS)) if (!PENDING_MAP.includes(id)) expect(placed, id).toContain(id);
+    for (const id of Object.keys(NPCS)) expect(placed, id).toContain(id);
   });
 });

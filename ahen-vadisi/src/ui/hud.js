@@ -16,7 +16,7 @@ import { MAPS } from '../data/maps/index.js';
 import { xpToNext, MAX_LEVEL, TILE, SLOTS, DURABILITY_WARN } from '../data/constants.js';
 import { countStack } from '../systems/inventory.js';
 import { trackedQuestList } from '../systems/quests.js';
-import { currentStage, getRun, sealsBroken } from '../systems/dungeon.js';
+import { currentStage, getRun } from '../systems/dungeon.js';
 import { FOG_CELL } from '../world/fog.js';
 import { sound } from '../audio/sound.js';
 import { openPanel } from './panels/index.js';
@@ -260,7 +260,9 @@ export function createHud() {
       const st = currentStage(ch, w.mapId);
       const area = w.mapDef.areas.find((a) => a.stage === st);
       const left = w.enemies.filter((e) => !e.dead && e.stage === st).length;
-      const seals = st === 3 && w.mapDef.seals ? ` · mühür ${sealsBroken(ch, w.mapId)}/${w.mapDef.seals.length}` : '';
+      const sc = w.mapDef.seals && st <= 4 ? w.sealCount(st) : null;
+      const lever = w.mapDef.seals?.some((s) => (s.stage || 3) === st && s.kind === 'lever');
+      const seals = sc?.total ? ` · ${lever ? 'mekanizma' : 'mühür'} ${sc.n}/${sc.total}` : '';
       const exit = w.mapDef.objects.find((o) => o.dungeonExit);
       dungeonBar.append(h('div', { class: 'grow' }, h('b', {}, w.mapDef.name + ' '), st <= 4 ? `· Bölüm ${st}/4: ${area?.name || ''} (${left} düşman${seals})` : '· Tamamlandı!'),
         h('button', { class: 'btn small red', onTap: () => ui.confirm({ title: 'Gönüllü çıkış', text: 'Mevcut koşu sona erer. Sonraki girişte yeni koşu başlar.', ok: 'Çık', danger: true, onOk: () => w.changeMap(exit.to, exit.entry, { exitDungeon: true }) }) }, 'Çık'));
