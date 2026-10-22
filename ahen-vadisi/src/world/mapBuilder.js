@@ -172,12 +172,14 @@ export function buildMap(def) {
   const targets = collectTargets(def);
   const start = Object.values(def.entries)[0];
   let repairs = 0;
+  const repaired = [];
   for (let pass = 0; pass < 3; pass++) {
     const reach = bfs(solid, W, H, start.x, start.y);
     const bad = targets.filter((t) => !nearReachable(reach, W, H, t.x, t.y));
     if (!bad.length) break;
     for (const t of bad) {
       repairs++;
+      repaired.push(t.what);
       carveTo(t.x, t.y, reach);
     }
     computeSolid();
@@ -259,7 +261,7 @@ export function buildMap(def) {
 
   return {
     id: def.id, def, w: W, h: H, ground, decor, lower, upper, solid, sight, terrain, mass,
-    areaCells, repairs, stamps: stampList,
+    areaCells, repairs, repaired, stamps: stampList,
     walkable,
     isSolid: (x, y) => !inB(x, y) || solid[idx(x, y)] === 1,
   };

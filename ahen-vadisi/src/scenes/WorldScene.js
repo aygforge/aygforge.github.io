@@ -206,19 +206,23 @@ export class WorldScene extends Phaser.Scene {
     // V2: kül / kar parçacıkları (kamera çevresinde dolaşan küçük havuz; düşük performans modunda azalır)
     if (def.particles) {
       const kind = def.particles;
-      const n = Math.round(({ ash: 36, snow: 54, snow_light: 22, gloom: 26, void: 30 }[kind] || 30) * (this.lowPerf ? 0.35 : 1));
+      const n = Math.round(({ ash: 36, snow: 54, snow_light: 22, gloom: 26, void: 30, storm: 40, star: 28 }[kind] || 30) * (this.lowPerf ? 0.35 : 1));
       this.flakes = [];
       for (let i = 0; i < n; i++) {
         // V3: gloom = Ölü Krallık'ın ağır, yavaş süzülen kül-gri sisi; void = Kara Taht'tan yükselen mor kıvılcımlar
-        const ember = (kind === 'ash' && i % 6 === 0) || kind === 'void';
+        // V4: storm = Gökyarık'ın yatay savrulan toz ve kıvılcımları; star = Yıldız Mezarı'nın yavaş yükselen yıldız tozu
+        const ember = (kind === 'ash' && i % 6 === 0) || kind === 'void' || kind === 'star' || (kind === 'storm' && i % 5 === 0);
         const f = this.add.image(0, 0, 'fx_px').setDepth(53500);
-        const size = kind === 'gloom' ? 2 + Math.random() * 2.5 : kind === 'ash' || kind === 'void' ? 1 + Math.random() * 1.5 : 1 + Math.random() * 2;
-        const tint = kind === 'void' ? (i % 3 ? 0x9a60e0 : 0xd0b0ff) : kind === 'gloom' ? 0x8a8a98 : ember ? 0xff8a3a : kind === 'ash' ? 0x9a928c : 0xffffff;
+        const size = kind === 'gloom' ? 2 + Math.random() * 2.5 : kind === 'ash' || kind === 'void' || kind === 'storm' || kind === 'star' ? 1 + Math.random() * 1.5 : 1 + Math.random() * 2;
+        const tint = kind === 'void' ? (i % 3 ? 0x9a60e0 : 0xd0b0ff) : kind === 'star' ? (i % 3 ? 0x8ab4ff : 0xfff0c0) : kind === 'storm' ? (ember ? 0x9ad8ff : 0xb8a888)
+          : kind === 'gloom' ? 0x8a8a98 : ember ? 0xff8a3a : kind === 'ash' ? 0x9a928c : 0xffffff;
         f.setScale(size).setTint(tint).setAlpha(kind === 'gloom' ? 0.18 + Math.random() * 0.18 : ember ? 0.9 : 0.55 + Math.random() * 0.35);
         if (ember) f.setBlendMode(Phaser.BlendModes.ADD);
         f.v = kind === 'ash'
           ? { x: 10 + Math.random() * 14, y: ember ? -(8 + Math.random() * 10) : 6 + Math.random() * 10 }
           : kind === 'void' ? { x: -4 + Math.random() * 8, y: -(10 + Math.random() * 14) }
+            : kind === 'storm' ? { x: 40 + Math.random() * 30, y: -3 + Math.random() * 8 }
+            : kind === 'star' ? { x: -3 + Math.random() * 6, y: -(5 + Math.random() * 8) }
             : kind === 'gloom' ? { x: 6 + Math.random() * 8, y: 2 + Math.random() * 4 }
               : { x: -8 - Math.random() * 16, y: 26 + Math.random() * 30 };
         f.ph = Math.random() * 10;
@@ -441,6 +445,12 @@ export class WorldScene extends Phaser.Scene {
       const wave = this.spawner.sealWaves?.[seal.id];
       if (!wave || !wave.length || this.spawner.sealWaveAlive(seal.id)) continue;
       this.spawner.sealWaves[seal.id] = [];
+      const next = (this.spawner.sealWaveIdx[seal.id] || 0) + 1;
+      if (seal.waves && next < seal.waves.length) {
+        this.spawner.spawnSealWave(seal, next);
+        bus.emit('toast', { text: `${seal.name}: savunma dalgası ${next + 1}/${seal.waves.length}`, kind: 'elite' });
+        continue;
+      }
       if (breakSeal(ch, this.mapId, seal.id)) {
         sound.play('altar');
         const { n, total } = this.sealCount(seal.stage || 3);

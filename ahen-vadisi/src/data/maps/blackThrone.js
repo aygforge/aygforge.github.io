@@ -38,6 +38,8 @@ export default {
     { pts: [[62, 46], [72, 56], [82, 66]], w: 3, tile: 'ruin_cobble' },
     { pts: [[62, 46], [80, 46], [96, 48], [108, 48]], w: 4, tile: 'royal_floor' },
     { pts: [[62, 46], [62, 60], [58, 70]], w: 2, tile: 'ruin_cobble' },
+    // V4: Gökyarık Geçidi — Kraliyet Avlusu'ndan kuzey kenarına
+    { pts: [[62, 40], [63, 26], [64, 12], [64, 0]], w: 3, tile: 'ruin_cobble' },
     { pts: [[40, 28], [32, 26], [30, 26]], w: 2, tile: 'ruin_cobble' },
     { pts: [[84, 24], [94, 24], [100, 26]], w: 2, tile: 'ruin_cobble' },
     { pts: [[40, 28], [24, 16], [8, 8]], w: 2, tile: 'grave_soil' },
@@ -88,6 +90,10 @@ export default {
   ],
   objects: [
     { type: 'portal', id: 'bt_to_dead', x: 0, y: 60, to: 'dead_kingdom', entry: 'from_throne', label: 'Ölü Krallık' },
+    { type: 'portal', id: 'bt_to_rift', x: 64, y: 0, to: 'sky_rift', entry: 'from_throne', label: 'Gökyarık Ovası',
+      requires: { flag: 'sky_rift_open', msg: 'Göğe açılan yarık mühürlü. "Gökyüzündeki Yarık" görevinde geçidi incele.' } },
+    { type: 'qobj', group: 'rift_gate', id: 'rift_gate', x: 66, y: 4, label: 'Gökyüzündeki yarık', sprite: 'marker_stone', say: 'Taşa dokunduğunda yarığın perdesi aralandı; kuzeyden fırtına kokusu geliyor.' },
+    { type: 'fx', fx: 'torch', x: 61, y: 3 }, { type: 'fx', fx: 'torch', x: 67, y: 3 },
     { type: 'dungeon_gate', id: 'crypt_gate', group: 'crypt_gate', x: 108, y: 42, to: 'dark_crypt', entry: 'entrance', label: 'Karanlık Mahzen', dungeon: 'dark_crypt' },
     { type: 'waystone', id: 'ws_throne', group: 'ws_throne', x: 20, y: 54 },
     { type: 'npc', npc: 'eren', x: 14, y: 54 },
@@ -128,6 +134,7 @@ export default {
   entries: {
     from_dead: { x: 3, y: 60 },
     from_crypt: { x: 108, y: 46 },
+    from_rift: { x: 64, y: 4 },
     waystone: { x: 20, y: 56 },
     respawn: { x: 16, y: 57 },
   },

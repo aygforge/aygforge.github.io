@@ -298,7 +298,7 @@ export const ENEMIES = {
     id: 'lightning_raider', name: 'Şimşek Yağmacısı', level: 43, hp: 3700, atk: 480, def: 185, mdef: 175, exp: 2050,
     species: 'humanoid', ai: 'skirmish', aggro: 6, leash: 14, speed: 3.7, attackInterval: 1.7, attackRange: 1.45,
     dmgType: 'phys', respawn: 26, radius: 0.46, sprite: 'lightning_raider', deathFx: 'storm',
-    abilities: ['shadow_dash'],
+    abilities: ['shadow_dash'], abilityLabel: 'Şimşek Atılışı', abilityTint: 0x9ad0ff,
     materials: [{ id: 'lightning_shard', w: 1 }],
   }),
   thunder_golem: N({
@@ -306,7 +306,7 @@ export const ENEMIES = {
     id: 'thunder_golem', name: 'Gökgürültüsü Golemi', level: 44, hp: 4300, atk: 520, def: 235, mdef: 195, exp: 2350,
     species: 'construct', ai: 'tank', aggro: 4, leash: 11, speed: 1.9, attackInterval: 2.6, attackRange: 1.75,
     dmgType: 'phys', respawn: 30, radius: 0.64, sprite: 'thunder_golem', deathFx: 'storm',
-    abilities: ['heavy_slam'],
+    abilities: ['heavy_slam'], abilityLabel: 'Gök Gürültüsü', abilityTint: 0x9ad0ff,
     materials: [{ id: 'meteor_dust', w: 1 }],
   }),
   star_parasite: N({
@@ -325,7 +325,7 @@ export const ENEMIES = {
     id: 'void_armor', name: 'Boşluk Zırhlısı', level: 48, hp: 5400, atk: 625, def: 260, mdef: 245, exp: 3500,
     species: 'construct', ai: 'tank', aggro: 4, leash: 11, speed: 2.0, attackInterval: 2.6, attackRange: 1.8,
     dmgType: 'phys', respawn: 30, radius: 0.62, sprite: 'void_armor', deathFx: 'void',
-    abilities: ['void_ward'],
+    abilities: ['void_ward'], abilityLabel: 'Boşluk Kalkanı',
     materials: [{ id: 'void_plate', w: 1 }],
   }),
   star_oracle: N({

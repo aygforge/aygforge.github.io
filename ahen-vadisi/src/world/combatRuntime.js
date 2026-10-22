@@ -294,7 +294,7 @@ export class CombatRuntime {
   groundHazard({ x, y, r, dur, tick = 0.5, coef = 0.2, src, key = 'fire_ground', label = null, warn = 0, dmgType = 'magic', tint = null }) {
     const sc = this.scene;
     const hz = { x, y, r, left: dur, tick, t: warn > 0 ? 0 : tick, coef, src, label, warn, dmgType, alive: true, sprites: [] };
-    if (warn > 0) sc.fx.telegraph({ kind: 'circle', x, y, r }, warn * 1000, key === 'void_ground' ? 0xa070e0 : 0xff6a1a);
+    if (warn > 0) sc.fx.telegraph({ kind: 'circle', x, y, r }, warn * 1000, key === 'void_ground' ? 0xa070e0 : key === 'storm_ground' ? 0x9ad0ff : 0xff6a1a);
     const show = () => {
       const s = sc.fx.sprite(key, x, y, { depth: 41, scale: (r * 2) / 64 * 2, tint });
       s.setDisplaySize(r * 2.2, r * 2.2 * TG_SQUASH * 0.9);
@@ -307,15 +307,19 @@ export class CombatRuntime {
 
   // Düşen buz kıymığı: telegraf (gecikme), sonra tek vuruş
   // V3: dark = true → Kayıp Kral / Obsidyen Celladı'nın kara mermisi (aynı telegraf ve isabet kuralı)
-  fallingShard({ x, y, r, delay = 1.4, coef = 1, src, dark = false, label = null }) {
+  // V4: style = 'storm' (yıldırım) / 'star' (düşen yıldız); isabet kuralı aynı
+  fallingShard({ x, y, r, delay = 1.4, coef = 1, src, dark = false, label = null, style = null }) {
     const sc = this.scene;
-    sc.fx.telegraph({ kind: 'circle', x, y, r }, delay * 1000, dark ? 0xa070e0 : 0x7ad8ff);
+    const st = style || (dark ? 'dark' : 'ice');
+    const look = { ice: ['ice_spike', 0x7ad8ff, null, 'ice'], dark: ['dark_missile', 0xa070e0, 0xa070e0, 'bolt'],
+      storm: ['storm_bolt', 0x9ad0ff, 0x9ad0ff, 'bolt'], star: ['star_bolt', 0xfff0c0, 0xfff0c0, 'bolt'] }[st];
+    sc.fx.telegraph({ kind: 'circle', x, y, r }, delay * 1000, look[1]);
     sc.time.delayedCall(delay * 1000 - 260, () => {
-      const s = sc.fx.sprite(dark ? 'dark_missile' : 'ice_spike', x, y - 140, { depth: 59000, origin: [0.5, 1], scale: 1.4 });
+      const s = sc.fx.sprite(look[0], x, y - 140, { depth: 59000, origin: [0.5, 1], scale: 1.4 });
       sc.tweens.add({ targets: s, y, duration: 260, ease: 'Quad.in', onComplete: () => {
         s.destroy();
-        sc.fx.sprite('shatter', x, y - 8, { scale: 1.6, tint: dark ? 0xa070e0 : null });
-        sound.play(dark ? 'bolt' : 'ice', { vol: 0.6 });
+        sc.fx.sprite('shatter', x, y - 8, { scale: 1.6, tint: look[2] });
+        sound.play(look[3], { vol: 0.6 });
         const p = sc.player;
         if (!p.dead && Math.hypot((p.x - x) / r, (p.y - y) / (r * TG_SQUASH)) <= 1) this.enemyHitsPlayer(src, { coef, dmgType: 'magic', label: label || (dark ? 'Kara Mermi' : 'Buz Kıymığı') });
       } });

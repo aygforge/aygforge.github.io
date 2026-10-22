@@ -7,6 +7,7 @@ import { sound } from '../audio/sound.js';
 import { pointInBeam, inTelegraphCircle } from './Enemy.js';
 import { ashGiantBehavior, frozenGuardianBehavior } from './bossesV2.js';
 import { graveCommanderBehavior, lostKingBehavior } from './bossesV3.js';
+import { stormTyrantBehavior, skyPrisonerBehavior } from './bossesV4.js';
 
 export function makeBossBehavior(e) {
   if (e.tpl.ai === 'boss_alpha') return alphaBehavior(e);
@@ -15,6 +16,8 @@ export function makeBossBehavior(e) {
   if (e.tpl.ai === 'boss_frost') return frozenGuardianBehavior(e);
   if (e.tpl.ai === 'boss_commander') return graveCommanderBehavior(e);
   if (e.tpl.ai === 'boss_king') return lostKingBehavior(e);
+  if (e.tpl.ai === 'boss_tyrant') return stormTyrantBehavior(e);
+  if (e.tpl.ai === 'boss_prisoner') return skyPrisonerBehavior(e);
   return null;
 }
 

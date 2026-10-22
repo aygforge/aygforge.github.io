@@ -8,6 +8,7 @@ import { spritePack, animDuration } from '../art/spriteRuntime.js';
 import { V2_SCALE } from '../art/monstersV2.js';
 import { V3_SCALE } from '../art/monstersV3.js';
 import { V4_SCALE } from '../art/monstersV4.js';
+import { V4_NORMAL_ABILITIES, V4_ELITE_ABILITIES, normalAbilityV4, eliteAbilityV4 } from './enemyV4.js';
 
 let NEXT_ID = 1;
 const SCALE = { captain: 1.2, executioner: 1.35, ...V2_SCALE, ...V3_SCALE, ...V4_SCALE };
@@ -396,6 +397,7 @@ export class Enemy {
     const ab = this.tpl.abilities[0];
     const sc = this.scene;
     if (ab === 'shroud_dash' || ab === 'obsidian_quake') { this.updateEliteV3(ab, p, dP); return; }
+    if (V4_ELITE_ABILITIES.has(ab)) { eliteAbilityV4(this, ab, p, dP); return; }
     if (ab === 'spin_slash' && dP < 3 * TILE) {
       this.abilityCd = 9;
       const r = 2.6 * TILE, dur = 1300;
@@ -497,6 +499,7 @@ export class Enemy {
     this.abilityCd -= dt;
     if (this.abilityCd > 0) return;
     const sc = this.scene, ab = this.tpl.abilities[0];
+    if (V4_NORMAL_ABILITIES.has(ab)) { normalAbilityV4(this, ab, p, dP); return; }
     if (ab === 'grave_curse' && dP < 6 * TILE && this.canSee(p)) {
       // Mezar Büyücüsü: oyuncunun altına küçük alan büyüsü; isabette kısa lanet (alınan hasar +%12, 4 sn)
       this.abilityCd = 10 + Math.random() * 2;
@@ -516,19 +519,19 @@ export class Enemy {
       // Obsidyen Nöbetçi: yavaş ama ağır yer darbesi (kendi çevresinde)
       this.abilityCd = 9 + Math.random() * 2;
       const r = 2.2 * TILE, dur = 1300;
-      sc.fx.telegraph({ kind: 'circle', x: this.x, y: this.y, r }, dur, 0xa070e0);
+      sc.fx.telegraph({ kind: 'circle', x: this.x, y: this.y, r }, dur, this.tpl.abilityTint ?? 0xa070e0);
       sound.play('warn', { vol: 0.5 });
       this.casting = { t: dur / 1000, fn: () => {
         if (this.dead) return;
         this.playAnim('atk');
-        sc.fx.sprite('shatter', this.x, this.y - 6, { scale: 2.4, tint: 0x8a6ab0 });
+        sc.fx.sprite('shatter', this.x, this.y - 6, { scale: 2.4, tint: this.tpl.abilityTint ?? 0x8a6ab0 });
         sound.play('slam'); sc.fx.shake(0.005, 140);
-        if (!p.dead && inTelegraphCircle(p.x, p.y, this.x, this.y, r)) sc.combat.enemyHitsPlayer(this, { coef: 1.5, label: 'Obsidyen Darbe' });
+        if (!p.dead && inTelegraphCircle(p.x, p.y, this.x, this.y, r)) sc.combat.enemyHitsPlayer(this, { coef: 1.5, label: this.tpl.abilityLabel || 'Obsidyen Darbe' });
       } };
     } else if (ab === 'shadow_dash' && dP > 2.6 * TILE && dP < 7 * TILE && this.canSee(p)) {
       // Gölge Avcısı: hedefe hızlı atılış (hat telegrafı), ardından geri çekilme
       this.abilityCd = 7 + Math.random() * 2;
-      this.dashAt(p, { len: Math.min(dP + TILE, 7.5 * TILE), w: 1.1 * TILE, dur: 800, coef: 1.25, label: 'Gölge Atılışı', tint: 0xa070e0 });
+      this.dashAt(p, { len: Math.min(dP + TILE, 7.5 * TILE), w: 1.1 * TILE, dur: 800, coef: 1.25, label: this.tpl.abilityLabel || 'Gölge Atılışı', tint: this.tpl.abilityTint ?? 0xa070e0 });
       this.retreatUntil = sc.clock + 800 + 900;
     } else if (ab === 'throne_cleave' && dP < 3.5 * TILE) {
       // Taht Celladı: uyarılı geniş ön yarma
@@ -552,7 +555,7 @@ export class Enemy {
         if (this.dead) return;
         this.reduce = 0.35;
         this.furyTint = 0xc8a0ff; this.sprite.setTint(this.furyTint);
-        sc.fx.text(this.x, this.y - this.height - 10, 'Hiçlik Kalkanı', { color: '#c8a0ff', size: 12 });
+        sc.fx.text(this.x, this.y - this.height - 10, this.tpl.abilityLabel || 'Hiçlik Kalkanı', { color: '#c8a0ff', size: 12 });
         sound.play('shield', { vol: 0.5 });
         this.drawBar();
         sc.time.delayedCall(3000, () => { if (this.dead) return; this.reduce = 0; this.furyTint = null; this.sprite.clearTint(); this.drawBar(); });
@@ -563,7 +566,7 @@ export class Enemy {
   }
 
   // Hat telegrafı ardından düz hatta atılış; telegraf dikdörtgeni = isabet alanı
-  dashAt(p, { len, w, dur, coef, label, tint, curse = 0 }) {
+  dashAt(p, { len, w, dur, coef, label, tint, curse = 0, slow = 0 }) {
     const sc = this.scene;
     const ang = Math.atan2(p.y - this.y, p.x - this.x), ox = this.x, oy = this.y - 10;
     sc.fx.telegraph({ kind: 'rect', x: ox, y: oy, len, width: w, angle: ang }, dur, tint);
@@ -580,6 +583,7 @@ export class Enemy {
       if (!p.dead && pointInBeam(p.x, p.y - 8, ox, oy, ang, len, w)) {
         sc.combat.enemyHitsPlayer(this, { coef, label });
         if (curse) sc.combat.cursePlayer(curse, 4);
+        if (slow) sc.combat.slowPlayer(slow, 1.5);
       }
     } };
   }

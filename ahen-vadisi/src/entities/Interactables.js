@@ -100,7 +100,7 @@ export class WaystoneObj extends Base {
 }
 
 // kazma ile toplanan düğümler (geri kalanlar ot)
-const ORE_KINDS = ['iron_ore', 'hard_ore', 'ash_ore', 'frost_crystal', 'dark_ore', 'obsidian_ore', 'soul_crystal'];
+const ORE_KINDS = ['iron_ore', 'hard_ore', 'ash_ore', 'frost_crystal', 'dark_ore', 'obsidian_ore', 'soul_crystal', 'storm_ore', 'astral_crystal'];
 
 export class GatherObj extends Base {
   constructor(scene, o) {
@@ -296,7 +296,7 @@ export class DungeonGateObj extends Base {
     this.info = DUNGEON_INFO[this.dId];
     this.group = o.group || this.info.gateGroup;
     this.name = this.info.name + ' Kapısı';
-    this.s = this.sprite({ dungeon: 'dungeon_gate', dark_crypt: 'crypt_gate' }[this.dId] || 'frost_gate', false);
+    this.s = this.sprite({ dungeon: 'dungeon_gate', dark_crypt: 'crypt_gate', astral_sanctum: 'sanctum_gate' }[this.dId] || 'frost_gate', false);
     this.height = 90;
     this.tapRadius = 44;
     this.interactRange = 2.2 * TILE;
@@ -378,15 +378,22 @@ export class SealObj extends Base {
     this.seal = scene.mapDef.seals.find((x) => x.id === o.id);
     this.stage = this.seal.stage || 3;
     this.lever = this.seal.kind === 'lever';
-    this.s = this.sprite(this.lever ? 'crypt_lever' : scene.mapId === 'dark_crypt' ? 'royal_seal_dg' : 'temple_seal', false);
+    // V4: Gökyarık Mabedi — enerji düğümleri (gerçek: 'lever', yanıltıcı: 'decoy') ve gök mühürleri
+    this.decoy = this.seal.kind === 'decoy';
+    const sanctum = scene.mapId === 'astral_sanctum';
+    this.s = this.sprite(sanctum ? (this.lever || this.decoy ? 'energy_node' : 'sanctum_seal')
+      : this.lever ? 'crypt_lever' : scene.mapId === 'dark_crypt' ? 'royal_seal_dg' : 'temple_seal', false);
     this.light = scene.add.image(this.x, this.y - 30, 'light_blue').setScale(0.6).setAlpha(0.4).setBlendMode(Phaser.BlendModes.ADD).setDepth(55000);
     if (scene.mapId === 'dark_crypt') this.light.setTint(0xb080ff);
+    // yanıltıcı düğüm sönük görünür (ipucu: gerçek düğümlerin ışığı parlak)
+    if (this.decoy) this.light.setAlpha(0.12);
     this.height = 56;
     this.interactRange = 1.8 * TILE;
   }
   get broken() { return !!getRun(app.char, this.scene.mapId)?.seals?.includes(this.o.id); }
   refresh() { this.update(); }
   update() {
+    if (this.decoy) { this.s.setFrame(2); return; }
     const br = this.broken, active = this.scene.spawner?.sealWaveAlive?.(this.o.id);
     this.s.setFrame(br ? 2 : active ? 1 : 0);
     this.light.setVisible(!br);
@@ -395,6 +402,12 @@ export class SealObj extends Base {
     const sc = this.scene, ch = app.char;
     const group = sc.mapDef.seals.filter((x) => (x.stage || 3) === this.stage);
     const done = () => group.filter((x) => getRun(ch, sc.mapId)?.seals?.includes(x.id)).length;
+    if (this.decoy) {
+      // zararsız ipucu: yanlış düğüm hiçbir şeyi bozmaz, yalnız doğru yönü gösterir
+      bus.emit('toast', { text: this.seal.hint || 'Bu düğüm sönük; enerji buradan akmıyor. Işığı parlak olan düğümleri ara.', kind: 'info' });
+      sound.play('error');
+      return;
+    }
     if (this.broken) { bus.emit('toast', { text: `${this.name} zaten ${this.lever ? 'etkin' : 'kırıldı'}`, kind: 'info', short: true }); return; }
     if (currentStage(ch, sc.mapId) < this.stage) {
       bus.emit('toast', { text: this.lever ? 'Mekanizma, zindana giden kapı açılmadan çalışmaz.' : 'Mühür, galeriye giden yol açılmadan uyanmaz.', kind: 'info' });

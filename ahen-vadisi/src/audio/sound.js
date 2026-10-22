@@ -130,7 +130,7 @@ class SoundManager {
     if (!theme) return;
     // ortam gürültüsü (rüzgâr / mağara uğultusu)
     const amb = { village: [600, 0.05], forest: [900, 0.07], mine: [250, 0.09], swamp: [400, 0.08], dungeon: [180, 0.1], menu: [500, 0.04],
-      ash: [320, 0.08], frost: [1400, 0.07], temple: [700, 0.07], dead: [450, 0.07], throne: [260, 0.09], crypt: [200, 0.1] }[theme] || [500, 0.05];
+      ash: [320, 0.08], frost: [1400, 0.07], temple: [700, 0.07], dead: [450, 0.07], throne: [260, 0.09], crypt: [200, 0.1], storm: [1100, 0.08], star: [800, 0.05], sanctum: [300, 0.08] }[theme] || [500, 0.05];
     const s = this.ctx.createBufferSource(); s.buffer = this.noise; s.loop = true;
     const fl = this.ctx.createBiquadFilter(); fl.type = 'lowpass'; fl.frequency.value = amb[0];
     const g = this.ctx.createGain(); g.gain.value = amb[1];
@@ -160,6 +160,14 @@ class SoundManager {
         // derin uğultu / fısıltı
         if (Math.random() < 0.55) this.tone({ f: 70, f2: 60, type: 'sawtooth', dur: 1.6, vol: 0.025, attack: 0.6, bus: this.ambBus });
         else this.tone({ f: 1800 + Math.random() * 600, f2: 1200, type: 'sine', dur: 0.4, vol: 0.02, attack: 0.15, bus: this.ambBus });
+      } else if (theme === 'storm' && r < 0.45) {
+        // V4: uzak gök gürültüsü / statik çıtırtı
+        if (Math.random() < 0.45) this.tone({ f: 55, f2: 40, type: 'sawtooth', dur: 1.8, vol: 0.03, attack: 0.05, bus: this.ambBus });
+        else for (let i = 0; i < 3; i++) this.tone({ f: 3000 + Math.random() * 1500, f2: 1500, type: 'square', dur: 0.015, vol: 0.02, at: i * 0.04, bus: this.ambBus });
+      } else if ((theme === 'star' || theme === 'sanctum') && r < 0.45) {
+        // V4: kristal çınlaması / boşluk uğultusu
+        if (Math.random() < 0.55) this.tone({ f: 1760 + Math.random() * 880, f2: 1700, type: 'sine', dur: 0.9, vol: 0.022, attack: 0.05, bus: this.ambBus });
+        else this.tone({ f: 82, f2: 78, type: 'triangle', dur: 2, vol: 0.025, attack: 0.7, bus: this.ambBus });
       } else if (theme === 'swamp' && r < 0.55) {
         if (Math.random() < 0.5) this.tone({ f: 120 + Math.random() * 40, f2: 90, type: 'square', dur: 0.15, vol: 0.03, bus: this.ambBus });
         else this.tone({ f: 300, f2: 700, type: 'sine', dur: 0.05, vol: 0.04, bus: this.ambBus });
@@ -172,11 +180,12 @@ class SoundManager {
       dungeon: [0, 1, 3, 6, 7], menu: [0, 2, 4, 7, 9], field: [0, 2, 3, 7, 9], cave: [0, 3, 5, 7, 10],
       ash: [0, 1, 4, 5, 7], frost: [0, 2, 5, 7, 9], temple: [0, 2, 3, 6, 9],
       dead: [0, 2, 3, 7, 8], throne: [0, 1, 3, 6, 8], crypt: [0, 1, 3, 5, 6],
+      storm: [0, 2, 3, 7, 10], star: [0, 2, 4, 6, 9], sanctum: [0, 1, 4, 6, 9],
     };
     const scale = scales[theme] || scales.village;
-    const root = { village: 220, forest: 196, mine: 174.6, swamp: 164.8, dungeon: 146.8, menu: 220, ash: 155.6, frost: 261.6, temple: 130.8, dead: 146.8, throne: 123.5, crypt: 110 }[theme] || 196;
+    const root = { village: 220, forest: 196, mine: 174.6, swamp: 164.8, dungeon: 146.8, menu: 220, ash: 155.6, frost: 261.6, temple: 130.8, dead: 146.8, throne: 123.5, crypt: 110, storm: 138.6, star: 185, sanctum: 116.5 }[theme] || 196;
     let step = 0;
-    const beat = theme === 'dungeon' || theme === 'temple' || theme === 'crypt' ? 520 : theme === 'frost' || theme === 'dead' ? 480 : theme === 'throne' ? 500 : 420;
+    const beat = theme === 'dungeon' || theme === 'temple' || theme === 'crypt' || theme === 'sanctum' ? 520 : theme === 'star' ? 540 : theme === 'frost' || theme === 'dead' ? 480 : theme === 'throne' ? 500 : 420;
     const tick = () => {
       if (!this.musicOn || !this.enabled) { step++; return; }
       const bar = Math.floor(step / 8) % 4;

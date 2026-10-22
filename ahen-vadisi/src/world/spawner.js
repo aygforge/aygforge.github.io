@@ -164,6 +164,7 @@ export class Spawner {
     const sc = this.scene, def = sc.mapDef, run = getRun(app.char, sc.mapId);
     const rng = new Rng(hashStr(run.runId));
     this.sealWaves = {};
+    this.sealWaveIdx = {};
     for (const [stageStr, list] of Object.entries(def.stages)) {
       const stage = +stageStr;
       if (run.cleared.includes(stage)) continue;
@@ -188,12 +189,14 @@ export class Spawner {
   }
 
   // Mühür karşılaşması (yaratıklar mührün bölümüne — varsayılan 3 — sayılır; kırılan mühür koşuda kalıcı)
-  spawnSealWave(seal) {
+  // V4: `waves` (çok dalgalı savunma) — dalga dizini sealWaveIdx'te; tek `wave` eski davranış
+  spawnSealWave(seal, idx = 0) {
     if (this.sealWaves[seal.id]?.some((e) => !e.dead)) return false;
     const sc = this.scene;
     const list = [];
     let i = 0;
-    for (const [id, n] of seal.wave) for (let k = 0; k < n; k++, i++) {
+    this.sealWaveIdx[seal.id] = idx;
+    for (const [id, n] of (seal.waves ? seal.waves[idx] : seal.wave)) for (let k = 0; k < n; k++, i++) {
       const a = (i / 3) * Math.PI * 2 + 0.4;
       let x = (seal.x + 0.5) * TILE + Math.cos(a) * 2.6 * TILE, y = (seal.y + 0.5) * TILE + Math.sin(a) * 2 * TILE;
       if (sc.grid.blockedAt(x, y)) { x = (seal.x + 0.5) * TILE; y = (seal.y + 2) * TILE; }

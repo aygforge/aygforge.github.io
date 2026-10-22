@@ -296,6 +296,41 @@ export const OBJECT_SPRITES = {
     if (i < 2) { pb.line(10, 10, 5, 2, '#8a8494'); pb.disc(5, 2, 1.6, '#c8a050'); }
     else { pb.line(10, 10, 15, 2, '#8a8494'); pb.disc(15, 2, 1.6, '#6a6472'); }
   }),
+  // ---------------- V4 nesneleri
+  sanctum_gate: () => frames(2, 48, 48, (pb, i) => {
+    pb.rect(2, 8, 44, 40, '#2a2e4a'); pb.poly([[2, 10], [24, 0], [46, 10]], '#3a4066'); pb.hline(4, 44, 9, '#9ab4ff');
+    pb.rect(10, 16, 28, 32, i ? '#06081a' : '#1a1e3a');
+    if (!i) { for (let x = 12; x < 38; x += 6) pb.vline(x, 16, 47, '#4a5488'); pb.hline(10, 37, 30, '#4a5488');
+      pb.disc(24, 30, 6, '#2a3270'); pb.ring(24, 30, 6, '#9ab4ff'); pb.set(24, 30, '#fff0c0'); }
+    else { pb.disc(24, 34, 9, '#0a0c24'); pb.disc(24, 34, 5, '#3a4aa0'); pb.set(24, 34, '#fff0c0'); }
+    for (let y = 12; y < 46; y += 6) { pb.rect(3, y, 6, 4, '#3a4066'); pb.rect(39, y, 6, 4, '#3a4066'); }
+    for (const [x, y] of [[12, 4], [24, 2], [36, 4]]) { pb.set(x, y, '#fff0c0'); pb.set(x - 1, y, '#9ab4ff'); pb.set(x + 1, y, '#9ab4ff'); }
+  }),
+  sanctum_seal: () => frames(3, 24, 30, (pb, i) => {
+    pb.ellipse(12, 28, 10, 2, '#0a0c1a');
+    pb.rect(5, 12, 14, 16, '#2e3456'); pb.rect(4, 10, 16, 3, '#444c7a'); pb.hline(4, 19, 10, '#9ab4ff');
+    const c = i === 0 ? '#9ab4ff' : i === 1 ? '#ffffff' : '#262a40';
+    pb.ring(12, 19, 5, c); pb.line(8, 15, 16, 23, c); pb.line(16, 15, 8, 23, c);
+    if (i < 2) { pb.poly([[9, 10], [12, 1], [15, 10]], '#fff0c0'); pb.vline(12, 3, 9, '#ffffff'); }
+    else { pb.poly([[9, 10], [10, 6], [12, 8], [14, 5], [15, 10]], '#3a4066'); pb.line(8, 14, 16, 26, '#141628'); }
+  }),
+  energy_node: () => frames(3, 20, 26, (pb, i) => {
+    pb.ellipse(10, 24, 8, 2, '#0a0c1a');
+    pb.poly([[3, 24], [5, 12], [15, 12], [17, 24]], '#2e3456'); pb.hline(4, 15, 12, '#6a78b0');
+    const c = i === 2 ? '#3a4066' : i === 1 ? '#ffffff' : '#9ab4ff';
+    pb.poly([[7, 12], [10, 2], [13, 12]], c); pb.vline(10, 4, 11, i === 2 ? '#262a40' : '#fff0c0');
+    pb.set(10, 18, c); pb.set(8, 20, c); pb.set(12, 20, c);
+  }),
+  astral_relic: () => frames(2, 20, 20, (pb, i) => {
+    pb.ellipse(10, 18, 8, 2, '#0a0c1a');
+    pb.poly([[2, 18], [4, 8], [10, 4], [16, 8], [18, 18]], '#3a3a5a'); pb.poly([[5, 16], [6, 9], [10, 6], [14, 9], [15, 16]], '#5a5a82');
+    pb.ring(10, 12, 3, i ? '#3a3a5a' : '#c0b0ff'); pb.set(10, 12, i ? '#5a5a82' : '#fff0c0');
+  }),
+  star_lens: () => frames(2, 18, 26, (pb, i) => {
+    pb.ellipse(9, 24, 7, 2, '#0a0c1a');
+    pb.line(4, 24, 8, 12, '#5a4a3a'); pb.line(14, 24, 10, 12, '#5a4a3a'); pb.line(9, 24, 9, 12, '#4a3a2a');
+    pb.poly([[4, 10], [14, 4], [16, 8], [6, 14]], '#6a6a8a'); pb.disc(15, 6, 2.2, i ? '#3a4066' : '#9ab4ff'); pb.set(15, 5, '#ffffff');
+  }),
   house_door: () => frames(2, 16, 22, (pb, i) => {
     pb.rect(2, 2, 12, 20, '#3e3228'); pb.rect(3, 3, 10, 19, i ? '#120e10' : '#5a4632');
     if (!i) { pb.vline(8, 3, 21, '#3e3228'); pb.set(11, 12, '#c8a050'); pb.line(4, 6, 12, 18, '#2e2620'); }
@@ -354,6 +389,21 @@ export const OBJECT_SPRITES = {
   herb_mourning_herb: () => frames(1, 14, 12, (pb) => {
     pb.ellipse(7, 8, 6, 4, '#3a3a40'); for (let i = 0; i < 5; i++) pb.line(7, 10, 2 + i * 2.5, 3 + (i % 2) * 2, '#6a6a78');
     pb.set(4, 4, '#c8c8e0'); pb.set(10, 3, '#c8c8e0'); pb.set(7, 2, '#a070e0');
+  }),
+  // V4 toplama düğümleri
+  ore_storm_ore: () => frames(1, 20, 16, (pb) => {
+    pb.poly([[1, 15], [3, 6], [8, 2], [15, 3], [19, 15]], '#2a3040'); pb.poly([[4, 13], [5, 7], [9, 4], [14, 5], [16, 13]], '#3a4458');
+    pb.line(6, 6, 9, 9, '#9ad0ff'); pb.line(9, 9, 8, 12, '#9ad0ff'); pb.line(13, 6, 15, 10, '#5a8ac0'); pb.set(9, 9, '#ffffff'); pb.set(14, 7, '#e0f4ff');
+  }),
+  ore_astral_crystal: () => frames(1, 20, 16, (pb) => {
+    pb.ellipse(10, 14, 8, 2, '#141228');
+    pb.poly([[3, 14], [5, 7], [7, 3], [9, 8], [10, 14]], '#6a5ac8'); pb.vline(6, 5, 12, '#d8d0ff');
+    pb.poly([[9, 14], [11, 5], [13, 1], [15, 6], [16, 14]], '#9a8aff'); pb.vline(13, 3, 12, '#ffffff');
+    pb.set(4, 6, '#fff0c0'); pb.set(17, 9, '#fff0c0');
+  }),
+  herb_star_flower: () => frames(1, 14, 12, (pb) => {
+    pb.ellipse(7, 9, 6, 3, '#3a4a3a'); for (let i = 0; i < 4; i++) pb.line(7, 10, 2 + i * 3, 4 + (i % 2) * 2, '#5a7a5a');
+    for (const [x, y] of [[4, 4], [10, 3], [7, 2]]) { pb.set(x, y, '#ffe8a0'); pb.set(x - 1, y, '#fff6d0'); pb.set(x + 1, y, '#fff6d0'); pb.set(x, y - 1, '#fff6d0'); pb.set(x, y + 1, '#fff6d0'); }
   }),
   lava_pool: () => frames(3, 32, 18, (pb, i) => {
     pb.ellipse(16, 9, 15, 8, '#2a1410'); pb.ellipse(16, 9, 13, 6.5, '#c8401a');
