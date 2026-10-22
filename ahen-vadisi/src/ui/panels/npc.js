@@ -6,7 +6,7 @@ import { app } from '../../core/app.js';
 import { bus } from '../../core/events.js';
 import { iconURL } from '../../art/icons.js';
 import { npcSheet } from '../../art/characters.js';
-import { NPCS } from '../../data/npcs.js';
+import { NPCS, SUPPLY_STOCK } from '../../data/npcs.js';
 import { ITEMS, isUpgradeable } from '../../data/items.js';
 import { STACKABLES, POTION_LIST } from '../../data/materials.js';
 import { RECIPES } from '../../data/recipes.js';
@@ -25,7 +25,7 @@ import { sound } from '../../audio/sound.js';
 const SVC_LABEL = {
   quests: 'Görevler', class_quests: 'Sınıf görevleri', shop: 'Satın al', sell: 'Sat', bag: 'Çanta genişlet',
   upgrade: 'Yükseltme', craft_blacksmith: 'Üretim', repair: 'Tamir', dismantle: 'Parçalama',
-  potions: 'İksirler', craft_healer: 'İksir üretimi', contracts: 'Av sözleşmeleri', bestiary: 'Yaratık rehberi',
+  potions: 'İksirler', craft_healer: 'İksir üretimi', craft_alchemy: 'Simya', supplies: 'Tedarik', contracts: 'Av sözleşmeleri', bestiary: 'Yaratık rehberi',
   reset_skills: 'Beceri sıfırla', reset_stats: 'Stat sıfırla', storage: 'Ortak depo', storage_expand: 'Depo genişlet',
 };
 
@@ -56,6 +56,7 @@ export function openNpc(npcId) {
   cur = list.length && services.includes('quests') ? 'quests' : services[0];
   shell.body.append(svcBox, content);
   ui.openPanel('npc', () => shell.el);
+  act.talk(npcId);   // V3: 'visit' hedefleri (mesaj/paket teslimi)
   const off = bus.on('changed', () => { if (ui.openName === 'npc' && !ui.layers.modal.firstChild) render(); });
   render();
 }
@@ -185,6 +186,16 @@ const SERVICES = {
   },
   craft_blacksmith(npcId, render) { return craftList('blacksmith', render); },
   craft_healer(npcId, render) { return craftList('healer', render); },
+  craft_alchemy(npcId, render) { return craftList('alchemy', render); },
+  // V3: kullanım eşyaları (Arındırma Tuzu, Kamp Erzağı, Dönüş Parşömeni…)
+  supplies(npcId, render) {
+    const ch = app.char;
+    const list = (SUPPLY_STOCK[npcId] || []).map((id) => ({ id, it: STACKABLES[id], price: STACKABLES[id].buy ?? BOTTLE_PRICE }));
+    const buy = (x, q) => h('button', { class: 'btn small green', 'data-testid': q === 1 ? 'supply-' + x.id : null, onTap: () => confirmBuy({ icon: iconURL(x.id), name: x.it.name, qty: q, price: x.price, onOk: () => { act.buySupply(x.id, q, x.price); render(); } }) }, `×${q} · ${fmt(x.price * q)} G`);
+    return h('div', { class: 'shopgrid' }, list.map((x) => h('div', { class: 'scard' },
+      h('div', { class: 'si' }, img(iconURL(x.id)), h('div', { class: 'grow', style: { minWidth: 0 } }, h('b', {}, x.it.name), h('div', { class: 'tiny muted' }, `${x.it.desc || ''} · Sahip: ${countStack(ch.bag, x.id)}`))),
+      h('div', { class: 'row', style: { gap: '4px' } }, buy(x, 1), buy(x, 5)))));
+  },
   repair(npcId, render) {
     const ch = app.char;
     const total = repairAllCost(ch);

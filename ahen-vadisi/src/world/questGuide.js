@@ -15,7 +15,7 @@ function npcSpot(npcId) {
 // Görev rehberinin hedefi: { map, x, y, r, label } (tile koordinatı) ya da null
 export function guideTarget(ch) {
   const list = trackedQuestList(ch);
-  const t = list.find((x) => x.q.id === ch.tracked) || list.find((x) => x.q.main) || list[0];
+  const t = list.find((x) => x.q.id === ch.tracked) || list.find((x) => x.tracked) || list.find((x) => x.q.main) || list[0];
   if (!t) {
     // aktif görev yok: seviyesi uygun ilk ana görev için Köy Muhtarı'na
     const next = Object.values(QUEST_MAP).filter((q) => q.main && !ch.quests[q.id] && ch.level >= q.minLevel).sort((a, b) => a.order - b.order)[0];
@@ -30,10 +30,22 @@ export function guideTarget(ch) {
     // henüz kullanılmamış en yakın görev nesnesi (ipucu haritasında öncelikli)
     const hint = currentHint(ch, q);
     for (const def of [MAPS[hint?.map], ...Object.values(MAPS)].filter(Boolean)) {
-      const ob = def.objects.find((x) => x.group === o.group && canInteractQuestObject(ch, o.group, x.id));
+      const ob = def.objects.find((x) => x.group === o.group && canInteractQuestObject(ch, o.group, x.id, x.order ?? null, true));
       if (ob) return { map: def.id, x: ob.x, y: ob.y, r: 1.2, label: o.label };
     }
   }
+  // V3: NPC ziyareti / üretim istasyonu / refakat-savunma başlangıcı
+  if (o?.type === 'visit' || (o?.type === 'craft' && o.at)) {
+    const spot = npcSpot(o.npc || o.at);
+    if (spot) return { ...spot, label: o.label };
+  }
+  if (o?.type === 'escort' || o?.type === 'defend') {
+    for (const def of Object.values(MAPS)) {
+      const ob = def.objects.find((x) => (x.type === 'escort' || x.type === 'defense') && x.id === o.event);
+      if (ob) return { map: def.id, x: ob.x, y: ob.y, r: 1.5, label: o.label };
+    }
+  }
+  if (o?.type === 'kill' && o.spawn) return { map: o.spawn.map, x: o.spawn.x, y: o.spawn.y, r: 3, label: o.label };
   if (o?.type === 'reach') {
     for (const def of Object.values(MAPS)) {
       const l = (def.locations || []).find((x) => x.id === o.loc);

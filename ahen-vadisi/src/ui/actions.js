@@ -24,6 +24,16 @@ function result(r, { okText, okSound = 'click', what = 'inventory', critical = t
   return r;
 }
 
+// Görev ilerleme bildirimleri (questProgress) + kayıt
+function questUpdates(ups) {
+  if (!ups?.length) return;
+  for (const u of ups) { bus.emit('questProgress', u); if (u.say) bus.emit('toast', { text: u.say, kind: 'info' }); }
+  sound.play('quest');
+  app.changed('quest');
+  app.requestSave('quest', true);
+}
+export { questUpdates };
+
 export const act = {
   equip(index) { return result(inv.equipFromBag(app.char, index), { okSound: 'click', what: 'equip' }); },
   unequip(slot) { return result(inv.unequip(app.char, slot), { what: 'equip' }); },
@@ -43,10 +53,17 @@ export const act = {
   },
   buyEquip(tid) { return result(eco.buyEquipment(app.char, tid), { okText: (r) => `${ITEMS[tid].name} alındı (−${r.price} G)`, okSound: 'coin' }); },
   buyPotion(tid, qty) { return result(eco.buyPotion(app.char, tid, qty), { okText: (r) => `Satın alındı (−${r.cost} G)`, okSound: 'coin' }); },
+  buySupply(tid, qty, price) { return result(eco.buyStack(app.char, tid, qty, price), { okText: (r) => `${STACKABLES[tid].name} ×${qty} (−${r.cost} G)`, okSound: 'coin' }); },
   buyBottle(qty) { return result(eco.buyBottle(app.char, qty), { okText: (r) => `Boş Şişe ×${qty} (−${r.cost} G)`, okSound: 'coin' }); },
   craft(id) {
-    return result(eco.craft(app.char, id, app.rng), { okText: (r) => (r.inst ? `Üretildi: ${ITEMS[r.inst.tid].name}` : `Üretildi: ${STACKABLES[r.out.id].name} ×${r.out.qty}`), okSound: 'anvil' });
+    const r = result(eco.craft(app.char, id, app.rng), { okText: (r) => (r.inst ? `Üretildi: ${ITEMS[r.inst.tid].name}` : `Üretildi: ${STACKABLES[r.out.id].name} ×${r.out.qty}`), okSound: 'anvil' });
+    // V3: üretim görevleri yalnız gerçek üretimde ilerler
+    if (r.ok) questUpdates(qs.onCraft(app.char, id, r.inst ? r.inst.tid : r.out.id, r.inst ? 1 : r.out.qty));
+    return r;
   },
+  // V3: NPC ile konuşma ('visit' hedefleri: mesaj/paket teslimi)
+  talk(npcId) { questUpdates(qs.onTalk(app.char, npcId)); },
+  track(id) { return result(qs.toggleTrack(app.char, id), { okText: (r) => (r.tracked ? 'Görev HUD\'da takip ediliyor' : 'Takip bırakıldı'), what: 'quest', critical: false }); },
   upgrade(loc) {
     const r = eco.upgrade(app.char, loc, app.rng);
     if (r.ok) {
@@ -73,7 +90,7 @@ export const act = {
   resetStats() { return result(chr.resetStats(app.char), { okText: (r) => `Statlar sıfırlandı: ${r.free} puan dağıtılabilir${r.cost ? ` (−${r.cost.toLocaleString('tr-TR')} G)` : ' (ücretsiz)'}`, what: 'stats' }); },
   acceptQuest(id) {
     const r = qs.acceptQuest(app.char, id);
-    if (r.ok) { app.char.tracked = id; sound.play('click'); bus.emit('toast', { text: `Görev alındı: ${r.q.name}`, kind: 'ok' }); app.changed('quest'); app.requestSave('quest', true); }
+    if (r.ok) { app.char.tracked = id; for (const g of r.q.giveOnAccept || []) bus.emit('loot', { name: STACKABLES[g.id].name, qty: g.qty, icon: g.id, r: 'U' }); sound.play('click'); bus.emit('toast', { text: `Görev alındı: ${r.q.name}`, kind: 'ok' }); app.changed('quest'); app.requestSave('quest', true); }
     else result(r);
     return r;
   },
@@ -84,9 +101,11 @@ export const act = {
       bus.emit('toast', { text: `Görev tamamlandı: ${r.q.name} (+${r.exp} EXP, +${r.gold} Gold)`, kind: 'level' });
       if (r.q.title) bus.emit('toast', { text: `Unvan kazanıldı: ${r.q.title}`, kind: 'elite' });
       if (r.q.mastery) bus.emit('toast', { text: 'Ustalık I açıldı!', kind: 'elite' });
+      if (r.q.mastery2) bus.emit('toast', { text: 'Ustalık II açıldı!', kind: 'elite' });
       if (r.q.skillPoint) bus.emit('toast', { text: '+1 beceri puanı', kind: 'level' });
       for (const ev of r.levelEvents) app.world?.onLevelUp(ev);
       if (app.char.tracked === id) app.char.tracked = null;
+      app.char.tracking = (app.char.tracking || []).filter((x) => x !== id);
       app.changed('quest');
       app.requestSave('questDone', true);
       if (r.q.id === 'm18') bus.emit('storyComplete');

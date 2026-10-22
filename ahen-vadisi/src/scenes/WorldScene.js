@@ -16,6 +16,7 @@ import { CombatRuntime } from '../world/combatRuntime.js';
 import { Spawner } from '../world/spawner.js';
 import { Player } from '../entities/Player.js';
 import { NpcObj, WaystoneObj, GatherObj, QuestObj, AltarObj, DungeonGateObj, PortalObj, FxObj, CheckpointObj, ChestObj, SealObj } from '../entities/Interactables.js';
+import { EscortObj, DefenseObj } from '../world/questEvents.js';
 import { onReach, onDungeonStage } from '../systems/quests.js';
 import { guideTarget, nextGateway } from '../world/questGuide.js';
 import { clearStage, respawnEntry, startOrResumeRun, exitRun, getRun, breakSeal, sealsBroken, DUNGEON_INFO } from '../systems/dungeon.js';
@@ -84,6 +85,8 @@ export class WorldScene extends Phaser.Scene {
         case 'checkpoint': obj = new CheckpointObj(this, o); break;
         case 'chest': obj = new ChestObj(this, o); break;
         case 'seal': obj = new SealObj(this, o); break;
+        case 'escort': obj = new EscortObj(this, o); break;
+        case 'defense': obj = new DefenseObj(this, o); break;
         case 'fx': new FxObj(this, o); break;
         default: break;
       }

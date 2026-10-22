@@ -317,6 +317,12 @@ export class CombatRuntime {
     sound.play('enemy_die');
     const p = sc.player;
     if (p.target === e) { p.target = null; p.approaching = p.interact ? p.approaching : false; bus.emit('target', null); }
+    // V3: görev olayı yaratığı — EXP/ganimet/görev sayacı/elit katkısı yok (farm çoğaltılamaz)
+    if (e.questSpawn) {
+      sc.spawner.onEnemyDeath(e);
+      e.questEvent?.onEnemyDead?.(e);
+      return;
+    }
     let res;
     const dId = dungeonOfBoss(e.tpl.id);
     if (dId && sc.mapId === dId) {

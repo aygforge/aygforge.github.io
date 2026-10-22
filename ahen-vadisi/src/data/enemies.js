@@ -242,6 +242,14 @@ export const ENEMIES = {
     species: 'construct', ai: 'static', aggro: 0, leash: 0, speed: 0, attackInterval: 99, attackRange: 0,
     dmgType: 'phys', radius: 0.5, sprite: 'frost_crystal', lootTable: null, gold: [0, 0], noReward: true, deathFx: 'ice',
   },
+  // ---------------------------------------------------------- V3: GÖREV VARYANTI AVLARI (kind 'hunt')
+  // Görev sürerken haritada bir tane doğar; kalıcı boss değildir, EXP verir, ekipman/ganimet düşürmez,
+  // sözleşme / elit katkısı / Av Rehberi listelerine girmez.
+  wounded_alpha_scout: {
+    id: 'wounded_alpha_scout', name: 'Yaralı Alfa İzcisi', kind: 'hunt', level: 7, hp: 260, atk: 20, def: 10, mdef: 8, exp: 120,
+    species: 'beast', ai: 'aggressive', aggro: 6, leash: 14, speed: 3.4, attackInterval: 1.4, attackRange: 1.35,
+    dmgType: 'phys', radius: 0.5, sprite: 'wolf', tint: 0xe0a088, lootTable: null, gold: [0, 0],
+  },
   training_dummy: {
     id: 'training_dummy', name: 'Saman Kukla', kind: 'dummy', level: 1, hp: 40, atk: 0, def: 0, mdef: 0, exp: 0,
     species: 'construct', ai: 'static', aggro: 0, leash: 0, speed: 0, attackInterval: 99, attackRange: 0,

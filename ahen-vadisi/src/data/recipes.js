@@ -44,6 +44,17 @@ export const RECIPES = [
   // V2: Ustalık Kitabı — pahalı alternatif üretim (Gezgin Bilge değil Demirci; boss/elit düşüşüne ek yol)
   { id: 'r_mastery_book', station: 'blacksmith', name: 'Ustalık Kitabı', out: { id: 'mastery_book', qty: 1 }, gold: 30000, inputs: [{ id: 'giant_ember', qty: 4 }, { id: 'warden_seal', qty: 6 }, { id: 'snow_seal', qty: 15 }, { id: 'altar_crystal', qty: 2 }] },
   { id: 'r_mp_l', station: 'healer', name: 'Büyük MP İksiri', out: { id: 'mp_l', qty: 1 }, gold: 40, inputs: [{ id: 'mana_herb', qty: 5 }, { id: 'magic_ore', qty: 2 }, { id: 'empty_bottle', qty: 1 }] },
+  // V3: kadim iksirler (Şifacı / Simyacı)
+  { id: 'r_hp_xxl', station: 'healer', name: 'Kadim HP İksiri', out: { id: 'hp_xxl', qty: 1 }, gold: 90, inputs: [{ id: 'mourning_herb', qty: 4 }, { id: 'grave_dust', qty: 1 }, { id: 'empty_bottle', qty: 1 }] },
+  { id: 'r_mp_xxl', station: 'healer', name: 'Kadim MP İksiri', out: { id: 'mp_xxl', qty: 1 }, gold: 90, inputs: [{ id: 'mourning_herb', qty: 3 }, { id: 'soul_crystal', qty: 1 }, { id: 'empty_bottle', qty: 1 }] },
+  // V3: Simya (Simyacı Nisa) — kullanım eşyaları ve görev eşyaları. Hiçbiri ganimet şansını etkilemez.
+  { id: 'r_purify_salt', station: 'alchemy', name: 'Arındırma Tuzu ×2', out: { id: 'purify_salt', qty: 2 }, gold: 10, inputs: [{ id: 'weak_essence', qty: 1 }, { id: 'healing_herb', qty: 1 }] },
+  { id: 'r_cleansing_salve', station: 'alchemy', name: 'Temizleyici Merhem ×2', out: { id: 'cleansing_salve', qty: 2 }, gold: 15, inputs: [{ id: 'healing_herb', qty: 2 }, { id: 'root_essence', qty: 1 }, { id: 'empty_bottle', qty: 1 }] },
+  { id: 'r_camp_ration', station: 'alchemy', name: 'Kamp Erzağı', out: { id: 'camp_ration', qty: 1 }, gold: 10, inputs: [{ id: 'small_fur', qty: 2 }, { id: 'healing_herb', qty: 1 }] },
+  { id: 'r_seal_ink', station: 'alchemy', name: 'Mühür Mürekkebi (görev)', out: { id: 'seal_ink', qty: 1 }, gold: 60, inputs: [{ id: 'magic_ore', qty: 2 }, { id: 'bat_wing', qty: 2 }, { id: 'empty_bottle', qty: 1 }] },
+  { id: 'r_warming_tonic', station: 'alchemy', name: 'Isıtıcı Tonik', out: { id: 'warming_tonic', qty: 1 }, gold: 80, inputs: [{ id: 'ash_dust', qty: 2 }, { id: 'crimson_hide', qty: 1 }, { id: 'healing_herb', qty: 2 }, { id: 'empty_bottle', qty: 1 }] },
+  { id: 'r_holy_symbol', station: 'alchemy', name: 'Arındırılmış Sembol (görev)', out: { id: 'holy_symbol', qty: 1 }, gold: 400, inputs: [{ id: 'shroud_cloth', qty: 3 }, { id: 'mourning_herb', qty: 2 }, { id: 'purify_salt', qty: 1 }] },
+  { id: 'r_royal_ink', station: 'alchemy', name: 'Kraliyet Mürekkebi', out: { id: 'royal_ink', qty: 1 }, gold: 250, inputs: [{ id: 'grave_dust', qty: 2 }, { id: 'mourning_herb', qty: 2 }, { id: 'empty_bottle', qty: 1 }] },
 ];
 
 export const RECIPE_MAP = Object.fromEntries(RECIPES.map((r) => [r.id, r]));

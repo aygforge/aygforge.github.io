@@ -15,6 +15,7 @@ export default {
     { id: 'miner_nook', x: 92, y: 30, r: 3 },
     { id: 'south_pass', x: 60, y: 72, r: 4 },
     { id: 'junction', x: 52, y: 34, r: 4 },
+    { id: 'miner_post', x: 12, y: 44, r: 2.5 },
   ],
   paths: [
     { pts: [[0, 40], [14, 40], [24, 30], [24, 22]], w: 4 },
@@ -56,6 +57,14 @@ export default {
     ...ironVeins.map(([x, y], i) => ({ type: 'gather', id: `iron_v${i}`, kind: 'iron_ore', x, y, clear: 0.6 })),
     ...hardVeins.map(([x, y], i) => ({ type: 'gather', id: `hard_v${i}`, kind: 'hard_ore', x, y, clear: 0.6 })),
     { type: 'qobj', group: 'lost_miner', id: 'lost_miner', x: 93, y: 30, label: 'Kayıp Madenci Kadir' },
+    // V3 NPC'si ve görev nesneleri
+    { type: 'npc', npc: 'fikret', x: 12, y: 44 },
+    { type: 'qobj', group: 'mine_mechanism', id: 'mech1', x: 40, y: 38, label: 'Bozuk vinç', sprite: 'mine_mechanism' },
+    { type: 'qobj', group: 'mine_mechanism', id: 'mech2', x: 55, y: 37, label: 'Kırık makara', sprite: 'mine_mechanism' },
+    { type: 'qobj', group: 'mine_mechanism', id: 'mech3', x: 47, y: 64, label: 'Havalandırma körüğü', sprite: 'mine_mechanism' },
+    { type: 'qobj', group: 'old_tools', id: 'tool1', x: 17, y: 18, label: 'Göçük altında aletler', sprite: 'old_tools', say: 'Eski bir kazma — sapına "Fikret\'in babası" kazınmış.' },
+    { type: 'qobj', group: 'old_tools', id: 'tool2', x: 72, y: 55, label: 'Göçük altında aletler', sprite: 'old_tools', say: 'Paslı bir madenci lambası; camı hâlâ sağlam.' },
+    { type: 'qobj', group: 'old_tools', id: 'tool3', x: 36, y: 66, label: 'Göçük altında aletler', sprite: 'old_tools', say: 'Ölçü zinciri — halkaları tek tek numaralanmış.' },
     { type: 'fx', fx: 'torch', x: 10, y: 38 }, { type: 'fx', fx: 'torch', x: 50, y: 32 }, { type: 'fx', fx: 'torch', x: 22, y: 20 },
     { type: 'fx', fx: 'torch', x: 64, y: 62 }, { type: 'fx', fx: 'torch', x: 54, y: 8 }, { type: 'fx', fx: 'torch', x: 32, y: 58 },
   ],
@@ -70,5 +79,9 @@ export default {
   locations: [
     { id: 'loc_mine_entrance', name: 'Kırık Damar Madeni girişi', x: 6, y: 40, r: 4 },
     { id: 'loc_broken_horizon', name: 'Doğu göçüğü', x: 98, y: 30, r: 3 },
+    // V3: Unutulmuş Yol
+    { id: 'loc_old_pass_n', name: 'Kuzey galeri', x: 52, y: 22, r: 2.5 },
+    { id: 'loc_old_pass_e', name: 'Doğu kovuğu', x: 91, y: 30, r: 2.5 },
+    { id: 'loc_old_pass_s', name: 'Güney geçidi', x: 60, y: 70, r: 2.5 },
   ],
 };

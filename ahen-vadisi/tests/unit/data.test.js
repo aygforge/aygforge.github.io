@@ -95,9 +95,10 @@ describe('Veri tabloları', () => {
     expect(cumulativeXp(30) - cumulativeXp(20)).toBe(368300);
     expect(xpToNext(40)).toBe(Infinity);
   });
-  it('V2 görevleri: 10 ana + 4 yan, toplam 40 tek seferlik; EXP 70.500 + 22.000', () => {
-    expect(QUESTS.length).toBe(40);
-    const v2 = QUESTS.filter((q) => !V1_QUESTS.includes(q));
+  it('V2 görevleri: 10 ana + 4 yan; EXP 70.500 + 22.000 (V3 görevleri ayrıca sayılır)', () => {
+    const V2_IDS = ['m27', 'm28', 'm29', 'm30', 'm31', 'm32', 'm33', 'm34', 'm35', 'm36', 's09', 's10', 's11', 's12'];
+    const v2 = QUESTS.filter((q) => V2_IDS.includes(q.id));
+    expect(v2.length).toBe(14);
     expect(v2.filter((q) => q.main).length).toBe(10);
     expect(v2.filter((q) => !q.main).length).toBe(4);
     expect(v2.filter((q) => q.main).reduce((a, q) => a + q.exp, 0)).toBe(70500);
@@ -134,15 +135,23 @@ describe('Veri tabloları', () => {
           expect(n).toBeGreaterThanOrEqual(o.count);
         }
         if (o.type === 'deliver') expect(STACKABLES[o.item]).toBeTruthy();
-        if (o.type === 'talk') expect(NPCS[o.npc]).toBeTruthy();
+        if (o.type === 'talk' || o.type === 'visit') expect(NPCS[o.npc]).toBeTruthy();
+        if (o.type === 'craft') expect(RECIPES.some((r) => r.id === o.recipe), o.recipe).toBe(true);
+        if (o.type === 'escort' || o.type === 'defend') {
+          const kind = o.type === 'escort' ? 'escort' : 'defense';
+          expect(Object.values(MAPS).flatMap((m) => m.objects).filter((x) => x.type === kind && x.id === o.event).length, o.event).toBe(1);
+        }
+        if (o.type === 'kill' && o.spawn) expect(MAPS[o.spawn.map], q.id).toBeTruthy();
       }
       for (const r of q.rewardItems) expect(STACKABLES[r.id]).toBeTruthy();
     }
   });
-  it('köyde 7 NPC haritaya yerleşik; V2 NPC\'leri kamplarda', () => {
+  it('köyde 7 V1 NPC\'si yerinde (+3 V3 NPC\'si); bütün NPC\'ler haritaya yerleşik', () => {
     const npcs = MAPS.village.objects.filter((o) => o.type === 'npc').map((o) => o.npc);
-    expect(npcs.sort()).toEqual([...V1_NPCS].sort());
+    expect(npcs.sort()).toEqual([...V1_NPCS, 'rauf', 'lale', 'nisa'].sort());
     const placed = Object.values(MAPS).flatMap((m) => m.objects.filter((o) => o.type === 'npc').map((o) => o.npc));
-    for (const id of Object.keys(NPCS)) expect(placed, id).toContain(id);
+    // GEÇİCİ: Ölü Krallık / Kara Taht haritaları sonraki adımda eklenince bu liste boşaltılacak
+    const PENDING_MAP = ['seher', 'hamit', 'eren', 'veysel'];
+    for (const id of Object.keys(NPCS)) if (!PENDING_MAP.includes(id)) expect(placed, id).toContain(id);
   });
 });

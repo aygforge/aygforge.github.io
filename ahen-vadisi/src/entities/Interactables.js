@@ -7,7 +7,7 @@ import { TILE } from '../data/constants.js';
 import { NPCS } from '../data/npcs.js';
 import { WAYSTONES, ALTAR_COOLDOWN, GATHER_RESPAWN } from '../data/maps/index.js';
 import { STACKABLES } from '../data/materials.js';
-import { questsForNpc, canInteractQuestObject, onInteract } from '../systems/quests.js';
+import { questsForNpc, canInteractQuestObject, onInteract, interactRequirement } from '../systems/quests.js';
 import { rollGather, rollAltar } from '../systems/loot.js';
 import { addStack, stackCapacity } from '../systems/inventory.js';
 import { canEnterDungeon, isDungeonUnlocked, getRun, sealsBroken, currentStage, DUNGEON_INFO } from '../systems/dungeon.js';
@@ -153,36 +153,47 @@ export class QuestObj extends Base {
     super(scene, o);
     this.kind = 'qobj';
     this.name = o.label;
-    const npcKey = QOBJ_NPC[o.group];
+    const npcKey = o.look || QOBJ_NPC[o.group];
     if (npcKey) {
       this.s = scene.add.sprite(this.x, this.y, npcKey, 'idle0').setOrigin(0.5, 28.5 / 30).setDepth(100 + this.y);
       this.s.play(npcKey + '_idle');
       this.height = 60;
     } else {
-      const flat = QOBJ_FLAT.has(o.group);
-      this.s = this.sprite(QOBJ_SPRITE[o.group], false, flat ? 0.5 : 1);
+      const flat = o.flat ?? QOBJ_FLAT.has(o.group);
+      this.s = this.sprite(o.sprite || QOBJ_SPRITE[o.group], false, flat ? 0.5 : 1);
       if (flat) this.s.setDepth(30);
       this.height = flat ? 12 : 44;
     }
     this.glow = scene.add.image(this.x, this.y - this.height / 2, 'light').setScale(0.5).setAlpha(0).setBlendMode(Phaser.BlendModes.ADD).setDepth(55000);
   }
   isDone() {
-    // görev aşaması kalıcı olarak etkinleştirildiyse görünüm değişir
-    return Object.values(app.char.quests).some((q) => q.used?.includes(this.o.id));
+    // görev aşaması kalıcı olarak etkinleştirildiyse görünüm değişir (V3: çok adımlı nesnede son adım beklenir)
+    const id = this.o.id;
+    const used = Object.values(app.char.quests).some((q) => q.used?.some((u) => u === id || u.startsWith(id + '#')));
+    return used && !canInteractQuestObject(app.char, this.o.group, id, this.o.order ?? null);
   }
   update(dt) {
-    const active = canInteractQuestObject(app.char, this.o.group, this.o.id);
+    const active = canInteractQuestObject(app.char, this.o.group, this.o.id, this.o.order ?? null, true);
     this.glow.setAlpha(active ? 0.35 + Math.sin(this.scene.clock / 300) * 0.15 : 0);
     const done = this.isDone();
     if (this.s.texture.key.startsWith('obj_')) this.s.setFrame(done ? 1 : 0);
   }
   interact(p) {
-    if (!canInteractQuestObject(app.char, this.o.group, this.o.id)) {
-      bus.emit('toast', { text: this.isDone() ? 'Bunu zaten inceledin' : 'Şu an burada yapılacak bir şey yok', kind: 'info', short: true });
+    const ord = this.o.order ?? null;
+    if (!canInteractQuestObject(app.char, this.o.group, this.o.id, ord)) {
+      bus.emit('toast', { text: this.isDone() ? (this.o.doneSay || 'Bunu zaten inceledin') : (this.o.idleSay || 'Şu an burada yapılacak bir şey yok'), kind: 'info', short: true });
       return;
     }
-    p.startChannel('İnceleniyor…', 1.0, () => {
-      const ups = onInteract(app.char, this.o.group, this.o.id);
+    // V3: sıra, onarım/arındırma materyali ve işlem süresi
+    const req = interactRequirement(app.char, this.o.group, this.o.id, ord);
+    if (!req.ok) { bus.emit('toast', { text: req.msg, kind: 'warn' }); sound.play('error'); return; }
+    const verb = { repair: 'Onarılıyor…', purify: 'Arındırılıyor…', dig: 'Kazılıyor…', activate: 'Etkinleştiriliyor…', write: 'Yazılıyor…' }[req.mode] || 'İnceleniyor…';
+    p.startChannel(verb, req.channel, () => {
+      const ups = onInteract(app.char, this.o.group, this.o.id, ord);
+      if (!ups.length) return;
+      if (req.mode === 'purify' || req.mode === 'activate') this.scene.fx.burst(this.x, this.y - 20, this.o.fxColor || 0x7af0ff, 20, 80, 800);
+      if (req.mode === 'repair') { sound.play('anvil'); this.scene.fx.sprite('spark', this.x, this.y - 18, { scale: 1.8 }); }
+      if (this.o.say) bus.emit('toast', { text: this.o.say, kind: 'info' });
       for (const u of ups) bus.emit('questProgress', u);
       if (this.o.group === 'purify_stone') { sound.play('altar'); this.scene.fx.burst(this.x, this.y - 20, 0x7af0ff, 20, 80, 800); }
       else sound.play('quest');

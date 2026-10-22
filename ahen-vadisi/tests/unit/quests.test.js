@@ -3,7 +3,7 @@ import { Rng } from '../../src/core/rng.js';
 import { createCharacter, gainExp } from '../../src/systems/character.js';
 import { QUESTS, CLASS_QUESTS, QUEST_MAP } from '../../src/data/quests.js';
 import * as qs from '../../src/systems/quests.js';
-import { addStack } from '../../src/systems/inventory.js';
+import { addStack, countStack } from '../../src/systems/inventory.js';
 import { applyKill } from '../../src/systems/rewards.js';
 import * as dg from '../../src/systems/dungeon.js';
 import { MAPS } from '../../src/data/maps/index.js';
@@ -21,9 +21,15 @@ function complete(c, q) {
       else if (o.type === 'qitem') qs.onKill(c, o.from[0], rng);
       else if (o.type === 'reach') qs.onReach(c, o.loc);
       else if (o.type === 'interact') {
-        const objs = Object.values(MAPS).flatMap((m) => m.objects).filter((x) => x.group === o.group);
-        for (const ob of objs) qs.onInteract(c, o.group, ob.id);
+        const objs = Object.values(MAPS).flatMap((m) => m.objects).filter((x) => x.group === o.group).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+        for (const ob of objs) {
+          for (const m of o.consume || []) addStack(c.bag, m.id, m.qty);
+          qs.onInteract(c, o.group, ob.id, ob.order ?? null);
+        }
       } else if (o.type === 'deliver') addStack(c.bag, o.item, o.count);
+      else if (o.type === 'visit') { for (const m of o.takes || []) if (!countStack(c.bag, m.id)) addStack(c.bag, m.id, m.qty); qs.onTalk(c, o.npc); }
+      else if (o.type === 'craft') qs.onCraft(c, o.recipe, null, 1);
+      else if (o.type === 'escort' || o.type === 'defend') qs.onEventComplete(c, o.type, o.event);
       else if (o.type === 'dungeon') qs.onDungeonStage(c, o.stage);
       else if (o.type === 'talk') break;
     }
@@ -31,11 +37,11 @@ function complete(c, q) {
 }
 
 describe('Görevler', () => {
-  it('26 görevin tamamı sırayla alınabilir, tamamlanabilir, ödülü bir kez verilir', () => {
+  it('bütün görevler (ana, yan, sınıf) sırayla alınabilir, tamamlanabilir, ödülü bir kez verilir', () => {
     for (const cls of ['warrior', 'mage']) {
       const c = createCharacter({ name: 'Görevci', cls, slot: 0 }, rng);
       let gold = c.gold;
-      const order = [...QUESTS.filter((q) => q.main), ...QUESTS.filter((q) => !q.main), ...CLASS_QUESTS];
+      const order = [...QUESTS.filter((q) => q.main), ...QUESTS.filter((q) => !q.main), ...CLASS_QUESTS.filter((q) => !q.cls || q.cls === cls)];
       for (const q of order) {
         if (c.level < q.minLevel) gainExp(c, cumulativeXp(q.minLevel) - cumulativeXp(c.level) - c.exp);
         expect(qs.questStatus(c, q), q.id).toBe('available');
@@ -93,6 +99,9 @@ describe('Görevler', () => {
         else if (o.type === 'qitem') maps = o.from.flatMap(mapsOfEnemy);
         else if (o.type === 'interact') maps = Object.values(MAPS).filter((d) => d.objects.some((x) => x.group === o.group)).map((d) => d.id);
         else if (o.type === 'reach') maps = Object.values(MAPS).filter((d) => (d.locations || []).some((l) => l.id === o.loc)).map((d) => d.id);
+        else if (o.type === 'escort' || o.type === 'defend') maps = Object.values(MAPS).filter((d) => d.objects.some((x) => x.id === o.event && (x.type === 'escort' || x.type === 'defense'))).map((d) => d.id);
+        else if (o.type === 'visit' || o.type === 'craft') return;
+        if (o.type === 'kill' && o.spawn) maps = [o.spawn.map];
         if (o.enemy === 'mine_golem' || o.enemy === 'training_dummy') return;
         if (!maps.includes(hint.map)) bad.push(`${q.id}#${i} ${hint.map} ∉ [${maps}]`);
       });

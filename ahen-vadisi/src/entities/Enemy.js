@@ -33,6 +33,8 @@ export class Enemy {
     this.dead = false;
     this.spawnRef = opts.spawnRef || null;
     this.summoned = !!opts.summoned;
+    this.questSpawn = !!opts.questSpawn;     // V3: görev olayı yaratığı (ödül/sayaç yok)
+    this.objective = null;                   // V3: saldırılacak korunan hedef (kervan, kamp…)
     this.stage = opts.stage || 0;
     this.facing = 1;
     this.windup = null;
@@ -62,8 +64,8 @@ export class Enemy {
     // can çubuğu
     this.bar = scene.add.graphics();
     c.add(this.bar);
-    if (tpl.kind === 'elite' || tpl.kind === 'boss') {
-      const col = tpl.kind === 'boss' ? '#ff9a4a' : '#d890ff';
+    if (tpl.kind === 'elite' || tpl.kind === 'boss' || tpl.kind === 'hunt') {
+      const col = tpl.kind === 'boss' ? '#ff9a4a' : tpl.kind === 'hunt' ? '#ffd060' : '#d890ff';
       this.label = scene.add.text(0, -this.height - 14, tpl.name, { fontFamily: 'Trebuchet MS, sans-serif', fontSize: '11px', fontStyle: 'bold', color: col, stroke: '#000', strokeThickness: 3 }).setOrigin(0.5, 1);
       c.add(this.label);
     }
@@ -164,6 +166,14 @@ export class Enemy {
     }
     if (this.casting) { this.casting.t -= dt; if (this.casting.t <= 0) { const c = this.casting; this.casting = null; c.fn(); } this.sync(); return; }
 
+    // V3: görev olayı yaratığı korunan hedefe saldırır; oyuncu ona vurup yakında kalırsa oyuncuya döner
+    const obj = this.objective;
+    if (obj && !obj.dead && obj.running && !(now - this.lastHitAt < 3500 && p && !p.dead && this.distTo(p) < 4.5 * TILE)) {
+      this.updateVsObjective(dt, obj);
+      this.sync();
+      return;
+    }
+
     const ai = this.tpl.ai;
     const pAlive = p && !p.dead;
     const pSafe = pAlive && sc.isSafeAt(p.x, p.y);
@@ -246,6 +256,28 @@ export class Enemy {
       default: break;
     }
     this.sync();
+  }
+
+  // Korunan hedefe yürü ve saldır (görev olayı yaratıkları)
+  updateVsObjective(dt, obj) {
+    const sc = this.scene;
+    const d = Math.hypot(obj.x - this.x, obj.y - this.y) - obj.radius;
+    const range = this.tpl.projectile ? Math.min(this.tileRange, 4 * TILE) : this.tileRange;
+    if (d > range) {
+      if (!this.followPathTo(obj.x, obj.y, dt, 1)) this.moveToward(obj.x, obj.y, dt, 1);
+      return;
+    }
+    this.setFacing(obj.x - this.x);
+    this.attackTimer -= dt;
+    if (this.attackTimer > 0) { if (!this.sprite.anims.isPlaying || this.sprite.anims.currentAnim?.key.endsWith('_walk')) this.playAnim('idle'); return; }
+    this.attackTimer = this.tpl.attackInterval * this.atkMult;
+    this.playAnim('atk');
+    this.windup = { t: 0.28, fn: () => {
+      if (this.dead || obj.dead || !obj.running) return;
+      const dmg = Math.max(1, Math.round(this.atk * (this.tpl.normalCoef ?? 1) * (0.45 + Math.random() * 0.15)));
+      if (this.tpl.projectile) sc.combat.projectile(this, obj, this.tpl.projectile, 300, () => obj.takeHit(dmg, this));
+      else obj.takeHit(dmg, this);
+    } };
   }
 
   sync() {

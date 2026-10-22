@@ -8,6 +8,10 @@ export default {
     { id: 'plaza', x: 30, y: 24, r: 6, ground: 'cobble' },
     { id: 'training', x: 18, y: 27, r: 4, ground: 'dirt', spawns: [{ enemy: 'training_dummy', max: 3 }], noRespawnDelay: true },
     { id: 'east_gate', x: 56, y: 24, r: 4 },
+    // V3: küçük çalışma alanları (meydan kalabalıklaşmasın)
+    { id: 'caravan_yard', x: 51, y: 29, r: 2.5, ground: 'dirt' },
+    { id: 'map_desk', x: 7, y: 27, r: 2.2, ground: 'dirt' },
+    { id: 'alchemy_corner', x: 24, y: 41, r: 2.5, ground: 'cobble' },
   ],
   paths: [
     { pts: [[4, 24], [24, 24], [36, 24], [63, 24]], w: 3, tile: 'cobble' },
@@ -38,6 +42,10 @@ export default {
     { s: 'fence_h', x: 13, y: 23 }, { s: 'fence_h', x: 14, y: 23 }, { s: 'fence_h', x: 15, y: 23 },
     { s: 'fence_h', x: 13, y: 31 }, { s: 'fence_h', x: 14, y: 31 }, { s: 'fence_h', x: 22, y: 31 }, { s: 'fence_h', x: 23, y: 31 },
     { s: 'sign', x: 59, y: 22 }, { s: 'sign', x: 26, y: 29 },
+    // V3
+    { s: 'cart', x: 53, y: 28 }, { s: 'crate', x: 49, y: 30 }, { s: 'barrel', x: 48, y: 29 },
+    { s: 'crate', x: 5, y: 26 },
+    { s: 'barrel', x: 21, y: 40 }, { s: 'crate', x: 21, y: 42 },
   ],
   scatter: [
     { s: 'tree_oak', d: 0.018 }, { s: 'tree_birch', d: 0.012 }, { s: 'bush', d: 0.012 }, { s: 'rock', d: 0.004 },
@@ -55,6 +63,14 @@ export default {
     { type: 'npc', npc: 'hunter', x: 54, y: 22 },
     { type: 'npc', npc: 'sage', x: 12, y: 21 },
     { type: 'npc', npc: 'keeper', x: 43, y: 40 },
+    // V3 NPC'leri ve görev nesneleri
+    { type: 'npc', npc: 'rauf', x: 51, y: 30 },
+    { type: 'npc', npc: 'lale', x: 8, y: 27 },
+    { type: 'npc', npc: 'nisa', x: 26, y: 41 },
+    { type: 'qobj', group: 'alchemy_table', id: 'alch_table', x: 23, y: 41, label: 'Simya tezgâhı', sprite: 'alchemy_table' },
+    { type: 'qobj', group: 'lost_sign', id: 'sign_w', x: 5, y: 21, label: 'Devrilmiş yol işareti', sprite: 'road_sign', say: 'İşarette "Batı geçidi — 2 fersah" yazıyor.' },
+    { type: 'qobj', group: 'lost_sign', id: 'sign_n', x: 31, y: 7, label: 'Devrilmiş yol işareti', sprite: 'road_sign', say: 'İşaret kuzeyi, eski değirmen yolunu gösteriyor.' },
+    { type: 'qobj', group: 'lost_sign', id: 'sign_se', x: 57, y: 40, label: 'Devrilmiş yol işareti', sprite: 'road_sign', say: 'Güneydoğu çayırı — işaretin altında taze kurt izleri var.' },
     { type: 'waystone', id: 'ws_village', x: 34, y: 21 },
     { type: 'portal', id: 'v_to_forest', x: 63, y: 24, to: 'forest', entry: 'from_village', label: 'Fısıldayan Orman' },
     { type: 'fx', fx: 'forge', x: 39, y: 15 },

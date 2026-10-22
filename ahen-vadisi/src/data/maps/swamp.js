@@ -14,6 +14,9 @@ export default {
     { id: 'graveyard', name: 'Unutulmuş Mezarlık', x: 86, y: 62, r: 10, ground: 'dirt', camp: true, keepRatio: 0.45, spawns: [{ enemy: 'rotten_guard', max: 6 }], elite: 'swamp_executioner' },
     { id: 'altar_isle', name: 'Sis Sunağı', x: 56, y: 64, r: 4, ground: 'dirt' },
     { id: 'center', x: 56, y: 40, r: 4 },
+    // V3
+    { id: 'purifier_camp', name: 'Arındırma Kampı', x: 50, y: 12, r: 2.5, ground: 'dirt' },
+    { id: 'fugitive_camp', name: 'Kaçakların Kampı', x: 42, y: 44, r: 3, ground: 'dirt' },
   ],
   paths: [
     { pts: [[56, 0], [56, 14], [40, 20], [26, 26]], w: 3, tile: 'dirt' },
@@ -51,6 +54,17 @@ export default {
     { type: 'qobj', group: 'purify_stone', id: 'ps1', x: 14, y: 44, label: 'Arındırma Taşı' },
     { type: 'qobj', group: 'purify_stone', id: 'ps2', x: 72, y: 40, label: 'Arındırma Taşı' },
     { type: 'qobj', group: 'purify_stone', id: 'ps3', x: 40, y: 70, label: 'Arındırma Taşı' },
+    // V3 NPC'si, görev nesneleri ve olay
+    { type: 'npc', npc: 'isil', x: 50, y: 12 },
+    { type: 'qobj', group: 'murky_pool', id: 'mpool1', x: 18, y: 34, label: 'Bulanık gölcük', sprite: 'murky_pool', flat: true },
+    { type: 'qobj', group: 'murky_pool', id: 'mpool2', x: 38, y: 52, label: 'Bulanık gölcük', sprite: 'murky_pool', flat: true },
+    { type: 'qobj', group: 'murky_pool', id: 'mpool3', x: 70, y: 46, label: 'Bulanık gölcük', sprite: 'murky_pool', flat: true },
+    { type: 'qobj', group: 'prayer_stone', id: 'pr1', order: 1, x: 62, y: 22, label: 'Kadim yazıt', sprite: 'prayer_stone', say: '"Sis çekilsin, toprak hatırlasın..."' },
+    { type: 'qobj', group: 'prayer_stone', id: 'pr2', order: 2, x: 74, y: 38, label: 'Kadim yazıt', sprite: 'prayer_stone', say: '"...su arınsın, kök uyansın..."' },
+    { type: 'qobj', group: 'prayer_stone', id: 'pr3', order: 3, x: 55, y: 56, label: 'Kadim yazıt', sprite: 'prayer_stone', say: '"...ölüler susar, yaşayan konuşur..."' },
+    { type: 'qobj', group: 'prayer_stone', id: 'pr4', order: 4, x: 46, y: 30, label: 'Kadim yazıt', sprite: 'prayer_stone', say: '"...ve bataklık yeniden nefes alır." Dua tamamlandı.' },
+    { type: 'defense', id: 'fugitive_camp', x: 42, y: 44, name: 'Kaçakların Kampı', sprite: 'refugee_tent', hp: 2200, height: 48, ring: [5, 6.5],
+      waves: [[['mud_dwarf', 2], ['swamp_leech', 1]], [['mud_dwarf', 2], ['mist_witch', 1]]] },
     { type: 'qobj', group: 'swamp_ruin', id: 'sr1', x: 82, y: 25, label: 'Eski yazıt' },
     { type: 'qobj', group: 'swamp_ruin', id: 'sr2', x: 94, y: 21, label: 'Eski yazıt' },
     { type: 'qobj', group: 'swamp_ruin', id: 'sr3', x: 84, y: 31, label: 'Eski yazıt' },

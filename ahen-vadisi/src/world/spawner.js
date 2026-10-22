@@ -8,11 +8,13 @@ import { TILE } from '../data/constants.js';
 import { Enemy } from '../entities/Enemy.js';
 import { Rng } from '../core/rng.js';
 import { getRun } from '../systems/dungeon.js';
+import { huntSpawns } from '../systems/quests.js';
 
 export class Spawner {
   constructor(scene) {
     this.scene = scene;
     this.slots = [];
+    this.hunts = {};   // V3: görev varyantı avları (anahtar → yaratık)
     this.elites = [];
     this.bosses = [];
     this.checkT = 0;
@@ -75,9 +77,31 @@ export class Spawner {
     e.destroy();
   }
 
+  // V3: aktif görevin özel av hedefi (ör. Yaralı Alfa İzcisi) — görev sürerken haritada bir tane bulunur.
+  // Kalıcı boss değildir; EXP verir, ekipman düşürmez (şablonda lootTable yok).
+  checkHunts() {
+    const want = huntSpawns(app.char, this.scene.mapId);
+    const keys = new Set(want.map((w) => w.key));
+    for (const [k, e] of Object.entries(this.hunts)) {
+      if (!keys.has(k) && e && !e.dead) this.despawn(e);
+      if (!keys.has(k) || (e && e.dead)) delete this.hunts[k];
+    }
+    for (const w of want) {
+      const cur = this.hunts[w.key];
+      if (cur && !cur.dead) continue;
+      const x = w.x * TILE + TILE / 2, y = w.y * TILE + TILE / 2;
+      const p = this.scene.player;
+      if (p && Math.hypot(p.x - x, p.y - y) < 5 * TILE) continue;   // oyuncunun dibinde doğmaz
+      const e = this.spawnEnemy(w.enemy, x, y, { leashR: 14 * TILE });
+      e.huntKey = w.key;
+      this.hunts[w.key] = e;
+    }
+  }
+
   // Elitler ve boss'lar (aktif süre tabanlı)
   checkSpecial() {
     const mapId = this.scene.mapId;
+    this.checkHunts();
     for (const el of this.elites) {
       if (el.ent && !el.ent.dead) continue;
       const st = this.world.elite[mapId] || (this.world.elite[mapId] = { kills: 0, lastDeath: -1e9 });

@@ -64,6 +64,7 @@ export function sellFromBag(char, index, qty = null) {
   const s = char.bag.slots[index];
   if (!s) return { ok: false, msg: 'Boş' };
   if (s.q !== undefined) {
+    if (STACKABLES[s.tid]?.questItem) return { ok: false, msg: 'Görev eşyası satılamaz' };
     const n = Math.min(s.q, qty ?? s.q);
     const price = (STACKABLES[s.tid]?.sell || 0) * n;
     s.q -= n;

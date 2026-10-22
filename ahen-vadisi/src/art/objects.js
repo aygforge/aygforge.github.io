@@ -148,6 +148,110 @@ export const OBJECT_SPRITES = {
     pb.ellipse(7, 11, 6, 2.5, '#e8f2f8'); pb.rect(3, 6, 8, 5, '#7a6a5a'); pb.hline(3, 10, 6, '#9a8a7a');
     pb.set(7, 8, i ? '#f0d060' : '#c8b080'); pb.hline(2, 11, 10, '#ffffff');
   }),
+  // ---------------- V3 görev nesneleri (kare 0: etkin, kare 1: tamamlandı)
+  road_sign: () => frames(2, 16, 24, (pb, i) => {
+    pb.ellipse(8, 22, 6, 1.5, '#2a2018');
+    if (i) { pb.rect(7, 6, 2, 16, '#6a4628'); pb.rect(1, 5, 14, 6, '#a87a48'); pb.hline(3, 12, 7, '#4a3020'); pb.hline(3, 10, 9, '#4a3020'); pb.poly([[15, 5], [16, 8], [15, 11]], '#a87a48'); }
+    else { pb.line(4, 21, 11, 9, '#6a4628'); pb.line(5, 21, 12, 9, '#5a3a20'); pb.poly([[6, 12], [15, 7], [16, 12], [8, 17]], '#8a6a42'); pb.line(9, 13, 14, 10, '#4a3020'); }
+  }),
+  tree_mark: () => frames(2, 16, 28, (pb, i) => {
+    pb.ellipse(8, 26, 7, 2, '#1e1a14');
+    pb.rect(4, 0, 8, 26, '#5a4028'); pb.vline(5, 0, 25, '#6e5032'); pb.vline(10, 0, 25, '#4a3420');
+    const c = i ? '#f0d060' : '#c8b088';
+    pb.line(6, 9, 9, 6, c); pb.line(6, 6, 9, 9, c); pb.hline(6, 9, 13, c); pb.set(7, 15, c);
+    pb.poly([[1, 26], [4, 22], [4, 26]], '#4a3420'); pb.poly([[15, 26], [12, 22], [12, 26]], '#4a3420');
+  }),
+  dry_spring: () => frames(2, 22, 16, (pb, i) => {
+    pb.ellipse(11, 9, 10, 6, '#6a6a62'); pb.ellipse(11, 9, 8, 4.5, '#4a4a44');
+    for (let k = 0; k < 8; k++) { const t = k / 8 * Math.PI * 2; pb.disc(11 + Math.cos(t) * 9, 9 + Math.sin(t) * 5.5, 1.4, k % 2 ? '#8a8a80' : '#7a7a70'); }
+    if (i) { pb.ellipse(11, 9, 7, 3.6, '#3a7ab8'); pb.hline(8, 12, 8, '#9ad0f0'); pb.set(14, 10, '#c8e8ff'); }
+    else { pb.ellipse(11, 9, 7, 3.6, '#2e2620'); pb.set(9, 9, '#5a1e3a'); pb.set(13, 8, '#5a1e3a'); pb.line(8, 10, 12, 8, '#1e1814'); }
+  }),
+  map_piece: () => frames(2, 16, 12, (pb, i) => {
+    pb.ellipse(8, 8, 7, 3.5, i ? '#3a2a1e' : '#6a5032'); pb.ellipse(8, 7, 5, 2.5, i ? '#2a1e16' : '#7a5e3a');
+    if (!i) { pb.rect(5, 3, 7, 3, '#e8dcb8'); pb.hline(6, 10, 4, '#8a6a42'); pb.set(11, 3, '#c03a3a'); }
+  }, false),
+  alchemy_table: () => frames(2, 28, 26, (pb, i) => {
+    pb.ellipse(14, 24, 13, 2, '#1e1a14');
+    pb.rect(2, 13, 24, 3, '#8a5a32'); pb.rect(3, 16, 2, 8, '#5a3a20'); pb.rect(23, 16, 2, 8, '#5a3a20');
+    pb.disc(9, 9, 3.5, '#c8e0e8'); pb.disc(9, 10, 2.2, i ? '#c070ff' : '#7ad050'); pb.rect(8, 2, 2, 5, '#c8e0e8');
+    pb.line(10, 3, 17, 6, '#a8c0c8'); pb.rect(16, 7, 5, 6, '#a07a48'); pb.disc(22, 11, 1.5, '#e04848');
+    if (i) { pb.set(8, 1, '#e0b0ff'); pb.set(10, 0, '#e0b0ff'); }
+  }),
+  mine_mechanism: () => frames(2, 26, 28, (pb, i) => {
+    pb.ellipse(13, 26, 12, 2, '#1a1614');
+    pb.rect(3, 4, 3, 22, '#5a4028'); pb.rect(20, 4, 3, 22, '#5a4028'); pb.rect(3, 3, 20, 3, '#6e5032');
+    pb.ring(13, 15, 6, '#8a8a96', 2); pb.disc(13, 15, 2, '#5a5a66');
+    for (let k = 0; k < 6; k++) { const t = k / 6 * Math.PI * 2 + (i ? 0.3 : 0); pb.set(13 + Math.cos(t) * 7, 15 + Math.sin(t) * 7, '#8a8a96'); }
+    if (i) { pb.vline(13, 6, 9, '#c0a060'); pb.disc(13, 15, 1, '#f0d060'); }
+    else { pb.line(15, 8, 19, 2, '#6a6a76'); pb.set(9, 21, '#3a3a44'); pb.set(17, 22, '#3a3a44'); }
+  }),
+  old_tools: () => frames(2, 22, 14, (pb, i) => {
+    pb.ellipse(11, 10, 10, 4, '#5a524a'); pb.ellipse(9, 9, 5, 3, '#6a625a'); pb.ellipse(15, 10, 4, 2.5, '#4a443e');
+    if (!i) { pb.line(4, 4, 14, 9, '#6a4628'); pb.poly([[2, 6], [5, 2], [7, 4]], '#9a9aa6'); pb.disc(17, 6, 1.8, '#f0c060'); pb.rect(16, 3, 3, 2, '#5a5a66'); }
+  }),
+  murky_pool: () => frames(2, 24, 14, (pb, i) => {
+    pb.ellipse(12, 7, 11, 6, i ? '#3a6a5a' : '#2a2a20'); pb.ellipse(12, 7, 9, 4.5, i ? '#4a9ab0' : '#3a2a3a');
+    if (i) { pb.hline(8, 13, 6, '#a8e0f0'); pb.set(15, 8, '#e0faff'); }
+    else { pb.set(8, 6, '#7a3a8a'); pb.set(14, 8, '#7a3a8a'); pb.disc(11, 7, 1.2, '#5a2a4a'); pb.set(16, 5, '#8be06a'); }
+  }),
+  prayer_stone: () => frames(2, 16, 24, (pb, i) => {
+    pb.ellipse(8, 22, 7, 2, '#1e2420');
+    pb.poly([[2, 22], [3, 5], [8, 1], [13, 5], [14, 22]], '#7a7a6e'); pb.poly([[4, 21], [5, 6], [8, 3], [9, 21]], '#8e8e82');
+    const c = i ? '#7af0ff' : '#4a4a40';
+    pb.hline(5, 11, 8, c); pb.hline(5, 10, 11, c); pb.hline(6, 11, 14, c); pb.hline(5, 9, 17, c); pb.set(3, 19, '#4a7a3a');
+  }),
+  broken_wagon: () => frames(2, 32, 20, (pb, i) => {
+    pb.ellipse(16, 18, 15, 2, '#1a1414');
+    pb.rect(4, 6, 24, 7, '#7a5232'); pb.hline(4, 27, 6, '#9a6a42'); pb.rect(6, 2, 6, 4, '#c8b088'); pb.rect(14, 3, 5, 3, '#8a6a42');
+    pb.disc(9, 15, 3.5, '#4a3020'); pb.disc(9, 15, 1.2, '#8a6a42');
+    if (i) { pb.disc(24, 15, 3.5, '#4a3020'); pb.disc(24, 15, 1.2, '#c0a060'); pb.line(28, 10, 31, 12, '#6a4628'); }
+    else { pb.ellipse(27, 16, 3, 1.5, '#4a3020'); pb.line(22, 13, 28, 17, '#2a1a10'); pb.set(25, 9, '#ff6a2a'); }
+  }),
+  fire_trace: () => frames(2, 18, 12, (pb, i) => {
+    const c = i ? '#f0d060' : '#2a1a14';
+    pb.ellipse(9, 6, 7, 3.5, '#3a2a24'); pb.ellipse(9, 6, 5, 2.4, c);
+    pb.set(4, 4, '#ff6a2a'); pb.set(14, 7, '#ff8a2a'); pb.set(9, 3, '#ffd060');
+  }, false),
+  frost_manuscript: () => frames(2, 18, 18, (pb, i) => {
+    pb.ellipse(9, 15, 8, 2.5, '#c8dce8');
+    pb.poly([[2, 15], [4, 5], [9, 2], [15, 5], [16, 15]], '#a8d0e8'); pb.poly([[4, 14], [5, 6], [9, 4], [10, 14]], '#c8e8f8');
+    if (!i) { pb.rect(6, 7, 6, 6, '#e8dcb8'); pb.hline(7, 11, 9, '#6a5a3a'); pb.hline(7, 10, 11, '#6a5a3a'); }
+    pb.set(13, 6, '#ffffff');
+  }),
+  // V3 olay hedefleri
+  caravan: () => frames(2, 40, 26, (pb, i) => {
+    pb.ellipse(20, 24, 19, 2, '#1a1414');
+    // öküz
+    pb.ellipse(33, 15, 6, 4, '#8a6a4a'); pb.disc(38, 13, 2.6, '#7a5a3a'); pb.set(40, 12, '#1a1418'); pb.line(36, 10, 35, 8, '#e8dcc0');
+    for (const [x, o] of [[30, 0], [35, 1]]) pb.rect(x, 18 + ((i + o) % 2), 2, 5 - ((i + o) % 2), '#5a3e28');
+    // araba
+    pb.rect(3, 9, 22, 8, '#8a5a32'); pb.hline(3, 24, 9, '#a87040'); pb.poly([[4, 9], [8, 1], [20, 1], [24, 9]], '#e8dcb8'); pb.line(8, 1, 6, 9, '#c8bc98'); pb.line(14, 1, 14, 9, '#c8bc98');
+    pb.line(25, 13, 29, 14, '#5a3a20');
+    for (const x of [8, 20]) { pb.disc(x, 19, 3.5, '#4a3020'); pb.disc(x, 19, 1.2, '#8a6a42'); pb.set(x + (i ? 2 : -2), 19, '#8a6a42'); }
+  }),
+  saplings: () => frames(2, 32, 26, (pb, i) => {
+    pb.ellipse(16, 23, 15, 3, '#4a3424');
+    for (const [x, h] of [[7, 12], [16, 16], [25, 11]]) {
+      pb.vline(x, 23 - h, 22, '#6a4a2a');
+      pb.disc(x, 23 - h, 4, i ? '#5fd068' : '#4a9a3e'); pb.disc(x - 1, 22 - h, 2, '#7ae080');
+      pb.set(x + 2, 25 - h, '#3a7a2e');
+    }
+    pb.rect(2, 20, 28, 1, '#8a6a42'); for (let x = 3; x < 30; x += 6) pb.vline(x, 18, 22, '#8a6a42');
+  }),
+  camp_crates: () => frames(1, 32, 24, (pb) => {
+    pb.ellipse(16, 22, 15, 2, '#1a1414');
+    pb.rect(2, 10, 11, 11, '#8a5a32'); pb.rect(2, 10, 11, 2, '#a87040'); pb.line(2, 12, 12, 20, '#5a3a20');
+    pb.rect(13, 6, 10, 15, '#7a5232'); pb.rect(13, 6, 10, 2, '#9a6a42'); pb.line(13, 8, 22, 20, '#5a3a20');
+    pb.ellipse(27, 15, 4, 6, '#6a4a2a'); pb.hline(23, 30, 12, '#3a2a1a'); pb.hline(23, 30, 18, '#3a2a1a');
+    pb.rect(5, 4, 6, 6, '#c8b088'); pb.hline(5, 10, 6, '#8a6a42');
+  }),
+  refugee_tent: () => frames(1, 36, 30, (pb) => {
+    pb.ellipse(18, 28, 17, 2, '#1a1414');
+    pb.poly([[3, 27], [18, 3], [33, 27]], '#8a7a5a'); pb.poly([[18, 3], [33, 27], [24, 27]], '#6e6046');
+    pb.poly([[14, 27], [18, 14], [22, 27]], '#2a2218'); pb.vline(18, 1, 4, '#5a4028');
+    pb.rect(1, 24, 7, 3, '#5a6a8a'); pb.rect(28, 25, 7, 2, '#8a4a3a');
+  }),
   temple_seal: () => frames(3, 24, 30, (pb, i) => {
     pb.ellipse(12, 28, 10, 2, '#34405a');
     pb.rect(5, 12, 14, 16, '#5a6a80'); pb.rect(4, 10, 16, 3, '#7a8aa0'); pb.hline(4, 19, 10, '#a8c0d8');

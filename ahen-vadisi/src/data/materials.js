@@ -65,6 +65,52 @@ export const MATERIAL_LIST = [
   mat('weak_essence', 'Zayıf Öz', 4, { type: 'essence', c: '#5fd068' }, 'Uncommon parçalamadan. 3 öz = 1 Sunak Tozu.'),
   mat('rare_essence', 'Nadir Öz', 20, { type: 'essence', c: '#4f9bff' }, 'Rare parçalamadan. 1 öz = 1 Sunak Tozu.'),
   mat('epic_remnant', 'Epic Kalıntısı', 60, { type: 'essence', c: '#c070ff' }, 'Epic parçalamadan. 1 kalıntı = 3 Sunak Tozu.'),
+  // V3 — Ölü Krallık
+  mat('shroud_cloth', 'Kefen Parçası', 12, { type: 'cloth', c: '#c8c0a8' }, 'Kefen Sürüngeninden. Kefen Başlığı ve arındırma üretiminde.'),
+  mat('bone_tip', 'Kemik Uç', 13, { type: 'tooth', c: '#e8e0c8' }, 'Kemik Okçudan. Yas Zırhı ve Kemik Asası tariflerinde.'),
+  mat('cursed_metal', 'Lanetli Metal', 14, { type: 'scrap', c: '#5a6a5a' }, 'Lanetli Muhafızdan. Kara Çelik ve Ölü Nöbet ekipmanında.'),
+  mat('grave_dust', 'Mezar Tozu', 15, { type: 'dust', c: '#8a8a7a' }, 'Mezar Büyücüsünden. Ruh Özü ve Kraliyet Mürekkebi üretiminde.'),
+  // V3 — Kara Taht
+  mat('obsidian_shard', 'Obsidyen Kırığı', 17, { type: 'shard', c: '#2a2630', s: '#8a7aff' }, 'Obsidyen Nöbetçiden. Obsidyen ekipmanında.'),
+  mat('shadow_essence', 'Gölge Özü', 18, { type: 'essence', c: '#4a3a6a' }, 'Gölge Avcısından. Siyah Dua Değneği ve Ruh Özü üretiminde.'),
+  mat('executioner_chain', 'Cellat Zinciri', 19, { type: 'scrap', c: '#4a4040' }, 'Taht Celladından. Kara Çelik ve Taht Çekirdeği üretiminde.'),
+  mat('void_crystal', 'Hiçlik Kristali', 20, { type: 'crystal', c: '#8a5ad0' }, 'Hiçlik Rahibinden. Hiçlik Odağı ve Taht Çekirdeği üretiminde.'),
+  // V3 — elit / boss (garantili)
+  mat('hunter_brand', 'Avcı Damgası', 110, { type: 'badge', c: '#a8a090' }, 'Kefen Avcısından (garantili).'),
+  mat('executioner_seal', 'Cellat Mührü', 160, { type: 'seal', c: '#3a3040' }, 'Obsidyen Celladından (garantili). Obsidyen Duvarı ve Hiçlik Odağı tariflerinde.'),
+  mat('commander_crest', 'Komutan Arması', 240, { type: 'badge', c: '#6a7a8a' }, 'Mezar Komutanı ganimeti (garantili). Taht Çekirdeği üretiminde.'),
+  mat('crown_shard', 'Kırık Taç Parçası', 320, { type: 'shard', c: '#c8a040', s: '#ffe070' }, 'Kayıp Kral ganimeti (garantili). Taht Çekirdeği ve Epic üretiminde; Legendary üretim parçası değildir.'),
+  // V3 — toplama
+  mat('dark_ore', 'Karanlık Cevher', 8, { type: 'ore', c: '#2e2a34', s: '#9a7aff' }, 'Ölü Krallık\'ta toplanır. 2 cevher + 1 Kül Çeliği = Kara Çelik.'),
+  mat('mourning_herb', 'Yas Otu', 6, { type: 'herb', c: '#8a9aa0' }, 'Ölü Krallık mezarlıklarında toplanır. Kadim iksirler ve Temizleyici Merhem için.'),
+  mat('soul_crystal', 'Ruh Kristali', 10, { type: 'crystal', c: '#9ad8e8' }, 'Kara Taht\'ta toplanır. 2 kristal + 1 Sunak Tozu = Ruh Özü.'),
+  mat('obsidian_ore', 'Obsidyen Damarı', 9, { type: 'ore', c: '#1e1a22', s: '#c070ff' }, 'Kara Taht\'taki obsidyen damarlarından. Obsidyen ekipmanında.'),
+  // V3 — işlenmiş
+  mat('dark_steel', 'Kara Çelik', 20, { type: 'ingot', c: '#3a3644' }, 'Lv.31+ eşyaların +1/+2 yükseltmesi için.'),
+  mat('soul_essence', 'Ruh Özü', 55, { type: 'essence', c: '#9ad8e8' }, 'Lv.31+ eşyaların +3/+4 yükseltmesi için.'),
+  mat('throne_core', 'Taht Çekirdeği', 300, { type: 'core', c: '#c070ff' }, 'Lv.31+ Rare/Epic/Legendary eşyaların +4→+5 yükseltmesi için.'),
+];
+
+// V3: görev eşyaları — satılamaz, parçalanamaz; görev bırakılınca geri alınır.
+const qitem = (id, name, look, desc) => ({ id, name, cat: 'quest', questItem: true, sell: 0, look, desc });
+export const QUEST_ITEM_LIST = [
+  qitem('q_sealed_package', 'Mühürlü Paket', { type: 'badge', c: '#c8a060' }, 'Kervancı Rauf\'un Şifacı Elin\'e gönderdiği paket.'),
+  qitem('seal_ink', 'Mühür Mürekkebi', { type: 'vial', c: '#3a4a8a' }, 'Simyacı Nisa için üretilen özel mürekkep. Yalnız görevde kullanılır.'),
+  qitem('holy_symbol', 'Arındırılmış Sembol', { type: 'seal', c: '#e8e0c0' }, 'Rahibe Seher için üretilen arındırma sembolü.'),
+  qitem('q_urgent_letter', 'Gecikmiş Mektup', { type: 'badge', c: '#e8dcb8' }, 'Haritacı Lale\'nin Ölü Krallık\'a gönderdiği mektup.'),
+];
+
+// V3: kullanılabilir eşyalar (envanterden "Kullan"). combatOk: savaşta kullanılabilir mi. Hiçbiri ganimet şansını etkilemez.
+const usable = (id, name, buy, use, look, desc, extra = {}) => ({ id, name, cat: 'usable', buy, sell: Math.max(1, Math.round(buy * 0.2)), use, look, desc, ...extra });
+export const USABLE_LIST = [
+  usable('cleansing_salve', 'Temizleyici Merhem', 40, { kind: 'cure_poison' }, { type: 'vial', c: '#8be06a' }, 'Zehir etkisini hemen giderir. Savaşta kullanılabilir.', { combatOk: true }),
+  usable('warming_tonic', 'Isıtıcı Tonik', 120, { kind: 'cold_resist', dur: 120, pct: 0.5 }, { type: 'vial', c: '#ff8a3a' }, '2 dk boyunca soğuk/yavaşlatma etkilerinin gücünü ve süresini yarıya indirir.', { combatOk: true }),
+  usable('return_scroll', 'Dönüş Parşömeni', 150, { kind: 'return' }, { type: 'book', c: '#e8dcb8' }, 'Savaş dışında, keşfettiğin bir Yol Taşı\'na ücretsiz döner.'),
+  usable('camp_ration', 'Kamp Erzağı', 35, { kind: 'ration', dur: 10, pct: 0.6 }, { type: 'herb', c: '#c8a060' }, 'Savaş dışında 10 sn içinde HP ve MP\'nin %60\'ını yeniler (hasar alınca kesilir).'),
+  usable('miner_lamp', 'Maden Lambası', 60, { kind: 'lamp', dur: 90 }, { type: 'core', c: '#ffd060' }, '90 sn boyunca bu haritadaki cevher ve ot düğümlerini mini haritada işaretler.'),
+  usable('scout_compass', 'İzci Pusulası', 80, { kind: 'compass', dur: 120 }, { type: 'stone', c: '#8ab0d0' }, '2 dk boyunca takip ettiğin görevin yaklaşık arama alanını mini haritada gösterir.'),
+  usable('purify_salt', 'Arındırma Tuzu', 25, { kind: 'quest' }, { type: 'dust', c: '#e8f0f8' }, 'Lanetli kaynakları ve görev nesnelerini arındırmakta kullanılır (nesneye dokun).'),
+  usable('royal_ink', 'Kraliyet Mürekkebi', 400, { kind: 'quest' }, { type: 'vial', c: '#6a2a8a' }, 'Kadim yazıt ve antlaşma tabletlerini okumakta kullanılır (nesneye dokun).'),
 ];
 
 export const POTION_LIST = [
@@ -77,10 +123,14 @@ export const POTION_LIST = [
   // V2: Lv.22+ yoğun iksirler (Kül/Ayaz bölgeleri)
   { id: 'hp_xl', name: 'Yoğun HP İksiri', cat: 'potion', kind: 'hp', lv: 22, amount: 420, buy: 230, sell: 46, look: { type: 'potion', c: '#ff5a3a', size: 3 } },
   { id: 'mp_xl', name: 'Yoğun MP İksiri', cat: 'potion', kind: 'mp', lv: 22, amount: 320, buy: 235, sell: 47, look: { type: 'potion', c: '#5ab0ff', size: 3 } },
+  // V3: Lv.32+ kadim iksirler (Ölü Krallık / Kara Taht)
+  { id: 'hp_xxl', name: 'Kadim HP İksiri', cat: 'potion', kind: 'hp', lv: 32, amount: 640, buy: 380, sell: 76, look: { type: 'potion', c: '#d02a5a', size: 3 } },
+  { id: 'mp_xxl', name: 'Kadim MP İksiri', cat: 'potion', kind: 'mp', lv: 32, amount: 480, buy: 390, sell: 78, look: { type: 'potion', c: '#7a5aff', size: 3 } },
 ];
 for (const p of POTION_LIST) p.desc = `+${p.amount} ${p.kind.toUpperCase()} anında. Bekleme ${10} sn. Seviye ${p.lv}+.`;
 
-export const STACKABLES = Object.fromEntries([...MATERIAL_LIST, ...POTION_LIST].map((m) => [m.id, m]));
+export const STACKABLES = Object.fromEntries([...MATERIAL_LIST, ...POTION_LIST, ...USABLE_LIST, ...QUEST_ITEM_LIST].map((m) => [m.id, m]));
+export const USABLES = Object.fromEntries(USABLE_LIST.map((u) => [u.id, u]));
 export const MATERIALS = Object.fromEntries(MATERIAL_LIST.map((m) => [m.id, m]));
 export const POTIONS = Object.fromEntries(POTION_LIST.map((p) => [p.id, p]));
 
