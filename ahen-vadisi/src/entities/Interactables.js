@@ -7,7 +7,7 @@ import { TILE } from '../data/constants.js';
 import { NPCS } from '../data/npcs.js';
 import { WAYSTONES, ALTAR_COOLDOWN, GATHER_RESPAWN } from '../data/maps/index.js';
 import { STACKABLES } from '../data/materials.js';
-import { questsForNpc, canInteractQuestObject, onInteract, interactRequirement } from '../systems/quests.js';
+import { npcQuestMark, canInteractQuestObject, onInteract, interactRequirement } from '../systems/quests.js';
 import { rollGather, rollAltar } from '../systems/loot.js';
 import { addStack, stackCapacity } from '../systems/inventory.js';
 import { canEnterDungeon, isDungeonUnlocked, getRun, breakSeal, currentStage, DUNGEON_INFO } from '../systems/dungeon.js';
@@ -52,9 +52,8 @@ export class NpcObj extends Base {
     this.refreshMark();
   }
   refreshMark() {
-    const list = questsForNpc(app.char, this.npc.id);
-    const ready = list.some((x) => x.status === 'active' && x.ready && x.q.turnIn === this.npc.id);
-    const avail = list.some((x) => x.status === 'available');
+    const m = npcQuestMark(app.char, this.npc.id);
+    const ready = m === 'ready', avail = m === 'avail';
     const contract = this.npc.id === 'hunter' && app.char.contract && app.char.contract.p >= app.char.contract.n;
     if (ready || contract) { this.mark.setTexture('obj_quest_turnin').setVisible(true).play('obj_quest_turnin_a'); }
     else if (avail) { this.mark.setTexture('obj_quest_mark').setVisible(true).play('obj_quest_mark_a'); }

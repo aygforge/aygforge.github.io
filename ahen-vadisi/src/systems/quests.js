@@ -1,6 +1,7 @@
 // QuestService — görev koşulları, sayaçlar, tek seferlik ödüller ve Av Sözleşmeleri.
 import { ALL_QUESTS, QUEST_MAP, CONTRACT_KILLS, CONTRACT_EXP_FACTOR, CONTRACT_GOLD_FACTOR, CONTRACT_LEVEL_WINDOW } from '../data/quests.js';
 import { ENEMIES } from '../data/enemies.js';
+import { NPCS } from '../data/npcs.js';
 import { STACKABLES } from '../data/materials.js';
 import { countStack, removeStack, stackCapacity, addStack, hasMaterials, consumeMaterials } from './inventory.js';
 import { gainExp } from './character.js';
@@ -383,6 +384,38 @@ export function trackedQuestList(char) {
     objectives: q.objectives.map((o, i) => ({ label: o.label, p: objectiveProgress(char, q, i), n: objectiveTarget(o), type: o.type })),
   }));
 }
+
+// V3 görev günlüğü: bölge (açık 'region' alanı yoksa ipucu haritasından / veren NPC'den türetilir)
+export const QUEST_REGIONS = [
+  ['village', 'Köy'], ['forest', 'Orman'], ['mine', 'Maden'], ['swamp', 'Bataklık'],
+  ['ash', 'Kül Yaylaları'], ['frost', 'Ayaz Geçidi'], ['dead', 'Ölü Krallık'], ['throne', 'Kara Taht'],
+];
+const MAP_REGION = { village: 'village', forest: 'forest', mine: 'mine', dungeon: 'mine', swamp: 'swamp', ash: 'ash', frost: 'frost', frost_temple: 'frost', dead_kingdom: 'dead', black_throne: 'throne', dark_crypt: 'throne' };
+export function questRegion(q) {
+  if (q.region) return q.region;
+  const h = q.hint || q.objectives.find((o) => o.hint)?.hint;
+  return (h && MAP_REGION[h.map]) || NPCS[q.giver]?.region || 'village';
+}
+// Görev kategorisi: main | side | class
+export function questCategory(q) {
+  return q.main ? 'main' : q.classQuest ? 'class' : 'side';
+}
+// NPC görev işareti (harita simgesi ve NPC başı): 'ready' (teslim) | 'avail' (yeni) | null
+export function npcQuestMark(char, npcId) {
+  const list = questsForNpc(char, npcId);
+  if (list.some((x) => x.status === 'active' && x.ready && x.q.turnIn === npcId)) return 'ready';
+  if (list.some((x) => x.status === 'available')) return 'avail';
+  return null;
+}
+// Hedef türü açıklamaları (günlükte kısa ipucu)
+export const OBJECTIVE_HELP = {
+  escort: 'Refakat: eşlik edilen yalnız sen yakınındayken ilerler; pusuda durur. Canı biterse yeniden deneyebilirsin.',
+  defend: 'Savunma: korunan nesnenin can çubuğu üstünde görünür. Dalgalar EXP/ganimet vermez; başarısız olursan yeniden deneyebilirsin.',
+  ordered: 'İz sürme: nesneler belirli bir sırayla incelenir; yanlış sırada ipucu verilir, ilerleme sayılmaz.',
+  craft: 'Üretim: yalnız gerçek üretim sayılır (satın alınan ya da önceden üretilmiş eşya sayılmaz).',
+  consume: 'Onarım / arındırma: gereken materyal nesneye dokununca tüketilir; işlem süresince hasar almamaya çalış.',
+  spawn: 'Özel av: hedef haritada tek başına belirir; ekipman düşürmez.',
+};
 
 export function stackName(id) {
   return STACKABLES[id]?.name || id;

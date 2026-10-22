@@ -15,7 +15,7 @@ import { QUEST_MAP } from '../data/quests.js';
 import { MAPS } from '../data/maps/index.js';
 import { xpToNext, MAX_LEVEL, TILE, SLOTS, DURABILITY_WARN } from '../data/constants.js';
 import { countStack } from '../systems/inventory.js';
-import { trackedQuestList } from '../systems/quests.js';
+import { trackedQuestList, npcQuestMark } from '../systems/quests.js';
 import { currentStage, getRun } from '../systems/dungeon.js';
 import { FOG_CELL } from '../world/fog.js';
 import { sound } from '../audio/sound.js';
@@ -240,12 +240,18 @@ export function createHud() {
     const ch = app.char;
     if (!ch) return;
     clear(tracker);
+    // V3: en çok 3 takip edilen görev (takip yoksa aktif ana görev). İlk görev tüm hedefleri, diğerleri sıradaki hedefi gösterir.
     const list = trackedQuestList(ch);
-    let q = list.find((x) => x.q.id === ch.tracked) || list.find((x) => x.q.main) || list[0];
-    if (q) {
-      tracker.appendChild(h('div', { class: 'qn' }, (q.q.main ? '◆ ' : '◇ ') + q.q.name));
-      if (q.ready) tracker.appendChild(h('div', { class: 'done' }, `✔ Teslim et: ${npcName(q.q.turnIn)}`));
-      else for (const o of q.objectives) if (o.type !== 'talk') tracker.appendChild(h('div', { class: o.p >= o.n ? 'done' : '' }, `${o.label} ${Math.min(o.p, o.n)}/${o.n}`));
+    let shown = list.filter((x) => x.tracked).slice(0, 3);
+    if (!shown.length) shown = [list.find((x) => x.q.main) || list[0]].filter(Boolean);
+    if (shown.length) {
+      shown.forEach((q, k) => {
+        tracker.appendChild(h('div', { class: 'qn' }, (q.q.main ? '◆ ' : '◇ ') + q.q.name));
+        if (q.ready) { tracker.appendChild(h('div', { class: 'done' }, `✔ Teslim et: ${npcName(q.q.turnIn)}`)); return; }
+        const objs = q.objectives.filter((o) => o.type !== 'talk');
+        const list2 = k === 0 && shown.length === 1 ? objs : objs.filter((o) => o.p < o.n).slice(0, 1);
+        for (const o of list2) tracker.appendChild(h('div', { class: o.p >= o.n ? 'done' : '' }, `${o.label} ${Math.min(o.p, o.n)}/${o.n}`));
+      });
     } else {
       const next = nextMainHint(ch);
       if (next) tracker.appendChild(h('div', { class: 'qn' }, next));
@@ -360,6 +366,15 @@ function nextMainHint(ch) {
 }
 
 // Mini/büyük harita işaretleri (yaratıklar gösterilmez)
+// NPC görev işaretleri mini haritada her karede yeniden hesaplanmasın (0,5 sn önbellek)
+const markCache = { t: 0, m: {} };
+function cachedMark(ch, npcId) {
+  const now = performance.now();
+  if (now - markCache.t > 500) { markCache.t = now; markCache.m = {}; }
+  if (!(npcId in markCache.m)) markCache.m[npcId] = npcQuestMark(ch, npcId);
+  return markCache.m[npcId];
+}
+
 export function drawMarkers(ctx, w, tf, k, mini) {
   const ch = app.char;
   const def = w.mapDef;
@@ -396,7 +411,11 @@ export function drawMarkers(ctx, w, tf, k, mini) {
     }
   }
   for (const o of def.objects) {
-    if (o.type === 'npc') dot(o.x, o.y, '#ffd040', mini ? 3 : 4);
+    if (o.type === 'npc') {
+      // V3: NPC görev simgesi — yeşil (teslim hazır), sarı (yeni görev), soluk (görev yok)
+      const m = cachedMark(ch, o.npc);
+      dot(o.x, o.y, m === 'ready' ? '#6af070' : m === 'avail' ? '#ffd040' : '#a89a70', m ? (mini ? 3.4 : 4.6) : (mini ? 2.4 : 3.2), m ? 'd' : 'c');
+    }
     else if (o.type === 'waystone') { if (ch.world.waystones.includes(o.id)) dot(o.x, o.y, '#5ad8ff', mini ? 3.5 : 5, 'd'); }
     else if (o.type === 'altar') { if (seen(o.x, o.y)) dot(o.x, o.y, '#c070ff', mini ? 3.5 : 5, 'd'); }
     else if (o.type === 'portal' || o.type === 'dungeon_gate') { if (seen(Math.min(o.x, def.w - 1), Math.min(o.y, def.h - 1))) dot(Math.min(Math.max(o.x, 1), def.w - 2), Math.min(Math.max(o.y, 1), def.h - 2), '#ffffff', mini ? 3 : 4.5, 's'); }

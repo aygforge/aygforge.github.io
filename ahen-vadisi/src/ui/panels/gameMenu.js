@@ -16,7 +16,8 @@ import { MAPS, MAP_ORDER } from '../../data/maps/index.js';
 import { computeStats } from '../../systems/stats.js';
 import { statPointsFree, statPointsSpent, statResetCost, skillPointsFree, canRankUp, canApplyMasteryBook } from '../../systems/character.js';
 import { countStack } from '../../systems/inventory.js';
-import { questStatus, trackedQuestList, objectiveProgress, objectiveTarget, isReady, currentHint } from '../../systems/quests.js';
+import { questStatus, trackedQuestList, objectiveProgress, objectiveTarget, isReady, currentHint, questRegion, questCategory, QUEST_REGIONS, OBJECTIVE_HELP, MAX_ACTIVE_SIDE } from '../../systems/quests.js';
+
 import { gridView, itemCell, cellSize } from './grid.js';
 import { showItemCard } from './itemcard.js';
 import { act } from '../actions.js';
@@ -252,46 +253,91 @@ function skillsTab(rerender) {
 }
 
 // ------------------------------------------------------------------ GÖREVLER
+// V3 görev günlüğü: Ana / Yan / Sınıf / Sözleşme, bölge filtresi, en çok 3 HUD takibi, tamamlananlar.
+// Alınabilir listesi kademeli: yalnız alınabilen ve en çok 3 seviye sonra açılacak görevler görünür.
+const JOURNAL = { cat: 'main', region: 'all', sel: null };
+const CAT_LABEL = { main: 'Ana hikâye', side: 'Yan', class: 'Sınıf', contract: 'Sözleşme' };
+
+function objectiveHelpKey(o) {
+  if (o.type === 'escort') return 'escort';
+  if (o.type === 'defend') return 'defend';
+  if (o.type === 'craft') return 'craft';
+  if (o.type === 'kill' && o.spawn) return 'spawn';
+  if (o.type === 'interact' && o.ordered) return 'ordered';
+  if (o.type === 'interact' && (o.consume?.length || o.mode === 'repair' || o.mode === 'purify')) return 'consume';
+  return null;
+}
+
 function questsTab(rerender) {
   const ch = app.char;
-  let sel = ch.tracked && ch.quests[ch.tracked]?.s === 'active' ? ch.tracked : null;
-  const listEl = h('div', { class: 'list scroll', style: { flex: '1 1 40%' } });
-  const detail = h('div', { class: 'box scroll', style: { flex: '1 1 60%' } });
+  const J = JOURNAL;
+  const listEl = h('div', { class: 'list scroll', style: { flex: '1 1 42%' } });
+  const detail = h('div', { class: 'box scroll', style: { flex: '1 1 58%' } });
+  const tracking = ch.tracking || [];
   const showDetail = (q) => {
     clear(detail);
+    J.sel = q.id;
     const st = questStatus(ch, q);
-    detail.append(
+    const hint = currentHint(ch, q);
+    const helps = [...new Set(q.objectives.map(objectiveHelpKey).filter(Boolean))];
+    const tracked = tracking.includes(q.id);
+    detail.append(...[
       h('h3', { class: 't' }, q.name),
-      h('div', { class: 'small muted' }, `${q.main ? 'Ana hikâye' : q.classQuest ? 'Sınıf görevi' : 'Yan görev'} · Önerilen Lv. ${q.rec} · Veren: ${npcName(q.giver)}`),
+      h('div', { class: 'small muted' }, `${q.main ? 'Ana hikâye' : q.classQuest ? 'Sınıf görevi' : 'Yan görev'} · ${QUEST_REGIONS.find(([k]) => k === questRegion(q))?.[1] || ''} · Önerilen Lv. ${q.rec} · Veren: ${npcName(q.giver)}${q.turnIn !== q.giver ? ` · Teslim: ${npcName(q.turnIn)}` : ''}`),
       h('p', { class: 'small' }, q.text),
       h('div', { class: 'small' }, q.objectives.map((o, i) => h('div', { class: objectiveProgress(ch, q, i) >= objectiveTarget(o) ? 'ok' : '' },
         `• ${o.label}${o.type === 'talk' ? '' : ` ${Math.min(objectiveProgress(ch, q, i), objectiveTarget(o))}/${objectiveTarget(o)}`}`))),
-      h('div', { class: 'small gold', style: { marginTop: '6px' } }, `Ödül: ${q.exp ? fmt(q.exp) + ' EXP · ' : ''}${fmt(q.gold)} Gold${q.rewardItems.length ? ' · ' + q.rewardItems.map((r) => `${STACKABLES[r.id].name} ×${r.qty}`).join(', ') : ''}${q.title ? ` · Unvan: ${q.title}` : ''}${q.skillPoint ? ' · +1 beceri puanı' : ''}`),
-      currentHint(ch, q) ? h('div', { class: 'tiny muted' }, `Bölge: ${MAPS[currentHint(ch, q).map].name}`) : null,
+      helps.length ? h('div', { class: 'tiny', style: { color: '#9ad0ff', marginTop: '4px' } }, helps.map((k) => h('div', {}, 'ⓘ ' + OBJECTIVE_HELP[k]))) : null,
+      h('div', { class: 'small gold', style: { marginTop: '6px' } }, `Ödül: ${q.exp ? fmt(q.exp) + ' EXP · ' : ''}${q.gold ? fmt(q.gold) + ' Gold' : ''}${q.rewardItems.length ? ' · ' + q.rewardItems.map((r) => `${STACKABLES[r.id].name} ×${r.qty}`).join(', ') : ''}${q.title ? ` · Unvan: ${q.title}` : ''}${q.skillPoint ? ' · +1 beceri puanı' : ''}${q.mastery2 ? ' · Ustalık II pasifi' : ''}`),
+      hint ? h('div', { class: 'tiny muted' }, `Yaklaşık konum: ${MAPS[hint.map].name} — haritada sarı alan`) : null,
       st === 'active' ? h('div', { class: 'row', style: { marginTop: '8px' } },
-        h('button', { class: 'btn small', onTap: () => { ch.tracked = q.id; app.changed('quest'); rerender(); } }, ch.tracked === q.id ? 'Takip ediliyor' : 'Takip et'),
-        isReady(ch, q) ? h('span', { class: 'ok small' }, `Teslim: ${npcName(q.turnIn)}`) : null,
-        h('button', { class: 'btn small red', onTap: () => ui.confirm({ title: 'Görevi bırak', text: 'İlerleme silinir; görevi yeniden alabilirsin.', danger: true, ok: 'Bırak', onOk: () => { act.abandon(q.id); rerender(); } }) }, 'Bırak')) : null);
+        h('button', { class: 'btn small' + (tracked ? ' green' : ''), 'data-testid': 'track-' + q.id, onTap: () => { act.track(q.id); rerender(); } }, tracked ? `★ Takipte (${tracking.length}/3)` : `☆ Takip et (${tracking.length}/3)`),
+        isReady(ch, q) ? h('span', { class: 'ok small' }, `✔ Teslim: ${npcName(q.turnIn)}`) : null,
+        h('button', { class: 'btn small red', onTap: () => ui.confirm({ title: 'Görevi bırak', text: 'İlerleme silinir; görevi yeniden alabilirsin.', danger: true, ok: 'Bırak', onOk: () => { act.abandon(q.id); rerender(); } }) }, 'Bırak')) : null,
+    ].filter(Boolean));
   };
-  const active = ALL_QUESTS.filter((q) => questStatus(ch, q) === 'active');
-  const done = ALL_QUESTS.filter((q) => questStatus(ch, q) === 'done');
-  const avail = ALL_QUESTS.filter((q) => ['available', 'lowlevel'].includes(questStatus(ch, q)) && (questStatus(ch, q) === 'available' || q.minLevel - ch.level <= 3));
+  const inCat = (q) => questCategory(q) === J.cat && (!q.cls || q.cls === ch.cls);
+  const inRegion = (q) => J.region === 'all' || questRegion(q) === J.region;
+  const pool = ALL_QUESTS.filter((q) => inCat(q) && inRegion(q));
+  const statusOf = (q) => questStatus(ch, q);
+  const active = pool.filter((q) => statusOf(q) === 'active').sort((a, b) => (tracking.includes(b.id) - tracking.includes(a.id)) || (isReady(ch, b) - isReady(ch, a)));
+  const done = pool.filter((q) => statusOf(q) === 'done');
+  const avail = pool.filter((q) => statusOf(q) === 'available' || (statusOf(q) === 'lowlevel' && q.minLevel - ch.level <= 3));
+  const allActive = ALL_QUESTS.filter((q) => statusOf(q) === 'active');
+  const countCat = (c) => allActive.filter((q) => questCategory(q) === c).length;
   const item = (q, extra) => {
-    const el = h('div', { class: 'li ia' + (sel === q.id ? ' on' : ''), onTap: () => { sel = q.id; listEl.querySelectorAll('.li').forEach((x) => x.classList.remove('on')); el.classList.add('on'); showDetail(q); } },
+    const ready = isReady(ch, q), tracked = tracking.includes(q.id);
+    const el = h('div', { class: 'li ia' + (J.sel === q.id ? ' on' : ''), 'data-testid': 'jq-' + q.id, onTap: () => { listEl.querySelectorAll('.li').forEach((x) => x.classList.remove('on')); el.classList.add('on'); showDetail(q); } },
       img(iconURL(q.main ? 'ui:star' : 'ui:quests')),
-      h('div', { class: 'grow' }, h('b', {}, q.name), h('div', { class: 'tiny muted' }, extra)));
+      h('div', { class: 'grow' }, h('b', {}, (tracked ? '★ ' : '') + q.name), h('div', { class: 'tiny ' + (ready ? 'ok' : 'muted') }, extra)));
     return el;
   };
-  listEl.append(h('div', { class: 'small gold' }, `Aktif (${active.length})`),
-    ...active.map((q) => item(q, isReady(ch, q) ? `Hazır — ${npcName(q.turnIn)}` : `Lv. ${q.rec}`)),
-    h('div', { class: 'small gold' }, 'Alınabilir'),
-    ...avail.map((q) => item(q, `${npcName(q.giver)} · Lv. ${q.minLevel}+`)),
-    ch.contract ? h('div', { class: 'li' }, img(iconURL('ui:target')), h('div', { class: 'grow small' }, `Av Sözleşmesi: ${ENEMIES[ch.contract.enemy].name} ${ch.contract.p}/${ch.contract.n} (Usta Avcı)`)) : null,
-    h('button', { class: 'btn small ghost', 'data-testid': 'quests-done-toggle', onTap: () => { showDone = !showDone; rerender(); } }, `${showDone ? '▾' : '▸'} Tamamlanan (${done.length}/${ALL_QUESTS.length})`),
-    ...(showDone ? done.map((q) => item(q, 'Tamamlandı ✔')) : []));
-  const first = ALL_QUESTS.find((q) => q.id === sel) || active[0] || avail[0];
-  if (first) showDetail(first); else detail.append(h('p', { class: 'muted' }, 'Görev yok.'));
-  return h('div', { class: 'row grow', style: { alignItems: 'stretch', minHeight: 0 } }, listEl, detail);
+  // kategori sekmeleri + bölge filtresi
+  const cats = h('div', { class: 'row wrap', style: { gap: '4px' } }, Object.entries(CAT_LABEL).map(([k, label]) =>
+    h('button', { class: 'btn small' + (J.cat === k ? ' green' : ' ghost'), 'data-testid': 'jcat-' + k, onTap: () => { J.cat = k; J.sel = null; rerender(); } },
+      k === 'contract' ? label + (ch.contract ? ' (1)' : '') : `${label} (${countCat(k)})`)));
+  const regionSel = h('select', { class: 'sel', 'data-testid': 'jregion', style: { minHeight: '40px' }, onchange: (e) => { J.region = e.target.value; J.sel = null; rerender(); } },
+    h('option', { value: 'all' }, 'Bütün bölgeler'), QUEST_REGIONS.map(([k, n]) => h('option', { value: k, selected: J.region === k }, n)));
+  const head = h('div', { class: 'row wrap', style: { gap: '6px', alignItems: 'center' } }, cats, regionSel,
+    h('span', { class: 'tiny muted' }, `Takip ${tracking.length}/3 · Yan görev ${allActive.filter((q) => questCategory(q) === 'side').length}/${MAX_ACTIVE_SIDE}`));
+  if (J.cat === 'contract') {
+    const c = ch.contract;
+    listEl.append(c ? h('div', { class: 'li' }, img(iconURL('ui:target')), h('div', { class: 'grow small' }, h('b', {}, `${ENEMIES[c.enemy].name} avı`), h('div', { class: 'tiny ' + (c.p >= c.n ? 'ok' : 'muted') }, `${c.p}/${c.n}${c.p >= c.n ? ' — Avcıya teslim et' : ''}`)))
+      : h('p', { class: 'small muted' }, 'Aktif sözleşme yok. Usta Avcı (köy) ve Avcı Sena (Ayaz Konağı) tekrarlanabilir av sözleşmeleri verir.'));
+    detail.append(h('h3', { class: 't' }, 'Av Sözleşmeleri'), h('p', { class: 'small' }, 'Sözleşmeler tekrarlanabilir; seviyene uygun bir yaratıktan belirli sayıda avlarsın. Ganimet şansını değiştirmez.'));
+  } else {
+    listEl.append(h('div', { class: 'small gold' }, `Aktif (${active.length})`),
+      ...active.map((q) => item(q, isReady(ch, q) ? `✔ Hazır — ${npcName(q.turnIn)}` : `Lv. ${q.rec}`)),
+      h('div', { class: 'small gold' }, `Alınabilir (${avail.length})`),
+      ...avail.map((q) => item(q, `${npcName(q.giver)} · Lv. ${q.minLevel}+${statusOf(q) === 'lowlevel' ? ' (yakında)' : ''}`)),
+      h('button', { class: 'btn small ghost', 'data-testid': 'quests-done-toggle', onTap: () => { showDone = !showDone; rerender(); } }, `${showDone ? '▾' : '▸'} Tamamlanan (${done.length}/${pool.length})`),
+      ...(showDone ? done.map((q) => item(q, 'Tamamlandı ✔')) : []));
+    if (!active.length && !avail.length) listEl.append(h('p', { class: 'small muted' }, 'Bu filtrede görev yok.'));
+    const first = pool.find((q) => q.id === J.sel) || active[0] || avail[0];
+    if (first) showDetail(first); else detail.append(h('p', { class: 'muted' }, 'Görev seç.'));
+  }
+  return h('div', { class: 'col grow', style: { minHeight: 0, gap: '6px' } }, head,
+    h('div', { class: 'row grow', style: { alignItems: 'stretch', minHeight: 0 } }, listEl, detail));
 }
 
 let showDone = false;   // tamamlanan görevler listesi (mobilde kaydırmayı azaltmak için kapalı başlar)
