@@ -212,10 +212,12 @@ try {
     const e = w.spawner.spawnEnemy('ice_warden', p.x + 70, p.y, { leashR: 20 * 32 });
     e.aggro(p);
     let cast = false, slowed = false;
-    const t0 = performance.now();
-    while (performance.now() - t0 < 9000) { await new Promise((r) => setTimeout(r, 100)); a.char.hp = Math.max(a.char.hp, 6000); cast = cast || !!e.casting; slowed = slowed || w.clock < p.slowUntil; }
+    // ilk yetenek 5–8 sn OYUN süresinde gelir: yazılımsal WebGL'de oyun saati gerçek saatten yavaş akabilir → oyun saatiyle bekle
+    const t0 = performance.now(), c0 = w.clock;
+    while (!cast && w.clock - c0 < 12000 && performance.now() - t0 < 40000) { await new Promise((r) => setTimeout(r, 100)); a.char.hp = Math.max(a.char.hp, 6000); cast = cast || !!e.casting; slowed = slowed || w.clock < p.slowUntil; }
+    const gameSec = Math.round((w.clock - c0) / 100) / 10, realSec = Math.round((performance.now() - t0) / 100) / 10;
     w.combat.applyToEnemy(e, { dmg: e.hp + 1, crit: false, miss: false });
-    return { cast, slowed };
+    return { cast, slowed, gameSec, realSec };
   });
   record('Buz Gardiyanı: telegraflı buz vuruşu / kıymıklar', warden.cast, JSON.stringify(warden));
   const gateLocked = await ev(page, () => { const w = window.__AHEN.world; const g = w.objects.find((o) => o.kind === 'gate'); g.interact(w.player); return w.mapId; });

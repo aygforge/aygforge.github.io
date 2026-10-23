@@ -1,6 +1,6 @@
 {
-  "date": "2026-10-23T07:22:32.892Z",
-  "passed": 31,
+  "date": "2026-10-23T07:52:52.162Z",
+  "passed": 32,
   "total": 32,
   "results": [
     {
@@ -41,12 +41,12 @@
     {
       "name": "\"Kırılan Ufuk\" geçiş hedefleri ilerler",
       "ok": true,
-      "info": "{\"s\":\"active\",\"p\":[1,1],\"used\":[],\"at\":1792740067150}"
+      "info": "{\"s\":\"active\",\"p\":[1,1],\"used\":[],\"at\":1792741880477}"
     },
     {
       "name": "V2 yaratık öldürme: EXP + Gold + Av Geçmişi sayacı",
       "ok": true,
-      "info": "{\"kills\":6,\"exp\":true,\"gold\":115,\"ids\":[\"ash_imp\",\"ash_imp\",\"ash_imp\",\"ash_imp\",\"ash_imp\",\"ash_imp\"]}"
+      "info": "{\"kills\":6,\"exp\":true,\"gold\":120,\"ids\":[\"ash_imp\",\"ash_imp\",\"ash_imp\",\"ash_imp\",\"ash_imp\",\"ash_imp\"]}"
     },
     {
       "name": "V2 sprite'ları: ayrı darbe ve ölüm animasyonları kayıtlı",
@@ -71,7 +71,7 @@
     {
       "name": "Gizli sandık bir kez ödül verir",
       "ok": true,
-      "info": "{\"first\":536,\"second\":0,\"opened\":true}"
+      "info": "{\"first\":647,\"second\":0,\"opened\":true}"
     },
     {
       "name": "Ayaz Geçidi: 4 yaratık türü, kar parçacıkları, Buz Mabedi kapısı",
@@ -80,8 +80,8 @@
     },
     {
       "name": "Buz Gardiyanı: telegraflı buz vuruşu / kıymıklar",
-      "ok": false,
-      "info": "{\"cast\":false,\"slowed\":false}"
+      "ok": true,
+      "info": "{\"cast\":true,\"slowed\":false,\"gameSec\":8.8,\"realSec\":12.1}"
     },
     {
       "name": "Buz Mabedi görev olmadan mühürlü (giriş yok)",

@@ -1,7 +1,7 @@
 {
-  "date": "2026-10-23T07:15:55.590Z",
-  "passed": 3,
-  "total": 5,
+  "date": "2026-10-23T07:39:04.745Z",
+  "passed": 22,
+  "total": 22,
   "results": [
     {
       "name": "Sunucu ayarı yokken Çevrimiçi penceresi açılır ve durumu söyler (oyun çevrimdışı çalışır)",
@@ -20,13 +20,98 @@
     },
     {
       "name": "Kayıt ol: hesap + takma ad oluşur, oturum açılır",
-      "ok": false,
+      "ok": true,
+      "info": "OyuncuAygun (ayg@test.com)Bulut kaydıhenüz yok {\"msg\":null,\"open\":false,\"sw\":true,\"log\":[{\"method\":\"POST\",\"path\":\"/auth/v1/signup\"},{\"method\":\"POST\",\"path\":\"/rest/v1/players?on_conflict=user_id\"},{\"method\":\"GET\",\"path\":\"/rest/v1/players?select=nickname&user_id=eq.b6d1c197-a5a0-487e-8986-a42c70cd5d34\"},{\"method\":\"GET\",\"path\":\"/rest/v1/cloud_saves?select=summary,game_version,updated_at&user_id=eq.b6d1c197-a5a0-487e-8986-a42c70cd5d34\"}]}"
+    },
+    {
+      "name": "Buluta kaydet: kayıt kodu ve karakter özeti buluta yazılır; liderlik satırı oluşur",
+      "ok": true,
+      "info": "{\"sum\":[{\"id\":\"cmvknqd7r218vxhaq6\",\"name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0}],\"lb\":{\"char_id\":\"cmvknqd7r218vxhaq6\",\"nickname\":\"Aygun\",\"char_name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0,\"kills\":0,\"boss_kills\":0,\"quests\":0,\"updated_at\":\"2026-10-23T07:37:30.374Z\",\"user_id\":\"b6d1c197-a5a0-487e-8986-a42c70cd5d34\"}}"
+    },
+    {
+      "name": "Yanlış şifre anlaşılır mesaj verir",
+      "ok": true,
+      "info": "E-posta ya da şifre yanlış"
+    },
+    {
+      "name": "Boş cihazda girişte buluttaki kayıt karşılaştırmayla önerilir",
+      "ok": true,
+      "info": "Buluttan yükleBulut (23.10.2026 07:37:30): Bulutcu Lv.8Bu cihaz: karakter yokYüklersen bu cihazdaki profil buluttakiyle değiştirilir; şu anki profilin bir kurta"
+    },
+    {
+      "name": "Buluttan yükle: karakter seviye, gold ve sınıfıyla bu cihaza gelir; önceki profilin kurtarma kopyası saklanır",
+      "ok": true,
+      "info": "{\"restored\":{\"name\":\"Bulutcu\",\"level\":8,\"gold\":4321,\"cls\":\"necromancer\"},\"rescue\":true}"
+    },
+    {
+      "name": "Yüklenen kayıt kalıcıdır ve oturum sayfa yenilemede sürer",
+      "ok": true,
+      "info": "{\"persisted\":\"Bulutcu\",\"stillIn\":true}"
+    },
+    {
+      "name": "Bulutta bu cihazda olmayan karakter varken yükleme durur ve sorulur; vazgeçilince bulut değişmez",
+      "ok": true,
+      "info": "Bulut kaydı bu cihazdakinden ileri: Bulutcu Lv.8 (bu cihazda yok). Bu cihazdaki profili buluta yazarsan buluttaki bu ilerleme kaybolur. Önce \"Buluttan yükle\" il"
+    },
+    {
+      "name": "Otomatik bulut kaydı da buluttaki ilerlemeyi ezmez",
+      "ok": true,
+      "info": "[{\"id\":\"cmvknqd7r218vxhaq6\",\"name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0}]"
+    },
+    {
+      "name": "Otomatik bulut kaydı 3 dakikadan sık yapılmaz (az önce elle kaydedildi)",
+      "ok": true,
+      "info": "8 → 8"
+    },
+    {
+      "name": "Süre dolunca otomatik bulut kaydı yapılır (Lv.10 buluta ve liderliğe yansır)",
+      "ok": true,
+      "info": "{\"cloud\":10,\"lbAuto\":10}"
+    },
+    {
+      "name": "Liderlik tablosu açılır: karakter, sınıf, takma ad, seviye",
+      "ok": true,
+      "info": "1.Bulutcu (Ölü Çağıran) · AygunLv.10 · 0 öldürme · 0 boss · 0 görev"
+    },
+    {
+      "name": "Hata/öneri bildirimi sürüm, harita, sınıf ve seviyeyle gönderilir",
+      "ok": true,
+      "info": "{\"version\":\"4.1.0\",\"map\":\"village\",\"cls\":\"necromancer\",\"level\":10,\"ua\":\"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.7390.37 Safari/537.36\",\"screen\":\"844x390\"}"
+    },
+    {
+      "name": "Bağlantı yokken bulut işlemi anlaşılır uyarı verir; yerel kayıt ve oyun etkilenmez",
+      "ok": true,
+      "info": "Sunucuya ulaşılamadı (internet bağlantısını kontrol et)"
+    },
+    {
+      "name": "Çıkış yap: oturum kapanır, yerel karakterler yerinde kalır",
+      "ok": true,
       "info": "DurumGiriş yapılmadı"
     },
     {
-      "name": "Beklenmeyen test hatası",
-      "ok": false,
-      "info": "page.tap: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=online-upload]')\u001b[22m\n\n    at /home/user/aygforge.github.io/ahen-vadisi/tests/e2e/run-e2e-online.mjs:112:12"
+      "name": "Mobil (640×360): Çevrimiçi penceresi taşmaz",
+      "ok": true,
+      "info": "{\"r\":534,\"w\":640,\"overflowX\":false}"
+    },
+    {
+      "name": "Konsol hatası yok (cihaz A)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Konsol hatası yok (cihaz B)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Konsol hatası yok (cihaz C)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Konsol hatası yok (cihaz M)",
+      "ok": true,
+      "info": ""
     }
   ]
 }

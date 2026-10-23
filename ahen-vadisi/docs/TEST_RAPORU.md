@@ -1,5 +1,27 @@
 # Ahen Vadisi — Test Raporu
 
+## 4.1.0 — Çevrimiçi test katmanı (23 Ekim 2026)
+
+| Paket | Sonuç |
+|---|---|
+| Birim testleri (16 dosya) | **183 / 183 geçti** — +9 çevrimiçi (`online.test.js`: ayar doğrulama ve gizli anahtar reddi, bulut kaydı kuralları, liderlik satırları, REST istemcisi sahte Supabase'e karşı: kayıt/giriş, başka cihazda indirme, satır görünürlüğü, oturum yenileme, ağ hatası, e-posta onayı), +1 kayıt (`flushSave` birleştirme) |
+| Çevrimiçi uçtan uca (`run-e2e-online.mjs`, yeni) | **22 / 22 geçti** (art arda 5 koşu). Gerçek oyun arayüzü; Supabase, Playwright ağ yönlendirmesiyle bellek içi sahte sunucu (`tests/fake-supabase.mjs`) — dış ağa çıkılmadı |
+| Kayıt / V4 / V1 / V3 uçtan uca | **14 / 14**, **39 / 39**, **61 / 61**, **37 / 37** |
+| V2 uçtan uca | **32 / 32** (art arda iki koşu) |
+| Supabase SQL (`supabase/kurulum.sql`) | PostgreSQL ayrıştırıcısıyla 32 ifade; **yerel PostgreSQL 16'da** Supabase benzeri `auth` şeması ve `anon`/`authenticated` rolleriyle çalıştırıldı (iki kez — tekrar çalıştırılabilir): 16 politika denemesi beklendiği gibi (kendi kaydı okunur/yazılır, başkasınınki görünmez/yazılamaz, liderlik herkese açık okunur, anonim yazamaz, bildirim yalnız eklenir, takma ad tekil, seviye sınırı) |
+
+**Gerçek bir Supabase projesine karşı test yapılamadı** (hesap yok). İstemci, Supabase'in belgelenmiş REST/Auth uç noktalarına
+göre yazıldı ve sahte sunucuyla sınandı; ilk gerçek kurulumda `docs/ONLINE_KURULUM.md` adımlarıyla denenmesi gerekir.
+
+Bu turda bulunan ve düzeltilenler:
+- **Kayıt (önceden vardı):** bir kayıt sürerken istenen kayıt yalnız işaretlenip hemen dönüyordu; `await flushSave()` en son durumun
+  yazıldığını garanti etmiyordu. Yük altında kayıt e2e testinde görüldü (bir kez 4/8). Artık ardından gelen kayıt bitene kadar
+  beklenir; birim testi eklendi. Normal oyunda risk, sekme tam o anda kapanırsa son birkaç saniyelik ilerlemeydi.
+- **Servis işçisi:** başka kökene giden GET istekleri önbellek denetiminden geçiyordu; artık doğrudan ağa gider.
+- **Test zamanlamaları:** V2 "Buz Gardiyanı" kontrolü gerçek saatle 9 sn bekliyordu; yetenek 5–8 sn *oyun* süresinde gelir ve
+  yazılımsal WebGL'de oyun saati yavaş akar (bir koşuda 8,8 sn oyun = 12,1 sn gerçek). Kontrol artık oyun saatiyle bekler.
+  Önceki turda "Kırılan Ufuk" konum denetimi yarışı da giderilmişti. Oyun kodu bu iki test için değişmedi.
+
 ## 4.0.1 — Okçu / Ölü Çağıran / iskelet sprite'ları (23 Ekim 2026)
 
 | Paket | Sonuç |

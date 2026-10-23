@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-23T00:46:46.746Z",
+  "date": "2026-10-23T07:48:48.199Z",
   "passed": 37,
   "total": 37,
   "results": [
@@ -36,7 +36,7 @@
     {
       "name": "m37 ulaşma hedefi tamamlanır",
       "ok": true,
-      "info": "{\"s\":\"active\",\"p\":[1],\"used\":[],\"at\":1792716292344}"
+      "info": "{\"s\":\"active\",\"p\":[1],\"used\":[],\"at\":1792741585486}"
     },
     {
       "name": "V3 yaratık öldürme EXP/gold verir; 30→31 seviye geçişi",
@@ -116,12 +116,12 @@
     {
       "name": "Kayıp Kral I–II: telegraflı saldırılar; %65 altında Kırık Taç kalkanı + 2 kadim mühür; mühürler kırılınca kalkan düşer",
       "ok": true,
-      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":false,\"fury\":true,\"ring\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3],\"x\":66,\"y\":25},\"shards\":1,\"claimed\":true,\"cleared4\":true,\"hist\":1}"
+      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":false,\"fury\":true,\"ring\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3],\"x\":66,\"y\":25},\"shards\":2,\"claimed\":true,\"cleared4\":true,\"hist\":1}"
     },
     {
       "name": "Kayıp Kral III (%30): Son Hüküm — hızlanır, güvenli boşluklu halka, en çok 4 karanlık alan",
       "ok": true,
-      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":false,\"fury\":true,\"ring\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3],\"x\":66,\"y\":25},\"shards\":1,\"claimed\":true,\"cleared4\":true,\"hist\":1}"
+      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":false,\"fury\":true,\"ring\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3],\"x\":66,\"y\":25},\"shards\":2,\"claimed\":true,\"cleared4\":true,\"hist\":1}"
     },
     {
       "name": "Mahzende ölüm: Kral tam cana döner, kalkan sıfırlanır, bölümler korunur (kontrol noktası)",
@@ -131,7 +131,7 @@
     {
       "name": "Kayıp Kral yenilir: garantili Kırık Taç Parçası, koşu başına tek ödül, zindan sayacı",
       "ok": true,
-      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":false,\"fury\":true,\"ring\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3],\"x\":66,\"y\":25},\"shards\":1,\"claimed\":true,\"cleared4\":true,\"hist\":1}"
+      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":false,\"fury\":true,\"ring\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3],\"x\":66,\"y\":25},\"shards\":2,\"claimed\":true,\"cleared4\":true,\"hist\":1}"
     },
     {
       "name": "Aynı koşuda ikinci Kral ödülü verilmez",
@@ -184,9 +184,9 @@
       "info": ""
     },
     {
-      "name": "PWA: servis işçisi etkin, 4.0.1 sürümlü önbellek; çevrimdışı açılış",
+      "name": "PWA: servis işçisi etkin, 4.1.0 sürümlü önbellek; çevrimdışı açılış",
       "ok": true,
-      "info": "{\"active\":true,\"version\":\"4.0.1\",\"cache\":\"ahen-vadisi-cce3064d5e\",\"assets\":2,\"offline\":true}"
+      "info": "{\"active\":true,\"version\":\"4.1.0\",\"cache\":\"ahen-vadisi-78342d817b\",\"assets\":2,\"offline\":true}"
     }
   ]
 }
