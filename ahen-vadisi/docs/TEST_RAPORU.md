@@ -1,5 +1,18 @@
 # Ahen Vadisi — Test Raporu
 
+## 4.5.2 — Bitmiş dungeon koşusu hatası (oyuncu bildirimi, 23 Ekim 2026)
+- Birim: 232/232. Yeni:
+  - `quests.test.js`: boss'u yenilmiş koşu (eski kayıt biçimi dahil) devam ettirilmez; yeni koşuda boss ganimeti hakkı
+    var ve "Madenin Kalbi" tamamlanır.
+  - `server.test.js`: bitmiş örnek boşalınca kapanır; yeni koşuyla gelen olursa örnek baştan kurulur (partide
+    içerideki üye de yeni durumu alır).
+- Yeni E2E `run-e2e-bugs.mjs` 6/6, gerçek tarayıcıda oyuncunun senaryosu: Derin Ocak önceden bitmiş + m17 sonradan
+  alınmış.
+  - Kapı "yeni koşu" soruyor; yeni koşuda golem doğuyor; golem ölünce görev tamamlanıyor.
+  - Koşu "bitti" işaretleniyor; "Yeni koşu" düğmesi baştan başlatıyor ve golem yeniden doğuyor.
+- Diğer e2e takımlarının tamamı yeniden koşuldu ve geçti. Ana takımda bir kez "normal saldırı hedefi öldürür"
+  zamanlama kontrolü düştü (−1,0 sn); dungeon kodunu kullanmıyor, aynı takım hemen tekrar koşulunca 61/61 geçti.
+
 ## 4.5.1 — Parti dungeon boss canı ölçeklemesi (23 Ekim 2026)
 - Birim: 230/230. Yeni 3 test:
   - ağırlık ve çarpan tablosu (tek kişi değişmez, 2 kişi ×1,75, 4 kişi ×3,25, düşük seviyeli yardımcı ×1,375);

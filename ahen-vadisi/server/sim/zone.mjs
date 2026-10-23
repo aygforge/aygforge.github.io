@@ -466,6 +466,23 @@ export class Zone {
     }
   }
 
+  dgComplete() { return !!this.dg && (this.dg.bossKilled || this.dg.cleared.includes(bossStage(this.mapId))); }
+
+  // örneği baştan kur (içerideki oyuncular yeni durumu alır)
+  resetDungeon(run) {
+    for (const e of this.enemies) if (!e.dead) { e.dead = true; this.everyone({ k: 'die', e: e.id, q: 1 }); }
+    this.enemies = []; this.hazards = []; this.shards = []; this.projectiles = []; this.timers = [];
+    this.grid.dyn.fill(0);
+    this.initDungeon(run);
+    this.flush();
+    for (const p of this.players.values()) {
+      p.seen.clear();
+      this.out(p.uid, { t: 'zone', map: this.mapId, dg: this.dgState(), e: this.enemies.filter((e) => Math.hypot(e.x - p.x, e.y - p.y) <= AOI).map((e) => e.full()) });
+      for (const e of this.enemies) if (Math.hypot(e.x - p.x, e.y - p.y) <= AOI) p.seen.set(e.id, '');
+    }
+    this.rescaleBoss();
+  }
+
   dgState() {
     const d = this.dg;
     return { cleared: d.cleared, seals: d.seals, bossKilled: d.bossKilled, waves: [...d.waves.keys()].filter((id) => d.waves.get(id).some((e) => !e.dead)) };

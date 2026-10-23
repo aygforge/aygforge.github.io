@@ -12,6 +12,9 @@
 // Sunucu → istemci: welcome, err, zone, snap, evs (olay listesi: tg, fx, tx, hz, sh, pj, a, eh, die, kill, note),
 //   bc (kanal yayını), pres (kanal üyeleri), count (çevrimiçi sayısı)
 import { Zone, isSharedMap, isDungeonMap } from './sim/zone.mjs';
+import { bossStage } from '../src/systems/dungeon.js';
+
+const runIsComplete = (run, map) => !!run && (!!run.bossKilled || (Array.isArray(run.cleared) && run.cleared.includes(bossStage(map))));
 import { GAME_VERSION } from '../src/data/constants.js';
 import { sanitizeOffer, emptyOffer } from '../src/systems/trade.js';
 
@@ -108,6 +111,12 @@ export class Hub {
     // dungeon: parti başına ayrı örnek (partisiz oyuncunun kendi örneği); açık dünya: herkese tek bölge
     const key = isDungeonMap(map) ? `${map}@${this.partyOf(c.uid) || 'solo:' + c.uid}` : map;
     let z = this.zones.get(key);
+    // biten dungeon örneği (boss öldü) + yeni koşuyla giren oyuncu → örnek baştan kurulur (boss yeniden doğar).
+    // Aksi halde oyuncu bitmiş örneğe düşer, boss hiç doğmaz ve "boss'u yen" görevi takılı kalır.
+    if (z?.dg && z.dgComplete() && !runIsComplete(m.run, map)) {
+      if (!z.players.size) { this.zones.delete(key); z = null; }
+      else z.resetDungeon(m.run);
+    }
     if (!z) {
       z = new Zone(map, { key, run: m.run, out: (uid, msg) => this.sendUid(uid, msg), partyOf: (uid) => this.partyOf(uid) });
       this.zones.set(key, z);
@@ -117,7 +126,11 @@ export class Hub {
   }
 
   leaveZone(c) {
-    if (c.zone) { c.zone.leave(c.uid); c.zone = null; }
+    if (!c.zone) return;
+    const z = c.zone;
+    z.leave(c.uid); c.zone = null;
+    // biten ve boşalan dungeon örneği hemen kapanır (sonraki giriş yeni koşu)
+    if (z.dg && !z.players.size && z.dgComplete()) for (const [k, v] of this.zones) if (v === z) this.zones.delete(k);
   }
 
   // ---------------------------------------------------------------- kanallar (parti, davet)

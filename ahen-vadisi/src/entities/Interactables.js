@@ -11,7 +11,7 @@ import { STACKABLES } from '../data/materials.js';
 import { npcQuestMark, canInteractQuestObject, onInteract, interactRequirement } from '../systems/quests.js';
 import { rollGather, rollAltar } from '../systems/loot.js';
 import { addStack, stackCapacity } from '../systems/inventory.js';
-import { canEnterDungeon, isDungeonUnlocked, getRun, breakSeal, currentStage, DUNGEON_INFO } from '../systems/dungeon.js';
+import { canEnterDungeon, isDungeonUnlocked, getRun, breakSeal, currentStage, DUNGEON_INFO, runComplete } from '../systems/dungeon.js';
 import { sound } from '../audio/sound.js';
 
 class Base {
@@ -334,10 +334,12 @@ export class DungeonGateObj extends Base {
     }
     const chk = canEnterDungeon(ch, this.dId);
     if (!chk.ok) { bus.emit('toast', { text: chk.msg, kind: 'warn' }); return; }
+    // biten koşu (boss yenildi) devam ettirilmez: girişte yeni koşu başlar
     const run = getRun(ch, this.dId);
+    const resume = run && !runComplete(run, this.dId);
     bus.emit('confirm', {
-      title: name, text: run ? 'Kaldığın koşuya devam et.' : 'Yeni bir koşu başlat. Giriş sınırsızdır; boss ödülü her koşuda bir kez çekilir.',
-      ok: 'Gir', onOk: () => this.scene.changeMap(this.dId, run ? null : 'entrance', { enterDungeon: true }),
+      title: name, text: resume ? 'Kaldığın koşuya devam et.' : 'Yeni bir koşu başlat. Giriş sınırsızdır; boss ödülü her koşuda bir kez çekilir.',
+      ok: 'Gir', onOk: () => this.scene.changeMap(this.dId, resume ? null : 'entrance', { enterDungeon: true }),
     });
   }
 }

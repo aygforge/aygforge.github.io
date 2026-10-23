@@ -491,3 +491,35 @@ describe('Parti dungeon boss canı (parti gücüne göre)', () => {
     expect(w.maxHp).toBe(w.tpl.hp);
   });
 });
+
+describe('Biten dungeon örneği', () => {
+  it('boşalan bitmiş örnek kapanır; bitmiş örneğe yeni koşuyla giren olursa örnek baştan kurulur (boss yeniden doğar)', async () => {
+    const hub = new Hub({ verify });
+    const a = fakeWs(), b = fakeWs();
+    hub.attach(a); hub.attach(b);
+    a.msg({ t: 'hello', token: 'ok:ua', v: GAME_VERSION }); b.msg({ t: 'hello', token: 'ok:ub', v: GAME_VERSION });
+    await tick();
+    // A bitmiş koşuyla (eski kayıt) girer → boss yok
+    a.msg({ t: 'enter', map: 'dungeon', x: 5 * TILE, y: 71 * TILE, run: { cleared: [1, 2, 3, 4], bossKilled: true } });
+    let z = hub.zones.get('dungeon@solo:ua');
+    expect(z.dgComplete()).toBe(true);
+    expect(z.enemies.some((e) => e.tpl.id === 'mine_golem')).toBe(false);
+    // çıkınca bitmiş örnek kapanır
+    a.msg({ t: 'enter', map: null });
+    expect(hub.zones.has('dungeon@solo:ua')).toBe(false);
+    // yeni koşuyla girince boss doğar
+    a.msg({ t: 'enter', map: 'dungeon', x: 5 * TILE, y: 71 * TILE, run: { cleared: [] } });
+    z = hub.zones.get('dungeon@solo:ua');
+    expect(z.enemies.some((e) => e.tpl.id === 'mine_golem')).toBe(true);
+    // partide: biri bitmiş örnekte beklerken diğeri yeni koşuyla girerse örnek sıfırlanır
+    const topic = 'ahen-party-ZZZZZZ';
+    for (const w of [a, b]) { w.msg({ t: 'sub', topic }); w.msg({ t: 'track', topic, meta: { nick: 'x', joinedAt: 1 } }); }
+    a.msg({ t: 'enter', map: 'dungeon', x: 5 * TILE, y: 71 * TILE, run: { cleared: [1, 2, 3, 4], bossKilled: true } });
+    const pz = hub.zones.get('dungeon@' + topic);
+    expect(pz.dgComplete()).toBe(true);
+    b.msg({ t: 'enter', map: 'dungeon', x: 5 * TILE, y: 71 * TILE, run: { cleared: [] } });
+    expect(pz.dgComplete()).toBe(false);
+    expect(pz.enemies.some((e) => e.tpl.id === 'mine_golem')).toBe(true);
+    expect(a.last('zone').dg.cleared).toEqual([]);     // içerideki A da yeni durumu aldı
+  });
+});

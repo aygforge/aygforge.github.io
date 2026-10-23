@@ -346,6 +346,8 @@ export function createHud() {
       const seals = sc?.total ? ` · ${lever ? 'mekanizma' : 'mühür'} ${sc.n}/${sc.total}` : '';
       const exit = w.mapDef.objects.find((o) => o.dungeonExit);
       dungeonBar.append(h('div', { class: 'grow' }, h('b', {}, w.mapDef.name + ' '), st <= nSt ? `· Bölüm ${st}/${nSt}: ${area?.name || ''} (${left} düşman${seals})` : '· Tamamlandı!'),
+        // biten koşuda: aynı dungeon'da baştan yeni koşu (boss yeniden doğar; boss ganimeti yeni koşuda yeniden çekilir)
+        st > nSt ? h('button', { class: 'btn small green', 'data-testid': 'dungeon-new-run', onTap: () => ui.confirm({ title: 'Yeni koşu', text: `${w.mapDef.name} baştan başlar: bütün bölümler ve boss yeniden doğar.`, ok: 'Başlat', onOk: () => w.changeMap(w.mapId, 'entrance', { exitDungeon: true, enterDungeon: true }) }) }, 'Yeni koşu') : null,
         h('button', { class: 'btn small red', onTap: () => ui.confirm({ title: 'Gönüllü çıkış', text: 'Mevcut koşu sona erer. Sonraki girişte yeni koşu başlar.', ok: 'Çık', danger: true, onOk: () => w.changeMap(exit.to, exit.entry, { exitDungeon: true }) }) }, 'Çık'));
     } else dungeonBar.classList.add('hidden');
   }

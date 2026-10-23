@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-23T15:24:07.194Z",
+  "date": "2026-10-23T18:16:40.875Z",
   "passed": 25,
   "total": 25,
   "results": [
@@ -21,7 +21,7 @@
     {
       "name": "Parti kur: 6 karakterli kod, durum \"bağlı\"",
       "ok": true,
-      "info": "QYUT89"
+      "info": "RRH35R"
     },
     {
       "name": "Davet yalnız hedef oyuncuya ulaşır ve pencere açılır",
@@ -36,7 +36,7 @@
     {
       "name": "Davet eden \"katılıyor/katıldı\" bildirimi alır",
       "ok": true,
-      "info": "Bora partiye katılıyor | Bora partiye katıldı"
+      "info": "Partidesin — kod: RRH35R | Bora davet edildi | Bora partiye katılıyor | Bora partiye katıldı"
     },
     {
       "name": "Aynı haritada arkadaş görünür: ad + seviye etiketi, doğru konumda",
@@ -51,7 +51,7 @@
     {
       "name": "Mesaj bütçesi: 2 sn yürüyüş ≈ 5–8 konum mesajı (en sık 0,4 sn'de bir)",
       "ok": true,
-      "info": "5 yayın"
+      "info": "6 yayın"
     },
     {
       "name": "Boşta duran iki oyuncu 4 sn içinde neredeyse hiç mesaj göndermez",
@@ -116,7 +116,7 @@
     {
       "name": "Sahte Realtime: istemci ikili (binary) yayın biçimini kullandı (gerçek sunucuyla aynı yol)",
       "ok": true,
-      "info": "{\"broadcasts\":25,\"delivered\":24,\"joins\":6,\"presence\":3,\"frames\":37,\"binary\":25}"
+      "info": "{\"broadcasts\":24,\"delivered\":23,\"joins\":6,\"presence\":3,\"frames\":35,\"binary\":24}"
     },
     {
       "name": "Konsol hatası yok (oyuncu A)",

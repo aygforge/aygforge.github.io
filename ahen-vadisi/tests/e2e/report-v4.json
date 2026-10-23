@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-23T15:21:33.457Z",
+  "date": "2026-10-23T18:14:22.684Z",
   "passed": 39,
   "total": 39,
   "results": [
@@ -26,12 +26,12 @@
     {
       "name": "Okçu becerileri (Lv.15): İsabetli Ok, Çoklu Atış, Çevik Adım, Delici Ok kullanılır ve hasar verir",
       "ok": true,
-      "info": "{\"aimed_shot\":true,\"aimed_shot_dmg\":58,\"multi_shot\":true,\"multi_shot_dmg\":23,\"agile_step\":true,\"agile_step_dmg\":22,\"piercing_arrow\":true,\"piercing_arrow_dmg\":42}"
+      "info": "{\"aimed_shot\":true,\"aimed_shot_dmg\":59,\"multi_shot\":true,\"multi_shot_dmg\":23,\"agile_step\":true,\"agile_step_dmg\":21,\"piercing_arrow\":true,\"piercing_arrow_dmg\":42}"
     },
     {
       "name": "Okçu Lv.50: 7 aktif becerinin hepsi kullanılır; hasar becerileri hasar verir (Ok Yağmuru, Kartal Fırtınası dahil)",
       "ok": true,
-      "info": "{\"aimed_shot\":{\"ok\":true,\"dmg\":89},\"multi_shot\":{\"ok\":true,\"dmg\":87},\"agile_step\":{\"ok\":true,\"dmg\":34},\"piercing_arrow\":{\"ok\":true,\"dmg\":97},\"arrow_rain\":{\"ok\":true,\"dmg\":80},\"hunter_mark\":{\"ok\":true,\"dmg\":37},\"eagle_storm\":{\"ok\":true,\"dmg\":115}}"
+      "info": "{\"aimed_shot\":{\"ok\":true,\"dmg\":90},\"multi_shot\":{\"ok\":true,\"dmg\":67},\"agile_step\":{\"ok\":true,\"dmg\":32},\"piercing_arrow\":{\"ok\":true,\"dmg\":116},\"arrow_rain\":{\"ok\":true,\"dmg\":79},\"hunter_mark\":{\"ok\":true,\"dmg\":38},\"eagle_storm\":{\"ok\":true,\"dmg\":78}}"
     },
     {
       "name": "Konsol hatası yok (Okçu)",
@@ -51,17 +51,17 @@
     {
       "name": "İskelet Çağır (Lv.12) bir iskelet çağırır; hedef seçilmeden saldırmaz (AFK farm yok)",
       "ok": true,
-      "info": "{\"soul\":{\"killed\":true,\"mpSame\":true},\"ok\":true,\"alive1\":1,\"afk\":{\"a\":true,\"b\":true,\"hits\":0},\"only\":{\"aDead\":true,\"bFull\":true,\"onlyA\":true,\"kills\":1,\"gold\":1},\"max2\":2,\"saved\":{\"main\":true,\"hpPct\":1}}"
+      "info": "{\"soul\":{\"killed\":true,\"mpSame\":true},\"ok\":true,\"alive1\":1,\"afk\":{\"a\":true,\"b\":true,\"hits\":0},\"only\":{\"aDead\":true,\"bFull\":true,\"onlyA\":true,\"kills\":1,\"gold\":3},\"max2\":2,\"saved\":{\"main\":true,\"hpPct\":1}}"
     },
     {
       "name": "İskelet yalnız seçili hedefe saldırır; iskeletin öldürdüğü yaratık tek öldürme / tek ödül sayılır",
       "ok": true,
-      "info": "{\"aDead\":true,\"bFull\":true,\"onlyA\":true,\"kills\":1,\"gold\":1}"
+      "info": "{\"aDead\":true,\"bFull\":true,\"onlyA\":true,\"kills\":1,\"gold\":3}"
     },
     {
       "name": "Aynı anda en çok 2 iskelet; kayıtta yalnız güvenli durum ({ana iskelet, can oranı})",
       "ok": true,
-      "info": "{\"soul\":{\"killed\":true,\"mpSame\":true},\"ok\":true,\"alive1\":1,\"afk\":{\"a\":true,\"b\":true,\"hits\":0},\"only\":{\"aDead\":true,\"bFull\":true,\"onlyA\":true,\"kills\":1,\"gold\":1},\"max2\":2,\"saved\":{\"main\":true,\"hpPct\":1}}"
+      "info": "{\"soul\":{\"killed\":true,\"mpSame\":true},\"ok\":true,\"alive1\":1,\"afk\":{\"a\":true,\"b\":true,\"hits\":0},\"only\":{\"aDead\":true,\"bFull\":true,\"onlyA\":true,\"kills\":1,\"gold\":3},\"max2\":2,\"saved\":{\"main\":true,\"hpPct\":1}}"
     },
     {
       "name": "Harita değişiminde iskelet çoğalmaz (1); ölümde dağılır ve kendiliğinden geri gelmez",
@@ -76,7 +76,7 @@
     {
       "name": "Ölü Çağıran Lv.50: 7 aktif becerinin hepsi kullanılır; hasar becerileri hasar verir; Ölüler Ordusu sonrası en çok 2 iskelet",
       "ok": true,
-      "info": "{\"nall\":{\"soul_arrow\":{\"ok\":true,\"dmg\":108},\"summon_skeleton\":{\"ok\":true,\"dmg\":55},\"curse_seal\":{\"ok\":true,\"dmg\":53},\"life_drain\":{\"ok\":true,\"dmg\":65},\"bone_burst\":{\"ok\":true,\"dmg\":101},\"army_of_dead\":{\"ok\":true,\"dmg\":78},\"soul_apocalypse\":{\"ok\":true,\"dmg\":143}},\"nmin\":2}"
+      "info": "{\"nall\":{\"soul_arrow\":{\"ok\":true,\"dmg\":87},\"summon_skeleton\":{\"ok\":true,\"dmg\":55},\"curse_seal\":{\"ok\":true,\"dmg\":55},\"life_drain\":{\"ok\":true,\"dmg\":110},\"bone_burst\":{\"ok\":true,\"dmg\":68},\"army_of_dead\":{\"ok\":true,\"dmg\":79},\"soul_apocalypse\":{\"ok\":true,\"dmg\":146}},\"nmin\":2}"
     },
     {
       "name": "Konsol hatası yok (Ölü Çağıran)",
@@ -181,7 +181,7 @@
     {
       "name": "Ayarlar → Kayıt Güvenliği: son kalıcı kayıt, teknoloji, dışa/içe aktarma ve önceki kayıtlar",
       "ok": true,
-      "info": "{\"text\":\"Kayıt GüvenliğiSon başarılı kalıcı kayıt23.10.2026 15:21:21 (IndexedDB + ayna)Kayıt teknolojisiIndexedDB (birincil) + localStorage aynasıKalıcı depolama iznitarayıcı izin vermediSon yedek (kod/dosya)henüz alınmadıŞimdi kaydetYedek kodunu kopyalaYedek kodu yapıştırYedeği dışa aktar (JSON)Yedeği içe aktarÖnceki kayıtlarKayıp karakter araKayıt bu tarayıcıda, bu sitenin deposunda tutulur (isteğe bağlı\",\"buttons\":7}"
+      "info": "{\"text\":\"Kayıt GüvenliğiSon başarılı kalıcı kayıt23.10.2026 18:14:10 (IndexedDB + ayna)Kayıt teknolojisiIndexedDB (birincil) + localStorage aynasıKalıcı depolama iznitarayıcı izin vermediSon yedek (kod/dosya)henüz alınmadıŞimdi kaydetYedek kodunu kopyalaYedek kodu yapıştırYedeği dışa aktar (JSON)Yedeği içe aktarÖnceki kayıtlarKayıp karakter araKayıt bu tarayıcıda, bu sitenin deposunda tutulur (isteğe bağlı\",\"buttons\":7}"
     },
     {
       "name": "V4 yedek hatırlatması bir kez gösterilir (\"Daha sonra\" sonrası tekrar çıkmaz)",
@@ -194,9 +194,9 @@
       "info": ""
     },
     {
-      "name": "PWA: servis işçisi etkin, 4.5.0 sürümlü önbellek; çevrimdışı açılış",
+      "name": "PWA: servis işçisi etkin, 4.5.2 sürümlü önbellek; çevrimdışı açılış",
       "ok": true,
-      "info": "{\"active\":true,\"version\":\"4.5.0\",\"offline\":true}"
+      "info": "{\"active\":true,\"version\":\"4.5.2\",\"offline\":true}"
     }
   ]
 }

@@ -47,9 +47,15 @@ function setRun(char, mapId, run) {
   }
 }
 
+// Koşu bitti mi? (boss bölümü temizlendi / boss öldü). Biten koşu yeniden girişte DEVAM ETTİRİLMEZ: aksi halde boss
+// hiç doğmaz ve sonradan alınan "boss'u yen" görevi takılı kalır.
+export function runComplete(run, mapId = 'dungeon') {
+  return !!run && (!!run.finished || !!run.bossKilled || run.cleared.includes(bossStage(mapId)));
+}
+
 export function startOrResumeRun(char, mapId = 'dungeon') {
   const cur = getRun(char, mapId);
-  if (cur && !cur.finished) return { resumed: true, run: cur };
+  if (cur && !runComplete(cur, mapId)) return { resumed: true, run: cur };
   const run = { runId: makeUid('run'), cleared: [], bossLootClaimed: false, bossKilled: false, startedAt: Date.now(), finished: false };
   if (DUNGEON_INFO[mapId]?.seals) run.seals = [];
   setRun(char, mapId, run);
@@ -61,6 +67,7 @@ export function clearStage(char, stage, mapId = 'dungeon') {
   if (!d || d.cleared.includes(stage)) return false;
   d.cleared.push(stage);
   d.cleared.sort((a, b) => a - b);
+  if (stage === bossStage(mapId)) d.finished = true;
   return true;
 }
 

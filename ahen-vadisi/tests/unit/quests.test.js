@@ -172,4 +172,34 @@ describe('Dungeon', () => {
     expect(r2.run.runId).not.toBe(r1.run.runId);
     expect(dg.claimBossLoot(c)).toBe(true);
   });
+
+  it('HATA DÜZELTMESİ: boss\'u yenilmiş (bitmiş) koşu yeniden girişte devam ettirilmez — boss doğar, sonradan alınan "Madenin Kalbi" tamamlanabilir', () => {
+    const c = createCharacter({ name: 'Golemci', cls: 'archer', slot: 0 }, rng);
+    c.world.dungeonUnlocked = true;
+    // görevi almadan önce Derin Ocak'ı bitir (boss öldü, çıkmadan kaldı)
+    const r1 = dg.startOrResumeRun(c);
+    for (const st of [1, 2, 3]) dg.clearStage(c, st);
+    expect(dg.claimBossLoot(c)).toBe(true);
+    applyKill(c, 'mine_golem', { killId: dg.bossKillId(c), unique: true }, rng);
+    dg.clearStage(c, 4);
+    expect(dg.runComplete(c.dungeon)).toBe(true);
+    expect(c.dungeon.finished).toBe(true);
+    // eski kayıtlar: finished alanı yok ama boss bölümü temiz → yine bitmiş sayılır
+    const old = JSON.parse(JSON.stringify(c)); delete old.dungeon.finished;
+    expect(dg.runComplete(old.dungeon)).toBe(true);
+    expect(dg.startOrResumeRun(old).resumed).toBe(false);
+    // şimdi görev alınır ve dungeon'a yeniden girilir
+    c.quests.m17 = { s: 'active', p: [0] };
+    const r2 = dg.startOrResumeRun(c);
+    expect(r2.resumed).toBe(false);
+    expect(r2.run.runId).not.toBe(r1.run.runId);
+    expect(r2.run.cleared).toEqual([]);
+    expect(r2.run.bossKilled).toBe(false);
+    expect(dg.currentStage(c)).toBe(1);
+    // yeni koşuda boss yenilir → görev hedefi işler, yeni koşuda boss ganimeti hakkı var
+    expect(dg.claimBossLoot(c)).toBe(true);
+    const res = applyKill(c, 'mine_golem', { killId: dg.bossKillId(c), unique: true }, rng);
+    expect(res.duplicate).toBe(false);
+    expect(c.quests.m17.p[0]).toBe(1);
+  });
 });

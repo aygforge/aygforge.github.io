@@ -1,5 +1,19 @@
 # Değişiklik Günlüğü
 
+## 4.5.2 — Hata düzeltmesi: bitmiş dungeon koşusu yüzünden boss doğmuyordu
+- **Hata:** Maden Golemi "Madenin Kalbi" görevi alınmadan önce yenildiyse, Derin Ocak'a dönüşte golem doğmuyor ve görev
+  takılı kalıyordu (aynısı diğer dungeon boss görevlerinde de olabiliyordu).
+- **Kaynak:** dungeon koşusu boss yenilince "bitti" diye işaretlenmiyordu. Kapı her girişte eski koşuyu devam ettiriyordu;
+  bütün bölümler temiz olduğu için boss hiç yeniden doğmuyordu.
+- **Düzeltme:**
+  - Boss bölümü temizlenince koşu "bitti" sayılır. Eski kayıtlar da kapsanır: boss öldü ya da boss bölümü temizse bitmiş.
+  - Bitmiş koşu girişte asla devam ettirilmez; yeni koşu başlar ve boss doğar.
+  - Dungeon çubuğunda bitmiş koşu için **Yeni koşu** düğmesi var (dungeon'dan çıkmadan baştan başlatır).
+  - Ortak dünyada bitmiş parti/tek kişilik örnek boşalınca kapanır. Yeni koşuyla gelen olursa örnek baştan kurulur.
+- **Takılı kalan kayıt için:** dungeon'daysan sol üstteki **Yeni koşu**'ya bas (ya da Çık → kapıdan yeniden gir); golem
+  doğar, görev tamamlanır.
+
+
 ## 4.5.1 — Parti dungeon boss canı parti gücüne göre
 - Dungeon boss'unun canı, örnekteki oyuncuların seviyesine göre artar. Her oyuncu boss seviyesine göre 0,5–1,5 arası
   ağırlık taşır (aynı seviye 1; her seviye farkı %5). En güçlü oyuncu temel sayılır, diğer her oyuncu ağırlığının
