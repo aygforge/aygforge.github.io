@@ -1,5 +1,10 @@
 # Değişiklik Günlüğü
 
+## 4.4.1 — Ortak dünya sunucusu oyuna bağlandı
+- `online.json`: `"gameServer": "wss://ahen-vadisi-sunucu.onrender.com"` (Render, ücretsiz plan). Giriş yapmış oyuncular
+  hiçbir ayar yapmadan ortak dünyaya bağlanır.
+
+
 ## 4.4.0 — Ortak dünya oyun sunucusu (MMO, 1. aşama)
 Kurulum: [`OYUN_SUNUCUSU.md`](OYUN_SUNUCUSU.md) (Render ücretsiz plan ya da Docker).
 - **Tek sunucu, tek dünya:** açık haritalardaki kamp yaratıkları ve elitler artık sunucuda yaşar. Bağlanan herkes aynı

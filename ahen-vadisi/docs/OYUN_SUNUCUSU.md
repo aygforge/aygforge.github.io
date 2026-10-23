@@ -26,6 +26,9 @@ programıdır (`server/`). Ücretsiz olarak Render'da çalışır.
 Karakterler hâlâ oyuncunun cihazında (ve bulut kaydında) durur. Sunucu yalnız dünyayı yönetir. Sunucu kapanırsa ya da
 uyursa oyun **durmaz**: tek oyunculu devam eder, sunucu dönünce kendiliğinden ortak dünyaya geçer.
 
+**Test grubunun sunucusu (4.4.1'den beri oyuna gömülü):** `https://ahen-vadisi-sunucu.onrender.com`
+(durum: `/health`, oyun bağlantısı: `wss://ahen-vadisi-sunucu.onrender.com/ws`).
+
 ## Render'a kurulum (ücretsiz, ≈5 dk)
 
 1. <https://render.com> → **Get Started** → GitHub hesabınla giriş yap.
