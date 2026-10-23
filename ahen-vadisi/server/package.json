@@ -1,0 +1,11 @@
+{
+  "name": "ahen-vadisi-server",
+  "private": true,
+  "version": "4.5.2",
+  "type": "module",
+  "description": "Ahen Vadisi çevrimiçi oyun sunucusu (ortak dünya)",
+  "main": "index.mjs",
+  "engines": { "node": ">=20" },
+  "scripts": { "start": "node index.mjs" },
+  "dependencies": { "ws": "8.18.0" }
+}

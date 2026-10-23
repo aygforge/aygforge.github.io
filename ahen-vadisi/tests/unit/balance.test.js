@@ -1,0 +1,239 @@
+// Denge simülasyonu — belge §13.1. Gerçek stat/hasar formülleriyle (systems/stats + systems/combat)
+// başsız savaş: normal saldırı + bekleme süresi dolan becerilerin kullanımı, MP bütçesi ve yenilenmesi.
+import { describe, it, expect } from 'vitest';
+import { Rng } from '../../src/core/rng.js';
+import { createCharacter, gainExp } from '../../src/systems/character.js';
+import { computeStats } from '../../src/systems/stats.js';
+import { playerHit, hitChance } from '../../src/systems/combat.js';
+import { createItem } from '../../src/systems/loot.js';
+import { ENEMIES } from '../../src/data/enemies.js';
+import { SKILLS, CLASS_SKILLS } from '../../src/data/skills.js';
+import { cumulativeXp, MP_REGEN_COMBAT, goldRangeForLevel, expMultiplier, WARRIOR_MP_ON_HIT } from '../../src/data/constants.js';
+
+function build(cls, level, gear, plus = 0, fullSkills = false) {
+  const rng = new Rng(level * 31 + (cls === 'mage' ? 7 : 0));
+  const c = createCharacter({ name: 'Sim', cls, slot: 0 }, rng);
+  gainExp(c, cumulativeXp(level));
+  const pts = 3 * (level - 1);
+  if (cls === 'warrior') { c.alloc.str = Math.round(pts * 0.6); c.alloc.vit = pts - c.alloc.str; }
+  else { c.alloc.int = Math.round(pts * 0.65); c.alloc.vit = pts - c.alloc.int; }
+  // beceri puanları: aktif 1 ve pasif 1'e öncelik
+  // V2 senaryoları: Lv.21+ oyuncu bütün puanlarını harcar (pasifler, sonra hasar becerileri)
+  const order = fullSkills
+    ? [...CLASS_SKILLS[cls].passives, ...CLASS_SKILLS[cls].actives.filter((id) => SKILLS[id].coef)]
+    : [...CLASS_SKILLS[cls].passives.slice(0, 1), CLASS_SKILLS[cls].actives[0], CLASS_SKILLS[cls].actives[1]];
+  let free = level - 1 + (fullSkills ? 2 : 0);
+  for (const id of order) while (c.skills[id] && free > 0 && c.skills[id] < (SKILLS[id].kind === 'active' ? 5 : 3)) {
+    const cost = SKILLS[id].kind === 'active' ? [0, 1, 1, 2, 2][c.skills[id]] : [0, 1, 2][c.skills[id]];
+    if (cost > free) break;
+    free -= cost; c.skills[id]++;
+  }
+  for (const tid of gear) {
+    const inst = createItem(tid, null, rng, { noBonus: !fullSkills });   // V2 senaryoları: gerçek rastgele bonuslarla
+    inst.p = ['R', 'A'].includes(tid[0]) ? 0 : plus;
+    c.equipment[{ W: 'weapon', M: 'weapon', O: 'offhand', H: 'helm', C: 'chest', G: 'gloves', B: 'boots', R: 'ring', A: 'amulet' }[tid[0]]] = inst;
+  }
+  return c;
+}
+
+// Savaş simülasyonu: normal saldırı + bekleme süresi dolan beceriler, MP bütçesi ve yenilenme.
+// state ardışık öldürmeler arasında taşınır (farm: bekleme süreleri ve MP sürer).
+function newState(c) {
+  const st = computeStats(c);
+  const actives = CLASS_SKILLS[c.cls].actives.filter((id) => c.skills[id] && SKILLS[id].coef);
+  return { c, st, mp: st.maxMp, actives, cds: Object.fromEntries(actives.map((id) => [id, 0])), atk: 0, gcd: 0, rng: new Rng(99) };
+}
+function fight(S, enemyId) {
+  const { st, c, rng } = S;
+  const e = { ...ENEMIES[enemyId], reduce: 0 };
+  let hp = e.hp, t = 0;
+  const dt = 0.05;
+  while (hp > 0 && t < 900) {
+    t += dt; S.atk -= dt; S.gcd -= dt;
+    S.mp = Math.min(st.maxMp, S.mp + st.maxMp * MP_REGEN_COMBAT * dt);
+    for (const id of S.actives) S.cds[id] -= dt;
+    if (S.gcd <= 0) {
+      for (const id of S.actives) {
+        const s = SKILLS[id], r = c.skills[id];
+        const cost = s.mp[r - 1] * (1 - st.costRed);
+        if (S.cds[id] <= 0 && S.mp >= cost) {
+          S.mp -= cost; S.cds[id] = s.cd[r - 1]; S.gcd = 0.5;
+          hp -= playerHit(st, e, { coef: s.coef[r - 1], rng, dmgType: s.dmg }).dmg;
+          break;
+        }
+      }
+    }
+    if (S.atk <= 0) {
+      S.atk = st.attackInterval;
+      const h = playerHit(st, e, { isNormal: true, rng });
+      hp -= h.dmg;
+      if (!h.miss && c.cls === 'warrior') S.mp = Math.min(st.maxMp, S.mp + WARRIOR_MP_ON_HIT);
+    }
+  }
+  return t;
+}
+function idle(S, sec) {
+  S.atk -= sec; S.gcd -= sec;
+  S.mp = Math.min(S.st.maxMp, S.mp + S.st.maxMp * MP_REGEN_COMBAT * sec);
+  for (const id of S.actives) S.cds[id] -= sec;
+}
+// tek savaş (boss)
+function ttk(c, enemyId) { return +fight(newState(c), enemyId).toFixed(1); }
+// sürekli farm: 12 ardışık öldürme, aralarda 2 sn yürüme; ortalama öldürme süresi
+function farmTtk(c, enemyId, n = 12) {
+  const S = newState(c);
+  let total = 0;
+  for (let i = 0; i < n; i++) { total += fight(S, enemyId); idle(S, 2); }
+  return +(total / n).toFixed(1);
+}
+
+const report = [];
+const log = (k, v) => { report.push(`${k}: ${v}`); };
+
+describe('Denge simülasyonu (gerçek formüller)', () => {
+  it('Lv.1 Warrior Köylü Kılıcı vs Çayır Sıçanı: 2–3 vuruş', () => {
+    const c = build('warrior', 1, ['W01', 'C01']);
+    const st = computeStats(c);
+    const per = st.physPower * 100 / 102;
+    log('Lv1 Warrior sıçana vuruş', per.toFixed(2));
+    expect(Math.ceil(32 / (per * 1.05))).toBeGreaterThanOrEqual(2);
+    expect(Math.ceil(32 / (per * 0.95))).toBeLessThanOrEqual(3);
+    expect(hitChance(1, 2)).toBeCloseTo(0.95);
+  });
+
+  it('normal yaratık öldürme süreleri ~4–9 sn bandında (uygun seviye/ekipman)', () => {
+    const cases = [
+      ['warrior', 10, ['W03', 'O02', 'H02', 'C02', 'G02', 'B02'], 0, 'pick_goblin'],
+      ['warrior', 10, ['W03', 'O02', 'H02', 'C02', 'G02', 'B02'], 3, 'pick_goblin'],
+      ['mage', 10, ['M04', 'H05', 'C06', 'G05', 'B05'], 0, 'pick_goblin'],
+      ['warrior', 15, ['W03', 'O02', 'H02', 'C03', 'G02', 'B02'], 3, 'ore_priest'],
+      ['mage', 15, ['M03', 'H05', 'C07', 'G05', 'B05'], 2, 'swamp_leech'],
+      ['warrior', 19, ['W06', 'O02', 'H03', 'C03', 'G03', 'B03'], 3, 'rotten_guard'],
+      ['mage', 19, ['M06', 'O06', 'H06', 'C07', 'G06', 'B06'], 2, 'rotten_guard'],
+      ['warrior', 5, ['W01', 'O01', 'H01', 'C01'], 1, 'gray_wolf'],
+      ['mage', 5, ['M01', 'H04', 'C05'], 1, 'gray_wolf'],
+    ];
+    for (const [cls, lv, gear, plus, en] of cases) {
+      const tt = farmTtk(build(cls, lv, gear, plus), en);
+      log(`${cls} Lv${lv} +${plus} → ${ENEMIES[en].name}`, `${tt} sn`);
+      expect(tt, `${cls} ${en}`).toBeGreaterThan(0.5);
+      expect(tt, `${cls} ${en}`).toBeLessThan(12);
+    }
+  });
+
+  it('elit savaşları normal yaratıklardan belirgin uzun (hedef 25–50 sn; kanonik HP ile ölçülür)', () => {
+    const w = ttk(build('warrior', 10, ['W02', 'H02', 'C02', 'G02', 'B02'], 1), 'bandit_captain');
+    const m = ttk(build('mage', 10, ['M02', 'O05', 'H05', 'C06', 'G05', 'B05'], 1), 'bandit_captain');
+    log('Warrior Lv10 U+1 → Haydut Kaptanı', `${w} sn`); log('Mage Lv10 U+1 → Haydut Kaptanı', `${m} sn`);
+    for (const v of [w, m]) { expect(v).toBeGreaterThan(8); expect(v).toBeLessThan(70); }
+  });
+
+  it('Alfa Kurt saf DPS 90–150 sn civarı; Maden Golemi 180–300 sn civarı', () => {
+    // Alfa'ya ilk girişte gerçekçi donanım: Uncommon +2 silah
+    const aw = ttk(build('warrior', 11, ['W02', 'H02', 'C02', 'G02', 'B02'], 2), 'alpha_wolf');
+    const am = ttk(build('mage', 11, ['M02', 'O05', 'H05', 'C06', 'G05', 'B05'], 2), 'alpha_wolf');
+    // Golem: belge senaryosu — Warrior Rare +3/+4, Mage Rare/Epic +0
+    const gw = ttk(build('warrior', 20, ['W06', 'O02', 'H03', 'C03', 'G03', 'B03'], 4), 'mine_golem');
+    const gwLow = ttk(build('warrior', 20, ['W06', 'O02', 'H03', 'C03', 'G03', 'B03'], 3), 'mine_golem');
+    const gm = ttk(build('mage', 20, ['M06', 'O06', 'H06', 'C07', 'G06', 'B06'], 0), 'mine_golem');
+    log('Warrior Lv11 Uncommon+2 → Alfa Kurt', `${aw} sn`); log('Mage Lv11 Uncommon+2 → Alfa Kurt', `${am} sn`);
+    log('Warrior Lv20 Rare+4 → Golem', `${gw} sn`); log('Warrior Lv20 Rare+3 → Golem', `${gwLow} sn`); log('Mage Lv20 Rare+0 → Golem', `${gm} sn`);
+    for (const v of [aw, am]) { expect(v).toBeGreaterThan(40); expect(v).toBeLessThan(220); }
+    for (const v of [gw, gm]) { expect(v).toBeGreaterThan(140); expect(v).toBeLessThan(420); }
+    // sınıf adaleti: iki sınıfın boss süreleri arasındaki fark 2 katı aşmaz
+    expect(Math.max(gw, gm) / Math.min(gw, gm)).toBeLessThan(2);
+    expect(Math.max(aw, am) / Math.min(aw, am)).toBeLessThan(2);
+    expect(gwLow).toBeGreaterThanOrEqual(gw);
+  });
+
+  it('V2: Kül Devi 3–5 dk, Donmuş Muhafız 4–6 dk (iki sınıf, gerçekçi donanım ve hareket payı)', () => {
+    // V2 senaryoları gerçek rastgele bonuslu eşyalar ve bütün beceri puanlarının harcandığı karakterlerle ölçülür.
+    // Hareket payı: telegraflardan kaçma ve yeniden konumlanma (Warrior yakın dövüş ×1,2; Mage menzil ayarı ×1,3).
+    const MOVE = { warrior: 1.2, mage: 1.3 };
+    const kwC = build('warrior', 26, ['W10', 'O07', 'H07', 'C09', 'G07', 'B03', 'R07', 'A05'], 3, true);
+    const kmC = build('mage', 26, ['M10', 'O09', 'H09', 'C11', 'G08', 'B06', 'R05', 'A05'], 2, true);
+    const fwC = build('warrior', 30, ['W12', 'O08', 'H08', 'C10', 'G07', 'B07', 'R07', 'A07'], 4, true);
+    const fmC = build('mage', 30, ['M12', 'O10', 'H10', 'C12', 'G08', 'B08', 'R08', 'A07'], 3, true);
+    // Buz Mührü fazında iki kristal kırılır (kalkan aktifken bossa hasar %80 azalır; kristaller önce kırılır)
+    const crystals = (c) => 2 * ttk(c, 'frost_seal_crystal');
+    const kw = ttk(kwC, 'ash_giant') * MOVE.warrior, km = ttk(kmC, 'ash_giant') * MOVE.mage;
+    const fw = (ttk(fwC, 'frozen_guardian') + crystals(fwC)) * MOVE.warrior, fm = (ttk(fmC, 'frozen_guardian') + crystals(fmC)) * MOVE.mage;
+    log('Warrior Lv26 Rare+3 → Kül Devi', `~${Math.round(kw)} sn (${(kw / 60).toFixed(1)} dk)`);
+    log('Mage Lv26 Rare+2 → Kül Devi', `~${Math.round(km)} sn (${(km / 60).toFixed(1)} dk)`);
+    log('Warrior Lv30 Rare/Epic+4 → Donmuş Muhafız', `~${Math.round(fw)} sn (${(fw / 60).toFixed(1)} dk)`);
+    log('Mage Lv30 Rare/Epic+3 → Donmuş Muhafız', `~${Math.round(fm)} sn (${(fm / 60).toFixed(1)} dk)`);
+    for (const v of [kw, km]) { expect(v).toBeGreaterThan(170); expect(v).toBeLessThan(310); }
+    for (const v of [fw, fm]) { expect(v).toBeGreaterThan(230); expect(v).toBeLessThan(370); }
+    expect(Math.max(kw, km) / Math.min(kw, km)).toBeLessThan(1.6);
+    expect(Math.max(fw, fm) / Math.min(fw, fm)).toBeLessThan(1.6);
+  });
+
+  it('V2 farm: öldürme süreleri, ~120 öldürme/saat bütçesi ve 20→30 toplam süre (hedef 8–12 sa)', () => {
+    // seviyeye uygun donanım: Lv.21–25 Uncommon/Rare +2, Lv.26–29 V2 Rare +3 (rastgele bonuslarla)
+    const gear = (cls, lv) => {
+      if (cls === 'warrior') return lv < 24 ? ['W09', 'O02', 'H07', 'C03', 'G03', 'B03', 'R05', 'A05'] : lv < 26 ? ['W10', 'O07', 'H07', 'C09', 'G03', 'B03', 'R07', 'A05'] : ['W12', 'O07', 'H08', 'C09', 'G07', 'B07', 'R07', 'A07'];
+      return lv < 24 ? ['M09', 'O06', 'H09', 'C07', 'G06', 'B06', 'R05', 'A05'] : lv < 26 ? ['M10', 'O09', 'H09', 'C11', 'G06', 'B06', 'R05', 'A05'] : ['M12', 'O09', 'H10', 'C11', 'G08', 'B08', 'R07', 'A07'];
+    };
+    let expFarmPerHour = 0;
+    const mobs = [['ash_imp', 21], ['ash_hunter', 23], ['crimson_scorpion', 24], ['burnt_warrior', 25], ['frost_wolf', 26], ['ice_wisp', 27], ['frost_sentinel', 28], ['snow_shaman', 29]];
+    for (const [id, lv] of mobs) {
+      const plus = lv >= 26 ? 3 : 2;
+      const w = farmTtk(build('warrior', lv, gear('warrior', lv), plus, true), id);
+      const m = farmTtk(build('mage', lv, gear('mage', lv), plus, true), id);
+      log(`V2 farm ${ENEMIES[id].name} (Lv.${lv})`, `Warrior ${w} sn · Mage ${m} sn`);
+      // 120 öldürme/saat bütçesi = 30 sn/öldürme; savaş en çok 20 sn, kalan yürüme/dinlenme
+      for (const v of [w, m]) { expect(v).toBeGreaterThan(1); expect(v).toBeLessThan(20); }
+      expFarmPerHour += 120 * ENEMIES[id].exp / mobs.length;
+    }
+    // Süre tahmini: 20→30 EXP'si (368.300) − V2 görev EXP'si (92.500) farmla; görev/zindan/boss oynanışı ~3 sa
+    const farmHours = (368300 - 92500) / expFarmPerHour;
+    log('V2 20→30 tahmini', `${farmHours.toFixed(1)} sa farm + ~3 sa görev/boss/zindan = ~${(farmHours + 3).toFixed(1)} sa`);
+    expect(farmHours + 3).toBeGreaterThan(8);
+    expect(farmHours + 3).toBeLessThan(12);
+  });
+
+  it('düşük seviyeli yaratıklar güçlenince kolaylaşır (gizli ölçekleme yok)', () => {
+    const a = farmTtk(build('warrior', 6, ['W01', 'C01'], 0), 'gray_wolf');
+    const b = farmTtk(build('warrior', 15, ['W03', 'O02', 'H02', 'C03', 'G02', 'B02'], 3), 'gray_wolf');
+    log('Boz Kurt: Lv6 başlangıç vs Lv15 donanımlı', `${a} sn → ${b} sn`);
+    expect(b).toBeLessThan(a / 2);
+  });
+
+  it('Lv.18–20 farm: 120 yaratık/saat net gold tahmini (iksir hariç)', () => {
+    const [lo, hi] = goldRangeForLevel(18);
+    const goldPerKill = (lo + hi) / 2;
+    const matValue = 0.28 * 6; // ortalama materyal satış değeri
+    const perHour = 120 * (goldPerKill + matValue);
+    log('Lv18–20 farm gold/saat (brüt, iksir/tamir öncesi)', perHour.toFixed(0));
+    expect(perHour).toBeGreaterThan(900);
+    expect(perHour).toBeLessThan(2400);
+    // EXP çarpanı: düşük seviye farmı verimsizleşir
+    expect(expMultiplier(20, 9)).toBe(0.1);
+  });
+
+  it('hayatta kalma: telegrafsız normal saldırılara karşı iksirsiz ölüm süresi', () => {
+    const surv = (c, id) => {
+      const st = computeStats(c), e = ENEMIES[id];
+      const def = e.dmgType === 'magic' ? st.mdef : st.def;
+      const dps = (e.atk * (e.normalCoef ?? 1) * 100 / (100 + def)) / e.attackInterval;
+      return +(st.maxHp / dps).toFixed(1);
+    };
+    const rows = [
+      ['warrior', 10, ['W02', 'O01', 'H02', 'C02', 'G01', 'B02'], 'pick_goblin', 15],
+      ['mage', 10, ['M02', 'O05', 'H05', 'C06', 'G04', 'B05'], 'pick_goblin', 10],
+      ['warrior', 10, ['W02', 'H02', 'C02', 'G02', 'B02'], 'bandit_captain', 12],
+      ['warrior', 11, ['W02', 'H02', 'C02', 'G02', 'B02'], 'alpha_wolf', 12],
+      ['mage', 11, ['M02', 'O05', 'H05', 'C06', 'G05', 'B05'], 'alpha_wolf', 8],
+      ['warrior', 20, ['W06', 'O02', 'H03', 'C03', 'G03', 'B03'], 'mine_golem', 15],
+      ['mage', 20, ['M06', 'O06', 'H06', 'C07', 'G06', 'B06'], 'mine_golem', 8],
+      ['warrior', 19, ['W06', 'O02', 'H03', 'C03', 'G03', 'B03'], 'rotten_guard', 20],
+    ];
+    for (const [cls, lv, gear, id, min] of rows) {
+      const t = surv(build(cls, lv, gear, 2), id);
+      log(`hayatta kalma ${cls} Lv${lv} vs ${ENEMIES[id].name} (yalnız normal saldırı, iksirsiz)`, `${t} sn`);
+      expect(t, `${cls} ${id}`).toBeGreaterThan(min);
+    }
+  });
+
+  it('rapor', () => { console.log('\n=== DENGE RAPORU ===\n' + report.join('\n')); expect(report.length).toBeGreaterThan(5); });
+});

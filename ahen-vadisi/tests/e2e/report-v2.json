@@ -1,0 +1,167 @@
+{
+  "date": "2026-10-23T18:10:19.459Z",
+  "passed": 32,
+  "total": 32,
+  "results": [
+    {
+      "name": "V1 kaydı açılır ve güncel şemaya (V4) geçer (seviye/gold korunur)",
+      "ok": true,
+      "info": "{\"ok\":true,\"from\":1,\"level\":20,\"gold\":777,\"bar\":[\"heavy_strike\",\"whirlwind\",\"iron_skin\",\"war_charge\"],\"hist\":true,\"backup\":1,\"sv\":4}"
+    },
+    {
+      "name": "Geçişte V1 yedeği saklanır; varsayılan 4'lü beceri çubuğu; Av Geçmişi V2'den başlar",
+      "ok": true,
+      "info": "{\"ok\":true,\"from\":1,\"level\":20,\"gold\":777,\"bar\":[\"heavy_strike\",\"whirlwind\",\"iron_skin\",\"war_charge\"],\"hist\":true,\"backup\":1,\"sv\":4}"
+    },
+    {
+      "name": "Dev: Lv.26'ya çıkış (20→26 gerçek EXP tablosu)",
+      "ok": true,
+      "info": "26"
+    },
+    {
+      "name": "V1 hikâyesi bitmeden Kül Yaylaları geçidi kapalı",
+      "ok": true,
+      "info": "{\"locked\":true,\"map\":\"mine\",\"toast\":\"Göçük taşları yolu tıkıyor. Vadi kurtulduktan sonra Karaağaç Muhtarı bu geçidi soruşturmanı isteyecek.\"}"
+    },
+    {
+      "name": "V1 finalinden sonra \"Kırılan Ufuk\" alınabilir",
+      "ok": true,
+      "info": "\"\""
+    },
+    {
+      "name": "Kül Yaylaları: 4 yaratık türü + Kül Devi doğar",
+      "ok": true,
+      "info": "ash_giant,ash_hunter,ash_imp,burnt_warrior,crimson_scorpion"
+    },
+    {
+      "name": "Kül Yaylaları: kül parçacıkları, NPC, sandık, Yol Taşı, Kül Cevheri",
+      "ok": true,
+      "info": "{\"f\":36}"
+    },
+    {
+      "name": "\"Kırılan Ufuk\" geçiş hedefleri ilerler",
+      "ok": true,
+      "info": "{\"s\":\"active\",\"p\":[1,1],\"used\":[],\"at\":1792778945797}"
+    },
+    {
+      "name": "V2 yaratık öldürme: EXP + Gold + Av Geçmişi sayacı",
+      "ok": true,
+      "info": "{\"kills\":6,\"exp\":true,\"gold\":110,\"ids\":[\"ash_imp\",\"ash_imp\",\"ash_imp\",\"ash_imp\",\"ash_imp\",\"ash_imp\"]}"
+    },
+    {
+      "name": "V2 sprite'ları: ayrı darbe ve ölüm animasyonları kayıtlı",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Kül Devi: telegraflı saldırılar, en çok 3 alev yarığı, %55 altında 2 yardımcı",
+      "ok": true,
+      "info": "{\"cast\":true,\"maxFiss\":2,\"helpers\":2,\"phase\":2}"
+    },
+    {
+      "name": "Kül Devi yenilir; yardımcılar EXP vermez; tehlikeler temizlenir; yeniden doğma zamanlanır",
+      "ok": true,
+      "info": "{\"helperExp\":0,\"boss\":1,\"hazards\":0,\"respawnAt\":true}"
+    },
+    {
+      "name": "Kül Kasabı: öfke (%30 altı), telegraflı satır, garantili nişan",
+      "ok": true,
+      "info": "{\"enr\":true,\"cast\":true,\"mark\":true}"
+    },
+    {
+      "name": "Gizli sandık bir kez ödül verir",
+      "ok": true,
+      "info": "{\"first\":457,\"second\":0,\"opened\":true}"
+    },
+    {
+      "name": "Ayaz Geçidi: 4 yaratık türü, kar parçacıkları, Buz Mabedi kapısı",
+      "ok": true,
+      "info": "{\"ids\":[\"frost_sentinel\",\"frost_wolf\",\"ice_wisp\",\"snow_shaman\"],\"flakes\":54,\"gate\":true}"
+    },
+    {
+      "name": "Buz Gardiyanı: telegraflı buz vuruşu / kıymıklar",
+      "ok": true,
+      "info": "{\"cast\":true,\"slowed\":false,\"gameSec\":7.5,\"realSec\":7.5}"
+    },
+    {
+      "name": "Buz Mabedi görev olmadan mühürlü (giriş yok)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Buz Mabedi: 1–2. bölüm temizlenir; galeri mühürsüz kapanmaz",
+      "ok": true,
+      "info": "[1,2]"
+    },
+    {
+      "name": "Her mühür kısa bir karşılaşma başlatır; 3 mühür boss kapısını açar",
+      "ok": true,
+      "info": "{\"st0\":[],\"afterStage3Kill\":[1,2],\"counts\":[3,2,3],\"cleared\":[1,2,3],\"seals\":[\"seal_a\",\"seal_b\",\"seal_c\"],\"bossDoor\":true}"
+    },
+    {
+      "name": "Donmuş Muhafız: II. faz Buz Mührü + 2 kristal; kristaller kırılınca kalkan düşer",
+      "ok": true,
+      "info": "{\"cast\":true,\"crystals\":2,\"shielded\":true,\"shieldAfter\":false,\"hpBefore\":33000,\"reset\":{\"died\":true,\"full\":true,\"entry\":66,\"cleared\":[1,2,3]},\"lootClaimed\":true,\"cleared4\":true,\"dungeons\":1}"
+    },
+    {
+      "name": "Mabette ölüm: boss tam cana döner, temizlenen bölümler korunur, kontrol noktasından devam",
+      "ok": true,
+      "info": "{\"died\":true,\"full\":true,\"entry\":66,\"cleared\":[1,2,3]}"
+    },
+    {
+      "name": "Donmuş Muhafız yenilir: koşu başına tek ödül, zindan sayacı",
+      "ok": true,
+      "info": "{\"cast\":true,\"crystals\":2,\"shielded\":true,\"shieldAfter\":false,\"hpBefore\":33000,\"reset\":{\"died\":true,\"full\":true,\"entry\":66,\"cleared\":[1,2,3]},\"lootClaimed\":true,\"cleared4\":true,\"dungeons\":1}"
+    },
+    {
+      "name": "Aynı koşuda ikinci boss ödülü verilmez (loot çoğaltma yok)",
+      "ok": true,
+      "info": "0"
+    },
+    {
+      "name": "Gönüllü çıkış koşuyu bitirir; tekrar giriş sınırsız",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Beceriler ekranından 5. aktif beceri 4'lü çubuğa yerleşir",
+      "ok": true,
+      "info": "[\"heavy_strike\",\"whirlwind\",\"iron_skin\",\"blade_rain\"]"
+    },
+    {
+      "name": "Ustalık Kitabı Lv.30 Rank 5 beceriye uygulanır ve tam 1 kitap tüketilir",
+      "ok": true,
+      "info": "{\"applied\":true,\"left\":0,\"before\":1}"
+    },
+    {
+      "name": "Av Geçmişi ekranı açılır",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Kılıç Yağmuru önündeki alanda birden çok hedefe vurur",
+      "ok": true,
+      "info": "{\"ok\":true,\"hit\":3}"
+    },
+    {
+      "name": "Konsol hatası yok (warrior V2 turu)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Mage Lv.25'te Zincir Yıldırım açılır",
+      "ok": true,
+      "info": "1"
+    },
+    {
+      "name": "Zincir Yıldırım ilk hedeften sonra sıçrar (≥3 hedef)",
+      "ok": true,
+      "info": "{\"ok\":true,\"hit\":4,\"pos\":[[126,0,\"ash_imp\",false],[163,31,\"ash_imp\",false],[203,0,\"ash_imp\",false],[243,30,\"ash_imp\",false]]}"
+    },
+    {
+      "name": "Konsol hatası yok (mage V2)",
+      "ok": true,
+      "info": ""
+    }
+  ]
+}

@@ -1,0 +1,338 @@
+{
+  "date": "2026-10-23T18:20:08.735Z",
+  "passed": 61,
+  "total": 61,
+  "results": [
+    {
+      "name": "HUD 16:9 640×360: ekran içinde",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "HUD 16:9 640×360: dokunma hedefleri ≥44px",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "HUD 16:9 640×360: buton çakışması yok",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Envanter paneli 640×360 ekrana sığar",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Konsol hatası yok (640×360)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "HUD 19.5:9 780×360: ekran içinde",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "HUD 19.5:9 780×360: dokunma hedefleri ≥44px",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "HUD 19.5:9 780×360: buton çakışması yok",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Envanter paneli 780×360 ekrana sığar",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Konsol hatası yok (780×360)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "HUD 20:9 800×360: ekran içinde",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "HUD 20:9 800×360: dokunma hedefleri ≥44px",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "HUD 20:9 800×360: buton çakışması yok",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Envanter paneli 800×360 ekrana sığar",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Konsol hatası yok (800×360)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "HUD 19.5:9 (iPhone 14) 844×390: ekran içinde",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "HUD 19.5:9 (iPhone 14) 844×390: dokunma hedefleri ≥44px",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "HUD 19.5:9 (iPhone 14) 844×390: buton çakışması yok",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Envanter paneli 844×390 ekrana sığar",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Konsol hatası yok (844×390)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "HUD 20:9 (Android) 915×412: ekran içinde",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "HUD 20:9 (Android) 915×412: dokunma hedefleri ≥44px",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "HUD 20:9 (Android) 915×412: buton çakışması yok",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Envanter paneli 915×412 ekrana sığar",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Konsol hatası yok (915×412)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Dikey ekranda \"telefonu yatay çevir\" ekranı",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Düşmana dokun → hedef seçilir ve yaklaşma başlar",
+      "ok": true,
+      "info": "{\"target\":true,\"approaching\":true}"
+    },
+    {
+      "name": "Joystick hareketi otomatik yaklaşmayı keser (≤ 2 kare)",
+      "ok": true,
+      "info": "1. karede"
+    },
+    {
+      "name": "Joystick bırakılınca yaklaşma kendiliğinden başlamaz; hedef korunur",
+      "ok": true,
+      "info": "{\"approaching\":false,\"target\":true}"
+    },
+    {
+      "name": "Menzile girince normal saldırı otomatik sürer ve hedef ölür",
+      "ok": true,
+      "info": "3.5 sn"
+    },
+    {
+      "name": "Hedef ölünce yeni hedef otomatik seçilmez",
+      "ok": true,
+      "info": "{\"target\":null,\"approaching\":false,\"kills\":1,\"exp\":13,\"gold\":23}"
+    },
+    {
+      "name": "Engelden görüş hattı geçmez (duvar arkasından saldırı yok)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Erişilemeyen hedefe sonsuz koşma yok (uyarı + kilit çözülür)",
+      "ok": true,
+      "info": "0.1 sn içinde durdu"
+    },
+    {
+      "name": "Zehirle ölüm hatasız; yeniden doğma çalışır",
+      "ok": true,
+      "info": "{\"dead\":true,\"poison\":null,\"revived\":true,\"errors\":[]}"
+    },
+    {
+      "name": "Görev yön okları hedefe giden yol üzerinde görünür",
+      "ok": true,
+      "info": "{\"goal\":{\"x\":1424,\"y\":720},\"arrows\":7,\"path\":38}"
+    },
+    {
+      "name": "Joystick halkasının çevresine dokunmak da yürütür",
+      "ok": true,
+      "info": "81 px sağa"
+    },
+    {
+      "name": "Karakter panelinde 4 stat ve Onayla kaydırmadan ekrana sığar",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Stat puanı 0'ın altına inmez; onaylanınca kaydedilir",
+      "ok": true,
+      "info": "{\"free0\":9,\"str0\":0,\"shown\":\"0\",\"str\":9}"
+    },
+    {
+      "name": "Geçit okunun 2 tile yanından harita geçişi olur",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Tüccar: cüzdan (gold) başlıkta görünür",
+      "ok": true,
+      "info": "{\"text\":\"5.000\",\"inView\":true}"
+    },
+    {
+      "name": "Satın alma onay ister; Vazgeç ile gold değişmez, onayla düşer",
+      "ok": true,
+      "info": "{\"g0\":5000,\"gAsk\":5000,\"gCancel\":5000,\"gBuy\":4910,\"wallet2\":\"4.910\"}"
+    },
+    {
+      "name": "Oto saldırı (kırmızı OTO) kapalıyken hedef kendiliğinden vurulmaz",
+      "ok": true,
+      "info": "{\"auto\":false,\"h0\":40,\"idle\":40}"
+    },
+    {
+      "name": "Büyük kılıç aktif saldırı: basınca en yakın hedefe vurur",
+      "ok": true,
+      "info": "40 → 12"
+    },
+    {
+      "name": "Kapat-aç: karakter, gold, görev, harita, envanter korunur",
+      "ok": true,
+      "info": "{\"name\":\"Kontrolcü\",\"level\":4,\"gold\":777,\"map\":\"forest\",\"kills\":1,\"bag\":2,\"q\":2,\"x\":3}"
+    },
+    {
+      "name": "Kayıttan dünyaya dönüş (aynı harita)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Hazır sprite paketleri yüklenir (Warrior: Fantasy Warrior, Cevher Rahibi: Evil Wizard 2)",
+      "ok": true,
+      "info": "{\"hero\":\"hero_warrior\",\"priest\":\"mon_ore_priest\",\"tex\":\"hero_warrior:idle\"}"
+    },
+    {
+      "name": "Performans: orman normal",
+      "ok": true,
+      "info": "oyun adımı 37.3/sn · ekran 37.3 FPS · 28 yaratık · bellek 117.3 MB (SwiftShader yazılım GPU)"
+    },
+    {
+      "name": "Performans: orman +30 kurt (saldırgan)",
+      "ok": true,
+      "info": "oyun adımı 34.6/sn · ekran 34.6 FPS · 39 yaratık · bellek 117.3 MB (SwiftShader yazılım GPU)"
+    },
+    {
+      "name": "Performans: düşük performans modu (30 FPS sınırı)",
+      "ok": true,
+      "info": "oyun adımı 24.5/sn (sınır 30) · ekran 56 FPS"
+    },
+    {
+      "name": "Performans: dungeon",
+      "ok": true,
+      "info": "oyun adımı 22.7/sn · ekran 22.7 FPS · 20 yaratık"
+    },
+    {
+      "name": "Golem büyük saldırıyı telegrafla işaretler",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Maden Golemi yenilebilir; bölüm 4 temizlenir",
+      "ok": true,
+      "info": "{\"dead\":true,\"goldGained\":224,\"claims\":1,\"secondGold\":0,\"cleared\":[4],\"lootClaimed\":true}"
+    },
+    {
+      "name": "Tek boss ölümünden birden fazla loot kazanılamaz",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Gönüllü çıkış koşuyu bitirir; tekrar giriş yeni koşu ve Golem",
+      "ok": true,
+      "info": "{\"runId\":\"runmvlaola031hfxa8ng\",\"golem\":true,\"cleared\":[]}"
+    },
+    {
+      "name": "Konsol hatası yok (kontrol/dungeon akışı)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "PWA: servis işçisi etkin",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "PWA: çevrimdışı yeniden açılış",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "PWA: manifest bağlı",
+      "ok": true,
+      "info": "http://localhost:4173/manifest.webmanifest"
+    },
+    {
+      "name": "Mage uzaktan saldırır ve normal büyü MP harcamaz",
+      "ok": true,
+      "info": "{\"dead\":true,\"mpUsed\":0,\"attackDistTiles\":4.7}"
+    },
+    {
+      "name": "Mage hazır sprite paketiyle çizilir (Wizard Pack)",
+      "ok": true,
+      "info": "hero_mage"
+    },
+    {
+      "name": "Konsol hatası yok (mage)",
+      "ok": true,
+      "info": ""
+    }
+  ],
+  "perf": [
+    {
+      "label": "orman normal",
+      "fps": 37.3,
+      "stepFps": 37.3,
+      "phaserFps": 41.1,
+      "memMB": 117.3,
+      "enemies": 28
+    },
+    {
+      "label": "orman +30 kurt (saldırgan)",
+      "fps": 34.6,
+      "stepFps": 34.6,
+      "phaserFps": 36.5,
+      "memMB": 117.3,
+      "enemies": 39
+    },
+    {
+      "label": "düşük performans modu (30 FPS sınırı)",
+      "fps": 56,
+      "stepFps": 24.5,
+      "phaserFps": 49,
+      "memMB": 117.3,
+      "enemies": 39
+    }
+  ]
+}
