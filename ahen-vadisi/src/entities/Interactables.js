@@ -1,6 +1,7 @@
 // Dokunulabilir dünya nesneleri: NPC, Yol Taşı, sunak, toplama düğümleri, görev nesneleri, Derin Ocak kapısı.
 // Dokununca karakter etkileşim menziline otomatik yaklaşır, sonra işlem/arayüz açılır.
 import Phaser from 'phaser';
+import { net } from '../online/gameServer.js';
 import { app } from '../core/app.js';
 import { bus } from '../core/events.js';
 import { TILE } from '../data/constants.js';
@@ -238,8 +239,16 @@ export class AltarObj extends Base {
     }
     bus.emit('confirm', {
       title: this.name, text: 'Sunağı uyandırırsan yaratık dalgaları saldıracak. Hepsini yenersen Sunak Tozu ve şansla Sunak Kristali kazanırsın.',
-      ok: 'Uyandır', onOk: () => this.start(),
+      ok: 'Uyandır', onOk: () => (this.scene.spawner?.net ? net.questEvent(this.o.id) : this.start()),
     });
+  }
+  // ortak dünya: sunak sunucuda; bitince bekleme süren dolmuşsa ödülünü al
+  netStart() { this.event = { net: true }; sound.play('altar'); bus.emit('toast', { text: `${this.name} uyandı! Dalga 1/${this.o.waves.length}`, kind: 'elite' }); }
+  netEnd(done) {
+    this.event = null;
+    if (!done) { bus.emit('toast', { text: `${this.name} sustu`, kind: 'info' }); return; }
+    if (!this.ready) { bus.emit('toast', { text: `${this.name} arındırıldı (sunağın senin için dinleniyor — ödül yok)`, kind: 'info' }); return; }
+    this.reward();
   }
   start() {
     this.event = { wave: 0, alive: [] };
@@ -271,7 +280,10 @@ export class AltarObj extends Base {
       this.scene.time.delayedCall(1200, () => this.spawnWave());
       return;
     }
-    // tamamlandı — tek seferlik ödül, sonra bekleme süresi
+    this.reward();
+  }
+  // tamamlandı — tek seferlik ödül, sonra bekleme süresi
+  reward() {
     const ch = app.char;
     ch.world.altarReadyAt[this.o.id] = ch.world.activeTime + ALTAR_COOLDOWN;
     const rewards = rollAltar(this.o.crystalChance, app.rng);
@@ -411,6 +423,13 @@ export class SealObj extends Base {
     if (this.broken) { bus.emit('toast', { text: `${this.name} zaten ${this.lever ? 'etkin' : 'kırıldı'}`, kind: 'info', short: true }); return; }
     if (currentStage(ch, sc.mapId) < this.stage) {
       bus.emit('toast', { text: this.lever ? 'Mekanizma, zindana giden kapı açılmadan çalışmaz.' : 'Mühür, galeriye giden yol açılmadan uyanmaz.', kind: 'info' });
+      return;
+    }
+    // ortak dünya (parti dungeon'u): mühür/mekanizma sunucuda; sonuç herkese bildirilir
+    if (sc.spawner?.net) {
+      if (this.lever) p.startChannel('Mekanizma çevriliyor…', 2.2, () => net.seal(this.o.id));
+      else if (sc.spawner.sealWaveAlive(this.o.id)) bus.emit('toast', { text: 'Mührün muhafızları hâlâ ayakta!', kind: 'warn', short: true });
+      else net.seal(this.o.id);
       return;
     }
     if (this.lever) {

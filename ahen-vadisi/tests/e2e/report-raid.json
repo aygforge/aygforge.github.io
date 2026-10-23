@@ -1,0 +1,87 @@
+{
+  "date": "2026-10-23T15:27:05.875Z",
+  "passed": 16,
+  "total": 16,
+  "results": [
+    {
+      "name": "İki oyuncu oyun sunucusuna bağlı",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Ticaret isteği karşı tarafta pencere açar",
+      "ok": true,
+      "info": "{\"reqR\":{\"ok\":true},\"ua\":\"e4bf6f02-5a51-4222-bb67-377fea994f23\",\"ub\":\"1ca0647d-1a41-4e2c-8fb2-c170a44774f9\",\"gift\":{\"uid\":\"imvl4hcyf412vmp261\",\"tid\":\"C01\"},\"readyA\":\"ready\",\"readyB\":\"ready\"}"
+    },
+    {
+      "name": "Kabul edince iki tarafta ticaret penceresi açılır",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Teklifler iki tarafta da görünür (eşya, malzeme, altın)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Ticaret tamamlanır: eşya B'ye, 120 altın B'ye, 5 iksir A'ya geçer; kimsede kopya kalmaz",
+      "ok": true,
+      "info": "{\"goldA\":380,\"goldB\":420,\"hpA\":5,\"hpB\":2,\"hpB0\":7}"
+    },
+    {
+      "name": "Ticaret sonrası kayıt hemen yazılır",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Açık dünya boss'u (Alfa Kurt) sunucuda: iki oyuncu aynı boss'u görür, yerelde ayrı boss doğmaz",
+      "ok": true,
+      "info": "31 31"
+    },
+    {
+      "name": "Boss mekaniği (Sürü Uluması) ve boss çubuğu arkadaşın ekranında da görünür",
+      "ok": true,
+      "info": "true true"
+    },
+    {
+      "name": "Sunucu olaylarının görselleri eksik doku (siyah kare) üretmez",
+      "ok": true,
+      "info": "eksik doku: 0"
+    },
+    {
+      "name": "Boss ölünce parti üyesi de boss ödülünü alır (tek seferlik ödül kimliğiyle)",
+      "ok": true,
+      "info": "[\"alpha_wolf:forest:mvl4hkzb:1\"]"
+    },
+    {
+      "name": "Parti dungeon'u: iki üye aynı örnekte, aynı yaratıklar (arkadaşın yanına \"Bölgesine git\" ile)",
+      "ok": true,
+      "info": "{\"can\":{\"ok\":true},\"a\":8,\"b\":8}"
+    },
+    {
+      "name": "A 1. bölümü temizleyince B'nin koşusu da ilerler ve kapı B'de de açılır",
+      "ok": true,
+      "info": "8 yaratık · Bölüm temizlendi: Eski Maden Girişi. Kapı açıldı!"
+    },
+    {
+      "name": "Partide olmayan oyuncu kendi ayrı dungeon örneğine girer (temizlenen bölüm onun için temiz değil)",
+      "ok": true,
+      "info": "{\"c\":8,\"cRun\":[]}"
+    },
+    {
+      "name": "Konsol hatası yok (oyuncu A)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Konsol hatası yok (oyuncu B)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Konsol hatası yok (oyuncu C)",
+      "ok": true,
+      "info": ""
+    }
+  ]
+}

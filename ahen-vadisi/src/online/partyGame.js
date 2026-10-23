@@ -8,6 +8,7 @@ import { online } from './index.js';
 import { Party, Lobby } from './party.js';
 import { createRealtimeTransport } from './realtime.js';
 import { net, createServerTransport } from './gameServer.js';
+import { isDungeonUnlocked } from '../systems/dungeon.js';
 
 const KEY = 'ahen_party';
 const REJOIN_MS = 30 * 60 * 1000;     // yenileme / menüye dönüşten sonra 30 dk içinde aynı partiye kendiliğinden dön
@@ -155,12 +156,16 @@ export const partyGame = {
     const st = m?.st;
     if (!w || !p || !ch) return { ok: false, msg: 'Oyunda değilsin' };
     if (!st || !m.fresh) return { ok: false, msg: 'Konumu bilinmiyor' };
-    if (st.dg) return { ok: false, msg: 'Arkadaşın bir dungeon\'da — birlikte dungeon sonraki aşamada' };
-    if (w.mapDef.dungeon) return { ok: false, msg: 'Önce dungeon\'dan çık' };
+    if (st.dg) {
+      // parti dungeon'u: oyun sunucusunda partinin ortak örneğine katıl (dungeon kilidi kendi karakterinde açık olmalı)
+      if (!net.ready) return { ok: false, msg: 'Birlikte dungeon için oyun sunucusuna bağlı olmalısın' };
+      if (!isDungeonUnlocked(ch, st.m)) return { ok: false, msg: `${mapName(st.m)} senin için henüz açılmadı` };
+      if (w.mapDef.dungeon && w.mapId !== st.m) return { ok: false, msg: 'Önce bulunduğun dungeon\'dan çık' };
+    } else if (w.mapDef.dungeon) return { ok: false, msg: 'Önce dungeon\'dan çık' };
     if (p.dead) return { ok: false, msg: 'Önce yeniden doğ' };
     if (p.inCombat()) return { ok: false, msg: 'Savaş sırasında olmaz' };
     if (!MAPS[st.m]) return { ok: false, msg: 'Bilinmeyen harita' };
-    if (st.m !== w.mapId) {
+    if (st.m !== w.mapId && !st.dg) {
       const known = Object.entries(WAYSTONES).some(([id, ws]) => ws.map === st.m && ch.world.waystones.includes(id));
       if (!known) return { ok: false, msg: `${mapName(st.m)} henüz keşfedilmedi (Yol Taşı'nı bul)` };
     }
@@ -182,7 +187,7 @@ export const partyGame = {
       return { ok: true };
     }
     bus.emit('closePanels');
-    w.changeMap(st.m, null, { pos: { x: Math.floor(st.x / TILE), y: Math.floor(st.y / TILE) } });
+    w.changeMap(st.m, null, { pos: { x: Math.floor(st.x / TILE), y: Math.floor(st.y / TILE) }, enterDungeon: !!st.dg });
     return { ok: true };
   },
 };

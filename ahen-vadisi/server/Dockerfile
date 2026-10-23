@@ -8,6 +8,7 @@ RUN cd server && npm ci --omit=dev
 COPY server/ server/
 COPY src/data/ src/data/
 COPY src/world/mapBuilder.js src/world/grid.js src/world/tileRegistry.js src/world/
+COPY src/systems/ src/systems/
 COPY src/core/rng.js src/core/
 COPY public/online.json public/
 ENV PORT=8787

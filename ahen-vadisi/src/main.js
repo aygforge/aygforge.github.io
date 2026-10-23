@@ -19,6 +19,8 @@ import { online } from './online/index.js';
 import { partyGame } from './online/partyGame.js';
 import { net } from './online/gameServer.js';
 import { bindPartyUi } from './ui/panels/party.js';
+import { bindTradeUi } from './ui/panels/trade.js';
+import { trade } from './online/trade.js';
 
 let hud = null;
 
@@ -27,6 +29,7 @@ async function start() {
   ui.init(root);
   bindPanelEvents();
   bindPartyUi();
+  bindTradeUi();
   // yükleme ekranı
   const bar = h('i');
   const loading = h('div', { class: 'screen', id: 'loading' }, h('div', { class: 'logo' }, 'AHEN VADİSİ'), h('div', { class: 'bar' }, bar), h('div', { class: 'small muted', id: 'loading-text' }, 'Dünya çiziliyor…'));
@@ -44,7 +47,7 @@ async function start() {
   online.init().catch((e) => console.warn('[Ahen] çevrimiçi katman başlatılamadı', e));
   partyGame.init();
   net.init();
-  if (app.dev) { window.__AHEN_ONLINE = online; window.__AHEN_PARTY = partyGame; window.__AHEN_NET = net; }
+  if (app.dev) { window.__AHEN_ONLINE = online; window.__AHEN_PARTY = partyGame; window.__AHEN_NET = net; window.__AHEN_TRADE = trade; }
 
   const game = new Phaser.Game({
     type: Phaser.AUTO,

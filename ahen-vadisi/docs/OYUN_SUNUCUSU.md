@@ -1,19 +1,35 @@
-# Ortak dünya oyun sunucusu (4.4.0)
+# Ortak dünya oyun sunucusu (4.4.0+, raid ve ticaret 4.5.0)
 
-Bu sunucuya bağlanan herkes **aynı dünyayı** görür: açık haritalardaki yaratıklar sunucuda yaşar. Bir yaratığa vurduğunda
+Bu sunucuya bağlanan herkes **aynı dünyayı** görür: açık haritalardaki yaratıklar ve boss'lar sunucuda yaşar, partiler
+dungeon'ları birlikte yapar, oyuncular ticaret yapar. Bir yaratığa vurduğunda
 arkadaşın da canının düştüğünü görür, öldürünce ikiniz de ölümü görürsünüz. Partideyseniz EXP ve altını paylaşırsınız.
 
 Supabase giriş/kayıt, bulut kaydı ve liderlik için kullanılmaya devam eder. Oyun sunucusu ayrı ve küçük bir Node.js
 programıdır (`server/`). Ücretsiz olarak Render'da çalışır.
 
-## Neler ortak, neler değil (bu sürüm)
+## Neler ortak (4.5.0)
 
-| Ortak (herkes aynısını görür) | Henüz kişisel (yalnız sen görürsün) |
+| Ortak (sunucuda, herkes aynısını görür) | Notlar |
 |---|---|
-| Açık haritalardaki kamp yaratıkları ve elitler (yetenekleri, telegrafları, ateş/buz izleri dahil) | Açık dünya boss'ları (Alfa Kurt, Kül Devi, Mezar Komutanı, Fırtına Tiranı) |
-| Yaratığın kime saldırdığı, canı, ölümü, yeniden doğması | Dungeon'lar (her oyuncunun kendi koşusu) |
-| Elitin doğması (kampında yeterli yaratık ölünce, herkese duyurulur) | Görev olayları (kervan, kamp savunması), görev avları, sunak dalgaları |
-| Bölgedeki tüm oyuncular haritada görünür (parti üyeleri yeşil, diğerleri mavi) | Eşya ticareti (sonraki aşama) |
+| Açık haritalardaki kamp yaratıkları, elitler ve **boss'lar** (Alfa Kurt, Kül Devi, Mezar Komutanı, Fırtına Tiranı) | Boss mekanikleri (çağrılar, kalkan kristalleri, yer tehlikeleri, fazlar) alandaki herkesi etkiler |
+| **Dungeon'lar parti başına ayrı örnek** (Derin Ocak, Buz Mabedi, Karanlık Mahzen, Gökyarık Mabedi) | Partideki herkes aynı örnekte: bölümler, kapılar, mühürler/mekanizmalar, muhafız dalgaları, boss. Partisiz oyuncunun kendi örneği olur |
+| **Görev olayları:** refakat (kervan/yolcu), alan savunması, sunak dalgaları, görev avları | Bölgede biri başlatınca herkes görür ve yardım eder; tamamlanınca görevi olan herkesin görev hedefi işler |
+| **Ticaret:** çevrimiçi oyuncularla eşya, malzeme ve altın takası | Kilitle → Onayla → iki tarafta aynı anda uygulanır |
+
+**Dungeon kuralları:**
+- Her oyuncunun dungeon kilidi kendi karakterinde açık olmalı. Kapıdan girersin ya da parti penceresinden arkadaşının
+  yanına "Bölgesine git" dersin.
+- Örneği ilk giren oyuncunun koşu durumu kurar. Sonradan gelenlerin koşusu örneğe uyar: temizlenen bölümler, kırılan
+  mühürler.
+- Boss ganimeti her oyuncuya kendi koşusunda bir kez düşer (yerel kural).
+- Ölünce kendi kontrol noktanda doğarsın. Partide herkes bayılırsa boss eve döner ve sıfırlanır.
+
+**Ticaret kuralları:**
+- Kilitli eşyalar ve görev eşyaları takas edilemez.
+- Teklif değişirse iki tarafın kilidi açılır.
+- Takastan hemen önce her iki oyun da "verebilir miyim, çantama sığar mı" diye kontrol eder; biri hayır derse ticaret
+  iptal olur ve hiçbir şey değişmez.
+- Takas biter bitmez kayıt yazılır.
 
 **Ödül kuralı:**
 - Yaratığa hasar veren her grup ödül alır. Grup, bir parti ya da partisiz tek bir oyuncudur.
@@ -23,8 +39,10 @@ programıdır (`server/`). Ücretsiz olarak Render'da çalışır.
 - Görev öldürme sayacı, paylaşan herkese işler.
 - Partisiz ve hiç vurmayan bir oyuncu, başkasının öldürdüğü yaratıktan ödül almaz.
 
-Karakterler hâlâ oyuncunun cihazında (ve bulut kaydında) durur. Sunucu yalnız dünyayı yönetir. Sunucu kapanırsa ya da
-uyursa oyun **durmaz**: tek oyunculu devam eder, sunucu dönünce kendiliğinden ortak dünyaya geçer.
+**Kalan sınırlar:** karakterler hâlâ oyuncunun cihazında (ve bulut kaydında) durur; oyuncu hasarını istemci hesaplar
+(hileye karşı korumalı değil). Dungeon boss'larının canı parti büyüklüğüne göre artmaz.
+
+Sunucu kapanırsa ya da uyursa oyun **durmaz**: tek oyunculu devam eder, sunucu dönünce kendiliğinden ortak dünyaya geçer.
 
 **Test grubunun sunucusu (4.4.1'den beri oyuna gömülü):** `https://ahen-vadisi-sunucu.onrender.com`
 (durum: `/health`, oyun bağlantısı: `wss://ahen-vadisi-sunucu.onrender.com/ws`).

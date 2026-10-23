@@ -1,6 +1,6 @@
 {
   "name": "ahen-vadisi",
-  "version": "4.4.1",
+  "version": "4.5.0",
   "private": true,
   "description": "Ahen Vadisi — mobil öncelikli HTML5 Old School Fantasy RPG (V1)",
   "type": "module",
@@ -9,7 +9,8 @@
     "build": "vite build",
     "preview": "vite preview --host",
     "test": "vitest run",
-    "test:e2e": "node tests/e2e/run-e2e.mjs && node tests/e2e/run-e2e-v2.mjs && node tests/e2e/run-e2e-v3.mjs && node tests/e2e/run-e2e-v4.mjs && node tests/e2e/run-e2e-save.mjs && node tests/e2e/run-e2e-online.mjs && node tests/e2e/run-e2e-party.mjs && node tests/e2e/run-e2e-world.mjs",
+    "test:e2e": "node tests/e2e/run-e2e.mjs && node tests/e2e/run-e2e-v2.mjs && node tests/e2e/run-e2e-v3.mjs && node tests/e2e/run-e2e-v4.mjs && node tests/e2e/run-e2e-save.mjs && node tests/e2e/run-e2e-online.mjs && node tests/e2e/run-e2e-party.mjs && node tests/e2e/run-e2e-world.mjs && node tests/e2e/run-e2e-raid.mjs",
+    "test:e2e:raid": "node tests/e2e/run-e2e-raid.mjs",
     "test:e2e:world": "node tests/e2e/run-e2e-world.mjs",
     "server": "node server/index.mjs",
     "test:e2e:party": "node tests/e2e/run-e2e-party.mjs",

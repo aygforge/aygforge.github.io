@@ -5,6 +5,7 @@
 // Kapsam (S1): normal yaratıklar + elitler (V1–V4 yetenekleri). Boss'lar ve dungeon'lar istemcide (kişisel) kalır.
 import { TILE } from '../../src/data/constants.js';
 import { inCircle, inBeam, inCone } from './geom.mjs';
+import { makeBossBehavior } from './bosses.mjs';
 
 const STORM = 0x9ad0ff, VOID = 0xa070e0;
 let NEXT_ID = 1;
@@ -40,6 +41,13 @@ export class SEnemy {
     this.moving = false;
     this.hidden = false;         // Çatlak Kanat dalışı (yarı saydam)
     this.tint = 0;               // öfke / kalkan rengi (istemci boyar)
+    this.aura = 0;               // kalkan parıltısı rengi (0: yok)
+    this.defMult = 1;            // savunma çarpanı (Fırtına Tiranı'nın çatlak zırhı)
+    this.dmgMult = 1;            // saldırı çarpanı (Lanetli Bayrak yakınındaki çağrılmışlar)
+    this.summoned = !!opts.summoned;
+    this.stage = opts.stage || 0;
+    this.age = 0;
+    this.behavior = makeBossBehavior(this);
   }
 
   get now() { return this.z.clock; }
@@ -113,6 +121,17 @@ export class SEnemy {
   update(dt) {
     if (this.dead) return;
     const now = this.now;
+    // boss davranışı (istemcideki gibi her şeyden önce; hedef = o anki hedef oyuncu)
+    if (this.behavior && (this.state === 'chase' || this.state === 'attack')) {
+      let p = this.targetPlayer();
+      if (!this.validTarget(p)) p = this.retarget();
+      if (p && this.behavior.update(dt, p)) return;
+    }
+    // süreli çağrılar (Sürü Kurdu, Kor Yavrusu, Kemik Asker) ömrü dolunca dağılır
+    if (this.summoned && this.tpl.lifetime) {
+      this.age += dt;
+      if (this.age > this.tpl.lifetime) { this.z.fx('burst', this.x, this.y - 10, { tint: 0xb0a090 }); this.z.despawn(this); return; }
+    }
     if (this.reduceUntil && now >= this.reduceUntil) { this.reduce = 0; this.reduceUntil = 0; this.tint = this.enraged ? 0xff8a6a : 0; }
     this.moving = false;
     if (now < this.stunUntil) return;
@@ -120,6 +139,12 @@ export class SEnemy {
     if (this.casting) { this.casting.t -= dt; if (this.casting.t <= 0) { const c = this.casting; this.casting = null; c.fn(); } return; }
     const ai = this.tpl.ai;
     if (ai === 'static') return;
+    // görev olayı yaratığı korunan hedefe saldırır; bir oyuncu ona vurup yakında kalırsa oyuncuya döner
+    const obj = this.objective;
+    if (obj && !obj.dead && obj.running) {
+      const p = this.targetPlayer();
+      if (!(now - this.lastHitAt < 3500 && p && !p.dead && this.distTo(p) < 4.5 * TILE)) { this.updateVsObjective(dt, obj); return; }
+    }
     const dHome = Math.hypot(this.x - this.home.x, this.y - this.home.y);
 
     switch (this.state) {
@@ -183,6 +208,8 @@ export class SEnemy {
         break;
       }
       case 'return': {
+        // çağrılmışlar ve görev olayı yaratıkları savaş bitince dağılır; haritada kalıcı tehlike bırakmaz
+        if ((this.summoned || this.questSpawn) && this.tpl.ai !== 'static') { this.z.despawn(this); return; }
         this.returnT = (this.returnT || 0) + dt;
         if (this.returnT > 7) { this.x = this.home.x; this.y = this.home.y; }
         const done = Math.hypot(this.home.x - this.x, this.home.y - this.y) < Math.max(8, this.radius);
@@ -190,6 +217,7 @@ export class SEnemy {
           this.returnT = 0;
           this.state = 'idle'; this.hp = this.maxHp; this.engaged = false; this.path = null;
           this.threat.clear(); this.dmgBy.clear(); this.target = null;
+          this.behavior?.reset?.();
         } else {
           this.hp = Math.min(this.maxHp, this.hp + this.maxHp * 0.2 * dt);
           if (!this.followPathTo(this.home.x, this.home.y, dt, 1.4)) { this.x = this.home.x; this.y = this.home.y; }
@@ -198,6 +226,21 @@ export class SEnemy {
       }
       default: break;
     }
+  }
+
+  updateVsObjective(dt, obj) {
+    const d = Math.hypot(obj.x - this.x, obj.y - this.y) - obj.radius;
+    const range = this.tpl.projectile ? Math.min(this.tpl.attackRange * TILE, 4 * TILE) : this.tpl.attackRange * TILE;
+    if (d > range) { if (!this.followPathTo(obj.x, obj.y, dt, 1)) this.moveToward(obj.x, obj.y, dt, 1); return; }
+    this.setFacing(obj.x - this.x);
+    this.attackTimer -= dt;
+    if (this.attackTimer > 0) return;
+    this.attackTimer = this.tpl.attackInterval * this.atkMult;
+    this.anim('atk');
+    this.windup = { t: 0.28, fn: () => {
+      if (this.dead || obj.dead || !obj.running) return;
+      obj.takeHit(Math.max(1, Math.round(this.tpl.atk * (this.tpl.normalCoef ?? 1) * (0.45 + Math.random() * 0.15))));
+    } };
   }
 
   startReturn() {
@@ -270,7 +313,7 @@ export class SEnemy {
     const extra = {};
     if (t.poison && Math.random() < t.poison.chance) extra.poison = t.poison;
     if (t.slow && Math.random() < t.slow.chance) extra.slow = [t.slow.pct, t.slow.dur];
-    this.z.hit(uid, this, { coef, n: 1, ...extra });
+    this.z.hit(uid, this, { coef: coef * this.dmgMult, n: 1, ...extra });
   }
 
   // alan isabeti: bölgedeki her canlı oyuncu için test
@@ -539,10 +582,11 @@ export class SEnemy {
   // bayrak bitleri: 1 hareket, 2 savaşta, 4 gizli (dalış), 8 sersem
   snap() {
     const fl = (this.moving ? 1 : 0) | (this.engaged ? 2 : 0) | (this.hidden ? 4 : 0) | (this.now < this.stunUntil ? 8 : 0);
-    return [this.id, Math.round(this.x), Math.round(this.y), Math.max(0, Math.ceil(this.hp)), this.facing, fl, Math.round(this.reduce * 100), this.tint];
+    return [this.id, Math.round(this.x), Math.round(this.y), Math.max(0, Math.ceil(this.hp)), this.facing, fl, Math.round(this.reduce * 100), this.tint,
+      this.behavior?.phase?.() || 0, this.aura, Math.round(this.defMult * 100)];
   }
 
   full() {
-    return { id: this.id, tpl: this.tpl.id, x: Math.round(this.x), y: Math.round(this.y), hp: Math.ceil(this.hp), mhp: this.maxHp, f: this.facing };
+    return { id: this.id, tpl: this.tpl.id, x: Math.round(this.x), y: Math.round(this.y), hp: Math.ceil(this.hp), mhp: this.maxHp, f: this.facing, st: this.stage || 0, sm: this.summoned ? 1 : 0 };
   }
 }

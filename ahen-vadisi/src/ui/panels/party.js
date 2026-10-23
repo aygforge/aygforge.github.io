@@ -9,6 +9,8 @@ import { online } from '../../online/index.js';
 import { partyGame, mapName } from '../../online/partyGame.js';
 import { PARTY_MAX } from '../../online/party.js';
 import { openOnline } from './online.js';
+import { trade } from '../../online/trade.js';
+import { net } from '../../online/gameServer.js';
 
 const toast = (text, kind = 'info') => bus.emit('toast', { text, kind });
 const clsName = (c) => CLASSES[c]?.name || c || '?';
@@ -83,6 +85,7 @@ function renderParty(box) {
   for (const x of others) {
     box.append(h('div', { class: 'row small', 'data-testid': 'party-online-row' },
       h('span', { class: 'grow' }, h('b', {}, x.nickname), x.char_name ? ` — ${x.char_name} (${clsName(x.cls)}) Lv.${x.level}` : '', ` · ${mapName(x.map)}`),
+      net.ready ? h('button', { class: 'btn small', 'data-testid': 'party-trade', onTap: () => { const r = trade.request(x.user_id); if (!r.ok) toast(r.msg, 'warn'); } }, 'Ticaret') : null,
       inParty.has(x.user_id) ? h('span', { class: 'tiny muted' }, 'partide')
         : h('button', { class: 'btn small', 'data-testid': 'party-invite', onTap: () => { const r = pg.invite(x.user_id); toast(r.ok ? `${x.nickname} davet edildi` : r.msg, r.ok ? 'ok' : 'warn'); } }, 'Davet et')));
   }

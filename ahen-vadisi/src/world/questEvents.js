@@ -8,6 +8,7 @@ import { bus } from '../core/events.js';
 import { TILE } from '../data/constants.js';
 import { eventAvailable, eventDone, onEventComplete } from '../systems/quests.js';
 import { sound } from '../audio/sound.js';
+import { net } from '../online/gameServer.js';
 
 // Ortak: korunan hedef (HP çubuğu, etiket, darbe alma)
 class Guarded {
@@ -107,6 +108,40 @@ class Guarded {
   }
 
   reset() { this.hp = this.maxHp; this.dead = false; }
+
+  // ---------------------------------------------------------------- ortak dünya (olay sunucuda koşar)
+  get net() { return !!this.scene.spawner?.net; }
+  netState(ev) {
+    this.x = ev.x; this.y = ev.y; this.hp = ev.hp; this.maxHp = ev.mhp || this.maxHp;
+    this.running = !!ev.run; this.atEnd = !!ev.end; if (ev.wave) this.waveNo = ev.wave;
+    this.sync?.();
+    this.drawBar();
+  }
+  netStart(ev) {
+    this.running = true;
+    if (ev.nick) bus.emit('toast', { text: `${ev.nick}: ${this.o.name} olayı başladı — yardım et!`, kind: 'elite' });
+    sound.play('quest');
+    this.drawBar();
+  }
+  netDone(ev) {
+    this.running = false;
+    const kind = this.kind === 'escort' ? 'escort' : 'defend';
+    const ch = app.char;
+    const ups = eventAvailable(ch, kind, this.o.id) ? onEventComplete(ch, kind, this.o.id) : [];
+    for (const u of ups) bus.emit('questProgress', u);
+    sound.play('victory');
+    this.scene.fx.lootBeam(this.x, this.y, 0x80f080);
+    bus.emit('toast', { text: ev.s || `${this.o.name} tamamlandı!`, kind: 'level' });
+    this.drawBar();
+    if (ups.length) { app.changed('quest'); app.requestSave('questEvent', true); this.scene.refreshMarks(); }
+  }
+  netFail(ev) {
+    this.running = false;
+    sound.play('error');
+    bus.emit('toast', { text: ev.s || `${this.o.name} başarısız`, kind: 'warn' });
+    this.reset();
+    this.drawBar();
+  }
 }
 
 // ------------------------------------------------------------------------------------------------ Refakat
@@ -163,7 +198,7 @@ export class EscortObj extends Guarded {
     bus.emit('confirm', {
       title: this.o.name,
       text: this.o.intro || 'Refakat: kervan yalnız SEN YAKININDAYKEN ilerler. Yolda pusu kurulabilir; saldırganları kervana ulaşmadan durdur. Kervanın canı biterse görev yeniden denenebilir.',
-      ok: 'Yola çık', onOk: () => this.begin(),
+      ok: 'Yola çık', onOk: () => (this.net ? net.questEvent(this.o.id) : this.begin()),
     });
   }
 
@@ -199,6 +234,7 @@ export class EscortObj extends Guarded {
   update(dt) {
     const sc = this.scene, p = sc.player;
     this.glow.setAlpha(!this.running && this.available ? 0.35 + Math.sin(sc.clock / 300) * 0.15 : 0);
+    if (this.net) { this.sync(); return; }   // sunucu yürütür (netState)
     if (!this.running) { this.sync(); return; }
     if (p.dead) { this.fail('Bayıldın. Refakat yeniden denenebilir.'); return; }
     const frac = this.total ? this.node / this.total : 1;
@@ -260,7 +296,7 @@ export class DefenseObj extends Guarded {
     bus.emit('confirm', {
       title: this.o.name,
       text: this.o.intro || `Savunma: ${this.o.waves.length} düşman dalgası ${this.o.name} hedefine saldıracak. Korunan hedefin canı çubukta görünür; düşerse görev yeniden denenebilir. Bu düşmanlar EXP/ganimet vermez.`,
-      ok: 'Hazırım', onOk: () => this.begin(),
+      ok: 'Hazırım', onOk: () => (this.net ? net.questEvent(this.o.id) : this.begin()),
     });
   }
 
@@ -283,7 +319,7 @@ export class DefenseObj extends Guarded {
   update() {
     const sc = this.scene, p = sc.player;
     this.glow.setAlpha(!this.running && this.available ? 0.35 + Math.sin(sc.clock / 300) * 0.15 : 0);
-    if (!this.running) return;
+    if (this.net || !this.running) return;
     if (p.dead) { this.fail('Bayıldın. Savunma yeniden denenebilir.'); return; }
     if (Math.hypot(p.x - this.x, p.y - this.y) > 18 * TILE) { this.fail(`${this.o.name} savunmasız bırakıldı. Yeniden denenebilir.`); return; }
     if (this.aliveWave().length) return;

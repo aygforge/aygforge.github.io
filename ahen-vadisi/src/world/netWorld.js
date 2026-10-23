@@ -5,8 +5,11 @@
 import { app } from '../core/app.js';
 import { bus } from '../core/events.js';
 import { ENEMIES } from '../data/enemies.js';
+import Phaser from 'phaser';
 import { Enemy } from '../entities/Enemy.js';
 import { applyKill } from '../systems/rewards.js';
+import { claimBossLoot, bossKillId, dungeonOfBoss, breakSeal, clearStage, getRun, bossStage } from '../systems/dungeon.js';
+import { onDungeonStage } from '../systems/quests.js';
 import { net } from '../online/gameServer.js';
 import { sound } from '../audio/sound.js';
 
@@ -21,7 +24,11 @@ export class NetEnemy extends Enemy {
     this.maxHp = full.mhp; this.hp = full.hp;
     this.tx = full.x; this.ty = full.y;
     this.setFacing(full.f || 1);
-    this.flags = 0; this.netTint = 0;
+    this.flags = 0; this.netTint = 0; this.netPhase = 0; this.netAura = 0;
+    this.stage = full.st || 0;
+    this.summoned = !!full.sm;
+    // boss çubuğu faz ve kalkan bilgisini sunucudan okur (istemci boss davranışı çalışmaz)
+    this.behavior = { phase: () => this.netPhase || 1, update: () => false, reset() {}, onDeath: () => this.aura?.destroy() };
     // oyuncunun becerileri yavaşlatma/sersemletmeyi yerel alanlara yazar → sunucuya da bildir
     let slowUntil = 0, stunUntil = 0;
     Object.defineProperty(this, 'slowUntil', { get: () => slowUntil, set: (v) => { slowUntil = v; this.queueEffect(); }, configurable: true });
@@ -57,7 +64,10 @@ export class NetEnemy extends Enemy {
   }
 
   applySnap(s) {
-    const [, x, y, hp, f, fl, red, tint] = s;
+    const [, x, y, hp, f, fl, red, tint, phase, aura, dm] = s;
+    this.netPhase = phase || 0;
+    if (dm != null) { const k = dm / 100; this.def = Math.round(this.tpl.def * k); this.mdef = Math.round(this.tpl.mdef * k); }
+    if ((aura || 0) !== this.netAura) this.setAura(aura || 0);
     this.tx = x; this.ty = y;
     if (hp < this.hp) this.onDamaged();
     this.hp = hp;
@@ -68,6 +78,15 @@ export class NetEnemy extends Enemy {
     if ((tint || 0) !== this.netTint) { this.netTint = tint || 0; this.applyTint(); }
     this.sprite.setAlpha(fl & 4 ? 0.5 : 1);
     this.drawBar();
+  }
+
+  // kalkan / bayrak parıltısı
+  setAura(color) {
+    this.netAura = color;
+    this.aura?.destroy(); this.aura = null;
+    if (!color) return;
+    this.aura = this.scene.add.image(0, -this.height / 2, 'light_white').setScale(this.tpl.kind === 'boss' ? 2 : 1.4).setAlpha(0.5).setTint(color).setBlendMode(Phaser.BlendModes.ADD);
+    this.container.addAt(this.aura, 0);
   }
 
   update(dt) {
@@ -104,6 +123,7 @@ export class NetWorld {
   constructor(scene) {
     this.scene = scene;
     this.byId = new Map();
+    this.hz = new Map();
     this.players = [];       // [uid, x, y, f, mv, hp, d, a, lv, cls, nick, name]
     this.playersAt = 0;
     this.active = false;
@@ -111,7 +131,7 @@ export class NetWorld {
   }
 
   // sahne açılırken: sunucu bağlıysa ve harita ortaksa yaratıklar sunucudan beklenir (yerel kamp yaratığı doğmaz)
-  get expectShared() { return net.ready && !this.scene.mapDef.dungeon; }
+  get expectShared() { return net.ready; }
 
   attach(m) {
     if (m.map !== this.scene.mapId) return;
@@ -119,6 +139,7 @@ export class NetWorld {
     this.active = true;
     this.scene.spawner.goNet();
     for (const e of m.e) this.add(e);
+    if (m.dg) this.syncDungeon(m.dg, true);
     bus.emit('netWorld', true);
   }
 
@@ -176,7 +197,9 @@ export class NetWorld {
           case 'tg': fx.telegraph(ev.s, ev.ms, ev.c); break;
           case 'fx': this.fxEvent(ev); break;
           case 'tx': fx.text(ev.x, ev.y, ev.s, { color: ev.c, size: ev.z || 13 }); if (ev.snd) sound.play(ev.snd); break;
-          case 'hz': cb.groundHazard({ x: ev.x, y: ev.y, r: ev.r, dur: ev.dur, warn: ev.warn, key: ev.key, tint: ev.tint, visual: true }); break;
+          case 'hz': { const hz = cb.groundHazard({ x: ev.x, y: ev.y, r: ev.r, dur: ev.dur, warn: ev.warn, key: ev.key, tint: ev.tint, visual: true }); if (ev.id) this.hz.set(ev.id, hz); break; }
+          case 'hzc': for (const id of ev.ids || []) { const hz = this.hz.get(id); if (hz) { hz.warn = 0; hz.left = 0; this.hz.delete(id); } } break;
+          case 'ann': fx.text(ev.x, ev.y - 90, ev.s, { color: ev.c, size: 16, rise: 26, dur: 1800 }); bus.emit('bossAnnounce', ev.s); break;
           case 'sh': cb.fallingShard({ x: ev.x, y: ev.y, r: ev.r, delay: ev.delay, style: ev.style, visual: true }); break;
           case 'pj': this.projectile(ev); break;
           case 'a': this.byId.get(ev.e)?.playAnim('atk'); break;
@@ -184,6 +207,10 @@ export class NetWorld {
           case 'die': { const e = this.byId.get(ev.e); if (e) { e.netDie(); this.byId.delete(ev.e); } break; }
           case 'kill': this.reward(ev); break;
           case 'note': bus.emit('toast', { text: ev.s, kind: ev.kind || 'info' }); break;
+          case 'dg': this.dungeonEvent(ev); break;
+          case 'qe': { const o = this.objOf(ev.id); if (!o) break; if (ev.op === 'start') o.netStart?.(ev); else if (ev.op === 'done') o.netDone?.(ev); else if (ev.op === 'fail') o.netFail?.(ev); break; }
+          case 'qeo': this.objOf(ev.id)?.netState?.(ev); break;
+          case 'alt': { const o = this.objOf(ev.id); if (!o) break; if (ev.op === 'start') o.netStart?.(); else o.netEnd?.(ev.op === 'done'); break; }
           default: break;
         }
       } catch (err) {
@@ -195,13 +222,18 @@ export class NetWorld {
   fxEvent(ev) {
     const sc = this.scene, o = ev.o || {};
     if (ev.key === 'beam_line') sc.combat.beamFlash?.(ev.x, ev.y, o.angle, o.len, o.width, o.tint);
+    else if (ev.key === 'none') { /* yalnız ses/sarsıntı */ }
+    else if (ev.key === 'burst') sc.fx.burst(ev.x, ev.y, o.tint || 0xffffff, o.n || 18, 160, 500);
+    else if (!sc.textures.exists('fx_' + ev.key)) { /* bilinmeyen efekt: çizme */ }
     else {
       sc.fx.sprite(ev.key, ev.x, ev.y, { scale: o.scale || 1, rotation: o.rotation || 0, tint: o.tint || null });
       if (o.twin) sc.fx.sprite(ev.key, ev.x, ev.y, { scale: o.scale || 1, rotation: Math.PI, tint: o.tint || null });
     }
     if (o.snd) sound.play(o.snd);
-    if (o.shake && this.near(ev.x, ev.y, 8 * 32)) sc.fx.shake(0.006, 160);
+    if (o.shake && this.near(ev.x, ev.y, 8 * 32)) sc.fx.shake(o.shake > 1 ? 0.014 : 0.006, o.shake > 1 ? 400 : 160);
   }
+
+  objOf(id) { return this.scene.objects.find((o) => o.o?.id === id) || null; }
 
   near(x, y, r) { const p = this.scene.player; return p && Math.hypot(p.x - x, p.y - y) <= r; }
 
@@ -225,19 +257,89 @@ export class NetWorld {
     if (ev.poison) cb.poisonPlayer(e, ev.poison);
     if (ev.slow) cb.slowPlayer(ev.slow[0], ev.slow[1]);
     if (ev.curse) cb.cursePlayer(ev.curse[0], ev.curse[1]);
+    const p = sc.player;
+    if (!p || p.dead) return;
+    if (ev.kb) p.knockback?.(ev.kb[0], ev.kb[1]);
+    if (ev.stun) { p.stun?.(ev.stun); if (ev.say) sc.fx.text(p.x, p.y - 84, ev.say, { color: '#c8f0ff', size: 13 }); }
+    if (ev.pslow) p.slow?.(ev.pslow[0], ev.pslow[1]);
   }
 
   // ölüm ödülü (hasar verdin ya da partin paylaştı): EXP/altın payı + kendi ganimet zarın + görev sayacı
   reward(ev) {
     const sc = this.scene, ch = app.char;
     if (!ch || !ENEMIES[ev.tpl]) return;
-    const res = applyKill(ch, ev.tpl, { share: ev.share ?? 1 }, sc.combat.rng);
+    const tpl = ENEMIES[ev.tpl];
+    let res;
+    const dId = dungeonOfBoss(ev.tpl);
+    if (dId && sc.mapId === dId) {
+      // zindan bossu: koşu başına tek ganimet (her oyuncunun kendi koşusu)
+      const allowed = claimBossLoot(ch, dId);
+      res = allowed ? applyKill(ch, ev.tpl, { killId: bossKillId(ch, dId), unique: true, share: ev.share ?? 1 }, sc.combat.rng)
+        : { duplicate: true, quest: [], levelEvents: [], items: [], pending: [], lost: [], stacks: [], lostStacks: [], exp: 0, gold: 0 };
+      if (allowed) ch.history.dungeons[dId] = (ch.history.dungeons[dId] || 0) + 1;
+    } else if (tpl.kind === 'boss' && ev.killId) res = applyKill(ch, ev.tpl, { killId: ev.killId, unique: true, share: ev.share ?? 1 }, sc.combat.rng);
+    else res = applyKill(ch, ev.tpl, { share: ev.share ?? 1 }, sc.combat.rng);
     const at = { x: ev.x, y: ev.y, height: this.byId.get(ev.e)?.height || 40, tpl: ENEMIES[ev.tpl] };
     sc.combat.presentRewards(at, res);
     if (ev.n > 1) sc.fx.text(ev.x, ev.y - at.height - 26, `Parti payı ×${(ev.share).toFixed(2)} (${ev.n} kişi)`, { color: '#9df0b0', size: 11, dur: 1300 });
-    const critical = res.levelEvents.length || ENEMIES[ev.tpl].kind === 'elite' || [...res.items, ...res.pending].some((i) => i.r !== 'N') || res.quest.length;
+    const critical = res.levelEvents.length || tpl.kind === 'elite' || tpl.kind === 'boss' || [...res.items, ...res.pending].some((i) => i.r !== 'N') || res.quest.length;
     app.changed('kill');
     app.requestSave('kill', !!critical);
+  }
+
+  // ---------------------------------------------------------------- parti dungeon'u (sunucu örneği)
+  // sunucunun koşu durumunu yerel koşuya yansıt: kapılar, mühürler, bölümler (yerel kurallar — kontrol noktası, HUD,
+  // görev ilerlemesi — aynen çalışsın)
+  syncDungeon(dg, initial = false) {
+    const sc = this.scene, ch = app.char, map = sc.mapId;
+    this.waves = new Set(dg.waves || []);
+    for (const id of dg.seals || []) breakSeal(ch, map, id);
+    for (const st of dg.cleared || []) this.stageCleared(st, initial);
+    if (dg.bossKilled) { const r = getRun(ch, map); if (r) r.bossKilled = true; }
+    for (const o of sc.objects) o.refresh?.();
+  }
+
+  stageCleared(stage, quiet = false) {
+    const sc = this.scene, ch = app.char, map = sc.mapId;
+    if (!clearStage(ch, stage, map)) return;
+    sc.openGates(stage);
+    const ups = onDungeonStage(ch, stage, map);
+    ups.forEach((u) => bus.emit('questProgress', u));
+    if (!quiet) {
+      if (stage === bossStage(map)) {
+        sound.play('victory');
+        sc.cameras.main.flash(600, 255, 230, 160);
+        const boss = sc.mapDef.boss || 'mine_golem';
+        bus.emit('toast', { text: `${ENEMIES[boss].name.toLocaleUpperCase('tr-TR')} YENİLDİ! ${sc.mapDef.name} temizlendi.`, kind: 'elite' });
+        bus.emit('bossDefeated', boss);
+      } else {
+        const area = sc.mapDef.areas.find((a) => a.stage === stage);
+        bus.emit('toast', { text: `Bölüm temizlendi: ${area?.name || stage}. Kapı açıldı!`, kind: 'ok' });
+      }
+    }
+    bus.emit('dungeonProgress');
+    app.requestSave('dungeonStage', true);
+  }
+
+  dungeonEvent(ev) {
+    const sc = this.scene, ch = app.char, map = sc.mapId;
+    if (!sc.mapDef.dungeon) return;
+    if (ev.op === 'clear') this.stageCleared(ev.stage);
+    else if (ev.op === 'seal') {
+      this.waves?.delete(ev.id);
+      if (breakSeal(ch, map, ev.id)) {
+        sound.play(ev.lever ? 'portal' : 'altar');
+        bus.emit('toast', { text: `${ev.name} ${ev.lever ? 'etkinleşti' : 'kırıldı'} (${ev.n}/${ev.total})`, kind: ev.n >= ev.total ? 'elite' : 'ok' });
+        app.requestSave('seal', true);
+      }
+      sc.objects.find((o) => o.o?.id === ev.id)?.refresh?.();
+      bus.emit('dungeonProgress');
+    } else if (ev.op === 'wave') {
+      (this.waves ||= new Set()).add(ev.id);
+      sound.play(ev.idx ? 'warn' : 'shield');
+      bus.emit('toast', { text: ev.n > 1 ? `${ev.name}: savunma dalgası ${ev.idx + 1}/${ev.n}` : `${ev.name} uyandı! Muhafızlarını yen.`, kind: 'elite' });
+      sc.objects.find((o) => o.o?.id === ev.id)?.refresh?.();
+    }
   }
 
   destroy() { this.clear(); }

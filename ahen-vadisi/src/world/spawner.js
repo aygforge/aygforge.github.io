@@ -9,6 +9,7 @@ import { Enemy } from '../entities/Enemy.js';
 import { Rng } from '../core/rng.js';
 import { getRun, bossStage } from '../systems/dungeon.js';
 import { huntSpawns } from '../systems/quests.js';
+import { net } from '../online/gameServer.js';
 
 export class Spawner {
   constructor(scene) {
@@ -24,13 +25,21 @@ export class Spawner {
   // sunucu bölgeye bağlandı: yerel kamp yaratıklarını ve elitleri kaldır
   goNet() {
     this.net = true;
+    this.huntSig = null;
+    if (this.scene.mapDef.dungeon) {
+      for (const e of this.scene.enemies) if (!e.net && !e.dead && (e.stage || e.sealId)) this.despawn(e);
+      this.golem = null; this.sealWaves = {}; this.sealWaveIdx = {};
+      return;
+    }
     for (const s of this.slots) { if (s.ent && !s.ent.dead) this.despawn(s.ent); s.ent = null; }
     for (const el of this.elites) { if (el.ent && !el.ent.dead) this.despawn(el.ent); el.ent = null; }
+    for (const b of this.bosses) { if (b.ent && !b.ent.dead) this.despawn(b.ent); b.ent = null; }
   }
 
   // sunucu bağlantısı koptu: yerel dünyaya dön (kamplar hemen dolar)
   goLocal() {
     this.net = false;
+    if (this.scene.mapDef.dungeon) { this.initDungeon(); return; }
     for (const s of this.slots) if (!s.ent || s.ent.dead) this.spawnSlot(s);
   }
 
@@ -39,7 +48,11 @@ export class Spawner {
 
   init() {
     const sc = this.scene, def = sc.mapDef;
-    if (def.dungeon) { this.initDungeon(); return; }
+    if (def.dungeon) {
+      this.sealWaves = {}; this.sealWaveIdx = {};
+      if (!this.net) this.initDungeon();   // ortak dünyada parti örneği sunucuda
+      return;
+    }
     for (const a of def.areas || []) {
       if (a.spawns) {
         for (const s of a.spawns) for (let i = 0; i < s.max; i++) {
@@ -95,6 +108,17 @@ export class Spawner {
   // Kalıcı boss değildir; EXP verir, ekipman düşürmez (şablonda lootTable yok).
   checkHunts() {
     const want = huntSpawns(app.char, this.scene.mapId);
+    if (this.net) {
+      // ortak dünya: görev avı sunucuda doğar (parti arkadaşları da görür ve birlikte avlar)
+      for (const e of Object.values(this.hunts)) if (e && !e.dead && !e.net) this.despawn(e);
+      this.hunts = {};
+      const sig = want.map((w) => w.key).join('|');
+      if (sig !== this.huntSig || Date.now() - (this.huntSentAt || 0) > 10000) {
+        this.huntSig = sig; this.huntSentAt = Date.now();
+        net.hunts(want.map((w) => ({ key: w.key, enemy: w.enemy, x: w.x, y: w.y })));
+      }
+      return;
+    }
     const keys = new Set(want.map((w) => w.key));
     for (const [k, e] of Object.entries(this.hunts)) {
       if (!keys.has(k) && e && !e.dead) this.despawn(e);
@@ -126,7 +150,7 @@ export class Spawner {
         bus.emit('toast', { text: `${ENEMIES[el.enemy].name} ${el.area.name} bölgesinde ortaya çıktı!`, kind: 'elite' });
       }
     }
-    for (const b of this.bosses) {
+    for (const b of this.net ? [] : this.bosses) {
       if (b.ent && !b.ent.dead) continue;
       const at = this.world.bossRespawnAt[b.enemy] || 0;
       if (this.now >= at) {
@@ -225,6 +249,7 @@ export class Spawner {
   }
 
   sealWaveAlive(sealId) {
+    if (this.net) return !!this.scene.netWorld?.waves?.has(sealId);
     return (this.sealWaves?.[sealId] || []).some((e) => !e.dead);
   }
 

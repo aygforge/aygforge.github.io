@@ -1,5 +1,24 @@
 # Değişiklik Günlüğü
 
+## 4.5.0 — Ortak boss'lar, parti dungeon'ları (raid), ortak görev olayları ve ticaret
+Oyun sunucusu da güncellenir (Render depo güncellenince kendisi kurar). Ayrıntı: [`OYUN_SUNUCUSU.md`](OYUN_SUNUCUSU.md).
+- **Boss'lar sunucuda:** 8 boss'un tamamı (Alfa Kurt, Maden Golemi, Kül Devi, Donmuş Muhafız, Mezar Komutanı, Kayıp Kral,
+  Fırtına Tiranı, Göğün Mahkûmu) sunucuya taşındı. Bütün mekanikleri (çağrılar, kalkan kristalleri/mühürleri, Lanetli
+  Bayrak, çatlak zırh, halkalar, düşen mermiler, kalıcı alanlar, öfke fazları) ortak; alandaki herkesi vurur. Geri itme,
+  sersemletme ve dondurma da isabetle gelir. Boss çubuğu faz ve kalkanı sunucudan gösterir. Açık dünya boss'ları herkes
+  için tek; ödül parti payıyla ve tek seferlik ödül kimliğiyle verilir.
+- **Parti dungeon'ları (raid):** her parti için dungeon'ın ayrı bir örneği. Bölüm yaratıkları, kapılar, mühürler,
+  mekanizmalar, muhafız dalgaları ve boss ortak; bir üye bölümü temizleyince herkesin koşusu ilerler ve kapı herkeste
+  açılır. Parti penceresinden "Bölgesine git" ile dungeon'daki arkadaşının yanına girilir. Boss ganimeti herkese kendi
+  koşusunda bir kez düşer.
+- **Ortak görev olayları:** refakat, alan savunması ve sunak dalgaları sunucuda koşar; biri başlatınca bölgedeki herkes
+  görür ve yardım edebilir. Tamamlanınca görevi olan herkesin hedefi işler. Görev avları (özel hedefler) bölgede tek ve
+  ortak doğar.
+- **Ticaret:** çevrimiçi oyuncularla eşya, malzeme ve altın takası (Parti penceresi → Çevrimiçi oyuncular → Ticaret).
+  Kilitle/Onayla. Takas iki tarafta hep-ya-hiç uygulanır ve hemen kaydedilir. Kilitli eşyalar ve görev eşyaları takas
+  edilemez.
+
+
 ## 4.4.1 — Ortak dünya sunucusu oyuna bağlandı
 - `online.json`: `"gameServer": "wss://ahen-vadisi-sunucu.onrender.com"` (Render, ücretsiz plan). Giriş yapmış oyuncular
   hiçbir ayar yapmadan ortak dünyaya bağlanır.

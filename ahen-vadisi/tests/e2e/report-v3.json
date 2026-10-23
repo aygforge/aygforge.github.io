@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-23T14:05:25.785Z",
+  "date": "2026-10-23T15:19:22.212Z",
   "passed": 37,
   "total": 37,
   "results": [
@@ -36,12 +36,12 @@
     {
       "name": "m37 ulaşma hedefi tamamlanır",
       "ok": true,
-      "info": "{\"s\":\"active\",\"p\":[1],\"used\":[],\"at\":1792764222144}"
+      "info": "{\"s\":\"active\",\"p\":[1],\"used\":[],\"at\":1792768660989}"
     },
     {
       "name": "V3 yaratık öldürme EXP/gold verir; 30→31 seviye geçişi",
       "ok": true,
-      "info": "{\"level\":31,\"kills\":1,\"gold\":34,\"exp0\":64480,\"k\":1}"
+      "info": "{\"level\":31,\"kills\":1,\"gold\":36,\"exp0\":64480,\"k\":1}"
     },
     {
       "name": "Mezar Büyücüsü: telegraflı Mezar Laneti (alınan hasar artışı)",
@@ -151,7 +151,7 @@
     {
       "name": "Donmuş Zaman (Lv.35): hasar + normal %55 yavaşlatma; bossta kısa ve zayıf (%20)",
       "ok": true,
-      "info": "{\"ok\":true,\"normal\":0.55,\"normalHit\":true,\"boss\":0.2,\"bossDur\":0.8,\"unlocked\":1}"
+      "info": "{\"ok\":true,\"normal\":0.55,\"normalHit\":true,\"boss\":0.2,\"bossDur\":0.7,\"unlocked\":1}"
     },
     {
       "name": "Kullanım eşyaları: Merhem zehri giderir (1 tüketilir); Parşömen savaşta reddedilir (tükenmez)",
@@ -184,9 +184,9 @@
       "info": ""
     },
     {
-      "name": "PWA: servis işçisi etkin, 4.4.0 sürümlü önbellek; çevrimdışı açılış",
+      "name": "PWA: servis işçisi etkin, 4.5.0 sürümlü önbellek; çevrimdışı açılış",
       "ok": true,
-      "info": "{\"active\":true,\"version\":\"4.4.0\",\"cache\":\"ahen-vadisi-84bf210195\",\"assets\":3,\"offline\":true}"
+      "info": "{\"active\":true,\"version\":\"4.5.0\",\"cache\":\"ahen-vadisi-1908b40bc7\",\"assets\":3,\"offline\":true}"
     }
   ]
 }

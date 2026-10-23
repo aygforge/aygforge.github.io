@@ -7,6 +7,7 @@ import { bus } from '../core/events.js';
 import { GAME_VERSION } from '../data/constants.js';
 import { MAPS } from '../data/maps/index.js';
 import { online } from './index.js';
+import { getRun } from '../systems/dungeon.js';
 
 const LOCAL_KEY = 'ahen_game_server';
 const POS_MS = 125;              // en sık konum gönderimi (8 Hz)
@@ -89,7 +90,7 @@ export const net = {
   setStatus(s) {
     const was = this.status;
     this.status = s;
-    if (s !== 'ready') { this.zoneMap = null; app.world?.netWorld?.detach(); for (const sub of this.subs.values()) sub.onStatus?.('joining'); }
+    if (s !== 'ready') { this.onTrade?.({ op: 'cancel', msg: 'Sunucu bağlantısı koptu — ticaret iptal' }); this.zoneMap = null; app.world?.netWorld?.detach(); for (const sub of this.subs.values()) sub.onStatus?.('joining'); }
     if (was !== s) bus.emit('net');
   },
 
@@ -127,6 +128,7 @@ export const net = {
       case 'subbed': this.subs.get(m.topic)?.onStatus?.('ok'); return;
       case 'bc': this.subs.get(m.topic)?.onBroadcast?.(m.ev, m.p || {}); return;
       case 'pres': this.subs.get(m.topic)?.onPresence?.(m.metas || []); return;
+      case 'trade': this.onTrade?.(m); return;
       default: return;
     }
   },
@@ -135,10 +137,12 @@ export const net = {
   enterCurrent() {
     if (!this.ready) return;
     const w = app.world;
-    const shared = w && MAPS[w.mapId] && !w.mapDef.dungeon;
+    const shared = w && MAPS[w.mapId];
     const st = this.state();
     this.lastPos = st; this.lastPosAt = Date.now();
-    this.send({ t: 'enter', map: shared && st ? w.mapId : null, ...(st || {}) });
+    // dungeon: parti örneğine gir; örnek yoksa benim koşu durumumla kurulur
+    const run = w?.mapDef?.dungeon ? getRun(app.char, w.mapId) : null;
+    this.send({ t: 'enter', map: shared && st ? w.mapId : null, ...(st || {}), ...(run ? { run: { cleared: run.cleared, seals: run.seals || [], bossKilled: !!run.bossKilled } } : {}) });
   },
 
   state() {
@@ -177,6 +181,9 @@ export const net = {
   // ---------------------------------------------------------------- dünyaya etkiler
   hit(id, dmg) { this.send({ t: 'hit', e: id, dmg: Math.round(dmg) }); },
   effect(id, s) { this.send({ t: 'st', e: id, ...s }); },
+  seal(id) { this.send({ t: 'dg', op: 'seal', id }); },
+  questEvent(id) { this.send({ t: 'qe', id }); },
+  hunts(list) { this.send({ t: 'hunts', list }); },
 };
 
 // Parti ve davet kanalları için taşıma (src/online/realtime.js ile aynı arayüz) — sunucu varken Supabase Realtime kullanılmaz

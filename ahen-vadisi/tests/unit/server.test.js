@@ -208,16 +208,240 @@ describe('Sunucu merkezi', () => {
     expect(a.last('pres').metas.map((m) => m.uid)).toEqual(['ua']);
   });
 
-  it('bölgeye giriş/çıkış: dungeon haritası ortak değildir; boş bölge oyuncusuz kalır', async () => {
+  it('bölgeye giriş/çıkış; dungeon parti başına ayrı örnektir (partisiz oyuncunun kendi örneği)', async () => {
     const hub = new Hub({ verify });
-    const a = fakeWs(); hub.attach(a);
-    a.msg({ t: 'hello', token: 'ok:ua', v: GAME_VERSION }); await tick();
-    a.msg({ t: 'enter', map: 'dungeon', x: 1, y: 1 });
-    expect(hub.zones.size).toBe(0);
+    const a = fakeWs(), b = fakeWs(), c = fakeWs();
+    hub.attach(a); hub.attach(b); hub.attach(c);
+    for (const [w, t] of [[a, 'ok:ua'], [b, 'ok:ub'], [c, 'ok:uc']]) w.msg({ t: 'hello', token: t, v: GAME_VERSION });
+    await tick();
     a.msg({ t: 'enter', map: 'forest', x: 60 * TILE, y: 44 * TILE });
     expect(hub.zones.get('forest').players.has('ua')).toBe(true);
     expect(a.last('zone').map).toBe('forest');
     a.msg({ t: 'enter', map: null });
     expect(hub.zones.get('forest').players.size).toBe(0);
+    const topic = 'ahen-party-K7M2QX';
+    for (const w of [a, b]) { w.msg({ t: 'sub', topic }); w.msg({ t: 'track', topic, meta: { nick: 'x', joinedAt: 1 } }); }
+    a.msg({ t: 'enter', map: 'dungeon', x: 5 * TILE, y: 60 * TILE, run: { cleared: [1] } });
+    b.msg({ t: 'enter', map: 'dungeon', x: 5 * TILE, y: 60 * TILE });
+    c.msg({ t: 'enter', map: 'dungeon', x: 5 * TILE, y: 60 * TILE });
+    const inst = hub.zones.get('dungeon@' + topic);
+    expect(inst.players.size).toBe(2);
+    expect(inst.dg.cleared).toEqual([1]);                  // ilk girenin koşu durumu
+    expect(b.last('zone').dg.cleared).toEqual([1]);        // sonradan gelen aynı durumu alır
+    expect(hub.zones.get('dungeon@solo:uc').players.has('uc')).toBe(true);
+  });
+});
+
+describe('Parti dungeon örneği', () => {
+  it('bölüm yaratıkları doğar, kapılar kapalıdır; bölüm temizlenince kapı açılır ve herkese duyurulur', () => {
+    const z = mkZone('dungeon');
+    z.join('a', { x: 5 * TILE, y: 60 * TILE });
+    const s1 = z.enemies.filter((e) => e.stage === 1);
+    expect(s1.length).toBeGreaterThan(0);
+    const g1 = z.def.gates.find((g) => g.opensAfter === 1);
+    const gi = g1.y0 * z.grid.w + g1.x0;
+    expect(z.grid.dyn[gi] || z.grid.solid[gi]).toBeTruthy();
+    for (const e of s1) z.onHit('a', e.id, e.maxHp + 1);
+    z.flush();
+    expect(z.evs('a', 'dg').some((d) => d.op === 'clear' && d.stage === 1)).toBe(true);
+    expect(z.grid.dyn[gi]).toBe(0);
+    expect(z.dg.cleared).toEqual([1]);
+  });
+
+  it('kayıtlı koşu durumuyla açılan örnek temizlenmiş bölümleri yeniden doğurmaz; boss yalnız boss bölümünde', () => {
+    const z = mkZone('dungeon');
+    const z2 = new Zone('dungeon', { out: () => {}, run: { cleared: [1, 2, 3] } });
+    expect(z2.enemies.every((e) => e.stage === 4)).toBe(true);
+    expect(z2.enemies.find((e) => e.tpl.kind === 'boss').tpl.id).toBe('mine_golem');
+    const z3 = new Zone('dungeon', { out: () => {}, run: { cleared: [1, 2, 3, 4], bossKilled: true } });
+    expect(z3.enemies.length).toBe(0);
+    void z;
+  });
+
+  it('Buz Mabedi mühürleri: dokununca muhafız dalgası, dalga ölünce mühür kırılır; mühürler + yaratıklar bitince bölüm açılır', () => {
+    const z = mkZone('frost_temple');
+    z.dg.cleared.push(1, 2);
+    z.join('a', { x: 10 * TILE, y: 10 * TILE });
+    const seals = z.def.seals.filter((x) => (x.stage || 3) === 3 && x.kind !== 'decoy');
+    expect(seals.length).toBeGreaterThan(0);
+    for (const e of z.enemies.filter((x) => x.stage === 3)) z.onHit('a', e.id, e.maxHp + 1);
+    z.flush();
+    expect(z.evs('a', 'note').some((n) => /mührü de kır/.test(n.s))).toBe(true);
+    for (const seal of seals) {
+      z.onSeal('a', seal.id);
+      let guard = 0;
+      while (!z.dg.seals.includes(seal.id) && guard++ < 6) {
+        const wave = z.dg.waves.get(seal.id) || [];
+        expect(wave.length).toBeGreaterThan(0);
+        for (const e of wave) if (!e.dead) z.onHit('a', e.id, e.maxHp + 1);
+      }
+      expect(z.dg.seals).toContain(seal.id);
+    }
+    z.flush();
+    expect(z.evs('a', 'dg').some((d) => d.op === 'seal' && d.n === seals.length)).toBe(true);
+    expect(z.dg.cleared).toContain(3);
+  });
+
+  it('Karanlık Mahzen mekanizmaları dokununca hemen etkinleşir; yanıltıcı düğüm hiçbir şey yapmaz', () => {
+    const z = mkZone('dark_crypt');
+    z.dg.cleared.push(1);
+    z.join('a', { x: 10 * TILE, y: 10 * TILE });
+    const levers = z.def.seals.filter((x) => x.kind === 'lever');
+    expect(levers.length).toBeGreaterThan(0);
+    z.onSeal('a', levers[0].id);
+    expect(z.dg.seals).toContain(levers[0].id);
+    const decoy = (z.def.seals || []).find((x) => x.kind === 'decoy');
+    if (decoy) { z.onSeal('a', decoy.id); expect(z.dg.seals).not.toContain(decoy.id); }
+  });
+});
+
+describe('Boss\'lar sunucuda', () => {
+  it('açık dünya boss\'u doğar; ölünce ödül kimliği (killId) ile paylaştırılır ve yeniden doğma süresi kurulur', () => {
+    const z = mkZone('forest');
+    z.join('a', { x: 5 * TILE, y: 42 * TILE });
+    z.tick(0.05);
+    const b = z.bosses[0];
+    expect(b.ent.tpl.id).toBe('alpha_wolf');
+    z.onHit('a', b.ent.id, b.ent.maxHp + 1);
+    z.flush();
+    const k = z.evs('a', 'kill').find((x) => x.tpl === 'alpha_wolf');
+    expect(k.killId).toMatch(/^alpha_wolf:forest:/);
+    expect(b.respawnAt).toBeGreaterThan(z.clock + 500 * 1000);
+  });
+
+  it('Alfa Kurt %70 altında sürüyü çağırır (ödülsüz çağrılmışlar), öfkede hızlanır; savaş bitince çağrılmışlar dağılır', () => {
+    const z = mkZone('forest');
+    z.tick(0.05);
+    const w = z.bosses[0].ent;
+    z.join('a', { x: w.x + 40, y: w.y });
+    w.hp = w.maxHp * 0.65;
+    w.target = 'a'; w.state = 'chase'; w.engaged = true;
+    for (let i = 0; i < 40; i++) z.tick(0.05);
+    const pack = z.enemies.filter((e) => e.tpl.id === 'pack_wolf' && !e.dead);
+    expect(pack.length).toBe(2);
+    expect(pack.every((e) => e.summoned)).toBe(true);
+    z.flush();
+    expect(z.evs('a', 'ann').some((x) => /Sürü Uluması/.test(x.s))).toBe(true);
+    w.hp = w.maxHp * 0.2;
+    z.tick(0.05);
+    expect(w.speedMult).toBeGreaterThan(1);
+    expect(w.behavior.phase()).toBe(2);
+    // oyuncu ölür → boss eve döner, sıfırlanır, çağrılmışlar dağılır
+    z.update('a', { d: 1 });
+    for (let i = 0; i < 200; i++) z.tick(0.05);
+    expect(z.enemies.filter((e) => e.tpl.id === 'pack_wolf' && !e.dead).length).toBe(0);
+    expect(w.speedMult).toBe(1);
+  });
+
+  it('Maden Golemi kalkanı: %50 altında iki kristal + %85 hasar azaltma; kristaller kırılınca kalkan söner', () => {
+    const z = new Zone('dungeon', { out: () => {}, run: { cleared: [1, 2, 3] } });
+    const g = z.enemies.find((e) => e.tpl.id === 'mine_golem');
+    z.join('a', { x: g.x + 50, y: g.y });
+    g.hp = g.maxHp * 0.45; g.target = 'a'; g.state = 'chase'; g.engaged = true;
+    z.tick(0.05);
+    const cr = z.enemies.filter((e) => e.tpl.id === 'shield_crystal');
+    expect(cr.length).toBe(2);
+    expect(g.reduce).toBeCloseTo(0.85);
+    expect(g.snap()[9]).toBeTruthy();   // parıltı
+    for (const c of cr) z.onHit('a', c.id, c.maxHp + 1);
+    z.tick(0.05);
+    expect(g.reduce).toBe(0);
+  });
+
+  it('Fırtına Tiranı kristalleri kırılınca zırhı çatlar (savunma çarpanı istemciye gider)', () => {
+    const z = mkZone('sky_rift');
+    z.tick(0.05);
+    const t = z.bosses[0].ent;
+    expect(t.tpl.id).toBe('storm_tyrant');
+    z.join('a', { x: t.x + 50, y: t.y });
+    t.hp = t.maxHp * 0.55; t.target = 'a'; t.state = 'chase'; t.engaged = true;
+    z.tick(0.05);
+    const cr = z.enemies.filter((e) => e.tpl.id === 'tyrant_crystal');
+    expect(cr.length).toBe(2);
+    expect(t.reduce).toBeCloseTo(0.6);
+    for (const c of cr) z.onHit('a', c.id, c.maxHp + 1);
+    z.tick(0.05);
+    expect(t.defMult).toBeCloseTo(0.65);
+    expect(t.snap()[10]).toBe(65);
+  });
+});
+
+describe('Görev olayları ve avlar sunucuda', () => {
+  const near = (z, id) => { const ev = z.events.get(id); return { x: ev.x + 20, y: ev.y }; };
+
+  it('alan savunması: başlatılır, dalgalar korunan hedefe saldırır; dalgalar bitince herkese "tamam" gider; olay yaratıkları ödül vermez', () => {
+    const z = mkZone('forest');
+    z.join('a', { ...near(z, 'saplings') }); z.join('b', { ...near(z, 'saplings') });
+    z.onEvent('a', 'saplings');
+    z.flush();
+    expect(z.evs('b', 'qe').some((e) => e.op === 'start' && e.id === 'saplings')).toBe(true);
+    const ev = z.events.get('saplings');
+    expect(ev.running).toBe(true);
+    for (let w = 0; w < ev.o.waves.length + 2 && ev.running; w++) {
+      for (const e of ev.aliveWave()) { expect(e.questSpawn).toBe(true); z.onHit('a', e.id, e.maxHp + 1); }
+      for (let i = 0; i < 40; i++) z.tick(0.05);
+    }
+    z.flush();
+    expect(z.evs('b', 'qe').some((e) => e.op === 'done' && e.id === 'saplings' && e.kind === 'defend')).toBe(true);
+    expect(z.evs('a', 'kill').length).toBe(0);
+  });
+
+  it('savunma: dalga yaratıkları hedefe vurur; hedef düşerse olay başarısız olur ve yeniden denenebilir', () => {
+    const z = mkZone('forest');
+    z.join('a', { ...near(z, 'saplings') });
+    z.onEvent('a', 'saplings');
+    const ev = z.events.get('saplings');
+    ev.hp = 1;
+    for (let i = 0; i < 400 && ev.running; i++) z.tick(0.05);
+    z.flush();
+    expect(ev.running).toBe(false);
+    expect(z.evs('a', 'qe').some((e) => e.op === 'fail')).toBe(true);
+    expect(ev.hp).toBe(ev.maxHp);
+  });
+
+  it('refakat: oyuncu yakındayken kervan yol alır; uzaklaşınca durur; pusu dalgası doğar', () => {
+    const z = mkZone('forest');
+    z.join('a', { ...near(z, 'meadow_caravan') });
+    z.onEvent('a', 'meadow_caravan');
+    const ev = z.events.get('meadow_caravan');
+    const x0 = ev.x, y0 = ev.y;
+    for (let i = 0; i < 40; i++) { const p = z.player('a'); p.x = ev.x + 10; p.y = ev.y; z.tick(0.05); }
+    expect(Math.hypot(ev.x - x0, ev.y - y0)).toBeGreaterThan(20);
+    const p = z.player('a'); p.x = ev.x + 15 * TILE; p.y = ev.y;
+    const x1 = ev.x;
+    for (let i = 0; i < 20; i++) z.tick(0.05);
+    expect(Math.abs(ev.x - x1)).toBeLessThan(1);
+    // ileri sar: pusu oranına kadar ilerlet
+    ev.node = Math.ceil(ev.total * (ev.o.ambushes[0].at + 0.01));
+    p.x = ev.x + 10; p.y = ev.y;
+    z.tick(0.05);
+    expect(ev.aliveWave().length).toBeGreaterThan(0);
+  });
+
+  it('sunak: dalgalar normal (ödüllü) yaratıklardır; bitince yakındakilere "arındırıldı" gider', () => {
+    const z = mkZone('forest');
+    z.join('a', { ...near(z, 'altar_forest') });
+    z.onEvent('a', 'altar_forest');
+    const al = z.events.get('altar_forest');
+    for (let w = 0; w < 5 && al.event; w++) {
+      for (const e of al.event.alive) if (!e.dead) z.onHit('a', e.id, e.maxHp + 1);
+      for (let i = 0; i < 30; i++) z.tick(0.05);
+    }
+    z.flush();
+    expect(z.evs('a', 'alt').some((e) => e.op === 'done')).toBe(true);
+    expect(z.evs('a', 'kill').length).toBeGreaterThan(0);
+  });
+
+  it('görev avı: isteyen oyuncu varken bölgede tek ve ortak doğar; isteyen kalmayınca kalkar', () => {
+    const z = mkZone('forest');
+    z.join('a', { x: 5 * TILE, y: 42 * TILE }); z.join('b', { x: 5 * TILE, y: 43 * TILE });
+    const h = { key: 'q1:0', enemy: 'gray_wolf', x: 40, y: 40 };
+    z.onHunts('a', [h]); z.onHunts('b', [h]);
+    for (let i = 0; i < 12; i++) z.tick(0.05);
+    const hunts = z.enemies.filter((e) => e.huntKey === 'q1:0' && !e.dead);
+    expect(hunts.length).toBe(1);
+    z.onHunts('a', []); z.onHunts('b', []);
+    for (let i = 0; i < 12; i++) z.tick(0.05);
+    expect(z.enemies.filter((e) => e.huntKey === 'q1:0' && !e.dead).length).toBe(0);
   });
 });

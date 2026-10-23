@@ -1,5 +1,34 @@
 # Ahen Vadisi — Test Raporu
 
+## 4.5.0 — Ortak boss'lar, parti dungeon'ları, ortak görev olayları, ticaret (23 Ekim 2026)
+- Birim: 227/227.
+  - `server.test.js` 26 test. Yenileri:
+    - parti başına dungeon örneği; ilk girenin koşu durumu; partisiz oyuncunun ayrı örneği;
+    - bölüm yaratıkları ve kapılar, bölüm temizlenince kapı açılması; kayıtlı koşudan açılış;
+    - Buz Mabedi mühür dalgaları; Karanlık Mahzen mekanizmaları ve yanıltıcı düğüm;
+    - açık dünya boss'u ve ödül kimliği;
+    - Alfa Kurt'un sürü çağrısı, öfkesi, sıfırlanması ve çağrılmışların dağılması;
+    - Maden Golemi kristal kalkanı; Fırtına Tiranı'nın çatlak zırhı;
+    - alan savunması (tamamlanma ve başarısızlık), refakatin ilerleyip durması ve pusu, sunak dalgaları, ortak görev avı.
+  - `trade.test.js` 6 test: kilitli eşya ve görev eşyası yasağı; takas; hep-ya-hiç; sunucu aracılığı (akış, sıfırlanan
+    kilitler, "yer yok" ile iptal, kopma, ret, çevrimdışı hedef).
+- E2E `run-e2e-raid.mjs` 16/16: gerçek sunucu süreci ve üç tarayıcı. Doğrulananlar:
+  - **ticaret gerçek arayüzle:** istek → kabul → teklifler → kilitle → onayla. Eşya ve altın bir yöne, iksir diğer yöne
+    geçti; kopya kalmadı; kayıt yazıldı.
+  - **açık dünya boss'u (Alfa Kurt):** iki oyuncu aynı boss'u görüyor; sürü çağrısı ve boss çubuğu arkadaşta da var;
+    parti üyesi tek seferlik boss ödülünü alıyor.
+  - **Derin Ocak parti örneği:** ikinci üye "Bölgesine git" ile aynı örneğe giriyor; A 1. bölümü temizleyince B'nin
+    koşusu ilerliyor ve kapı B'de de açılıyor; partisiz üçüncü oyuncu ayrı örnekte.
+  - Eksik doku yok; konsol hatası yok.
+- **Bulunan ve düzeltilen hata:** yalnız ses taşıyan boss olayları (uluma, kükreme) ekranda siyah "eksik doku" karesi
+  çiziyordu. Testte ekran görüntüsünden yakalandı; düzeltildi ve teste eksik doku kontrolü eklendi.
+- Diğer e2e takımları: 61/61, 32/32, 37/37, 39/39, kayıt 14/14, çevrimiçi 27/27, parti 25/25, ortak dünya 15/15.
+- **Denenmedi:**
+  - Gerçek Render sunucusunda ve internet gecikmesinde çok oyunculu boss/dungeon dengesi.
+  - Dungeon boss'larının parti büyüklüğüne göre zorluğu (can ölçeklenmez; dört kişi daha kolay keser).
+  - Boss mekaniklerinin tamamı tek tek uçtan uca: tarayıcıda yalnız Alfa Kurt, birim testte Golem, Tiran ve Alfa denendi.
+    Diğerleri istemci kodunun birebir taşıması.
+
 ## 4.4.0 — Ortak dünya oyun sunucusu (23 Ekim 2026)
 - Birim: 208/208. Yeni `tests/unit/server.test.js` (13 test) şunları doğrular:
   - harita başına yuva sayısı, ortak/dungeon ayrımı;

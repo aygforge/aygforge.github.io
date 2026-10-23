@@ -476,6 +476,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   checkStageCleared(stage) {
+    if (this.spawner?.net) return;   // ortak dünya: bölüm temizliğini sunucu bildirir
     if (this.mapDef.seals) this.checkSeals();
     if (this.spawner.stageAlive(stage)) return;
     const ch = app.char;

@@ -8,10 +8,12 @@
 //   {t:'hit', e, dmg}                      yaratığa vuruş (hasarı istemci hesaplar)
 //   {t:'st', e, slow:[oran, ms], stun:ms}  yaratığa durum etkisi
 //   {t:'sub', topic, key} / {t:'unsub', topic} / {t:'bc', topic, ev, p} / {t:'track', topic, meta}
+//   {t:'trade', op, ...}                   ticaret: req/ans/offer/lock/confirm/ready/cancel (aşağıda)
 // Sunucu → istemci: welcome, err, zone, snap, evs (olay listesi: tg, fx, tx, hz, sh, pj, a, eh, die, kill, note),
 //   bc (kanal yayını), pres (kanal üyeleri), count (çevrimiçi sayısı)
-import { Zone, isSharedMap } from './sim/zone.mjs';
+import { Zone, isSharedMap, isDungeonMap } from './sim/zone.mjs';
 import { GAME_VERSION } from '../src/data/constants.js';
+import { sanitizeOffer, emptyOffer } from '../src/systems/trade.js';
 
 const ZONE_TTL_MS = 10 * 60 * 1000;     // boş bölge 10 dk sonra kapanır (yaratık durumu o süre korunur)
 const MAX_MSG_PER_SEC = 60;
@@ -26,6 +28,9 @@ export class Hub {
     this.byUid = new Map();
     this.zones = new Map();
     this.topics = new Map();      // topic → Map(conn → meta|null)
+    this.trades = new Map();      // id → oturum
+    this.tradeInv = new Map();    // hedef uid → { from, at }
+    this.tradeN = 0;
     this.last = Date.now();
   }
 
@@ -44,6 +49,7 @@ export class Hub {
     this.conns.delete(c);
     this.leaveZone(c);
     for (const t of [...c.topics]) this.unsub(c, t);
+    if (c.uid) for (const tr of [...this.trades.values()]) if (tr.a === c.uid || tr.b === c.uid) this.endTrade(tr, 'Karşı taraf bağlantıyı kaybetti — ticaret iptal');
     if (c.uid && this.byUid.get(c.uid) === c) this.byUid.delete(c.uid);
     this.broadcastCount();
   }
@@ -71,6 +77,10 @@ export class Hub {
       case 'unsub': return this.unsub(c, str(m.topic, 64));
       case 'track': return this.track(c, str(m.topic, 64), m.meta);
       case 'bc': return this.bc(c, str(m.topic, 64), str(m.ev, 24), m.p);
+      case 'trade': return this.trade(c, m);
+      case 'dg': if (m.op === 'seal') c.zone?.onSeal?.(c.uid, str(m.id, 40)); return;
+      case 'qe': c.zone?.onEvent?.(c.uid, str(m.id, 40)); return;
+      case 'hunts': c.zone?.onHunts?.(c.uid, m.list); return;
       default: return;
     }
   }
@@ -94,11 +104,13 @@ export class Hub {
   enter(c, m) {
     const map = str(m.map, 40);
     this.leaveZone(c);
-    if (!map || !isSharedMap(map)) return;
-    let z = this.zones.get(map);
+    if (!map || !(isSharedMap(map) || isDungeonMap(map))) return;
+    // dungeon: parti başına ayrı örnek (partisiz oyuncunun kendi örneği); açık dünya: herkese tek bölge
+    const key = isDungeonMap(map) ? `${map}@${this.partyOf(c.uid) || 'solo:' + c.uid}` : map;
+    let z = this.zones.get(key);
     if (!z) {
-      z = new Zone(map, { out: (uid, msg) => this.sendUid(uid, msg), partyOf: (uid) => this.partyOf(uid) });
-      this.zones.set(map, z);
+      z = new Zone(map, { key, run: m.run, out: (uid, msg) => this.sendUid(uid, msg), partyOf: (uid) => this.partyOf(uid) });
+      this.zones.set(key, z);
     }
     c.zone = z;
     z.join(c.uid, { ...m, nick: c.nick });
@@ -148,6 +160,81 @@ export class Hub {
     return null;
   }
 
+  // ---------------------------------------------------------------- ticaret (aracı)
+  // Akış: req → (karşı taraf) ans → open → offer/lock (her değişiklik kilitleri ve onayları sıfırlar) →
+  //   iki taraf da kilitli + onay → prep (her istemci "verebilir miyim, sığar mı" der) → ikisi de hazır → exec
+  //   (her istemci kendi tarafını hep-ya-hiç uygular ve hemen kaydeder). İptal/kopma her aşamada iki tarafa bildirilir.
+  tradeOf(uid) { for (const tr of this.trades.values()) if (tr.a === uid || tr.b === uid) return tr; return null; }
+  tradeMsg(uid, msg) { this.sendUid(uid, { t: 'trade', ...msg }); }
+  tradeState(tr) {
+    for (const [me, them] of [[tr.a, tr.b], [tr.b, tr.a]]) {
+      this.tradeMsg(me, { op: 'state', id: tr.id, mine: tr.offer[me], theirs: tr.offer[them], lock: { me: !!tr.lock[me], them: !!tr.lock[them] }, conf: { me: !!tr.conf[me], them: !!tr.conf[them] } });
+    }
+  }
+  endTrade(tr, msg) {
+    this.trades.delete(tr.id);
+    for (const uid of [tr.a, tr.b]) this.tradeMsg(uid, { op: 'cancel', id: tr.id, msg });
+  }
+
+  trade(c, m) {
+    const me = c.uid, op = str(m.op, 12);
+    if (op === 'req') {
+      const to = str(m.to, 64);
+      const tc = this.byUid.get(to);
+      if (!tc || to === me) return this.tradeMsg(me, { op: 'err', msg: 'Oyuncu oyun sunucusunda değil' });
+      if (this.tradeOf(me) || this.tradeOf(to)) return this.tradeMsg(me, { op: 'err', msg: 'Oyunculardan biri zaten ticarette' });
+      this.tradeInv.set(to, { from: me, at: Date.now() });
+      this.tradeMsg(to, { op: 'req', from: me, nick: c.nick });
+      this.tradeMsg(me, { op: 'sent', to, nick: tc.nick });
+      return;
+    }
+    if (op === 'ans') {
+      const inv = this.tradeInv.get(me);
+      const from = str(m.from, 64);
+      if (!inv || inv.from !== from || Date.now() - inv.at > 60000) return this.tradeMsg(me, { op: 'err', msg: 'Ticaret isteğinin süresi doldu' });
+      this.tradeInv.delete(me);
+      const fc = this.byUid.get(from);
+      if (!fc) return this.tradeMsg(me, { op: 'err', msg: 'Oyuncu artık çevrimiçi değil' });
+      if (!m.ok) return this.tradeMsg(from, { op: 'declined', nick: c.nick });
+      if (this.tradeOf(me) || this.tradeOf(from)) return this.tradeMsg(me, { op: 'err', msg: 'Oyunculardan biri zaten ticarette' });
+      const tr = { id: 'tr' + (++this.tradeN) + '_' + Date.now().toString(36), a: from, b: me, offer: { [from]: emptyOffer(), [me]: emptyOffer() }, lock: {}, conf: {}, ready: {}, phase: 'open' };
+      this.trades.set(tr.id, tr);
+      this.tradeMsg(from, { op: 'open', id: tr.id, with: { uid: me, nick: c.nick } });
+      this.tradeMsg(me, { op: 'open', id: tr.id, with: { uid: from, nick: fc.nick } });
+      this.tradeState(tr);
+      return;
+    }
+    const tr = this.trades.get(str(m.id, 40));
+    if (!tr || (tr.a !== me && tr.b !== me)) return;
+    const other = tr.a === me ? tr.b : tr.a;
+    if (op === 'cancel') return this.endTrade(tr, m.msg ? str(m.msg, 120) : `${c.nick} ticareti iptal etti`);
+    if (op === 'offer' && tr.phase === 'open') {
+      tr.offer[me] = sanitizeOffer(m.offer);
+      tr.lock = {}; tr.conf = {};
+      return this.tradeState(tr);
+    }
+    if (op === 'lock' && tr.phase === 'open') { tr.lock[me] = !!m.on; if (!m.on) tr.conf = {}; return this.tradeState(tr); }
+    if (op === 'confirm' && tr.phase === 'open') {
+      if (!tr.lock[me] || !tr.lock[other]) return;
+      tr.conf[me] = true;
+      this.tradeState(tr);
+      if (tr.conf[other]) {
+        tr.phase = 'prep';
+        for (const [x, y] of [[tr.a, tr.b], [tr.b, tr.a]]) this.tradeMsg(x, { op: 'prep', id: tr.id, give: tr.offer[x], get: tr.offer[y] });
+      }
+      return;
+    }
+    if (op === 'ready' && tr.phase === 'prep') {
+      if (!m.ok) return this.endTrade(tr, `Ticaret yapılamadı: ${str(m.msg, 100) || 'hazır değil'}`);
+      tr.ready[me] = true;
+      if (tr.ready[other]) {
+        this.trades.delete(tr.id);
+        for (const [x, y] of [[tr.a, tr.b], [tr.b, tr.a]]) this.tradeMsg(x, { op: 'exec', id: tr.id, give: tr.offer[x], get: tr.offer[y] });
+        this.log('ticaret', tr.id, tr.a, '↔', tr.b);
+      }
+    }
+  }
+
   broadcastCount() {
     const n = this.byUid.size;
     for (const c of this.conns) if (c.uid) this.send(c, { t: 'count', n });
@@ -173,7 +260,7 @@ export class Hub {
   }
 
   stats() {
-    return { players: this.byUid.size, zones: [...this.zones.entries()].map(([id, z]) => ({ id, players: z.players.size, enemies: z.enemies.length })) };
+    return { players: this.byUid.size, zones: [...this.zones.entries()].map(([id, z]) => ({ id: id.replace(/@.*/, '@örnek'), players: z.players.size, enemies: z.enemies.length })) };
   }
 }
 
