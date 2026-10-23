@@ -1,5 +1,58 @@
 # Ahen Vadisi — Test Raporu
 
+## 4.0.0 «Gökyarık Genişlemesi» (22–23 Ekim 2026)
+
+Ortam önceki sürümlerle aynı (Linux, Node 22, Playwright headless Chromium, yazılımsal WebGL, mobil dokunmatik emülasyonu).
+**Gerçek Android/iOS cihazında ve gerçek itch.io sayfasında test yapılamadı.** Komutlar: `npm test` ·
+`npm run build && npm run test:e2e` (V1 + V2 + V3 + V4 + kayıt).
+
+| Paket | Sonuç |
+|---|---|
+| Birim testleri (Vitest, 15 dosya) | **173 / 173 geçti** — +6 kayıt (`v4save`), +9 içerik (`v4content`), +8 denge (`v4balance`); eski testler V4 verisine göre güncellendi (davranış aynı: eski eşyalar `ITEM_LIST.slice(0,126)`, Legendary havuzları 4 eşya, şema ≥3, Lv.50, 102 görev, köyde +2 NPC, dört sınıfla görev zinciri) |
+| V4 uçtan uca (`run-e2e-v4.mjs`, yeni) | **39 / 39 geçti** |
+| V1 uçtan uca (`run-e2e.mjs`) | **61 / 61 geçti** |
+| V2 uçtan uca (`run-e2e-v2.mjs`) | **32 / 32 geçti**. Bir koşuda "Kırılan Ufuk geçiş hedefleri ilerler" düştü (31/32), tekrar koşuda geçti — 3.0.1 raporundaki, 3.0.0 kodunda da düşen zamanlama kontrolüyle aynı |
+| V3 uçtan uca (`run-e2e-v3.mjs`) | **37 / 37 geçti** |
+| Kayıt uçtan uca (`run-e2e-save.mjs`) | **14 / 14 geçti** |
+| Üretim derlemesi | Başarılı; servis işçisi sürümü 4.0.0 |
+
+Eski e2e senaryolarında yapılan uyarlamalar (davranış testi değişmedi): ana menüde bir kez çıkan V4 yedek hatırlatması kapatılır;
+şema beklentisi 3 → 4; ana menü yedek düğmeleri artık Kayıt Güvenliği bölümünde (`copy-code` / `paste-code`); PWA sürümü
+`package.json`'dan okunur. Bir vitest çalışmasında ağır loot testinin iş parçacığı zaman aşımı uyarısı vardı; test olay
+döngüsüne dönecek şekilde düzenlendi (çıkış kodu artık 0).
+
+### V4 uçtan uca (gerçek tarayıcı, 844×390 ve 640×360)
+
+5 karakter yuvası ve 4 sınıf kartı · Okçu Lv.1 değerleri (HP 130, MP 67, menzil 7, ≤1,25 sn), görünür okla uzaktan öldürme
+(MP harcamadan) · **ok duvara çarpar** (arada opak karo varken hedef hasar almaz) · Okçu Lv.15 dört becerisi ve **Lv.50'de 7
+aktif becerinin hepsi** · Ölü Çağıran Lv.1 değerleri (HP 115, MP 162, menzil 6) · Ruh Mermisi MP harcamaz · İskelet Çağır;
+**hedef seçilmeden iskelet saldırmaz (AFK yok)**; yalnız seçili hedefe saldırır; iskeletin öldürdüğü yaratık tek öldürme / tek
+ödül · en çok 2 iskelet; kayıtta yalnız `{main, hpPct}` · harita değişiminde çoğalmaz, ölümde dağılır ve geri gelmez,
+kapat-açta bir kez geri gelir · Ölü Çağıran Lv.50 7 becerisi (Ölüler Ordusu sonrası ≤2 iskelet) · Kara Taht kuzey geçidi m47
+olmadan kapalı, yarık incelenince açılır · Gökyarık Ovası yaratıkları, Fırtına Tiranı, Atlas, yol taşı, sandıklar, toplama,
+parçacıklar · V4 yaratık ve elit yetenekleri telegrafla başlar · **Fırtına Tiranı:** %60 Kristal Çağrısı (2 kristal, %60
+azaltma), kristaller kırılınca kalkan söner ve savunma 105 → 68, %25 Son Gök Gürültüsü, garantili Tiran Çekirdeği · Yıldız
+Mezarı geçidi m53 ile açılır; yaratıklar, Leyla, Tufan, 3 mercek · Mabet kapısı m56 olmadan mühürlü; giriş mühürleri yanlış
+sırada ipucu verir, doğru sırada kapı açılır · **Mabet:** kapı mührü olmadan 1. bölüm kapanmaz; yanıltıcı düğüm ipucu verir,
+sayılmaz; üç gök mührünün her biri iki savunma dalgası, ikinci dalgadan sonra kırılır · **Göğün Mahkûmu:** %65 kalkan + 2 Gök
+Mührü, mühürler kırılınca kalkan düşer; %30 Yıldızların Sonu (≤4 alan); ölümde boss tam can, kalkan/mühürler sıfır, bölümler
+korunur (kontrol noktası); garantili Mahkûmun Zinciri, ikinci ödül yok · 640×360'ta iskelet HUD ekranda, yatay taşma yok ·
+Ayarlar → Kayıt Güvenliği (son kalıcı kayıt, teknoloji, 7 düğme) · V4 yedek hatırlatması bir kez · PWA 4.0.0 çevrimdışı.
+Bütün turlarda konsol hatası yok.
+
+Not: e2e savaşları geliştirici kancalarıyla hızlandırılır (hasar doğrudan uygulanır, karakter taşınır, etkileşim kanal süresi
+atlanır). Fazlar, kristaller, mühürler, dalgalar ve iskelet kuralları gerçek oyun döngüsünde çalışır; ama tam bir boss savaşı
+dokunmatik kontrolle baştan sona oynanmadı. Yazılımsal WebGL'de FPS 19–44 (ekran görüntülerindeki sayaç).
+
+### V4 birim testleri
+
+| Alan | Doğrulanan |
+|---|---|
+| Kayıt (`v4save`) | 3 yuvalı profil 5'e genişler (sıra, kimlik, seviye, eşya, gold, stat, görev aynı); migrasyon doğrulamadan önce; şema 3 kaydı yüklenir, `v3_backup` bir kez; IndexedDB açılamaz ve kopya yoksa boş profil "yüklendi" sayılmaz, hata türü bildirilir; aynadaki eski kayıt yüklenir, üzerine boş yazılmaz; yalnız bellek kalıcı sayılmaz |
+| İçerik (`v4content`) | Lv.50; 40→50 EXP 153.680 … 282.440 (toplam 2.142.150); şema 4, 5 yuva; Okçu/Ölü Çağıran taban stat, HP/MP/güç formülleri, aralık/menzil; 7 aktif (1/5/10/15/25/35/45) + 3 pasif adları; Ustalık II/III; Yıldırım Yarığı ×2,20 / Astral Patlama ×2,00 6 hedef, 24 sn; Can Sömürüsü ≤%5; 210 eşya (84 yeni); her 10 seviyelik bantta yeni sınıf silah+gövde; Lv.1–5 yaratıkları yeni sınıf ekipmanı düşürür; normal R %0,25 / elit E %0,75 değişmedi; 4 Legendary bossunda 4 sınıfın Legendary'si; 400.000 Mahkûm kesiminde L %0,4 ve %80 kendi sınıfı; Tiran ve V4 elitlerinde Legendary yok; Legendary tarifi yok; elit/boss değerleri ve loot tabloları; haritalar 124×88 / 128×92, 4 kamp, elit, 2 sandık, yol taşı, ≥6 toplama, onarımsız erişim; geçiş kilitleri gerçek görev bayraklarına bağlı; Mabet 5 bölüm, kontrol noktaları, koşu başına tek ödül, yanıltıcı düğüm sayılmaz; 5 NPC haritada ve görev verir; görevler Legendary vermez/istemez |
+| Denge (`v4balance`) | Bkz. [`V4_NOTLARI.md`](V4_NOTLARI.md): dört sınıf Lv.10–50 farm, V4 yaratıkları 6,7–13,7 sn, elitler 52–84 sn, Tiran 4,4–6,7 dk, Mahkûm 5,9–7,4 dk, iskelet payı %25–35, 40→50 ≈10,2 sa |
+| Görevler (`quests`, güncellendi) | 102 ana/yan görev + sınıf/rehber görevleri **dört sınıfla** sırayla alınır, tamamlanır, ödül bir kez; Gökyarık/Yıldız Mezarı bayrakları, Mabet kilidi, "Göğün Bekçisi" unvanı, Ustalık II ve III |
+
 ## 3.0.1 — Kayıt sağlamlaştırma (22 Ekim 2026)
 
 Komutlar: `npm test` · `npm run build && npm run test:e2e:save`. Gerçek telefon / gerçek itch.io sayfasında test **yapılamadı**;

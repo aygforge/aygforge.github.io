@@ -267,6 +267,7 @@ try {
   const sk3 = await ev(page, () => ({ alive: window.__AHEN.world.minions.alive.length, cls: window.__AHEN.char.cls }));
   record('Kapat-aç: kayıtlı iskelet bir kez geri gelir (çoğalmaz)', sk3.alive === 1 && sk3.cls === 'necromancer', JSON.stringify(sk3));
   await page.screenshot({ path: join(shots, 'v4-necro.png') });
+  if (!await ev(page, () => !!window.__T)) await ev(page, HELPERS);   // kapat-aç sonrası yardımcılar yeniden kurulur
   await ev(page, (sk) => { window.__AHEN_SKILLS = sk; }, { necromancer: ['soul_arrow', 'summon_skeleton', 'curse_seal', 'life_drain', 'bone_burst', 'army_of_dead', 'soul_apocalypse'] });
   const nall = await ev(page, ALL_SKILLS, 'necromancer');
   const nmin = await ev(page, () => window.__AHEN.world.minions.alive.length);

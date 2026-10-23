@@ -1,6 +1,6 @@
 {
-  "date": "2026-10-22T13:09:36.041Z",
-  "passed": 60,
+  "date": "2026-10-23T00:05:06.037Z",
+  "passed": 61,
   "total": 61,
   "results": [
     {
@@ -156,7 +156,7 @@
     {
       "name": "Hedef ölünce yeni hedef otomatik seçilmez",
       "ok": true,
-      "info": "{\"target\":null,\"approaching\":false,\"kills\":1,\"exp\":13,\"gold\":22}"
+      "info": "{\"target\":null,\"approaching\":false,\"kills\":1,\"exp\":13,\"gold\":23}"
     },
     {
       "name": "Engelden görüş hattı geçmez (duvar arkasından saldırı yok)",
@@ -181,7 +181,7 @@
     {
       "name": "Joystick halkasının çevresine dokunmak da yürütür",
       "ok": true,
-      "info": "90 px sağa"
+      "info": "84 px sağa"
     },
     {
       "name": "Karakter panelinde 4 stat ve Onayla kaydırmadan ekrana sığar",
@@ -216,12 +216,12 @@
     {
       "name": "Büyük kılıç aktif saldırı: basınca en yakın hedefe vurur",
       "ok": true,
-      "info": "40 → 11"
+      "info": "40 → 13"
     },
     {
       "name": "Kapat-aç: karakter, gold, görev, harita, envanter korunur",
       "ok": true,
-      "info": "{\"name\":\"Kontrolcü\",\"level\":4,\"gold\":777,\"map\":\"forest\",\"kills\":1,\"bag\":2,\"q\":2,\"x\":3}"
+      "info": "{\"name\":\"Kontrolcü\",\"level\":4,\"gold\":777,\"map\":\"forest\",\"kills\":1,\"bag\":1,\"q\":2,\"x\":3}"
     },
     {
       "name": "Kayıttan dünyaya dönüş (aynı harita)",
@@ -236,22 +236,22 @@
     {
       "name": "Performans: orman normal",
       "ok": true,
-      "info": "oyun adımı 13.7/sn · ekran 13.7 FPS · 28 yaratık · bellek 92.9 MB (SwiftShader yazılım GPU)"
+      "info": "oyun adımı 25/sn · ekran 25 FPS · 28 yaratık · bellek 82.4 MB (SwiftShader yazılım GPU)"
     },
     {
       "name": "Performans: orman +30 kurt (saldırgan)",
       "ok": true,
-      "info": "oyun adımı 12.1/sn · ekran 12.1 FPS · 39 yaratık · bellek 92.9 MB (SwiftShader yazılım GPU)"
+      "info": "oyun adımı 24.3/sn · ekran 24.3 FPS · 39 yaratık · bellek 82.4 MB (SwiftShader yazılım GPU)"
     },
     {
       "name": "Performans: düşük performans modu (30 FPS sınırı)",
       "ok": true,
-      "info": "oyun adımı 11.4/sn (sınır 30) · ekran 11.4 FPS"
+      "info": "oyun adımı 22.6/sn (sınır 30) · ekran 22.6 FPS"
     },
     {
       "name": "Performans: dungeon",
-      "ok": false,
-      "info": "oyun adımı 8.8/sn · ekran 8.8 FPS · 20 yaratık"
+      "ok": true,
+      "info": "oyun adımı 19.4/sn · ekran 19.4 FPS · 20 yaratık"
     },
     {
       "name": "Golem büyük saldırıyı telegrafla işaretler",
@@ -261,7 +261,7 @@
     {
       "name": "Maden Golemi yenilebilir; bölüm 4 temizlenir",
       "ok": true,
-      "info": "{\"dead\":true,\"goldGained\":200,\"claims\":1,\"secondGold\":0,\"cleared\":[4],\"lootClaimed\":true}"
+      "info": "{\"dead\":true,\"goldGained\":205,\"claims\":1,\"secondGold\":0,\"cleared\":[4],\"lootClaimed\":true}"
     },
     {
       "name": "Tek boss ölümünden birden fazla loot kazanılamaz",
@@ -271,7 +271,7 @@
     {
       "name": "Gönüllü çıkış koşuyu bitirir; tekrar giriş yeni koşu ve Golem",
       "ok": true,
-      "info": "{\"runId\":\"runmvjk57qw3x7galwv6\",\"golem\":true,\"cleared\":[]}"
+      "info": "{\"runId\":\"runmvk7kb7u46sk8zi1g\",\"golem\":true,\"cleared\":[]}"
     },
     {
       "name": "Konsol hatası yok (kontrol/dungeon akışı)",
@@ -296,7 +296,7 @@
     {
       "name": "Mage uzaktan saldırır ve normal büyü MP harcamaz",
       "ok": true,
-      "info": "{\"dead\":true,\"mpUsed\":0,\"attackDistTiles\":4.7}"
+      "info": "{\"dead\":true,\"mpUsed\":0,\"attackDistTiles\":4.8}"
     },
     {
       "name": "Mage hazır sprite paketiyle çizilir (Wizard Pack)",
@@ -312,26 +312,26 @@
   "perf": [
     {
       "label": "orman normal",
-      "fps": 13.7,
-      "stepFps": 13.7,
-      "phaserFps": 23.6,
-      "memMB": 92.9,
+      "fps": 25,
+      "stepFps": 25,
+      "phaserFps": 33,
+      "memMB": 82.4,
       "enemies": 28
     },
     {
       "label": "orman +30 kurt (saldırgan)",
-      "fps": 12.1,
-      "stepFps": 12.1,
-      "phaserFps": 15.2,
-      "memMB": 92.9,
+      "fps": 24.3,
+      "stepFps": 24.3,
+      "phaserFps": 27.3,
+      "memMB": 82.4,
       "enemies": 39
     },
     {
       "label": "düşük performans modu (30 FPS sınırı)",
-      "fps": 11.4,
-      "stepFps": 11.4,
-      "phaserFps": 13.5,
-      "memMB": 92.9,
+      "fps": 22.6,
+      "stepFps": 22.6,
+      "phaserFps": 24.3,
+      "memMB": 82.4,
       "enemies": 39
     }
   ]
