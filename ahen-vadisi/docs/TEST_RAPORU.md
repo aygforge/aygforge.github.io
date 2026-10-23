@@ -1,5 +1,18 @@
 # Ahen Vadisi — Test Raporu
 
+## 4.3.0 — Parti, Faz 1 (23 Ekim 2026)
+- Birim: `tests/unit/party.test.js` (kod biçimi, güvenilmez verinin sınırlanması, lider sırası, kur/katıl, konum paylaşımı
+  ve mesaj bütçesi, sohbet ve hız sınırı, ayrılma/kopma/bayat üye, 4 kişi sınırı, davetin yalnız hedefe gitmesi).
+- E2E `run-e2e-party.mjs`: 25/25. **Gerçek** `@supabase/realtime-js` istemcisi, Playwright WebSocket yönlendirmesiyle
+  Supabase Realtime protokolünü (Phoenix vsn 2.0.0: ikili yayın, presence_state/diff, kalp atışı) taklit eden sahte sunucuya
+  bağlandı. Doğrulananlar: davet → kabul, birbirini haritada görme ve yürüyüş takibi, mini harita, parti çerçevesi, sohbet +
+  balon, bölge değişimi bildirimi, "Bölgesine git", keşfedilmemiş bölge kuralı, lideri takip, yenilemede partiye dönüş,
+  ayrılma, mobil sığma, konsol hatası yok. Ölçülen bütçe: 2 sn yürüyüş = 5 yayın, boşta 4 sn = 0 yayın.
+- `kurulum.sql` yerel PostgreSQL 16'da 4.2.0 betiğinin üstüne iki kez çalıştırıldı; `online_players.user_id` geldi.
+- **Denenmedi:** gerçek Supabase Realtime sunucusu (bu ortamdan `*.supabase.co`'ya erişim yok). Sahte sunucu
+  kütüphanenin gönderdiği gerçek çerçevelerle çalıştı, ama Supabase'in ayarlarına (ör. herkese açık kanal izni) ve
+  gecikmesine dair bir doğrulama değildir.
+
 ## 4.2.0 — Çevrimiçi oyuncular (23 Ekim 2026)
 - `supabase/kurulum.sql` yerel PostgreSQL 16'da iki kez art arda çalıştırıldı (tekrar güvenli). `presence` denetimleri:
   istemci eski zaman gönderse de sunucu zamanı yazılır; anonim çevrimiçi listesini okur; B, A adına yazamaz, A'nın satırını

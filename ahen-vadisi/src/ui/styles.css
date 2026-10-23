@@ -166,6 +166,17 @@ input.name { font: inherit; font-size: 1.1rem; padding: 10px 12px; border-radius
 .mmcol { display: flex; flex-direction: column; align-items: stretch; gap: 3px; }
 .hud-tr .onl { pointer-events: auto; font: inherit; font-size: .62rem; color: #cfe; background: rgba(0,0,0,.6); border: 1px solid var(--edge); border-radius: 8px; padding: 2px 4px; white-space: nowrap; cursor: pointer; }
 .hud-tr .onl::first-letter { color: #5e5; }
+.hud-tr .pbtn { position: relative; flex: 1 1 0; color: #f0e0c0; }
+.hud-tr .pbtn::first-letter { color: inherit; }
+.hud-tr .pbtn .badge { position: absolute; top: -6px; right: -4px; min-width: 14px; height: 14px; border-radius: 7px; background: #c03a2a; color: #fff; font-size: .6rem; line-height: 14px; text-align: center; border: 1px solid #000; }
+.partyf { pointer-events: auto; display: flex; flex-direction: column; gap: 2px; background: rgba(12,8,14,.55); border-left: 3px solid #5ee07a; border-radius: 4px; padding: 3px 6px; font-size: .7rem; max-width: 240px; }
+.partyf .pm.stale { opacity: .55; }
+.partyf .pn { color: #c8f0d0; text-shadow: 0 0 2px #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.partyf .mbar { height: 4px; background: rgba(0,0,0,.6); border: 1px solid #000; border-radius: 2px; overflow: hidden; }
+.partyf .mbar i { display: block; height: 100%; background: #5ee07a; }
+.chatlog { position: absolute; left: 50%; transform: translateX(-50%); bottom: calc(10px + var(--sab)); width: min(380px, 38vw); display: flex; flex-direction: column; gap: 2px; font-size: .74rem; pointer-events: none; }
+.chatlog div { background: rgba(10,6,12,.62); padding: 2px 6px; border-radius: 4px; text-shadow: 0 1px 1px #000; overflow-wrap: anywhere; transition: opacity 1s; }
+.chatlog div.fade { opacity: 0; }
 .mm .mn { position: absolute; left: 0; right: 0; bottom: 0; font-size: .62rem; text-align: center; background: rgba(0,0,0,.6); padding: 1px; }
 .menubtns { display: grid; grid-template-columns: repeat(3, 48px); grid-auto-rows: 48px; gap: 5px; }
 .ibtn { width: 48px; height: 48px; border-radius: 10px; border: 2px solid var(--edge); background: rgba(30,20,24,.86) center/34px no-repeat; pointer-events: auto; position: relative; box-shadow: 0 2px 0 #120d10; }

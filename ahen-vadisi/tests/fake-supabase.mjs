@@ -64,7 +64,7 @@ export function createFakeSupabase({ confirmEmail = false, tokenTtl = 3600 } = {
     // görünüm: son 90 sn'de görülen oyuncular (yalnız okunur)
     if (table === 'online_players') {
       if (method !== 'GET') return json(405, { message: 'cannot modify view' });
-      const fresh = db.presence.filter((r) => Date.now() - r.last_seen < 90000).map(({ user_id, ...r }) => ({ ...r, last_seen: new Date(r.last_seen).toISOString() }));
+      const fresh = db.presence.filter((r) => Date.now() - r.last_seen < 90000).map((r) => ({ ...r, last_seen: new Date(r.last_seen).toISOString() }));
       return rest('GET', '__view', q, null, headers, fresh);
     }
     if (!viewRows && (!db[table] || table === 'users')) return json(404, { code: 'PGRST205', message: `Could not find the table 'public.${table}' in the schema cache` });

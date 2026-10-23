@@ -170,7 +170,7 @@ describe('REST istemcisi (sahte Supabase)', () => {
     const anon = new OnlineApi(cfg, { fetchImpl: fake.fetchImpl });
     const list = await anon.getOnline();
     expect(list.rows.length).toBe(2);
-    expect(list.rows[0]).toEqual({ nickname: 'Ayg', char_name: 'Okcu', cls: 'archer', level: 13, map: 'mine' });
+    expect(list.rows[0]).toEqual({ user_id: a.user.id, nickname: 'Ayg', char_name: 'Okcu', cls: 'archer', level: 13, map: 'mine' });
     // B, A'nın satırını silemez
     await b.request('DELETE', `/rest/v1/presence?user_id=eq.${a.user.id}`);
     expect(fake.db.presence.length).toBe(2);

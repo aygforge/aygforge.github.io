@@ -103,8 +103,9 @@ drop trigger if exists presence_touch on public.presence;
 create trigger presence_touch before insert or update on public.presence
   for each row execute function public.presence_touch();
 
+-- user_id (4.3.0): parti daveti kime gidecek (sona eklenir; "create or replace view" yalnız sona sütun eklemeye izin verir)
 create or replace view public.online_players with (security_invoker = true) as
-  select nickname, char_name, cls, level, map, last_seen
+  select nickname, char_name, cls, level, map, last_seen, user_id
   from public.presence
   where last_seen > now() - interval '90 seconds';
 

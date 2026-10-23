@@ -185,7 +185,7 @@ export class OnlineApi {
   }
 
   async getOnline(limit = 100) {
-    const r = await this.request('GET', `/rest/v1/online_players?select=nickname,char_name,cls,level,map&order=level.desc&limit=${limit}`, { auth: this.loggedIn });
+    const r = await this.request('GET', `/rest/v1/online_players?select=user_id,nickname,char_name,cls,level,map&order=level.desc&limit=${limit}`, { auth: this.loggedIn });
     return r.ok ? { ok: true, rows: Array.isArray(r.data) ? r.data : [] } : r;
   }
 

@@ -1,5 +1,24 @@
 # Değişiklik Günlüğü
 
+## 4.3.0 — Parti: birlikte görünme, gezme ve sohbet (çok oyunculu Faz 1)
+Supabase Realtime (ücretsiz katman) ile; ek sunucu yok. Çevrimiçi giriş gerekir.
+- **Parti kur / kodla katıl / davet et:** HUD'da mini haritanın altında **Parti** düğmesi. Parti 6 karakterli bir kodla
+  kurulur (en çok 4 kişi, ilk kuran lider ★). Çevrimiçi oyuncular listesinden **Davet et**; davet edilen oyuncuya pencere
+  açılır (Katıl / Reddet), davet edene sonuç bildirilir.
+- **Haritada birlikte:** aynı bölgedeki parti arkadaşları kendi sınıf sprite'ıyla, ad + seviye + can çubuğuyla görünür,
+  yürüyüşü yumuşatılarak çizilir. Mini haritada yeşil nokta, sol üstte parti çerçevesi (ad, seviye, can, başka
+  bölgedeyse bölge adı). Arkadaşlar yalnız görünür: savaşa, düşmanlara ve ganimete etkileri yok (birlikte savaş Faz 3).
+- **Birlikte gezme:** arkadaş bölge değiştirince bildirim. Parti penceresinde **Yanına git** (aynı bölgede ışınlanma) /
+  **Bölgesine git** (keşfedilmiş Yol Taşı olan, dungeon olmayan bölgeye; savaş dışında, ücretsiz). **Lideri takip et**
+  açıksa lider bölge değiştirince peşinden gidilir.
+- **Parti sohbeti:** HUD'da **Sohbet**; mesajlar ekranın altında ve gönderenin başının üstünde konuşma balonu olarak.
+- Sayfa yenilenir ya da ana menüye dönülürse 30 dk içinde oyuna girince aynı partiye kendiliğinden dönülür.
+- **Mesaj bütçesi:** konum yalnız yürürken ve aynı bölgede arkadaş varken en sık 0,4 sn'de bir gider; durunca susar
+  (15 sn'de bir yoklama). Ayrıntı: `ONLINE_KURULUM.md`.
+- `kurulum.sql`: `online_players` görünümüne `user_id` (davet için) eklendi — **yeniden çalıştırılmalı** (güvenli).
+- Anlık bağlantı kütüphanesi (`@supabase/realtime-js`) yalnız gerektiğinde yüklenir.
+
+
 ## 4.2.0 — Çevrimiçi oyuncular + kurulum hatası teşhisi
 - **Çevrimiçi oyuncular:** oyundayken mini haritanın altında "● N çevrimiçi". Dokununca liste: takma ad, karakter, sınıf,
   seviye ve bulunduğu harita; kendi satırın "(sen)". Giriş yapmış oyuncu oyundayken yaklaşık 45 sn'de bir (ve harita

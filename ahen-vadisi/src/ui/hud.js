@@ -22,6 +22,8 @@ import { sound } from '../audio/sound.js';
 import { openPanel } from './panels/index.js';
 import { online } from '../online/index.js';
 import { openPlayers } from './panels/online.js';
+import { openParty, openChat } from './panels/party.js';
+import { partyGame, mapName } from '../online/partyGame.js';
 
 export function createHud() {
   const el = h('div', { id: 'hud' });
@@ -37,7 +39,9 @@ export function createHud() {
   const minionsEl = h('div', { class: 'minions hidden', 'data-testid': 'minion-hud' });
   const tracker = h('div', { class: 'tracker ia', onTap: () => openPanel('quests') });
   const dungeonBar = h('div', { class: 'dungeonbar hidden' });
-  const tl = h('div', { class: 'hud-tl' }, h('div', { class: 'vit' }, portrait, h('div', { class: 'bars' }, hpBar, mpBar, xpBar)), minionsEl, buffs, dungeonBar, tracker);
+  // parti arkadaşları (Faz 1): ad, seviye, can, başka bölgedeyse bölge adı; dokununca parti penceresi
+  const partyEl = h('div', { class: 'partyf ia hidden', 'data-testid': 'hud-party-frame', onTap: () => openParty() });
+  const tl = h('div', { class: 'hud-tl' }, h('div', { class: 'vit' }, portrait, h('div', { class: 'bars' }, hpBar, mpBar, xpBar)), partyEl, minionsEl, buffs, dungeonBar, tracker);
 
   // ---------------- üst orta
   const tName = h('span'), tLv = h('span', { class: 'muted' });
@@ -75,7 +79,39 @@ export function createHud() {
     onl.classList.toggle('hidden', !online.configured || n == null);
     onl.textContent = `● ${n ?? 0} çevrimiçi`;
   };
-  const tr = h('div', { class: 'hud-tr' }, menuBtns, h('div', { class: 'mmcol' }, mm, onl));
+  const partyBadge = h('span', { class: 'badge hidden' }, '!');
+  const partyBtn = h('button', { class: 'onl pbtn hidden', 'data-testid': 'hud-party', onTap: () => { sound.play('click'); openParty(); } }, 'Parti', partyBadge);
+  const chatBtn = h('button', { class: 'onl pbtn hidden', 'data-testid': 'hud-chat', onTap: () => { sound.play('click'); openChat(); } }, 'Sohbet');
+  const updateParty = () => {
+    const pg = partyGame, p = pg.party;
+    partyBtn.classList.toggle('hidden', !online.loggedIn);
+    partyBadge.classList.toggle('hidden', !pg.invites.length);
+    chatBtn.classList.toggle('hidden', !p?.inParty);
+    const others = p?.inParty ? p.others() : [];
+    const k = others.map((m) => `${m.uid}:${m.nick}:${m.leader}:${m.fresh}:${m.st?.lv}:${m.st?.m}:${Math.round((m.st?.hp ?? 100) / 5)}:${m.st?.d}`).join('|') + (p?.status || '') + (app.world?.mapId || '');
+    if (partyEl.dataset.k === k) return;
+    partyEl.dataset.k = k;
+    clear(partyEl);
+    partyEl.classList.toggle('hidden', !p?.inParty);
+    if (!p?.inParty) return;
+    if (!others.length) partyEl.append(h('div', { class: 'tiny muted' }, p.status === 'in' ? `Parti ${p.code} · arkadaş bekleniyor` : 'Parti: bağlanıyor…'));
+    for (const m of others) {
+      const st = m.st, away = st && st.m !== app.world?.mapId;
+      partyEl.append(h('div', { class: 'pm' + (m.fresh ? '' : ' stale') },
+        h('div', { class: 'pn' }, m.leader ? '★' : '', h('b', {}, m.nick), st ? ` Lv.${st.lv}` : '', away ? h('span', { class: 'tiny muted' }, ' · ' + mapName(st.m)) : null),
+        h('div', { class: 'mbar' }, h('i', { style: { width: `${st ? (st.d ? 0 : st.hp) : 0}%` } }))));
+    }
+  };
+  const tr = h('div', { class: 'hud-tr' }, menuBtns, h('div', { class: 'mmcol' }, mm, onl, h('div', { class: 'row', style: { gap: '3px' } }, partyBtn, chatBtn)));
+  // parti sohbeti: alt ortada son mesajlar (birkaç saniye sonra solar)
+  const chatLog = h('div', { class: 'chatlog', 'data-testid': 'hud-chat-log' });
+  const pushChat = (e) => {
+    const line = h('div', {}, h('b', { style: { color: e.self ? '#ffd86a' : '#9df0b0' } }, e.nick + ': '), e.text);
+    chatLog.appendChild(line);
+    while (chatLog.children.length > 4) chatLog.firstChild.remove();
+    setTimeout(() => line.classList.add('fade'), 9000);
+    setTimeout(() => line.remove(), 10000);
+  };
 
   // ---------------- sol alt
   // sol alt köşe: joystick + çevresindeki geniş dokunma bölgesi
@@ -149,7 +185,7 @@ export function createHud() {
 
   const channel = h('div', { class: 'channel hidden' }, h('div', { class: 'small', style: { textAlign: 'center', textShadow: '0 1px 2px #000' } }), h('div', { class: 'bar' }, h('i')));
   const fps = h('div', { class: 'fps hidden' });
-  el.append(tl, tc, tr, bl, feed, br, channel, fps);
+  el.append(tl, tc, tr, bl, feed, br, channel, fps, chatLog);
 
   // ---------------------------------------------------------------- güncellemeler
   let tAcc = 0, mmAcc = 0;
@@ -337,7 +373,7 @@ export function createHud() {
     bus.on('tick', (dt) => {
       tAcc += dt; mmAcc += dt;
       if (tAcc >= 0.1) { tAcc = 0; updateVitals(); }
-      if (mmAcc >= 0.25) { mmAcc = 0; drawMinimap(); }
+      if (mmAcc >= 0.25) { mmAcc = 0; drawMinimap(); updateParty(); }
     }),
     bus.on('changed', () => { updateVitals(); updateTracker(); }),
     bus.on('questProgress', (u) => {
@@ -359,7 +395,9 @@ export function createHud() {
     bus.on('mapEnter', (def) => { pushToast({ text: `${def.name} · ${def.rec}`, kind: 'level' }); updateTracker(); }),
     bus.on('dungeonProgress', updateTracker),
     bus.on('bossAnnounce', (t) => pushToast({ text: t, kind: 'elite' })),
-    bus.on('online', updateOnline),
+    bus.on('online', () => { updateOnline(); updateParty(); }),
+    bus.on('party', updateParty),
+    bus.on('partyChat', pushChat),
   ];
 
   const recent = new Map();
@@ -382,6 +420,7 @@ export function createHud() {
   updateVitals();
   updateTracker();
   updateOnline();
+  updateParty();
   return { el, destroy() { offs.forEach((f) => f()); window.removeEventListener('resize', layoutActions); el.remove(); } };
 }
 
@@ -451,6 +490,8 @@ export function drawMarkers(ctx, w, tf, k, mini) {
     else if (o.type === 'altar') { if (seen(o.x, o.y)) dot(o.x, o.y, '#c070ff', mini ? 3.5 : 5, 'd'); }
     else if (o.type === 'portal' || o.type === 'dungeon_gate') { if (seen(Math.min(o.x, def.w - 1), Math.min(o.y, def.h - 1))) dot(Math.min(Math.max(o.x, 1), def.w - 2), Math.min(Math.max(o.y, 1), def.h - 2), '#ffffff', mini ? 3 : 4.5, 's'); }
   }
+  // parti arkadaşları
+  for (const m of w.remote?.markers(TILE) || []) dot(m.x, m.y, '#5ee07a', mini ? 3.6 : 5);
   if (!mini) {
     ctx.font = 'bold 11px Trebuchet MS, sans-serif'; ctx.textAlign = 'center';
     for (const a of def.areas) {

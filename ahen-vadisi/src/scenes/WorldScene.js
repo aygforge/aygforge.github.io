@@ -1,6 +1,7 @@
 // WorldManager: tilemap katmanları, varlıklar, kamera, dokunma girdisi, harita geçişleri,
 // dungeon kapıları/bölümleri, ölüm-yeniden doğma, keşif ve aktif oyun süresi.
 import { MinionManager } from '../world/minions.js';
+import { RemotePlayers } from '../world/remotePlayers.js';
 import Phaser from 'phaser';
 import { app } from '../core/app.js';
 import { bus } from '../core/events.js';
@@ -100,6 +101,8 @@ export class WorldScene extends Phaser.Scene {
     // V4: Ölü Çağıran iskeletleri (kayıttaki güvenli durumdan tek ana iskelet; çoğalma yok)
     this.minions = new MinionManager(this);
     this.minions.restore();
+    // parti arkadaşları (yalnız görünür; savaşa etkisi yok)
+    this.remote = new RemotePlayers(this);
 
     // keşif
     this.fog = new Fog(this.mapId, def.w, def.h, ch.world.discovered[this.mapId]);
@@ -129,7 +132,7 @@ export class WorldScene extends Phaser.Scene {
       bus.on('settings', (s) => { this.applyZoom(); this.applyPerf(s); }),
       bus.on('heroLook', () => this.player?.refreshLook()),
     ];
-    this.events.once('shutdown', () => { this.offs.forEach((f) => f()); this.scale.off('resize', this.onResize, this); });
+    this.events.once('shutdown', () => { this.offs.forEach((f) => f()); this.remote?.destroy(); this.scale.off('resize', this.onResize, this); });
     this.applyPerf(app.settings);
     this.refreshMarks();
     bus.emit('worldReady', this);
@@ -508,8 +511,10 @@ export class WorldScene extends Phaser.Scene {
     this.changing = true;
     if (opts.exitDungeon) exitRun(ch, this.mapId);
     if (opts.enterDungeon) startOrResumeRun(ch, mapId);
-    if (DUNGEON_INFO[mapId] && !entry) entry = respawnEntry(ch, mapId);
-    const e = MAPS[mapId].entries[entry] || MAPS[mapId].entries.respawn;
+    if (DUNGEON_INFO[mapId] && !entry && !opts.pos) entry = respawnEntry(ch, mapId);
+    // opts.pos: belirli bir kareye geç (parti: arkadaşın yanına); yürünemezse create() bölge girişine düşer
+    const e = opts.pos || MAPS[mapId].entries[entry] || MAPS[mapId].entries.respawn;
+    if (opts.pos) entry = null;
     this.syncToChar();
     ch.world.map = mapId; ch.world.x = e.x; ch.world.y = e.y;
     sound.play('portal');
@@ -642,6 +647,7 @@ export class WorldScene extends Phaser.Scene {
     this.guard('oyuncu', () => this.player.update(dt));
     for (const e of this.enemies) this.guard(e.tpl.id, () => e.update(dt));
     this.guard('iskelet', () => this.minions.update(dt));
+    this.guard('parti', () => this.remote.update(dt));
     this.separate();
     this.enemies = this.enemies.filter((e) => !e.dead || e.container.active);
     for (const o of this.objects) this.guard(o.kind || 'nesne', () => o.update(dt));

@@ -8,6 +8,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createFakeSupabase } from '../fake-supabase.mjs';
+import { createPhoenixServer } from '../fake-realtime.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..', '..');
@@ -21,6 +22,7 @@ const results = [];
 const record = (name, ok, info = '') => { results.push({ name, ok: !!ok, info }); console.log(`${ok ? '✔' : '✘'} ${name}${info ? ' — ' + info : ''}`); };
 
 const fake = createFakeSupabase();
+const rt = createPhoenixServer();   // 4.3.0: giriş yapmış oyuncu oyunda davet kanalına bağlanır
 let offline = false;
 const server = spawn('npx', ['vite', 'preview', '--port', String(PORT), '--strictPort'], { cwd: root, stdio: 'pipe' });
 await new Promise((res) => { server.stdout.on('data', (d) => { if (String(d).includes(String(PORT))) res(); }); setTimeout(res, 6000); });
@@ -39,6 +41,7 @@ async function device(name, w = 844, h = 390) {
     const r = fake.handle(req.method(), req.url(), await req.allHeaders(), req.postData());
     return route.fulfill({ status: r.status, body: r.body, headers: { 'content-type': 'application/json', 'access-control-allow-origin': '*' } });
   });
+  await ctx.routeWebSocket(/\/realtime\/v1\/websocket/, (ws) => (offline ? ws.close() : rt.accept(ws)));
   const page = await ctx.newPage();
   page.errors = [];
   page.on('pageerror', (e) => page.errors.push(e.message));

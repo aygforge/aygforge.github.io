@@ -16,6 +16,8 @@ import { MAPS } from './data/maps/index.js';
 import { sound } from './audio/sound.js';
 import { devEnabled, mountDevButton, installDevHooks } from './dev/devpanel.js';
 import { online } from './online/index.js';
+import { partyGame } from './online/partyGame.js';
+import { bindPartyUi } from './ui/panels/party.js';
 
 let hud = null;
 
@@ -23,6 +25,7 @@ async function start() {
   const root = document.getElementById('ui');
   ui.init(root);
   bindPanelEvents();
+  bindPartyUi();
   // yükleme ekranı
   const bar = h('i');
   const loading = h('div', { class: 'screen', id: 'loading' }, h('div', { class: 'logo' }, 'AHEN VADİSİ'), h('div', { class: 'bar' }, bar), h('div', { class: 'small muted', id: 'loading-text' }, 'Dünya çiziliyor…'));
@@ -38,7 +41,8 @@ async function start() {
   }
   // çevrimiçi test katmanı (isteğe bağlı; ayar yoksa ya da ağ yoksa oyun etkilenmez)
   online.init().catch((e) => console.warn('[Ahen] çevrimiçi katman başlatılamadı', e));
-  if (app.dev) window.__AHEN_ONLINE = online;
+  partyGame.init();
+  if (app.dev) { window.__AHEN_ONLINE = online; window.__AHEN_PARTY = partyGame; }
 
   const game = new Phaser.Game({
     type: Phaser.AUTO,

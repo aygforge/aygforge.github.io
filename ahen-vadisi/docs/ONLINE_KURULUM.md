@@ -5,6 +5,7 @@ Oyun tek oyunculu kalır ve çevrimiçi olmadan da tamamen çalışır. Bu katma
 - **Bulut kaydı:** hesabınla ilerlemen buluta da yedeklenir; başka cihazda/tarayıcıda "Buluttan yükle" ile devam edersin.
 - **Liderlik tablosu:** arkadaşların karakterleri (seviye, öldürme, boss, görev).
 - **Hata / öneri bildir:** oyun içinden; sürüm, harita, sınıf ve seviye otomatik eklenir.
+- **Parti (4.3.0):** arkadaşlarınla parti kur, haritada birbirinizi görün, birlikte bölgeden bölgeye gezin, sohbet edin.
 - **Çevrimiçi oyuncular (4.2.0):** oyundayken mini haritanın altında "● N çevrimiçi"; dokununca kim, hangi karakterle, hangi haritada.
 
 Sunucu kodu yazmak ya da sunucu kiralamak gerekmez: Supabase'in ücretsiz katmanı (veritabanı + giriş sistemi) yeterli.
@@ -45,6 +46,17 @@ Yeni sürümle gelen betiği her zaman **baştan sona yeniden çalıştır** (es
 **Authentication → Sign In / Providers → Email**: "Enable Email provider" açık kalsın, **"Confirm email" kapalı** olsun → Save.
 
 Açık kalırsa arkadaşlarına onay e-postası gider ve bağlantı oyuna geri dönmez; kapalıyken kayıt anında tamamlanır.
+
+## 3b. Anlık bağlantı (parti için) — genelde ayar gerekmez
+
+Parti, Supabase **Realtime** (Broadcast + Presence) kullanır; varsayılan olarak açıktır. Parti "bağlantı hatası" derse:
+**Project Settings → Realtime** (ya da sol menü **Realtime → Settings**) altında herkese açık kanallara izin veren seçenek
+("Allow public access" / "private channels only" kapalı) açık olmalı.
+
+**Ücretsiz katman sınırları (Supabase belgelerine göre):** ayda 2 milyon Realtime mesajı, aynı anda 200 bağlantı, saniyede
+100 mesaj. Her yayın 1 gönderim + alan kişi sayısı kadar mesaj sayılır. Oyun konumu yalnız yürürken ve aynı bölgede parti
+arkadaşı varken en sık 0,4 sn'de bir gönderir, dururken susar. Kabaca: 2 kişi birlikte sürekli yürürse saatte ≈ 36 bin,
+4 kişi ≈ 140 bin mesaj; gerçek oyunda duraklamalarla daha az. Kullanımı **Reports / Usage → Realtime** altında izle.
 
 ## 4. Adres ve herkese açık anahtarı al
 
@@ -92,6 +104,7 @@ yeniden itch.io'ya yükle.
 
 ## Ne değildir
 
-Bu katman çok oyunculu (aynı dünyada birlikte oynama) **değildir**; her oyuncu kendi tek oyunculu dünyasında oynar. "Çevrimiçi
-oyuncular" listesi kimin oyunda olduğunu gösterir; birbirinizi haritada görmezsiniz. Liderlik ve
+Parti arkadaşları haritada görünür ve birlikte gezilir, ama **savaş hâlâ herkesin kendi dünyasında**: aynı kurdu ikiniz ayrı
+ayrı görürsünüz, ganimet ve görev ilerlemesi ortak değildir (birlikte savaş / raid sonraki aşama). Eşya ticareti yoktur.
+Parti kanalları herkese açık anahtarla açılır: kodu bilen katılabilir (arkadaş grubu için yeterli). Liderlik ve
 kayıt verisi istemciden gelir (arkadaş grubu için yeterli; hileye karşı korumalı değildir).

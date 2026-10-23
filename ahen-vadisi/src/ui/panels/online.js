@@ -143,7 +143,9 @@ export async function openPlayers() {
   const body = h('div', { class: 'col scroll', style: { maxHeight: '60vh' }, 'data-testid': 'online-players-list' }, h('p', { class: 'small muted' }, 'Yükleniyor…'));
   ui.modal(h('div', { class: 'dlg frame', 'data-testid': 'online-players-dlg' }, h('h3', { class: 't' }, 'Çevrimiçi oyuncular'), body,
     h('p', { class: 'tiny muted' }, online.loggedIn ? 'Oyundayken listede görünürsün (yaklaşık her 45 sn güncellenir). Herkes kendi dünyasında oynar.' : 'Listede görünmek için Ayarlar → Çevrimiçi\'den giriş yap.'),
-    h('div', { class: 'row', style: { justifyContent: 'flex-end' } }, h('button', { class: 'btn', onTap: () => ui.closeModal() }, 'Kapat'))));
+    h('div', { class: 'row', style: { justifyContent: 'flex-end' } },
+      online.loggedIn && app.world ? h('button', { class: 'btn green', 'data-testid': 'players-party', onTap: () => { ui.closeModal(); openPartyLazy(); } }, 'Parti / davet et') : null,
+      h('button', { class: 'btn', onTap: () => ui.closeModal() }, 'Kapat'))));
   const r = await online.loadPlayers();
   clear(body);
   if (!r.ok) { body.append(h('p', { class: 'small warn' }, r.msg)); return; }
@@ -154,6 +156,9 @@ export async function openPlayers() {
     h('span', { class: 'grow' }, h('b', {}, x.nickname), x.nickname === me ? ' (sen)' : '', x.char_name ? ` — ${x.char_name} (${CLASSES[x.cls]?.name || x.cls || '?'})` : ''),
     h('span', {}, `${x.level ? 'Lv.' + x.level + ' · ' : ''}${MAPS[x.map]?.name || x.map || '—'}`))));
 }
+
+// parti penceresi (döngüsel içe aktarmayı önlemek için geç yüklenir)
+function openPartyLazy() { import('./party.js').then((m) => m.openParty()); }
 
 async function boardModal() {
   const body = h('div', { class: 'col scroll', style: { maxHeight: '60vh' }, 'data-testid': 'online-board-list' }, h('p', { class: 'small muted' }, 'Yükleniyor…'));
