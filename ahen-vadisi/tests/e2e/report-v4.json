@@ -1,0 +1,202 @@
+{
+  "date": "2026-10-23T07:18:37.403Z",
+  "passed": 39,
+  "total": 39,
+  "results": [
+    {
+      "name": "Ana menü: 5 karakter yuvası; oluşturma ekranında 4 sınıf",
+      "ok": true,
+      "info": "{\"slots\":5,\"classes\":[\"warrior\",\"mage\",\"archer\",\"necromancer\"]}"
+    },
+    {
+      "name": "Okçu Lv.1: HP 130, MP 67, menzil 7, saldırı ≤1,25 sn (temel 1,25 + DEX hızı); yay + başlangıç zırhı; İsabetli Ok çubukta",
+      "ok": true,
+      "info": "{\"hp\":130,\"mp\":67,\"range\":7,\"iv\":1.2278978388998034,\"bar\":[\"aimed_shot\",\"multi_shot\",\"agile_step\",\"piercing_arrow\"],\"eq\":[\"Y01\",\"YH01\",\"YC01\"]}"
+    },
+    {
+      "name": "Okçu normal saldırısı görünür ok mermisiyle uzaktan öldürür (MP harcamaz)",
+      "ok": true,
+      "info": "{\"killed\":true,\"kills\":1,\"maxProj\":1,\"dist\":5,\"mpSame\":true,\"wall\":{\"x\":13,\"y\":6},\"blocked\":{\"hit\":false,\"hp\":true,\"alive\":0}}"
+    },
+    {
+      "name": "Ok duvara çarpar: arada opak karo varsa hedef hasar almaz",
+      "ok": true,
+      "info": "{\"hit\":false,\"hp\":true,\"alive\":0}"
+    },
+    {
+      "name": "Okçu becerileri (Lv.15): İsabetli Ok, Çoklu Atış, Çevik Adım, Delici Ok kullanılır ve hasar verir",
+      "ok": true,
+      "info": "{\"aimed_shot\":true,\"aimed_shot_dmg\":37,\"multi_shot\":true,\"multi_shot_dmg\":46,\"agile_step\":true,\"agile_step_dmg\":22,\"piercing_arrow\":true,\"piercing_arrow_dmg\":42}"
+    },
+    {
+      "name": "Okçu Lv.50: 7 aktif becerinin hepsi kullanılır; hasar becerileri hasar verir (Ok Yağmuru, Kartal Fırtınası dahil)",
+      "ok": true,
+      "info": "{\"aimed_shot\":{\"ok\":true,\"dmg\":91},\"multi_shot\":{\"ok\":true,\"dmg\":67},\"agile_step\":{\"ok\":true,\"dmg\":33},\"piercing_arrow\":{\"ok\":true,\"dmg\":96},\"arrow_rain\":{\"ok\":true,\"dmg\":81},\"hunter_mark\":{\"ok\":true,\"dmg\":36},\"eagle_storm\":{\"ok\":true,\"dmg\":116}}"
+    },
+    {
+      "name": "Konsol hatası yok (Okçu)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Ölü Çağıran Lv.1: HP 115, MP 162, menzil 6, saldırı ≤1,6 sn (temel 1,6 + DEX hızı)",
+      "ok": true,
+      "info": "{\"hp\":115,\"mp\":162,\"range\":6,\"iv\":1.5873015873015874}"
+    },
+    {
+      "name": "Ruh Mermisi MP harcamadan öldürür",
+      "ok": true,
+      "info": "{\"killed\":true,\"mpSame\":true}"
+    },
+    {
+      "name": "İskelet Çağır (Lv.12) bir iskelet çağırır; hedef seçilmeden saldırmaz (AFK farm yok)",
+      "ok": true,
+      "info": "{\"soul\":{\"killed\":true,\"mpSame\":true},\"ok\":true,\"alive1\":1,\"afk\":{\"a\":true,\"b\":true,\"hits\":0},\"only\":{\"aDead\":true,\"bFull\":true,\"onlyA\":true,\"kills\":1,\"gold\":1},\"max2\":2,\"saved\":{\"main\":true,\"hpPct\":1}}"
+    },
+    {
+      "name": "İskelet yalnız seçili hedefe saldırır; iskeletin öldürdüğü yaratık tek öldürme / tek ödül sayılır",
+      "ok": true,
+      "info": "{\"aDead\":true,\"bFull\":true,\"onlyA\":true,\"kills\":1,\"gold\":1}"
+    },
+    {
+      "name": "Aynı anda en çok 2 iskelet; kayıtta yalnız güvenli durum ({ana iskelet, can oranı})",
+      "ok": true,
+      "info": "{\"soul\":{\"killed\":true,\"mpSame\":true},\"ok\":true,\"alive1\":1,\"afk\":{\"a\":true,\"b\":true,\"hits\":0},\"only\":{\"aDead\":true,\"bFull\":true,\"onlyA\":true,\"kills\":1,\"gold\":1},\"max2\":2,\"saved\":{\"main\":true,\"hpPct\":1}}"
+    },
+    {
+      "name": "Harita değişiminde iskelet çoğalmaz (1); ölümde dağılır ve kendiliğinden geri gelmez",
+      "ok": true,
+      "info": "{\"afterMap\":1,\"dead\":{\"alive\":0,\"saved\":null},\"afterRespawn\":0}"
+    },
+    {
+      "name": "Kapat-aç: kayıtlı iskelet bir kez geri gelir (çoğalmaz)",
+      "ok": true,
+      "info": "{\"alive\":1,\"cls\":\"necromancer\"}"
+    },
+    {
+      "name": "Ölü Çağıran Lv.50: 7 aktif becerinin hepsi kullanılır; hasar becerileri hasar verir; Ölüler Ordusu sonrası en çok 2 iskelet",
+      "ok": true,
+      "info": "{\"nall\":{\"soul_arrow\":{\"ok\":true,\"dmg\":110},\"summon_skeleton\":{\"ok\":true,\"dmg\":54},\"curse_seal\":{\"ok\":true,\"dmg\":54},\"life_drain\":{\"ok\":true,\"dmg\":65},\"bone_burst\":{\"ok\":true,\"dmg\":102},\"army_of_dead\":{\"ok\":true,\"dmg\":76},\"soul_apocalypse\":{\"ok\":true,\"dmg\":146}},\"nmin\":2}"
+    },
+    {
+      "name": "Konsol hatası yok (Ölü Çağıran)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Kara Taht kuzey geçidi m47 olmadan kapalı; yarık incelenince bayrak açılır",
+      "ok": true,
+      "info": "{\"locked\":true,\"stayed\":true,\"acc\":true,\"flag\":true,\"lockedAfter\":false,\"m47\":1}"
+    },
+    {
+      "name": "Gökyarık Ovası: 4 yaratık türü + Fırtına Tiranı; Atlas, yol taşı, 2 sandık, toplama düğümleri, fırtına parçacıkları",
+      "ok": true,
+      "info": "{\"ids\":[\"lightning_raider\",\"rift_wing\",\"storm_hound\",\"storm_tyrant\",\"thunder_golem\"],\"npcs\":[\"atlas\"],\"flakes\":40,\"chests\":2,\"gather\":13,\"ws\":true,\"theme\":\"storm\"}"
+    },
+    {
+      "name": "V4 yetenekleri telegrafla başlar: Fırtına Sıçrayışı, Yarık Pençesi, Yıldız Düşüşü; Fırtına Celladı ve Hiçlik Muhafızı",
+      "ok": true,
+      "info": "{\"storm_hound\":true,\"rift_wing\":true,\"storm_executioner\":true,\"void_warden\":true,\"star_oracle\":true}"
+    },
+    {
+      "name": "Fırtına Tiranı: telegraflı saldırılar; %60 altı Kristal Çağrısı (2 kristal, hasar azaltma)",
+      "ok": true,
+      "info": "{\"cast\":true,\"crystals\":2,\"shield\":0.6,\"crack\":{\"reduce\":0,\"def\":68,\"base\":105},\"fury\":true,\"core\":1,\"dead\":true,\"left\":0}"
+    },
+    {
+      "name": "Kristaller kırılınca kalkan söner ve savunma düşer; %25 altı Son Gök Gürültüsü; garantili Tiran Çekirdeği",
+      "ok": true,
+      "info": "{\"cast\":true,\"crystals\":2,\"shield\":0.6,\"crack\":{\"reduce\":0,\"def\":68,\"base\":105},\"fury\":true,\"core\":1,\"dead\":true,\"left\":0}"
+    },
+    {
+      "name": "Konsol hatası yok (Gökyarık turu)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Yıldız Mezarı geçidi m53 ile açılır",
+      "ok": true,
+      "info": "{\"locked\":true,\"open\":true,\"flag\":true}"
+    },
+    {
+      "name": "Yıldız Mezarı: 4 yaratık türü; Leyla ve Tufan; 3 gözlem merceği; m53 ulaşma hedefi tamamlanır",
+      "ok": true,
+      "info": "{\"ids\":[\"astral_hunter\",\"star_oracle\",\"star_parasite\",\"void_armor\"],\"npcs\":[\"leyla\",\"tufan\"],\"m53\":[1,1],\"gateMsg\":\"Gökyarık Mabedi mühürlü. \\\"Mabet Mühürleri\\\" görevinde girişteki mühürleri çöz.\",\"lenses\":3}"
+    },
+    {
+      "name": "Gökyarık Mabedi kapısı \"Mabet Mühürleri\" olmadan mühürlü",
+      "ok": true,
+      "info": "Gökyarık Mabedi mühürlü. \"Mabet Mühürleri\" görevinde girişteki mühürleri çöz."
+    },
+    {
+      "name": "Mabet giriş mühürleri sırayla: yanlış sırada ipucu verir; doğru sırada kapı açılır",
+      "ok": true,
+      "info": "{\"wrong\":\"Mühür tepki vermiyor. Gök doğudan doğar, tepeye çıkar, batıda batar.\",\"p\":[3,1],\"unlocked\":true}"
+    },
+    {
+      "name": "Mabet 1–3: kapı mührü bölümü açar; koridor savaşları; kontrol noktaları",
+      "ok": true,
+      "info": "{\"stages0\":5,\"s1before\":false,\"s1\":true,\"decoy\":{\"hint\":\"Düğüm sönük ve soğuk. Zemindeki çatlaklar ışığı çapraz köşelere taşıyor — parlayan iki düğümü ara.\",\"counted\":false,\"cleared\":false},\"s2\":true,\"s3\":true,\"waves\":[{\"id\":\"sky_seal_a\",\"w1\":2,\"w2\":3,\"brokenAfter1\":false,\"broken\":true},{\"id\":\"sky_seal_b\",\"w1\":3,\"w2\":2,\"brokenAfter1\":false,\"broken\":true},{\"id\":\"sky_seal_c\",\"w1\":2,\"w2\":3,\"brokenAfter1\":false,\"broken\":true}],\"s4\":true}"
+    },
+    {
+      "name": "Yanıltıcı enerji düğümü zararsız ipucu verir ve sayılmaz",
+      "ok": true,
+      "info": "{\"hint\":\"Düğüm sönük ve soğuk. Zemindeki çatlaklar ışığı çapraz köşelere taşıyor — parlayan iki düğümü ara.\",\"counted\":false,\"cleared\":false}"
+    },
+    {
+      "name": "Gök Mühürleri: her mühür iki savunma dalgası; ikinci dalga bitince kırılır; boss kapısı açılır",
+      "ok": true,
+      "info": "[{\"id\":\"sky_seal_a\",\"w1\":2,\"w2\":3,\"brokenAfter1\":false,\"broken\":true},{\"id\":\"sky_seal_b\",\"w1\":3,\"w2\":2,\"brokenAfter1\":false,\"broken\":true},{\"id\":\"sky_seal_c\",\"w1\":2,\"w2\":3,\"brokenAfter1\":false,\"broken\":true}]"
+    },
+    {
+      "name": "Göğün Mahkûmu I–II: telegraflı saldırılar; %65 altı kalkan + 2 Gök Mührü; mühürler kırılınca kalkan düşer",
+      "ok": true,
+      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":0,\"fury\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3,4],\"x\":68,\"y\":23,\"seals\":0},\"chain\":1,\"claimed\":true,\"cleared5\":true,\"dupGold\":0,\"hist\":1}"
+    },
+    {
+      "name": "Göğün Mahkûmu III (%30): Yıldızların Sonu, en çok 4 yıldız alanı",
+      "ok": true,
+      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":0,\"fury\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3,4],\"x\":68,\"y\":23,\"seals\":0},\"chain\":1,\"claimed\":true,\"cleared5\":true,\"dupGold\":0,\"hist\":1}"
+    },
+    {
+      "name": "Mabette ölüm: Mahkûm tam cana döner, kalkan/mühürler sıfırlanır, bölümler korunur (kontrol noktası)",
+      "ok": true,
+      "info": "{\"full\":true,\"shield\":0,\"cleared\":[1,2,3,4],\"x\":68,\"y\":23,\"seals\":0}"
+    },
+    {
+      "name": "Göğün Mahkûmu yenilir: garantili Mahkûmun Zinciri, koşu başına tek ödül",
+      "ok": true,
+      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":0,\"fury\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3,4],\"x\":68,\"y\":23,\"seals\":0},\"chain\":1,\"claimed\":true,\"cleared5\":true,\"dupGold\":0,\"hist\":1}"
+    },
+    {
+      "name": "Konsol hatası yok (Yıldız Mezarı / Mabet)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Mobil (640×360): iskelet HUD ekranda; yatay taşma yok",
+      "ok": true,
+      "info": "{\"minion\":{\"x\":8,\"y\":54,\"w\":192,\"h\":17},\"vw\":640,\"vh\":360,\"overflowX\":false}"
+    },
+    {
+      "name": "Ayarlar → Kayıt Güvenliği: son kalıcı kayıt, teknoloji, dışa/içe aktarma ve önceki kayıtlar",
+      "ok": true,
+      "info": "{\"text\":\"Kayıt GüvenliğiSon başarılı kalıcı kayıt23.10.2026 07:18:20 (IndexedDB + ayna)Kayıt teknolojisiIndexedDB (birincil) + localStorage aynasıKalıcı depolama iznitarayıcı izin vermediSon yedek (kod/dosya)henüz alınmadıŞimdi kaydetYedek kodunu kopyalaYedek kodu yapıştırYedeği dışa aktar (JSON)Yedeği içe aktarÖnceki kayıtlarKayıp karakter araKayıt bu tarayıcıda, bu sitenin deposunda tutulur (isteğe bağlı\",\"buttons\":7}"
+    },
+    {
+      "name": "V4 yedek hatırlatması bir kez gösterilir (\"Daha sonra\" sonrası tekrar çıkmaz)",
+      "ok": true,
+      "info": "{\"n1\":true,\"n2\":false}"
+    },
+    {
+      "name": "Konsol hatası yok (mobil)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "PWA: servis işçisi etkin, 4.1.0 sürümlü önbellek; çevrimdışı açılış",
+      "ok": true,
+      "info": "{\"active\":true,\"version\":\"4.1.0\",\"offline\":true}"
+    }
+  ]
+}

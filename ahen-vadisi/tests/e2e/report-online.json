@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-23T07:15:55.590Z",
+  "passed": 3,
+  "total": 5,
+  "results": [
+    {
+      "name": "Sunucu ayarı yokken Çevrimiçi penceresi açılır ve durumu söyler (oyun çevrimdışı çalışır)",
+      "ok": true,
+      "info": "DurumSunucu ayarlanmadı"
+    },
+    {
+      "name": "Gizli (service_role) anahtar reddedilir",
+      "ok": true,
+      "info": "Bu service_role (GİZLİ) anahtar! Oyuna yalnız \"anon public\" anahtar konur."
+    },
+    {
+      "name": "Sunucu ayarlanınca giriş/kayıt düğmeleri görünür",
+      "ok": true,
+      "info": "DurumGiriş yapılmadı"
+    },
+    {
+      "name": "Kayıt ol: hesap + takma ad oluşur, oturum açılır",
+      "ok": false,
+      "info": "DurumGiriş yapılmadı"
+    },
+    {
+      "name": "Beklenmeyen test hatası",
+      "ok": false,
+      "info": "page.tap: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=online-upload]')\u001b[22m\n\n    at /home/user/aygforge.github.io/ahen-vadisi/tests/e2e/run-e2e-online.mjs:112:12"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-# AHEN VADİSİ — V4.0 «Gökyarık Genişlemesi» (4.0.1)
+# AHEN VADİSİ — V4.0 «Gökyarık Genişlemesi» (4.1.0)
 
 Mobil öncelikli (yatay ekran), HTML5 tabanlı, eski usul 2D fantastik RPG. Karaağaç Köyü'nden Derin Ocak'a uzanan
 Lv. 1–20 ilerleme döngüsü (V1), **V2.0 Kül ve Ayaz (Lv. 21–30)** ve onların üzerine kurulan **V3.0 Kayıp Krallığın
@@ -118,6 +118,8 @@ otomatik seçilmez; erişilemeyen hedefe sonsuz koşma olmaz; duvar arkasından 
   (+4 yeni sınıf rehber görevi),
   tekrarlanabilir Av Sözleşmeleri; görev günlüğünde kategori/bölge filtresi ve 3 görev takibi.
 - **Av Geçmişi:** türe göre öldürme, boss zaferleri, bulunan Rare/Epic/Legendary, tamamlanan zindanlar (ganimeti etkilemez).
+- **Çevrimiçi (isteğe bağlı, test):** ücretsiz Supabase ile bulut kaydı, arkadaşlar arası liderlik tablosu, oyun içi hata
+  bildirimi. Kurulum: [`docs/ONLINE_KURULUM.md`](docs/ONLINE_KURULUM.md). Ayar yoksa oyun tamamen çevrimdışı çalışır.
 - **Kayıt:** 5 karakter yuvası, Ayarlar → Kayıt Güvenliği (son kalıcı kayıt, teknoloji, yedekler, kurtarma), IndexedDB + localStorage aynası (çift yazım), önceki sağlam kayıtlar + kayıt geçmişi, checksum,
   bozuk kayıt onarımı, kayıp karakter kurtarma, yedek kodu (kopyala/yapıştır) ve JSON yedek dışa/içe aktarma,
   sürümlü şema geçişi (V1 → V2 → V3 → V4) ve geçiş öncesi yedek; depolama açılamazsa kayıt üzerine boş profil yazılmaz. PWA: yeni sürüm hazır olunca "kaydet ve yenile" bildirimi.

@@ -15,6 +15,7 @@ import { respawnEntry, getRun, isDungeonUnlocked, DUNGEON_INFO } from './systems
 import { MAPS } from './data/maps/index.js';
 import { sound } from './audio/sound.js';
 import { devEnabled, mountDevButton, installDevHooks } from './dev/devpanel.js';
+import { online } from './online/index.js';
 
 let hud = null;
 
@@ -35,6 +36,9 @@ async function start() {
   } catch (e) {
     console.error(e);
   }
+  // çevrimiçi test katmanı (isteğe bağlı; ayar yoksa ya da ağ yoksa oyun etkilenmez)
+  online.init().catch((e) => console.warn('[Ahen] çevrimiçi katman başlatılamadı', e));
+  if (app.dev) window.__AHEN_ONLINE = online;
 
   const game = new Phaser.Game({
     type: Phaser.AUTO,

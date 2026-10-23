@@ -7,6 +7,7 @@ import { exportJson, encodeBackupCode, decodeBackupCode, wrap } from '../../save
 import { CLASSES } from '../../data/classes.js';
 import { sound } from '../../audio/sound.js';
 import { requestFullscreen } from '../screen.js';
+import { onlineBox } from './online.js';
 
 function toggle(on, fn, testid) {
   const t = h('button', { class: 'tog' + (on ? ' on' : ''), 'data-testid': testid, onTap: () => { const v = !t.classList.contains('on'); t.classList.toggle('on', v); sound.play('click'); fn(v); } });
@@ -54,9 +55,9 @@ export function settingsTab(rerender) {
   void rerender;
   const credits = h('div', { class: 'box col small' },
     h('b', { class: 'gold' }, 'Emeği geçenler'),
-    h('div', {}, 'Karakter ve Cevher Rahibi sprite\'ları: LuizMelo (luizmelo.itch.io) — Fantasy Warrior, Wizard Pack, Evil Wizard 2 (CC0).'),
+    h('div', {}, 'Karakter ve Cevher Rahibi sprite\'ları: LuizMelo (luizmelo.itch.io) — Fantasy Warrior, Wizard Pack, Huntress 2, Evil Wizard 2 ve 3 (CC0); iskelet: Skeleton Sprite Pack.'),
     h('div', { class: 'muted' }, 'Diğer tüm görseller, sesler ve müzik oyun içinde procedural olarak üretilir.'));
-  return h('div', { class: 'col grow scroll' }, general, potion, backup, credits, exit);
+  return h('div', { class: 'col grow scroll' }, general, potion, backup, onlineBox(), credits, exit);
 }
 
 // ------------------------------------------------------------------ Kayıt Güvenliği (oyun içi ve ana menü)
@@ -108,7 +109,7 @@ export function saveSafetyBox() {
       h('button', { class: 'btn small', onTap: () => importSave() }, 'Yedeği içe aktar'),
       h('button', { class: 'btn small', 'data-testid': 'snapshots', onTap: () => snapshots() }, 'Önceki kayıtlar'),
       h('button', { class: 'btn small', 'data-testid': 'find-lost', onTap: () => findLost() }, 'Kayıp karakter ara')),
-    h('p', { class: 'tiny muted' }, 'Kayıt bu tarayıcıda, bu sitenin deposunda tutulur (çevrimiçi kayıt yoktur). itch.io gibi gömülü sayfalarda ya da Brave/Safari gibi gizlilik ayarı sıkı tarayıcılarda depolama silinebilir veya farklı bir adrese bağlanabilir. Yedek kodunu ara sıra kopyalayıp bir nota ya da kendine mesaja yapıştır: başka tarayıcıda ya da cihazda da aynı kodla devam edebilirsin.'));
+    h('p', { class: 'tiny muted' }, 'Kayıt bu tarayıcıda, bu sitenin deposunda tutulur (isteğe bağlı bulut kaydı: Çevrimiçi bölümü). itch.io gibi gömülü sayfalarda ya da Brave/Safari gibi gizlilik ayarı sıkı tarayıcılarda depolama silinebilir veya farklı bir adrese bağlanabilir. Yedek kodunu ara sıra kopyalayıp bir nota ya da kendine mesaja yapıştır: başka tarayıcıda ya da cihazda da aynı kodla devam edebilirsin.'));
 }
 
 function markExported() {
@@ -139,13 +140,14 @@ async function replaceProfile(profile, tag) {
   bus.emit('profileReplaced');
 }
 
-function confirmImport(r, tag) {
+// after: yükleme bittikten sonra (ör. çevrimiçi katmanın bulut özetini güncellemesi)
+export function confirmImport(r, tag, after = null) {
   if (!r.ok) { ui.alert('İçe aktarma başarısız', r.msg); return; }
   const names = r.profile.characters.filter(Boolean).map((c) => `${c.name} Lv.${c.level}`).join(', ') || 'karakter yok';
   ui.confirm({
     title: 'Yedeği yükle', danger: true, ok: 'Yükle',
     text: `Bu cihazdaki profil yedekteki profille değiştirilecek: ${names}. (Şu anki profilin ayrıca bir kurtarma kopyası saklanır.) Emin misin?`,
-    onOk: () => replaceProfile(r.profile, tag),
+    onOk: async () => { await replaceProfile(r.profile, tag); after?.(); },
   });
 }
 

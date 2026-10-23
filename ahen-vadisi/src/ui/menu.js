@@ -11,6 +11,7 @@ import { ITEMS } from '../data/items.js';
 import { MAPS } from '../data/maps/index.js';
 import { createCharacter, validateName } from '../systems/character.js';
 import { computeStats } from '../systems/stats.js';
+import { openOnline } from './panels/online.js';
 import { importSave, showRecovery, copyBackupCode, pasteBackupCode, snapshots, saveSafetyBox } from './panels/settings.js';
 import { sound } from '../audio/sound.js';
 import { isIOS, isStandalone } from './screen.js';
@@ -29,7 +30,10 @@ export function showMainMenu(onPlay) {
     h('p', { class: 'sub' }, 'Karaağaç\'tan Derin Ocak\'a uzanan bir eski usul macera'),
     h('button', { class: 'btn green', 'data-testid': 'menu-play', onTap: () => { sound.init(); sound.play('click'); showCharSelect(onPlay); } }, hasChars ? 'Oyna' : 'Yeni Oyun'),
     h('button', { class: 'btn', onTap: () => { sound.init(); howTo(); } }, 'Nasıl Oynanır?'),
-    h('button', { class: 'btn', onTap: () => { sound.init(); menuSettings(); } }, 'Ayarlar ve Yedek'));
+    // alçak yatay ekranlara sığsın diye ayarlar ve çevrimiçi yan yana
+    h('div', { class: 'menu-row' },
+      h('button', { class: 'btn', onTap: () => { sound.init(); menuSettings(); } }, 'Ayarlar ve Yedek'),
+      h('button', { class: 'btn', 'data-testid': 'menu-online', onTap: () => { sound.init(); openOnline(); } }, 'Çevrimiçi')));
   const scr = h('div', { class: 'screen', id: 'menu' }, bg, box, h('div', { class: 'ver' }, `V${__GAME_VERSION__} · Procedural pixel art & ses · Çevrimdışı oynanabilir`));
   ui.layers.screen.appendChild(scr);
   sound.setTheme('menu');

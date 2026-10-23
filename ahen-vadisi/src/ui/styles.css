@@ -94,6 +94,8 @@ h3.t { font-family: var(--title); color: var(--gold2); margin: 4px 0 6px; font-s
   text-shadow: 0 4px 0 #5a3410, 0 0 30px rgba(255,170,80,.5), 0 0 2px #000; }
 #menu .sub { color: #e8d8b8; margin: 0 0 10px; letter-spacing: 2px; font-size: .95rem; text-shadow: 0 2px 4px #000; }
 #menu .menu-box .btn { min-width: 240px; min-height: 52px; font-size: 1.1rem; }
+#menu .menu-box .menu-row { display: flex; gap: 10px; }
+#menu .menu-box .menu-row .btn { min-width: 115px; flex: 1 1 0; }
 #menu .ver { position: absolute; right: calc(10px + var(--sar)); bottom: calc(8px + var(--sab)); font-size: .75rem; color: #a898b8; }
 .overlay { position: absolute; inset: 0; z-index: 60; background: rgba(8,6,12,.72); display: flex; align-items: center; justify-content: center; pointer-events: auto; padding: calc(8px + var(--sat)) calc(8px + var(--sar)) calc(8px + var(--sab)) calc(8px + var(--sal)); }
 

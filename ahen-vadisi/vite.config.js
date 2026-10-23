@@ -42,6 +42,8 @@ const put = (req, res) => { if (res.ok && new URL(req.url).origin === location.o
 self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET') return;
+  // başka kökene (ör. çevrimiçi test sunucusu) giden istekler önbelleğe hiç girmez: doğrudan ağ
+  if (new URL(req.url).origin !== location.origin) return;
   if (req.mode === 'navigate') {
     e.respondWith(fetch(req).then((res) => put(req, res)).catch(() => caches.match(req, { ignoreSearch: true }).then((r) => r || caches.match('./index.html')).then((r) => r || caches.match('./'))));
     return;

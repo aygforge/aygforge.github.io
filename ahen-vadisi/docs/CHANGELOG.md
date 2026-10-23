@@ -1,5 +1,21 @@
 # Değişiklik Günlüğü
 
+## 4.1.0 — Çevrimiçi test katmanı (isteğe bağlı, ücretsiz Supabase)
+Kurulum: [`ONLINE_KURULUM.md`](ONLINE_KURULUM.md). Oyun tek oyunculu kalır ve sunucu ayarı olmadan aynen çalışır.
+- **Bulut kaydı:** e-posta + şifre hesabıyla; elle "Buluta kaydet" ve yerel kayıttan sonra otomatik (en sık 3 dk). Bulutta
+  oyunun yedek kodunun aynısı (sıkıştırılmış + checksum'lı) saklanır. Boş profil buluta yazılmaz; bulutta bu cihazda olmayan
+  ya da daha ileri bir karakter varsa otomatik yükleme durur, elle yüklemede uyarılır (her yüklemeden önce bulut yeniden okunur).
+- **Buluttan yükle:** bulut ve cihaz yan yana gösterilir; yalnız onayla, mevcut profilin kurtarma kopyası alınarak (içe aktarma
+  yolu). Boş cihazda girişte önerilir.
+- **Liderlik tablosu** (karakter, sınıf, takma ad, seviye, öldürme, boss, görev) ve **hata/öneri bildirimi** (sürüm, harita,
+  sınıf, seviye ve tarayıcı bilgisiyle; giriş yapmadan da gönderilebilir).
+- Ana menüde **Çevrimiçi** düğmesi; oyun içinde Ayarlar → Çevrimiçi. Sunucu ayarı: oyunla gelen `online.json` ya da oyunda
+  elle / `AHO1:` sunucu kodu ile. Gizli (`service_role` / `sb_secret_`) anahtar reddedilir.
+- Supabase kurulumu: `supabase/kurulum.sql` (4 tablo, satır güvenliği; yerel PostgreSQL 16'da politikalar denendi).
+- Servis işçisi başka kökene (çevrimiçi sunucu) giden istekleri artık önbellekten geçirmez.
+- Ana menüde "Ayarlar ve Yedek" ile "Çevrimiçi" yan yana (alçak ekranlara sığması için).
+
+
 ## 4.0.1 — Okçu, Ölü Çağıran ve iskelet sprite'ları
 - **Okçu** artık Huntress 2 (LuizMelo, CC0) sprite'ıyla görünür: bekleme, koşu, yay çekme, darbe ve ölüm animasyonları;
   ok mermisi paketin okudur ve yayın bırakıldığı karede çıkar.
