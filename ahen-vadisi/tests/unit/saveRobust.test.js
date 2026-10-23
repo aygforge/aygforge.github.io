@@ -256,3 +256,32 @@ describe('Yedek kodu', () => {
     expect(r.newer).toBe(true);
   });
 });
+
+// 4.1.0: kayıt sürerken istenen kayıt beklenir — await flushSave() döndüğünde en son durum yazılmıştır
+import { app as appCore } from '../../src/core/app.js';
+describe('flushSave birleştirme', () => {
+  it('kayıt sürerken çağrılan flushSave, ardından gelen kayıt bitene kadar bekler (en son durum yazılır)', async () => {
+    const written = [];
+    let release;
+    const saved = { repo: appCore.repo, profile: appCore.profile, world: appCore.world };
+    appCore.world = null;
+    appCore.profile = { characters: [], v: 1 };
+    appCore.repo = {
+      readOnly: false, lastWrite: { persistent: true },
+      async save(p) { const snap = p.v; if (snap === 1) await new Promise((r) => { release = r; }); else await new Promise((r) => setTimeout(r, 20)); written.push(snap); },
+    };
+    try {
+      const first = appCore.flushSave('a');          // yavaş kayıt (v=1)
+      await new Promise((r) => setTimeout(r, 5));
+      appCore.profile.v = 2;                          // bu arada durum değişti
+      let secondDone = false;
+      const second = appCore.flushSave('b').then(() => { secondDone = true; });
+      await new Promise((r) => setTimeout(r, 30));
+      expect(secondDone).toBe(false);                 // ilk kayıt bitmeden "kaydedildi" sayılmaz
+      release();
+      await first; await second;
+      expect(written).toEqual([1, 2]);                // ikinci çağrı en son durumu yazdıktan sonra döndü
+      expect(secondDone).toBe(true);
+    } finally { Object.assign(appCore, saved); appCore.save.inFlight = false; appCore.save.again = false; }
+  });
+});

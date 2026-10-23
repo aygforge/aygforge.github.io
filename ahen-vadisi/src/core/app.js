@@ -24,7 +24,7 @@ export const app = {
   _stats: null,
   _statsVer: -1,
   ver: 0,
-  save: { timer: null, inFlight: false, again: false, lastAt: 0, error: null, count: 0 },
+  save: { timer: null, inFlight: false, again: false, waiters: [], lastAt: 0, error: null, count: 0 },
 
   get settings() { return this.profile?.settings || {}; },
 
@@ -110,7 +110,9 @@ export const app = {
   async flushSave(reason = 'auto') {
     if (this.save.timer) { clearTimeout(this.save.timer); this.save.timer = null; }
     if (this.repo.readOnly) return;   // daha yeni sürüm kaydı ya da okunamayan depo: üzerine yazılmaz
-    if (this.save.inFlight) { this.save.again = true; return; }
+    // bir kayıt sürüyorsa ardından bir kayıt daha yapılır; bekleyen çağıran o kayıt bitene kadar bekler
+    // (await flushSave() döndüğünde en son durum gerçekten yazılmış olur)
+    if (this.save.inFlight) { this.save.again = true; return new Promise((res) => { (this.save.waiters ||= []).push(res); }); }
     this.save.inFlight = true;
     try {
       if (this.world && this.char) this.world.syncToChar();
@@ -135,7 +137,12 @@ export const app = {
       setTimeout(() => this.requestSave('retry', true), 4000);
     } finally {
       this.save.inFlight = false;
-      if (this.save.again) { this.save.again = false; this.flushSave('coalesced'); }
+      if (this.save.again) {
+        this.save.again = false;
+        const waiters = this.save.waiters || [];
+        this.save.waiters = [];
+        this.flushSave('coalesced').finally(() => waiters.forEach((r) => r()));
+      }
     }
   },
 

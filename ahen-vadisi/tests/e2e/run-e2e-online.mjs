@@ -103,7 +103,8 @@ try {
   record('Sunucu ayarlanınca giriş/kayıt düğmeleri görünür', /Giriş yapılmadı/.test(st1) && !!await pa.$('[data-testid=online-register]'), st1);
   await auth(pa, 'register', 'ayg@test.com', 'sifre123', 'Aygun');
   const st2 = await pa.textContent('[data-testid=online-status]');
-  record('Kayıt ol: hesap + takma ad oluşur, oturum açılır', /Aygun/.test(st2) && fake.db.users.length === 1 && fake.db.players[0]?.nickname === 'Aygun', st2);
+  const regDiag = await ev(pa, () => ({ msg: document.querySelector('[data-testid=online-auth-msg]')?.textContent || null, open: !!document.querySelector('[data-testid=online-auth]'), sw: !!navigator.serviceWorker?.controller }));
+  record('Kayıt ol: hesap + takma ad oluşur, oturum açılır', /Aygun/.test(st2) && fake.db.users.length === 1 && fake.db.players[0]?.nickname === 'Aygun', st2 + ' ' + JSON.stringify({ ...regDiag, log: fake.log.slice(0, 6) }));
   await pa.screenshot({ path: join(shots, 'online-menu-loggedin.png') });
   await closeModals(pa);
   await createChar(pa, 'necromancer', 'Bulutcu');
