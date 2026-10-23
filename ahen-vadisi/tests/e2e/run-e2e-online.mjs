@@ -206,6 +206,30 @@ try {
   await pa.waitForTimeout(800);
   const fb = fake.db.feedback[0];
   record('Hata/öneri bildirimi sürüm, harita, sınıf ve seviyeyle gönderilir', fb?.message?.includes('Mabet') && fb.context?.version && fb.context?.cls === 'necromancer' && fb.context?.level === 10 && fb.user_id, JSON.stringify(fb?.context));
+  // ============================================================== çevrimiçi oyuncular: iki hesap oyunda → sayı 2, arkadaş listede
+  await closeModals(pa);
+  await ev(pa, () => window.__AHEN_CLOSE());
+  await C.ctx.close();      // C, A ile aynı hesap: arka planda "buradayım" demesin
+  await ev(pa, () => window.__AHEN_ONLINE.presenceTick());
+  const chipA1 = await waitFor(pa, () => /● 1 çevrimiçi/.test(document.querySelector('[data-testid=hud-online]:not(.hidden)')?.textContent || ''), null, 6000);
+  record('Oyundayken HUD\'da çevrimiçi sayısı görünür (yalnız ben: 1)', chipA1, await ev(pa, () => document.querySelector('[data-testid=hud-online]')?.outerHTML));
+  const D = await device('D');
+  const pd = D.page;
+  await pd.tap('[data-testid=menu-online]'); await pd.waitForTimeout(200);
+  await setServer(pd, PROJECT, KEY);
+  await auth(pd, 'register', 'bora@test.com', 'sifre456', 'Bora');
+  await createChar(pd, 'mage', 'Buyucu');
+  const chipD = await waitFor(pd, () => /● 2 çevrimiçi/.test(document.querySelector('[data-testid=hud-online]')?.textContent || ''), null, 8000);
+  await pd.screenshot({ path: join(shots, 'online-hud-count.png') });
+  record('Arkadaş oyuna girince hemen "buradayım" der; onun ekranında 2 çevrimiçi', chipD && fake.db.presence.length === 2, JSON.stringify(fake.db.presence.map((r) => [r.nickname, r.char_name, r.map, r.level])));
+  await ev(pa, () => window.__AHEN_ONLINE.presenceTick());
+  await waitFor(pa, () => /● 2/.test(document.querySelector('[data-testid=hud-online]')?.textContent || ''), null, 6000);
+  await pa.tap('[data-testid=hud-online]');
+  const listOk = await waitFor(pa, () => document.querySelectorAll('[data-testid=player-row]').length === 2, null, 6000);
+  const plist = listOk ? await pa.textContent('[data-testid=online-players-list]') : '';
+  await pa.screenshot({ path: join(shots, 'online-players.png') });
+  record('Sayıya dokununca liste: takma ad, karakter, sınıf, seviye, harita; kendi satırım "(sen)"', /Bora/.test(plist) && /Buyucu/.test(plist) && /Aygun \(sen\)/.test(plist) && /Bulutcu/.test(plist) && /Lv\.10/.test(plist) && /Lv\.1\b/.test(plist), plist.slice(0, 200));
+  await closeModals(pa);
   // bağlantı kopması: oyun çalışmaya devam eder, yerel kayıt sürer, anlaşılır uyarı
   offline = true;
   await openSettings(pa);
@@ -220,13 +244,16 @@ try {
   await pa.waitForTimeout(500);
   const st3 = await pa.textContent('[data-testid=online-status]');
   record('Çıkış yap: oturum kapanır, yerel karakterler yerinde kalır', /Giriş yapılmadı/.test(st3) && await ev(pa, () => window.__AHEN.profile.characters.filter(Boolean).length === 1), st3);
+  await ev(pd, () => window.__AHEN_ONLINE.presenceTick());
+  const dropped = await waitFor(pd, () => /● 1 çevrimiçi/.test(document.querySelector('[data-testid=hud-online]')?.textContent || ''), null, 6000);
+  record('Çıkış yapan oyuncu çevrimiçi listesinden hemen düşer', dropped && fake.db.presence.length === 1 && fake.db.presence[0].nickname === 'Bora', JSON.stringify(fake.db.presence.map((r) => r.nickname)));
   // mobil boyut: ana menü penceresi ekrana sığar
   const M = await device('M', 640, 360);
   await M.page.tap('[data-testid=menu-online]'); await M.page.waitForTimeout(300);
   const fit = await ev(M.page, () => { const b = document.querySelector('[data-testid=online-box]').getBoundingClientRect(); return { r: Math.round(b.right), w: innerWidth, overflowX: document.documentElement.scrollWidth > innerWidth }; });
   await M.page.screenshot({ path: join(shots, 'online-mobile.png') });
   record('Mobil (640×360): Çevrimiçi penceresi taşmaz', fit.r <= fit.w && !fit.overflowX, JSON.stringify(fit));
-  for (const d of [A, B, C, M]) record(`Konsol hatası yok (cihaz ${d.page.label})`, d.page.errors.length === 0, d.page.errors.slice(0, 3).join(' | '));
+  for (const d of [A, B, C, D, M]) record(`Konsol hatası yok (cihaz ${d.page.label})`, d.page.errors.length === 0, d.page.errors.slice(0, 3).join(' | '));
 } catch (e) {
   record('Beklenmeyen test hatası', false, e.stack);
 } finally {

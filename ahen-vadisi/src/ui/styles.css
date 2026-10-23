@@ -163,6 +163,9 @@ input.name { font: inherit; font-size: 1.1rem; padding: 10px 12px; border-radius
 .hud-tr { position: absolute; right: calc(8px + var(--sar)); top: calc(6px + var(--sat)); display: flex; gap: 6px; align-items: flex-start; }
 .mm { width: clamp(84px, 22vh, 128px); height: clamp(84px, 22vh, 128px); border: 2px solid var(--edge); border-radius: 8px; overflow: hidden; position: relative; background: #000; pointer-events: auto; box-shadow: 0 0 0 2px #120d10; }
 .mm canvas { width: 100%; height: 100%; image-rendering: pixelated; }
+.mmcol { display: flex; flex-direction: column; align-items: stretch; gap: 3px; }
+.hud-tr .onl { pointer-events: auto; font: inherit; font-size: .62rem; color: #cfe; background: rgba(0,0,0,.6); border: 1px solid var(--edge); border-radius: 8px; padding: 2px 4px; white-space: nowrap; cursor: pointer; }
+.hud-tr .onl::first-letter { color: #5e5; }
 .mm .mn { position: absolute; left: 0; right: 0; bottom: 0; font-size: .62rem; text-align: center; background: rgba(0,0,0,.6); padding: 1px; }
 .menubtns { display: grid; grid-template-columns: repeat(3, 48px); grid-auto-rows: 48px; gap: 5px; }
 .ibtn { width: 48px; height: 48px; border-radius: 10px; border: 2px solid var(--edge); background: rgba(30,20,24,.86) center/34px no-repeat; pointer-events: auto; position: relative; box-shadow: 0 2px 0 #120d10; }

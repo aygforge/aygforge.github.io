@@ -8,6 +8,7 @@ import { validateConfig, shareCode, parseShareCode } from '../../online/config.j
 import { summarize } from '../../online/cloud.js';
 import { CLASSES } from '../../data/classes.js';
 import { app } from '../../core/app.js';
+import { MAPS } from '../../data/maps/index.js';
 import { confirmImport } from './settings.js';
 
 const fmtTime = (t) => (t ? new Date(t).toLocaleString('tr-TR') : '—');
@@ -55,6 +56,7 @@ export function onlineBox() {
     const meta = online.cloudMeta;
     row('Oyuncu', `${online.nickname || '—'} (${online.api.user?.email || ''})`);
     row('Bulut kaydı', meta ? `${fmtTime(meta.updated_at)} · ${chars(meta.summary)}` : online.metaLoaded ? 'henüz yok' : 'okunuyor…');
+    if (online.players) row('Şu an çevrimiçi', `${online.players.length} oyuncu`);
     if (online.lastError) row('Son hata', online.lastError, true);
     const auto = h('button', { class: 'btn small' + (online.autoSync ? ' green' : ''), 'data-testid': 'online-auto', onTap: () => online.setAutoSync(!online.autoSync) }, online.autoSync ? 'Otomatik bulut kaydı: açık' : 'Otomatik bulut kaydı: kapalı');
     box.append(
@@ -63,6 +65,7 @@ export function onlineBox() {
         actBtn('Buluttan yükle', '', 'online-restore', () => restoreFlow()),
         auto),
       h('div', { class: 'row', style: { flexWrap: 'wrap' } },
+        h('button', { class: 'btn small', 'data-testid': 'online-players', onTap: () => openPlayers() }, 'Çevrimiçi oyuncular'),
         h('button', { class: 'btn small', 'data-testid': 'online-board', onTap: () => boardModal() }, 'Liderlik tablosu'),
         h('button', { class: 'btn small', 'data-testid': 'online-feedback', onTap: () => feedbackModal() }, 'Hata/öneri bildir'),
         online.source === 'local' ? h('button', { class: 'btn small ghost', onTap: () => shareModal() }, 'Sunucu kodunu paylaş') : null,
@@ -71,6 +74,7 @@ export function onlineBox() {
   };
   const off = bus.on('online', render);
   render();
+  if (online.configured && !online.players) online.loadPlayers();
   return box;
 }
 
@@ -132,6 +136,23 @@ function authModal(mode) {
     h('p', { class: 'tiny muted' }, 'Hesap yalnız bulut kaydı ve liderlik için kullanılır. Şifreni başka yerde kullandığın bir şifre yapma (test sunucusu).'),
     h('div', { class: 'row', style: { justifyContent: 'flex-end' } }, h('button', { class: 'btn ghost', onTap: () => ui.closeModal() }, 'Vazgeç'), submit)));
   setTimeout(() => email.focus(), 50);
+}
+
+// Şu an oyunda olan oyuncular (son 90 sn içinde "buradayım" diyenler)
+export async function openPlayers() {
+  const body = h('div', { class: 'col scroll', style: { maxHeight: '60vh' }, 'data-testid': 'online-players-list' }, h('p', { class: 'small muted' }, 'Yükleniyor…'));
+  ui.modal(h('div', { class: 'dlg frame', 'data-testid': 'online-players-dlg' }, h('h3', { class: 't' }, 'Çevrimiçi oyuncular'), body,
+    h('p', { class: 'tiny muted' }, online.loggedIn ? 'Oyundayken listede görünürsün (yaklaşık her 45 sn güncellenir). Herkes kendi dünyasında oynar.' : 'Listede görünmek için Ayarlar → Çevrimiçi\'den giriş yap.'),
+    h('div', { class: 'row', style: { justifyContent: 'flex-end' } }, h('button', { class: 'btn', onTap: () => ui.closeModal() }, 'Kapat'))));
+  const r = await online.loadPlayers();
+  clear(body);
+  if (!r.ok) { body.append(h('p', { class: 'small warn' }, r.msg)); return; }
+  if (!r.rows.length) { body.append(h('p', { class: 'small muted' }, 'Şu an oyunda kimse yok.')); return; }
+  const me = online.loggedIn ? online.nickname : null;
+  r.rows.forEach((x) => body.append(h('div', { class: 'row small', 'data-testid': 'player-row' },
+    h('b', { style: { color: '#5e5' } }, '●'),
+    h('span', { class: 'grow' }, h('b', {}, x.nickname), x.nickname === me ? ' (sen)' : '', x.char_name ? ` — ${x.char_name} (${CLASSES[x.cls]?.name || x.cls || '?'})` : ''),
+    h('span', {}, `${x.level ? 'Lv.' + x.level + ' · ' : ''}${MAPS[x.map]?.name || x.map || '—'}`))));
 }
 
 async function boardModal() {

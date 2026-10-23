@@ -139,4 +139,46 @@ describe('REST istemcisi (sahte Supabase)', () => {
     expect(r.ok).toBe(false); expect(r.needsConfirm).toBe(true); expect(r.msg).toMatch(/Confirm email/);
     expect(errorText(404, { message: "Could not find the table 'public.cloud_saves'" })).toMatch(/kurulum/);
   });
+  it('sunucu hata kodları mesajda görünür: tablo yok (PGRST205), izin yok (42501)', () => {
+    const t = errorText(404, { code: 'PGRST205', message: "Could not find the table 'public.players' in the schema cache" });
+    expect(t).toMatch(/"players" tablosu yok/); expect(t).toMatch(/PGRST205/); expect(t).toMatch(/kurulum\.sql/);
+    const p = errorText(401, { code: '42501', message: 'permission denied for table cloud_saves' });
+    expect(p).toMatch(/izni yok/); expect(p).toMatch(/42501/);
+    expect(errorText(401, { message: 'JWT expired' })).toMatch(/Oturum/);
+  });
+  it('takma ad satırı yazılamadıysa (tablo sonradan kuruldu) hesaptaki takma ad okunur', async () => {
+    const fake = createFakeSupabase();
+    const a = new OnlineApi(cfg, { fetchImpl: fake.fetchImpl });
+    await a.signUp('a@x.com', 'gizli123', 'Ayg');
+    fake.db.players.length = 0;                           // kurulumdan önce kayıt olunmuş gibi
+    expect(await a.getNickname()).toBe(null);
+    a.session.user.nickname = null;                       // eski oturum: takma ad saklanmamış → sunucudan okunur
+    expect(await a.getUserNickname()).toBe('Ayg');
+    expect((await a.setNickname('Ayg')).ok).toBe(true);
+    expect(await a.getNickname()).toBe('Ayg');
+  });
+  it('çevrimiçi oyuncular: buradayım → listede; 90 sn sessiz kalan düşer; çıkışta silinir; başkasının satırı silinemez', async () => {
+    const fake = createFakeSupabase();
+    const a = new OnlineApi(cfg, { fetchImpl: fake.fetchImpl });
+    const b = new OnlineApi(cfg, { fetchImpl: fake.fetchImpl });
+    await a.signUp('a@x.com', 'gizli123', 'Ayg');
+    await b.signUp('b@x.com', 'gizli123', 'Bora');
+    expect((await a.heartbeat({ nickname: 'Ayg', char_name: 'Okcu', cls: 'archer', level: 12, map: 'forest' })).ok).toBe(true);
+    expect((await a.heartbeat({ nickname: 'Ayg', char_name: 'Okcu', cls: 'archer', level: 13, map: 'mine' })).ok).toBe(true);
+    expect((await b.heartbeat({ nickname: 'Bora', char_name: 'Buyu', cls: 'mage', level: 9, map: 'village' })).ok).toBe(true);
+    expect(fake.db.presence.length).toBe(2);
+    const anon = new OnlineApi(cfg, { fetchImpl: fake.fetchImpl });
+    const list = await anon.getOnline();
+    expect(list.rows.length).toBe(2);
+    expect(list.rows[0]).toEqual({ nickname: 'Ayg', char_name: 'Okcu', cls: 'archer', level: 13, map: 'mine' });
+    // B, A'nın satırını silemez
+    await b.request('DELETE', `/rest/v1/presence?user_id=eq.${a.user.id}`);
+    expect(fake.db.presence.length).toBe(2);
+    // B 2 dk önce görüldü → listede değil
+    fake.db.presence.find((r) => r.nickname === 'Bora').last_seen = Date.now() - 120000;
+    expect((await a.getOnline()).rows.map((r) => r.nickname)).toEqual(['Ayg']);
+    expect((await a.clearPresence()).ok).toBe(true);
+    expect((await anon.getOnline()).rows.length).toBe(0);
+    expect((await anon.heartbeat({ nickname: 'x' })).ok).toBe(false);
+  });
 });

@@ -9,12 +9,14 @@ import { loadConfig, saveLocalConfig } from './config.js';
 import { summarize, uploadCheck, leaderboardRows, AUTO_UPLOAD_MIN_MS } from './cloud.js';
 
 const AUTO_KEY = 'ahen_online_auto';
+export const PRESENCE_MS = 45000;   // "buradayım" sıklığı; sunucu son 90 sn'de görüleni çevrimiçi sayar
 
 export const online = {
   cfg: null, source: null, api: null,
   nickname: null, cloudMeta: null, metaLoaded: false,
   lastUploadAt: 0, uploading: false, lastError: null,
   autoSync: true,
+  players: null, playersAt: 0, lastBeat: 0,   // çevrimiçi oyuncular (null: henüz okunmadı / okunamadı)
 
   get configured() { return !!this.api; },
   get loggedIn() { return !!this.api?.loggedIn; },
@@ -26,7 +28,36 @@ export const online = {
     const c = await loadConfig();
     if (c.ok) this.use(c.cfg, c.source);
     bus.on('saved', (reason) => { this.autoUpload(reason); });
+    // oyuna girince / harita değişince hemen, sonra düzenli aralıkla; sekme gizliyken gönderilmez
+    bus.on('mapEnter', () => { if (Date.now() - this.lastBeat > 5000) this.presenceTick(); });
+    document.addEventListener('visibilitychange', () => { if (!document.hidden && Date.now() - this.lastBeat > PRESENCE_MS / 2) this.presenceTick(); });
+    setInterval(() => this.presenceTick(), PRESENCE_MS);
     if (this.loggedIn) this.refresh();
+  },
+
+  // giriş yapmış ve oyundaysa "buradayım" de; oyundaysa (giriş olmasa da) çevrimiçi listesini yenile
+  async presenceTick() {
+    if (!this.configured || typeof document !== 'undefined' && document.hidden) return;
+    const ch = app.char, w = app.world;
+    if (!ch || !w) return;
+    if (this.loggedIn) {
+      this.lastBeat = Date.now();
+      const r = await this.api.heartbeat({
+        nickname: (this.nickname || this.api.user?.nickname || (this.api.user?.email || 'oyuncu').split('@')[0]).slice(0, 16),
+        char_name: String(ch.name || '').slice(0, 16), cls: ch.cls, level: ch.level, map: String(w.mapId || '').slice(0, 40),
+      });
+      if (!r.ok && this.loggedIn) { this.lastError = 'Çevrimiçi durum: ' + r.msg; this.changed(); }
+    }
+    await this.loadPlayers();
+  },
+
+  async loadPlayers() {
+    if (!this.configured) return { ok: false, msg: 'Sunucu ayarlanmadı' };
+    const r = await this.api.getOnline();
+    if (r.ok) { this.players = r.rows; this.playersAt = Date.now(); }
+    else { this.players = null; if (this.loggedIn) this.lastError = 'Çevrimiçi listesi: ' + r.msg; }
+    this.changed();
+    return r;
   },
 
   use(cfg, source = 'local') {
@@ -52,6 +83,11 @@ export const online = {
     if (!this.loggedIn) return;
     const [nick, meta] = await Promise.all([this.api.getNickname(), this.api.getCloudMeta()]);
     if (nick) this.nickname = nick;
+    else if (meta.ok) {
+      // tablo kurulmadan kayıt olunduysa takma ad satırı yazılamamıştır: hesaptaki takma adla onar
+      const n = await this.api.getUserNickname();
+      if (n && (await this.api.setNickname(n)).ok) this.nickname = n;
+    }
     if (meta.ok) { this.cloudMeta = meta.meta; this.metaLoaded = true; this.lastError = null; } else this.lastError = meta.msg;
     if (!this.loggedIn) { this.nickname = null; this.cloudMeta = null; }
     this.changed();
@@ -59,20 +95,21 @@ export const online = {
 
   async register(email, password, nickname) {
     const r = await this.api.signUp(email, password, nickname);
-    if (r.ok) { this.nickname = nickname; await this.refresh(); }
+    if (r.ok) { this.nickname = nickname; await this.refresh(); this.presenceTick(); }
     return r;
   },
 
   async login(email, password) {
     const r = await this.api.signIn(email, password);
-    if (r.ok) await this.refresh();
+    if (r.ok) { await this.refresh(); this.presenceTick(); }
     return r;
   },
 
   async logout() {
+    await this.api?.clearPresence();   // çevrimiçi listesinden hemen düş
     await this.api?.signOut();
-    this.nickname = null; this.cloudMeta = null; this.metaLoaded = false;
-    this.changed();
+    this.nickname = null; this.cloudMeta = null; this.metaLoaded = false; this.lastError = null;
+    if (app.world) this.loadPlayers(); else this.changed();
   },
 
   // Buluta yükle. force: oyuncu "bulut ileride" uyarısını onayladı

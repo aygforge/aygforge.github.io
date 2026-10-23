@@ -1,5 +1,15 @@
 # Ahen Vadisi — Test Raporu
 
+## 4.2.0 — Çevrimiçi oyuncular (23 Ekim 2026)
+- `supabase/kurulum.sql` yerel PostgreSQL 16'da iki kez art arda çalıştırıldı (tekrar güvenli). `presence` denetimleri:
+  istemci eski zaman gönderse de sunucu zamanı yazılır; anonim çevrimiçi listesini okur; B, A adına yazamaz, A'nın satırını
+  değiştiremez/silemez; 90 sn'den eski satır görünümde yok; A kendi satırını siler; anonim yazamaz — hepsi beklendiği gibi.
+- Birim: 186/186 (yeni: hata kodu mesajları, takma ad onarımı, presence akışı sahte Supabase'te).
+- E2E çevrimiçi: 27/27 (yeni: HUD sayısı 1 → arkadaş oyuna girince 2, listede takma ad/karakter/sınıf/seviye/harita ve
+  "(sen)", çıkış yapan listeden hemen düşer, D cihazında konsol hatası yok).
+- **Denenmedi:** gerçek Supabase projesine bağlantı (bu ortamın ağ politikası `*.supabase.co`'ya izin vermiyor); gerçek
+  sunucudaki davranış SQL'in yerel PostgreSQL denemesine ve sahte sunucuya dayanır.
+
 ## 4.1.0 — Çevrimiçi test katmanı (23 Ekim 2026)
 
 | Paket | Sonuç |

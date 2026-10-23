@@ -20,6 +20,8 @@ import { currentStage, getRun, bossStage } from '../systems/dungeon.js';
 import { FOG_CELL } from '../world/fog.js';
 import { sound } from '../audio/sound.js';
 import { openPanel } from './panels/index.js';
+import { online } from '../online/index.js';
+import { openPlayers } from './panels/online.js';
 
 export function createHud() {
   const el = h('div', { id: 'hud' });
@@ -66,7 +68,14 @@ export function createHud() {
     ib('quests', 'quests', null, 'opt'),
     ib('settings', 'settings', null, 'opt'),
     h('button', { class: 'ibtn more', style: { backgroundImage: `url(${iconURL('ui:menu')})` }, 'data-testid': 'btn-more', onTap: () => { sound.play('click'); openPanel('character'); } }, h('span', { class: 'badge hidden' })));
-  const tr = h('div', { class: 'hud-tr' }, menuBtns, mm);
+  // çevrimiçi oyuncu sayısı (sunucu ayarlıysa); dokununca kim, hangi karakterle, nerede
+  const onl = h('button', { class: 'onl hidden', 'data-testid': 'hud-online', onTap: () => { sound.play('click'); openPlayers(); } });
+  const updateOnline = () => {
+    const n = online.players?.length;
+    onl.classList.toggle('hidden', !online.configured || n == null);
+    onl.textContent = `● ${n ?? 0} çevrimiçi`;
+  };
+  const tr = h('div', { class: 'hud-tr' }, menuBtns, h('div', { class: 'mmcol' }, mm, onl));
 
   // ---------------- sol alt
   // sol alt köşe: joystick + çevresindeki geniş dokunma bölgesi
@@ -350,6 +359,7 @@ export function createHud() {
     bus.on('mapEnter', (def) => { pushToast({ text: `${def.name} · ${def.rec}`, kind: 'level' }); updateTracker(); }),
     bus.on('dungeonProgress', updateTracker),
     bus.on('bossAnnounce', (t) => pushToast({ text: t, kind: 'elite' })),
+    bus.on('online', updateOnline),
   ];
 
   const recent = new Map();
@@ -371,6 +381,7 @@ export function createHud() {
 
   updateVitals();
   updateTracker();
+  updateOnline();
   return { el, destroy() { offs.forEach((f) => f()); window.removeEventListener('resize', layoutActions); el.remove(); } };
 }
 

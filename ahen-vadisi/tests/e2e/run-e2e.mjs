@@ -29,6 +29,8 @@ const browser = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable
 
 async function newPage(w, h, dev = true) {
   const ctx = await browser.newContext({ viewport: { width: w, height: h }, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
+  // oyunla gelen online.json gerçek test sunucusunu gösterir: bu testler dışarı çıkmasın (boş yanıt)
+  await ctx.route("**/*.supabase.co/**", (r) => r.fulfill({ status: 200, contentType: "application/json", body: "[]" }));
   const page = await ctx.newPage();
   page.errors = [];
   page.on('pageerror', (e) => page.errors.push(e.message));
@@ -101,6 +103,8 @@ try {
   // ------------------------------------------------------------------ 2) Dikey ekran uyarısı
   {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    // oyunla gelen online.json gerçek test sunucusunu gösterir: bu testler dışarı çıkmasın (boş yanıt)
+    await ctx.route("**/*.supabase.co/**", (r) => r.fulfill({ status: 200, contentType: "application/json", body: "[]" }));
     const page = await ctx.newPage();
     await page.goto(BASE);
     await page.waitForTimeout(1500);
@@ -408,6 +412,8 @@ try {
   // ------------------------------------------------------------------ 6b) PWA: servis işçisi ile çevrimdışı açılış
   {
     const ctx = await browser.newContext({ viewport: { width: 844, height: 390 }, isMobile: true, hasTouch: true });
+    // oyunla gelen online.json gerçek test sunucusunu gösterir: bu testler dışarı çıkmasın (boş yanıt)
+    await ctx.route("**/*.supabase.co/**", (r) => r.fulfill({ status: 200, contentType: "application/json", body: "[]" }));
     const pg = await ctx.newPage();
     await pg.goto(BASE);
     await pg.waitForSelector('[data-testid=menu-play]', { timeout: 40000 });

@@ -80,3 +80,46 @@ create policy board_delete on public.leaderboard for delete to authenticated usi
 drop policy if exists feedback_insert on public.feedback;
 create policy feedback_insert on public.feedback for insert to anon, authenticated
   with check (user_id is null or (select auth.uid()) = user_id);
+
+-- 4.2.0: çevrimiçi oyuncular. Oyundaki (giriş yapmış) oyuncu 45 sn'de bir "buradayım" der; son 90 sn içinde
+-- görülenler çevrimiçi sayılır. Zaman damgası sunucuda atılır (cihaz saati yanlış olsa da doğru çalışır).
+create table if not exists public.presence (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  nickname text not null check (char_length(nickname) <= 16),
+  char_name text check (char_length(char_name) <= 16),
+  cls text check (cls in ('warrior', 'mage', 'archer', 'necromancer')),
+  level int check (level between 1 and 50),
+  map text check (char_length(map) <= 40),
+  last_seen timestamptz not null default now()
+);
+
+create or replace function public.presence_touch() returns trigger
+language plpgsql set search_path = '' as $$
+begin
+  new.last_seen := now();
+  return new;
+end $$;
+drop trigger if exists presence_touch on public.presence;
+create trigger presence_touch before insert or update on public.presence
+  for each row execute function public.presence_touch();
+
+create or replace view public.online_players with (security_invoker = true) as
+  select nickname, char_name, cls, level, map, last_seen
+  from public.presence
+  where last_seen > now() - interval '90 seconds';
+
+alter table public.presence enable row level security;
+grant select on public.presence, public.online_players to anon, authenticated;
+grant insert, update, delete on public.presence to authenticated;
+
+drop policy if exists presence_read on public.presence;
+drop policy if exists presence_insert on public.presence;
+drop policy if exists presence_update on public.presence;
+drop policy if exists presence_delete on public.presence;
+create policy presence_read on public.presence for select to anon, authenticated using (true);
+create policy presence_insert on public.presence for insert to authenticated with check ((select auth.uid()) = user_id);
+create policy presence_update on public.presence for update to authenticated using ((select auth.uid()) = user_id) with check ((select auth.uid()) = user_id);
+create policy presence_delete on public.presence for delete to authenticated using ((select auth.uid()) = user_id);
+
+-- Veri API'sinin şema önbelleğini yenile (yeni tablolar hemen görünsün; "Could not find the table" hatasını önler)
+notify pgrst, 'reload schema';

@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-23T07:48:48.199Z",
+  "date": "2026-10-23T08:55:38.708Z",
   "passed": 37,
   "total": 37,
   "results": [
@@ -36,12 +36,12 @@
     {
       "name": "m37 ulaşma hedefi tamamlanır",
       "ok": true,
-      "info": "{\"s\":\"active\",\"p\":[1],\"used\":[],\"at\":1792741585486}"
+      "info": "{\"s\":\"active\",\"p\":[1],\"used\":[],\"at\":1792745611005}"
     },
     {
       "name": "V3 yaratık öldürme EXP/gold verir; 30→31 seviye geçişi",
       "ok": true,
-      "info": "{\"level\":31,\"kills\":1,\"gold\":37,\"exp0\":64480,\"k\":1}"
+      "info": "{\"level\":31,\"kills\":1,\"gold\":32,\"exp0\":64480,\"k\":1}"
     },
     {
       "name": "Mezar Büyücüsü: telegraflı Mezar Laneti (alınan hasar artışı)",
@@ -184,9 +184,9 @@
       "info": ""
     },
     {
-      "name": "PWA: servis işçisi etkin, 4.1.0 sürümlü önbellek; çevrimdışı açılış",
+      "name": "PWA: servis işçisi etkin, 4.2.0 sürümlü önbellek; çevrimdışı açılış",
       "ok": true,
-      "info": "{\"active\":true,\"version\":\"4.1.0\",\"cache\":\"ahen-vadisi-78342d817b\",\"assets\":2,\"offline\":true}"
+      "info": "{\"active\":true,\"version\":\"4.2.0\",\"cache\":\"ahen-vadisi-c7778fb52c\",\"assets\":2,\"offline\":true}"
     }
   ]
 }

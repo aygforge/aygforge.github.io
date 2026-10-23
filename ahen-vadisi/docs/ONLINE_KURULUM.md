@@ -5,6 +5,7 @@ Oyun tek oyunculu kalır ve çevrimiçi olmadan da tamamen çalışır. Bu katma
 - **Bulut kaydı:** hesabınla ilerlemen buluta da yedeklenir; başka cihazda/tarayıcıda "Buluttan yükle" ile devam edersin.
 - **Liderlik tablosu:** arkadaşların karakterleri (seviye, öldürme, boss, görev).
 - **Hata / öneri bildir:** oyun içinden; sürüm, harita, sınıf ve seviye otomatik eklenir.
+- **Çevrimiçi oyuncular (4.2.0):** oyundayken mini haritanın altında "● N çevrimiçi"; dokununca kim, hangi karakterle, hangi haritada.
 
 Sunucu kodu yazmak ya da sunucu kiralamak gerekmez: Supabase'in ücretsiz katmanı (veritabanı + giriş sistemi) yeterli.
 Kurulumu **bir kişi** (sen) bir kez yapar, arkadaşların yalnız oyunda hesap açar.
@@ -24,8 +25,20 @@ Kurulumu **bir kişi** (sen) bir kez yapar, arkadaşların yalnız oyunda hesap 
 2. Bu depodaki `supabase/kurulum.sql` dosyasının **tamamını** yapıştır → **Run**. "Success" görmelisin.
    (Tekrar çalıştırmak güvenlidir; mevcut veriyi silmez.)
 
-Bu betik dört tablo kurar ve satır güvenliğini açar: herkes yalnız **kendi** bulut kaydını okuyup yazabilir, liderlik
+Bu betik beş tablo (+ `online_players` görünümü) kurar ve satır güvenliğini açar: herkes yalnız **kendi** bulut kaydını okuyup yazabilir, liderlik
 tablosunu herkes okur ama yalnız kendi satırını yazar, hata bildirimleri yalnız eklenebilir (yalnız sen panelden okursun).
+
+**Doğrulama:** sol menü → **Table Editor**'da `players`, `cloud_saves`, `leaderboard`, `feedback`, `presence` görünmeli.
+Yeni sürümle gelen betiği her zaman **baştan sona yeniden çalıştır** (eski tablolara ve veriye dokunmaz, eksikleri ekler).
+
+### Oyunda "Sunucuda … tablosu yok [PGRST205]" ya da "Sunucu tabloları yok" görürsen
+
+1. Betik bu projede hiç çalışmamış ya da yarıda kalmış olabilir: SQL Editor'da betiğin **tamamını** (ilk satırdan son satıra)
+   yapıştırıp **Run** de; altta kırmızı hata varsa metnini bana gönder.
+2. Doğru projede olduğundan emin ol: panelin üstündeki proje adı, oyundaki adresle (`https://<kod>.supabase.co`) aynı olmalı.
+3. Betiğin son satırı Veri API'sinin şema önbelleğini yeniler. Yine de görünmezse: Project Settings → Data API →
+   "Exposed schemas" listesinde `public` olmalı.
+4. Oyunda Çevrimiçi penceresini kapatıp aç (ya da sayfayı yenile); takma ad kayıtta verdiğinle otomatik onarılır.
 
 ## 3. E-posta onayını kapat (test için)
 
@@ -79,5 +92,6 @@ yeniden itch.io'ya yükle.
 
 ## Ne değildir
 
-Bu katman çok oyunculu (aynı dünyada birlikte oynama) **değildir**; her oyuncu kendi tek oyunculu dünyasında oynar. Liderlik ve
+Bu katman çok oyunculu (aynı dünyada birlikte oynama) **değildir**; her oyuncu kendi tek oyunculu dünyasında oynar. "Çevrimiçi
+oyuncular" listesi kimin oyunda olduğunu gösterir; birbirinizi haritada görmezsiniz. Liderlik ve
 kayıt verisi istemciden gelir (arkadaş grubu için yeterli; hileye karşı korumalı değildir).

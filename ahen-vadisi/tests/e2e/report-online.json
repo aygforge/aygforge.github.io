@@ -1,7 +1,7 @@
 {
-  "date": "2026-10-23T08:10:51.392Z",
-  "passed": 22,
-  "total": 22,
+  "date": "2026-10-23T08:40:24.505Z",
+  "passed": 27,
+  "total": 27,
   "results": [
     {
       "name": "Sunucu ayarı yokken Çevrimiçi penceresi açılır ve durumu söyler (oyun çevrimdışı çalışır)",
@@ -21,12 +21,12 @@
     {
       "name": "Kayıt ol: hesap + takma ad oluşur, oturum açılır",
       "ok": true,
-      "info": "OyuncuAygun (ayg@test.com)Bulut kaydıhenüz yok {\"msg\":null,\"open\":false,\"sw\":false,\"log\":[{\"method\":\"POST\",\"path\":\"/auth/v1/signup\"},{\"method\":\"POST\",\"path\":\"/rest/v1/players?on_conflict=user_id\"},{\"method\":\"GET\",\"path\":\"/rest/v1/players?select=nickname&user_id=eq.c03e0705-57d2-45b9-9922-75ba7f8dbc77\"},{\"method\":\"GET\",\"path\":\"/rest/v1/cloud_saves?select=summary,game_version,updated_at&user_id=eq.c03e0705-57d2-45b9-9922-75ba7f8dbc77\"}]}"
+      "info": "OyuncuAygun (ayg@test.com)Bulut kaydıhenüz yok {\"msg\":null,\"open\":false,\"sw\":false,\"log\":[{\"method\":\"POST\",\"path\":\"/auth/v1/signup\"},{\"method\":\"POST\",\"path\":\"/rest/v1/players?on_conflict=user_id\"},{\"method\":\"GET\",\"path\":\"/rest/v1/players?select=nickname&user_id=eq.26f2f654-2c7b-4261-85e9-5794c7cc2684\"},{\"method\":\"GET\",\"path\":\"/rest/v1/cloud_saves?select=summary,game_version,updated_at&user_id=eq.26f2f654-2c7b-4261-85e9-5794c7cc2684\"}]}"
     },
     {
       "name": "Buluta kaydet: kayıt kodu ve karakter özeti buluta yazılır; liderlik satırı oluşur",
       "ok": true,
-      "info": "{\"sum\":[{\"id\":\"cmvkovlo7279nqe154\",\"name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0}],\"lb\":{\"char_id\":\"cmvkovlo7279nqe154\",\"nickname\":\"Aygun\",\"char_name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0,\"kills\":0,\"boss_kills\":0,\"quests\":0,\"updated_at\":\"2026-10-23T08:09:34.083Z\",\"user_id\":\"c03e0705-57d2-45b9-9922-75ba7f8dbc77\"}}"
+      "info": "{\"sum\":[{\"id\":\"cmvkpx3f221ylwi2l1\",\"name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0}],\"lb\":{\"char_id\":\"cmvkpx3f221ylwi2l1\",\"nickname\":\"Aygun\",\"char_name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0,\"kills\":0,\"boss_kills\":0,\"quests\":0,\"updated_at\":\"2026-10-23T08:38:43.797Z\",\"user_id\":\"26f2f654-2c7b-4261-85e9-5794c7cc2684\"}}"
     },
     {
       "name": "Yanlış şifre anlaşılır mesaj verir",
@@ -36,7 +36,7 @@
     {
       "name": "Boş cihazda girişte buluttaki kayıt karşılaştırmayla önerilir",
       "ok": true,
-      "info": "Buluttan yükleBulut (23.10.2026 08:09:33): Bulutcu Lv.8Bu cihaz: karakter yokYüklersen bu cihazdaki profil buluttakiyle değiştirilir; şu anki profilin bir kurta"
+      "info": "Buluttan yükleBulut (23.10.2026 08:38:43): Bulutcu Lv.8Bu cihaz: karakter yokYüklersen bu cihazdaki profil buluttakiyle değiştirilir; şu anki profilin bir kurta"
     },
     {
       "name": "Buluttan yükle: karakter seviye, gold ve sınıfıyla bu cihaza gelir; önceki profilin kurtarma kopyası saklanır",
@@ -56,7 +56,7 @@
     {
       "name": "Otomatik bulut kaydı da buluttaki ilerlemeyi ezmez",
       "ok": true,
-      "info": "[{\"id\":\"cmvkovlo7279nqe154\",\"name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0}]"
+      "info": "[{\"id\":\"cmvkpx3f221ylwi2l1\",\"name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0}]"
     },
     {
       "name": "Otomatik bulut kaydı 3 dakikadan sık yapılmaz (az önce elle kaydedildi)",
@@ -79,6 +79,21 @@
       "info": "{\"version\":\"4.1.1\",\"map\":\"village\",\"cls\":\"necromancer\",\"level\":10,\"ua\":\"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.7390.37 Safari/537.36\",\"screen\":\"844x390\"}"
     },
     {
+      "name": "Oyundayken HUD'da çevrimiçi sayısı görünür (yalnız ben: 1)",
+      "ok": true,
+      "info": "<button class=\"onl\" data-testid=\"hud-online\">● 1 çevrimiçi</button>"
+    },
+    {
+      "name": "Arkadaş oyuna girince hemen \"buradayım\" der; onun ekranında 2 çevrimiçi",
+      "ok": true,
+      "info": "[[\"Aygun\",\"Bulutcu\",\"village\",10],[\"Bora\",\"Buyucu\",\"village\",1]]"
+    },
+    {
+      "name": "Sayıya dokununca liste: takma ad, karakter, sınıf, seviye, harita; kendi satırım \"(sen)\"",
+      "ok": true,
+      "info": "●Aygun (sen) — Bulutcu (Ölü Çağıran)Lv.10 · Karaağaç Köyü●Bora — Buyucu (Büyücü)Lv.1 · Karaağaç Köyü"
+    },
+    {
       "name": "Bağlantı yokken bulut işlemi anlaşılır uyarı verir; yerel kayıt ve oyun etkilenmez",
       "ok": true,
       "info": "Sunucuya ulaşılamadı (internet bağlantısını kontrol et)"
@@ -87,6 +102,11 @@
       "name": "Çıkış yap: oturum kapanır, yerel karakterler yerinde kalır",
       "ok": true,
       "info": "DurumGiriş yapılmadı"
+    },
+    {
+      "name": "Çıkış yapan oyuncu çevrimiçi listesinden hemen düşer",
+      "ok": true,
+      "info": "[\"Bora\"]"
     },
     {
       "name": "Mobil (640×360): Çevrimiçi penceresi taşmaz",
@@ -105,6 +125,11 @@
     },
     {
       "name": "Konsol hatası yok (cihaz C)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Konsol hatası yok (cihaz D)",
       "ok": true,
       "info": ""
     },

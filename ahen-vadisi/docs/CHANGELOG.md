@@ -1,5 +1,16 @@
 # Değişiklik Günlüğü
 
+## 4.2.0 — Çevrimiçi oyuncular + kurulum hatası teşhisi
+- **Çevrimiçi oyuncular:** oyundayken mini haritanın altında "● N çevrimiçi". Dokununca liste: takma ad, karakter, sınıf,
+  seviye ve bulunduğu harita; kendi satırın "(sen)". Giriş yapmış oyuncu oyundayken yaklaşık 45 sn'de bir (ve harita
+  değişince) "buradayım" der; son 90 sn'de görülenler çevrimiçi sayılır, zamanı sunucu yazar. Çıkış yapınca listeden hemen
+  düşer; sekme arka plandayken gönderilmez. Ayarlar → Çevrimiçi kutusunda sayı ve "Çevrimiçi oyuncular" düğmesi.
+- `supabase/kurulum.sql`: `presence` tablosu, sunucu zamanı tetikleyicisi, `online_players` görünümü ve satır güvenliği;
+  sonda `notify pgrst, 'reload schema'` (yeni tablolar Veri API'sinde hemen görünsün). **Yeniden çalıştırılmalı** (güvenli).
+- Hata mesajları sunucu kodunu ve tabloyu söyler (ör. `Sunucuda "players" tablosu yok [PGRST205]`, `Sunucu izni yok [42501]`).
+- Tablolar kurulmadan kayıt olunduysa takma ad, kurulumdan sonraki ilk girişte hesaptaki takma addan otomatik onarılır.
+
+
 ## 4.1.1 — Test sunucusu oyuna bağlandı
 - `online.json`: test grubunun Supabase projesi (adres + herkese açık "publishable" anahtar). Oyuncular hiçbir ayar yapmadan
   Çevrimiçi → Kayıt ol diyebilir. Gizli anahtar oyunda yoktur.

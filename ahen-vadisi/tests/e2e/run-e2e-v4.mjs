@@ -26,6 +26,8 @@ const browser = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable
 
 async function newPage(w = 844, h = 390) {
   const ctx = await browser.newContext({ viewport: { width: w, height: h }, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
+  // oyunla gelen online.json gerçek test sunucusunu gösterir: bu testler dışarı çıkmasın (boş yanıt)
+  await ctx.route("**/*.supabase.co/**", (r) => r.fulfill({ status: 200, contentType: "application/json", body: "[]" }));
   const page = await ctx.newPage();
   page.errors = [];
   globalThis.__lastPage = page;
@@ -527,6 +529,8 @@ try {
   // ============================================================== 6) PWA önbelleği
   {
     const ctx = await browser.newContext({ viewport: { width: 844, height: 390 }, isMobile: true, hasTouch: true });
+    // oyunla gelen online.json gerçek test sunucusunu gösterir: bu testler dışarı çıkmasın (boş yanıt)
+    await ctx.route("**/*.supabase.co/**", (r) => r.fulfill({ status: 200, contentType: "application/json", body: "[]" }));
     const pg = await ctx.newPage();
     await pg.goto(BASE);
     await pg.waitForSelector('[data-testid=menu-play]', { timeout: 40000 });

@@ -1,14 +1,15 @@
 // Testler için bellek içi sahte Supabase (GoTrue /auth/v1 + PostgREST /rest/v1 alt kümesi).
 // Gerçek sunucunun RLS kurallarını taklit eder: kullanıcı yalnız kendi cloud_saves satırını görür/yazar; liderlik herkese
-// açık okunur, yalnız sahibi yazar; feedback yalnız eklenir. Birim testlerde fetch yerine, e2e'de Playwright route ile kullanılır.
+// açık okunur, yalnız sahibi yazar; feedback yalnız eklenir; presence herkese açık okunur, yalnız sahibi yazar/siler,
+// online_players görünümü son 90 sn'de görülenleri verir (zamanı sunucu yazar). Birim testlerde fetch yerine, e2e'de Playwright route ile kullanılır.
 import { randomUUID } from 'node:crypto';
 
 export function createFakeSupabase({ confirmEmail = false, tokenTtl = 3600 } = {}) {
-  const db = { users: [], players: [], cloud_saves: [], leaderboard: [], feedback: [] };
+  const db = { users: [], players: [], cloud_saves: [], leaderboard: [], feedback: [], presence: [] };
   const tokens = new Map();     // access_token -> { uid, exp }
   const refresh = new Map();    // refresh_token -> uid
   const log = [];
-  const PK = { players: ['user_id'], cloud_saves: ['user_id'], leaderboard: ['user_id', 'char_id'] };
+  const PK = { players: ['user_id'], cloud_saves: ['user_id'], leaderboard: ['user_id', 'char_id'], presence: ['user_id'] };
 
   const issue = (uid) => {
     const access = 'at_' + randomUUID(), rt = 'rt_' + randomUUID();
@@ -28,11 +29,11 @@ export function createFakeSupabase({ confirmEmail = false, tokenTtl = 3600 } = {
     return { uid: null };
   };
 
-  function auth(method, path, q, body) {
+  function auth(method, path, q, body, headers) {
     if (path === '/auth/v1/signup' && method === 'POST') {
       if (db.users.some((u) => u.email === body.email)) return json(422, { code: 'user_already_exists', msg: 'User already registered' });
       if (!body.password || body.password.length < 6) return json(422, { code: 'weak_password', msg: 'Password should be at least 6 characters.' });
-      const u = { id: randomUUID(), email: body.email, password: body.password, confirmed: !confirmEmail };
+      const u = { id: randomUUID(), email: body.email, password: body.password, confirmed: !confirmEmail, meta: body.data || {} };
       db.users.push(u);
       return confirmEmail ? json(200, { id: u.id, email: u.email }) : json(200, issue(u.id));
     }
@@ -51,11 +52,22 @@ export function createFakeSupabase({ confirmEmail = false, tokenTtl = 3600 } = {
       }
     }
     if (path === '/auth/v1/logout') return json(204);
+    if (path === '/auth/v1/user' && method === 'GET') {
+      const w = who(headers);
+      const u = w.uid && db.users.find((x) => x.id === w.uid);
+      return u ? json(200, { id: u.id, email: u.email, user_metadata: u.meta || {} }) : json(401, { msg: 'invalid JWT' });
+    }
     return json(404, { msg: 'not found' });
   }
 
-  function rest(method, table, q, body, headers) {
-    if (!db[table] || table === 'users') return json(404, { message: `Could not find the table 'public.${table}'` });
+  function rest(method, table, q, body, headers, viewRows = null) {
+    // görünüm: son 90 sn'de görülen oyuncular (yalnız okunur)
+    if (table === 'online_players') {
+      if (method !== 'GET') return json(405, { message: 'cannot modify view' });
+      const fresh = db.presence.filter((r) => Date.now() - r.last_seen < 90000).map(({ user_id, ...r }) => ({ ...r, last_seen: new Date(r.last_seen).toISOString() }));
+      return rest('GET', '__view', q, null, headers, fresh);
+    }
+    if (!viewRows && (!db[table] || table === 'users')) return json(404, { code: 'PGRST205', message: `Could not find the table 'public.${table}' in the schema cache` });
     const w = who(headers);
     if (w.expired) return json(401, { message: 'JWT expired' });
     const uid = w.uid;
@@ -64,7 +76,7 @@ export function createFakeSupabase({ confirmEmail = false, tokenTtl = 3600 } = {
     if (method === 'GET') {
       if (table === 'cloud_saves' && !uid) return json(401, { message: 'permission denied for table cloud_saves' });
       if (table === 'feedback') return json(401, { message: 'permission denied for table feedback' });
-      let rows = db[table].filter(visible);
+      let rows = viewRows || db[table].filter(visible);
       for (const [k, v] of q) if (v.startsWith('eq.')) rows = rows.filter((r) => String(r[k]) === v.slice(3));
       const order = q.get('order');
       if (order) {
@@ -95,9 +107,16 @@ export function createFakeSupabase({ confirmEmail = false, tokenTtl = 3600 } = {
         const pk = PK[table];
         const i = db[table].findIndex((x) => pk.every((k) => x[k] === r[k]));
         if (i >= 0 && !upsert) return json(409, { message: 'duplicate key value' });
-        if (i >= 0) db[table][i] = { ...db[table][i], ...r }; else db[table].push({ ...r });
+        const row = table === 'presence' ? { ...r, last_seen: Date.now() } : r;   // sunucu zamanı
+        if (i >= 0) db[table][i] = { ...db[table][i], ...row }; else db[table].push({ ...row });
       }
       return json(201);
+    }
+    if (method === 'DELETE') {
+      if (!uid) return json(401, { code: '42501', message: `permission denied for table ${table}` });
+      const eq = [...q].filter(([, v]) => v.startsWith('eq.'));
+      db[table] = db[table].filter((r) => !(r.user_id === uid && eq.every(([k, v]) => String(r[k]) === v.slice(3))));
+      return json(204);
     }
     return json(405, { message: 'method not allowed' });
   }
@@ -108,7 +127,7 @@ export function createFakeSupabase({ confirmEmail = false, tokenTtl = 3600 } = {
     const body = bodyText ? JSON.parse(bodyText) : null;
     log.push({ method, path: u.pathname + u.search });
     if (!headers.apikey) return json(401, { message: 'No API key found in request' });
-    if (u.pathname.startsWith('/auth/v1/')) return auth(method, u.pathname, u.searchParams, body);
+    if (u.pathname.startsWith('/auth/v1/')) return auth(method, u.pathname, u.searchParams, body, headers);
     if (u.pathname.startsWith('/rest/v1/')) return rest(method, u.pathname.slice(9), u.searchParams, body, headers);
     return json(404, { message: 'not found' });
   }
