@@ -27,7 +27,11 @@ await new Promise((res) => { server.stdout.on('data', (d) => { if (String(d).inc
 const browser = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader'] });
 
 async function device(name, w = 844, h = 390) {
-  const ctx = await browser.newContext({ viewport: { width: w, height: h }, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
+  // servis işçisi kapalı: her istek bu testin yönlendirmesinden geçer. Oyunla gelen online.json (gerçek proje) yerine
+  // boş ayar verilir — test hiçbir zaman gerçek sunucuya istek atmaz.
+  const ctx = await browser.newContext({ viewport: { width: w, height: h }, isMobile: true, hasTouch: true, deviceScaleFactor: 1, serviceWorkers: 'block' });
+  await ctx.route('**/online.json', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: '{"url":"","anonKey":""}' }));
+  await ctx.route('**/*.supabase.co/**', (route) => (route.request().url().startsWith(PROJECT) ? route.fallback() : route.abort('blockedbyclient')));
   await ctx.route(`${PROJECT}/**`, async (route) => {
     const req = route.request();
     if (offline) return route.abort('internetdisconnected');

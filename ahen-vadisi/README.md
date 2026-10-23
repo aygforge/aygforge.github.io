@@ -1,4 +1,4 @@
-# AHEN VADİSİ — V4.0 «Gökyarık Genişlemesi» (4.1.0)
+# AHEN VADİSİ — V4.0 «Gökyarık Genişlemesi» (4.1.1)
 
 Mobil öncelikli (yatay ekran), HTML5 tabanlı, eski usul 2D fantastik RPG. Karaağaç Köyü'nden Derin Ocak'a uzanan
 Lv. 1–20 ilerleme döngüsü (V1), **V2.0 Kül ve Ayaz (Lv. 21–30)** ve onların üzerine kurulan **V3.0 Kayıp Krallığın

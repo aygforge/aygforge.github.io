@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-23T07:39:04.745Z",
+  "date": "2026-10-23T08:10:51.392Z",
   "passed": 22,
   "total": 22,
   "results": [
@@ -21,12 +21,12 @@
     {
       "name": "Kayıt ol: hesap + takma ad oluşur, oturum açılır",
       "ok": true,
-      "info": "OyuncuAygun (ayg@test.com)Bulut kaydıhenüz yok {\"msg\":null,\"open\":false,\"sw\":true,\"log\":[{\"method\":\"POST\",\"path\":\"/auth/v1/signup\"},{\"method\":\"POST\",\"path\":\"/rest/v1/players?on_conflict=user_id\"},{\"method\":\"GET\",\"path\":\"/rest/v1/players?select=nickname&user_id=eq.b6d1c197-a5a0-487e-8986-a42c70cd5d34\"},{\"method\":\"GET\",\"path\":\"/rest/v1/cloud_saves?select=summary,game_version,updated_at&user_id=eq.b6d1c197-a5a0-487e-8986-a42c70cd5d34\"}]}"
+      "info": "OyuncuAygun (ayg@test.com)Bulut kaydıhenüz yok {\"msg\":null,\"open\":false,\"sw\":false,\"log\":[{\"method\":\"POST\",\"path\":\"/auth/v1/signup\"},{\"method\":\"POST\",\"path\":\"/rest/v1/players?on_conflict=user_id\"},{\"method\":\"GET\",\"path\":\"/rest/v1/players?select=nickname&user_id=eq.c03e0705-57d2-45b9-9922-75ba7f8dbc77\"},{\"method\":\"GET\",\"path\":\"/rest/v1/cloud_saves?select=summary,game_version,updated_at&user_id=eq.c03e0705-57d2-45b9-9922-75ba7f8dbc77\"}]}"
     },
     {
       "name": "Buluta kaydet: kayıt kodu ve karakter özeti buluta yazılır; liderlik satırı oluşur",
       "ok": true,
-      "info": "{\"sum\":[{\"id\":\"cmvknqd7r218vxhaq6\",\"name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0}],\"lb\":{\"char_id\":\"cmvknqd7r218vxhaq6\",\"nickname\":\"Aygun\",\"char_name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0,\"kills\":0,\"boss_kills\":0,\"quests\":0,\"updated_at\":\"2026-10-23T07:37:30.374Z\",\"user_id\":\"b6d1c197-a5a0-487e-8986-a42c70cd5d34\"}}"
+      "info": "{\"sum\":[{\"id\":\"cmvkovlo7279nqe154\",\"name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0}],\"lb\":{\"char_id\":\"cmvkovlo7279nqe154\",\"nickname\":\"Aygun\",\"char_name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0,\"kills\":0,\"boss_kills\":0,\"quests\":0,\"updated_at\":\"2026-10-23T08:09:34.083Z\",\"user_id\":\"c03e0705-57d2-45b9-9922-75ba7f8dbc77\"}}"
     },
     {
       "name": "Yanlış şifre anlaşılır mesaj verir",
@@ -36,7 +36,7 @@
     {
       "name": "Boş cihazda girişte buluttaki kayıt karşılaştırmayla önerilir",
       "ok": true,
-      "info": "Buluttan yükleBulut (23.10.2026 07:37:30): Bulutcu Lv.8Bu cihaz: karakter yokYüklersen bu cihazdaki profil buluttakiyle değiştirilir; şu anki profilin bir kurta"
+      "info": "Buluttan yükleBulut (23.10.2026 08:09:33): Bulutcu Lv.8Bu cihaz: karakter yokYüklersen bu cihazdaki profil buluttakiyle değiştirilir; şu anki profilin bir kurta"
     },
     {
       "name": "Buluttan yükle: karakter seviye, gold ve sınıfıyla bu cihaza gelir; önceki profilin kurtarma kopyası saklanır",
@@ -56,7 +56,7 @@
     {
       "name": "Otomatik bulut kaydı da buluttaki ilerlemeyi ezmez",
       "ok": true,
-      "info": "[{\"id\":\"cmvknqd7r218vxhaq6\",\"name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0}]"
+      "info": "[{\"id\":\"cmvkovlo7279nqe154\",\"name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0}]"
     },
     {
       "name": "Otomatik bulut kaydı 3 dakikadan sık yapılmaz (az önce elle kaydedildi)",
@@ -76,7 +76,7 @@
     {
       "name": "Hata/öneri bildirimi sürüm, harita, sınıf ve seviyeyle gönderilir",
       "ok": true,
-      "info": "{\"version\":\"4.1.0\",\"map\":\"village\",\"cls\":\"necromancer\",\"level\":10,\"ua\":\"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.7390.37 Safari/537.36\",\"screen\":\"844x390\"}"
+      "info": "{\"version\":\"4.1.1\",\"map\":\"village\",\"cls\":\"necromancer\",\"level\":10,\"ua\":\"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.7390.37 Safari/537.36\",\"screen\":\"844x390\"}"
     },
     {
       "name": "Bağlantı yokken bulut işlemi anlaşılır uyarı verir; yerel kayıt ve oyun etkilenmez",

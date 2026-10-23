@@ -44,6 +44,8 @@ Herkese açık anahtarın oyunda görünmesi normaldir: verileri satır güvenli
 
 ## 5. Oyuna bağla — iki yol
 
+> 4.1.1'den itibaren test grubunun projesi `online.json` ile oyuna gömülüdür; aşağıdakiler başka bir proje için.
+
 **A) En kolayı — adres ve anahtarı bana gönder:** `online.json` dosyasına yazıp yeni itch.io ZIP'ini hazırlarım. Arkadaşların
 hiçbir ayar yapmadan doğrudan "Kayıt ol" der.
 

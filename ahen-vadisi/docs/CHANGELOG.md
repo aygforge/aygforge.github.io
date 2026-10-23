@@ -1,5 +1,11 @@
 # Değişiklik Günlüğü
 
+## 4.1.1 — Test sunucusu oyuna bağlandı
+- `online.json`: test grubunun Supabase projesi (adres + herkese açık "publishable" anahtar). Oyuncular hiçbir ayar yapmadan
+  Çevrimiçi → Kayıt ol diyebilir. Gizli anahtar oyunda yoktur.
+- Çevrimiçi e2e testi gerçek projeye hiç istek atmaz (servis işçisi kapalı, `online.json` boş ayarla değiştirilir).
+
+
 ## 4.1.0 — Çevrimiçi test katmanı (isteğe bağlı, ücretsiz Supabase)
 Kurulum: [`ONLINE_KURULUM.md`](ONLINE_KURULUM.md). Oyun tek oyunculu kalır ve sunucu ayarı olmadan aynen çalışır.
 - **Bulut kaydı:** e-posta + şifre hesabıyla; elle "Buluta kaydet" ve yerel kayıttan sonra otomatik (en sık 3 dk). Bulutta

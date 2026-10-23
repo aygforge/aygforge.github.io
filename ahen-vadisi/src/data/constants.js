@@ -2,7 +2,7 @@
 
 export const GAME_TITLE = 'Ahen Vadisi';
 export const SCHEMA_VERSION = 4;      // V1 = 1, V2.0 (Kül ve Ayaz) = 2, V3.0 (Kayıp Krallığın Mirası) = 3, V4.0 (Gökyarık) = 4
-export const GAME_VERSION = '4.1.0';
+export const GAME_VERSION = '4.1.1';
 
 export const TILE = 32;          // dünya pikseli / tile
 export const ART_SCALE = 2;      // 1 sanat pikseli = 2 dünya pikseli
