@@ -1,5 +1,14 @@
 # Ahen Vadisi — Test Raporu
 
+## 4.5.1 — Parti dungeon boss canı ölçeklemesi (23 Ekim 2026)
+- Birim: 230/230. Yeni 3 test:
+  - ağırlık ve çarpan tablosu (tek kişi değişmez, 2 kişi ×1,75, 4 kişi ×3,25, düşük seviyeli yardımcı ×1,375);
+  - katılma, ayrılma ve seviye atlamada yeniden hesap; can yüzdesinin korunması ve duyuru;
+  - açık dünya boss'unun ölçeklenmemesi.
+- E2E `run-e2e-raid.mjs` 17/17. İki Lv.20 oyuncu Derin Ocak'ta Maden Golemi'nin canını 35.000 (20.000 × 1,75) görüyor;
+  boss çubuğunda "Parti ×1,75" yazıyor.
+- Ortak dünya 15/15, ana e2e 61/61 yeniden koşuldu.
+
 ## 4.5.0 — Ortak boss'lar, parti dungeon'ları, ortak görev olayları, ticaret (23 Ekim 2026)
 - Birim: 227/227.
   - `server.test.js` 26 test. Yenileri:

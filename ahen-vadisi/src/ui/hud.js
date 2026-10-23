@@ -232,7 +232,8 @@ export function createHud() {
     const bossE = w.enemies.find((e) => !e.dead && e.tpl.kind === 'boss' && (e.engaged || p.target === e) && Math.hypot(e.x - p.x, e.y - p.y) < 18 * TILE);
     if (bossE) {
       boss.classList.remove('hidden');
-      bName.textContent = `${bossE.tpl.name} — Lv.${bossE.level}`;
+      const scale = bossE.maxHp / bossE.tpl.hp;
+      bName.textContent = `${bossE.tpl.name} — Lv.${bossE.level}` + (scale > 1.01 ? ` · Parti ×${scale.toFixed(2).replace('.', ',')}` : '');
       bBarFill.style.width = `${(bossE.hp / bossE.maxHp) * 100}%`;
       bBarText.textContent = `${fmt(bossE.hp)} / ${fmt(bossE.maxHp)}`;
       bShield.classList.toggle('hidden', !(bossE.reduce > 0));

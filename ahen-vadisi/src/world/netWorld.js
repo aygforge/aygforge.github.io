@@ -64,7 +64,8 @@ export class NetEnemy extends Enemy {
   }
 
   applySnap(s) {
-    const [, x, y, hp, f, fl, red, tint, phase, aura, dm] = s;
+    const [, x, y, hp, f, fl, red, tint, phase, aura, dm, mhp] = s;
+    if (mhp) this.maxHp = mhp;   // parti dungeon'unda boss canı parti gücüne göre ölçeklenir
     this.netPhase = phase || 0;
     if (dm != null) { const k = dm / 100; this.def = Math.round(this.tpl.def * k); this.mdef = Math.round(this.tpl.mdef * k); }
     if ((aura || 0) !== this.netAura) this.setAura(aura || 0);

@@ -1,5 +1,16 @@
 # Değişiklik Günlüğü
 
+## 4.5.1 — Parti dungeon boss canı parti gücüne göre
+- Dungeon boss'unun canı, örnekteki oyuncuların seviyesine göre artar. Her oyuncu boss seviyesine göre 0,5–1,5 arası
+  ağırlık taşır (aynı seviye 1; her seviye farkı %5). En güçlü oyuncu temel sayılır, diğer her oyuncu ağırlığının
+  %75'i kadar can ekler.
+  - Boss seviyesinde 2 kişi ×1,75, 3 kişi ×2,5, 4 kişi ×3,25.
+  - 10 seviye düşük bir arkadaş yardıma gelirse ×1,375; tek başına girersen hiçbir şey değişmez.
+- Biri savaş sırasında katılır, ayrılır ya da seviye atlarsa can yüzdesi korunarak yeniden hesaplanır ve herkese
+  duyurulur. Boss çubuğunda "Parti ×1,75" yazar.
+- Açık dünya boss'ları ve dungeon'daki diğer yaratıklar ölçeklenmez. EXP ve altın zaten parti payıyla bölünür.
+
+
 ## 4.5.0 — Ortak boss'lar, parti dungeon'ları (raid), ortak görev olayları ve ticaret
 Oyun sunucusu da güncellenir (Render depo güncellenince kendisi kurar). Ayrıntı: [`OYUN_SUNUCUSU.md`](OYUN_SUNUCUSU.md).
 - **Boss'lar sunucuda:** 8 boss'un tamamı (Alfa Kurt, Maden Golemi, Kül Devi, Donmuş Muhafız, Mezar Komutanı, Kayıp Kral,

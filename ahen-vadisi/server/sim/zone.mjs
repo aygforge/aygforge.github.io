@@ -16,6 +16,19 @@ export const SHARE_RANGE = 30 * TILE;    // parti EXP paylaşımı mesafesi
 export const PARTY_BONUS = 0.2;          // kişi başına ek toplam EXP (2 kişi: 1,2 → kişi başı 0,6)
 const builtCache = {};
 
+// Parti dungeon'u boss canı: örnekteki oyuncuların seviyesine göre ölçeklenir. Her oyuncunun ağırlığı boss seviyesine
+// göre 0,5–1,5 (aynı seviye = 1; her seviye farkı %5). En güçlü oyuncu "temel" sayılır (tek kişi = değişiklik yok);
+// diğer her oyuncu ağırlığının %75'i kadar can ekler. Ör. boss seviyesinde 2 kişi ×1,75, 4 kişi ×3,25;
+// 10 seviye düşük bir arkadaş yardıma gelirse ×1,375.
+export const BOSS_SCALE = { per: 0.75, perLevel: 0.05, minW: 0.5, maxW: 1.5 };
+export function playerWeight(lv, bossLv) {
+  return Math.max(BOSS_SCALE.minW, Math.min(BOSS_SCALE.maxW, 1 + ((lv || 1) - bossLv) * BOSS_SCALE.perLevel));
+}
+export function bossHpMult(levels, bossLv) {
+  const w = levels.map((l) => playerWeight(l, bossLv)).sort((a, b) => b - a);
+  return 1 + BOSS_SCALE.per * w.slice(1).reduce((a, b) => a + b, 0);
+}
+
 export function sharePerMember(n) { return n <= 1 ? 1 : (1 + PARTY_BONUS * (n - 1)) / n; }
 
 export function isSharedMap(mapId) { return !!MAPS[mapId] && !MAPS[mapId].dungeon; }
@@ -207,10 +220,28 @@ export class Zone {
     this.ev({ k: 'pj', e: e.id, to: tp.uid, key }, e.x, e.y);
   }
 
+  // dungeon boss'unun canını örnekteki oyunculara göre ayarla; can yüzdesi korunur (savaş sırasında katılan/ayrılan olursa)
+  rescaleBoss() {
+    const b = this.dg?.boss;
+    if (!b || b.dead || !this.players.size) return;
+    const mult = bossHpMult([...this.players.values()].map((p) => p.lv), b.tpl.level);
+    const max = Math.round(b.tpl.hp * mult);
+    if (max === b.maxHp) return;
+    const pct = b.hp / b.maxHp;
+    b.maxHp = max;
+    b.hp = Math.max(1, Math.round(pct * max));
+    b.hpMult = mult;
+    if (mult !== this.dg.lastMult) {
+      this.dg.lastMult = mult;
+      this.everyone({ k: 'note', s: mult > 1 ? `${b.tpl.name} partinize göre güçlendi: can ×${mult.toFixed(2).replace('.', ',')}` : `${b.tpl.name}: tek kişilik güçte`, kind: 'info' });
+    }
+  }
+
   // ---------------------------------------------------------------- oyuncular
   join(uid, st) {
     const p = { uid, x: st.x, y: st.y, radius: 9, dead: !!st.d, nick: st.nick || '?', cls: st.cls, lv: st.lv || 1, n: st.n || '', hp: st.hp ?? 100, f: 1, mv: 0, a: 0, seen: new Map(), seenP: new Set() };
     this.players.set(uid, p);
+    if (this.dg) this.rescaleBoss();
     if (this.events) for (const ev of this.events.values()) if (ev.running) this.push(uid, { k: 'qe', op: 'start', id: ev.id, nick: '' });
     this.out(uid, { t: 'zone', map: this.mapId, dg: this.dg ? this.dgState() : null, e: this.enemies.filter((e) => !e.dead && Math.hypot(e.x - p.x, e.y - p.y) <= AOI).map((e) => e.full()) });
     for (const e of this.enemies) if (!e.dead && Math.hypot(e.x - p.x, e.y - p.y) <= AOI) p.seen.set(e.id, '');
@@ -226,6 +257,7 @@ export class Zone {
     }
     for (const p of this.players.values()) p.seenP.delete(uid);
     if (!this.players.size) this.emptySince = Date.now();
+    else if (this.dg) this.rescaleBoss();
   }
 
   update(uid, st) {
@@ -234,7 +266,7 @@ export class Zone {
     if (Number.isFinite(st.x) && Number.isFinite(st.y)) { p.x = st.x; p.y = st.y; }
     p.dead = !!st.d; p.f = st.f < 0 ? -1 : 1; p.mv = st.mv ? 1 : 0; p.a = st.a ? 1 : 0;
     if (st.hp != null) p.hp = st.hp;
-    if (st.lv) p.lv = st.lv;
+    if (st.lv && st.lv !== p.lv) { p.lv = st.lv; if (this.dg) this.rescaleBoss(); }
     if (st.cls) p.cls = st.cls;
     if (st.n != null) p.n = st.n;
     if (st.nick) p.nick = st.nick;

@@ -1,7 +1,7 @@
 // Ortak dünya sunucusu (server/): bölge simülasyonu, yapay zekâ, alan yetenekleri, ödül paylaşımı, elit kuralı,
 // merkez (kimlik, sürüm, kanallar, parti bilgisi).
 import { describe, it, expect } from 'vitest';
-import { Zone, sharePerMember, isSharedMap, SHARE_RANGE } from '../../server/sim/zone.mjs';
+import { Zone, sharePerMember, isSharedMap, SHARE_RANGE, bossHpMult, playerWeight } from '../../server/sim/zone.mjs';
 import { Hub } from '../../server/hub.mjs';
 import { ENEMIES } from '../../src/data/enemies.js';
 import { ELITE_RULE } from '../../src/data/maps/index.js';
@@ -443,5 +443,51 @@ describe('Görev olayları ve avlar sunucuda', () => {
     z.onHunts('a', []); z.onHunts('b', []);
     for (let i = 0; i < 12; i++) z.tick(0.05);
     expect(z.enemies.filter((e) => e.huntKey === 'q1:0' && !e.dead).length).toBe(0);
+  });
+});
+
+describe('Parti dungeon boss canı (parti gücüne göre)', () => {
+  it('ağırlık: boss seviyesinde 1, seviye başına %5, 0,5–1,5 arası; tek kişi değişmez', () => {
+    expect(playerWeight(20, 20)).toBe(1);
+    expect(playerWeight(30, 20)).toBeCloseTo(1.5);
+    expect(playerWeight(10, 20)).toBeCloseTo(0.5);
+    expect(playerWeight(50, 20)).toBe(1.5);
+    expect(playerWeight(1, 20)).toBe(0.5);
+    expect(bossHpMult([20], 20)).toBe(1);
+    expect(bossHpMult([45], 20)).toBe(1);              // tek kişi, seviyesi ne olursa olsun
+    expect(bossHpMult([20, 20], 20)).toBeCloseTo(1.75);
+    expect(bossHpMult([20, 20, 20, 20], 20)).toBeCloseTo(3.25);
+    expect(bossHpMult([20, 10], 20)).toBeCloseTo(1.375);   // düşük seviyeli yardımcı az ekler
+    expect(bossHpMult([10, 30], 20)).toBeCloseTo(1.375);   // en güçlü temel sayılır
+  });
+
+  it('oyuncu girince/çıkınca/seviye atlayınca boss canı ölçeklenir, can yüzdesi korunur, herkese duyurulur', () => {
+    const z = mkZone('dungeon');
+    const b = z.dg.boss;
+    expect(b.tpl.id).toBe('mine_golem');
+    z.join('a', { x: 5 * TILE, y: 60 * TILE, lv: 20 });
+    expect(b.maxHp).toBe(b.tpl.hp);
+    b.hp = b.maxHp / 2;
+    z.join('b', { x: 5 * TILE, y: 60 * TILE, lv: 20 });
+    expect(b.maxHp).toBe(Math.round(b.tpl.hp * 1.75));
+    expect(b.hp / b.maxHp).toBeCloseTo(0.5, 2);
+    expect(b.snap()[11]).toBe(b.maxHp);
+    z.update('b', { lv: 30 });
+    expect(b.maxHp).toBe(Math.round(b.tpl.hp * 1.75));    // en güçlü (b) temel; yardımcı a (Lv.20) ×0,75 ekler
+    z.update('a', { lv: 30 });
+    expect(b.maxHp).toBe(Math.round(b.tpl.hp * 2.125));   // ikisi de Lv.30: 1 + 0,75 × 1,5
+    z.leave('b');
+    expect(b.maxHp).toBe(b.tpl.hp);
+    expect(b.hp / b.maxHp).toBeCloseTo(0.5, 2);
+    z.flush();
+    expect(z.evs('a', 'note').some((n) => /partinize göre güçlendi/.test(n.s))).toBe(true);
+  });
+
+  it('açık dünya boss\'u ölçeklenmez', () => {
+    const z = mkZone('forest');
+    z.tick(0.05);
+    const w = z.bosses[0].ent;
+    z.join('a', { x: 5 * TILE, y: 42 * TILE, lv: 10 }); z.join('b', { x: 5 * TILE, y: 42 * TILE, lv: 10 });
+    expect(w.maxHp).toBe(w.tpl.hp);
   });
 });

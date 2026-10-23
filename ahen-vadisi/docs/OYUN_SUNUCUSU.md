@@ -22,6 +22,12 @@ programıdır (`server/`). Ücretsiz olarak Render'da çalışır.
 - Örneği ilk giren oyuncunun koşu durumu kurar. Sonradan gelenlerin koşusu örneğe uyar: temizlenen bölümler, kırılan
   mühürler.
 - Boss ganimeti her oyuncuya kendi koşusunda bir kez düşer (yerel kural).
+- **Boss canı parti gücüne göre (4.5.1):** her oyuncu boss seviyesine göre 0,5–1,5 ağırlık taşır (aynı seviye = 1,
+  seviye farkı başına %5). En güçlü oyuncu temel; diğer her oyuncu ağırlığının %75'i kadar can ekler. Örnekler:
+  - boss seviyesinde 2 kişi ×1,75, 4 kişi ×3,25;
+  - 10 seviye düşük yardımcı ×1,375; tek kişi değişmez.
+
+  Katılan, ayrılan ya da seviye atlayan olursa can yüzdesi korunarak yeniden hesaplanır.
 - Ölünce kendi kontrol noktanda doğarsın. Partide herkes bayılırsa boss eve döner ve sıfırlanır.
 
 **Ticaret kuralları:**
@@ -40,7 +46,7 @@ programıdır (`server/`). Ücretsiz olarak Render'da çalışır.
 - Partisiz ve hiç vurmayan bir oyuncu, başkasının öldürdüğü yaratıktan ödül almaz.
 
 **Kalan sınırlar:** karakterler hâlâ oyuncunun cihazında (ve bulut kaydında) durur; oyuncu hasarını istemci hesaplar
-(hileye karşı korumalı değil). Dungeon boss'larının canı parti büyüklüğüne göre artmaz.
+(hileye karşı korumalı değil).
 
 Sunucu kapanırsa ya da uyursa oyun **durmaz**: tek oyunculu devam eder, sunucu dönünce kendiliğinden ortak dünyaya geçer.
 

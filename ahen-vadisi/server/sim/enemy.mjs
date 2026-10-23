@@ -583,7 +583,7 @@ export class SEnemy {
   snap() {
     const fl = (this.moving ? 1 : 0) | (this.engaged ? 2 : 0) | (this.hidden ? 4 : 0) | (this.now < this.stunUntil ? 8 : 0);
     return [this.id, Math.round(this.x), Math.round(this.y), Math.max(0, Math.ceil(this.hp)), this.facing, fl, Math.round(this.reduce * 100), this.tint,
-      this.behavior?.phase?.() || 0, this.aura, Math.round(this.defMult * 100)];
+      this.behavior?.phase?.() || 0, this.aura, Math.round(this.defMult * 100), this.maxHp];
   }
 
   full() {

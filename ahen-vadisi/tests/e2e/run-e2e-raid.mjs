@@ -208,6 +208,15 @@ try {
   const toastB = await ev(pb, () => [...document.querySelectorAll('.toast')].map((t) => t.textContent).join('|'));
   await pb.screenshot({ path: join(shots, 'raid-dungeon.png') });
   record('A 1. bölümü temizleyince B\'nin koşusu da ilerler ve kapı B\'de de açılır', s1.length > 0 && clearedB && gateB, `${s1.length} yaratık · ${toastB.slice(0, 120)}`);
+  // boss canı parti gücüne göre: iki Lv.20 oyuncu, Lv.20 Maden Golemi → ×1,75
+  await teleport(pa, 80 * 32, 18 * 32); await teleport(pb, 80 * 32, 19 * 32);
+  const golem = await waitFor(pb, () => [...window.__AHEN.world.netWorld.byId.values()].some((e) => e.tpl.id === 'mine_golem'), null, 8000);
+  await pb.waitForTimeout(600);
+  const gm = await ev(pb, () => { const e = [...window.__AHEN.world.netWorld.byId.values()].find((x) => x.tpl.id === 'mine_golem'); return e ? { max: e.maxHp, base: e.tpl.hp } : null; });
+  const label = await waitFor(pb, () => /Parti ×1,75/.test(document.querySelector('.bossbar')?.textContent || ''), null, 6000);
+  await pb.screenshot({ path: join(shots, 'raid-boss-scaled.png') });
+  record('Parti dungeon boss canı parti gücüne göre ölçeklenir (2 × Lv.20 → ×1,75) ve boss çubuğunda yazar', golem && gm && gm.max === Math.round(gm.base * 1.75) && label, JSON.stringify(gm));
+  await teleport(pa, 5 * 32, 71 * 32); await teleport(pb, 5 * 32, 71 * 32);
   // partisiz üçüncü oyuncu ayrı örnekte
   const C = await device('C');
   const pc = C.page;
