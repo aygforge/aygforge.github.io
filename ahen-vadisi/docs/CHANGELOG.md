@@ -1,5 +1,56 @@
 # Değişiklik Günlüğü
 
+## 4.0.0 — «Gökyarık Genişlemesi» (Lv. 41–50)
+Ayrıntılar, denge tablosu ve bilinen sınırlamalar: [`V4_NOTLARI.md`](V4_NOTLARI.md). **Mevcut kayıtlar aynen açılır:**
+şema 3 → 4 geçişi yalnız alan ekler; geçişten önceki kayıt `v3_backup` olarak saklanır.
+
+**Kayıt ve kayıt güvenliği**
+- Şema 4: 3 karakter yuvası doğrulamadan **önce** 5'e genişler (sıra, kimlik, seviye, eşya, gold, stat ve görevler aynen).
+- Depolama açılamazsa (kota, engellenmiş, kapalı, meşgul, eksik) oyun boş profili "yüklendi" saymaz ve hiçbir kaydın üzerine
+  yazmaz: hata türü gösterilir, yedekler ve önceki kayıtlar aranır, kurtarılabilir kayıtlar listelenir, yalnız bellekte
+  çalışılıyorsa açık uyarı verilir, JSON dışa aktarma önerilir.
+- Ayarlar → **Kayıt Güvenliği:** son başarılı kalıcı kayıt zamanı, kayıt teknolojisi, kalıcı depolama izni, son yedek, şimdi
+  kaydet, yedek kodu kopyala/yapıştır, JSON dışa/içe aktar, önceki kayıtlar, kayıp karakter ara. Ana menüde de açılır.
+- Mevcut karakteri olan oyuncuya V4'te bir kez yedek hatırlatması.
+
+**Yeni sınıflar (Lv.1'den)**
+- **Okçu:** menzilli fiziksel; görünür oklar duvara çarpar, cephane yok. İsabetli Ok, Çoklu Atış, Çevik Adım, Delici Ok,
+  Ok Yağmuru, Avcı İşareti, Kartal Fırtınası; pasifler Keskin Nişancı, Çevik Refleks, Avcı İçgüdüsü.
+- **Ölü Çağıran:** Ruh Mermisi (MP harcamaz); Ruh Oku, İskelet Çağır, Lanet Mührü, Can Sömürüsü (en çok %5 can), Kemik
+  Patlaması, Ölüler Ordusu, Ruh Kıyameti; pasifler Karanlık Bilgi, Kemik Bağı, Ruh Hasadı.
+- **İskelet:** en çok 2; yalnız seçili hedefe saldırır (AFK farm yok); tek öldürme / tek ödül / görev sayacı bir kez; kayda
+  yalnız güvenli durum; harita değişimi, ölüm ve kapat-aç çoğaltmaz; bosslar iskeleti hedeflemez, telegraflar iskelete de vurur.
+- Lv.1–40 içeriği dört sınıfla oynanır; yeni sınıf ekipmanı Lv.1 yaratıklarından düşer; Ustalık I/II/III.
+- Savaşçı **Yıldırım Yarığı** (×2,20, 24 sn), Büyücü **Astral Patlama** (×2,00, en çok 6 hedef, 24 sn) — Lv.45.
+
+**Dünya, yaratıklar, bosslar**
+- **Gökyarık Ovası** (124×88, Lv.40–45): Fırtına Çayırı, Yarık Tepeleri, Yağmacı Yolu, Yıldırım Ocağı; Fırtına Celladı;
+  Fırtına Tiranı'nın Çemberi; Keşif Kampı (Atlas, yol taşı); Kırık Gözcü Kulesi; 2 gizli sandık; Fırtına Cevheri, Yıldız Çiçeği.
+- **Yıldız Mezarı** (128×92, Lv.45–50): Düşen Taşlar, Astral İzler, Boşluk Meydanı, Kâhin Harabeleri; Hiçlik Muhafızı;
+  Gözlemci Kampı (Leyla, yol taşı); 3 gözlem noktası; Mabet Basamakları (Tufan); 2 gizli sandık; Astral Kristal.
+- **Gökyarık Mabedi** (Lv.48–50, 5 bölüm, sınırsız giriş): kapı mührü → enerji düğümleri (yanlış düğüm zararsız ipucu) →
+  koridor savaşları → 3 gök mührü (ikişer savunma dalgası) → **Göğün Mahkûmu**. Kontrol noktaları, ölümde boss sıfırlanır,
+  ödül koşu başına bir kez.
+- 8 yaratık, 2 elit (Epic %0,75, Legendary yok), **Fırtına Tiranı** (Kristal Çağrısı, Son Gök Gürültüsü) ve **Göğün Mahkûmu**
+  (Göğün Zincirleri, Kırılan Mühürler, Yıldızların Sonu). Fırtına/yıldız ortam sesleri, müzik ve parçacıkları.
+
+**Eşya, loot, ekonomi**
+- 84 yeni eşya (toplam 210): Okçu/Ölü Çağıran silah, zırh, sadak/tılsım; Savaşçı/Büyücü Lv.44–50; aksesuarlar; 4 sınıfa
+  Lv.50 Legendary. Golem, Donmuş Muhafız ve Kayıp Kral havuzlarına Okçu/Ölü Çağıran Legendary'leri eklendi; **oran değişmedi**
+  (toplam %0,4; %80 kendi sınıfı, %20 diğer üç sınıf). Normal Rare %0,25 ve elit Epic %0,75 değişmedi.
+- Yeni materyaller, işleme tarifleri, yeni sınıfların erken eşyaları için eski materyallerle üretim, Yıldız HP/MP iksirleri,
+  Lv.41+ yükseltme kademesi. Yeni para birimi yok, Legendary üretimi yok.
+
+**NPC ve görevler**
+- 5 NPC: Usta Okçu Duru ve Ruhbilge Selim (köy; eski NPC'ler yerinde), İzci Atlas, Yıldız Yorumcusu Leyla, Gökyarık Bekçisi Tufan.
+- 12 ana görev (m47–m58, 512.000 EXP), 10 yan görev (s43–s52, 132.000 EXP) → toplam 102 ana/yan görev; eski görev kimlikleri
+  aynı. Ustalık II (Okçu/Ölü Çağıran), Ustalık III (dört sınıf, Lv.50, hikâyeden sonra), sayım dışı 4 rehber görevi.
+  Hiçbir görev Legendary vermez ya da Legendary'ye bağlı değildir.
+
+**Testler**
+- `tests/unit/v4save.test.js`, `v4content.test.js`, `v4balance.test.js`; `tests/e2e/run-e2e-v4.mjs` (`npm run test:e2e:v4`).
+  Eski testler V4 verisine göre güncellendi (davranış aynı). Sonuçlar: [`TEST_RAPORU.md`](TEST_RAPORU.md).
+
 ## 3.0.1 — Kayıt sağlamlaştırma
 Oyuncu bildirimi: itch.io sürümü aralıklarla oynanırken bir süre sonra karakterlerin silinip profilin sıfırlanması.
 **Mevcut kayıtlar aynen açılır** — şema değişmedi (3), hiçbir eski anahtar silinmez ya da dönüştürülmez; 3.0.0 ve öncesinin

@@ -26,7 +26,8 @@ function openTravel(from) {
   const ch = app.char;
   const scroll = typeof from === 'object' && !!from?.scroll;
   const fromId = scroll ? null : from;
-  const box = h('div', { class: 'dlg frame' }, h('h3', { class: 't' }, scroll ? 'Dönüş Parşömeni' : 'Yol Taşı — Hızlı Seyahat'),
+  // V4: 10 yol taşı — alçak yatay ekranda liste kaydırılabilir (alttaki taşlara erişilir)
+  const box = h('div', { class: 'dlg frame scroll', style: { maxHeight: '92vh' } }, h('h3', { class: 't' }, scroll ? 'Dönüş Parşömeni' : 'Yol Taşı — Hızlı Seyahat'),
     h('p', { class: 'small muted' }, scroll ? 'Keşfettiğin bir Yol Taşı\'na ücretsiz dön. Parşömen seçince tükenir.' : 'Keşfettiğin Yol Taşlarının bulunduğu bölge girişine ışınlanırsın.'),
     h('div', { class: 'list' }, Object.entries(WAYSTONES).map(([id, ws]) => {
       const known = ch.world.waystones.includes(id);

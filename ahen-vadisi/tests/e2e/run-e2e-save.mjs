@@ -16,6 +16,12 @@ const BASE = `http://localhost:${PORT}/`;
 const results = [];
 const record = (name, ok, info = '') => { results.push({ name, ok: !!ok, info }); console.log(`${ok ? '✔' : '✘'} ${name}${info ? ' — ' + info : ''}`); };
 
+// V4: mevcut karakterli profilde ana menü bir kez yedek hatırlatması gösterir; eski senaryolar için kapatılır
+async function dismissV4Notice(pg) {
+  await pg.waitForTimeout(300);
+  await pg.evaluate(() => { const n = document.querySelector('[data-testid=v4-notice]'); if (!n) return; if (window.__AHEN_UI) window.__AHEN_UI.closeModal(); else n.remove(); }).catch(() => {});
+}
+
 const server = spawn('npx', ['vite', 'preview', '--port', String(PORT), '--strictPort'], { cwd: root, stdio: 'pipe' });
 await new Promise((res) => { server.stdout.on('data', (d) => { if (String(d).includes(String(PORT))) res(); }); setTimeout(res, 6000); });
 const browser = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader'] });
@@ -27,9 +33,10 @@ async function newPage() {
   page.on('pageerror', (e) => page.errors.push(e.message));
   await page.goto(BASE + '?dev=1');
   await page.waitForSelector('[data-testid=menu-play]', { timeout: 40000 });
+  await dismissV4Notice(page);
   return { ctx, page };
 }
-const reload = async (page) => { await page.reload(); await page.waitForSelector('[data-testid=menu-play]', { timeout: 40000 }); await page.waitForTimeout(400); };
+const reload = async (page) => { await page.reload(); await page.waitForSelector('[data-testid=menu-play]', { timeout: 40000 }); await page.waitForTimeout(400); await dismissV4Notice(page); };
 
 async function createChar(page, cls, name) {
   await page.tap('[data-testid=menu-play]');
@@ -143,7 +150,7 @@ try {
   await ctx.grantPermissions(['clipboard-read', 'clipboard-write']).catch(() => {});
   const before = await ev(page, () => window.__AHEN.profile.characters.filter(Boolean).map((c) => `${c.name}:${c.level}:${c.gold}`));
   await page.locator('button', { hasText: 'Ayarlar ve Yedek' }).tap();
-  await page.tap('[data-testid=menu-copy-code]');
+  await page.tap('[data-testid=copy-code]');   // V4: Kayıt Güvenliği bölümü (ana menü ayarlarında)
   await page.waitForSelector('[data-testid=code-output]');
   const code = await page.$eval('[data-testid=code-output]', (t) => t.value);
   record('Yedek kodu üretilir', /^AHV1g?:/.test(code), `${code.length} karakter`);
@@ -152,7 +159,7 @@ try {
   await reload(page);
   const wiped = await ev(page, () => window.__AHEN.profile.characters.filter(Boolean).length);
   await page.locator('button', { hasText: 'Ayarlar ve Yedek' }).tap();
-  await page.tap('[data-testid=menu-paste-code]');
+  await page.tap('[data-testid=paste-code]');
   await page.fill('[data-testid=code-input]', code);
   await page.tap('[data-testid=code-ok]');
   await page.waitForTimeout(300);

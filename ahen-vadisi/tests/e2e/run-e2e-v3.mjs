@@ -4,7 +4,7 @@
 // Kullanım: npm run build && node tests/e2e/run-e2e-v3.mjs
 import { chromium } from 'playwright';
 import { spawn } from 'node:child_process';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -16,6 +16,12 @@ const PORT = 4175;
 const BASE = `http://localhost:${PORT}/`;
 const results = [];
 const record = (name, ok, info = '') => { results.push({ name, ok: !!ok, info }); console.log(`${ok ? '✔' : '✘'} ${name}${info ? ' — ' + info : ''}`); };
+
+// V4: mevcut karakterli profilde ana menü bir kez yedek hatırlatması gösterir; eski senaryolar için kapatılır
+async function dismissV4Notice(pg) {
+  await pg.waitForTimeout(300);
+  await pg.evaluate(() => { const n = document.querySelector('[data-testid=v4-notice]'); if (!n) return; if (window.__AHEN_UI) window.__AHEN_UI.closeModal(); else n.remove(); }).catch(() => {});
+}
 
 const server = spawn('npx', ['vite', 'preview', '--port', String(PORT), '--strictPort'], { cwd: root, stdio: 'pipe' });
 await new Promise((res) => { server.stdout.on('data', (d) => { if (String(d).includes(String(PORT))) res(); }); setTimeout(res, 6000); });
@@ -30,6 +36,7 @@ async function newPage(w = 844, h = 390) {
   page.on('console', (m) => { if (m.type() === 'error') page.errors.push(m.text()); });
   await page.goto(BASE + '?dev=1');
   await page.waitForSelector('[data-testid=menu-play]', { timeout: 40000 });
+  await dismissV4Notice(page);
   return { ctx, page };
 }
 
@@ -77,7 +84,7 @@ try {
       const backup = await a.repo.readRaw('v2_backup');
       return { from: r.migratedFrom, sv: r.profile.schemaVersion, level: c.level, gold: c.gold, m36: c.quests.m36?.s, s11: c.quests.s11?.p?.[0], m37: c.quests.m37 || null, tracking: c.tracking, mastery2: c.mastery2, backup: backup?.schemaVersion };
     });
-    record('V2 kaydı (Lv.30) V3\'e geçer: seviye, gold, görevler korunur; yeni görevler yapılmamış', mig.from === 2 && mig.sv === 3 && mig.level === 30 && mig.gold === 4321 && mig.m36 === 'done' && mig.s11 === 3 && mig.m37 === null, JSON.stringify(mig));
+    record('V2 kaydı (Lv.30) güncel şemaya (V4) geçer: seviye, gold, görevler korunur; yeni görevler yapılmamış', mig.from === 2 && mig.sv === 4 && mig.level === 30 && mig.gold === 4321 && mig.m36 === 'done' && mig.s11 === 3 && mig.m37 === null, JSON.stringify(mig));
     record('Geçişte v2_backup saklanır; V3 alanları eklenir (takip listesi, Ustalık II)', mig.backup === 2 && Array.isArray(mig.tracking) && mig.mastery2 === false, JSON.stringify(mig));
     await ctx.close();
   }
@@ -355,6 +362,7 @@ try {
   const before = await ev(page, async () => { const a = window.__AHEN; a.char.tracking = ['s40']; a.char.mastery2 = true; await a.flushSave('test'); return { name: a.char.name, flag: a.char.world.flags.black_gate_open, lv: a.char.level }; });
   await page.reload();
   await page.waitForSelector('[data-testid=menu-play]', { timeout: 40000 });
+  await dismissV4Notice(page);
   const after = await ev(page, (name) => { const c = window.__AHEN.profile.characters.find((x) => x?.name === name); return { lv: c.level, flag: c.world.flags.black_gate_open, m2: c.mastery2, tr: c.tracking, s40: c.quests.s40?.s, bar: c.skillBar }; }, before.name);
   record('Kapat-aç: seviye, bayraklar, görevler, takip listesi, Ustalık II, beceri çubuğu korunur', after.lv === before.lv && after.flag && after.m2 && after.tr?.[0] === 's40' && after.bar.includes('iron_fury'), JSON.stringify(after));
   await cw.close();
@@ -446,6 +454,7 @@ try {
     const pg = await ctx.newPage();
     await pg.goto(BASE);
     await pg.waitForSelector('[data-testid=menu-play]', { timeout: 40000 });
+    await dismissV4Notice(pg);
     const sw = await pg.evaluate(async () => {
       const r = await navigator.serviceWorker.ready;
       const txt = await (await fetch('sw.js')).text();
@@ -456,7 +465,9 @@ try {
     await pg.reload();
     let offline = false;
     try { await pg.waitForSelector('[data-testid=menu-play]', { timeout: 30000 }); offline = true; } catch { /* */ }
-    record('PWA: servis işçisi etkin, 3.0.0 sürümlü önbellek; çevrimdışı açılış', sw.active && offline && sw.assets > 0 && sw.version === '3.0.0', JSON.stringify({ ...sw, offline }));
+    // V4: sürüm package.json'dan okunur (önbellek her sürümde yenilenir)
+    const PKGV = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).version;
+    record(`PWA: servis işçisi etkin, ${PKGV} sürümlü önbellek; çevrimdışı açılış`, sw.active && offline && sw.assets > 0 && sw.version === PKGV, JSON.stringify({ ...sw, offline }));
     await ctx.close();
   }
 } catch (e) {

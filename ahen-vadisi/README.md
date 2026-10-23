@@ -1,17 +1,18 @@
-# AHEN VADİSİ — V3.0 «Kayıp Krallığın Mirası»
+# AHEN VADİSİ — V4.0 «Gökyarık Genişlemesi»
 
 Mobil öncelikli (yatay ekran), HTML5 tabanlı, eski usul 2D fantastik RPG. Karaağaç Köyü'nden Derin Ocak'a uzanan
 Lv. 1–20 ilerleme döngüsü (V1), **V2.0 Kül ve Ayaz (Lv. 21–30)** ve onların üzerine kurulan **V3.0 Kayıp Krallığın
-Mirası (Lv. 31–40)**: Ayaz Geçidi'nin doğusundaki eski kraliyet yolundan Ölü Krallık'a, Siyah Kapı'dan Kara Taht'a ve
-Karanlık Mahzen'de bekleyen Kayıp Kral'a uzanan hikâye. Warrior veya Mage ile seviye kas, nadir eşya düşür, demircide
-+5'e kadar yükselt, Alfa Kurt, Maden Golemi, Kül Devi, Donmuş Muhafız, Mezar Komutanı ve Kayıp Kral'ı yen, zindanlara
-sınırsız gir ve Legendary avına çık.
+Mirası (Lv. 31–40)** ve **V4.0 Gökyarık Genişlemesi (Lv. 41–50)**: Kara Taht'ın kuzeyinde göğe açılan yarıktan Gökyarık
+Ovası'na, Yıldız Mezarı'na ve Gökyarık Mabedi'nde zincirlenmiş Göğün Mahkûmu'na uzanan hikâye. Savaşçı, Büyücü, **Okçu** veya
+**Ölü Çağıran** ile seviye kas, nadir eşya düşür, demircide +5'e kadar yükselt, Alfa Kurt'tan Göğün Mahkûmu'na sekiz bossu yen,
+zindanlara sınırsız gir ve Legendary avına çık.
 
-V1 ve V2 kayıtları V3'te otomatik ve kayıpsız açılır (geçişten önceki kayıt `v1_backup` / `v2_backup` olarak saklanır).
-Değişiklikler: [`docs/CHANGELOG.md`](docs/CHANGELOG.md) · V3 mimarisi, denge ve bilinen sınırlamalar:
-[`docs/V3_NOTLARI.md`](docs/V3_NOTLARI.md) · V2 notları: [`docs/V2_NOTLARI.md`](docs/V2_NOTLARI.md)
+V1, V2 ve V3 kayıtları V4'te otomatik ve kayıpsız açılır (geçişten önceki kayıt `v1_backup` / `v2_backup` / `v3_backup`
+olarak saklanır; 3 yuva 5'e genişler). Değişiklikler: [`docs/CHANGELOG.md`](docs/CHANGELOG.md) · V4 mimarisi, denge ve
+bilinen sınırlamalar: [`docs/V4_NOTLARI.md`](docs/V4_NOTLARI.md) · V3: [`docs/V3_NOTLARI.md`](docs/V3_NOTLARI.md) ·
+V2: [`docs/V2_NOTLARI.md`](docs/V2_NOTLARI.md)
 
-Oyuncu karakterleri (Warrior, Mage) ve V1 yaratıklarının çoğu hazır sprite paketleriyle çizilir
+Savaşçı/Büyücü karakterleri ve V1 yaratıklarının çoğu hazır sprite paketleriyle çizilir (Okçu, Ölü Çağıran ve V3/V4 içeriği procedural)
 (`public/sprites/`, kaynaklar: [`docs/CREDITS.md`](docs/CREDITS.md)). Diğer tüm görseller (Kızıl Akrep dışındaki V2 yaratık/elit/boss
 sprite'ları, NPC'ler, kül/kar/buz tile set'leri, efektler) ve bütün sesler **oyun açılırken kodla (procedural) üretilir**.
 Eşya, materyal ve beceri ikonlarının çoğu Clockwork Raven Studios ikon paketlerinden alınır (`src/art/iconPack.js`).
@@ -94,27 +95,32 @@ otomatik seçilmez; erişilemeyen hedefe sonsuz koşma olmaz; duvar arkasından 
 
 ## İçerik özeti
 
-- **Sınıflar:** Warrior (Savaşçı), Mage (Büyücü) — 6 aktif (Lv.25: Kılıç Yağmuru / Zincir Yıldırım; Lv.35: Sarsılmaz Öfke /
-  Donmuş Zaman), 3 pasif, Lv.20 Ustalık I, Lv.40 Ustalık II (Savaşın Mirası / Kadim Büyü Bilgisi), 4 düğmelik beceri çubuğu,
-  Lv.30 Ustalık Kitapları; Lv.40'ta 117 stat puanı.
+- **Sınıflar:** Savaşçı, Büyücü, Okçu (menzilli fiziksel, duvara çarpan oklar), Ölü Çağıran (MP'siz Ruh Mermisi, en çok 2
+  iskelet; iskelet yalnız seçili hedefe saldırır) — her biri 7 aktif (Lv.1/5/10/15/25/35/45), 3 pasif, Ustalık I (Lv.20),
+  II (Lv.40), III (Lv.50), 4 düğmelik beceri çubuğu, Lv.30 Ustalık Kitapları; Lv.50'de 147 stat puanı.
 - **Dünya:** Karaağaç Köyü (64×48), Fısıldayan Orman (120×88), Kırık Damar Madeni (104×78), Sis Bataklığı (112×80),
   Derin Ocak dungeon'ı (104×80, 4 bölüm); **V2:** Kül Yaylaları (112×80, Lv.20–25), Ayaz Geçidi (116×88, Lv.25–30),
   Buz Mabedi dungeon'ı (100×76, 4 bölüm, Mühür Galerisi); **V3:** Ölü Krallık (120×88, Lv.30–35), Kara Taht (124×92, Lv.35–40),
-  Karanlık Mahzen dungeon'ı (100×76, 4 bölüm: kapı mekanizmaları + kraliyet mühürleri). Her açık bölgede 4 farm kampı, elit,
+  Karanlık Mahzen dungeon'ı (100×76, 4 bölüm: kapı mekanizmaları + kraliyet mühürleri); **V4:** Gökyarık Ovası (124×88,
+  Lv.40–45), Yıldız Mezarı (128×92, Lv.45–50), Gökyarık Mabedi dungeon'ı (112×80, 5 bölüm: kapı mührü, enerji düğümleri,
+  koridorlar, savunmalı gök mühürleri, Göğün Mahkûmu). Her açık bölgede 4 farm kampı, elit,
   yol taşı, toplama düğümleri; V2/V3 bölgelerinde güvenli kamp, NPC'ler, 2'şer gizli sandık.
-- **Yaratıklar:** 28 normal, 7 elit, 6 boss (Alfa Kurt, Maden Golemi, Kül Devi, Donmuş Muhafız, Mezar Komutanı, Kayıp Kral) —
+- **Yaratıklar:** 36 normal, 9 elit, 8 boss (Alfa Kurt, Maden Golemi, Kül Devi, Donmuş Muhafız, Mezar Komutanı, Kayıp Kral,
+  Fırtına Tiranı, Göğün Mahkûmu) —
   telegraflı büyük saldırılar, aşamalar, kalkanlar ve kırılabilir mühürler, yer tehlikeleri, yardımcı çağırma, lanet.
-- **Eşyalar:** 126 ekipman şablonu (V1 60, V2 30, V3 36), rastgele bonuslar, +5 yükseltme (başarısızlıkta eşya kırılmaz).
-- **Hardcore loot:** Legendary yalnızca Maden Golemi, Donmuş Muhafız ve Kayıp Kral'ın %0,4 boss çekilişinden;
+- **Eşyalar:** 210 ekipman şablonu (V1 60, V2 30, V3 36, V4 84), rastgele bonuslar, +5 yükseltme (başarısızlıkta eşya kırılmaz).
+- **Hardcore loot:** Legendary yalnızca Maden Golemi, Donmuş Muhafız, Kayıp Kral ve Göğün Mahkûmu'nun %0,4 boss çekilişinden
+  (%80 kendi sınıfı);
   pity/garanti/craft/sandık/görev yok.
-- **Ekonomi:** Tek para Gold; 10 iksir, 8 kullanım eşyası, üretim (demirci, şifacı, simya), tamir, parçalama,
+- **Ekonomi:** Tek para Gold; 12 iksir, 8 kullanım eşyası, üretim (demirci, şifacı, simya), tamir, parçalama,
   çanta/depo genişletme, ortak depo, yol taşı seyahati.
-- **Görevler:** 80 tek seferlik ana/yan görev (refakat, savunma, iz sürme, üretim, onarım/arındırma, özel av), 4 sınıf görevi,
+- **Görevler:** 102 tek seferlik ana/yan görev (refakat, savunma, iz sürme, üretim, onarım/arındırma, özel av), 10 sınıf görevi
+  (+4 yeni sınıf rehber görevi),
   tekrarlanabilir Av Sözleşmeleri; görev günlüğünde kategori/bölge filtresi ve 3 görev takibi.
 - **Av Geçmişi:** türe göre öldürme, boss zaferleri, bulunan Rare/Epic/Legendary, tamamlanan zindanlar (ganimeti etkilemez).
-- **Kayıt:** 3 karakter yuvası, IndexedDB + localStorage aynası (çift yazım), önceki sağlam kayıtlar + kayıt geçmişi, checksum,
+- **Kayıt:** 5 karakter yuvası, Ayarlar → Kayıt Güvenliği (son kalıcı kayıt, teknoloji, yedekler, kurtarma), IndexedDB + localStorage aynası (çift yazım), önceki sağlam kayıtlar + kayıt geçmişi, checksum,
   bozuk kayıt onarımı, kayıp karakter kurtarma, yedek kodu (kopyala/yapıştır) ve JSON yedek dışa/içe aktarma,
-  sürümlü şema geçişi (V1 → V2 → V3) ve geçiş öncesi yedek. PWA: yeni sürüm hazır olunca "kaydet ve yenile" bildirimi.
+  sürümlü şema geçişi (V1 → V2 → V3 → V4) ve geçiş öncesi yedek; depolama açılamazsa kayıt üzerine boş profil yazılmaz. PWA: yeni sürüm hazır olunca "kaydet ve yenile" bildirimi.
 
 ## Proje yapısı
 
@@ -125,8 +131,8 @@ ahen-vadisi/
 ├─ src/
 │  ├─ main.js              önyükleme, Phaser yapılandırması, yaşam döngüsü (arka plan kaydı)
 │  ├─ core/                app (profil, kayıt zamanlaması, stat önbelleği), olay yolu, RNG
-│  ├─ data/                MERKEZİ VERİ: sabitler, sınıflar, beceriler, yaratıklar, 126 eşya, materyaller,
-│  │                       tarifler, loot oranları, NPC'ler, görevler, 11 harita tanımı
+│  ├─ data/                MERKEZİ VERİ: sabitler, sınıflar, beceriler, yaratıklar, 210 eşya, materyaller,
+│  │                       tarifler, loot oranları, NPC'ler, görevler, 14 harita tanımı
 │  ├─ systems/             SAF OYUN MANTIĞI (Node'da test edilir): stats, combat, loot, inventory,
 │  │                       economy (alım/satım/craft/yükseltme/tamir), quests, rewards, dungeon, character
 │  ├─ save/                şema/doğrulama/checksum + IndexedDB deposu (snapshot, localStorage yedeği)

@@ -16,6 +16,12 @@ const BASE = `http://localhost:${PORT}/`;
 const results = [];
 const record = (name, ok, info = '') => { results.push({ name, ok, info }); console.log(`${ok ? '✔' : '✘'} ${name}${info ? ' — ' + info : ''}`); };
 
+// V4: mevcut karakterli profilde ana menü bir kez yedek hatırlatması gösterir; eski senaryolar için kapatılır
+async function dismissV4Notice(pg) {
+  await pg.waitForTimeout(300);
+  await pg.evaluate(() => { const n = document.querySelector('[data-testid=v4-notice]'); if (!n) return; if (window.__AHEN_UI) window.__AHEN_UI.closeModal(); else n.remove(); }).catch(() => {});
+}
+
 const server = spawn('npx', ['vite', 'preview', '--port', String(PORT), '--strictPort'], { cwd: root, stdio: 'pipe' });
 await new Promise((res) => { server.stdout.on('data', (d) => { if (String(d).includes(String(PORT))) res(); }); setTimeout(res, 6000); });
 const browser = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader'] });
@@ -29,6 +35,7 @@ async function newPage(w = 844, h = 390) {
   page.on('console', (m) => { if (m.type() === 'error') page.errors.push(m.text()); });
   await page.goto(BASE + '?dev=1');
   await page.waitForSelector('[data-testid=menu-play]', { timeout: 40000 });
+  await dismissV4Notice(page);
   return { ctx, page };
 }
 
@@ -72,7 +79,7 @@ try {
       const backup = await a.repo.readRaw('v1_backup');
       return { ok: !!r.profile, from: r.migratedFrom, level: c.level, gold: c.gold, bar: c.skillBar, hist: !!c.history?.fromV1, backup: backup?.schemaVersion, sv: r.profile.schemaVersion };
     });
-    record('V1 kaydı açılır ve güncel şemaya (V3) geçer (seviye/gold korunur)', mig.ok && mig.from === 1 && mig.level === 20 && mig.gold === 777 && mig.sv === 3, JSON.stringify(mig));
+    record('V1 kaydı açılır ve güncel şemaya (V4) geçer (seviye/gold korunur)', mig.ok && mig.from === 1 && mig.level === 20 && mig.gold === 777 && mig.sv === 4, JSON.stringify(mig));
     record('Geçişte V1 yedeği saklanır; varsayılan 4\'lü beceri çubuğu; Av Geçmişi V2\'den başlar', mig.backup === 1 && mig.bar?.length === 4 && mig.hist, JSON.stringify(mig));
     await ctx.close();
   }

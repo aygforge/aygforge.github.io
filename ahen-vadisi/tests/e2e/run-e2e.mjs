@@ -16,6 +16,12 @@ const BASE = `http://localhost:${PORT}/`;
 const results = [];
 const record = (name, ok, info = '') => { results.push({ name, ok, info }); console.log(`${ok ? '✔' : '✘'} ${name}${info ? ' — ' + info : ''}`); };
 
+// V4: mevcut karakterli profilde ana menü bir kez yedek hatırlatması gösterir; eski senaryolar için kapatılır
+async function dismissV4Notice(pg) {
+  await pg.waitForTimeout(300);
+  await pg.evaluate(() => { const n = document.querySelector('[data-testid=v4-notice]'); if (!n) return; if (window.__AHEN_UI) window.__AHEN_UI.closeModal(); else n.remove(); }).catch(() => {});
+}
+
 const server = spawn('npx', ['vite', 'preview', '--port', String(PORT), '--strictPort'], { cwd: root, stdio: 'pipe' });
 await new Promise((res) => { server.stdout.on('data', (d) => { if (String(d).includes(String(PORT))) res(); }); setTimeout(res, 6000); });
 
@@ -29,6 +35,7 @@ async function newPage(w, h, dev = true) {
   page.on('console', (m) => { if (m.type() === 'error') page.errors.push(m.text()); });
   await page.goto(BASE + (dev ? '?dev=1' : ''));
   await page.waitForSelector('[data-testid=menu-play]', { timeout: 40000 });
+  await dismissV4Notice(page);
   return { ctx, page };
 }
 
@@ -316,6 +323,7 @@ try {
   });
   await page.reload();
   await page.waitForSelector('[data-testid=menu-play]', { timeout: 40000 });
+  await dismissV4Notice(page);
   const after = await ev(page, () => { const c = window.__AHEN.profile.characters.find((x) => x?.name === 'Kontrolcü'); return { name: c.name, level: c.level, gold: c.gold, map: c.world.map, kills: c.record.kills, bag: c.bag.slots.filter(Boolean).length, q: c.quests.m01?.p[0], x: c.world.x }; });
   record('Kapat-aç: karakter, gold, görev, harita, envanter korunur', after.gold === 777 && after.map === 'forest' && after.kills === before.kills && after.q === 2 && after.bag === before.bag, JSON.stringify(after));
   // aynı karakterle dünyaya geri dön
@@ -403,6 +411,7 @@ try {
     const pg = await ctx.newPage();
     await pg.goto(BASE);
     await pg.waitForSelector('[data-testid=menu-play]', { timeout: 40000 });
+    await dismissV4Notice(pg);
     const swOk = await pg.evaluate(async () => { const r = await navigator.serviceWorker.ready; return !!r.active; });
     await pg.waitForTimeout(1500);
     await ctx.setOffline(true);

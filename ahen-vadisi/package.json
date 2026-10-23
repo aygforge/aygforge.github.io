@@ -1,6 +1,6 @@
 {
   "name": "ahen-vadisi",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "private": true,
   "description": "Ahen Vadisi — mobil öncelikli HTML5 Old School Fantasy RPG (V1)",
   "type": "module",
@@ -9,7 +9,8 @@
     "build": "vite build",
     "preview": "vite preview --host",
     "test": "vitest run",
-    "test:e2e": "node tests/e2e/run-e2e.mjs && node tests/e2e/run-e2e-v2.mjs && node tests/e2e/run-e2e-v3.mjs && node tests/e2e/run-e2e-save.mjs",
+    "test:e2e": "node tests/e2e/run-e2e.mjs && node tests/e2e/run-e2e-v2.mjs && node tests/e2e/run-e2e-v3.mjs && node tests/e2e/run-e2e-v4.mjs && node tests/e2e/run-e2e-save.mjs",
+    "test:e2e:v4": "node tests/e2e/run-e2e-v4.mjs",
     "test:e2e:save": "node tests/e2e/run-e2e-save.mjs",
     "test:e2e:v3": "node tests/e2e/run-e2e-v3.mjs",
     "test:e2e:v2": "node tests/e2e/run-e2e-v2.mjs",
