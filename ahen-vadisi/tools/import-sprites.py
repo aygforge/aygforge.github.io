@@ -34,6 +34,10 @@ from aseprite import load as load_aseprite  # noqa: E402
 #   Her dict kaynakta 'reverse': True kareleri ters çevirir.
 # Paket seçenekleri: 'flip': True (sola bakan paketi sağa çevir), 'scale' (boy yerine sabit ölçek; tam sayıya yakın
 # ölçek piksel sanatı bozmaz), 'hue' (doymuş pikselleri hedef renk tonuna çevir, ör. mor akrebi kızıla), 'credit_file' (lisans/EULA dosyası, LICENSE.txt olarak kopyalanır).
+# V4: kaynak dict'te 'fw'/'fh' o animasyonun kare boyunu verir (şeritlerin kare boyu farklı paketler); paket seçeneği
+#   'pad': 'left-bottom' farklı boyutlu kareleri ortak tuvale sol-alt hizalı yerleştirir (karakter karede sola dayalıysa).
+# FX: 'fx' → {ad: (dosya, kare_g, kare_y, ölçek, fps, tekrar)} paketin efekt şeritleri public/sprites/fx/<ad>.png olur;
+#   oyun bu dokuları procedural efekt (fx_<ad>) yerine kullanır (FX_PACKS).
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_DIR = os.path.join(ROOT, 'public', 'sprites')
@@ -115,6 +119,31 @@ PACKS = {
                   'hurt': ({'derive': 'flash', 'of': 'idle'}, 10, 0),
                   'die': ({'derive': 'collapse', 'of': 'idle'}, 10, 0)},
     },
+    # V4: Okçu = Huntress 2 (LuizMelo, CC0); oku ve ok efekti paketten
+    'hero_archer': {
+        'name': 'Huntress 2 (LuizMelo, CC0)', 'dir': 'Huntress_2/Huntress 2/Sprites/Character', 'frame': (100, 100),
+        'height': 58, 'license': 'Huntress_2/Huntress 2/License.txt',
+        'anims': {'idle': ('Idle', 9, -1), 'walk': ('Run', 13, -1), 'atk': ('Attack', 16, 0), 'atk2': ('Attack', 16, 0),
+                  'cast': ('Attack', 16, 0), 'hurt': ('Get Hit', 12, 0), 'die': ('Death', 10, 0)},
+        'fx': {'arrow': ('../Arrow/Move.png', 24, 5, 2, 12, -1)},
+    },
+    # V4: Ölü Çağıran = Evil Wizard 3 (LuizMelo, CC0). Saldırı şeridinin mermi uçuş kareleri (9–12) atılır: mermiyi oyun atar.
+    'hero_necromancer': {
+        'name': 'Evil Wizard 3 (LuizMelo, CC0)', 'dir': 'Evil_Wizard_3/Evil Wizard 3/Sprites', 'frame': (140, 140),
+        'height': 58, 'license': 'Evil_Wizard_3/Evil Wizard 3/License.txt',
+        'anims': {'idle': ('Idle', 9, -1), 'walk': ('Run', 12, -1),
+                  'atk': ({'strip': 'Attack', 'frames': list(range(9))}, 18, 0), 'atk2': ({'strip': 'Attack', 'frames': list(range(9))}, 18, 0),
+                  'cast': ({'strip': 'Attack', 'frames': list(range(9))}, 18, 0), 'hurt': ('Get hit', 12, 0), 'die': ('Death', 14, 0)},
+        'fx': {'soul_bolt': ('Projectile/Moving.png', 50, 50, 1, 12, -1), 'soul_burst': ('Projectile/Explode.png', 50, 50, 1, 18, 0)},
+    },
+    # V4: Ölü Çağıran'ın iskeleti = Skeleton Sprite Pack; şeritlerin kare boyu farklı, karakter karede sola dayalı
+    'mon_skeleton_minion': {
+        'name': 'Skeleton Sprite Pack', 'dir': 'Skeleton_Sprite_Pack/Skeleton/Sprite Sheets', 'frame': (24, 32),
+        'scale': 1.5, 'pad': 'left-bottom', 'license': None,
+        'anims': {'idle': ({'strip': 'Skeleton Idle', 'fw': 24, 'fh': 32}, 8, -1), 'walk': ({'strip': 'Skeleton Walk', 'fw': 22, 'fh': 33}, 12, -1),
+                  'atk': ({'strip': 'Skeleton Attack', 'fw': 43, 'fh': 37}, 22, 0), 'hurt': ({'strip': 'Skeleton Hit', 'fw': 30, 'fh': 32}, 16, 0),
+                  'die': ({'strip': 'Skeleton Dead', 'fw': 33, 'fh': 32}, 12, 0)},
+    },
     'mon_ore_priest': {
         'name': 'Evil Wizard 2 (LuizMelo, CC0)', 'dir': 'EVil_Wizard_2/EVil Wizard 2/Sprites', 'frame': (250, 250),
         'height': 72, 'license': 'EVil_Wizard_2/EVil Wizard 2/License.txt',
@@ -142,8 +171,8 @@ def load_source(base, spec, fw, fh):
     if isinstance(spec, str):
         return frames_of(os.path.join(base, spec + '.png'), fw, fh)
     if 'strip' in spec:
-        allf = frames_of(os.path.join(base, spec['strip'] + '.png'), fw, fh)
-        frs = [allf[i].copy() for i in spec['frames']]
+        allf = frames_of(os.path.join(base, spec['strip'] + '.png'), spec.get('fw', fw), spec.get('fh', fh))
+        frs = [allf[i].copy() for i in spec['frames']] if 'frames' in spec else allf
     elif 'files' in spec:
         frs = numbered(os.path.join(base, spec['files']))
     elif 'ase' in spec:
@@ -211,16 +240,27 @@ def union(boxes):
     return (min(b[0] for b in boxes), min(b[1] for b in boxes), max(b[2] for b in boxes), max(b[3] for b in boxes))
 
 
-def load_existing():
+def load_existing(name='SPRITE_PACKS'):
     if not os.path.exists(OUT_JS):
         return {}
     txt = open(OUT_JS, encoding='utf-8').read()
-    m = re.search(r'SPRITE_PACKS = (\{.*\});', txt, re.S)
+    m = re.search(name + r' = (\{.*?\});\n', txt, re.S)
     return json.loads(m.group(1)) if m else {}
+
+
+def pad_frames(frs, w, h):
+    """Farklı boyutlu kareleri ortak tuvale sol-alt hizalı yerleştir."""
+    out = []
+    for fr in frs:
+        c = Image.new('RGBA', (w, h))
+        c.paste(fr, (0, h - fr.height), fr)
+        out.append(c)
+    return out
 
 
 def main(src):
     meta = load_existing()
+    fx_meta = load_existing('FX_PACKS')
     credits = []
     for pid, p in PACKS.items():
         base = os.path.join(src, p['dir'])
@@ -239,6 +279,10 @@ def main(src):
                 frs = [recolor(fr, p['hue']) for fr in frs]
             # tamamen boş kareleri at (bazı şeritlerin sonunda boş kare olabilir)
             raw[a] = [fr for fr in frs if fr.getbbox()] or frs[:1]
+        if p.get('pad'):
+            pw = max(fr.width for frs in raw.values() for fr in frs)
+            ph = max(fr.height for frs in raw.values() for fr in frs)
+            raw = {a: pad_frames(frs, pw, ph) for a, frs in raw.items()}
         for a, (spec, _, _) in p['anims'].items():
             if isinstance(spec, dict) and 'derive' in spec:
                 raw[a] = derive(spec['derive'], raw[spec['of']])
@@ -271,6 +315,13 @@ def main(src):
         }
         if p['license']:
             shutil.copy(os.path.join(src, p['license']), os.path.join(out, 'LICENSE.txt'))
+        for name, (f, fw2, fh2, sc, fps, rep) in p.get('fx', {}).items():
+            im = Image.open(os.path.normpath(os.path.join(base, f))).convert('RGBA')
+            n = im.width // fw2
+            im = im.crop((0, 0, n * fw2, fh2)).resize((n * fw2 * sc, fh2 * sc), Image.NEAREST)
+            os.makedirs(os.path.join(OUT_DIR, 'fx'), exist_ok=True)
+            im.save(os.path.join(OUT_DIR, 'fx', name + '.png'), optimize=True)
+            fx_meta[name] = {'w': fw2 * sc, 'h': fh2 * sc, 'frames': n, 'fps': fps, 'repeat': rep, 'credit': p['name']}
         credits.append(f"{pid}: {p['name']}")
         print(f'{pid}: kare {tw}x{th}, ölçek {scale:.2f}, {len(anims)} animasyon')
     with open(OUT_JS, 'w', encoding='utf-8') as fh:
@@ -278,6 +329,8 @@ def main(src):
         fh.write('// Hazır sprite paketleri (public/sprites/<id>/<anim>.png). ox/oy: ayak noktası (orijin).\n')
         order = [k for k in PACKS if k in meta] + [k for k in meta if k not in PACKS]
         fh.write('export const SPRITE_PACKS = ' + json.dumps({k: meta[k] for k in order}, ensure_ascii=False, indent=2) + ';\n')
+        fh.write('// Paket efektleri (public/sprites/fx/<ad>.png): procedural fx_<ad> dokusunun yerine geçer.\n')
+        fh.write('export const FX_PACKS = ' + json.dumps(fx_meta, ensure_ascii=False, indent=2) + ';\n')
     print('yazıldı:', os.path.relpath(OUT_JS, ROOT))
 
 

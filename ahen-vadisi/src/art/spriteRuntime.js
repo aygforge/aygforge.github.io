@@ -1,6 +1,6 @@
 // Hazır sprite paketlerinin (public/sprites) yüklenmesi, animasyonları ve arayüz önizlemeleri.
 // Bir paket yüklenemezse (ör. dosya eksik) oyun procedural çizime geri döner.
-import { SPRITE_PACKS } from './spritePacks.js';
+import { SPRITE_PACKS, FX_PACKS } from './spritePacks.js';
 
 let game = null;
 // Ayarlar → "Kahraman görünümü: Ekipman görünür": hazır kahraman sprite'ı yerine giyilen
@@ -13,6 +13,8 @@ export function preloadSpritePacks(scene) {
   for (const [id, p] of Object.entries(SPRITE_PACKS)) {
     for (const a of Object.keys(p.anims)) scene.load.spritesheet(`${id}:${a}`, `sprites/${id}/${a}.png`, { frameWidth: p.w, frameHeight: p.h });
   }
+  // V4: paket efektleri (ok, ruh mermisi) aynı anahtarla (fx_<ad>) yüklenir; procedural üretim var olan dokuyu atlar
+  for (const [name, f] of Object.entries(FX_PACKS)) scene.load.spritesheet('fx_' + name, `sprites/fx/${name}.png`, { frameWidth: f.w, frameHeight: f.h });
 }
 
 export function registerSpritePacks(scene) {
@@ -24,6 +26,16 @@ export function registerSpritePacks(scene) {
       scene.anims.create({ key: `${id}_${a}`, frames: scene.anims.generateFrameNumbers(tex, { start: 0, end: an.frames - 1 }), frameRate: an.fps, repeat: an.repeat });
     }
   }
+  for (const [name, f] of Object.entries(FX_PACKS)) {
+    const tex = 'fx_' + name;
+    if (!scene.textures.exists(tex) || scene.anims.exists(tex + '_a') || f.frames < 2) continue;
+    scene.anims.create({ key: tex + '_a', frames: scene.anims.generateFrameNumbers(tex, { start: 0, end: f.frames - 1 }), frameRate: f.fps, repeat: f.repeat });
+  }
+}
+
+// Paket efekti yüklendi mi (ör. Ölü Çağıran'ın ruh mermisi patlaması)
+export function fxPackLoaded(name) {
+  return !!FX_PACKS[name] && !!game?.textures.exists('fx_' + name);
 }
 
 // Paket kullanılabilir mi (bekleme animasyonu yüklendi mi)

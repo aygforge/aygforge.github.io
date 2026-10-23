@@ -76,9 +76,10 @@ olan alanlar hedef sürelere çekildi:
   savaşı dokunmatik kontrolle baştan sona oynanmadı. **Gerçek Android/iOS cihazında ve gerçek itch.io sayfasında test
   yapılamadı.**
 - **Elitler V1 kuralıyla doğar** (kendi kampında 25 öldürme + 120 sn). Testler elitleri doğrudan çağırdı.
-- **V4 yaratık, elit, boss, NPC, iskelet ve yeni sınıf görselleri procedural piksel sanattır.** Hazır sprite paketi yalnız
-  Savaşçı/Büyücü için vardır ve korunur; Okçu/Ölü Çağıran her zaman procedural insansı çizimle görünür (yay, sadak, kemik asa,
-  kitap, tılsım). Görev avları mevcut çizimleri renk tonuyla kullanır.
+- **V4 yaratık, elit, boss ve NPC görselleri procedural piksel sanattır.** 4.0.1'den itibaren Okçu (Huntress 2), Ölü Çağıran
+  (Evil Wizard 3) ve iskeletleri (Skeleton Sprite Pack) hazır sprite paketleriyle çizilir; "Ekipman görünür (piksel)" ayarında
+  ya da paket yüklenemezse procedural çizime dönülür. Skeleton Sprite Pack arşivinde lisans dosyası yoktur (CREDITS).
+  Görev avları mevcut çizimleri renk tonuyla kullanır.
 - **Beceri çubuğu 4 düğmedir;** 7 aktiften hangilerinin çubukta olacağı Beceriler ekranından seçilir.
 - **İskelet hasarı büyü savunmasıyla hesaplanır** (ruh bağı); bu, görsel olarak fiziksel bir pençe darbesidir.
 - **Refakat / savunma olayı kayda yazılmaz** (V3 ile aynı): harita değişince olay sıfırlanır, yeniden başlatılabilir.

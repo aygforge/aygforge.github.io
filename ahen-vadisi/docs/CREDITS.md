@@ -13,12 +13,19 @@
 | 72 eşya/iksir ikonu (`src/art/iconPack.js`) | Clockwork Raven Studios — "FREE RPG Icon Pack: 100+ Weapons and Potions" ve "100+ Accessories and Armor", https://clockworkraven.itch.io/ | Silah/iksir paketi README'si: ticari kullanım serbest, kredi zorunlu değil. Zırh/aksesuar paketinde lisans dosyası yok; itch.io sayfasından doğrulanmalı |
 | 26 kalkan/odak/eldiven/kolye, 47 materyal ve 18 beceri ikonu (`src/art/iconPack.js`) | Clockwork Raven Studios — "Free - Raven Fantasy Icons", https://clockworkraven.itch.io/ | Pakette lisans dosyası yok (yalnız teşekkür notu); itch.io sayfasındaki lisans doğrulanmalı |
 | Cevher Rahibi sprite'ı (`public/sprites/mon_ore_priest`) | Evil Wizard 2 — LuizMelo, https://luizmelo.itch.io/evil-wizard-2 | CC0 (pakette License.txt) |
+| Okçu oyuncu sprite'ı ve ok (`public/sprites/hero_archer`, `public/sprites/fx/arrow.png`) | Huntress 2 — LuizMelo, https://luizmelo.itch.io/ | CC0 (pakette License.txt) |
+| Ölü Çağıran oyuncu sprite'ı, ruh mermisi ve patlaması (`public/sprites/hero_necromancer`, `public/sprites/fx/soul_bolt.png`, `soul_burst.png`) | Evil Wizard 3 — LuizMelo, https://luizmelo.itch.io/ | CC0 (pakette License.txt) |
+| Ölü Çağıran'ın iskeleti (`public/sprites/mon_skeleton_minion`) | "Skeleton Sprite Pack" (oyuncunun sağladığı arşiv) | Pakette lisans dosyası ve yazar bilgisi yok; kaynak sayfadaki lisans doğrulanmalı |
 
 Sprite'lar `tools/import-sprites.py` ile kırpılıp oyun boyuna ölçeklenmiştir (ham paketler repoda tutulmaz; Aseprite
 dosyaları `tools/aseprite.py` ile okunur). Sola bakan paket (Light Bandit) aynalanmıştır. Pakette olmayan
 animasyonlar mevcut karelerden türetilmiştir: Light Bandit ölümü = "Recover" karelerinin tersi;
 Goblin, Mushroom, Skeleton ve Flying Eye paketin kendi bekleme/koşma/saldırı/darbe/ölüm şeritlerini kullanır.
 Akrebin darbe/ölüm kareleri türetilir. Flying Eye ve akrep kızıla boyanmıştır.
+**4.0.1:** Huntress 2 ve Evil Wizard 3 oyuncu boyuna (58 px) ölçeklenir; Evil Wizard 3 saldırı şeridinin mermi uçuş kareleri
+atılır (mermiyi oyun atar, paketin kendi mermi/patlama şeritleriyle). Skeleton Sprite Pack şeritlerinin kare boyu farklıdır;
+kareler sol-alt hizalı ortak tuvale yerleştirilip ×1,5 ölçeklenir. "Ekipman görünür (piksel)" ayarında Okçu/Ölü Çağıran yine
+procedural çizimle görünür; paket yüklenemezse oyun procedural çizime geri döner.
 Kurtlar (Boz Kurt, Sürü Kurdu, Alfa Kurt, Ayaz Kurdu) `src/art/wolf.js` ile procedural çizilir (2.0.2'de Skullwolf paketi kaldırıldı).
 Diğer tüm görseller, sesler ve müzik oyun içinde procedural olarak üretilir.
 

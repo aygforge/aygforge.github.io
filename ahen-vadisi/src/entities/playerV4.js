@@ -4,6 +4,7 @@ import Phaser from 'phaser';
 import { TILE } from '../data/constants.js';
 import { app } from '../core/app.js';
 import { sound } from '../audio/sound.js';
+import { fxPackLoaded } from '../art/spriteRuntime.js';
 
 const ARROW_SPEED = 680;
 
@@ -135,7 +136,8 @@ export function execSkillV4(pl, id, s, rank, t, coef, bk) {
         if (pl.dead || t.dead) return;
         sound.play('bolt');
         sc.combat.projectile(pl, t, 'soul_bolt', 480, () => {
-          sc.fx.sprite('spirit', t.x, t.y - 16, { scale: 1.2, tint: 0x8ad0a0 });
+          if (fxPackLoaded('soul_burst')) sc.fx.sprite('soul_burst', t.x, t.y - (t.height || 40) * 0.5, { scale: 1.4 });
+          else sc.fx.sprite('spirit', t.x, t.y - 16, { scale: 1.2, tint: 0x8ad0a0 });
           sc.combat.playerSkillHit(t, { coef, skill: id, spell: true, critMult: bk?.critMult });
         }, { blockable: true, scale: 1.4 });
       });

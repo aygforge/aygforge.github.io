@@ -1,5 +1,17 @@
 # Ahen Vadisi — Test Raporu
 
+## 4.0.1 — Okçu / Ölü Çağıran / iskelet sprite'ları (23 Ekim 2026)
+
+| Paket | Sonuç |
+|---|---|
+| Birim testleri | **173 / 173 geçti** (oyun mantığı değişmedi) |
+| V4 uçtan uca | **39 / 39 geçti** (yeni sprite'larla: ok mermisi ve duvar, Ruh Mermisi, iskelet kuralları, 7'şer beceri) |
+| V1 / V3 / kayıt uçtan uca | **61 / 61**, **37 / 37**, **14 / 14** |
+| V2 uçtan uca | **32 / 32** (art arda iki koşu). "Kırılan Ufuk geçiş hedefleri" kontrolünün aralıklı düşmesinin nedeni bulundu: test, göçük konumunda görevi alıp geçidi hemen tetikliyordu; konumlar 0,5 sn oyun süresinde bir denetlendiği için ilk hedef bazen sayılmıyordu. Test artık geçitten önce konum denetimini bekliyor (oyun kodu değişmedi) |
+
+Görsel kontrol (headless Chromium, kamera ×2): Okçu ve Ölü Çağıran hedefe döner; iskelet sağa bakar, saldırı karesinde kılıç
+hedefe değer; mor mermi ve isabet patlaması görünür; karakter oluşturma kartlarında yeni sprite'lar. Gerçek cihazda görülmedi.
+
 ## 4.0.0 «Gökyarık Genişlemesi» (22–23 Ekim 2026)
 
 Ortam önceki sürümlerle aynı (Linux, Node 22, Playwright headless Chromium, yazılımsal WebGL, mobil dokunmatik emülasyonu).

@@ -109,6 +109,8 @@ try {
   await ev(page, () => { const ch = window.__AHEN.char; for (const id of ['m01', 'm02', 'm03', 'm04', 'm05', 'm06', 'm07', 'm08', 'm09', 'm10', 'm11', 'm12', 'm13', 'm14', 'm15', 'm16', 'm17', 'm18']) ch.quests[id] = { s: 'done', p: [], used: [] }; });
   const acc = await ev(page, () => window.__AHEN.devTools.accept('m27'));
   record('V1 finalinden sonra "Kırılan Ufuk" alınabilir', acc.ok, JSON.stringify(acc.msg || ''));
+  // oyuncu göçük konumunda duruyor: konumlar 0,5 sn oyun süresinde bir denetlenir — geçitten önce bir denetimi bekle
+  await page.waitForFunction(() => window.__AHEN.char.quests.m27?.p?.[0] === 1, null, { timeout: 8000 }).catch(() => {});
   await ev(page, () => { const w = window.__AHEN.world; const portal = w.objects.find((o) => o.o?.id === 'm_to_ash'); portal.trigger(); });
   await waitMap(page, 'ash');
   const ash = await ev(page, () => {

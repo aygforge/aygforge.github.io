@@ -7,6 +7,7 @@
 import { TILE } from '../data/constants.js';
 import { MINION } from '../systems/stats.js';
 import { sound } from '../audio/sound.js';
+import { spritePack, animDuration } from '../art/spriteRuntime.js';
 
 export class Minion {
   constructor(scene, owner, x, y, { temp = 0, hpPct = 1 } = {}) {
@@ -27,7 +28,11 @@ export class Minion {
     this.hp = Math.max(1, Math.round(this.maxHp * hpPct));
     const c = scene.add.container(x, y);
     this.shadow = scene.add.image(0, 0, 'obj_shadow').setScale(1.3, 1.1).setAlpha(0.6);
-    this.sprite = scene.add.sprite(0, 0, 'mon_skeleton_minion', 'idle0').setOrigin(0.5, 1);
+    // hazır sprite paketi (Skeleton Sprite Pack) varsa o; yoksa procedural iskelet (aynı animasyon adları)
+    this.pack = spritePack('mon_skeleton_minion');
+    this.sprite = this.pack
+      ? scene.add.sprite(0, 0, `${this.pack.id}:idle`, 0).setOrigin(this.pack.ox, this.pack.oy)
+      : scene.add.sprite(0, 0, 'mon_skeleton_minion', 'idle0').setOrigin(0.5, 1);
     if (temp) this.sprite.setTint(0xb8f0d0);
     this.sprite.play('mon_skeleton_minion_idle');
     this.bar = scene.add.graphics();
@@ -172,9 +177,15 @@ export class Minion {
     this.bar.clear();
     this.shadow.setVisible(false);
     const sc = this.scene;
-    sc.fx.sprite('ash_puff', this.x, this.y - 12, { scale: 1.4, tint: 0xe0d8c4 });
     if (!expired) sound.play('enemy_die', { vol: 0.5 });
-    sc.tweens.add({ targets: this.sprite, alpha: 0, angle: this.facing > 0 ? -70 : 70, duration: 420, onComplete: () => this.container.destroy() });
+    if (this.pack && !expired) {
+      // paketin dağılma animasyonu, ardından solma
+      this.sprite.play(`${this.pack.id}_die`, false);
+      sc.tweens.add({ targets: this.sprite, alpha: 0, delay: animDuration(this.pack.id, 'die') * 1000, duration: 300, onComplete: () => this.container.destroy() });
+    } else {
+      sc.fx.sprite('ash_puff', this.x, this.y - 12, { scale: 1.4, tint: 0xe0d8c4 });
+      sc.tweens.add({ targets: this.sprite, alpha: 0, angle: this.facing > 0 ? -70 : 70, duration: 420, onComplete: () => this.container.destroy() });
+    }
     sc.minions?.onMinionGone(this);
   }
 

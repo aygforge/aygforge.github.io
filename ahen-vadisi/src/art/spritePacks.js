@@ -406,6 +406,131 @@ export const SPRITE_PACKS = {
     },
     "credit": "Scorpian"
   },
+  "hero_archer": {
+    "w": 106,
+    "h": 72,
+    "body": 58,
+    "ox": 0.2727,
+    "oy": 1.0,
+    "anims": {
+      "idle": {
+        "frames": 10,
+        "fps": 9,
+        "repeat": -1
+      },
+      "walk": {
+        "frames": 8,
+        "fps": 13,
+        "repeat": -1
+      },
+      "atk": {
+        "frames": 6,
+        "fps": 16,
+        "repeat": 0
+      },
+      "atk2": {
+        "frames": 6,
+        "fps": 16,
+        "repeat": 0
+      },
+      "cast": {
+        "frames": 6,
+        "fps": 16,
+        "repeat": 0
+      },
+      "hurt": {
+        "frames": 3,
+        "fps": 12,
+        "repeat": 0
+      },
+      "die": {
+        "frames": 10,
+        "fps": 10,
+        "repeat": 0
+      }
+    },
+    "credit": "Huntress 2 (LuizMelo, CC0)"
+  },
+  "hero_necromancer": {
+    "w": 69,
+    "h": 72,
+    "body": 58,
+    "ox": 0.3889,
+    "oy": 1.0,
+    "anims": {
+      "idle": {
+        "frames": 10,
+        "fps": 9,
+        "repeat": -1
+      },
+      "walk": {
+        "frames": 8,
+        "fps": 12,
+        "repeat": -1
+      },
+      "atk": {
+        "frames": 9,
+        "fps": 18,
+        "repeat": 0
+      },
+      "atk2": {
+        "frames": 9,
+        "fps": 18,
+        "repeat": 0
+      },
+      "cast": {
+        "frames": 9,
+        "fps": 18,
+        "repeat": 0
+      },
+      "hurt": {
+        "frames": 3,
+        "fps": 12,
+        "repeat": 0
+      },
+      "die": {
+        "frames": 18,
+        "fps": 14,
+        "repeat": 0
+      }
+    },
+    "credit": "Evil Wizard 3 (LuizMelo, CC0)"
+  },
+  "mon_skeleton_minion": {
+    "w": 64,
+    "h": 56,
+    "body": 48,
+    "ox": 0.2791,
+    "oy": 1.0,
+    "anims": {
+      "idle": {
+        "frames": 11,
+        "fps": 8,
+        "repeat": -1
+      },
+      "walk": {
+        "frames": 13,
+        "fps": 12,
+        "repeat": -1
+      },
+      "atk": {
+        "frames": 18,
+        "fps": 22,
+        "repeat": 0
+      },
+      "hurt": {
+        "frames": 8,
+        "fps": 16,
+        "repeat": 0
+      },
+      "die": {
+        "frames": 15,
+        "fps": 12,
+        "repeat": 0
+      }
+    },
+    "credit": "Skeleton Sprite Pack"
+  },
   "mon_ore_priest": {
     "w": 117,
     "h": 107,
@@ -445,5 +570,32 @@ export const SPRITE_PACKS = {
       }
     },
     "credit": "Evil Wizard 2 (LuizMelo, CC0)"
+  }
+};
+// Paket efektleri (public/sprites/fx/<ad>.png): procedural fx_<ad> dokusunun yerine geçer.
+export const FX_PACKS = {
+  "arrow": {
+    "w": 48,
+    "h": 10,
+    "frames": 2,
+    "fps": 12,
+    "repeat": -1,
+    "credit": "Huntress 2 (LuizMelo, CC0)"
+  },
+  "soul_bolt": {
+    "w": 50,
+    "h": 50,
+    "frames": 4,
+    "fps": 12,
+    "repeat": -1,
+    "credit": "Evil Wizard 3 (LuizMelo, CC0)"
+  },
+  "soul_burst": {
+    "w": 50,
+    "h": 50,
+    "frames": 7,
+    "fps": 18,
+    "repeat": 0,
+    "credit": "Evil Wizard 3 (LuizMelo, CC0)"
   }
 };

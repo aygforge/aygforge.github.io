@@ -1,4 +1,4 @@
-# AHEN VADİSİ — V4.0 «Gökyarık Genişlemesi»
+# AHEN VADİSİ — V4.0 «Gökyarık Genişlemesi» (4.0.1)
 
 Mobil öncelikli (yatay ekran), HTML5 tabanlı, eski usul 2D fantastik RPG. Karaağaç Köyü'nden Derin Ocak'a uzanan
 Lv. 1–20 ilerleme döngüsü (V1), **V2.0 Kül ve Ayaz (Lv. 21–30)** ve onların üzerine kurulan **V3.0 Kayıp Krallığın
@@ -12,7 +12,7 @@ olarak saklanır; 3 yuva 5'e genişler). Değişiklikler: [`docs/CHANGELOG.md`](
 bilinen sınırlamalar: [`docs/V4_NOTLARI.md`](docs/V4_NOTLARI.md) · V3: [`docs/V3_NOTLARI.md`](docs/V3_NOTLARI.md) ·
 V2: [`docs/V2_NOTLARI.md`](docs/V2_NOTLARI.md)
 
-Savaşçı/Büyücü karakterleri ve V1 yaratıklarının çoğu hazır sprite paketleriyle çizilir (Okçu, Ölü Çağıran ve V3/V4 içeriği procedural)
+Dört oyuncu sınıfı (Savaşçı, Büyücü, Okçu: Huntress 2, Ölü Çağıran: Evil Wizard 3; iskeletleri: Skeleton Sprite Pack) ve V1 yaratıklarının çoğu hazır sprite paketleriyle çizilir (V2–V4 yaratıkları procedural)
 (`public/sprites/`, kaynaklar: [`docs/CREDITS.md`](docs/CREDITS.md)). Diğer tüm görseller (Kızıl Akrep dışındaki V2 yaratık/elit/boss
 sprite'ları, NPC'ler, kül/kar/buz tile set'leri, efektler) ve bütün sesler **oyun açılırken kodla (procedural) üretilir**.
 Eşya, materyal ve beceri ikonlarının çoğu Clockwork Raven Studios ikon paketlerinden alınır (`src/art/iconPack.js`).

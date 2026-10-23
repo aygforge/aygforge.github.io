@@ -11,7 +11,7 @@ import { ITEMS } from '../data/items.js';
 import { POTION_LIST, USABLES } from '../data/materials.js';
 import { countStack, removeStack } from '../systems/inventory.js';
 import { ensurePlayerTexture } from '../scenes/textures.js';
-import { spritePack, animDuration } from '../art/spriteRuntime.js';
+import { spritePack, animDuration, fxPackLoaded } from '../art/spriteRuntime.js';
 import { handAnchor } from '../art/characters.js';
 import { sound } from '../audio/sound.js';
 import { guideTarget } from '../world/questGuide.js';
@@ -286,7 +286,8 @@ export class Player {
     if (st.ranged) {
       // V4 Okçu: yay çekme + görünür ok mermisi (duvara çarpan ok kırılır; ok tüketilmez)
       this.playAction('_cast', 0.28, 'atk');
-      this.scene.time.delayedCall(130, () => {
+      // hazır sprite paketinde ok, yayın bırakıldığı karede çıkar
+      this.scene.time.delayedCall(this.pack ? 220 : 130, () => {
         if (this.dead || t.dead) return;
         sound.play('swing', { vol: 0.45 });
         fireArrow(this, t, () => this.scene.combat.playerNormalHit(t));
@@ -294,10 +295,14 @@ export class Player {
     } else if (st.cls === 'necromancer') {
       // V4 Ruh Mermisi: MP harcamaz, büyü hasarı
       this.playAction('_cast', 0.25, 'atk');
-      this.scene.time.delayedCall(120, () => {
+      // hazır sprite paketinde mermi, asanın parladığı karede çıkar; isabette paketin patlama efekti
+      this.scene.time.delayedCall(this.pack ? 330 : 120, () => {
         if (this.dead || t.dead) return;
         sound.play('bolt', { vol: 0.5 });
-        this.scene.combat.projectile(this, t, 'soul_bolt', 470, () => this.scene.combat.playerNormalHit(t), { blockable: true });
+        this.scene.combat.projectile(this, t, 'soul_bolt', 470, () => {
+          if (fxPackLoaded('soul_burst')) this.scene.fx.sprite('soul_burst', t.x, t.y - (t.height || 40) * 0.5);
+          this.scene.combat.playerNormalHit(t);
+        }, { blockable: true });
       });
     } else if (st.damageType === 'phys') {
       this.altSwing = !this.altSwing;

@@ -1,5 +1,16 @@
 # Değişiklik Günlüğü
 
+## 4.0.1 — Okçu, Ölü Çağıran ve iskelet sprite'ları
+- **Okçu** artık Huntress 2 (LuizMelo, CC0) sprite'ıyla görünür: bekleme, koşu, yay çekme, darbe ve ölüm animasyonları;
+  ok mermisi paketin okudur ve yayın bırakıldığı karede çıkar.
+- **Ölü Çağıran** Evil Wizard 3 (LuizMelo, CC0) sprite'ıyla görünür; Ruh Mermisi ve Ruh Oku paketin mor mermisini,
+  isabette paketin patlama efektini kullanır.
+- **İskeletler** (İskelet Çağır ve Ölüler Ordusu) Skeleton Sprite Pack ile: bekleme, yürüme, saldırı ve dağılma animasyonu.
+- Karakter oluşturma ekranı ve HUD portresi yeni sprite'ları gösterir. "Ekipman görünür (piksel)" ayarı ve paket
+  yüklenemediğinde procedural çizime dönülür. Oyun mantığı, denge ve kayıt değişmedi.
+- `tools/import-sprites.py`: animasyon başına kare boyu, sol-alt hizalama ve paket efektleri (`FX_PACKS`).
+
+
 ## 4.0.0 — «Gökyarık Genişlemesi» (Lv. 41–50)
 Ayrıntılar, denge tablosu ve bilinen sınırlamalar: [`V4_NOTLARI.md`](V4_NOTLARI.md). **Mevcut kayıtlar aynen açılır:**
 şema 3 → 4 geçişi yalnız alan ekler; geçişten önceki kayıt `v3_backup` olarak saklanır.
