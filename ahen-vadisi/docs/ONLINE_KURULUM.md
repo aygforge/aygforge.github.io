@@ -5,6 +5,8 @@ Oyun tek oyunculu kalır ve çevrimiçi olmadan da tamamen çalışır. Bu katma
 - **Bulut kaydı:** hesabınla ilerlemen buluta da yedeklenir; başka cihazda/tarayıcıda "Buluttan yükle" ile devam edersin.
 - **Liderlik tablosu:** arkadaşların karakterleri (seviye, öldürme, boss, görev).
 - **Hata / öneri bildir:** oyun içinden; sürüm, harita, sınıf ve seviye otomatik eklenir.
+- **Ortak dünya (4.4.0):** ayrı küçük oyun sunucusu ile herkes aynı yaratıkları görür, partide EXP paylaşılır —
+  kurulum: [`OYUN_SUNUCUSU.md`](OYUN_SUNUCUSU.md).
 - **Parti (4.3.0):** arkadaşlarınla parti kur, haritada birbirinizi görün, birlikte bölgeden bölgeye gezin, sohbet edin.
 - **Çevrimiçi oyuncular (4.2.0):** oyundayken mini haritanın altında "● N çevrimiçi"; dokununca kim, hangi karakterle, hangi haritada.
 
@@ -104,7 +106,7 @@ yeniden itch.io'ya yükle.
 
 ## Ne değildir
 
-Parti arkadaşları haritada görünür ve birlikte gezilir, ama **savaş hâlâ herkesin kendi dünyasında**: aynı kurdu ikiniz ayrı
-ayrı görürsünüz, ganimet ve görev ilerlemesi ortak değildir (birlikte savaş / raid sonraki aşama). Eşya ticareti yoktur.
+Oyun sunucusu (4.4.0) **olmadan** parti arkadaşları haritada görünür ama savaş herkesin kendi dünyasındadır. Oyun sunucusu
+kuruluysa açık haritalardaki yaratıklar ortaktır ve EXP paylaşılır; boss'lar ve dungeon'lar henüz kişiseldir. Eşya ticareti yoktur.
 Parti kanalları herkese açık anahtarla açılır: kodu bilen katılabilir (arkadaş grubu için yeterli). Liderlik ve
 kayıt verisi istemciden gelir (arkadaş grubu için yeterli; hileye karşı korumalı değildir).

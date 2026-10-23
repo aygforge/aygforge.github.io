@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-23T09:36:15.701Z",
+  "date": "2026-10-23T14:03:29.736Z",
   "passed": 32,
   "total": 32,
   "results": [
@@ -41,7 +41,7 @@
     {
       "name": "\"Kırılan Ufuk\" geçiş hedefleri ilerler",
       "ok": true,
-      "info": "{\"s\":\"active\",\"p\":[1,1],\"used\":[],\"at\":1792748088706}"
+      "info": "{\"s\":\"active\",\"p\":[1,1],\"used\":[],\"at\":1792764135155}"
     },
     {
       "name": "V2 yaratık öldürme: EXP + Gold + Av Geçmişi sayacı",
@@ -71,7 +71,7 @@
     {
       "name": "Gizli sandık bir kez ödül verir",
       "ok": true,
-      "info": "{\"first\":526,\"second\":0,\"opened\":true}"
+      "info": "{\"first\":602,\"second\":0,\"opened\":true}"
     },
     {
       "name": "Ayaz Geçidi: 4 yaratık türü, kar parçacıkları, Buz Mabedi kapısı",
@@ -81,7 +81,7 @@
     {
       "name": "Buz Gardiyanı: telegraflı buz vuruşu / kıymıklar",
       "ok": true,
-      "info": "{\"cast\":true,\"slowed\":false,\"gameSec\":6.7,\"realSec\":8.7}"
+      "info": "{\"cast\":true,\"slowed\":false,\"gameSec\":7.3,\"realSec\":7.3}"
     },
     {
       "name": "Buz Mabedi görev olmadan mühürlü (giriş yok)",

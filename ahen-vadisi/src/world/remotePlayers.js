@@ -86,6 +86,7 @@ class Ghost {
     }
     const nm = `${m.nick} · Lv.${st.lv}`;
     if (this.label.text !== nm) this.label.setText(nm);
+    if (this.mate !== m.mate) { this.mate = m.mate; this.label.setColor(m.mate ? '#9df0b0' : '#bfe0ff'); this.ring.setFillStyle(m.mate ? 0x5ee07a : 0x6aa8ff, m.mate ? 0.28 : 0.18); this.hpFg.setFillStyle(m.mate ? 0x5ee07a : 0x6aa8ff); }
     this.label.setPosition(Math.round(x), Math.round(y) - 72);
     this.hpBg.setPosition(Math.round(x), Math.round(y) - 70);
     this.hpFg.setPosition(Math.round(x) - 17, Math.round(y) - 69).setSize(Math.max(0, 34 * st.hp / 100), 2);
@@ -119,12 +120,19 @@ export class RemotePlayers {
     this.off = bus.on('partyChat', (e) => this.onChat(e));
   }
 
-  // aynı haritadaki, durumu taze arkadaşlar
+  // aynı haritadaki, durumu taze arkadaşlar. Ortak dünya sunucusuna bağlıyken bölgedeki TÜM oyuncular (parti üyeleri yeşil).
   visible() {
     const p = partyGame.party;
+    const nw = this.scene.netWorld;
+    if (nw?.active) {
+      const mates = new Set(p?.inParty ? p.others().map((m) => m.uid) : []);
+      return nw.remoteList().map((m) => ({ ...m, mate: mates.has(m.uid) }));
+    }
     if (!p?.inParty) return [];
-    return p.others().filter((m) => m.fresh && m.st.m === this.scene.mapId);
+    return p.others().filter((m) => m.fresh && m.st.m === this.scene.mapId).map((m) => ({ ...m, mate: true }));
   }
+
+  ghostOf(uid) { return this.ghosts.get(uid) || null; }
 
   update() {
     const now = Date.now();

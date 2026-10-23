@@ -1,6 +1,7 @@
 // CombatSystem çalışma zamanı: hasar tek yerden uygulanır (systems/combat formülleri),
 // öldürme ödülleri tek yerden verilir (systems/rewards), görsel/ses geri bildirimi burada üretilir.
 import Phaser from 'phaser';
+import { net } from '../online/gameServer.js';
 import { app } from '../core/app.js';
 import { bus } from '../core/events.js';
 import { playerHit, enemyHit, poisonTick } from '../systems/combat.js';
@@ -210,14 +211,18 @@ export class CombatRuntime {
   applyToEnemy(t, res, { normal = false, legend = false, fromMinion = false } = {}) {
     const fx = this.scene.fx;
     if (res.miss) { fx.damage(t.x, t.y - t.height, 0, { miss: true }); if (!fromMinion) sound.play('miss'); return; }
-    t.hp -= res.dmg;
+    if (t.net) {
+      // ortak dünya: hasarı sunucu uygular (ölüm ve ödül sunucudan gelir); burada anında görüntü
+      net.hit(t.netId, res.dmg);
+      t.hp = Math.max(1, t.hp - res.dmg);
+    } else t.hp -= res.dmg;
     this.logDps(res.dmg);
     fx.damage(t.x, t.y - t.height, res.dmg, { crit: res.crit, kind: legend ? 'legend' : '' });
     if (res.crit) { sound.play('crit'); fx.sprite('spark', t.x, t.y - t.height / 2, { scale: 1.6 }); fx.shake(0.0025, 70); }
     else { sound.play('hit'); if (normal) fx.sprite('spark', t.x + (Math.random() - 0.5) * 8, t.y - t.height / 2, { scale: 1 }); }
     t.onDamaged();
     this.scene.player.lastCombatAt = this.scene.clock;
-    if (t.hp <= 0) this.killEnemy(t);
+    if (t.hp <= 0 && !t.net) this.killEnemy(t);
     bus.emit('enemyHp', t);
   }
 
@@ -293,9 +298,10 @@ export class CombatRuntime {
 
   // ------------------------------------------------------------- yer tehlikeleri (V2)
   // Geçici alan hasarı (ateş izi, alev yarığı): telegraf alanı = isabet alanı, tik başına küçük hasar
-  groundHazard({ x, y, r, dur, tick = 0.5, coef = 0.2, src, key = 'fire_ground', label = null, warn = 0, dmgType = 'magic', tint = null }) {
+  // visual: yalnız görüntü (ortak dünyada hasarı sunucu verir)
+  groundHazard({ x, y, r, dur, tick = 0.5, coef = 0.2, src, key = 'fire_ground', label = null, warn = 0, dmgType = 'magic', tint = null, visual = false }) {
     const sc = this.scene;
-    const hz = { x, y, r, left: dur, tick, t: warn > 0 ? 0 : tick, coef, src, label, warn, dmgType, alive: true, sprites: [] };
+    const hz = { x, y, r, left: dur, tick, t: warn > 0 ? 0 : tick, coef, src, label, warn, dmgType, alive: true, sprites: [], visual };
     if (warn > 0) sc.fx.telegraph({ kind: 'circle', x, y, r }, warn * 1000, key === 'void_ground' ? 0xa070e0 : key === 'storm_ground' ? 0x9ad0ff : 0xff6a1a);
     const show = () => {
       const s = sc.fx.sprite(key, x, y, { depth: 41, scale: (r * 2) / 64 * 2, tint });
@@ -310,7 +316,7 @@ export class CombatRuntime {
   // Düşen buz kıymığı: telegraf (gecikme), sonra tek vuruş
   // V3: dark = true → Kayıp Kral / Obsidyen Celladı'nın kara mermisi (aynı telegraf ve isabet kuralı)
   // V4: style = 'storm' (yıldırım) / 'star' (düşen yıldız); isabet kuralı aynı
-  fallingShard({ x, y, r, delay = 1.4, coef = 1, src, dark = false, label = null, style = null }) {
+  fallingShard({ x, y, r, delay = 1.4, coef = 1, src, dark = false, label = null, style = null, visual = false }) {
     const sc = this.scene;
     const st = style || (dark ? 'dark' : 'ice');
     const look = { ice: ['ice_spike', 0x7ad8ff, null, 'ice'], dark: ['dark_missile', 0xa070e0, 0xa070e0, 'bolt'],
@@ -323,7 +329,7 @@ export class CombatRuntime {
         sc.fx.sprite('shatter', x, y - 8, { scale: 1.6, tint: look[2] });
         sound.play(look[3], { vol: 0.6 });
         const p = sc.player;
-        if (!p.dead && Math.hypot((p.x - x) / r, (p.y - y) / (r * TG_SQUASH)) <= 1) this.enemyHitsPlayer(src, { coef, dmgType: 'magic', label: label || (dark ? 'Kara Mermi' : 'Buz Kıymığı') });
+        if (!visual && !p.dead && Math.hypot((p.x - x) / r, (p.y - y) / (r * TG_SQUASH)) <= 1) this.enemyHitsPlayer(src, { coef, dmgType: 'magic', label: label || (dark ? 'Kara Mermi' : 'Buz Kıymığı') });
       } });
     });
   }
@@ -337,7 +343,7 @@ export class CombatRuntime {
       hz.t -= dt;
       if (hz.t <= 0) {
         hz.t = hz.tick;
-        if (!p.dead && Math.hypot((p.x - hz.x) / hz.r, (p.y - hz.y) / (hz.r * TG_SQUASH)) <= 1) {
+        if (!hz.visual && !p.dead && Math.hypot((p.x - hz.x) / hz.r, (p.y - hz.y) / (hz.r * TG_SQUASH)) <= 1) {
           this.enemyHitsPlayer(hz.src, { coef: hz.coef, dmgType: hz.dmgType, label: hz.label });
           hz.label = null;   // etiket yalnız ilk tikte
         }
@@ -373,6 +379,13 @@ export class CombatRuntime {
     if (now < p.slowUntil && p.slowPct >= pct) return;
     p.slow(pct, sec);
     this.scene.fx.text(p.x, p.y - 70, 'Yavaşladın', { color: '#9fe8ff', size: 12 });
+  }
+
+  // Kristal Işını gibi düz ışın parlaması (yalnız görüntü)
+  beamFlash(ox, oy, ang, len, w, tint = 0xff4030) {
+    const sc = this.scene;
+    const beam = sc.add.image(ox, oy, 'tg_rect').setOrigin(0, 0.5).setRotation(ang).setDisplaySize(len, w).setTint(tint).setDepth(60000).setBlendMode(Phaser.BlendModes.ADD);
+    sc.tweens.add({ targets: beam, alpha: 0, duration: 350, onComplete: () => beam.destroy() });
   }
 
   // ------------------------------------------------------------- düşman → oyuncu

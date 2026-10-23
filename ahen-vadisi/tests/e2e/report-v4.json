@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-23T09:41:33.906Z",
+  "date": "2026-10-23T14:07:40.588Z",
   "passed": 39,
   "total": 39,
   "results": [
@@ -26,12 +26,12 @@
     {
       "name": "Okçu becerileri (Lv.15): İsabetli Ok, Çoklu Atış, Çevik Adım, Delici Ok kullanılır ve hasar verir",
       "ok": true,
-      "info": "{\"aimed_shot\":true,\"aimed_shot_dmg\":58,\"multi_shot\":true,\"multi_shot_dmg\":23,\"agile_step\":true,\"agile_step_dmg\":22,\"piercing_arrow\":true,\"piercing_arrow_dmg\":42}"
+      "info": "{\"aimed_shot\":true,\"aimed_shot_dmg\":59,\"multi_shot\":true,\"multi_shot_dmg\":23,\"agile_step\":true,\"agile_step_dmg\":22,\"piercing_arrow\":true,\"piercing_arrow_dmg\":42}"
     },
     {
       "name": "Okçu Lv.50: 7 aktif becerinin hepsi kullanılır; hasar becerileri hasar verir (Ok Yağmuru, Kartal Fırtınası dahil)",
       "ok": true,
-      "info": "{\"aimed_shot\":{\"ok\":true,\"dmg\":90},\"multi_shot\":{\"ok\":true,\"dmg\":68},\"agile_step\":{\"ok\":true,\"dmg\":35},\"piercing_arrow\":{\"ok\":true,\"dmg\":96},\"arrow_rain\":{\"ok\":true,\"dmg\":82},\"hunter_mark\":{\"ok\":true,\"dmg\":38},\"eagle_storm\":{\"ok\":true,\"dmg\":113}}"
+      "info": "{\"aimed_shot\":{\"ok\":true,\"dmg\":89},\"multi_shot\":{\"ok\":true,\"dmg\":69},\"agile_step\":{\"ok\":true,\"dmg\":33},\"piercing_arrow\":{\"ok\":true,\"dmg\":97},\"arrow_rain\":{\"ok\":true,\"dmg\":105},\"hunter_mark\":{\"ok\":true,\"dmg\":36},\"eagle_storm\":{\"ok\":true,\"dmg\":116}}"
     },
     {
       "name": "Konsol hatası yok (Okçu)",
@@ -76,7 +76,7 @@
     {
       "name": "Ölü Çağıran Lv.50: 7 aktif becerinin hepsi kullanılır; hasar becerileri hasar verir; Ölüler Ordusu sonrası en çok 2 iskelet",
       "ok": true,
-      "info": "{\"nall\":{\"soul_arrow\":{\"ok\":true,\"dmg\":109},\"summon_skeleton\":{\"ok\":true,\"dmg\":54},\"curse_seal\":{\"ok\":true,\"dmg\":56},\"life_drain\":{\"ok\":true,\"dmg\":99},\"bone_burst\":{\"ok\":true,\"dmg\":67},\"army_of_dead\":{\"ok\":true,\"dmg\":77},\"soul_apocalypse\":{\"ok\":true,\"dmg\":144}},\"nmin\":2}"
+      "info": "{\"nall\":{\"soul_arrow\":{\"ok\":true,\"dmg\":109},\"summon_skeleton\":{\"ok\":true,\"dmg\":54},\"curse_seal\":{\"ok\":true,\"dmg\":56},\"life_drain\":{\"ok\":true,\"dmg\":67},\"bone_burst\":{\"ok\":true,\"dmg\":99},\"army_of_dead\":{\"ok\":true,\"dmg\":74},\"soul_apocalypse\":{\"ok\":true,\"dmg\":126}},\"nmin\":2}"
     },
     {
       "name": "Konsol hatası yok (Ölü Çağıran)",
@@ -181,7 +181,7 @@
     {
       "name": "Ayarlar → Kayıt Güvenliği: son kalıcı kayıt, teknoloji, dışa/içe aktarma ve önceki kayıtlar",
       "ok": true,
-      "info": "{\"text\":\"Kayıt GüvenliğiSon başarılı kalıcı kayıt23.10.2026 09:41:17 (IndexedDB + ayna)Kayıt teknolojisiIndexedDB (birincil) + localStorage aynasıKalıcı depolama iznitarayıcı izin vermediSon yedek (kod/dosya)henüz alınmadıŞimdi kaydetYedek kodunu kopyalaYedek kodu yapıştırYedeği dışa aktar (JSON)Yedeği içe aktarÖnceki kayıtlarKayıp karakter araKayıt bu tarayıcıda, bu sitenin deposunda tutulur (isteğe bağlı\",\"buttons\":7}"
+      "info": "{\"text\":\"Kayıt GüvenliğiSon başarılı kalıcı kayıt23.10.2026 14:07:27 (IndexedDB + ayna)Kayıt teknolojisiIndexedDB (birincil) + localStorage aynasıKalıcı depolama iznitarayıcı izin vermediSon yedek (kod/dosya)henüz alınmadıŞimdi kaydetYedek kodunu kopyalaYedek kodu yapıştırYedeği dışa aktar (JSON)Yedeği içe aktarÖnceki kayıtlarKayıp karakter araKayıt bu tarayıcıda, bu sitenin deposunda tutulur (isteğe bağlı\",\"buttons\":7}"
     },
     {
       "name": "V4 yedek hatırlatması bir kez gösterilir (\"Daha sonra\" sonrası tekrar çıkmaz)",
@@ -194,9 +194,9 @@
       "info": ""
     },
     {
-      "name": "PWA: servis işçisi etkin, 4.3.0 sürümlü önbellek; çevrimdışı açılış",
+      "name": "PWA: servis işçisi etkin, 4.4.0 sürümlü önbellek; çevrimdışı açılış",
       "ok": true,
-      "info": "{\"active\":true,\"version\":\"4.3.0\",\"offline\":true}"
+      "info": "{\"active\":true,\"version\":\"4.4.0\",\"offline\":true}"
     }
   ]
 }

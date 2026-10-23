@@ -24,6 +24,7 @@ import { online } from '../online/index.js';
 import { openPlayers } from './panels/online.js';
 import { openParty, openChat } from './panels/party.js';
 import { partyGame, mapName } from '../online/partyGame.js';
+import { net } from '../online/gameServer.js';
 
 export function createHud() {
   const el = h('div', { id: 'hud' });
@@ -75,6 +76,14 @@ export function createHud() {
   // çevrimiçi oyuncu sayısı (sunucu ayarlıysa); dokununca kim, hangi karakterle, nerede
   const onl = h('button', { class: 'onl hidden', 'data-testid': 'hud-online', onTap: () => { sound.play('click'); openPlayers(); } });
   const updateOnline = () => {
+    // ortak dünya sunucusu: bağlıysa sunucudaki oyuncu sayısı; bağlanamıyorsa durum
+    if (net.configured && online.loggedIn) {
+      onl.classList.remove('hidden');
+      onl.dataset.net = net.status;
+      onl.textContent = net.ready ? `● ${net.count} çevrimiçi · sunucu` : net.status === 'error' ? '○ sunucu: hata' : '○ sunucuya bağlanıyor…';
+      onl.title = net.err || '';
+      return;
+    }
     const n = online.players?.length;
     onl.classList.toggle('hidden', !online.configured || n == null);
     onl.textContent = `● ${n ?? 0} çevrimiçi`;
@@ -397,6 +406,7 @@ export function createHud() {
     bus.on('bossAnnounce', (t) => pushToast({ text: t, kind: 'elite' })),
     bus.on('online', () => { updateOnline(); updateParty(); }),
     bus.on('party', updateParty),
+    bus.on('net', updateOnline),
     bus.on('partyChat', pushChat),
   ];
 

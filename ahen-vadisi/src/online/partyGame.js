@@ -7,6 +7,7 @@ import { TILE } from '../data/constants.js';
 import { online } from './index.js';
 import { Party, Lobby } from './party.js';
 import { createRealtimeTransport } from './realtime.js';
+import { net, createServerTransport } from './gameServer.js';
 
 const KEY = 'ahen_party';
 const REJOIN_MS = 30 * 60 * 1000;     // yenileme / menüye dönüşten sonra 30 dk içinde aynı partiye kendiliğinden dön
@@ -21,7 +22,8 @@ export const partyGame = {
   party: null, lobby: null, api: null, transport: null,
   invites: [],          // bekleyen davetler { from, nick, code, at }
   follow: false,
-  transportFactory: createRealtimeTransport,
+  // ortak dünya sunucusu ayarlıysa parti/davet onun üzerinden (Supabase Realtime mesaj kotası harcanmaz)
+  transportFactory: (api) => (net.configured ? createServerTransport() : createRealtimeTransport(api)),
 
   me() {
     const u = online.loggedIn ? online.api?.user : null;

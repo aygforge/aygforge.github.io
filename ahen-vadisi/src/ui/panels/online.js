@@ -9,6 +9,7 @@ import { summarize } from '../../online/cloud.js';
 import { CLASSES } from '../../data/classes.js';
 import { app } from '../../core/app.js';
 import { MAPS } from '../../data/maps/index.js';
+import { net } from '../../online/gameServer.js';
 import { confirmImport } from './settings.js';
 
 const fmtTime = (t) => (t ? new Date(t).toLocaleString('tr-TR') : '—');
@@ -57,6 +58,7 @@ export function onlineBox() {
     row('Oyuncu', `${online.nickname || '—'} (${online.api.user?.email || ''})`);
     row('Bulut kaydı', meta ? `${fmtTime(meta.updated_at)} · ${chars(meta.summary)}` : online.metaLoaded ? 'henüz yok' : 'okunuyor…');
     if (online.players) row('Şu an çevrimiçi', `${online.players.length} oyuncu`);
+    if (net.configured) row('Ortak dünya', net.ready ? `bağlı · ${net.count} oyuncu` : net.status === 'error' ? (net.err || 'hata') : 'oyuna girince bağlanır', net.status === 'error');
     if (online.lastError) row('Son hata', online.lastError, true);
     const auto = h('button', { class: 'btn small' + (online.autoSync ? ' green' : ''), 'data-testid': 'online-auto', onTap: () => online.setAutoSync(!online.autoSync) }, online.autoSync ? 'Otomatik bulut kaydı: açık' : 'Otomatik bulut kaydı: kapalı');
     box.append(
@@ -69,10 +71,12 @@ export function onlineBox() {
         h('button', { class: 'btn small', 'data-testid': 'online-board', onTap: () => boardModal() }, 'Liderlik tablosu'),
         h('button', { class: 'btn small', 'data-testid': 'online-feedback', onTap: () => feedbackModal() }, 'Hata/öneri bildir'),
         online.source === 'local' ? h('button', { class: 'btn small ghost', onTap: () => shareModal() }, 'Sunucu kodunu paylaş') : null,
+        h('button', { class: 'btn small ghost', 'data-testid': 'online-gameserver-open', onTap: () => gameServerModal() }, 'Oyun sunucusu'),
         actBtn('Çıkış yap', 'ghost', 'online-logout', () => online.logout())),
       h('p', { class: 'tiny muted' }, 'Yerel kayıt her zaman asıldır. Otomatik bulut kaydı en sık 3 dakikada bir yapılır ve bulutta bu cihazda olmayan ya da daha ileri bir karakter varsa yapılmaz (sorulur). Buluttan yükleme yalnız onayınla yapılır; şu anki profilin kurtarma kopyası saklanır.'));
   };
-  const off = bus.on('online', render);
+  const offs = [bus.on('online', render), bus.on('net', render)];
+  const off = () => offs.forEach((f) => f());
   render();
   if (online.configured && !online.players) online.loadPlayers();
   return box;
@@ -209,6 +213,18 @@ function serverModal() {
         ui.closeModal();
         toast('Sunucu ayarlandı', 'ok');
       } }, 'Kaydet'))));
+}
+
+// ortak dünya oyun sunucusu adresi (yalnız bu tarayıcı; boşsa online.json'daki kullanılır)
+function gameServerModal() {
+  const inp = h('input', { class: 'name', placeholder: 'wss://ahen-sunucu.onrender.com', 'data-testid': 'online-gameserver', value: net.localUrl() });
+  ui.modal(h('div', { class: 'dlg frame' }, h('h3', { class: 't' }, 'Ortak dünya sunucusu'),
+    h('p', { class: 'small' }, 'Herkesin aynı yaratıkları gördüğü, birlikte avlanıp EXP paylaştığı oyun sunucusu. Adres oyunla gelmediyse buraya gir (kurulum: docs/OYUN_SUNUCUSU.md). Boş bırakırsan oyunla gelen adres kullanılır.'),
+    h('p', { class: 'tiny muted' }, `Şu anki: ${net.url || 'yok (tek oyunculu)'}`),
+    inp,
+    h('div', { class: 'row', style: { justifyContent: 'flex-end' } },
+      h('button', { class: 'btn ghost', onTap: () => ui.closeModal() }, 'Vazgeç'),
+      h('button', { class: 'btn green', 'data-testid': 'online-gameserver-ok', onTap: () => { net.setLocalUrl(inp.value.trim() || null); ui.closeModal(); toast('Oyun sunucusu ayarlandı', 'ok'); } }, 'Kaydet'))));
 }
 
 function shareModal() {

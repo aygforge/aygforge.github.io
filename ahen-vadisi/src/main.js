@@ -17,6 +17,7 @@ import { sound } from './audio/sound.js';
 import { devEnabled, mountDevButton, installDevHooks } from './dev/devpanel.js';
 import { online } from './online/index.js';
 import { partyGame } from './online/partyGame.js';
+import { net } from './online/gameServer.js';
 import { bindPartyUi } from './ui/panels/party.js';
 
 let hud = null;
@@ -42,7 +43,8 @@ async function start() {
   // çevrimiçi test katmanı (isteğe bağlı; ayar yoksa ya da ağ yoksa oyun etkilenmez)
   online.init().catch((e) => console.warn('[Ahen] çevrimiçi katman başlatılamadı', e));
   partyGame.init();
-  if (app.dev) { window.__AHEN_ONLINE = online; window.__AHEN_PARTY = partyGame; }
+  net.init();
+  if (app.dev) { window.__AHEN_ONLINE = online; window.__AHEN_PARTY = partyGame; window.__AHEN_NET = net; }
 
   const game = new Phaser.Game({
     type: Phaser.AUTO,

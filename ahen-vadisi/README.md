@@ -120,6 +120,9 @@ otomatik seçilmez; erişilemeyen hedefe sonsuz koşma olmaz; duvar arkasından 
 - **Av Geçmişi:** türe göre öldürme, boss zaferleri, bulunan Rare/Epic/Legendary, tamamlanan zindanlar (ganimeti etkilemez).
 - **Çevrimiçi (isteğe bağlı, test):** ücretsiz Supabase ile bulut kaydı, arkadaşlar arası liderlik tablosu, oyun içi hata
   bildirimi. Kurulum: [`docs/ONLINE_KURULUM.md`](docs/ONLINE_KURULUM.md). Ayar yoksa oyun tamamen çevrimdışı çalışır.
+- **Parti (4.3.0) ve ortak dünya (4.4.0):** parti, sohbet, birlikte gezme; ayrı küçük oyun sunucusu (`server/`, Render
+  ücretsiz ya da Docker) ile herkes aynı yaratıkları görür, partide EXP paylaşılır. Kurulum:
+  [`docs/OYUN_SUNUCUSU.md`](docs/OYUN_SUNUCUSU.md). Yerelde: `npm run server` (port 8787).
 - **Kayıt:** 5 karakter yuvası, Ayarlar → Kayıt Güvenliği (son kalıcı kayıt, teknoloji, yedekler, kurtarma), IndexedDB + localStorage aynası (çift yazım), önceki sağlam kayıtlar + kayıt geçmişi, checksum,
   bozuk kayıt onarımı, kayıp karakter kurtarma, yedek kodu (kopyala/yapıştır) ve JSON yedek dışa/içe aktarma,
   sürümlü şema geçişi (V1 → V2 → V3 → V4) ve geçiş öncesi yedek; depolama açılamazsa kayıt üzerine boş profil yazılmaz. PWA: yeni sürüm hazır olunca "kaydet ve yenile" bildirimi.

@@ -1,5 +1,23 @@
 # Değişiklik Günlüğü
 
+## 4.4.0 — Ortak dünya oyun sunucusu (MMO, 1. aşama)
+Kurulum: [`OYUN_SUNUCUSU.md`](OYUN_SUNUCUSU.md) (Render ücretsiz plan ya da Docker).
+- **Tek sunucu, tek dünya:** açık haritalardaki kamp yaratıkları ve elitler artık sunucuda yaşar. Bağlanan herkes aynı
+  yaratıkları aynı yerde görür, kimin saldırdığını, canın düştüğünü ve ölümü birlikte görür. Yaratık yakındaki ya da
+  ona en çok vuran oyuncuya saldırır; elit yeteneklerinin alanı içindeki **herkesi** vurur. Hasar, vurulan oyuncunun
+  kendi savunmasıyla hesaplanır.
+- **Birlikte avlanma ve EXP paylaşımı:** partide yakındaki üyeler EXP ve altını bonuslu paylaşır (2 kişi ×0,6,
+  4 kişi ×0,4), ganimet herkese ayrı düşer, görev öldürme sayacı herkese işler. Ekranda "Parti payı ×0,60 (2 kişi)".
+- **Herkes görünür:** bölgedeki tüm oyuncular haritada (parti üyeleri yeşil, diğerleri mavi etiketle).
+- **Elit doğuşu** sunucuda (kampında yeterli öldürme + süre) ve herkese duyurulur.
+- Parti ve davetler sunucu ayarlıysa oyun sunucusu üzerinden gider (Supabase Realtime kotası harcanmaz).
+- Sunucuya ulaşılamazsa ya da bağlantı koparsa oyun tek oyunculu devam eder, sunucu dönünce kendiliğinden ortak dünyaya
+  geçer. HUD: "● N çevrimiçi · sunucu" / "○ sunucuya bağlanıyor…".
+- Henüz kişisel kalanlar: açık dünya boss'ları, dungeon'lar, görev olayları/avları, sunak dalgaları.
+- `server/` (Node.js + ws), `render.yaml` (Render Blueprint), `server/Dockerfile`. Ayar: `online.json` → `gameServer`
+  ya da oyunda Ayarlar → Çevrimiçi → Oyun sunucusu.
+
+
 ## 4.3.0 — Parti: birlikte görünme, gezme ve sohbet (çok oyunculu Faz 1)
 Supabase Realtime (ücretsiz katman) ile; ek sunucu yok. Çevrimiçi giriş gerekir.
 - **Parti kur / kodla katıl / davet et:** HUD'da mini haritanın altında **Parti** düğmesi. Parti 6 karakterli bir kodla

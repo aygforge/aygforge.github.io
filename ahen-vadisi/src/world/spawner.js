@@ -18,6 +18,20 @@ export class Spawner {
     this.elites = [];
     this.bosses = [];
     this.checkT = 0;
+    this.net = false;   // 4.4.0: ortak dünyada kamp yaratıkları ve elitler sunucudan gelir
+  }
+
+  // sunucu bölgeye bağlandı: yerel kamp yaratıklarını ve elitleri kaldır
+  goNet() {
+    this.net = true;
+    for (const s of this.slots) { if (s.ent && !s.ent.dead) this.despawn(s.ent); s.ent = null; }
+    for (const el of this.elites) { if (el.ent && !el.ent.dead) this.despawn(el.ent); el.ent = null; }
+  }
+
+  // sunucu bağlantısı koptu: yerel dünyaya dön (kamplar hemen dolar)
+  goLocal() {
+    this.net = false;
+    for (const s of this.slots) if (!s.ent || s.ent.dead) this.spawnSlot(s);
   }
 
   get world() { return app.char.world; }
@@ -31,7 +45,7 @@ export class Spawner {
         for (const s of a.spawns) for (let i = 0; i < s.max; i++) {
           const slot = { area: a, enemy: s.enemy, ent: null, respawnAt: 0 };
           this.slots.push(slot);
-          this.spawnSlot(slot, true);
+          if (!this.net) this.spawnSlot(slot, true);
         }
       }
       if (a.elite) this.elites.push({ area: a, enemy: a.elite, ent: null });
@@ -102,7 +116,7 @@ export class Spawner {
   checkSpecial() {
     const mapId = this.scene.mapId;
     this.checkHunts();
-    for (const el of this.elites) {
+    for (const el of this.net ? [] : this.elites) {
       if (el.ent && !el.ent.dead) continue;
       const st = this.world.elite[mapId] || (this.world.elite[mapId] = { kills: 0, lastDeath: -1e9 });
       if (st.kills >= ELITE_RULE.killsNeeded && this.now - st.lastDeath >= ELITE_RULE.minActiveSec) {
@@ -128,7 +142,7 @@ export class Spawner {
     this.checkT -= dt;
     if (this.checkT > 0) return;
     this.checkT = 0.5;
-    for (const s of this.slots) {
+    for (const s of this.net ? [] : this.slots) {
       if (s.ent && !s.ent.dead) continue;
       if (this.now >= s.respawnAt) this.spawnSlot(s);
     }

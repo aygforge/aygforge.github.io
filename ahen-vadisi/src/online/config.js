@@ -27,7 +27,11 @@ export function validateConfig(raw) {
   const role = jwtRole(anonKey);
   if (role === 'service_role') return { ok: false, msg: 'Bu service_role (GİZLİ) anahtar! Oyuna yalnız "anon public" anahtar konur.' };
   if (!(anonKey.startsWith('sb_publishable_') || role === 'anon')) return { ok: false, msg: 'Anahtar tanınmadı: Supabase → Project Settings → API Keys → "publishable" ya da "anon public" anahtarını kopyala' };
-  return { ok: true, cfg: { url, anonKey } };
+  // isteğe bağlı ortak dünya oyun sunucusu (4.4.0): wss://… (yerel testte ws://)
+  const gs = String(raw?.gameServer || '').trim().replace(/\/+$/, '');
+  const cfg = { url, anonKey };
+  if (gs && /^wss?:\/\/[a-z0-9.-]+(:\d+)?(\/[\w./-]*)?$/i.test(gs)) cfg.gameServer = gs;
+  return { ok: true, cfg };
 }
 
 export async function loadConfig() {
@@ -51,7 +55,7 @@ export function saveLocalConfig(cfg) { lsSet(LOCAL_KEY, cfg ? JSON.stringify(cfg
 
 // Arkadaşlara verilecek tek satırlık sunucu kodu (yalnız adres + herkese açık anahtar içerir)
 export function shareCode(cfg) {
-  return SHARE_PREFIX + btoa(JSON.stringify({ url: cfg.url, anonKey: cfg.anonKey }));
+  return SHARE_PREFIX + btoa(JSON.stringify({ url: cfg.url, anonKey: cfg.anonKey, ...(cfg.gameServer ? { gameServer: cfg.gameServer } : {}) }));
 }
 
 export function parseShareCode(text) {

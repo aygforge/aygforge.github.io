@@ -2,6 +2,7 @@
 // dungeon kapıları/bölümleri, ölüm-yeniden doğma, keşif ve aktif oyun süresi.
 import { MinionManager } from '../world/minions.js';
 import { RemotePlayers } from '../world/remotePlayers.js';
+import { NetWorld } from '../world/netWorld.js';
 import Phaser from 'phaser';
 import { app } from '../core/app.js';
 import { bus } from '../core/events.js';
@@ -97,6 +98,9 @@ export class WorldScene extends Phaser.Scene {
 
     if (def.dungeon) this.setupGates();
     this.spawner = new Spawner(this);
+    // 4.4.0 ortak dünya: oyun sunucusu bağlıysa kamp yaratıkları sunucudan gelir (bölge bilgisi beklenir)
+    this.netWorld = new NetWorld(this);
+    if (this.netWorld.expectShared) { this.spawner.net = true; this.netWorld.waitSince = Date.now(); }
     this.spawner.init();
     // V4: Ölü Çağıran iskeletleri (kayıttaki güvenli durumdan tek ana iskelet; çoğalma yok)
     this.minions = new MinionManager(this);
@@ -132,7 +136,7 @@ export class WorldScene extends Phaser.Scene {
       bus.on('settings', (s) => { this.applyZoom(); this.applyPerf(s); }),
       bus.on('heroLook', () => this.player?.refreshLook()),
     ];
-    this.events.once('shutdown', () => { this.offs.forEach((f) => f()); this.remote?.destroy(); this.scale.off('resize', this.onResize, this); });
+    this.events.once('shutdown', () => { this.offs.forEach((f) => f()); this.remote?.destroy(); this.netWorld?.destroy(); this.scale.off('resize', this.onResize, this); });
     this.applyPerf(app.settings);
     this.refreshMarks();
     bus.emit('worldReady', this);
@@ -648,6 +652,7 @@ export class WorldScene extends Phaser.Scene {
     for (const e of this.enemies) this.guard(e.tpl.id, () => e.update(dt));
     this.guard('iskelet', () => this.minions.update(dt));
     this.guard('parti', () => this.remote.update(dt));
+    this.guard('ağ', () => this.netWorld.update(dt));
     this.separate();
     this.enemies = this.enemies.filter((e) => !e.dead || e.container.active);
     for (const o of this.objects) this.guard(o.kind || 'nesne', () => o.update(dt));
@@ -708,10 +713,10 @@ export class WorldScene extends Phaser.Scene {
     const list = this.enemies;
     for (let i = 0; i < list.length; i++) {
       const a = list[i];
-      if (a.dead || a.tpl.ai === 'static' || a.tpl.kind === 'boss') continue;
+      if (a.dead || a.net || a.tpl.ai === 'static' || a.tpl.kind === 'boss') continue;
       for (let j = i + 1; j < list.length; j++) {
         const b = list[j];
-        if (b.dead || b.tpl.ai === 'static') continue;
+        if (b.dead || b.net || b.tpl.ai === 'static') continue;
         const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy), min = (a.radius + b.radius) * 0.9;
         if (d > 0.01 && d < min) {
           const push = (min - d) * 0.5;

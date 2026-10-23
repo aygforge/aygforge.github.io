@@ -1,5 +1,31 @@
 # Ahen Vadisi — Test Raporu
 
+## 4.4.0 — Ortak dünya oyun sunucusu (23 Ekim 2026)
+- Birim: 208/208. Yeni `tests/unit/server.test.js` (13 test) şunları doğrular:
+  - harita başına yuva sayısı, ortak/dungeon ayrımı;
+  - saldırgan yaratığın yakındaki oyuncuya saldırması, güvenli bölgede saldırı olmaması;
+  - vuruş toplama, ölüm ve tek oyuncunun tam payı;
+  - parti paylaşımı (2 kişi ×0,6; uzaktaki üye ve partisiz yabancı almaz), iki ayrı grubun ayrı payı;
+  - elit kuralı ve duyurusu; elit alan yeteneğinin telegrafı ve alandaki herkesi vurması;
+  - oyuncu ölünce/çıkınca hedef bırakma, yavaşlatma ve sersemletme;
+  - sürüm/oturum reddi, aynı hesabın ikinci bağlantısı, kanallar ve presence, partinin EXP paylaşımı için tanınması,
+    dungeon'ın ortak olmaması.
+- E2E `run-e2e-world.mjs` 15/15 (iki kez arka arkaya). **Gerçek sunucu süreci** (`server/index.mjs`) ve iki tarayıcı
+  kullanıldı; oturum, sahte Supabase'in yerel `/auth/v1/user` ucundan doğrulandı. Doğrulananlar:
+  - bağlanma ve HUD sayısı; Fısıldayan Orman'da yaratıkların yalnız sunucudan gelmesi;
+  - iki oyuncunun aynı yaratığı aynı kimlik ve konumda görmesi; partisiz diğer oyuncunun görünmesi;
+  - yaratık saldırısının oyuncunun kendi savunmasıyla işlenmesi;
+  - partinin sunucu üzerinden kurulması; A'nın vuruşunun B'de görünmesi; ölümü ikisinin de görmesi;
+  - vurmayan parti üyesinin EXP payı ve öldürme sayacı alması (ekranda "Parti payı ×0,60 (2 kişi)"); partisiz
+    yabancının ödül almaması;
+  - sunucu kapanınca tek oyunculu devam, sunucu dönünce kendiliğinden yeniden bağlanma; `/health`; konsol hatası yok.
+- Diğer e2e takımları: 61/61, 32/32, 37/37, 39/39, kayıt 14/14, çevrimiçi 27/27, parti 25/25.
+- İlk tam koşuda ortak dünya testi 14/15 kaldı. Sebep testin kendisiydi: yaratık B'ye değil A'ya saldırmıştı, test
+  yalnız B'ye bakıyordu. Test iki oyuncuyu da kontrol edecek şekilde düzeltildi.
+- Docker imajındaki dosya kümesiyle sunucunun açıldığı yerelde denendi (Docker'ın kendisi bu ortamda yok).
+- **Denenmedi:** Render'a gerçek kurulum ve internet üzerinden gecikme. Render'ın ücretsiz planda uyuma/uyanma davranışı
+  belgelerine dayanır.
+
 ## 4.3.0 — Parti, Faz 1 (23 Ekim 2026)
 - Birim: `tests/unit/party.test.js` (kod biçimi, güvenilmez verinin sınırlanması, lider sırası, kur/katıl, konum paylaşımı
   ve mesaj bütçesi, sohbet ve hız sınırı, ayrılma/kopma/bayat üye, 4 kişi sınırı, davetin yalnız hedefe gitmesi).
