@@ -1,0 +1,110 @@
+{
+ "ranAt": "2026-10-24T14:34:35.402Z",
+ "results": [
+  {
+   "name": "free-tile rules: covered, side-blocked and partially covered tiles",
+   "ok": true,
+   "ms": 1
+  },
+  {
+   "name": "selecting the same tile twice deselects it",
+   "ok": true,
+   "ms": 0
+  },
+  {
+   "name": "wrong match shakes and moves the selection",
+   "ok": true,
+   "ms": 0
+  },
+  {
+   "name": "blocked tiles cannot be selected",
+   "ok": true,
+   "ms": 1
+  },
+  {
+   "name": "removing an upper-layer pair reveals the tiles beneath",
+   "ok": true,
+   "ms": 0
+  },
+  {
+   "name": "matching the last two tiles wins and locks the board",
+   "ok": true,
+   "ms": 0
+  },
+  {
+   "name": "flowers match any flower, seasons any season, never each other",
+   "ok": true,
+   "ms": 0
+  },
+  {
+   "name": "no-moves state is detected",
+   "ok": true,
+   "ms": 1
+  },
+  {
+   "name": "shuffle refuses geometry that no deal can clear, rewind recovers",
+   "ok": true,
+   "ms": 1
+  },
+  {
+   "name": "undo and multiple undo restore tiles, counters and freeness",
+   "ok": true,
+   "ms": 2
+  },
+  {
+   "name": "shuffle keeps the tile multiset and always yields a solvable board",
+   "ok": true,
+   "ms": 17
+  },
+  {
+   "name": "restart restores the same deterministic starting board",
+   "ok": true,
+   "ms": 3
+  },
+  {
+   "name": "hints always point at a valid free matching pair and can solve whole boards",
+   "ok": true,
+   "ms": 35
+  },
+  {
+   "name": "stars: 3 without help, 2 with up to two hints or one shuffle, else 1",
+   "ok": true,
+   "ms": 0
+  },
+  {
+   "name": "every one of the 500 levels can be played to a win through the real tap() API",
+   "ok": true,
+   "ms": 78
+  },
+  {
+   "name": "  · random play dead-ended 162 times across 21 sampled levels; all recovered",
+   "ok": true,
+   "info": true
+  },
+  {
+   "name": "alternative moves can dead-end a solvable start; the engine detects and recovers",
+   "ok": true,
+   "ms": 22702
+  },
+  {
+   "name": "save/restore of a game in progress replays and validates every move",
+   "ok": true,
+   "ms": 1
+  },
+  {
+   "name": "progression: sequential unlocks, world transitions and no level 501",
+   "ok": true,
+   "ms": 25
+  },
+  {
+   "name": "export/import: round trip, version checks and sanitising",
+   "ok": true,
+   "ms": 2
+  },
+  {
+   "name": "continue level prefers the saved game in progress",
+   "ok": true,
+   "ms": 1
+  }
+ ]
+}

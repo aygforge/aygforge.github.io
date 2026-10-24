@@ -1,0 +1,15 @@
+{
+  "name": "mahjong-zen-journey",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mahjong: Zen Journey — a 500-level Mahjong Solitaire HTML5 game (vanilla JS, single file, offline).",
+  "scripts": {
+    "generate": "node tools/generate-levels.js",
+    "build": "node tools/build.js",
+    "validate": "node tools/validate-levels.js index.html",
+    "test:engine": "node tools/test-engine.js",
+    "test:browser": "node tools/test-browser.js",
+    "test": "node tools/validate-levels.js index.html && node tools/test-engine.js && node tools/test-browser.js"
+  },
+  "license": "UNLICENSED"
+}

@@ -1,0 +1,135 @@
+{
+ "ranAt": "2026-10-24T14:40:48.438Z",
+ "results": [
+  {
+   "name": "boot: splash then main menu, no errors, no external requests",
+   "ok": true,
+   "ms": 2322
+  },
+  {
+   "name": "Play → world intro → level 1 with tutorial coach mark",
+   "ok": true,
+   "ms": 4099
+  },
+  {
+   "name": "touch: select, deselect, blocked tile, mismatch keep state consistent",
+   "ok": true,
+   "ms": 358
+  },
+  {
+   "name": "level 1 solved with real touch taps → win screen with stars → Next Level",
+   "ok": true,
+   "ms": 4778
+  },
+  {
+   "name": "layered hit-testing: a raised tile wins over the tile beneath it",
+   "ok": true,
+   "ms": 1013
+  },
+  {
+   "name": "hint, shuffle, undo (multiple), restart and pause buttons",
+   "ok": true,
+   "ms": 5878
+  },
+  {
+   "name": "rapid taps and undo during match animation stay consistent",
+   "ok": true,
+   "ms": 2016
+  },
+  {
+   "name": "save and reload restores the game in progress",
+   "ok": true,
+   "ms": 4476
+  },
+  {
+   "name": "export save downloads a real JSON file",
+   "ok": true,
+   "ms": 1686
+  },
+  {
+   "name": "reset requires confirmation, import restores the exported save",
+   "ok": true,
+   "ms": 4973
+  },
+  {
+   "name": "world map and level select render 20 worlds / 25 levels",
+   "ok": true,
+   "ms": 36022
+  },
+  {
+   "name": "world final → World Complete → next world intro → level 26",
+   "ok": true,
+   "ms": 8132
+  },
+  {
+   "name": "level 500 shows the journey-complete screen and never opens level 501",
+   "ok": true,
+   "ms": 8818
+  },
+  {
+   "name": "  · iphone-se: tile width 35.9px on the densest late level",
+   "ok": true,
+   "info": true
+  },
+  {
+   "name": "  · small-android: tile width 34.5px on the densest late level",
+   "ok": true,
+   "info": true
+  },
+  {
+   "name": "  · iphone-14: tile width 37.4px on the densest late level",
+   "ok": true,
+   "info": true
+  },
+  {
+   "name": "  · 20x9: tile width 39.6px on the densest late level",
+   "ok": true,
+   "info": true
+  },
+  {
+   "name": "  · desktop: tile width 41.6px on the densest late level",
+   "ok": true,
+   "info": true
+  },
+  {
+   "name": "responsive layouts: board fits and taps stay accurate on many screens",
+   "ok": true,
+   "ms": 16810
+  },
+  {
+   "name": "rotating a phone to landscape shows the rotate notice and back to portrait restores the board",
+   "ok": true,
+   "ms": 5502
+  },
+  {
+   "name": "pinch-to-zoom, drag-to-pan, wheel zoom and Fit button",
+   "ok": true,
+   "ms": 4501
+  },
+  {
+   "name": "fullscreen button: enter, exit, re-enter, play while fullscreen",
+   "ok": true,
+   "ms": 4476
+  },
+  {
+   "name": "itch.io-style iframe: works embedded; blocked fullscreen falls back gracefully",
+   "ok": true,
+   "ms": 8848
+  },
+  {
+   "name": "unsupported fullscreen (iPhone-like) shows guidance and does not retry",
+   "ok": true,
+   "ms": 3047
+  },
+  {
+   "name": "debug mode: hidden by default, ?debug=1 panel validates all 500 levels in the browser",
+   "ok": true,
+   "ms": 9523
+  },
+  {
+   "name": "visual tour of several worlds",
+   "ok": true,
+   "ms": 21552
+  }
+ ]
+}
