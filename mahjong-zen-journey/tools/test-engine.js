@@ -343,10 +343,10 @@ test('export/import: round trip, version checks and sanitising', () => {
   const back = P.sanitizeSave(json);
   eq(back.progress.stars[0], 2); eq(back.progress.unlocked, 2); eq(back.settings.volume, 0.25); eq(back.settings.music, false);
   const throws = (v, re) => { let msg = ''; try { P.sanitizeSave(v); } catch (e) { msg = e.message; } assert(re.test(msg), 'expected error ' + re + ' got ' + msg); };
-  throws('not json', /valid JSON/);
-  throws(JSON.stringify({ game: 'other', version: 1 }), /not a Mahjong/);
-  throws(JSON.stringify({ ...d, version: 99 }), /newer version/);
-  throws(JSON.stringify([1, 2]), /does not contain/);
+  throws('not json', /geçerli bir JSON/);
+  throws(JSON.stringify({ game: 'other', version: 1 }), /Zen Journey kaydı değil/);
+  throws(JSON.stringify({ ...d, version: 99 }), /daha yeni bir sürüm/);
+  throws(JSON.stringify([1, 2]), /kayıt bulunmuyor/);
   // hostile values are clamped
   const evil = JSON.parse(json);
   evil.progress.stars = [9, -1, 'x', 3]; evil.progress.unlocked = 9999; evil.settings.volume = 7; evil.achievements = { bogus: 1, first_match: 5 };

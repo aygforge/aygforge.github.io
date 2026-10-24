@@ -1,6 +1,6 @@
 # Mahjong: Zen Journey
 
-A calm, portrait-first Mahjong Solitaire game: **500 verified levels across 20 themed worlds**, built with HTML5, CSS3 and vanilla JavaScript. Everything is in one offline `index.html` (about 330 KB): the tile art, backgrounds, synthesized audio and all level data. It needs no CDN, fonts, images, audio files or network access.
+A calm, portrait-first Mahjong Solitaire game with a **Turkish interface** (menus, tutorial, dialogs, world and layout names, achievements): **500 verified levels across 20 themed worlds**, built with HTML5, CSS3 and vanilla JavaScript. Everything is in one offline `index.html` (about 330 KB): the tile art, backgrounds, synthesized audio and all level data. It needs no CDN, fonts, images, audio files or network access.
 
 | Menu | Level 1 (tutorial) | World map | Level 401 | Level 500 |
 |---|---|---|---|---|
@@ -24,18 +24,18 @@ A calm, portrait-first Mahjong Solitaire game: **500 verified levels across 20 t
 | Fullscreen button | **Enabled** |
 | Scrollbars | **Disabled** |
 
-The game has its own fullscreen button, separate from itch.io's. If the embedding iframe does not allow fullscreen, the game says so and offers **Open in new tab**. It never pretends fullscreen worked.
+The game has its own fullscreen button, separate from itch.io's. If the embedding iframe does not allow fullscreen, the game says so and offers **Yeni sekmede aç** (open in new tab). It never pretends fullscreen worked.
 
 ## Mobile use
 
 - The game is designed for 9:16 portrait and adapts to taller phones (19.5:9, 20:9). It fills the viewport using `100dvh`/`100vh`, `viewport-fit=cover` and safe-area insets, so the notch and home bar never cover buttons.
 - On a phone held in landscape, a "please rotate" screen appears and the timer pauses. On desktop the game shows as a centred portrait column, with a blurred copy of the world background filling the sides.
-- **Fullscreen** (button at the top right of the menu and game screens) uses the real Fullscreen API, with `webkit`-prefixed fallbacks, and tries to lock portrait orientation. Safari on iPhone has no element fullscreen. There the button explains this and suggests *Add to Home Screen*.
+- **Fullscreen** (button at the top right of the menu and game screens) uses the real Fullscreen API, with `webkit`-prefixed fallbacks, and tries to lock portrait orientation. Safari on iPhone has no element fullscreen. There the button explains this and suggests *Ana Ekrana Ekle* (Add to Home Screen).
 - **Controls:**
   - **Tap a tile:** select it.
   - **Pinch** (or mouse wheel): zoom.
   - **Drag while zoomed:** pan.
-  - **Fit:** reset the zoom.
+  - **Sığdır** (Fit): reset the zoom.
   - **Keyboard:** `H` hint, `S` shuffle, `U` or `Ctrl+Z` undo, `P`/`Esc` pause, `F` fullscreen.
 - Hit-testing follows the visual stacking order, so a covered tile can never be picked through the tile above it.
 
@@ -50,8 +50,8 @@ The game has its own fullscreen button, separate from itch.io's. If the embeddin
   - 1★: more help than that.
   - Each level keeps its best result. Stars never gate progress: clearing level *n* unlocks *n+1*.
 - **Hint** shows a pair taken from a full solution of the current board whenever the solver finds one, so following hints never leads into a dead end.
-- **Shuffle** re-deals the remaining tiles along a freshly computed clearing order, so the new deal is always solvable. If the remaining stack can't be cleared by *any* deal (e.g. a tile lying directly on its only partner), the game offers **Rewind to solvable board** or **Restart**.
-- A solvable start does not mean every line of play stays solvable. After each move a time-limited solver checks the board and shows a gentle "No full solution from here" note when it proves a dead end. If no pair is left at all, a dialog offers Undo, Shuffle and Restart.
+- **Shuffle** re-deals the remaining tiles along a freshly computed clearing order, so the new deal is always solvable. If the remaining stack can't be cleared by *any* deal (e.g. a tile lying directly on its only partner), the game offers **Çözülebilir tahtaya dön** (rewind to a solvable board) or **Bölümü yeniden başlat** (restart).
+- A solvable start does not mean every line of play stays solvable. After each move a time-limited solver checks the board and shows a gentle "Buradan tam çözüm yok" (no full solution from here) note when it proves a dead end. If no pair is left at all, a dialog offers Geri Al (undo), Karıştır (shuffle) and Baştan (restart).
 
 ## Saving
 
@@ -63,9 +63,9 @@ The game has its own fullscreen button, separate from itch.io's. If the embeddin
   - Settings and seen tips.
   - The **game in progress**: current faces and the full undo history, which is replayed and checked move by move when restored.
 - **Settings:**
-  - **Export Save** downloads `mahjong-zen-journey-save-YYYYMMDD.json`. It also shows the text for copying, in case an embed blocks downloads.
-  - **Import Save** accepts a file or pasted text. It checks the game id and version, sanitises every value and asks before replacing your progress.
-  - **Reset Progress** asks for confirmation first.
+  - **Kaydı Dışa Aktar** (export save) downloads `mahjong-zen-journey-save-YYYYMMDD.json`. It also shows the text for copying, in case an embed blocks downloads.
+  - **Kaydı İçe Aktar** (import save) accepts a file or pasted text. It checks the game id and version, sanitises every value and asks before replacing your progress.
+  - **İlerlemeyi Sıfırla** (reset progress) asks for confirmation first.
 - Private browsing or clearing site data erases local saves, so export now and then.
 
 ## Debug mode

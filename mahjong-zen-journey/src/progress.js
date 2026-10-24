@@ -16,24 +16,24 @@
   const N = Core.LEVEL_COUNT;
 
   const ACHIEVEMENTS = [
-    { id: 'first_match', name: 'First Match', desc: 'Make your very first match.' },
-    { id: 'perfect_start', name: 'Perfect Start', desc: 'Clear a level with 3 stars.' },
-    { id: 'apprentice', name: 'Zen Apprentice', desc: 'Complete the five guided levels.' },
-    { id: 'final_challenger', name: 'Final Challenger', desc: 'Conquer a world Final Challenge.' },
-    { id: 'first_journey', name: 'First Journey', desc: 'Complete the Bamboo Garden.' },
-    { id: 'levels_25', name: '25 Levels Cleared', desc: 'Clear 25 different levels.' },
-    { id: 'levels_100', name: '100 Levels Cleared', desc: 'Clear 100 different levels.' },
-    { id: 'levels_250', name: '250 Levels Cleared', desc: 'Clear 250 different levels.' },
-    { id: 'mahjong_master', name: 'Mahjong Master', desc: 'Clear all 500 levels.' },
-    { id: 'three_star_100', name: '100 Three-Star Levels', desc: 'Earn 3 stars on 100 levels.' },
-    { id: 'all_stars', name: 'All 1500 Stars', desc: 'Earn every star in the journey.' },
-    { id: 'pure_mind', name: 'Pure Mind', desc: 'Clear an 80+ tile level without hint, shuffle or undo.' },
-    { id: 'serenity', name: 'Serenity Streak', desc: 'Earn 3 stars on 10 levels in a row.' },
-    { id: 'pairs_1000', name: 'Thousand Pairs', desc: 'Make 1,000 matches.' },
-    { id: 'pairs_10000', name: 'Ten Thousand Pairs', desc: 'Make 10,000 matches.' },
-    { id: 'explorer', name: 'Explorer', desc: 'Clear all 20 layout families.' },
-    { id: 'zen_hour', name: 'Zen Hour', desc: 'Spend one hour on your journey.' },
-    { id: 'dragons_crown', name: "Dragon's Crown", desc: 'Complete the final world.' }
+    { id: 'first_match', name: 'İlk Eşleşme', desc: 'İlk eşleştirmeni yap.' },
+    { id: 'perfect_start', name: 'Kusursuz Başlangıç', desc: 'Bir bölümü 3 yıldızla tamamla.' },
+    { id: 'apprentice', name: 'Zen Çırağı', desc: 'Beş rehberli bölümün hepsini tamamla.' },
+    { id: 'final_challenger', name: 'Final Fatihi', desc: 'Bir dünyanın Final Mücadelesini kazan.' },
+    { id: 'first_journey', name: 'İlk Yolculuk', desc: 'Bambu Bahçesi dünyasını tamamla.' },
+    { id: 'levels_25', name: '25 Bölüm Tamamlandı', desc: '25 farklı bölümü tamamla.' },
+    { id: 'levels_100', name: '100 Bölüm Tamamlandı', desc: '100 farklı bölümü tamamla.' },
+    { id: 'levels_250', name: '250 Bölüm Tamamlandı', desc: '250 farklı bölümü tamamla.' },
+    { id: 'mahjong_master', name: 'Mahjong Ustası', desc: '500 bölümün hepsini tamamla.' },
+    { id: 'three_star_100', name: '100 Üç Yıldızlı Bölüm', desc: '100 bölümde 3 yıldız kazan.' },
+    { id: 'all_stars', name: '1500 Yıldızın Tamamı', desc: 'Yolculuktaki her yıldızı topla.' },
+    { id: 'pure_mind', name: 'Saf Zihin', desc: '80+ taşlı bir bölümü ipucu, karıştırma veya geri alma kullanmadan bitir.' },
+    { id: 'serenity', name: 'Dinginlik Serisi', desc: 'Üst üste 10 bölümde 3 yıldız kazan.' },
+    { id: 'pairs_1000', name: 'Bin Çift', desc: '1.000 eşleştirme yap.' },
+    { id: 'pairs_10000', name: 'On Bin Çift', desc: '10.000 eşleştirme yap.' },
+    { id: 'explorer', name: 'Kâşif', desc: '20 yerleşim ailesinin hepsinde bir bölüm tamamla.' },
+    { id: 'zen_hour', name: 'Zen Saati', desc: 'Yolculuğunda bir saat geçir.' },
+    { id: 'dragons_crown', name: 'Ejderha Tacı', desc: 'Son dünyayı tamamla.' }
   ];
 
   function defaultSave() {
@@ -69,12 +69,12 @@
   function sanitizeSave(raw) {
     let obj = raw;
     if (typeof obj === 'string') {
-      try { obj = JSON.parse(obj); } catch (e) { throw new Error('The file is not valid JSON.'); }
+      try { obj = JSON.parse(obj); } catch (e) { throw new Error('Dosya geçerli bir JSON değil.'); }
     }
-    if (!isObj(obj)) throw new Error('The file does not contain a save.');
-    if (obj.game !== GAME_ID) throw new Error('This is not a Mahjong: Zen Journey save.');
-    if (!Number.isInteger(obj.version) || obj.version < 1) throw new Error('Unknown save version.');
-    if (obj.version > SAVE_VERSION) throw new Error('This save comes from a newer version of the game (v' + obj.version + ').');
+    if (!isObj(obj)) throw new Error('Dosyada bir kayıt bulunmuyor.');
+    if (obj.game !== GAME_ID) throw new Error('Bu bir Mahjong: Zen Journey kaydı değil.');
+    if (!Number.isInteger(obj.version) || obj.version < 1) throw new Error('Bilinmeyen kayıt sürümü.');
+    if (obj.version > SAVE_VERSION) throw new Error('Bu kayıt oyunun daha yeni bir sürümünden geliyor (v' + obj.version + ').');
     obj = migrate(obj);
     const s = defaultSave();
     s.updatedAt = nonNeg(obj.updatedAt, 0);

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="tr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="description" content="Mahjong: Zen Journey — a calm Mahjong Solitaire journey through 500 levels and 20 worlds.">
+<meta name="description" content="Mahjong: Zen Journey — 500 bölüm ve 20 dünyadan oluşan sakin bir Mahjong Solitaire yolculuğu.">
 <title>Mahjong: Zen Journey</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='14' y='8' width='38' height='50' rx='7' fill='%23176b4b'/%3E%3Crect x='10' y='4' width='38' height='50' rx='7' fill='%23fbf4e2'/%3E%3Cpath d='M18 22h22M29 12v34M20 30h18v10H20z' stroke='%23c23a2b' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
@@ -22,7 +22,7 @@
     <div id="bg-next"></div>
     <canvas id="ambient" aria-hidden="true"></canvas>
 
-    <section id="scr-splash" class="screen active" aria-label="Loading">
+    <section id="scr-splash" class="screen active" aria-label="Yükleniyor">
       <div class="logo splash-logo">
         <div class="logo-mark" data-logo-mark></div>
         <h1 class="logo-title">MAHJONG</h1>
@@ -31,10 +31,10 @@
       <div class="splash-dots"><i></i><i></i><i></i></div>
     </section>
 
-    <section id="scr-menu" class="screen" aria-label="Main menu">
+    <section id="scr-menu" class="screen" aria-label="Ana menü">
       <header class="topbar">
         <span class="grow"></span>
-        <button class="icon-btn" data-act="fullscreen" data-fs aria-label="Enter fullscreen"></button>
+        <button class="icon-btn" data-act="fullscreen" data-fs aria-label="Tam ekrana geç"></button>
       </header>
       <div class="menu-body">
         <div class="logo">
@@ -44,67 +44,67 @@
         </div>
         <div class="menu-card">
           <div class="menu-progress">
-            <div><span class="label">Current level</span><b id="menu-level">1</b><span id="menu-world" class="muted">Bamboo Garden</span></div>
+            <div><span class="label">Mevcut bölüm</span><b id="menu-level">1</b><span id="menu-world" class="muted">Bambu Bahçesi</span></div>
             <div class="menu-stars"><span class="star-ico" data-icon="star"></span><b id="menu-stars">0</b><span class="muted">/ 1500</span></div>
           </div>
           <div class="bar"><i id="menu-bar"></i></div>
         </div>
         <div class="menu-actions">
-          <button class="btn primary big" data-act="continue"><span data-icon="play"></span><span id="menu-play-label">Play</span></button>
-          <button class="btn big ghost" data-act="map"><span data-icon="map"></span>Level Select</button>
+          <button class="btn primary big" data-act="continue"><span data-icon="play"></span><span id="menu-play-label">Oyna</span></button>
+          <button class="btn big ghost" data-act="map"><span data-icon="map"></span>Bölüm Seç</button>
           <div class="menu-row">
-            <button class="btn round" data-act="settings" aria-label="Settings"><span data-icon="settings"></span><small>Settings</small></button>
-            <button class="btn round" data-act="stats" aria-label="Statistics"><span data-icon="stats"></span><small>Statistics</small></button>
-            <button class="btn round" data-act="achievements" aria-label="Achievements"><span data-icon="trophy"></span><small>Awards</small></button>
+            <button class="btn round" data-act="settings" aria-label="Ayarlar"><span data-icon="settings"></span><small>Ayarlar</small></button>
+            <button class="btn round" data-act="stats" aria-label="İstatistikler"><span data-icon="stats"></span><small>İstatistik</small></button>
+            <button class="btn round" data-act="achievements" aria-label="Başarımlar"><span data-icon="trophy"></span><small>Başarımlar</small></button>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="scr-map" class="screen" aria-label="World map">
+    <section id="scr-map" class="screen" aria-label="Dünya haritası">
       <header class="topbar">
-        <button class="icon-btn" data-act="home" aria-label="Back" data-icon="back"></button>
-        <h2 class="grow title">World Map</h2>
-        <button class="icon-btn" data-act="fullscreen" data-fs aria-label="Enter fullscreen"></button>
+        <button class="icon-btn" data-act="home" aria-label="Geri" data-icon="back"></button>
+        <h2 class="grow title">Dünya Haritası</h2>
+        <button class="icon-btn" data-act="fullscreen" data-fs aria-label="Tam ekrana geç"></button>
       </header>
       <div class="scroll" id="world-list"></div>
     </section>
 
-    <section id="scr-levels" class="screen" aria-label="Level select">
+    <section id="scr-levels" class="screen" aria-label="Bölüm seçimi">
       <header class="topbar">
-        <button class="icon-btn" data-act="map" aria-label="Back" data-icon="back"></button>
-        <div class="grow title-stack"><h2 class="title" id="levels-title">Bamboo Garden</h2><span id="levels-sub" class="muted"></span></div>
-        <button class="icon-btn" data-act="fullscreen" data-fs aria-label="Enter fullscreen"></button>
+        <button class="icon-btn" data-act="map" aria-label="Geri" data-icon="back"></button>
+        <div class="grow title-stack"><h2 class="title" id="levels-title">Bambu Bahçesi</h2><span id="levels-sub" class="muted"></span></div>
+        <button class="icon-btn" data-act="fullscreen" data-fs aria-label="Tam ekrana geç"></button>
       </header>
       <div class="scroll"><div class="level-grid" id="level-grid"></div></div>
     </section>
 
-    <section id="scr-game" class="screen" aria-label="Game">
+    <section id="scr-game" class="screen" aria-label="Oyun">
       <header class="hud">
-        <button class="icon-btn" data-act="leave" aria-label="Back to level map" data-icon="back"></button>
+        <button class="icon-btn" data-act="leave" aria-label="Bölüm haritasına dön" data-icon="back"></button>
         <div class="hud-title grow">
-          <div class="hud-level"><span id="hud-level">Level 1</span><span id="hud-final" class="final-tag" hidden>FINAL</span></div>
-          <div class="hud-world" id="hud-world">Bamboo Garden</div>
+          <div class="hud-level"><span id="hud-level">Bölüm 1</span><span id="hud-final" class="final-tag" hidden>FİNAL</span></div>
+          <div class="hud-world" id="hud-world">Bambu Bahçesi</div>
           <div class="bar thin"><i id="hud-bar"></i></div>
         </div>
-        <button class="icon-btn" data-act="fullscreen" data-fs aria-label="Enter fullscreen"></button>
+        <button class="icon-btn" data-act="fullscreen" data-fs aria-label="Tam ekrana geç"></button>
       </header>
       <div class="hud-sub">
-        <span class="hud-stat"><span><b id="hud-tiles">0</b> tiles</span><span><b id="hud-pairs">0</b> pairs open</span></span>
-        <span id="hud-warn" class="warn" hidden>No full solution from here — try Undo or Shuffle</span>
+        <span class="hud-stat"><span><b id="hud-tiles">0</b> taş</span><span><b id="hud-pairs">0</b> açık çift</span></span>
+        <span id="hud-warn" class="warn" hidden>Buradan tam çözüm yok — Geri Al veya Karıştır'ı dene</span>
         <span class="grow"></span>
-        <button class="chip" id="zoom-reset" data-act="zoomreset" hidden><span data-icon="zoom"></span>Fit</button>
+        <button class="chip" id="zoom-reset" data-act="zoomreset" hidden><span data-icon="zoom"></span>Sığdır</button>
       </div>
       <div id="board-wrap">
-        <canvas id="board" aria-label="Mahjong board"></canvas>
+        <canvas id="board" aria-label="Mahjong tahtası"></canvas>
         <div id="coach" hidden></div>
       </div>
       <nav class="toolbar">
-        <button class="tool" data-act="hint" id="btn-hint"><span data-icon="hint"></span><small>Hint</small></button>
-        <button class="tool" data-act="shuffle" id="btn-shuffle"><span data-icon="shuffle"></span><small>Shuffle</small></button>
-        <button class="tool" data-act="undo" id="btn-undo"><span data-icon="undo"></span><small>Undo</small></button>
-        <button class="tool" data-act="restart"><span data-icon="restart"></span><small>Restart</small></button>
-        <button class="tool" data-act="pause"><span data-icon="pause"></span><small>Pause</small></button>
+        <button class="tool" data-act="hint" id="btn-hint"><span data-icon="hint"></span><small>İpucu</small></button>
+        <button class="tool" data-act="shuffle" id="btn-shuffle"><span data-icon="shuffle"></span><small>Karıştır</small></button>
+        <button class="tool" data-act="undo" id="btn-undo"><span data-icon="undo"></span><small>Geri Al</small></button>
+        <button class="tool" data-act="restart"><span data-icon="restart"></span><small>Baştan</small></button>
+        <button class="tool" data-act="pause"><span data-icon="pause"></span><small>Duraklat</small></button>
       </nav>
     </section>
 
@@ -115,8 +115,8 @@
     <div id="rotate">
       <div class="rotate-card">
         <div class="rotate-phone"><i></i></div>
-        <h3>Please rotate your device</h3>
-        <p>Mahjong: Zen Journey is designed for portrait play.</p>
+        <h3>Lütfen cihazınızı çevirin</h3>
+        <p>Mahjong: Zen Journey dikey ekranda oynanmak üzere tasarlandı.</p>
       </div>
     </div>
   </div>

@@ -144,7 +144,7 @@ async function solveByTaps(page, touch, from) {
   await test('level 1 solved with real touch taps → win screen with stars → Next Level', async () => {
     await solveByTaps(page, true);
     await page.waitForSelector('.modal h2', { timeout: 4000 });
-    assert((await page.textContent('.modal h2')).includes('Level Complete'));
+    assert((await page.textContent('.modal h2')).includes('Bölüm Tamamlandı'));
     await page.waitForTimeout(1400);
     await shot(page, '05-level-complete');
     const stars = await page.$$eval('.win-stars span.on', (e) => e.length);
@@ -240,7 +240,7 @@ async function solveByTaps(page, touch, from) {
     await page.waitForTimeout(700); // debounced save
     await page.reload();
     await page.waitForSelector('#scr-menu.active', { timeout: 8000 });
-    assert((await page.textContent('#menu-play-label')) === 'Continue', 'menu offers Continue');
+    assert((await page.textContent('#menu-play-label')) === 'Devam Et', 'menu offers Continue');
     await page.tap('[data-act=continue]');
     await page.waitForSelector('#scr-game.active');
     const after = await page.evaluate(() => ({ s: MJApp.session.serialize(), unlocked: MJApp.save.data.progress.unlocked }));
@@ -270,7 +270,7 @@ async function solveByTaps(page, touch, from) {
     const starsBefore = await page.evaluate(() => MJProgress.totalStars(MJApp.save.data));
     await page.tap('.modal [data-m=reset]');
     await page.waitForSelector('.modal [data-m=yes]');
-    assert((await page.textContent('.modal h2')).includes('Reset'), 'confirmation shown');
+    assert((await page.textContent('.modal h2')).includes('sıfırlansın'), 'confirmation shown');
     await page.tap('.modal [data-m=yes]');
     await page.waitForSelector('#scr-menu.active');
     assert(await page.evaluate(() => MJApp.save.data.progress.unlocked === 1 && MJProgress.totalStars(MJApp.save.data) === 0), 'progress reset');
@@ -288,7 +288,7 @@ async function solveByTaps(page, touch, from) {
     await page.tap('[data-act=settings]');
     await page.tap('.modal [data-m=import]');
     await page.setInputFiles('.modal [data-file]', bad);
-    await page.waitForSelector('.modal h2:has-text("Import failed")');
+    await page.waitForSelector('.modal h2:has-text("İçe aktarma başarısız")');
     await page.tap('.modal [data-m=ok]');
     await page.tap('.modal [data-m=cancel]');
     await page.tap('.modal [data-m=close]');
@@ -303,6 +303,12 @@ async function solveByTaps(page, touch, from) {
     await page.tap('.world-card[data-world="0"]');
     await page.waitForSelector('#scr-levels.active');
     assert((await page.$$('.level-btn')).length === 25);
+    const fit = await page.evaluate(() => {
+      const g = document.getElementById('level-grid'), sc = g.parentElement;
+      const last = g.children[4].getBoundingClientRect();
+      return { overflow: sc.scrollWidth - sc.clientWidth, right: last.right, w: innerWidth };
+    });
+    assert(fit.overflow <= 0 && fit.right <= fit.w, 'level grid fits the screen width ' + JSON.stringify(fit));
     await page.waitForTimeout(300);
     await shot(page, '10-level-select');
     await page.tap('.world-card[data-world="5"]').catch(() => {});
@@ -311,12 +317,12 @@ async function solveByTaps(page, touch, from) {
   await test('world final → World Complete → next world intro → level 26', async () => {
     await gotoLevelViaDebug(page, 25);
     await page.evaluate(() => { MJApp.save.data.seen.worlds = [0]; MJApp.playSolution(false, 1); });
-    await page.waitForSelector('.modal h2:has-text("World Complete")', { timeout: 8000 });
+    await page.waitForSelector('.modal h2:has-text("Dünya Tamamlandı")', { timeout: 8000 });
     await page.waitForTimeout(900);
     await shot(page, '11-world-complete');
     await page.tap('[data-m=next]');
     await page.waitForSelector('#world-intro:not([hidden])');
-    assert((await page.textContent('#world-intro h2')).includes('Cherry Blossom'));
+    assert((await page.textContent('#world-intro h2')).includes('Kiraz Çiçeği'));
     await page.waitForSelector('#scr-game.active', { timeout: 6000 });
     await page.waitForTimeout(3500);
     assert((await sess(page)).level === 26, 'level 26 started after intro');
@@ -327,7 +333,7 @@ async function solveByTaps(page, touch, from) {
     await gotoLevelViaDebug(page, 500);
     await shot(page, '13-level500');
     await page.evaluate(() => MJApp.playSolution(false, 1));
-    await page.waitForSelector('.modal h2:has-text("Journey Complete")', { timeout: 10000 });
+    await page.waitForSelector('.modal h2:has-text("Yolculuk Tamamlandı")', { timeout: 10000 });
     await page.waitForTimeout(1200);
     await shot(page, '14-journey-complete');
     assert(!(await page.$('.modal [data-m=next]')), 'no Next Level button');
@@ -461,7 +467,7 @@ async function solveByTaps(page, touch, from) {
     await frame.waitForSelector('#scr-menu.active', { timeout: 8000 });
     assert(await frame.evaluate(() => !MJApp.fs.supported && MJApp.fs.inIframe), 'fullscreen not allowed in this iframe');
     await frame.click('#scr-menu [data-fs]');
-    await frame.waitForSelector('.modal h2:has-text("Fullscreen unavailable")');
+    await frame.waitForSelector('.modal h2:has-text("Tam ekran kullanılamıyor")');
     assert(await frame.isVisible('.modal [data-m=tab]'), 'offers Open in new tab');
     await shot(p6, '18-iframe-fullscreen-blocked');
     await frame.click('.modal [data-m=ok]');
@@ -473,7 +479,7 @@ async function solveByTaps(page, touch, from) {
     await frame.waitForTimeout(500);
     const n = await frame.evaluate(() => MJApp.session.n);
     for (let i = 0; i < n; i++) { const pt = await tileXY(p6, i, frame); const fb = await (await p6.$('#f')).boundingBox(); await p6.mouse.click(fb.x + pt.x, fb.y + pt.y); }
-    await frame.waitForSelector('.modal h2:has-text("Level Complete")', { timeout: 4000 });
+    await frame.waitForSelector('.modal h2:has-text("Bölüm Tamamlandı")', { timeout: 4000 });
     assert(!p6.errors.length, p6.errors.join('\n'));
     await p6.goto(base + '/host.html');
     const f2 = await (await p6.waitForSelector('#f')).contentFrame();
@@ -496,9 +502,9 @@ async function solveByTaps(page, touch, from) {
     });
     await boot(p7, base + '/index.html');
     await p7.tap('#scr-menu [data-fs]');
-    await p7.waitForSelector('.modal h2:has-text("Fullscreen unavailable")');
+    await p7.waitForSelector('.modal h2:has-text("Tam ekran kullanılamıyor")');
     const txt = await p7.textContent('.modal p');
-    assert(/Add to Home Screen/.test(txt), 'iOS guidance shown');
+    assert(/Ana Ekrana Ekle/.test(txt), 'iOS guidance shown');
     await shot(p7, '19-ios-fullscreen-help');
     await c7.close();
   });
@@ -513,7 +519,7 @@ async function solveByTaps(page, touch, from) {
     await p8.tap('.dbg-fab');
     await p8.waitForSelector('.dbg [data-info]');
     const info = await p8.textContent('.dbg [data-info]');
-    assert(/hash=[0-9a-f]{8}-/.test(info) && /available matches/.test(info), 'level hash and match list shown');
+    assert(/hash=[0-9a-f]{8}-/.test(info) && /mevcut eşleşmeler/.test(info), 'level hash and match list shown');
     await p8.tap('.modal [data-m=free]');
     await p8.tap('.dbg-fab');
     await p8.tap('.modal [data-m=coords]');
@@ -527,7 +533,7 @@ async function solveByTaps(page, touch, from) {
     assert(S.passed === 500 && S.uniqueHashes === 500, `in-browser validation ${S.passed}/500, hashes ${S.uniqueHashes}`);
     await p8.tap('.modal [data-m=close]');
     await p8.evaluate(() => MJApp.playSolution(false, 30));
-    await p8.waitForSelector('.modal h2:has-text("Level Complete")', { timeout: 20000 });
+    await p8.waitForSelector('.modal h2:has-text("Bölüm Tamamlandı")', { timeout: 20000 });
     await c8.close();
   });
 

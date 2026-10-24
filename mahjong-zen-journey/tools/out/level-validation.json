@@ -1,7 +1,7 @@
 {
- "validatedAt": "2026-10-24T14:34:04.170Z",
+ "validatedAt": "2026-10-24T14:54:13.557Z",
  "source": "index.html",
- "seconds": 1.335,
+ "seconds": 1.346,
  "summary": {
   "total": 500,
   "passed": 500,
@@ -95,7 +95,7 @@
   {
    "n": 1,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 26,
    "layers": 1,
    "hash": "f2901a0d-1a",
@@ -108,7 +108,7 @@
   {
    "n": 2,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 24,
    "layers": 1,
    "hash": "54f84629-18",
@@ -121,7 +121,7 @@
   {
    "n": 3,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 28,
    "layers": 2,
    "hash": "fff456a8-1c",
@@ -134,7 +134,7 @@
   {
    "n": 4,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 30,
    "layers": 2,
    "hash": "e2a0c0a2-1e",
@@ -147,7 +147,7 @@
   {
    "n": 5,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 32,
    "layers": 2,
    "hash": "fb851268-20",
@@ -173,7 +173,7 @@
   {
    "n": 7,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 34,
    "layers": 2,
    "hash": "ef8134a0-22",
@@ -186,7 +186,7 @@
   {
    "n": 8,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 36,
    "layers": 2,
    "hash": "695bcb84-24",
@@ -199,7 +199,7 @@
   {
    "n": 9,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 34,
    "layers": 3,
    "hash": "80ea3299-22",
@@ -212,7 +212,7 @@
   {
    "n": 10,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 34,
    "layers": 2,
    "hash": "88d02686-22",
@@ -225,7 +225,7 @@
   {
    "n": 11,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 36,
    "layers": 2,
    "hash": "4b39dc1a-24",
@@ -238,7 +238,7 @@
   {
    "n": 12,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 36,
    "layers": 2,
    "hash": "3cd9f173-24",
@@ -251,7 +251,7 @@
   {
    "n": 13,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 38,
    "layers": 2,
    "hash": "dcd35209-26",
@@ -264,7 +264,7 @@
   {
    "n": 14,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 30,
    "layers": 2,
    "hash": "b05c1b16-1e",
@@ -277,7 +277,7 @@
   {
    "n": 15,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 34,
    "layers": 3,
    "hash": "efc05d68-22",
@@ -290,7 +290,7 @@
   {
    "n": 16,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 32,
    "layers": 2,
    "hash": "37057907-20",
@@ -303,7 +303,7 @@
   {
    "n": 17,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 32,
    "layers": 2,
    "hash": "02932c68-20",
@@ -316,7 +316,7 @@
   {
    "n": 18,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 40,
    "layers": 2,
    "hash": "5044a12c-28",
@@ -329,7 +329,7 @@
   {
    "n": 19,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 32,
    "layers": 3,
    "hash": "534725e6-20",
@@ -342,7 +342,7 @@
   {
    "n": 20,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 38,
    "layers": 3,
    "hash": "d25d3ded-26",
@@ -355,7 +355,7 @@
   {
    "n": 21,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 40,
    "layers": 2,
    "hash": "27898c84-28",
@@ -368,7 +368,7 @@
   {
    "n": 22,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 40,
    "layers": 2,
    "hash": "964b83cb-28",
@@ -381,7 +381,7 @@
   {
    "n": 23,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 40,
    "layers": 2,
    "hash": "815ee46e-28",
@@ -407,7 +407,7 @@
   {
    "n": 25,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 40,
    "layers": 2,
    "hash": "9d959f50-28",
@@ -420,7 +420,7 @@
   {
    "n": 26,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 46,
    "layers": 2,
    "hash": "5ebef7ba-2e",
@@ -433,7 +433,7 @@
   {
    "n": 27,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 48,
    "layers": 2,
    "hash": "18626ef1-30",
@@ -446,7 +446,7 @@
   {
    "n": 28,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 48,
    "layers": 3,
    "hash": "45e9309b-30",
@@ -459,7 +459,7 @@
   {
    "n": 29,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 48,
    "layers": 3,
    "hash": "a00ffb29-30",
@@ -472,7 +472,7 @@
   {
    "n": 30,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 42,
    "layers": 3,
    "hash": "e91cfd3c-2a",
@@ -485,7 +485,7 @@
   {
    "n": 31,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 46,
    "layers": 3,
    "hash": "d8de46cd-2e",
@@ -498,7 +498,7 @@
   {
    "n": 32,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 46,
    "layers": 3,
    "hash": "bf377ead-2e",
@@ -511,7 +511,7 @@
   {
    "n": 33,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 46,
    "layers": 3,
    "hash": "bea0f3c4-2e",
@@ -524,7 +524,7 @@
   {
    "n": 34,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 40,
    "layers": 2,
    "hash": "82f7f9aa-28",
@@ -537,7 +537,7 @@
   {
    "n": 35,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 44,
    "layers": 2,
    "hash": "e336372a-2c",
@@ -550,7 +550,7 @@
   {
    "n": 36,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 40,
    "layers": 2,
    "hash": "538fed1c-28",
@@ -563,7 +563,7 @@
   {
    "n": 37,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 44,
    "layers": 2,
    "hash": "7f2eecf7-2c",
@@ -576,7 +576,7 @@
   {
    "n": 38,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 46,
    "layers": 3,
    "hash": "cfb1b611-2e",
@@ -589,7 +589,7 @@
   {
    "n": 39,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 52,
    "layers": 2,
    "hash": "2218d110-34",
@@ -602,7 +602,7 @@
   {
    "n": 40,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 54,
    "layers": 2,
    "hash": "1ba82305-36",
@@ -615,7 +615,7 @@
   {
    "n": 41,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 46,
    "layers": 2,
    "hash": "12433160-2e",
@@ -641,7 +641,7 @@
   {
    "n": 43,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 54,
    "layers": 2,
    "hash": "2d76380d-36",
@@ -667,7 +667,7 @@
   {
    "n": 45,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 54,
    "layers": 3,
    "hash": "bc42a5f6-36",
@@ -680,7 +680,7 @@
   {
    "n": 46,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 56,
    "layers": 3,
    "hash": "df65c078-38",
@@ -693,7 +693,7 @@
   {
    "n": 47,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 44,
    "layers": 3,
    "hash": "be85b4fb-2c",
@@ -706,7 +706,7 @@
   {
    "n": 48,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 54,
    "layers": 4,
    "hash": "f9e59900-36",
@@ -719,7 +719,7 @@
   {
    "n": 49,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 46,
    "layers": 3,
    "hash": "980a7daf-2e",
@@ -732,7 +732,7 @@
   {
    "n": 50,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 54,
    "layers": 4,
    "hash": "820d5d64-36",
@@ -745,7 +745,7 @@
   {
    "n": 51,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 52,
    "layers": 3,
    "hash": "f5ee77ed-34",
@@ -758,7 +758,7 @@
   {
    "n": 52,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 52,
    "layers": 2,
    "hash": "4dfbb45d-34",
@@ -771,7 +771,7 @@
   {
    "n": 53,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 50,
    "layers": 3,
    "hash": "e64cec36-32",
@@ -784,7 +784,7 @@
   {
    "n": 54,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 40,
    "layers": 3,
    "hash": "d4a6b3ff-28",
@@ -797,7 +797,7 @@
   {
    "n": 55,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 44,
    "layers": 2,
    "hash": "3c05307d-2c",
@@ -810,7 +810,7 @@
   {
    "n": 56,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 42,
    "layers": 2,
    "hash": "33cb1bf0-2a",
@@ -823,7 +823,7 @@
   {
    "n": 57,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 42,
    "layers": 2,
    "hash": "96e34595-2a",
@@ -836,7 +836,7 @@
   {
    "n": 58,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 42,
    "layers": 2,
    "hash": "a505552b-2a",
@@ -849,7 +849,7 @@
   {
    "n": 59,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 42,
    "layers": 2,
    "hash": "e806939d-2a",
@@ -875,7 +875,7 @@
   {
    "n": 61,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 56,
    "layers": 2,
    "hash": "7e9a0bf6-38",
@@ -901,7 +901,7 @@
   {
    "n": 63,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 48,
    "layers": 3,
    "hash": "aab5fcd3-30",
@@ -914,7 +914,7 @@
   {
    "n": 64,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 44,
    "layers": 2,
    "hash": "f2627ba0-2c",
@@ -927,7 +927,7 @@
   {
    "n": 65,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 48,
    "layers": 4,
    "hash": "ea3f203f-30",
@@ -940,7 +940,7 @@
   {
    "n": 66,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 56,
    "layers": 3,
    "hash": "2b4d67bd-38",
@@ -953,7 +953,7 @@
   {
    "n": 67,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 56,
    "layers": 2,
    "hash": "9aac6baf-38",
@@ -966,7 +966,7 @@
   {
    "n": 68,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 48,
    "layers": 3,
    "hash": "ab696d76-30",
@@ -979,7 +979,7 @@
   {
    "n": 69,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 52,
    "layers": 2,
    "hash": "bf782f50-34",
@@ -992,7 +992,7 @@
   {
    "n": 70,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 52,
    "layers": 3,
    "hash": "e763d8ef-34",
@@ -1005,7 +1005,7 @@
   {
    "n": 71,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 54,
    "layers": 4,
    "hash": "c7fe259a-36",
@@ -1018,7 +1018,7 @@
   {
    "n": 72,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 56,
    "layers": 2,
    "hash": "3afdb19e-38",
@@ -1031,7 +1031,7 @@
   {
    "n": 73,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 56,
    "layers": 2,
    "hash": "07250a83-38",
@@ -1044,7 +1044,7 @@
   {
    "n": 74,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 50,
    "layers": 2,
    "hash": "6d3c7495-32",
@@ -1057,7 +1057,7 @@
   {
    "n": 75,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 50,
    "layers": 4,
    "hash": "fab1c547-32",
@@ -1070,7 +1070,7 @@
   {
    "n": 76,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 52,
    "layers": 3,
    "hash": "c05cceef-34",
@@ -1083,7 +1083,7 @@
   {
    "n": 77,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 56,
    "layers": 2,
    "hash": "7ebe31c0-38",
@@ -1109,7 +1109,7 @@
   {
    "n": 79,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 56,
    "layers": 3,
    "hash": "cfcbad85-38",
@@ -1135,7 +1135,7 @@
   {
    "n": 81,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 50,
    "layers": 3,
    "hash": "62e5a61e-32",
@@ -1148,7 +1148,7 @@
   {
    "n": 82,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 52,
    "layers": 3,
    "hash": "76af1580-34",
@@ -1161,7 +1161,7 @@
   {
    "n": 83,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 50,
    "layers": 2,
    "hash": "dcf546ab-32",
@@ -1174,7 +1174,7 @@
   {
    "n": 84,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 52,
    "layers": 2,
    "hash": "ce15f435-34",
@@ -1187,7 +1187,7 @@
   {
    "n": 85,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 54,
    "layers": 2,
    "hash": "565c977f-36",
@@ -1200,7 +1200,7 @@
   {
    "n": 86,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 60,
    "layers": 2,
    "hash": "f1210970-3c",
@@ -1213,7 +1213,7 @@
   {
    "n": 87,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 54,
    "layers": 3,
    "hash": "064da578-36",
@@ -1226,7 +1226,7 @@
   {
    "n": 88,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 56,
    "layers": 2,
    "hash": "4e0beb55-38",
@@ -1239,7 +1239,7 @@
   {
    "n": 89,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 56,
    "layers": 3,
    "hash": "01fa64e4-38",
@@ -1252,7 +1252,7 @@
   {
    "n": 90,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 54,
    "layers": 2,
    "hash": "571d45b3-36",
@@ -1265,7 +1265,7 @@
   {
    "n": 91,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 50,
    "layers": 2,
    "hash": "66e2caa3-32",
@@ -1278,7 +1278,7 @@
   {
    "n": 92,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 64,
    "layers": 2,
    "hash": "6d8af3c4-40",
@@ -1291,7 +1291,7 @@
   {
    "n": 93,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 60,
    "layers": 2,
    "hash": "2672880e-3c",
@@ -1304,7 +1304,7 @@
   {
    "n": 94,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 66,
    "layers": 2,
    "hash": "56c5e835-42",
@@ -1317,7 +1317,7 @@
   {
    "n": 95,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 64,
    "layers": 3,
    "hash": "f77a007e-40",
@@ -1330,7 +1330,7 @@
   {
    "n": 96,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 64,
    "layers": 2,
    "hash": "9ccc9207-40",
@@ -1343,7 +1343,7 @@
   {
    "n": 97,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 54,
    "layers": 3,
    "hash": "beea6c3e-36",
@@ -1369,7 +1369,7 @@
   {
    "n": 99,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 58,
    "layers": 2,
    "hash": "5b8c4682-3a",
@@ -1382,7 +1382,7 @@
   {
    "n": 100,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 72,
    "layers": 3,
    "hash": "a4d273ce-48",
@@ -1395,7 +1395,7 @@
   {
    "n": 101,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 58,
    "layers": 3,
    "hash": "c35e9c92-3a",
@@ -1408,7 +1408,7 @@
   {
    "n": 102,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 48,
    "layers": 3,
    "hash": "09e34f4a-30",
@@ -1421,7 +1421,7 @@
   {
    "n": 103,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 48,
    "layers": 2,
    "hash": "f587983e-30",
@@ -1434,7 +1434,7 @@
   {
    "n": 104,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 56,
    "layers": 3,
    "hash": "7f0a7ab4-38",
@@ -1447,7 +1447,7 @@
   {
    "n": 105,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 62,
    "layers": 2,
    "hash": "7bb178d1-3e",
@@ -1460,7 +1460,7 @@
   {
    "n": 106,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 62,
    "layers": 3,
    "hash": "fd8f3b86-3e",
@@ -1473,7 +1473,7 @@
   {
    "n": 107,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 52,
    "layers": 3,
    "hash": "187270de-34",
@@ -1486,7 +1486,7 @@
   {
    "n": 108,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 62,
    "layers": 3,
    "hash": "77932ba2-3e",
@@ -1499,7 +1499,7 @@
   {
    "n": 109,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 54,
    "layers": 3,
    "hash": "2fc46a8a-36",
@@ -1512,7 +1512,7 @@
   {
    "n": 110,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 56,
    "layers": 2,
    "hash": "4f42212f-38",
@@ -1525,7 +1525,7 @@
   {
    "n": 111,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 54,
    "layers": 2,
    "hash": "2a88587e-36",
@@ -1538,7 +1538,7 @@
   {
    "n": 112,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 52,
    "layers": 3,
    "hash": "70394f56-34",
@@ -1551,7 +1551,7 @@
   {
    "n": 113,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 68,
    "layers": 2,
    "hash": "229cf8dd-44",
@@ -1564,7 +1564,7 @@
   {
    "n": 114,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 64,
    "layers": 3,
    "hash": "3dca593a-40",
@@ -1577,7 +1577,7 @@
   {
    "n": 115,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 68,
    "layers": 2,
    "hash": "443be3ea-44",
@@ -1603,7 +1603,7 @@
   {
    "n": 117,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 58,
    "layers": 3,
    "hash": "744c17c1-3a",
@@ -1629,7 +1629,7 @@
   {
    "n": 119,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 68,
    "layers": 2,
    "hash": "279d0710-44",
@@ -1642,7 +1642,7 @@
   {
    "n": 120,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 68,
    "layers": 3,
    "hash": "f2f43910-44",
@@ -1655,7 +1655,7 @@
   {
    "n": 121,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 64,
    "layers": 4,
    "hash": "2ae057c2-40",
@@ -1668,7 +1668,7 @@
   {
    "n": 122,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 66,
    "layers": 2,
    "hash": "a35be528-42",
@@ -1681,7 +1681,7 @@
   {
    "n": 123,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 72,
    "layers": 3,
    "hash": "97aed8e7-48",
@@ -1694,7 +1694,7 @@
   {
    "n": 124,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 62,
    "layers": 2,
    "hash": "03cffc8b-3e",
@@ -1720,7 +1720,7 @@
   {
    "n": 126,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 60,
    "layers": 2,
    "hash": "f414eb2f-3c",
@@ -1733,7 +1733,7 @@
   {
    "n": 127,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 64,
    "layers": 2,
    "hash": "35535e27-40",
@@ -1746,7 +1746,7 @@
   {
    "n": 128,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 58,
    "layers": 3,
    "hash": "aae31531-3a",
@@ -1759,7 +1759,7 @@
   {
    "n": 129,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 58,
    "layers": 4,
    "hash": "3d85801d-3a",
@@ -1772,7 +1772,7 @@
   {
    "n": 130,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 56,
    "layers": 3,
    "hash": "16c9453c-38",
@@ -1785,7 +1785,7 @@
   {
    "n": 131,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 68,
    "layers": 2,
    "hash": "67fa9dba-44",
@@ -1798,7 +1798,7 @@
   {
    "n": 132,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 68,
    "layers": 2,
    "hash": "ca4f6312-44",
@@ -1811,7 +1811,7 @@
   {
    "n": 133,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 66,
    "layers": 3,
    "hash": "3510af43-42",
@@ -1837,7 +1837,7 @@
   {
    "n": 135,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 70,
    "layers": 2,
    "hash": "16e0e072-46",
@@ -1863,7 +1863,7 @@
   {
    "n": 137,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 70,
    "layers": 3,
    "hash": "fc7b7246-46",
@@ -1876,7 +1876,7 @@
   {
    "n": 138,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 64,
    "layers": 2,
    "hash": "759e2169-40",
@@ -1889,7 +1889,7 @@
   {
    "n": 139,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 60,
    "layers": 3,
    "hash": "c459a099-3c",
@@ -1902,7 +1902,7 @@
   {
    "n": 140,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 72,
    "layers": 2,
    "hash": "b2bd7393-48",
@@ -1915,7 +1915,7 @@
   {
    "n": 141,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 58,
    "layers": 3,
    "hash": "1fe5a9f3-3a",
@@ -1928,7 +1928,7 @@
   {
    "n": 142,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 72,
    "layers": 3,
    "hash": "3f7d1260-48",
@@ -1941,7 +1941,7 @@
   {
    "n": 143,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 72,
    "layers": 4,
    "hash": "1e81f9f1-48",
@@ -1954,7 +1954,7 @@
   {
    "n": 144,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 64,
    "layers": 2,
    "hash": "f1c7274c-40",
@@ -1967,7 +1967,7 @@
   {
    "n": 145,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 66,
    "layers": 3,
    "hash": "e8bb96e0-42",
@@ -1980,7 +1980,7 @@
   {
    "n": 146,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 68,
    "layers": 3,
    "hash": "3f883f6a-44",
@@ -1993,7 +1993,7 @@
   {
    "n": 147,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 72,
    "layers": 3,
    "hash": "15b139a6-48",
@@ -2006,7 +2006,7 @@
   {
    "n": 148,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 72,
    "layers": 2,
    "hash": "cb1d5d94-48",
@@ -2019,7 +2019,7 @@
   {
    "n": 149,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 72,
    "layers": 3,
    "hash": "35be4854-48",
@@ -2032,7 +2032,7 @@
   {
    "n": 150,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 72,
    "layers": 3,
    "hash": "224ac7fe-48",
@@ -2045,7 +2045,7 @@
   {
    "n": 151,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 64,
    "layers": 3,
    "hash": "82426455-40",
@@ -2071,7 +2071,7 @@
   {
    "n": 153,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 60,
    "layers": 3,
    "hash": "1a906e0c-3c",
@@ -2097,7 +2097,7 @@
   {
    "n": 155,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 64,
    "layers": 2,
    "hash": "25171995-40",
@@ -2110,7 +2110,7 @@
   {
    "n": 156,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 66,
    "layers": 2,
    "hash": "5c168344-42",
@@ -2123,7 +2123,7 @@
   {
    "n": 157,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 62,
    "layers": 3,
    "hash": "9eeb128b-3e",
@@ -2136,7 +2136,7 @@
   {
    "n": 158,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 62,
    "layers": 3,
    "hash": "97864cf2-3e",
@@ -2149,7 +2149,7 @@
   {
    "n": 159,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 56,
    "layers": 2,
    "hash": "6c4ef18b-38",
@@ -2162,7 +2162,7 @@
   {
    "n": 160,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 64,
    "layers": 3,
    "hash": "a2355131-40",
@@ -2175,7 +2175,7 @@
   {
    "n": 161,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 70,
    "layers": 3,
    "hash": "0896409a-46",
@@ -2188,7 +2188,7 @@
   {
    "n": 162,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 62,
    "layers": 3,
    "hash": "95365541-3e",
@@ -2201,7 +2201,7 @@
   {
    "n": 163,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 66,
    "layers": 4,
    "hash": "4233a5f2-42",
@@ -2214,7 +2214,7 @@
   {
    "n": 164,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 58,
    "layers": 3,
    "hash": "0e7d7bdd-3a",
@@ -2227,7 +2227,7 @@
   {
    "n": 165,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 62,
    "layers": 3,
    "hash": "22980c4b-3e",
@@ -2240,7 +2240,7 @@
   {
    "n": 166,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 70,
    "layers": 2,
    "hash": "70d0a477-46",
@@ -2253,7 +2253,7 @@
   {
    "n": 167,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 66,
    "layers": 4,
    "hash": "b8cc5809-42",
@@ -2266,7 +2266,7 @@
   {
    "n": 168,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 60,
    "layers": 3,
    "hash": "de509ee3-3c",
@@ -2279,7 +2279,7 @@
   {
    "n": 169,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 72,
    "layers": 3,
    "hash": "bc74359e-48",
@@ -2292,7 +2292,7 @@
   {
    "n": 170,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 64,
    "layers": 3,
    "hash": "b7216432-40",
@@ -2305,7 +2305,7 @@
   {
    "n": 171,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 74,
    "layers": 2,
    "hash": "bff7c287-4a",
@@ -2331,7 +2331,7 @@
   {
    "n": 173,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 74,
    "layers": 4,
    "hash": "afefcb1e-4a",
@@ -2357,7 +2357,7 @@
   {
    "n": 175,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 72,
    "layers": 4,
    "hash": "9ebda9ef-48",
@@ -2370,7 +2370,7 @@
   {
    "n": 176,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 60,
    "layers": 3,
    "hash": "aa1dc4ec-3c",
@@ -2383,7 +2383,7 @@
   {
    "n": 177,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 58,
    "layers": 3,
    "hash": "6c212d25-3a",
@@ -2396,7 +2396,7 @@
   {
    "n": 178,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 68,
    "layers": 4,
    "hash": "a2c645c3-44",
@@ -2409,7 +2409,7 @@
   {
    "n": 179,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 60,
    "layers": 3,
    "hash": "61eb312d-3c",
@@ -2422,7 +2422,7 @@
   {
    "n": 180,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 56,
    "layers": 3,
    "hash": "b429d4ca-38",
@@ -2435,7 +2435,7 @@
   {
    "n": 181,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 66,
    "layers": 4,
    "hash": "a1e78579-42",
@@ -2448,7 +2448,7 @@
   {
    "n": 182,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 70,
    "layers": 3,
    "hash": "eb0f32c4-46",
@@ -2461,7 +2461,7 @@
   {
    "n": 183,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 70,
    "layers": 4,
    "hash": "48396f0e-46",
@@ -2474,7 +2474,7 @@
   {
    "n": 184,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 58,
    "layers": 3,
    "hash": "cd5b4cf4-3a",
@@ -2487,7 +2487,7 @@
   {
    "n": 185,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 60,
    "layers": 4,
    "hash": "968ab677-3c",
@@ -2500,7 +2500,7 @@
   {
    "n": 186,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 70,
    "layers": 3,
    "hash": "8548a5c9-46",
@@ -2513,7 +2513,7 @@
   {
    "n": 187,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 72,
    "layers": 3,
    "hash": "a0680297-48",
@@ -2526,7 +2526,7 @@
   {
    "n": 188,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 74,
    "layers": 2,
    "hash": "8c1008ef-4a",
@@ -2539,7 +2539,7 @@
   {
    "n": 189,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 62,
    "layers": 3,
    "hash": "e2e834c5-3e",
@@ -2565,7 +2565,7 @@
   {
    "n": 191,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 74,
    "layers": 3,
    "hash": "ca801356-4a",
@@ -2591,7 +2591,7 @@
   {
    "n": 193,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 70,
    "layers": 4,
    "hash": "cc61e872-46",
@@ -2604,7 +2604,7 @@
   {
    "n": 194,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 70,
    "layers": 4,
    "hash": "364df731-46",
@@ -2617,7 +2617,7 @@
   {
    "n": 195,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 76,
    "layers": 3,
    "hash": "fe504cf8-4c",
@@ -2630,7 +2630,7 @@
   {
    "n": 196,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 66,
    "layers": 3,
    "hash": "2396d865-42",
@@ -2643,7 +2643,7 @@
   {
    "n": 197,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 76,
    "layers": 3,
    "hash": "f48c1fa3-4c",
@@ -2656,7 +2656,7 @@
   {
    "n": 198,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 76,
    "layers": 3,
    "hash": "19b1a540-4c",
@@ -2669,7 +2669,7 @@
   {
    "n": 199,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 78,
    "layers": 2,
    "hash": "1a74b677-4e",
@@ -2682,7 +2682,7 @@
   {
    "n": 200,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 80,
    "layers": 4,
    "hash": "f6122fc2-50",
@@ -2695,7 +2695,7 @@
   {
    "n": 201,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 60,
    "layers": 4,
    "hash": "08c7d300-3c",
@@ -2708,7 +2708,7 @@
   {
    "n": 202,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 70,
    "layers": 3,
    "hash": "282fd77c-46",
@@ -2721,7 +2721,7 @@
   {
    "n": 203,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 68,
    "layers": 3,
    "hash": "66f7efc1-44",
@@ -2734,7 +2734,7 @@
   {
    "n": 204,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 72,
    "layers": 3,
    "hash": "a398e7fd-48",
@@ -2747,7 +2747,7 @@
   {
    "n": 205,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 70,
    "layers": 2,
    "hash": "8d44df7d-46",
@@ -2760,7 +2760,7 @@
   {
    "n": 206,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 72,
    "layers": 3,
    "hash": "1ec5fd85-48",
@@ -2773,7 +2773,7 @@
   {
    "n": 207,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 72,
    "layers": 3,
    "hash": "4b7d227c-48",
@@ -2799,7 +2799,7 @@
   {
    "n": 209,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 74,
    "layers": 3,
    "hash": "081aff9f-4a",
@@ -2825,7 +2825,7 @@
   {
    "n": 211,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 72,
    "layers": 3,
    "hash": "f38291d1-48",
@@ -2838,7 +2838,7 @@
   {
    "n": 212,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 76,
    "layers": 3,
    "hash": "de207bb6-4c",
@@ -2851,7 +2851,7 @@
   {
    "n": 213,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 64,
    "layers": 4,
    "hash": "e30944fe-40",
@@ -2864,7 +2864,7 @@
   {
    "n": 214,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 64,
    "layers": 3,
    "hash": "7d580d13-40",
@@ -2877,7 +2877,7 @@
   {
    "n": 215,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 76,
    "layers": 2,
    "hash": "30819b2e-4c",
@@ -2890,7 +2890,7 @@
   {
    "n": 216,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 78,
    "layers": 3,
    "hash": "ca740ea4-4e",
@@ -2903,7 +2903,7 @@
   {
    "n": 217,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 76,
    "layers": 3,
    "hash": "79d79aab-4c",
@@ -2916,7 +2916,7 @@
   {
    "n": 218,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 70,
    "layers": 3,
    "hash": "d3905c2d-46",
@@ -2929,7 +2929,7 @@
   {
    "n": 219,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 80,
    "layers": 4,
    "hash": "05c52168-50",
@@ -2942,7 +2942,7 @@
   {
    "n": 220,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 78,
    "layers": 3,
    "hash": "eee52ef5-4e",
@@ -2955,7 +2955,7 @@
   {
    "n": 221,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 66,
    "layers": 4,
    "hash": "767c7513-42",
@@ -2968,7 +2968,7 @@
   {
    "n": 222,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 80,
    "layers": 3,
    "hash": "d9c7e3e0-50",
@@ -2981,7 +2981,7 @@
   {
    "n": 223,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 80,
    "layers": 3,
    "hash": "22ae7cf7-50",
@@ -2994,7 +2994,7 @@
   {
    "n": 224,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 80,
    "layers": 3,
    "hash": "4a60c82b-50",
@@ -3007,7 +3007,7 @@
   {
    "n": 225,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 74,
    "layers": 3,
    "hash": "f61bfc9a-4a",
@@ -3033,7 +3033,7 @@
   {
    "n": 227,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 66,
    "layers": 3,
    "hash": "f26ae228-42",
@@ -3059,7 +3059,7 @@
   {
    "n": 229,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 76,
    "layers": 3,
    "hash": "fceb9ce5-4c",
@@ -3072,7 +3072,7 @@
   {
    "n": 230,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 74,
    "layers": 3,
    "hash": "009fd246-4a",
@@ -3085,7 +3085,7 @@
   {
    "n": 231,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 66,
    "layers": 3,
    "hash": "9fa1fbde-42",
@@ -3098,7 +3098,7 @@
   {
    "n": 232,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 78,
    "layers": 3,
    "hash": "1d43a767-4e",
@@ -3111,7 +3111,7 @@
   {
    "n": 233,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 76,
    "layers": 2,
    "hash": "b22e6a33-4c",
@@ -3124,7 +3124,7 @@
   {
    "n": 234,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 72,
    "layers": 3,
    "hash": "be41f47b-48",
@@ -3137,7 +3137,7 @@
   {
    "n": 235,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 66,
    "layers": 4,
    "hash": "c80d9625-42",
@@ -3150,7 +3150,7 @@
   {
    "n": 236,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 78,
    "layers": 3,
    "hash": "3ecc0c3d-4e",
@@ -3163,7 +3163,7 @@
   {
    "n": 237,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 78,
    "layers": 3,
    "hash": "64b7386f-4e",
@@ -3176,7 +3176,7 @@
   {
    "n": 238,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 78,
    "layers": 3,
    "hash": "79290309-4e",
@@ -3189,7 +3189,7 @@
   {
    "n": 239,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 78,
    "layers": 3,
    "hash": "7bba6f9b-4e",
@@ -3202,7 +3202,7 @@
   {
    "n": 240,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 76,
    "layers": 3,
    "hash": "a6c0f044-4c",
@@ -3215,7 +3215,7 @@
   {
    "n": 241,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 78,
    "layers": 3,
    "hash": "18da0cc8-4e",
@@ -3228,7 +3228,7 @@
   {
    "n": 242,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 76,
    "layers": 4,
    "hash": "495d2701-4c",
@@ -3241,7 +3241,7 @@
   {
    "n": 243,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 80,
    "layers": 2,
    "hash": "7271e6f1-50",
@@ -3254,7 +3254,7 @@
   {
    "n": 244,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 80,
    "layers": 2,
    "hash": "ee41430a-50",
@@ -3267,7 +3267,7 @@
   {
    "n": 245,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 80,
    "layers": 3,
    "hash": "8a96c0ad-50",
@@ -3293,7 +3293,7 @@
   {
    "n": 247,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 80,
    "layers": 2,
    "hash": "98bef237-50",
@@ -3319,7 +3319,7 @@
   {
    "n": 249,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 80,
    "layers": 3,
    "hash": "7bbbd7d8-50",
@@ -3332,7 +3332,7 @@
   {
    "n": 250,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 80,
    "layers": 4,
    "hash": "d2ef02fa-50",
@@ -3345,7 +3345,7 @@
   {
    "n": 251,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 64,
    "layers": 3,
    "hash": "384cbaf5-40",
@@ -3358,7 +3358,7 @@
   {
    "n": 252,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 72,
    "layers": 3,
    "hash": "5845da35-48",
@@ -3371,7 +3371,7 @@
   {
    "n": 253,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 70,
    "layers": 4,
    "hash": "8658ffba-46",
@@ -3384,7 +3384,7 @@
   {
    "n": 254,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 68,
    "layers": 3,
    "hash": "4a3aabc8-44",
@@ -3397,7 +3397,7 @@
   {
    "n": 255,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 72,
    "layers": 3,
    "hash": "93849385-48",
@@ -3410,7 +3410,7 @@
   {
    "n": 256,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 72,
    "layers": 2,
    "hash": "30a55c55-48",
@@ -3423,7 +3423,7 @@
   {
    "n": 257,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 66,
    "layers": 4,
    "hash": "1c661841-42",
@@ -3436,7 +3436,7 @@
   {
    "n": 258,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 68,
    "layers": 3,
    "hash": "d07ee43c-44",
@@ -3449,7 +3449,7 @@
   {
    "n": 259,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 64,
    "layers": 3,
    "hash": "b0f3b4f8-40",
@@ -3462,7 +3462,7 @@
   {
    "n": 260,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 66,
    "layers": 3,
    "hash": "8d346172-42",
@@ -3475,7 +3475,7 @@
   {
    "n": 261,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 70,
    "layers": 4,
    "hash": "4bdc9d41-46",
@@ -3488,7 +3488,7 @@
   {
    "n": 262,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 76,
    "layers": 2,
    "hash": "9307b5df-4c",
@@ -3501,7 +3501,7 @@
   {
    "n": 263,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 78,
    "layers": 3,
    "hash": "d1a82a68-4e",
@@ -3527,7 +3527,7 @@
   {
    "n": 265,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 78,
    "layers": 3,
    "hash": "758e7954-4e",
@@ -3553,7 +3553,7 @@
   {
    "n": 267,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 78,
    "layers": 3,
    "hash": "727d0c15-4e",
@@ -3566,7 +3566,7 @@
   {
    "n": 268,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 78,
    "layers": 4,
    "hash": "ebdea391-4e",
@@ -3579,7 +3579,7 @@
   {
    "n": 269,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 70,
    "layers": 3,
    "hash": "81c23097-46",
@@ -3592,7 +3592,7 @@
   {
    "n": 270,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 80,
    "layers": 3,
    "hash": "6967e800-50",
@@ -3605,7 +3605,7 @@
   {
    "n": 271,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 68,
    "layers": 3,
    "hash": "264a567b-44",
@@ -3618,7 +3618,7 @@
   {
    "n": 272,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 82,
    "layers": 3,
    "hash": "acbfe468-52",
@@ -3631,7 +3631,7 @@
   {
    "n": 273,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 82,
    "layers": 4,
    "hash": "fdaaaa63-52",
@@ -3644,7 +3644,7 @@
   {
    "n": 274,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 82,
    "layers": 3,
    "hash": "391bc819-52",
@@ -3657,7 +3657,7 @@
   {
    "n": 275,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 88,
    "layers": 3,
    "hash": "aa2161a9-58",
@@ -3670,7 +3670,7 @@
   {
    "n": 276,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 68,
    "layers": 3,
    "hash": "dcd145e4-44",
@@ -3683,7 +3683,7 @@
   {
    "n": 277,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 72,
    "layers": 5,
    "hash": "7f4dc4cd-48",
@@ -3696,7 +3696,7 @@
   {
    "n": 278,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 76,
    "layers": 3,
    "hash": "6551a57b-4c",
@@ -3709,7 +3709,7 @@
   {
    "n": 279,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 66,
    "layers": 3,
    "hash": "2c6e43ca-42",
@@ -3722,7 +3722,7 @@
   {
    "n": 280,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 64,
    "layers": 3,
    "hash": "0ba11109-40",
@@ -3735,7 +3735,7 @@
   {
    "n": 281,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 72,
    "layers": 3,
    "hash": "a6ce611b-48",
@@ -3761,7 +3761,7 @@
   {
    "n": 283,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 80,
    "layers": 3,
    "hash": "e6876948-50",
@@ -3787,7 +3787,7 @@
   {
    "n": 285,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 78,
    "layers": 3,
    "hash": "cb4beddb-4e",
@@ -3800,7 +3800,7 @@
   {
    "n": 286,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 76,
    "layers": 3,
    "hash": "414fa736-4c",
@@ -3813,7 +3813,7 @@
   {
    "n": 287,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 72,
    "layers": 4,
    "hash": "493ba6e5-48",
@@ -3826,7 +3826,7 @@
   {
    "n": 288,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 80,
    "layers": 4,
    "hash": "36995086-50",
@@ -3839,7 +3839,7 @@
   {
    "n": 289,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 82,
    "layers": 2,
    "hash": "12f82325-52",
@@ -3852,7 +3852,7 @@
   {
    "n": 290,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 80,
    "layers": 4,
    "hash": "00fe4f53-50",
@@ -3865,7 +3865,7 @@
   {
    "n": 291,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 82,
    "layers": 3,
    "hash": "3c73389e-52",
@@ -3878,7 +3878,7 @@
   {
    "n": 292,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 82,
    "layers": 3,
    "hash": "a4faaf48-52",
@@ -3891,7 +3891,7 @@
   {
    "n": 293,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 76,
    "layers": 5,
    "hash": "db6fda55-4c",
@@ -3904,7 +3904,7 @@
   {
    "n": 294,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 82,
    "layers": 3,
    "hash": "f566c06c-52",
@@ -3917,7 +3917,7 @@
   {
    "n": 295,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 82,
    "layers": 3,
    "hash": "29ae43b7-52",
@@ -3930,7 +3930,7 @@
   {
    "n": 296,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 84,
    "layers": 3,
    "hash": "265dd348-54",
@@ -3943,7 +3943,7 @@
   {
    "n": 297,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 84,
    "layers": 4,
    "hash": "a6f2c152-54",
@@ -3956,7 +3956,7 @@
   {
    "n": 298,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 80,
    "layers": 4,
    "hash": "b53a440d-50",
@@ -3969,7 +3969,7 @@
   {
    "n": 299,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 86,
    "layers": 3,
    "hash": "a1d09d6e-56",
@@ -3982,7 +3982,7 @@
   {
    "n": 300,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 88,
    "layers": 3,
    "hash": "97e93c6f-58",
@@ -3995,7 +3995,7 @@
   {
    "n": 301,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 78,
    "layers": 3,
    "hash": "810d087d-4e",
@@ -4021,7 +4021,7 @@
   {
    "n": 303,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 78,
    "layers": 3,
    "hash": "b15545c3-4e",
@@ -4034,7 +4034,7 @@
   {
    "n": 304,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 78,
    "layers": 3,
    "hash": "6e5f7d06-4e",
@@ -4047,7 +4047,7 @@
   {
    "n": 305,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 66,
    "layers": 3,
    "hash": "4f1448ec-42",
@@ -4060,7 +4060,7 @@
   {
    "n": 306,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 82,
    "layers": 3,
    "hash": "1892e675-52",
@@ -4073,7 +4073,7 @@
   {
    "n": 307,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 82,
    "layers": 3,
    "hash": "203ec921-52",
@@ -4086,7 +4086,7 @@
   {
    "n": 308,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 76,
    "layers": 4,
    "hash": "2ce1f8ed-4c",
@@ -4099,7 +4099,7 @@
   {
    "n": 309,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 82,
    "layers": 4,
    "hash": "e9ca1159-52",
@@ -4112,7 +4112,7 @@
   {
    "n": 310,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 82,
    "layers": 3,
    "hash": "30ed9444-52",
@@ -4125,7 +4125,7 @@
   {
    "n": 311,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 78,
    "layers": 4,
    "hash": "7cd86d7d-4e",
@@ -4138,7 +4138,7 @@
   {
    "n": 312,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 84,
    "layers": 4,
    "hash": "d48b2971-54",
@@ -4151,7 +4151,7 @@
   {
    "n": 313,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 84,
    "layers": 3,
    "hash": "0f081683-54",
@@ -4164,7 +4164,7 @@
   {
    "n": 314,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 78,
    "layers": 3,
    "hash": "c6eafcdd-4e",
@@ -4177,7 +4177,7 @@
   {
    "n": 315,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 74,
    "layers": 4,
    "hash": "6e9008a1-4a",
@@ -4190,7 +4190,7 @@
   {
    "n": 316,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 78,
    "layers": 3,
    "hash": "13fd7baf-4e",
@@ -4203,7 +4203,7 @@
   {
    "n": 317,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 84,
    "layers": 3,
    "hash": "1a6b73f2-54",
@@ -4216,7 +4216,7 @@
   {
    "n": 318,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 86,
    "layers": 2,
    "hash": "4d74a869-56",
@@ -4229,7 +4229,7 @@
   {
    "n": 319,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 76,
    "layers": 3,
    "hash": "64d74d82-4c",
@@ -4255,7 +4255,7 @@
   {
    "n": 321,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 86,
    "layers": 3,
    "hash": "30acb127-56",
@@ -4281,7 +4281,7 @@
   {
    "n": 323,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 88,
    "layers": 3,
    "hash": "fe419f3f-58",
@@ -4294,7 +4294,7 @@
   {
    "n": 324,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 88,
    "layers": 3,
    "hash": "7eb5f0e0-58",
@@ -4307,7 +4307,7 @@
   {
    "n": 325,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 80,
    "layers": 5,
    "hash": "abb87d46-50",
@@ -4320,7 +4320,7 @@
   {
    "n": 326,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 82,
    "layers": 4,
    "hash": "a49abe93-52",
@@ -4333,7 +4333,7 @@
   {
    "n": 327,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 70,
    "layers": 4,
    "hash": "9836b810-46",
@@ -4346,7 +4346,7 @@
   {
    "n": 328,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 74,
    "layers": 4,
    "hash": "b604d1af-4a",
@@ -4359,7 +4359,7 @@
   {
    "n": 329,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 72,
    "layers": 3,
    "hash": "08860d3a-48",
@@ -4372,7 +4372,7 @@
   {
    "n": 330,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 76,
    "layers": 5,
    "hash": "244cead7-4c",
@@ -4385,7 +4385,7 @@
   {
    "n": 331,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 82,
    "layers": 3,
    "hash": "2b02be92-52",
@@ -4398,7 +4398,7 @@
   {
    "n": 332,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 84,
    "layers": 3,
    "hash": "17d3fd9a-54",
@@ -4411,7 +4411,7 @@
   {
    "n": 333,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 84,
    "layers": 4,
    "hash": "ce10e105-54",
@@ -4424,7 +4424,7 @@
   {
    "n": 334,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 86,
    "layers": 3,
    "hash": "ecf17503-56",
@@ -4437,7 +4437,7 @@
   {
    "n": 335,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 86,
    "layers": 4,
    "hash": "88c0d50e-56",
@@ -4450,7 +4450,7 @@
   {
    "n": 336,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 88,
    "layers": 3,
    "hash": "6e1c8444-58",
@@ -4463,7 +4463,7 @@
   {
    "n": 337,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 82,
    "layers": 3,
    "hash": "b336f099-52",
@@ -4489,7 +4489,7 @@
   {
    "n": 339,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 86,
    "layers": 2,
    "hash": "9525af33-56",
@@ -4515,7 +4515,7 @@
   {
    "n": 341,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 88,
    "layers": 4,
    "hash": "bdda569e-58",
@@ -4528,7 +4528,7 @@
   {
    "n": 342,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 88,
    "layers": 3,
    "hash": "c2ed517a-58",
@@ -4541,7 +4541,7 @@
   {
    "n": 343,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 86,
    "layers": 4,
    "hash": "d0c6cf7b-56",
@@ -4554,7 +4554,7 @@
   {
    "n": 344,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 88,
    "layers": 3,
    "hash": "8c5f7128-58",
@@ -4567,7 +4567,7 @@
   {
    "n": 345,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 88,
    "layers": 2,
    "hash": "349543ab-58",
@@ -4580,7 +4580,7 @@
   {
    "n": 346,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 88,
    "layers": 3,
    "hash": "0816f6f5-58",
@@ -4593,7 +4593,7 @@
   {
    "n": 347,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 88,
    "layers": 2,
    "hash": "e4e14563-58",
@@ -4606,7 +4606,7 @@
   {
    "n": 348,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 88,
    "layers": 3,
    "hash": "2d40b2cb-58",
@@ -4619,7 +4619,7 @@
   {
    "n": 349,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 82,
    "layers": 4,
    "hash": "d5a42151-52",
@@ -4632,7 +4632,7 @@
   {
    "n": 350,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 88,
    "layers": 4,
    "hash": "ae535c7d-58",
@@ -4645,7 +4645,7 @@
   {
    "n": 351,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 72,
    "layers": 3,
    "hash": "972b70d2-48",
@@ -4658,7 +4658,7 @@
   {
    "n": 352,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 80,
    "layers": 3,
    "hash": "97303419-50",
@@ -4671,7 +4671,7 @@
   {
    "n": 353,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 80,
    "layers": 2,
    "hash": "e26a6943-50",
@@ -4684,7 +4684,7 @@
   {
    "n": 354,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 82,
    "layers": 2,
    "hash": "1fa29f5c-52",
@@ -4697,7 +4697,7 @@
   {
    "n": 355,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 72,
    "layers": 3,
    "hash": "b7894048-48",
@@ -4723,7 +4723,7 @@
   {
    "n": 357,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 82,
    "layers": 2,
    "hash": "656e4fd7-52",
@@ -4749,7 +4749,7 @@
   {
    "n": 359,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 84,
    "layers": 3,
    "hash": "a2d0650c-54",
@@ -4762,7 +4762,7 @@
   {
    "n": 360,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 84,
    "layers": 3,
    "hash": "a3d9f01b-54",
@@ -4775,7 +4775,7 @@
   {
    "n": 361,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 84,
    "layers": 3,
    "hash": "c9760f15-54",
@@ -4788,7 +4788,7 @@
   {
    "n": 362,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 86,
    "layers": 3,
    "hash": "84289a4c-56",
@@ -4801,7 +4801,7 @@
   {
    "n": 363,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 84,
    "layers": 3,
    "hash": "4b9b58f4-54",
@@ -4814,7 +4814,7 @@
   {
    "n": 364,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 86,
    "layers": 4,
    "hash": "c816c001-56",
@@ -4827,7 +4827,7 @@
   {
    "n": 365,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 86,
    "layers": 3,
    "hash": "bccac5f5-56",
@@ -4840,7 +4840,7 @@
   {
    "n": 366,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 76,
    "layers": 3,
    "hash": "2acaa65a-4c",
@@ -4853,7 +4853,7 @@
   {
    "n": 367,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 80,
    "layers": 5,
    "hash": "23665f1a-50",
@@ -4866,7 +4866,7 @@
   {
    "n": 368,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 84,
    "layers": 4,
    "hash": "a5a8391e-54",
@@ -4879,7 +4879,7 @@
   {
    "n": 369,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 88,
    "layers": 3,
    "hash": "fd18f580-58",
@@ -4892,7 +4892,7 @@
   {
    "n": 370,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 88,
    "layers": 3,
    "hash": "4beea76f-58",
@@ -4905,7 +4905,7 @@
   {
    "n": 371,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 80,
    "layers": 4,
    "hash": "41313cf6-50",
@@ -4918,7 +4918,7 @@
   {
    "n": 372,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 90,
    "layers": 3,
    "hash": "2c7c90be-5a",
@@ -4931,7 +4931,7 @@
   {
    "n": 373,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 90,
    "layers": 3,
    "hash": "cd2e6918-5a",
@@ -4944,7 +4944,7 @@
   {
    "n": 374,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 92,
    "layers": 2,
    "hash": "d00f9cab-5c",
@@ -4983,7 +4983,7 @@
   {
    "n": 377,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 82,
    "layers": 2,
    "hash": "d5069b20-52",
@@ -4996,7 +4996,7 @@
   {
    "n": 378,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 84,
    "layers": 3,
    "hash": "1c7e62ac-54",
@@ -5009,7 +5009,7 @@
   {
    "n": 379,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 84,
    "layers": 4,
    "hash": "e3e5a2b0-54",
@@ -5022,7 +5022,7 @@
   {
    "n": 380,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 84,
    "layers": 3,
    "hash": "1f90da9a-54",
@@ -5035,7 +5035,7 @@
   {
    "n": 381,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 86,
    "layers": 3,
    "hash": "51a16c12-56",
@@ -5048,7 +5048,7 @@
   {
    "n": 382,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 74,
    "layers": 4,
    "hash": "a13a2686-4a",
@@ -5061,7 +5061,7 @@
   {
    "n": 383,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 80,
    "layers": 4,
    "hash": "2fc8c598-50",
@@ -5074,7 +5074,7 @@
   {
    "n": 384,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 86,
    "layers": 3,
    "hash": "17ae3a94-56",
@@ -5087,7 +5087,7 @@
   {
    "n": 385,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 88,
    "layers": 4,
    "hash": "03ca24a6-58",
@@ -5100,7 +5100,7 @@
   {
    "n": 386,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 78,
    "layers": 5,
    "hash": "75461387-4e",
@@ -5113,7 +5113,7 @@
   {
    "n": 387,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 76,
    "layers": 4,
    "hash": "1a0f6967-4c",
@@ -5126,7 +5126,7 @@
   {
    "n": 388,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 80,
    "layers": 3,
    "hash": "25570a19-50",
@@ -5139,7 +5139,7 @@
   {
    "n": 389,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 88,
    "layers": 5,
    "hash": "579825fd-58",
@@ -5152,7 +5152,7 @@
   {
    "n": 390,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 88,
    "layers": 3,
    "hash": "9b7a9898-58",
@@ -5165,7 +5165,7 @@
   {
    "n": 391,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 90,
    "layers": 2,
    "hash": "768b3c0a-5a",
@@ -5178,7 +5178,7 @@
   {
    "n": 392,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 90,
    "layers": 3,
    "hash": "e603bfee-5a",
@@ -5191,7 +5191,7 @@
   {
    "n": 393,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 88,
    "layers": 3,
    "hash": "154beb29-58",
@@ -5217,7 +5217,7 @@
   {
    "n": 395,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 92,
    "layers": 2,
    "hash": "d21b4fd7-5c",
@@ -5243,7 +5243,7 @@
   {
    "n": 397,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 92,
    "layers": 2,
    "hash": "aed723e0-5c",
@@ -5256,7 +5256,7 @@
   {
    "n": 398,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 94,
    "layers": 4,
    "hash": "2a4613a3-5e",
@@ -5269,7 +5269,7 @@
   {
    "n": 399,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 92,
    "layers": 5,
    "hash": "2d0ca654-5c",
@@ -5282,7 +5282,7 @@
   {
    "n": 400,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 94,
    "layers": 5,
    "hash": "d8a9d5f5-5e",
@@ -5295,7 +5295,7 @@
   {
    "n": 401,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 84,
    "layers": 5,
    "hash": "7be6fe17-54",
@@ -5308,7 +5308,7 @@
   {
    "n": 402,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 80,
    "layers": 4,
    "hash": "8de39eeb-50",
@@ -5321,7 +5321,7 @@
   {
    "n": 403,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 86,
    "layers": 4,
    "hash": "b2c624ef-56",
@@ -5334,7 +5334,7 @@
   {
    "n": 404,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 86,
    "layers": 5,
    "hash": "5b5f5474-56",
@@ -5347,7 +5347,7 @@
   {
    "n": 405,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 82,
    "layers": 4,
    "hash": "3cccd630-52",
@@ -5360,7 +5360,7 @@
   {
    "n": 406,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 84,
    "layers": 3,
    "hash": "2cfc9846-54",
@@ -5373,7 +5373,7 @@
   {
    "n": 407,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 90,
    "layers": 3,
    "hash": "0464ad27-5a",
@@ -5386,7 +5386,7 @@
   {
    "n": 408,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 88,
    "layers": 4,
    "hash": "f5d57fc5-58",
@@ -5399,7 +5399,7 @@
   {
    "n": 409,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 82,
    "layers": 4,
    "hash": "17d1a16f-52",
@@ -5412,7 +5412,7 @@
   {
    "n": 410,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 90,
    "layers": 3,
    "hash": "cedd9485-5a",
@@ -5425,7 +5425,7 @@
   {
    "n": 411,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 80,
    "layers": 3,
    "hash": "3c549435-50",
@@ -5451,7 +5451,7 @@
   {
    "n": 413,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 92,
    "layers": 3,
    "hash": "4f24b9a4-5c",
@@ -5477,7 +5477,7 @@
   {
    "n": 415,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 94,
    "layers": 4,
    "hash": "daeeb81a-5e",
@@ -5490,7 +5490,7 @@
   {
    "n": 416,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 94,
    "layers": 3,
    "hash": "bed298c3-5e",
@@ -5503,7 +5503,7 @@
   {
    "n": 417,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 94,
    "layers": 4,
    "hash": "edfab550-5e",
@@ -5516,7 +5516,7 @@
   {
    "n": 418,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 94,
    "layers": 4,
    "hash": "49630ab4-5e",
@@ -5529,7 +5529,7 @@
   {
    "n": 419,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 94,
    "layers": 3,
    "hash": "a1a8df22-5e",
@@ -5542,7 +5542,7 @@
   {
    "n": 420,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 94,
    "layers": 3,
    "hash": "0bec3c7c-5e",
@@ -5555,7 +5555,7 @@
   {
    "n": 421,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 92,
    "layers": 4,
    "hash": "abe99b0c-5c",
@@ -5568,7 +5568,7 @@
   {
    "n": 422,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 94,
    "layers": 3,
    "hash": "67500ee0-5e",
@@ -5581,7 +5581,7 @@
   {
    "n": 423,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 92,
    "layers": 5,
    "hash": "ff3876de-5c",
@@ -5594,7 +5594,7 @@
   {
    "n": 424,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 96,
    "layers": 4,
    "hash": "1aa5aaa5-60",
@@ -5607,7 +5607,7 @@
   {
    "n": 425,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 92,
    "layers": 4,
    "hash": "74063c14-5c",
@@ -5620,7 +5620,7 @@
   {
    "n": 426,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 90,
    "layers": 4,
    "hash": "102c99dd-5a",
@@ -5633,7 +5633,7 @@
   {
    "n": 427,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 88,
    "layers": 2,
    "hash": "c29f5310-58",
@@ -5646,7 +5646,7 @@
   {
    "n": 428,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 90,
    "layers": 3,
    "hash": "38b4e2ea-5a",
@@ -5659,7 +5659,7 @@
   {
    "n": 429,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 82,
    "layers": 3,
    "hash": "7d5cb29f-52",
@@ -5685,7 +5685,7 @@
   {
    "n": 431,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 90,
    "layers": 4,
    "hash": "8bf4aa7e-5a",
@@ -5711,7 +5711,7 @@
   {
    "n": 433,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 94,
    "layers": 3,
    "hash": "e6e049ac-5e",
@@ -5724,7 +5724,7 @@
   {
    "n": 434,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 94,
    "layers": 3,
    "hash": "872e8ccf-5e",
@@ -5737,7 +5737,7 @@
   {
    "n": 435,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 94,
    "layers": 2,
    "hash": "1f476049-5e",
@@ -5750,7 +5750,7 @@
   {
    "n": 436,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 94,
    "layers": 3,
    "hash": "7c21c60b-5e",
@@ -5763,7 +5763,7 @@
   {
    "n": 437,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 94,
    "layers": 2,
    "hash": "790fce03-5e",
@@ -5776,7 +5776,7 @@
   {
    "n": 438,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 94,
    "layers": 5,
    "hash": "fe684628-5e",
@@ -5789,7 +5789,7 @@
   {
    "n": 439,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 94,
    "layers": 4,
    "hash": "f4351111-5e",
@@ -5802,7 +5802,7 @@
   {
    "n": 440,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 96,
    "layers": 5,
    "hash": "6aa5b18d-60",
@@ -5815,7 +5815,7 @@
   {
    "n": 441,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 92,
    "layers": 4,
    "hash": "229018ab-5c",
@@ -5828,7 +5828,7 @@
   {
    "n": 442,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 96,
    "layers": 3,
    "hash": "87457f44-60",
@@ -5841,7 +5841,7 @@
   {
    "n": 443,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 96,
    "layers": 4,
    "hash": "0f27d0e8-60",
@@ -5854,7 +5854,7 @@
   {
    "n": 444,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 90,
    "layers": 3,
    "hash": "59493673-5a",
@@ -5867,7 +5867,7 @@
   {
    "n": 445,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 88,
    "layers": 5,
    "hash": "e4a679d0-58",
@@ -5880,7 +5880,7 @@
   {
    "n": 446,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 96,
    "layers": 2,
    "hash": "37062745-60",
@@ -5893,7 +5893,7 @@
   {
    "n": 447,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 96,
    "layers": 3,
    "hash": "077f8fcd-60",
@@ -5906,7 +5906,7 @@
   {
    "n": 448,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 96,
    "layers": 2,
    "hash": "133b37aa-60",
@@ -5919,7 +5919,7 @@
   {
    "n": 449,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 96,
    "layers": 3,
    "hash": "623aae3e-60",
@@ -5932,7 +5932,7 @@
   {
    "n": 450,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 96,
    "layers": 3,
    "hash": "df9b09ad-60",
@@ -5945,7 +5945,7 @@
   {
    "n": 451,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 80,
    "layers": 4,
    "hash": "5e2f0ef0-50",
@@ -5958,7 +5958,7 @@
   {
    "n": 452,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 88,
    "layers": 4,
    "hash": "a756ff0c-58",
@@ -5971,7 +5971,7 @@
   {
    "n": 453,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 88,
    "layers": 3,
    "hash": "decd84eb-58",
@@ -5984,7 +5984,7 @@
   {
    "n": 454,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 84,
    "layers": 5,
    "hash": "3b05ffde-54",
@@ -5997,7 +5997,7 @@
   {
    "n": 455,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 90,
    "layers": 3,
    "hash": "3f6f44c2-5a",
@@ -6010,7 +6010,7 @@
   {
    "n": 456,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 86,
    "layers": 4,
    "hash": "5c8c5b0d-56",
@@ -6023,7 +6023,7 @@
   {
    "n": 457,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 80,
    "layers": 6,
    "hash": "5c1d32c0-50",
@@ -6036,7 +6036,7 @@
   {
    "n": 458,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 90,
    "layers": 3,
    "hash": "01b816f9-5a",
@@ -6049,7 +6049,7 @@
   {
    "n": 459,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 90,
    "layers": 4,
    "hash": "8bf57159-5a",
@@ -6062,7 +6062,7 @@
   {
    "n": 460,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 90,
    "layers": 4,
    "hash": "0399bf38-5a",
@@ -6075,7 +6075,7 @@
   {
    "n": 461,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 90,
    "layers": 4,
    "hash": "d02fa180-5a",
@@ -6088,7 +6088,7 @@
   {
    "n": 462,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 86,
    "layers": 3,
    "hash": "d07ec2e7-56",
@@ -6101,7 +6101,7 @@
   {
    "n": 463,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 92,
    "layers": 3,
    "hash": "6d47694f-5c",
@@ -6114,7 +6114,7 @@
   {
    "n": 464,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 92,
    "layers": 3,
    "hash": "0b892025-5c",
@@ -6127,7 +6127,7 @@
   {
    "n": 465,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 94,
    "layers": 2,
    "hash": "7b8a384d-5e",
@@ -6140,7 +6140,7 @@
   {
    "n": 466,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 92,
    "layers": 3,
    "hash": "3e1b32aa-5c",
@@ -6153,7 +6153,7 @@
   {
    "n": 467,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 90,
    "layers": 4,
    "hash": "0e75d34b-5a",
@@ -6179,7 +6179,7 @@
   {
    "n": 469,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 94,
    "layers": 3,
    "hash": "11debb65-5e",
@@ -6205,7 +6205,7 @@
   {
    "n": 471,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 96,
    "layers": 2,
    "hash": "4a04d84a-60",
@@ -6218,7 +6218,7 @@
   {
    "n": 472,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 96,
    "layers": 3,
    "hash": "618c6adc-60",
@@ -6231,7 +6231,7 @@
   {
    "n": 473,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 84,
    "layers": 5,
    "hash": "03d00ba4-54",
@@ -6244,7 +6244,7 @@
   {
    "n": 474,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 96,
    "layers": 4,
    "hash": "36fdf352-60",
@@ -6257,7 +6257,7 @@
   {
    "n": 475,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 92,
    "layers": 3,
    "hash": "af3ea3ef-5c",
@@ -6270,7 +6270,7 @@
   {
    "n": 476,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 92,
    "layers": 3,
    "hash": "f33d3704-5c",
@@ -6283,7 +6283,7 @@
   {
    "n": 477,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 92,
    "layers": 4,
    "hash": "26802e3b-5c",
@@ -6296,7 +6296,7 @@
   {
    "n": 478,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 92,
    "layers": 4,
    "hash": "fdc5b7fa-5c",
@@ -6309,7 +6309,7 @@
   {
    "n": 479,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 88,
    "layers": 4,
    "hash": "df8cceb8-58",
@@ -6322,7 +6322,7 @@
   {
    "n": 480,
    "ok": true,
-   "family": "Four Islands",
+   "family": "Dört Ada",
    "tiles": 84,
    "layers": 4,
    "hash": "aaa99ce9-54",
@@ -6335,7 +6335,7 @@
   {
    "n": 481,
    "ok": true,
-   "family": "Star",
+   "family": "Yıldız",
    "tiles": 82,
    "layers": 5,
    "hash": "962e42e8-52",
@@ -6348,7 +6348,7 @@
   {
    "n": 482,
    "ok": true,
-   "family": "Grand Palace",
+   "family": "Büyük Saray",
    "tiles": 94,
    "layers": 3,
    "hash": "b1d92280-5e",
@@ -6361,7 +6361,7 @@
   {
    "n": 483,
    "ok": true,
-   "family": "Classic Turtle",
+   "family": "Kaplumbağa",
    "tiles": 94,
    "layers": 2,
    "hash": "866bb582-5e",
@@ -6374,7 +6374,7 @@
   {
    "n": 484,
    "ok": true,
-   "family": "Pyramid",
+   "family": "Piramit",
    "tiles": 94,
    "layers": 3,
    "hash": "ae533231-5e",
@@ -6387,7 +6387,7 @@
   {
    "n": 485,
    "ok": true,
-   "family": "Butterfly",
+   "family": "Kelebek",
    "tiles": 86,
    "layers": 4,
    "hash": "6229046b-56",
@@ -6413,7 +6413,7 @@
   {
    "n": 487,
    "ok": true,
-   "family": "Twin Towers",
+   "family": "İkiz Kuleler",
    "tiles": 96,
    "layers": 3,
    "hash": "8ab45031-60",
@@ -6439,7 +6439,7 @@
   {
    "n": 489,
    "ok": true,
-   "family": "Diamond",
+   "family": "Elmas",
    "tiles": 92,
    "layers": 4,
    "hash": "cfc92410-5c",
@@ -6452,7 +6452,7 @@
   {
    "n": 490,
    "ok": true,
-   "family": "Bridge",
+   "family": "Köprü",
    "tiles": 96,
    "layers": 4,
    "hash": "fde84a1e-60",
@@ -6465,7 +6465,7 @@
   {
    "n": 491,
    "ok": true,
-   "family": "Lotus",
+   "family": "Nilüfer",
    "tiles": 94,
    "layers": 4,
    "hash": "57af9c33-5e",
@@ -6478,7 +6478,7 @@
   {
    "n": 492,
    "ok": true,
-   "family": "Temple",
+   "family": "Tapınak",
    "tiles": 96,
    "layers": 4,
    "hash": "17fb7623-60",
@@ -6491,7 +6491,7 @@
   {
    "n": 493,
    "ok": true,
-   "family": "Mountain",
+   "family": "Dağ",
    "tiles": 96,
    "layers": 3,
    "hash": "9fc7ff18-60",
@@ -6504,7 +6504,7 @@
   {
    "n": 494,
    "ok": true,
-   "family": "Crescent",
+   "family": "Hilal",
    "tiles": 88,
    "layers": 4,
    "hash": "9961ce2f-58",
@@ -6517,7 +6517,7 @@
   {
    "n": 495,
    "ok": true,
-   "family": "Cross",
+   "family": "Haç",
    "tiles": 90,
    "layers": 4,
    "hash": "948ea492-5a",
@@ -6530,7 +6530,7 @@
   {
    "n": 496,
    "ok": true,
-   "family": "Hourglass",
+   "family": "Kum Saati",
    "tiles": 96,
    "layers": 2,
    "hash": "465cdc0f-60",
@@ -6543,7 +6543,7 @@
   {
    "n": 497,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 94,
    "layers": 4,
    "hash": "b44d3faf-5e",
@@ -6556,7 +6556,7 @@
   {
    "n": 498,
    "ok": true,
-   "family": "Fortress",
+   "family": "Kale",
    "tiles": 96,
    "layers": 4,
    "hash": "c7f06952-60",
@@ -6569,7 +6569,7 @@
   {
    "n": 499,
    "ok": true,
-   "family": "Wave",
+   "family": "Dalga",
    "tiles": 96,
    "layers": 3,
    "hash": "c704da3e-60",
@@ -6582,7 +6582,7 @@
   {
    "n": 500,
    "ok": true,
-   "family": "Dragon",
+   "family": "Ejderha",
    "tiles": 92,
    "layers": 5,
    "hash": "2ec37a02-5c",

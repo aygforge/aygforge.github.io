@@ -1,6 +1,6 @@
 # Test Report — Mahjong: Zen Journey v1.0.0
 
-All results below come from real runs on the final build (`index.html`). Every suite can be re-run, and the raw output is in `tools/out/*.json`.
+All results below come from real runs on the final build (`index.html`). The game's interface is in Turkish; the browser tests check the Turkish on-screen text (for example "Bölüm Tamamlandı", "Dünya Tamamlandı", "Yolculuk Tamamlandı", "Tam ekran kullanılamıyor"). English labels below describe the same screens. Every suite can be re-run, and the raw output is in `tools/out/*.json`.
 
 | Suite | Command | Result |
 |---|---|---|

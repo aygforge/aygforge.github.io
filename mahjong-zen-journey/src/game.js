@@ -17,7 +17,7 @@
   function fillIcons(scope) { $$('[data-icon]', scope).forEach((el) => { if (!el.firstElementChild) el.innerHTML = icon(el.dataset.icon); }); }
   function fmtTime(ms) {
     const s = Math.floor(ms / 1000), h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), r = s % 60;
-    return h ? `${h}h ${String(m).padStart(2, '0')}m` : `${m}:${String(r).padStart(2, '0')}`;
+    return h ? `${h} sa ${String(m).padStart(2, '0')} dk` : `${m}:${String(r).padStart(2, '0')}`;
   }
   const levelCache = new Map();
   function getLevel(n) {
@@ -77,7 +77,7 @@
       const a = this.active;
       $$('[data-fs]').forEach((b) => {
         b.innerHTML = icon(a ? 'fsExit' : 'fsEnter');
-        b.setAttribute('aria-label', a ? 'Exit fullscreen' : 'Enter fullscreen');
+        b.setAttribute('aria-label', a ? 'Tam ekrandan çık' : 'Tam ekrana geç');
         b.setAttribute('aria-pressed', a ? 'true' : 'false');
         b.dataset.state = a ? 'on' : 'off';
       });
@@ -98,7 +98,7 @@
     }
     achievementToasts(list) {
       list.forEach((a, i) => setTimeout(() => {
-        this.toast('Achievement: ' + a.name, { cls: 'ach', icon: 'trophy', ms: 3200 });
+        this.toast('Başarım: ' + a.name, { cls: 'ach', icon: 'trophy', ms: 3200 });
         this.app.audio.play('achievement');
       }, 400 + i * 900));
     }
@@ -141,7 +141,7 @@
     }
     get isOpen() { return !!this.modal; }
     confirm(title, text, okLabel, onOk, opts) {
-      this.open(`<h2>${esc(title)}</h2><p>${esc(text)}</p><div class="actions row"><button class="btn" data-m="no">Cancel</button><button class="btn ${opts && opts.danger ? 'danger' : 'primary'}" data-m="yes">${esc(okLabel)}</button></div>`, {
+      this.open(`<h2>${esc(title)}</h2><p>${esc(text)}</p><div class="actions row"><button class="btn" data-m="no">Vazgeç</button><button class="btn ${opts && opts.danger ? 'danger' : 'primary'}" data-m="yes">${esc(okLabel)}</button></div>`, {
         actions: { no: () => { this.close(); if (opts && opts.onCancel) opts.onCancel(); }, yes: () => { this.closeNow(); onOk(); } }
       });
     }
@@ -149,10 +149,10 @@
       const app = this.app;
       const iframe = app.fs.inIframe;
       let text;
-      if (isIOS() && !app.fs.supported) text = 'Safari on iPhone does not allow web pages to hide the browser bars. The game already fills all of the available screen. For the most space, use Share → Add to Home Screen, or open the game in its own tab.';
-      else if (iframe) text = 'The page hosting this game does not allow fullscreen. The game is using all the space it was given. You can open it in its own browser tab instead.';
-      else text = afterFailure ? 'Your browser declined the fullscreen request. The game keeps using all of the visible screen.' : 'This browser does not support fullscreen mode. The game keeps using all of the visible screen.';
-      this.open(`<h2>Fullscreen unavailable</h2><p>${esc(text)}</p><div class="actions">${iframe ? '<button class="btn primary" data-m="tab"><span data-icon="external"></span>Open in new tab</button>' : ''}<button class="btn" data-m="ok">OK</button></div>`, {
+      if (isIOS() && !app.fs.supported) text = 'iPhone\'daki Safari, web sayfalarının tarayıcı çubuklarını gizlemesine izin vermiyor. Oyun zaten kullanılabilir ekranın tamamını dolduruyor. En geniş alan için Paylaş → Ana Ekrana Ekle\'yi kullanın ya da oyunu kendi sekmesinde açın.';
+      else if (iframe) text = 'Bu oyunu barındıran sayfa tam ekrana izin vermiyor. Oyun kendisine verilen alanın tamamını kullanıyor. Bunun yerine oyunu ayrı bir tarayıcı sekmesinde açabilirsiniz.';
+      else text = afterFailure ? 'Tarayıcınız tam ekran isteğini reddetti. Oyun görünen ekranın tamamını kullanmaya devam ediyor.' : 'Bu tarayıcı tam ekran modunu desteklemiyor. Oyun görünen ekranın tamamını kullanmaya devam ediyor.';
+      this.open(`<h2>Tam ekran kullanılamıyor</h2><p>${esc(text)}</p><div class="actions">${iframe ? '<button class="btn primary" data-m="tab"><span data-icon="external"></span>Yeni sekmede aç</button>' : ''}<button class="btn" data-m="ok">Tamam</button></div>`, {
         actions: { ok: () => this.close(), tab: () => { root.open(root.location.href, '_blank', 'noopener'); this.close(); } }
       });
     }
@@ -203,7 +203,7 @@
       $('#app').classList.remove('booting');
       this.setWorld(Core.levelMeta(P.continueLevel(this.save.data)).world);
       this.showMenu();
-      if (!this.save.persistent) setTimeout(() => this.ui.toast('Storage is unavailable here — export your save to keep progress.', { ms: 4200 }), 600);
+      if (!this.save.persistent) setTimeout(() => this.ui.toast('Burada depolama kullanılamıyor — ilerlemeni korumak için kaydını dışa aktar.', { ms: 4200 }), 600);
       if (this.debug && root.MJDebug) root.MJDebug.install(this);
     }
     get settings() { return this.save.data.settings; }
@@ -367,7 +367,7 @@
       $('#menu-stars').textContent = P.totalStars(d);
       $('#menu-bar').style.width = (P.levelsCleared(d) / Core.LEVEL_COUNT * 100).toFixed(1) + '%';
       const started = P.levelsCleared(d) > 0 || d.current;
-      $('#menu-play-label').textContent = started ? (d.current ? 'Continue' : 'Play Level ' + n) : 'Play';
+      $('#menu-play-label').textContent = started ? (d.current ? 'Devam Et' : n + '. Bölümü Oyna') : 'Oyna';
       this.setWorld(m.world);
       this.show('menu');
     }
@@ -379,10 +379,10 @@
       for (let w = 0; w < Core.WORLD_COUNT; w++) {
         const W = A.WORLDS[w], ws = P.worldStats(d, w);
         const cls = ['world-card', ws.unlocked ? '' : 'locked', ws.complete ? 'complete' : '', w === cur ? 'current' : ''].join(' ');
-        html += `<button class="${cls}" data-act="world" data-world="${w}" aria-label="${esc(W.name)}${ws.unlocked ? '' : ' (locked)'}">
+        html += `<button class="${cls}" data-act="world" data-world="${w}" aria-label="${esc(W.name)}${ws.unlocked ? '' : ' (kilitli)'}">
           <div class="world-thumb" style='background-image:${A.worldBackgroundURL(w)}'><span class="wn">${w + 1}</span></div>
-          <div class="world-info"><h3>${esc(W.name)}</h3><p>${ws.unlocked ? esc(W.sub) : 'Complete ' + esc(A.WORLDS[Math.max(0, w - 1)].name) + ' to unlock'}</p>
-          <div class="world-meta"><span>${ws.cleared}/25 levels</span><span><span class="star-ico">${icon('star')}</span>${ws.stars}/75</span><span class="muted">Lv ${w * 25 + 1}–${w * 25 + 25}</span></div></div>
+          <div class="world-info"><h3>${esc(W.name)}</h3><p>${ws.unlocked ? esc(W.sub) : 'Açmak için ' + esc(A.WORLDS[Math.max(0, w - 1)].name) + ' dünyasını tamamla'}</p>
+          <div class="world-meta"><span>${ws.cleared}/25 bölüm</span><span><span class="star-ico">${icon('star')}</span>${ws.stars}/75</span><span class="muted">Bölüm ${w * 25 + 1}–${w * 25 + 25}</span></div></div>
           ${ws.unlocked ? '' : `<span class="world-lock">${icon('lock')}</span>`}
         </button>`;
       }
@@ -395,14 +395,14 @@
     showLevels(w) {
       const d = this.save.data;
       if (!P.worldUnlocked(d, w)) {
-        this.ui.toast('Complete ' + A.WORLDS[w - 1].name + ' to unlock ' + A.WORLDS[w].name + '.', { icon: 'lock' });
+        this.ui.toast(A.WORLDS[w].name + ' dünyasını açmak için ' + A.WORLDS[w - 1].name + ' dünyasını tamamla.', { icon: 'lock' });
         return;
       }
       this.mapWorld = w;
       this.setWorld(w);
       const ws = P.worldStats(d, w);
       $('#levels-title').textContent = A.WORLDS[w].name;
-      $('#levels-sub').textContent = `World ${w + 1} · ${ws.cleared}/25 cleared · ${ws.stars}/75 ★`;
+      $('#levels-sub').textContent = `${w + 1}. Dünya · ${ws.cleared}/25 tamamlandı · ${ws.stars}/75 ★`;
       let html = '';
       const frontier = d.progress.unlocked;
       for (let i = 0; i < Core.WORLD_SIZE; i++) {
@@ -413,8 +413,8 @@
         const fam = Core.FAMILIES[getLevel(n).family];
         const stars = [1, 2, 3].map((k) => `<span class="${st >= k ? 'on' : ''}">${icon('star')}</span>`).join('');
         const cls = ['level-btn', unlocked ? '' : 'locked', fin ? 'final' : '', unlocked && n === frontier && !st ? 'next' : ''].join(' ');
-        html += `<button class="${cls}" data-act="level" data-level="${n}" ${unlocked ? '' : 'disabled'} aria-label="Level ${n}${unlocked ? ', ' + st + ' stars' : ', locked'}">` +
-          (fin ? `<div><div class="ft">FINAL CHALLENGE</div><b>${n}</b></div><div><div class="lstars">${unlocked ? stars : ''}</div><div class="fam">${esc(fam)}</div></div>${unlocked ? '' : `<span class="lk">${icon('lock')}</span>`}`
+        html += `<button class="${cls}" data-act="level" data-level="${n}" ${unlocked ? '' : 'disabled'} aria-label="Bölüm ${n}${unlocked ? ', ' + st + ' yıldız' : ', kilitli'}">` +
+          (fin ? `<div><div class="ft">FİNAL MÜCADELESİ</div><b>${n}</b></div><div><div class="lstars">${unlocked ? stars : ''}</div><div class="fam">${esc(fam)}</div></div>${unlocked ? '' : `<span class="lk">${icon('lock')}</span>`}`
             : `<b>${n}</b>${unlocked ? `<div class="lstars">${stars}</div><div class="fam">${esc(fam)}</div>` : `<span class="lk">${icon('lock')}</span>`}`) + '</button>';
       }
       $('#level-grid').innerHTML = html;
@@ -426,7 +426,7 @@
       opts = opts || {};
       const d = this.save.data;
       if (!(n >= 1 && n <= Core.LEVEL_COUNT)) return;
-      if (!P.isUnlocked(d, n)) { this.ui.toast('Level ' + n + ' is locked.', { icon: 'lock' }); return; }
+      if (!P.isUnlocked(d, n)) { this.ui.toast(n + '. bölüm kilitli.', { icon: 'lock' }); return; }
       const meta = Core.levelMeta(n);
       if (!opts.skipIntro && !d.seen.worlds.includes(meta.world)) {
         d.seen.worlds.push(meta.world);
@@ -447,7 +447,7 @@
       this.levelNo = n;
       this.setWorld(meta.world);
       this.renderer.setSession(s);
-      $('#hud-level').textContent = 'Level ' + n;
+      $('#hud-level').textContent = 'Bölüm ' + n;
       $('#hud-world').textContent = meta.worldName + ' · ' + Core.FAMILIES[lv.family];
       $('#hud-final').hidden = !meta.isFinal;
       $('#hud-warn').hidden = true;
@@ -490,7 +490,7 @@
         case 'deselect': this.audio.play('deselect'); r.invalidate(); break;
         case 'blocked':
           this.audio.play('blocked'); r.shake(res.tile);
-          if (!this._blockedTipShown && this.levelNo <= 3) { this._blockedTipShown = true; this.coach('That tile is blocked. A tile is free when nothing lies on it and its left or right side is open.', 4200); }
+          if (!this._blockedTipShown && this.levelNo <= 3) { this._blockedTipShown = true; this.coach('Bu taş bloke. Bir taşın üstünde başka taş yoksa ve sol ya da sağ yanı açıksa taş serbesttir.', 4200); }
           break;
         case 'mismatch': this.audio.play('mismatch'); r.shake(res.prev); r.invalidate(); break;
         case 'match': {
@@ -524,7 +524,7 @@
       const s = this.session;
       if (!s || s.won) return;
       const h = s.useHint(25000);
-      if (!h) { this.ui.toast('No matching pairs are free — try Shuffle or Undo.', { icon: 'info' }); return; }
+      if (!h) { this.ui.toast('Serbest eşleşen çift yok — Karıştır veya Geri Al\'ı dene.', { icon: 'info' }); return; }
       this.renderer.showHint(h.pair[0], h.pair[1]);
       this.audio.play('hint');
       if (h.solvable === false) $('#hud-warn').hidden = false;
@@ -553,7 +553,7 @@
       if (!s || s.won) return;
       const before = s.faces.slice();
       const e = s.undo();
-      if (!e) { this.ui.toast('Nothing to undo yet.'); return; }
+      if (!e) { this.ui.toast('Henüz geri alınacak hamle yok.'); return; }
       this.renderer.clearHint();
       if (e.t === 'm') this.renderer.restoreTiles([e.a, e.b]);
       else {
@@ -580,7 +580,7 @@
       $('#hud-warn').hidden = true;
       this.updateHUD();
       this.persistCurrent();
-      this.ui.toast(undone.length ? `Rewound ${undone.length} move${undone.length > 1 ? 's' : ''} to a solvable board.` : 'This board is already solvable.', { icon: 'undo' });
+      this.ui.toast(undone.length ? `Çözülebilir bir tahtaya dönmek için ${undone.length} hamle geri alındı.` : 'Bu tahta zaten çözülebilir.', { icon: 'undo' });
     }
     doRestart(force) {
       const s = this.session;
@@ -591,21 +591,21 @@
         $('#hud-warn').hidden = true;
         this.updateHUD();
         this.persistCurrent();
-        this.ui.toast('Level restarted', { icon: 'restart', ms: 1400 });
+        this.ui.toast('Bölüm yeniden başlatıldı', { icon: 'restart', ms: 1400 });
       };
       if (force || s.moves === 0 || s.won) { this.ui.closeNow(); go(); }
-      else this.ui.confirm('Restart level?', 'Your moves on this board will be cleared. The layout stays the same.', 'Restart', go);
+      else this.ui.confirm('Bölüm yeniden başlatılsın mı?', 'Bu tahtadaki hamlelerin silinecek. Taş düzeni aynı kalır.', 'Yeniden Başlat', go);
     }
 
     // ---------------------------------------------------------- modals
     openPause() {
       if (!this.session || this.session.won) return;
       const s = this.session;
-      this.ui.open(`<h2>Paused</h2><p>Level ${s.levelNo} · ${esc(Core.levelMeta(s.levelNo).worldName)}</p>
-        <div class="win-stats"><div><b>${s.remaining}</b><small>Tiles left</small></div><div><b>${s.moves}</b><small>Moves</small></div><div><b>${fmtTime(s.elapsed)}</b><small>Time</small></div></div>
-        <div class="actions"><button class="btn primary big" data-m="resume"><span data-icon="play"></span>Resume</button>
-        <div class="actions row" style="margin-top:0"><button class="btn" data-m="restart"><span data-icon="restart"></span>Restart</button><button class="btn" data-m="settings"><span data-icon="settings"></span>Settings</button></div>
-        <div class="actions row" style="margin-top:0"><button class="btn" data-m="map"><span data-icon="map"></span>Level Map</button><button class="btn" data-m="menu">Main Menu</button></div></div>`, {
+      this.ui.open(`<h2>Duraklatıldı</h2><p>Bölüm ${s.levelNo} · ${esc(Core.levelMeta(s.levelNo).worldName)}</p>
+        <div class="win-stats"><div><b>${s.remaining}</b><small>Kalan taş</small></div><div><b>${s.moves}</b><small>Hamle</small></div><div><b>${fmtTime(s.elapsed)}</b><small>Süre</small></div></div>
+        <div class="actions"><button class="btn primary big" data-m="resume"><span data-icon="play"></span>Devam Et</button>
+        <div class="actions row" style="margin-top:0"><button class="btn" data-m="restart"><span data-icon="restart"></span>Baştan</button><button class="btn" data-m="settings"><span data-icon="settings"></span>Ayarlar</button></div>
+        <div class="actions row" style="margin-top:0"><button class="btn" data-m="map"><span data-icon="map"></span>Bölüm Haritası</button><button class="btn" data-m="menu">Ana Menü</button></div></div>`, {
         actions: {
           resume: () => this.ui.close(),
           restart: () => this.doRestart(),
@@ -616,16 +616,16 @@
       });
     }
     showNoMoves() {
-      this.ui.open(`<h2>No more matches</h2><p>There are no free pairs left on the board. Undo a few moves, or shuffle the remaining tiles into a new solvable arrangement.</p>
-        <div class="actions"><button class="btn primary" data-m="undo"><span data-icon="undo"></span>Undo last move</button>
-        <div class="actions row" style="margin-top:0"><button class="btn" data-m="shuffle"><span data-icon="shuffle"></span>Shuffle</button><button class="btn" data-m="restart"><span data-icon="restart"></span>Restart</button></div></div>`, {
+      this.ui.open(`<h2>Eşleşme kalmadı</h2><p>Tahtada serbest çift kalmadı. Birkaç hamleyi geri al ya da kalan taşları çözülebilir yeni bir düzene karıştır.</p>
+        <div class="actions"><button class="btn primary" data-m="undo"><span data-icon="undo"></span>Son hamleyi geri al</button>
+        <div class="actions row" style="margin-top:0"><button class="btn" data-m="shuffle"><span data-icon="shuffle"></span>Karıştır</button><button class="btn" data-m="restart"><span data-icon="restart"></span>Baştan</button></div></div>`, {
         dismissable: false,
         actions: { undo: () => { this.ui.closeNow(); this.doUndo(); }, shuffle: () => { this.ui.closeNow(); this.doShuffle(); }, restart: () => { this.ui.closeNow(); this.doRestart(true); } }
       });
     }
     showShuffleImpossible() {
-      this.ui.open(`<h2>Shuffle can't help</h2><p>The remaining tiles are stacked so that no deal could clear them (for example a tile lying directly on its only partner). Rewind to the last board that can still be cleared, or restart the level.</p>
-        <div class="actions"><button class="btn primary" data-m="rewind"><span data-icon="undo"></span>Rewind to solvable board</button><button class="btn" data-m="restart"><span data-icon="restart"></span>Restart level</button><button class="btn" data-m="cancel">Cancel</button></div>`, {
+      this.ui.open(`<h2>Karıştırmak işe yaramaz</h2><p>Kalan taşlar hiçbir dağıtımla temizlenemeyecek biçimde üst üste duruyor (örneğin bir taş, tek eşinin hemen üstünde). Hâlâ temizlenebilen son tahtaya geri dön ya da bölümü yeniden başlat.</p>
+        <div class="actions"><button class="btn primary" data-m="rewind"><span data-icon="undo"></span>Çözülebilir tahtaya dön</button><button class="btn" data-m="restart"><span data-icon="restart"></span>Bölümü yeniden başlat</button><button class="btn" data-m="cancel">Vazgeç</button></div>`, {
         actions: { rewind: () => { this.ui.closeNow(); this.doRewind(); }, restart: () => { this.ui.closeNow(); this.doRestart(true); }, cancel: () => this.ui.close() }
       });
     }
@@ -653,16 +653,16 @@
     showWin(s, result) {
       const n = s.levelNo, meta = Core.levelMeta(n);
       const best = this.save.data.progress.bestTime[n - 1];
-      const title = meta.isFinal ? 'World Complete!' : 'Level Complete';
-      const help = s.hints + s.shuffles ? `<p style="font-size:13px">${s.hints} hint${s.hints === 1 ? '' : 's'} · ${s.shuffles} shuffle${s.shuffles === 1 ? '' : 's'} used — clear it with no help for 3 stars.</p>` : '';
-      const nextWorld = meta.isFinal ? `<p>${esc(A.WORLDS[meta.world + 1].name)} is now open.</p>` : '';
-      const el = this.ui.open(`${meta.isFinal ? `<div class="final-banner">${esc(meta.worldName)} · Final Challenge</div>` : ''}<h2>${title}</h2>
+      const title = meta.isFinal ? 'Dünya Tamamlandı!' : 'Bölüm Tamamlandı';
+      const help = s.hints + s.shuffles ? `<p style="font-size:13px">${s.hints} ipucu · ${s.shuffles} karıştırma kullanıldı — 3 yıldız için yardımsız bitir.</p>` : '';
+      const nextWorld = meta.isFinal ? `<p>${esc(A.WORLDS[meta.world + 1].name)} artık açık.</p>` : '';
+      const el = this.ui.open(`${meta.isFinal ? `<div class="final-banner">${esc(meta.worldName)} · Final Mücadelesi</div>` : ''}<h2>${title}</h2>
         <div class="win-stars"><span>${icon('star')}</span><span>${icon('star')}</span><span>${icon('star')}</span></div>
-        ${result.newBest && !result.firstClear ? '<div><span class="badge-new">NEW BEST</span></div>' : ''}
-        <div class="win-stats"><div><b>${s.moves}</b><small>Moves</small></div><div><b>${fmtTime(s.elapsed)}</b><small>Time</small></div><div><b>${fmtTime(best)}</b><small>Best</small></div></div>
+        ${result.newBest && !result.firstClear ? '<div><span class="badge-new">YENİ REKOR</span></div>' : ''}
+        <div class="win-stats"><div><b>${s.moves}</b><small>Hamle</small></div><div><b>${fmtTime(s.elapsed)}</b><small>Süre</small></div><div><b>${fmtTime(best)}</b><small>En iyi</small></div></div>
         ${help}${nextWorld}
-        <div class="actions"><button class="btn primary big" data-m="next"><span data-icon="play"></span>Next Level</button>
-        <div class="actions row" style="margin-top:0"><button class="btn" data-m="replay"><span data-icon="restart"></span>Replay</button><button class="btn" data-m="map"><span data-icon="map"></span>Level Map</button></div></div>`, {
+        <div class="actions"><button class="btn primary big" data-m="next"><span data-icon="play"></span>Sonraki Bölüm</button>
+        <div class="actions row" style="margin-top:0"><button class="btn" data-m="replay"><span data-icon="restart"></span>Tekrar Oyna</button><button class="btn" data-m="map"><span data-icon="map"></span>Bölüm Haritası</button></div></div>`, {
         dismissable: false,
         actions: {
           next: () => this.startLevel(n + 1, { resume: true }),
@@ -678,13 +678,13 @@
     showJourneyComplete(s, result) {
       const d = this.save.data;
       const total = P.totalStars(d), cleared = P.levelsCleared(d);
-      const el = this.ui.open(`<div class="final-banner">Dragon's Crown · Level 500</div><h2>Journey Complete!</h2>
+      const el = this.ui.open(`<div class="final-banner">${esc(A.WORLDS[Core.WORLD_COUNT - 1].name)} · Bölüm 500</div><h2>Yolculuk Tamamlandı!</h2>
         <div class="win-stars"><span>${icon('star')}</span><span>${icon('star')}</span><span>${icon('star')}</span></div>
-        <p>You have reached the summit of the Zen Journey. Every one of the 20 worlds has opened to you.</p>
-        <div class="win-stats"><div><b>${cleared}</b><small>Levels</small></div><div><b>${total}</b><small>of 1500 ★</small></div><div><b>${fmtTime(d.stats.playTimeMs)}</b><small>Played</small></div></div>
-        <p style="font-size:13px">${total < 1500 ? 'Replay any level to collect the remaining stars.' : 'Every star collected — a true Mahjong master.'}</p>
-        <div class="actions"><button class="btn primary big" data-m="map"><span data-icon="map"></span>World Map</button>
-        <div class="actions row" style="margin-top:0"><button class="btn" data-m="replay"><span data-icon="restart"></span>Replay</button><button class="btn" data-m="menu">Main Menu</button></div></div>`, {
+        <p>Zen Yolculuğu'nun zirvesine ulaştın. 20 dünyanın her biri sana kapılarını açtı.</p>
+        <div class="win-stats"><div><b>${cleared}</b><small>Bölüm</small></div><div><b>${total}</b><small>/ 1500 ★</small></div><div><b>${fmtTime(d.stats.playTimeMs)}</b><small>Oynama</small></div></div>
+        <p style="font-size:13px">${total < 1500 ? 'Kalan yıldızları toplamak için istediğin bölümü tekrar oyna.' : 'Tüm yıldızlar toplandı — gerçek bir Mahjong ustası.'}</p>
+        <div class="actions"><button class="btn primary big" data-m="map"><span data-icon="map"></span>Dünya Haritası</button>
+        <div class="actions row" style="margin-top:0"><button class="btn" data-m="replay"><span data-icon="restart"></span>Tekrar Oyna</button><button class="btn" data-m="menu">Ana Menü</button></div></div>`, {
         dismissable: false, cls: 'journey-complete',
         actions: {
           map: () => { this.ui.closeNow(); this.celebration.stop(); this.showMap(); },
@@ -699,7 +699,7 @@
       const el = $('#world-intro');
       this.setWorld(w);
       el.style.backgroundImage = A.worldBackgroundURL(w);
-      el.innerHTML = `<div class="wi-num">World ${w + 1} of ${Core.WORLD_COUNT}</div><h2>${esc(W.name)}</h2><div class="wi-line"></div><p>${esc(W.sub)}</p><div class="wi-tap">Tap to begin</div>`;
+      el.innerHTML = `<div class="wi-num">Dünya ${w + 1} / ${Core.WORLD_COUNT}</div><h2>${esc(W.name)}</h2><div class="wi-line"></div><p>${esc(W.sub)}</p><div class="wi-tap">Başlamak için dokun</div>`;
       el.hidden = false;
       el.classList.remove('closing');
       el.classList.add('enter');
@@ -724,20 +724,20 @@
 
     openSettings(onClose) {
       const st = this.settings;
-      const sw = (key, on) => `<button class="switch" role="switch" aria-checked="${on}" data-m="toggle" data-key="${key}" aria-label="${key}"></button>`;
-      const fsLabel = this.fs.active ? 'Exit fullscreen' : 'Enter fullscreen';
-      const el = this.ui.open(`<div class="modal-head"><h2>Settings</h2><button class="icon-btn" data-m="close" aria-label="Close" data-icon="close"></button></div>
+      const sw = (key, on, label) => `<button class="switch" role="switch" aria-checked="${on}" data-m="toggle" data-key="${key}" aria-label="${label}"></button>`;
+      const fsLabel = this.fs.active ? 'Tam ekrandan çık' : 'Tam ekrana geç';
+      const el = this.ui.open(`<div class="modal-head"><h2>Ayarlar</h2><button class="icon-btn" data-m="close" aria-label="Kapat" data-icon="close"></button></div>
         <div class="settings-list">
-          <div class="set-row"><span class="ico">${icon('music')}</span><span class="lbl">Music<small>Calm generative ambience</small></span>${sw('music', st.music)}</div>
-          <div class="set-row"><span class="ico">${icon('sound')}</span><span class="lbl">Sound effects</span>${sw('sfx', st.sfx)}</div>
-          <div class="set-row"><span class="ico">${icon('sound')}</span><span class="lbl">Volume</span><input type="range" min="0" max="100" step="1" value="${Math.round(st.volume * 100)}" aria-label="Volume" data-vol></div>
-          <div class="set-row"><span class="ico">${icon('star')}</span><span class="lbl">Ambient effects<small>Falling petals, mist, particles</small></span>${sw('effects', st.effects)}</div>
-          <div class="set-row"><span class="ico">${icon('fsEnter')}</span><span class="lbl">Fullscreen</span><button class="btn small" data-m="fs">${fsLabel}</button></div>
+          <div class="set-row"><span class="ico">${icon('music')}</span><span class="lbl">Müzik<small>Sakin, kendiliğinden oluşan ambiyans</small></span>${sw('music', st.music, 'Müzik')}</div>
+          <div class="set-row"><span class="ico">${icon('sound')}</span><span class="lbl">Ses efektleri</span>${sw('sfx', st.sfx, 'Ses efektleri')}</div>
+          <div class="set-row"><span class="ico">${icon('sound')}</span><span class="lbl">Ses düzeyi</span><input type="range" min="0" max="100" step="1" value="${Math.round(st.volume * 100)}" aria-label="Ses düzeyi" data-vol></div>
+          <div class="set-row"><span class="ico">${icon('star')}</span><span class="lbl">Ortam efektleri<small>Düşen yapraklar, sis, parçacıklar</small></span>${sw('effects', st.effects, 'Ortam efektleri')}</div>
+          <div class="set-row"><span class="ico">${icon('fsEnter')}</span><span class="lbl">Tam ekran</span><button class="btn small" data-m="fs">${fsLabel}</button></div>
         </div>
-        <div class="set-section">Your progress</div>
-        <div class="btn-grid"><button class="btn" data-m="export"><span data-icon="download"></span>Export Save</button><button class="btn" data-m="import"><span data-icon="upload"></span>Import Save</button></div>
-        <div class="btn-grid" style="grid-template-columns:1fr"><button class="btn danger" data-m="reset"><span data-icon="trash"></span>Reset Progress</button></div>
-        <p class="storage-note">Progress is saved automatically on this device (${this.save.status.idb ? 'IndexedDB' : ''}${this.save.status.idb && this.save.status.ls ? ' + ' : ''}${this.save.status.ls ? 'localStorage' : ''}${this.save.persistent ? '' : 'storage unavailable — export to keep it'}). Private browsing or clearing site data erases it, so export a backup now and then.</p>
+        <div class="set-section">İlerlemen</div>
+        <div class="btn-grid"><button class="btn" data-m="export"><span data-icon="download"></span>Kaydı Dışa Aktar</button><button class="btn" data-m="import"><span data-icon="upload"></span>Kaydı İçe Aktar</button></div>
+        <div class="btn-grid" style="grid-template-columns:1fr"><button class="btn danger" data-m="reset"><span data-icon="trash"></span>İlerlemeyi Sıfırla</button></div>
+        <p class="storage-note">İlerleme bu cihaza otomatik olarak kaydedilir (${this.save.status.idb ? 'IndexedDB' : ''}${this.save.status.idb && this.save.status.ls ? ' + ' : ''}${this.save.status.ls ? 'localStorage' : ''}${this.save.persistent ? '' : 'depolama kullanılamıyor — korumak için dışa aktar'}). Gizli gezinme veya site verilerini temizlemek kaydı siler; ara sıra yedek almak için dışa aktar.</p>
         <p class="storage-note">Mahjong: Zen Journey v${VERSION}</p>`, {
         onClose,
         actions: {
@@ -750,10 +750,10 @@
             this.applySettings();
             this.save.save();
           },
-          fs: (b) => { this.fs.toggle(); setTimeout(() => { b.textContent = this.fs.active ? 'Exit fullscreen' : 'Enter fullscreen'; }, 400); },
+          fs: (b) => { this.fs.toggle(); setTimeout(() => { b.textContent = this.fs.active ? 'Tam ekrandan çık' : 'Tam ekrana geç'; }, 400); },
           export: () => this.exportSave(),
           import: () => this.importSave(),
-          reset: () => this.ui.confirm('Reset all progress?', 'Every level, star, statistic and achievement will be erased. This cannot be undone. Consider exporting your save first.', 'Reset everything', () => this.resetProgress(), { danger: true, onCancel: () => this.openSettings(onClose) })
+          reset: () => this.ui.confirm('Tüm ilerleme sıfırlansın mı?', 'Tüm bölümler, yıldızlar, istatistikler ve başarımlar silinecek. Bu işlem geri alınamaz. Önce kaydını dışa aktarmayı düşün.', 'Her şeyi sıfırla', () => this.resetProgress(), { danger: true, onCancel: () => this.openSettings(onClose) })
         }
       });
       const vol = $('[data-vol]', el);
@@ -773,15 +773,15 @@
         setTimeout(() => URL.revokeObjectURL(url), 5000);
         downloaded = true;
       } catch (e) { downloaded = false; }
-      const el = this.ui.open(`<h2>Save exported</h2><p>${downloaded ? 'A JSON save file has been downloaded.' : 'Your browser blocked the download.'} If no file appeared (some embedded players block downloads), copy the text below and keep it somewhere safe.</p>
+      const el = this.ui.open(`<h2>Kayıt dışa aktarıldı</h2><p>${downloaded ? 'Bir JSON kayıt dosyası indirildi.' : 'Tarayıcın indirmeyi engelledi.'} Dosya görünmediyse (bazı gömülü oynatıcılar indirmeleri engeller) aşağıdaki metni kopyalayıp güvenli bir yerde sakla.</p>
         <textarea class="io" readonly>${esc(json)}</textarea>
-        <div class="actions row"><button class="btn" data-m="copy">Copy text</button><button class="btn primary" data-m="ok">Done</button></div>`, {
+        <div class="actions row"><button class="btn" data-m="copy">Metni kopyala</button><button class="btn primary" data-m="ok">Bitti</button></div>`, {
         actions: {
           ok: () => this.openSettings(),
           copy: () => {
             const ta = $('textarea', el);
             ta.select();
-            const ok = () => this.ui.toast('Save copied to clipboard');
+            const ok = () => this.ui.toast('Kayıt panoya kopyalandı');
             if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(json).then(ok, () => { try { document.execCommand('copy'); ok(); } catch (e) { /* noop */ } });
             else { try { document.execCommand('copy'); ok(); } catch (e) { /* noop */ } }
           }
@@ -789,11 +789,11 @@
       });
     }
     importSave() {
-      const el = this.ui.open(`<h2>Import save</h2><p>Choose a Mahjong: Zen Journey save file (.json), or paste the save text.</p>
+      const el = this.ui.open(`<h2>Kaydı içe aktar</h2><p>Bir Mahjong: Zen Journey kayıt dosyası (.json) seç ya da kayıt metnini yapıştır.</p>
         <input type="file" accept=".json,application/json" data-file hidden>
-        <div class="actions"><button class="btn primary" data-m="pick"><span data-icon="upload"></span>Choose file</button></div>
-        <textarea class="io" placeholder="…or paste save text here" data-paste></textarea>
-        <div class="actions row"><button class="btn" data-m="cancel">Cancel</button><button class="btn" data-m="paste">Import text</button></div>`, {
+        <div class="actions"><button class="btn primary" data-m="pick"><span data-icon="upload"></span>Dosya seç</button></div>
+        <textarea class="io" placeholder="…ya da kayıt metnini buraya yapıştır" data-paste></textarea>
+        <div class="actions row"><button class="btn" data-m="cancel">Vazgeç</button><button class="btn" data-m="paste">Metni içe aktar</button></div>`, {
         actions: {
           cancel: () => this.openSettings(),
           pick: () => $('[data-file]', el).click(),
@@ -805,21 +805,21 @@
         if (!f) return;
         const rd = new FileReader();
         rd.onload = () => this._importText(String(rd.result));
-        rd.onerror = () => this.ui.toast('Could not read the file.');
+        rd.onerror = () => this.ui.toast('Dosya okunamadı.');
         rd.readAsText(f);
       });
     }
     _importText(text) {
       let data;
       try { data = this.save.parseImport(text); }
-      catch (e) { this.ui.open(`<h2>Import failed</h2><p>${esc(e.message)}</p><div class="actions"><button class="btn primary" data-m="ok">OK</button></div>`, { actions: { ok: () => this.importSave() } }); return; }
+      catch (e) { this.ui.open(`<h2>İçe aktarma başarısız</h2><p>${esc(e.message)}</p><div class="actions"><button class="btn primary" data-m="ok">Tamam</button></div>`, { actions: { ok: () => this.importSave() } }); return; }
       const cleared = P.levelsCleared(data), stars = P.totalStars(data);
-      this.ui.confirm('Replace progress?', `The imported save has ${cleared} cleared level${cleared === 1 ? '' : 's'} and ${stars} stars. It will replace the progress on this device.`, 'Import', () => {
+      this.ui.confirm('İlerleme değiştirilsin mi?', `İçe aktarılan kayıtta ${cleared} tamamlanmış bölüm ve ${stars} yıldız var. Bu cihazdaki ilerlemenin yerini alacak.`, 'İçe aktar', () => {
         this.save.replace(data).then(() => {});
         this.session = null;
         this.applySettings();
         this.showMenu();
-        this.ui.toast('Save imported successfully', { icon: 'check' });
+        this.ui.toast('Kayıt başarıyla içe aktarıldı', { icon: 'check' });
       });
     }
     resetProgress() {
@@ -827,33 +827,33 @@
       this.session = null;
       this.applySettings();
       this.showMenu();
-      this.ui.toast('Progress has been reset', { icon: 'trash' });
+      this.ui.toast('İlerleme sıfırlandı', { icon: 'trash' });
     }
     openStats() {
       const d = this.save.data, st = d.stats;
       const three = d.progress.stars.filter((v) => v === 3).length;
       const ach = Object.keys(d.achievements).length;
       const item = (v, l) => `<div><b>${v}</b><small>${l}</small></div>`;
-      this.ui.open(`<div class="modal-head"><h2>Statistics</h2><button class="icon-btn" data-m="close" aria-label="Close" data-icon="close"></button></div>
-        <div class="stats-grid">${item(P.levelsCleared(d) + ' / 500', 'Levels cleared')}${item(P.totalStars(d) + ' / 1500', 'Stars')}${item(three, 'Three-star levels')}${item(d.progress.unlocked, 'Furthest level')}
-        ${item(st.matches.toLocaleString(), 'Matches made')}${item(fmtTime(st.playTimeMs), 'Time played')}${item(st.wins, 'Levels won')}${item(st.bestStreak3, 'Best 3★ streak')}
-        ${item(st.hints, 'Hints used')}${item(st.shuffles, 'Shuffles used')}${item(st.undos, 'Undos')}${item(ach + ' / ' + P.ACHIEVEMENTS.length, 'Achievements')}
-        ${item(st.families.filter((v) => v > 0).length + ' / 20', 'Layouts explored')}${item(Core.WORLD_COUNT - Array.from({ length: 20 }, (_, w) => P.worldStats(d, w).complete).filter((x) => !x).length + ' / 20', 'Worlds complete')}</div>`, {
+      this.ui.open(`<div class="modal-head"><h2>İstatistikler</h2><button class="icon-btn" data-m="close" aria-label="Kapat" data-icon="close"></button></div>
+        <div class="stats-grid">${item(P.levelsCleared(d) + ' / 500', 'Tamamlanan bölüm')}${item(P.totalStars(d) + ' / 1500', 'Yıldız')}${item(three, 'Üç yıldızlı bölüm')}${item(d.progress.unlocked, 'En ileri bölüm')}
+        ${item(st.matches.toLocaleString('tr-TR'), 'Yapılan eşleşme')}${item(fmtTime(st.playTimeMs), 'Oynama süresi')}${item(st.wins, 'Kazanılan bölüm')}${item(st.bestStreak3, 'En iyi 3★ serisi')}
+        ${item(st.hints, 'Kullanılan ipucu')}${item(st.shuffles, 'Kullanılan karıştırma')}${item(st.undos, 'Geri alma')}${item(ach + ' / ' + P.ACHIEVEMENTS.length, 'Başarım')}
+        ${item(st.families.filter((v) => v > 0).length + ' / 20', 'Keşfedilen yerleşim')}${item(Core.WORLD_COUNT - Array.from({ length: 20 }, (_, w) => P.worldStats(d, w).complete).filter((x) => !x).length + ' / 20', 'Tamamlanan dünya')}</div>`, {
         actions: { close: () => this.ui.close() }
       });
     }
     openAchievements() {
       const d = this.save.data;
       const rows = P.ACHIEVEMENTS.map((a) => `<div class="ach ${d.achievements[a.id] ? 'on' : ''}"><span class="medal">${icon(d.achievements[a.id] ? 'trophy' : 'lock')}</span><div><b>${esc(a.name)}</b><small>${esc(a.desc)}</small></div></div>`).join('');
-      this.ui.open(`<div class="modal-head"><h2>Achievements</h2><button class="icon-btn" data-m="close" aria-label="Close" data-icon="close"></button></div>
-        <p>${Object.keys(d.achievements).length} of ${P.ACHIEVEMENTS.length} unlocked</p><div class="ach-list">${rows}</div>`, { actions: { close: () => this.ui.close() } });
+      this.ui.open(`<div class="modal-head"><h2>Başarımlar</h2><button class="icon-btn" data-m="close" aria-label="Kapat" data-icon="close"></button></div>
+        <p>${P.ACHIEVEMENTS.length} başarımdan ${Object.keys(d.achievements).length} tanesi açıldı</p><div class="ach-list">${rows}</div>`, { actions: { close: () => this.ui.close() } });
     }
 
     // ---------------------------------------------------------- tutorial coach
     coach(text, ms, opts) {
       const box = $('#coach');
       clearTimeout(this.coachTimer);
-      box.innerHTML = `<div class="coach-card"><span class="hand">${opts && opts.img ? opts.img : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5a1.5 1.5 0 0 1 3 0v5M12 10V8.5a1.5 1.5 0 0 1 3 0V11M15 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a5 5 0 0 1-4.3-2.5L4 14a1.5 1.5 0 0 1 2.6-1.5L9 15"/></svg>'}</span><span>${esc(text)}</span><button class="x" aria-label="Dismiss">${icon('close')}</button></div>`;
+      box.innerHTML = `<div class="coach-card"><span class="hand">${opts && opts.img ? opts.img : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5a1.5 1.5 0 0 1 3 0v5M12 10V8.5a1.5 1.5 0 0 1 3 0V11M15 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a5 5 0 0 1-4.3-2.5L4 14a1.5 1.5 0 0 1 2.6-1.5L9 15"/></svg>'}</span><span>${esc(text)}</span><button class="x" aria-label="Kapat">${icon('close')}</button></div>`;
       box.hidden = false;
       $('.x', box).onclick = () => this.clearCoach();
       $$('.tool.coach-target').forEach((b) => b.classList.remove('coach-target'));
@@ -877,11 +877,11 @@
       this._blockedTipShown = this.tipSeen('blocked');
       if (s.moves > 0) return;
       const steps = {
-        1: ['t1', 'Tap two matching tiles to clear them. The glowing pair is a good start!'],
-        2: ['t2', 'Dimmed tiles are blocked: something lies on top, or both sides are covered. Clear their neighbours first.'],
-        3: ['t3', 'Stuck? Hint shows a free matching pair. Clearing a level without help earns 3 stars.', '#btn-hint'],
-        4: ['t4', 'Changed your mind? Undo takes moves back as often as you like — it never costs stars.', '#btn-undo'],
-        5: ['t5', 'Shuffle re-deals the remaining tiles into a new arrangement that can still be cleared.', '#btn-shuffle']
+        1: ['t1', 'Eşleşen iki taşa dokunarak onları kaldır. Parlayan çift iyi bir başlangıç!'],
+        2: ['t2', 'Soluk taşlar bloke: üstlerinde taş var ya da iki yanları da kapalı. Önce çevrelerindeki taşları temizle.'],
+        3: ['t3', 'Takıldın mı? İpucu serbest bir eşleşen çift gösterir. Bölümü yardımsız bitirmek 3 yıldız kazandırır.', '#btn-hint'],
+        4: ['t4', 'Fikrini mi değiştirdin? Geri Al, hamleleri istediğin kadar geri alır — asla yıldız kaybettirmez.', '#btn-undo'],
+        5: ['t5', 'Karıştır, kalan taşları hâlâ temizlenebilecek yeni bir düzene dağıtır.', '#btn-shuffle']
       };
       const st = steps[n];
       if (st && !this.tipSeen(st[0])) {
@@ -897,7 +897,7 @@
       if (hasBonus && !this.tipSeen('bonus')) {
         const img = `<img alt="" src="${A.tileDataURL(34, 40)}" style="width:34px">`;
         this.coachStep = 'bonus';
-        this.coach('Flower tiles match any other Flower, and Season tiles match any other Season.', 9000, { img });
+        this.coach('Çiçek taşları herhangi bir Çiçek taşıyla, Mevsim taşları da herhangi bir Mevsim taşıyla eşleşir.', 9000, { img });
         this.markTip('bonus');
       }
     }
@@ -906,7 +906,7 @@
       if (!step) return;
       if (step === 't1') {
         this.markTip('t1');
-        this.coach('Wonderful! A tile is free when nothing covers it and its left or right side is open. Clear every pair to win.', 6000);
+        this.coach('Harika! Bir taşın üstü boşsa ve sol ya da sağ yanı açıksa taş serbesttir. Kazanmak için tüm çiftleri temizle.', 6000);
         this.coachStep = 'done';
       } else if (step === 't2') { this.markTip('t2'); this.clearCoach(); }
     }
@@ -922,7 +922,7 @@
       let pairs;
       if (fromCurrent) {
         const res = Core.solveExact(s.geom, s.faces, s.st.present, { budget: 400000 });
-        if (res.status !== 'solved') { this.ui.toast('No solution found from here (' + res.status + ')'); return false; }
+        if (res.status !== 'solved') { this.ui.toast('Buradan çözüm bulunamadı (' + res.status + ')'); return false; }
         pairs = res.moves;
       } else {
         s.reset();

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="tr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="description" content="Mahjong: Zen Journey — a calm Mahjong Solitaire journey through 500 levels and 20 worlds.">
+<meta name="description" content="Mahjong: Zen Journey — 500 bölüm ve 20 dünyadan oluşan sakin bir Mahjong Solitaire yolculuğu.">
 <title>Mahjong: Zen Journey</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='14' y='8' width='38' height='50' rx='7' fill='%23176b4b'/%3E%3Crect x='10' y='4' width='38' height='50' rx='7' fill='%23fbf4e2'/%3E%3Cpath d='M18 22h22M29 12v34M20 30h18v10H20z' stroke='%23c23a2b' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
@@ -117,7 +117,7 @@ svg { display: block; }
 .title-stack { text-align: center; color: #fff; }
 .title-stack .title { font-size: 21px; }
 .title-stack .muted { color: rgba(255, 255, 255, 0.85); font-size: 13px; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4); }
-.scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 6px 14px 18px; touch-action: pan-y; }
+.scroll { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 6px 14px 18px; touch-action: pan-y; }
 
 /* ---------- menu */
 .menu-body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 22px; padding: 0 24px 22px; max-width: 460px; width: 100%; margin: 0 auto; }
@@ -155,12 +155,12 @@ svg { display: block; }
 .world-card.current { box-shadow: var(--shadow), 0 0 0 3px rgba(255, 255, 255, 0.9); }
 
 /* ---------- level grid */
-.level-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; max-width: 440px; margin: 8px auto 0; }
+.level-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; max-width: 440px; margin: 8px auto 0; }
 .level-btn {
   position: relative; aspect-ratio: 0.8; border: 0; border-radius: 14px; cursor: pointer; padding: 0;
   background: linear-gradient(160deg, #fffdf6, #efe4cb); box-shadow: 4px 5px 0 #1d6a4b, 0 8px 14px rgba(0, 0, 0, 0.25);
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; transition: transform 0.12s;
-  min-height: 56px;
+  min-height: 56px; min-width: 0;
 }
 .level-btn b { font-family: var(--serif); font-size: 21px; line-height: 1; }
 .level-btn .lstars { display: flex; gap: 1px; }
@@ -345,7 +345,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
     <div id="bg-next"></div>
     <canvas id="ambient" aria-hidden="true"></canvas>
 
-    <section id="scr-splash" class="screen active" aria-label="Loading">
+    <section id="scr-splash" class="screen active" aria-label="Yükleniyor">
       <div class="logo splash-logo">
         <div class="logo-mark" data-logo-mark></div>
         <h1 class="logo-title">MAHJONG</h1>
@@ -354,10 +354,10 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       <div class="splash-dots"><i></i><i></i><i></i></div>
     </section>
 
-    <section id="scr-menu" class="screen" aria-label="Main menu">
+    <section id="scr-menu" class="screen" aria-label="Ana menü">
       <header class="topbar">
         <span class="grow"></span>
-        <button class="icon-btn" data-act="fullscreen" data-fs aria-label="Enter fullscreen"></button>
+        <button class="icon-btn" data-act="fullscreen" data-fs aria-label="Tam ekrana geç"></button>
       </header>
       <div class="menu-body">
         <div class="logo">
@@ -367,67 +367,67 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
         </div>
         <div class="menu-card">
           <div class="menu-progress">
-            <div><span class="label">Current level</span><b id="menu-level">1</b><span id="menu-world" class="muted">Bamboo Garden</span></div>
+            <div><span class="label">Mevcut bölüm</span><b id="menu-level">1</b><span id="menu-world" class="muted">Bambu Bahçesi</span></div>
             <div class="menu-stars"><span class="star-ico" data-icon="star"></span><b id="menu-stars">0</b><span class="muted">/ 1500</span></div>
           </div>
           <div class="bar"><i id="menu-bar"></i></div>
         </div>
         <div class="menu-actions">
-          <button class="btn primary big" data-act="continue"><span data-icon="play"></span><span id="menu-play-label">Play</span></button>
-          <button class="btn big ghost" data-act="map"><span data-icon="map"></span>Level Select</button>
+          <button class="btn primary big" data-act="continue"><span data-icon="play"></span><span id="menu-play-label">Oyna</span></button>
+          <button class="btn big ghost" data-act="map"><span data-icon="map"></span>Bölüm Seç</button>
           <div class="menu-row">
-            <button class="btn round" data-act="settings" aria-label="Settings"><span data-icon="settings"></span><small>Settings</small></button>
-            <button class="btn round" data-act="stats" aria-label="Statistics"><span data-icon="stats"></span><small>Statistics</small></button>
-            <button class="btn round" data-act="achievements" aria-label="Achievements"><span data-icon="trophy"></span><small>Awards</small></button>
+            <button class="btn round" data-act="settings" aria-label="Ayarlar"><span data-icon="settings"></span><small>Ayarlar</small></button>
+            <button class="btn round" data-act="stats" aria-label="İstatistikler"><span data-icon="stats"></span><small>İstatistik</small></button>
+            <button class="btn round" data-act="achievements" aria-label="Başarımlar"><span data-icon="trophy"></span><small>Başarımlar</small></button>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="scr-map" class="screen" aria-label="World map">
+    <section id="scr-map" class="screen" aria-label="Dünya haritası">
       <header class="topbar">
-        <button class="icon-btn" data-act="home" aria-label="Back" data-icon="back"></button>
-        <h2 class="grow title">World Map</h2>
-        <button class="icon-btn" data-act="fullscreen" data-fs aria-label="Enter fullscreen"></button>
+        <button class="icon-btn" data-act="home" aria-label="Geri" data-icon="back"></button>
+        <h2 class="grow title">Dünya Haritası</h2>
+        <button class="icon-btn" data-act="fullscreen" data-fs aria-label="Tam ekrana geç"></button>
       </header>
       <div class="scroll" id="world-list"></div>
     </section>
 
-    <section id="scr-levels" class="screen" aria-label="Level select">
+    <section id="scr-levels" class="screen" aria-label="Bölüm seçimi">
       <header class="topbar">
-        <button class="icon-btn" data-act="map" aria-label="Back" data-icon="back"></button>
-        <div class="grow title-stack"><h2 class="title" id="levels-title">Bamboo Garden</h2><span id="levels-sub" class="muted"></span></div>
-        <button class="icon-btn" data-act="fullscreen" data-fs aria-label="Enter fullscreen"></button>
+        <button class="icon-btn" data-act="map" aria-label="Geri" data-icon="back"></button>
+        <div class="grow title-stack"><h2 class="title" id="levels-title">Bambu Bahçesi</h2><span id="levels-sub" class="muted"></span></div>
+        <button class="icon-btn" data-act="fullscreen" data-fs aria-label="Tam ekrana geç"></button>
       </header>
       <div class="scroll"><div class="level-grid" id="level-grid"></div></div>
     </section>
 
-    <section id="scr-game" class="screen" aria-label="Game">
+    <section id="scr-game" class="screen" aria-label="Oyun">
       <header class="hud">
-        <button class="icon-btn" data-act="leave" aria-label="Back to level map" data-icon="back"></button>
+        <button class="icon-btn" data-act="leave" aria-label="Bölüm haritasına dön" data-icon="back"></button>
         <div class="hud-title grow">
-          <div class="hud-level"><span id="hud-level">Level 1</span><span id="hud-final" class="final-tag" hidden>FINAL</span></div>
-          <div class="hud-world" id="hud-world">Bamboo Garden</div>
+          <div class="hud-level"><span id="hud-level">Bölüm 1</span><span id="hud-final" class="final-tag" hidden>FİNAL</span></div>
+          <div class="hud-world" id="hud-world">Bambu Bahçesi</div>
           <div class="bar thin"><i id="hud-bar"></i></div>
         </div>
-        <button class="icon-btn" data-act="fullscreen" data-fs aria-label="Enter fullscreen"></button>
+        <button class="icon-btn" data-act="fullscreen" data-fs aria-label="Tam ekrana geç"></button>
       </header>
       <div class="hud-sub">
-        <span class="hud-stat"><span><b id="hud-tiles">0</b> tiles</span><span><b id="hud-pairs">0</b> pairs open</span></span>
-        <span id="hud-warn" class="warn" hidden>No full solution from here — try Undo or Shuffle</span>
+        <span class="hud-stat"><span><b id="hud-tiles">0</b> taş</span><span><b id="hud-pairs">0</b> açık çift</span></span>
+        <span id="hud-warn" class="warn" hidden>Buradan tam çözüm yok — Geri Al veya Karıştır'ı dene</span>
         <span class="grow"></span>
-        <button class="chip" id="zoom-reset" data-act="zoomreset" hidden><span data-icon="zoom"></span>Fit</button>
+        <button class="chip" id="zoom-reset" data-act="zoomreset" hidden><span data-icon="zoom"></span>Sığdır</button>
       </div>
       <div id="board-wrap">
-        <canvas id="board" aria-label="Mahjong board"></canvas>
+        <canvas id="board" aria-label="Mahjong tahtası"></canvas>
         <div id="coach" hidden></div>
       </div>
       <nav class="toolbar">
-        <button class="tool" data-act="hint" id="btn-hint"><span data-icon="hint"></span><small>Hint</small></button>
-        <button class="tool" data-act="shuffle" id="btn-shuffle"><span data-icon="shuffle"></span><small>Shuffle</small></button>
-        <button class="tool" data-act="undo" id="btn-undo"><span data-icon="undo"></span><small>Undo</small></button>
-        <button class="tool" data-act="restart"><span data-icon="restart"></span><small>Restart</small></button>
-        <button class="tool" data-act="pause"><span data-icon="pause"></span><small>Pause</small></button>
+        <button class="tool" data-act="hint" id="btn-hint"><span data-icon="hint"></span><small>İpucu</small></button>
+        <button class="tool" data-act="shuffle" id="btn-shuffle"><span data-icon="shuffle"></span><small>Karıştır</small></button>
+        <button class="tool" data-act="undo" id="btn-undo"><span data-icon="undo"></span><small>Geri Al</small></button>
+        <button class="tool" data-act="restart"><span data-icon="restart"></span><small>Baştan</small></button>
+        <button class="tool" data-act="pause"><span data-icon="pause"></span><small>Duraklat</small></button>
       </nav>
     </section>
 
@@ -438,8 +438,8 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
     <div id="rotate">
       <div class="rotate-card">
         <div class="rotate-phone"><i></i></div>
-        <h3>Please rotate your device</h3>
-        <p>Mahjong: Zen Journey is designed for portrait play.</p>
+        <h3>Lütfen cihazınızı çevirin</h3>
+        <p>Mahjong: Zen Journey dikey ekranda oynanmak üzere tasarlandı.</p>
       </div>
     </div>
   </div>
@@ -474,19 +474,19 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
   const CLASS_FLOWER = 34;
   const CLASS_SEASON = 35;
   const SUITS = [
-    { key: 'dots', name: 'Circles', start: 0, count: 9 },
-    { key: 'bamboo', name: 'Bamboo', start: 9, count: 9 },
-    { key: 'chars', name: 'Characters', start: 18, count: 9 },
-    { key: 'wind', name: 'Wind', start: 27, count: 4 },
-    { key: 'dragon', name: 'Dragon', start: 31, count: 3 },
-    { key: 'flower', name: 'Flower', start: 34, count: 4 },
-    { key: 'season', name: 'Season', start: 38, count: 4 }
+    { key: 'dots', name: 'Daire', start: 0, count: 9 },
+    { key: 'bamboo', name: 'Bambu', start: 9, count: 9 },
+    { key: 'chars', name: 'Karakter', start: 18, count: 9 },
+    { key: 'wind', name: 'Rüzgâr', start: 27, count: 4 },
+    { key: 'dragon', name: 'Ejderha', start: 31, count: 3 },
+    { key: 'flower', name: 'Çiçek', start: 34, count: 4 },
+    { key: 'season', name: 'Mevsim', start: 38, count: 4 }
   ];
   const RANK_NAMES = {
-    wind: ['East', 'South', 'West', 'North'],
-    dragon: ['Red', 'Green', 'White'],
-    flower: ['Plum', 'Orchid', 'Chrysanthemum', 'Bamboo'],
-    season: ['Spring', 'Summer', 'Autumn', 'Winter']
+    wind: ['Doğu', 'Güney', 'Batı', 'Kuzey'],
+    dragon: ['Kırmızı', 'Yeşil', 'Beyaz'],
+    flower: ['Erik', 'Orkide', 'Kasımpatı', 'Bambu'],
+    season: ['İlkbahar', 'Yaz', 'Sonbahar', 'Kış']
   };
 
   function faceClass(f) { return f < 34 ? f : (f < 38 ? CLASS_FLOWER : CLASS_SEASON); }
@@ -495,7 +495,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       if (f >= s.start && f < s.start + s.count) {
         const rank = f - s.start;
         const named = RANK_NAMES[s.key];
-        const label = named ? named[rank] + ' ' + s.name : s.name + ' ' + (rank + 1);
+        const label = s.name + ' ' + (named ? named[rank] : rank + 1);
         return { suit: s.key, rank, label };
       }
     }
@@ -503,17 +503,17 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
   }
 
   const FAMILIES = [
-    'Classic Turtle', 'Pyramid', 'Butterfly', 'Pagoda', 'Twin Towers',
-    'Spiral', 'Diamond', 'Bridge', 'Lotus', 'Temple',
-    'Mountain', 'Crescent', 'Cross', 'Hourglass', 'Dragon',
-    'Fortress', 'Wave', 'Four Islands', 'Star', 'Grand Palace'
+    'Kaplumbağa', 'Piramit', 'Kelebek', 'Pagoda', 'İkiz Kuleler',
+    'Spiral', 'Elmas', 'Köprü', 'Nilüfer', 'Tapınak',
+    'Dağ', 'Hilal', 'Haç', 'Kum Saati', 'Ejderha',
+    'Kale', 'Dalga', 'Dört Ada', 'Yıldız', 'Büyük Saray'
   ];
 
   const WORLD_NAMES = [
-    'Bamboo Garden', 'Cherry Blossom', 'Autumn Temple', 'Misty Lake', 'Moonlight Garden',
-    'Ancient Ruins', 'Lantern Village', 'Cloud Mountains', 'Jade Sanctuary', 'Golden Sands',
-    'Lotus Paradise', 'Winter Palace', 'Festival of Lights', 'Starlight Harbor', 'Hidden Valley',
-    'Sunken Temple', 'Crimson Canyon', 'Midnight Forest', 'Celestial Garden', "Dragon's Crown"
+    'Bambu Bahçesi', 'Kiraz Çiçeği', 'Sonbahar Tapınağı', 'Puslu Göl', 'Ay Işığı Bahçesi',
+    'Kadim Harabeler', 'Fener Köyü', 'Bulut Dağları', 'Yeşim Mabedi', 'Altın Kumlar',
+    'Nilüfer Cenneti', 'Kış Sarayı', 'Işıklar Festivali', 'Yıldızlı Liman', 'Gizli Vadi',
+    'Batık Tapınak', 'Kızıl Kanyon', 'Gece Ormanı', 'Göksel Bahçe', 'Ejderha Tacı'
   ];
 
   // Difficulty curve from the design brief: [firstLevel, lastLevel, minTiles, maxTiles]
@@ -1342,24 +1342,24 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
   const N = Core.LEVEL_COUNT;
 
   const ACHIEVEMENTS = [
-    { id: 'first_match', name: 'First Match', desc: 'Make your very first match.' },
-    { id: 'perfect_start', name: 'Perfect Start', desc: 'Clear a level with 3 stars.' },
-    { id: 'apprentice', name: 'Zen Apprentice', desc: 'Complete the five guided levels.' },
-    { id: 'final_challenger', name: 'Final Challenger', desc: 'Conquer a world Final Challenge.' },
-    { id: 'first_journey', name: 'First Journey', desc: 'Complete the Bamboo Garden.' },
-    { id: 'levels_25', name: '25 Levels Cleared', desc: 'Clear 25 different levels.' },
-    { id: 'levels_100', name: '100 Levels Cleared', desc: 'Clear 100 different levels.' },
-    { id: 'levels_250', name: '250 Levels Cleared', desc: 'Clear 250 different levels.' },
-    { id: 'mahjong_master', name: 'Mahjong Master', desc: 'Clear all 500 levels.' },
-    { id: 'three_star_100', name: '100 Three-Star Levels', desc: 'Earn 3 stars on 100 levels.' },
-    { id: 'all_stars', name: 'All 1500 Stars', desc: 'Earn every star in the journey.' },
-    { id: 'pure_mind', name: 'Pure Mind', desc: 'Clear an 80+ tile level without hint, shuffle or undo.' },
-    { id: 'serenity', name: 'Serenity Streak', desc: 'Earn 3 stars on 10 levels in a row.' },
-    { id: 'pairs_1000', name: 'Thousand Pairs', desc: 'Make 1,000 matches.' },
-    { id: 'pairs_10000', name: 'Ten Thousand Pairs', desc: 'Make 10,000 matches.' },
-    { id: 'explorer', name: 'Explorer', desc: 'Clear all 20 layout families.' },
-    { id: 'zen_hour', name: 'Zen Hour', desc: 'Spend one hour on your journey.' },
-    { id: 'dragons_crown', name: "Dragon's Crown", desc: 'Complete the final world.' }
+    { id: 'first_match', name: 'İlk Eşleşme', desc: 'İlk eşleştirmeni yap.' },
+    { id: 'perfect_start', name: 'Kusursuz Başlangıç', desc: 'Bir bölümü 3 yıldızla tamamla.' },
+    { id: 'apprentice', name: 'Zen Çırağı', desc: 'Beş rehberli bölümün hepsini tamamla.' },
+    { id: 'final_challenger', name: 'Final Fatihi', desc: 'Bir dünyanın Final Mücadelesini kazan.' },
+    { id: 'first_journey', name: 'İlk Yolculuk', desc: 'Bambu Bahçesi dünyasını tamamla.' },
+    { id: 'levels_25', name: '25 Bölüm Tamamlandı', desc: '25 farklı bölümü tamamla.' },
+    { id: 'levels_100', name: '100 Bölüm Tamamlandı', desc: '100 farklı bölümü tamamla.' },
+    { id: 'levels_250', name: '250 Bölüm Tamamlandı', desc: '250 farklı bölümü tamamla.' },
+    { id: 'mahjong_master', name: 'Mahjong Ustası', desc: '500 bölümün hepsini tamamla.' },
+    { id: 'three_star_100', name: '100 Üç Yıldızlı Bölüm', desc: '100 bölümde 3 yıldız kazan.' },
+    { id: 'all_stars', name: '1500 Yıldızın Tamamı', desc: 'Yolculuktaki her yıldızı topla.' },
+    { id: 'pure_mind', name: 'Saf Zihin', desc: '80+ taşlı bir bölümü ipucu, karıştırma veya geri alma kullanmadan bitir.' },
+    { id: 'serenity', name: 'Dinginlik Serisi', desc: 'Üst üste 10 bölümde 3 yıldız kazan.' },
+    { id: 'pairs_1000', name: 'Bin Çift', desc: '1.000 eşleştirme yap.' },
+    { id: 'pairs_10000', name: 'On Bin Çift', desc: '10.000 eşleştirme yap.' },
+    { id: 'explorer', name: 'Kâşif', desc: '20 yerleşim ailesinin hepsinde bir bölüm tamamla.' },
+    { id: 'zen_hour', name: 'Zen Saati', desc: 'Yolculuğunda bir saat geçir.' },
+    { id: 'dragons_crown', name: 'Ejderha Tacı', desc: 'Son dünyayı tamamla.' }
   ];
 
   function defaultSave() {
@@ -1395,12 +1395,12 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
   function sanitizeSave(raw) {
     let obj = raw;
     if (typeof obj === 'string') {
-      try { obj = JSON.parse(obj); } catch (e) { throw new Error('The file is not valid JSON.'); }
+      try { obj = JSON.parse(obj); } catch (e) { throw new Error('Dosya geçerli bir JSON değil.'); }
     }
-    if (!isObj(obj)) throw new Error('The file does not contain a save.');
-    if (obj.game !== GAME_ID) throw new Error('This is not a Mahjong: Zen Journey save.');
-    if (!Number.isInteger(obj.version) || obj.version < 1) throw new Error('Unknown save version.');
-    if (obj.version > SAVE_VERSION) throw new Error('This save comes from a newer version of the game (v' + obj.version + ').');
+    if (!isObj(obj)) throw new Error('Dosyada bir kayıt bulunmuyor.');
+    if (obj.game !== GAME_ID) throw new Error('Bu bir Mahjong: Zen Journey kaydı değil.');
+    if (!Number.isInteger(obj.version) || obj.version < 1) throw new Error('Bilinmeyen kayıt sürümü.');
+    if (obj.version > SAVE_VERSION) throw new Error('Bu kayıt oyunun daha yeni bir sürümünden geliyor (v' + obj.version + ').');
     obj = migrate(obj);
     const s = defaultSave();
     s.updatedAt = nonNeg(obj.updatedAt, 0);
@@ -1983,26 +1983,26 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
   // ------------------------------------------------------------------ worlds
   // sky: [top, mid, bottom]; ink: UI accent; particles: ambient effect type
   const WORLDS = [
-    { name: 'Bamboo Garden', sky: ['#d9efd8', '#a9d5b0', '#5f9f7a'], hill: ['#86bf98', '#4f8f6b', '#2f6b4c'], accent: '#3c9a68', ui: '#2f7f57', particles: 'leaves', scene: 'bamboo', key: 0, sub: 'Where every journey begins' },
-    { name: 'Cherry Blossom', sky: ['#fde6ec', '#f6c1cf', '#d98aa3'], hill: ['#e9b3c2', '#c47d95', '#8f4f68'], accent: '#d9668b', ui: '#b84d73', particles: 'petals', scene: 'sakura', key: 2, sub: 'Petals drift on a gentle wind' },
-    { name: 'Autumn Temple', sky: ['#fbe3bd', '#f1b878', '#c9683b'], hill: ['#d9905a', '#a85c34', '#6e3720'], accent: '#d4733a', ui: '#b25a26', particles: 'maple', scene: 'autumn', key: 4, sub: 'Maple leaves and temple bells' },
-    { name: 'Misty Lake', sky: ['#e4eef2', '#c3d6df', '#8fb0bf'], hill: ['#a8c0cb', '#7d9cab', '#557684'], accent: '#5f8ea3', ui: '#3f7088', particles: 'mist', scene: 'lake', key: 1, sub: 'Still waters, quiet mind' },
-    { name: 'Moonlight Garden', sky: ['#1b2245', '#2e3a6b', '#4a4f86'], hill: ['#3a4377', '#2a3160', '#1b2148'], accent: '#a9b4ff', ui: '#7d87d9', particles: 'fireflies', scene: 'moon', key: 3, sub: 'Silver light on sleeping flowers', dark: true },
-    { name: 'Ancient Ruins', sky: ['#f3dcc0', '#c9b59a', '#7f8a7a'], hill: ['#a8a088', '#7c7a66', '#525448'], accent: '#9a7b4f', ui: '#7d6340', particles: 'dust', scene: 'ruins', key: 5, sub: 'Stones remember old stories' },
-    { name: 'Lantern Village', sky: ['#2a1a33', '#5a2b45', '#a4484c'], hill: ['#4a2a3c', '#33202f', '#1e1420'], accent: '#ff9a4a', ui: '#e0733a', particles: 'fireflies', scene: 'lanterns', key: 2, sub: 'Warm lights guide the way', dark: true },
-    { name: 'Cloud Mountains', sky: ['#fbefe6', '#d9e3f0', '#a7bcd8'], hill: ['#9fb2cc', '#7488a8', '#4c5f80'], accent: '#6f86b3', ui: '#4f6797', particles: 'clouds', scene: 'peaks', key: 0, sub: 'Above the sea of clouds' },
-    { name: 'Jade Sanctuary', sky: ['#d6f0e6', '#8fcfb5', '#3e8f74'], hill: ['#62ad91', '#3e8a70', '#1f5c48'], accent: '#2f9e7c', ui: '#1f7d61', particles: 'motes', scene: 'jade', key: 4, sub: 'Sacred halls of green stone' },
-    { name: 'Golden Sands', sky: ['#fff1cf', '#f6cf82', '#d99a45'], hill: ['#e9b763', '#c98d3c', '#9a6526'], accent: '#d29a2f', ui: '#a87418', particles: 'dust', scene: 'desert', key: 1, sub: 'Temples beneath a golden sun' },
-    { name: 'Lotus Paradise', sky: ['#fdeef3', '#d8eee9', '#8fcbc2'], hill: ['#a7d8cf', '#6fb3a8', '#3f8a80'], accent: '#e07aa0', ui: '#c0577f', particles: 'petals', scene: 'lotus', key: 3, sub: 'Blossoms floating on still water' },
-    { name: 'Winter Palace', sky: ['#eef5fb', '#cfe0ef', '#9db9d6'], hill: ['#dfe9f3', '#b3c8dd', '#7f9cbb'], accent: '#5c8fc4', ui: '#3d70a8', particles: 'snow', scene: 'winter', key: 5, sub: 'Snow settles on silent roofs' },
-    { name: 'Festival of Lights', sky: ['#160f2e', '#3a1f55', '#7a3363'], hill: ['#3b2150', '#27163a', '#170d25'], accent: '#ffcf5a', ui: '#e8a93a', particles: 'sparks', scene: 'festival', key: 2, sub: 'The sky blooms with celebration', dark: true },
-    { name: 'Starlight Harbor', sky: ['#0d1b33', '#1c3358', '#36557f'], hill: ['#22385c', '#172a48', '#0d1a30'], accent: '#7fc4ff', ui: '#4f9fe0', particles: 'stars', scene: 'harbor', key: 0, sub: 'Boats rest under the stars', dark: true },
-    { name: 'Hidden Valley', sky: ['#e8f6e4', '#b9e0b4', '#6fae73'], hill: ['#8cc48c', '#5c9a62', '#356f40'], accent: '#4f9e56', ui: '#357f3d', particles: 'mist', scene: 'valley', key: 4, sub: 'A waterfall behind the hills' },
-    { name: 'Sunken Temple', sky: ['#5fc2d6', '#2a8aa8', '#0f4f72'], hill: ['#2e7f95', '#1d5f78', '#0e3e57'], accent: '#7fe0e8', ui: '#3fb0c4', particles: 'bubbles', scene: 'sunken', key: 1, sub: 'Light ripples through the deep', dark: true },
-    { name: 'Crimson Canyon', sky: ['#ffd9b8', '#f29a6a', '#b6463a'], hill: ['#d9734e', '#a94a36', '#6f2a24'], accent: '#d4553a', ui: '#b03d26', particles: 'embers', scene: 'canyon', key: 3, sub: 'Red cliffs glow at dusk' },
-    { name: 'Midnight Forest', sky: ['#0e1f1f', '#173434', '#24504a'], hill: ['#1d3f3b', '#132d2b', '#0a1c1b'], accent: '#c8f56a', ui: '#8fcf4a', particles: 'fireflies', scene: 'forest', key: 5, sub: 'Fireflies among the pines', dark: true },
-    { name: 'Celestial Garden', sky: ['#1a1240', '#3b2a74', '#7a5bb0'], hill: ['#4a3a86', '#33276a', '#1f1747'], accent: '#e6c7ff', ui: '#b88ae8', particles: 'stars', scene: 'celestial', key: 2, sub: 'A garden among the stars', dark: true },
-    { name: "Dragon's Crown", sky: ['#0f2a22', '#1f4a3a', '#5a6a3a'], hill: ['#244a3a', '#17352a', '#0c211a'], accent: '#f2c14e', ui: '#d9a12a', particles: 'embers', scene: 'dragon', key: 0, sub: 'The summit of the journey', dark: true }
+    { name: 'Bambu Bahçesi', sky: ['#d9efd8', '#a9d5b0', '#5f9f7a'], hill: ['#86bf98', '#4f8f6b', '#2f6b4c'], accent: '#3c9a68', ui: '#2f7f57', particles: 'leaves', scene: 'bamboo', key: 0, sub: 'Her yolculuğun başladığı yer' },
+    { name: 'Kiraz Çiçeği', sky: ['#fde6ec', '#f6c1cf', '#d98aa3'], hill: ['#e9b3c2', '#c47d95', '#8f4f68'], accent: '#d9668b', ui: '#b84d73', particles: 'petals', scene: 'sakura', key: 2, sub: 'Yapraklar hafif bir rüzgârda süzülür' },
+    { name: 'Sonbahar Tapınağı', sky: ['#fbe3bd', '#f1b878', '#c9683b'], hill: ['#d9905a', '#a85c34', '#6e3720'], accent: '#d4733a', ui: '#b25a26', particles: 'maple', scene: 'autumn', key: 4, sub: 'Akçaağaç yaprakları ve tapınak çanları' },
+    { name: 'Puslu Göl', sky: ['#e4eef2', '#c3d6df', '#8fb0bf'], hill: ['#a8c0cb', '#7d9cab', '#557684'], accent: '#5f8ea3', ui: '#3f7088', particles: 'mist', scene: 'lake', key: 1, sub: 'Durgun sular, sakin zihin' },
+    { name: 'Ay Işığı Bahçesi', sky: ['#1b2245', '#2e3a6b', '#4a4f86'], hill: ['#3a4377', '#2a3160', '#1b2148'], accent: '#a9b4ff', ui: '#7d87d9', particles: 'fireflies', scene: 'moon', key: 3, sub: 'Uyuyan çiçeklerde gümüş ışık', dark: true },
+    { name: 'Kadim Harabeler', sky: ['#f3dcc0', '#c9b59a', '#7f8a7a'], hill: ['#a8a088', '#7c7a66', '#525448'], accent: '#9a7b4f', ui: '#7d6340', particles: 'dust', scene: 'ruins', key: 5, sub: 'Taşlar eski hikâyeleri hatırlar' },
+    { name: 'Fener Köyü', sky: ['#2a1a33', '#5a2b45', '#a4484c'], hill: ['#4a2a3c', '#33202f', '#1e1420'], accent: '#ff9a4a', ui: '#e0733a', particles: 'fireflies', scene: 'lanterns', key: 2, sub: 'Sıcak ışıklar yolu gösterir', dark: true },
+    { name: 'Bulut Dağları', sky: ['#fbefe6', '#d9e3f0', '#a7bcd8'], hill: ['#9fb2cc', '#7488a8', '#4c5f80'], accent: '#6f86b3', ui: '#4f6797', particles: 'clouds', scene: 'peaks', key: 0, sub: 'Bulut denizinin üzerinde' },
+    { name: 'Yeşim Mabedi', sky: ['#d6f0e6', '#8fcfb5', '#3e8f74'], hill: ['#62ad91', '#3e8a70', '#1f5c48'], accent: '#2f9e7c', ui: '#1f7d61', particles: 'motes', scene: 'jade', key: 4, sub: 'Yeşil taştan kutsal salonlar' },
+    { name: 'Altın Kumlar', sky: ['#fff1cf', '#f6cf82', '#d99a45'], hill: ['#e9b763', '#c98d3c', '#9a6526'], accent: '#d29a2f', ui: '#a87418', particles: 'dust', scene: 'desert', key: 1, sub: 'Altın güneşin altında tapınaklar' },
+    { name: 'Nilüfer Cenneti', sky: ['#fdeef3', '#d8eee9', '#8fcbc2'], hill: ['#a7d8cf', '#6fb3a8', '#3f8a80'], accent: '#e07aa0', ui: '#c0577f', particles: 'petals', scene: 'lotus', key: 3, sub: 'Durgun suda yüzen çiçekler' },
+    { name: 'Kış Sarayı', sky: ['#eef5fb', '#cfe0ef', '#9db9d6'], hill: ['#dfe9f3', '#b3c8dd', '#7f9cbb'], accent: '#5c8fc4', ui: '#3d70a8', particles: 'snow', scene: 'winter', key: 5, sub: 'Sessiz çatılara kar yağar' },
+    { name: 'Işıklar Festivali', sky: ['#160f2e', '#3a1f55', '#7a3363'], hill: ['#3b2150', '#27163a', '#170d25'], accent: '#ffcf5a', ui: '#e8a93a', particles: 'sparks', scene: 'festival', key: 2, sub: 'Gökyüzü kutlamayla çiçek açar', dark: true },
+    { name: 'Yıldızlı Liman', sky: ['#0d1b33', '#1c3358', '#36557f'], hill: ['#22385c', '#172a48', '#0d1a30'], accent: '#7fc4ff', ui: '#4f9fe0', particles: 'stars', scene: 'harbor', key: 0, sub: 'Tekneler yıldızların altında dinlenir', dark: true },
+    { name: 'Gizli Vadi', sky: ['#e8f6e4', '#b9e0b4', '#6fae73'], hill: ['#8cc48c', '#5c9a62', '#356f40'], accent: '#4f9e56', ui: '#357f3d', particles: 'mist', scene: 'valley', key: 4, sub: 'Tepelerin ardında bir şelale' },
+    { name: 'Batık Tapınak', sky: ['#5fc2d6', '#2a8aa8', '#0f4f72'], hill: ['#2e7f95', '#1d5f78', '#0e3e57'], accent: '#7fe0e8', ui: '#3fb0c4', particles: 'bubbles', scene: 'sunken', key: 1, sub: 'Işık derinliklerde dalgalanır', dark: true },
+    { name: 'Kızıl Kanyon', sky: ['#ffd9b8', '#f29a6a', '#b6463a'], hill: ['#d9734e', '#a94a36', '#6f2a24'], accent: '#d4553a', ui: '#b03d26', particles: 'embers', scene: 'canyon', key: 3, sub: 'Kızıl kayalıklar alacakaranlıkta parlar' },
+    { name: 'Gece Ormanı', sky: ['#0e1f1f', '#173434', '#24504a'], hill: ['#1d3f3b', '#132d2b', '#0a1c1b'], accent: '#c8f56a', ui: '#8fcf4a', particles: 'fireflies', scene: 'forest', key: 5, sub: 'Çamların arasında ateşböcekleri', dark: true },
+    { name: 'Göksel Bahçe', sky: ['#1a1240', '#3b2a74', '#7a5bb0'], hill: ['#4a3a86', '#33276a', '#1f1747'], accent: '#e6c7ff', ui: '#b88ae8', particles: 'stars', scene: 'celestial', key: 2, sub: 'Yıldızların arasında bir bahçe', dark: true },
+    { name: 'Ejderha Tacı', sky: ['#0f2a22', '#1f4a3a', '#5a6a3a'], hill: ['#244a3a', '#17352a', '#0c211a'], accent: '#f2c14e', ui: '#d9a12a', particles: 'embers', scene: 'dragon', key: 0, sub: 'Yolculuğun zirvesi', dark: true }
   ];
 
   // ------------------------------------------------------------------ backgrounds (SVG)
@@ -2592,7 +2592,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
     }
     // Returns sanitized data or throws Error(message).
     parseImport(text) {
-      if (typeof text !== 'string' || text.length > 5e6) throw new Error('The file is too large to be a save.');
+      if (typeof text !== 'string' || text.length > 5e6) throw new Error('Dosya, bir kayıt olamayacak kadar büyük.');
       return P.sanitizeSave(text);
     }
     replace(data) {
@@ -3152,7 +3152,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
   function install(app) {
     const fab = document.createElement('button');
     fab.className = 'dbg-fab';
-    fab.setAttribute('aria-label', 'Debug panel');
+    fab.setAttribute('aria-label', 'Hata ayıklama paneli');
     fab.innerHTML = A.ICONS.bug;
     fab.addEventListener('click', () => open(app));
     document.getElementById('app').appendChild(fab);
@@ -3161,18 +3161,18 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
 
   function info(app) {
     const s = app.session;
-    if (!s || app.screen !== 'game') return 'No level in play.';
+    if (!s || app.screen !== 'game') return 'Oynanan bölüm yok.';
     const lv = s.level;
     const sig = Core.layoutSignature(lv.tiles);
     const b = Core.layoutBounds(lv.tiles);
     const free = s.st.freeList();
     const pairs = s.availablePairs();
     const lines = [
-      `Level ${s.levelNo}  family=${Core.FAMILIES[lv.family]}  tiles=${s.n}  layers=${b.layers}`,
-      `hash=${sig.hash}  grid=${b.spanX / 2}x${b.spanY / 2}`,
-      `remaining=${s.remaining}  free=${free.length}  moves=${s.moves}  hints=${s.hints}  shuffles=${s.shuffles}  undos=${s.undos}`,
-      `stars if won now: ${s.stars()}`,
-      `available matches (${pairs.length}):`
+      `Bölüm ${s.levelNo}  aile=${Core.FAMILIES[lv.family]}  taş=${s.n}  katman=${b.layers}`,
+      `hash=${sig.hash}  ızgara=${b.spanX / 2}x${b.spanY / 2}`,
+      `kalan=${s.remaining}  serbest=${free.length}  hamle=${s.moves}  ipucu=${s.hints}  karıştırma=${s.shuffles}  geri alma=${s.undos}`,
+      `şimdi kazanılsa yıldız: ${s.stars()}`,
+      `mevcut eşleşmeler (${pairs.length}):`
     ];
     for (const [a, c] of pairs.slice(0, 40)) {
       const ta = s.tiles[a], tc = s.tiles[c];
@@ -3185,19 +3185,19 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
     if (!rep) return '';
     const S = rep.summary;
     const rows = V.CHECKS.map((k) => `<tr><td>${k}</td><td>${S.passCounts[k]} / ${S.total}</td></tr>`).join('');
-    const fails = S.failed.length ? S.failed.slice(0, 20).map((f) => `Level ${f.n}: ${esc(f.errors.join('; '))}`).join('\n') : 'none';
-    return `<table>${rows}<tr><td><b>fully valid</b></td><td><b>${S.passed} / ${S.total}</b></td></tr><tr><td>unique hashes</td><td>${S.uniqueHashes}</td></tr><tr><td>unique geometries</td><td>${S.uniqueGeometries}</td></tr><tr><td>total tiles</td><td>${S.totalTiles}</td></tr><tr><td>min tile width @360x640</td><td>${S.minMobileTileWidth}px</td></tr></table><pre>failures: ${fails}</pre>`;
+    const fails = S.failed.length ? S.failed.slice(0, 20).map((f) => `Bölüm ${f.n}: ${esc(f.errors.join('; '))}`).join('\n') : 'yok';
+    return `<table>${rows}<tr><td><b>tamamen geçerli</b></td><td><b>${S.passed} / ${S.total}</b></td></tr><tr><td>benzersiz hash</td><td>${S.uniqueHashes}</td></tr><tr><td>benzersiz geometri</td><td>${S.uniqueGeometries}</td></tr><tr><td>toplam taş</td><td>${S.totalTiles}</td></tr><tr><td>en küçük taş genişliği @360x640</td><td>${S.minMobileTileWidth}px</td></tr></table><pre>hatalar: ${fails}</pre>`;
   }
 
   function open(app) {
     const r = app.renderer;
-    const el = app.ui.open(`<div class="modal-head"><h2>Debug</h2><button class="icon-btn" data-m="close" data-icon="close" aria-label="Close"></button></div>
+    const el = app.ui.open(`<div class="modal-head"><h2>Hata Ayıklama</h2><button class="icon-btn" data-m="close" data-icon="close" aria-label="Kapat"></button></div>
       <div class="dbg">
-        <div class="row"><input type="number" min="1" max="500" value="${app.levelNo}" data-lv><button class="btn small primary" data-m="go">Jump to level</button><button class="btn small" data-m="unlock">Unlock all</button></div>
-        <div class="row"><button class="btn small" data-m="free">${r.debug.free ? 'Hide' : 'Show'} free tiles</button><button class="btn small" data-m="coords">${r.debug.coords ? 'Hide' : 'Show'} coordinates</button></div>
-        <div class="row"><button class="btn small" data-m="play">Play stored solution</button><button class="btn small" data-m="solve">Auto-solve from here</button><button class="btn small" data-m="win">Win instantly</button></div>
+        <div class="row"><input type="number" min="1" max="500" value="${app.levelNo}" data-lv><button class="btn small primary" data-m="go">Bölüme git</button><button class="btn small" data-m="unlock">Tümünü aç</button></div>
+        <div class="row"><button class="btn small" data-m="free">Serbest taşları ${r.debug.free ? 'gizle' : 'göster'}</button><button class="btn small" data-m="coords">Koordinatları ${r.debug.coords ? 'gizle' : 'göster'}</button></div>
+        <div class="row"><button class="btn small" data-m="play">Kayıtlı çözümü oynat</button><button class="btn small" data-m="solve">Buradan otomatik çöz</button><button class="btn small" data-m="win">Anında kazan</button></div>
         <pre data-info>${esc(info(app))}</pre>
-        <div class="row"><button class="btn small primary" data-m="validate">Validate all 500 levels</button><span data-prog></span></div>
+        <div class="row"><button class="btn small primary" data-m="validate">500 bölümün hepsini doğrula</button><span data-prog></span></div>
         <div data-report>${reportHTML(lastReport)}</div>
       </div>`, {
       actions: {
@@ -3211,7 +3211,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
           app.ui.closeNow();
           app.startLevel(n, { resume: false, skipIntro: true });
         },
-        unlock: () => { app.save.data.progress.unlocked = 500; app.save.save(); app.ui.toast('All levels unlocked'); },
+        unlock: () => { app.save.data.progress.unlocked = 500; app.save.save(); app.ui.toast('Tüm bölümler açıldı'); },
         free: () => { r.debug.free = !r.debug.free; r.invalidate(); app.ui.close(); },
         coords: () => { r.debug.coords = !r.debug.coords; r.invalidate(); app.ui.close(); },
         play: () => { app.ui.closeNow(); app.playSolution(false, 180); },
@@ -3222,7 +3222,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
           V.validateAllAsync(root.MJ_LEVELS, (k) => { prog.textContent = `${k} / 500`; }).then((rep) => {
             lastReport = rep;
             root.MJLastValidation = rep.summary;
-            prog.textContent = `done: ${rep.summary.passed} / 500 valid`;
+            prog.textContent = `bitti: ${rep.summary.passed} / 500 geçerli`;
             el.querySelector('[data-report]').innerHTML = reportHTML(rep);
           });
         }
@@ -3253,7 +3253,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
   function fillIcons(scope) { $$('[data-icon]', scope).forEach((el) => { if (!el.firstElementChild) el.innerHTML = icon(el.dataset.icon); }); }
   function fmtTime(ms) {
     const s = Math.floor(ms / 1000), h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), r = s % 60;
-    return h ? `${h}h ${String(m).padStart(2, '0')}m` : `${m}:${String(r).padStart(2, '0')}`;
+    return h ? `${h} sa ${String(m).padStart(2, '0')} dk` : `${m}:${String(r).padStart(2, '0')}`;
   }
   const levelCache = new Map();
   function getLevel(n) {
@@ -3313,7 +3313,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       const a = this.active;
       $$('[data-fs]').forEach((b) => {
         b.innerHTML = icon(a ? 'fsExit' : 'fsEnter');
-        b.setAttribute('aria-label', a ? 'Exit fullscreen' : 'Enter fullscreen');
+        b.setAttribute('aria-label', a ? 'Tam ekrandan çık' : 'Tam ekrana geç');
         b.setAttribute('aria-pressed', a ? 'true' : 'false');
         b.dataset.state = a ? 'on' : 'off';
       });
@@ -3334,7 +3334,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
     }
     achievementToasts(list) {
       list.forEach((a, i) => setTimeout(() => {
-        this.toast('Achievement: ' + a.name, { cls: 'ach', icon: 'trophy', ms: 3200 });
+        this.toast('Başarım: ' + a.name, { cls: 'ach', icon: 'trophy', ms: 3200 });
         this.app.audio.play('achievement');
       }, 400 + i * 900));
     }
@@ -3377,7 +3377,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
     }
     get isOpen() { return !!this.modal; }
     confirm(title, text, okLabel, onOk, opts) {
-      this.open(`<h2>${esc(title)}</h2><p>${esc(text)}</p><div class="actions row"><button class="btn" data-m="no">Cancel</button><button class="btn ${opts && opts.danger ? 'danger' : 'primary'}" data-m="yes">${esc(okLabel)}</button></div>`, {
+      this.open(`<h2>${esc(title)}</h2><p>${esc(text)}</p><div class="actions row"><button class="btn" data-m="no">Vazgeç</button><button class="btn ${opts && opts.danger ? 'danger' : 'primary'}" data-m="yes">${esc(okLabel)}</button></div>`, {
         actions: { no: () => { this.close(); if (opts && opts.onCancel) opts.onCancel(); }, yes: () => { this.closeNow(); onOk(); } }
       });
     }
@@ -3385,10 +3385,10 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       const app = this.app;
       const iframe = app.fs.inIframe;
       let text;
-      if (isIOS() && !app.fs.supported) text = 'Safari on iPhone does not allow web pages to hide the browser bars. The game already fills all of the available screen. For the most space, use Share → Add to Home Screen, or open the game in its own tab.';
-      else if (iframe) text = 'The page hosting this game does not allow fullscreen. The game is using all the space it was given. You can open it in its own browser tab instead.';
-      else text = afterFailure ? 'Your browser declined the fullscreen request. The game keeps using all of the visible screen.' : 'This browser does not support fullscreen mode. The game keeps using all of the visible screen.';
-      this.open(`<h2>Fullscreen unavailable</h2><p>${esc(text)}</p><div class="actions">${iframe ? '<button class="btn primary" data-m="tab"><span data-icon="external"></span>Open in new tab</button>' : ''}<button class="btn" data-m="ok">OK</button></div>`, {
+      if (isIOS() && !app.fs.supported) text = 'iPhone\'daki Safari, web sayfalarının tarayıcı çubuklarını gizlemesine izin vermiyor. Oyun zaten kullanılabilir ekranın tamamını dolduruyor. En geniş alan için Paylaş → Ana Ekrana Ekle\'yi kullanın ya da oyunu kendi sekmesinde açın.';
+      else if (iframe) text = 'Bu oyunu barındıran sayfa tam ekrana izin vermiyor. Oyun kendisine verilen alanın tamamını kullanıyor. Bunun yerine oyunu ayrı bir tarayıcı sekmesinde açabilirsiniz.';
+      else text = afterFailure ? 'Tarayıcınız tam ekran isteğini reddetti. Oyun görünen ekranın tamamını kullanmaya devam ediyor.' : 'Bu tarayıcı tam ekran modunu desteklemiyor. Oyun görünen ekranın tamamını kullanmaya devam ediyor.';
+      this.open(`<h2>Tam ekran kullanılamıyor</h2><p>${esc(text)}</p><div class="actions">${iframe ? '<button class="btn primary" data-m="tab"><span data-icon="external"></span>Yeni sekmede aç</button>' : ''}<button class="btn" data-m="ok">Tamam</button></div>`, {
         actions: { ok: () => this.close(), tab: () => { root.open(root.location.href, '_blank', 'noopener'); this.close(); } }
       });
     }
@@ -3439,7 +3439,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       $('#app').classList.remove('booting');
       this.setWorld(Core.levelMeta(P.continueLevel(this.save.data)).world);
       this.showMenu();
-      if (!this.save.persistent) setTimeout(() => this.ui.toast('Storage is unavailable here — export your save to keep progress.', { ms: 4200 }), 600);
+      if (!this.save.persistent) setTimeout(() => this.ui.toast('Burada depolama kullanılamıyor — ilerlemeni korumak için kaydını dışa aktar.', { ms: 4200 }), 600);
       if (this.debug && root.MJDebug) root.MJDebug.install(this);
     }
     get settings() { return this.save.data.settings; }
@@ -3603,7 +3603,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       $('#menu-stars').textContent = P.totalStars(d);
       $('#menu-bar').style.width = (P.levelsCleared(d) / Core.LEVEL_COUNT * 100).toFixed(1) + '%';
       const started = P.levelsCleared(d) > 0 || d.current;
-      $('#menu-play-label').textContent = started ? (d.current ? 'Continue' : 'Play Level ' + n) : 'Play';
+      $('#menu-play-label').textContent = started ? (d.current ? 'Devam Et' : n + '. Bölümü Oyna') : 'Oyna';
       this.setWorld(m.world);
       this.show('menu');
     }
@@ -3615,10 +3615,10 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       for (let w = 0; w < Core.WORLD_COUNT; w++) {
         const W = A.WORLDS[w], ws = P.worldStats(d, w);
         const cls = ['world-card', ws.unlocked ? '' : 'locked', ws.complete ? 'complete' : '', w === cur ? 'current' : ''].join(' ');
-        html += `<button class="${cls}" data-act="world" data-world="${w}" aria-label="${esc(W.name)}${ws.unlocked ? '' : ' (locked)'}">
+        html += `<button class="${cls}" data-act="world" data-world="${w}" aria-label="${esc(W.name)}${ws.unlocked ? '' : ' (kilitli)'}">
           <div class="world-thumb" style='background-image:${A.worldBackgroundURL(w)}'><span class="wn">${w + 1}</span></div>
-          <div class="world-info"><h3>${esc(W.name)}</h3><p>${ws.unlocked ? esc(W.sub) : 'Complete ' + esc(A.WORLDS[Math.max(0, w - 1)].name) + ' to unlock'}</p>
-          <div class="world-meta"><span>${ws.cleared}/25 levels</span><span><span class="star-ico">${icon('star')}</span>${ws.stars}/75</span><span class="muted">Lv ${w * 25 + 1}–${w * 25 + 25}</span></div></div>
+          <div class="world-info"><h3>${esc(W.name)}</h3><p>${ws.unlocked ? esc(W.sub) : 'Açmak için ' + esc(A.WORLDS[Math.max(0, w - 1)].name) + ' dünyasını tamamla'}</p>
+          <div class="world-meta"><span>${ws.cleared}/25 bölüm</span><span><span class="star-ico">${icon('star')}</span>${ws.stars}/75</span><span class="muted">Bölüm ${w * 25 + 1}–${w * 25 + 25}</span></div></div>
           ${ws.unlocked ? '' : `<span class="world-lock">${icon('lock')}</span>`}
         </button>`;
       }
@@ -3631,14 +3631,14 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
     showLevels(w) {
       const d = this.save.data;
       if (!P.worldUnlocked(d, w)) {
-        this.ui.toast('Complete ' + A.WORLDS[w - 1].name + ' to unlock ' + A.WORLDS[w].name + '.', { icon: 'lock' });
+        this.ui.toast(A.WORLDS[w].name + ' dünyasını açmak için ' + A.WORLDS[w - 1].name + ' dünyasını tamamla.', { icon: 'lock' });
         return;
       }
       this.mapWorld = w;
       this.setWorld(w);
       const ws = P.worldStats(d, w);
       $('#levels-title').textContent = A.WORLDS[w].name;
-      $('#levels-sub').textContent = `World ${w + 1} · ${ws.cleared}/25 cleared · ${ws.stars}/75 ★`;
+      $('#levels-sub').textContent = `${w + 1}. Dünya · ${ws.cleared}/25 tamamlandı · ${ws.stars}/75 ★`;
       let html = '';
       const frontier = d.progress.unlocked;
       for (let i = 0; i < Core.WORLD_SIZE; i++) {
@@ -3649,8 +3649,8 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
         const fam = Core.FAMILIES[getLevel(n).family];
         const stars = [1, 2, 3].map((k) => `<span class="${st >= k ? 'on' : ''}">${icon('star')}</span>`).join('');
         const cls = ['level-btn', unlocked ? '' : 'locked', fin ? 'final' : '', unlocked && n === frontier && !st ? 'next' : ''].join(' ');
-        html += `<button class="${cls}" data-act="level" data-level="${n}" ${unlocked ? '' : 'disabled'} aria-label="Level ${n}${unlocked ? ', ' + st + ' stars' : ', locked'}">` +
-          (fin ? `<div><div class="ft">FINAL CHALLENGE</div><b>${n}</b></div><div><div class="lstars">${unlocked ? stars : ''}</div><div class="fam">${esc(fam)}</div></div>${unlocked ? '' : `<span class="lk">${icon('lock')}</span>`}`
+        html += `<button class="${cls}" data-act="level" data-level="${n}" ${unlocked ? '' : 'disabled'} aria-label="Bölüm ${n}${unlocked ? ', ' + st + ' yıldız' : ', kilitli'}">` +
+          (fin ? `<div><div class="ft">FİNAL MÜCADELESİ</div><b>${n}</b></div><div><div class="lstars">${unlocked ? stars : ''}</div><div class="fam">${esc(fam)}</div></div>${unlocked ? '' : `<span class="lk">${icon('lock')}</span>`}`
             : `<b>${n}</b>${unlocked ? `<div class="lstars">${stars}</div><div class="fam">${esc(fam)}</div>` : `<span class="lk">${icon('lock')}</span>`}`) + '</button>';
       }
       $('#level-grid').innerHTML = html;
@@ -3662,7 +3662,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       opts = opts || {};
       const d = this.save.data;
       if (!(n >= 1 && n <= Core.LEVEL_COUNT)) return;
-      if (!P.isUnlocked(d, n)) { this.ui.toast('Level ' + n + ' is locked.', { icon: 'lock' }); return; }
+      if (!P.isUnlocked(d, n)) { this.ui.toast(n + '. bölüm kilitli.', { icon: 'lock' }); return; }
       const meta = Core.levelMeta(n);
       if (!opts.skipIntro && !d.seen.worlds.includes(meta.world)) {
         d.seen.worlds.push(meta.world);
@@ -3683,7 +3683,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       this.levelNo = n;
       this.setWorld(meta.world);
       this.renderer.setSession(s);
-      $('#hud-level').textContent = 'Level ' + n;
+      $('#hud-level').textContent = 'Bölüm ' + n;
       $('#hud-world').textContent = meta.worldName + ' · ' + Core.FAMILIES[lv.family];
       $('#hud-final').hidden = !meta.isFinal;
       $('#hud-warn').hidden = true;
@@ -3726,7 +3726,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
         case 'deselect': this.audio.play('deselect'); r.invalidate(); break;
         case 'blocked':
           this.audio.play('blocked'); r.shake(res.tile);
-          if (!this._blockedTipShown && this.levelNo <= 3) { this._blockedTipShown = true; this.coach('That tile is blocked. A tile is free when nothing lies on it and its left or right side is open.', 4200); }
+          if (!this._blockedTipShown && this.levelNo <= 3) { this._blockedTipShown = true; this.coach('Bu taş bloke. Bir taşın üstünde başka taş yoksa ve sol ya da sağ yanı açıksa taş serbesttir.', 4200); }
           break;
         case 'mismatch': this.audio.play('mismatch'); r.shake(res.prev); r.invalidate(); break;
         case 'match': {
@@ -3760,7 +3760,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       const s = this.session;
       if (!s || s.won) return;
       const h = s.useHint(25000);
-      if (!h) { this.ui.toast('No matching pairs are free — try Shuffle or Undo.', { icon: 'info' }); return; }
+      if (!h) { this.ui.toast('Serbest eşleşen çift yok — Karıştır veya Geri Al\'ı dene.', { icon: 'info' }); return; }
       this.renderer.showHint(h.pair[0], h.pair[1]);
       this.audio.play('hint');
       if (h.solvable === false) $('#hud-warn').hidden = false;
@@ -3789,7 +3789,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       if (!s || s.won) return;
       const before = s.faces.slice();
       const e = s.undo();
-      if (!e) { this.ui.toast('Nothing to undo yet.'); return; }
+      if (!e) { this.ui.toast('Henüz geri alınacak hamle yok.'); return; }
       this.renderer.clearHint();
       if (e.t === 'm') this.renderer.restoreTiles([e.a, e.b]);
       else {
@@ -3816,7 +3816,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       $('#hud-warn').hidden = true;
       this.updateHUD();
       this.persistCurrent();
-      this.ui.toast(undone.length ? `Rewound ${undone.length} move${undone.length > 1 ? 's' : ''} to a solvable board.` : 'This board is already solvable.', { icon: 'undo' });
+      this.ui.toast(undone.length ? `Çözülebilir bir tahtaya dönmek için ${undone.length} hamle geri alındı.` : 'Bu tahta zaten çözülebilir.', { icon: 'undo' });
     }
     doRestart(force) {
       const s = this.session;
@@ -3827,21 +3827,21 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
         $('#hud-warn').hidden = true;
         this.updateHUD();
         this.persistCurrent();
-        this.ui.toast('Level restarted', { icon: 'restart', ms: 1400 });
+        this.ui.toast('Bölüm yeniden başlatıldı', { icon: 'restart', ms: 1400 });
       };
       if (force || s.moves === 0 || s.won) { this.ui.closeNow(); go(); }
-      else this.ui.confirm('Restart level?', 'Your moves on this board will be cleared. The layout stays the same.', 'Restart', go);
+      else this.ui.confirm('Bölüm yeniden başlatılsın mı?', 'Bu tahtadaki hamlelerin silinecek. Taş düzeni aynı kalır.', 'Yeniden Başlat', go);
     }
 
     // ---------------------------------------------------------- modals
     openPause() {
       if (!this.session || this.session.won) return;
       const s = this.session;
-      this.ui.open(`<h2>Paused</h2><p>Level ${s.levelNo} · ${esc(Core.levelMeta(s.levelNo).worldName)}</p>
-        <div class="win-stats"><div><b>${s.remaining}</b><small>Tiles left</small></div><div><b>${s.moves}</b><small>Moves</small></div><div><b>${fmtTime(s.elapsed)}</b><small>Time</small></div></div>
-        <div class="actions"><button class="btn primary big" data-m="resume"><span data-icon="play"></span>Resume</button>
-        <div class="actions row" style="margin-top:0"><button class="btn" data-m="restart"><span data-icon="restart"></span>Restart</button><button class="btn" data-m="settings"><span data-icon="settings"></span>Settings</button></div>
-        <div class="actions row" style="margin-top:0"><button class="btn" data-m="map"><span data-icon="map"></span>Level Map</button><button class="btn" data-m="menu">Main Menu</button></div></div>`, {
+      this.ui.open(`<h2>Duraklatıldı</h2><p>Bölüm ${s.levelNo} · ${esc(Core.levelMeta(s.levelNo).worldName)}</p>
+        <div class="win-stats"><div><b>${s.remaining}</b><small>Kalan taş</small></div><div><b>${s.moves}</b><small>Hamle</small></div><div><b>${fmtTime(s.elapsed)}</b><small>Süre</small></div></div>
+        <div class="actions"><button class="btn primary big" data-m="resume"><span data-icon="play"></span>Devam Et</button>
+        <div class="actions row" style="margin-top:0"><button class="btn" data-m="restart"><span data-icon="restart"></span>Baştan</button><button class="btn" data-m="settings"><span data-icon="settings"></span>Ayarlar</button></div>
+        <div class="actions row" style="margin-top:0"><button class="btn" data-m="map"><span data-icon="map"></span>Bölüm Haritası</button><button class="btn" data-m="menu">Ana Menü</button></div></div>`, {
         actions: {
           resume: () => this.ui.close(),
           restart: () => this.doRestart(),
@@ -3852,16 +3852,16 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       });
     }
     showNoMoves() {
-      this.ui.open(`<h2>No more matches</h2><p>There are no free pairs left on the board. Undo a few moves, or shuffle the remaining tiles into a new solvable arrangement.</p>
-        <div class="actions"><button class="btn primary" data-m="undo"><span data-icon="undo"></span>Undo last move</button>
-        <div class="actions row" style="margin-top:0"><button class="btn" data-m="shuffle"><span data-icon="shuffle"></span>Shuffle</button><button class="btn" data-m="restart"><span data-icon="restart"></span>Restart</button></div></div>`, {
+      this.ui.open(`<h2>Eşleşme kalmadı</h2><p>Tahtada serbest çift kalmadı. Birkaç hamleyi geri al ya da kalan taşları çözülebilir yeni bir düzene karıştır.</p>
+        <div class="actions"><button class="btn primary" data-m="undo"><span data-icon="undo"></span>Son hamleyi geri al</button>
+        <div class="actions row" style="margin-top:0"><button class="btn" data-m="shuffle"><span data-icon="shuffle"></span>Karıştır</button><button class="btn" data-m="restart"><span data-icon="restart"></span>Baştan</button></div></div>`, {
         dismissable: false,
         actions: { undo: () => { this.ui.closeNow(); this.doUndo(); }, shuffle: () => { this.ui.closeNow(); this.doShuffle(); }, restart: () => { this.ui.closeNow(); this.doRestart(true); } }
       });
     }
     showShuffleImpossible() {
-      this.ui.open(`<h2>Shuffle can't help</h2><p>The remaining tiles are stacked so that no deal could clear them (for example a tile lying directly on its only partner). Rewind to the last board that can still be cleared, or restart the level.</p>
-        <div class="actions"><button class="btn primary" data-m="rewind"><span data-icon="undo"></span>Rewind to solvable board</button><button class="btn" data-m="restart"><span data-icon="restart"></span>Restart level</button><button class="btn" data-m="cancel">Cancel</button></div>`, {
+      this.ui.open(`<h2>Karıştırmak işe yaramaz</h2><p>Kalan taşlar hiçbir dağıtımla temizlenemeyecek biçimde üst üste duruyor (örneğin bir taş, tek eşinin hemen üstünde). Hâlâ temizlenebilen son tahtaya geri dön ya da bölümü yeniden başlat.</p>
+        <div class="actions"><button class="btn primary" data-m="rewind"><span data-icon="undo"></span>Çözülebilir tahtaya dön</button><button class="btn" data-m="restart"><span data-icon="restart"></span>Bölümü yeniden başlat</button><button class="btn" data-m="cancel">Vazgeç</button></div>`, {
         actions: { rewind: () => { this.ui.closeNow(); this.doRewind(); }, restart: () => { this.ui.closeNow(); this.doRestart(true); }, cancel: () => this.ui.close() }
       });
     }
@@ -3889,16 +3889,16 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
     showWin(s, result) {
       const n = s.levelNo, meta = Core.levelMeta(n);
       const best = this.save.data.progress.bestTime[n - 1];
-      const title = meta.isFinal ? 'World Complete!' : 'Level Complete';
-      const help = s.hints + s.shuffles ? `<p style="font-size:13px">${s.hints} hint${s.hints === 1 ? '' : 's'} · ${s.shuffles} shuffle${s.shuffles === 1 ? '' : 's'} used — clear it with no help for 3 stars.</p>` : '';
-      const nextWorld = meta.isFinal ? `<p>${esc(A.WORLDS[meta.world + 1].name)} is now open.</p>` : '';
-      const el = this.ui.open(`${meta.isFinal ? `<div class="final-banner">${esc(meta.worldName)} · Final Challenge</div>` : ''}<h2>${title}</h2>
+      const title = meta.isFinal ? 'Dünya Tamamlandı!' : 'Bölüm Tamamlandı';
+      const help = s.hints + s.shuffles ? `<p style="font-size:13px">${s.hints} ipucu · ${s.shuffles} karıştırma kullanıldı — 3 yıldız için yardımsız bitir.</p>` : '';
+      const nextWorld = meta.isFinal ? `<p>${esc(A.WORLDS[meta.world + 1].name)} artık açık.</p>` : '';
+      const el = this.ui.open(`${meta.isFinal ? `<div class="final-banner">${esc(meta.worldName)} · Final Mücadelesi</div>` : ''}<h2>${title}</h2>
         <div class="win-stars"><span>${icon('star')}</span><span>${icon('star')}</span><span>${icon('star')}</span></div>
-        ${result.newBest && !result.firstClear ? '<div><span class="badge-new">NEW BEST</span></div>' : ''}
-        <div class="win-stats"><div><b>${s.moves}</b><small>Moves</small></div><div><b>${fmtTime(s.elapsed)}</b><small>Time</small></div><div><b>${fmtTime(best)}</b><small>Best</small></div></div>
+        ${result.newBest && !result.firstClear ? '<div><span class="badge-new">YENİ REKOR</span></div>' : ''}
+        <div class="win-stats"><div><b>${s.moves}</b><small>Hamle</small></div><div><b>${fmtTime(s.elapsed)}</b><small>Süre</small></div><div><b>${fmtTime(best)}</b><small>En iyi</small></div></div>
         ${help}${nextWorld}
-        <div class="actions"><button class="btn primary big" data-m="next"><span data-icon="play"></span>Next Level</button>
-        <div class="actions row" style="margin-top:0"><button class="btn" data-m="replay"><span data-icon="restart"></span>Replay</button><button class="btn" data-m="map"><span data-icon="map"></span>Level Map</button></div></div>`, {
+        <div class="actions"><button class="btn primary big" data-m="next"><span data-icon="play"></span>Sonraki Bölüm</button>
+        <div class="actions row" style="margin-top:0"><button class="btn" data-m="replay"><span data-icon="restart"></span>Tekrar Oyna</button><button class="btn" data-m="map"><span data-icon="map"></span>Bölüm Haritası</button></div></div>`, {
         dismissable: false,
         actions: {
           next: () => this.startLevel(n + 1, { resume: true }),
@@ -3914,13 +3914,13 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
     showJourneyComplete(s, result) {
       const d = this.save.data;
       const total = P.totalStars(d), cleared = P.levelsCleared(d);
-      const el = this.ui.open(`<div class="final-banner">Dragon's Crown · Level 500</div><h2>Journey Complete!</h2>
+      const el = this.ui.open(`<div class="final-banner">${esc(A.WORLDS[Core.WORLD_COUNT - 1].name)} · Bölüm 500</div><h2>Yolculuk Tamamlandı!</h2>
         <div class="win-stars"><span>${icon('star')}</span><span>${icon('star')}</span><span>${icon('star')}</span></div>
-        <p>You have reached the summit of the Zen Journey. Every one of the 20 worlds has opened to you.</p>
-        <div class="win-stats"><div><b>${cleared}</b><small>Levels</small></div><div><b>${total}</b><small>of 1500 ★</small></div><div><b>${fmtTime(d.stats.playTimeMs)}</b><small>Played</small></div></div>
-        <p style="font-size:13px">${total < 1500 ? 'Replay any level to collect the remaining stars.' : 'Every star collected — a true Mahjong master.'}</p>
-        <div class="actions"><button class="btn primary big" data-m="map"><span data-icon="map"></span>World Map</button>
-        <div class="actions row" style="margin-top:0"><button class="btn" data-m="replay"><span data-icon="restart"></span>Replay</button><button class="btn" data-m="menu">Main Menu</button></div></div>`, {
+        <p>Zen Yolculuğu'nun zirvesine ulaştın. 20 dünyanın her biri sana kapılarını açtı.</p>
+        <div class="win-stats"><div><b>${cleared}</b><small>Bölüm</small></div><div><b>${total}</b><small>/ 1500 ★</small></div><div><b>${fmtTime(d.stats.playTimeMs)}</b><small>Oynama</small></div></div>
+        <p style="font-size:13px">${total < 1500 ? 'Kalan yıldızları toplamak için istediğin bölümü tekrar oyna.' : 'Tüm yıldızlar toplandı — gerçek bir Mahjong ustası.'}</p>
+        <div class="actions"><button class="btn primary big" data-m="map"><span data-icon="map"></span>Dünya Haritası</button>
+        <div class="actions row" style="margin-top:0"><button class="btn" data-m="replay"><span data-icon="restart"></span>Tekrar Oyna</button><button class="btn" data-m="menu">Ana Menü</button></div></div>`, {
         dismissable: false, cls: 'journey-complete',
         actions: {
           map: () => { this.ui.closeNow(); this.celebration.stop(); this.showMap(); },
@@ -3935,7 +3935,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       const el = $('#world-intro');
       this.setWorld(w);
       el.style.backgroundImage = A.worldBackgroundURL(w);
-      el.innerHTML = `<div class="wi-num">World ${w + 1} of ${Core.WORLD_COUNT}</div><h2>${esc(W.name)}</h2><div class="wi-line"></div><p>${esc(W.sub)}</p><div class="wi-tap">Tap to begin</div>`;
+      el.innerHTML = `<div class="wi-num">Dünya ${w + 1} / ${Core.WORLD_COUNT}</div><h2>${esc(W.name)}</h2><div class="wi-line"></div><p>${esc(W.sub)}</p><div class="wi-tap">Başlamak için dokun</div>`;
       el.hidden = false;
       el.classList.remove('closing');
       el.classList.add('enter');
@@ -3960,20 +3960,20 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
 
     openSettings(onClose) {
       const st = this.settings;
-      const sw = (key, on) => `<button class="switch" role="switch" aria-checked="${on}" data-m="toggle" data-key="${key}" aria-label="${key}"></button>`;
-      const fsLabel = this.fs.active ? 'Exit fullscreen' : 'Enter fullscreen';
-      const el = this.ui.open(`<div class="modal-head"><h2>Settings</h2><button class="icon-btn" data-m="close" aria-label="Close" data-icon="close"></button></div>
+      const sw = (key, on, label) => `<button class="switch" role="switch" aria-checked="${on}" data-m="toggle" data-key="${key}" aria-label="${label}"></button>`;
+      const fsLabel = this.fs.active ? 'Tam ekrandan çık' : 'Tam ekrana geç';
+      const el = this.ui.open(`<div class="modal-head"><h2>Ayarlar</h2><button class="icon-btn" data-m="close" aria-label="Kapat" data-icon="close"></button></div>
         <div class="settings-list">
-          <div class="set-row"><span class="ico">${icon('music')}</span><span class="lbl">Music<small>Calm generative ambience</small></span>${sw('music', st.music)}</div>
-          <div class="set-row"><span class="ico">${icon('sound')}</span><span class="lbl">Sound effects</span>${sw('sfx', st.sfx)}</div>
-          <div class="set-row"><span class="ico">${icon('sound')}</span><span class="lbl">Volume</span><input type="range" min="0" max="100" step="1" value="${Math.round(st.volume * 100)}" aria-label="Volume" data-vol></div>
-          <div class="set-row"><span class="ico">${icon('star')}</span><span class="lbl">Ambient effects<small>Falling petals, mist, particles</small></span>${sw('effects', st.effects)}</div>
-          <div class="set-row"><span class="ico">${icon('fsEnter')}</span><span class="lbl">Fullscreen</span><button class="btn small" data-m="fs">${fsLabel}</button></div>
+          <div class="set-row"><span class="ico">${icon('music')}</span><span class="lbl">Müzik<small>Sakin, kendiliğinden oluşan ambiyans</small></span>${sw('music', st.music, 'Müzik')}</div>
+          <div class="set-row"><span class="ico">${icon('sound')}</span><span class="lbl">Ses efektleri</span>${sw('sfx', st.sfx, 'Ses efektleri')}</div>
+          <div class="set-row"><span class="ico">${icon('sound')}</span><span class="lbl">Ses düzeyi</span><input type="range" min="0" max="100" step="1" value="${Math.round(st.volume * 100)}" aria-label="Ses düzeyi" data-vol></div>
+          <div class="set-row"><span class="ico">${icon('star')}</span><span class="lbl">Ortam efektleri<small>Düşen yapraklar, sis, parçacıklar</small></span>${sw('effects', st.effects, 'Ortam efektleri')}</div>
+          <div class="set-row"><span class="ico">${icon('fsEnter')}</span><span class="lbl">Tam ekran</span><button class="btn small" data-m="fs">${fsLabel}</button></div>
         </div>
-        <div class="set-section">Your progress</div>
-        <div class="btn-grid"><button class="btn" data-m="export"><span data-icon="download"></span>Export Save</button><button class="btn" data-m="import"><span data-icon="upload"></span>Import Save</button></div>
-        <div class="btn-grid" style="grid-template-columns:1fr"><button class="btn danger" data-m="reset"><span data-icon="trash"></span>Reset Progress</button></div>
-        <p class="storage-note">Progress is saved automatically on this device (${this.save.status.idb ? 'IndexedDB' : ''}${this.save.status.idb && this.save.status.ls ? ' + ' : ''}${this.save.status.ls ? 'localStorage' : ''}${this.save.persistent ? '' : 'storage unavailable — export to keep it'}). Private browsing or clearing site data erases it, so export a backup now and then.</p>
+        <div class="set-section">İlerlemen</div>
+        <div class="btn-grid"><button class="btn" data-m="export"><span data-icon="download"></span>Kaydı Dışa Aktar</button><button class="btn" data-m="import"><span data-icon="upload"></span>Kaydı İçe Aktar</button></div>
+        <div class="btn-grid" style="grid-template-columns:1fr"><button class="btn danger" data-m="reset"><span data-icon="trash"></span>İlerlemeyi Sıfırla</button></div>
+        <p class="storage-note">İlerleme bu cihaza otomatik olarak kaydedilir (${this.save.status.idb ? 'IndexedDB' : ''}${this.save.status.idb && this.save.status.ls ? ' + ' : ''}${this.save.status.ls ? 'localStorage' : ''}${this.save.persistent ? '' : 'depolama kullanılamıyor — korumak için dışa aktar'}). Gizli gezinme veya site verilerini temizlemek kaydı siler; ara sıra yedek almak için dışa aktar.</p>
         <p class="storage-note">Mahjong: Zen Journey v${VERSION}</p>`, {
         onClose,
         actions: {
@@ -3986,10 +3986,10 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
             this.applySettings();
             this.save.save();
           },
-          fs: (b) => { this.fs.toggle(); setTimeout(() => { b.textContent = this.fs.active ? 'Exit fullscreen' : 'Enter fullscreen'; }, 400); },
+          fs: (b) => { this.fs.toggle(); setTimeout(() => { b.textContent = this.fs.active ? 'Tam ekrandan çık' : 'Tam ekrana geç'; }, 400); },
           export: () => this.exportSave(),
           import: () => this.importSave(),
-          reset: () => this.ui.confirm('Reset all progress?', 'Every level, star, statistic and achievement will be erased. This cannot be undone. Consider exporting your save first.', 'Reset everything', () => this.resetProgress(), { danger: true, onCancel: () => this.openSettings(onClose) })
+          reset: () => this.ui.confirm('Tüm ilerleme sıfırlansın mı?', 'Tüm bölümler, yıldızlar, istatistikler ve başarımlar silinecek. Bu işlem geri alınamaz. Önce kaydını dışa aktarmayı düşün.', 'Her şeyi sıfırla', () => this.resetProgress(), { danger: true, onCancel: () => this.openSettings(onClose) })
         }
       });
       const vol = $('[data-vol]', el);
@@ -4009,15 +4009,15 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
         setTimeout(() => URL.revokeObjectURL(url), 5000);
         downloaded = true;
       } catch (e) { downloaded = false; }
-      const el = this.ui.open(`<h2>Save exported</h2><p>${downloaded ? 'A JSON save file has been downloaded.' : 'Your browser blocked the download.'} If no file appeared (some embedded players block downloads), copy the text below and keep it somewhere safe.</p>
+      const el = this.ui.open(`<h2>Kayıt dışa aktarıldı</h2><p>${downloaded ? 'Bir JSON kayıt dosyası indirildi.' : 'Tarayıcın indirmeyi engelledi.'} Dosya görünmediyse (bazı gömülü oynatıcılar indirmeleri engeller) aşağıdaki metni kopyalayıp güvenli bir yerde sakla.</p>
         <textarea class="io" readonly>${esc(json)}</textarea>
-        <div class="actions row"><button class="btn" data-m="copy">Copy text</button><button class="btn primary" data-m="ok">Done</button></div>`, {
+        <div class="actions row"><button class="btn" data-m="copy">Metni kopyala</button><button class="btn primary" data-m="ok">Bitti</button></div>`, {
         actions: {
           ok: () => this.openSettings(),
           copy: () => {
             const ta = $('textarea', el);
             ta.select();
-            const ok = () => this.ui.toast('Save copied to clipboard');
+            const ok = () => this.ui.toast('Kayıt panoya kopyalandı');
             if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(json).then(ok, () => { try { document.execCommand('copy'); ok(); } catch (e) { /* noop */ } });
             else { try { document.execCommand('copy'); ok(); } catch (e) { /* noop */ } }
           }
@@ -4025,11 +4025,11 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       });
     }
     importSave() {
-      const el = this.ui.open(`<h2>Import save</h2><p>Choose a Mahjong: Zen Journey save file (.json), or paste the save text.</p>
+      const el = this.ui.open(`<h2>Kaydı içe aktar</h2><p>Bir Mahjong: Zen Journey kayıt dosyası (.json) seç ya da kayıt metnini yapıştır.</p>
         <input type="file" accept=".json,application/json" data-file hidden>
-        <div class="actions"><button class="btn primary" data-m="pick"><span data-icon="upload"></span>Choose file</button></div>
-        <textarea class="io" placeholder="…or paste save text here" data-paste></textarea>
-        <div class="actions row"><button class="btn" data-m="cancel">Cancel</button><button class="btn" data-m="paste">Import text</button></div>`, {
+        <div class="actions"><button class="btn primary" data-m="pick"><span data-icon="upload"></span>Dosya seç</button></div>
+        <textarea class="io" placeholder="…ya da kayıt metnini buraya yapıştır" data-paste></textarea>
+        <div class="actions row"><button class="btn" data-m="cancel">Vazgeç</button><button class="btn" data-m="paste">Metni içe aktar</button></div>`, {
         actions: {
           cancel: () => this.openSettings(),
           pick: () => $('[data-file]', el).click(),
@@ -4041,21 +4041,21 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
         if (!f) return;
         const rd = new FileReader();
         rd.onload = () => this._importText(String(rd.result));
-        rd.onerror = () => this.ui.toast('Could not read the file.');
+        rd.onerror = () => this.ui.toast('Dosya okunamadı.');
         rd.readAsText(f);
       });
     }
     _importText(text) {
       let data;
       try { data = this.save.parseImport(text); }
-      catch (e) { this.ui.open(`<h2>Import failed</h2><p>${esc(e.message)}</p><div class="actions"><button class="btn primary" data-m="ok">OK</button></div>`, { actions: { ok: () => this.importSave() } }); return; }
+      catch (e) { this.ui.open(`<h2>İçe aktarma başarısız</h2><p>${esc(e.message)}</p><div class="actions"><button class="btn primary" data-m="ok">Tamam</button></div>`, { actions: { ok: () => this.importSave() } }); return; }
       const cleared = P.levelsCleared(data), stars = P.totalStars(data);
-      this.ui.confirm('Replace progress?', `The imported save has ${cleared} cleared level${cleared === 1 ? '' : 's'} and ${stars} stars. It will replace the progress on this device.`, 'Import', () => {
+      this.ui.confirm('İlerleme değiştirilsin mi?', `İçe aktarılan kayıtta ${cleared} tamamlanmış bölüm ve ${stars} yıldız var. Bu cihazdaki ilerlemenin yerini alacak.`, 'İçe aktar', () => {
         this.save.replace(data).then(() => {});
         this.session = null;
         this.applySettings();
         this.showMenu();
-        this.ui.toast('Save imported successfully', { icon: 'check' });
+        this.ui.toast('Kayıt başarıyla içe aktarıldı', { icon: 'check' });
       });
     }
     resetProgress() {
@@ -4063,33 +4063,33 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       this.session = null;
       this.applySettings();
       this.showMenu();
-      this.ui.toast('Progress has been reset', { icon: 'trash' });
+      this.ui.toast('İlerleme sıfırlandı', { icon: 'trash' });
     }
     openStats() {
       const d = this.save.data, st = d.stats;
       const three = d.progress.stars.filter((v) => v === 3).length;
       const ach = Object.keys(d.achievements).length;
       const item = (v, l) => `<div><b>${v}</b><small>${l}</small></div>`;
-      this.ui.open(`<div class="modal-head"><h2>Statistics</h2><button class="icon-btn" data-m="close" aria-label="Close" data-icon="close"></button></div>
-        <div class="stats-grid">${item(P.levelsCleared(d) + ' / 500', 'Levels cleared')}${item(P.totalStars(d) + ' / 1500', 'Stars')}${item(three, 'Three-star levels')}${item(d.progress.unlocked, 'Furthest level')}
-        ${item(st.matches.toLocaleString(), 'Matches made')}${item(fmtTime(st.playTimeMs), 'Time played')}${item(st.wins, 'Levels won')}${item(st.bestStreak3, 'Best 3★ streak')}
-        ${item(st.hints, 'Hints used')}${item(st.shuffles, 'Shuffles used')}${item(st.undos, 'Undos')}${item(ach + ' / ' + P.ACHIEVEMENTS.length, 'Achievements')}
-        ${item(st.families.filter((v) => v > 0).length + ' / 20', 'Layouts explored')}${item(Core.WORLD_COUNT - Array.from({ length: 20 }, (_, w) => P.worldStats(d, w).complete).filter((x) => !x).length + ' / 20', 'Worlds complete')}</div>`, {
+      this.ui.open(`<div class="modal-head"><h2>İstatistikler</h2><button class="icon-btn" data-m="close" aria-label="Kapat" data-icon="close"></button></div>
+        <div class="stats-grid">${item(P.levelsCleared(d) + ' / 500', 'Tamamlanan bölüm')}${item(P.totalStars(d) + ' / 1500', 'Yıldız')}${item(three, 'Üç yıldızlı bölüm')}${item(d.progress.unlocked, 'En ileri bölüm')}
+        ${item(st.matches.toLocaleString('tr-TR'), 'Yapılan eşleşme')}${item(fmtTime(st.playTimeMs), 'Oynama süresi')}${item(st.wins, 'Kazanılan bölüm')}${item(st.bestStreak3, 'En iyi 3★ serisi')}
+        ${item(st.hints, 'Kullanılan ipucu')}${item(st.shuffles, 'Kullanılan karıştırma')}${item(st.undos, 'Geri alma')}${item(ach + ' / ' + P.ACHIEVEMENTS.length, 'Başarım')}
+        ${item(st.families.filter((v) => v > 0).length + ' / 20', 'Keşfedilen yerleşim')}${item(Core.WORLD_COUNT - Array.from({ length: 20 }, (_, w) => P.worldStats(d, w).complete).filter((x) => !x).length + ' / 20', 'Tamamlanan dünya')}</div>`, {
         actions: { close: () => this.ui.close() }
       });
     }
     openAchievements() {
       const d = this.save.data;
       const rows = P.ACHIEVEMENTS.map((a) => `<div class="ach ${d.achievements[a.id] ? 'on' : ''}"><span class="medal">${icon(d.achievements[a.id] ? 'trophy' : 'lock')}</span><div><b>${esc(a.name)}</b><small>${esc(a.desc)}</small></div></div>`).join('');
-      this.ui.open(`<div class="modal-head"><h2>Achievements</h2><button class="icon-btn" data-m="close" aria-label="Close" data-icon="close"></button></div>
-        <p>${Object.keys(d.achievements).length} of ${P.ACHIEVEMENTS.length} unlocked</p><div class="ach-list">${rows}</div>`, { actions: { close: () => this.ui.close() } });
+      this.ui.open(`<div class="modal-head"><h2>Başarımlar</h2><button class="icon-btn" data-m="close" aria-label="Kapat" data-icon="close"></button></div>
+        <p>${P.ACHIEVEMENTS.length} başarımdan ${Object.keys(d.achievements).length} tanesi açıldı</p><div class="ach-list">${rows}</div>`, { actions: { close: () => this.ui.close() } });
     }
 
     // ---------------------------------------------------------- tutorial coach
     coach(text, ms, opts) {
       const box = $('#coach');
       clearTimeout(this.coachTimer);
-      box.innerHTML = `<div class="coach-card"><span class="hand">${opts && opts.img ? opts.img : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5a1.5 1.5 0 0 1 3 0v5M12 10V8.5a1.5 1.5 0 0 1 3 0V11M15 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a5 5 0 0 1-4.3-2.5L4 14a1.5 1.5 0 0 1 2.6-1.5L9 15"/></svg>'}</span><span>${esc(text)}</span><button class="x" aria-label="Dismiss">${icon('close')}</button></div>`;
+      box.innerHTML = `<div class="coach-card"><span class="hand">${opts && opts.img ? opts.img : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5a1.5 1.5 0 0 1 3 0v5M12 10V8.5a1.5 1.5 0 0 1 3 0V11M15 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a5 5 0 0 1-4.3-2.5L4 14a1.5 1.5 0 0 1 2.6-1.5L9 15"/></svg>'}</span><span>${esc(text)}</span><button class="x" aria-label="Kapat">${icon('close')}</button></div>`;
       box.hidden = false;
       $('.x', box).onclick = () => this.clearCoach();
       $$('.tool.coach-target').forEach((b) => b.classList.remove('coach-target'));
@@ -4113,11 +4113,11 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       this._blockedTipShown = this.tipSeen('blocked');
       if (s.moves > 0) return;
       const steps = {
-        1: ['t1', 'Tap two matching tiles to clear them. The glowing pair is a good start!'],
-        2: ['t2', 'Dimmed tiles are blocked: something lies on top, or both sides are covered. Clear their neighbours first.'],
-        3: ['t3', 'Stuck? Hint shows a free matching pair. Clearing a level without help earns 3 stars.', '#btn-hint'],
-        4: ['t4', 'Changed your mind? Undo takes moves back as often as you like — it never costs stars.', '#btn-undo'],
-        5: ['t5', 'Shuffle re-deals the remaining tiles into a new arrangement that can still be cleared.', '#btn-shuffle']
+        1: ['t1', 'Eşleşen iki taşa dokunarak onları kaldır. Parlayan çift iyi bir başlangıç!'],
+        2: ['t2', 'Soluk taşlar bloke: üstlerinde taş var ya da iki yanları da kapalı. Önce çevrelerindeki taşları temizle.'],
+        3: ['t3', 'Takıldın mı? İpucu serbest bir eşleşen çift gösterir. Bölümü yardımsız bitirmek 3 yıldız kazandırır.', '#btn-hint'],
+        4: ['t4', 'Fikrini mi değiştirdin? Geri Al, hamleleri istediğin kadar geri alır — asla yıldız kaybettirmez.', '#btn-undo'],
+        5: ['t5', 'Karıştır, kalan taşları hâlâ temizlenebilecek yeni bir düzene dağıtır.', '#btn-shuffle']
       };
       const st = steps[n];
       if (st && !this.tipSeen(st[0])) {
@@ -4133,7 +4133,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       if (hasBonus && !this.tipSeen('bonus')) {
         const img = `<img alt="" src="${A.tileDataURL(34, 40)}" style="width:34px">`;
         this.coachStep = 'bonus';
-        this.coach('Flower tiles match any other Flower, and Season tiles match any other Season.', 9000, { img });
+        this.coach('Çiçek taşları herhangi bir Çiçek taşıyla, Mevsim taşları da herhangi bir Mevsim taşıyla eşleşir.', 9000, { img });
         this.markTip('bonus');
       }
     }
@@ -4142,7 +4142,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       if (!step) return;
       if (step === 't1') {
         this.markTip('t1');
-        this.coach('Wonderful! A tile is free when nothing covers it and its left or right side is open. Clear every pair to win.', 6000);
+        this.coach('Harika! Bir taşın üstü boşsa ve sol ya da sağ yanı açıksa taş serbesttir. Kazanmak için tüm çiftleri temizle.', 6000);
         this.coachStep = 'done';
       } else if (step === 't2') { this.markTip('t2'); this.clearCoach(); }
     }
@@ -4158,7 +4158,7 @@ textarea.io { width: 100%; height: 120px; border-radius: 12px; border: 1px solid
       let pairs;
       if (fromCurrent) {
         const res = Core.solveExact(s.geom, s.faces, s.st.present, { budget: 400000 });
-        if (res.status !== 'solved') { this.ui.toast('No solution found from here (' + res.status + ')'); return false; }
+        if (res.status !== 'solved') { this.ui.toast('Buradan çözüm bulunamadı (' + res.status + ')'); return false; }
         pairs = res.moves;
       } else {
         s.reset();

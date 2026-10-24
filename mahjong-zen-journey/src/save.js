@@ -104,7 +104,7 @@
     }
     // Returns sanitized data or throws Error(message).
     parseImport(text) {
-      if (typeof text !== 'string' || text.length > 5e6) throw new Error('The file is too large to be a save.');
+      if (typeof text !== 'string' || text.length > 5e6) throw new Error('Dosya, bir kayıt olamayacak kadar büyük.');
       return P.sanitizeSave(text);
     }
     replace(data) {

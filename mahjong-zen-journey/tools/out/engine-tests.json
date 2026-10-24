@@ -1,5 +1,5 @@
 {
- "ranAt": "2026-10-24T14:34:35.402Z",
+ "ranAt": "2026-10-24T14:54:38.439Z",
  "results": [
   {
    "name": "free-tile rules: covered, side-blocked and partially covered tiles",
@@ -54,27 +54,27 @@
   {
    "name": "shuffle keeps the tile multiset and always yields a solvable board",
    "ok": true,
-   "ms": 17
+   "ms": 16
   },
   {
    "name": "restart restores the same deterministic starting board",
    "ok": true,
-   "ms": 3
+   "ms": 0
   },
   {
    "name": "hints always point at a valid free matching pair and can solve whole boards",
    "ok": true,
-   "ms": 35
+   "ms": 34
   },
   {
    "name": "stars: 3 without help, 2 with up to two hints or one shuffle, else 1",
    "ok": true,
-   "ms": 0
+   "ms": 1
   },
   {
    "name": "every one of the 500 levels can be played to a win through the real tap() API",
    "ok": true,
-   "ms": 78
+   "ms": 87
   },
   {
    "name": "  · random play dead-ended 162 times across 21 sampled levels; all recovered",
@@ -84,7 +84,7 @@
   {
    "name": "alternative moves can dead-end a solvable start; the engine detects and recovers",
    "ok": true,
-   "ms": 22702
+   "ms": 24668
   },
   {
    "name": "save/restore of a game in progress replays and validates every move",
@@ -94,7 +94,7 @@
   {
    "name": "progression: sequential unlocks, world transitions and no level 501",
    "ok": true,
-   "ms": 25
+   "ms": 26
   },
   {
    "name": "export/import: round trip, version checks and sanitising",
@@ -104,7 +104,7 @@
   {
    "name": "continue level prefers the saved game in progress",
    "ok": true,
-   "ms": 1
+   "ms": 0
   }
  ]
 }

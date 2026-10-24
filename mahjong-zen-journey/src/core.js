@@ -25,19 +25,19 @@
   const CLASS_FLOWER = 34;
   const CLASS_SEASON = 35;
   const SUITS = [
-    { key: 'dots', name: 'Circles', start: 0, count: 9 },
-    { key: 'bamboo', name: 'Bamboo', start: 9, count: 9 },
-    { key: 'chars', name: 'Characters', start: 18, count: 9 },
-    { key: 'wind', name: 'Wind', start: 27, count: 4 },
-    { key: 'dragon', name: 'Dragon', start: 31, count: 3 },
-    { key: 'flower', name: 'Flower', start: 34, count: 4 },
-    { key: 'season', name: 'Season', start: 38, count: 4 }
+    { key: 'dots', name: 'Daire', start: 0, count: 9 },
+    { key: 'bamboo', name: 'Bambu', start: 9, count: 9 },
+    { key: 'chars', name: 'Karakter', start: 18, count: 9 },
+    { key: 'wind', name: 'Rüzgâr', start: 27, count: 4 },
+    { key: 'dragon', name: 'Ejderha', start: 31, count: 3 },
+    { key: 'flower', name: 'Çiçek', start: 34, count: 4 },
+    { key: 'season', name: 'Mevsim', start: 38, count: 4 }
   ];
   const RANK_NAMES = {
-    wind: ['East', 'South', 'West', 'North'],
-    dragon: ['Red', 'Green', 'White'],
-    flower: ['Plum', 'Orchid', 'Chrysanthemum', 'Bamboo'],
-    season: ['Spring', 'Summer', 'Autumn', 'Winter']
+    wind: ['Doğu', 'Güney', 'Batı', 'Kuzey'],
+    dragon: ['Kırmızı', 'Yeşil', 'Beyaz'],
+    flower: ['Erik', 'Orkide', 'Kasımpatı', 'Bambu'],
+    season: ['İlkbahar', 'Yaz', 'Sonbahar', 'Kış']
   };
 
   function faceClass(f) { return f < 34 ? f : (f < 38 ? CLASS_FLOWER : CLASS_SEASON); }
@@ -46,7 +46,7 @@
       if (f >= s.start && f < s.start + s.count) {
         const rank = f - s.start;
         const named = RANK_NAMES[s.key];
-        const label = named ? named[rank] + ' ' + s.name : s.name + ' ' + (rank + 1);
+        const label = s.name + ' ' + (named ? named[rank] : rank + 1);
         return { suit: s.key, rank, label };
       }
     }
@@ -54,17 +54,17 @@
   }
 
   const FAMILIES = [
-    'Classic Turtle', 'Pyramid', 'Butterfly', 'Pagoda', 'Twin Towers',
-    'Spiral', 'Diamond', 'Bridge', 'Lotus', 'Temple',
-    'Mountain', 'Crescent', 'Cross', 'Hourglass', 'Dragon',
-    'Fortress', 'Wave', 'Four Islands', 'Star', 'Grand Palace'
+    'Kaplumbağa', 'Piramit', 'Kelebek', 'Pagoda', 'İkiz Kuleler',
+    'Spiral', 'Elmas', 'Köprü', 'Nilüfer', 'Tapınak',
+    'Dağ', 'Hilal', 'Haç', 'Kum Saati', 'Ejderha',
+    'Kale', 'Dalga', 'Dört Ada', 'Yıldız', 'Büyük Saray'
   ];
 
   const WORLD_NAMES = [
-    'Bamboo Garden', 'Cherry Blossom', 'Autumn Temple', 'Misty Lake', 'Moonlight Garden',
-    'Ancient Ruins', 'Lantern Village', 'Cloud Mountains', 'Jade Sanctuary', 'Golden Sands',
-    'Lotus Paradise', 'Winter Palace', 'Festival of Lights', 'Starlight Harbor', 'Hidden Valley',
-    'Sunken Temple', 'Crimson Canyon', 'Midnight Forest', 'Celestial Garden', "Dragon's Crown"
+    'Bambu Bahçesi', 'Kiraz Çiçeği', 'Sonbahar Tapınağı', 'Puslu Göl', 'Ay Işığı Bahçesi',
+    'Kadim Harabeler', 'Fener Köyü', 'Bulut Dağları', 'Yeşim Mabedi', 'Altın Kumlar',
+    'Nilüfer Cenneti', 'Kış Sarayı', 'Işıklar Festivali', 'Yıldızlı Liman', 'Gizli Vadi',
+    'Batık Tapınak', 'Kızıl Kanyon', 'Gece Ormanı', 'Göksel Bahçe', 'Ejderha Tacı'
   ];
 
   // Difficulty curve from the design brief: [firstLevel, lastLevel, minTiles, maxTiles]
