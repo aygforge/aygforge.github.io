@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-23T18:17:01.628Z",
+  "date": "2026-10-25T10:12:51.947Z",
   "passed": 15,
   "total": 15,
   "results": [
@@ -16,7 +16,7 @@
     {
       "name": "İki oyuncu aynı yaratığı aynı kimlik ve konumda görür",
       "ok": true,
-      "info": "{\"posA\":{\"x\":1516,\"y\":1268},\"posB\":{\"x\":1516,\"y\":1268},\"ortak\":11}"
+      "info": "{\"posA\":{\"x\":1525,\"y\":1336},\"posB\":{\"x\":1525,\"y\":1336},\"ortak\":11}"
     },
     {
       "name": "Diğer oyuncu (partide olmasa da) haritada görünür",
@@ -26,12 +26,12 @@
     {
       "name": "Yakındaki yaratık sunucuda saldırır; hasar vurulan oyuncunun kendi savunmasıyla işlenir",
       "ok": true,
-      "info": "{\"src\":\"gray_wolf\",\"label\":\"normal\",\"dmg\":15,\"t\":2498.3199999999997}"
+      "info": "{\"src\":\"gray_wolf\",\"label\":\"normal\",\"dmg\":15,\"t\":2531.5999999999995}"
     },
     {
       "name": "Parti oyun sunucusu üzerinden kurulur (Realtime kotası harcanmaz)",
       "ok": true,
-      "info": "FUT7CH"
+      "info": "P8RB32"
     },
     {
       "name": "A'nın vuruşu sunucuda uygulanır; B aynı yaratığın canını düşmüş görür",
@@ -46,7 +46,7 @@
     {
       "name": "Parti: vurmayan B de EXP payı ve öldürme sayacı alır; A da alır",
       "ok": true,
-      "info": "{\"before\":{\"exp\":0,\"lv\":9,\"kills\":0,\"gold\":20},\"after\":{\"exp\":12,\"lv\":9,\"kills\":1,\"gold\":24},\"beforeA\":{\"exp\":0,\"lv\":9,\"kills\":0},\"afterA\":{\"exp\":12,\"lv\":9,\"kills\":1}}"
+      "info": "{\"before\":{\"exp\":0,\"lv\":9,\"kills\":0,\"gold\":20},\"after\":{\"exp\":12,\"lv\":9,\"kills\":1,\"gold\":22},\"beforeA\":{\"exp\":0,\"lv\":9,\"kills\":0},\"afterA\":{\"exp\":12,\"lv\":9,\"kills\":1}}"
     },
     {
       "name": "Partide olmayan ve vurmayan oyuncu başkasının öldürdüğü yaratıktan ödül almaz",
@@ -66,7 +66,7 @@
     {
       "name": "Sunucu sağlık ucu oyuncu ve bölge sayısını verir",
       "ok": true,
-      "info": "{\"ok\":true,\"game\":\"ahen-vadisi\",\"version\":\"4.5.2\",\"players\":2,\"zones\":[{\"id\":\"forest\",\"players\":2,\"enemies\":28}]}"
+      "info": "{\"ok\":true,\"game\":\"ahen-vadisi\",\"version\":\"4.5.3\",\"web\":true,\"players\":2,\"zones\":[{\"id\":\"forest\",\"players\":2,\"enemies\":28}]}"
     },
     {
       "name": "Konsol hatası yok (oyuncu A)",

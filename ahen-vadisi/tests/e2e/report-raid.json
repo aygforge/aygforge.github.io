@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-23T18:17:54.307Z",
+  "date": "2026-10-25T10:13:44.476Z",
   "passed": 17,
   "total": 17,
   "results": [
@@ -11,7 +11,7 @@
     {
       "name": "Ticaret isteği karşı tarafta pencere açar",
       "ok": true,
-      "info": "{\"reqR\":{\"ok\":true},\"ua\":\"87c5d7ab-f0cf-478b-a1b3-7835d5cde443\",\"ub\":\"e0f3c1e4-ad67-4a10-9f53-988144ff64d9\",\"gift\":{\"uid\":\"imvlakzbc44wi6u3al\",\"tid\":\"C01\"},\"readyA\":\"ready\",\"readyB\":\"ready\"}"
+      "info": "{\"reqR\":{\"ok\":true},\"ua\":\"13101039-502a-464f-8835-c3abc0a6caac\",\"ub\":\"8103c026-fe94-4378-9321-1ddafd211d2b\",\"gift\":{\"uid\":\"imvno61tv41s1r0x0i\",\"tid\":\"C01\"},\"readyA\":\"ready\",\"readyB\":\"ready\"}"
     },
     {
       "name": "Kabul edince iki tarafta ticaret penceresi açılır",
@@ -51,7 +51,7 @@
     {
       "name": "Boss ölünce parti üyesi de boss ödülünü alır (tek seferlik ödül kimliğiyle)",
       "ok": true,
-      "info": "[\"alpha_wolf:forest:mvlal6vc:1\"]"
+      "info": "[\"alpha_wolf:forest:mvno69sn:1\"]"
     },
     {
       "name": "Parti dungeon'u: iki üye aynı örnekte, aynı yaratıklar (arkadaşın yanına \"Bölgesine git\" ile)",
@@ -71,7 +71,7 @@
     {
       "name": "Partide olmayan oyuncu kendi ayrı dungeon örneğine girer (temizlenen bölüm onun için temiz değil)",
       "ok": true,
-      "info": "{\"c\":8,\"cRun\":[]}"
+      "info": "{\"c\":10,\"cRun\":[]}"
     },
     {
       "name": "Konsol hatası yok (oyuncu A)",

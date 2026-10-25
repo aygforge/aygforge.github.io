@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-23T18:16:40.875Z",
+  "date": "2026-10-25T10:12:31.549Z",
   "passed": 25,
   "total": 25,
   "results": [
@@ -21,7 +21,7 @@
     {
       "name": "Parti kur: 6 karakterli kod, durum \"bağlı\"",
       "ok": true,
-      "info": "RRH35R"
+      "info": "TD8L5P"
     },
     {
       "name": "Davet yalnız hedef oyuncuya ulaşır ve pencere açılır",
@@ -36,7 +36,7 @@
     {
       "name": "Davet eden \"katılıyor/katıldı\" bildirimi alır",
       "ok": true,
-      "info": "Partidesin — kod: RRH35R | Bora davet edildi | Bora partiye katılıyor | Bora partiye katıldı"
+      "info": "Partidesin — kod: TD8L5P | Bora davet edildi | Bora partiye katılıyor | Bora partiye katıldı"
     },
     {
       "name": "Aynı haritada arkadaş görünür: ad + seviye etiketi, doğru konumda",
@@ -111,12 +111,12 @@
     {
       "name": "Mobil (640×360): parti penceresi ekrana sığar",
       "ok": true,
-      "info": "{\"r\":560,\"b\":346,\"w\":640,\"h\":360}"
+      "info": "{\"r\":560,\"b\":352,\"w\":640,\"h\":360}"
     },
     {
       "name": "Sahte Realtime: istemci ikili (binary) yayın biçimini kullandı (gerçek sunucuyla aynı yol)",
       "ok": true,
-      "info": "{\"broadcasts\":24,\"delivered\":23,\"joins\":6,\"presence\":3,\"frames\":35,\"binary\":24}"
+      "info": "{\"broadcasts\":23,\"delivered\":22,\"joins\":6,\"presence\":3,\"frames\":34,\"binary\":23}"
     },
     {
       "name": "Konsol hatası yok (oyuncu A)",

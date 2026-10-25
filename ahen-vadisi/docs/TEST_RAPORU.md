@@ -1,5 +1,21 @@
 # Ahen Vadisi — Test Raporu
 
+## 4.5.3 — iPhone'da tam ekran ve dar ekran (oyuncu bildirimi, 25 Ekim 2026)
+- Birim: 232/232.
+- Yeni E2E `run-e2e-screen.mjs` 15/15. Gerçek oyun sunucusu süreci ve iPhone Safari kimliğiyle tarayıcı:
+  - sunucu `/health` (`"web": true`), kök adreste oyun sayfası, manifest türü, önbellek başlıkları; klasör dışı → 404;
+  - oyun sunucu adresinden hatasız açılıyor;
+  - 734×330'da (iPhone 15 yatay + Safari çubukları) ve 560×300'de bütün sekmeler sığıyor, Ayarlar görünür ve
+    dokunulabilir; 1280×720'de sekmeler tam adlarıyla;
+  - "Tam ekrana geç" Ana Ekrana Ekle anlatımını açıyor, pencere ekrana sığıyor; başka adreste (itch.io gibi) oyunun
+    kalıcı adresine bağlantı veriliyor.
+- Render derleme komutu temiz bir kopyada koşuldu (`npm ci --include=dev && npm run build && cd server && npm ci`); sunucu
+  oyunu sunarak açıldı.
+- Diğer e2e takımlarının hepsi geçti: ana 61/61, V2 32/32, V3 37/37, V4 39/39, kayıt 14/14, çevrimiçi 27/27, parti 25/25,
+  ortak dünya 15/15, raid 17/17, hata regresyonu 6/6.
+- Gerçek iPhone'da denenmedi (bu ortamda yok). Safari'nin tam ekran kısıtı Apple'ın; ana ekran uygulamasının çubuksuz
+  açılması iOS'un bilinen davranışı.
+
 ## 4.5.2 — Bitmiş dungeon koşusu hatası (oyuncu bildirimi, 23 Ekim 2026)
 - Birim: 232/232. Yeni:
   - `quests.test.js`: boss'u yenilmiş koşu (eski kayıt biçimi dahil) devam ettirilmez; yeni koşuda boss ganimeti hakkı

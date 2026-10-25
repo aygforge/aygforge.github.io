@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-23T18:14:22.684Z",
+  "date": "2026-10-25T10:10:07.965Z",
   "passed": 39,
   "total": 39,
   "results": [
@@ -26,12 +26,12 @@
     {
       "name": "Okçu becerileri (Lv.15): İsabetli Ok, Çoklu Atış, Çevik Adım, Delici Ok kullanılır ve hasar verir",
       "ok": true,
-      "info": "{\"aimed_shot\":true,\"aimed_shot_dmg\":59,\"multi_shot\":true,\"multi_shot_dmg\":23,\"agile_step\":true,\"agile_step_dmg\":21,\"piercing_arrow\":true,\"piercing_arrow_dmg\":42}"
+      "info": "{\"aimed_shot\":true,\"aimed_shot_dmg\":58,\"multi_shot\":true,\"multi_shot_dmg\":23,\"agile_step\":true,\"agile_step_dmg\":23,\"piercing_arrow\":true,\"piercing_arrow_dmg\":42}"
     },
     {
       "name": "Okçu Lv.50: 7 aktif becerinin hepsi kullanılır; hasar becerileri hasar verir (Ok Yağmuru, Kartal Fırtınası dahil)",
       "ok": true,
-      "info": "{\"aimed_shot\":{\"ok\":true,\"dmg\":90},\"multi_shot\":{\"ok\":true,\"dmg\":67},\"agile_step\":{\"ok\":true,\"dmg\":32},\"piercing_arrow\":{\"ok\":true,\"dmg\":116},\"arrow_rain\":{\"ok\":true,\"dmg\":79},\"hunter_mark\":{\"ok\":true,\"dmg\":38},\"eagle_storm\":{\"ok\":true,\"dmg\":78}}"
+      "info": "{\"aimed_shot\":{\"ok\":true,\"dmg\":91},\"multi_shot\":{\"ok\":true,\"dmg\":69},\"agile_step\":{\"ok\":true,\"dmg\":34},\"piercing_arrow\":{\"ok\":true,\"dmg\":112},\"arrow_rain\":{\"ok\":true,\"dmg\":81},\"hunter_mark\":{\"ok\":true,\"dmg\":36},\"eagle_storm\":{\"ok\":true,\"dmg\":116}}"
     },
     {
       "name": "Konsol hatası yok (Okçu)",
@@ -76,7 +76,7 @@
     {
       "name": "Ölü Çağıran Lv.50: 7 aktif becerinin hepsi kullanılır; hasar becerileri hasar verir; Ölüler Ordusu sonrası en çok 2 iskelet",
       "ok": true,
-      "info": "{\"nall\":{\"soul_arrow\":{\"ok\":true,\"dmg\":87},\"summon_skeleton\":{\"ok\":true,\"dmg\":55},\"curse_seal\":{\"ok\":true,\"dmg\":55},\"life_drain\":{\"ok\":true,\"dmg\":110},\"bone_burst\":{\"ok\":true,\"dmg\":68},\"army_of_dead\":{\"ok\":true,\"dmg\":79},\"soul_apocalypse\":{\"ok\":true,\"dmg\":146}},\"nmin\":2}"
+      "info": "{\"nall\":{\"soul_arrow\":{\"ok\":true,\"dmg\":127},\"summon_skeleton\":{\"ok\":true,\"dmg\":57},\"curse_seal\":{\"ok\":true,\"dmg\":57},\"life_drain\":{\"ok\":true,\"dmg\":67},\"bone_burst\":{\"ok\":true,\"dmg\":124},\"army_of_dead\":{\"ok\":true,\"dmg\":90},\"soul_apocalypse\":{\"ok\":true,\"dmg\":146}},\"nmin\":2}"
     },
     {
       "name": "Konsol hatası yok (Ölü Çağıran)",
@@ -151,12 +151,12 @@
     {
       "name": "Göğün Mahkûmu I–II: telegraflı saldırılar; %65 altı kalkan + 2 Gök Mührü; mühürler kırılınca kalkan düşer",
       "ok": true,
-      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":0,\"fury\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3,4],\"x\":68,\"y\":23,\"seals\":0},\"chain\":1,\"claimed\":true,\"cleared5\":true,\"dupGold\":0,\"hist\":1}"
+      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":0,\"fury\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3,4],\"x\":68,\"y\":23,\"seals\":0},\"chain\":2,\"claimed\":true,\"cleared5\":true,\"dupGold\":0,\"hist\":1}"
     },
     {
       "name": "Göğün Mahkûmu III (%30): Yıldızların Sonu, en çok 4 yıldız alanı",
       "ok": true,
-      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":0,\"fury\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3,4],\"x\":68,\"y\":23,\"seals\":0},\"chain\":1,\"claimed\":true,\"cleared5\":true,\"dupGold\":0,\"hist\":1}"
+      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":0,\"fury\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3,4],\"x\":68,\"y\":23,\"seals\":0},\"chain\":2,\"claimed\":true,\"cleared5\":true,\"dupGold\":0,\"hist\":1}"
     },
     {
       "name": "Mabette ölüm: Mahkûm tam cana döner, kalkan/mühürler sıfırlanır, bölümler korunur (kontrol noktası)",
@@ -166,7 +166,7 @@
     {
       "name": "Göğün Mahkûmu yenilir: garantili Mahkûmun Zinciri, koşu başına tek ödül",
       "ok": true,
-      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":0,\"fury\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3,4],\"x\":68,\"y\":23,\"seals\":0},\"chain\":1,\"claimed\":true,\"cleared5\":true,\"dupGold\":0,\"hist\":1}"
+      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":0,\"fury\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3,4],\"x\":68,\"y\":23,\"seals\":0},\"chain\":2,\"claimed\":true,\"cleared5\":true,\"dupGold\":0,\"hist\":1}"
     },
     {
       "name": "Konsol hatası yok (Yıldız Mezarı / Mabet)",
@@ -181,7 +181,7 @@
     {
       "name": "Ayarlar → Kayıt Güvenliği: son kalıcı kayıt, teknoloji, dışa/içe aktarma ve önceki kayıtlar",
       "ok": true,
-      "info": "{\"text\":\"Kayıt GüvenliğiSon başarılı kalıcı kayıt23.10.2026 18:14:10 (IndexedDB + ayna)Kayıt teknolojisiIndexedDB (birincil) + localStorage aynasıKalıcı depolama iznitarayıcı izin vermediSon yedek (kod/dosya)henüz alınmadıŞimdi kaydetYedek kodunu kopyalaYedek kodu yapıştırYedeği dışa aktar (JSON)Yedeği içe aktarÖnceki kayıtlarKayıp karakter araKayıt bu tarayıcıda, bu sitenin deposunda tutulur (isteğe bağlı\",\"buttons\":7}"
+      "info": "{\"text\":\"Kayıt GüvenliğiSon başarılı kalıcı kayıt25.10.2026 10:09:55 (IndexedDB + ayna)Kayıt teknolojisiIndexedDB (birincil) + localStorage aynasıKalıcı depolama iznitarayıcı izin vermediSon yedek (kod/dosya)henüz alınmadıŞimdi kaydetYedek kodunu kopyalaYedek kodu yapıştırYedeği dışa aktar (JSON)Yedeği içe aktarÖnceki kayıtlarKayıp karakter araKayıt bu tarayıcıda, bu sitenin deposunda tutulur (isteğe bağlı\",\"buttons\":7}"
     },
     {
       "name": "V4 yedek hatırlatması bir kez gösterilir (\"Daha sonra\" sonrası tekrar çıkmaz)",
@@ -194,9 +194,9 @@
       "info": ""
     },
     {
-      "name": "PWA: servis işçisi etkin, 4.5.2 sürümlü önbellek; çevrimdışı açılış",
+      "name": "PWA: servis işçisi etkin, 4.5.3 sürümlü önbellek; çevrimdışı açılış",
       "ok": true,
-      "info": "{\"active\":true,\"version\":\"4.5.2\",\"offline\":true}"
+      "info": "{\"active\":true,\"version\":\"4.5.3\",\"offline\":true}"
     }
   ]
 }

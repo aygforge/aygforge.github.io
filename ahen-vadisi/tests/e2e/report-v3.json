@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-23T18:12:12.216Z",
+  "date": "2026-10-25T10:07:55.294Z",
   "passed": 37,
   "total": 37,
   "results": [
@@ -36,7 +36,7 @@
     {
       "name": "m37 ulaşma hedefi tamamlanır",
       "ok": true,
-      "info": "{\"s\":\"active\",\"p\":[1],\"used\":[],\"at\":1792779031048}"
+      "info": "{\"s\":\"active\",\"p\":[1],\"used\":[],\"at\":1792922774768}"
     },
     {
       "name": "V3 yaratık öldürme EXP/gold verir; 30→31 seviye geçişi",
@@ -116,12 +116,12 @@
     {
       "name": "Kayıp Kral I–II: telegraflı saldırılar; %65 altında Kırık Taç kalkanı + 2 kadim mühür; mühürler kırılınca kalkan düşer",
       "ok": true,
-      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":false,\"fury\":true,\"ring\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3],\"x\":66,\"y\":25},\"shards\":1,\"claimed\":true,\"cleared4\":true,\"hist\":1}"
+      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":false,\"fury\":true,\"ring\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3],\"x\":66,\"y\":25},\"shards\":2,\"claimed\":true,\"cleared4\":true,\"hist\":1}"
     },
     {
       "name": "Kayıp Kral III (%30): Son Hüküm — hızlanır, güvenli boşluklu halka, en çok 4 karanlık alan",
       "ok": true,
-      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":false,\"fury\":true,\"ring\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3],\"x\":66,\"y\":25},\"shards\":1,\"claimed\":true,\"cleared4\":true,\"hist\":1}"
+      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":false,\"fury\":true,\"ring\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3],\"x\":66,\"y\":25},\"shards\":2,\"claimed\":true,\"cleared4\":true,\"hist\":1}"
     },
     {
       "name": "Mahzende ölüm: Kral tam cana döner, kalkan sıfırlanır, bölümler korunur (kontrol noktası)",
@@ -131,7 +131,7 @@
     {
       "name": "Kayıp Kral yenilir: garantili Kırık Taç Parçası, koşu başına tek ödül, zindan sayacı",
       "ok": true,
-      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":false,\"fury\":true,\"ring\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3],\"x\":66,\"y\":25},\"shards\":1,\"claimed\":true,\"cleared4\":true,\"hist\":1}"
+      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":false,\"fury\":true,\"ring\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3],\"x\":66,\"y\":25},\"shards\":2,\"claimed\":true,\"cleared4\":true,\"hist\":1}"
     },
     {
       "name": "Aynı koşuda ikinci Kral ödülü verilmez",
@@ -151,7 +151,7 @@
     {
       "name": "Donmuş Zaman (Lv.35): hasar + normal %55 yavaşlatma; bossta kısa ve zayıf (%20)",
       "ok": true,
-      "info": "{\"ok\":true,\"normal\":0.55,\"normalHit\":true,\"boss\":0.2,\"bossDur\":0.7,\"unlocked\":1}"
+      "info": "{\"ok\":true,\"normal\":0.55,\"normalHit\":true,\"boss\":0.2,\"bossDur\":0.8,\"unlocked\":1}"
     },
     {
       "name": "Kullanım eşyaları: Merhem zehri giderir (1 tüketilir); Parşömen savaşta reddedilir (tükenmez)",
@@ -184,9 +184,9 @@
       "info": ""
     },
     {
-      "name": "PWA: servis işçisi etkin, 4.5.2 sürümlü önbellek; çevrimdışı açılış",
+      "name": "PWA: servis işçisi etkin, 4.5.3 sürümlü önbellek; çevrimdışı açılış",
       "ok": true,
-      "info": "{\"active\":true,\"version\":\"4.5.2\",\"cache\":\"ahen-vadisi-6212725ae3\",\"assets\":3,\"offline\":true}"
+      "info": "{\"active\":true,\"version\":\"4.5.3\",\"cache\":\"ahen-vadisi-9000d56ade\",\"assets\":3,\"offline\":true}"
     }
   ]
 }
