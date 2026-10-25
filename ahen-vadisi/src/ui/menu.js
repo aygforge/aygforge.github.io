@@ -15,6 +15,7 @@ import { openOnline } from './panels/online.js';
 import { importSave, showRecovery, copyBackupCode, pasteBackupCode, snapshots, saveSafetyBox } from './panels/settings.js';
 import { sound } from '../audio/sound.js';
 import { isIOS, isStandalone } from './screen.js';
+import { goFullscreen } from './panels/fullscreen.js';
 
 export function showMainMenu(onPlay) {
   clear(ui.layers.screen);
@@ -40,7 +41,7 @@ export function showMainMenu(onPlay) {
   saveNotices();
   if (isIOS() && !isStandalone() && !sessionStorage.getItem('iosHint')) {
     try { sessionStorage.setItem('iosHint', '1'); } catch { /* */ }
-    bus.emit('toast', { text: 'iPhone: Tam ekran için Paylaş → "Ana Ekrana Ekle"' });
+    bus.emit('toast', { text: 'iPhone\'da tam ekran: Ayarlar ve Yedek → Tam ekrana geç' });
   }
 }
 
@@ -124,6 +125,7 @@ function menuSettings() {
     h('h3', { class: 't' }, 'Ayarlar ve Yedek'),
     h('div', { class: 'row' }, h('span', { class: 'grow' }, 'Ses'), h('button', { class: 'btn small', onTap: (e) => { app.setSettings({ sound: !app.settings.sound }); e.target.textContent = app.settings.sound ? 'Açık' : 'Kapalı'; } }, s.sound ? 'Açık' : 'Kapalı')),
     h('div', { class: 'row' }, h('span', { class: 'grow' }, 'Müzik'), h('button', { class: 'btn small', onTap: (e) => { app.setSettings({ music: !app.settings.music }); e.target.textContent = app.settings.music ? 'Açık' : 'Kapalı'; } }, s.music ? 'Açık' : 'Kapalı')),
+    h('div', { class: 'row' }, h('span', { class: 'grow' }, 'Tam ekran'), h('button', { class: 'btn small', 'data-testid': 'menu-fullscreen', onTap: () => goFullscreen() }, 'Tam ekrana geç')),
     h('div', { class: 'row' }, h('span', { class: 'grow' }, 'Düşük performans (30 FPS)'), h('button', { class: 'btn small', onTap: (e) => { app.setSettings({ lowPerf: !app.settings.lowPerf }); e.target.textContent = app.settings.lowPerf ? 'Açık' : 'Kapalı'; } }, s.lowPerf ? 'Açık' : 'Kapalı')),
     saveSafetyBox(),
     h('button', { class: 'btn', onTap: () => ui.closeModal() }, 'Kapat')));

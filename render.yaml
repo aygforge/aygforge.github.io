@@ -7,13 +7,16 @@ services:
     plan: free
     region: frankfurt
     rootDir: ahen-vadisi
-    buildCommand: cd server && npm ci --omit=dev
+    # Oyun da derlenip aynı adresten sunulur (iPhone'da "Ana Ekrana Ekle" ile tam ekran için kalıcı adres)
+    buildCommand: npm ci --include=dev && npm run build && cd server && npm ci --omit=dev
     startCommand: node server/index.mjs
     healthCheckPath: /health
     autoDeploy: true
     envVars:
       - key: NODE_VERSION
         value: "22"
+      - key: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD
+        value: "1"
       # Supabase adresi ve HERKESE AÇIK anahtar public/online.json'dan okunur; başka proje için burada verilebilir:
       # - key: SUPABASE_URL
       #   value: https://xxxx.supabase.co

@@ -53,14 +53,28 @@ export const ui = {
         extra,
         h('button', { class: 'xbtn', onTap: () => { sound.play('click'); (onClose || (() => this.closePanel()))(); }, 'aria-label': 'Kapat' }, '×')),
       body);
+    // Dar ekranda (ör. iPhone yatay + Safari çubukları) sekmeler sığmazsa yalnız simge kalır, seçili sekme yazılı
+    // kalır; o da sığmazsa hepsi simge olur. Böylece Ayarlar sekmesi ekran dışına taşmaz.
+    const fit = () => {
+      if (!tabBar.isConnected) return;
+      tabBar.classList.remove('compact', 'tight');
+      if (tabBar.scrollWidth > tabBar.clientWidth + 1) tabBar.classList.add('compact');
+      if (tabBar.scrollWidth > tabBar.clientWidth + 1) tabBar.classList.add('tight');
+      tabBar.querySelector('.tab.on')?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+    };
     const renderTabs = (cur) => {
       clear(tabBar);
       for (const t of tabs) {
-        tabBar.appendChild(h('button', { class: 'tab' + (t.id === cur ? ' on' : ''), onTap: () => { sound.play('click'); renderTabs(t.id); onTab(t.id); } },
-          t.icon ? h('img', { src: t.icon, class: 'px' }) : null, t.label));
+        tabBar.appendChild(h('button', { class: 'tab' + (t.id === cur ? ' on' : ''), 'data-testid': 'tab-' + t.id, title: t.label, 'aria-label': t.label, onTap: () => { sound.play('click'); renderTabs(t.id); onTab(t.id); } },
+          t.icon ? h('img', { src: t.icon, class: 'px' }) : null, t.icon ? h('span', { class: 'lbl' }, t.label) : t.label));
       }
+      requestAnimationFrame(fit);
     };
-    if (tabs.length) renderTabs(active);
+    if (tabs.length) {
+      renderTabs(active);
+      const ro = typeof ResizeObserver === 'function' ? new ResizeObserver(() => fit()) : null;
+      ro?.observe(tabBar);
+    }
     return { el, body, renderTabs };
   },
 

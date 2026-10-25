@@ -1,5 +1,23 @@
 # Değişiklik Günlüğü
 
+## 4.5.3 — iPhone'da tam ekran ve dar ekran düzeni
+- **Sorun:** iPhone 15 Safari'de oyun tam ekran olmuyordu. Menü sekmeleri ekrana sığmadığı için **Ayarlar** sekmesi (ve
+  içindeki "Tam ekrana geç") ekran dışında kalıyordu.
+- **Kaynak:** iPhone Safari, web sayfalarının (itch.io dahil) tam ekrana geçmesine izin vermez. Bu bir Apple kısıtıdır;
+  iPad'de ve Android'de çalışır. "Tam ekrana geç" iPhone'da sessizce hiçbir şey yapmıyordu.
+- **Düzeltme:**
+  - Menü sekmeleri sığmazsa yalnız simgeleri kalır (seçili sekmenin adı yazılı); daha da darsa hepsi simge olur. Ayarlar
+    her zaman görünür.
+  - Kaydırılabilir pencereler görünen alanı aşmaz (iOS'ta `vh` araç çubuklarını saymıyordu).
+  - iPhone'da "Tam ekrana geç" artık adım adım **Ana Ekrana Ekle** yolunu anlatır. Ana menüdeki "Ayarlar ve Yedek"
+    penceresinde de bu düğme var.
+  - **Oyunun kalıcı adresi:** oyun sunucusu derlenmiş oyunu da sunar: <https://ahen-vadisi-sunucu.onrender.com/>.
+    Bu adres Safari'de açılıp ana ekrana eklenince oyun Safari çubukları olmadan, tam ekran açılır. itch.io sayfası ana
+    ekrana eklenirse yine Safari içinde açılır; itch.io'dayken pencerede bu adrese bağlantı çıkar.
+  - Ana ekran uygulamasının kaydı ayrıdır: karakter Çevrimiçi → "Buluttan yükle" ya da yedek koduyla taşınır.
+  - Servis işçisi: ağ 5 sn içinde yanıt vermezse (ör. uyuyan ücretsiz sunucu) oyun önbellekten açılır.
+
+
 ## 4.5.2 — Hata düzeltmesi: bitmiş dungeon koşusu yüzünden boss doğmuyordu
 - **Hata:** Maden Golemi "Madenin Kalbi" görevi alınmadan önce yenildiyse, Derin Ocak'a dönüşte golem doğmuyor ve görev
   takılı kalıyordu (aynısı diğer dungeon boss görevlerinde de olabiliyordu).

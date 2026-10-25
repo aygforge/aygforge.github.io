@@ -6,7 +6,7 @@ import { bus } from '../../core/events.js';
 import { exportJson, encodeBackupCode, decodeBackupCode, wrap } from '../../save/serialize.js';
 import { CLASSES } from '../../data/classes.js';
 import { sound } from '../../audio/sound.js';
-import { requestFullscreen } from '../screen.js';
+import { goFullscreen } from './fullscreen.js';
 import { onlineBox } from './online.js';
 
 function toggle(on, fn, testid) {
@@ -43,7 +43,7 @@ export function settingsTab(rerender) {
     h('span', {}, 'Hasar sayıları'), toggle(s.damageNumbers, (v) => set({ damageNumbers: v })),
     h('span', {}, 'Ekran sarsıntısı'), toggle(s.shake, (v) => set({ shake: v })),
     h('span', {}, 'FPS göster'), toggle(s.showFps, (v) => set({ showFps: v })),
-    h('span', {}, 'Tam ekran'), h('button', { class: 'btn small', onTap: () => requestFullscreen() }, 'Tam ekrana geç'));
+    h('span', {}, 'Tam ekran'), h('button', { class: 'btn small', 'data-testid': 'set-fullscreen', onTap: () => goFullscreen() }, 'Tam ekrana geç'));
   const potion = ap ? h('div', { class: 'set box' },
     h('span', { class: 'gold' }, 'Otomatik iksir'), h('span', { class: 'tiny muted' }, 'Yalnız iksir içer; savaşmaz.'),
     h('span', {}, 'HP iksiri, HP şu yüzdenin altına inince'), h('div', { class: 'row' }, toggle(ap.hpOn, (v) => { ap.hpOn = v; app.requestSave('settings'); }, 'auto-hp'), select([20, 30, 35, 40, 50, 60].map((x) => [String(x), '%' + x]), String(ap.hpPct), (v) => { ap.hpPct = +v; app.requestSave('settings'); })),

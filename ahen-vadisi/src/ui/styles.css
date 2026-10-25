@@ -98,6 +98,8 @@ h3.t { font-family: var(--title); color: var(--gold2); margin: 4px 0 6px; font-s
 #menu .menu-box .menu-row .btn { min-width: 115px; flex: 1 1 0; }
 #menu .ver { position: absolute; right: calc(10px + var(--sar)); bottom: calc(8px + var(--sab)); font-size: .75rem; color: #a898b8; }
 .overlay { position: absolute; inset: 0; z-index: 60; background: rgba(8,6,12,.72); display: flex; align-items: center; justify-content: center; pointer-events: auto; padding: calc(8px + var(--sat)) calc(8px + var(--sar)) calc(8px + var(--sab)) calc(8px + var(--sal)); }
+/* iOS Safari'de vh, araç çubukları gizliymiş gibi hesaplanır: kaydırılabilir pencereler görünen alanı aşmasın */
+.overlay > .dlg.scroll { max-height: 100% !important; }
 
 /* karakter seçimi */
 #charsel { z-index: 45; background: radial-gradient(ellipse at 50% 30%, #2a2038 0%, #0e0c14 75%); flex-direction: column; padding: calc(10px + var(--sat)) calc(12px + var(--sar)) calc(10px + var(--sab)) calc(12px + var(--sal)); gap: 10px; }
@@ -226,6 +228,9 @@ input.name { font: inherit; font-size: 1.1rem; padding: 10px 12px; border-radius
 .tab { min-height: 44px; padding: 6px 12px; border-radius: 8px 8px 0 0; border: 2px solid #5a4028; border-bottom: none; background: #2a1e1a; color: var(--muted); font-weight: bold; font-size: .92rem; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
 .tab img { width: 24px; height: 24px; }
 .tab.on { background: #4a3424; color: var(--gold2); }
+.tabs.compact .tab { padding: 6px 9px; }
+.tabs.compact .tab:not(.on) .lbl, .tabs.tight .tab .lbl { display: none; }
+.tabs.tight .tab { padding: 6px 7px; }
 .xbtn { width: 48px; height: 44px; border-radius: 8px; border: 2px solid #6a2a20; background: linear-gradient(180deg, #8a3020, #5a1a10); color: #fff; font-size: 1.4rem; font-weight: bold; flex: none; }
 .panel .pb { flex: 1; min-height: 0; display: flex; gap: 8px; padding: 8px; }
 .box { background: rgba(0,0,0,.25); border: 1px solid #4a3828; border-radius: 8px; padding: 8px; }

@@ -6,9 +6,11 @@
 //   DEV_AUTH=1        yalnız yerel test: "dev:<uid>" belirteçleri kabul edilir
 import http from 'node:http';
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { WebSocketServer } from 'ws';
 import { Hub, supabaseVerifier } from './hub.mjs';
 import { GAME_VERSION } from '../src/data/constants.js';
+import { staticSite } from './static.mjs';
 
 const PORT = +(process.env.PORT || 8787);
 let url = process.env.SUPABASE_URL, key = process.env.SUPABASE_KEY;
@@ -27,17 +29,22 @@ const verify = async (token) => {
 const log = (...a) => console.log(new Date().toISOString(), ...a);
 const hub = new Hub({ verify, log });
 
+// Derlenmiş oyun (dist/) varsa aynı adresten sunulur: iPhone'da "Ana Ekrana Ekle" ile tam ekran oynamak için
+// kalıcı bir adres (itch.io'nun gömülü sayfası tam ekran uygulama olarak eklenemez). Render derlemesi dist'i üretir.
+const site = staticSite(process.env.STATIC_DIR || fileURLToPath(new URL('../dist/', import.meta.url)));
 const server = http.createServer((req, res) => {
   const cors = { 'access-control-allow-origin': '*', 'content-type': 'application/json' };
-  if (req.url === '/health' || req.url === '/') {
+  const path = (req.url || '/').split('?')[0];
+  if (path === '/health' || (path === '/' && !site.ready)) {
     res.writeHead(200, cors);
-    res.end(JSON.stringify({ ok: true, game: 'ahen-vadisi', version: GAME_VERSION, ...hub.stats() }));
+    res.end(JSON.stringify({ ok: true, game: 'ahen-vadisi', version: GAME_VERSION, web: site.ready, ...hub.stats() }));
     return;
   }
+  if (site.serve(req, res)) return;
   res.writeHead(404, cors); res.end('{}');
 });
 const wss = new WebSocketServer({ server, path: '/ws', maxPayload: 64 * 1024 });
 wss.on('connection', (ws) => hub.attach(ws));
 setInterval(() => hub.tick(), 50);
 setInterval(() => hub.heartbeat(), 20000);
-server.listen(PORT, () => log(`Ahen Vadisi sunucusu ${GAME_VERSION} :${PORT} (kimlik: ${devAuth ? 'DEV + ' : ''}${supa ? url : 'yok!'})`));
+server.listen(PORT, () => log(`Ahen Vadisi sunucusu ${GAME_VERSION} :${PORT} (kimlik: ${devAuth ? 'DEV + ' : ''}${supa ? url : 'yok!'}; web oyunu: ${site.ready ? 'açık' : 'dist yok'})`));

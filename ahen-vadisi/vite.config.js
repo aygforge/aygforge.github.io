@@ -45,7 +45,12 @@ self.addEventListener('fetch', (e) => {
   // başka kökene (ör. çevrimiçi test sunucusu) giden istekler önbelleğe hiç girmez: doğrudan ağ
   if (new URL(req.url).origin !== location.origin) return;
   if (req.mode === 'navigate') {
-    e.respondWith(fetch(req).then((res) => put(req, res)).catch(() => caches.match(req, { ignoreSearch: true }).then((r) => r || caches.match('./index.html')).then((r) => r || caches.match('./'))));
+    // Ağ yavaşsa (ör. uyuyan ücretsiz sunucu uyanırken) 5 sn sonra önbellekteki sayfayla açılır. Sayfa yanıtı
+    // önbelleğe yazılmaz: önbellekteki sayfa her zaman aynı sürümün kurulumda alınan dosyalarıyla eşleşir.
+    const cached = () => caches.match(req, { ignoreSearch: true }).then((r) => r || caches.match('./index.html')).then((r) => r || caches.match('./'));
+    const net = fetch(req).then((res) => (res.ok ? res : cached().then((r) => r || res)));
+    e.respondWith(Promise.race([net.catch(() => cached()), new Promise((ok) => setTimeout(ok, 5000)).then(() => cached())])
+      .then((r) => r || net));
     return;
   }
   e.respondWith(caches.match(req, { ignoreSearch: true }).then((r) => r || fetch(req).then((res) => put(req, res))));

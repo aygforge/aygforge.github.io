@@ -53,6 +53,14 @@ Sunucu kapanırsa ya da uyursa oyun **durmaz**: tek oyunculu devam eder, sunucu 
 **Test grubunun sunucusu (4.4.1'den beri oyuna gömülü):** `https://ahen-vadisi-sunucu.onrender.com`
 (durum: `/health`, oyun bağlantısı: `wss://ahen-vadisi-sunucu.onrender.com/ws`).
 
+**Oyunun kendi adresi (4.5.3):** aynı sunucu derlenmiş oyunu da sunar: <https://ahen-vadisi-sunucu.onrender.com/>.
+- iPhone Safari web sayfalarına tam ekran izni vermez. Tam ekran oynamak için bu adres Safari'de açılır →
+  Paylaş → **Ana Ekrana Ekle**. Ana ekrandaki simge oyunu Safari çubukları olmadan açar.
+- Oyunun içinde de anlatılır: Ayarlar → Tam ekrana geç.
+- Ana ekran uygulamasının kaydı ayrıdır: karakter Çevrimiçi → "Buluttan yükle" ya da yedek koduyla taşınır.
+- Render derlemesi (`render.yaml`) önce oyunu derler (`npm run build` → `dist/`), sonra sunucuyu kurar. `dist/`
+  yoksa sunucu yalnız oyun sunucusu olarak çalışır; `/health` yanıtındaki `"web"` bunu gösterir.
+
 ## Render'a kurulum (ücretsiz, ≈5 dk)
 
 1. <https://render.com> → **Get Started** → GitHub hesabınla giriş yap.
@@ -62,7 +70,7 @@ Sunucu kapanırsa ya da uyursa oyun **durmaz**: tek oyunculu devam eder, sunucu 
 3. **Apply** → kurulum birkaç dakika sürer.
    - Hizmet adı `ahen-vadisi-sunucu`, plan **Free**, bölge Frankfurt.
    - Supabase adresi ve herkese açık anahtar depodaki `public/online.json`'dan okunur; ek ayar gerekmez.
-4. Bitince adresi açarak doğrula: `https://ahen-vadisi-sunucu.onrender.com/health` → `{"ok":true,"version":"4.4.0",…}`.
+4. Bitince adresi açarak doğrula: `https://ahen-vadisi-sunucu.onrender.com/health` → `{"ok":true,"version":"4.5.3","web":true,…}`.
    Render adresi farklı verdiyse onu kullan.
 5. Oyuna bağla — iki yol:
    - **En kolayı:** adresi bana gönder. `public/online.json` dosyasına
@@ -93,6 +101,8 @@ docker run -d --restart=always -p 8787:8787 ahen-sunucu
 
 Önüne TLS'li bir ters vekil (Caddy/Nginx) koy; oyun itch.io'da https üzerinden açıldığı için `wss://` gerekir.
 Docker olmadan: `cd server && npm ci && cd .. && node server/index.mjs` (Node 20+).
+Docker kalıbı yalnız oyun sunucusunu içerir; oyunun web sürümünü de sunmak için Docker'sız yolda önce `npm ci && npm run build`
+çalıştır (sunucu `dist/` klasörünü bulursa kendiliğinden sunar).
 
 ## Teknik özet
 
