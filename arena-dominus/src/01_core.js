@@ -121,8 +121,8 @@ const TIERS = [null,
   { n: 'İmparatorluk Ligi', s: 'İmparatorluk', eco: 5.0, ovr: 64.5, rep: 68, fans: [2400, 4800], fac: [2, 4], staff: [48, 68] },
   { n: 'Eyalet Şampiyonası', s: 'Eyalet', eco: 3.5, ovr: 58, rep: 56, fans: [1900, 3800], fac: [2, 3], staff: [40, 58] },
   { n: 'Şehir Arenaları Birliği', s: 'Şehir Arenaları', eco: 2.85, ovr: 52, rep: 44, fans: [1300, 2700], fac: [1, 3], staff: [32, 50] },
-  { n: 'Taş Çember Ligi', s: 'Taş Çember', eco: 2.0, ovr: 46, rep: 32, fans: [850, 1800], fac: [1, 2], staff: [25, 42] },
-  { n: 'Kum Arenası', s: 'Kum Arenası', eco: 1.3, ovr: 40, rep: 20, fans: [450, 980], fac: [1, 1], staff: [18, 34] }
+  { n: 'Taş Çember Ligi', s: 'Taş Çember', eco: 2.1, ovr: 46, rep: 32, fans: [850, 1800], fac: [1, 2], staff: [25, 42] },
+  { n: 'Kum Arenası', s: 'Kum Arenası', eco: 1.4, ovr: 40, rep: 20, fans: [450, 980], fac: [1, 1], staff: [18, 34] }
 ];
 
 // attribute keys

@@ -140,7 +140,7 @@ const Transfer = {
     if (!Calendar.isWindow()) return 'Transfer dönemi kapalı. ' + Calendar.windowLabel() + '.';
     if (me.roster.length >= 5) return 'Kadronuz dolu (5/5). Önce kadroda yer açmalısınız.';
     if (!Scouting.canSee(g)) return 'Keşif ağınız bu bölgeyi kapsamıyor. Keşif Merkezi\'ni geliştirin.';
-    if (me.arrears > 0) return 'Maaş borcu varken transfer yapılamaz.';
+    if (me.arrears > 0 && g.club >= 0) return 'Maaş borcu varken bonservisli transfer yapılamaz (serbest gladyatörlerle görüşebilirsiniz).';
     const n = this.nego(g.id);
     if (n && n.blocked) return 'Bu gladyatörle ilgili görüşmeler bu transfer döneminde sona erdi.';
     return null;

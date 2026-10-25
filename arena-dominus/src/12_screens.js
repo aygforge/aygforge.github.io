@@ -302,7 +302,7 @@ const Screens = {
     const bm = m => {
       const h = S.clubs[m.h], a = S.clubs[m.a]; const r = m.r;
       const sH = r ? (r.w === 0 ? 'w' : 'l') : '', sA = r ? (r.w === 1 ? 'w' : 'l') : '';
-      return `<div class="bm ${h.isPlayer || a.isPlayer ? 'me' : ''}"><div class="s ${sH}">${H.crest(h, 15)}<span class="grow ellip">${esc(h.n)}</span><span class="tiny dim">${h.tier}</span>${r ? `<b>${r.hs}</b>` : ''}</div><div class="s ${sA}">${H.crest(a, 15)}<span class="grow ellip">${esc(a.n)}</span><span class="tiny dim">${a.tier}</span>${r ? `<b>${r.as}</b>` : ''}</div></div>`;
+      return `<div class="bm ${h.isPlayer || a.isPlayer ? 'me' : ''}"><div class="s ${sH}">${H.crest(h, 15)}<span class="grow ellip">${esc(h.n)}</span><span class="tiny dim" title="Lig seviyesi">${h.tier}.lig</span>${r ? `<b>${r.hs}</b>` : ''}</div><div class="s ${sA}">${H.crest(a, 15)}<span class="grow ellip">${esc(a.n)}</span><span class="tiny dim" title="Lig seviyesi">${a.tier}.lig</span>${r ? `<b>${r.as}</b>` : ''}</div></div>`;
     };
     const byes = cup.byes ? `<div class="bround"><h4>Bay geçenler (1.–2. lig)</h4>${cup.byes.map(cid => `<div class="bm"><div class="s">${H.crest(S.clubs[cid], 15)}<span class="ellip">${esc(S.clubs[cid].n)}</span></div></div>`).join('')}</div>` : '';
     const seeds = cup.seeds ? `<div class="bround"><h4>Seri başları</h4>${cup.seeds.map(cid => `<div class="bm"><div class="s">${H.crest(S.clubs[cid], 15)}<span class="ellip">${esc(S.clubs[cid].n)}</span></div></div>`).join('')}</div>` : '';

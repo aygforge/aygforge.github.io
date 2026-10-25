@@ -122,7 +122,7 @@ const Battle = {
   // world → screen
   proj(x, y) {
     const cx = this.W / 2, cy = this.H * 0.63, rx = this.W * 0.44, ry = this.H * 0.29;
-    return { x: cx + x / ARENA_RX * rx, y: cy + y / ARENA_RY * ry, s: this.H / 470 * (0.88 + 0.12 * (y + ARENA_RY) / (2 * ARENA_RY)) };
+    return { x: cx + x / ARENA_RX * rx, y: cy + y / ARENA_RY * ry, s: Math.min(this.H / 540, this.W / 960) * (0.88 + 0.12 * (y + ARENA_RY) / (2 * ARENA_RY)) };
   },
   renderBG() {
     const c = document.createElement('canvas');
@@ -142,14 +142,16 @@ const Battle = {
       const y0 = H * 0.07 + t * H * 0.034;
       x.fillStyle = t % 2 ? Art.shade(T.wall, -0.25) : Art.shade(T.wall, -0.15);
       x.fillRect(0, y0, W, H * 0.034);
-      const n = Math.floor(W / 7);
+      const sp = Math.max(7, H * 0.02), hw = sp * 0.36, hr = sp * 0.24;
+      const n = Math.floor(W / sp);
       for (let i = 0; i < n; i++) {
-        if (rng.next() < 0.12) continue;
-        const px = i * 7 + rng.range(0, 3), py = y0 + H * 0.02;
+        if (rng.next() < 0.14) continue;
+        const px = i * sp + rng.range(0, sp * 0.35), py = y0 + H * 0.017 + rng.range(-1, 1);
         const tone = Art.SKIN[rng.int(0, 5)];
         x.fillStyle = rng.pick(['#7b2d26', '#2f4a6b', '#e6dccb', '#6b5a2a', T.a, T.b, '#3e5c3a', '#8c6d46']);
-        x.fillRect(px - 2.4, py, 4.8, H * 0.016);
-        x.fillStyle = tone; x.beginPath(); x.arc(px, py - 1, 2, 0, 7); x.fill();
+        x.beginPath(); x.moveTo(px - hw, py + H * 0.017); x.lineTo(px - hw * 0.8, py + hr * 0.6); x.quadraticCurveTo(px, py, px + hw * 0.8, py + hr * 0.6); x.lineTo(px + hw, py + H * 0.017); x.fill();
+        x.fillStyle = tone; x.beginPath(); x.arc(px, py - hr * 0.3, hr, 0, 7); x.fill();
+        if (rng.next() < 0.3) { x.fillStyle = Art.HAIR[rng.int(0, 5)]; x.beginPath(); x.arc(px, py - hr * 0.6, hr * 0.9, Math.PI, 0); x.fill(); }
       }
     }
     // podium wall with banners
@@ -211,7 +213,15 @@ const Battle = {
   },
   head(u) { const p = this.proj(u.x, u.y); return { x: p.x, y: p.y - 72 * p.s, s: p.s }; },
   chest(u) { const p = this.proj(u.x, u.y); return { x: p.x, y: p.y - 58 * p.s, s: p.s }; },
-  text(x, y, t, col, size = 14, life = 0.9) { this.parts.push({ k: 'txt', x: x + (Math.random() - 0.5) * 22, y: y - Math.random() * 8, vx: 0, vy: -38, t, col, size, life, max: life }); },
+  text(x, y, t, col, size = 14, life = 0.9) {
+    // stack labels instead of drawing them on top of each other
+    x += (Math.random() - 0.5) * 16;
+    const step = size * Math.max(0.8, this.H / 470) + 3;
+    for (let k = 0; k < 6; k++) { if (!this.parts.some(q => q.k === 'txt' && q.life > q.max * 0.45 && Math.abs(q.x - x) < 46 && Math.abs(q.y - y) < step)) break; y -= step; }
+    let n = 0; for (const q of this.parts) if (q.k === 'txt') n++;
+    if (n > 7) { const i = this.parts.findIndex(q => q.k === 'txt'); if (i >= 0) this.parts.splice(i, 1); }
+    this.parts.push({ k: 'txt', x, y, vx: 0, vy: -38, t, col, size, life, max: life });
+  },
   sparks(x, y, n, col) { for (let i = 0; i < n; i++) { const a = Math.random() * Math.PI * 2, sp = 60 + Math.random() * 140; this.parts.push({ k: 'spark', x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 30, col, life: 0.25 + Math.random() * 0.15, max: 0.35 }); } },
   dust(x, y, n, big) { for (let i = 0; i < n; i++) this.parts.push({ k: 'dust', x: x + (Math.random() - 0.5) * 14, y: y - Math.random() * 4, vx: (Math.random() - 0.5) * 30, vy: -10 - Math.random() * 15, r: big ? 6 : 3, life: 0.6 + Math.random() * 0.4, max: 1 }); },
   petals() { for (let i = 0; i < 60; i++) this.parts.push({ k: 'petal', x: Math.random() * this.W, y: -Math.random() * this.H * 0.5, vx: (Math.random() - 0.5) * 30, vy: 40 + Math.random() * 40, rot: Math.random() * 6, col: Math.random() < 0.6 ? '#b3261e' : '#efe6d6', life: 4, max: 4 }); },

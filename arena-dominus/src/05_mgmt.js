@@ -160,7 +160,7 @@ const Economy = {
   debit(club, cat, amt, force) {
     amt = Math.round(num(amt));
     if (amt <= 0) return true;
-    if (!force && (club.budget < amt || club.arrears > 0)) return false;
+    if (!force && (club.budget < amt || (club.arrears > 0 && cat !== 'signing'))) return false;
     let paid = amt;
     if (club.budget < amt) { paid = Math.max(0, club.budget); club.arrears += amt - paid; }
     club.budget -= paid;

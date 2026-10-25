@@ -121,10 +121,10 @@ table.t td.n, table.t th.n { text-align: right; font-variant-numeric: tabular-nu
 
 /* list rows (market) */
 .grow-list { display: flex; flex-direction: column; gap: .3rem; }
-.grow-row { display: grid; grid-template-columns: 2.6rem minmax(7rem, 1.6fr) 5.2rem 2.3rem 3.3rem 4.2rem 5.2rem 4.4rem 3.2rem; align-items: center; gap: .45rem; padding: .3rem .45rem; border-radius: .45rem; background: rgba(0,0,0,.2); border: 1px solid rgba(76,56,40,.6); cursor: pointer; font-size: .82rem; }
+.grow-row { display: grid; grid-template-columns: 2.6rem minmax(7rem, 1.6fr) 6.8rem 2.3rem 4.2rem 5.6rem 5.4rem 4.6rem 3.2rem; align-items: center; gap: .45rem; padding: .3rem .45rem; border-radius: .45rem; background: rgba(0,0,0,.2); border: 1px solid rgba(76,56,40,.6); cursor: pointer; font-size: .82rem; }
 .grow-row:hover { background: rgba(255,255,255,.04); }
 .grow-row.head { background: transparent; border: 0; cursor: default; color: var(--muted); font-size: .72rem; position: sticky; top: -.7rem; z-index: 2; background: #1d140d; }
-.grow-row .nm { font-weight: 700; } .grow-row .sub { font-size: .72rem; color: var(--dim); }
+.grow-row .nm { font-weight: 700; } .grow-row > * { white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; } .grow-row .sub { font-size: .72rem; color: var(--dim); }
 .filters { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .4rem; align-items: end; }
 .filters label { display: flex; flex-direction: column; gap: .15rem; font-size: .72rem; color: var(--muted); min-width: 0; }
 .filters label > * { width: 100%; }
@@ -226,7 +226,7 @@ table.t td.n, table.t th.n { text-align: right; font-variant-numeric: tabular-nu
 @media (max-width: 760px) {
   .hubgrid, .g3, .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .filters { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .grow-row { grid-template-columns: 2.3rem minmax(6rem, 1.5fr) 4.6rem 2.2rem 3rem 3.8rem 4.6rem 4rem; }
+  .grow-row { grid-template-columns: 2.3rem minmax(6rem, 1.5fr) 6.2rem 2.2rem 3.8rem 5.2rem 4.8rem 4rem; }
   .grow-row > :nth-child(9) { display: none; }
 }
 @media (max-width: 560px) { .g2, .hubgrid { grid-template-columns: minmax(0, 1fr); } }

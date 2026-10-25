@@ -132,10 +132,10 @@ table.t td.n, table.t th.n { text-align: right; font-variant-numeric: tabular-nu
 
 /* list rows (market) */
 .grow-list { display: flex; flex-direction: column; gap: .3rem; }
-.grow-row { display: grid; grid-template-columns: 2.6rem minmax(7rem, 1.6fr) 5.2rem 2.3rem 3.3rem 4.2rem 5.2rem 4.4rem 3.2rem; align-items: center; gap: .45rem; padding: .3rem .45rem; border-radius: .45rem; background: rgba(0,0,0,.2); border: 1px solid rgba(76,56,40,.6); cursor: pointer; font-size: .82rem; }
+.grow-row { display: grid; grid-template-columns: 2.6rem minmax(7rem, 1.6fr) 6.8rem 2.3rem 4.2rem 5.6rem 5.4rem 4.6rem 3.2rem; align-items: center; gap: .45rem; padding: .3rem .45rem; border-radius: .45rem; background: rgba(0,0,0,.2); border: 1px solid rgba(76,56,40,.6); cursor: pointer; font-size: .82rem; }
 .grow-row:hover { background: rgba(255,255,255,.04); }
 .grow-row.head { background: transparent; border: 0; cursor: default; color: var(--muted); font-size: .72rem; position: sticky; top: -.7rem; z-index: 2; background: #1d140d; }
-.grow-row .nm { font-weight: 700; } .grow-row .sub { font-size: .72rem; color: var(--dim); }
+.grow-row .nm { font-weight: 700; } .grow-row > * { white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; } .grow-row .sub { font-size: .72rem; color: var(--dim); }
 .filters { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .4rem; align-items: end; }
 .filters label { display: flex; flex-direction: column; gap: .15rem; font-size: .72rem; color: var(--muted); min-width: 0; }
 .filters label > * { width: 100%; }
@@ -237,7 +237,7 @@ table.t td.n, table.t th.n { text-align: right; font-variant-numeric: tabular-nu
 @media (max-width: 760px) {
   .hubgrid, .g3, .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .filters { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .grow-row { grid-template-columns: 2.3rem minmax(6rem, 1.5fr) 4.6rem 2.2rem 3rem 3.8rem 4.6rem 4rem; }
+  .grow-row { grid-template-columns: 2.3rem minmax(6rem, 1.5fr) 6.2rem 2.2rem 3.8rem 5.2rem 4.8rem 4rem; }
   .grow-row > :nth-child(9) { display: none; }
 }
 @media (max-width: 560px) { .g2, .hubgrid { grid-template-columns: minmax(0, 1fr); } }
@@ -390,8 +390,8 @@ const TIERS = [null,
   { n: 'İmparatorluk Ligi', s: 'İmparatorluk', eco: 5.0, ovr: 64.5, rep: 68, fans: [2400, 4800], fac: [2, 4], staff: [48, 68] },
   { n: 'Eyalet Şampiyonası', s: 'Eyalet', eco: 3.5, ovr: 58, rep: 56, fans: [1900, 3800], fac: [2, 3], staff: [40, 58] },
   { n: 'Şehir Arenaları Birliği', s: 'Şehir Arenaları', eco: 2.85, ovr: 52, rep: 44, fans: [1300, 2700], fac: [1, 3], staff: [32, 50] },
-  { n: 'Taş Çember Ligi', s: 'Taş Çember', eco: 2.0, ovr: 46, rep: 32, fans: [850, 1800], fac: [1, 2], staff: [25, 42] },
-  { n: 'Kum Arenası', s: 'Kum Arenası', eco: 1.3, ovr: 40, rep: 20, fans: [450, 980], fac: [1, 1], staff: [18, 34] }
+  { n: 'Taş Çember Ligi', s: 'Taş Çember', eco: 2.1, ovr: 46, rep: 32, fans: [850, 1800], fac: [1, 2], staff: [25, 42] },
+  { n: 'Kum Arenası', s: 'Kum Arenası', eco: 1.4, ovr: 40, rep: 20, fans: [450, 980], fac: [1, 1], staff: [18, 34] }
 ];
 
 // attribute keys
@@ -1917,7 +1917,7 @@ const Economy = {
   debit(club, cat, amt, force) {
     amt = Math.round(num(amt));
     if (amt <= 0) return true;
-    if (!force && (club.budget < amt || club.arrears > 0)) return false;
+    if (!force && (club.budget < amt || (club.arrears > 0 && cat !== 'signing'))) return false;
     let paid = amt;
     if (club.budget < amt) { paid = Math.max(0, club.budget); club.arrears += amt - paid; }
     club.budget -= paid;
@@ -2504,7 +2504,7 @@ const Transfer = {
     if (!Calendar.isWindow()) return 'Transfer dönemi kapalı. ' + Calendar.windowLabel() + '.';
     if (me.roster.length >= 5) return 'Kadronuz dolu (5/5). Önce kadroda yer açmalısınız.';
     if (!Scouting.canSee(g)) return 'Keşif ağınız bu bölgeyi kapsamıyor. Keşif Merkezi\'ni geliştirin.';
-    if (me.arrears > 0) return 'Maaş borcu varken transfer yapılamaz.';
+    if (me.arrears > 0 && g.club >= 0) return 'Maaş borcu varken bonservisli transfer yapılamaz (serbest gladyatörlerle görüşebilirsiniz).';
     const n = this.nego(g.id);
     if (n && n.blocked) return 'Bu gladyatörle ilgili görüşmeler bu transfer döneminde sona erdi.';
     return null;
@@ -4150,7 +4150,7 @@ const Battle = {
   // world → screen
   proj(x, y) {
     const cx = this.W / 2, cy = this.H * 0.63, rx = this.W * 0.44, ry = this.H * 0.29;
-    return { x: cx + x / ARENA_RX * rx, y: cy + y / ARENA_RY * ry, s: this.H / 470 * (0.88 + 0.12 * (y + ARENA_RY) / (2 * ARENA_RY)) };
+    return { x: cx + x / ARENA_RX * rx, y: cy + y / ARENA_RY * ry, s: Math.min(this.H / 540, this.W / 960) * (0.88 + 0.12 * (y + ARENA_RY) / (2 * ARENA_RY)) };
   },
   renderBG() {
     const c = document.createElement('canvas');
@@ -4170,14 +4170,16 @@ const Battle = {
       const y0 = H * 0.07 + t * H * 0.034;
       x.fillStyle = t % 2 ? Art.shade(T.wall, -0.25) : Art.shade(T.wall, -0.15);
       x.fillRect(0, y0, W, H * 0.034);
-      const n = Math.floor(W / 7);
+      const sp = Math.max(7, H * 0.02), hw = sp * 0.36, hr = sp * 0.24;
+      const n = Math.floor(W / sp);
       for (let i = 0; i < n; i++) {
-        if (rng.next() < 0.12) continue;
-        const px = i * 7 + rng.range(0, 3), py = y0 + H * 0.02;
+        if (rng.next() < 0.14) continue;
+        const px = i * sp + rng.range(0, sp * 0.35), py = y0 + H * 0.017 + rng.range(-1, 1);
         const tone = Art.SKIN[rng.int(0, 5)];
         x.fillStyle = rng.pick(['#7b2d26', '#2f4a6b', '#e6dccb', '#6b5a2a', T.a, T.b, '#3e5c3a', '#8c6d46']);
-        x.fillRect(px - 2.4, py, 4.8, H * 0.016);
-        x.fillStyle = tone; x.beginPath(); x.arc(px, py - 1, 2, 0, 7); x.fill();
+        x.beginPath(); x.moveTo(px - hw, py + H * 0.017); x.lineTo(px - hw * 0.8, py + hr * 0.6); x.quadraticCurveTo(px, py, px + hw * 0.8, py + hr * 0.6); x.lineTo(px + hw, py + H * 0.017); x.fill();
+        x.fillStyle = tone; x.beginPath(); x.arc(px, py - hr * 0.3, hr, 0, 7); x.fill();
+        if (rng.next() < 0.3) { x.fillStyle = Art.HAIR[rng.int(0, 5)]; x.beginPath(); x.arc(px, py - hr * 0.6, hr * 0.9, Math.PI, 0); x.fill(); }
       }
     }
     // podium wall with banners
@@ -4239,7 +4241,15 @@ const Battle = {
   },
   head(u) { const p = this.proj(u.x, u.y); return { x: p.x, y: p.y - 72 * p.s, s: p.s }; },
   chest(u) { const p = this.proj(u.x, u.y); return { x: p.x, y: p.y - 58 * p.s, s: p.s }; },
-  text(x, y, t, col, size = 14, life = 0.9) { this.parts.push({ k: 'txt', x: x + (Math.random() - 0.5) * 22, y: y - Math.random() * 8, vx: 0, vy: -38, t, col, size, life, max: life }); },
+  text(x, y, t, col, size = 14, life = 0.9) {
+    // stack labels instead of drawing them on top of each other
+    x += (Math.random() - 0.5) * 16;
+    const step = size * Math.max(0.8, this.H / 470) + 3;
+    for (let k = 0; k < 6; k++) { if (!this.parts.some(q => q.k === 'txt' && q.life > q.max * 0.45 && Math.abs(q.x - x) < 46 && Math.abs(q.y - y) < step)) break; y -= step; }
+    let n = 0; for (const q of this.parts) if (q.k === 'txt') n++;
+    if (n > 7) { const i = this.parts.findIndex(q => q.k === 'txt'); if (i >= 0) this.parts.splice(i, 1); }
+    this.parts.push({ k: 'txt', x, y, vx: 0, vy: -38, t, col, size, life, max: life });
+  },
   sparks(x, y, n, col) { for (let i = 0; i < n; i++) { const a = Math.random() * Math.PI * 2, sp = 60 + Math.random() * 140; this.parts.push({ k: 'spark', x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 30, col, life: 0.25 + Math.random() * 0.15, max: 0.35 }); } },
   dust(x, y, n, big) { for (let i = 0; i < n; i++) this.parts.push({ k: 'dust', x: x + (Math.random() - 0.5) * 14, y: y - Math.random() * 4, vx: (Math.random() - 0.5) * 30, vy: -10 - Math.random() * 15, r: big ? 6 : 3, life: 0.6 + Math.random() * 0.4, max: 1 }); },
   petals() { for (let i = 0; i < 60; i++) this.parts.push({ k: 'petal', x: Math.random() * this.W, y: -Math.random() * this.H * 0.5, vx: (Math.random() - 0.5) * 30, vy: 40 + Math.random() * 40, rot: Math.random() * 6, col: Math.random() < 0.6 ? '#b3261e' : '#efe6d6', life: 4, max: 4 }); },
@@ -5308,7 +5318,7 @@ const Screens = {
     const bm = m => {
       const h = S.clubs[m.h], a = S.clubs[m.a]; const r = m.r;
       const sH = r ? (r.w === 0 ? 'w' : 'l') : '', sA = r ? (r.w === 1 ? 'w' : 'l') : '';
-      return `<div class="bm ${h.isPlayer || a.isPlayer ? 'me' : ''}"><div class="s ${sH}">${H.crest(h, 15)}<span class="grow ellip">${esc(h.n)}</span><span class="tiny dim">${h.tier}</span>${r ? `<b>${r.hs}</b>` : ''}</div><div class="s ${sA}">${H.crest(a, 15)}<span class="grow ellip">${esc(a.n)}</span><span class="tiny dim">${a.tier}</span>${r ? `<b>${r.as}</b>` : ''}</div></div>`;
+      return `<div class="bm ${h.isPlayer || a.isPlayer ? 'me' : ''}"><div class="s ${sH}">${H.crest(h, 15)}<span class="grow ellip">${esc(h.n)}</span><span class="tiny dim" title="Lig seviyesi">${h.tier}.lig</span>${r ? `<b>${r.hs}</b>` : ''}</div><div class="s ${sA}">${H.crest(a, 15)}<span class="grow ellip">${esc(a.n)}</span><span class="tiny dim" title="Lig seviyesi">${a.tier}.lig</span>${r ? `<b>${r.as}</b>` : ''}</div></div>`;
     };
     const byes = cup.byes ? `<div class="bround"><h4>Bay geçenler (1.–2. lig)</h4>${cup.byes.map(cid => `<div class="bm"><div class="s">${H.crest(S.clubs[cid], 15)}<span class="ellip">${esc(S.clubs[cid].n)}</span></div></div>`).join('')}</div>` : '';
     const seeds = cup.seeds ? `<div class="bround"><h4>Seri başları</h4>${cup.seeds.map(cid => `<div class="bm"><div class="s">${H.crest(S.clubs[cid], 15)}<span class="ellip">${esc(S.clubs[cid].n)}</span></div></div>`).join('')}</div>` : '';
