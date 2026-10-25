@@ -1,0 +1,142 @@
+{
+  "date": "2026-10-25T10:11:54.329Z",
+  "passed": 27,
+  "total": 27,
+  "results": [
+    {
+      "name": "Sunucu ayarı yokken Çevrimiçi penceresi açılır ve durumu söyler (oyun çevrimdışı çalışır)",
+      "ok": true,
+      "info": "DurumSunucu ayarlanmadı"
+    },
+    {
+      "name": "Gizli (service_role) anahtar reddedilir",
+      "ok": true,
+      "info": "Bu service_role (GİZLİ) anahtar! Oyuna yalnız \"anon public\" anahtar konur."
+    },
+    {
+      "name": "Sunucu ayarlanınca giriş/kayıt düğmeleri görünür",
+      "ok": true,
+      "info": "DurumGiriş yapılmadı"
+    },
+    {
+      "name": "Kayıt ol: hesap + takma ad oluşur, oturum açılır",
+      "ok": true,
+      "info": "OyuncuAygun (ayg@test.com)Bulut kaydıhenüz yok {\"msg\":null,\"open\":false,\"sw\":false,\"log\":[{\"method\":\"POST\",\"path\":\"/auth/v1/signup\"},{\"method\":\"POST\",\"path\":\"/rest/v1/players?on_conflict=user_id\"},{\"method\":\"GET\",\"path\":\"/rest/v1/players?select=nickname&user_id=eq.71d839a5-0c17-4b56-a22b-a74b2170b514\"},{\"method\":\"GET\",\"path\":\"/rest/v1/cloud_saves?select=summary,game_version,updated_at&user_id=eq.71d839a5-0c17-4b56-a22b-a74b2170b514\"}]}"
+    },
+    {
+      "name": "Buluta kaydet: kayıt kodu ve karakter özeti buluta yazılır; liderlik satırı oluşur",
+      "ok": true,
+      "info": "{\"sum\":[{\"id\":\"cmvno3c1m2me32y6dy\",\"name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0}],\"lb\":{\"char_id\":\"cmvno3c1m2me32y6dy\",\"nickname\":\"Aygun\",\"char_name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0,\"kills\":0,\"boss_kills\":0,\"quests\":0,\"updated_at\":\"2026-10-25T10:10:53.114Z\",\"user_id\":\"71d839a5-0c17-4b56-a22b-a74b2170b514\"}}"
+    },
+    {
+      "name": "Yanlış şifre anlaşılır mesaj verir",
+      "ok": true,
+      "info": "E-posta ya da şifre yanlış"
+    },
+    {
+      "name": "Boş cihazda girişte buluttaki kayıt karşılaştırmayla önerilir",
+      "ok": true,
+      "info": "Buluttan yükleBulut (25.10.2026 10:10:53): Bulutcu Lv.8Bu cihaz: karakter yokYüklersen bu cihazdaki profil buluttakiyle değiştirilir; şu anki profilin bir kurta"
+    },
+    {
+      "name": "Buluttan yükle: karakter seviye, gold ve sınıfıyla bu cihaza gelir; önceki profilin kurtarma kopyası saklanır",
+      "ok": true,
+      "info": "{\"restored\":{\"name\":\"Bulutcu\",\"level\":8,\"gold\":4321,\"cls\":\"necromancer\"},\"rescue\":true}"
+    },
+    {
+      "name": "Yüklenen kayıt kalıcıdır ve oturum sayfa yenilemede sürer",
+      "ok": true,
+      "info": "{\"persisted\":\"Bulutcu\",\"stillIn\":true}"
+    },
+    {
+      "name": "Bulutta bu cihazda olmayan karakter varken yükleme durur ve sorulur; vazgeçilince bulut değişmez",
+      "ok": true,
+      "info": "Bulut kaydı bu cihazdakinden ileri: Bulutcu Lv.8 (bu cihazda yok). Bu cihazdaki profili buluta yazarsan buluttaki bu ilerleme kaybolur. Önce \"Buluttan yükle\" il"
+    },
+    {
+      "name": "Otomatik bulut kaydı da buluttaki ilerlemeyi ezmez",
+      "ok": true,
+      "info": "[{\"id\":\"cmvno3c1m2me32y6dy\",\"name\":\"Bulutcu\",\"cls\":\"necromancer\",\"level\":8,\"exp\":0}]"
+    },
+    {
+      "name": "Otomatik bulut kaydı 3 dakikadan sık yapılmaz (az önce elle kaydedildi)",
+      "ok": true,
+      "info": "8 → 8"
+    },
+    {
+      "name": "Süre dolunca otomatik bulut kaydı yapılır (Lv.10 buluta ve liderliğe yansır)",
+      "ok": true,
+      "info": "{\"cloud\":10,\"lbAuto\":10}"
+    },
+    {
+      "name": "Liderlik tablosu açılır: karakter, sınıf, takma ad, seviye",
+      "ok": true,
+      "info": "1.Bulutcu (Ölü Çağıran) · AygunLv.10 · 0 öldürme · 0 boss · 0 görev"
+    },
+    {
+      "name": "Hata/öneri bildirimi sürüm, harita, sınıf ve seviyeyle gönderilir",
+      "ok": true,
+      "info": "{\"version\":\"4.5.3\",\"map\":\"village\",\"cls\":\"necromancer\",\"level\":10,\"ua\":\"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.7390.37 Safari/537.36\",\"screen\":\"844x390\"}"
+    },
+    {
+      "name": "Oyundayken HUD'da çevrimiçi sayısı görünür (yalnız ben: 1)",
+      "ok": true,
+      "info": "<button class=\"onl\" data-testid=\"hud-online\">● 1 çevrimiçi</button>"
+    },
+    {
+      "name": "Arkadaş oyuna girince hemen \"buradayım\" der; onun ekranında 2 çevrimiçi",
+      "ok": true,
+      "info": "[[\"Aygun\",\"Bulutcu\",\"village\",10],[\"Bora\",\"Buyucu\",\"village\",1]]"
+    },
+    {
+      "name": "Sayıya dokununca liste: takma ad, karakter, sınıf, seviye, harita; kendi satırım \"(sen)\"",
+      "ok": true,
+      "info": "●Aygun (sen) — Bulutcu (Ölü Çağıran)Lv.10 · Karaağaç Köyü●Bora — Buyucu (Büyücü)Lv.1 · Karaağaç Köyü"
+    },
+    {
+      "name": "Bağlantı yokken bulut işlemi anlaşılır uyarı verir; yerel kayıt ve oyun etkilenmez",
+      "ok": true,
+      "info": "Sunucuya ulaşılamadı (internet bağlantısını kontrol et)"
+    },
+    {
+      "name": "Çıkış yap: oturum kapanır, yerel karakterler yerinde kalır",
+      "ok": true,
+      "info": "DurumGiriş yapılmadı"
+    },
+    {
+      "name": "Çıkış yapan oyuncu çevrimiçi listesinden hemen düşer",
+      "ok": true,
+      "info": "[\"Bora\"]"
+    },
+    {
+      "name": "Mobil (640×360): Çevrimiçi penceresi taşmaz",
+      "ok": true,
+      "info": "{\"r\":534,\"w\":640,\"overflowX\":false}"
+    },
+    {
+      "name": "Konsol hatası yok (cihaz A)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Konsol hatası yok (cihaz B)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Konsol hatası yok (cihaz C)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Konsol hatası yok (cihaz D)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Konsol hatası yok (cihaz M)",
+      "ok": true,
+      "info": ""
+    }
+  ]
+}

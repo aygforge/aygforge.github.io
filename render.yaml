@@ -1,0 +1,24 @@
+# Render Blueprint — Ahen Vadisi ortak dünya oyun sunucusu (ücretsiz plan).
+# Render panelinde: New → Blueprint → bu depoyu seç → Apply. Ayrıntı: ahen-vadisi/docs/OYUN_SUNUCUSU.md
+services:
+  - type: web
+    name: ahen-vadisi-sunucu
+    runtime: node
+    plan: free
+    region: frankfurt
+    rootDir: ahen-vadisi
+    # Oyun da derlenip aynı adresten sunulur (iPhone'da "Ana Ekrana Ekle" ile tam ekran için kalıcı adres)
+    buildCommand: npm ci --include=dev && npm run build && cd server && npm ci --omit=dev
+    startCommand: node server/index.mjs
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD
+        value: "1"
+      # Supabase adresi ve HERKESE AÇIK anahtar public/online.json'dan okunur; başka proje için burada verilebilir:
+      # - key: SUPABASE_URL
+      #   value: https://xxxx.supabase.co
+      # - key: SUPABASE_KEY
+      #   value: sb_publishable_...

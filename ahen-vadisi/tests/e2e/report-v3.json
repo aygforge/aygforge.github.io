@@ -1,0 +1,192 @@
+{
+  "date": "2026-10-25T10:07:55.294Z",
+  "passed": 37,
+  "total": 37,
+  "results": [
+    {
+      "name": "V2 kaydı (Lv.30) güncel şemaya (V4) geçer: seviye, gold, görevler korunur; yeni görevler yapılmamış",
+      "ok": true,
+      "info": "{\"from\":2,\"sv\":4,\"level\":30,\"gold\":4321,\"m36\":\"done\",\"s11\":3,\"m37\":null,\"tracking\":[],\"mastery2\":false,\"backup\":2}"
+    },
+    {
+      "name": "Geçişte v2_backup saklanır; V3 alanları eklenir (takip listesi, Ustalık II)",
+      "ok": true,
+      "info": "{\"from\":2,\"sv\":4,\"level\":30,\"gold\":4321,\"m36\":\"done\",\"s11\":3,\"m37\":null,\"tracking\":[],\"mastery2\":false,\"backup\":2}"
+    },
+    {
+      "name": "Ölü Krallık yolu \"Mührün Ardındaki Yol\" alınmadan kapalı",
+      "ok": true,
+      "info": "{\"locked\":true,\"map\":\"frost\"}"
+    },
+    {
+      "name": "Donmuş Muhafız sonrası m37 Arşivci Kaya'dan alınır",
+      "ok": true,
+      "info": "{\"ok\":true}"
+    },
+    {
+      "name": "Ölü Krallık: 4 yaratık türü + Mezar Komutanı doğar",
+      "ok": true,
+      "info": "bone_archer,cursed_guard,grave_commander,grave_mage,shroud_crawler"
+    },
+    {
+      "name": "Ölü Krallık: Seher ve Hamit, sis parçacıkları, 2 gizli sandık, toplama düğümleri",
+      "ok": true,
+      "info": "{\"npcs\":[\"seher\",\"hamit\"],\"f\":26,\"g\":15}"
+    },
+    {
+      "name": "m37 ulaşma hedefi tamamlanır",
+      "ok": true,
+      "info": "{\"s\":\"active\",\"p\":[1],\"used\":[],\"at\":1792922774768}"
+    },
+    {
+      "name": "V3 yaratık öldürme EXP/gold verir; 30→31 seviye geçişi",
+      "ok": true,
+      "info": "{\"level\":31,\"kills\":1,\"gold\":38,\"exp0\":64480,\"k\":1}"
+    },
+    {
+      "name": "Mezar Büyücüsü: telegraflı Mezar Laneti (alınan hasar artışı)",
+      "ok": true,
+      "info": "{\"cast\":true,\"cursed\":true}"
+    },
+    {
+      "name": "Kefen Avcısı: öfke (%30 altı), telegraflı yetenek, garantili Avcı Damgası",
+      "ok": true,
+      "info": "{\"enr\":true,\"cast\":true,\"brand\":true}"
+    },
+    {
+      "name": "Mezar Komutanı: telegraflı saldırılar, %70 altında 2 Kemik Asker, %80 altında Lanetli Bayrak",
+      "ok": true,
+      "info": "{\"cast\":true,\"soldiers\":2,\"banner\":1,\"summonExp\":0,\"fury\":true,\"kill\":1,\"crest\":true,\"hazards\":0}"
+    },
+    {
+      "name": "Komutan çağrıları EXP vermez; Son Nöbet (%25); yenilince garantili Komutan Arması",
+      "ok": true,
+      "info": "{\"cast\":true,\"soldiers\":2,\"banner\":1,\"summonExp\":0,\"fury\":true,\"kill\":1,\"crest\":true,\"hazards\":0}"
+    },
+    {
+      "name": "Siyah Kapı: Komutan Arması ile açılır (1 arma tüketilir), Kara Taht geçidi açılır",
+      "ok": true,
+      "info": "{\"acc42\":{\"ok\":true},\"gate\":{\"before\":true,\"after\":false,\"flag\":true,\"used\":1,\"p0\":1}}"
+    },
+    {
+      "name": "Kara Taht: 4 yaratık türü, Eren ve Veysel, Karanlık Mahzen kapısı",
+      "ok": true,
+      "info": "{\"ids\":[\"obsidian_sentinel\",\"shadow_hunter\",\"throne_executioner\",\"void_priest\"],\"npcs\":[\"eren\",\"veysel\"],\"m42\":[1,1],\"ready\":true,\"gate\":true}"
+    },
+    {
+      "name": "m42 iki hedefi de tamamlandı (kapı + Kara Taht'a geçiş)",
+      "ok": true,
+      "info": "[1,1]"
+    },
+    {
+      "name": "Refakat: oyuncu uzaktayken ilerlemez; yakında kalınca hedefe takılmadan ulaşır",
+      "ok": true,
+      "info": "{\"movedFar\":0,\"done\":1,\"ambushExp\":0,\"ambush\":4,\"atEnd\":true}"
+    },
+    {
+      "name": "Refakat pusu yaratıkları EXP vermez",
+      "ok": true,
+      "info": "{\"movedFar\":0,\"done\":1,\"ambushExp\":0,\"ambush\":4,\"atEnd\":true}"
+    },
+    {
+      "name": "Savunma: korunan nesne düşerse görev başarısız, yeniden denenebilir",
+      "ok": true,
+      "info": "{\"failed\":true,\"done\":1,\"waves\":2,\"exp\":0,\"again\":false}"
+    },
+    {
+      "name": "Savunma: dalgalar temizlenince hedef tamamlanır; dalgalar EXP vermez; tekrar başlatılamaz",
+      "ok": true,
+      "info": "{\"failed\":true,\"done\":1,\"waves\":2,\"exp\":0,\"again\":false}"
+    },
+    {
+      "name": "Sarsılmaz Öfke: 6. beceri 4'lü çubuğa yerleşir; +%15 fiziksel hasar, −%10 alınan hasar",
+      "ok": true,
+      "info": "{\"bar\":[\"heavy_strike\",\"whirlwind\",\"iron_fury\",\"war_charge\"],\"ok\":true,\"fury\":true,\"red\":0.1,\"mult\":1.15}"
+    },
+    {
+      "name": "Karanlık Mahzen: 1. bölüm temizlenir; 2. bölüm iki kapı mekanizması olmadan açılmaz",
+      "ok": true,
+      "info": "{\"afterKill2\":[1],\"levers\":2,\"afterLevers\":[1,2],\"afterKill3\":[1,2],\"counts\":[3,2,3],\"cleared\":[1,2,3],\"bossDoor\":true}"
+    },
+    {
+      "name": "Kraliyet Mühürleri: her mühür savunma karşılaşması başlatır; üçü kırılınca taht kapısı açılır",
+      "ok": true,
+      "info": "{\"afterKill2\":[1],\"levers\":2,\"afterLevers\":[1,2],\"afterKill3\":[1,2],\"counts\":[3,2,3],\"cleared\":[1,2,3],\"bossDoor\":true}"
+    },
+    {
+      "name": "Kayıp Kral I–II: telegraflı saldırılar; %65 altında Kırık Taç kalkanı + 2 kadim mühür; mühürler kırılınca kalkan düşer",
+      "ok": true,
+      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":false,\"fury\":true,\"ring\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3],\"x\":66,\"y\":25},\"shards\":2,\"claimed\":true,\"cleared4\":true,\"hist\":1}"
+    },
+    {
+      "name": "Kayıp Kral III (%30): Son Hüküm — hızlanır, güvenli boşluklu halka, en çok 4 karanlık alan",
+      "ok": true,
+      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":false,\"fury\":true,\"ring\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3],\"x\":66,\"y\":25},\"shards\":2,\"claimed\":true,\"cleared4\":true,\"hist\":1}"
+    },
+    {
+      "name": "Mahzende ölüm: Kral tam cana döner, kalkan sıfırlanır, bölümler korunur (kontrol noktası)",
+      "ok": true,
+      "info": "{\"full\":true,\"shield\":0,\"cleared\":[1,2,3],\"x\":66,\"y\":25}"
+    },
+    {
+      "name": "Kayıp Kral yenilir: garantili Kırık Taç Parçası, koşu başına tek ödül, zindan sayacı",
+      "ok": true,
+      "info": "{\"cast\":true,\"seals\":2,\"shielded\":true,\"shieldAfter\":false,\"fury\":true,\"ring\":true,\"maxZones\":1,\"reset\":{\"full\":true,\"shield\":0,\"cleared\":[1,2,3],\"x\":66,\"y\":25},\"shards\":2,\"claimed\":true,\"cleared4\":true,\"hist\":1}"
+    },
+    {
+      "name": "Aynı koşuda ikinci Kral ödülü verilmez",
+      "ok": true,
+      "info": "0"
+    },
+    {
+      "name": "Konsol hatası yok (warrior V3 turu)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "Kapat-aç: seviye, bayraklar, görevler, takip listesi, Ustalık II, beceri çubuğu korunur",
+      "ok": true,
+      "info": "{\"lv\":39,\"flag\":true,\"m2\":true,\"tr\":[\"s40\"],\"s40\":\"active\",\"bar\":[\"heavy_strike\",\"whirlwind\",\"iron_fury\",\"war_charge\"]}"
+    },
+    {
+      "name": "Donmuş Zaman (Lv.35): hasar + normal %55 yavaşlatma; bossta kısa ve zayıf (%20)",
+      "ok": true,
+      "info": "{\"ok\":true,\"normal\":0.55,\"normalHit\":true,\"boss\":0.2,\"bossDur\":0.8,\"unlocked\":1}"
+    },
+    {
+      "name": "Kullanım eşyaları: Merhem zehri giderir (1 tüketilir); Parşömen savaşta reddedilir (tükenmez)",
+      "ok": true,
+      "info": "{\"salve\":{\"ok\":true,\"poison\":false,\"used\":1},\"scrollCombat\":{\"ok\":false,\"used\":0},\"ration\":true,\"lamp\":true,\"rationLeft\":1,\"lampLeft\":1}"
+    },
+    {
+      "name": "Kamp Erzağı ve Maden Lambası savaş dışında çalışır ve tam 1 adet tüketilir",
+      "ok": true,
+      "info": "{\"salve\":{\"ok\":true,\"poison\":false,\"used\":1},\"scrollCombat\":{\"ok\":false,\"used\":0},\"ration\":true,\"lamp\":true,\"rationLeft\":1,\"lampLeft\":1}"
+    },
+    {
+      "name": "Dönüş Parşömeni: keşfedilmiş Yol Taşı'na ücretsiz döner, 1 parşömen tükenir",
+      "ok": true,
+      "info": "{\"map\":\"village\",\"scrolls\":1,\"gold\":20}"
+    },
+    {
+      "name": "Görev günlüğü: Yan + Ölü Krallık filtresi yalnız o bölgenin yan görevlerini listeler",
+      "ok": true,
+      "info": "[\"s39\",\"s37\"]"
+    },
+    {
+      "name": "En çok 3 görev takip edilir ve HUD'da gösterilir",
+      "ok": true,
+      "info": "{\"trk\":[\"s37\",\"s39\",\"m38\"],\"hud\":[\"◇ Ölülerin Kayıtları\",\"◇ Gecikmiş Haber\",\"◆ Sessiz Evler\"]}"
+    },
+    {
+      "name": "Konsol hatası yok (mage V3)",
+      "ok": true,
+      "info": ""
+    },
+    {
+      "name": "PWA: servis işçisi etkin, 4.5.3 sürümlü önbellek; çevrimdışı açılış",
+      "ok": true,
+      "info": "{\"active\":true,\"version\":\"4.5.3\",\"cache\":\"ahen-vadisi-9000d56ade\",\"assets\":3,\"offline\":true}"
+    }
+  ]
+}
