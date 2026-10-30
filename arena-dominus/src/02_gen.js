@@ -19,11 +19,14 @@ const GameState = {
   isPlayerClub(cid) { return cid === S.player; },
   rosterGlads(club) { return club.roster.map(id => S.glads[id]).filter(Boolean); },
   freeAgents() { const out = []; for (const id in S.glads) { const g = S.glads[id]; if (g.club < 0) out.push(g); } return out; },
+  // text may be a plain string or a function producing it; functions are stored in both languages
   news(text, opt = {}) {
-    S.news.unshift({ s: S.season, w: S.week, t: text, p: opt.p ? 1 : 0, k: opt.k || 'gen' });
+    S.news.unshift({ s: S.season, w: S.week, t: bi(text), p: opt.p ? 1 : 0, k: opt.k || 'gen' });
     if (S.news.length > 120) S.news.length = 120;
   },
-  syncRng() { if (S && R) S.rng = R.state(); }
+  syncRng() { if (S && R) S.rng = R.state(); },
+  // club names are stored in both languages (nt/ne); c.n always holds the active one
+  applyLang() { if (!S) return; for (const c of S.clubs) if (c.nt) c.n = I18N.lang === 'en' ? (c.ne || c.nt) : c.nt; }
 };
 
 // ---------------------------------------------------------------- gladiators
@@ -91,7 +94,7 @@ const GladiatorGenerator = {
     const cls = CLASS_IDS[rng.int(0, 5)];
     const base = clamp(TIERS[tier].ovr - 22 + rng.normal(0, 2), 14, 55);
     const g = {
-      id: -1 - slot, temp: true, n: 'Arena Dövüşçüsü', age: rng.int(19, 34), reg: REGIONS[rng.int(0, 4)].id, cls,
+      id: -1 - slot, temp: true, n: tx('Arena Dövüşçüsü', 'Arena Fighter'), age: rng.int(19, 34), reg: REGIONS[rng.int(0, 4)].id, cls,
       str: base + rng.normal(0, 3), end: base + rng.normal(0, 3), agi: base + rng.normal(0, 3), tec: base + rng.normal(0, 3), dis: base - 4, cha: 20,
       clu: 40, cond: 90, mor: 50, injury: null, eq: { w: 0, a: 0, x: 0 },
       look: { sk: rng.int(0, 5), hc: rng.int(0, 4), hs: rng.int(0, 6), bd: rng.int(0, 5), jw: 1, ns: rng.int(0, 2), br: 0.5, ey: 1, bw: 1, ht: 1, sc: 0, ac: 5, pl: 0 }
@@ -120,18 +123,18 @@ const TransferMath = {
 // ---------------------------------------------------------------- world
 const WorldGenerator = {
   clubNames(reg) {
-    const out = new Set();
+    const out = new Map();
     const cities = CITIES[reg];
     let guard = 0;
     while (out.size < 48 && guard++ < 5000) {
       const r = R.next();
       let n;
-      if (r < 0.38) n = 'Ludus ' + R.pick(LUDUS_STEMS);
-      else if (r < 0.86) n = R.pick(cities) + ' ' + R.pick(CLUB_SUFFIX);
-      else n = R.pick(cities) + ' Ludusu';
-      out.add(n);
+      if (r < 0.38) { const st = R.pick(LUDUS_STEMS); n = ['Ludus ' + st, 'Ludus ' + st]; }
+      else if (r < 0.86) { const c = R.pick(cities), sf = R.pick(CLUB_SUFFIX); n = [c + ' ' + sf[0], c + ' ' + sf[1]]; }
+      else { const c = R.pick(cities); n = [c + ' Ludusu', c + ' Ludus']; }
+      if (!out.has(n[0])) out.set(n[0], n);
     }
-    return [...out];
+    return [...out.values()];
   },
   crest(reg) {
     const pal = REGION_BY_ID[reg].pal;
@@ -167,7 +170,7 @@ const WorldGenerator = {
     const pol = this.pickPolicy(tier);
     const off = R.normal(0, 2.4);
     const club = {
-      id, n: name, reg, tier, lg: GameState.leagueIndex(GameState.regIdx(reg), tier),
+      id, n: Array.isArray(name) ? name[0] : name, nt: Array.isArray(name) ? name[0] : name, ne: Array.isArray(name) ? name[1] : name, reg, tier, lg: GameState.leagueIndex(GameState.regIdx(reg), tier),
       crest: this.crest(reg),
       rep: Math.round(clamp(T.rep + R.normal(0, 5) + off * 1.5, 3, 99)),
       fans: Math.round(R.range(T.fans[0], T.fans[1])),
@@ -256,7 +259,8 @@ const WorldGenerator = {
     for (const club of S.clubs) club.goal = ClubAI.seasonGoal(club);
     Leagues.createAllFixtures();
     Cups.createRegionalAll();
-    GameState.news('İmparatorluk Kupası ilk sezonda düzenlenmez; katılımcılar bu sezon Altın Kolezyum liglerini ilk iki sırada bitiren kulüplerden belirlenecek.', { k: 'cup' });
+    GameState.news(() => tx('İmparatorluk Kupası ilk sezonda düzenlenmez; katılımcılar bu sezon Altın Kolezyum liglerini ilk iki sırada bitiren kulüplerden belirlenecek.', 'The Imperial Cup is not held in the first season; its entrants will be the clubs finishing in the top two of this season\'s Golden Colosseum leagues.'), { k: 'cup' });
+    GameState.applyLang();
     GameState.syncRng();
     return S;
   },
@@ -302,7 +306,7 @@ const WorldGenerator = {
     for (const gid of c.roster) S.scout[gid] = 2;
     Sponsors.generateOffers();
     Staff.generateCandidates();
-    GameState.news(`${c.n} yönetimini devraldınız. ${TIERS[c.tier].n} (${REGION_BY_ID[c.reg].name}) sizi bekliyor!`, { p: 1, k: 'club' });
+    GameState.news(() => tx(`${cn(c)} yönetimini devraldınız. ${TIERS[c.tier].n} (${REGION_BY_ID[c.reg].name}) sizi bekliyor!`, `You have taken charge of ${cn(c)}. The ${TIERS[c.tier].n} (${REGION_BY_ID[c.reg].name}) awaits!`), { p: 1, k: 'club' });
     GameState.syncRng();
   }
 };

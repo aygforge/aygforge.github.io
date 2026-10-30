@@ -179,6 +179,8 @@ table.t td.n, table.t th.n { text-align: right; font-variant-numeric: tabular-nu
 .logo .sub { color: var(--text); letter-spacing: .3em; font-size: .85rem; opacity: .85; }
 .menu { position: relative; display: flex; flex-direction: column; gap: .5rem; width: min(20rem, 80vw); }
 .menu .btn { min-height: 2.8rem; font-size: 1.05rem; }
+.langmenu .btn { min-height: 3.4rem; font-size: 1.2rem; justify-content: flex-start; padding-left: 1.2rem; }
+.langmenu .flag { display: inline-flex; align-items: center; justify-content: center; width: 2.4rem; height: 1.6rem; border-radius: .3rem; background: rgba(0,0,0,.35); border: 1px solid rgba(255,220,170,.35); font-size: .8rem; letter-spacing: .05em; margin-right: .5rem; }
 .setup { position: absolute; inset: 0; overflow: auto; padding: .8rem; }
 .choice { cursor: pointer; transition: transform .12s; } .choice:hover { transform: translateY(-2px); } .choice.on { outline: 2px solid var(--gold); }
 .swatch { width: 2rem; height: 2rem; border-radius: .4rem; border: 2px solid rgba(0,0,0,.4); cursor: pointer; }

@@ -79,6 +79,14 @@ const Leagues = {
 };
 
 const Cups = {
+  // display name from the cup key (works for old saves too)
+  nameOf(c) {
+    const key = typeof c === 'string' ? c : c && c.key;
+    if (!key) return '';
+    if (key === 'imp') return tx('İmparatorluk Kupası', 'Imperial Cup');
+    const r = REGION_BY_ID[key.slice(2)];
+    return r ? tx(r.name + ' Kupası', r.name + ' Cup') : key;
+  },
   draw(list, neutral) {
     const arr = R.shuffle(list.slice());
     const out = [];
@@ -166,10 +174,10 @@ const Cups = {
 const Calendar = {
   isWindow(week = S.week) { return WINDOW_WEEKS.includes(week); },
   windowLabel() {
-    if (S.week <= 1) return 'Sezon başı transfer dönemi açık';
-    if (S.week === 15 || S.week === 16) return 'Ara transfer dönemi açık';
-    if (S.week < 15) return 'Transfer dönemi 15. haftada açılacak';
-    return 'Transfer dönemi gelecek sezon başında açılacak';
+    if (S.week <= 1) return tx('Sezon başı transfer dönemi açık', 'Pre-season transfer window open');
+    if (S.week === 15 || S.week === 16) return tx('Ara transfer dönemi açık', 'Mid-season transfer window open');
+    if (S.week < 15) return tx('Transfer dönemi 15. haftada açılacak', 'Transfer window opens in week 15');
+    return tx('Transfer dönemi gelecek sezon başında açılacak', 'Transfer window opens next pre-season');
   },
   fixturesForWeek(week) {
     const out = [];
@@ -193,17 +201,17 @@ const Calendar = {
       else {
         const ci = RCUP_WEEKS.indexOf(w);
         const cup = S.rcups[S.clubs[cid].reg];
-        if (ci >= 0 && cup && cup.cur < ci && Cups.alive(cup, cid)) out.push({ w, tbd: cup.name + ' — ' + RCUP_ROUNDS[ci] + ' (kura bekleniyor)' });
+        if (ci >= 0 && cup && cup.cur < ci && Cups.alive(cup, cid)) out.push({ w, tbd: Cups.nameOf(cup) + ' — ' + RCUP_ROUNDS[ci] + tx(' (kura bekleniyor)', ' (awaiting draw)') });
         const ii = ICUP_WEEKS.indexOf(w);
-        if (ii >= 0 && S.icup && S.icup.cur < ii && Cups.alive(S.icup, cid)) out.push({ w, tbd: 'İmparatorluk Kupası — ' + ICUP_ROUNDS[ii] + ' (kura bekleniyor)' });
+        if (ii >= 0 && S.icup && S.icup.cur < ii && Cups.alive(S.icup, cid)) out.push({ w, tbd: Cups.nameOf('imp') + ' — ' + ICUP_ROUNDS[ii] + tx(' (kura bekleniyor)', ' (awaiting draw)') });
       }
     }
     return out;
   },
   compName(comp) {
-    if (comp.type === 'league') { const lg = S.leagues[comp.lg]; return TIERS[lg.tier].s + ' · ' + (comp.round + 1) + '. Maç'; }
-    if (comp.type === 'rcup') return S.rcups[comp.key.slice(2)].name + ' · ' + RCUP_ROUNDS[comp.round];
-    return 'İmparatorluk Kupası · ' + ICUP_ROUNDS[comp.round];
+    if (comp.type === 'league') { const lg = S.leagues[comp.lg]; return TIERS[lg.tier].s + ' · ' + tx((comp.round + 1) + '. Maç', 'Match ' + (comp.round + 1)); }
+    if (comp.type === 'rcup') return Cups.nameOf(comp.key) + ' · ' + RCUP_ROUNDS[comp.round];
+    return Cups.nameOf('imp') + ' · ' + ICUP_ROUNDS[comp.round];
   },
   pressure(comp) {
     if (comp.type === 'league') return 0.3;

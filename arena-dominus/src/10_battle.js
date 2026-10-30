@@ -166,7 +166,7 @@ const Battle = {
       x.fillStyle = col[0]; x.beginPath(); x.moveTo(bx - 9, wy + 2); x.lineTo(bx + 9, wy + 2); x.lineTo(bx + 9, wy + H * 0.075); x.lineTo(bx, wy + H * 0.06); x.lineTo(bx - 9, wy + H * 0.075); x.closePath(); x.fill();
       x.fillStyle = col[1]; x.fillRect(bx - 9, wy + 6, 18, 3);
     }
-    if (T.grand) { x.fillStyle = '#d4ad52'; x.font = `bold ${Math.round(H * 0.03)}px serif`; x.textAlign = 'center'; x.fillText('✦ BÜYÜK KOLEZYUM ✦', W / 2, wy + H * 0.05); }
+    if (T.grand) { x.fillStyle = '#d4ad52'; x.font = `bold ${Math.round(H * 0.03)}px serif`; x.textAlign = 'center'; x.fillText(tx('✦ BÜYÜK KOLEZYUM ✦', '✦ GRAND COLOSSEUM ✦'), W / 2, wy + H * 0.05); }
     // arena floor
     const cx = W / 2, cy = H * 0.63, rx = W * 0.5, ry = H * 0.36;
     x.save(); x.beginPath(); x.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2); x.clip();
@@ -233,14 +233,14 @@ const Battle = {
       case 'hit': {
         const T = U[e.tg], A = U[e.u], c = this.chest(T);
         const rv = this.rv[e.tg];
-        if (e.blocked) { rv.blkT = now; this.sparks(lerp(c.x, this.chest(A).x, 0.3), c.y, 10, '#ffe7a0'); Sfx.play('block'); this.text(c.x, c.y - 18 * c.s, 'BLOK ' + Math.round(e.dmg), '#e6d8b0', 12); }
+        if (e.blocked) { rv.blkT = now; this.sparks(lerp(c.x, this.chest(A).x, 0.3), c.y, 10, '#ffe7a0'); Sfx.play('block'); this.text(c.x, c.y - 18 * c.s, tx('BLOK ', 'BLOCK ') + Math.round(e.dmg), '#e6d8b0', 12); }
         else { rv.hitT = now; this.sparks(c.x, c.y, e.crit ? 14 : 6, e.crit ? '#ffd27a' : '#f5f0e0'); Sfx.play(e.crit ? 'clash' : 'hit'); this.text(c.x, c.y - 18 * c.s, String(Math.round(e.dmg)), e.crit ? '#ffcc4d' : '#fff', e.crit ? 18 : 14); }
-        if (e.crit) { this.text(c.x, c.y - 40 * c.s, 'KRİTİK!', '#ffb02e', 15, 1.1); this.shake = Math.max(this.shake, 5); this.rv[e.tg].critT = now; }
+        if (e.crit) { this.text(c.x, c.y - 40 * c.s, tx('KRİTİK!', 'CRITICAL!'), '#ffb02e', 15, 1.1); this.shake = Math.max(this.shake, 5); this.rv[e.tg].critT = now; }
         if (e.sp) this.dust(this.proj(T.x, T.y).x, this.proj(T.x, T.y).y, 4);
         break;
       }
-      case 'miss': case 'whiff': { if (Math.random() < 0.4) { const c = this.chest(U[e.tg]); this.text(c.x, c.y - 18 * c.s, 'ıska', '#bfb6a2', 10, 0.5); } break; }
-      case 'evade': { this.rv[e.tg].evT = now; const c = this.chest(U[e.tg]); this.text(c.x, c.y - 18 * c.s, 'KAÇTI', '#9fd3ff', 12, 0.7); break; }
+      case 'miss': case 'whiff': { if (Math.random() < 0.4) { const c = this.chest(U[e.tg]); this.text(c.x, c.y - 18 * c.s, tx('ıska', 'miss'), '#bfb6a2', 10, 0.5); } break; }
+      case 'evade': { this.rv[e.tg].evT = now; const c = this.chest(U[e.tg]); this.text(c.x, c.y - 18 * c.s, tx('KAÇTI', 'DODGED'), '#9fd3ff', 12, 0.7); break; }
       case 'special': {
         const u = U[e.u], rv = this.rv[e.u];
         rv.spT = now; rv.sp = e.sp;
@@ -254,19 +254,19 @@ const Battle = {
       case 'net': {
         const T = U[e.tg], c = this.chest(T);
         this.parts.push({ k: 'netfly', from: e.u, to: e.tg, life: 0.25, max: 0.25 });
-        if (e.ok) this.text(c.x, c.y - 26 * c.s, 'AĞA DÜŞTÜ!', '#cde7ff', 13, 1.1); else this.text(c.x, c.y - 26 * c.s, 'AĞ BOŞA GİTTİ', '#bfb6a2', 11, 0.8);
+        if (e.ok) this.text(c.x, c.y - 26 * c.s, tx('AĞA DÜŞTÜ!', 'NETTED!'), '#cde7ff', 13, 1.1); else this.text(c.x, c.y - 26 * c.s, tx('AĞ BOŞA GİTTİ', 'NET MISSED'), '#bfb6a2', 11, 0.8);
         break;
       }
-      case 'stumble': { const c = this.chest(U[e.u]); this.text(c.x, c.y - 20 * c.s, 'Sendeledi', '#d9b38c', 11, 0.8); break; }
+      case 'stumble': { const c = this.chest(U[e.u]); this.text(c.x, c.y - 20 * c.s, tx('Sendeledi', 'Stumbled'), '#d9b38c', 11, 0.8); break; }
       case 'elim': {
         const u = U[e.u]; this.rv[e.u].elimT = now;
         const p = this.proj(u.x, u.y); this.dust(p.x, p.y, 14, true); this.shake = Math.max(this.shake, 8);
-        this.text(p.x, p.y - 90 * p.s, 'ELENDİ', '#ff7a6b', 16, 1.6);
+        this.text(p.x, p.y - 90 * p.s, tx('ELENDİ', 'ELIMINATED'), '#ff7a6b', 16, 1.6);
         Sfx.play('fall'); setTimeout(() => Sfx.play('cheer'), 200);
-        UI.battleLog(`${u.name} elendi${e.by >= 0 ? ' — ' + U[e.by].name : ''}`);
+        UI.battleLog(tx(`${u.name} elendi`, `${u.name} eliminated`) + (e.by >= 0 ? ' — ' + U[e.by].name : ''));
         break;
       }
-      case 'cmd': UI.battleLog(e.side === this.pside ? 'Emir: ' + (e.cmd === 'attack' ? 'Hücum!' : e.cmd === 'defend' ? 'Savunma!' : 'Odaklan: ' + (U[e.tg] ? U[e.tg].name : '')) : 'Rakip taktik değiştirdi'); break;
+      case 'cmd': UI.battleLog(e.side === this.pside ? tx('Emir: ', 'Order: ') + (e.cmd === 'attack' ? tx('Hücum!', 'Attack!') : e.cmd === 'defend' ? tx('Savunma!', 'Defend!') : tx('Odaklan: ', 'Focus: ') + (U[e.tg] ? U[e.tg].name : '')) : tx('Rakip taktik değiştirdi', 'The opponent changed tactics')); break;
     }
   },
   // pose derived from engine state + event timings (visual only)
@@ -522,14 +522,14 @@ const Battle = {
     const m = this.m; if (!m || m.over) return;
     if (cmd === 'focus') { this.targeting = !this.targeting; UI.battleTargeting(this.targeting); return; }
     const ok = CombatAI.command(m, this.pside, cmd);
-    if (!ok) UI.toast('Komut bekleme süresinde (' + Math.ceil(m.teams[this.pside].cmdCd) + ' sn).');
+    if (!ok) UI.toast(tx('Komut bekleme süresinde (', 'Command on cooldown (') + Math.ceil(m.teams[this.pside].cmdCd) + tx(' sn).', 's).'));
     this.consumeEvents();
   },
   pickTarget(idx) {
     const m = this.m; if (!m) return;
     this.targeting = false; UI.battleTargeting(false);
     const ok = CombatAI.command(m, this.pside, 'focus', idx);
-    if (!ok) UI.toast(m.teams[this.pside].cmdCd > 0 ? 'Komut bekleme süresinde.' : 'Geçersiz hedef.');
+    if (!ok) UI.toast(m.teams[this.pside].cmdCd > 0 ? tx('Komut bekleme süresinde.', 'Command on cooldown.') : tx('Geçersiz hedef.', 'Invalid target.'));
     this.consumeEvents();
   },
   canvasTap(ev) {

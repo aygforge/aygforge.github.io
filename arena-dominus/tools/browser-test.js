@@ -3,6 +3,8 @@ const { chromium } = require('playwright');
 const path = require('path');
 const OUT = process.env.SHOTS || '/tmp/shots';
 const W = +(process.env.VW || 844), Hh = +(process.env.VH || 390);
+const LANG = process.env.GLANG || 'tr';
+const T = (tr, en) => (LANG === 'en' ? en : tr);
 (async () => {
   const browser = await chromium.launch();
   const ctx = await browser.newContext({ viewport: { width: W, height: Hh }, deviceScaleFactor: 2, hasTouch: true });
@@ -13,12 +15,25 @@ const W = +(process.env.VW || 844), Hh = +(process.env.VH || 390);
   const url = 'file://' + path.resolve(__dirname, '..', 'index.html');
   await page.goto(url);
   await page.waitForTimeout(600);
-  const shot = async n => page.screenshot({ path: `${OUT}/${W}_${n}.png` });
+  const leftovers = new Set();
+  const shot = async n => {
+    await page.screenshot({ path: `${OUT}/${LANG}_${W}_${n}.png` });
+    if (LANG === 'en') {
+      const text = await page.evaluate(() => document.body.innerText);
+      for (const line of text.split('\n')) {
+        const l = line.replace(/\b[A-ZÇĞİÖŞÜ][\wçğıöşüÇĞİÖŞÜ'’-]*/g, '');   // ignore capitalised proper nouns
+        if (/[çğıöşü]|\b(ve|bir|için|hafta|sezon|kulüp|maç|yok|var|ile|olarak|sıra|puan)\b/i.test(l) && !/Türkçe|DİL SEÇİN|yatay/.test(line)) leftovers.add(n + ': ' + line.trim().slice(0, 140));
+      }
+    }
+  };
+  await shot('00_lang');
+  await page.click('#lang-' + LANG);
+  await page.waitForTimeout(300);
   await shot('01_title');
-  await page.click('text=Yeni Kariyer');
-  await page.waitForSelector('text=Yeni Ludus Kur', { timeout: 15000 });
+  await page.click('[data-a=newCareer]');
+  await page.waitForSelector('[data-a=setupNew]', { timeout: 15000 });
   await shot('02_mode');
-  await page.click('text=Yeni Ludus Kur');
+  await page.click('[data-a=setupNew]');
   await page.click('[data-a=setupReg][data-r=nemeris]');
   await page.fill('#lname', 'Ludus Testus');
   await page.click('[data-a=setupShape][data-i="2"]');
@@ -70,6 +85,7 @@ const W = +(process.env.VW || 844), Hh = +(process.env.VH || 390);
   const st1 = await page.evaluate(() => ({ s: S.season, w: S.week, b: GameState.player().budget, n: GameState.player().n }));
   // reload and continue
   await page.reload(); await page.waitForTimeout(800);
+  await page.click('#lang-' + LANG); await page.waitForTimeout(200);
   await page.waitForSelector('#btn-cont:not([disabled])', { timeout: 10000 });
   await page.click('#btn-cont'); await page.waitForTimeout(500);
   const st2 = await page.evaluate(() => ({ s: S.season, w: S.week, b: GameState.player().budget, n: GameState.player().n }));
@@ -88,6 +104,13 @@ const W = +(process.env.VW || 844), Hh = +(process.env.VH || 390);
   await page.keyboard.press('Escape');
   await page.click('#nav-cups'); await page.click('[data-a=cupsTab][data-t=imp]'); await page.waitForTimeout(200); await shot('27_imperial');
   await page.click('#nav-finance'); await page.waitForTimeout(200); await shot('28_finance');
+  // switch language in-game from Settings and check club names / UI follow
+  const other = LANG === 'en' ? 'tr' : 'en';
+  await page.click('#nav-settings'); await page.click(`[data-a=setLang][data-l=${other}]`); await page.waitForTimeout(200);
+  const sw = await page.evaluate(() => ({ lang: I18N.lang, nav: document.querySelector('#nav-hub span').textContent, club: S.clubs.find(c => !c.isPlayer && c.nt !== c.ne).n, htmlLang: document.documentElement.lang }));
+  console.log('after switch', JSON.stringify(sw));
+  await page.click('#nav-hub'); await page.waitForTimeout(200); await shot('29_switched_hub');
+  if (LANG === 'en') console.log(leftovers.size ? 'TURKISH LEFTOVERS:\n' + [...leftovers].join('\n') : 'no Turkish leftovers');
   console.log(errors.length ? 'ERRORS:\n' + errors.join('\n') : 'no page errors');
   await browser.close();
 })().catch(e => { console.error('TEST FAILED', e.message.split('\n')[0]); console.log('ERRORS:\n' + (global.__errs || []).join('\n')); process.exit(1); });

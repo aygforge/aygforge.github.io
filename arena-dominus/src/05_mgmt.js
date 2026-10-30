@@ -61,7 +61,7 @@ const Progression = {
       const l = r < 0.72 ? 1 : r < 0.95 ? 2 : 3;
       const w = l === 1 ? 1 : l === 2 ? R.int(2, 3) : R.int(4, 6);
       g.injury = { l, w };
-      if (g.club === S.player) GameState.news(`${g.n} ${['', 'hafif', 'orta', 'ağır'][l]} sakatlık geçirdi (${w} hafta).`, { p: 1, k: 'inj' });
+      if (g.club === S.player) GameState.news(() => tx(`${cn(g)} ${['', 'hafif', 'orta', 'ağır'][l]} sakatlık geçirdi (${w} hafta).`, `${cn(g)} suffered a ${['', 'minor', 'moderate', 'serious'][l]} injury (${w} week${w > 1 ? 's' : ''}).`), { p: 1, k: 'inj' });
     }
   },
   convertXP(g, club) {
@@ -96,7 +96,7 @@ const Progression = {
       if (g.injury) {
         g.injury.w--;
         if (g.injury.w > 0 && club && R.next() < Staff.healChance(club)) g.injury.w--;
-        if (g.injury.w <= 0) { g.injury = null; if (g.club === S.player) GameState.news(`${g.n} sakatlığını atlattı ve maçlara hazır.`, { p: 1, k: 'inj' }); }
+        if (g.injury.w <= 0) { g.injury = null; if (g.club === S.player) GameState.news(() => tx(`${cn(g)} sakatlığını atlattı ve maçlara hazır.`, `${cn(g)} has recovered from injury and is ready to fight.`), { p: 1, k: 'inj' }); }
       }
       // morale
       g.mor = g.mor + (62 - g.mor) * 0.1;
@@ -133,8 +133,8 @@ const Progression = {
 };
 
 // ---------------------------------------------------------------- economy
-const FIN_INC = { sponsor: 'Hami', tickets: 'Bilet', prizes: 'Ödüller', transfers: 'Transfer satışı', loan: 'Yeniden finansman' };
-const FIN_EXP = { wages: 'Maaşlar', staff: 'Personel', ops: 'İşletme', transfers: 'Bonservis', signing: 'İmza parası', bonuses: 'Bonuslar', facilities: 'Tesisler', equipment: 'Ekipman', loanpay: 'Borç taksidi', release: 'Fesih', scout: 'Keşif' };
+const FIN_INC = { get sponsor() { return tx('Hami', 'Patron'); }, get tickets() { return tx('Bilet', 'Tickets'); }, get prizes() { return tx('Ödüller', 'Prize money'); }, get transfers() { return tx('Transfer satışı', 'Transfer sales'); }, get loan() { return tx('Yeniden finansman', 'Refinancing'); } };
+const FIN_EXP = { get wages() { return tx('Maaşlar', 'Wages'); }, get staff() { return tx('Personel', 'Staff'); }, get ops() { return tx('İşletme', 'Operations'); }, get transfers() { return tx('Bonservis', 'Transfer fees'); }, get signing() { return tx('İmza parası', 'Signing fees'); }, get bonuses() { return tx('Bonuslar', 'Bonuses'); }, get facilities() { return tx('Tesisler', 'Facilities'); }, get equipment() { return tx('Ekipman', 'Equipment'); }, get loanpay() { return tx('Borç taksidi', 'Loan repayment'); }, get release() { return tx('Fesih', 'Contract terminations'); }, get scout() { return tx('Keşif', 'Scouting'); } };
 
 const Economy = {
   blankFin() {
@@ -200,12 +200,12 @@ const Economy = {
     if (club.loan) {
       this.debit(club, 'loanpay', club.loan.wk, true);
       club.loan.left--;
-      if (club.loan.left <= 0) { club.loan = null; if (club.isPlayer) GameState.news('Yeniden finansman borcu tamamen ödendi.', { p: 1, k: 'fin' }); }
+      if (club.loan.left <= 0) { club.loan = null; if (club.isPlayer) GameState.news(() => tx('Yeniden finansman borcu tamamen ödendi.', 'The refinancing loan has been fully repaid.'), { p: 1, k: 'fin' }); }
     }
     club.arrears = Math.round(club.arrears);
     if (club.arrears > 0) {
       club.rep = clamp(club.rep - 0.4, 1, 99);
-      if (club.isPlayer && !club.autoManage) GameState.news(`Maaş borcu: ${fmtGold(club.arrears)}. Gladyatörlerin morali düşüyor, harcamalar durduruldu.`, { p: 1, k: 'fin' });
+      if (club.isPlayer && !club.autoManage) GameState.news(() => tx(`Maaş borcu: ${fmtGold(club.arrears)}. Gladyatörlerin morali düşüyor, harcamalar durduruldu.`, `Wage arrears: ${fmtGold(club.arrears)}. Gladiator morale is falling and spending is frozen.`), { p: 1, k: 'fin' });
       // unbounded debt is not allowed: unpaid gladiators walk out once arrears exceed ~6 weeks of wages
       const wb = this.wageBill(club);
       if (club.arrears > Math.max(600, wb * 6)) {
@@ -213,8 +213,8 @@ const Economy = {
         if (gl) {
           const forgiven = Math.min(club.arrears, gl.con.wage * 6);
           club.arrears -= forgiven;
-          GameState.news(`${gl.n}, ödenmeyen maaşları nedeniyle ${club.n} ile sözleşmesini feshetti.`, { p: club.isPlayer ? 1 : 0, k: 'fin' });
-          Transfer.detach(gl, { reason: 'Maaş alamadı' });
+          GameState.news(() => tx(`${cn(gl)}, ödenmeyen maaşları nedeniyle ${cn(club)} ile sözleşmesini feshetti.`, `${cn(gl)} terminated his contract with ${cn(club)} over unpaid wages.`), { p: club.isPlayer ? 1 : 0, k: 'fin' });
+          Transfer.detach(gl);
         }
       }
       if (!club.isPlayer || club.autoManage) this.aiRefinance(club);
@@ -235,7 +235,7 @@ const Economy = {
     this.credit(club, 'loan', o.amount);
     const p = Math.min(club.budget, club.arrears); club.budget -= p; club.arrears -= p;
     club.rep = clamp(club.rep - 3, 1, 99);
-    GameState.news(`${club.n} Sarraflar Loncası'ndan ${fmtGold(o.amount)} yeniden finansman aldı.`, { p: club.isPlayer ? 1 : 0, k: 'fin' });
+    GameState.news(() => tx(`${cn(club)} Sarraflar Loncası'ndan ${fmtGold(o.amount)} yeniden finansman aldı.`, `${cn(club)} took ${fmtGold(o.amount)} of refinancing from the Moneylenders' Guild.`), { p: club.isPlayer ? 1 : 0, k: 'fin' });
     return true;
   },
   aiRefinance(club) { if (this.refinanceOffer(club)) this.refinance(club); },
@@ -283,22 +283,37 @@ const Sponsors = {
   },
   makeGoal(kind, club, e) {
     const pick = arr => R.pick(arr);
-    let N, d, txt;
+    let N, d;
     switch (kind) {
-      case 'rank': N = clamp(e + pick([-1, 0, 1]), 1, 7); d = clamp(0.5 + (e - N) * 0.15, 0.1, 0.95); txt = `Ligi ilk ${N} sırada bitir`; if (N === 1) txt = 'Lig şampiyonu ol'; break;
-      case 'title': N = 1; d = clamp(0.4 + (e - 1) * 0.12, 0.3, 0.97); txt = 'Lig şampiyonu ol'; break;
-      case 'promo': N = 2; d = clamp(0.45 + (e - 2) * 0.12, 0.2, 0.95); txt = 'Üst lige yüksel (ilk 2)'; break;
-      case 'wins': { const ew = Math.round(14 * (8.5 - e) / 8); N = clamp(ew + pick([-1, 0, 1, 2]), 3, 13); d = clamp(0.5 + (N - ew) * 0.1, 0.1, 0.95); txt = `En az ${N} lig maçı kazan`; break; }
-      case 'kos': { const ek = Math.round(14 * (1.2 + 1.4 * (8.5 - e) / 8)); N = clamp(ek + pick([-3, 0, 3, 5]), 8, 40); d = clamp(0.5 + (N - ek) * 0.04, 0.1, 0.95); txt = `Ligde en az ${N} rakip ele`; break; }
+      case 'rank': N = clamp(e + pick([-1, 0, 1]), 1, 7); d = clamp(0.5 + (e - N) * 0.15, 0.1, 0.95); break;
+      case 'title': N = 1; d = clamp(0.4 + (e - 1) * 0.12, 0.3, 0.97); break;
+      case 'promo': N = 2; d = clamp(0.45 + (e - 2) * 0.12, 0.2, 0.95); break;
+      case 'wins': { const ew = Math.round(14 * (8.5 - e) / 8); N = clamp(ew + pick([-1, 0, 1, 2]), 3, 13); d = clamp(0.5 + (N - ew) * 0.1, 0.1, 0.95); break; }
+      case 'kos': { const ek = Math.round(14 * (1.2 + 1.4 * (8.5 - e) / 8)); N = clamp(ek + pick([-3, 0, 3, 5]), 8, 40); d = clamp(0.5 + (N - ek) * 0.04, 0.1, 0.95); break; }
       case 'cup': {
         const bye = club.tier <= 2;
         N = bye ? pick([2, 3, 4]) : pick([1, 2, 3]);
         d = clamp(0.3 + (N - (bye ? 2 : 1)) * 0.2 + (club.tier - 3) * 0.05, 0.1, 0.95);
-        txt = `Bölgesel kupada ${RCUP_ROUNDS[N]} turuna ulaş`; break;
+        break;
       }
-      case 'homewins': { const eh = Math.round(7 * (8.5 - e) / 8 + 0.5); N = clamp(eh + pick([-1, 0, 1]), 2, 7); d = clamp(0.5 + (N - eh) * 0.15, 0.1, 0.95); txt = `Ev sahibi olarak en az ${N} lig maçı kazan`; break; }
+      case 'homewins': { const eh = Math.round(7 * (8.5 - e) / 8 + 0.5); N = clamp(eh + pick([-1, 0, 1]), 2, 7); d = clamp(0.5 + (N - eh) * 0.15, 0.1, 0.95); break; }
     }
-    return { kind, N, d: r1(d), txt };
+    return { kind, N, d: r1(d) };
+  },
+  // goal text is rendered from kind/N so it follows the active language
+  goalText(g) {
+    if (!g) return '';
+    const N = g.N;
+    switch (g.kind) {
+      case 'rank': return N === 1 ? tx('Lig şampiyonu ol', 'Win the league') : tx(`Ligi ilk ${N} sırada bitir`, `Finish in the top ${N}`);
+      case 'title': return tx('Lig şampiyonu ol', 'Win the league');
+      case 'promo': return tx('Üst lige yüksel (ilk 2)', 'Win promotion (top 2)');
+      case 'wins': return tx(`En az ${N} lig maçı kazan`, `Win at least ${N} league matches`);
+      case 'kos': return tx(`Ligde en az ${N} rakip ele`, `Eliminate at least ${N} opponents in the league`);
+      case 'cup': return tx(`Bölgesel kupada ${RCUP_ROUNDS[N]} turuna ulaş`, `Reach the ${RCUP_ROUNDS[N]} of the regional cup`);
+      case 'homewins': return tx(`Ev sahibi olarak en az ${N} lig maçı kazan`, `Win at least ${N} league matches at home`);
+    }
+    return txt(g.txt);
   },
   generateOffers() {
     const club = GameState.player();
@@ -320,7 +335,7 @@ const Sponsors = {
     const o = S.sponsorOffers[i];
     club.sponsor = { ...o, left: o.dur, since: S.season, hits: 0 };
     S.sponsorOffers = [];
-    GameState.news(`${o.n} ile ${o.dur} sezonluk hami anlaşması imzalandı (haftalık ${fmtGold(o.wk)}).`, { p: 1, k: 'spon' });
+    GameState.news(() => tx(`${SPONSOR_TYPES[o.t].n} ile ${o.dur} sezonluk hami anlaşması imzalandı (haftalık ${fmtGold(o.wk)}).`, `Signed a ${o.dur}-season patron deal with the ${SPONSOR_TYPES[o.t].n} (${fmtGold(o.wk)} per week).`), { p: 1, k: 'spon' });
     return true;
   },
   progress(club) {
@@ -329,11 +344,11 @@ const Sponsors = {
     const row = Leagues.table(S.leagues[club.lg]).find(r => r.cid === club.id) || { rank: 8, w: 0, kf: 0 };
     let cur, ok;
     switch (g.kind) {
-      case 'rank': case 'title': case 'promo': cur = row.rank + '. sıra'; ok = row.rank <= g.N; break;
-      case 'wins': cur = row.w + ' galibiyet'; ok = row.w >= g.N; break;
-      case 'kos': cur = row.kf + ' eleme'; ok = row.kf >= g.N; break;
-      case 'homewins': cur = club.st.homeW + ' ev galibiyeti'; ok = club.st.homeW >= g.N; break;
-      case 'cup': { const rr = Cups.roundReached(S.rcups[club.reg], club.id); cur = rr >= 0 ? (rr >= RCUP_ROUNDS.length ? 'Şampiyon' : RCUP_ROUNDS[rr]) : '-'; ok = rr >= g.N; break; }
+      case 'rank': case 'title': case 'promo': cur = tx(row.rank + '. sıra', 'position ' + row.rank); ok = row.rank <= g.N; break;
+      case 'wins': cur = tx(row.w + ' galibiyet', row.w + ' wins'); ok = row.w >= g.N; break;
+      case 'kos': cur = tx(row.kf + ' eleme', row.kf + ' eliminations'); ok = row.kf >= g.N; break;
+      case 'homewins': cur = tx(club.st.homeW + ' ev galibiyeti', club.st.homeW + ' home wins'); ok = club.st.homeW >= g.N; break;
+      case 'cup': { const rr = Cups.roundReached(S.rcups[club.reg], club.id); cur = rr >= 0 ? (rr >= RCUP_ROUNDS.length ? tx('Şampiyon', 'Champions') : RCUP_ROUNDS[rr]) : '-'; ok = rr >= g.N; break; }
     }
     return { cur, ok };
   },
@@ -344,14 +359,14 @@ const Sponsors = {
       this.credit(club, sp.bonus);
       sp.hits++;
       club.rep = clamp(club.rep + 1, 1, 99);
-      GameState.news(`${sp.n} hedefi tutturuldu: "${sp.goal.txt}". Ödül: ${fmtGold(sp.bonus)}.`, { p: 1, k: 'spon' });
-    } else GameState.news(`${sp.n} sezon hedefi gerçekleşmedi: "${sp.goal.txt}".`, { p: 1, k: 'spon' });
+      GameState.news(() => tx(`${SPONSOR_TYPES[sp.t].n} hedefi tutturuldu: "${Sponsors.goalText(sp.goal)}". Ödül: ${fmtGold(sp.bonus)}.`, `${SPONSOR_TYPES[sp.t].n} target met: "${Sponsors.goalText(sp.goal)}". Reward: ${fmtGold(sp.bonus)}.`), { p: 1, k: 'spon' });
+    } else GameState.news(() => tx(`${SPONSOR_TYPES[sp.t].n} sezon hedefi gerçekleşmedi: "${Sponsors.goalText(sp.goal)}".`, `${SPONSOR_TYPES[sp.t].n} season target missed: "${Sponsors.goalText(sp.goal)}".`), { p: 1, k: 'spon' });
     sp.left--;
   },
   credit(club, amt) { Economy.credit(club, 'sponsor', amt); },
   seasonStart(club) {
     if (club.sponsor && club.sponsor.left <= 0) {
-      GameState.news(`${club.sponsor.n} ile hami anlaşması sona erdi. Yeni teklifler sizi bekliyor.`, { p: 1, k: 'spon' });
+      { const t = club.sponsor.t; GameState.news(() => tx(`${SPONSOR_TYPES[t].n} ile hami anlaşması sona erdi. Yeni teklifler sizi bekliyor.`, `The patron deal with the ${SPONSOR_TYPES[t].n} has ended. New offers await.`), { p: 1, k: 'spon' }); }
       club.sponsor = null;
     }
     if (club.sponsor) {
@@ -384,13 +399,13 @@ const Staff = {
   hire(type, idx) {
     const club = GameState.player();
     const c = S.staffCands && S.staffCands[type] && S.staffCands[type][idx];
-    if (!c) return { ok: false, msg: 'Aday bulunamadı.' };
+    if (!c) return { ok: false, msg: tx('Aday bulunamadı.', 'Candidate not found.') };
     const cost = this.hireCost(c);
-    if (!Economy.debit(club, 'staff', cost, false)) return { ok: false, msg: 'Yetersiz bütçe (işe alım bedeli ' + fmtGold(cost) + ').' };
+    if (!Economy.debit(club, 'staff', cost, false)) return { ok: false, msg: tx('Yetersiz bütçe (işe alım bedeli ', 'Not enough money (hiring fee ') + fmtGold(cost) + ').' };
     const old = club.staff[type];
     club.staff[type] = { n: c.n, q: c.q, w: c.w };
     S.staffCands[type].splice(idx, 1, old);
-    GameState.news(`${STAFF[type].name} olarak ${c.n} (kalite ${c.q}) göreve başladı.`, { p: 1, k: 'club' });
+    GameState.news(() => tx(`${STAFF[type].name} olarak ${cn(c)} (kalite ${c.q}) göreve başladı.`, `${cn(c)} (quality ${c.q}) joined as ${STAFF[type].name}.`), { p: 1, k: 'club' });
     return { ok: true };
   }
 };
@@ -403,21 +418,21 @@ const Facilities = {
   },
   effect(fid, lv, club) {
     switch (fid) {
-      case 'train': return `Gelişim çarpanı ×${FAC.trainMult[lv].toFixed(2)}`;
-      case 'med': return `Kondisyon +${FAC.medCond[lv]}/hafta · ek iyileşme %${Math.round(FAC.medHeal[lv] * 100)} · sakatlık riski -%${Math.round(FAC.medInj[lv] * 100)}`;
-      case 'scout': return `${FAC.scoutRegions[lv]} bölge · haftada ${FAC.scoutReports[lv]} rapor · doğruluk +%${Math.round(FAC.scoutAcc[lv] * 100)}`;
-      case 'arena': return `Kapasite ${fmtInt(FAC.capacity[lv])} · bilet fiyatı +%${Math.round(FAC.ticketBonus[lv] * 100)}`;
+      case 'train': return tx(`Gelişim çarpanı ×${FAC.trainMult[lv].toFixed(2)}`, `Development ×${FAC.trainMult[lv].toFixed(2)}`);
+      case 'med': return tx(`Kondisyon +${FAC.medCond[lv]}/hafta · ek iyileşme %${Math.round(FAC.medHeal[lv] * 100)} · sakatlık riski -%${Math.round(FAC.medInj[lv] * 100)}`, `Condition +${FAC.medCond[lv]}/week · extra healing ${Math.round(FAC.medHeal[lv] * 100)}% · injury risk -${Math.round(FAC.medInj[lv] * 100)}%`);
+      case 'scout': return tx(`${FAC.scoutRegions[lv]} bölge · haftada ${FAC.scoutReports[lv]} rapor · doğruluk +%${Math.round(FAC.scoutAcc[lv] * 100)}`, `${FAC.scoutRegions[lv]} region(s) · ${FAC.scoutReports[lv]} report(s)/week · accuracy +${Math.round(FAC.scoutAcc[lv] * 100)}%`);
+      case 'arena': return tx(`Kapasite ${fmtInt(FAC.capacity[lv])} · bilet fiyatı +%${Math.round(FAC.ticketBonus[lv] * 100)}`, `Capacity ${fmtInt(FAC.capacity[lv])} · ticket price +${Math.round(FAC.ticketBonus[lv] * 100)}%`);
     }
     return '';
   },
   upgrade(club, fid) {
     const lv = club.fac[fid];
-    if (lv >= 5) return { ok: false, msg: 'Tesis en üst seviyede.' };
+    if (lv >= 5) return { ok: false, msg: tx('Tesis en üst seviyede.', 'Facility is already at maximum level.') };
     const cost = this.cost(club, fid);
-    if (club.arrears > 0) return { ok: false, msg: 'Maaş borcu varken yatırım yapılamaz.' };
-    if (!Economy.debit(club, 'facilities', cost, false)) return { ok: false, msg: 'Yetersiz bütçe.' };
+    if (club.arrears > 0) return { ok: false, msg: tx('Maaş borcu varken yatırım yapılamaz.', 'No investments while wages are in arrears.') };
+    if (!Economy.debit(club, 'facilities', cost, false)) return { ok: false, msg: tx('Yetersiz bütçe.', 'Not enough money.') };
     club.fac[fid] = lv + 1;
-    if (club.isPlayer) GameState.news(`${FACILITIES[fid].name} ${lv + 1}. seviyeye yükseltildi.`, { p: 1, k: 'club' });
+    if (club.isPlayer) GameState.news(() => tx(`${FACILITIES[fid].name} ${lv + 1}. seviyeye yükseltildi.`, `${FACILITIES[fid].name} upgraded to level ${lv + 1}.`), { p: 1, k: 'club' });
     return { ok: true };
   }
 };
@@ -446,15 +461,16 @@ const Equipment = {
   },
   statLine(it) {
     const T = ITEM_TYPES[it.t], q = it.q + 1, p = it.p, out = [];
-    if (T.dmg) out.push('Hasar +' + r1(T.dmg * (q * 0.45 + p * 0.2)));
-    if (T.armor) out.push('Zırh +' + r1(T.armor * (q * 1.2 + p * 0.4)));
-    if (T.hp) out.push('Can +' + r1(T.hp * (q * 0.6 + p * 0.3)));
-    if (T.block) out.push('Blok +%' + r1(T.block * (q + p * 0.3) * 100));
-    if (T.eva) out.push('Kaçınma +%' + r1(T.eva * (q + p * 0.3) * 100));
-    if (T.acc) out.push('İsabet +%' + r1(T.acc * (q + p * 0.3) * 100));
-    if (T.crit) out.push('Kritik +%' + r1(T.crit * (q + p * 0.3) * 100));
-    if (T.special) out.push('Teknik etkisi +%' + r1(T.special * (q * 0.5 + p * 0.2) * 100));
-    if (T.spd) out.push('Hız %' + r1(T.spd * 100));
+    const pct = (tr, en, v) => tx(tr + ' +%' + v, en + ' +' + v + '%');
+    if (T.dmg) out.push(tx('Hasar +', 'Damage +') + r1(T.dmg * (q * 0.45 + p * 0.2)));
+    if (T.armor) out.push(tx('Zırh +', 'Armour +') + r1(T.armor * (q * 1.2 + p * 0.4)));
+    if (T.hp) out.push(tx('Can +', 'Health +') + r1(T.hp * (q * 0.6 + p * 0.3)));
+    if (T.block) out.push(pct('Blok', 'Block', r1(T.block * (q + p * 0.3) * 100)));
+    if (T.eva) out.push(pct('Kaçınma', 'Evasion', r1(T.eva * (q + p * 0.3) * 100)));
+    if (T.acc) out.push(pct('İsabet', 'Accuracy', r1(T.acc * (q + p * 0.3) * 100)));
+    if (T.crit) out.push(pct('Kritik', 'Critical', r1(T.crit * (q + p * 0.3) * 100)));
+    if (T.special) out.push(pct('Teknik etkisi', 'Technique effect', r1(T.special * (q * 0.5 + p * 0.2) * 100)));
+    if (T.spd) out.push(tx('Hız %', 'Speed ') + r1(T.spd * 100) + tx('', '%'));
     return out.join(' · ');
   },
   price(type, q) { const T = ITEM_TYPES[type]; return Math.round(QUALITIES[q].price * (T.slot === 'a' ? 1.1 : T.slot === 'x' ? 0.9 : 1)); },
@@ -465,9 +481,9 @@ const Equipment = {
   fits(it, g) { const T = ITEM_TYPES[it.t]; return T && T.cls.includes(g.cls); },
   equip(itemId, gid, silent) {
     const it = S.items[itemId], g = S.glads[gid];
-    if (!it || !g) return { ok: false, msg: 'Geçersiz seçim.' };
-    if (it.club !== g.club) return { ok: false, msg: 'Ekipman bu kulübe ait değil.' };
-    if (!this.fits(it, g)) return { ok: false, msg: `${CLASSES[g.cls].name} bu ekipmanı kullanamaz.` };
+    if (!it || !g) return { ok: false, msg: tx('Geçersiz seçim.', 'Invalid selection.') };
+    if (it.club !== g.club) return { ok: false, msg: tx('Ekipman bu kulübe ait değil.', 'This equipment does not belong to the club.') };
+    if (!this.fits(it, g)) return { ok: false, msg: tx(`${CLASSES[g.cls].name} bu ekipmanı kullanamaz.`, `A ${CLASSES[g.cls].name} cannot use this equipment.`) };
     const slot = ITEM_TYPES[it.t].slot;
     if (it.g && S.glads[it.g]) S.glads[it.g].eq[slot] = 0;
     const prev = S.items[g.eq[slot]]; if (prev) prev.g = 0;
@@ -482,20 +498,20 @@ const Equipment = {
   },
   unequipAll(g) { for (const slot of ['w', 'a', 'x']) { const it = S.items[g.eq[slot]]; if (it) it.g = 0; g.eq[slot] = 0; } },
   buy(club, type, q) {
-    if (club.rep < this.repNeeded(q)) return { ok: false, msg: `${QUALITIES[q].n} ekipman için en az ${this.repNeeded(q)} itibar gerekir.` };
+    if (club.rep < this.repNeeded(q)) return { ok: false, msg: tx(`${QUALITIES[q].n} ekipman için en az ${this.repNeeded(q)} itibar gerekir.`, `${QUALITIES[q].n} equipment requires at least ${this.repNeeded(q)} reputation.`) };
     const cost = this.price(type, q);
-    if (club.arrears > 0) return { ok: false, msg: 'Maaş borcu varken harcama yapılamaz.' };
-    if (!Economy.debit(club, 'equipment', cost, false)) return { ok: false, msg: 'Yetersiz bütçe.' };
+    if (club.arrears > 0) return { ok: false, msg: tx('Maaş borcu varken harcama yapılamaz.', 'No spending while wages are in arrears.') };
+    if (!Economy.debit(club, 'equipment', cost, false)) return { ok: false, msg: tx('Yetersiz bütçe.', 'Not enough money.') };
     const it = WorldGenerator.addItem(club, type, q, 0);
     return { ok: true, item: it };
   },
   upgrade(club, itemId) {
     const it = S.items[itemId];
-    if (!it || it.club !== club.id) return { ok: false, msg: 'Geçersiz ekipman.' };
-    if (it.p >= 5) return { ok: false, msg: 'Ekipman en üst seviyede (+5).' };
+    if (!it || it.club !== club.id) return { ok: false, msg: tx('Geçersiz ekipman.', 'Invalid equipment.') };
+    if (it.p >= 5) return { ok: false, msg: tx('Ekipman en üst seviyede (+5).', 'Equipment is already at maximum (+5).') };
     const cost = this.upgradeCost(it);
-    if (club.arrears > 0) return { ok: false, msg: 'Maaş borcu varken harcama yapılamaz.' };
-    if (!Economy.debit(club, 'equipment', cost, false)) return { ok: false, msg: 'Yetersiz bütçe.' };
+    if (club.arrears > 0) return { ok: false, msg: tx('Maaş borcu varken harcama yapılamaz.', 'No spending while wages are in arrears.') };
+    if (!Economy.debit(club, 'equipment', cost, false)) return { ok: false, msg: tx('Yetersiz bütçe.', 'Not enough money.') };
     it.p++;
     return { ok: true };
   },
@@ -569,18 +585,17 @@ const Scouting = {
     const raw = { inj: (g.inj - 0.5) / 1.4 * 100, loy: g.loy, clu: g.clu, grow: (g.grow - 0.6) / 0.85 * 100 }[key];
     const noise = lvl === 2 ? (hash01(g.id, key.length * 31) - 0.5) * 30 : 0;
     const v = raw + noise;
-    if (key === 'inj') return v < 33 ? 'Düşük' : v < 66 ? 'Orta' : 'Yüksek';
-    return v < 33 ? 'Düşük' : v < 66 ? 'Orta' : 'Yüksek';
+    return v < 33 ? tx('Düşük', 'Low') : v < 66 ? tx('Orta', 'Medium') : tx('Yüksek', 'High');
   },
   reportCost() { const c = GameState.player(); return Math.round(40 * Math.pow(tierEco(c.tier), 0.6) / 5) * 5; },
   reportsLeft() { const c = GameState.player(); return Math.max(0, FAC.scoutReports[c.fac.scout] - num(S.scoutUsed)); },
   report(g) {
     const c = GameState.player();
-    if (this.level(g) >= 3) return { ok: false, msg: 'Bu gladyatör hakkında bilgiler zaten çok net.' };
-    if (this.reportsLeft() <= 0) return { ok: false, msg: 'Bu haftaki keşif raporu hakkınız doldu.' };
-    if (!this.canSee(g)) return { ok: false, msg: 'Keşif ağınız bu bölgeyi kapsamıyor.' };
+    if (this.level(g) >= 3) return { ok: false, msg: tx('Bu gladyatör hakkında bilgiler zaten çok net.', 'Information on this gladiator is already very precise.') };
+    if (this.reportsLeft() <= 0) return { ok: false, msg: tx('Bu haftaki keşif raporu hakkınız doldu.', 'No scouting reports left this week.') };
+    if (!this.canSee(g)) return { ok: false, msg: tx('Keşif ağınız bu bölgeyi kapsamıyor.', 'Your scouting network does not cover this region.') };
     const cost = this.reportCost();
-    if (!Economy.debit(c, 'scout', cost, false)) return { ok: false, msg: 'Yetersiz bütçe.' };
+    if (!Economy.debit(c, 'scout', cost, false)) return { ok: false, msg: tx('Yetersiz bütçe.', 'Not enough money.') };
     S.scout[g.id] = Math.min(3, this.level(g) + 1);
     S.scoutUsed = num(S.scoutUsed) + 1;
     return { ok: true };
@@ -595,11 +610,11 @@ const News = {
     if (H.isPlayer || A.isPlayer) {
       const me = H.isPlayer ? H : A;
       const opp = H.isPlayer ? A : H;
-      const riv = Rivalry.get(H.id, A.id) >= 35 ? ' (rekabet maçı)' : '';
-      GameState.news(`${Calendar.compName(comp)}: ${me.n} ${W === me ? 'kazandı' : 'kaybetti'} — ${opp.n} karşısında ${sc}${riv}.`, { p: 1, k: 'match' });
+      const rivalry = Rivalry.get(H.id, A.id) >= 35;
+      GameState.news(() => tx(`${Calendar.compName(comp)}: ${cn(me)} ${W === me ? 'kazandı' : 'kaybetti'} — ${cn(opp)} karşısında ${sc}${rivalry ? ' (rekabet maçı)' : ''}.`, `${Calendar.compName(comp)}: ${cn(me)} ${W === me ? 'won' : 'lost'} ${sc} against ${cn(opp)}${rivalry ? ' (rivalry match)' : ''}.`), { p: 1, k: 'match' });
     }
     if (comp.type !== 'league' && W.tier - L.tier >= 2) {
-      GameState.news(`${S.rcups[W.reg] && comp.type === 'rcup' ? S.rcups[W.reg].name : 'İmparatorluk Kupası'}'nda sürpriz: ${TIERS[W.tier].s} ekibi ${W.n}, ${TIERS[L.tier].s} ekibi ${L.n}'yi eledi!`, { k: 'cup', p: W.isPlayer || L.isPlayer });
+      GameState.news(() => tx(`${Cups.nameOf(comp.key)}'nda sürpriz: ${TIERS[W.tier].s} ekibi ${cn(W)}, ${TIERS[L.tier].s} ekibi ${cn(L)}'yi eledi!`, `Upset in the ${Cups.nameOf(comp.key)}: ${TIERS[W.tier].s} side ${cn(W)} knocked out ${TIERS[L.tier].s} side ${cn(L)}!`), { k: 'cup', p: W.isPlayer || L.isPlayer });
     }
   }
 };

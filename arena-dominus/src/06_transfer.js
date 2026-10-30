@@ -35,15 +35,15 @@ const Transfer = {
   execute(g, buyer, fee, con, type) {
     const fromId = g.club;
     const seller = fromId >= 0 ? S.clubs[fromId] : null;
-    if (buyer.roster.length >= 5) return { ok: false, msg: 'Kadro dolu (en fazla 5 gladyatör).' };
+    if (buyer.roster.length >= 5) return { ok: false, msg: tx('Kadro dolu (en fazla 5 gladyatör).', 'Squad is full (maximum 5 gladiators).') };
     if (fee > 0) {
-      if (!Economy.debit(buyer, 'transfers', fee, false)) return { ok: false, msg: 'Bonservis için yeterli bütçe yok.' };
+      if (!Economy.debit(buyer, 'transfers', fee, false)) return { ok: false, msg: tx('Bonservis için yeterli bütçe yok.', 'Not enough money for the transfer fee.') };
       if (seller) Economy.credit(seller, 'transfers', fee);
     }
     if (con.sign > 0) {
       if (!Economy.debit(buyer, 'signing', con.sign, false)) {
         if (fee > 0) { buyer.budget += fee; if (seller) seller.budget -= fee; }
-        return { ok: false, msg: 'İmza parası için yeterli bütçe yok.' };
+        return { ok: false, msg: tx('İmza parası için yeterli bütçe yok.', 'Not enough money for the signing fee.') };
       }
     }
     this.detach(g, { reason: 'transfer' });
@@ -53,11 +53,11 @@ const Transfer = {
     if (seller) Rivalry.add(seller.id, buyer.id, fee > TransferMath.value(g) * 0.8 && g.ovr > TIERS[buyer.tier].ovr + 3 ? 5 : 1);
     const big = fee >= 12000 || g.ovr >= 75;
     if (buyer.isPlayer || (seller && seller.isPlayer)) {
-      GameState.news(fromId >= 0
-        ? `${g.n} (${CLASSES[g.cls].name}, ${Math.round(g.ovr)}) ${seller.n} → ${buyer.n} transferi tamamlandı. Bonservis: ${fmtGold(fee)}.`
-        : `Serbest gladyatör ${g.n} (${CLASSES[g.cls].name}, ${Math.round(g.ovr)}) ${buyer.n} ile sözleşme imzaladı.`, { p: 1, k: 'transfer' });
+      GameState.news(() => fromId >= 0
+        ? tx(`${cn(g)} (${CLASSES[g.cls].name}, ${Math.round(g.ovr)}) ${cn(seller)} → ${cn(buyer)} transferi tamamlandı. Bonservis: ${fmtGold(fee)}.`, `${cn(g)} (${CLASSES[g.cls].name}, ${Math.round(g.ovr)}) completed the move ${cn(seller)} → ${cn(buyer)}. Fee: ${fmtGold(fee)}.`)
+        : tx(`Serbest gladyatör ${cn(g)} (${CLASSES[g.cls].name}, ${Math.round(g.ovr)}) ${cn(buyer)} ile sözleşme imzaladı.`, `Free agent ${cn(g)} (${CLASSES[g.cls].name}, ${Math.round(g.ovr)}) signed for ${cn(buyer)}.`), { p: 1, k: 'transfer' });
     } else if (big) {
-      GameState.news(`${REGION_BY_ID[buyer.reg].name}: ${seller ? seller.n + ' kulübünün yıldızı ' : ''}${g.n}, ${buyer.n}'e ${fee ? fmtGold(fee) + ' bedelle ' : ''}transfer oldu.`, { k: 'transfer' });
+      GameState.news(() => tx(`${REGION_BY_ID[buyer.reg].name}: ${seller ? cn(seller) + ' kulübünün yıldızı ' : ''}${cn(g)}, ${cn(buyer)}'e ${fee ? fmtGold(fee) + ' bedelle ' : ''}transfer oldu.`, `${REGION_BY_ID[buyer.reg].name}: ${seller ? cn(seller) + '\'s star ' : ''}${cn(g)} moved to ${cn(buyer)}${fee ? ' for ' + fmtGold(fee) : ''}.`), { k: 'transfer' });
     }
     if (buyer.isPlayer) S.scout[g.id] = Math.max(S.scout[g.id] || 0, 2);
     return { ok: true };
@@ -135,14 +135,14 @@ const Transfer = {
   },
   canBuy(g) {
     const me = GameState.player();
-    if (!g) return 'Gladyatör bulunamadı.';
-    if (g.club === me.id) return 'Bu gladyatör zaten kulübünüzde.';
-    if (!Calendar.isWindow()) return 'Transfer dönemi kapalı. ' + Calendar.windowLabel() + '.';
-    if (me.roster.length >= 5) return 'Kadronuz dolu (5/5). Önce kadroda yer açmalısınız.';
-    if (!Scouting.canSee(g)) return 'Keşif ağınız bu bölgeyi kapsamıyor. Keşif Merkezi\'ni geliştirin.';
-    if (me.arrears > 0 && g.club >= 0) return 'Maaş borcu varken bonservisli transfer yapılamaz (serbest gladyatörlerle görüşebilirsiniz).';
+    if (!g) return tx('Gladyatör bulunamadı.', 'Gladiator not found.');
+    if (g.club === me.id) return tx('Bu gladyatör zaten kulübünüzde.', 'This gladiator is already at your club.');
+    if (!Calendar.isWindow()) return tx('Transfer dönemi kapalı. ', 'The transfer window is closed. ') + Calendar.windowLabel() + '.';
+    if (me.roster.length >= 5) return tx('Kadronuz dolu (5/5). Önce kadroda yer açmalısınız.', 'Your squad is full (5/5). Free up a place first.');
+    if (!Scouting.canSee(g)) return tx('Keşif ağınız bu bölgeyi kapsamıyor. Keşif Merkezi\'ni geliştirin.', 'Your scouting network does not cover this region. Upgrade the Scouting Centre.');
+    if (me.arrears > 0 && g.club >= 0) return tx('Maaş borcu varken bonservisli transfer yapılamaz (serbest gladyatörlerle görüşebilirsiniz).', 'No fee-paying transfers while wages are in arrears (you can still talk to free agents).');
     const n = this.nego(g.id);
-    if (n && n.blocked) return 'Bu gladyatörle ilgili görüşmeler bu transfer döneminde sona erdi.';
+    if (n && n.blocked) return tx('Bu gladyatörle ilgili görüşmeler bu transfer döneminde sona erdi.', 'Talks with this gladiator are over for this transfer window.');
     return null;
   },
   bidFee(g, fee) {
@@ -150,21 +150,23 @@ const Transfer = {
     const err = this.canBuy(g); if (err) return { ok: false, msg: err };
     const n = this.nego(g.id) || this.startNego(g);
     fee = Math.max(0, Math.round(num(fee)));
-    if (fee > me.budget) return { ok: false, msg: 'Teklif bütçenizi aşıyor.' };
+    if (fee > me.budget) return { ok: false, msg: tx('Teklif bütçenizi aşıyor.', 'The offer exceeds your budget.') };
     const seller = S.clubs[g.club];
     const r = this.evaluateBid(seller, g, fee);
     n.tries++;
-    if (r.res === 'accept') { n.stage = 'contract'; n.fee = fee; n.msg = `${seller.n} ${fmtGold(fee)} bonservis teklifini kabul etti. Şimdi gladyatörle sözleşme görüşmesi yapın.`; }
-    else if (r.res === 'counter') { n.counter = r.counter; n.msg = `${seller.n} karşı teklif verdi: ${fmtGold(r.counter)}.`; }
-    else { n.msg = `${seller.n} teklifi reddetti. Bu gladyatörü bu fiyata satmayı düşünmüyorlar.`; if (fee < r.ask * 0.5) n.tries++; }
-    if (r.res !== 'accept' && n.tries >= 4) { n.blocked = true; n.msg += ' Kulüp görüşmeleri kesti.'; }
+    if (r.res === 'accept') { n.stage = 'contract'; n.fee = fee; n.msg = bi(() => tx(`${cn(seller)} ${fmtGold(fee)} bonservis teklifini kabul etti. Şimdi gladyatörle sözleşme görüşmesi yapın.`, `${cn(seller)} accepted the ${fmtGold(fee)} fee. Now negotiate a contract with the gladiator.`)); }
+    else if (r.res === 'counter') { n.counter = r.counter; n.msg = bi(() => tx(`${cn(seller)} karşı teklif verdi: ${fmtGold(r.counter)}.`, `${cn(seller)} made a counter-offer: ${fmtGold(r.counter)}.`)); }
+    else { if (fee < r.ask * 0.5) n.tries++; }
+    const cut = r.res !== 'accept' && n.tries >= 4;
+    if (r.res === 'reject' || cut) n.msg = bi(() => (r.res === 'reject' ? tx(`${cn(seller)} teklifi reddetti. Bu gladyatörü bu fiyata satmayı düşünmüyorlar.`, `${cn(seller)} rejected the offer. They won't sell at that price.`) : txt(n.msg)) + (cut ? tx(' Kulüp görüşmeleri kesti.', ' The club has ended talks.') : ''));
+    if (cut) n.blocked = true;
     return { ok: true, res: r.res, n };
   },
   acceptCounter(g) {
     const n = this.nego(g.id);
-    if (!n || !n.counter) return { ok: false, msg: 'Karşı teklif yok.' };
-    if (n.counter > GameState.player().budget) return { ok: false, msg: 'Bütçeniz yetersiz.' };
-    n.fee = n.counter; n.stage = 'contract'; n.msg = 'Bonservis anlaşması sağlandı. Şimdi sözleşmeyi görüşün.';
+    if (!n || !n.counter) return { ok: false, msg: tx('Karşı teklif yok.', 'There is no counter-offer.') };
+    if (n.counter > GameState.player().budget) return { ok: false, msg: tx('Bütçeniz yetersiz.', 'Your budget is insufficient.') };
+    n.fee = n.counter; n.stage = 'contract'; n.msg = bi(() => tx('Bonservis anlaşması sağlandı. Şimdi sözleşmeyi görüşün.', 'Fee agreed. Now negotiate the contract.'));
     return { ok: true };
   },
   offerContract(g, offer) {
@@ -172,18 +174,18 @@ const Transfer = {
     const n = this.nego(g.id) || this.startNego(g, g.club === me.id);
     const renew = g.club === me.id;
     if (!renew) { const err = this.canBuy(g); if (err) return { ok: false, msg: err }; }
-    if (n.blocked) return { ok: false, msg: 'Görüşmeler sona erdi.' };
-    if (n.stage !== 'contract') return { ok: false, msg: 'Önce kulüple bonservis konusunda anlaşmalısınız.' };
+    if (n.blocked) return { ok: false, msg: tx('Görüşmeler sona erdi.', 'Talks are over.') };
+    if (n.stage !== 'contract') return { ok: false, msg: tx('Önce kulüple bonservis konusunda anlaşmalısınız.', 'First agree a transfer fee with the club.') };
     offer = { wage: Math.max(1, Math.round(num(offer.wage))), yrs: clamp(Math.round(num(offer.yrs, 1)), 1, 4), sign: Math.max(0, Math.round(num(offer.sign))), winB: Math.max(0, Math.round(num(offer.winB))), titleB: Math.max(0, Math.round(num(offer.titleB))) };
-    if (offer.sign + n.fee > me.budget) return { ok: false, msg: 'Bonservis + imza parası bütçenizi aşıyor.' };
+    if (offer.sign + n.fee > me.budget) return { ok: false, msg: tx('Bonservis + imza parası bütçenizi aşıyor.', 'Fee + signing bonus exceed your budget.') };
     const r = this.evaluateContract(g, me, offer, n, renew);
     if (r.res === 'accept') {
       if (renew) {
-        if (offer.sign > 0 && !Economy.debit(me, 'signing', offer.sign, false)) return { ok: false, msg: 'İmza parası için bütçe yetersiz.' };
+        if (offer.sign > 0 && !Economy.debit(me, 'signing', offer.sign, false)) return { ok: false, msg: tx('İmza parası için bütçe yetersiz.', 'Not enough money for the signing bonus.') };
         g.con = { ...offer };
         g.mor = clamp(g.mor + 5, 0, 100);
         delete S.nego[g.id];
-        GameState.news(`${g.n} sözleşmesini ${offer.yrs} sezon uzattı (haftalık ${fmtGold(offer.wage)}).`, { p: 1, k: 'transfer' });
+        GameState.news(() => tx(`${cn(g)} sözleşmesini ${offer.yrs} sezon uzattı (haftalık ${fmtGold(offer.wage)}).`, `${cn(g)} extended his contract by ${offer.yrs} season(s) (${fmtGold(offer.wage)} per week).`), { p: 1, k: 'transfer' });
         return { ok: true, res: 'accept', done: true };
       }
       const ex = this.execute(g, me, n.fee, offer, g.club < 0 ? 'free' : 'transfer');
@@ -191,8 +193,8 @@ const Transfer = {
       delete S.nego[g.id];
       return { ok: true, res: 'accept', done: true };
     }
-    if (r.res === 'walk') { n.blocked = true; n.msg = `${g.n} görüşme masasından kalktı. Bu dönemde yeniden görüşmeyecek.`; return { ok: true, res: 'walk', n }; }
-    n.msg = (r.insult ? 'Bu teklif gladyatörü gücendirdi. ' : '') + `${g.n}'in beklentisi: haftalık en az ~${fmtGold(r.needWage)} (diğer şartlar aynı kalırsa). Tercih ettiği süre: ${r.d.yrs} sezon.`;
+    if (r.res === 'walk') { n.blocked = true; n.msg = bi(() => tx(`${cn(g)} görüşme masasından kalktı. Bu dönemde yeniden görüşmeyecek.`, `${cn(g)} walked away from the table and won't talk again this window.`)); return { ok: true, res: 'walk', n }; }
+    n.msg = bi(() => (r.insult ? tx('Bu teklif gladyatörü gücendirdi. ', 'This offer insulted the gladiator. ') : '') + tx(`${cn(g)}'in beklentisi: haftalık en az ~${fmtGold(r.needWage)} (diğer şartlar aynı kalırsa). Tercih ettiği süre: ${r.d.yrs} sezon.`, `${cn(g)} expects at least ~${fmtGold(r.needWage)} per week (other terms unchanged). Preferred length: ${r.d.yrs} season(s).`));
     n.lastDemand = r.needWage;
     return { ok: true, res: 'counter', n };
   },
@@ -203,36 +205,36 @@ const Transfer = {
   },
   release(club, g) {
     const cost = this.releaseCost(g);
-    if (!Economy.debit(club, 'release', cost, false)) return { ok: false, msg: 'Fesih bedeli için bütçe yetersiz (' + fmtGold(cost) + ').' };
+    if (!Economy.debit(club, 'release', cost, false)) return { ok: false, msg: tx('Fesih bedeli için bütçe yetersiz (', 'Not enough money for the termination fee (') + fmtGold(cost) + ').' };
     this.record(g, club.id, -1, 0, 'release');
-    if (club.isPlayer) GameState.news(`${g.n} ile sözleşme feshedildi (bedel ${fmtGold(cost)}).`, { p: 1, k: 'transfer' });
+    if (club.isPlayer) GameState.news(() => tx(`${cn(g)} ile sözleşme feshedildi (bedel ${fmtGold(cost)}).`, `${cn(g)}'s contract was terminated (cost ${fmtGold(cost)}).`), { p: 1, k: 'transfer' });
     this.detach(g);
     return { ok: true };
   },
   // incoming offers for player's gladiators
   respondOffer(oid, action) {
     const i = S.offers.findIndex(o => o.id === oid);
-    if (i < 0) return { ok: false, msg: 'Teklif bulunamadı.' };
+    if (i < 0) return { ok: false, msg: tx('Teklif bulunamadı.', 'Offer not found.') };
     const o = S.offers[i];
     const g = S.glads[o.gid], buyer = S.clubs[o.from], me = GameState.player();
-    if (!g || g.club !== me.id || !buyer) { S.offers.splice(i, 1); return { ok: false, msg: 'Teklif artık geçerli değil.' }; }
-    if (action === 'reject') { S.offers.splice(i, 1); g.mor = clamp(g.mor - (g.loy < 40 ? 4 : 0), 0, 100); return { ok: true, msg: 'Teklif reddedildi.' }; }
+    if (!g || g.club !== me.id || !buyer) { S.offers.splice(i, 1); return { ok: false, msg: tx('Teklif artık geçerli değil.', 'The offer is no longer valid.') }; }
+    if (action === 'reject') { S.offers.splice(i, 1); g.mor = clamp(g.mor - (g.loy < 40 ? 4 : 0), 0, 100); return { ok: true, msg: tx('Teklif reddedildi.', 'Offer rejected.') }; }
     if (action === 'counter') {
       const ask = Math.round(o.fee * 1.2 / 50) * 50;
-      if (o.countered) return { ok: false, msg: 'Bu teklif için zaten pazarlık yapıldı.' };
+      if (o.countered) return { ok: false, msg: tx('Bu teklif için zaten pazarlık yapıldı.', 'You have already negotiated this offer.') };
       o.countered = true;
-      if (ask <= o.max && buyer.budget >= ask) { o.fee = ask; return { ok: true, msg: `${buyer.n} yeni bedeli kabul etti: ${fmtGold(ask)}. Teklifi onaylayabilirsiniz.` }; }
+      if (ask <= o.max && buyer.budget >= ask) { o.fee = ask; return { ok: true, msg: tx(`${buyer.n} yeni bedeli kabul etti: ${fmtGold(ask)}. Teklifi onaylayabilirsiniz.`, `${buyer.n} accepted the new fee: ${fmtGold(ask)}. You can now accept the offer.`) }; }
       S.offers.splice(i, 1);
-      return { ok: true, msg: `${buyer.n} karşı teklifi kabul etmedi ve geri çekildi.` };
+      return { ok: true, msg: tx(`${buyer.n} karşı teklifi kabul etmedi ve geri çekildi.`, `${buyer.n} refused the counter-offer and withdrew.`) };
     }
     if (action === 'accept') {
-      if (!Calendar.isWindow()) return { ok: false, msg: 'Transfer dönemi kapandı.' };
-      if (buyer.roster.length >= 5 || buyer.budget < o.fee) { S.offers.splice(i, 1); return { ok: false, msg: `${buyer.n} artık bu transferi yapamıyor.` }; }
+      if (!Calendar.isWindow()) return { ok: false, msg: tx('Transfer dönemi kapandı.', 'The transfer window has closed.') };
+      if (buyer.roster.length >= 5 || buyer.budget < o.fee) { S.offers.splice(i, 1); return { ok: false, msg: tx(`${buyer.n} artık bu transferi yapamıyor.`, `${buyer.n} can no longer complete this transfer.`) }; }
       const d = this.demand(g, buyer, false);
       const ex = this.execute(g, buyer, o.fee, { ...d, sign: 0 }, 'transfer');
       S.offers.splice(i, 1);
       S.offers = S.offers.filter(x => x.gid !== g.id);
-      return ex.ok ? { ok: true, msg: `${g.n} ${fmtGold(o.fee)} karşılığında ${buyer.n}'e satıldı.` } : ex;
+      return ex.ok ? { ok: true, msg: tx(`${g.n} ${fmtGold(o.fee)} karşılığında ${buyer.n}'e satıldı.`, `${g.n} was sold to ${buyer.n} for ${fmtGold(o.fee)}.`) } : ex;
     }
     return { ok: false };
   },
@@ -243,6 +245,11 @@ const Transfer = {
 };
 
 // ---------------------------------------------------------------- ClubAI
+// season goal keys → text (older saves stored the Turkish text directly)
+function goalName(g) {
+  return { title: tx('Şampiyonluk', 'Title challenge'), top: tx('Üst sıralar', 'Top of the table'), mid: tx('Orta sıra', 'Mid-table'), stay: tx('Ligde kalmak', 'Avoid relegation') }[g] || (g || '-');
+}
+
 const ClubAI = {
   utility(g, club) {
     let u = g.ovr;
@@ -284,7 +291,7 @@ const ClubAI = {
   },
   seasonGoal(club) {
     const e = Sponsors.expectedRank(club);
-    return e <= 1 ? 'Şampiyonluk' : e <= 3 ? 'Üst sıralar' : e <= 5 ? 'Orta sıra' : 'Ligde kalmak';
+    return e <= 1 ? 'title' : e <= 3 ? 'top' : e <= 5 ? 'mid' : 'stay';
   },
   expectedIncome(club) {
     return Sponsors.aiWeekly(club) + ECON.ticketPrice * Math.min(FAC.capacity[club.fac.arena], club.fans * 0.75) * 7 / 30 + ECON.winPrize * tierEco(club.tier) * 0.25 + ECON.rankPrize[4] * tierEco(club.tier) / 30;
@@ -358,7 +365,7 @@ const ClubAI = {
         const fee = Math.round(best.fee * R.range(0.85, 1.12) / 50) * 50;
         const max = Math.round(TransferMath.value(best.g) * (club.pol === 'rich' ? 1.65 : 1.45) / 50) * 50;
         S.offers.push({ id: GameState.newId('o'), gid: best.g.id, from: club.id, fee, max, s: S.season, w: S.week });
-        GameState.news(`Transfer teklifi: ${club.n}, ${best.g.n} için ${fmtGold(fee)} teklif etti.`, { p: 1, k: 'offer' });
+        GameState.news(() => tx(`Transfer teklifi: ${cn(club)}, ${best.cn(g)} için ${fmtGold(fee)} teklif etti.`, `Transfer offer: ${cn(club)} bid ${fmtGold(fee)} for ${best.cn(g)}.`), { p: 1, k: 'offer' });
         playerBids.n++;
       }
       return;
@@ -385,7 +392,7 @@ const ClubAI = {
       const fee = Math.round(Transfer.askingPrice(me, g) * R.range(0.8, 1.15) / 50) * 50;
       const max = Math.round(TransferMath.value(g) * (buyer.pol === 'rich' ? 1.65 : 1.45) / 50) * 50;
       S.offers.push({ id: GameState.newId('o'), gid: g.id, from: buyer.id, fee, max, s: S.season, w: S.week });
-      GameState.news(`Büyük transfer teklifi kulübümüze ulaştı: ${buyer.n}, ${g.n} için ${fmtGold(fee)} önerdi.`, { p: 1, k: 'offer' });
+      GameState.news(() => tx(`Büyük transfer teklifi kulübümüze ulaştı: ${cn(buyer)}, ${cn(g)} için ${fmtGold(fee)} önerdi.`, `A big transfer offer has arrived: ${cn(buyer)} offered ${fmtGold(fee)} for ${cn(g)}.`), { p: 1, k: 'offer' });
       playerBids.n++;
     }
   },
