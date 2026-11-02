@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#8fd3f5}canvas{display:block}</style></head><body>
+<canvas id="c" width="2200" height="1500"></canvas>
+<script src="../src/core/ns.js"></script><script src="../src/data/source/sources.js"></script><script src="../src/core/RNG.js"></script>
+<script src="../src/data/EconomyConfig.js"></script><script src="../src/data/RegionDB.js"></script><script src="../src/data/FishBalanceDB.js"></script><script src="../src/data/ItemBalanceDB.js"></script><script src="../src/data/BoatDB.js"></script><script src="../src/data/ChestDB.js"></script>
+<script src="../src/systems/Inventory.js"></script>
+<script src="../src/render/Art.js"></script><script src="../src/render/FishArt.js"></script><script src="../src/render/ItemArt.js"></script><script src="../src/render/NPCArt.js"></script><script src="../src/render/BoatArt.js"></script>
+<script>
+const D=DUMEN,c=document.getElementById('c').getContext('2d');
+['rustem','hasan','zip','tarcov','komplo','kaya','kropi','marti','factory','market','player'].forEach((id,i)=>{D.NPCArt.draw(c,id,100+i*190,330,1,1.0); D.NPCArt.portrait(c,id,100+i*190,420,60,1)});
+for(let l=1;l<=10;l++){ const x=200+((l-1)%5)*420,y=700+Math.floor((l-1)/5)*260; c.fillStyle='#2e9ac4';c.fillRect(x-200,y,400,60); D.BoatArt.draw(c,l,x,y,0.62,1,{player:true}); c.fillStyle='#000';c.fillText('L'+l,x-190,y+50)}
+Object.keys(D.ItemBalanceDB).forEach((id,i)=>{const x=40+(i%26)*82,y=1240+Math.floor(i/26)*66; D.ItemArt.draw(c,id,x,y,56)});
+</script></body></html>

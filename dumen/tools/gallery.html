@@ -1,0 +1,13 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#2b5a78}canvas{display:block}</style></head><body>
+<canvas id="c" width="2200" height="1500"></canvas>
+<script src="../src/core/ns.js"></script><script src="../src/data/source/sources.js"></script><script src="../src/core/RNG.js"></script>
+<script src="../src/data/EconomyConfig.js"></script><script src="../src/data/RegionDB.js"></script><script src="../src/data/FishBalanceDB.js"></script>
+<script src="../src/systems/Inventory.js"></script>
+<script src="../src/render/Art.js"></script><script src="../src/render/FishArt.js"></script>
+<script>
+const D=DUMEN,c=document.getElementById('c').getContext('2d');
+const ids=Object.keys(D.FishBalanceDB); const mode=location.hash.slice(1);
+ids.forEach((id,i)=>{const x=(i%11)*200+100,y=Math.floor(i/11)*185+85; c.fillStyle=i%2?'#2f6488':'#285877'; c.fillRect(x-100,y-85,200,185);
+ try{D.FishArt.draw(c,id,x,y,140,{t:0.5,sil:mode==='sil'});}catch(e){c.fillStyle='red';c.fillText(e.message,x-90,y);console.error(id,e);}
+ c.fillStyle='#fff';c.font='12px sans-serif';c.textAlign='center';c.fillText(id+' '+D.FishDBSource.FishDB[id].name.slice(0,22),x,y+82);});
+</script></body></html>

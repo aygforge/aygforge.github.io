@@ -1,0 +1,1059 @@
+{
+  "database": "ItemDB",
+  "project": "DÜMEN",
+  "compiledAt": "2026-11-02",
+  "status": "known_name_catalog_numeric_data_incomplete",
+  "count": 102,
+  "categories": {
+    "special": 25,
+    "bait": 14,
+    "rod": 9,
+    "line": 4,
+    "hook": 4,
+    "float": 3,
+    "material": 18,
+    "chest": 10,
+    "key": 5,
+    "black_market_part": 6,
+    "currency": 3,
+    "permit": 1
+  },
+  "sourceNote": "25 özel eşya listesi final; diğer kategorilerin isimleri 18 Ocak 2026 tarihli ItemDB v1.0 katalog özetinden derlendi. Bu dosya eski çalışır oyundaki DB nin birebir byte kopyası değildir. Verilmemiş teknik ID ler export için oluşturuldu; verilmemiş fiyatlar ve rarity değerleri null. 25 özel eşya için geçmişte açıklanan etkiler girildi; teknik parametreler ayrı tanımlanmalıdır. Sandıkların bir kısmı kaynakta kısaltılmış adlarla kayıtlı olduğundan açıklayıcı Sandık eki eklenmiş olabilir.",
+  "schema": {
+    "id": "string",
+    "name": "string",
+    "category": "string",
+    "effect": "string|null",
+    "buyPrice": "number|null",
+    "sellPrice": "number|null",
+    "rarity": "string|null"
+  },
+  "ItemDB": {
+    "SPC_01": {
+      "id": "SPC_01",
+      "name": "Papatya Çayı",
+      "category": "special",
+      "effect": "Asılma hamlesinin başlamasını geciktirir.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_02": {
+      "id": "SPC_02",
+      "name": "Sıcak Çikolata",
+      "category": "special",
+      "effect": "Son Çırpınış aşamasındaki gerilim artışını azaltır.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_03": {
+      "id": "SPC_03",
+      "name": "Taso Yığını",
+      "category": "special",
+      "effect": "Balığın ilk hamlesini önceden tahmin ettirir.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_04": {
+      "id": "SPC_04",
+      "name": "Tansiyon Aleti",
+      "category": "special",
+      "effect": "Tension dolmasına kısa süre kala görsel uyarı verir.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_05": {
+      "id": "SPC_05",
+      "name": "Özel Yazlık Şapka (Baseball)",
+      "category": "special",
+      "effect": "Tembel ve dengeli balıkla karşılaşma olasılığını artırır.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_06": {
+      "id": "SPC_06",
+      "name": "Anneanne Gözlüğü",
+      "category": "special",
+      "effect": "Balık hamlesinden 0,3 saniye önce görsel ipucu verir.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_07": {
+      "id": "SPC_07",
+      "name": "Ağrı Kesici",
+      "category": "special",
+      "effect": "Hata sonrası ani tension yükselişini %50 azaltır.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_08": {
+      "id": "SPC_08",
+      "name": "Kahve Termosu",
+      "category": "special",
+      "effect": "Kontrol girdisi gecikmesini azaltır.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_09": {
+      "id": "SPC_09",
+      "name": "Eski Balıkçı Eldiveni",
+      "category": "special",
+      "effect": "Dip Yapma sırasında tension değerini sabitler.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_10": {
+      "id": "SPC_10",
+      "name": "Yarım Bisküvi (Kardeş Payı)",
+      "category": "special",
+      "effect": "Çöp ihtimalini düşürür; gelen balığın HP değerini %10 artırır.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_11": {
+      "id": "SPC_11",
+      "name": "Melek Tokası",
+      "category": "special",
+      "effect": "İp kopacağı anda %25 ihtimalle kopmayı engeller.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_12": {
+      "id": "SPC_12",
+      "name": "Uğurlu Kitap",
+      "category": "special",
+      "effect": "Nadir/özel balık şansını artırır; gelen balığa +1 hamle ekler.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_13": {
+      "id": "SPC_13",
+      "name": "Melek Kanadı (Çift)",
+      "category": "special",
+      "effect": "Kaçmak üzere olan balığı %15 ihtimalle tutar.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_14": {
+      "id": "SPC_14",
+      "name": "Şanslı Çorap",
+      "category": "special",
+      "effect": "İlk balık karşılaşmasını bir kez yeniden seçtirir (reroll).",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_15": {
+      "id": "SPC_15",
+      "name": "Çatlak Pusula",
+      "category": "special",
+      "effect": "Balık hamle dizilimini bir kez yeniden karıştırır.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_16": {
+      "id": "SPC_16",
+      "name": "Günay Bey’in Özel Misinası",
+      "category": "special",
+      "effect": "Asılma tension artışını azaltır, Dip Yapma süresini uzatır.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_17": {
+      "id": "SPC_17",
+      "name": "Köstekli Saat",
+      "category": "special",
+      "effect": "Balığın hamlelerini daha düzenli aralıklarla getirir.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_18": {
+      "id": "SPC_18",
+      "name": "Dambıl",
+      "category": "special",
+      "effect": "Ağır/İnatçı balık ihtimalini artırır; genel tension +%10.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_19": {
+      "id": "SPC_19",
+      "name": "Acil Durum Butonu",
+      "category": "special",
+      "effect": "Tension değerini %40 azaltır; balığı Son Çırpınış aşamasına geçirir.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_20": {
+      "id": "SPC_20",
+      "name": "Balık Sakinleştirici Sprey",
+      "category": "special",
+      "effect": "20 saniye Asılma hamlesi gelmez; Son Çırpınış devam eder.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_21": {
+      "id": "SPC_21",
+      "name": "Cep Vantilatörü",
+      "category": "special",
+      "effect": "Tension dolum hızını azaltır.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_22": {
+      "id": "SPC_22",
+      "name": "Eski Kumanda",
+      "category": "special",
+      "effect": "Bir balık hamlesini iptal eder.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_23": {
+      "id": "SPC_23",
+      "name": "Balonlu Naylon (Patpat)",
+      "category": "special",
+      "effect": "Hata sonrasında balığı kısa bir süre duraksatır.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_24": {
+      "id": "SPC_24",
+      "name": "Enerji İçeceği",
+      "category": "special",
+      "effect": "Balığın HP kaybını geçici hızlandırır; tension daha agresif dolar.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "SPC_25": {
+      "id": "SPC_25",
+      "name": "Kaçak Yem",
+      "category": "special",
+      "effect": "Efsanevi balık şansını artırır; gelen balık Hırçın olur.",
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "BAIT_01": {
+      "id": "BAIT_01",
+      "name": "Ekmek Topu",
+      "category": "bait",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "BAIT_02": {
+      "id": "BAIT_02",
+      "name": "Solucan Dürümü",
+      "category": "bait",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "BAIT_03": {
+      "id": "BAIT_03",
+      "name": "Mısır Tanesi",
+      "category": "bait",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "BAIT_04": {
+      "id": "BAIT_04",
+      "name": "Midye Lokumu",
+      "category": "bait",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "BAIT_05": {
+      "id": "BAIT_05",
+      "name": "Karides Kırıntısı",
+      "category": "bait",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "BAIT_06": {
+      "id": "BAIT_06",
+      "name": "Simit Kırığı Deluxe",
+      "category": "bait",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "BAIT_07": {
+      "id": "BAIT_07",
+      "name": "Paslı Cıvata Yemi",
+      "category": "bait",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "BAIT_08": {
+      "id": "BAIT_08",
+      "name": "Yakamoz Jölesi",
+      "category": "bait",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "BAIT_09": {
+      "id": "BAIT_09",
+      "name": "Buzlu Hamsi Küpü",
+      "category": "bait",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "BAIT_10": {
+      "id": "BAIT_10",
+      "name": "Acı Lava Çekirdeği",
+      "category": "bait",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "BAIT_11": {
+      "id": "BAIT_11",
+      "name": "Hayalet Sardalya",
+      "category": "bait",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "BAIT_12": {
+      "id": "BAIT_12",
+      "name": "Efsane Sosu",
+      "category": "bait",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "BAIT_13": {
+      "id": "BAIT_13",
+      "name": "Yasaklı Sucuk",
+      "category": "bait",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "BAIT_14": {
+      "id": "BAIT_14",
+      "name": "Alüminyum Folyo Böceği",
+      "category": "bait",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "ROD_01": {
+      "id": "ROD_01",
+      "name": "Tahta Olta",
+      "category": "rod",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "ROD_02": {
+      "id": "ROD_02",
+      "name": "Dengeli Olta",
+      "category": "rod",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "ROD_03": {
+      "id": "ROD_03",
+      "name": "Sağlam Olta",
+      "category": "rod",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "ROD_04": {
+      "id": "ROD_04",
+      "name": "Hızlı Sarıcı Olta",
+      "category": "rod",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "ROD_05": {
+      "id": "ROD_05",
+      "name": "Usta Oltası",
+      "category": "rod",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "ROD_06": {
+      "id": "ROD_06",
+      "name": "Buzkıran Olta",
+      "category": "rod",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "ROD_07": {
+      "id": "ROD_07",
+      "name": "Kızıl Isırgan Olta",
+      "category": "rod",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "ROD_08": {
+      "id": "ROD_08",
+      "name": "Pas Yiyen Olta",
+      "category": "rod",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "ROD_09": {
+      "id": "ROD_09",
+      "name": "Yakamoz Fısıldayan Olta",
+      "category": "rod",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "LINE_01": {
+      "id": "LINE_01",
+      "name": "Naylon Misina",
+      "category": "line",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "LINE_02": {
+      "id": "LINE_02",
+      "name": "Çelik Örgü Misina",
+      "category": "line",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "LINE_03": {
+      "id": "LINE_03",
+      "name": "Yakamoz Misina",
+      "category": "line",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "LINE_04": {
+      "id": "LINE_04",
+      "name": "Buz Kıran Misina",
+      "category": "line",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "HOOK_01": {
+      "id": "HOOK_01",
+      "name": "Körelmiş İğne",
+      "category": "hook",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "HOOK_02": {
+      "id": "HOOK_02",
+      "name": "Keskin İğne",
+      "category": "hook",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "HOOK_03": {
+      "id": "HOOK_03",
+      "name": "Üç Dişli Kanca",
+      "category": "hook",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "HOOK_04": {
+      "id": "HOOK_04",
+      "name": "Korsan Çengeli",
+      "category": "hook",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "FLOAT_01": {
+      "id": "FLOAT_01",
+      "name": "Mantarlı Şamandıra",
+      "category": "float",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "FLOAT_02": {
+      "id": "FLOAT_02",
+      "name": "Kurşun Şamandıra",
+      "category": "float",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "FLOAT_03": {
+      "id": "FLOAT_03",
+      "name": "Neon Şamandıra",
+      "category": "float",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "MAT_SCRAP": {
+      "id": "MAT_SCRAP",
+      "name": "Hurda Metal",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "previously_recorded_reference"
+    },
+    "MAT_02": {
+      "id": "MAT_02",
+      "name": "Paslı Plaka",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "MAT_03": {
+      "id": "MAT_03",
+      "name": "Cıvata & Somun Paketi",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "MAT_04": {
+      "id": "MAT_04",
+      "name": "Yay Mekanizması",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "MAT_05": {
+      "id": "MAT_05",
+      "name": "Dişli Seti",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "MAT_06": {
+      "id": "MAT_06",
+      "name": "Eski Motor Parçası",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "MAT_07": {
+      "id": "MAT_07",
+      "name": "Kırık Pervane",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "MAT_08": {
+      "id": "MAT_08",
+      "name": "Çatlak Plastik Parça",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "MAT_09": {
+      "id": "MAT_09",
+      "name": "Elektrik Kablosu Demeti",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "MAT_10": {
+      "id": "MAT_10",
+      "name": "Buz Kristali Parçası",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "MAT_11": {
+      "id": "MAT_11",
+      "name": "Lava Çekirdeği",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "MAT_12": {
+      "id": "MAT_12",
+      "name": "Yakamoz İnci",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "MAT_13": {
+      "id": "MAT_13",
+      "name": "Korsan Altın Pulu",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "MAT_14": {
+      "id": "MAT_14",
+      "name": "Manyetik Çekirdek",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "MAT_15": {
+      "id": "MAT_15",
+      "name": "Buzkıran Dişi",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "MAT_16": {
+      "id": "MAT_16",
+      "name": "Kızıl Isırgan Tohumu",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "MAT_17": {
+      "id": "MAT_17",
+      "name": "Pas Yiyen Çekirdek",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "MAT_18": {
+      "id": "MAT_18",
+      "name": "Yakamoz Fısıltı Taşı",
+      "category": "material",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "CHEST_01": {
+      "id": "CHEST_01",
+      "name": "Islak Karton Sandık",
+      "category": "chest",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "CHEST_02": {
+      "id": "CHEST_02",
+      "name": "Teneke Sandık",
+      "category": "chest",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "CHEST_03": {
+      "id": "CHEST_03",
+      "name": "Korsan Sandığı",
+      "category": "chest",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "CHEST_04": {
+      "id": "CHEST_04",
+      "name": "Yakamoz Sandığı",
+      "category": "chest",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "CHEST_05": {
+      "id": "CHEST_05",
+      "name": "Buzlu Sandık",
+      "category": "chest",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "CHEST_06": {
+      "id": "CHEST_06",
+      "name": "Lava Kasası",
+      "category": "chest",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "CHEST_07": {
+      "id": "CHEST_07",
+      "name": "Bermuda Mührü Sandığı",
+      "category": "chest",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "CHEST_08": {
+      "id": "CHEST_08",
+      "name": "Kilitli Kasa",
+      "category": "chest",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "CHEST_09": {
+      "id": "CHEST_09",
+      "name": "Şifreli Kasa",
+      "category": "chest",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "CHEST_10": {
+      "id": "CHEST_10",
+      "name": "Tarçov Mühürlü Kasa",
+      "category": "chest",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "KEY_01": {
+      "id": "KEY_01",
+      "name": "Paslı Anahtar",
+      "category": "key",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "KEY_02": {
+      "id": "KEY_02",
+      "name": "Korsan Anahtarı",
+      "category": "key",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "KEY_03": {
+      "id": "KEY_03",
+      "name": "Yakamoz Anahtarı",
+      "category": "key",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "KEY_04": {
+      "id": "KEY_04",
+      "name": "Buz Mührü Anahtarı",
+      "category": "key",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "KEY_05": {
+      "id": "KEY_05",
+      "name": "Bermuda Gravür Anahtarı",
+      "category": "key",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export"
+    },
+    "BM_01": {
+      "id": "BM_01",
+      "name": "Gizli Motor Parçası",
+      "category": "black_market_part",
+      "effect": null,
+      "buyPrice": 30,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export",
+      "currency": "Miyav"
+    },
+    "BM_02": {
+      "id": "BM_02",
+      "name": "Kara Pazar Gövde Plakası",
+      "category": "black_market_part",
+      "effect": null,
+      "buyPrice": 45,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export",
+      "currency": "Miyav"
+    },
+    "BM_03": {
+      "id": "BM_03",
+      "name": "Güçlendirilmiş Omurga",
+      "category": "black_market_part",
+      "effect": null,
+      "buyPrice": 65,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export",
+      "currency": "Miyav"
+    },
+    "BM_04": {
+      "id": "BM_04",
+      "name": "Derin Su Modülü",
+      "category": "black_market_part",
+      "effect": null,
+      "buyPrice": 90,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export",
+      "currency": "Miyav"
+    },
+    "BM_05": {
+      "id": "BM_05",
+      "name": "Kaçak Navigasyon Ünitesi",
+      "category": "black_market_part",
+      "effect": null,
+      "buyPrice": 120,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export",
+      "currency": "Miyav"
+    },
+    "BM_06": {
+      "id": "BM_06",
+      "name": "Kimseye Söyleme Çekirdeği",
+      "category": "black_market_part",
+      "effect": null,
+      "buyPrice": 160,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "generated_for_this_export",
+      "currency": "Miyav"
+    },
+    "CUR_COIN": {
+      "id": "CUR_COIN",
+      "name": "Coin",
+      "category": "currency",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "reference_id_or_export_id"
+    },
+    "CUR_SCRAP": {
+      "id": "CUR_SCRAP",
+      "name": "Scrap",
+      "category": "currency",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "reference_id_or_export_id"
+    },
+    "CUR_MIYAV": {
+      "id": "CUR_MIYAV",
+      "name": "Miyav Puanı",
+      "category": "currency",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "reference_id_or_export_id"
+    },
+    "TCK_BOATYARD_PERMIT": {
+      "id": "TCK_BOATYARD_PERMIT",
+      "name": "Tersane İzni",
+      "category": "permit",
+      "effect": null,
+      "buyPrice": null,
+      "sellPrice": null,
+      "rarity": null,
+      "technicalIdStatus": "reference_id_or_export_id"
+    }
+  }
+}

@@ -1,0 +1,57 @@
+# CANON_GAPS — Kaynakta belirsiz → bu sürümde seçilen çözüm
+
+Kaynaklar: `DUMEN_Tam_Surum_GDD_v1.0.md`, `src/data/source/Dumen_FishDB_2026-11-02.json` (88 balık), `src/data/source/Dumen_ItemDB_2026-11-02.json` (102 eşya).
+Kaynak JSON dosyaları **birebir** korunur (testler gömülü kopyanın bayt eşitliğini doğrular). Aşağıdaki her şey **türetilmiş (derived) uygulama kararıdır**; GDD kanonu olarak sunulmaz.
+
+## Kesin alınan kanon (değiştirilmedi)
+- 8 bölge adı ve sırası; 88 balık ID/ad/bölge; 9 teyitli `legendary`, `BG_15 Antik Kraken` = `boss`.
+- 102 eşya ID/ad/kategori/effect; 12 kategori sayaçları (25/14/9/4/4/3/18/10/5/6/3/1). `MAT_SCRAP` (Hurda Metal, materyal) ve `CUR_SCRAP` (Scrap, para birimi) ayrı kalır.
+- 9 olta; 4 özel olta Hurdacı Hasan'da craft. İnat Barı + gerilim + mesafe + SAR + **Çek** çekirdeği.
+- Hazine oltayla çıkar, zamanlama barı yeşil/sarı/kırmızı; sandık balık tutarken açılmaz, Envanter'de açılır.
+- Tarçov × Zıpırleone 5 bölüm → **Kara Pazar Çarkı** açılır (mahzen/mekan açılmaz), Tarçov kalıcı ayrılır. Zıpırleone orta oyun 5 bölüm → **gizli mekan**. Komplo Teorisyeni 3 bölüm → dördüncü duvar. Bölüm adları aynen.
+- Çark: günde 1 ücretsiz + 2 ödüllü reklam. Martı tekneye konar, görev vermez. Pano evin yanında; kabul edilen sipariş Not Defteri'ne gider.
+
+## Sayısal değerler (FishDB / ItemDB'de `null`)
+| Kaynakta belirsiz | Bu sürümdeki çözüm | Yer |
+|---|---|---|
+| 78 balığın rarity'si `null` | Her balığa ad/tema/bölge tier'ına göre elle `derivedRarity` atandı (bölge başına ~4 Yaygın, 3 Sıradışı, 2 Nadir, 1 Epik). Kaynak alanı silinmedi; `rarityDerived:true` ile işaretli, Fishpedia'da "denge kararı" yazar. | `FishBalanceDB.js` |
+| `basePrice`, `stamina`, `tensionSensitivity`, `escapeRate` hepsi `null` | Formül: bölge tabanı (EL 10 … BG 170) × nadirlik çarpanı (1 / 1.8 / 3.4 / 6.5 / 18 / 60) × ±%10 deterministik sapma. İnat = 36 × (1+0.3·(tier−1)) × nadirlik × davranış. | `FishBalanceDB.js`, `EconomyConfig.js` |
+| Davranış ailesi atamaları | 7 aile (Calm, Wiggler, Runner, Heavy, Trickster, Berserk, Boss) isim temasına göre atandı; her aile ayrı hamle seti. | `FishBalanceDB.js`, `systems/Fishing.js` |
+| Boy aralıkları | Balığın adına göre (hamsi küçük, balina büyük) elle atandı. | `FishBalanceDB.js` |
+| Spawn ağırlıkları | Yaygın 60, Sıradışı 26, Nadir 10, Epik 3.4, Efsanevi 2.2, Boss 4. Efsanevi+Boss payı hiçbir kombinasyonla %12'yi geçemez (yem garanti vermez). Pity sistemi **eklenmedi** (kaynakta yok). | `FishBalanceDB.js`, `Encounter.js` |
+| Eşya fiyatları (BM hariç `null`) | Market fiyatları ItemBalanceDB'de (ör. Dengeli 380, Sağlam 950, Hızlı Sarıcı 1500, Usta 3600). `null` hiçbir yerde 0'a çevrilmez. BM_01..06 kaynak Miyav fiyatları (30/45/65/90/120/160) aynen kullanıldı. | `ItemBalanceDB.js` |
+| 25 özel eşyanın teknik parametreleri | Kaynak effect metni tooltip'te aynen gösterilir; sayı gerekenler kaynaktaki değerle (SPC_06 0,3 sn, SPC_07 %50, SPC_10 HP +%10, SPC_11 %25, SPC_13 %15, SPC_18 +%10, SPC_19 %40, SPC_20 20 sn). Diğerleri: SPC_01 Asılma +2 sn gecikme, SPC_02 Son Çırpınış gerilimi ×0.6, SPC_04 0,9 sn önceden uyarı, SPC_08 girdi gecikmesi 0,22→0,06 sn, SPC_16 Asılma ×0.55 / Dip süresi ×1.6, SPC_21 gerilim ×0.85, SPC_23 hata sonrası 1,4 sn duraklama, SPC_24 10 sn HP kaybı ×1.8 / gerilim ×1.35, SPC_25 Efsanevi ×2 + Hırçın. | `ItemBalanceDB.js`, `Loadout.js`, `Fishing.js` |
+| Özel eşya tüketim/yuva kuralı | Pasif / şarjlı (mücadele ya da sefer başına 1, tükenmez) / tüketilir türleri. Yuva: tekne Sv.1–4: 2, Sv.5–8: 3, Sv.9+: 4; BM_06 +1. "Kaçak Yem" atışta tüketilir. | `ItemBalanceDB.js` |
+| "Tembel ve dengeli balık" (SPC_05) | Tembel = Calm ×1.5, Dengeli = Wiggler ×1.3 olarak yorumlandı. | `ItemBalanceDB.js` |
+| "Asılma", "Dip Yapma", "Son Çırpınış", "Hırçın" | Yeni UI metriği değil; balık davranış sistemi içindeki türetilmiş hamle/evre adları. Son Çırpınış İnat %35 altında başlar; Çek için İnat ≤ %22, mesafe ≤ çek bölgesi, gerilim kırmızı dışında. | `Fishing.js` |
+
+## Sistem kararları
+| Kaynakta belirsiz | Çözüm |
+|---|---|
+| Tazelik zaman eşikleri ve saat kuralı | **Aktif oyun saati** (sekme görünür + menü dışında). FRESH < 10 dk, NORMAL < 25 dk (×0.78), sonra STALE. Oyun kapalıyken / sahne değişince bozulma yok. Rüstem bayat almaz → fabrika. |
+| Geri dönüşüm tarifleri | Deterministik: her bölgenin balığı → bölge materyali (Nadir+ ek özel materyal). Fabrika coin çarpanı 0.22–0.32; testler fabrikanın Rüstem'in taze fiyatını hiç geçmediğini doğrular. |
+| Çöp | GDD'de var, ItemDB'de yok → ayrı **TrashDB** (20 tür). ItemDB 102'de kalır. |
+| 10 sandık havuzu, 5 anahtar kuralı | ChestDB: Islak Karton (EL/TS, anahtarsız), Teneke (TS/PSK, anahtarsız), Korsan (KEY_02), Yakamoz (KEY_03), Buzlu (KEY_04), Lava Kasası (1 Buz Kristali ile soğutulur), Bermuda Mührü (KEY_05), Kilitli Kasa (KEY_01, her bölge), Şifreli Kasa (3 haneli kod bulmacası), Tarçov Mühürlü Kasa (T4 ödülü; Tarçov ayrılınca açılır). Anahtarlar Hasan'da tekrar üretilebilir. GDD §7.3 tablosundaki önerilen sandık adları yerine ItemDB adları kullanıldı. |
+| Tekne seviye sayısı | GDD "1–10 önerilir" → **10 seviye** seçildi. Açılımlar: Sv.2 TS, Sv.3 PSK, Sv.4 YK, Sv.5 TB, Sv.6 BKM, Sv.8 KKD, Sv.10 BG. Sv.7/9 çevre dayanımı ve bonus verir. |
+| `TCK_BOATYARD_PERMIT` | Tekne Sv.5 sonrası Tekne Atölyesi'nden 1.600 coin + 5 Cıvata; Sv.6+ yükseltmeler için gerekli, tüketilmez. |
+| Bermuda "özel ilerleme koşulu" | Sv.10 + Komplo Teorisyeni 3. bölümünde verilen "Bermuda koordinatları" (GDD §8.8 tematik bağı). |
+| Bölge çevre etkileri | Pas (dayanım −%15), soğuk (sarma −%22), sıcak (gerilim +%18), sis/karanlık/hayalet/anomali bilgi cezaları; bölge oltaları, misina/kanca/şamandıra ve tekne seviyeleri korur. Özel oltalar kendi bölgelerinde üstün, dışarıda Usta'dan biraz zayıf. |
+| Envanter kapasitesi | Tekne seviyesine bağlı ambar (12 → 60), BM_02 +6. Dolunca atış engellenir; Envanter'den "denize bırak" ile softlock yok. |
+| Miyav Puanı kazanma/harcama | Kazanç: hikâye bölümleri, günlükler, çark, Don'un tekrarlanabilir işleri, şiir gecesi. Harcama: BM parçaları, özel eşyalar, Yasaklı Sucuk, Arka Oda kozmetikleri, Z4 "Miyav Borcu". Cüzdanda hareket geçmişi tutulur. |
+| Gizli mekanın işlevi | **"Arka Oda"**: günlük şiir gecesi (5 Miyav), Hatıra Duvarı (biten hikâyeler), Miyav butiği, gardırop. Balıkçılık bölgesi değildir. |
+| Kara pazar parçalarının işlevi | Tekneye takılan kalıcı bonuslar (bekleme, ambar, düzeltme süresi, nadirlik, hazine, +1 yuva). Z5 en az bir takılı parça ister. |
+| Günlük yenileme | Yerel takvim günü; cihaz saati geri alınırsa en büyük görülen zaman damgası kullanılır (tekrar hak yok). İleri alma çevrimdışı tamamen engellenemez. |
+| Sipariş sayısı | 36 şablon (GDD'de kilitli sayı yok; hedef ≥30). 10 günlük şablon. |
+| Kozmetikler | Ayrı **CosmeticDB** (12): bayrak/boya/şapka; tekne ve oyuncuda görünür. |
+| Reklam | Gerçek SDK yok. `window.DUMEN_AD_PROVIDER` adaptörü tanımlı; yalnız `rewarded===true` sonrası tek kullanımlık jeton. SDK yoksa reklamlı haklar devre dışı ve açıklamalı. `?debug=1` emülatörü ödül yazmaz. |
+| Boss tekrar sınırı | Konmadı (GDD önerisi). |
+| Legendary yemler zorunlu mu | Hayır; yalnız bonus. |
+
+## Karakterler
+- **Kaya Usta** (Denizin Defteri) ve **Kropi Usta** (Tekne Atölyesi): önceki sürümden yardımcı roller; GDD'de tam kilitli değil.
+- Fabrika ve Market çalışanlarına isim uydurulmadı (GDD §18.6): "Fabrika Görevlisi", "Market Kasiyeri".
+- **Masalcı** bu sürümde yok (yalnız önceki tasarım bağlamında geçiyordu; ana mekânları değiştirmemek için eklenmedi).
+- Tüm diyaloglar ve 88 balık açıklaması bu sürüm için yazıldı.
+
+## Görseller
+Orijinal sahne/sprite görselleri sağlanmadığı için tüm görseller **sıfırdan prosedürel Canvas rekonstrüksiyonudur** (harici dosya yok). Kasaba/sokak/iç mekân yerleşimleri GDD'deki öğelere sadık kompozisyonlardır; piksel koordinatları kaynakta kilitli değildir. Sesler WebAudio ile üretilir.

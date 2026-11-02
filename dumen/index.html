@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#1a3a5a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="DÜMEN — mizahi balıkçılık, kasaba ilerlemesi ve koleksiyon oyunu (mobil yatay HTML5).">
+<title>DÜMEN</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <div id="stage">
+    <canvas id="cv"></canvas>
+    <div id="ui"></div>
+    <div id="hud"></div>
+    <div id="modal-root"></div>
+    <div id="toast-root"></div>
+    <div id="fade"></div>
+  </div>
+  <div id="rotate" aria-live="polite">
+    <div class="rot-phone"></div>
+    <p><b>Telefonunu yatay çevir</b></p>
+    <p class="small">DÜMEN yatay ekranda oynanır. İlerlemen kaybolmaz.</p>
+  </div>
+  <noscript><p style="color:#fff;padding:20px">DÜMEN için JavaScript gerekir.</p></noscript>
+</div>
+<!-- Çekirdek (veri / sistem: DOM'suz, testlerde de yüklenir) -->
+<script src="src/core/ns.js"></script>
+<script src="src/data/source/sources.js"></script>
+<script src="src/core/RNG.js"></script>
+<script src="src/core/EventBus.js"></script>
+<script src="src/core/Clock.js"></script>
+<script src="src/core/Transactions.js"></script>
+<script src="src/core/Save.js"></script>
+<script src="src/data/EconomyConfig.js"></script>
+<script src="src/data/RegionDB.js"></script>
+<script src="src/data/FishBalanceDB.js"></script>
+<script src="src/data/ItemBalanceDB.js"></script>
+<script src="src/data/BoatDB.js"></script>
+<script src="src/data/ChestDB.js"></script>
+<script src="src/data/RecipeDB.js"></script>
+<script src="src/data/NPCDB.js"></script>
+<script src="src/data/QuestDB.js"></script>
+<script src="src/systems/Inventory.js"></script>
+<script src="src/systems/Loadout.js"></script>
+<script src="src/systems/Encounter.js"></script>
+<script src="src/systems/Fishing.js"></script>
+<script src="src/systems/Quests.js"></script>
+<script src="src/systems/Actions.js"></script>
+<script src="src/data/Validate.js"></script>
+<script src="src/core/Ads.js"></script>
+<script src="src/core/Game.js"></script>
+<!-- Tarayıcı katmanı -->
+<script src="src/core/Audio.js"></script>
+<script src="src/core/Input.js"></script>
+<script src="src/render/Art.js"></script>
+<script src="src/render/FishArt.js"></script>
+<script src="src/render/ItemArt.js"></script>
+<script src="src/render/NPCArt.js"></script>
+<script src="src/render/BoatArt.js"></script>
+<script src="src/render/SceneArt.js"></script>
+<script src="src/render/RegionArt.js"></script>
+<script src="src/ui/UI.js"></script>
+<script src="src/ui/HUD.js"></script>
+<script src="src/ui/Panels.js"></script>
+<script src="src/core/SceneManager.js"></script>
+<script src="src/scenes/Boot.js"></script>
+<script src="src/scenes/MainMenu.js"></script>
+<script src="src/scenes/Town.js"></script>
+<script src="src/scenes/Map.js"></script>
+<script src="src/scenes/Fishing.js"></script>
+<script src="src/scenes/NewStreet.js"></script>
+<script src="src/scenes/Shops.js"></script>
+<script src="src/scenes/Zipirleone.js"></script>
+<script src="src/scenes/Inventory.js"></script>
+<script src="src/scenes/Journal.js"></script>
+<script src="src/scenes/Fishpedia.js"></script>
+<script src="src/scenes/Settings.js"></script>
+<script src="src/main.js"></script>
+</body>
+</html>
