@@ -111,9 +111,12 @@ input[type=range] { width: 360px; height: 60px; accent-color: var(--wood); }
 @keyframes pop { from { transform: scale(.7); opacity: 0; } }
 
 /* Modal */
-.modal-back { position: absolute; inset: 0; background: rgba(11,24,36,.62); display: flex; align-items: center; justify-content: center; touch-action: none; }
+.modal-back { position: absolute; inset: 0; background: rgba(11,24,36,.62); display: flex; align-items: center; justify-content: center; }
 .modal { position: relative; max-width: calc(100% - 80px); max-height: calc(100% - 60px); animation: pop .18s ease-out; }
-.modal .panel { position: relative; max-height: inherit; }
+.modal .panel { position: relative; max-height: inherit; overflow: hidden; }
+/* Esnek sütunlarda içerik panelden taşmasın: büyüyen öğeler küçülebilir, kaydırma kendi içinde olur */
+.panel .grow, .panel .scroll { min-height: 0; }
+.modal .panel > .col.grow:not(.scroll) { overflow: hidden; }
 .modal .x { position: absolute; top: -26px; right: -26px; z-index: 2; }
 .modal-actions { display: flex; gap: 16px; justify-content: flex-end; margin-top: 18px; flex-wrap: wrap; }
 

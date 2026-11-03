@@ -28,6 +28,7 @@
         if (down && (e.code === 'Enter' || e.code === 'KeyE')) this.doPull();
       } else if (this.state === 'TREASURE' && down && e.code === 'Space') this.stopBar();
       else if (this.state === 'READY' && down && e.code === 'Space' && !D.UI.modalOpen()) this.cast();
+      else if (this.state === 'SELECT' && down && /^Digit[1-4]$/.test(e.code)) { const i = +e.code.slice(5) - 1; if (this.enc.candidates[i]) this.pick(i); }
     },
     setState(st) { this.state = st; this.build(); },
     build() {
@@ -71,11 +72,19 @@
     },
     buildSelect(s) {
       this.root.append(h('div', { class: 'banner', style: { left: '26%', top: '180px', maxWidth: '900px' } }, 'Bir hedef seç! Siluete dokun.' + (this.enc.candidates.length > 1 ? ' (Büyük siluet = büyük/nadir av olabilir)' : '')));
-      this.silBtns = this.enc.candidates.map((cand, i) => {
-        const b = h('button', { class: 'hot', type: 'button', style: { width: '200px', height: '150px' }, 'aria-label': 'Hedef ' + (i + 1) });
-        b.addEventListener('click', () => { if (!D.Input.blocked()) this.pick(i); });
-        this.root.append(b); return b;
+      // Su altı panelinin tamamı dokunma alanı: basıldığı anda (pointerdown) en yakın siluet seçilir.
+      // Hareketli küçük düğmeler yerine tek alan → parmak kayınca da kaçırmaz, yanlış/boş dokunuş ölü ekran yaratmaz.
+      const px = this.px();
+      const zone = h('div', { class: 'sil-zone', role: 'button', 'aria-label': 'Hedef seç (siluete dokun)', style: { position: 'absolute', left: px + 'px', top: PANEL.y + 'px', width: PANEL.w + 'px', height: PANEL.h + 'px', touchAction: 'none', cursor: 'pointer' } });
+      zone.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        if (this.state !== 'SELECT') return;
+        const v = D.UI.view;
+        const x = (e.clientX - v.offX) / v.scale, y = (e.clientY - v.offY) / v.scale;
+        this.pick(this.nearestSil(x, y));
       });
+      this.root.append(zone);
+      this.silBtns = null;
       const pc = s.pendingCast;
       const sock = s.equip.specials.includes('SPC_14') && (s.inv.items.SPC_14 || 0) > 0 && s.trip && s.trip.firstCastId === this.castId && !s.trip.rerollUsed;
       if (sock) this.root.append(h('div', { style: { position: 'absolute', left: 'calc(30px + var(--safeL))', bottom: '40px' } }, btn('Şanslı Çorap: Yeniden Seç', () => {
@@ -83,6 +92,11 @@
         if (r.ok) { this.enc = Object.assign({}, this.enc, r.encounter); this.selectT = 0; D.UI.toast('Siluetler yeniden zarlandı!', 'gold'); this.build(); } else D.UI.toast(r.message, 'bad');
       }, { cls: 'purple' })));
       void pc;
+    },
+    nearestSil(x, y) {
+      let best = 0, bd = Infinity;
+      this.enc.candidates.forEach((c, i) => { const [sx, sy] = this.silPos(i, this.t); const d = Math.hypot(sx - x, sy - y); if (d < bd) { bd = d; best = i; } });
+      return best;
     },
     silPos(i, t) {
       const c = this.enc.candidates[i], px = this.px();
@@ -160,11 +174,12 @@
         h('div', { class: 'g', style: { left: ((bar.center - bar.green / 2) * 100) + '%', width: bar.green * 100 + '%' } }));
       this.barM = h('div', { class: 'm' }); el.append(this.barM);
       const zone = h('div', { style: { position: 'absolute', inset: '0', touchAction: 'none' } });
-      this.root.append(zone, h('div', { class: 'banner' }, 'Hazine! İşaretçi YEŞİL\'deyken dokun (sarı da geçerli).'), el,
-        h('div', { style: { position: 'absolute', left: '50%', top: '600px', transform: 'translateX(-50%)' } }, h('div', { class: 'btn yellow big', style: { pointerEvents: 'none' } }, 'DOKUN!')));
+      const tapBtn = h('button', { class: 'btn yellow big', type: 'button', style: { position: 'absolute', left: '50%', top: '600px', transform: 'translateX(-50%)', minWidth: '520px', minHeight: '180px', fontSize: '1.4em', touchAction: 'none' } }, 'DOKUN!');
+      this.root.append(zone, h('div', { class: 'banner' }, 'Hazine! İşaretçi YEŞİL\'deyken DOKUN\'a bas (sarı da geçerli).'), el, tapBtn);
       // Yalnız bu andan sonraki YENİ basışlar sayılır; önceki sahneden kalan basılı parmak otomatik açmaz.
+      // Dinleyici sahne kökünde: DOKUN düğmesi, bar ve boş alan — hepsi aynı anda (pointerdown) algılanır.
       const since = performance.now() + 120;
-      this.unTap = D.Input.freshTap(zone, since, () => this.stopBar());
+      this.unTap = D.Input.freshTap(this.root, since, () => { tapBtn.classList.add('pressed'); this.stopBar(); });
     },
     stopBar() {
       if (this.state !== 'TREASURE' || !this.bar || this.bar.done) return;
@@ -232,7 +247,6 @@
       else if (this.state === 'WAITING') { this.waitT += dt; if (this.waitT >= this.enc.wait) { D.Audio.sfx('bite'); D.Audio.vibrate(25); this.selectT = 0; this.setState('SELECT'); } }
       else if (this.state === 'SELECT') {
         this.selectT += dt;
-        if (this.silBtns) this.silBtns.forEach((b, i) => { const [x, y] = this.silPos(i, t); b.style.left = (x - 100) + 'px'; b.style.top = (y - 75) + 'px'; });
         if (this.selectT > 12) this.finish({ outcome: 'abandon' });
       } else if (this.state === 'FIGHT' && this.sim) {
         this.sim.advance(dt, { reel: this.reel });
@@ -297,7 +311,7 @@
       }
       if (this.state === 'SELECT' && this.enc) {
         this.enc.candidates.forEach((cand, i) => {
-          const [x, y, flip] = this.silPos(i, t);
+          const [x, y, flip] = this.silPos(i, this.t);
           const flick = (L && (L.decoys || L.fog)) ? 0.55 + 0.45 * Math.abs(Math.sin(t * 2.3 + i)) : 0.92;
           c.save(); c.globalAlpha = flick;
           if (cand.type === 'fish') {

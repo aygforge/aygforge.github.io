@@ -26,7 +26,7 @@ Oyun yalnız `rewarded === true` sonrası tek kullanımlık jeton üretir; jeton
 
 ## Oynanış özeti
 - **Kasaba:** ev + yanındaki ilan panosu, iskeleye halatla bağlı sallanan tekne (Martı üstünde, görev vermez), Balık Pazarı (Rüstem), Market, Hurdacı Hasan, Denizin Defteri (Kaya Usta), Yeni Sokak (Zıpırleone'nin Mekanı, Geri Dönüşüm Fabrikası, Tekne Atölyesi).
-- **Balıkçılık:** Oltayı At → bekle → siluete dokun → **SAR** (basılı) / bırak → İnat düşük, mesafe yakın, gerilim kırmızı dışındayken **ÇEK**. Gerilim yeşil/sarı/kırmızı; kırmızıda kısa düzeltme süresi var, uzun kalırsa ip kopar; uzun gevşeklikte balık kaçar; iki erken Çek "Erken çektin". 7 davranış ailesi ayrı hamle setleri kullanır; Kraken 3 evrelidir. Masaüstü: Boşluk = SAR, Enter/E = ÇEK.
+- **Balıkçılık:** Oltayı At → bekle → siluete dokun (su altı panelinin tamamı dokunma alanıdır; basıldığı anda en yakın siluet seçilir; masaüstünde 1–4 tuşları) → **SAR** (basılı) / bırak → İnat düşük, mesafe yakın, gerilim kırmızı dışındayken **ÇEK**. Gerilim yeşil/sarı/kırmızı; kırmızıda kısa düzeltme süresi var, uzun kalırsa ip kopar; uzun gevşeklikte balık kaçar; iki erken Çek "Erken çektin". 7 davranış ailesi ayrı hamle setleri kullanır; Kraken 3 evrelidir. Masaüstü: Boşluk = SAR, Enter/E = ÇEK.
 - **Hazine:** ayrı zamanlama barı (yalnız yeni dokunuş sayılır). Sandık envantere girer, Envanter'den açılır.
 - **Ekonomi:** tek fiyat hesaplayıcı (temel × nadirlik × boy × tazelik × Rüstem ilişki bonusu). Tazelik aktif oyun süresine bağlı.
 - **İlerleme:** 10 tekne seviyesi, 9 olta, 4+4+3 ekipman, 14 yem, 25 özel eşya, kara pazar parçaları, 36 sipariş şablonu + 10 günlük, 19 ana görev, 13 hikâye bölümü, koleksiyon ödülleri.
@@ -54,6 +54,7 @@ tests         load.js, run.js (Node), e2e.js (Playwright)
 node tests/run.js            # 209 test: veri bütünlüğü, işlem/idempotency, balıkçılık, 25 özel eşya, ekonomi, görevler, çark, kayıt, uçtan uca otomatik oyuncu
 node tests/run.js --report   # + DATA_INTEGRITY_REPORT.md üretir
 node tests/e2e.js            # Playwright + Chromium: gerçek pointer ile tam akış, çift tıklama, modal, kalıcılık, mobil boyutlar (19 kontrol)
+node tests/e2e-touch.js      # Dokunmatik telefon görünümü: hareketli siluete dokunma, hazine DOKUN düğmesi, panellerin taşmadan kaydırılması
 ```
 Otomatik oyuncu yalnız gerçek eylemleri kullanarak yeni oyundan Tekne Sv.10'a, 8 bölgeye, 13 hikâye bölümüne ve Antik Kraken'e ulaşır (softlock testi).
 

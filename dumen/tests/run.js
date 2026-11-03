@@ -285,10 +285,10 @@ section('8. Görevler, pano, hikâye');
   fresh(51); const timed = S().board.offers.find((o) => D.orderTplById[o.tpl].timed);
   if (timed) { act('acceptOrder', { oid: timed.oid }); S().clock.playTime += D.orderTplById[timed.tpl].timed + 5; act('maintenance', {}); eq(S().orders[timed.oid].state, 'EXPIRED', 'Süreli sipariş süresi geçer'); ok(!act('deliverOrder', { oid: timed.oid }).ok, 'Süresi geçen teslim edilemez'); }
   // günlük
-  fresh(52); D.Clock.now = () => new Date(2026, 10, 2, 12).getTime(); act('maintenance', { dayKey: D.Clock.dayKey(S()) });
+  fresh(52); D.Clock.now = () => new Date(2030, 0, 2, 12).getTime(); act('maintenance', { dayKey: D.Clock.dayKey(S()) });
   eq(S().daily.list.length, 3, '3 günlük görev'); const dk = S().daily.dayKey;
-  D.Clock.now = () => new Date(2026, 10, 1, 12).getTime(); eq(D.Clock.dayKey(S()), dk, 'Saat geri alınınca gün geri gitmez');
-  D.Clock.now = () => new Date(2026, 10, 3, 12).getTime(); act('maintenance', { dayKey: D.Clock.dayKey(S()) }); ok(S().daily.dayKey !== dk, 'Ertesi gün yeni günlükler');
+  D.Clock.now = () => new Date(2030, 0, 1, 12).getTime(); eq(D.Clock.dayKey(S()), dk, 'Saat geri alınınca gün geri gitmez');
+  D.Clock.now = () => new Date(2030, 0, 3, 12).getTime(); act('maintenance', { dayKey: D.Clock.dayKey(S()) }); ok(S().daily.dayKey !== dk, 'Ertesi gün yeni günlükler');
   D.Clock.now = () => Date.now();
   // Hikâye: T1 kilidi MQ_02'ye bağlı, Tarçov zinciri çarkı açar, mekan açmaz
   ok(!S().quests.T1, 'T1 başlangıçta kilitli');
@@ -299,18 +299,18 @@ section('8. Görevler, pano, hikâye');
 
 section('9. Çark + reklam (dürüst)');
 {
-  fresh(60); D.Clock.now = () => new Date(2026, 10, 2, 12).getTime(); act('maintenance', { dayKey: D.Clock.dayKey(S()) });
+  fresh(60); D.Clock.now = () => new Date(2030, 0, 2, 12).getTime(); act('maintenance', { dayKey: D.Clock.dayKey(S()) });
   ok(!act('spinWheel', { kind: 'free' }).ok, 'Çark T5 öncesi kilitli');
   S().flags.wheelUnlocked = true;
   const a = act('spinWheel', { kind: 'free' }), b = act('spinWheel', { kind: 'free' });
   ok(a.ok && !b.ok, 'Günde 1 ücretsiz çevirme');
   ok(!D.Ads.isAvailable(), 'Reklam SDK yok → reklam kullanılamaz');
   ok(!act('spinWheel', { kind: 'ad' }).ok && !act('spinWheel', { kind: 'ad', token: 'sahte' }).ok, 'Doğrulanmamış reklam jetonuyla hak verilmez');
-  D.Clock.now = () => new Date(2026, 10, 3, 12).getTime(); ok(act('spinWheel', { kind: 'free' }).ok, 'Ertesi gün yeni ücretsiz hak');
-  D.Clock.now = () => new Date(2026, 10, 2, 12).getTime(); ok(!act('spinWheel', { kind: 'free' }).ok, 'Saat geri alınarak tekrar hak alınamaz');
+  D.Clock.now = () => new Date(2030, 0, 3, 12).getTime(); ok(act('spinWheel', { kind: 'free' }).ok, 'Ertesi gün yeni ücretsiz hak');
+  D.Clock.now = () => new Date(2030, 0, 2, 12).getTime(); ok(!act('spinWheel', { kind: 'free' }).ok, 'Saat geri alınarak tekrar hak alınamaz');
   D.Clock.now = () => Date.now();
   // sahte sağlayıcı ile token akışı
-  D.Clock.now = () => new Date(2026, 10, 5, 12).getTime(); act('maintenance', { dayKey: D.Clock.dayKey(S()) });
+  D.Clock.now = () => new Date(2030, 0, 5, 12).getTime(); act('maintenance', { dayKey: D.Clock.dayKey(S()) });
   globalThis_set(D);
 }
 function globalThis_set(D2) { notes.push(['Reklam', 'SDK yok; yalnız DUMEN_AD_PROVIDER rewarded===true geri çağrısı jeton üretir (testte sağlayıcı yok).']); D2.Clock.now = () => Date.now(); }

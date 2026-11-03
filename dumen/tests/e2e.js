@@ -39,8 +39,8 @@ const ok = (c, n) => { if (c) pass++; else { fail++; console.log('  ✗ ' + n); 
     await page.waitForFunction(() => DUMEN.SM.cur.state === 'SELECT', null, { timeout: 12000 });
     const kinds = await ev(() => DUMEN.SM.cur.enc.candidates.map((c) => c.type));
     let idx = kinds.indexOf('fish'); if (idx < 0) idx = 0;
-    const b = await page.locator('.scene-root .hot').nth(idx).boundingBox();
-    await page.mouse.click(b.x + b.width / 2, b.y + b.height / 2); await page.waitForTimeout(150);
+    const [sx, sy] = await ev((i) => { const c = DUMEN.SM.cur, v = DUMEN.UI.view; const [x, y] = c.silPos(i, c.t + 0.02); return [v.offX + x * v.scale, v.offY + y * v.scale]; }, idx);
+    await page.mouse.click(sx, sy); await page.waitForTimeout(150);
     const st = await ev(() => DUMEN.SM.cur.state);
     if (st === 'FIGHT') {
       if (round === 0) await page.screenshot({ path: path.join(OUT, '02_fight.png') });
@@ -59,7 +59,8 @@ const ok = (c, n) => { if (c) pass++; else { fail++; console.log('  ✗ ' + n); 
       // önceden basılı parmak: basılıyken hazine açılmamalı
       await page.waitForTimeout(200);
       ok(await ev(() => !DUMEN.SM.cur.bar.done), 'Hazine barı kendiliğinden durmaz');
-      await page.mouse.click(640, 400);
+      await tap('button:has-text("DOKUN")');
+      ok(await ev(() => !!DUMEN.SM.cur.bar.done || DUMEN.SM.cur.state === 'RESULT'), 'Hazine DOKUN düğmesiyle durur');
     }
     await page.waitForFunction(() => DUMEN.UI.modalOpen(), null, { timeout: 15000 });
     const title = await page.locator('.modal h2').first().textContent();
