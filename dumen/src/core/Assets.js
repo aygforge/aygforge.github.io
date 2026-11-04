@@ -3,7 +3,7 @@
   'use strict';
   const LIST = { town: 'assets/town_main.webp', street: 'assets/street_main.webp', map: 'assets/world_map.webp' };
   // Kullanıcının çizdiği karakterler (kırpılmış, şeffaf WebP)
-  for (const id of ['rustem', 'hasan', 'zip', 'kaya', 'kropi', 'factory', 'market', 'baskan', 'tekir']) LIST['char_' + id] = 'assets/chars/' + id + '.webp';
+  for (const id of ['rustem', 'hasan', 'zip', 'kaya', 'kropi', 'factory', 'market', 'baskan', 'tekir', 'marti']) LIST['char_' + id] = 'assets/chars/' + id + '.webp';
   // Kullanıcının çizdiği iç mekân arka planları
   for (const id of ['home', 'belediye', 'factory', 'hasan', 'zip', 'market', 'rustem', 'boatyard', 'komplo']) LIST['bg_' + id] = 'assets/bg/' + id + '.webp';
   // Kullanıcının çizdiği balıkçılık bölgesi arka planları (1920×1072) ve çerçeveli su altı panelleri (1100 genişlik, şeffaf kenar)
@@ -14,7 +14,7 @@
   // Çöp ikonları, SAR makarası kareleri (sarma F1–F6, bırakma RB1–RB5), ÇEK düğmesi, kasabadaki kayık
   for (const id of ['T_BOLT', 'T_GEAR', 'T_BELL', 'T_CABLE', 'T_LID', 'T_MOTOR', 'T_BAG', 'T_SOCK', 'T_BOTTLE']) LIST['trash_' + id] = 'assets/trash/' + id + '.webp';
   for (const f of ['F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'RB1', 'RB2', 'RB3', 'RB4', 'RB5']) LIST['reel_' + f] = 'assets/ui/reel_' + f + '.webp';
-  LIST.btn_cek = 'assets/ui/cek.webp'; LIST.town_boat = 'assets/town_boat.webp';
+  LIST.btn_cek = 'assets/ui/cek.webp'; LIST.bubble = 'assets/ui/bubble.webp'; LIST.town_boat = 'assets/town_boat.webp';
   const Assets = {
     imgs: {},
     get(k) { return Assets.imgs[k] || null; },

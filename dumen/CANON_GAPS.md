@@ -63,7 +63,7 @@ Kaynak JSON dosyaları **birebir** korunur (testler gömülü kopyanın bayt eş
 - **Liman Sokağı** (`assets/street_main.webp`): fabrika binaları → Geri Dönüşüm Fabrikası; **Café → Zıpırleone'nin Mekanı** (görselde tabelası "Café"; "tamamen yasal kafe" olarak yorumlandı — kullanıcı farklı isterse değiştirilir); tekne hangarı → Tekne Atölyesi; ara sokak → kasabaya dönüş; iskele/tekneler → harita. T1 "şüpheli sandıklar" iskeledeki sandık yığınına taşındı.
 - **Harita** (`assets/world_map.webp`): bölge alanları görseldeki biyomlara göre eşlendi (Eski Liman sol alt liman, Yakamoz sol üst gece koyu, Titrek Buzullar üst orta, Batık Korsan sağ üst batıklar, Kaynar Kazan sağ volkanlar, Tembel Sazlıklar sağ alt bataklık, Paslı Sanayi alt orta paslı borular, Bermuda ortadaki girdap). Bermuda'nın merkezde olması yalnız görsel yerleşimdir; açılış sırası değişmedi.
 - **Karakterler** (`assets/chars/*.webp`; orijinal 2816×1536 PNG'ler figüre kırpılıp şeffaf WebP'ye çevrildi, ~13 MB → ~600 KB): Ahmet = Market sahibi (önceki "Market Kasiyeri"), Başkan = Belediye Başkanı (Tersane İzni ve duyurular; Kaya Usta arşivde yanında), Geri Dönüşümcü = fabrika görevlisi, **Tekir = Don Zıpırleone'nin sağ kolu** (yeni yan karakter; görev vermez, Liman Sokağı'nda ve mekânda konuşulur). Başkan ve Tekir için diyaloglar bu sürümde yazıldı.
-- Görseli olmayanlar (Tarçov, Komplo Teorisyeni, Martı, oyuncu) prosedürel çizimle kalır.
+- Görseli olmayanlar (Tarçov, Komplo Teorisyeni, oyuncu) prosedürel çizimle kalır. (Martı görseli sonradan geldi.)
 
 ## İç mekân arka planları (kullanıcı)
 - `assets/bg/*.webp` (2816 px PNG'ler 1920 px WebP'ye çevrildi, toplam ~1,9 MB): Ev, Belediye (müze), Rüstem Aga, Market, Hurdacı, Fabrika, Tekne Atölyesi, Karanlık Mahalle (Zıpırleone), Teorisyen. `TekneAtölye.png` iki zip'te de vardı (aynı dosya).
@@ -86,6 +86,11 @@ Kaynak JSON dosyaları **birebir** korunur (testler gömülü kopyanın bayt eş
 - **SAR**: kareler 14 kare/sn döngü (sarma), bırakma 12 kare/sn tek sefer; dinlenme karesi RB5. Klavye (Boşluk) ile sarınca da aynı animasyon oynar. Altına küçük "SAR" etiketi eklendi (ilk kez oynayan için). **ÇEK**: görsel düğme; Çek koşulları sağlanınca yeşil hale + nabız.
 - **Kasaba kayığı**: iskele sağındaki denize yerleştirildi; Martı artık kumdaki kayık yerine bu kayıkta durur ve kayıkla birlikte sallanır. Martı replik listesine kayık temalı 5 satır eklendi.
 - Otomatik oyuncu testi artık 9 oltanın tümünü de almadan durmuyor (çöp değişikliğiyle rastgelelik kaydı; ROD_07 erişilebilirliği ayrıca kanıtlanıyor).
+
+## Martı görseli, replikleri ve konuşma balonu (kullanıcı)
+- Replikler.txt kategorileri yerleştirildi: kasaba (genel_konusma, ingiltere_brighton, simit_ve_balik_hayali, absurt_atasozleri, oyuncuyla_konusma + önceki 15 replik, kategoriler sırayla karıştırılır), ana menü (main_menu, ~10 sn'de bir; Martı'ya dokununca sıradaki), balık kaçtığında/boş av (failed_fishing + önceki 3), yükleme ekranı (loading_* rastgele biri). Metinler değiştirilmedi.
+- Benim kararlarım: yükleme ekranı replik okunabilsin diye en az ~1,6 sn görünür. Ana menüye sol altta atkılı Martı eklendi. Balık sonucu penceresinde Martı yorumu artık portre + kullanıcı balonuyla gösterilir. Diyalog kutuları (hikâye konuşmaları) eski biçimde kaldı; balon yalnız Martı'nın serbest repliklerinde kullanılır.
+- Martı görseli diyalog/sonuç portrelerinde de kullanılır.
 
 ## Görseller
 Kasaba, Liman Sokağı, harita, karakterler, iç mekânlar ve bölgeler kullanıcı görselidir. Balıklar, eşyalar, tekne, Tarçov/Komplo Teorisyeni/Martı/oyuncu ve efektler **prosedürel Canvas çizimidir**. Yerleşimler GDD'deki öğelere sadık kompozisyonlardır; piksel koordinatları kaynakta kilitli değildir. Sesler WebAudio ile üretilir.

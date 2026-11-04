@@ -20,8 +20,8 @@
   });
 
   // Rutin konuşmalar (görev vermeyen). Sırayla döner; tekrarı azaltmak için index kayıtta tutulur.
-  D.IdleLines = D.deepFreeze({
-    marti: [
+  const M = D.MartiLinesSource || {}; const L0 = (k) => M[k] || [];
+  const MOLD = [
       'Ben bu tekneye konmadım. Tekne benim altıma park etti.',
       'O balık kaçmadı. Stratejik geri çekildi.',
       'Simit var mı? Yok mu? O zaman konuşmamız bitmiştir.',
@@ -37,9 +37,15 @@
       'Dalga geldi, gitti. Ben kaldım. Sadakat budur.',
       'Su soğuk mu? Bilmem. Ayaklarımı ıslatmam, imajım var.',
       'Bu kayığı kimse çalamaz. Çünkü önce beni geçmesi lazım. Ve ben simit istiyorum.'
-    ],
+    ];
+  D.IdleLines = D.deepFreeze({
+
+    // Kullanıcının Replikler.txt kategorileri (MartiLines.js) + önceki repliklerle birlikte
+    marti: D.interleaveLines(L0('genel_konusma'), L0('ingiltere_brighton'), L0('simit_ve_balik_hayali'), L0('absurt_atasozleri'), L0('oyuncuyla_konusma'), MOLD),
+    marti_menu: L0('main_menu').slice(),
+    marti_loading: D.interleaveLines(L0('loading_genel'), L0('loading_insaat'), L0('loading_asci'), L0('loading_aristokrat'), L0('loading_coach'), L0('loading_bilim')),
     marti_success: ['Vay! Bunu ben yakalasam daha iyi olurdu ama yine de vay.', 'Bu balığın fotoğrafını çekin, ben de kadraja gireceğim.', 'İşte bu! Simitle kutlayalım. Senin simitinle.'],
-    marti_fail: ['O balık kaçmadı. Stratejik geri çekildi.', 'Misina koptu ama gurur sağlam. Değil mi? Değil mi?', 'Dert etme, ben de dün bir patatesi kaçırdım.'],
+    marti_fail: D.interleaveLines(L0('failed_fishing'), ['O balık kaçmadı. Stratejik geri çekildi.', 'Misina koptu ama gurur sağlam. Değil mi? Değil mi?', 'Dert etme, ben de dün bir patatesi kaçırdım.']),
     rustem: ['Taze balık, taze para! Bayat balık? Fabrikaya, kardeşim.', 'Bu tezgâhta kırk yıldır balık satıyorum. Martı kırk bir yıldır çalıyor.', 'Bir balığın tazeliği gözünden belli olur. Senin gözünden de yorgunluk.', 'Bugün buz bedava! Yarın değil. Yarın hiç değil.'],
     hasan: ['Pas, metalin bilgeliğidir.', 'Bu dişliyi görüyor musun? Ben de görmüyorum, gözlüğümü kaybettim.', 'Bir hurdacı hiçbir şeyi atmaz. Karım bunu sevmiyor.', 'Bana çöp getir, sana olta yapayım. Adil ticaret!'],
     zip: ['Burada her şey tamamen yasal. Özellikle yasal olmayan kısımlar.', 'Miyav Puanı mı? Hiç duymadım. Kaç tane var sende?', 'Ben bir iş insanıyım. İşim de insanlarla. Ve balıklarla. Ve sorulmayan sorularla.', 'Kapıyı çalmadan girdin. Bunu severim. Bir dahakine çal.'],

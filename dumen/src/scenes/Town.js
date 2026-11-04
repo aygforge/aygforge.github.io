@@ -81,6 +81,7 @@
   const BOAT = { x: 1070, y: 930, w: 360 };            // merkez (görsel koordinatı) ve genişlik
   const GULL_ON_BOAT = [455, 215];                    // kayık görselinde martının durduğu arka oturak
   const GULL_AT = [835, 662];                         // kayık görseli yoksa: iskele yanındaki kayık
+  const GULL_SCALE = () => (D.Assets.get('town_boat') ? (D.NPCArt.sprite('marti') ? 0.9 : 0.7) : 0.42);
   const boatPose = (t) => ({ dy: Math.sin(t * 1.4) * 6, rot: Math.sin(t * 1.1 + 0.6) * 0.035, dx: Math.sin(t * 0.45) * 5 });
   const gullPoint = (t) => {
     if (!D.Assets.get('town_boat')) return GULL_AT;
@@ -136,11 +137,11 @@
       const lines = D.IdleLines.marti;
       const k = (D.Game.state.npc.talk.marti_ambient || 0);
       D.Game.state.npc.talk.marti_ambient = k + 1; // yalnız süs sayacı (ekonomi dışı)
-      const g = gullPoint(this.t || 0), [x, y] = TV.pt(g[0], g[1]);
-      D.UI.speech(this.root, Math.max(20, x - 60), Math.max(110, y - 200), lines[k % lines.length]);
+      const g = gullPoint(this.t || 0), hp = D.NPCArt.headPoint('marti', g[0], g[1], GULL_SCALE()), [x, y] = TV.pt(hp[0], hp[1] - 6);
+      D.UI.gullSpeech(this.root, x, y, lines[k % lines.length]);
       if (force) D.Audio.sfx('gull');
     },
-    update(dt) { this.nextGull -= dt; if (this.nextGull <= 0) { this.nextGull = 16 + Math.random() * 10; if (!D.UI.modalOpen()) this.gull(false); } },
+    update(dt) { this.nextGull -= dt; if (this.nextGull <= 0) { this.nextGull = 13 + Math.random() * 8; if (!D.UI.modalOpen()) this.gull(false); } },
     render(c, W, H, t) {
       const s = D.Game.state;
       const img = D.Assets.get('town');
@@ -178,7 +179,7 @@
         c.save(); c.globalAlpha = 0.35; c.fillStyle = '#5fb6b8'; c.beginPath(); c.ellipse(BOAT.x + p.dx, BOAT.y + bh * 0.42 + p.dy, BOAT.w * 0.45, 14, 0, 0, Math.PI * 2); c.fill(); c.restore();
       }
       const g = gullPoint(t);
-      D.NPCArt.draw(c, 'marti', g[0], g[1], bimg ? 0.7 : 0.42, t);
+      D.NPCArt.draw(c, 'marti', g[0], g[1], GULL_SCALE(), t);
       if (this.tarcovHere(s)) D.NPCArt.draw(c, 'tarcov', TARCOV_AT[0], TARCOV_AT[1], 0.55, t);
       c.restore();
     }

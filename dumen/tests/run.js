@@ -342,6 +342,9 @@ section('10. Kayıt / migration / export-import');
 { const old = D.Save.newState(5); old.inv.trash = { T_CAN: 2, T_DUCK: 1, T_LID: 1, T_KEYRING: 1, T_YOK: 3 }; const k0 = old.inv.items.KEY_01 || 0;
   const mt = D.Save.migrate(JSON.parse(JSON.stringify(old)));
   ok(mt.inv.trash.T_LID === 3 && mt.inv.trash.T_BAG === 1 && !mt.inv.trash.T_CAN && !mt.inv.trash.T_YOK && (mt.inv.items.KEY_01 || 0) === k0 + 1 && Object.keys(mt.inv.trash).every((id) => D.TrashDB[id]), 'Eski çöp kimlikleri yeni kataloğa taşınır (anahtarlık → anahtar)'); }
+{ const M = D.MartiLinesSource, I = D.IdleLines; const all = Object.values(M).flat(); const used = new Set([].concat(I.marti, I.marti_menu, I.marti_loading, I.marti_fail));
+  ok(all.length === 84 && all.every((l) => used.has(l)), 'Martı replik dosyasının 84 satırının tümü oyunda (kasaba/menü/yükleme/kaçan av)');
+  ok(M.main_menu.every((l) => I.marti_menu.includes(l)) && M.failed_fishing.every((l) => I.marti_fail.includes(l)), 'Kategoriler doğru yerde'); }
 section('11. İlerleme: otomatik oyuncu (softlock testi)');
 const auto = (() => {
   fresh(2026);

@@ -212,7 +212,8 @@
     kropi: { fx: 0.43, fy: 0.09, hr: 0.10, hm: 1.05 },
     rustem: { fx: 0.52, fy: 0.19, hr: 0.20, hm: 1.0 },
     tekir: { fx: 0.30, fy: 0.19, hr: 0.18, hm: 0.82 },
-    zip: { fx: 0.29, fy: 0.24, hr: 0.21, hm: 0.95 }
+    zip: { fx: 0.29, fy: 0.24, hr: 0.21, hm: 0.95 },
+    marti: { fx: 0.5, fy: 0.16, hr: 0.2, hm: 0.6, head: [0.62, 0.2] }   // oturan martı (atkılı); head: konuşma balonu ucu
   };
   const sprite = (id) => (SPR[id] && D.Assets ? D.Assets.get('char_' + id) : null);
   const NPCArt = {
@@ -236,6 +237,13 @@
       A.shadow(c, 0, 0, id === 'marti' ? 30 : 50, 10, 0.22);
       N[id](c, t || 0, opts);
       c.restore();
+    },
+    // Konuşma balonu ucu için baş noktası (draw ile aynı ölçek/çapa)
+    headPoint(id, x, y, scale) {
+      const img = sprite(id), sp = SPR[id];
+      if (!img) return [x, y - 70 * scale];
+      const hh = 280 * sp.hm * scale, ww = hh * img.width / img.height, hp = sp.head || [sp.fx, sp.fy];
+      return [x - ww / 2 + hp[0] * ww, y - hh + hp[1] * hh];
     },
     // Portre: baş+gövde üst kısmı bir dairenin içinde
     portrait(c, id, cx, cy, r, t, bg) {

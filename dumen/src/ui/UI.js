@@ -214,6 +214,32 @@
   };
 
   // ---------- Konuşma balonu (sahne üstü) ----------
+  // Martı konuşma balonu (kullanıcı görseli assets/ui/bubble.webp, 900×644; kuyruk ucu %70.5 / %99.7).
+  // (tipX, tipY): kuyruğun değeceği nokta (martının başı). inline: akışta (modal içinde) gösterilir.
+  const BUB = { w: 900, h: 644, tip: [0.705, 0.997], text: [0.12, 0.13, 0.76, 0.57] };
+  UI.fitText = (el, max, min) => { let f = max; el.style.fontSize = f + 'em'; while (f > min && (el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1)) { f -= 0.03; el.style.fontSize = f + 'em'; } };
+  UI.gullBubble = (text, opts) => {
+    opts = opts || {};
+    if (!D.Assets.get('bubble')) return h('div', { class: 'speech' + (opts.inline ? ' inline' : '') }, text);
+    const t = BUB.text, inner = h('div', { class: 'gb-text', style: { left: t[0] * 100 + '%', top: t[1] * 100 + '%', width: t[2] * 100 + '%', height: t[3] * 100 + '%' } }, h('span', null, text));
+    const el = h('div', { class: 'gbubble' + (opts.inline ? ' inline' : ''), role: 'status', style: { width: (opts.w || 600) + 'px', backgroundImage: 'url(' + D.Assets.get('bubble').src + ')' } }, inner);
+    requestAnimationFrame(() => UI.fitText(inner, opts.fs || 1.05, 0.5));
+    return el;
+  };
+  UI.gullSpeech = (parent, tipX, tipY, text, ms, opts) => {
+    opts = opts || {};
+    if (parent._gull) parent._gull.remove();
+    const w = opts.w || 600, hh = w * BUB.h / BUB.w, v = UI.view;
+    const el = UI.gullBubble(text, { w, fs: opts.fs });
+    if (!D.Assets.get('bubble')) { el.style.left = Math.max(20, tipX - 60) + 'px'; el.style.top = Math.max(110, tipY - 160) + 'px'; }
+    else {
+      const left = D.clamp(tipX - BUB.tip[0] * w, 16, v.W - w - 16), top = D.clamp(tipY - BUB.tip[1] * hh, 8, v.H - hh - 8);
+      el.style.left = left + 'px'; el.style.top = top + 'px';
+    }
+    parent.append(el); parent._gull = el;
+    setTimeout(() => { el.remove(); if (parent._gull === el) parent._gull = null; }, ms || Math.max(4200, Math.min(9000, 1800 + text.length * 55)));
+    return el;
+  };
   UI.speech = (parent, x, y, text, ms) => {
     const sp = h('div', { class: 'speech', style: { left: x + 'px', top: y + 'px' } }, text);
     parent.append(sp); setTimeout(() => sp.remove(), ms || 3600);

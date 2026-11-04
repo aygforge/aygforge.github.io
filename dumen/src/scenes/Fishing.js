@@ -226,7 +226,8 @@
       const again = () => { this.enc = null; this.sim = null; this.bar = null; this.setState('READY'); };
       const actions = [{ label: 'Haritaya Dön', cls: 'wood', fn: () => { D.SM.go('map', { sel: this.region }); } }, { label: 'Kasabaya Dön', cls: 'wood', fn: () => { D.SM.go('town'); } }, { label: 'Tekrar At', cls: 'green', fn: () => { again(); } }];
       let title, body;
-      const gull = (ok) => { const L2 = D.IdleLines[ok ? 'marti_success' : 'marti_fail']; return h('div', { class: 'row small' }, D.UI.portrait('marti', 90), h('i', null, '“' + L2[(s.stats.casts) % L2.length] + '”')); };
+      // Martı yorumu: portre + kullanıcının konuşma balonu (modal içinde, akışta)
+      const gull = (ok) => { const L2 = D.IdleLines[ok ? 'marti_success' : 'marti_fail']; return h('div', { class: 'row gull-say', style: { alignItems: 'flex-end' } }, D.UI.gullBubble(L2[(s.stats.casts) % L2.length], { inline: true, w: 520, fs: 0.95 }), D.UI.portrait('marti', 150)); };
       if (r.kind === 'fish' && r.outcome === 'caught') {
         const f = r.fish, b = D.FishBalanceDB[f.fishId], src = D.FishDBSource.FishDB[f.fishId];
         const leg = b.rarity === 'legendary' || b.rarity === 'boss';
