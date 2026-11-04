@@ -65,5 +65,11 @@ Kaynak JSON dosyaları **birebir** korunur (testler gömülü kopyanın bayt eş
 - **Karakterler** (`assets/chars/*.webp`; orijinal 2816×1536 PNG'ler figüre kırpılıp şeffaf WebP'ye çevrildi, ~13 MB → ~600 KB): Ahmet = Market sahibi (önceki "Market Kasiyeri"), Başkan = Belediye Başkanı (Tersane İzni ve duyurular; Kaya Usta arşivde yanında), Geri Dönüşümcü = fabrika görevlisi, **Tekir = Don Zıpırleone'nin sağ kolu** (yeni yan karakter; görev vermez, Liman Sokağı'nda ve mekânda konuşulur). Başkan ve Tekir için diyaloglar bu sürümde yazıldı.
 - Görseli olmayanlar (Tarçov, Komplo Teorisyeni, Martı, oyuncu) prosedürel çizimle kalır.
 
+## İç mekân arka planları (kullanıcı)
+- `assets/bg/*.webp` (2816 px PNG'ler 1920 px WebP'ye çevrildi, toplam ~1,9 MB): Ev, Belediye (müze), Rüstem Aga, Market, Hurdacı, Fabrika, Tekne Atölyesi, Karanlık Mahalle (Zıpırleone), Teorisyen. `TekneAtölye.png` iki zip'te de vardı (aynı dosya).
+- **KayaUsta.png ve Marketnew.png aynı görsel** (yalnız köşedeki küçük işaret farklı). Olta raflı dükkân olduğu için Market'te kullanıldı; Kaya Usta Belediye'deki deniz müzesinde (Denizin Defteri arşivi) kalır. Kaya Usta için ayrı bir mekân görseli gelirse ona taşınır.
+- Kullanıcının istediği değişiklikler: Zıpırleone'nin Mekanı = Liman Sokağı'nın ortasındaki **Karanlık Mahalle**; kasabaya dönüş sokağın **en sağından**; **Café kapalı** (restoran gibi, ileride açılacak); **Liman Sokağı iskelesinden balığa çıkılmaz**.
+- Benim kararlarım: Tarçov'un T1 "şüpheli sandıklar" ipucu Karanlık Mahalle'deki sandığa taşındı; evdeki panoya ve müzedeki akvaryuma dokunulabilir; Rüstem tezgâhın arkasında (tezgâh önü karakterin üzerine yeniden çizilir). Komplo Teorisyeni, Tarçov, Martı ve oyuncu için çizim gelmediğinden prosedürel çizimler kullanılmaya devam ediyor.
+
 ## Görseller
 Kasaba görseli dışındaki tüm görseller (iç mekânlar, bölgeler, balıklar, karakterler) **sıfırdan prosedürel Canvas rekonstrüksiyonudur**. Kasaba/sokak/iç mekân yerleşimleri GDD'deki öğelere sadık kompozisyonlardır; piksel koordinatları kaynakta kilitli değildir. Sesler WebAudio ile üretilir.

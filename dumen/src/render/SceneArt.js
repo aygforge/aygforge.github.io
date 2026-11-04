@@ -1,4 +1,4 @@
-// Kasaba, Yeni Sokak, iç mekânlar, harita ve ana menü sahne çizimleri.
+// Kasaba, Liman Sokağı, iç mekânlar, harita ve ana menü sahne çizimleri.
 // Kompozisyon 1920×1080 güvenli alanda; geniş/yüksek ekranlarda gökyüzü/deniz/zemin kenarlara uzatılır.
 (function (D) {
   'use strict';
@@ -189,7 +189,43 @@
   };
 
   // ---------------- İÇ MEKÂN ----------------
+  // ---- Kullanıcı çizimi iç mekân arka planları ----
+  // side: bilgi panelinin yeri (önemli öğe görünür kalsın). npcs: {id, fx, fy (ayak), h (görsel yüksekliği oranı)}.
+  // occ: karakterin önüne yeniden çizilen ön plan parçası (tezgâh vb.). hots: görsel üzerindeki dokunma alanları.
+  const BGL = {
+    home: { side: 'right', npcs: [], hots: [{ key: 'board', f: [0.09, 0.08, 0.32, 0.54], label: 'İlan Panosu', fn: () => D.Scenes.openJournal('board') }] },
+    belediye: { side: 'left', npcs: [{ id: 'baskan', fx: 0.66, fy: 0.99, h: 0.62 }, { id: 'kaya', fx: 0.9, fy: 1.0, h: 0.66 }], hots: [{ key: 'aquarium', f: [0.53, 0.04, 0.25, 0.5], label: 'Akvaryum — Denizin Defteri', fn: () => D.Scenes.openFishpedia() }] },
+    rustem: { side: 'left', npcs: [{ id: 'rustem', fx: 0.6, fy: 0.84, h: 0.5 }], occ: [[0.37, 0.6, 0.37, 0.36]] },
+    market: { side: 'right', npcs: [{ id: 'market', fx: 0.3, fy: 0.97, h: 0.58 }] },
+    hasan: { side: 'right', npcs: [{ id: 'hasan', fx: 0.28, fy: 0.95, h: 0.62 }] },
+    factory: { side: 'right', npcs: [{ id: 'factory', fx: 0.27, fy: 0.98, h: 0.66 }] },
+    boatyard: { side: 'right', npcs: [{ id: 'kropi', fx: 0.24, fy: 0.97, h: 0.62 }] },
+    zip: { side: 'left', npcs: [{ id: 'tekir', fx: 0.58, fy: 0.99, h: 0.42 }, { id: 'zip', fx: 0.76, fy: 0.93, h: 0.52 }], hots: [] },
+    komplo: { side: 'right', npcs: [{ id: 'komplo', fx: 0.2, fy: 0.95, h: 0.44 }] }
+  };
+  SA.BG_LAYOUT = BGL;
+  SA.bgImage = (kind) => (D.Assets ? D.Assets.get('bg_' + kind) : null);
+  SA.bgFit = (kind, W, H) => {
+    const img = SA.bgImage(kind); if (!img) return null;
+    const k = Math.max(W / img.width, H / img.height);
+    return { k, ox: (W - img.width * k) / 2, oy: (H - img.height * k) / 2, iw: img.width, ih: img.height, img };
+  };
+  SA.bgRect = (kind, f) => {
+    const v = D.UI.view, F = SA.bgFit(kind, v.W, v.H); if (!F) return null;
+    return { left: F.ox + f[0] * F.iw * F.k, top: F.oy + f[1] * F.ih * F.k, width: f[2] * F.iw * F.k, height: f[3] * F.ih * F.k };
+  };
   SA.interior = (c, W, H, t, kind, state) => {
+    const F = SA.bgFit(kind, W, H);
+    if (F) {
+      D.SM.drawStatic(c, 'bg-' + kind, (cc, w, hh) => { const G = SA.bgFit(kind, w, hh); cc.drawImage(G.img, G.ox, G.oy, G.iw * G.k, G.ih * G.k); });
+      const L = BGL[kind] || {};
+      for (const n of L.npcs || []) {
+        const x = F.ox + n.fx * F.iw * F.k, y = F.oy + n.fy * F.ih * F.k;
+        D.NPCArt.draw(c, n.id, x, y, (n.h * F.ih * F.k) / 280, t, n.id === 'player' ? { hat: state.cosmetics.equipped.hat } : null);
+      }
+      for (const o of L.occ || []) c.drawImage(F.img, o[0] * F.iw, o[1] * F.ih, o[2] * F.iw, o[3] * F.ih, F.ox + o[0] * F.iw * F.k, F.oy + o[1] * F.ih * F.k, o[2] * F.iw * F.k, o[3] * F.ih * F.k);
+      return;
+    }
     const ox = (W - 1920) / 2, oy = (H - 1080) / 2;
     const P = {
       rustem: { wall: '#7ab8d8', wall2: '#5a98b8', floor: '#c8a878' },

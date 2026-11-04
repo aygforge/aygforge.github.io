@@ -4,14 +4,29 @@
   const { h, btn } = D.UI;
   const P = () => D.Panels;
 
+  // Arka plan görselindeki dokunma alanları (+ o sahnedeki aktif hikâye inceleme noktaları)
+  D.Scenes.addBgHots = (root, kind) => {
+    const L = D.SceneArt.BG_LAYOUT[kind]; if (!L || !D.SceneArt.bgImage(kind)) return;
+    const list = (L.hots || []).slice();
+    const INSPECT = { zip_crates: [0.83, 0.42, 0.15, 0.5] };
+    for (const sp of D.Quests.activeInspectSpots(D.Game.state, kind)) if (INSPECT[sp.spot]) list.push({ key: sp.spot, f: INSPECT[sp.spot], label: sp.label, alert: '?', fn: async () => { const r = D.Game.act('inspect', { spot: sp.spot }); if (r.ok) { await D.UI.dialog(D.DialogueDB[r.dlg]); D.SM.rebuild(); } } });
+    for (const hs of list) {
+      const r = D.SceneArt.bgRect(kind, hs.f); if (!r) continue;
+      const b = h('button', { class: 'hot', type: 'button', 'aria-label': hs.label, style: { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' } }, h('span', { class: 'lbl' }, hs.label), hs.alert ? h('span', { class: 'alert' }, hs.alert) : null);
+      b.addEventListener('click', (e) => { e.stopPropagation(); if (D.Input.blocked()) return; D.Audio.sfx('click'); hs.fn(); });
+      root.append(b);
+    }
+  };
   function shopScene(name, cfg) {
     D.SM.register(name, {
       music: 'shop',
       enter() { this.tab = cfg.defaultTab || null; this.sel = new Set(); this.build(); },
       build() {
         D.UI.clear(this.root);
-        D.HUD.set('interior', { back: () => D.SM.go(cfg.back || 'town'), backLabel: cfg.back === 'street' ? '← Yeni Sokak' : '← Kasaba' });
-        const panel = h('div', { class: 'panel shop-layout' });
+        D.HUD.set('interior', { back: () => D.SM.go(cfg.back || 'town'), backLabel: cfg.back === 'street' ? '← Liman Sokağı' : '← Kasaba' });
+        const L = D.SceneArt.bgImage(cfg.kind) ? D.SceneArt.BG_LAYOUT[cfg.kind] : null;
+        D.Scenes.addBgHots(this.root, cfg.kind);
+        const panel = h('div', { class: 'panel shop-layout' + (L && L.side === 'left' ? ' left' : '') });
         const talkBtn = (npc, label) => btn(label, () => D.Scenes.talk(npc), { cls: 'small' + (D.Quests.npcHasStory(D.Game.state, npc) ? ' yellow' : '') });
         const head = h('h2', null, cfg.title, h('span', { class: 'grow' }),
           cfg.npc2 ? talkBtn(cfg.npc2, D.NPCDB[cfg.npc2].name) : null,
@@ -37,7 +52,7 @@
       const allTotal = D.sum(sellable, (f) => D.Econ.fishValue(s, f));
       const stale = fish.filter((f) => D.Econ.freshness(s, f) === 'STALE').length;
       p.append(h('div', { class: 'small' }, 'Taze balık tam fiyat, Normal ×' + D.EconomyConfig.freshness.NORMAL.mult + '. Bayat balık almam — Geri Dönüşüm Fabrikası\'na götür. Görevdeki ya da koruduğun balıklar satılmaz. Tazelik yalnız aktif oyun süresiyle azalır.'),
-        stale ? h('div', { class: 'no small' }, stale + ' bayat balık var → Yeni Sokak\'taki fabrika değerlendirir.') : null);
+        stale ? h('div', { class: 'no small' }, stale + ' bayat balık var → Liman Sokağı\'ndaki fabrika değerlendirir.') : null);
       const list = h('div', { class: 'list scroll grow' });
       if (!fish.length) list.append(h('div', { class: 'muted center', style: { padding: '40px' } }, 'Ambarın boş. Balığa çık!'));
       for (const f of fish) {
@@ -146,7 +161,7 @@
       const body = h('div', { class: 'scroll grow col' });
       if (this.tab === 'up') {
         const cur = D.boatLevel(s.boat.level), nx = D.boatLevel(s.boat.level + 1);
-        body.append(h('div', { class: 'small' }, 'Mevcut: ', h('b', null, 'Sv.' + cur.level + ' ' + cur.name), ' — ' + cur.desc));
+        body.append(h('div', { class: 'row' }, D.UI.canvas(300, 170, (c) => D.BoatArt.draw(c, cur.level, 150, 140, 0.48, 0.5, { still: true, flag: s.cosmetics.equipped.flag, paint: s.cosmetics.equipped.paint })), h('div', { class: 'small grow' }, 'Mevcut: ', h('b', null, 'Sv.' + cur.level + ' ' + cur.name), ' — ' + cur.desc)));
         const prog = h('div', { class: 'row small' }, 'Tekne ilerlemesi: ' + s.boat.level + '/10', h('div', { class: 'prog grow' }, h('i', { style: { width: s.boat.level * 10 + '%' } })));
         body.append(prog);
         if (nx) {

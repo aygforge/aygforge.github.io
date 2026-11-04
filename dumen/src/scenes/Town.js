@@ -1,4 +1,4 @@
-// Kasaba: ev, evin yanında ilan panosu, iskeleye halatla bağlı sallanan tekne, tekneye konmuş Martı, dükkânlar, Yeni Sokak.
+// Kasaba: ev, evin yanında ilan panosu, iskeleye halatla bağlı sallanan tekne, tekneye konmuş Martı, dükkânlar, Liman Sokağı.
 (function (D) {
   'use strict';
   const { h, btn } = D.UI;
@@ -103,7 +103,7 @@
       const st = (npc) => (D.Quests.npcHasStory(s, npc) ? '!' : null);
       const boardReady = Object.values(s.orders).some((o) => D.Quests.orderState(s, o) === 'COMPLETABLE');
       // Sıra önemli: sonra eklenen üstte kalır.
-      this.hot('street', '← Diğer Sokak', () => D.SM.go('street'), st('zip') || st('kropi') || st('factory') || (D.Quests.activeInspectSpots(s, 'street').length ? '?' : null), { aria: 'Diğer Sokak', lblLeft: true });
+      this.hot('street', '← Liman Sokağı', () => D.SM.go('street'), st('zip') || st('kropi') || st('factory') || (D.Quests.activeInspectSpots(s, 'street').length ? '?' : null), { aria: 'Liman Sokağı', lblLeft: true });
       this.hot('home', 'Evim', () => D.SM.go('home'), boardReady ? '✓' : null);
       this.hot('market', 'Market', () => D.SM.go('market'));
       this.hot('restaurant', 'Restoran (kapalı)', () => D.Scenes.restaurantClosed(), null, { aria: 'Restoran' });

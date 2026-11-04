@@ -51,7 +51,7 @@
   // Hikâye diyalogları (QuestDB adımları buradan referans verir). Satır: [konuşan, metin]. {choice:[...]} seçim.
   D.DialogueDB = D.deepFreeze({
     // ---------- Tarçov × Zıpırleone (erken, 5 bölüm) ----------
-    T1_tarcov: [['tarcov', 'Dur! Kımıldama. Ben Müfettiş Tarçov. Rozetime alçaktan bak lütfen.'], ['player', 'Merhaba?'], ['tarcov', 'Bu kasabada bir kedi var. Takım elbiseli. Adı Don Zıpırleone. Hakkında soruşturma başlattım.'], ['tarcov', 'Yeni sokaktaki mekânının önünde şüpheli sandıklar gördüm. Git bir bak. Ben... buradan izleyeceğim. Kedilerle aram iyi değil.']],
+    T1_tarcov: [['tarcov', 'Dur! Kımıldama. Ben Müfettiş Tarçov. Rozetime alçaktan bak lütfen.'], ['player', 'Merhaba?'], ['tarcov', 'Bu kasabada bir kedi var. Takım elbiseli. Adı Don Zıpırleone. Hakkında soruşturma başlattım.'], ['tarcov', 'Liman Sokağı\'ndaki Karanlık Mahalle\'de, mekânının önünde şüpheli sandıklar gördüm. Git bir bak. Ben... buradan izleyeceğim. Kedilerle aram iyi değil.']],
     T1_inspect: [['player', 'Sandıkların üstünde "BALIK DEĞİLDİR" yazıyor.'], ['player', 'İçinden mırıltı geliyor. Ve bir de... radyo? Kedi radyosu mu bu?'], ['marti', '(uzaktan) Ben bir şey görmedim! Simit verirseniz daha da az görürüm!']],
     T1_zip: [['zip', 'Ahh, yeni balıkçımız. Sandıklarıma bakıyordun. Merak güzel bir şey. Bazen de tehlikeli.'], ['zip', 'İçlerinde ne mi var? Kedi kumu. Hukuken tamamen kedi kumu.'], ['zip', 'O kısa boylu köpeğe söyle: Don Zıpırleone dürüst bir iş insanıdır. Ve köpekleri hiç sevmez.']],
     T2_tarcov: [['tarcov', 'Kasabada "Miyav Puanı" diye bir şey dolaşıyor. Para mı? Puan mı? Kupon mu? Kimse bilmiyor!'], ['tarcov', 'Kasabalılara sor. Rüstem\'e, Hasan\'a, Kaya Usta\'ya. Her şeyi not alacağım.']],

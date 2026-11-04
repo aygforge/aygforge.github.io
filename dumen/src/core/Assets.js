@@ -4,6 +4,8 @@
   const LIST = { town: 'assets/town_main.webp', street: 'assets/street_main.webp', map: 'assets/world_map.webp' };
   // Kullanıcının çizdiği karakterler (kırpılmış, şeffaf WebP)
   for (const id of ['rustem', 'hasan', 'zip', 'kaya', 'kropi', 'factory', 'market', 'baskan', 'tekir']) LIST['char_' + id] = 'assets/chars/' + id + '.webp';
+  // Kullanıcının çizdiği iç mekân arka planları
+  for (const id of ['home', 'belediye', 'factory', 'hasan', 'zip', 'market', 'rustem', 'boatyard', 'komplo']) LIST['bg_' + id] = 'assets/bg/' + id + '.webp';
   const Assets = {
     imgs: {},
     get(k) { return Assets.imgs[k] || null; },

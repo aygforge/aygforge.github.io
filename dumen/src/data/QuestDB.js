@@ -16,7 +16,7 @@
     MQ('MQ_01', 'İlk Av', 'Teknene bin, Balığa Çık ve bir balık yakala.', { stat: 'fishCaught', gte: 1 }, [coin(40), it('BAIT_02', 3)]),
     MQ('MQ_02', 'Rüstem\'le Tanış', 'Balık Pazarı\'nda Rüstem\'e bir balık sat.', { stat: 'fishSold', gte: 1 }, [coin(30)], 'MQ_01'),
     MQ('MQ_03', 'Panoya Göz At', 'Evinin yanındaki ilan panosundan bir sipariş kabul et.', { stat: 'ordersAccepted', gte: 1 }, [it('BAIT_01', 5)], 'MQ_02'),
-    MQ('MQ_04', 'Yamalı Kayık', 'Tekne Atölyesi\'nde tekneni Seviye 2\'ye yükselt. (Yeni Sokak)', { boat: 2 }, [coin(80)], 'MQ_02'),
+    MQ('MQ_04', 'Yamalı Kayık', 'Tekne Atölyesi\'nde tekneni Seviye 2\'ye yükselt. (Liman Sokağı)', { boat: 2 }, [coin(80)], 'MQ_02'),
     MQ('MQ_05', 'Hazine Kokusu', 'Oltayla bir sandık yakala (zamanlama barı).', { stat: 'chestsCaught', gte: 1 }, [it('MAT_03', 2)], 'MQ_01'),
     MQ('MQ_06', 'Sandık Açılışı', 'Envanterden bir sandık aç.', { stat: 'chestsOpened', gte: 1 }, [coin(50)], 'MQ_05'),
     MQ('MQ_07', 'Hurdacıyla Tanış', 'Hurdacı Hasan\'da bir şey üret ya da erit.', { stat: 'crafted', gte: 1 }, [scrap(20)], 'MQ_04'),
@@ -42,7 +42,7 @@
     // Tarçov × Zıpırleone — erken (sonuç: ÇARK açılır, mahzen açılmaz; Tarçov kalıcı ayrılır)
     C('T1', 'tarcov', 1, 'Rozetin Gölgesi', 'Müfettiş Tarçov kasabaya geldi ve Don Zıpırleone hakkında soruşturma başlattı.',
       [{ quest: 'MQ_02' }],
-      [talk('tarcov', 'T1_tarcov', 'Kasabada Müfettiş Tarçov ile konuş (Belediye önünde).'), inspect('zip_crates', 'street', 'Şüpheli Sandıklar', 'T1_inspect', 'Yeni Sokak\'taki şüpheli sandıkları incele.'), talk('zip', 'T1_zip', 'Zıpırleone\'nin Mekanı\'nda Don ile konuş.')],
+      [talk('tarcov', 'T1_tarcov', 'Kasabada Müfettiş Tarçov ile konuş (Belediye önünde).'), inspect('zip_crates', 'zip', 'Şüpheli Sandıklar', 'T1_inspect', 'Liman Sokağı\'ndaki Karanlık Mahalle\'de (Zıpırleone\'nin Mekanı) şüpheli sandıkları incele.'), talk('zip', 'T1_zip', 'Zıpırleone\'nin Mekanı\'nda Don ile konuş.')],
       [it('SPC_04', 1), rel('zip', 10), rel('tarcov', 10)]),
     C('T2', 'tarcov', 2, 'Miyav Puanı Meselesi', 'Miyav Puanı nedir? Herkes başka şey söylüyor.',
       [{ chapter: 'T1' }],

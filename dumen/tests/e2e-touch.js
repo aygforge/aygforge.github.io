@@ -51,7 +51,7 @@ let chromium; try { ({ chromium } = require('playwright')); } catch (e) { consol
  console.log('silhouette', silOk+'/'+silTries, 'treasure', treasureOk+'/'+treasureSeen); if(silOk!==silTries||treasureOk!==treasureSeen) fail++;
  // Kasaba illüstrasyonu: her binaya dokunmak doğru yere götürür
  await ev(()=>{DUMEN.UI.closeAll(); DUMEN.SM.go('town');}); await p.waitForTimeout(700);
- const targets=[['Diğer Sokak','street'],['Evim','home'],['Market','market'],['Hurdacı Hasan','hasan'],['Belediye','belediye'],['Komplo Teorisyeni\'nin Evi','komplo'],['Balık Pazarı','rustem'],['Tekne — Balığa Çık','map']];
+ const targets=[['Liman Sokağı','street'],['Evim','home'],['Market','market'],['Hurdacı Hasan','hasan'],['Belediye','belediye'],['Komplo Teorisyeni\'nin Evi','komplo'],['Balık Pazarı','rustem'],['Tekne — Balığa Çık','map']];
  for (const [label, scene] of targets) {
    const bx = await p.locator('.hot[aria-label="'+label+'"]').first().boundingBox();
    // görünür alanın, diğer alanlarla çakışmayan alt-orta noktası (etiket bölgesi)
@@ -61,12 +61,27 @@ let chromium; try { ({ chromium } = require('playwright')); } catch (e) { consol
    await ev(()=>{DUMEN.UI.closeAll(); DUMEN.SM.go('town');}); await p.waitForTimeout(500);
  }
  // Liman sokağı: her giriş doğru yere götürür
- for (const [label, scene] of [['Geri Dönüşüm Fabrikası','factory'],['Zıpırleone\'nin Mekanı','zip'],['Tekne Atölyesi','boatyard'],['Liman iskelesi — Balığa Çık','map'],['Ara sokak — Kasabaya dön','town']]) {
+ for (const [label, scene] of [['Geri Dönüşüm Fabrikası','factory'],['Zıpırleone\'nin Mekanı','zip'],['Tekne Atölyesi','boatyard'],['Kasabaya dön','town']]) {
    await ev(()=>{DUMEN.UI.closeAll(); DUMEN.SM.go('street');}); await p.waitForTimeout(500);
    const bx = await p.locator('.hot[aria-label="'+label+'"]').first().boundingBox();
    await p.touchscreen.tap(bx.x + bx.width/2, bx.y + bx.height - 10); await p.waitForTimeout(450);
    const got = await ev(()=>DUMEN.SM.name);
    console.log('liman sokağı →', label, got===scene ? 'OK' : 'HATA ('+got+')'); if(got!==scene) fail++;
+ }
+ // Café kapalı bilgi penceresi açar; sokakta Balığa Çık yok
+ await ev(()=>{DUMEN.UI.closeAll(); DUMEN.SM.go('street');}); await p.waitForTimeout(500);
+ { const cb = await p.locator('.hot[aria-label="Café"]').boundingBox(); await p.touchscreen.tap(cb.x+cb.width/2, cb.y+cb.height-10); await p.waitForTimeout(400);
+   const okc = await ev(()=>DUMEN.UI.modalOpen() && /Café/.test(document.querySelector('.modal h2').textContent) && DUMEN.SM.name==='street');
+   const noFish = await ev(()=>!document.querySelector('.scene-root button.green.big') && ![...document.querySelectorAll('.hot')].some(b=>/Balığa/.test(b.getAttribute('aria-label'))));
+   console.log('liman sokağı → Café kapalı', okc?'OK':'HATA', '· sokakta balığa çıkış yok', noFish?'OK':'HATA'); if(!okc||!noFish) fail++; await ev(()=>DUMEN.UI.closeAll()); }
+ // İç mekân görselleri: evdeki ilan panosu ve müzedeki akvaryum dokunulabilir
+ for (const [scene, label, check] of [['home','İlan Panosu','board'],['belediye','Akvaryum — Denizin Defteri','fish']]) {
+   await ev((sc)=>{DUMEN.UI.closeAll(); DUMEN.SM.go(sc);}, scene); await p.waitForTimeout(600);
+   const hb = await p.locator('.hot[aria-label="'+label+'"]').boundingBox(); await p.touchscreen.tap(hb.x+hb.width/2, hb.y+hb.height/2); await p.waitForTimeout(500);
+   const t = await ev(()=>document.querySelector('.modal h2') ? document.querySelector('.modal h2').textContent : '');
+   const okh = check==='board' ? /İlan Panosu/.test(t) : /Denizin Defteri/.test(t);
+   console.log('iç mekân →', label, okh?'OK':'HATA ('+t+')'); if(!okh) fail++;
+   await p.screenshot({path:out+'touch_'+scene+'.png'}); await ev(()=>DUMEN.UI.closeAll());
  }
  // Harita: kilitli bölgeye dokunmak seçer ama girmez; açık bölgeden yola çıkılır
  await ev(()=>{DUMEN.UI.closeAll(); DUMEN.SM.go('map');}); await p.waitForTimeout(500);
