@@ -13,8 +13,10 @@
     komplo: { name: 'Komplo Teorisyeni', role: 'Gerçeğin peşinde', canonical: true },
     kaya: { name: 'Kaya Usta', role: 'Denizin Defteri', canonical: false, note: 'Önceki sürümden yardımcı; GDD\'de tam kilitli değil.' },
     kropi: { name: 'Kropi Usta', role: 'Tekne Atölyesi', canonical: false, note: 'Önceki sürümden yardımcı; GDD\'de tam kilitli değil.' },
-    factory: { name: 'Fabrika Görevlisi', role: 'Geri Dönüşüm Fabrikası', canonical: false },
-    market: { name: 'Market Kasiyeri', role: 'Market', canonical: false }
+    factory: { name: 'Geri Dönüşümcü', role: 'Geri Dönüşüm Fabrikası', canonical: false },
+    market: { name: 'Ahmet', role: 'Market', canonical: false },
+    baskan: { name: 'Belediye Başkanı', role: 'Belediye', canonical: false },
+    tekir: { name: 'Tekir', role: 'Don Zıpırleone\'nin sağ kolu', canonical: false }
   });
 
   // Rutin konuşmalar (görev vermeyen). Sırayla döner; tekrarı azaltmak için index kayıtta tutulur.
@@ -41,7 +43,9 @@
     kaya: ['Denizin Defteri hiçbir balığı unutmaz. Ben de unutmam. Ama gözlüğümü unuturum.', 'Her balığın bir hikâyesi vardır. Bazılarınınki çok uzundur, kısalt derim.', 'Bir bölgenin bütün balıklarını kaydet; deniz sana teşekkür eder.'],
     kropi: ['Tekne dediğin su almaz. Az alır. Kabul edilebilir miktarda alır.', 'Her yeni seviye, yeni bir deniz demek.', 'Çekici bana uzat. Hayır, o kerpeten. Neyse, o da olur.'],
     factory: ['Bayat balık bizim işimiz. Koku da bizim işimiz. Maaş az.', 'Bant hiç durmaz. Bir kere durdu, Hasan dans ediyor sandık.', 'Taze balığını burada değerlendirirsen Rüstem\'den az kazanırsın. Söylemiş olayım.'],
-    market: ['Yem rafı solda, olta rafı sağda, martı yasak.', 'Bir olta bir kez alınır. Ama yem? Yem sonsuzdur.', 'Fiş ister misin? Ben de istemem.']
+    market: ['Hoş geldin! Yem rafı solda, olta rafı sağda, martı yasak.', 'Bir olta bir kez alınır. Ama yem? Yem sonsuzdur.', 'Bu sandıkta en iyi yemler var. Bakmak bedava, koklamak da.', 'Fiş ister misin? Ben de istemem.'],
+    baskan: ['Belediyemiz halkın hizmetinde! Özellikle de tekne izni almak isteyen halkın.', 'Bu rozet çok önemli. Ne anlama geldiğini unuttum ama çok önemli.', 'Saat mi? Belediyenin saati hiç geç kalmaz. Çünkü hiç ilerlemez.', 'Kasabamızın sloganı: "Balık var, umut var, simit de var."'],
+    tekir: ['Don meşgul. Ben de meşgulüm. Hepimiz çok meşgulüz.', 'Bu sandığın içinde ne var diye sorma. Kedi kumu. Resmî olarak kedi kumu.', 'Patron sağ kolunu kaybetmesin diye ben buradayım. Sol kolunun da kim olduğunu bilmiyorum.', 'Gözlerim kısık, çünkü her şeyi görüyorum. Bir de uykum var.']
   });
 
   // Hikâye diyalogları (QuestDB adımları buradan referans verir). Satır: [konuşan, metin]. {choice:[...]} seçim.

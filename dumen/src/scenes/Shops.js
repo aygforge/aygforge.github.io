@@ -12,7 +12,10 @@
         D.UI.clear(this.root);
         D.HUD.set('interior', { back: () => D.SM.go(cfg.back || 'town'), backLabel: cfg.back === 'street' ? '← Yeni Sokak' : '← Kasaba' });
         const panel = h('div', { class: 'panel shop-layout' });
-        const head = h('h2', null, cfg.title, h('span', { class: 'grow' }), cfg.npc ? btn('Konuş', () => D.Scenes.talk(cfg.npc), { cls: 'small' + (D.Quests.npcHasStory(D.Game.state, cfg.npc) ? ' yellow' : '') }) : null);
+        const talkBtn = (npc, label) => btn(label, () => D.Scenes.talk(npc), { cls: 'small' + (D.Quests.npcHasStory(D.Game.state, npc) ? ' yellow' : '') });
+        const head = h('h2', null, cfg.title, h('span', { class: 'grow' }),
+          cfg.npc2 ? talkBtn(cfg.npc2, D.NPCDB[cfg.npc2].name) : null,
+          cfg.npc ? talkBtn(cfg.npc, cfg.npc2 ? D.NPCDB[cfg.npc].name : 'Konuş') : null);
         panel.append(head);
         cfg.panel.call(this, panel, D.Game.state);
         this.root.append(panel);
@@ -193,7 +196,7 @@
     p.append(list, btn('Denizin Defteri\'ni Aç', () => D.Scenes.openFishpedia(), { cls: 'primary big' }));
   }
   const belediye = {
-    kind: 'belediye', npc: 'kaya', title: 'Belediye Binası', defaultTab: 'arsiv',
+    kind: 'belediye', npc: 'baskan', npc2: 'kaya', title: 'Belediye Binası', defaultTab: 'arsiv',
     panel(p, s) {
       p.append(tabs(this, [['arsiv', 'Denizin Defteri Arşivi'], ['izin', 'Tersane İzni'], ['duyuru', 'Duyurular']]));
       if (this.tab === 'arsiv') return archivePanel.call(this, p, s);

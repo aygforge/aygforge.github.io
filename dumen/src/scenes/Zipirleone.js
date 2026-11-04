@@ -78,7 +78,7 @@
       const s = D.Game.state;
       D.HUD.set('interior', { back: () => D.SM.go('street'), backLabel: '← Yeni Sokak' });
       const p = h('div', { class: 'panel shop-layout' });
-      p.append(h('h2', null, 'Zıpırleone\'nin Mekanı', h('span', { class: 'grow' }), btn('Konuş', () => D.Scenes.talk('zip'), { cls: 'small' + (D.Quests.npcHasStory(s, 'zip') ? ' yellow' : '') })));
+      p.append(h('h2', null, 'Zıpırleone\'nin Mekanı', h('span', { class: 'grow' }), btn('Tekir', () => D.Scenes.talk('tekir'), { cls: 'small' }), btn('Don', () => D.Scenes.talk('zip'), { cls: 'small' + (D.Quests.npcHasStory(s, 'zip') ? ' yellow' : '') })));
       p.append(tabs(this, [['don', 'Don'], ['wheel', 'Çark'], ['bm', 'Kara Pazar'], ['jobs', 'Don\'un İşleri'], ['door', 'Arka Kapı']]));
       const body = h('div', { class: 'scroll grow col' });
       const rel = s.npc.rel.zip || 0;

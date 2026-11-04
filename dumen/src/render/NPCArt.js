@@ -201,9 +201,36 @@
     else { c.beginPath(); c.moveTo(-34, -128 + b); c.quadraticCurveTo(0, -170 + b, 34, -128 + b); c.lineTo(44, -122 + b); c.lineTo(-40, -122 + b); c.closePath(); fs(c, '#f2c42a'); }
   };
 
+  // Kullanıcı çizimi karakter görselleri. fx/fy: baş merkezi (görsel genişlik/yükseklik oranı),
+  // hr: portre yarıçapı (görsel yüksekliği oranı), hm: tam boy yükseklik çarpanı (oturan/küçük karakterler).
+  const SPR = {
+    market: { fx: 0.51, fy: 0.18, hr: 0.17, hm: 1.0 },
+    baskan: { fx: 0.43, fy: 0.19, hr: 0.17, hm: 1.0 },
+    factory: { fx: 0.46, fy: 0.10, hr: 0.11, hm: 1.05 },
+    hasan: { fx: 0.48, fy: 0.16, hr: 0.14, hm: 1.05 },
+    kaya: { fx: 0.42, fy: 0.12, hr: 0.11, hm: 1.05 },
+    kropi: { fx: 0.43, fy: 0.09, hr: 0.10, hm: 1.05 },
+    rustem: { fx: 0.52, fy: 0.19, hr: 0.20, hm: 1.0 },
+    tekir: { fx: 0.30, fy: 0.19, hr: 0.18, hm: 0.82 },
+    zip: { fx: 0.29, fy: 0.24, hr: 0.21, hm: 0.95 }
+  };
+  const sprite = (id) => (SPR[id] && D.Assets ? D.Assets.get('char_' + id) : null);
   const NPCArt = {
-    has: (id) => !!N[id],
+    has: (id) => !!N[id] || !!SPR[id],
+    sprite,
     draw(c, id, x, y, scale, t, opts) {
+      const img = sprite(id);
+      if (img) {
+        const sp = SPR[id];
+        c.save(); c.translate(x, y); c.scale(scale, scale);
+        A.shadow(c, 0, 0, 60, 12, 0.22);
+        const hh = 280 * sp.hm, ww = hh * img.width / img.height;
+        const br = 1 + Math.sin((t || 0) * 2 + x * 0.01) * 0.008; // nefes alma
+        c.translate(0, 0); c.scale(1, br);
+        c.drawImage(img, -ww / 2, -hh, ww, hh);
+        c.restore();
+        return;
+      }
       if (!N[id]) return;
       c.save(); c.translate(x, y); c.scale(scale, scale);
       A.shadow(c, 0, 0, id === 'marti' ? 30 : 50, 10, 0.22);
@@ -212,6 +239,16 @@
     },
     // Portre: baş+gövde üst kısmı bir dairenin içinde
     portrait(c, id, cx, cy, r, t, bg) {
+      const img = sprite(id);
+      if (img) {
+        const sp = SPR[id];
+        c.save(); A.circle(c, cx, cy, r); c.fillStyle = bg || '#f6e7c8'; c.fill(); c.clip();
+        const s2 = r / (sp.hr * img.height);
+        const px = sp.fx * img.width, py = (sp.fy + sp.hr * 0.35) * img.height;
+        c.drawImage(img, cx - px * s2, cy - py * s2, img.width * s2, img.height * s2);
+        c.restore(); A.circle(c, cx, cy, r); A.fs(c, null, 5);
+        return;
+      }
       c.save();
       A.circle(c, cx, cy, r); c.fillStyle = bg || '#f6e7c8'; c.fill(); c.clip();
       const hy = id === 'marti' ? 66 : id === 'tarcov' ? 172 : id === 'zip' ? 236 : id === 'player' ? 116 : 214;

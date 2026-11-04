@@ -172,3 +172,7 @@ input[type=range] { width: 360px; height: 60px; accent-color: var(--wood); }
 .ok { color: #2f8a3f; font-weight: 900; } .no { color: #b8301f; font-weight: 900; }
 .price { font-weight: 900; white-space: nowrap; }
 .debug-only { border: 4px dashed #a35ee0 !important; }
+/* Harita bölge etiketleri (görsel harita üzerinde) */
+.map-lbl { position: absolute; transform: translateX(-50%); pointer-events: none !important; white-space: nowrap; background: rgba(42,26,16,.85); color: #fff6df; font-weight: 900; font-size: .74em; padding: 4px 18px; border-radius: 14px; border: 3px solid #fff6df; }
+.map-lbl.locked { background: rgba(40,40,50,.8); color: #d8d0c0; }
+.map-lbl.sel { background: #f2c42a; color: var(--ink); border-color: var(--ink); }

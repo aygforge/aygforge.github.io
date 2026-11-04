@@ -29,9 +29,9 @@ const ok = (c, n) => { if (c) pass++; else { fail++; console.log('  ✗ ' + n); 
   await tap('.hot[aria-label="Tekne — Balığa Çık"]'); await page.waitForTimeout(500);
   ok(await ev(() => DUMEN.SM.name) === 'map', 'Tekneye dokun → harita');
   // kilitli bölge girişi engeli
-  await tap('.hot:has-text("Bermuda")');
+  await tap('.hot[aria-label="Bermuda Girdabı"]');
   ok(await page.locator('button:has-text("Yola Çık")').isDisabled(), 'Kilitli bölgede Yola Çık pasif');
-  await tap('.hot:has-text("Eski Liman")'); await tap('button:has-text("Yola Çık")'); await page.waitForTimeout(500);
+  await tap('.map-card button[aria-label="Kartı gizle"]'); await tap('.map-lbl:has-text("Eski Liman")'); await tap('button:has-text("Yola Çık")'); await page.waitForTimeout(500);
   ok(await ev(() => DUMEN.SM.name) === 'fishing', 'Balıkçılık sahnesi');
   let caught = 0;
   for (let round = 0; round < 6 && caught < 2; round++) {

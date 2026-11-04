@@ -257,9 +257,10 @@
     },
     zip(c, t, s) {
       for (const x of [0, 820]) { c.beginPath(); c.moveTo(x, 0); c.quadraticCurveTo(x + 60, 400, x + 20, 800); c.lineTo(x + 100, 800); c.quadraticCurveTo(x + 140, 400, x + 100, 0); c.closePath(); A.fs(c, '#8a1a2a', 4); }
+      D.NPCArt.draw(c, 'zip', 460, 700, 1.35, t); // Don masanın arkasında, koltuğunda
       A.rr(c, 200, 560, 520, 90, 10); A.fs(c, '#3a1a10', 4); A.rr(c, 230, 650, 460, 200, 6); A.fs(c, '#2a100a', 4);
       c.fillStyle = A.rg(c, 460, 380, 20, 420, ['rgba(255,200,120,0.28)', 'rgba(0,0,0,0)']); c.fillRect(0, 0, 920, 900);
-      D.NPCArt.draw(c, 'zip', 460, 640, 1.35, t);
+      D.NPCArt.draw(c, 'tekir', 790, 880, 1.0, t); // sağ kol
       if (s.flags.wheelUnlocked) { c.save(); c.translate(760, 280); c.rotate(t * 0.1); for (let i = 0; i < 12; i++) { c.beginPath(); c.moveTo(0, 0); c.arc(0, 0, 90, (i / 12) * 6.283, ((i + 1) / 12) * 6.283); c.closePath(); A.fs(c, D.WheelDB.segments[i].color, 2.5); } A.circle(c, 0, 0, 14); A.fs(c, '#f0c040', 3); c.restore(); }
       A.signText(c, 'Zıpırleone\'nin Mekanı', 460, 110, 48, '#ff8ab8', '#2a0a14');
     },
@@ -300,12 +301,13 @@
       A.rr(c, 230, 250, 460, 70, 10); A.fs(c, '#2a5a8a', 5); A.signText(c, 'DÜMEN BELEDİYESİ', 460, 287, 40, '#fff');
       // dosya dolapları
       for (let i = 0; i < 2; i++) { A.rr(c, 150 + i * 560, 380, 110, 300, 8); A.fs(c, '#8a949e', 5); for (let k = 0; k < 4; k++) { A.rr(c, 162 + i * 560, 392 + k * 72, 86, 58, 4); A.fs(c, '#a8b0b8', 3); A.rr(c, 190 + i * 560, 414 + k * 72, 30, 10, 3); A.fs(c, '#5a5f66', 2); } }
-      D.NPCArt.draw(c, 'kaya', 460, 760, 1.3, t);
-      // masa (Kaya Usta'nın önünde)
+      D.NPCArt.draw(c, 'baskan', 460, 760, 1.25, t);
+      // masa (Başkan'ın önünde)
       A.rr(c, 230, 640, 460, 70, 10); A.fs(c, '#8a5a3a', 5); A.rr(c, 250, 710, 420, 180, 8); A.fs(c, '#6a4a2a', 5);
       A.rr(c, 300, 600, 160, 50, 6); A.fs(c, '#2a5a8a', 4); A.rr(c, 306, 606, 148, 38, 4); A.fs(c, '#f5efe0', 2);
       A.rr(c, 560, 596, 30, 44, 6); A.fs(c, '#c9302c', 4); A.rr(c, 548, 636, 54, 14, 4); A.fs(c, '#5a3a2a', 3); // mühür
       A.signText(c, 'Tersane İzinleri · Denizin Defteri Arşivi', 460, 830, 26, '#f5e2b8');
+      D.NPCArt.draw(c, 'kaya', 770, 1000, 1.0, t); // Kaya Usta: arşivin başında
     },
     komplo(c, t) {
       A.rr(c, 70, 120, 600, 380, 10); A.fs(c, '#c8955a', 6);

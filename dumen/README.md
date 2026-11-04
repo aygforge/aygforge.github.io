@@ -1,7 +1,7 @@
 # DÜMEN — mobil yatay HTML5 balıkçılık oyunu
 
 Sıcak, absürt bir balıkçı kasabası: balık tut, Rüstem'e sat, tekneni 10 seviyede büyüt, 8 bölgeyi keşfet, 88 türü Denizin Defteri'ne yaz, Antik Kraken'i yakala.
-Tamamen statik: build gerekmez, internet/CDN gerekmez. Kasaba ana görünümü yerel bir görseldir (`assets/`); diğer tüm çizimler Canvas, sesler WebAudio.
+Tamamen statik: build gerekmez, internet/CDN gerekmez. Kasaba, Liman Sokağı, harita ve karakterler kullanıcının çizdiği yerel görsellerdir (`assets/`); iç mekân dekorları, bölgeler, balıklar ve eşyalar Canvas ile çizilir, sesler WebAudio.
 
 ## Çalıştırma
 - **Doğrudan:** `index.html` dosyasını tarayıcıda aç (`file://` çalışır; kaynak JSON'lar `src/data/source/sources.js` içine birebir gömülüdür).
@@ -26,6 +26,9 @@ Oyun yalnız `rewarded === true` sonrası tek kullanımlık jeton üretir; jeton
 
 ## Oynanış özeti
 - **Kasaba:** ana görünüm kullanıcının sağladığı illüstrasyondur (`assets/town_main.webp`); binalara dokununca içeri girilir. Soldan: Diğer Sokak (evin solu), Evim (kapının yanındaki ilan panosu), Market, Restoran (şimdilik kapalı), Hurdacı Hasan, Belediye (Denizin Defteri arşivi — Kaya Usta, Tersane İzni, duyurular); sahilde Komplo Teorisyeni'nin Evi ve Rüstem Aga; iskele/kayık → Balığa Çık. Martı iskele yanındaki kayığa konar.
+- **Liman Sokağı** (evin solundan): Geri Dönüşüm Fabrikası (fabrika binaları), Zıpırleone'nin Mekanı (Café; kapıda Tekir), Tekne Atölyesi (tekne hangarı), iskele → Balığa Çık, ara sokak → Kasaba.
+- **Harita:** boyalı dünya haritası; 8 bölge görseldeki yerlerinde (Eski Liman sol alt, Yakamoz sol üst, Buzullar üst orta, Korsan Mezarlığı sağ üst, Kaynar Kazan sağ, Sazlıklar sağ alt, Paslı Sanayi alt orta, Bermuda ortadaki girdap). Kilitli bölgeler karartılır ve kilitlenir; bilgi kartı en az bölgeyi kapatan köşede açılır, ✕ ile gizlenir.
+- **Karakterler:** Rüstem Aga, Hurdacı Hasan, Don Zıpırleone, Tekir (Don'un sağ kolu), Kaya Usta, Kropi Usta, Ahmet (Market), Belediye Başkanı, Geri Dönüşümcü — kullanıcı çizimleri iç mekânlarda ve diyalog portrelerinde. Müfettiş Tarçov, Komplo Teorisyeni, Martı ve oyuncu için görsel verilmediğinden prosedürel çizimler kullanılır.
 - **Balıkçılık:** Oltayı At → bekle → siluete dokun (su altı panelinin tamamı dokunma alanıdır; basıldığı anda en yakın siluet seçilir; masaüstünde 1–4 tuşları) → **SAR** (basılı) / bırak → İnat düşük, mesafe yakın, gerilim kırmızı dışındayken **ÇEK**. Gerilim yeşil/sarı/kırmızı; kırmızıda kısa düzeltme süresi var, uzun kalırsa ip kopar; uzun gevşeklikte balık kaçar; iki erken Çek "Erken çektin". 7 davranış ailesi ayrı hamle setleri kullanır; Kraken 3 evrelidir. Masaüstü: Boşluk = SAR, Enter/E = ÇEK.
 - **Hazine:** ayrı zamanlama barı (yalnız yeni dokunuş sayılır). Sandık envantere girer, Envanter'den açılır.
 - **Ekonomi:** tek fiyat hesaplayıcı (temel × nadirlik × boy × tazelik × Rüstem ilişki bonusu). Tazelik aktif oyun süresine bağlı.

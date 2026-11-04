@@ -60,6 +60,31 @@ let chromium; try { ({ chromium } = require('playwright')); } catch (e) { consol
    console.log('kasaba →', label, got===scene ? 'OK' : 'HATA ('+got+')'); if(got!==scene) fail++;
    await ev(()=>{DUMEN.UI.closeAll(); DUMEN.SM.go('town');}); await p.waitForTimeout(500);
  }
+ // Liman sokağı: her giriş doğru yere götürür
+ for (const [label, scene] of [['Geri Dönüşüm Fabrikası','factory'],['Zıpırleone\'nin Mekanı','zip'],['Tekne Atölyesi','boatyard'],['Liman iskelesi — Balığa Çık','map'],['Ara sokak — Kasabaya dön','town']]) {
+   await ev(()=>{DUMEN.UI.closeAll(); DUMEN.SM.go('street');}); await p.waitForTimeout(500);
+   const bx = await p.locator('.hot[aria-label="'+label+'"]').first().boundingBox();
+   await p.touchscreen.tap(bx.x + bx.width/2, bx.y + bx.height - 10); await p.waitForTimeout(450);
+   const got = await ev(()=>DUMEN.SM.name);
+   console.log('liman sokağı →', label, got===scene ? 'OK' : 'HATA ('+got+')'); if(got!==scene) fail++;
+ }
+ // Harita: kilitli bölgeye dokunmak seçer ama girmez; açık bölgeden yola çıkılır
+ await ev(()=>{DUMEN.UI.closeAll(); DUMEN.SM.go('map');}); await p.waitForTimeout(500);
+ for (const [label, code] of [['Bermuda Girdabı','BG'],['Kaynar Kazan Deltası','KKD'],['Batık Korsan Mezarlığı','BKM'],['Yakamoz Koyu','YK'],['Tembel Sazlıklar','TS'],['Paslı Sanayi Kanalı','PSK'],['Titrek Buzullar','TB'],['Eski Liman','EL']]) {
+   // oyuncu gibi: bölgenin görünen etiketine dokun
+   let lb = await p.locator('.map-lbl', { hasText: label }).first().boundingBox();
+   const card = await p.locator('.map-card').first().boundingBox().catch(()=>null);
+   if (card && lb.x+lb.width/2 > card.x && lb.x+lb.width/2 < card.x+card.width && lb.y+lb.height/2 > card.y && lb.y+lb.height/2 < card.y+card.height) {
+     const xb = await p.locator('.map-card button[aria-label="Kartı gizle"]').boundingBox(); await p.touchscreen.tap(xb.x+xb.width/2, xb.y+xb.height/2); await p.waitForTimeout(300);
+     lb = await p.locator('.map-lbl', { hasText: label }).first().boundingBox();
+   }
+   await p.touchscreen.tap(lb.x + lb.width/2, lb.y + lb.height/2); await p.waitForTimeout(350);
+   const r = await ev(()=>({sel:DUMEN.SM.cur.sel, dis:document.querySelector('.map-card .btn.green').disabled}));
+   const okSel = r.sel===code && r.dis === (code!=='EL');
+   console.log('harita →', label, okSel?'OK':'HATA '+JSON.stringify(r)); if(!okSel) fail++;
+ }
+ await p.screenshot({path:out+'touch_map.png'});
+ await ev(()=>{DUMEN.UI.closeAll(); DUMEN.SM.go('town');}); await p.waitForTimeout(500);
  const rb = await p.locator('.hot[aria-label="Restoran"]').boundingBox();
  await p.touchscreen.tap(rb.x+rb.width/2, rb.y+rb.height-10); await p.waitForTimeout(400);
  const restOk = await ev(()=>DUMEN.UI.modalOpen() && /Restoran/.test(document.querySelector('.modal h2').textContent) && DUMEN.SM.name==='town');

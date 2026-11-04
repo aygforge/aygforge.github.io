@@ -55,31 +55,7 @@
   // ---- Kasaba ana görünümü: kullanıcının sağladığı illüstrasyon (assets/town_main.webp, 2000×1103) ----
   // Tüm dokunma alanları görselin piksel koordinatlarında tanımlıdır; ekrana aynı dönüşümle taşınır.
   const IMG_W = 2000, IMG_H = 1103;
-  const TV = {
-    fit(W, H) {
-      const kW = W / IMG_W, kH = H / IMG_H;
-      // Geniş ekran: yükseklik en fazla %12 kırpılır, kalan yanlar kenar uzatmasıyla doldurulur.
-      // Dar/yüksek ekran: genişlik en fazla %5 kırpılır, alt kısım deniz uzatmasıyla doldurulur.
-      const k = kW > kH ? Math.min(kW, kH * 1.12) : Math.min(kH, kW * 1.05);
-      const ox = (W - IMG_W * k) / 2, hh = IMG_H * k;
-      const oy = hh >= H ? (H - hh) / 2 : 0;
-      return { k, ox, oy };
-    },
-    rect(r) { const v = D.UI.view, f = TV.fit(v.W, v.H); return { left: f.ox + r[0] * f.k, top: f.oy + r[1] * f.k, width: r[2] * f.k, height: r[3] * f.k }; },
-    pt(x, y) { const v = D.UI.view, f = TV.fit(v.W, v.H); return [f.ox + x * f.k, f.oy + y * f.k]; },
-    drawStatic(c, W, H, img) {
-      const { k, ox, oy } = TV.fit(W, H);
-      const w = IMG_W * k, hh = IMG_H * k;
-      c.fillStyle = '#4fa9b4'; c.fillRect(0, 0, W, H);
-      if (ox > 0) { // yan uzatma (kenar şeritleri gerilir, hafif gölgelenir)
-        c.drawImage(img, 0, 0, 18, IMG_H, 0, oy, ox + 1, hh);
-        c.drawImage(img, IMG_W - 18, 0, 18, IMG_H, ox + w - 1, oy, ox + 1, hh);
-        c.fillStyle = 'rgba(20,30,40,0.18)'; c.fillRect(0, 0, ox, H); c.fillRect(ox + w, 0, ox + 1, H);
-      }
-      if (oy + hh < H) c.drawImage(img, 0, IMG_H - 60, IMG_W, 60, Math.min(0, ox), oy + hh - 1, Math.max(W, w), H - (oy + hh) + 1); // alt: deniz uzatması
-      c.drawImage(img, ox, oy, w, hh);
-    }
-  };
+  const TV = D.ImageView(IMG_W, IMG_H);
   D.TownView = TV;
   // Görsel koordinatlarında alanlar [x, y, w, h]
   const AREA = {
