@@ -83,7 +83,7 @@
       this.setState('CASTING');
     },
     buildSelect(s) {
-      this.root.append(h('div', { class: 'banner', style: { left: '26%', top: 'calc(var(--hudH) + 80px)', maxWidth: '900px' } }, 'Bir hedef seç! Siluete dokun.' + (this.enc.candidates.length > 1 ? ' (Büyük siluet = büyük/nadir av olabilir)' : '')));
+      this.root.append(h('div', { class: 'banner', style: { left: '26%', top: 'calc(var(--hudH) + 104px)', maxWidth: '900px' } }, 'Bir hedef seç! Siluete dokun.' + (this.enc.candidates.length > 1 ? ' (Büyük siluet = büyük/nadir av olabilir)' : '')));
       // Su altı panelinin tamamı dokunma alanı: basıldığı anda (pointerdown) en yakın siluet seçilir.
       // Hareketli küçük düğmeler yerine tek alan → parmak kayınca da kaçırmaz, yanlış/boş dokunuş ölü ekran yaratmaz.
       const P = this.pr();
@@ -165,7 +165,7 @@
         }
       }
       this.teleEl = h('div', { class: 'tele', style: { display: 'none', left: '26%' } });
-      this.bannerEl = h('div', { class: 'banner', style: { display: 'none', left: '26%', top: 'calc(var(--hudH) + 80px)', maxWidth: '900px' } });
+      this.bannerEl = h('div', { class: 'banner', style: { display: 'none', left: '26%', top: 'calc(var(--hudH) + 104px)', maxWidth: '900px' } });
       this.root.append(this.teleEl, this.bannerEl, h('div', { class: 'fish-hud' }, meters, specials, h('div', { class: 'ctrl' }, this.pullB, reelB)));
       this.fightUI();
     },
@@ -227,7 +227,10 @@
       const actions = [{ label: 'Haritaya Dön', cls: 'wood', fn: () => { D.SM.go('map', { sel: this.region }); } }, { label: 'Kasabaya Dön', cls: 'wood', fn: () => { D.SM.go('town'); } }, { label: 'Tekrar At', cls: 'green', fn: () => { again(); } }];
       let title, body;
       // Martı yorumu: portre + kullanıcının konuşma balonu (modal içinde, akışta)
-      const gull = (ok) => { const L2 = D.IdleLines[ok ? 'marti_success' : 'marti_fail']; return h('div', { class: 'row gull-say', style: { alignItems: 'flex-end' } }, D.UI.gullBubble(L2[(s.stats.casts) % L2.length], { inline: true, w: 520, fs: 0.95 }), D.UI.portrait('marti', 150)); };
+      // Kompakt: balon (320 px) + kuyruğun ucunda küçük Martı portresi
+      const gull = (ok) => { const L2 = D.IdleLines[ok ? 'marti_success' : 'marti_fail']; const w = 320, bh = Math.round(w * 644 / 900), pr = 88;
+        const pt = D.UI.portrait('marti', pr); pt.style.position = 'absolute'; pt.style.left = Math.round(w * 0.705 - 14) + 'px'; pt.style.top = (bh - 34) + 'px';
+        return h('div', { class: 'gull-say', style: { position: 'relative', width: (w + pr) + 'px', height: (bh - 34 + pr) + 'px', flex: '0 0 auto' } }, D.UI.gullBubble(L2[(s.stats.casts) % L2.length], { inline: true, w, fs: 0.8 }), pt); };
       if (r.kind === 'fish' && r.outcome === 'caught') {
         const f = r.fish, b = D.FishBalanceDB[f.fishId], src = D.FishDBSource.FishDB[f.fishId];
         const leg = b.rarity === 'legendary' || b.rarity === 'boss';

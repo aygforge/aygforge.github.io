@@ -207,13 +207,13 @@
     market: { fx: 0.51, fy: 0.18, hr: 0.17, hm: 1.0 },
     baskan: { fx: 0.43, fy: 0.19, hr: 0.17, hm: 1.0 },
     factory: { fx: 0.46, fy: 0.10, hr: 0.11, hm: 1.05 },
-    hasan: { fx: 0.48, fy: 0.16, hr: 0.14, hm: 1.05 },
-    kaya: { fx: 0.42, fy: 0.12, hr: 0.11, hm: 1.05 },
+    hasan: { fx: 0.48, fy: 0.16, hr: 0.14, hm: 1.05, pc: [0.51, 0.113, 0.092] },
+    kaya: { fx: 0.42, fy: 0.12, hr: 0.11, hm: 1.05, pc: [0.47, 0.115, 0.085] },
     kropi: { fx: 0.43, fy: 0.09, hr: 0.10, hm: 1.05 },
-    rustem: { fx: 0.52, fy: 0.19, hr: 0.20, hm: 1.0 },
-    tekir: { fx: 0.30, fy: 0.19, hr: 0.18, hm: 0.82 },
-    zip: { fx: 0.29, fy: 0.24, hr: 0.21, hm: 0.95 },
-    marti: { fx: 0.5, fy: 0.16, hr: 0.2, hm: 0.6, head: [0.62, 0.2] }   // oturan martı (atkılı); head: konuşma balonu ucu
+    rustem: { fx: 0.52, fy: 0.19, hr: 0.20, hm: 1.0, pc: [0.46, 0.21, 0.19] },
+    tekir: { fx: 0.30, fy: 0.19, hr: 0.18, hm: 0.82, pc: [0.65, 0.24, 0.2] },
+    zip: { fx: 0.29, fy: 0.24, hr: 0.21, hm: 0.95, pc: [0.39, 0.24, 0.2] },
+    marti: { fx: 0.5, fy: 0.16, hr: 0.2, hm: 0.6, head: [0.62, 0.2], pc: [0.47, 0.18, 0.2] }   // oturan martı (atkılı); head: konuşma balonu ucu
   };
   const sprite = (id) => (SPR[id] && D.Assets ? D.Assets.get('char_' + id) : null);
   const NPCArt = {
@@ -251,8 +251,9 @@
       if (img) {
         const sp = SPR[id];
         c.save(); A.circle(c, cx, cy, r); c.fillStyle = bg || '#f6e7c8'; c.fill(); c.clip();
-        const s2 = r / (sp.hr * img.height);
-        const px = sp.fx * img.width, py = (sp.fy + sp.hr * 0.35) * img.height;
+        // pc: [baş merkezi x, y (oran), baş yarıçapı (yükseklik oranı)] → baş dairenin ~%60'ı, omuzlar görünür
+        const s2 = sp.pc ? (r * 0.62) / (sp.pc[2] * img.height) : r / (sp.hr * img.height);
+        const px = (sp.pc ? sp.pc[0] : sp.fx) * img.width, py = sp.pc ? sp.pc[1] * img.height + (r * 0.1) / s2 : (sp.fy + sp.hr * 0.35) * img.height;
         c.drawImage(img, cx - px * s2, cy - py * s2, img.width * s2, img.height * s2);
         c.restore(); A.circle(c, cx, cy, r); A.fs(c, null, 5);
         return;

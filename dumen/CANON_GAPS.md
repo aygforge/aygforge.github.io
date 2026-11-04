@@ -103,5 +103,12 @@ Kaynak JSON dosyaları **birebir** korunur (testler gömülü kopyanın bayt eş
 - Market: eski kasiyer (Ahmet) kaldırıldı, Kaya Usta Market'te (Konuş = Kaya Usta; T2 görev metni "Market" olarak güncellendi). Belediye: yalnız Başkan, panel ve akvaryum dokunma alanı yok. Benim kararım: Denizin Defteri 88/88 ödülü (Altın Dümen Bayrağı + 10.000 coin) Defter penceresine eklendi; bölge ödülleri zaten oradaydı. Belediye duyuruları kaldırıldı (bölge durumu harita kartında).
 - Kasaba: kayık 360 → 270 px, Martı küçüldü, kasabadaki konuşma balonu 600 → 440 px.
 
+## İnce ayarlar 2
+- Portreler: Zıpırleone, Tekir, Kaya Usta, Hasan, Rüstem ve Martı için baş merkezi/yarıçapı görsel üzerinden yeniden ölçüldü (`NPCArt` SPR `pc`); baş dairenin ~%60'ı, omuzlar görünür.
+- Yakalama/kaçış penceresinde Martı: 320 px balon + kuyruğun ucunda küçük portre (kompakt blok).
+- Balık tutarken kırmızı uyarı (hamle sinyali) HUD barının altına alındı; olay bandı onun da altında.
+- Kaya Usta Market'te öne, tezgâha yaslanır konumda. Mekân panelleri 900 px genişlik, en fazla 740 px yükseklik.
+- e2e testi yükleme ekranının (≥1,6 sn) bitmesini bekliyor.
+
 ## Görseller
 Kasaba, Liman Sokağı, harita, karakterler, iç mekânlar ve bölgeler kullanıcı görselidir. Balıklar, eşyalar, tekne, Tarçov/Komplo Teorisyeni/Martı/oyuncu ve efektler **prosedürel Canvas çizimidir**. Yerleşimler GDD'deki öğelere sadık kompozisyonlardır; piksel koordinatları kaynakta kilitli değildir. Sesler WebAudio ile üretilir.

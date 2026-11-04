@@ -196,7 +196,7 @@
     home: { side: 'right', npcs: [], hots: [{ key: 'board', f: [0.09, 0.08, 0.32, 0.54], label: 'İlan Panosu', fn: () => D.Scenes.openJournal('board') }] },
     belediye: { side: 'none', npcs: [{ id: 'baskan', fx: 0.5, fy: 1.04, h: 0.76 }], hots: [{ key: 'baskan', f: [0.38, 0.28, 0.24, 0.72], label: 'Belediye Başkanı', fn: () => D.Scenes.talk('baskan') }] },
     rustem: { side: 'left', npcs: [{ id: 'rustem', fx: 0.68, fy: 1.06, h: 0.92 }] },   // tezgâhın önünde, ön planda tam boy
-    market: { side: 'right', npcs: [{ id: 'kaya', fx: 0.28, fy: 1.02, h: 0.78 }] },
+    market: { side: 'right', npcs: [{ id: 'kaya', fx: 0.4, fy: 1.1, h: 0.96 }] },   // öne, masaya yaslanır gibi
     hasan: { side: 'right', npcs: [{ id: 'hasan', fx: 0.3, fy: 1.08, h: 0.9 }] },     // ön plana yakın
     factory: { side: 'right', npcs: [{ id: 'factory', fx: 0.2, fy: 0.84, h: 0.56 }] },  // kutunun önünden sol-yukarı
     boatyard: { side: 'right', npcs: [{ id: 'kropi', fx: 0.22, fy: 1.04, h: 0.8 }] },

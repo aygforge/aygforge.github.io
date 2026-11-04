@@ -17,9 +17,9 @@ const ok = (c, n) => { if (c) pass++; else { fail++; console.log('  ✗ ' + n); 
   const ev = (fn, arg) => page.evaluate(fn, arg);
   const center = async (sel) => { const b = await page.locator(sel).first().boundingBox(); return [b.x + b.width / 2, b.y + b.height / 2]; };
   const tap = async (sel) => { const [x, y] = await center(sel); await page.mouse.click(x, y); await page.waitForTimeout(250); };
-  await page.goto(URL); await page.waitForTimeout(900);
+  await page.goto(URL); await page.waitForFunction(() => window.DUMEN && DUMEN.SM.name === 'menu', null, { timeout: 15000 }); await page.waitForTimeout(400);
   await ev(() => localStorage.clear());
-  await page.reload(); await page.waitForTimeout(900);
+  await page.reload(); await page.waitForFunction(() => window.DUMEN && DUMEN.SM.name === 'menu', null, { timeout: 15000 }); await page.waitForTimeout(400);
   ok(await page.locator('button[aria-label="Devam Et"]').isDisabled(), 'Kayıt yokken Devam Et pasif');
   await tap('button[aria-label="Yeni Oyun"]'); await page.waitForTimeout(1300);
   // intro diyaloğu geç
@@ -90,7 +90,7 @@ const ok = (c, n) => { if (c) pass++; else { fail++; console.log('  ✗ ' + n); 
   // kayıt kalıcılığı
   await ev(() => DUMEN.Game.saveNow());
   const snap = await ev(() => JSON.stringify({ c: DUMEN.Game.state.wallet, col: Object.keys(DUMEN.Game.state.collection).length }));
-  await page.reload(); await page.waitForTimeout(900);
+  await page.reload(); await page.waitForFunction(() => window.DUMEN && DUMEN.SM.name === 'menu', null, { timeout: 15000 }); await page.waitForTimeout(400);
   ok(!(await page.locator('button[aria-label="Devam Et"]').isDisabled()), 'Kayıt varken Devam Et aktif');
   await tap('button[aria-label="Devam Et"]'); await page.waitForTimeout(900);
   ok(await ev(() => JSON.stringify({ c: DUMEN.Game.state.wallet, col: Object.keys(DUMEN.Game.state.collection).length })) === snap, 'Yeniden açılışta cüzdan ve koleksiyon korunur');
