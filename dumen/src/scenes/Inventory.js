@@ -42,10 +42,10 @@
     return m;
   };
 
-  D.Scenes.openInventory = (tab) => {
+  D.Scenes.openInventory = (tab, onClose) => {
     const st = { tab: tab || 'fish', q: '', region: '', rarity: '', fresh: '', sort: 'new', showAll: true };
     const m = D.UI.modal({
-      title: 'Envanter', width: D.UI.view.W - 120, height: D.UI.view.H - 110, scroll: false,
+      title: 'Envanter', width: D.UI.view.W - 120, height: D.UI.view.H - 110, scroll: false, onClose,
       body: (b) => {
         const render = () => {
           D.UI.clear(b);

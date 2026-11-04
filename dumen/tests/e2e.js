@@ -83,7 +83,7 @@ const ok = (c, n) => { if (c) pass++; else { fail++; console.log('  ✗ ' + n); 
   ok(after - before === expect, 'Çift tıklama tek satış: +' + (after - before) + ' (beklenen ' + expect + ')');
   await page.screenshot({ path: path.join(OUT, '04_rustem.png') });
   // modal açıkken arka plan tıklanamaz
-  await tap('button:has-text("Envanter")'); await page.waitForTimeout(300);
+  await tap('button[aria-label="Envanter"]'); await page.waitForTimeout(300);
   await page.mouse.click(200, 400); await page.waitForTimeout(200);
   ok(await ev(() => DUMEN.SM.name) === 'rustem', 'Modal arka plan tıklamasını engeller');
   await ev(() => DUMEN.UI.closeAll());

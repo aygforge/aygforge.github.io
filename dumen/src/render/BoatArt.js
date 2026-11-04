@@ -62,6 +62,50 @@
     },
     // Oltanın ucu (dünya koordinatı) — çizgi buradan suya iner
     rodTip(level, x, y, scale) { const v = D.boatLevel(level).visual; const half = v.len / 2; const ox = (v.cabin ? -half * 0.45 : 10) + 40; return [x + (ox + 120) * scale, y - 190 * scale]; },
+    // ---- Kullanıcının çizdiği bölge kayıkları (assets/boats/<KOD>.webp, 720×~272, aynalı: burun solda, kıç direği sağda) ----
+    // Oyuncu karakteri çizilmez; olta kayıktaki ahşap tutucudan çıkar ve gerilimle bükülür. (x,y) = kayık merkezi / su hattı.
+    hasRegion(code) { return !!D.Assets.get('boat_' + code); },
+    drawRegion(c, code, x, y, scale, t, bend, opts) {
+      opts = opts || {};
+      const img = D.Assets.get('boat_' + code);
+      const IW = 720, WL = 178;            // görselde su hattı (gövde altı ~212)
+      const bob = Math.sin(t * 1.6) * 3, rock = Math.sin(t * 1.3) * 0.02;
+      let tip;
+      c.save(); c.translate(x, y + bob); c.rotate(rock); c.scale(scale, scale);
+      c.drawImage(img, -IW / 2, -WL, IW, img.height * IW / img.width);
+      // kıç direğinde bayrak (kozmetik takılıysa)
+      const flag = opts.flag && D.CosmeticDB[opts.flag] ? D.CosmeticDB[opts.flag].value : null;
+      if (flag) {
+        const px = IW / 2 - 18, py = -WL + 4;
+        c.beginPath(); c.moveTo(px, py); c.lineTo(px, py - 110); c.lineWidth = 9; c.strokeStyle = OL; c.stroke(); c.lineWidth = 5; c.strokeStyle = '#8a5a3a'; c.stroke();
+        c.beginPath(); c.moveTo(px, py - 108); c.quadraticCurveTo(px - 40, py - 118 + Math.sin(t * 6) * 5, px - 80, py - 104 + Math.sin(t * 6 + 1) * 6); c.lineTo(px - 80, py - 74 + Math.sin(t * 6 + 1) * 6); c.quadraticCurveTo(px - 40, py - 86 + Math.sin(t * 6) * 5, px, py - 76); c.closePath(); fs(c, flag.color, 4);
+        A.signText(c, { gull: '〰', skull: '☠', paw: '❀', star: '★', wheel: '☸' }[flag.mark] || '', px - 40, py - 92, 22, flag.color === '#ffffff' ? '#3d8fe0' : '#fff');
+      }
+      // olta: tutucudan (görselde ~453,55) yukarı, uç misinanın yönüne doğru bükülür
+      const bx = 453 - IW / 2, by = 55 - WL, b = D.clamp(bend || 0, 0, 1);
+      const tx = bx + 120 + b * 70, ty = by - 250 + b * 70;
+      const mx = bx + 70 + b * 50, my = by - 150 - b * 10;
+      c.lineCap = 'round';
+      c.beginPath(); c.moveTo(bx, by); c.quadraticCurveTo(mx, my, tx, ty);
+      c.lineWidth = 13; c.strokeStyle = OL; c.stroke(); c.lineWidth = 7; c.strokeStyle = '#a8743a'; c.stroke();
+      c.beginPath(); c.moveTo(bx + 2, by - 20); c.quadraticCurveTo(mx, my, tx, ty); c.lineWidth = 3; c.strokeStyle = 'rgba(255,230,180,0.55)'; c.stroke();
+      // makara
+      A.circle(c, bx - 6, by - 20, 15); fs(c, '#6a6f78', 6); A.circle(c, bx - 6, by - 20, 5); fs(c, '#c9ccd0', 3);
+      // uç halkası
+      A.circle(c, tx, ty, 6); fs(c, '#d8b47a', 4);
+      c.restore();
+      // su hattında köpük/halka: kayık suya oturur
+      c.save(); c.lineCap = 'round';
+      for (let k = 0; k < 3; k++) {
+        const q = (t * 0.35 + k / 3) % 1, rw = IW * scale * (0.5 + q * 0.25);
+        c.strokeStyle = `rgba(255,255,255,${0.45 * (1 - q)})`; c.lineWidth = 3;
+        c.beginPath(); c.ellipse(x - IW * scale * 0.04, y + bob + 4 + q * 6, rw, 10 + q * 8, 0, 0.1, Math.PI - 0.1); c.stroke();
+      }
+      c.restore();
+      const cs = Math.cos(rock), sn = Math.sin(rock);
+      tip = [x + (tx * cs - ty * sn) * scale, y + bob + (tx * sn + ty * cs) * scale];
+      return tip;
+    },
     drawRod(c, level, x, y, scale, t, bend) {
       const v = D.boatLevel(level).visual; const half = v.len / 2; const deck = v.hull === 'dinghy' ? -40 : v.hull === 'fishing' ? -48 : -58;
       const bx = x + ((v.cabin ? -half * 0.45 : 10) + 30) * scale, by = y + (deck - 70) * scale;

@@ -43,10 +43,10 @@
     setState(st) { this.state = st; this.build(); },
     build() {
       D.UI.clear(this.root);
-      D.HUD.set('wallet');
+      D.HUD.set('wallet', { inv: this.state === 'READY', onInvClose: () => { if (this.state === 'READY' && D.SM.cur === this) this.build(); } });
       const s = D.Game.state; const R = D.RegionDB[this.region];
       const L = this.L();
-      this.root.append(h('div', { class: 'row', style: { position: 'absolute', left: 'calc(20px + var(--safeL))', top: '96px', gap: '10px' } },
+      this.root.append(h('div', { class: 'row', style: { position: 'absolute', left: 'calc(20px + var(--safeL))', top: 'calc(var(--fs) * 6 + 20px)', gap: '10px' } },
         h('span', { class: 'chip', style: { fontSize: '.8em' } }, R.order + '. ' + R.name),
         R.env ? h('span', { class: 'chip ' + (L.envActive || L.decoys || L.fog || L.unsignaled ? 'no' : 'ok'), style: { fontSize: '.62em', maxWidth: '760px', whiteSpace: 'normal' } }, (L.envActive || L.decoys || L.fog || L.unsignaled ? 'Çevre: ' : 'Çevreye karşı korumalısın: ') + R.env.text) : null));
       if (this.state === 'READY') this.buildReady(s, L);
@@ -81,7 +81,7 @@
       this.setState('CASTING');
     },
     buildSelect(s) {
-      this.root.append(h('div', { class: 'banner', style: { left: '26%', top: '180px', maxWidth: '900px' } }, 'Bir hedef seç! Siluete dokun.' + (this.enc.candidates.length > 1 ? ' (Büyük siluet = büyük/nadir av olabilir)' : '')));
+      this.root.append(h('div', { class: 'banner', style: { left: '26%', top: 'calc(var(--fs) * 6 + 80px)', maxWidth: '900px' } }, 'Bir hedef seç! Siluete dokun.' + (this.enc.candidates.length > 1 ? ' (Büyük siluet = büyük/nadir av olabilir)' : '')));
       // Su altı panelinin tamamı dokunma alanı: basıldığı anda (pointerdown) en yakın siluet seçilir.
       // Hareketli küçük düğmeler yerine tek alan → parmak kayınca da kaçırmaz, yanlış/boş dokunuş ölü ekran yaratmaz.
       const P = this.pr();
@@ -155,7 +155,7 @@
         }
       }
       this.teleEl = h('div', { class: 'tele', style: { display: 'none', left: '26%' } });
-      this.bannerEl = h('div', { class: 'banner', style: { display: 'none', left: '26%', top: '180px', maxWidth: '900px' } });
+      this.bannerEl = h('div', { class: 'banner', style: { display: 'none', left: '26%', top: 'calc(var(--fs) * 6 + 80px)', maxWidth: '900px' } });
       this.root.append(this.teleEl, this.bannerEl, h('div', { class: 'fish-hud' }, meters, specials, h('div', { class: 'ctrl' }, this.pullB, reelB)));
       this.fightUI();
     },
@@ -291,9 +291,13 @@
       const lvl = s.boat.level;
       const sn = this.sim && this.state !== 'READY' ? this.sim.snapshot() : null;
       const reeling = this.reel && this.state === 'FIGHT';
-      D.BoatArt.draw(c, lvl, bx, by, 0.75, t, { player: true, reel: reeling, flag: s.cosmetics.equipped.flag, paint: s.cosmetics.equipped.paint, hat: s.cosmetics.equipped.hat, night: this.region === 'YK' });
       const bend = sn ? sn.tension : 0;
-      const tip = D.BoatArt.drawRod(c, lvl, bx, by + Math.sin(t * 1.3) * 0, 0.75, t, bend);
+      let tip;
+      if (D.BoatArt.hasRegion(this.region)) tip = D.BoatArt.drawRegion(c, this.region, bx, WY + 6, 0.62, t, bend, { flag: s.cosmetics.equipped.flag });
+      else {
+        D.BoatArt.draw(c, lvl, bx, by, 0.75, t, { player: true, reel: reeling, flag: s.cosmetics.equipped.flag, paint: s.cosmetics.equipped.paint, hat: s.cosmetics.equipped.hat, night: this.region === 'YK' });
+        tip = D.BoatArt.drawRod(c, lvl, bx, by + Math.sin(t * 1.3) * 0, 0.75, t, bend);
+      }
       // misina
       const entryX = Math.min(820, this.frame().x - 60);
       if (this.state !== 'READY') {

@@ -104,8 +104,8 @@
   // Tekne su çizgisinin biraz altına, ön plandaki suya oturur.
   const BG_VIEW = D.ImageView(1920, 1072);
   RA.BG_INFO = {
-    EL: { boat: 0.56 }, TS: { boat: 0.6 }, PSK: { boat: 0.52 }, YK: { boat: 0.53 },
-    TB: { boat: 0.5 }, BKM: { boat: 0.54 }, KKD: { boat: 0.48 }, BG: { boat: 0.55 }
+    EL: { boat: 0.56 }, TS: { boat: 0.6 }, PSK: { boat: 0.56 }, YK: { boat: 0.53 },
+    TB: { boat: 0.53 }, BKM: { boat: 0.54 }, KKD: { boat: 0.48 }, BG: { boat: 0.55 }
   };
   // Panel görselinin iç penceresi (çerçeve hariç su alanı), görsel boyutuna oranla [sol, üst, sağ, alt] boşluk.
   RA.PANEL_INSET = { EL: [0.105, 0.115, 0.105, 0.135], TS: [0.105, 0.11, 0.105, 0.125], PSK: [0.095, 0.11, 0.1, 0.13], YK: [0.11, 0.14, 0.105, 0.12],

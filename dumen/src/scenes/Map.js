@@ -42,7 +42,7 @@
       // Kart dört köşeden, en az bölgeyi (özellikle seçili bölgeyi) kapatan köşede açılır; ✕ ile gizlenebilir.
       const vw = D.UI.view.W, vh = D.UI.view.H, cardW = 700, cardH = 560;
       const corners = [
-        { x0: 30, y0: 120, css: { left: 'calc(30px + var(--safeL))', top: '120px' } },
+        { x0: 30, y0: D.HUD.bottom(), css: { left: 'calc(30px + var(--safeL))', top: D.HUD.bottom() + 'px' } },   // sol üst: görsel HUD barının altı
         { x0: vw - 30 - cardW, y0: 120, css: { right: 'calc(30px + var(--safeR))', top: '120px' } },
         { x0: 30, y0: vh - 30 - cardH, css: { left: 'calc(30px + var(--safeL))', bottom: '30px' } },
         { x0: vw - 30 - cardW, y0: vh - 30 - cardH, css: { right: 'calc(30px + var(--safeR))', bottom: '30px' } }
@@ -51,7 +51,7 @@
       let best = corners[0], bc = Infinity; for (const cn of corners) { const v = cover(cn); if (v < bc) { bc = v; best = cn; } }
       const side = best.css;
       if (this.cardHidden) return;
-      const panel = h('div', { class: 'panel map-card', style: Object.assign({ width: '700px', maxHeight: 'calc(100% - 160px)' }, side) },
+      const panel = h('div', { class: 'panel map-card', style: Object.assign({ width: '700px', maxHeight: 'calc(100% - ' + (best.y0 + 40) + 'px)' }, side) },
         h('h2', null, R.order + '. ' + R.name, h('span', { class: 'grow' }), btn('✕', () => { this.cardHidden = true; this.build(); }, { cls: 'small round', aria: 'Kartı gizle' })),
         h('div', { class: 'scroll grow col' },
           D.Assets.get('region_' + this.sel) ? h('div', { class: 'map-prev' + (unlocked ? '' : ' locked') },

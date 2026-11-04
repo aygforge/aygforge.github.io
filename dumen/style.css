@@ -96,6 +96,19 @@ input[type=range] { width: 360px; height: 60px; accent-color: var(--wood); }
 .wallet { display: flex; gap: 10px; flex-wrap: wrap; }
 .wallet .chip { font-size: .8em; padding: 6px 18px; background: rgba(255,246,223,.95); }
 .hud-btns { display: flex; gap: 12px; }
+/* Görsel HUD: tahta bar + ikonlar; yükseklik --fs ile ölçeklenir (arayüz boyutu ayarı dahil) */
+.hud-left { display: flex; align-items: flex-start; gap: 10px; }
+.hudbar { position: relative; height: calc(var(--fs) * 6); aspect-ratio: 900 / 246; flex: 0 0 auto; margin: -8px 0 0 -10px; filter: drop-shadow(0 6px 4px rgba(0,0,0,.35)); }
+.hudbar-bg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.hslot { position: absolute; padding: 0; margin: 0; border: 0; background: none; }
+.hslot img { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.hslot.bag { cursor: pointer; touch-action: manipulation; border-radius: 50%; min-width: var(--tap); min-height: var(--tap); transition: transform .08s; }
+.hslot.bag:active { transform: scale(.94); }
+.hslot.bag.off { filter: grayscale(.6) brightness(.8); cursor: default; }
+.hval { position: absolute; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #fff8e6; line-height: 1; font-size: calc(var(--fs) * .72); white-space: nowrap; text-shadow: 0 0 3px #2a1606, 0 0 3px #2a1606, 0 2px 0 #2a1606; letter-spacing: -.02em; }
+.hval.l4 { font-size: calc(var(--fs) * .64); } .hval.l5 { font-size: calc(var(--fs) * .56); } .hval.l6 { font-size: calc(var(--fs) * .5); }
+.hud-chips { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+.hud-chips .chip { font-size: .7em; padding: 4px 16px; background: rgba(255,246,223,.95); }
 .hud-btns .btn { padding: 0 22px; font-size: .78em; }
 .hud-btns .btn .lbl { display: inline; }
 
@@ -176,7 +189,7 @@ input[type=range] { width: 360px; height: 60px; accent-color: var(--wood); }
 .map-lbl { position: absolute; transform: translateX(-50%); pointer-events: none !important; white-space: nowrap; background: rgba(42,26,16,.85); color: #fff6df; font-weight: 900; font-size: .74em; padding: 4px 18px; border-radius: 14px; border: 3px solid #fff6df; }
 .map-lbl.locked { background: rgba(40,40,50,.8); color: #d8d0c0; }
 .map-lbl.sel { background: #f2c42a; color: var(--ink); border-color: var(--ink); }
-.shop-layout.left { right: auto; left: calc(30px + var(--safeL)); }
+.shop-layout.left { right: auto; left: calc(30px + var(--safeL)); top: calc(var(--fs) * 6 + 26px); }
 
 /* Harita kartında bölge önizlemesi: kullanıcı çizimi arka plan + çerçeveli su altı paneli */
 .map-prev { position: relative; flex: 0 0 auto; height: 170px; border: 5px solid var(--ink); border-radius: 18px; overflow: hidden; }
