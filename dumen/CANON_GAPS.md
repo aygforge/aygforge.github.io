@@ -92,5 +92,10 @@ Kaynak JSON dosyaları **birebir** korunur (testler gömülü kopyanın bayt eş
 - Benim kararlarım: yükleme ekranı replik okunabilsin diye en az ~1,6 sn görünür. Ana menüye sol altta atkılı Martı eklendi. Balık sonucu penceresinde Martı yorumu artık portre + kullanıcı balonuyla gösterilir. Diyalog kutuları (hikâye konuşmaları) eski biçimde kaldı; balon yalnız Martı'nın serbest repliklerinde kullanılır.
 - Martı görseli diyalog/sonuç portrelerinde de kullanılır.
 
+## Ana menü görselleri (kullanıcı)
+- Zip'te ayrı bir arka plan görseli yoktu; benim kararım: arka plan olarak kasaba illüstrasyonu (üstten/alttan karartma ile) kullanıldı. Ayrı bir menü arka planı gelirse ona geçilir.
+- "Kayıtlı Oyun" düğmesi için oyunda tek kayıt yuvası var: özet + devam / dışa aktar / içe aktar penceresi açar (çoklu kayıt yuvası yok). "Çıkış": web'de `window.close()` çoğu tarayıcıda yalnız betikle açılan sekmeleri kapatır; kapanmazsa kullanıcıya bilgi verilir, ilerleme önceden kaydedilir.
+- Eski "Tam Ekran" düğmesi görsel setinde olmadığı için sol üstte küçük yuvarlak düğmeye dönüştü (mobilde gerekli).
+
 ## Görseller
 Kasaba, Liman Sokağı, harita, karakterler, iç mekânlar ve bölgeler kullanıcı görselidir. Balıklar, eşyalar, tekne, Tarçov/Komplo Teorisyeni/Martı/oyuncu ve efektler **prosedürel Canvas çizimidir**. Yerleşimler GDD'deki öğelere sadık kompozisyonlardır; piksel koordinatları kaynakta kilitli değildir. Sesler WebAudio ile üretilir.

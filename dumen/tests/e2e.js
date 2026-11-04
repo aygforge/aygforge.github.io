@@ -20,8 +20,8 @@ const ok = (c, n) => { if (c) pass++; else { fail++; console.log('  ✗ ' + n); 
   await page.goto(URL); await page.waitForTimeout(900);
   await ev(() => localStorage.clear());
   await page.reload(); await page.waitForTimeout(900);
-  ok(await page.locator('button:has-text("Devam Et")').isDisabled(), 'Kayıt yokken Devam Et pasif');
-  await tap('button:has-text("Yeni Oyun")'); await page.waitForTimeout(1300);
+  ok(await page.locator('button[aria-label="Devam Et"]').isDisabled(), 'Kayıt yokken Devam Et pasif');
+  await tap('button[aria-label="Yeni Oyun"]'); await page.waitForTimeout(1300);
   // intro diyaloğu geç
   for (let i = 0; i < 6 && await ev(() => DUMEN.UI.modalOpen()); i++) { await page.mouse.click(640, 600); await page.waitForTimeout(350); }
   ok(await ev(() => DUMEN.SM.name) === 'town', 'Kasaba sahnesi');
@@ -91,8 +91,8 @@ const ok = (c, n) => { if (c) pass++; else { fail++; console.log('  ✗ ' + n); 
   await ev(() => DUMEN.Game.saveNow());
   const snap = await ev(() => JSON.stringify({ c: DUMEN.Game.state.wallet, col: Object.keys(DUMEN.Game.state.collection).length }));
   await page.reload(); await page.waitForTimeout(900);
-  ok(!(await page.locator('button:has-text("Devam Et")').isDisabled()), 'Kayıt varken Devam Et aktif');
-  await tap('button:has-text("Devam Et")'); await page.waitForTimeout(900);
+  ok(!(await page.locator('button[aria-label="Devam Et"]').isDisabled()), 'Kayıt varken Devam Et aktif');
+  await tap('button[aria-label="Devam Et"]'); await page.waitForTimeout(900);
   ok(await ev(() => JSON.stringify({ c: DUMEN.Game.state.wallet, col: Object.keys(DUMEN.Game.state.collection).length })) === snap, 'Yeniden açılışta cüzdan ve koleksiyon korunur');
   // mobil boyutlar
   for (const [w, h, name] of [[844, 390, '05_phone_19.5x9'], [915, 412, '06_phone_20x9'], [1024, 768, '07_tablet_4x3']]) {

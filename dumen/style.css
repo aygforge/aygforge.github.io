@@ -213,3 +213,13 @@ input[type=range] { width: 360px; height: 60px; accent-color: var(--wood); }
 .map-prev .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; }
 .map-prev .pn { position: absolute; right: 8px; bottom: 6px; height: 150px; width: auto; filter: drop-shadow(0 4px 6px rgba(0,0,0,.45)); }
 .map-prev.locked img { filter: grayscale(.7) brightness(.55); }
+
+/* Ana menü: kullanıcı görselleri (tahta tabela düğmeler, DÜMEN logosu) */
+.menu-logo { position: absolute; height: auto; pointer-events: none; filter: drop-shadow(0 10px 8px rgba(0,0,0,.4)); animation: logoSwing 5s ease-in-out infinite; transform-origin: 50% 0; }
+@keyframes logoSwing { 50% { transform: rotate(1.2deg); } }
+.menu-row { position: absolute; transform: translateX(-50%); display: flex; gap: 22px; align-items: center; }
+.btn.menu-sign { padding: 0; border: 0; background: none; box-shadow: none; border-radius: 26px; min-height: 0; }
+.btn.menu-sign img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; filter: drop-shadow(0 8px 4px rgba(0,0,0,.45)); transition: transform .08s, filter .1s; }
+.btn.menu-sign:hover img { transform: translateY(-3px) rotate(-.6deg); }
+.btn.menu-sign:active img { transform: translateY(4px) scale(.98); }
+.btn.menu-sign.off img { filter: grayscale(.85) brightness(.7) drop-shadow(0 8px 4px rgba(0,0,0,.4)); }
