@@ -44,28 +44,20 @@
 
   // ---- TrashDB (türetilmiş) ----
   const T = (id, name, regions, w, out, extra) => Object.assign({ id, name, regions, w, out }, extra || {});
+  // Kullanıcının çizdiği 9 çöp ikonu (assets/trash/<ID>.webp). Ayrıştırma çıktıları materyal bölgelerine göre.
   D.TrashDB = D.deepFreeze({
-    T_BOOT: T('T_BOOT', 'Tek Lastik Çizme', ['EL', 'TS', 'BKM'], 10, [{ id: 'MAT_08', n: 1 }], { quip: 'Diğer teki muhtemelen Bermuda\'da.' }),
-    T_CAN: T('T_CAN', 'Ezik Teneke Kutu', ['EL', 'PSK', 'TS'], 12, [{ id: 'MAT_SCRAP', n: 1 }], { quip: 'İçinde balık yok. Sadece hayal kırıklığı.' }),
-    T_UMBRELLA: T('T_UMBRELLA', 'Ters Dönmüş Şemsiye', ['EL', 'TS'], 6, [{ id: 'MAT_03', n: 1 }, { id: 'MAT_SCRAP', n: 1 }], { quip: 'Rüzgârla tartışmayı kaybetmiş.' }),
-    T_DUCK: T('T_DUCK', 'Plastik Ördek', ['*'], 7, [{ id: 'MAT_08', n: 1 }], { quip: 'Vak. Ama ıslak.' }),
-    T_BELL: T('T_BELL', 'Paslı Bisiklet Zili', ['PSK', 'EL'], 7, [{ id: 'MAT_SCRAP', n: 1 }, { id: 'MAT_04', n: 1 }], { quip: 'Çın çın. Paslı çın.' }),
-    T_SLIPPER: T('T_SLIPPER', 'Tek Terlik', ['EL', 'TS', 'YK'], 9, [{ id: 'MAT_08', n: 1 }], { quip: 'Anne terliği değil, rahatla.' }),
-    T_PIPE: T('T_PIPE', 'Boru Parçası', ['PSK'], 12, [{ id: 'MAT_02', n: 1 }], { quip: 'Kanaldan kanala göçmen bir boru.' }),
-    T_GEARBOX: T('T_GEARBOX', 'Kırık Vites Kutusu', ['PSK'], 8, [{ id: 'MAT_05', n: 1 }, { id: 'MAT_SCRAP', n: 1 }], { quip: 'Geri vitese takılı kalmış.' }),
-    T_REMOTE: T('T_REMOTE', 'Pilsiz Kumanda', ['PSK', 'BG'], 6, [{ id: 'MAT_09', n: 1 }], { quip: 'Kanal değiştirmeye çalıştın. Denizi değiştirdin.' }),
-    T_FAN: T('T_FAN', 'Pervane Kanadı', ['EL', 'BKM', 'TS'], 7, [{ id: 'MAT_07', n: 1 }], { quip: 'Bir zamanlar bir teknenin hayaliydi.' }),
-    T_MAGNET: T('T_MAGNET', 'Buzdolabı Magneti', ['TB', 'BG'], 7, [{ id: 'MAT_08', n: 1 }, { id: 'MAT_SCRAP', n: 1 }], { quip: '"Antalya 1998" yazıyor.' }),
-    T_GLOBE: T('T_GLOBE', 'Kar Küresi', ['TB'], 9, [{ id: 'MAT_10', n: 1 }], { quip: 'İçinde minik bir buzul var. Şaka değil.' }),
-    T_ANCHOR: T('T_ANCHOR', 'Mini Çapa', ['BKM'], 8, [{ id: 'MAT_SCRAP', n: 2 }, { id: 'MAT_06', n: 1 }], { quip: 'Oyuncak gemiye aitmiş.' }),
-    T_BOTTLE: T('T_BOTTLE', 'Şişede Mesaj', ['BKM', 'YK', 'EL'], 5, [{ id: 'MAT_08', n: 1 }], { coin: 15, quip: '"Kim okuyorsa: Martıya simit verme." — İmza: Rüstem' }),
-    T_PAN: T('T_PAN', 'Erimiş Tava', ['KKD'], 11, [{ id: 'MAT_SCRAP', n: 2 }], { quip: 'Teflon değilmiş.' }),
-    T_GRILL: T('T_GRILL', 'Mangal Izgarası', ['KKD'], 9, [{ id: 'MAT_SCRAP', n: 2 }, { id: 'MAT_03', n: 1 }], { quip: 'Delta halkı pikniği abartmış.' }),
-    T_CD: T('T_CD', 'Eski CD', ['YK', 'BG'], 8, [{ id: 'MAT_08', n: 1 }, { id: 'MAT_09', n: 1 }], { quip: '"Arabesk Hitler 2003". Çizik.' }),
-    T_EARBUDS: T('T_EARBUDS', 'Dolanmış Kulaklık', ['PSK', 'YK', 'BG'], 7, [{ id: 'MAT_09', n: 1 }], { quip: 'Çözmeye çalışma. Kimse çözemedi.' }),
-    T_KEYRING: T('T_KEYRING', 'Paslı Anahtarlık', ['*'], 1.6, [{ id: 'KEY_01', n: 1 }], { quip: 'Üzerinde bir de anahtar var! Paslı ama çalışır.' }),
-    T_PIXELS: T('T_PIXELS', 'Piksel Kümesi', ['BG'], 4, [{ id: 'MAT_14', n: 1 }], { quip: 'Gerçekliğin bir parçası kopmuş. Geri dönüştürülebilir.' })
+    T_BOLT: T('T_BOLT', 'Paslı Cıvata & Somun', ['EL', 'TS', 'PSK'], 10, [{ id: 'MAT_03', n: 1 }], { quip: 'Somun cıvatasını hiç bırakmamış. Pas bile ayıramamış.' }),
+    T_GEAR: T('T_GEAR', 'Dişli Çark', ['TS', 'PSK', 'KKD'], 8, [{ id: 'MAT_05', n: 1 }, { id: 'MAT_SCRAP', n: 1 }], { quip: 'Hâlâ dönmeye çalışıyor. Saygı duy.' }),
+    T_BELL: T('T_BELL', 'Eski Gemi Çanı', ['EL', 'BKM', 'TB'], 6, [{ id: 'MAT_SCRAP', n: 2 }, { id: 'MAT_04', n: 1 }], { quip: 'Çaldın mı? Çalma. Hayaletler geliyor.' }),
+    T_CABLE: T('T_CABLE', 'Kopuk Kablo', ['PSK', 'YK', 'BG'], 9, [{ id: 'MAT_09', n: 1 }], { quip: 'Kırmızı mı mavi mi? İkisi de ıslak.' }),
+    T_LID: T('T_LID', 'Paslı Kapak', ['*'], 10, [{ id: 'MAT_SCRAP', n: 1 }], { quip: 'Neyin kapağı olduğunu kimse bilmiyor. Kapak da bilmiyor.' }),
+    T_MOTOR: T('T_MOTOR', 'Paslı Motor', ['PSK', 'BKM', 'KKD'], 6, [{ id: 'MAT_06', n: 1 }, { id: 'MAT_SCRAP', n: 1 }], { quip: 'Bir zamanlar bir teknenin hayaliydi. Şimdi senin ambarının yükü.' }),
+    T_BAG: T('T_BAG', 'Plastik Poşet', ['*'], 12, [{ id: 'MAT_08', n: 1 }], { quip: 'Denizanası sandın, değil. Neyse ki.' }),
+    T_SOCK: T('T_SOCK', 'Tek Çorap', ['EL', 'TS', 'YK', 'TB'], 9, [{ id: 'MAT_08', n: 1 }], { quip: 'Diğer teki muhtemelen Bermuda\'da.' }),
+    T_BOTTLE: T('T_BOTTLE', 'Şişede Mesaj', ['*'], 6, [{ id: 'MAT_08', n: 1 }], { coin: 15, quip: '"Kim okuyorsa: Martıya simit verme." — İmza: Rüstem' })
   });
+  // Eski kayıtlardaki çöp kimlikleri → yeni katalog (Save.migrate kullanır). T_KEYRING içindeki anahtar anahtar olarak verilir.
+  D.TRASH_LEGACY = Object.freeze({ T_BOOT: 'T_SOCK', T_CAN: 'T_LID', T_UMBRELLA: 'T_BAG', T_DUCK: 'T_BAG', T_SLIPPER: 'T_SOCK', T_PIPE: 'T_LID', T_GEARBOX: 'T_GEAR', T_REMOTE: 'T_CABLE', T_FAN: 'T_MOTOR', T_MAGNET: 'T_LID', T_GLOBE: 'T_BOTTLE', T_ANCHOR: 'T_BELL', T_PAN: 'T_LID', T_GRILL: 'T_BOLT', T_CD: 'T_CABLE', T_EARBUDS: 'T_CABLE', T_PIXELS: 'T_CABLE', T_KEYRING: 'KEY_01' });
 
   // ---- CosmeticDB (türetilmiş; GDD §30 "tekne kozmetikleri" açık madde) ----
   const C = (id, name, slot, value, source) => ({ id, name, slot, value, source });

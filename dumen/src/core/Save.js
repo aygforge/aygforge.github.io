@@ -132,6 +132,8 @@
     s.inv.fish = s.inv.fish.filter((f) => D.FishDBSource.FishDB[f.fishId]);
     s.inv.chests = s.inv.chests.filter((c) => D.ItemDBSource.ItemDB[c.chestId] && D.ItemDBSource.ItemDB[c.chestId].category === 'chest');
     for (const id of Object.keys(s.inv.items)) if (!D.ItemDBSource.ItemDB[id]) delete s.inv.items[id];
+    // Çöp kataloğu yenilendi: eski kimlikler yenilerine taşınır, bilinmeyenler atılır
+    { const tr = {}; for (const [id, n] of Object.entries(s.inv.trash || {})) { if (!(n > 0)) continue; const to = D.TrashDB[id] ? id : D.TRASH_LEGACY[id]; if (!to) continue; if (D.TrashDB[to]) tr[to] = (tr[to] || 0) + n; else if (D.ItemDBSource.ItemDB[to]) s.inv.items[to] = (s.inv.items[to] || 0) + n; } s.inv.trash = tr; }
     for (const slot of ['rod', 'line', 'hook', 'float']) {
       s.owned[slot] = s.owned[slot].filter((id) => D.ItemDBSource.ItemDB[id] && D.ItemDBSource.ItemDB[id].category === slot);
       if (!s.owned[slot].includes(s.equip[slot])) s.equip[slot] = s.owned[slot][0];

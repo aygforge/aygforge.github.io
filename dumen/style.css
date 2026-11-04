@@ -167,6 +167,18 @@ input[type=range] { width: 360px; height: 60px; accent-color: var(--wood); }
 .btn.reel.on { background: #2a6ab0; transform: translateY(6px); box-shadow: 0 1px 0 var(--ink); }
 .btn.pull { width: 230px; height: 230px; border-radius: 50%; font-size: 1.3em; background: #f2c42a; }
 .btn.pull.ready { background: #4fb36b; color: #fff; animation: pulse .6s ease-in-out infinite; }
+/* Görsel SAR (makara kareleri) ve ÇEK düğmeleri */
+.btn.reel.art, .btn.pull.art { background: none; border: 0; box-shadow: none; padding: 0; border-radius: 50%; }
+.btn.reel.art { width: 290px; height: 290px; }
+.btn.reel.art img, .btn.pull.art img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; filter: drop-shadow(0 7px 0 rgba(42,26,16,.55)); }
+.btn.reel.art.on { transform: translateY(4px) scale(.97); box-shadow: none; }
+.btn.reel.art .cap { position: absolute; left: 50%; bottom: -6px; transform: translateX(-50%); background: #2a6ab0; color: #fff; border: 4px solid var(--ink); border-radius: 14px; padding: 2px 16px; font-size: .62em; pointer-events: none; }
+.btn.pull.art { width: 300px; height: 181px; border-radius: 36px; }
+.btn.pull.art img { filter: drop-shadow(0 7px 0 rgba(42,26,16,.55)) saturate(.85) brightness(.92); }
+.btn.pull.art.ready { animation: pullready .6s ease-in-out infinite; }
+.btn.pull.art.ready img { filter: drop-shadow(0 7px 0 rgba(42,26,16,.55)) drop-shadow(0 0 18px rgba(120,230,140,.95)); }
+.btn.pull.art:active { transform: translateY(5px); }
+@keyframes pullready { 50% { transform: scale(1.06); } }
 @keyframes pulse { 50% { box-shadow: 0 7px 0 var(--ink), 0 0 0 16px rgba(79,179,107,.45); } }
 .tele { position: absolute; left: 50%; top: 130px; transform: translateX(-50%); background: #e0453d; color: #fff; border: 5px solid var(--ink); border-radius: 22px; padding: 10px 30px; font-weight: 900; font-size: .9em; pointer-events: none; animation: pop .15s; }
 .banner { position: absolute; left: 50%; top: 220px; transform: translateX(-50%); background: rgba(42,26,16,.9); color: #ffe08a; border: 5px solid #ffe08a; border-radius: 22px; padding: 12px 34px; font-weight: 900; font-size: .9em; pointer-events: none; text-align: center; max-width: 1300px; }

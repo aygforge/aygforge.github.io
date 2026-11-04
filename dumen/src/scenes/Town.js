@@ -70,14 +70,23 @@
     rustem: [1705, 390, 290, 280],
     pier: [415, 545, 470, 420],
     boatL: [0, 705, 150, 130],
-    gull: [790, 600, 110, 90],
+    gull: [905, 840, 330, 190],          // denizdeki kayık + martı
     tarcov: [1160, 400, 120, 150],
     // Komplo 2. bölüm inceleme noktaları
     lamp: [1570, 395, 110, 85],
     cloud: [1435, 0, 115, 85],
     facade: [1260, 120, 150, 210]
   };
-  const GULL_AT = [835, 662];
+  // Denizde hafifçe dalgalanan kayık (kullanıcı görseli assets/town_boat.webp, 700×354) ve üstündeki martı
+  const BOAT = { x: 1070, y: 930, w: 360 };            // merkez (görsel koordinatı) ve genişlik
+  const GULL_ON_BOAT = [455, 215];                    // kayık görselinde martının durduğu arka oturak
+  const GULL_AT = [835, 662];                         // kayık görseli yoksa: iskele yanındaki kayık
+  const boatPose = (t) => ({ dy: Math.sin(t * 1.4) * 6, rot: Math.sin(t * 1.1 + 0.6) * 0.035, dx: Math.sin(t * 0.45) * 5 });
+  const gullPoint = (t) => {
+    if (!D.Assets.get('town_boat')) return GULL_AT;
+    const p = boatPose(t), k = BOAT.w / 700, lx = (GULL_ON_BOAT[0] - 350) * k, ly = (GULL_ON_BOAT[1] - 177) * k;
+    return [BOAT.x + p.dx + lx * Math.cos(p.rot) - ly * Math.sin(p.rot), BOAT.y + p.dy + lx * Math.sin(p.rot) + ly * Math.cos(p.rot)];
+  };
   const TARCOV_AT = [1220, 540];
 
   D.SM.register('town', {
@@ -127,7 +136,7 @@
       const lines = D.IdleLines.marti;
       const k = (D.Game.state.npc.talk.marti_ambient || 0);
       D.Game.state.npc.talk.marti_ambient = k + 1; // yalnız süs sayacı (ekonomi dışı)
-      const [x, y] = TV.pt(GULL_AT[0], GULL_AT[1]);
+      const g = gullPoint(this.t || 0), [x, y] = TV.pt(g[0], g[1]);
       D.UI.speech(this.root, Math.max(20, x - 60), Math.max(110, y - 200), lines[k % lines.length]);
       if (force) D.Audio.sfx('gull');
     },
@@ -154,8 +163,22 @@
       }
       // kıyıda parıltılar
       D.Art.sparkles(c, [[1120, 840, 0, 6], [1480, 900, 2, 5], [300, 930, 4, 5], [1750, 960, 1, 6]], t, 'rgba(255,255,255,0.75)');
-      // Martı: iskele yanındaki kayığa konmuş (görev vermez)
-      D.NPCArt.draw(c, 'marti', GULL_AT[0], GULL_AT[1], 0.42, t);
+      // Denizdeki kayık hafifçe dalgalanır; martı üstünde (görev vermez, replik söyler)
+      const bimg = D.Assets.get('town_boat');
+      if (bimg) {
+        const p = boatPose(t), k = BOAT.w / 700, bh = 354 * k;
+        // su halkaları
+        c.save(); c.lineCap = 'round';
+        for (let i = 0; i < 3; i++) { const q = (t * 0.3 + i / 3) % 1; c.strokeStyle = `rgba(255,255,255,${0.5 * (1 - q)})`; c.lineWidth = 3; c.beginPath(); c.ellipse(BOAT.x + p.dx, BOAT.y + bh * 0.36 + p.dy * 0.5, BOAT.w * (0.48 + q * 0.18), 16 + q * 12, 0, 0.15, Math.PI - 0.15); c.stroke(); }
+        c.restore();
+        c.save(); c.translate(BOAT.x + p.dx, BOAT.y + p.dy); c.rotate(p.rot);
+        c.drawImage(bimg, -BOAT.w / 2, -bh / 2, BOAT.w, bh);
+        c.restore();
+        // gövdenin alt kısmına su rengi bir şerit: kayık suya oturur
+        c.save(); c.globalAlpha = 0.35; c.fillStyle = '#5fb6b8'; c.beginPath(); c.ellipse(BOAT.x + p.dx, BOAT.y + bh * 0.42 + p.dy, BOAT.w * 0.45, 14, 0, 0, Math.PI * 2); c.fill(); c.restore();
+      }
+      const g = gullPoint(t);
+      D.NPCArt.draw(c, 'marti', g[0], g[1], bimg ? 0.7 : 0.42, t);
       if (this.tarcovHere(s)) D.NPCArt.draw(c, 'tarcov', TARCOV_AT[0], TARCOV_AT[1], 0.55, t);
       c.restore();
     }

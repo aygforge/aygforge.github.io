@@ -176,7 +176,7 @@
     // baca dumanı (fabrika)
     for (const x0 of [800, 1150]) for (let i = 0; i < 5; i++) { const k = (t * 0.2 + i / 5 + x0 * 0.001) % 1; A.circle(c, x0 + Math.sin(k * 5) * 12 + k * 40, 170 - k * 150, 18 + k * 26); c.fillStyle = `rgba(200,200,200,${0.5 * (1 - k)})`; c.fill(); }
     // fabrika bandı
-    c.fillStyle = '#2a2a2a'; c.fillRect(806, 690, 188, 14); for (let i = 0; i < 6; i++) { const x = 806 + ((t * 40 + i * 32) % 188); D.ItemArt.drawTrash(c, ['T_CAN', 'T_BOOT', 'T_DUCK'][i % 3], x, 676, 26); }
+    c.fillStyle = '#2a2a2a'; c.fillRect(806, 690, 188, 14); for (let i = 0; i < 6; i++) { const x = 806 + ((t * 40 + i * 32) % 188); D.ItemArt.drawTrash(c, ['T_LID', 'T_SOCK', 'T_BAG'][i % 3], x, 676, 26); }
     A.signText(c, 'GERİ DÖNÜŞÜM FABRİKASI', 980, 340, 28, '#fff', OL);
     // atölye içindeki tekne
     D.BoatArt.draw(c, state.boat.level, 1550, 690, 0.55, t, { still: true, flag: state.cosmetics.equipped.flag, paint: state.cosmetics.equipped.paint });
@@ -274,7 +274,7 @@
     },
     factory(c, t) {
       c.fillStyle = '#2a2a2a'; c.fillRect(0, 620, 880, 30);
-      for (let i = 0; i < 10; i++) { const x = (t * 70 + i * 90) % 900; D.ItemArt.drawTrash(c, ['T_CAN', 'T_BOOT', 'T_DUCK', 'T_PIPE', 'T_BOTTLE'][i % 5], x, 596, 48); }
+      for (let i = 0; i < 10; i++) { const x = (t * 70 + i * 90) % 900; D.ItemArt.drawTrash(c, ['T_LID', 'T_SOCK', 'T_BAG', 'T_GEAR', 'T_BOTTLE'][i % 5], x, 596, 48); }
       for (let i = 0; i < 6; i++) { A.circle(c, 30 + i * 160, 635, 14); A.fs(c, '#5a5f66', 3); }
       A.rr(c, 560, 260, 300, 340, 10); A.fs(c, '#5a6a5a', 4); A.rr(c, 600, 300, 220, 120, 8); A.fs(c, '#1a2a1a', 4);
       c.fillStyle = '#3cff6c'; c.font = 'bold 26px monospace'; c.fillText('BAYAT→%', 620, 350); c.fillText('ÇÖP→MAT', 620, 390);

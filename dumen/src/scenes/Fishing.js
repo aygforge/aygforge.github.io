@@ -7,6 +7,8 @@
   // Görsel yoksa eski prosedürel panel (iç pencere = PANEL).
   const PANEL = { y: 130, w: 840, h: 620 };
   const FRAME = { y: 84, w: 860, h: 718 };
+  const REEL = ['F1', 'F2', 'F3', 'F4', 'F5', 'F6'], UNREEL = ['RB1', 'RB2', 'RB3', 'RB4', 'RB5'];
+  const REEL_FPS = 14, UNREEL_FPS = 12;
 
   D.SM.register('fishing', {
     music: (p) => p.region,
@@ -135,9 +137,17 @@
       this.mDist.append(h('span', { class: 'mark', style: { left: (sim.pullDist / sim.maxDist) * 100 + '%' } }));
       this.lInat = h('span', null, ''); this.lTen = h('span', null, ''); this.lDist = h('span', null, '');
       const meters = h('div', { class: 'meters' }, h('span', null, 'İnat'), this.mInat, this.lInat, h('span', null, 'Gerilim'), this.mTen, this.lTen, h('span', null, 'Mesafe'), this.mDist, this.lDist);
-      const reelB = h('button', { class: 'btn reel', type: 'button', 'aria-label': 'Sar (basılı tut)' }, 'SAR');
+      // SAR: kullanıcının makara kareleri — basılıyken sarma (F1→F6 döngü), bırakınca bırakma (RB1→RB5 bir kez)
+      const A = D.Assets, reelArt = REEL.every((f) => A.get('reel_' + f)) && UNREEL.every((f) => A.get('reel_' + f));
+      const reelB = reelArt
+        ? h('button', { class: 'btn reel art', type: 'button', 'aria-label': 'Sar (basılı tut)' }, this.reelImg = h('img', { src: A.get('reel_RB5').src, alt: '', draggable: 'false' }), h('span', { class: 'cap' }, 'SAR'))
+        : h('button', { class: 'btn reel', type: 'button', 'aria-label': 'Sar (basılı tut)' }, 'SAR');
+      if (!reelArt) this.reelImg = null;
+      this.reelB = reelB; this.reelAnim = { mode: 'idle', t: 0, frame: 'RB5' };
       this.holdH = D.Input.hold(reelB, (on) => { this.reel = on; });
-      this.pullB = btn('ÇEK', () => this.doPull(), { cls: 'pull', aria: 'Çek' });
+      this.pullB = A.get('btn_cek')
+        ? btn(null, () => this.doPull(), { cls: 'pull art', aria: 'Çek', icon: h('img', { src: A.get('btn_cek').src, alt: '', draggable: 'false' }) })
+        : btn('ÇEK', () => this.doPull(), { cls: 'pull', aria: 'Çek' });
       const specials = h('div', { class: 'col' });
       const L = sim.L;
       for (const id of L.actives) {
@@ -251,8 +261,22 @@
       if (D.Inv.fishFull(D.Game.state)) actions.pop();
       D.UI.modal({ title, width: 1500, closable: false, body: (b) => b.append(body), actions });
     },
+    // SAR makara animasyonu (kare sırası kullanıcının dosyalarındaki gibi)
+    animReel(dt) {
+      const ra = this.reelAnim; if (!ra || !this.reelImg) return;
+      const on = this.reel && this.state === 'FIGHT';
+      if (this.reelB) this.reelB.classList.toggle('on', on);
+      if (on && ra.mode !== 'reel') { ra.mode = 'reel'; ra.t = 0; }
+      else if (!on && ra.mode === 'reel') { ra.mode = 'release'; ra.t = 0; }
+      ra.t += dt;
+      let f = ra.frame;
+      if (ra.mode === 'reel') f = REEL[Math.floor(ra.t * REEL_FPS) % REEL.length];
+      else if (ra.mode === 'release') { const i = Math.floor(ra.t * UNREEL_FPS); if (i >= UNREEL.length) { ra.mode = 'idle'; f = UNREEL[UNREEL.length - 1]; } else f = UNREEL[i]; }
+      if (f !== ra.frame) { ra.frame = f; const im = D.Assets.get('reel_' + f); if (im) this.reelImg.src = im.src; }
+    },
     update(dt) {
       const t = this.t;
+      this.animReel(dt);
       if (this.state === 'CASTING') { this.castT += dt; if (this.castT > 0.9) { D.Audio.sfx('splash'); this.waitT = 0; this.setState('WAITING'); } }
       else if (this.state === 'WAITING') { this.waitT += dt; if (this.waitT >= this.enc.wait) { D.Audio.sfx('bite'); D.Audio.vibrate(25); this.selectT = 0; this.setState('SELECT'); } }
       else if (this.state === 'SELECT') {

@@ -85,15 +85,15 @@
   // ---- 18 MATERYAL ----
   const mat = (id, icon, color, sources, sell) => set(id, { slot: 'material', icon, color, sources, sell });
   mat('MAT_SCRAP', 'scrapmetal', '#8a8f94', 'Her bölgenin çöpü (fabrika ayrıştırma), Teneke Sandık', 3);
-  mat('MAT_02', 'plate', '#c26b2d', 'Paslı Sanayi çöpü, Teneke Sandık, PSK balık geri dönüşümü', 5);
+  mat('MAT_02', 'plate', '#c26b2d', 'Hasan, Teneke Sandık, PSK balık geri dönüşümü', 5);
   mat('MAT_03', 'bolts', '#9aa7b2', 'Eski Liman/Sazlık/Sanayi çöpü, Islak Karton Sandık', 3);
-  mat('MAT_04', 'spring', '#b8c0c8', 'Teneke Sandık, Kilitli Kasa, Sanayi çöpü', 6);
-  mat('MAT_05', 'gears', '#d9a05a', 'Paslı Sanayi çöpü ve sandıkları', 6);
-  mat('MAT_06', 'motor', '#5a5f66', 'Korsan Mezarlığı / Sanayi çöpü, Kilitli Kasa', 12);
-  mat('MAT_07', 'propeller', '#e8c94a', 'Eski Liman / Sazlık / Korsan çöpü', 4);
+  mat('MAT_04', 'spring', '#b8c0c8', 'Teneke Sandık, Kilitli Kasa, Eski Gemi Çanı (Liman/Korsan/Buzul çöpü)', 6);
+  mat('MAT_05', 'gears', '#d9a05a', 'Dişli Çark (Sazlık/Sanayi/Kaynar çöpü), Teneke Sandık', 6);
+  mat('MAT_06', 'motor', '#5a5f66', 'Paslı Motor (Sanayi/Korsan/Kaynar çöpü), Kilitli Kasa', 12);
+  mat('MAT_07', 'propeller', '#e8c94a', 'Hasan, Islak Karton Sandık, EL balık geri dönüşümü', 4);
   mat('MAT_08', 'plastic', '#5fb0e0', 'Hemen her bölgenin çöpü', 2);
-  mat('MAT_09', 'cable', '#e0453d', 'Sanayi ve Bermuda çöpü, Yakamoz Sandığı', 7);
-  mat('MAT_10', 'crystal', '#9fe2ff', 'Titrek Buzullar: Buzlu Sandık, TB balık geri dönüşümü, çöp', 10);
+  mat('MAT_09', 'cable', '#e0453d', 'Kopuk Kablo (Sanayi/Yakamoz/Bermuda çöpü), Yakamoz Sandığı', 7);
+  mat('MAT_10', 'crystal', '#9fe2ff', 'Titrek Buzullar: Buzlu Sandık, TB balık geri dönüşümü', 10);
   mat('MAT_11', 'lavacore', '#ff6a2a', 'Kaynar Kazan: Lava Kasası, KKD balık geri dönüşümü', 14);
   mat('MAT_12', 'pearl', '#e8e0ff', 'Yakamoz Koyu: Yakamoz Sandığı, YK balık geri dönüşümü', 9);
   mat('MAT_13', 'goldscale', '#f0c040', 'Korsan Mezarlığı: Korsan Sandığı, BKM balık geri dönüşümü', 12);

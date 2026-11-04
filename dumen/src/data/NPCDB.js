@@ -31,7 +31,12 @@
       'Bir gün ben de balık tutacağım. Gagamla. Bekle ve gör.',
       'Denizde ne var biliyor musun? Su. Ve balık. Ve benim hayallerim.',
       'Kraken diye bir şey yok. Olsa bana haber verirlerdi.',
-      'Teknene bakıyorum, sonra sana bakıyorum. İkiniz de yamalısınız.'
+      'Teknene bakıyorum, sonra sana bakıyorum. İkiniz de yamalısınız.',
+      'Bu kayık dalgada sallanıyor. Ben sallanmıyorum. Ben sabitim.',
+      'Kayığın kaptanı benim. Sen sadece kürekçisin. Kürek de benim.',
+      'Dalga geldi, gitti. Ben kaldım. Sadakat budur.',
+      'Su soğuk mu? Bilmem. Ayaklarımı ıslatmam, imajım var.',
+      'Bu kayığı kimse çalamaz. Çünkü önce beni geçmesi lazım. Ve ben simit istiyorum.'
     ],
     marti_success: ['Vay! Bunu ben yakalasam daha iyi olurdu ama yine de vay.', 'Bu balığın fotoğrafını çekin, ben de kadraja gireceğim.', 'İşte bu! Simitle kutlayalım. Senin simitinle.'],
     marti_fail: ['O balık kaçmadı. Stratejik geri çekildi.', 'Misina koptu ama gurur sağlam. Değil mi? Değil mi?', 'Dert etme, ben de dün bir patatesi kaçırdım.'],

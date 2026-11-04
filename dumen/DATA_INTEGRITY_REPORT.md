@@ -1,10 +1,10 @@
 # DATA_INTEGRITY_REPORT
 
-Bu rapor `node tests/run.js --report` tarafından otomatik üretildi (2026-11-04T14:08:06.364Z).
+Bu rapor `node tests/run.js --report` tarafından otomatik üretildi (2026-11-04T17:21:13.240Z).
 
 ## Sonuç
 
-- Test: **209 geçti, 0 başarısız**
+- Test: **210 geçti, 0 başarısız**
 - Validate.run: hatasız
 
 ## Kaynak sayımları
@@ -20,7 +20,7 @@ Bu rapor `node tests/run.js --report` tarafından otomatik üretildi (2026-11-04
 | Sipariş şablonu | 36 |
 | Günlük görev şablonu | 10 |
 | Ana görev | 19 |
-| TrashDB (ayrı katalog) | 20 |
+| TrashDB (ayrı katalog) | 9 |
 | CosmeticDB (ayrı katalog) | 12 |
 
 ## Bölge → balık
@@ -54,15 +54,15 @@ Bu rapor `node tests/run.js --report` tarafından otomatik üretildi (2026-11-04
 - MAT_16 Kızıl Isırgan Tohumu: bölge #7 (KKD)
 - MAT_14 Manyetik Çekirdek: bölge #8 (BG)
 - MAT_09 Elektrik Kablosu Demeti: bölge #3 (PSK)
-- MAT_04 Yay Mekanizması: bölge #1 (EL)
 - MAT_05 Dişli Seti: bölge #2 (TS)
+- MAT_04 Yay Mekanizması: bölge #1 (EL)
 
 ## Otomatik oyuncu (uçtan uca ilerleme)
 
-- Atış: 1955, varsayılan aktif süre ≈ 14.1 saat (25 sn/atış varsayımı)
-- Tekne: Sv.10, bölge: 8/8, tür: 74/88, boss: 1
+- Atış: 2412, varsayılan aktif süre ≈ 17.4 saat (25 sn/atış varsayımı)
+- Tekne: Sv.10, bölge: 8/8, tür: 75/88, boss: 1
 - Hikâye bölümleri: T1, T2, T3, T4, T5, K1, K2, K3, Z1, Z2, Z3, Z4, Z5
-- Tekne yükseltme zaman çizelgesi: Sv.2 @24 atış · Sv.3 @108 atış · Sv.4 @156 atış · Sv.5 @420 atış · Sv.6 @432 atış · Sv.7 @624 atış · Sv.8 @1632 atış · Sv.9 @1656 atış · Sv.10 @1692 atış
+- Tekne yükseltme zaman çizelgesi: Sv.2 @24 atış · Sv.3 @108 atış · Sv.4 @156 atış · Sv.5 @264 atış · Sv.6 @420 atış · Sv.7 @1152 atış · Sv.8 @2136 atış · Sv.9 @2184 atış · Sv.10 @2208 atış
 
 ## Eşya edinim kaynakları (102)
 
@@ -127,20 +127,20 @@ Bu rapor `node tests/run.js --report` tarafından otomatik üretildi (2026-11-04
 | FLOAT_01 | Mantarlı Şamandıra | başlangıç |
 | FLOAT_02 | Kurşun Şamandıra | Market |
 | FLOAT_03 | Neon Şamandıra | Market |
-| MAT_SCRAP | Hurda Metal | Market; CHEST_02; Çöp: Ezik Teneke Kutu; Çöp: Ters Dönmüş Şemsiye; Çöp: Paslı Bisiklet Zili; Çöp: Kırık Vites Kutusu … |
-| MAT_02 | Paslı Plaka | Hasan: R_PLATE; CHEST_02; Çöp: Boru Parçası; Fabrika: PSK |
-| MAT_03 | Cıvata & Somun Paketi | Market; CHEST_01; Çöp: Ters Dönmüş Şemsiye; Çöp: Mangal Izgarası; Fabrika: EL; Fabrika: TS … |
-| MAT_04 | Yay Mekanizması | Hasan: R_SPRING; CHEST_02; CHEST_05; CHEST_08; Çöp: Paslı Bisiklet Zili |
-| MAT_05 | Dişli Seti | Hasan: R_GEARS; CHEST_02; Çöp: Kırık Vites Kutusu; Görev ödülü |
-| MAT_06 | Eski Motor Parçası | Hasan: R_MOTOR; CHEST_03; CHEST_06; CHEST_08; Çöp: Mini Çapa; Fabrika: BKM |
-| MAT_07 | Kırık Pervane | Hasan: R_PROP; CHEST_01; Çöp: Pervane Kanadı; Fabrika: EL; Görev ödülü |
-| MAT_08 | Çatlak Plastik Parça | Market; CHEST_01; Çöp: Tek Lastik Çizme; Çöp: Plastik Ördek; Çöp: Tek Terlik; Çöp: Buzdolabı Magneti … |
-| MAT_09 | Elektrik Kablosu Demeti | Hasan: R_CABLE; CHEST_04; Çöp: Pilsiz Kumanda; Çöp: Eski CD; Çöp: Dolanmış Kulaklık; Fabrika: BG |
-| MAT_10 | Buz Kristali Parçası | CHEST_05; Çöp: Kar Küresi; Fabrika: TB; Görev ödülü |
+| MAT_SCRAP | Hurda Metal | Market; CHEST_02; Çöp: Dişli Çark; Çöp: Eski Gemi Çanı; Çöp: Paslı Kapak; Çöp: Paslı Motor … |
+| MAT_02 | Paslı Plaka | Hasan: R_PLATE; CHEST_02; Fabrika: PSK |
+| MAT_03 | Cıvata & Somun Paketi | Market; CHEST_01; Çöp: Paslı Cıvata & Somun; Fabrika: EL; Fabrika: TS; Görev ödülü |
+| MAT_04 | Yay Mekanizması | Hasan: R_SPRING; CHEST_02; CHEST_05; CHEST_08; Çöp: Eski Gemi Çanı |
+| MAT_05 | Dişli Seti | Hasan: R_GEARS; CHEST_02; Çöp: Dişli Çark; Görev ödülü |
+| MAT_06 | Eski Motor Parçası | Hasan: R_MOTOR; CHEST_03; CHEST_06; CHEST_08; Çöp: Paslı Motor; Fabrika: BKM |
+| MAT_07 | Kırık Pervane | Hasan: R_PROP; CHEST_01; Fabrika: EL; Görev ödülü |
+| MAT_08 | Çatlak Plastik Parça | Market; CHEST_01; Çöp: Plastik Poşet; Çöp: Tek Çorap; Çöp: Şişede Mesaj; Fabrika: TS … |
+| MAT_09 | Elektrik Kablosu Demeti | Hasan: R_CABLE; CHEST_04; Çöp: Kopuk Kablo; Fabrika: BG |
+| MAT_10 | Buz Kristali Parçası | CHEST_05; Fabrika: TB; Görev ödülü |
 | MAT_11 | Lava Çekirdeği | CHEST_06; Fabrika: KKD; Görev ödülü |
 | MAT_12 | Yakamoz İnci | CHEST_04; Fabrika: YK; Görev ödülü |
 | MAT_13 | Korsan Altın Pulu | CHEST_03; Fabrika: BKM; Görev ödülü |
-| MAT_14 | Manyetik Çekirdek | CHEST_07; Çöp: Piksel Kümesi; Fabrika: BG; Görev ödülü |
+| MAT_14 | Manyetik Çekirdek | CHEST_07; Fabrika: BG; Görev ödülü |
 | MAT_15 | Buzkıran Dişi | CHEST_05; Fabrika: TB; Görev ödülü |
 | MAT_16 | Kızıl Isırgan Tohumu | CHEST_06; Fabrika: KKD; Görev ödülü |
 | MAT_17 | Pas Yiyen Çekirdek | CHEST_02; Fabrika: PSK; Görev ödülü |
@@ -155,7 +155,7 @@ Bu rapor `node tests/run.js --report` tarafından otomatik üretildi (2026-11-04
 | CHEST_08 | Kilitli Kasa | Hazine: tüm bölgeler; Çark |
 | CHEST_09 | Şifreli Kasa | Hazine: BKM; Hazine: KKD; Hazine: BG; Çark |
 | CHEST_10 | Tarçov Mühürlü Kasa | Görev ödülü |
-| KEY_01 | Paslı Anahtar | Hasan: R_KEY_01; CHEST_01; CHEST_02; Çöp: Paslı Anahtarlık; Görev ödülü |
+| KEY_01 | Paslı Anahtar | Hasan: R_KEY_01; CHEST_01; CHEST_02; Görev ödülü |
 | KEY_02 | Korsan Anahtarı | Hasan: R_KEY_02; CHEST_08; Görev ödülü |
 | KEY_03 | Yakamoz Anahtarı | Hasan: R_KEY_03; CHEST_08; Görev ödülü |
 | KEY_04 | Buz Mührü Anahtarı | Hasan: R_KEY_04; CHEST_08 |

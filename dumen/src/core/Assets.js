@@ -11,6 +11,10 @@
   // Bölgeye göre kayık (aynalanmış, boyalı olta üstü silinmiş; olta oyunda çizilir) ve HUD görselleri
   for (const code of ['EL', 'TS', 'PSK', 'YK', 'TB', 'BKM', 'KKD', 'BG']) LIST['boat_' + code] = 'assets/boats/' + code + '.webp';
   for (const id of ['bar', 'miyav', 'scrap', 'coin', 'bag']) LIST['hud_' + id] = 'assets/hud/' + id + '.webp';
+  // Çöp ikonları, SAR makarası kareleri (sarma F1–F6, bırakma RB1–RB5), ÇEK düğmesi, kasabadaki kayık
+  for (const id of ['T_BOLT', 'T_GEAR', 'T_BELL', 'T_CABLE', 'T_LID', 'T_MOTOR', 'T_BAG', 'T_SOCK', 'T_BOTTLE']) LIST['trash_' + id] = 'assets/trash/' + id + '.webp';
+  for (const f of ['F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'RB1', 'RB2', 'RB3', 'RB4', 'RB5']) LIST['reel_' + f] = 'assets/ui/reel_' + f + '.webp';
+  LIST.btn_cek = 'assets/ui/cek.webp'; LIST.town_boat = 'assets/town_boat.webp';
   const Assets = {
     imgs: {},
     get(k) { return Assets.imgs[k] || null; },

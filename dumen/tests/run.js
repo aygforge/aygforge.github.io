@@ -259,7 +259,7 @@ section('7. Tazelik / satış / fabrika');
   let maxRatio = 0; for (const id of Object.keys(D.FishBalanceDB)) { const g = { fishId: id, size: D.FishBalanceDB[id].sizeMax, caughtPlay: 0 }; const fr = Object.assign({}, g, { caughtPlay: S().clock.playTime }); maxRatio = Math.max(maxRatio, D.Econ.fishValue(S(), g, 'factory') / D.Econ.fishValue(S(), fr)); }
   ok(maxRatio < 1, 'Fabrika coin\'i her zaman taze Rüstem fiyatından az (max oran ' + maxRatio.toFixed(2) + ')');
   const r = act('recycleFish', { ids: ['FZ'], mode: 'material' }); ok(r.ok && r.mats.MAT_03 === 1, 'Bayat balık → materyal (deterministik)');
-  S().inv.trash = { T_CAN: 2, T_DUCK: 1 }; const t = act('recycleTrash', {}); ok(t.ok && t.scrap === 6 && S().inv.items.MAT_SCRAP === 2, 'Çöp ayrıştırma (MAT_SCRAP ve CUR_SCRAP ayrı)');
+  S().inv.trash = { T_LID: 2, T_BAG: 1 }; const t = act('recycleTrash', {}); ok(t.ok && t.scrap === 6 && S().inv.items.MAT_SCRAP === 2, 'Çöp ayrıştırma (MAT_SCRAP ve CUR_SCRAP ayrı)');
   S().inv.items.MAT_SCRAP = 5; const sc = S().wallet.CUR_SCRAP; ok(act('craft', { recipeId: 'R_MELT' }).ok && S().wallet.CUR_SCRAP === sc + 12 && !S().inv.items.MAT_SCRAP, 'Açık eritme tarifi Hurda Metal → Scrap');
 }
 
@@ -339,6 +339,9 @@ section('10. Kayıt / migration / export-import');
 }
 
 // ------------------------------------------------------------------
+{ const old = D.Save.newState(5); old.inv.trash = { T_CAN: 2, T_DUCK: 1, T_LID: 1, T_KEYRING: 1, T_YOK: 3 }; const k0 = old.inv.items.KEY_01 || 0;
+  const mt = D.Save.migrate(JSON.parse(JSON.stringify(old)));
+  ok(mt.inv.trash.T_LID === 3 && mt.inv.trash.T_BAG === 1 && !mt.inv.trash.T_CAN && !mt.inv.trash.T_YOK && (mt.inv.items.KEY_01 || 0) === k0 + 1 && Object.keys(mt.inv.trash).every((id) => D.TrashDB[id]), 'Eski çöp kimlikleri yeni kataloğa taşınır (anahtarlık → anahtar)'); }
 section('11. İlerleme: otomatik oyuncu (softlock testi)');
 const auto = (() => {
   fresh(2026);
@@ -386,7 +389,7 @@ const auto = (() => {
   let lastReg = null;
   while (casts < 30000) {
     const s = S();
-    if (s.stats.bossCaught > 0 && D.QuestDB.story.every((c) => s.quests[c.id] && s.quests[c.id].state === 'COMPLETED')) break;
+    if (s.stats.bossCaught > 0 && s.owned.rod.length >= 9 && D.QuestDB.story.every((c) => s.quests[c.id] && s.quests[c.id].state === 'COMPLETED')) break;
     // hikâye adımı belirli bölgede av istiyorsa oraya git
     let reg = s.unlockedRegions.slice().sort((a, b) => D.RegionDB[b].order - D.RegionDB[a].order)[0];
     for (const ch of D.Quests.activeChapters(s)) { const st = D.Quests.currentStep(s, ch.id); if (st && (st.t === 'catch' || st.t === 'chest' || st.t === 'deliver') && st.filter && st.filter.region && s.unlockedRegions.includes(st.filter.region)) reg = st.filter.region; }
@@ -419,7 +422,7 @@ eq(auto.regions, 8, '8 bölgenin hepsi açıldı');
 ok(auto.boss >= 1, 'Antik Kraken (final boss) yakalandı');
 eq(auto.chapters.length, 13, '5+5+3 hikâye bölümünün tamamı bitirildi');
 ok(auto.flags.wheelUnlocked && auto.flags.secretVenue && auto.flags.bermudaCoords && auto.flags.tarcovLeft, 'Çark, gizli mekan, Bermuda koordinatları, Tarçov ayrıldı');
-ok(auto.rods.length === 9, '9 oltanın tümü edinildi');
+ok(auto.rods.length === 9, '9 oltanın tümü edinildi' + (auto.rods.length === 9 ? '' : ' (eksik: ' + ['ROD_01','ROD_02','ROD_03','ROD_04','ROD_05','ROD_06','ROD_07','ROD_08','ROD_09'].filter((r) => !auto.rods.includes(r)).join(',') + ')'));
 notes.push(['Otomatik oyuncu', auto]);
 
 // ------------------------------------------------------------------

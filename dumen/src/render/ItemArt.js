@@ -97,6 +97,8 @@
       c.restore();
     },
     drawTrash(c, id, x, y, size) {
+      const img = D.Assets && D.Assets.get('trash_' + id);
+      if (img) { c.drawImage(img, x - size / 2, y - size / 2, size, size); return; }   // kullanıcı ikonu (256×256, ortalanmış)
       c.save(); c.translate(x, y); c.scale(size / 100, size / 100);
       const r = A.rand(D.RNG.hashStr(id));
       const col = ['#8a8f94', '#5fb0e0', '#c26b2d', '#e8c94a', '#6a5a4a', '#e0453d'][Math.floor(r() * 6)];
