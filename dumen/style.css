@@ -177,3 +177,9 @@ input[type=range] { width: 360px; height: 60px; accent-color: var(--wood); }
 .map-lbl.locked { background: rgba(40,40,50,.8); color: #d8d0c0; }
 .map-lbl.sel { background: #f2c42a; color: var(--ink); border-color: var(--ink); }
 .shop-layout.left { right: auto; left: calc(30px + var(--safeL)); }
+
+/* Harita kartında bölge önizlemesi: kullanıcı çizimi arka plan + çerçeveli su altı paneli */
+.map-prev { position: relative; flex: 0 0 auto; height: 170px; border: 5px solid var(--ink); border-radius: 18px; overflow: hidden; }
+.map-prev .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; }
+.map-prev .pn { position: absolute; right: 8px; bottom: 6px; height: 150px; width: auto; filter: drop-shadow(0 4px 6px rgba(0,0,0,.45)); }
+.map-prev.locked img { filter: grayscale(.7) brightness(.55); }

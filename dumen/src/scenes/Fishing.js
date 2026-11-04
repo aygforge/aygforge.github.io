@@ -3,7 +3,10 @@
 (function (D) {
   'use strict';
   const { h, btn } = D.UI;
+  // Su altı paneli: çerçeveli görsel varsa dış dikdörtgen FRAME, oyun alanı = çerçevenin iç penceresi.
+  // Görsel yoksa eski prosedürel panel (iç pencere = PANEL).
   const PANEL = { y: 130, w: 840, h: 620 };
+  const FRAME = { y: 84, w: 860, h: 718 };
 
   D.SM.register('fishing', {
     music: (p) => p.region,
@@ -20,7 +23,14 @@
       const s = D.Game.state;
       if (s.pendingCast) D.Game.act('resolveCast', { castId: s.pendingCast.castId, outcome: 'abandon' });
     },
-    px() { return D.UI.view.W - PANEL.w - 40; },
+    px() { return this.pr().x; },
+    // çerçeve dış dikdörtgeni (görsel paneller için)
+    frame() { return { x: D.UI.view.W - FRAME.w - 26 - (D.UI.view.safeR || 0), y: FRAME.y, w: FRAME.w, h: FRAME.h }; },
+    // oyun alanı (iç pencere): siluetler, balık, kanca burada
+    pr() {
+      if (D.RegionArt.hasPanel(this.region)) { const f = this.frame(); return D.RegionArt.panelInner(this.region, f.x, f.y, f.w, f.h); }
+      return { x: D.UI.view.W - PANEL.w - 40, y: PANEL.y, w: PANEL.w, h: PANEL.h };
+    },
     L() { return D.Loadout.compute(D.Game.state, this.region); },
     onKey(e, down) {
       if (this.state === 'FIGHT') {
@@ -74,8 +84,8 @@
       this.root.append(h('div', { class: 'banner', style: { left: '26%', top: '180px', maxWidth: '900px' } }, 'Bir hedef seç! Siluete dokun.' + (this.enc.candidates.length > 1 ? ' (Büyük siluet = büyük/nadir av olabilir)' : '')));
       // Su altı panelinin tamamı dokunma alanı: basıldığı anda (pointerdown) en yakın siluet seçilir.
       // Hareketli küçük düğmeler yerine tek alan → parmak kayınca da kaçırmaz, yanlış/boş dokunuş ölü ekran yaratmaz.
-      const px = this.px();
-      const zone = h('div', { class: 'sil-zone', role: 'button', 'aria-label': 'Hedef seç (siluete dokun)', style: { position: 'absolute', left: px + 'px', top: PANEL.y + 'px', width: PANEL.w + 'px', height: PANEL.h + 'px', touchAction: 'none', cursor: 'pointer' } });
+      const P = this.pr();
+      const zone = h('div', { class: 'sil-zone', role: 'button', 'aria-label': 'Hedef seç (siluete dokun)', style: { position: 'absolute', left: P.x + 'px', top: P.y + 'px', width: P.w + 'px', height: P.h + 'px', touchAction: 'none', cursor: 'pointer' } });
       zone.addEventListener('pointerdown', (e) => {
         e.preventDefault();
         if (this.state !== 'SELECT') return;
@@ -99,9 +109,9 @@
       return best;
     },
     silPos(i, t) {
-      const c = this.enc.candidates[i], px = this.px();
-      const lane = PANEL.y + 140 + c.lane * (PANEL.h - 300);
-      const x = px + 160 + ((Math.sin(t * c.speed * 0.6 + c.phase) + 1) / 2) * (PANEL.w - 320);
+      const c = this.enc.candidates[i], P = this.pr();
+      const lane = P.y + P.h * 0.23 + c.lane * (P.h * 0.5);
+      const x = P.x + P.w * 0.19 + ((Math.sin(t * c.speed * 0.6 + c.phase) + 1) / 2) * (P.w * 0.62);
       return [x, lane + Math.sin(t * 2 + c.phase) * 14, Math.cos(t * c.speed * 0.6 + c.phase) < 0];
     },
     pick(i) {
@@ -273,8 +283,10 @@
     },
     // ---------- çizim ----------
     render(c, W, H, t) {
-      const s = D.Game.state; const RA = D.RegionArt; const WY = RA.WATER_Y;
-      RA.backdrop(c, this.region, W, H, t, t * 14);
+      const s = D.Game.state; const RA = D.RegionArt;
+      let WY = RA.WATER_Y;
+      if (RA.hasImage(this.region)) WY = RA.backdropImage(c, this.region, W, H, t);
+      else RA.backdrop(c, this.region, W, H, t, t * 14);
       const bx = Math.min(470, W * 0.22), by = WY + 12;
       const lvl = s.boat.level;
       const sn = this.sim && this.state !== 'READY' ? this.sim.snapshot() : null;
@@ -283,7 +295,7 @@
       const bend = sn ? sn.tension : 0;
       const tip = D.BoatArt.drawRod(c, lvl, bx, by + Math.sin(t * 1.3) * 0, 0.75, t, bend);
       // misina
-      const entryX = 820;
+      const entryX = Math.min(820, this.frame().x - 60);
       if (this.state !== 'READY') {
         let ex = entryX, ey = WY + 4;
         if (this.state === 'CASTING') { const k = Math.min(1, this.castT / 0.9); ex = tip[0] + (entryX - tip[0]) * k; ey = tip[1] + (WY - tip[1]) * k - Math.sin(k * Math.PI) * 220; }
@@ -297,13 +309,14 @@
         }
       }
       // su altı paneli
-      const px = this.px(), py = PANEL.y, pw = PANEL.w, ph = PANEL.h;
-      RA.under(c, this.region, px, py, pw, ph, t);
-      c.save(); D.Art.rr(c, px, py, pw, ph, 24); c.clip();
+      const P = this.pr(), px = P.x, py = P.y, pw = P.w, ph = P.h;
+      if (RA.hasPanel(this.region)) { const f = this.frame(); RA.panelImage(c, this.region, f.x, f.y, f.w, f.h, t); }
+      else RA.under(c, this.region, px, py, pw, ph, t);
+      c.save(); if (RA.hasPanel(this.region)) { c.beginPath(); c.rect(px, py, pw, ph); } else D.Art.rr(c, px, py, pw, ph, 24); c.clip();
       const L = this.state === 'SELECT' || this.state === 'WAITING' ? this._L || (this._L = this.L()) : null;
       if (this.state === 'READY') { this._L = null; D.Art.signText(c, 'Su altı görüşü', px + pw / 2, py + 50, 34, 'rgba(255,255,255,0.55)'); }
       // hook / misina
-      const hookX = px + 120, hookY = py + 220;
+      const hookX = px + pw * 0.14, hookY = py + ph * 0.36;
       if (this.state === 'WAITING' || this.state === 'SELECT') {
         c.beginPath(); c.moveTo(hookX, py); c.lineTo(hookX, hookY); c.lineWidth = 2.5; c.strokeStyle = 'rgba(255,255,255,0.8)'; c.stroke();
         D.ItemArt.draw(c, s.equip.hook, hookX, hookY + 18, 50);
@@ -329,18 +342,18 @@
       }
       if ((this.state === 'FIGHT' || this.state === 'ENDING') && this.sim) {
         const sim = this.sim; const f = sim.snapshot();
-        const fx = px + 140 + D.clamp(f.dist / f.maxDist, 0, 1) * (pw - 260);
-        this._depth = D.lerp(this._depth || 0, f.active === 'dip' || f.active === 'deepdive' ? 140 : f.active === 'dart' ? -40 : 0, 0.05);
+        const fx = px + pw * 0.17 + D.clamp(f.dist / f.maxDist, 0, 1) * (pw * 0.69);
+        this._depth = D.lerp(this._depth || 0, f.active === 'dip' || f.active === 'deepdive' ? ph * 0.22 : f.active === 'dart' ? -ph * 0.06 : 0, 0.05);
         const fy = py + ph * 0.46 + this._depth + Math.sin(t * (f.active === 'frenzy' ? 30 : 4)) * (f.active === 'frenzy' ? 8 : 10);
         // çek bölgesi + kaçış sınırı
-        const pullX = px + 140 + (sim.pullDist / f.maxDist) * (pw - 260);
+        const pullX = px + pw * 0.17 + (sim.pullDist / f.maxDist) * (pw * 0.69);
         c.fillStyle = 'rgba(80,220,120,0.18)'; c.fillRect(px, py, pullX - px, ph);
-        c.setLineDash([14, 10]); c.lineWidth = 4; c.strokeStyle = 'rgba(255,90,80,0.8)'; c.beginPath(); c.moveTo(px + pw - 120, py); c.lineTo(px + pw - 120, py + ph); c.stroke(); c.setLineDash([]);
-        D.Art.signText(c, 'kaçış', px + pw - 120, py + 30, 26, '#ff8a80');
+        c.setLineDash([14, 10]); c.lineWidth = 4; c.strokeStyle = 'rgba(255,90,80,0.8)'; c.beginPath(); c.moveTo(px + pw * 0.86, py); c.lineTo(px + pw * 0.86, py + ph); c.stroke(); c.setLineDash([]);
+        D.Art.signText(c, 'kaçış', px + pw * 0.86, py + 30, 26, '#ff8a80');
         // misina balığa
-        c.beginPath(); c.moveTo(hookX, py); c.quadraticCurveTo((hookX + fx) / 2, py + (1 - f.tension) * 200 + 60, fx - 40, fy); c.lineWidth = 3; c.strokeStyle = f.red ? '#ff3a2a' : 'rgba(255,255,255,0.85)'; c.stroke();
+        c.beginPath(); c.moveTo(hookX, py); c.quadraticCurveTo((hookX + fx) / 2, py + (1 - f.tension) * ph * 0.32 + 60, fx - 40, fy); c.lineWidth = 3; c.strokeStyle = f.red ? '#ff3a2a' : 'rgba(255,255,255,0.85)'; c.stroke();
         const b = D.FishBalanceDB[sim.fishId];
-        const len = D.clamp(180 + Math.log(sim.sizeT * 10 + 2) * 40 + (sim.boss ? 160 : D.rarityRank(b.rarity) >= 4 ? 60 : 0), 200, 470);
+        const len = D.clamp(180 + Math.log(sim.sizeT * 10 + 2) * 40 + (sim.boss ? 160 : D.rarityRank(b.rarity) >= 4 ? 60 : 0), 200, Math.min(470, pw * 0.68));
         const known = !!D.Game.state.collection[sim.fishId];
         D.FishArt.draw(c, sim.fishId, fx + len * 0.3, fy, len, { t, flip: true, rot: Math.sin(t * 5) * 0.08 + (f.active === 'dart' ? -0.15 : 0), sil: false && !known });
         const nx = this.sim.queue[0];

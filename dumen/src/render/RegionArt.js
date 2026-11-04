@@ -99,6 +99,49 @@
     A.rr(c, x, y, w, h, 24); c.lineWidth = 16; c.strokeStyle = OL; c.stroke(); c.lineWidth = 10; c.strokeStyle = '#a8743a'; c.stroke();
     c.setLineDash([10, 10]); c.lineWidth = 3; c.strokeStyle = '#d8b47a'; A.rr(c, x, y, w, h, 24); c.stroke(); c.setLineDash([]);
   };
+  // ---- Kullanıcı görselleri ----
+  // Bölge arka planı: görseldeki su çizgisi (y oranı) ve teknenin oturacağı su seviyesi (görsel y oranı).
+  // Tekne su çizgisinin biraz altına, ön plandaki suya oturur.
+  const BG_VIEW = D.ImageView(1920, 1072);
+  RA.BG_INFO = {
+    EL: { boat: 0.56 }, TS: { boat: 0.6 }, PSK: { boat: 0.52 }, YK: { boat: 0.53 },
+    TB: { boat: 0.5 }, BKM: { boat: 0.54 }, KKD: { boat: 0.48 }, BG: { boat: 0.55 }
+  };
+  // Panel görselinin iç penceresi (çerçeve hariç su alanı), görsel boyutuna oranla [sol, üst, sağ, alt] boşluk.
+  RA.PANEL_INSET = { EL: [0.105, 0.115, 0.105, 0.135], TS: [0.105, 0.11, 0.105, 0.125], PSK: [0.095, 0.11, 0.1, 0.13], YK: [0.11, 0.14, 0.105, 0.12],
+    TB: [0.105, 0.12, 0.105, 0.125], BKM: [0.105, 0.115, 0.105, 0.12], KKD: [0.1, 0.12, 0.1, 0.125], BG: [0.105, 0.115, 0.105, 0.12] };
+  RA.hasImage = (code) => !!D.Assets.get('region_' + code);
+  RA.hasPanel = (code) => !!D.Assets.get('panel_' + code);
+  // Arka planı çizer, teknenin oturacağı su seviyesini (sahne y) döndürür.
+  RA.backdropImage = (c, code, W, H, t) => {
+    const img = D.Assets.get('region_' + code);
+    D.SM.drawStatic(c, 'region-' + code, (cc, w, hh) => BG_VIEW.drawStatic(cc, w, hh, img));
+    const wy = BG_VIEW.pt(0, RA.BG_INFO[code].boat * 1072)[1];
+    // hafif su yansımaları (resmin üzerine, yalnız su seviyesinin altında)
+    c.save(); c.lineCap = 'round';
+    for (let i = 0; i < 16; i++) {
+      const x = ((i * 241) % (W + 200)) - 100 + Math.sin(t * 0.5 + i) * 26, y = wy + 30 + ((i * 53) % Math.max(60, H - wy - 60));
+      const a = 0.1 + 0.1 * Math.sin(t * 1.1 + i * 1.7);
+      if (a <= 0) continue;
+      c.strokeStyle = `rgba(255,255,255,${a})`; c.lineWidth = 3;
+      c.beginPath(); c.moveTo(x - 34, y); c.quadraticCurveTo(x, y - 6, x + 34, y); c.stroke();
+    }
+    c.restore();
+    return wy;
+  };
+  // Çerçeveli su altı paneli: dış dikdörtgene çizer, iç pencereyi döndürür.
+  RA.panelInner = (code, x, y, w, h) => { const k = RA.PANEL_INSET[code] || [0.105, 0.12, 0.105, 0.125]; return { x: x + w * k[0], y: y + h * k[1], w: w * (1 - k[0] - k[2]), h: h * (1 - k[1] - k[3]) }; };
+  RA.panelImage = (c, code, x, y, w, h, t) => {
+    const img = D.Assets.get('panel_' + code);
+    c.drawImage(img, x, y, w, h);
+    const r = RA.panelInner(code, x, y, w, h);
+    // kabarcıklar (iç pencerede)
+    c.save(); c.beginPath(); c.rect(r.x, r.y, r.w, r.h); c.clip();
+    c.strokeStyle = 'rgba(255,255,255,0.45)'; c.lineWidth = 2;
+    for (let i = 0; i < 12; i++) { const q = (t * (0.07 + (i % 4) * 0.02) + i / 12) % 1; A.circle(c, r.x + ((i * 97) % r.w) + Math.sin(q * 8 + i) * 8, r.y + r.h - q * r.h, 3 + (i % 3) * 2); c.stroke(); }
+    c.restore();
+    return r;
+  };
   // Haritada kilitli bölge için çizilmiş asma kilit
   RA.padlock = (c, x, y, s) => { c.save(); c.translate(x, y); c.scale(s, s); c.beginPath(); c.arc(0, -14, 16, Math.PI, 0); c.lineWidth = 8; c.strokeStyle = OL; c.stroke(); c.lineWidth = 4; c.strokeStyle = '#c9ccd0'; c.stroke(); A.rr(c, -22, -14, 44, 36, 6); fs(c, '#f0c040'); A.circle(c, 0, 0, 5); fs(c, OL, 0); c.restore(); };
   D.RegionArt = RA;

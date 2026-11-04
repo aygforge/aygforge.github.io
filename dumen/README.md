@@ -1,7 +1,7 @@
 # DÜMEN — mobil yatay HTML5 balıkçılık oyunu
 
 Sıcak, absürt bir balıkçı kasabası: balık tut, Rüstem'e sat, tekneni 10 seviyede büyüt, 8 bölgeyi keşfet, 88 türü Denizin Defteri'ne yaz, Antik Kraken'i yakala.
-Tamamen statik: build gerekmez, internet/CDN gerekmez. Kasaba, Liman Sokağı, harita ve karakterler kullanıcının çizdiği yerel görsellerdir (`assets/`); iç mekân dekorları, bölgeler, balıklar ve eşyalar Canvas ile çizilir, sesler WebAudio.
+Tamamen statik: build gerekmez, internet/CDN gerekmez. Kasaba, Liman Sokağı, harita, karakterler, iç mekânlar, 8 balıkçılık bölgesi arka planı ve çerçeveli su altı panelleri kullanıcının çizdiği yerel görsellerdir (`assets/`); balıklar, eşyalar, tekne ve efektler Canvas ile çizilir, sesler WebAudio. Görsel yüklenemezse prosedürel çizime geri düşülür.
 
 ## Çalıştırma
 - **Doğrudan:** `index.html` dosyasını tarayıcıda aç (`file://` çalışır; kaynak JSON'lar `src/data/source/sources.js` içine birebir gömülüdür).
@@ -30,6 +30,7 @@ Oyun yalnız `rewarded === true` sonrası tek kullanımlık jeton üretir; jeton
 - **İç mekânlar:** Evim, Belediye (deniz müzesi; akvaryum → Denizin Defteri), Rüstem Aga, Market, Hurdacı Hasan, Geri Dönüşüm Fabrikası, Tekne Atölyesi, Karanlık Mahalle (Zıpırleone) ve Komplo Teorisyeni'nin evi kullanıcının çizdiği arka planlarla (`assets/bg/`); bilgi paneli önemli öğeyi kapatmayacak tarafta açılır.
 - **Harita:** boyalı dünya haritası; 8 bölge görseldeki yerlerinde (Eski Liman sol alt, Yakamoz sol üst, Buzullar üst orta, Korsan Mezarlığı sağ üst, Kaynar Kazan sağ, Sazlıklar sağ alt, Paslı Sanayi alt orta, Bermuda ortadaki girdap). Kilitli bölgeler karartılır ve kilitlenir; bilgi kartı en az bölgeyi kapatan köşede açılır, ✕ ile gizlenir.
 - **Karakterler:** Rüstem Aga, Hurdacı Hasan, Don Zıpırleone, Tekir (Don'un sağ kolu), Kaya Usta, Kropi Usta, Ahmet (Market), Belediye Başkanı, Geri Dönüşümcü — kullanıcı çizimleri iç mekânlarda ve diyalog portrelerinde. Müfettiş Tarçov, Komplo Teorisyeni, Martı ve oyuncu için görsel verilmediğinden prosedürel çizimler kullanılır.
+- **Bölge görselleri:** her bölgenin arka planı `assets/regions/<KOD>.webp`, su altı paneli `assets/panels/<KOD>.webp` (EL Eski Liman, TS Sazlıklar, PSK Paslı Sanayi, YK Yakamoz, TB Buzullar, BKM Korsan Mezarlığı, KKD Kaynar Kazan, BG Bermuda). Tekne her görselde ön plandaki suya oturur (`RegionArt.BG_INFO`); siluetler, kanca ve balık panelin çerçeve içindeki penceresinde hareket eder (`RegionArt.PANEL_INSET`), siluet dokunma alanı da bu penceredir. Harita kartında seçili bölgenin önizlemesi (arka plan + panel) gösterilir.
 - **Balıkçılık:** Oltayı At → bekle → siluete dokun (su altı panelinin tamamı dokunma alanıdır; basıldığı anda en yakın siluet seçilir; masaüstünde 1–4 tuşları) → **SAR** (basılı) / bırak → İnat düşük, mesafe yakın, gerilim kırmızı dışındayken **ÇEK**. Gerilim yeşil/sarı/kırmızı; kırmızıda kısa düzeltme süresi var, uzun kalırsa ip kopar; uzun gevşeklikte balık kaçar; iki erken Çek "Erken çektin". 7 davranış ailesi ayrı hamle setleri kullanır; Kraken 3 evrelidir. Masaüstü: Boşluk = SAR, Enter/E = ÇEK.
 - **Hazine:** ayrı zamanlama barı (yalnız yeni dokunuş sayılır). Sandık envantere girer, Envanter'den açılır.
 - **Ekonomi:** tek fiyat hesaplayıcı (temel × nadirlik × boy × tazelik × Rüstem ilişki bonusu). Tazelik aktif oyun süresine bağlı.

@@ -6,6 +6,8 @@
   for (const id of ['rustem', 'hasan', 'zip', 'kaya', 'kropi', 'factory', 'market', 'baskan', 'tekir']) LIST['char_' + id] = 'assets/chars/' + id + '.webp';
   // Kullanıcının çizdiği iç mekân arka planları
   for (const id of ['home', 'belediye', 'factory', 'hasan', 'zip', 'market', 'rustem', 'boatyard', 'komplo']) LIST['bg_' + id] = 'assets/bg/' + id + '.webp';
+  // Kullanıcının çizdiği balıkçılık bölgesi arka planları (1920×1072) ve çerçeveli su altı panelleri (1100 genişlik, şeffaf kenar)
+  for (const code of ['EL', 'TS', 'PSK', 'YK', 'TB', 'BKM', 'KKD', 'BG']) { LIST['region_' + code] = 'assets/regions/' + code + '.webp'; LIST['panel_' + code] = 'assets/panels/' + code + '.webp'; }
   const Assets = {
     imgs: {},
     get(k) { return Assets.imgs[k] || null; },
