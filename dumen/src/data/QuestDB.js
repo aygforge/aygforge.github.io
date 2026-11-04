@@ -46,7 +46,7 @@
       [it('SPC_04', 1), rel('zip', 10), rel('tarcov', 10)]),
     C('T2', 'tarcov', 2, 'Miyav Puanı Meselesi', 'Miyav Puanı nedir? Herkes başka şey söylüyor.',
       [{ chapter: 'T1' }],
-      [talk('tarcov', 'T2_tarcov', 'Tarçov ile konuş.'), talk('rustem', 'T2_rustem', 'Rüstem Aga\'ya Miyav Puanı\'nı sor (sahil).'), talk('hasan', 'T2_hasan', 'Hurdacı Hasan\'a sor.'), talk('kaya', 'T2_kaya', 'Kaya Usta\'ya sor (Belediye Binası, Denizin Defteri arşivi).'), talk('zip', 'T2_zip', 'Zıpırleone ile konuş.'),
+      [talk('tarcov', 'T2_tarcov', 'Tarçov ile konuş.'), talk('rustem', 'T2_rustem', 'Rüstem Aga\'ya Miyav Puanı\'nı sor (sahil).'), talk('hasan', 'T2_hasan', 'Hurdacı Hasan\'a sor.'), talk('kaya', 'T2_kaya', 'Kaya Usta\'ya sor (Market).'), talk('zip', 'T2_zip', 'Zıpırleone ile konuş.'),
         { t: 'deliver', npc: 'zip', filter: { rarityMin: 'rare' }, n: 1, dlg: 'T2_zip_done', text: 'Don\'a 1 Nadir veya daha iyi balık götür.' }],
       [miyav(12), it('SPC_03', 1), rel('zip', 10)]),
     C('T3', 'tarcov', 3, 'Resmi Uyarı', 'Tarçov, Komplo Teorisyeni\'ni resmen uyarır.',

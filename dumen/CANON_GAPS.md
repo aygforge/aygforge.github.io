@@ -97,5 +97,11 @@ Kaynak JSON dosyaları **birebir** korunur (testler gömülü kopyanın bayt eş
 - "Kayıtlı Oyun" düğmesi için oyunda tek kayıt yuvası var: özet + devam / dışa aktar / içe aktar penceresi açar (çoklu kayıt yuvası yok). "Çıkış": web'de `window.close()` çoğu tarayıcıda yalnız betikle açılan sekmeleri kapatır; kapanmazsa kullanıcıya bilgi verilir, ilerleme önceden kaydedilir.
 - Eski "Tam Ekran" düğmesi görsel setinde olmadığı için sol üstte küçük yuvarlak düğmeye dönüştü (mobilde gerekli).
 
+## İnce ayarlar (kullanıcı isteği)
+- Mekân panelleri küçültüldü (1020 → 720 px genişlik, yükseklik en fazla 660 px, yazı %84). HUD barı %17 küçültüldü (yükseklik `--hudH` = 5×yazı boyu), HUD düğmeleri küçüldü (dokunma hedefi yine ≥ 44 CSS px).
+- Fabrika görevlisi sol-yukarı alındı ve küçültüldü; Zıpırleone ve Tekir sol sandıkların önüne, panel sağa; T1 "şüpheli sandıklar" inceleme noktası da soldaki sandık yığınına taşındı. Rüstem Aga tezgâhın önünde, ön planda (tezgâh artık üstüne çizilmiyor); Hasan, Kropi, Komplo ön plana yaklaştırıldı.
+- Market: eski kasiyer (Ahmet) kaldırıldı, Kaya Usta Market'te (Konuş = Kaya Usta; T2 görev metni "Market" olarak güncellendi). Belediye: yalnız Başkan, panel ve akvaryum dokunma alanı yok. Benim kararım: Denizin Defteri 88/88 ödülü (Altın Dümen Bayrağı + 10.000 coin) Defter penceresine eklendi; bölge ödülleri zaten oradaydı. Belediye duyuruları kaldırıldı (bölge durumu harita kartında).
+- Kasaba: kayık 360 → 270 px, Martı küçüldü, kasabadaki konuşma balonu 600 → 440 px.
+
 ## Görseller
 Kasaba, Liman Sokağı, harita, karakterler, iç mekânlar ve bölgeler kullanıcı görselidir. Balıklar, eşyalar, tekne, Tarçov/Komplo Teorisyeni/Martı/oyuncu ve efektler **prosedürel Canvas çizimidir**. Yerleşimler GDD'deki öğelere sadık kompozisyonlardır; piksel koordinatları kaynakta kilitli değildir. Sesler WebAudio ile üretilir.

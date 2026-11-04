@@ -194,14 +194,14 @@
   // occ: karakterin önüne yeniden çizilen ön plan parçası (tezgâh vb.). hots: görsel üzerindeki dokunma alanları.
   const BGL = {
     home: { side: 'right', npcs: [], hots: [{ key: 'board', f: [0.09, 0.08, 0.32, 0.54], label: 'İlan Panosu', fn: () => D.Scenes.openJournal('board') }] },
-    belediye: { side: 'left', npcs: [{ id: 'baskan', fx: 0.66, fy: 0.99, h: 0.62 }, { id: 'kaya', fx: 0.9, fy: 1.0, h: 0.66 }], hots: [{ key: 'aquarium', f: [0.53, 0.04, 0.25, 0.5], label: 'Akvaryum — Denizin Defteri', fn: () => D.Scenes.openFishpedia() }] },
-    rustem: { side: 'left', npcs: [{ id: 'rustem', fx: 0.6, fy: 0.84, h: 0.5 }], occ: [[0.37, 0.6, 0.37, 0.36]] },
-    market: { side: 'right', npcs: [{ id: 'market', fx: 0.3, fy: 0.97, h: 0.58 }] },
-    hasan: { side: 'right', npcs: [{ id: 'hasan', fx: 0.28, fy: 0.95, h: 0.62 }] },
-    factory: { side: 'right', npcs: [{ id: 'factory', fx: 0.27, fy: 0.98, h: 0.66 }] },
-    boatyard: { side: 'right', npcs: [{ id: 'kropi', fx: 0.24, fy: 0.97, h: 0.62 }] },
-    zip: { side: 'left', npcs: [{ id: 'tekir', fx: 0.58, fy: 0.99, h: 0.42 }, { id: 'zip', fx: 0.76, fy: 0.93, h: 0.52 }], hots: [] },
-    komplo: { side: 'right', npcs: [{ id: 'komplo', fx: 0.2, fy: 0.95, h: 0.44 }] }
+    belediye: { side: 'none', npcs: [{ id: 'baskan', fx: 0.5, fy: 1.04, h: 0.76 }], hots: [{ key: 'baskan', f: [0.38, 0.28, 0.24, 0.72], label: 'Belediye Başkanı', fn: () => D.Scenes.talk('baskan') }] },
+    rustem: { side: 'left', npcs: [{ id: 'rustem', fx: 0.68, fy: 1.06, h: 0.92 }] },   // tezgâhın önünde, ön planda tam boy
+    market: { side: 'right', npcs: [{ id: 'kaya', fx: 0.28, fy: 1.02, h: 0.78 }] },
+    hasan: { side: 'right', npcs: [{ id: 'hasan', fx: 0.3, fy: 1.08, h: 0.9 }] },     // ön plana yakın
+    factory: { side: 'right', npcs: [{ id: 'factory', fx: 0.2, fy: 0.84, h: 0.56 }] },  // kutunun önünden sol-yukarı
+    boatyard: { side: 'right', npcs: [{ id: 'kropi', fx: 0.22, fy: 1.04, h: 0.8 }] },
+    zip: { side: 'right', npcs: [{ id: 'zip', fx: 0.24, fy: 1.0, h: 0.56 }, { id: 'tekir', fx: 0.47, fy: 0.97, h: 0.42 }], hots: [] },  // sol sandıkların önünde
+    komplo: { side: 'right', npcs: [{ id: 'komplo', fx: 0.22, fy: 1.0, h: 0.56 }] }
   };
   SA.BG_LAYOUT = BGL;
   SA.bgImage = (kind) => (D.Assets ? D.Assets.get('bg_' + kind) : null);

@@ -70,7 +70,7 @@
     rustem: [1705, 390, 290, 280],
     pier: [415, 545, 470, 420],
     boatL: [0, 705, 150, 130],
-    gull: [905, 840, 330, 190],          // denizdeki kayık + martı
+    gull: [920, 860, 280, 160],          // denizdeki kayık + martı
     tarcov: [1160, 400, 120, 150],
     // Komplo 2. bölüm inceleme noktaları
     lamp: [1570, 395, 110, 85],
@@ -78,10 +78,10 @@
     facade: [1260, 120, 150, 210]
   };
   // Denizde hafifçe dalgalanan kayık (kullanıcı görseli assets/town_boat.webp, 700×354) ve üstündeki martı
-  const BOAT = { x: 1070, y: 930, w: 360 };            // merkez (görsel koordinatı) ve genişlik
+  const BOAT = { x: 1060, y: 935, w: 270 };            // merkez (görsel koordinatı) ve genişlik
   const GULL_ON_BOAT = [455, 215];                    // kayık görselinde martının durduğu arka oturak
   const GULL_AT = [835, 662];                         // kayık görseli yoksa: iskele yanındaki kayık
-  const GULL_SCALE = () => (D.Assets.get('town_boat') ? (D.NPCArt.sprite('marti') ? 0.9 : 0.7) : 0.42);
+  const GULL_SCALE = () => (D.Assets.get('town_boat') ? (D.NPCArt.sprite('marti') ? 0.68 : 0.55) : 0.42);
   const boatPose = (t) => ({ dy: Math.sin(t * 1.4) * 6, rot: Math.sin(t * 1.1 + 0.6) * 0.035, dx: Math.sin(t * 0.45) * 5 });
   const gullPoint = (t) => {
     if (!D.Assets.get('town_boat')) return GULL_AT;
@@ -115,11 +115,11 @@
       // Sıra önemli: sonra eklenen üstte kalır.
       this.hot('street', '← Liman Sokağı', () => D.SM.go('street'), st('zip') || st('kropi') || st('factory') || (D.Quests.activeInspectSpots(s, 'street').length ? '?' : null), { aria: 'Liman Sokağı', lblLeft: true });
       this.hot('home', 'Evim', () => D.SM.go('home'), boardReady ? '✓' : null);
-      this.hot('market', 'Market', () => D.SM.go('market'));
+      this.hot('market', 'Market', () => D.SM.go('market'), st('kaya'));
       this.hot('restaurant', 'Restoran (kapalı)', () => D.Scenes.restaurantClosed(), null, { aria: 'Restoran' });
       this.hot('scrapPile', 'Hurdacı Hasan', () => D.SM.go('hasan'), null, { noLabel: true, aria: 'Hurdacı Hasan (hurda yığını)' });
       this.hot('scrapShed', 'Hurdacı Hasan', () => D.SM.go('hasan'), st('hasan'));
-      this.hot('belediye', 'Belediye', () => D.SM.go('belediye'), st('kaya') || (D.HUD.collectionBadge(s) ? '✓' : null));
+      this.hot('belediye', 'Belediye', () => D.SM.go('belediye'), st('baskan'));
       this.hot('komplo', 'Komplo Teorisyeni', () => D.SM.go('komplo'), st('komplo'), { aria: 'Komplo Teorisyeni\'nin Evi' });
       this.hot('rustem', 'Rüstem Aga', () => D.SM.go('rustem'), st('rustem'), { aria: 'Balık Pazarı' });
       this.hot('boatL', 'Balığa Çık', () => D.SM.go('map'), null, { noLabel: true, aria: 'Kayık — Balığa Çık' });
@@ -138,7 +138,7 @@
       const k = (D.Game.state.npc.talk.marti_ambient || 0);
       D.Game.state.npc.talk.marti_ambient = k + 1; // yalnız süs sayacı (ekonomi dışı)
       const g = gullPoint(this.t || 0), hp = D.NPCArt.headPoint('marti', g[0], g[1], GULL_SCALE()), [x, y] = TV.pt(hp[0], hp[1] - 6);
-      D.UI.gullSpeech(this.root, x, y, lines[k % lines.length]);
+      D.UI.gullSpeech(this.root, x, y, lines[k % lines.length], null, { w: 440 });
       if (force) D.Audio.sfx('gull');
     },
     update(dt) { this.nextGull -= dt; if (this.nextGull <= 0) { this.nextGull = 13 + Math.random() * 8; if (!D.UI.modalOpen()) this.gull(false); } },

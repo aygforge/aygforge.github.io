@@ -21,7 +21,7 @@
     bottom() {
       if (!D.Assets.get('hud_bar') || typeof getComputedStyle === 'undefined') return 120;
       const st = document.getElementById('stage'); const fs = st ? parseFloat(getComputedStyle(st).fontSize) || 34 : 34;
-      return Math.round(fs * 6 + 26);
+      return Math.round(fs * 5 + 26);
     },
     invAllowed() { return HUD.mode === 'town' || HUD.mode === 'interior' || !!HUD.opts.inv; },
     openInv() { if (!HUD.invAllowed() || D.Input.blocked() || D.UI.modalOpen()) return; D.Audio.sfx('click'); D.Scenes.openInventory(null, HUD.opts.onInvClose); },

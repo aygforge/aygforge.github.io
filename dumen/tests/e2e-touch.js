@@ -74,12 +74,12 @@ let chromium; try { ({ chromium } = require('playwright')); } catch (e) { consol
    const okc = await ev(()=>DUMEN.UI.modalOpen() && /Café/.test(document.querySelector('.modal h2').textContent) && DUMEN.SM.name==='street');
    const noFish = await ev(()=>!document.querySelector('.scene-root button.green.big') && ![...document.querySelectorAll('.hot')].some(b=>/Balığa/.test(b.getAttribute('aria-label'))));
    console.log('liman sokağı → Café kapalı', okc?'OK':'HATA', '· sokakta balığa çıkış yok', noFish?'OK':'HATA'); if(!okc||!noFish) fail++; await ev(()=>DUMEN.UI.closeAll()); }
- // İç mekân görselleri: evdeki ilan panosu ve müzedeki akvaryum dokunulabilir
- for (const [scene, label, check] of [['home','İlan Panosu','board'],['belediye','Akvaryum — Denizin Defteri','fish']]) {
+ // İç mekân görselleri: evdeki ilan panosu; Belediye'de panel yok, Başkan'a dokununca konuşur
+ for (const [scene, label, check] of [['home','İlan Panosu','board'],['belediye','Belediye Başkanı','baskan']]) {
    await ev((sc)=>{DUMEN.UI.closeAll(); DUMEN.SM.go(sc);}, scene); await p.waitForTimeout(600);
    const hb = await p.locator('.hot[aria-label="'+label+'"]').boundingBox(); await p.touchscreen.tap(hb.x+hb.width/2, hb.y+hb.height/2); await p.waitForTimeout(500);
-   const t = await ev(()=>document.querySelector('.modal h2') ? document.querySelector('.modal h2').textContent : '');
-   const okh = check==='board' ? /İlan Panosu/.test(t) : /Denizin Defteri/.test(t);
+   const t = await ev(()=>document.querySelector('.modal h2') ? document.querySelector('.modal h2').textContent : (document.querySelector('.dlg .name') ? document.querySelector('.dlg .name').textContent : ''));
+   const okh = check==='board' ? /İlan Panosu/.test(t) : /Belediye Başkanı/.test(t) && await ev(()=>!document.querySelector('.shop-layout'));
    console.log('iç mekân →', label, okh?'OK':'HATA ('+t+')'); if(!okh) fail++;
    await p.screenshot({path:out+'touch_'+scene+'.png'}); await ev(()=>DUMEN.UI.closeAll());
  }

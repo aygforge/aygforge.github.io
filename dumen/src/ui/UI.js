@@ -29,6 +29,7 @@
     cv.width = Math.round(W * scale * dpr); cv.height = Math.round(H * scale * dpr);
     st.style.setProperty('--tap', Math.max(96, Math.ceil(46 / scale)) + 'px');
     st.style.setProperty('--fs', Math.max(32, Math.ceil(13.5 / scale)) * (s.uiScale || 1) + 'px');
+    st.style.setProperty('--hudH', 'calc(var(--fs) * 5)');
     // çentik güvenli alanı
     const probe = UI._probe || (UI._probe = Object.assign(document.createElement('div'), { style: 'position:fixed;left:0;top:0;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);visibility:hidden;pointer-events:none' }));
     if (!probe.parentNode) document.body.appendChild(probe);

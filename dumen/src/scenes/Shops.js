@@ -8,7 +8,7 @@
   D.Scenes.addBgHots = (root, kind) => {
     const L = D.SceneArt.BG_LAYOUT[kind]; if (!L || !D.SceneArt.bgImage(kind)) return;
     const list = (L.hots || []).slice();
-    const INSPECT = { zip_crates: [0.83, 0.42, 0.15, 0.5] };
+    const INSPECT = { zip_crates: [0.19, 0.46, 0.18, 0.24] };   // Karanlık Mahalle: soldaki üst üste sandıklar
     for (const sp of D.Quests.activeInspectSpots(D.Game.state, kind)) if (INSPECT[sp.spot]) list.push({ key: sp.spot, f: INSPECT[sp.spot], label: sp.label, alert: '?', fn: async () => { const r = D.Game.act('inspect', { spot: sp.spot }); if (r.ok) { await D.UI.dialog(D.DialogueDB[r.dlg]); D.SM.rebuild(); } } });
     for (const hs of list) {
       const r = D.SceneArt.bgRect(kind, hs.f); if (!r) continue;
@@ -26,6 +26,7 @@
         D.HUD.set('interior', { back: () => D.SM.go(cfg.back || 'town'), backLabel: cfg.back === 'street' ? '← Liman Sokağı' : '← Kasaba' });
         const L = D.SceneArt.bgImage(cfg.kind) ? D.SceneArt.BG_LAYOUT[cfg.kind] : null;
         D.Scenes.addBgHots(this.root, cfg.kind);
+        if (!cfg.panel) return; // panelsiz mekân (Belediye: yalnız Başkan; dokununca konuşur)
         const panel = h('div', { class: 'panel shop-layout' + (L && L.side === 'left' ? ' left' : '') });
         const talkBtn = (npc, label) => btn(label, () => D.Scenes.talk(npc), { cls: 'small' + (D.Quests.npcHasStory(D.Game.state, npc) ? ' yellow' : '') });
         const head = h('h2', null, cfg.title, h('span', { class: 'grow' }),
@@ -70,7 +71,7 @@
 
   // ---------------- MARKET ----------------
   shopScene('market', {
-    kind: 'market', npc: 'market', title: 'Market', defaultTab: 'rods',
+    kind: 'market', npc: 'kaya', title: 'Market', defaultTab: 'rods',
     panel(p, s) {
       p.append(tabs(this, [['rods', 'Oltalar'], ['gear', 'Misina · Kanca · Şamandıra'], ['baits', 'Yemler'], ['specials', 'Özel'], ['mats', 'Malzeme']]));
       const list = h('div', { class: 'list scroll grow' });
@@ -210,7 +211,11 @@
     list.append(h('div', { class: 'card' }, h('div', { class: 'grow ttl' }, '88/88: Altın Dümen Bayrağı + 10.000 coin'), btn(s.collectionRewards.ALL ? 'Alındı ✓' : 'Al', () => D.UI.act('claimCollection', { region: 'ALL', pct: 100 }, (r) => { P().rewardsModal('Denizin Defteri tamamlandı!', r.rewards); this.build(); }), { cls: 'green small', disabled: !!s.collectionRewards.ALL || t.got < t.total })));
     p.append(list, btn('Denizin Defteri\'ni Aç', () => D.Scenes.openFishpedia(), { cls: 'primary big' }));
   }
-  const belediye = {
+  // Belediye: mekân paneli yok, yalnız Belediye Başkanı (dokununca konuşur). Denizin Defteri Not Defteri/Defter'de,
+  // Tersane İzni Tekne Atölyesi'nde. Eski panel kodu (belediyePanel) referans için duruyor ama kullanılmıyor.
+  const belediye = { kind: 'belediye', npc: 'baskan', title: 'Belediye Binası', panel: null };
+  void archivePanel;
+  const belediyePanel = {
     kind: 'belediye', npc: 'baskan', npc2: 'kaya', title: 'Belediye Binası', defaultTab: 'arsiv',
     panel(p, s) {
       p.append(tabs(this, [['arsiv', 'Denizin Defteri Arşivi'], ['izin', 'Tersane İzni'], ['duyuru', 'Duyurular']]));
@@ -231,6 +236,7 @@
       p.append(body);
     }
   };
+  void belediyePanel;
   shopScene('belediye', belediye);
   shopScene('kaya', belediye); // eski kayıtlar/bağlantılar için takma ad
 

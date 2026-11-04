@@ -35,6 +35,7 @@
           } else right.append(h('div', { class: 'b', style: { fontSize: '1.3em' } }, '???'), h('div', { class: 'muted' }, 'Henüz yakalanmadı. Kaya Usta: "Bu gölgeyi tanımıyorum. Yakala da tanışalım."'), h('div', { class: 'small' }, 'Bölge: ' + src.region));
           const rc = D.Quests.regionCollection(s, reg);
           right.append(h('div', { class: 'hr' }), h('div', { class: 'row wrap' }, h('span', { class: 'small b' }, D.RegionDB[reg].name + ' %' + rc.pct + ' ödülleri:'), D.QuestDB.collection.thresholds.map((pct) => { const done = s.collectionRewards[reg + ':' + pct]; return btn('%' + pct + (done ? ' ✓' : ''), () => D.UI.act('claimCollection', { region: reg, pct }, (r) => { D.Panels.rewardsModal(D.RegionDB[reg].name + ' %' + pct, r.rewards); render(); }), { cls: 'small ' + (!done && rc.pct >= pct ? 'green' : ''), disabled: done || rc.pct < pct }); })));
+          { const tc = D.Quests.totalCollection(s); right.append(h('div', { class: 'row wrap' }, h('span', { class: 'small b' }, '88/88 (' + tc.got + '/' + tc.total + '): Altın Dümen Bayrağı + 10.000 coin'), btn(s.collectionRewards.ALL ? 'Alındı ✓' : 'Al', () => D.UI.act('claimCollection', { region: 'ALL', pct: 100 }, (r) => { D.Panels.rewardsModal('Denizin Defteri tamamlandı!', r.rewards); render(); }), { cls: 'small green', disabled: !!s.collectionRewards.ALL || tc.got < tc.total }))); }
           b.append(h('div', { class: 'row grow', style: { alignItems: 'stretch', minHeight: 0 } }, left, right));
         };
         render();
