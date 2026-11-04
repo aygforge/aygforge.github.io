@@ -1,7 +1,7 @@
 # DÜMEN — mobil yatay HTML5 balıkçılık oyunu
 
 Sıcak, absürt bir balıkçı kasabası: balık tut, Rüstem'e sat, tekneni 10 seviyede büyüt, 8 bölgeyi keşfet, 88 türü Denizin Defteri'ne yaz, Antik Kraken'i yakala.
-Tamamen statik: build gerekmez, internet/CDN gerekmez, harici görsel/ses dosyası yoktur (tüm çizimler Canvas, sesler WebAudio).
+Tamamen statik: build gerekmez, internet/CDN gerekmez. Kasaba ana görünümü yerel bir görseldir (`assets/`); diğer tüm çizimler Canvas, sesler WebAudio.
 
 ## Çalıştırma
 - **Doğrudan:** `index.html` dosyasını tarayıcıda aç (`file://` çalışır; kaynak JSON'lar `src/data/source/sources.js` içine birebir gömülüdür).
@@ -25,7 +25,7 @@ window.DUMEN_AD_PROVIDER = { isReady: () => true, showRewarded: async () => ({ r
 Oyun yalnız `rewarded === true` sonrası tek kullanımlık jeton üretir; jetonsuz/sahte istek hak vermez. Reklam iptal/başarısızsa hak tüketilmez.
 
 ## Oynanış özeti
-- **Kasaba:** ev + yanındaki ilan panosu, iskeleye halatla bağlı sallanan tekne (Martı üstünde, görev vermez), Balık Pazarı (Rüstem), Market, Hurdacı Hasan, Denizin Defteri (Kaya Usta), Yeni Sokak (Zıpırleone'nin Mekanı, Geri Dönüşüm Fabrikası, Tekne Atölyesi).
+- **Kasaba:** ana görünüm kullanıcının sağladığı illüstrasyondur (`assets/town_main.webp`); binalara dokununca içeri girilir. Soldan: Diğer Sokak (evin solu), Evim (kapının yanındaki ilan panosu), Market, Restoran (şimdilik kapalı), Hurdacı Hasan, Belediye (Denizin Defteri arşivi — Kaya Usta, Tersane İzni, duyurular); sahilde Komplo Teorisyeni'nin Evi ve Rüstem Aga; iskele/kayık → Balığa Çık. Martı iskele yanındaki kayığa konar.
 - **Balıkçılık:** Oltayı At → bekle → siluete dokun (su altı panelinin tamamı dokunma alanıdır; basıldığı anda en yakın siluet seçilir; masaüstünde 1–4 tuşları) → **SAR** (basılı) / bırak → İnat düşük, mesafe yakın, gerilim kırmızı dışındayken **ÇEK**. Gerilim yeşil/sarı/kırmızı; kırmızıda kısa düzeltme süresi var, uzun kalırsa ip kopar; uzun gevşeklikte balık kaçar; iki erken Çek "Erken çektin". 7 davranış ailesi ayrı hamle setleri kullanır; Kraken 3 evrelidir. Masaüstü: Boşluk = SAR, Enter/E = ÇEK.
 - **Hazine:** ayrı zamanlama barı (yalnız yeni dokunuş sayılır). Sandık envantere girer, Envanter'den açılır.
 - **Ekonomi:** tek fiyat hesaplayıcı (temel × nadirlik × boy × tazelik × Rüstem ilişki bonusu). Tazelik aktif oyun süresine bağlı.
@@ -54,7 +54,7 @@ tests         load.js, run.js (Node), e2e.js (Playwright)
 node tests/run.js            # 209 test: veri bütünlüğü, işlem/idempotency, balıkçılık, 25 özel eşya, ekonomi, görevler, çark, kayıt, uçtan uca otomatik oyuncu
 node tests/run.js --report   # + DATA_INTEGRITY_REPORT.md üretir
 node tests/e2e.js            # Playwright + Chromium: gerçek pointer ile tam akış, çift tıklama, modal, kalıcılık, mobil boyutlar (19 kontrol)
-node tests/e2e-touch.js      # Dokunmatik telefon görünümü: hareketli siluete dokunma, hazine DOKUN düğmesi, panellerin taşmadan kaydırılması
+node tests/e2e-touch.js      # Dokunmatik telefon görünümü: kasabadaki her binanın doğru yere açılması, hareketli siluete dokunma, hazine DOKUN düğmesi, panellerin taşmadan kaydırılması
 ```
 Otomatik oyuncu yalnız gerçek eylemleri kullanarak yeni oyundan Tekne Sv.10'a, 8 bölgeye, 13 hikâye bölümüne ve Antik Kraken'e ulaşır (softlock testi).
 

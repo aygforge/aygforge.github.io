@@ -53,5 +53,11 @@ Kaynak JSON dosyaları **birebir** korunur (testler gömülü kopyanın bayt eş
 - **Masalcı** bu sürümde yok (yalnız önceki tasarım bağlamında geçiyordu; ana mekânları değiştirmemek için eklenmedi).
 - Tüm diyaloglar ve 88 balık açıklaması bu sürüm için yazıldı.
 
+## Kasaba ana görünümü (kullanıcı görseli)
+- Kasaba artık kullanıcının verdiği illüstrasyonla çizilir (`assets/town_main.webp`, 2000×1103). Dokunma alanları görselin piksel koordinatlarında tanımlıdır (`src/scenes/Town.js` → `AREA`); geniş ekranda yükseklik en fazla %12 kırpılır, yanlar kenar uzatmasıyla dolar; dar ekranda alt kısım deniz uzatmasıyla dolar. Görsel yüklenemezse eski prosedürel kasaba çizilir.
+- Kullanıcının belirttiği yerleşim: Evim, Market, Restoran (şimdilik kapalı; dokununca bilgi penceresi), Hurdacı, Belediye; sahilde Komplo Teorisyeni'nin evi ve Rüstem Aga. Evin solu → Diğer Sokak (şimdilik eski Yeni Sokak: Zıpırleone, Fabrika, Tekne Atölyesi; kullanıcı yeniden tanımlayacak).
+- Benim seçtiğim yerleştirmeler (kullanıcı değiştirebilir): **İlan panosu** evin içinde, kapının yanında (GDD "evin yanı"); **Denizin Defteri / Kaya Usta** ve **Tersane İzni** Belediye'de (izin Tekne Atölyesi'nden de alınabilir); **Müfettiş Tarçov** hikâye boyunca Belediye önünde durur; **Martı** iskele yanındaki kayığa konar. Görselde oyuncunun teknesi ayrıca çizilmez (GDD'deki "halatla bağlı sallanan tekne" yerine görseldeki kayık/iskele); tekne seviyesi görünümü Tekne Atölyesi'nde ve balık sahnesinde görünür.
+- Komplo 2. bölüm inceleme noktaları görsele uyarlandı: Komplo'nun çatısındaki eğri anten, Belediye'nin durmuş saati, Belediye'nin arkası olmayan yan cephesi (kayıt uyumu için iç kimlikler aynı).
+
 ## Görseller
-Orijinal sahne/sprite görselleri sağlanmadığı için tüm görseller **sıfırdan prosedürel Canvas rekonstrüksiyonudur** (harici dosya yok). Kasaba/sokak/iç mekân yerleşimleri GDD'deki öğelere sadık kompozisyonlardır; piksel koordinatları kaynakta kilitli değildir. Sesler WebAudio ile üretilir.
+Kasaba görseli dışındaki tüm görseller (iç mekânlar, bölgeler, balıklar, karakterler) **sıfırdan prosedürel Canvas rekonstrüksiyonudur**. Kasaba/sokak/iç mekân yerleşimleri GDD'deki öğelere sadık kompozisyonlardır; piksel koordinatları kaynakta kilitli değildir. Sesler WebAudio ile üretilir.

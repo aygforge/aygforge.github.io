@@ -103,6 +103,7 @@ input[type=range] { width: 360px; height: 60px; accent-color: var(--wood); }
 .hot { font: inherit; position: absolute; background: transparent; border: none; cursor: pointer; touch-action: manipulation; border-radius: 20px; min-width: var(--tap); min-height: var(--tap); }
 .hot:focus-visible, .hot:hover { outline: 6px dashed rgba(255,240,150,.9); outline-offset: -6px; background: rgba(255,240,150,.08); }
 .hot .lbl { position: absolute; left: 50%; transform: translateX(-50%); bottom: 6px; white-space: nowrap; background: rgba(42,26,16,.85); color: #fff6df; font-weight: 900; font-size: .72em; padding: 4px 16px; border-radius: 14px; border: 3px solid #fff6df; pointer-events: none; }
+.hot .lbl.left { left: 6px; transform: none; }
 .hot .alert { position: absolute; top: 6px; right: 10px; width: 56px; height: 56px; border-radius: 50%; background: #f2c42a; border: 5px solid var(--ink); font-weight: 900; display: flex; align-items: center; justify-content: center; font-size: .9em; animation: bob 1.2s ease-in-out infinite; pointer-events: none; }
 .hot .alert.green { background: var(--green); color: #fff; }
 @keyframes bob { 50% { transform: translateY(-10px); } }

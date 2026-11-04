@@ -199,7 +199,10 @@
       boatyard: { wall: '#c8a070', wall2: '#a88050', floor: '#7a6040' },
       zip: { wall: '#4a1020', wall2: '#3a0a18', floor: '#2a1a14' },
       venue: { wall: '#1a2a3a', wall2: '#12202e', floor: '#3a2a1a' },
-      kaya: { wall: '#d8c8a8', wall2: '#c0b090', floor: '#8a6a4a' }
+      kaya: { wall: '#d8c8a8', wall2: '#c0b090', floor: '#8a6a4a' },
+      home: { wall: '#c8925a', wall2: '#a8743a', floor: '#7a5a3a' },
+      belediye: { wall: '#eee6d6', wall2: '#d8ccb4', floor: '#9a8a7a' },
+      komplo: { wall: '#5a5a44', wall2: '#3e3e2e', floor: '#4a3a2a' }
     }[kind];
     c.fillStyle = A.lg(c, 0, 0, 0, H * 0.75, [P.wall, P.wall2]); c.fillRect(0, 0, W, H);
     c.fillStyle = A.lg(c, 0, H * 0.74, 0, H, [P.floor, A.shade(P.floor, -0.3)]); c.fillRect(0, H * 0.74, W, H);
@@ -217,7 +220,7 @@
       ['EL_01', 'EL_02', 'EL_03', 'EL_04', 'TS_01', 'EL_05'].forEach((id, i) => D.FishArt.draw(c, id, 150 + i * 105, 620, 80, { t: 0.2, noAura: true }));
       D.NPCArt.draw(c, 'rustem', 420, 610, 1.4, t);
       A.rr(c, 640, 430, 80, 120, 6); A.fs(c, '#c9ccd0', 4); A.circle(c, 680, 470, 26); A.fs(c, '#fff', 3); // terazi
-      A.signText(c, 'RÜSTEM\'İN BALIK PAZARI', 430, 300, 46, '#fff', OL);
+      A.signText(c, 'RÜSTEM AGA\'NIN BALIK PAZARI', 430, 300, 42, '#fff', OL);
     },
     market(c, t) {
       for (let r = 0; r < 3; r++) { A.rr(c, 60, 200 + r * 150, 760, 18, 4); A.fs(c, '#8a5a3a', 4); for (let i = 0; i < 9; i++) D.ItemArt.draw(c, 'BAIT_' + D.pad2(((i + r * 5) % 14) + 1), 100 + i * 82, 172 + r * 150, 62); }
@@ -268,6 +271,56 @@
       A.signText(c, 'HATIRA DUVARI', 670, 180, 26, '#f0c040', OL);
       D.NPCArt.draw(c, 'zip', 640, 860, 1.1, t);
       A.signText(c, 'ARKA ODA', 460, 100, 56, '#f0c040', '#1a0a00');
+    },
+    home(c, t, s) {
+      A.planks(c, 30, 40, 860, 740, '#b98a5a', 10, true);
+      // pencere: deniz manzarası
+      A.rr(c, 90, 140, 260, 200, 10); A.fs(c, A.lg(c, 0, 140, 0, 340, ['#8fd3f5', '#3aa6cf']), 5);
+      A.waves(c, 92, 348, 270, 4, 60, t * 1.5, '#5ec0e0', null, 338);
+      c.strokeStyle = '#f6efe0'; c.lineWidth = 6; c.beginPath(); c.moveTo(220, 142); c.lineTo(220, 338); c.moveTo(92, 240); c.lineTo(348, 240); c.stroke();
+      A.rr(c, 70, 330, 300, 24, 6); A.fs(c, '#8a5a3a', 4);
+      // yatak
+      A.rr(c, 60, 610, 380, 140, 24); A.fs(c, '#3d6fb0', 5); A.rr(c, 70, 590, 110, 60, 20); A.fs(c, '#fff6df', 4);
+      c.strokeStyle = 'rgba(255,255,255,0.5)'; c.lineWidth = 4; for (let x = 200; x < 430; x += 40) { c.beginPath(); c.moveTo(x, 616); c.lineTo(x, 744); c.stroke(); }
+      // kapının yanındaki ilan panosu
+      A.rr(c, 560, 230, 16, 360, 4); A.fs(c, '#6a4a2a', 3); A.rr(c, 824, 230, 16, 360, 4); A.fs(c, '#6a4a2a', 3);
+      A.planks(c, 540, 200, 320, 250, '#a8743a', 5, true);
+      A.rr(c, 600, 172, 200, 46, 10); A.fs(c, '#f2d14a', 4); A.signText(c, 'İLAN PANOSU', 700, 196, 24, '#5a2a10');
+      const n = s ? s.board.offers.length : 3;
+      for (let i = 0; i < n; i++) { const x = 566 + (i % 2) * 142, y = 236 + Math.floor(i / 2) * 104; c.save(); c.translate(x + 60, y + 44); c.rotate(i % 2 ? 0.04 : -0.05); A.rr(c, -58, -42, 116, 88, 3); A.fs(c, '#fffaf0', 3); c.fillStyle = '#c9302c'; A.circle(c, 0, -36, 6); c.fill(); c.strokeStyle = '#8a7a5a'; c.lineWidth = 3; for (let k = 0; k < 4; k++) { c.beginPath(); c.moveTo(-44, -16 + k * 16); c.lineTo(44, -16 + k * 16); c.stroke(); } c.restore(); }
+      // olta duvara yaslı + kilim
+      D.ItemArt.draw(c, (s && s.equip.rod) || 'ROD_01', 470, 520, 220);
+      A.ellipse(c, 560, 900, 260, 60); A.fs(c, '#c9483a', 5); A.ellipse(c, 560, 900, 200, 40); c.strokeStyle = '#f2d14a'; c.lineWidth = 5; c.stroke();
+      D.NPCArt.draw(c, 'player', 640, 950, 1.5, t, { hat: s && s.cosmetics.equipped.hat });
+    },
+    belediye(c, t) {
+      for (const x of [40, 820]) { A.rr(c, x, 60, 70, 720, 10); A.fs(c, '#fbf6ec', 5); c.strokeStyle = '#d8ccb4'; c.lineWidth = 4; for (let k = 1; k < 4; k++) { c.beginPath(); c.moveTo(x + k * 17, 80); c.lineTo(x + k * 17, 760); c.stroke(); } A.rr(c, x - 12, 40, 94, 30, 6); A.fs(c, '#eee6d6', 4); }
+      // duvar saati: hep 10:10 (Komplo bunu da not etti)
+      A.circle(c, 460, 150, 70); A.fs(c, '#fffaf0', 6); c.lineWidth = 6; c.strokeStyle = A.OL; c.beginPath(); c.moveTo(460, 150); c.lineTo(460 - 38, 150 - 26); c.moveTo(460, 150); c.lineTo(460 + 38, 150 - 26); c.stroke();
+      A.rr(c, 230, 250, 460, 70, 10); A.fs(c, '#2a5a8a', 5); A.signText(c, 'DÜMEN BELEDİYESİ', 460, 287, 40, '#fff');
+      // dosya dolapları
+      for (let i = 0; i < 2; i++) { A.rr(c, 150 + i * 560, 380, 110, 300, 8); A.fs(c, '#8a949e', 5); for (let k = 0; k < 4; k++) { A.rr(c, 162 + i * 560, 392 + k * 72, 86, 58, 4); A.fs(c, '#a8b0b8', 3); A.rr(c, 190 + i * 560, 414 + k * 72, 30, 10, 3); A.fs(c, '#5a5f66', 2); } }
+      D.NPCArt.draw(c, 'kaya', 460, 760, 1.3, t);
+      // masa (Kaya Usta'nın önünde)
+      A.rr(c, 230, 640, 460, 70, 10); A.fs(c, '#8a5a3a', 5); A.rr(c, 250, 710, 420, 180, 8); A.fs(c, '#6a4a2a', 5);
+      A.rr(c, 300, 600, 160, 50, 6); A.fs(c, '#2a5a8a', 4); A.rr(c, 306, 606, 148, 38, 4); A.fs(c, '#f5efe0', 2);
+      A.rr(c, 560, 596, 30, 44, 6); A.fs(c, '#c9302c', 4); A.rr(c, 548, 636, 54, 14, 4); A.fs(c, '#5a3a2a', 3); // mühür
+      A.signText(c, 'Tersane İzinleri · Denizin Defteri Arşivi', 460, 830, 26, '#f5e2b8');
+    },
+    komplo(c, t) {
+      A.rr(c, 70, 120, 600, 380, 10); A.fs(c, '#c8955a', 6);
+      const pins = [[140, 190], [300, 170], [500, 210], [610, 330], [420, 400], [200, 420], [350, 300]];
+      c.strokeStyle = '#d0302a'; c.lineWidth = 3; c.beginPath(); pins.forEach(([x, y], i) => (i ? c.lineTo(x, y) : c.moveTo(x, y))); c.lineTo(140, 190); c.moveTo(300, 170); c.lineTo(420, 400); c.stroke();
+      pins.forEach(([x, y], i) => { A.rr(c, x - 44, y - 30, 88, 64, 3); A.fs(c, '#fffaf0', 3); D.FishArt.draw(c, ['EL_03', 'TS_02', 'PSK_08', 'YK_05', 'BG_12', 'BKM_08', 'EL_09'][i], x, y + 2, 60, { t: 0.3, noAura: true }); c.fillStyle = '#d0302a'; A.circle(c, x, y - 28, 6); c.fill(); });
+      A.signText(c, 'BALIKLAR NORMAL DEĞİL', 370, 470, 30, '#2a1a10');
+      // monitör
+      A.rr(c, 700, 360, 190, 140, 10); A.fs(c, '#2a2a2a', 5); A.rr(c, 714, 374, 162, 104, 6); A.fs(c, '#0a1a0a', 3);
+      c.fillStyle = Math.sin(t * 4) > 0 ? '#3cff6c' : '#2aaa4a'; c.font = 'bold 22px monospace'; c.fillText('VERİTABANI', 724, 408); c.fillText('EL_03 ?!', 724, 440); c.fillText('> izle_', 724, 468);
+      A.rr(c, 770, 500, 50, 40, 4); A.fs(c, '#3a3a3a', 4);
+      // antenler, folyo
+      for (const [x, h2] of [[740, 200], [840, 260]]) { c.beginPath(); c.moveTo(x, 360); c.lineTo(x + 10, 360 - h2); c.lineWidth = 6; c.strokeStyle = A.OL; c.stroke(); for (let k = 0; k < 4; k++) { c.beginPath(); c.moveTo(x - 20 + k * 2, 360 - h2 + 20 + k * 22); c.lineTo(x + 40 - k * 2, 360 - h2 + 14 + k * 22); c.lineWidth = 4; c.stroke(); } }
+      A.wobblyPoly(c, [[80, 560], [260, 540], [300, 640], [90, 660]], 4, 10); A.fs(c, '#d9dde6', 4);
+      D.NPCArt.draw(c, 'komplo', 520, 980, 1.25, t);
     },
     kaya(c, t) {
       for (let r = 0; r < 4; r++) { A.rr(c, 40, 150 + r * 130, 820, 16, 4); A.fs(c, '#6a4a2a', 4); for (let i = 0; i < 22; i++) { const h = 70 + ((i * 37 + r * 11) % 30); A.rr(c, 50 + i * 36, 150 + r * 130 - h, 30, h, 3); A.fs(c, ['#2a5a8a', '#8a2a2a', '#4a7a3a', '#c98a1a', '#5a3a6a'][(i + r) % 5], 2.5); } }

@@ -13,9 +13,11 @@
           h('div', { class: 'scroll small grow' }, r.errors.map((e) => h('div', null, '• ' + e)))));
         return;
       }
+      this.ok = false; this.assetsReady = false;
+      D.Assets.load().then(() => { this.assetsReady = true; });
       this.ok = true;
     },
-    update() { if (this.ok && this.t > 0.2) { this.ok = false; D.SM.go('menu'); } },
+    update() { if (this.ok && this.assetsReady && this.t > 0.2) { this.ok = false; D.SM.go('menu'); } },
     render(c, W, H) { c.fillStyle = '#10202e'; c.fillRect(0, 0, W, H); D.Art.signText(c, 'DÜMEN yükleniyor…', W / 2, H / 2, 60, '#f6e7c8'); }
   });
 })(globalThis.DUMEN);

@@ -6,7 +6,7 @@
   D.NPCDB = D.deepFreeze({
     player: { name: 'Sen', role: 'Balıkçı' },
     marti: { name: 'Martı', role: 'Teknenin gayriresmî sahibi', canonical: true, givesQuests: false },
-    rustem: { name: 'Rüstem', role: 'Balık Pazarı', canonical: true },
+    rustem: { name: 'Rüstem Aga', role: 'Balık Pazarı', canonical: true },
     hasan: { name: 'Hurdacı Hasan', role: 'Hurda & craft ustası', canonical: true },
     zip: { name: 'Don Zıpırleone', role: 'Tamamen yasal iş insanı (kedi)', canonical: true },
     tarcov: { name: 'Müfettiş Tarçov', role: 'Müfettiş (köpek)', canonical: true },
@@ -68,10 +68,10 @@
     // ---------- Komplo Teorisyeni (3 bölüm) ----------
     K1_komplo: [['komplo', 'Psst. Sen. Balıklara hiç dikkatli baktın mı?'], ['komplo', 'Memur Kefal\'in kravatı var. Kravat! Denizde! Bu balıklar normal değil.'], ['komplo', 'Bence bir veritabanından kaçtılar. Her birinin bir kimlik numarası var. EL_03 gibi. Kanıtla bana: Tembel Sazlıklar\'dan bir balık yakala.']],
     K1_done: [['komplo', 'Pijama! Ya da kamuflaj! Ya da yoga! Gördün mü? Hiçbiri normal değil!'], ['komplo', 'Al, bu Anneanne Gözlüğü. Hamleleri önceden görmeni sağlar. Anneannem de veritabanını görürdü.']],
-    K2_komplo: [['komplo', 'Kasabanın açısı yanlış. Her şey hep aynı açıdan görünüyor. Sanki biri bizi yandan çiziyor.'], ['komplo', 'Kasabada üç şeyi incele: eğri sokak lambası, hep aynı yerde duran bulut ve şu düz bina cephesi.']],
-    K2_lamp: [['player', 'Sokak lambası gerçekten eğri. Gölgesi ise dimdik.'], ['komplo', '(uzaktan) GÖLGESİ DİMDİK! Not et!']],
-    K2_cloud: [['player', 'Bu bulut hiç hareket etmiyor. Diğerleri kayarken bu... bekliyor.'], ['marti', 'O bulut benim. Rezervasyonlu.']],
-    K2_facade: [['player', 'Binanın arkasına bakmaya çalıştım. Arkası... yok gibi.'], ['komplo', '(uzaktan) Arkası yok! Çünkü kimse arkasını çizmedi!']],
+    K2_komplo: [['komplo', 'Kasabanın açısı yanlış. Her şey hep aynı açıdan görünüyor. Sanki biri bizi yandan çiziyor.'], ['komplo', 'Üç şeyi incele: benim çatımdaki eğri anten, belediyenin hiç ilerlemeyen saati ve belediyenin arkası olmayan yan cephesi.']],
+    K2_lamp: [['player', 'Çatıdaki anten gerçekten eğri. Ama gölgesi... dimdik.'], ['komplo', '(içeriden) GÖLGESİ DİMDİK! Not et!']],
+    K2_cloud: [['player', 'Belediyenin saati hep aynı dakikayı gösteriyor. Ne ileri gidiyor ne geri.'], ['marti', 'O saat bana göre çalışıyor. Ben de hiç acele etmem.']],
+    K2_facade: [['player', 'Belediyenin yanından arkasına bakmaya çalıştım. Arkası... yok gibi.'], ['komplo', '(uzaktan) Arkası yok! Çünkü kimse arkasını çizmedi!']],
     K2_done: [['komplo', 'Üç kanıt! Tarçov\'un uyarısından beri daha da eminim. Acil durum butonu al; belki bir gün bu simülasyondan çıkarız.'], ['komplo', 'Çalışmıyor tabii. Ama misina gerilimini düşürüyor. Tuhaf, değil mi?']],
     K3_komplo: [['komplo', 'Şimdi dikkatlice dinle. Arkanı dönme. Ekrana bak.'], ['komplo', 'Evet, SANA. Ekranın öbür tarafındakine. Parmağının ucundakine.'], ['komplo', 'Şu ana kadar {fishCaught} balık yakaladın ve {playMin} dakikadır buradasın. Bunu nereden biliyorum? Çünkü O da biliyor.'], ['komplo', 'Bizi izliyorlar. Daha doğrusu SEN izliyorsun. Ve bu çok... tatlı aslında.'], { choice: [
       { label: '"Ben sadece balık tutmaya geldim."', reply: [['komplo', 'Herkes öyle der. Sonra bir bakmışsın, 88 türü defterine yazmışsın.']] },

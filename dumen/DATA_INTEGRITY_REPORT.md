@@ -1,6 +1,6 @@
 # DATA_INTEGRITY_REPORT
 
-Bu rapor `node tests/run.js --report` tarafından otomatik üretildi (2026-11-03T05:55:47.134Z).
+Bu rapor `node tests/run.js --report` tarafından otomatik üretildi (2026-11-04T13:20:37.596Z).
 
 ## Sonuç
 

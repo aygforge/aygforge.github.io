@@ -52,17 +52,71 @@
     if (ev.type === 'story') D.UI.toast(ev.text, 'gold', 3500);
   });
 
-  const MARTI_X = 260;
+  // ---- Kasaba ana görünümü: kullanıcının sağladığı illüstrasyon (assets/town_main.webp, 2000×1103) ----
+  // Tüm dokunma alanları görselin piksel koordinatlarında tanımlıdır; ekrana aynı dönüşümle taşınır.
+  const IMG_W = 2000, IMG_H = 1103;
+  const TV = {
+    fit(W, H) {
+      const kW = W / IMG_W, kH = H / IMG_H;
+      // Geniş ekran: yükseklik en fazla %12 kırpılır, kalan yanlar kenar uzatmasıyla doldurulur.
+      // Dar/yüksek ekran: genişlik en fazla %5 kırpılır, alt kısım deniz uzatmasıyla doldurulur.
+      const k = kW > kH ? Math.min(kW, kH * 1.12) : Math.min(kH, kW * 1.05);
+      const ox = (W - IMG_W * k) / 2, hh = IMG_H * k;
+      const oy = hh >= H ? (H - hh) / 2 : 0;
+      return { k, ox, oy };
+    },
+    rect(r) { const v = D.UI.view, f = TV.fit(v.W, v.H); return { left: f.ox + r[0] * f.k, top: f.oy + r[1] * f.k, width: r[2] * f.k, height: r[3] * f.k }; },
+    pt(x, y) { const v = D.UI.view, f = TV.fit(v.W, v.H); return [f.ox + x * f.k, f.oy + y * f.k]; },
+    drawStatic(c, W, H, img) {
+      const { k, ox, oy } = TV.fit(W, H);
+      const w = IMG_W * k, hh = IMG_H * k;
+      c.fillStyle = '#4fa9b4'; c.fillRect(0, 0, W, H);
+      if (ox > 0) { // yan uzatma (kenar şeritleri gerilir, hafif gölgelenir)
+        c.drawImage(img, 0, 0, 18, IMG_H, 0, oy, ox + 1, hh);
+        c.drawImage(img, IMG_W - 18, 0, 18, IMG_H, ox + w - 1, oy, ox + 1, hh);
+        c.fillStyle = 'rgba(20,30,40,0.18)'; c.fillRect(0, 0, ox, H); c.fillRect(ox + w, 0, ox + 1, H);
+      }
+      if (oy + hh < H) c.drawImage(img, 0, IMG_H - 60, IMG_W, 60, Math.min(0, ox), oy + hh - 1, Math.max(W, w), H - (oy + hh) + 1); // alt: deniz uzatması
+      c.drawImage(img, ox, oy, w, hh);
+    }
+  };
+  D.TownView = TV;
+  // Görsel koordinatlarında alanlar [x, y, w, h]
+  const AREA = {
+    street: [-60, 40, 132, 560],
+    home: [55, 165, 275, 335],
+    market: [445, 130, 300, 360],
+    restaurant: [760, 85, 360, 440],
+    scrapPile: [820, 0, 440, 90],
+    scrapShed: [1050, 90, 215, 275],
+    belediye: [1255, 0, 450, 360],
+    komplo: [1355, 400, 310, 345],
+    rustem: [1705, 390, 290, 280],
+    pier: [415, 545, 470, 420],
+    boatL: [0, 705, 150, 130],
+    gull: [790, 600, 110, 90],
+    tarcov: [1160, 400, 120, 150],
+    // Komplo 2. bölüm inceleme noktaları
+    lamp: [1570, 395, 110, 85],
+    cloud: [1435, 0, 115, 85],
+    facade: [1260, 120, 150, 210]
+  };
+  const GULL_AT = [835, 662];
+  const TARCOV_AT = [1220, 540];
+
   D.SM.register('town', {
     music: 'town',
     enter(p) {
       this.build();
       this.nextGull = 4;
-      if (p && p.intro) setTimeout(() => D.UI.dialog([['marti', 'Hoş geldin, balıkçı. Bu tekne artık benim de. Kira ödemiyorum.'], ['marti', 'Evinin önündeki tekneye dokun, Balığa Çık. Rüstem\'e sat, panodan sipariş al. Ben? Ben sadece burada oturuyorum.']]), 500);
+      if (p && p.intro) setTimeout(() => D.UI.dialog([['marti', 'Hoş geldin, balıkçı. Bu tekne artık benim de. Kira ödemiyorum.'], ['marti', 'İskeleye ya da tekneye dokun, Balığa Çık. Rüstem Aga\'ya sat, evinin kapısındaki panodan sipariş al. Ben? Ben sadece burada oturuyorum.']]), 500);
     },
-    hot(x, y, w, hh, label, fn, alert) {
-      const ox = (D.UI.view.W - 1920) / 2, oy = (D.UI.view.H - 1080) / 2;
-      const b = h('button', { class: 'hot', type: 'button', 'aria-label': label, style: { left: x + ox + 'px', top: y + oy + 'px', width: w + 'px', height: hh + 'px' } }, label ? h('span', { class: 'lbl' }, label) : null, alert ? h('span', { class: 'alert' + (alert === '✓' ? ' green' : '') }, alert) : null);
+    hot(key, label, fn, alert, opts) {
+      opts = opts || {};
+      const r = TV.rect(AREA[key]);
+      if (r.left < 0) { r.width += r.left; r.left = 0; } // ekran dışına taşan kısım kırpılır (etiket görünür kalsın)
+      const b = h('button', { class: 'hot' + (opts.cls ? ' ' + opts.cls : ''), type: 'button', 'aria-label': opts.aria || label, style: { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' } },
+        label && !opts.noLabel ? h('span', { class: 'lbl' + (opts.lblLeft ? ' left' : '') }, label) : null, alert ? h('span', { class: 'alert' + (alert === '✓' ? ' green' : '') }, alert) : null);
       b.addEventListener('click', (e) => { e.stopPropagation(); if (D.Input.blocked()) return; D.Audio.sfx('click'); fn(); });
       this.root.append(b); return b;
     },
@@ -72,23 +126,23 @@
       D.HUD.set('town', { back: () => { D.Game.saveNow(); D.SM.go('menu'); }, backLabel: 'Menü' });
       const st = (npc) => (D.Quests.npcHasStory(s, npc) ? '!' : null);
       const boardReady = Object.values(s.orders).some((o) => D.Quests.orderState(s, o) === 'COMPLETABLE');
-      this.hot(90, 330, 280, 410, 'Evim', () => D.Scenes.openInventory());
-      this.hot(380, 500, 170, 240, 'İlan Panosu', () => D.Scenes.openJournal('board'), boardReady ? '✓' : (s.board.offers.length ? null : null));
-      this.hot(570, 450, 310, 290, 'Balık Pazarı', () => D.SM.go('rustem'), st('rustem'));
-      this.hot(900, 450, 260, 290, 'Market', () => D.SM.go('market'));
-      this.hot(1170, 460, 280, 280, 'Hurdacı Hasan', () => D.SM.go('hasan'), st('hasan'));
-      this.hot(1460, 420, 230, 320, 'Denizin Defteri', () => D.SM.go('kaya'), st('kaya') || (D.HUD.collectionBadge(s) ? '✓' : null));
-      this.hot(1700, 380, 220, 360, 'Yeni Sokak', () => D.SM.go('street'), st('zip') || (D.Quests.activeInspectSpots(s, 'street').length ? '?' : null));
-      this.hot(90, 830, 470, 210, 'Tekne — Balığa Çık', () => D.SM.go('map'));
-      this.hot(MARTI_X - 70, 820, 140, 110, null, () => this.gull(true));
-      // NPC'ler
-      this.hot(830, 600, 140, 200, 'Komplo Teorisyeni', () => D.Scenes.talk('komplo'), st('komplo'));
-      if (this.tarcovHere(s)) this.hot(420, 620, 120, 180, 'Müfettiş Tarçov', () => D.Scenes.talk('tarcov'), st('tarcov'));
-      // İnceleme noktaları (Komplo 2. bölüm)
-      const spots = { lamp: [520, 590, 100, 200], cloud: [1160, 140, 200, 120], facade: [1160, 470, 120, 140] };
+      // Sıra önemli: sonra eklenen üstte kalır.
+      this.hot('street', '← Diğer Sokak', () => D.SM.go('street'), st('zip') || st('kropi') || st('factory') || (D.Quests.activeInspectSpots(s, 'street').length ? '?' : null), { aria: 'Diğer Sokak', lblLeft: true });
+      this.hot('home', 'Evim', () => D.SM.go('home'), boardReady ? '✓' : null);
+      this.hot('market', 'Market', () => D.SM.go('market'));
+      this.hot('restaurant', 'Restoran (kapalı)', () => D.Scenes.restaurantClosed(), null, { aria: 'Restoran' });
+      this.hot('scrapPile', 'Hurdacı Hasan', () => D.SM.go('hasan'), null, { noLabel: true, aria: 'Hurdacı Hasan (hurda yığını)' });
+      this.hot('scrapShed', 'Hurdacı Hasan', () => D.SM.go('hasan'), st('hasan'));
+      this.hot('belediye', 'Belediye', () => D.SM.go('belediye'), st('kaya') || (D.HUD.collectionBadge(s) ? '✓' : null));
+      this.hot('komplo', 'Komplo Teorisyeni', () => D.SM.go('komplo'), st('komplo'), { aria: 'Komplo Teorisyeni\'nin Evi' });
+      this.hot('rustem', 'Rüstem Aga', () => D.SM.go('rustem'), st('rustem'), { aria: 'Balık Pazarı' });
+      this.hot('boatL', 'Balığa Çık', () => D.SM.go('map'), null, { noLabel: true, aria: 'Kayık — Balığa Çık' });
+      this.hot('pier', 'İskele — Balığa Çık', () => D.SM.go('map'), null, { aria: 'Tekne — Balığa Çık' });
+      this.hot('gull', null, () => this.gull(true), null, { aria: 'Martı' });
+      if (this.tarcovHere(s)) this.hot('tarcov', 'Müfettiş Tarçov', () => D.Scenes.talk('tarcov'), st('tarcov'));
       for (const sp of D.Quests.activeInspectSpots(s, 'town')) {
-        const r = spots[sp.spot]; if (!r) continue;
-        this.hot(r[0], r[1], r[2], r[3], sp.label, async () => { const res = D.Game.act('inspect', { spot: sp.spot }); if (res.ok) { await D.UI.dialog(D.DialogueDB[res.dlg]); D.SM.rebuild(); } }, '?');
+        if (!AREA[sp.spot]) continue;
+        this.hot(sp.spot, sp.label, async () => { const res = D.Game.act('inspect', { spot: sp.spot }); if (res.ok) { await D.UI.dialog(D.DialogueDB[res.dlg]); D.SM.rebuild(); } }, '?');
       }
       this.root.append(h('div', { style: { position: 'absolute', right: 'calc(40px + var(--safeR))', bottom: '40px' } }, btn('Balığa Çık', () => D.SM.go('map'), { cls: 'green big' })));
     },
@@ -97,21 +151,51 @@
       const lines = D.IdleLines.marti;
       const k = (D.Game.state.npc.talk.marti_ambient || 0);
       D.Game.state.npc.talk.marti_ambient = k + 1; // yalnız süs sayacı (ekonomi dışı)
-      const ox = (D.UI.view.W - 1920) / 2, oy = (D.UI.view.H - 1080) / 2;
-      D.UI.speech(this.root, MARTI_X - 40 + ox, 690 + oy, lines[k % lines.length]);
+      const [x, y] = TV.pt(GULL_AT[0], GULL_AT[1]);
+      D.UI.speech(this.root, Math.max(20, x - 60), Math.max(110, y - 200), lines[k % lines.length]);
       if (force) D.Audio.sfx('gull');
     },
     update(dt) { this.nextGull -= dt; if (this.nextGull <= 0) { this.nextGull = 16 + Math.random() * 10; if (!D.UI.modalOpen()) this.gull(false); } },
     render(c, W, H, t) {
       const s = D.Game.state;
-      D.SM.drawStatic(c, 'town:' + D.SceneArt.skyTone().top, (cc, w, hh) => D.SceneArt.townStatic(cc, w, hh, s));
-      const completable = Object.values(s.orders).some((o) => D.Quests.orderState(s, o) === 'COMPLETABLE');
-      D.SceneArt.townAnim(c, W, H, t, s, { offers: s.board.offers.length, completable });
-      const ox = (W - 1920) / 2, oy = (H - 1080) / 2;
-      c.save(); c.translate(ox, oy);
-      D.NPCArt.draw(c, 'komplo', 900, 795, 0.72, t);
-      if (this.tarcovHere(s)) D.NPCArt.draw(c, 'tarcov', 480, 798, 0.8, t);
+      const img = D.Assets.get('town');
+      if (!img) { // görsel yoksa prosedürel kasabaya geri düş
+        D.SM.drawStatic(c, 'town:' + D.SceneArt.skyTone().top, (cc, w, hh) => D.SceneArt.townStatic(cc, w, hh, s));
+        D.SceneArt.townAnim(c, W, H, t, s, { offers: s.board.offers.length, completable: false });
+        return;
+      }
+      D.SM.drawStatic(c, 'town-img', (cc, w, hh) => TV.drawStatic(cc, w, hh, img));
+      const { k, ox, oy } = TV.fit(W, H);
+      c.save(); c.translate(ox, oy); c.scale(k, k);
+      // denizde hafif hareketli köpük çizgileri (görselin üzerinde, düşük opaklık)
+      c.lineCap = 'round';
+      for (let i = 0; i < 16; i++) {
+        const baseX = (i * 241) % 2000, y = 880 + ((i * 53) % 210);
+        const x = baseX + Math.sin(t * 0.5 + i) * 26;
+        const a = 0.18 + 0.18 * Math.sin(t * 1.3 + i * 1.7);
+        c.strokeStyle = `rgba(255,255,255,${Math.max(0, a)})`; c.lineWidth = 3;
+        c.beginPath(); c.moveTo(x - 34, y); c.quadraticCurveTo(x, y - 7, x + 34, y); c.stroke();
+      }
+      // kıyıda parıltılar
+      D.Art.sparkles(c, [[1120, 840, 0, 6], [1480, 900, 2, 5], [300, 930, 4, 5], [1750, 960, 1, 6]], t, 'rgba(255,255,255,0.75)');
+      // Martı: iskele yanındaki kayığa konmuş (görev vermez)
+      D.NPCArt.draw(c, 'marti', GULL_AT[0], GULL_AT[1], 0.42, t);
+      if (this.tarcovHere(s)) D.NPCArt.draw(c, 'tarcov', TARCOV_AT[0], TARCOV_AT[1], 0.55, t);
       c.restore();
     }
   });
+
+  // Restoran: şimdilik kapalı (ileride güncellemeyle açılacak)
+  D.Scenes.restaurantClosed = () => {
+    D.UI.modal({
+      title: 'Restoran', width: 1100,
+      body: (b) => {
+        b.append(h('div', { class: 'row' },
+          D.UI.canvas(260, 200, (c) => { c.save(); c.translate(130, 100); c.rotate(-0.06); D.Art.rr(c, -110, -60, 220, 120, 14); D.Art.fs(c, '#f5e2b8', 6); D.Art.signText(c, 'KAPALI', 0, -12, 46, '#c9302c'); D.Art.signText(c, 'Tadilatta', 0, 32, 26, '#5a2a10'); c.restore(); }),
+          h('div', { class: 'col grow' }, h('div', { class: 'b' }, 'Mutfak şimdilik kapalı.'), h('div', null, 'Restoran ileride bir güncellemeyle açılacak. Kapıdaki not: "Balıkları Rüstem Aga\'dan alıyoruz, merak etmeyin."'),
+            h('div', { class: 'small muted' }, 'Martı: "Ben menüyü zaten ezbere biliyorum. Simit, simit, bir de simit."'))));
+      },
+      actions: [{ label: 'Tamam' }]
+    });
+  };
 })(globalThis.DUMEN);

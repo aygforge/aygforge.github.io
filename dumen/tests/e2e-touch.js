@@ -49,6 +49,23 @@ let chromium; try { ({ chromium } = require('playwright')); } catch (e) { consol
    await p.waitForTimeout(600);
  }
  console.log('silhouette', silOk+'/'+silTries, 'treasure', treasureOk+'/'+treasureSeen); if(silOk!==silTries||treasureOk!==treasureSeen) fail++;
+ // Kasaba illüstrasyonu: her binaya dokunmak doğru yere götürür
+ await ev(()=>{DUMEN.UI.closeAll(); DUMEN.SM.go('town');}); await p.waitForTimeout(700);
+ const targets=[['Diğer Sokak','street'],['Evim','home'],['Market','market'],['Hurdacı Hasan','hasan'],['Belediye','belediye'],['Komplo Teorisyeni\'nin Evi','komplo'],['Balık Pazarı','rustem'],['Tekne — Balığa Çık','map']];
+ for (const [label, scene] of targets) {
+   const bx = await p.locator('.hot[aria-label="'+label+'"]').first().boundingBox();
+   // görünür alanın, diğer alanlarla çakışmayan alt-orta noktası (etiket bölgesi)
+   await p.touchscreen.tap(bx.x + Math.min(bx.width/2, Math.max(8, bx.width/2)), bx.y + bx.height - 10); await p.waitForTimeout(450);
+   const got = await ev(()=>DUMEN.SM.name);
+   console.log('kasaba →', label, got===scene ? 'OK' : 'HATA ('+got+')'); if(got!==scene) fail++;
+   await ev(()=>{DUMEN.UI.closeAll(); DUMEN.SM.go('town');}); await p.waitForTimeout(500);
+ }
+ const rb = await p.locator('.hot[aria-label="Restoran"]').boundingBox();
+ await p.touchscreen.tap(rb.x+rb.width/2, rb.y+rb.height-10); await p.waitForTimeout(400);
+ const restOk = await ev(()=>DUMEN.UI.modalOpen() && /Restoran/.test(document.querySelector('.modal h2').textContent) && DUMEN.SM.name==='town');
+ console.log('kasaba → Restoran (kapalı bilgi penceresi)', restOk?'OK':'HATA'); if(!restOk) fail++;
+ await ev(()=>DUMEN.UI.closeAll()); await p.waitForTimeout(300);
+ await p.screenshot({path:out+'touch_town.png'});
  // not defteri / defter / envanter yerleşim: içerik panel içinde mi, kaydırılabilir mi
  await ev(()=>{DUMEN.UI.closeAll(); DUMEN.SM.go('town');}); await p.waitForTimeout(600);
  const check=async(open,name)=>{ await ev(open); await p.waitForTimeout(500);

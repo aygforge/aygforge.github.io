@@ -25,7 +25,7 @@
 
   // ---------------- RÜSTEM ----------------
   shopScene('rustem', {
-    kind: 'rustem', npc: 'rustem', title: 'Rüstem\'in Balık Pazarı',
+    kind: 'rustem', npc: 'rustem', title: 'Rüstem Aga\'nın Balık Pazarı',
     panel(p, s) {
       const fish = s.inv.fish.slice().sort((a, b) => D.Econ.fishValue(s, b) - D.Econ.fishValue(s, a));
       const sellable = fish.filter((f) => D.Econ.sellableAtRustem(s, f));
@@ -179,21 +179,74 @@
     }
   });
 
-  // ---------------- DENİZİN DEFTERİ (Kaya Usta) ----------------
-  shopScene('kaya', {
-    kind: 'kaya', npc: 'kaya', title: 'Denizin Defteri',
+  // ---------------- BELEDİYE BİNASI (Denizin Defteri arşivi — Kaya Usta, Tersane İzni, duyurular) ----------------
+  function archivePanel(p, s) {
+    const t = D.Quests.totalCollection(s);
+    p.append(h('div', null, 'Kaya Usta belediyenin arşivinde her balığı kaydeder. Toplam: ', h('b', null, t.got + ' / ' + t.total)), h('div', { class: 'prog' }, h('i', { style: { width: (t.got / t.total) * 100 + '%' } })));
+    const list = h('div', { class: 'list scroll grow' });
+    for (const reg of D.REGION_ORDER) {
+      const rc = D.Quests.regionCollection(s, reg);
+      list.append(h('div', { class: 'card' }, h('div', { class: 'col grow' }, h('div', { class: 'ttl' }, D.RegionDB[reg].name + ' — ' + rc.got + '/' + rc.total + ' (%' + rc.pct + ')'),
+        h('div', { class: 'row wrap' }, D.QuestDB.collection.thresholds.map((pct) => { const key = reg + ':' + pct; const done = s.collectionRewards[key]; return btn('%' + pct + (done ? ' ✓' : ''), () => D.UI.act('claimCollection', { region: reg, pct }, (r) => { P().rewardsModal(D.RegionDB[reg].name + ' %' + pct + ' ödülü', r.rewards); this.build(); }), { cls: 'small ' + (done ? '' : rc.pct >= pct ? 'green' : ''), disabled: done || rc.pct < pct }); })))));
+    }
+    list.append(h('div', { class: 'card' }, h('div', { class: 'grow ttl' }, '88/88: Altın Dümen Bayrağı + 10.000 coin'), btn(s.collectionRewards.ALL ? 'Alındı ✓' : 'Al', () => D.UI.act('claimCollection', { region: 'ALL', pct: 100 }, (r) => { P().rewardsModal('Denizin Defteri tamamlandı!', r.rewards); this.build(); }), { cls: 'green small', disabled: !!s.collectionRewards.ALL || t.got < t.total })));
+    p.append(list, btn('Denizin Defteri\'ni Aç', () => D.Scenes.openFishpedia(), { cls: 'primary big' }));
+  }
+  const belediye = {
+    kind: 'belediye', npc: 'kaya', title: 'Belediye Binası', defaultTab: 'arsiv',
     panel(p, s) {
-      const t = D.Quests.totalCollection(s);
-      p.append(h('div', null, 'Kaya Usta her balığı kaydeder. Toplam: ', h('b', null, t.got + ' / ' + t.total)), h('div', { class: 'prog' }, h('i', { style: { width: (t.got / t.total) * 100 + '%' } })));
-      const list = h('div', { class: 'list scroll grow' });
-      for (const reg of D.REGION_ORDER) {
-        const rc = D.Quests.regionCollection(s, reg);
-        const row = h('div', { class: 'card' }, h('div', { class: 'col grow' }, h('div', { class: 'ttl' }, D.RegionDB[reg].name + ' — ' + rc.got + '/' + rc.total + ' (%' + rc.pct + ')'),
-          h('div', { class: 'row wrap' }, D.QuestDB.collection.thresholds.map((pct) => { const key = reg + ':' + pct; const done = s.collectionRewards[key]; return btn('%' + pct + (done ? ' ✓' : ''), () => D.UI.act('claimCollection', { region: reg, pct }, (r) => { P().rewardsModal(D.RegionDB[reg].name + ' %' + pct + ' ödülü', r.rewards); this.build(); }), { cls: 'small ' + (done ? '' : rc.pct >= pct ? 'green' : ''), disabled: done || rc.pct < pct }); }))));
-        list.append(row);
+      p.append(tabs(this, [['arsiv', 'Denizin Defteri Arşivi'], ['izin', 'Tersane İzni'], ['duyuru', 'Duyurular']]));
+      if (this.tab === 'arsiv') return archivePanel.call(this, p, s);
+      const body = h('div', { class: 'scroll grow col' });
+      if (this.tab === 'izin') {
+        const PM = D.ShopDB.boatyard.permit;
+        body.append(h('div', { class: 'small' }, 'Tekne Sv.6 ve üstü tersane işleri için belediye izni gerekir. Tekne Sv.' + PM.requiresBoat + ' olduktan sonra alınabilir; bir kez alınır, tüketilmez. (Tekne Atölyesi\'nden de alınabilir.)'),
+          P().itemCard('TCK_BOATYARD_PERMIT', { meta: D.ItemBalanceDB.TCK_BOATYARD_PERMIT.mech, right: [D.Inv.owns(s, PM.id) ? h('span', { class: 'ok' }, 'Sende') : btn('Al (' + D.fmt(PM.coin) + ' c + Cıvata ×5)', () => D.UI.act('buyPermit', {}, () => this.build(), 'Tersane İzni alındı!'), { cls: 'green small', disabled: s.boat.level < PM.requiresBoat || s.wallet.CUR_COIN < PM.coin || (s.inv.items.MAT_03 || 0) < 5 })] }),
+          h('div', { class: 'row wrap small' }, need(s.boat.level, PM.requiresBoat, 'Tekne Sv.'), need(s.wallet.CUR_COIN, PM.coin, 'Coin'), need(s.inv.items.MAT_03 || 0, 5, D.itemName('MAT_03'))));
+      } else {
+        body.append(h('div', { class: 'small' }, 'Belediye panosu: denize açılma izinleri ve bölge durumları.'));
+        for (const code of D.REGION_ORDER) {
+          const R = D.RegionDB[code]; const open = s.unlockedRegions.includes(code);
+          body.append(h('div', { class: 'card' + (open ? '' : ' dis') }, h('div', { class: 'col grow' }, h('div', { class: 'ttl' }, R.order + '. ' + R.name + ' ', h('span', { class: 'chip ' + (open ? 'ok' : 'no') }, open ? 'Açık' : 'Kapalı')), h('div', { class: 'meta' }, open ? (R.env ? R.env.text : R.envText) : R.unlockText))));
+        }
       }
-      list.append(h('div', { class: 'card' }, h('div', { class: 'grow ttl' }, '88/88: Altın Dümen Bayrağı + 10.000 coin'), btn(s.collectionRewards.ALL ? 'Alındı ✓' : 'Al', () => D.UI.act('claimCollection', { region: 'ALL', pct: 100 }, (r) => { P().rewardsModal('Denizin Defteri tamamlandı!', r.rewards); this.build(); }), { cls: 'green small', disabled: !!s.collectionRewards.ALL || t.got < t.total })));
-      p.append(list, btn('Defteri Aç (Fishpedia)', () => D.Scenes.openFishpedia(), { cls: 'primary big' }));
+      p.append(body);
+    }
+  };
+  shopScene('belediye', belediye);
+  shopScene('kaya', belediye); // eski kayıtlar/bağlantılar için takma ad
+
+  // ---------------- EVİM (kapının yanındaki ilan panosu) ----------------
+  shopScene('home', {
+    kind: 'home', title: 'Evim',
+    panel(p, s) {
+      const offers = s.board.offers.length;
+      const ready = Object.values(s.orders).filter((o) => D.Quests.orderState(s, o) === 'COMPLETABLE').length;
+      const big = (label, fn, cls, sub) => h('div', { class: 'card' }, h('div', { class: 'col grow' }, h('div', { class: 'ttl' }, label), sub ? h('div', { class: 'meta' }, sub) : null), btn('Aç', fn, { cls: cls || 'primary' }));
+      p.append(h('div', { class: 'small' }, 'Küçük ama huzurlu. Kapının hemen yanında kasabanın ilan panosu asılı.'),
+        h('div', { class: 'list scroll grow' },
+          big('İlan Panosu', () => D.Scenes.openJournal('board'), 'green', offers + ' ilan asılı' + (ready ? ' · ' + ready + ' sipariş teslime hazır' : '')),
+          big('Not Defteri', () => D.Scenes.openJournal('notes'), '', 'Kabul edilen siparişler, ana görevler, hikâyeler, günlükler'),
+          big('Envanter', () => D.Scenes.openInventory(), '', 'Balık ' + s.inv.fish.length + '/' + D.Inv.capacity(s) + ' · Sandık ' + s.inv.chests.length),
+          big('Ekipman', () => D.Scenes.loadout(() => this.build()), '', D.itemName(s.equip.rod) + (s.equip.bait ? ' · ' + D.itemName(s.equip.bait) : '')),
+          big('Denizin Defteri', () => D.Scenes.openFishpedia(), '', D.Quests.totalCollection(s).got + ' / 88 tür'),
+          big('Ayarlar ve Kayıt', () => D.Scenes.openSettings(), 'wood', 'Son kayıt: ' + new Date(s.savedAt).toLocaleTimeString('tr-TR'))));
+    }
+  });
+
+  // ---------------- KOMPLO TEORİSYENİ'NİN EVİ (sahil) ----------------
+  shopScene('komplo', {
+    kind: 'komplo', npc: 'komplo', title: 'Komplo Teorisyeni\'nin Evi',
+    panel(p, s) {
+      const body = h('div', { class: 'scroll grow col' });
+      body.append(h('div', { class: 'row' }, D.UI.portrait('komplo', 150), h('i', { class: 'grow' }, '“' + D.IdleLines.komplo[(s.npc.talk.komplo || 0) % D.IdleLines.komplo.length] + '”')));
+      body.append(h('h3', null, 'Teoriler (hikâye)'));
+      for (const ch of D.QuestDB.story.filter((c) => c.chain === 'komplo')) {
+        const r = s.quests[ch.id]; const stt = r ? r.state : 'LOCKED';
+        const step = r && stt !== 'COMPLETED' ? D.Quests.currentStep(s, ch.id) : null;
+        body.append(h('div', { class: 'card' + (stt === 'LOCKED' ? ' dis' : '') }, h('div', { class: 'col grow' }, h('div', { class: 'ttl' }, ch.no + '. ' + ch.title), h('div', { class: 'meta' }, stt === 'COMPLETED' ? 'Tamamlandı' : stt === 'LOCKED' ? 'Kilitli — ' + ch.unlock.map(D.Quests.condText).join(', ') : step ? 'Sıradaki: ' + step.text : ''))));
+      }
+      p.append(body);
     }
   });
 })(globalThis.DUMEN);
