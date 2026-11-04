@@ -1,5 +1,5 @@
 // Ana menü (kullanıcı görselleri: assets/menu/): DÜMEN tabelası, tahta düğmeler (Devam Et / Yeni Oyun / Kayıtlı Oyun / Ayarlar / Çıkış),
-// sağda varil ve üstünde Martı (main_menu replikleri). Arka plan: kasaba illüstrasyonu, okunabilirlik için hafif karartılmış.
+// sağda varil ve üstünde Martı (main_menu replikleri). Arka plan: kullanıcının menü görseli (assets/menu/bg.webp).
 // Yeni Oyun mevcut kaydı ikinci onaysız silmez. Görseller yoksa metin düğmelere geri düşer.
 (function (D) {
   'use strict';
@@ -128,8 +128,11 @@
     },
     exit() { if (this._fsl) { document.removeEventListener('fullscreenchange', this._fsl); document.removeEventListener('webkitfullscreenchange', this._fsl); this._fsl = null; } },
     render(c, W, H, t) {
-      const town = A().get('town');
-      if (town && this.art()) {
+      const bg = A().get('menu_bg'), town = A().get('town');
+      if (bg && this.art()) {
+        // kullanıcının menü arka planı (1920×1071): ekranı kaplar (cover)
+        D.SM.drawStatic(c, 'menu-bg2', (cc, w, hh) => { const k = Math.max(w / bg.width, hh / bg.height), dw = bg.width * k, dh = bg.height * k; cc.drawImage(bg, (w - dw) / 2, (hh - dh) / 2, dw, dh); });
+      } else if (town && this.art()) {
         D.SM.drawStatic(c, 'menu-bg', (cc, w, hh) => {
           D.TownView.drawStatic(cc, w, hh, town);
           const g = cc.createLinearGradient(0, 0, 0, hh); g.addColorStop(0, 'rgba(16,32,46,0.55)'); g.addColorStop(0.55, 'rgba(16,32,46,0.25)'); g.addColorStop(1, 'rgba(16,32,46,0.5)');

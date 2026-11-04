@@ -93,7 +93,7 @@ Kaynak JSON dosyaları **birebir** korunur (testler gömülü kopyanın bayt eş
 - Martı görseli diyalog/sonuç portrelerinde de kullanılır.
 
 ## Ana menü görselleri (kullanıcı)
-- Zip'te ayrı bir arka plan görseli yoktu; benim kararım: arka plan olarak kasaba illüstrasyonu (üstten/alttan karartma ile) kullanıldı. Ayrı bir menü arka planı gelirse ona geçilir.
+- Menü arka planı kullanıcının sonradan verdiği görseldir (`assets/menu/bg.webp`, ekranı kaplayacak şekilde ölçeklenir; geniş telefonda üst/alt hafif kırpılır).
 - "Kayıtlı Oyun" düğmesi için oyunda tek kayıt yuvası var: özet + devam / dışa aktar / içe aktar penceresi açar (çoklu kayıt yuvası yok). "Çıkış": web'de `window.close()` çoğu tarayıcıda yalnız betikle açılan sekmeleri kapatır; kapanmazsa kullanıcıya bilgi verilir, ilerleme önceden kaydedilir.
 - Eski "Tam Ekran" düğmesi görsel setinde olmadığı için sol üstte küçük yuvarlak düğmeye dönüştü (mobilde gerekli).
 
