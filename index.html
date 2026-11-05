@@ -260,17 +260,14 @@ const FIELD_L = 105, FIELD_W = 68;
 const MESH_L = 112, MESH_W = 75;           // saha + kenar payı
 const SEG_L = 176, SEG_W = 118;
 const BASE_Y = -2.6;                        // yan yüzeylerin alt kenarı
-const HEIGHT = 26;                          // en yüksek çubuk (1.0) → 26 birim yükselti (saha 105 birim)
-const HIST_MIN = 10;                        // sahada görünen geçmiş: son 10 dakika
-const HIST_SPAN = 0.72;                     // bu geçmişin kapladığı saha uzunluğu oranı
+const HEIGHT = 15;
 
 const col3 = hex => new THREE.Color(hex);
 const uniforms = {
   uTime: { value: 0 }, uHome: { value: 0 }, uAway: { value: 0 }, uHeight: { value: HEIGHT },
   uGoalAge: { value: 99 }, uGoalSide: { value: 0 }, uGoalAmp: { value: 0 }, uGoalGlow: { value: 0 },
   uGoalColor: { value: col3(TEAMS.home.ui) }, uReveal: { value: 1.2 }, uBase: { value: BASE_Y },
-  uNeutral: { value: col3('#3a4050') }, uTintSide: { value: 0 }, uTintAmt: { value: 0 },
-  uHistH: { value: new Float32Array(64) }, uHistA: { value: new Float32Array(64) }, uSpan: { value: HIST_SPAN },
+  uNeutral: { value: col3('#3a4050') }, uTint: { value: col3(TEAMS.away.base) }, uTintAmt: { value: 0 },
   uHomeA: { value: col3(TEAMS.home.stripeA) }, uHomeB: { value: col3(TEAMS.home.stripeB) },
   uAwayA: { value: col3(TEAMS.away.stripeA) }, uAwayB: { value: col3(TEAMS.away.stripeB) },
   uLines: { value: null },
@@ -280,15 +277,8 @@ const COMMON = /* glsl */`
   uniform float uTime, uHome, uAway, uHeight, uGoalAge, uGoalSide, uGoalAmp, uBase, uReveal;
   const float HL = ${(FIELD_L / 2).toFixed(2)};
   const float HW = ${(FIELD_W / 2).toFixed(2)};
-  // --- Dakika dakika baskı geçmişi: her çubuk sahadan yükselen bir sırt olur ---
-  // index 0 = şu anki dakika (hücum edilen kale çizgisinde), sonra geriye doğru uSpan boyunca
-  #define NH 64
-  uniform float uHistH[NH];
-  uniform float uHistA[NH];
-  uniform float uSpan;
-  float sampleH(float d){ float x = clamp(d / uSpan, 0.0, 1.0) * float(NH - 1); int i = int(floor(x)); int j = min(i + 1, NH - 1); return mix(uHistH[i], uHistH[j], fract(x)); }
-  float sampleA(float d){ float x = clamp(d / uSpan, 0.0, 1.0) * float(NH - 1); int i = int(floor(x)); int j = min(i + 1, NH - 1); return mix(uHistA[i], uHistA[j], fract(x)); }
-  float tail(float d){ return 1.0 - smoothstep(uSpan * 0.80, uSpan, d); }
+  // Baskı zarfı: d=0 hücum edilen kale çizgisi. Güçlü baskı → dalga sahaya daha çok yayılır.
+  float env(float d, float p){ float w = 0.15 + 0.42 * p; return exp(-(d * d) / (w * w) * 1.8); }
   float goalRing(vec2 q){
     if (uGoalAmp <= 0.0) return 0.0;
     vec2 gp = vec2(uGoalSide < 0.5 ? -HL : HL, 0.0);
@@ -296,23 +286,24 @@ const COMMON = /* glsl */`
     float front = uGoalAge * 62.0;
     return exp(-pow((r - front) / 8.0, 2.0)) * uGoalAmp * exp(-uGoalAge * 0.85);
   }
-  // x: Takım A yükseltisi, y: Takım B yükseltisi
-  vec2 teamHeights(vec2 q){
+  float heightAt(vec2 q){
     // Takım A (ev) -x kalesine, Takım B (dep) +x kalesine hücum eder.
     float dH = (q.x + HL) / (2.0 * HL);
     float dA = (HL - q.x) / (2.0 * HL);
     float zN = q.y / HW;
-    float bend = 0.03 * sin(zN * 2.2 + uTime * 0.6);
-    float latH = 0.86 + 0.14 * cos(zN * 2.0 + sin(uTime * 0.5));
-    float latA = 0.86 + 0.14 * cos(zN * 2.0 - cos(uTime * 0.45) + 1.0);
-    float dh = max(dH + bend, 0.0), da = max(dA - bend, 0.0);
-    return vec2(uHeight * sampleH(dh) * tail(dh) * latH,
-                uHeight * sampleA(da) * tail(da) * latA);
-  }
-  float heightAt(vec2 q){
-    vec2 th = teamHeights(q);
-    float h = th.x + th.y;
+    float latH = 0.80 + 0.20 * cos(zN * 2.3 + sin(uTime * 0.7) * 0.8);
+    float latA = 0.80 + 0.20 * cos(zN * 2.3 - cos(uTime * 0.6) * 0.8 + 1.0);
+    // Kaleye doğru ilerleyen dalgacıklar
+    float rH = 0.72 + 0.28 * sin(dH * 25.0 + uTime * 5.2);
+    float rA = 0.72 + 0.28 * sin(dA * 25.0 + uTime * 5.2 + 1.7);
+    float h = uHeight * uHome * env(dH, uHome) * rH * latH;
+    h      += uHeight * uAway * env(dA, uAway) * rA * latA;
+    // Çok güçlü baskıda saha ucu yukarı kıvrılır
+    h += uHeight * 0.45 * uHome * uHome * exp(-max(dH, 0.0) * 15.0);
+    h += uHeight * 0.45 * uAway * uAway * exp(-max(dA, 0.0) * 15.0);
+    // Sakin ortam hareketi
     h += 0.32 * sin(q.x * 0.09 + uTime * 0.9) * cos(q.y * 0.11 - uTime * 0.7);
+    // Gol şok dalgası
     h += goalRing(q) * 8.5;
     return h;
   }
@@ -342,8 +333,8 @@ const VERT = /* glsl */`
 
 const FRAG = /* glsl */`
   ${COMMON}
-  uniform vec3 uNeutral, uHomeA, uHomeB, uAwayA, uAwayB, uGoalColor;
-  uniform float uTintAmt, uTintSide, uGoalGlow;
+  uniform vec3 uNeutral, uTint, uHomeA, uHomeB, uAwayA, uAwayB, uGoalColor;
+  uniform float uTintAmt, uGoalGlow;
   uniform sampler2D uLines;
   varying vec3 vN; varying vec2 vUv; varying vec2 vQ; varying float vH; varying float vSkY;
   float bands(float x){
@@ -354,24 +345,24 @@ const FRAG = /* glsl */`
   void main(){
     float xN = (vQ.x + HL + 3.5) / (2.0 * HL + 7.0);
     if (xN > uReveal) discard;
-    vec2 th = teamHeights(vQ);
-    float zN = vQ.y / HW;
-    // Saha boyunca uzanan, yükseltiyi izleyen takım şeritleri
-    float sb = bands(zN * 1.45 + vH * 0.018 + 10.0);
-    vec3 cH = mix(uHomeA, uHomeB, sb);
-    vec3 cA = mix(uAwayA, uAwayB, sb);
-    vec3 col = mix(uNeutral, mix(cA, cH, uTintSide), uTintAmt * 0.85);
-    float wT = max(smoothstep(0.6, 5.0, th.x), smoothstep(0.6, 5.0, th.y));
-    float share = smoothstep(0.3, 0.7, th.x / (th.x + th.y + 0.001));
-    col = mix(col, mix(cA, cH, share), wT);
+    float dH = (vQ.x + HL) / (2.0 * HL);
+    float dA = 1.0 - dH;
+    vec3 col = mix(uNeutral, uTint, uTintAmt);
+    float iH = uHome * env(dH, uHome);
+    float iA = uAway * env(dA, uAway);
+    // Takım renk şeritleri (kale çizgisine paralel), baskı yönünde akar
+    vec3 cH = mix(uHomeA, uHomeB, bands(dH * 9.0 + uTime * 0.55));
+    vec3 cA = mix(uAwayA, uAwayB, bands(dA * 9.0 + uTime * 0.55));
+    col = mix(col, cA, smoothstep(0.04, 0.42, iA));
+    col = mix(col, cH, smoothstep(0.04, 0.42, iH));
     // Aydınlatma
     vec3 n = normalize(vN);
     vec3 L = normalize(vec3(-0.35, 1.0, -0.45));
     float dif = max(dot(n, L), 0.0);
-    float crest = clamp(vH / uHeight, 0.0, 1.0);
+    float crest = clamp(vH / (uHeight * 1.2), 0.0, 1.0);
     vec3 V = normalize(vec3(-0.5, 0.8, 0.6));
     float spec = pow(max(dot(n, normalize(L + V)), 0.0), 28.0) * 0.18;
-    float light = 0.52 + 0.50 * dif + 0.18 * crest;
+    float light = 0.50 + 0.52 * dif + 0.22 * crest;
   #ifdef SKIRT
     light = mix(0.32, 0.72, vSkY);
     spec = 0.0;
@@ -382,7 +373,7 @@ const FRAG = /* glsl */`
     col = mix(col, vec3(0.97), a * 0.93);
   #endif
     // Gol ışığı
-    col += uGoalColor * (uGoalGlow * 0.18 + goalRing(vQ) * 0.4);
+    col += uGoalColor * (uGoalGlow * 0.35 + goalRing(vQ) * 0.55);
     // Açılış süpürmesinin parlak kenarı
     col += vec3(1.0) * smoothstep(uReveal - 0.035, uReveal, xN) * step(uReveal, 1.05) * 0.6;
     gl_FragColor = vec4(col, 1.0);
@@ -489,7 +480,7 @@ const FORMATS = {
   '9:16': { w: 1080, h: 1920, fov: 34, el: 44, az: -63, sx: 0.94, top: 0.52, bot: -0.64 },
 };
 const BOX = [];
-for (const sx of [-1, 1]) for (const sz of [-1, 1]) for (const y of [BASE_Y, 30]) BOX.push(new THREE.Vector3(sx * MESH_L / 2, y, sz * MESH_W / 2));
+for (const sx of [-1, 1]) for (const sz of [-1, 1]) for (const y of [BASE_Y, 17]) BOX.push(new THREE.Vector3(sx * MESH_L / 2, y, sz * MESH_W / 2));
 const tmpV = new THREE.Vector3();
 let fitDist = 200;
 let quality = 1;
@@ -623,7 +614,7 @@ function drawTimeline(ctx, t, m, gs, alpha) {
   ctx.fillText('ATTACKING PRESSURE', g.x, g.lblY);
   setLS(ctx, 0.5 * u);
   ctx.textAlign = 'right'; ctx.font = `600 ${19 * u}px ${FONT}`; ctx.fillStyle = 'rgba(255,255,255,0.78)';
-  ctx.fillText('Rise height = minute-by-minute pressure', g.x + g.w, g.lblY);
+  ctx.fillText('Taller wave → stronger pressure', g.x + g.w, g.lblY);
   // küçük takım anahtarı
   ctx.font = `600 ${15 * u}px ${FONT}`; ctx.fillStyle = 'rgba(255,255,255,0.45)';
   const kx = state.format === '16:9' ? g.x + 250 * u : g.x;
@@ -658,21 +649,6 @@ function scoreText(ctx, val, x, y, size, pop, color, align) {
 }
 const popOf = age => (isFinite(age) && age >= 0 && age < 0.9) ? Math.exp(-age * 5) * Math.sin(Math.min(age / 0.12, 1) * Math.PI / 2) : 0;
 
-/* Skorun altında o ana kadarki gol dakikaları (• 28' 74') */
-function drawScorerMinutes(ctx, t, team, x, y, size, align) {
-  const mins = GOALS.filter(g => g.team === team && t >= goalTime(g)).map(g => g.minute + "'");
-  if (!mins.length) return;
-  ctx.save();
-  ctx.font = `700 ${size}px ${FONT_C}`; ctx.textAlign = 'left'; setLS(ctx, 0.5 * size / 21);
-  const txt = mins.join('  '), dot = size * 0.22, gap = size * 0.5;
-  const w = ctx.measureText(txt).width + dot * 2 + gap;
-  const x0 = align === 'center' ? x - w / 2 : x;
-  ctx.fillStyle = team === 'home' ? TEAMS.home.stripeB : TEAMS.away.ui;
-  ctx.beginPath(); ctx.arc(x0 + dot, y - size * 0.33, dot, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = 'rgba(255,255,255,0.88)';
-  ctx.fillText(txt, x0 + dot * 2 + gap, y);
-  ctx.restore();
-}
 function drawScoreboard(ctx, t, gs, alpha) {
   const u = U(), W = out.width;
   const per = periodAt(t), p = phases();
@@ -687,7 +663,6 @@ function drawScoreboard(ctx, t, gs, alpha) {
       ctx.fillText(TEAMS[team].code, x, y0 + 46 * u);
       setLS(ctx, 0);
       scoreText(ctx, gs.score[team], x + 2 * u, y0 + 158 * u, 120 * u, popOf(gs.lastAge[team]), TEAMS[team].ui, 'left');
-      drawScorerMinutes(ctx, t, team, x + 2 * u, y0 + 192 * u, 21 * u, 'left');
     }
     ctx.textAlign = 'center'; ctx.fillStyle = '#fff';
     ctx.font = `700 ${25 * u}px ${FONT}`; setLS(ctx, 3 * u);
@@ -723,7 +698,6 @@ function drawScoreboard(ctx, t, gs, alpha) {
       ctx.fillText(TEAMS[team].code, codeX, sy - 22 * u);
       setLS(ctx, 0);
       scoreText(ctx, gs.score[team], cx + sign * 105 * u, sy, 150 * u, popOf(gs.lastAge[team]), TEAMS[team].ui, 'center');
-      drawScorerMinutes(ctx, t, team, codeX, sy + 14 * u, 24 * u, 'center');
     }
     ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font = `700 ${90 * u}px ${FONT_C}`; ctx.textAlign = 'center';
     ctx.fillText('–', cx, sy - 14 * u);
@@ -842,14 +816,7 @@ function renderFrame(t) {
   uniforms.uHome.value = home;
   uniforms.uAway.value = away;
   const tintAmt = smooth(0.02, 0.30, Math.abs(dom.d)) * 0.9 * smooth(0.03, 0.18, dom.act);
-  uniforms.uTintSide.value = dom.d >= 0 ? 1 : 0;
-  const hh = uniforms.uHistH.value, ha = uniforms.uHistA.value;
-  const settle = 1 - 0.35 * smooth(p.h2, p.end, t);
-  for (let k = 0; k < 64; k++) {
-    const mk = m - k * HIST_MIN / 63;
-    hh[k] = pressureAt('home', mk) * settle;
-    ha[k] = pressureAt('away', mk) * settle;
-  }
+  uniforms.uTint.value.set(dom.d >= 0 ? TEAMS.home.base : TEAMS.away.base);
   uniforms.uTintAmt.value = tintAmt;
   const gAge = gs.last ? gs.age : 99;
   const goalActive = gs.last && gAge < 3;
