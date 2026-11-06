@@ -1,0 +1,1244 @@
+{
+  "game": "Cozy Fishing",
+  "version": "1.0",
+  "locale": "tr-TR",
+  "status": "GDD tasarım baz çizgisi; ilk oynanabilir sürümde balans testi bekler",
+  "platform": {
+    "runtime": "HTML5 Canvas 2D + vanilla JavaScript",
+    "screen": "mobile landscape",
+    "logical_resolution": [
+      640,
+      360
+    ],
+    "single_html_offline": true,
+    "full_screen": "user initiated with safe fallback",
+    "touch_first": true,
+    "external_runtime_assets": false
+  },
+  "core": {
+    "start_cash": 100,
+    "daily_energy": 100,
+    "max_manual_casts": 20,
+    "stack_size": 10,
+    "day_timer": false,
+    "season_days": 28,
+    "year_days": 112,
+    "daily_event_chance": 0.4,
+    "auto_daily_catch_cap": 6,
+    "autos_offline": false,
+    "fish_decay": false,
+    "bait_basic_unlimited": true
+  },
+  "reeling": {
+    "charge_seconds": 1.2,
+    "cast_bands": {
+      "near": [
+        0,
+        35
+      ],
+      "mid": [
+        36,
+        70
+      ],
+      "far": [
+        71,
+        100
+      ]
+    },
+    "wait_sec_range": [
+      2,
+      6
+    ],
+    "bite_base": 0.88,
+    "reaction_window_sec": 1.6,
+    "tension_start": 35,
+    "tension_hold_gain_per_second": 18,
+    "tension_release_drop_per_second": 26,
+    "safe_band": [
+      30,
+      75
+    ],
+    "break_threshold_above": 95,
+    "break_after_seconds": 1.2,
+    "slack_threshold_below": 10,
+    "slack_after_seconds": 1.2,
+    "surge_preview_sec": 0.4,
+    "fish_power_allowed_rule": "fish.power <= rod.power+1",
+    "hard_fish_only_manual_power": 5
+  },
+  "inventory": {
+    "fish_stack_per_slot": 10,
+    "bag": [
+      [
+        "bag1",
+        6,
+        0
+      ],
+      [
+        "bag2",
+        8,
+        250
+      ],
+      [
+        "bag3",
+        12,
+        800
+      ],
+      [
+        "bag4",
+        16,
+        2450
+      ],
+      [
+        "bag5",
+        20,
+        7400
+      ]
+    ],
+    "home_chest": [
+      [
+        "chest1",
+        10,
+        0
+      ],
+      [
+        "chest2",
+        20,
+        1500
+      ],
+      [
+        "chest3",
+        30,
+        5000
+      ]
+    ],
+    "on_boat_storage_priority": "manual->bag then boat; automatic->boat then bag",
+    "species_favorites_preserved_on_bulk_sale": true,
+    "gear_does_not_consume_fish_slots": true,
+    "no_capacity_when_reeling": "allow_land_then_release_or_replace_with_confirmation"
+  },
+  "shop": {
+    "rods": [
+      {
+        "id": "old_bamboo",
+        "name": "Eski Bambu Olta",
+        "price": 0,
+        "energy": 8,
+        "power": 1
+      },
+      {
+        "id": "light",
+        "name": "Hafif Olta",
+        "price": 350,
+        "energy": 7,
+        "power": 2
+      },
+      {
+        "id": "fiberglass",
+        "name": "Fiberglas Olta",
+        "price": 1150,
+        "energy": 6,
+        "power": 3
+      },
+      {
+        "id": "carbon",
+        "name": "Karbon Olta",
+        "price": 3800,
+        "energy": 5,
+        "power": 4
+      },
+      {
+        "id": "professional",
+        "name": "Profesyonel Deniz Oltası",
+        "price": 11000,
+        "energy": 5,
+        "power": 5
+      }
+    ],
+    "lines": [
+      {
+        "id": "thin",
+        "name": "İnce Misina",
+        "price": 0,
+        "durability_bonus_pct": 0
+      },
+      {
+        "id": "durable",
+        "name": "Dayanıklı Misina",
+        "price": 180,
+        "durability_bonus_pct": 15
+      },
+      {
+        "id": "braided",
+        "name": "Örgü Misina",
+        "price": 620,
+        "durability_bonus_pct": 30
+      },
+      {
+        "id": "marine",
+        "name": "Güçlü Deniz Misinası",
+        "price": 2100,
+        "durability_bonus_pct": 50
+      },
+      {
+        "id": "pro",
+        "name": "Profesyonel Misina",
+        "price": 6400,
+        "durability_bonus_pct": 70
+      }
+    ],
+    "reels": [
+      {
+        "id": "basic",
+        "name": "Basit Makara",
+        "price": 0,
+        "reel_speed_bonus_pct": 0
+      },
+      {
+        "id": "light",
+        "name": "Hafif Makara",
+        "price": 240,
+        "reel_speed_bonus_pct": 10
+      },
+      {
+        "id": "balanced",
+        "name": "Dengeli Makara",
+        "price": 780,
+        "reel_speed_bonus_pct": 20
+      },
+      {
+        "id": "strong",
+        "name": "Güçlü Makara",
+        "price": 2500,
+        "reel_speed_bonus_pct": 30
+      },
+      {
+        "id": "professional",
+        "name": "Profesyonel Makara",
+        "price": 7600,
+        "reel_speed_bonus_pct": 40
+      }
+    ],
+    "hooks": [
+      {
+        "id": "standard",
+        "name": "Standart İğne",
+        "price": 0,
+        "slack_resistance_bonus_pct": 0
+      },
+      {
+        "id": "sharp",
+        "name": "Keskin İğne",
+        "price": 120,
+        "slack_resistance_bonus_pct": 10
+      },
+      {
+        "id": "reinforced",
+        "name": "Güçlendirilmiş İğne",
+        "price": 500,
+        "slack_resistance_bonus_pct": 20
+      },
+      {
+        "id": "pro",
+        "name": "Profesyonel İğne",
+        "price": 1700,
+        "slack_resistance_bonus_pct": 35
+      }
+    ],
+    "bait": [
+      {
+        "id": "basic",
+        "name": "Temel Yem",
+        "purchase_price": 0,
+        "consumed_per_cast": 0,
+        "stock": "unlimited"
+      },
+      {
+        "id": "worm",
+        "name": "Solucan",
+        "purchase_price": 3,
+        "consumed_per_cast": 1
+      },
+      {
+        "id": "shrimp",
+        "name": "Karides",
+        "purchase_price": 6,
+        "consumed_per_cast": 1
+      },
+      {
+        "id": "fish",
+        "name": "Balık Parçası",
+        "purchase_price": 9,
+        "consumed_per_cast": 1
+      },
+      {
+        "id": "lure",
+        "name": "Metal Sahte Yem",
+        "purchase_price": 12,
+        "consumed_per_cast": 1
+      },
+      {
+        "id": "deep",
+        "name": "Derin Su Yemi",
+        "purchase_price": 20,
+        "consumed_per_cast": 1
+      }
+    ]
+  },
+  "boats": [
+    {
+      "id": "coastal_skiff",
+      "name": "Kıyı Kayığı",
+      "price": 2200,
+      "initial_storage": 6,
+      "max_storage": 12,
+      "slots": 1,
+      "default_motor": 1,
+      "upgrades": {
+        "motor_II": 650,
+        "storage_9": 280,
+        "storage_12": 780,
+        "navigation_I": 250,
+        "navigation_II": 700,
+        "hull_I": 350,
+        "hull_II": 900
+      },
+      "base_access": [
+        "yesil_koy"
+      ]
+    },
+    {
+      "id": "motorboat",
+      "name": "Motorlu Balıkçı Teknesi",
+      "price": 8000,
+      "initial_storage": 12,
+      "max_storage": 20,
+      "slots": 2,
+      "default_motor": 2,
+      "upgrades": {
+        "motor_III": 2300,
+        "storage_16": 900,
+        "storage_20": 2100,
+        "navigation_I": 1200,
+        "hull_I": 800,
+        "hull_II": 1800
+      },
+      "base_access": [
+        "serin_akintilar"
+      ]
+    },
+    {
+      "id": "cabin",
+      "name": "Kabinli Balıkçı Teknesi",
+      "price": 25000,
+      "initial_storage": 18,
+      "max_storage": 28,
+      "slots": 2,
+      "default_motor": 3,
+      "upgrades": {
+        "motor_IV": 4800,
+        "storage_23": 1900,
+        "storage_28": 3900,
+        "navigation_II": 3600,
+        "hull_I": 2200,
+        "hull_II": 5400
+      },
+      "base_access": []
+    },
+    {
+      "id": "offshore",
+      "name": "Açık Deniz Teknesi",
+      "price": 70000,
+      "initial_storage": 24,
+      "max_storage": 36,
+      "slots": 3,
+      "default_motor": 4,
+      "upgrades": {
+        "motor_V": 9000,
+        "storage_30": 4000,
+        "storage_36": 9000,
+        "navigation_II": 7000,
+        "hull_I": 6500,
+        "hull_II": 14500
+      },
+      "base_access": []
+    }
+  ],
+  "regions": [
+    {
+      "id": "sakin_liman",
+      "name": "Sakin Liman",
+      "requirements": "Başlangıçta açık",
+      "trip_fuel_cost": 0
+    },
+    {
+      "id": "yesil_koy",
+      "name": "Yeşil Koy",
+      "requirements": "Kıyı Kayığı veya daha üst tekne",
+      "trip_fuel_cost": 12
+    },
+    {
+      "id": "kayalik_adalar",
+      "name": "Kayalık Adalar",
+      "requirements": "Kıyı Kayığı motor II veya daha üst menzilli tekne",
+      "trip_fuel_cost": 20
+    },
+    {
+      "id": "serin_akintilar",
+      "name": "Serin Akıntılar",
+      "requirements": "Motorlu Balıkçı Teknesi veya daha üst tekne",
+      "trip_fuel_cost": 35
+    },
+    {
+      "id": "sisli_kuzey",
+      "name": "Sisli Kuzey",
+      "requirements": "Motorlu Tekne motor III + navigasyon I veya daha üst eşdeğer donanım",
+      "trip_fuel_cost": 45
+    },
+    {
+      "id": "gunes_adalari",
+      "name": "Güneş Adaları",
+      "requirements": "Kabinli Tekne motor IV veya daha üst eşdeğer donanım",
+      "trip_fuel_cost": 65
+    },
+    {
+      "id": "derin_mavi",
+      "name": "Derin Mavi",
+      "requirements": "Açık Deniz Teknesi motor V + navigasyon II",
+      "trip_fuel_cost": 90
+    }
+  ],
+  "automation": [
+    {
+      "id": "auto1",
+      "name": "Basit Otomatik Olta",
+      "price": 1300,
+      "type": "device",
+      "attempt_every_casts": 4,
+      "success": 0.55,
+      "max_power": 2
+    },
+    {
+      "id": "auto_reel",
+      "name": "Otomatik Sarma Modülü",
+      "price": 2100,
+      "type": "global_upgrade",
+      "attempt_every_casts": 3,
+      "success": 0.65,
+      "max_power": 3,
+      "requires": "auto1"
+    },
+    {
+      "id": "sensing",
+      "name": "Hassas Algılama",
+      "price": 6000,
+      "type": "global_upgrade",
+      "attempt_every_casts": 3,
+      "success": 0.75,
+      "max_power": 3,
+      "requires": "auto_reel"
+    },
+    {
+      "id": "auto2",
+      "name": "İkinci Otomatik Olta",
+      "price": 2800,
+      "type": "device",
+      "attempt_every_casts": 4,
+      "success": 0.55,
+      "max_power": 2,
+      "requires": "auto1",
+      "inherits_global_upgrades": true
+    },
+    {
+      "id": "auto3",
+      "name": "Üçüncü Otomatik Olta",
+      "price": 10000,
+      "type": "device",
+      "attempt_every_casts": 4,
+      "success": 0.55,
+      "max_power": 2,
+      "requires": "auto2",
+      "inherits_global_upgrades": true
+    },
+    {
+      "id": "deep_sea_gear",
+      "name": "Derin Deniz Dişlisi",
+      "price": 9000,
+      "type": "global_upgrade",
+      "max_power": 4,
+      "only_boat": "offshore",
+      "requires": "auto_reel"
+    }
+  ],
+  "customers": [
+    {
+      "id": "bahar",
+      "name": "Bahar Lokantası",
+      "focus": [
+        "sakin_liman",
+        "yesil_koy"
+      ],
+      "bonus_range": [
+        0.15,
+        0.25
+      ]
+    },
+    {
+      "id": "nihat",
+      "name": "Liman Balıkçısı",
+      "focus": [
+        "sakin_liman"
+      ],
+      "bonus_range": [
+        0.1,
+        0.2
+      ]
+    },
+    {
+      "id": "sunset_hotel",
+      "name": "Günbatımı Oteli",
+      "focus": [
+        "yesil_koy",
+        "kayalik_adalar"
+      ],
+      "bonus_range": [
+        0.2,
+        0.35
+      ]
+    },
+    {
+      "id": "seafood_restaurant",
+      "name": "Deniz Ürünleri Restoranı",
+      "focus": [
+        "kayalik_adalar",
+        "serin_akintilar"
+      ],
+      "bonus_range": [
+        0.2,
+        0.35
+      ]
+    },
+    {
+      "id": "north_fishery",
+      "name": "Kuzey Balıkhanesi",
+      "focus": [
+        "sisli_kuzey"
+      ],
+      "bonus_range": [
+        0.15,
+        0.3
+      ]
+    },
+    {
+      "id": "island_cuisine",
+      "name": "Ada Mutfağı",
+      "focus": [
+        "gunes_adalari"
+      ],
+      "bonus_range": [
+        0.2,
+        0.35
+      ]
+    },
+    {
+      "id": "cooperative",
+      "name": "Denizcilik Kooperatifi",
+      "focus": [
+        "serin_akintilar",
+        "derin_mavi"
+      ],
+      "bonus_range": [
+        0.2,
+        0.4
+      ]
+    }
+  ],
+  "orders": {
+    "starting_board_slots": 4,
+    "board_slots_after_three_regions": 5,
+    "board_slots_after_five_regions": 6,
+    "durations_days": [
+      1,
+      2,
+      3
+    ],
+    "bonus_min": 0.1,
+    "bonus_max": 0.4,
+    "min_delivery_qty": 1,
+    "all_orders_partial_sale_allowed": true,
+    "full_order_completion_bonus": 0,
+    "expiry_penalty": 0,
+    "relationship_threshold_fish_delivered": [
+      50,
+      150,
+      350
+    ],
+    "price_rounding": "round half up to integer; frozen at creation",
+    "expiry_semantics": "expire at start of day created+duration"
+  },
+  "weather": {
+    "types": [
+      "sunny",
+      "cloudy",
+      "rain",
+      "fog",
+      "wind"
+    ],
+    "region_daily_deterministic": true,
+    "unfavorable_weather_never_blocks_region": true
+  },
+  "events": [
+    {
+      "id": "sardine_school",
+      "name": "Sardalya Sürüsü",
+      "region": "sakin_liman",
+      "species": "sardalya",
+      "modifier": 1.15
+    },
+    {
+      "id": "bay_activity",
+      "name": "Koyda Balık Hareketliliği",
+      "region": "yesil_koy",
+      "species": "levrek",
+      "modifier": 1.15
+    },
+    {
+      "id": "rocky_bounty",
+      "name": "Kayalıkların Bereketi",
+      "region": "kayalik_adalar",
+      "species": "mercan",
+      "modifier": 1.15
+    },
+    {
+      "id": "currents_day",
+      "name": "Akıntıların Günü",
+      "region": "serin_akintilar",
+      "species": "palamut",
+      "modifier": 1.15
+    },
+    {
+      "id": "calm_north",
+      "name": "Kuzeyde Sakin Deniz",
+      "region": "sisli_kuzey",
+      "effect": "reel_tension_gain_multiplier",
+      "modifier": 0.94
+    },
+    {
+      "id": "tropical_activity",
+      "name": "Tropik Balık Hareketliliği",
+      "region": "gunes_adalari",
+      "species": "lambuka",
+      "modifier": 1.15
+    },
+    {
+      "id": "special_restaurant",
+      "name": "Restoranın Özel Alımı",
+      "effect": "extra_fair_order"
+    },
+    {
+      "id": "harbor_market",
+      "name": "Liman Pazarı",
+      "effect": "one_extra_order"
+    },
+    {
+      "id": "bait_discount",
+      "name": "Ekipman Dükkânı İndirimi",
+      "effect": "bait_prices_multiplier",
+      "modifier": 0.9
+    },
+    {
+      "id": "open_sea_current",
+      "name": "Açık Denizde Uygun Akıntı",
+      "region": "derin_mavi",
+      "effect": "bite_chance_bonus",
+      "modifier": 0.03
+    }
+  ],
+  "achievements": [
+    {
+      "id": "first_catch",
+      "name": "İlk Av",
+      "condition_tr": "İlk balığı yakala",
+      "category": "İlk Adımlar"
+    },
+    {
+      "id": "first_sale",
+      "name": "İlk Kazanç",
+      "condition_tr": "İlk balığını sat",
+      "category": "İlk Adımlar"
+    },
+    {
+      "id": "first_partial",
+      "name": "Sipariş Teslimatı",
+      "condition_tr": "İlk kısmi sipariş satışını yap",
+      "category": "İlk Adımlar"
+    },
+    {
+      "id": "first_sleep",
+      "name": "Yeni Bir Gün",
+      "condition_tr": "İlk kez uyu",
+      "category": "İlk Adımlar"
+    },
+    {
+      "id": "first_gear",
+      "name": "Güçleniyorum",
+      "condition_tr": "İlk ekipmanını satın al",
+      "category": "İlk Adımlar"
+    },
+    {
+      "id": "ten_fish",
+      "name": "Küçük Balıkçı",
+      "condition_tr": "Toplam 10 balık yakala",
+      "category": "İlk Adımlar"
+    },
+    {
+      "id": "fifty_manual",
+      "name": "Düzenli Balıkçı",
+      "condition_tr": "50 manuel av yap",
+      "category": "Avcılık"
+    },
+    {
+      "id": "twofifty_manual",
+      "name": "Deneyimli Balıkçı",
+      "condition_tr": "250 manuel av yap",
+      "category": "Avcılık"
+    },
+    {
+      "id": "thousand_manual",
+      "name": "Olta Ustası",
+      "condition_tr": "1.000 manuel av yap",
+      "category": "Avcılık"
+    },
+    {
+      "id": "first_power4",
+      "name": "Güçlü Rakip",
+      "condition_tr": "İlk güç 4 balığını yakala",
+      "category": "Avcılık"
+    },
+    {
+      "id": "first_power5",
+      "name": "Deniz Mücadelesi",
+      "condition_tr": "İlk güç 5 balığını yakala",
+      "category": "Avcılık"
+    },
+    {
+      "id": "species25",
+      "name": "Her Türlü Av",
+      "condition_tr": "25 farklı tür yakala",
+      "category": "Avcılık"
+    },
+    {
+      "id": "first_trip",
+      "name": "İlk Yolculuk",
+      "condition_tr": "Tekneyle ilk bölgeye git",
+      "category": "Keşif"
+    },
+    {
+      "id": "visit3",
+      "name": "Kıyı Gezgini",
+      "condition_tr": "3 bölgeyi ziyaret et",
+      "category": "Keşif"
+    },
+    {
+      "id": "visit7",
+      "name": "Deniz Kâşifi",
+      "condition_tr": "7 bölgeyi ziyaret et",
+      "category": "Keşif"
+    },
+    {
+      "id": "spots10",
+      "name": "Av Noktaları",
+      "condition_tr": "10 farklı av noktası ziyaret et",
+      "category": "Keşif"
+    },
+    {
+      "id": "spots21",
+      "name": "Her Koyun Hikâyesi",
+      "condition_tr": "21 av noktasını ziyaret et",
+      "category": "Keşif"
+    },
+    {
+      "id": "all_seasons",
+      "name": "Dört Mevsim",
+      "condition_tr": "Dört mevsimin tamamını yaşa",
+      "category": "Keşif"
+    },
+    {
+      "id": "sales10k",
+      "name": "İlk Birikim",
+      "condition_tr": "10.000 toplam satış geliri",
+      "category": "Ticaret"
+    },
+    {
+      "id": "sales100k",
+      "name": "Balık Tüccarı",
+      "condition_tr": "100.000 toplam satış geliri",
+      "category": "Ticaret"
+    },
+    {
+      "id": "orders50",
+      "name": "Düzenli Tedarikçi",
+      "condition_tr": "İlanlara 50 balık teslim et",
+      "category": "Ticaret"
+    },
+    {
+      "id": "orders500",
+      "name": "Büyük Tedarikçi",
+      "condition_tr": "İlanlara 500 balık teslim et",
+      "category": "Ticaret"
+    },
+    {
+      "id": "buyers5",
+      "name": "Kasabanın Balıkçısı",
+      "condition_tr": "5 farklı müşteriye satış yap",
+      "category": "Ticaret"
+    },
+    {
+      "id": "relation3",
+      "name": "Güvenilir Ortak",
+      "condition_tr": "Bir müşteride ilişki seviyesi 3 ol",
+      "category": "Ticaret"
+    },
+    {
+      "id": "first_boat",
+      "name": "İlk Teknem",
+      "condition_tr": "Kıyı Kayığı satın al",
+      "category": "Tekneler"
+    },
+    {
+      "id": "second_boat",
+      "name": "İkinci Kaptanlık",
+      "condition_tr": "İkinci tekneyi satın al",
+      "category": "Tekneler"
+    },
+    {
+      "id": "all_boats",
+      "name": "Tekne Koleksiyonu",
+      "condition_tr": "Dört teknenin tamamına sahip ol",
+      "category": "Tekneler"
+    },
+    {
+      "id": "first_auto",
+      "name": "Otomatik Yardımcı",
+      "condition_tr": "İlk otomatik balığı yakala",
+      "category": "Tekneler"
+    },
+    {
+      "id": "auto100",
+      "name": "Verimli Balıkçılık",
+      "condition_tr": "Otomasyonla toplam 100 balık yakala",
+      "category": "Tekneler"
+    },
+    {
+      "id": "motor5",
+      "name": "Açık Deniz Kaptanı",
+      "condition_tr": "Son teknenin motorunu V. seviyeye çıkar",
+      "category": "Tekneler"
+    },
+    {
+      "id": "species5",
+      "name": "İlk Keşifler",
+      "condition_tr": "5 farklı tür keşfet",
+      "category": "Koleksiyon"
+    },
+    {
+      "id": "species20",
+      "name": "Yarı Yol",
+      "condition_tr": "20 farklı tür keşfet",
+      "category": "Koleksiyon"
+    },
+    {
+      "id": "species42",
+      "name": "Balık Ansiklopedisi",
+      "condition_tr": "42 türün tamamını keşfet",
+      "category": "Koleksiyon"
+    },
+    {
+      "id": "records10",
+      "name": "Rekor Peşinde",
+      "condition_tr": "10 kez kişisel boy rekorunu geliştir",
+      "category": "Koleksiyon"
+    },
+    {
+      "id": "day100",
+      "name": "Uzun Bir Yolculuk",
+      "condition_tr": "100 oyun gününü tamamla",
+      "category": "Koleksiyon"
+    },
+    {
+      "id": "home3",
+      "name": "Sıcak Yuva",
+      "condition_tr": "Evine 3 dekoratif eşya yerleştir",
+      "category": "Koleksiyon"
+    }
+  ],
+  "npc_dialogues": {
+    "zeynep": [
+      {
+        "trigger": "first_meet",
+        "text_tr": "Merhaba! İlk oltanı iyi kullanırsan seni uzun süre idare eder."
+      },
+      {
+        "trigger": "day_generic1",
+        "text_tr": "İyi bir makara bazen pahalı bir oltadan daha çok iş görür."
+      },
+      {
+        "trigger": "day_generic2",
+        "text_tr": "İğne küçük olabilir ama güvenli avın önemli bir parçasıdır."
+      },
+      {
+        "trigger": "day_generic3",
+        "text_tr": "Yem seçerken avlandığın noktayı düşün."
+      },
+      {
+        "trigger": "sunny",
+        "text_tr": "Güneş güzel ama her tür aynı havayı sevmez."
+      },
+      {
+        "trigger": "rain",
+        "text_tr": "Yağmurlu günlerin de kendine göre bereketi vardır."
+      },
+      {
+        "trigger": "wind",
+        "text_tr": "Rüzgârda atışını biraz daha dikkatli ayarla."
+      },
+      {
+        "trigger": "rod2",
+        "text_tr": "Hafif olta enerjini korumaya yardımcı olacak."
+      },
+      {
+        "trigger": "rod3",
+        "text_tr": "Fiberglas olta ile kayalık suları daha rahat deneyebilirsin."
+      },
+      {
+        "trigger": "rod4",
+        "text_tr": "Karbon olta, güçlü balıklara yaklaşırken iyi hissettirir."
+      },
+      {
+        "trigger": "rod5",
+        "text_tr": "Artık elinde profesyonel bir deniz oltası var."
+      },
+      {
+        "trigger": "first_boat",
+        "text_tr": "Tekneye uygun yem de almayı unutma."
+      },
+      {
+        "trigger": "kuzey",
+        "text_tr": "Sisli Kuzey için sağlam misina iyi bir hazırlık."
+      },
+      {
+        "trigger": "tropik",
+        "text_tr": "Tropik balıklarda doğru yemin farkını göreceksin."
+      },
+      {
+        "trigger": "record",
+        "text_tr": "Yeni rekorunu duydum! Sabır işi gerçekten."
+      }
+    ],
+    "nihat": [
+      {
+        "trigger": "first_meet",
+        "text_tr": "Bugün hangi balığı getirirsen getir, tezgâhımda yeri var."
+      },
+      {
+        "trigger": "day_generic1",
+        "text_tr": "Balık halindeki fiyatlar bellidir; ne kazanacağını bilirsin."
+      },
+      {
+        "trigger": "day_generic2",
+        "text_tr": "İlan panosunu kontrol et, bazen daha iyi teklif çıkar."
+      },
+      {
+        "trigger": "day_generic3",
+        "text_tr": "Az balık getirmek de ticarettir."
+      },
+      {
+        "trigger": "sunny",
+        "text_tr": "Güneşli günler limana canlılık katıyor."
+      },
+      {
+        "trigger": "rain",
+        "text_tr": "Biraz yağmur balıkçıları yıldırmaz."
+      },
+      {
+        "trigger": "wind",
+        "text_tr": "Rüzgârlı günde sağlam ekipman iyidir."
+      },
+      {
+        "trigger": "first_sale",
+        "text_tr": "İlk satışın hayırlı olsun!"
+      },
+      {
+        "trigger": "sales10k",
+        "text_tr": "Tezgâha epey balık getirdin, tebrikler."
+      },
+      {
+        "trigger": "sales100k",
+        "text_tr": "Kasabadaki herkes senden bahsediyor."
+      },
+      {
+        "trigger": "first_boat",
+        "text_tr": "Artık daha farklı türler göreceğiz anlaşılan."
+      },
+      {
+        "trigger": "second_boat",
+        "text_tr": "Yeni tekneyle güzel avlar bekliyorum."
+      },
+      {
+        "trigger": "north",
+        "text_tr": "Kuzey balıklarının da alıcısı bulunur."
+      },
+      {
+        "trigger": "tropics",
+        "text_tr": "Ada balıklarının renkleri bir başka."
+      },
+      {
+        "trigger": "record",
+        "text_tr": "Şu rekor balığı bir görmeyi isterdim."
+      }
+    ],
+    "bora": [
+      {
+        "trigger": "first_meet",
+        "text_tr": "İlk teknen küçük olabilir ama seni güzel yerlere götürecek."
+      },
+      {
+        "trigger": "day_generic1",
+        "text_tr": "İyi bir gövde, rahat bir yolculuk demektir."
+      },
+      {
+        "trigger": "day_generic2",
+        "text_tr": "Motor yükseltmesinin farkını menzilde hissedersin."
+      },
+      {
+        "trigger": "day_generic3",
+        "text_tr": "Tekne depolarını düzenli tutmak işini kolaylaştırır."
+      },
+      {
+        "trigger": "sunny",
+        "text_tr": "Böyle günde tekneleri boyamak bile keyifli."
+      },
+      {
+        "trigger": "rain",
+        "text_tr": "Yağmur atölyeye güzel bir ritim katıyor."
+      },
+      {
+        "trigger": "wind",
+        "text_tr": "Rüzgâr kuvvetliyse gövde donanımına bak."
+      },
+      {
+        "trigger": "first_boat",
+        "text_tr": "Kıyı Kayığı sana hayırlı olsun!"
+      },
+      {
+        "trigger": "second_boat",
+        "text_tr": "Motorlu tekneyle artık daha uzağa gideceksin."
+      },
+      {
+        "trigger": "third_boat",
+        "text_tr": "Kabinli tekne uzun yol için güzel seçim."
+      },
+      {
+        "trigger": "fourth_boat",
+        "text_tr": "İşte gerçek bir açık deniz teknesi!"
+      },
+      {
+        "trigger": "first_auto",
+        "text_tr": "Otomatik oltanın yem haznesine göz at."
+      },
+      {
+        "trigger": "deep_gear",
+        "text_tr": "Derin Deniz Dişlisi güç 4 avları için hazır."
+      },
+      {
+        "trigger": "max_hull",
+        "text_tr": "Bu gövdeyle gurur duyabilirsin."
+      },
+      {
+        "trigger": "record",
+        "text_tr": "Büyük avlara güzel bir tekne yakışır."
+      }
+    ],
+    "bahar": [
+      {
+        "trigger": "first_meet",
+        "text_tr": "Üç levrek bile getirsen alırım. Bugünkü menüye yeter."
+      },
+      {
+        "trigger": "day_generic1",
+        "text_tr": "Yarın da yeni bir alış ilanı asabiliriz."
+      },
+      {
+        "trigger": "day_generic2",
+        "text_tr": "Tam miktarı beklemene gerek yok, elindekini getir."
+      },
+      {
+        "trigger": "day_generic3",
+        "text_tr": "Taze fikirler bazen yeni menüler çıkarır."
+      },
+      {
+        "trigger": "sunny",
+        "text_tr": "Güneşli günlerde sahil masaları doluyor."
+      },
+      {
+        "trigger": "rain",
+        "text_tr": "Yağmurda sıcak bir lokanta iyi gelir."
+      },
+      {
+        "trigger": "wind",
+        "text_tr": "Dışarıdaki hava değişse de mutfak çalışıyor."
+      },
+      {
+        "trigger": "first_partial",
+        "text_tr": "İlk teslimatın için teşekkür ederim."
+      },
+      {
+        "trigger": "order50",
+        "text_tr": "Düzenli tedarikin çok işimize yarıyor."
+      },
+      {
+        "trigger": "relationship2",
+        "text_tr": "Balık seçimlerine güvenmeye başladık."
+      },
+      {
+        "trigger": "north",
+        "text_tr": "Kuzeyin balıkları menüye farklılık katıyor."
+      },
+      {
+        "trigger": "tropics",
+        "text_tr": "Ada Mutfağı bugün neler almış merak ediyorum."
+      },
+      {
+        "trigger": "big_order",
+        "text_tr": "İlan büyük görünüyor; az miktar getirmen de yeter."
+      },
+      {
+        "trigger": "record",
+        "text_tr": "Büyük avını anlat, merak ettim!"
+      },
+      {
+        "trigger": "generic_after",
+        "text_tr": "Umarım bugün güzel bir avın olur."
+      }
+    ],
+    "efe": [
+      {
+        "trigger": "first_meet",
+        "text_tr": "Her balık uzaklarda değildir. Bazen en güzel av iskelenin ucundadır."
+      },
+      {
+        "trigger": "day_generic1",
+        "text_tr": "Oltayı atarken acele etme."
+      },
+      {
+        "trigger": "day_generic2",
+        "text_tr": "Bazen kısa atış, uzak atıştan daha iyi sonuç verir."
+      },
+      {
+        "trigger": "day_generic3",
+        "text_tr": "Balık çekişini hisset, sonra makarayı bırak."
+      },
+      {
+        "trigger": "sunny",
+        "text_tr": "Deniz bugün sakin görünüyor."
+      },
+      {
+        "trigger": "rain",
+        "text_tr": "Yağmurun sesiyle balık tutmak güzeldir."
+      },
+      {
+        "trigger": "wind",
+        "text_tr": "Rüzgârda misinayı zorlamamaya bak."
+      },
+      {
+        "trigger": "first_catch",
+        "text_tr": "İlk balığını yakaladın, güzel başlangıç."
+      },
+      {
+        "trigger": "first_boat",
+        "text_tr": "Artık koyların yolunu öğrenme vakti."
+      },
+      {
+        "trigger": "rocky",
+        "text_tr": "Kayalık sular sabırlı balıkçıyı ödüllendirir."
+      },
+      {
+        "trigger": "currents",
+        "text_tr": "Akıntıda balıkla inatlaşmak yerine onu yor."
+      },
+      {
+        "trigger": "north",
+        "text_tr": "Sisli Kuzey seni şaşırtabilir."
+      },
+      {
+        "trigger": "tropics",
+        "text_tr": "Güneş Adaları güzel bir değişiklik olacak."
+      },
+      {
+        "trigger": "deep",
+        "text_tr": "Derin Mavi herkesin ilk denemede alıştığı bir yer değildir."
+      },
+      {
+        "trigger": "all_species",
+        "text_tr": "Her türü görmüşsün; denizle iyi arkadaş olmuşsun."
+      }
+    ]
+  },
+  "scenes": [
+    "MainMenu",
+    "CharacterCreator",
+    "Town",
+    "PierFishing",
+    "SeaMap",
+    "BoatFishing",
+    "Home",
+    "EndDay"
+  ],
+  "overlay_panels": [
+    "Inventory",
+    "Orders",
+    "FishMarket",
+    "TackleShop",
+    "Boatyard",
+    "Encyclopedia",
+    "Achievements",
+    "Statistics",
+    "Settings",
+    "Help",
+    "BoatLoadout",
+    "PurchaseConfirm",
+    "CatchResult"
+  ],
+  "gameplay_locks": {
+    "offline_auto_fishing": false,
+    "forced_delivery": false,
+    "fish_price_affected_by_size": false,
+    "forced_day_length": false,
+    "multiplayer": false,
+    "fish_farming": false,
+    "boat_fleet_background_income": false,
+    "ads_and_microtransactions": false
+  },
+  "design_targets": {
+    "first_boat_day_range": [
+      13,
+      18
+    ],
+    "middle_manual_catch_day": [
+      12,
+      18
+    ],
+    "late_manual_catch_day": [
+      14,
+      18
+    ],
+    "late_auto_catch_day": [
+      4,
+      6
+    ],
+    "auto_income_share_soft_target": [
+      0.15,
+      0.3
+    ]
+  }
+}
