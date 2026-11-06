@@ -138,7 +138,9 @@ const TEAMS = {
   home: { code: 'CEL', name: 'Celtic', upper: 'CELTIC', ui: '#1fae5f', base: '#14904b', stripeA: '#0f7d3f', stripeB: '#f1f3f1', mark: '#1fae5f' },
   away: { code: 'BJK', name: 'Beşiktaş', upper: 'BEŞİKTAŞ', ui: '#f0f0f3', base: '#dfe0e5', stripeA: '#eeeef1', stripeB: '#121214' },
 };
-const MATCH = { title: 'Celtic – Beşiktaş', competition: 'EUROPA LEAGUE' };
+const MATCH = { title: 'Celtic – Beşiktaş', competition: 'EUROPA LEAGUE',
+  // Avrupa Ligi teması: turuncu-siyah
+  bgInner: '#1d0f07', bgOuter: '#050302', glow: '#ff6a00', accent: '#ff7a1a' };
 
 /* =====================================================================
    2) YARDIMCILAR
@@ -666,7 +668,7 @@ function drawScoreboard(ctx, t, gs, alpha) {
       setLS(ctx, 0);
       scoreText(ctx, gs.score[team], x + 2 * u, y0 + 158 * u, 120 * u, popOf(gs.lastAge[team]), TEAMS[team].ui, 'left');
     }
-    ctx.textAlign = 'center'; ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center'; ctx.fillStyle = MATCH.accent;
     ctx.font = `700 ${25 * u}px ${FONT}`; setLS(ctx, 3 * u);
     ctx.fillText(MATCH.competition, W / 2, 78 * u);
     setLS(ctx, 0.5 * u);
@@ -685,7 +687,7 @@ function drawScoreboard(ctx, t, gs, alpha) {
     ctx.fillStyle = '#fff'; ctx.fillRect(rx - 120 * u, 210 * u, 120 * u * prog, 3 * u);
   } else {
     const cx = W / 2;
-    ctx.textAlign = 'center'; ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center'; ctx.fillStyle = MATCH.accent;
     ctx.font = `700 ${30 * u}px ${FONT}`; setLS(ctx, 4 * u);
     ctx.fillText(MATCH.competition, cx, 108 * u);
     setLS(ctx, 0.5 * u);
@@ -779,7 +781,7 @@ function drawIntro(ctx, t) {
   const bd = ctx.createRadialGradient(W / 2, cy + 20 * u, 0, W / 2, cy + 20 * u, 560 * u);
   bd.addColorStop(0, 'rgba(5,6,10,0.78)'); bd.addColorStop(1, 'rgba(5,6,10,0)');
   ctx.fillStyle = bd; ctx.fillRect(0, 0, W, H);
-  ctx.fillStyle = 'rgba(255,255,255,0.65)'; ctx.font = `700 ${24 * u * s}px ${FONT}`; setLS(ctx, 6 * u);
+  ctx.fillStyle = MATCH.accent; ctx.font = `700 ${24 * u * s}px ${FONT}`; setLS(ctx, 6 * u);
   ctx.fillText(MATCH.competition, W / 2, cy - 92 * u * s);
   setLS(ctx, 2 * u);
   ctx.fillStyle = '#fff'; ctx.font = `800 ${96 * u * s}px ${FONT_C}`;
@@ -857,10 +859,20 @@ function renderFrame(t) {
   // --- 2D kompozisyon
   const W = out.width, H = out.height, u = U();
   const bg = octx.createRadialGradient(W * 0.5, H * 0.48, 0, W * 0.5, H * 0.48, Math.max(W, H) * 0.75);
-  bg.addColorStop(0, '#1b1c26'); bg.addColorStop(1, '#060709');
+  bg.addColorStop(0, MATCH.bgInner); bg.addColorStop(1, MATCH.bgOuter);
   octx.globalCompositeOperation = 'source-over';
   octx.globalAlpha = 1;
   octx.fillStyle = bg; octx.fillRect(0, 0, W, H);
+  // turnuva ışıması: üstten ve alttan yumuşak turuncu hale
+  for (const [gy, r, a] of [[-0.05, 0.72, 0.30], [1.08, 0.62, 0.18]]) {
+    const gg = octx.createRadialGradient(W * 0.5, H * gy, 0, W * 0.5, H * gy, Math.max(W, H) * r);
+    gg.addColorStop(0, hexA(MATCH.glow, a)); gg.addColorStop(1, hexA(MATCH.glow, 0));
+    octx.fillStyle = gg; octx.fillRect(0, 0, W, H);
+  }
+  // ince turuncu çapraz ışık çizgileri
+  octx.save(); octx.globalAlpha = 0.05; octx.strokeStyle = MATCH.glow; octx.lineWidth = 2 * u;
+  for (let i = -6; i <= 12; i++) { const x = i * 180 * u + (t * 12 * u) % (180 * u); octx.beginPath(); octx.moveTo(x, 0); octx.lineTo(x - H * 0.6, H); octx.stroke(); }
+  octx.restore();
   // baskın takım için hafif ortam rengi
   const tintCol = dom.d >= 0 ? TEAMS.home.ui : TEAMS.away.ui;
   const amb = octx.createRadialGradient(W * 0.5, H * 0.55, 0, W * 0.5, H * 0.55, Math.max(W, H) * 0.6);
