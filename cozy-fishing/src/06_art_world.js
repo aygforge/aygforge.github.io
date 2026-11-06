@@ -85,10 +85,19 @@ function rocks(pb, x, base, w, h, c, seed) {
     pb.ellipse(cx, cy, rx, ry, c, (px, py) => { const t = (py - (cy - ry)) / (2 * ry); if (t < 0.18) return light(c, 0.3); if (px < cx - rx * 0.4) return dark(c, 0.12); if (t > 0.75) return dark(c, 0.25); return ihash(px, py, 5) < 0.08 ? dark(c, 0.15) : c; });
   }
 }
-function cliff(pb, x0, x1, top, base, c, seed) {
+function cliff(pb, x0, x1, top, base, c, seed, cap) {
+  const W = Math.max(1, x1 - x0), H = base - top;
   for (let x = x0; x < x1; x++) {
-    const e = Math.round(top + 8 * fbm(x * 0.05, seed) - 4); const edgeL = x - x0 < 6 ? (6 - (x - x0)) * 4 : 0, edgeR = x1 - x < 6 ? (6 - (x1 - x)) * 4 : 0;
-    for (let y = e + edgeL + edgeR; y < base; y++) { let col = (y - e) % 7 === 0 ? dark(c, 0.15) : c; if (y < e + edgeL + edgeR + 2) col = light(c, 0.25); if (ihash(x, y, seed) < 0.06) col = dark(c, 0.22); if (dith(x, y, (x - x0) / (x1 - x0) * 0.5)) col = mix(col, dark(c, 0.3), 0.3); pb.set(x, y, col); }
+    const u = (x - x0) / W, ed = Math.min(u, 1 - u);
+    const sh = ed < 0.3 ? Math.pow(1 - ed / 0.3, 1.7) * H * 0.6 : 0;
+    const e = Math.round(top + sh + 14 * (fbm(x * 0.04, seed) - 0.5) + 4 * (vnoise(x * 0.35, seed + 7) - 0.5));
+    for (let y = e; y < base; y++) {
+      const d = y - e; let col = ((y + Math.round(fbm(x * 0.08, seed + 2) * 6)) % 9 === 0) ? dark(c, 0.16) : c;
+      if (d < 2) col = light(c, 0.3); else if (cap && d < 4 + Math.round(vnoise(x * 0.5, seed) * 3)) col = (ihash(x, y, seed) < 0.2) ? dark(cap, 0.15) : cap;
+      if (ihash(x, y, seed) < 0.05) col = dark(c, 0.22);
+      if (u < 0.5 && dith(x, y, (0.5 - u) * 0.9)) col = mix(col, dark(c, 0.3), 0.35);
+      pb.set(x, y, col);
+    }
   }
 }
 function house(pb, x, y, w, h, wall, roof) {
@@ -154,13 +163,13 @@ function genRegion(rid, season) {
       ridge(mid, 0, MW, SURF, 22, 40, 0.015, 22, leaf[1], leaf[0]);
       for (let i = 0; i < 40; i++) treeRound(mid, 10 + i * 26 + r() * 10, SURF - 20 - r() * 26, 5 + r() * 3, leaf[0], leaf[1]);
       // A: koy girişi – iki burun
-      cliff(near, 0, 120, SURF - 70, SURF + 6, '#9a8a6a', 5); for (let i = 0; i < 5; i++) treeRound(near, 10 + i * 22, SURF - 66, 7, leaf[0], leaf[1]);
-      cliff(near, 420, 520, SURF - 50, SURF + 6, '#9a8a6a', 6); for (let i = 0; i < 4; i++) treeRound(near, 430 + i * 22, SURF - 46, 6, leaf[0], leaf[1]);
+      cliff(near, -40, 140, SURF - 76, SURF + 6, '#9a8a6a', 5, leaf[0]); for (let i = 0; i < 4; i++) treeRound(near, 20 + i * 22, SURF - 70 + (i === 0 ? 10 : 0), 7, leaf[0], leaf[1]);
+      cliff(near, 400, 540, SURF - 56, SURF + 6, '#9a8a6a', 6, leaf[0]); for (let i = 0; i < 3; i++) treeRound(near, 446 + i * 22, SURF - 50, 6, leaf[0], leaf[1]);
       // B: kayalık kıyı (çamlar)
       for (let i = 0; i < 6; i++) rocks(near, 640 + i * 40, SURF + 14, 44, 34 + (i % 2) * 14, '#a89e86', 70 + i);
       for (let i = 0; i < 6; i++) pine(near, 650 + i * 38, SURF - 26 - (i % 2) * 10, 26, '#2f6a3a', '#24502e', winter);
       // C: derin koy – dik yeşil yamaç
-      cliff(near, 1300, RW, SURF - 120, SURF + 6, '#7a8a5a', 9); for (let i = 0; i < 8; i++) treeRound(near, 1310 + i * 24, SURF - 116 + (i % 3) * 8, 8, leaf[0], leaf[1]);
+      cliff(near, 1290, RW + 60, SURF - 126, SURF + 6, '#7a8a5a', 9, leaf[0]); for (let i = 0; i < 6; i++) treeRound(near, 1360 + i * 24, SURF - 118 + (i % 3) * 6, 8, leaf[0], leaf[1]);
       const T = seabed(bed, 0, RW, YB, '#c8c898', '#a8b080', 2, 12);
       for (let x = 10; x < RW; x += 10 + Math.round(r() * 12)) seagrass(bed, x, T[x], 14 + Math.round(r() * 14), r() < 0.5 ? '#3a8a4a' : '#2f7a42');
       for (let i = 0; i < 10; i++) { const rx = Math.round(80 + i * 140); rocks(bed, rx, T[rx + 13] + 6, 26, 16, '#8a8a7a', 90 + i); }
@@ -172,9 +181,9 @@ function genRegion(rid, season) {
       // A: sığ kayalıklar – sudan çıkan taşlar
       for (let i = 0; i < 9; i++) rocks(near, 40 + i * 50, SURF + 12, 30, 16 + (i % 3) * 8, '#9a8a7a', 100 + i);
       // B: resif kenarı – kemer kaya
-      cliff(near, 640, 700, SURF - 60, SURF + 6, '#a89070', 41); cliff(near, 780, 840, SURF - 56, SURF + 6, '#a89070', 42); for (let x = 690; x < 790; x++) { const y = Math.round(SURF - 60 + Math.pow((x - 740) / 50, 2) * 14); for (let yy = y; yy < y + 10; yy++) near.set(x, yy, yy === y ? '#c8b090' : '#a89070'); }
+      cliff(near, 630, 712, SURF - 66, SURF + 6, '#a89070', 41, leaf[0]); cliff(near, 770, 852, SURF - 60, SURF + 6, '#a89070', 42, leaf[0]); for (let x = 690; x < 790; x++) { const y = Math.round(SURF - 60 + Math.pow((x - 740) / 50, 2) * 14); for (let yy = y; yy < y + 10; yy++) near.set(x, yy, yy === y ? '#c8b090' : '#a89070'); }
       // C: derin ada suyu – büyük ada
-      cliff(near, 1320, RW, SURF - 90, SURF + 6, '#8a7a6a', 43); for (let i = 0; i < 7; i++) treeRound(near, 1330 + i * 24, SURF - 88 + (i % 2) * 6, 6, leaf[0], leaf[1]);
+      cliff(near, 1310, RW + 60, SURF - 96, SURF + 6, '#8a7a6a', 43, leaf[0]); for (let i = 0; i < 5; i++) treeRound(near, 1370 + i * 24, SURF - 90 + (i % 2) * 6, 6, leaf[0], leaf[1]);
       const T = seabed(bed, 0, RW, YB, '#a89a88', '#8a7e70', 3, 16);
       for (let i = 0; i < 26; i++) { const rx = Math.round(i * 60 + r() * 30); rocks(bed, rx, T[Math.min(RW - 1, rx + 15)] + 8, 30, 22, '#7a7068', 120 + i); }
       for (let i = 0; i < 40; i++) { const x = Math.round(r() * RW), y = T[x] - 2 - Math.round(r() * 6); bed.set(x, y, '#2a1e2e'); bed.set(x + 1, y - 1, '#2a1e2e'); bed.set(x - 1, y - 1, '#2a1e2e'); bed.set(x, y - 2, '#3a2e3e'); }
@@ -185,10 +194,10 @@ function genRegion(rid, season) {
       ridge(far, 0, FW, SURF, 26, 22, 0.012, 31, '#7a8ea0', '#94a8b8');
       for (let i = 0; i < 5; i++) island(mid, 80 + i * 220, SURF, 120, 22 + r() * 10, '#5a7a6a', '#8a9a88', 0);
       // A: akıntı kenarı – feneri olan burun
-      cliff(near, 0, 200, SURF - 74, SURF + 6, '#7a8088', 51); lighthouse(near, 120, SURF - 70, 42, '#f4f0e4', '#2e4a7a');
+      cliff(near, -30, 220, SURF - 80, SURF + 6, '#7a8088', 51, '#6a8a5a'); lighthouse(near, 96, SURF - 78, 42, '#f4f0e4', '#2e4a7a');
       // B: kanal – iki ada arası
-      cliff(near, 560, 640, SURF - 44, SURF + 6, '#6a7078', 52); cliff(near, 860, 940, SURF - 50, SURF + 6, '#6a7078', 53);
-      for (let i = 0; i < 4; i++) pine(near, 570 + i * 20, SURF - 40, 18, '#2f5a42', '#244a36', winter); for (let i = 0; i < 4; i++) pine(near, 868 + i * 20, SURF - 46, 18, '#2f5a42', '#244a36', winter);
+      cliff(near, 550, 660, SURF - 48, SURF + 6, '#6a7078', 52, '#5a7a5a'); cliff(near, 850, 960, SURF - 54, SURF + 6, '#6a7078', 53, '#5a7a5a');
+      for (let i = 0; i < 3; i++) pine(near, 584 + i * 20, SURF - 44, 18, '#2f5a42', '#244a36', winter); for (let i = 0; i < 3; i++) pine(near, 884 + i * 20, SURF - 50, 18, '#2f5a42', '#244a36', winter);
       // C: açık akıntı – uzak gemi
       far.rect(farX(1240, 470), SURF - 8, 40, 6, '#4a4a52'); far.rect(farX(1240, 476), SURF - 14, 14, 6, '#e8e8e8'); far.rect(farX(1240, 480), SURF - 20, 3, 6, '#c4473f');
       const T = seabed(bed, 0, RW, YB, '#b8b8a8', '#9a9a8c', 4, 8);
@@ -201,8 +210,7 @@ function genRegion(rid, season) {
       ridge(mid, 0, MW, SURF, 40, 50, 0.012, 62, '#3a4a4a', '#4e5e5e', winter ? 60 : 78);
       for (let i = 0; i < 50; i++) pine(mid, 10 + i * 20 + r() * 8, SURF - 4 - r() * 14, 14 + r() * 8, '#2a4238', '#1e342c', winter);
       // A: fiyort ağzı – iki yanda dik yamaç
-      cliff(near, 0, 170, SURF - 140, SURF + 6, '#4a525a', 71); cliff(near, 420, 540, SURF - 120, SURF + 6, '#4a525a', 72);
-      for (let x = 0; x < 170; x += 2) near.set(x, SURF - 140 + Math.round(8 * fbm(x * 0.05, 71)) - 4, '#f4f8fb');
+      cliff(near, -40, 200, SURF - 146, SURF + 6, '#4a525a', 71, '#eef4f8'); cliff(near, 400, 560, SURF - 124, SURF + 6, '#4a525a', 72, '#eef4f8');
       // B: soğuk kıyı – kırmızı balıkçı kulübeleri
       for (let x = 600; x < 900; x++) for (let y = SURF - 10 + Math.round(Math.sin(x * 0.03) * 3); y < SURF + 6; y++) near.set(x, y, '#5a626a');
       for (let i = 0; i < 4; i++) { const hx = 620 + i * 64; near.rect(hx, SURF - 32, 34, 22, '#9a2e2e'); near.rect(hx, SURF - 32, 2, 22, '#7a2222'); near.poly([[hx - 3, SURF - 32], [hx + 17, SURF - 46], [hx + 37, SURF - 32]], winter ? '#f4f8fb' : '#3a3a42'); near.rect(hx + 6, SURF - 26, 5, 5, '#f6e2a0'); near.rect(hx + 22, SURF - 22, 6, 12, '#5a2020'); for (let px = hx; px < hx + 34; px += 6) near.rect(px, SURF - 10, 2, 14, '#4a3020'); }

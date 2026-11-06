@@ -35,6 +35,23 @@ function drawWeatherFx(g, wx, surf, dt) {
   if (wx === 'fog') { for (let i = 0; i < 4; i++) { g.globalAlpha = 0.16; g.fillStyle = '#e8eef2'; const y = 120 + i * 40 + Math.sin(Game.t * 0.2 + i) * 6; const x = ((Game.t * (6 + i * 3)) % 200) - 200; for (let k = 0; k < 6; k++) g.fillRect(Math.round(x + k * 200), Math.round(y), 160, 26); } g.globalAlpha = 0.12; g.fillStyle = '#dfe6ea'; g.fillRect(0, 0, LW, LH); g.globalAlpha = 1; }
   if (wx === 'wind') { g.fillStyle = 'rgba(255,255,255,0.5)'; for (let i = 0; i < 12; i++) { const x = ((Game.t * 260 + i * 97) % 760) - 60, y = 30 + (i * 53) % (surf - 40); g.fillRect(Math.round(x), y, 14 + (i % 3) * 6, 1); } }
 }
+
+/* bölgesel ambiyans canlıları ve mevsim efektleri */
+const dolphinPB = () => { const p = new PB(18, 8); p.ellipse(9, 4.5, 7.5, 2.6, '#5a6a80', (x, y) => y > 4 ? '#c8d0dc' : '#5a6a80'); p.poly([[8, 2], [11, -1], [11, 2]], '#4a5a70'); p.poly([[1, 4], [-1, 1], [3, 3]], '#4a5a70'); p.poly([[1, 5], [-1, 7], [3, 5]], '#4a5a70'); p.set(14, 4, '#1a1426'); p.rect(16, 5, 2, 1, '#5a6a80'); p.outline(null, 0.5); return p; };
+const SNOW = Array.from({ length: 70 }, (_, i) => ({ x: (i * 97) % 680, y: (i * 61) % 360, s: 14 + (i % 5) * 6, w: i % 3 }));
+function seasonFx(g, season, dt, top) {
+  if (SETTINGS.reduced) return;
+  const col = season === 'winter' ? '#ffffff' : season === 'autumn' ? '#d8843a' : season === 'spring' ? '#f8b8d0' : null; if (!col) return;
+  const n = season === 'winter' ? 70 : 14;
+  for (let i = 0; i < n; i++) { const d = SNOW[i]; d.y += d.s * dt * (season === 'winter' ? 1 : 0.8); d.x += Math.sin(Game.t + i) * 8 * dt - (season === 'winter' ? 2 : 10) * dt; if (d.y > top) { d.y = -4; d.x = Math.random() * 680; } if (d.x < -10) d.x = 650; g.fillStyle = col; g.fillRect(Math.round(d.x), Math.round(d.y), d.w ? 2 : 1, d.w === 2 ? 2 : 1); }
+}
+function regionAmbient(g, rid, cam, surf) {
+  const n = rid === 'derin_mavi' ? 1 : 2;
+  for (let i = 0; i < n; i++) { const f = Math.floor(Game.t * 5 + i) % 3; const gx = ((Game.t * (26 + i * 9) + i * 380) % (LW + 220)) - 110; g.drawImage(Atlas.get('gull' + f, () => gullPB(f)), Math.round(gx), 34 + i * 26 + Math.round(Math.sin(Game.t * 0.9 + i) * 5)); }
+  if (rid === 'gunes_adalari' || rid === 'kayalik_adalar') { for (let i = 0; i < 2; i++) { const ph = (Game.t + i * 3.1) % 7; if (ph < 1.1) { const k = ph / 1.1; const fid = rid === 'gunes_adalari' ? 'ucan_balik' : 'zargana'; const sp = fishSprR(fid); const x = 330 + i * 150 + k * 70, y = surf - Math.sin(k * Math.PI) * 22 - 4; g.drawImage(sp, Math.round(x), Math.round(y), Math.round(sp.width / 2), Math.round(sp.height / 2)); if (k > 0.9) Fishing.splash(x + cam, surf, 1); } } }
+  if (rid === 'derin_mavi' || rid === 'serin_akintilar') { const ph = (Game.t + 2) % 11; if (ph < 1.4) { const k = ph / 1.4; const sp = Atlas.get('dolphin', dolphinPB); const x = 420 + k * 90, y = surf - Math.sin(k * Math.PI) * 16 + 2; g.save(); g.beginPath(); g.rect(0, 0, LW, surf + 1); g.clip(); g.drawImage(sp, Math.round(x), Math.round(y)); g.restore(); } }
+  if (rid === 'derin_mavi') { const ph = Game.t % 13; if (ph < 1.6) { const x = 560 - cam * 0.15 % 200; for (let i = 0; i < 10; i++) { const h = Math.sin(ph / 1.6 * Math.PI) * 14; g.fillStyle = 'rgba(255,255,255,0.7)'; g.fillRect(Math.round(x + Math.sin(i * 1.7) * 4), Math.round(surf - 4 - h * (i / 10)), 1, 1); } g.fillStyle = '#4a5a70'; g.fillRect(Math.round(x - 6), surf - 2, 14, 2); } }
+}
 function drawPerson(g, look, pose, x, footY, flip) { const sp = personSprite(look, pose, flip); g.drawImage(sp, Math.round(x - CH_W / 2), Math.round(footY - 30)); return sp; }
 function handPt(look, pose, x, footY, flip) { const sp = personSprite(look, pose, flip); return [Math.round(x - CH_W / 2) + sp._hand[0], Math.round(footY - 30) + sp._hand[1]]; }
 function fishingPose(ph, t) {
@@ -85,6 +102,10 @@ Game.scenes.CharacterCreator = {
 };
 /* ================= Town ================= */
 const TOWN_NPC = { zeynep: 372, nihat: 640, bora: 930, bahar: 1268 };
+const VILLAGERS = [
+  { look: { skin: 4, hair: 7, hairColor: 0, body: 0, outfit: { shirt: '#d87a4a', shirt2: '#a85a32', pants: '#3a4a5a', shoes: '#3a2a22', pat: 'plain' }, hat: 'none' }, x: 520, a: 420, b: 1150, v: 18 },
+  { look: { skin: 1, hair: 3, hairColor: 4, body: 0, outfit: { shirt: '#8a6ac8', shirt2: '#6a4aa8', pants: '#4a3a3a', shoes: '#2a2226', pat: 'flower' }, hat: 'hasir' }, x: 900, a: 240, b: 1240, v: -14 }
+];
 Game.scenes.Town = {
   p: null, cam: 0, target: null, onArrive: null, efeX: 1590, efeDir: 1, cat: { x: 210, t: 0 }, near: null,
   enter(prm) {
@@ -142,6 +163,7 @@ Game.scenes.Town = {
     // NPC'ler
     for (const id in TOWN_NPC) drawPerson(g, NPCS[id].look, Math.floor(Game.t * 1.5 + id.length) % 2 ? 'idle0' : 'idle1', TOWN_NPC[id] - cam, TOWN_GROUND + 2, this.p.x < TOWN_NPC[id]);
     const ef = Math.floor(Game.t * 4) % 4; drawPerson(g, NPCS.efe.look, 'walk' + ef, this.efeX - cam, TOWN_GROUND - 2, this.efeDir < 0);
+    for (const v of VILLAGERS) { if (dt) { v.x += v.v * dt; if (v.x > v.b) v.v = -Math.abs(v.v); if (v.x < v.a) v.v = Math.abs(v.v); } const sx = v.x - cam; if (sx > -20 && sx < LW + 20) drawPerson(g, v.look, 'walk' + (Math.floor(Game.t * 5 + v.a) % 4), sx, TOWN_GROUND + 6, v.v < 0); }
     // kedi ve martılar
     const cf = Math.floor(Game.t * 3) % 2; g.drawImage(Atlas.get('cat' + cf, () => catPB(cf)), Math.round(this.cat.x + Math.sin(Game.t * 0.3) * 30 - cam), TOWN_GROUND + 12);
     g.drawImage(Atlas.get('gullS', gullStandPB), 1388 - cam, TOWN_GROUND - 20); g.drawImage(Atlas.get('gullS', gullStandPB), 1508 - cam, TOWN_GROUND - 20);
@@ -150,7 +172,7 @@ Game.scenes.Town = {
     const p = this.p; const pose = p.moving ? 'walk' + (Math.floor(p.walkT * 8) % 4) : (Math.floor(Game.t * 1.2) % 2 ? 'idle0' : 'idle1');
     drawPerson(g, S.player, pose, p.x - cam, p.x > TOWN_WATER_X - 40 ? TOWN_GROUND - 2 : TOWN_GROUND + 2, p.dir < 0);
     if (this.near) { const dx = (this.near.id === 'efe' ? this.efeX : this.near.x) - cam; const bob = Math.round(Math.sin(Game.t * 5) * 2); g.drawImage(iconCanvas(this.near.icon), Math.round(dx - 8), TOWN_GROUND - 100 + bob); }
-    drawWeatherFx(g, wx, 300, dt);
+    drawWeatherFx(g, wx, 300, dt); seasonFx(g, season, dt, LH);
   }
 };
 /* ================= PierFishing ================= */
@@ -183,9 +205,9 @@ Game.scenes.PierFishing = {
     drawPerson(g, S.player, pose, sx, sy, this.trans > 0 && this.transDir < 0);
     if (this.trans === 0) { const h = handPt(S.player, pose, sx, sy); this.tipPt = drawRod(g, h[0], h[1], pose, Fishing.phase === 'REELING' ? Fishing.tension : (Fishing.phase === 'QUICK_PULL' ? 40 : 0), S.gear.rod); }
     Fishing.render(g, 0);
-    drawWeatherFx(g, wx, PIER_SURF, dt);
+    drawWeatherFx(g, wx, PIER_SURF, dt); seasonFx(g, season, dt, LH);
     if (this.trans > 0) { const a = this.trans < 1.4 ? clamp((this.trans - 0.9) / 0.5, 0, 1) : clamp(1 - (this.trans - 1.4) / 0.8, 0, 1); g.globalAlpha = a; g.fillStyle = '#100c18'; g.fillRect(0, 0, LW, LH); g.globalAlpha = 1; }
-    drawText(g, 'SAKİN LİMAN · ' + SPOTS[PIER_SPOTS[this.idx]].name, 8, 46, '#fff6e0', 1, '#1a1426');
+    drawText(g, 'SAKİN LİMAN · ' + SPOTS[PIER_SPOTS[this.idx]].name, 8, 56, '#fff6e0', 1, '#1a1426');
     Fishing.renderHUD(g);
   }
 };
@@ -248,6 +270,7 @@ Game.scenes.BoatFishing = {
   atSpot() { return Math.abs(SPOT_X[this.spotIdx()] - this.x) < 70; },
   input(dir) { if (Fishing.locked()) { if (dir) Fishing.say('Önce oltayı topla / avı bitir.', 1.4); this.move = 0; return; } this.move = dir; if (dir) this.target = null; },
   goSpot(i) { if (Fishing.locked()) return; this.target = SPOT_X[i]; },
+  tap(x, y) { if (Fishing.locked() || this.arrive > 0) return; for (let i = 0; i < 3; i++) { const bx = SPOT_X[i] + 150 - this.cam; if (Math.abs(x - bx) < 34 && y > SURF - 50 && y < SURF + 40) { this.goSpot(i); return; } } if (y > 90 && y < 300) this.target = clamp(x + this.cam - 150, 120, RW - 140); },
   autoAnim(e) { this.dev[e.dev] = { type: e.type, t: 0, fid: e.fid }; },
   update(dt) {
     if (this.arrive > 0) { this.arrive -= dt; }
@@ -271,6 +294,7 @@ Game.scenes.BoatFishing = {
     // ortam balıkları
     for (let i = 0; i < 6; i++) { const fid = REGION[rid].fish_ids[i % 6]; const sil = fishSil(fid); const sp = 10 + i * 3; const W = RW + 200; const fx = ((i * 260 + Game.t * sp * (i % 2 ? 1 : -1)) % W + W) % W - 100; const fy = SURF + 40 + (i * 23) % 80 + Math.sin(Game.t * 0.8 + i) * 3; g.globalAlpha = 0.22; g.drawImage(i % 2 ? fishSilR(fid) : sil, Math.round(fx - cam), Math.round(fy), Math.round(sil.width * 0.6), Math.round(sil.height * 0.6)); } g.globalAlpha = 1;
     g.drawImage(art.near, -cam, 0);
+    regionAmbient(g, rid, cam, SURF);
     // av noktası şamandıraları
     SPOT_X.forEach((sx, i) => { const x = sx + 150 - cam; if (x < -20 || x > LW + 20) return; const by = SURF - 10 + Math.round(Math.sin(Game.t * 2 + i) * 1.5); g.fillStyle = '#3a3a42'; g.fillRect(x, by - 12, 1, 12); g.fillStyle = ['#e8483a', '#f2c230', '#4f86c6'][i]; g.fillRect(x + 1, by - 12, 7, 5); g.fillStyle = '#f4f0e4'; g.fillRect(x - 3, by, 7, 4); g.fillStyle = ['#e8483a', '#f2c230', '#4f86c6'][i]; g.fillRect(x - 3, by + 2, 7, 2); });
     // tekne
@@ -301,8 +325,8 @@ Game.scenes.BoatFishing = {
     drawUnderTint(g, pal, SURF); drawSurface(g, rid, pal, SURF, cam);
     if (Math.abs(this.v) > 6) { g.fillStyle = 'rgba(255,255,255,0.8)'; for (let i = 0; i < 8; i++) g.fillRect(bx + bs.motor[0] - i * 6 - Math.round(Game.t * 30) % 6, SURF - 1 + (i % 2), 4, 1); }
     Fishing.render(g, cam);
-    drawWeatherFx(g, wx, SURF, dt);
-    drawText(g, REGION[rid].name + ' · ' + SPOTS[this.spotId()].name + (this.atSpot() ? '' : ' (yaklaşıyor)'), 8, 46, '#fff6e0', 1, '#1a1426');
+    drawWeatherFx(g, wx, SURF, dt); if (rid === 'sisli_kuzey' || season === 'winter') seasonFx(g, rid === 'sisli_kuzey' && season !== 'summer' ? 'winter' : season, dt, LH);
+    drawText(g, REGION[rid].name + ' · ' + SPOTS[this.spotId()].name + (this.atSpot() ? '' : ' (yaklaşıyor)'), 8, 56, '#fff6e0', 1, '#1a1426');
     Fishing.renderHUD(g);
     if (this.arrive > 0) { g.globalAlpha = clamp(this.arrive - 0.5, 0, 1); g.fillStyle = '#100c18'; g.fillRect(0, 0, LW, LH); g.globalAlpha = 1; }
   }

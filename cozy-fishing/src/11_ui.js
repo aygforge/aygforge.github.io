@@ -81,13 +81,13 @@ const UI = {
   },
   /* -------- panel sistemi -------- */
   openPanel(name, args) { if (Fishing.ctx && !['READY', 'OUTCOME'].includes(Fishing.phase) && !['Settings', 'Help'].includes(name)) { Fishing.say('Önce avı tamamla.', 1.4); return; } if (this.panel !== name) for (const k in this.npcLines) delete this.npcLines[k]; this.panel = name; this.args = args || {}; this.renderPanel(); },
-  closePanel(silent) { this.panel = null; this.panelEl.innerHTML = ''; this.panelEl.classList.remove('on'); if (!silent && Game.sceneName) this.refresh(); },
+  closePanel(silent) { this.panel = null; this.frame.classList.remove('haspanel'); this.panelEl.innerHTML = ''; this.panelEl.classList.remove('on'); if (!silent && Game.sceneName) this.refresh(); },
   renderPanel(keep) {
     const fn = this.P[this.panel]; if (!fn) return;
     const body = this.panelEl.querySelector('.body'); const st = keep && body ? body.scrollTop : 0;
     const r = fn.call(this, this.args);
     this.panelEl.innerHTML = `<div class="win ${r.cls || ''}"><div class="head">${r.icon ? img(r.icon, 2) : ''}<h2>${esc(r.title)}</h2>${r.tabs || ''}<span class="sp"></span><button class="x" data-a="closePanel">✕</button></div>${r.npc ? this.npcBubble(r.npc) : ''}<div class="body scroll">${r.html}</div>${r.foot ? `<div class="foot">${r.foot}</div>` : ''}</div>`;
-    this.panelEl.classList.add('on');
+    this.panelEl.classList.add('on'); this.frame.classList.add('haspanel');
     const nb = this.panelEl.querySelector('.body'); if (nb && keep) nb.scrollTop = st;
   },
   npcLines: {},
@@ -99,8 +99,8 @@ const UI = {
   tabsHtml(id, list) { const cur = this.tab[id] || list[0][0]; return `<div class="tabs">${list.map(([k, n]) => `<button class="${k === cur ? 'on' : ''}" data-a="tab" data-t="${id}" data-v="${k}">${n}</button>`).join('')}</div>`; },
   curTab(id, def) { return this.tab[id] || def; },
   /* -------- modal -------- */
-  showModal(html, cls) { this.modal = true; this.modalEl.innerHTML = `<div class="dlg ${cls || ''}">${html}</div>`; this.modalEl.classList.add('on'); },
-  closeModal() { this.modal = null; this.modalEl.innerHTML = ''; this.modalEl.classList.remove('on'); this._onOk = null; },
+  showModal(html, cls) { this.modal = true; this.frame.classList.add('hasmodal'); this.modalEl.innerHTML = `<div class="dlg scroll ${cls || ''}">${html}</div>`; this.modalEl.classList.add('on'); },
+  closeModal() { this.modal = null; this.frame.classList.remove('hasmodal'); this.modalEl.innerHTML = ''; this.modalEl.classList.remove('on'); this._onOk = null; },
   confirm(o) {
     this._onOk = o.onOk; this._onCancel = o.onCancel;
     const price = o.price != null ? `<div class="price">${img('coin', 2)}<b>${fmt(o.price)}</b></div><div class="dim">Bakiye: ${fmt(S.cash)} → <b class="${S.cash - o.price < 0 ? 'bad' : ''}">${fmt(S.cash - o.price)}</b></div>` : '';
@@ -207,7 +207,7 @@ const UI = {
       <div class="kv"><span>Keşfedilen türler</span><b>${disc}/6</b></div>
       <div class="fishrow">${R.fish_ids.map(f => `<span title="${esc(S.ency[f] && S.ency[f].caught ? FISH[f].name_tr : '???')}">${fishImg(f, 1, 'mini')}</span>`).join('')}</div>
       <div class="kv"><span>Av noktaları</span><b>${R.spot_ids.map(s => esc(SPOTS[s].name) + (S.stats.spotsVisited[s] ? ' ✓' : '')).join(' · ')}</b></div>
-      <div class="btns"><button class="btn" data-a="mapBack">${img('home', 1, 'ic')} Limana Dön</button><button class="btn g" data-a="depart" ${re.ok && S.cash >= R.trip_fuel_cost ? '' : 'disabled'}>${img('boat', 1, 'ic')} Yola Çık (${fmt(R.trip_fuel_cost)})</button></div>
+      <div class="btns">${Object.keys(S.auto.devices).length ? `<button class="btn sm" data-a="openPanel" data-p="BoatLoadout">${img('auto1', 1, 'ic')} Donanım</button>` : ''}<button class="btn" data-a="mapBack">${img('home', 1, 'ic')} Limana Dön</button><button class="btn g" data-a="depart" ${re.ok && S.cash >= R.trip_fuel_cost ? '' : 'disabled'}>${img('boat', 1, 'ic')} Yola Çık (${fmt(R.trip_fuel_cost)})</button></div>
       <div class="dim small">Limana dönüş ücretsizdir. ${R.id === 'sakin_liman' ? 'Sakin Liman\'da tekneyle de avlanabilirsin; iskele avı her zaman ücretsiz.' : ''}</div></div>`;
   },
   endDay(rep) {
@@ -223,7 +223,7 @@ const UI = {
       </div>${exp ? `<div class="dim small">${esc(exp)}</div>` : ''}
       ${rep.newSpecies.length ? `<h4>Yeni türler</h4><div class="fishrow">${rep.newSpecies.map(f => fishImgAlways(f, 1, 'mini')).join('')} ${rep.newSpecies.map(f => esc(FISH[f].name_tr)).join(', ')}</div>` : ''}
       ${rep.records.length ? `<h4>Rekorlar</h4><div>${[...new Set(rep.records)].map(f => esc(FISH[f].name_tr) + ' ' + S.ency[f].maxLen + ' cm').join(' · ')}</div>` : ''}
-      ${rep.achievements.length ? `<h4>Başarımlar</h4><div>${rep.achievements.map(a => '🏆 ' + esc(ACHS.find(x => x.id === a).name)).join(' · ')}</div>` : ''}
+      ${rep.achievements.length ? `<h4>Başarımlar</h4><div>${rep.achievements.map(a => img('trophy', 1, 'ic') + ' ' + esc(ACHS.find(x => x.id === a).name)).join(' · ')}</div>` : ''}
       <hr><div class="next">${rep.newYear ? '<b class="ok">Yeni yıl başladı! </b>' : ''}${rep.newSeason ? `<b class="ok">${SEASON_TR[rep.season]} geldi! </b>` : ''}Yarın: <b>Gün ${rep.newDay}</b> · ${SEASON_TR[rep.season]} · Sakin Liman ${WEATHER_TR[rep.weather]}${ev ? ` · Olay: <b>${esc(ev.name)}</b>` : ''}</div>
       <div class="btns"><button class="btn g big" data-a="wake">${img('sunny', 2)} Yeni Güne Başla</button></div></div>`;
   },
@@ -264,7 +264,7 @@ const UI = {
       const tab = this.curTab('inv', 'fish');
       const box = (key) => {
         const arr = Inv.arr(key), cap = Inv.cap(key); let cells = '';
-        for (let i = 0; i < cap; i++) { const s = arr[i]; cells += s ? `<button class="slot ${this.sel.slot === key + ':' + i ? 'sel' : ''}" data-a="slotSel" data-k="${key}" data-i="${i}">${fishImgAlways(s.f, 1)}<i>${s.q}</i>${S.favorites[s.f] ? '<em>★</em>' : ''}</button>` : `<div class="slot empty"></div>`; }
+        for (let i = 0; i < cap; i++) { const s = arr[i]; cells += s ? `<button class="slot ${this.sel.slot === key + ':' + i ? 'sel' : ''}" data-a="slotSel" data-k="${key}" data-i="${i}">${fishImgAlways(s.f, 1)}<i>${s.q}</i>${S.favorites[s.f] ? '<em>' + img('star', 1, 'ic') + '</em>' : ''}</button>` : `<div class="slot empty"></div>`; }
         return `<div class="invbox"><div class="sub">${esc(Inv.label(key))} <span class="dim">${arr.length}/${cap} yuva · ${Inv.total(key)} balık</span></div><div class="slots">${cells}</div></div>`;
       };
       let html = '';
@@ -285,7 +285,7 @@ const UI = {
       const src = Market.sources(!!this.sel.mChest); const sp = Inv.species(src); const ids = Object.keys(sp).sort((a, b) => FISH[a].base_price - FISH[b].base_price);
       let rows = ids.map(f => {
         const n = sp[f], q = clamp(this.qty['m' + f] || n, 1, n); const bo = Market.betterOffer(f);
-        return `<div class="row"><button class="fav" data-a="fav" data-f="${f}">${S.favorites[f] ? '★' : '☆'}</button>${fishImgAlways(f, 1, 'mini')}<div class="grow"><b>${esc(FISH[f].name_tr)}</b> <span class="dim">×${n} · ${fmt(FISH[f].base_price)}/adet</span>${bo ? `<div class="warn small">${img('event', 1, 'ic')} ${esc(CUST[bo.customerId].name)} ilanında ${fmt(bo.unitPrice)}/adet!</div>` : ''}</div>
+        return `<div class="row"><button class="fav" data-a="fav" data-f="${f}" title="Favori">${img(S.favorites[f] ? 'star' : 'starOff', 1, 'ic')}</button>${fishImgAlways(f, 1, 'mini')}<div class="grow"><b>${esc(FISH[f].name_tr)}</b> <span class="dim">×${n} · ${fmt(FISH[f].base_price)}/adet</span>${bo ? `<div class="warn small">${img('event', 1, 'ic')} ${esc(CUST[bo.customerId].name)} ilanında ${fmt(bo.unitPrice)}/adet!</div>` : ''}</div>
           <div class="step"><button data-a="qty" data-k="m${f}" data-d="-1" data-max="${n}">−</button><b>${q}</b><button data-a="qty" data-k="m${f}" data-d="1" data-max="${n}">+</button><button data-a="qty" data-k="m${f}" data-d="999" data-max="${n}">Max</button></div>
           <button class="btn g sm" data-a="mSell" data-f="${f}" data-n="${q}">Sat ${coin(q * FISH[f].base_price)}</button></div>`;
       }).join('');
@@ -364,7 +364,7 @@ const UI = {
         const desc = { auto1: '4 manuel atışta 1 deneme · %55 başarı · güç ≤2', auto_reel: 'Tüm cihazlar: 3 atışta 1 deneme · %65 · güç ≤3', sensing: 'Tüm cihazlar: başarı %75', auto2: 'Yeni bağımsız cihaz (global yükseltmeleri kullanır)', auto3: 'Yeni bağımsız cihaz (global yükseltmeleri kullanır)', deep_sea_gear: 'Yalnızca Açık Deniz Teknesi\'nde güç 4 otomatik av' };
         html += `<div class="evbox">Şu anki ayar: her <b>${Auto.every()}</b> manuel atışta 1 deneme · başarı <b>%${Math.round(Auto.success() * 100)}</b> · güç sınırı <b>${Auto.maxPower(S.boats.active)}</b> (aktif tekne) · bugün <b>${S.auto.dailyCaught}/${CORE.auto_daily_catch_cap}</b> otomatik av</div>`;
         html += AUTOS.map(a => { const s = Auto.state(a.id); return `<div class="row">${img(a.id, 2)}<div class="grow"><b>${esc(a.name)}</b> <span class="dim small">${a.type === 'device' ? 'cihaz' : 'global yükseltme'}</span><div class="dim small">${desc[a.id]}</div></div>${s === 'owned' ? '<span class="ok">Sahip</span>' : s === 'locked' ? `<span class="dim">Önce ${esc(AUTO[a.requires].name)}</span>` : `<button class="btn g sm" data-a="buyAuto" data-id="${a.id}" ${s === 'poor' ? 'disabled' : ''}>Satın Al ${coin(a.price)}</button>`}</div>`; }).join('');
-        html += this.loadoutHtml();
+        html += `<div class="btns left"><button class="btn sm" data-a="openPanel" data-p="BoatLoadout">${img('auto1', 1, 'ic')} Tekne Donanımı paneli</button></div>` + this.loadoutHtml();
         html += '<p class="dim small">Otomatik oltalar yalnızca denizde, sen geçerli manuel atış yaptıkça ilerler; çevrimdışı ya da beklerken balık üretmez. Her denemede 1 ücretli yem harcanır. Güç 5 balıklar daima manueldir. Tüm cihazlar toplam günde en çok 6 başarılı av yapabilir.</p>';
       }
       if (tab === 'look') {
@@ -426,7 +426,7 @@ const UI = {
         <h4>Ticaret</h4><p>Balık fiyatı türe göre sabittir; boy fiyatı değiştirmez. Nihat'ın hali her balığı alır. Panodaki ilanlar daha iyi fiyat verir ve kısmi teslim kabul eder: 100 isteyen alıcıya 3 balık satabilirsin.</p>
         <h4>Tekneler ve bölgeler</h4><p>Bora'dan tekne al, limandan haritaya çık. Sefer bedeli ödenir, dönüş ücretsiz. Motor/navigasyon yükseltmeleri yeni bölgeleri açar. Her bölgede 3 av noktası var; ◀ ▶ ile tekneyi sür.</p>
         <h4>Otomatik oltalar</h4><p>Teknede, manuel atışların eşliğinde deneme yapar, ücretli yem harcar ve günde toplam en çok 6 balık yakalar. Güç 5 balıklar hep manueldir.</p>
-        <h4>Kontroller</h4><p>Dokunmatik: düğmeler, binalara dokunarak yürüme. Klavye: ←/→ veya A/D yürü/sür, Boşluk olta at/çek, E veya Enter etkileşim, I envanter, Esc kapat/iptal, F3 test paneli.</p>`;
+        <h4>Kontroller</h4><p>Dokunmatik: düğmeler, binalara dokunarak yürüme. Klavye: ←/→ veya A/D yürü/sür, Boşluk olta at/çek, E veya Enter etkileşim, I envanter, Esc kapat/iptal, 1/2/3 teknede av noktası.</p><h4>İpuçları</h4><p>Şamandıralara dokunarak tekneyi o noktaya sürebilirsin. Navigasyon yükseltmesi av noktasındaki en olası türleri (II. seviyede yüzdeleriyle) gösterir. Ücretli yem bitince oyun otomatik olarak ücretsiz temel yeme geçer.</p>`;
       return { title: 'Nasıl Oynanır', icon: 'help', html };
     },
     Dialog(a) {

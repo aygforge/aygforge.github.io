@@ -229,13 +229,13 @@ const Fishing = {
   /* ---- çizim (dünya koordinatı; cam = kamera x) ---- */
   render(g, cam) {
     if (!this.ctx) return;
-    const surf = this.ctx.surf; const tip = this.ctx.tip();
+    const surf = this.ctx.surf; const tip = this.ctx.tip(); const LC = LINE_COL[Math.max(0, LINES.findIndex(l => l.id === S.gear.line))]; const lineC = mix(LC, '#ffffff', 0.25);
     for (const r of this.rip) { const k = r.t / 1.2, rx = 4 + k * 18 * r.s; g.globalAlpha = (1 - k) * 0.8; pxEllipse(g, Math.round(r.x - cam), surf + 1, rx, Math.max(1, rx * 0.22), '#e8f8ff'); }
     g.globalAlpha = 1;
     const b = this.bob;
     // misina
     if (b && ['CAST_FLYING', 'WAITING', 'BITE_WINDOW', 'OUTCOME'].includes(this.phase)) {
-      const sag = this.phase === 'CAST_FLYING' ? 4 : 10; pxCurve(g, tip[0] - cam, tip[1], b.x - cam, b.y + (this.phase === 'CAST_FLYING' ? 0 : b.dip), sag, 'rgba(240,248,255,0.85)');
+      const sag = this.phase === 'CAST_FLYING' ? 4 : 10; pxCurve(g, tip[0] - cam, tip[1], b.x - cam, b.y + (this.phase === 'CAST_FLYING' ? 0 : b.dip), sag, lineC);
     }
     if (this.fishPos && ['WAITING', 'BITE_WINDOW', 'QUICK_PULL', 'REELING'].includes(this.phase) && S.pendingCast && S.pendingCast.fish) {
       const sil = this.phase === 'WAITING' ? fishSil(S.pendingCast.fish) : fishSil(S.pendingCast.fish);
@@ -243,7 +243,7 @@ const Fishing = {
       g.globalAlpha = this.phase === 'WAITING' ? 0.45 : 0.75;
       g.drawImage(flip ? fishSilR(S.pendingCast.fish) : sil, Math.round(fp.x - cam - (flip ? sil.width - 4 : 4)), Math.round(fp.y - sil.height / 2));
       g.globalAlpha = 1;
-      if (this.phase === 'QUICK_PULL' || this.phase === 'REELING') pxLine(g, tip[0] - cam, tip[1], fp.x - cam, fp.y, this.tension > 75 ? 'rgba(255,220,200,0.95)' : 'rgba(240,248,255,0.9)');
+      if (this.phase === 'QUICK_PULL' || this.phase === 'REELING') pxLine(g, tip[0] - cam, tip[1], fp.x - cam, fp.y, this.tension > 75 ? '#ffd8c8' : lineC);
     }
     if (b && ['CAST_FLYING', 'WAITING', 'BITE_WINDOW', 'OUTCOME'].includes(this.phase)) drawBobber(g, Math.round(b.x - cam), Math.round(b.y + (this.phase === 'CAST_FLYING' ? 0 : b.dip)), this.phase === 'BITE_WINDOW');
     if (this.phase === 'BITE_WINDOW' && b) { const k = 1 - this.t / (RC.reaction_window_sec * (SETTINGS.comfort ? 1.5 : 1)); drawBang(g, Math.round(b.x - cam), surf - 26, k); }
@@ -269,7 +269,7 @@ const Fishing = {
       const lbl = this.power <= B.near[1] ? 'YAKIN' : this.power <= B.mid[1] ? 'ORTA' : 'UZAK'; drawText(g, lbl + ' ' + Math.round(this.power) + '%', x - 30, y + h + 8, '#ffffff', 1, '#1a1426');
     }
     if (this.phase === 'REELING' || this.phase === 'QUICK_PULL') {
-      const x0 = 170, y0 = 40, w = 300;
+      const x0 = 170, y0 = 66, w = 300;
       g.fillStyle = 'rgba(20,14,26,0.75)'; g.fillRect(x0 - 6, y0 - 6, w + 12, this.phase === 'REELING' ? 44 : 24);
       // ilerleme
       g.fillStyle = '#3a3048'; g.fillRect(x0, y0, w, 6); g.fillStyle = '#5fc46a'; g.fillRect(x0, y0, Math.round(this.progress / 100 * w), 6);
@@ -294,7 +294,7 @@ const Fishing = {
     if (this.msgT > 0 && this.msg) {
       const words = this.msg.split(' '); const lines = []; let cur = '';
       for (const w of words) { if ((cur + ' ' + w).length > 52) { lines.push(cur); cur = w; } else cur = cur ? cur + ' ' + w : w; } lines.push(cur);
-      const h = lines.length * 8 + 6; const y = 70;
+      const h = lines.length * 8 + 6; const y = (this.phase === 'REELING' || this.phase === 'QUICK_PULL') ? 116 : 70;
       g.fillStyle = 'rgba(20,14,26,0.72)'; g.fillRect(110, y, 420, h);
       lines.forEach((l, i) => drawText(g, l, 320 - textWidth(l) / 2, y + 4 + i * 8, '#fff6e0', 1));
     }
@@ -321,6 +321,6 @@ function drawRod(g, hx, hy, pose, tension, rodId, flip) {
   const tipX = hx + Math.cos(ang) * len + bend * 6, tipY = hy + Math.sin(ang) * len + bend * 14;
   const n = 14; let px = hx, py = hy;
   for (let k = 1; k <= n; k++) { const t = k / n; const x = lerp(hx, tipX, t), y = lerp(hy, tipY, t) - Math.sin(t * Math.PI) * (2 - bend * 6) + t * t * bend * 6; g.fillStyle = t < 0.3 ? c2 : c1; pxLine(g, px, py, x, y, t < 0.3 ? c2 : c1); px = x; py = y; }
-  g.fillStyle = '#8a94a0'; g.fillRect(Math.round(hx) + 1, Math.round(hy) + 1, 3, 3); g.fillStyle = '#d8dce0'; g.fillRect(Math.round(hx) + 2, Math.round(hy) + 2, 1, 1);
+  const rc = REEL_COL[Math.max(0, REELS.findIndex(r => r.id === S.gear.reel))]; g.fillStyle = dark(rc, 0.3); g.fillRect(Math.round(hx), Math.round(hy) + 1, 5, 4); g.fillStyle = rc; g.fillRect(Math.round(hx) + 1, Math.round(hy) + 1, 3, 3); g.fillStyle = '#e8ecf0'; g.fillRect(Math.round(hx) + 2, Math.round(hy) + 2, 1, 1);
   return [Math.round(px), Math.round(py)];
 }

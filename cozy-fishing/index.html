@@ -71,6 +71,8 @@ button:disabled{cursor:default}
 .ccbox .btns{position:sticky;bottom:-.5em;background:#f6ecd2;padding:.3em 0;margin:0}
 .toast{font-size:.86em}
 #bottom.fishing~#toasts{bottom:calc(var(--u)*80px)}
+.haspanel #toasts{bottom:calc(var(--u)*14px)}
+.hasmodal #toasts{bottom:auto;top:calc(var(--u)*28px);flex-direction:column}
 /* toast */
 #toasts{position:absolute;left:50%;bottom:calc(var(--u)*56px);transform:translateX(-50%);display:flex;flex-direction:column-reverse;gap:4px;align-items:center;z-index:30;pointer-events:none;width:76%}
 .toast{display:flex;align-items:center;gap:.4em;background:rgba(246,236,210,.96);border:2px solid #5a3a1e;border-radius:4px;padding:.25em .6em;font-size:.9em;box-shadow:0 3px 0 rgba(0,0,0,.35);animation:tin .25s ease-out;transition:opacity .5s,transform .5s;max-width:100%}
@@ -1389,10 +1391,19 @@ function rocks(pb, x, base, w, h, c, seed) {
     pb.ellipse(cx, cy, rx, ry, c, (px, py) => { const t = (py - (cy - ry)) / (2 * ry); if (t < 0.18) return light(c, 0.3); if (px < cx - rx * 0.4) return dark(c, 0.12); if (t > 0.75) return dark(c, 0.25); return ihash(px, py, 5) < 0.08 ? dark(c, 0.15) : c; });
   }
 }
-function cliff(pb, x0, x1, top, base, c, seed) {
+function cliff(pb, x0, x1, top, base, c, seed, cap) {
+  const W = Math.max(1, x1 - x0), H = base - top;
   for (let x = x0; x < x1; x++) {
-    const e = Math.round(top + 8 * fbm(x * 0.05, seed) - 4); const edgeL = x - x0 < 6 ? (6 - (x - x0)) * 4 : 0, edgeR = x1 - x < 6 ? (6 - (x1 - x)) * 4 : 0;
-    for (let y = e + edgeL + edgeR; y < base; y++) { let col = (y - e) % 7 === 0 ? dark(c, 0.15) : c; if (y < e + edgeL + edgeR + 2) col = light(c, 0.25); if (ihash(x, y, seed) < 0.06) col = dark(c, 0.22); if (dith(x, y, (x - x0) / (x1 - x0) * 0.5)) col = mix(col, dark(c, 0.3), 0.3); pb.set(x, y, col); }
+    const u = (x - x0) / W, ed = Math.min(u, 1 - u);
+    const sh = ed < 0.3 ? Math.pow(1 - ed / 0.3, 1.7) * H * 0.6 : 0;
+    const e = Math.round(top + sh + 14 * (fbm(x * 0.04, seed) - 0.5) + 4 * (vnoise(x * 0.35, seed + 7) - 0.5));
+    for (let y = e; y < base; y++) {
+      const d = y - e; let col = ((y + Math.round(fbm(x * 0.08, seed + 2) * 6)) % 9 === 0) ? dark(c, 0.16) : c;
+      if (d < 2) col = light(c, 0.3); else if (cap && d < 4 + Math.round(vnoise(x * 0.5, seed) * 3)) col = (ihash(x, y, seed) < 0.2) ? dark(cap, 0.15) : cap;
+      if (ihash(x, y, seed) < 0.05) col = dark(c, 0.22);
+      if (u < 0.5 && dith(x, y, (0.5 - u) * 0.9)) col = mix(col, dark(c, 0.3), 0.35);
+      pb.set(x, y, col);
+    }
   }
 }
 function house(pb, x, y, w, h, wall, roof) {
@@ -1458,13 +1469,13 @@ function genRegion(rid, season) {
       ridge(mid, 0, MW, SURF, 22, 40, 0.015, 22, leaf[1], leaf[0]);
       for (let i = 0; i < 40; i++) treeRound(mid, 10 + i * 26 + r() * 10, SURF - 20 - r() * 26, 5 + r() * 3, leaf[0], leaf[1]);
       // A: koy girişi – iki burun
-      cliff(near, 0, 120, SURF - 70, SURF + 6, '#9a8a6a', 5); for (let i = 0; i < 5; i++) treeRound(near, 10 + i * 22, SURF - 66, 7, leaf[0], leaf[1]);
-      cliff(near, 420, 520, SURF - 50, SURF + 6, '#9a8a6a', 6); for (let i = 0; i < 4; i++) treeRound(near, 430 + i * 22, SURF - 46, 6, leaf[0], leaf[1]);
+      cliff(near, -40, 140, SURF - 76, SURF + 6, '#9a8a6a', 5, leaf[0]); for (let i = 0; i < 4; i++) treeRound(near, 20 + i * 22, SURF - 70 + (i === 0 ? 10 : 0), 7, leaf[0], leaf[1]);
+      cliff(near, 400, 540, SURF - 56, SURF + 6, '#9a8a6a', 6, leaf[0]); for (let i = 0; i < 3; i++) treeRound(near, 446 + i * 22, SURF - 50, 6, leaf[0], leaf[1]);
       // B: kayalık kıyı (çamlar)
       for (let i = 0; i < 6; i++) rocks(near, 640 + i * 40, SURF + 14, 44, 34 + (i % 2) * 14, '#a89e86', 70 + i);
       for (let i = 0; i < 6; i++) pine(near, 650 + i * 38, SURF - 26 - (i % 2) * 10, 26, '#2f6a3a', '#24502e', winter);
       // C: derin koy – dik yeşil yamaç
-      cliff(near, 1300, RW, SURF - 120, SURF + 6, '#7a8a5a', 9); for (let i = 0; i < 8; i++) treeRound(near, 1310 + i * 24, SURF - 116 + (i % 3) * 8, 8, leaf[0], leaf[1]);
+      cliff(near, 1290, RW + 60, SURF - 126, SURF + 6, '#7a8a5a', 9, leaf[0]); for (let i = 0; i < 6; i++) treeRound(near, 1360 + i * 24, SURF - 118 + (i % 3) * 6, 8, leaf[0], leaf[1]);
       const T = seabed(bed, 0, RW, YB, '#c8c898', '#a8b080', 2, 12);
       for (let x = 10; x < RW; x += 10 + Math.round(r() * 12)) seagrass(bed, x, T[x], 14 + Math.round(r() * 14), r() < 0.5 ? '#3a8a4a' : '#2f7a42');
       for (let i = 0; i < 10; i++) { const rx = Math.round(80 + i * 140); rocks(bed, rx, T[rx + 13] + 6, 26, 16, '#8a8a7a', 90 + i); }
@@ -1476,9 +1487,9 @@ function genRegion(rid, season) {
       // A: sığ kayalıklar – sudan çıkan taşlar
       for (let i = 0; i < 9; i++) rocks(near, 40 + i * 50, SURF + 12, 30, 16 + (i % 3) * 8, '#9a8a7a', 100 + i);
       // B: resif kenarı – kemer kaya
-      cliff(near, 640, 700, SURF - 60, SURF + 6, '#a89070', 41); cliff(near, 780, 840, SURF - 56, SURF + 6, '#a89070', 42); for (let x = 690; x < 790; x++) { const y = Math.round(SURF - 60 + Math.pow((x - 740) / 50, 2) * 14); for (let yy = y; yy < y + 10; yy++) near.set(x, yy, yy === y ? '#c8b090' : '#a89070'); }
+      cliff(near, 630, 712, SURF - 66, SURF + 6, '#a89070', 41, leaf[0]); cliff(near, 770, 852, SURF - 60, SURF + 6, '#a89070', 42, leaf[0]); for (let x = 690; x < 790; x++) { const y = Math.round(SURF - 60 + Math.pow((x - 740) / 50, 2) * 14); for (let yy = y; yy < y + 10; yy++) near.set(x, yy, yy === y ? '#c8b090' : '#a89070'); }
       // C: derin ada suyu – büyük ada
-      cliff(near, 1320, RW, SURF - 90, SURF + 6, '#8a7a6a', 43); for (let i = 0; i < 7; i++) treeRound(near, 1330 + i * 24, SURF - 88 + (i % 2) * 6, 6, leaf[0], leaf[1]);
+      cliff(near, 1310, RW + 60, SURF - 96, SURF + 6, '#8a7a6a', 43, leaf[0]); for (let i = 0; i < 5; i++) treeRound(near, 1370 + i * 24, SURF - 90 + (i % 2) * 6, 6, leaf[0], leaf[1]);
       const T = seabed(bed, 0, RW, YB, '#a89a88', '#8a7e70', 3, 16);
       for (let i = 0; i < 26; i++) { const rx = Math.round(i * 60 + r() * 30); rocks(bed, rx, T[Math.min(RW - 1, rx + 15)] + 8, 30, 22, '#7a7068', 120 + i); }
       for (let i = 0; i < 40; i++) { const x = Math.round(r() * RW), y = T[x] - 2 - Math.round(r() * 6); bed.set(x, y, '#2a1e2e'); bed.set(x + 1, y - 1, '#2a1e2e'); bed.set(x - 1, y - 1, '#2a1e2e'); bed.set(x, y - 2, '#3a2e3e'); }
@@ -1489,10 +1500,10 @@ function genRegion(rid, season) {
       ridge(far, 0, FW, SURF, 26, 22, 0.012, 31, '#7a8ea0', '#94a8b8');
       for (let i = 0; i < 5; i++) island(mid, 80 + i * 220, SURF, 120, 22 + r() * 10, '#5a7a6a', '#8a9a88', 0);
       // A: akıntı kenarı – feneri olan burun
-      cliff(near, 0, 200, SURF - 74, SURF + 6, '#7a8088', 51); lighthouse(near, 120, SURF - 70, 42, '#f4f0e4', '#2e4a7a');
+      cliff(near, -30, 220, SURF - 80, SURF + 6, '#7a8088', 51, '#6a8a5a'); lighthouse(near, 96, SURF - 78, 42, '#f4f0e4', '#2e4a7a');
       // B: kanal – iki ada arası
-      cliff(near, 560, 640, SURF - 44, SURF + 6, '#6a7078', 52); cliff(near, 860, 940, SURF - 50, SURF + 6, '#6a7078', 53);
-      for (let i = 0; i < 4; i++) pine(near, 570 + i * 20, SURF - 40, 18, '#2f5a42', '#244a36', winter); for (let i = 0; i < 4; i++) pine(near, 868 + i * 20, SURF - 46, 18, '#2f5a42', '#244a36', winter);
+      cliff(near, 550, 660, SURF - 48, SURF + 6, '#6a7078', 52, '#5a7a5a'); cliff(near, 850, 960, SURF - 54, SURF + 6, '#6a7078', 53, '#5a7a5a');
+      for (let i = 0; i < 3; i++) pine(near, 584 + i * 20, SURF - 44, 18, '#2f5a42', '#244a36', winter); for (let i = 0; i < 3; i++) pine(near, 884 + i * 20, SURF - 50, 18, '#2f5a42', '#244a36', winter);
       // C: açık akıntı – uzak gemi
       far.rect(farX(1240, 470), SURF - 8, 40, 6, '#4a4a52'); far.rect(farX(1240, 476), SURF - 14, 14, 6, '#e8e8e8'); far.rect(farX(1240, 480), SURF - 20, 3, 6, '#c4473f');
       const T = seabed(bed, 0, RW, YB, '#b8b8a8', '#9a9a8c', 4, 8);
@@ -1505,8 +1516,7 @@ function genRegion(rid, season) {
       ridge(mid, 0, MW, SURF, 40, 50, 0.012, 62, '#3a4a4a', '#4e5e5e', winter ? 60 : 78);
       for (let i = 0; i < 50; i++) pine(mid, 10 + i * 20 + r() * 8, SURF - 4 - r() * 14, 14 + r() * 8, '#2a4238', '#1e342c', winter);
       // A: fiyort ağzı – iki yanda dik yamaç
-      cliff(near, 0, 170, SURF - 140, SURF + 6, '#4a525a', 71); cliff(near, 420, 540, SURF - 120, SURF + 6, '#4a525a', 72);
-      for (let x = 0; x < 170; x += 2) near.set(x, SURF - 140 + Math.round(8 * fbm(x * 0.05, 71)) - 4, '#f4f8fb');
+      cliff(near, -40, 200, SURF - 146, SURF + 6, '#4a525a', 71, '#eef4f8'); cliff(near, 400, 560, SURF - 124, SURF + 6, '#4a525a', 72, '#eef4f8');
       // B: soğuk kıyı – kırmızı balıkçı kulübeleri
       for (let x = 600; x < 900; x++) for (let y = SURF - 10 + Math.round(Math.sin(x * 0.03) * 3); y < SURF + 6; y++) near.set(x, y, '#5a626a');
       for (let i = 0; i < 4; i++) { const hx = 620 + i * 64; near.rect(hx, SURF - 32, 34, 22, '#9a2e2e'); near.rect(hx, SURF - 32, 2, 22, '#7a2222'); near.poly([[hx - 3, SURF - 32], [hx + 17, SURF - 46], [hx + 37, SURF - 32]], winter ? '#f4f8fb' : '#3a3a42'); near.rect(hx + 6, SURF - 26, 5, 5, '#f6e2a0'); near.rect(hx + 22, SURF - 22, 6, 12, '#5a2020'); for (let px = hx; px < hx + 34; px += 6) near.rect(px, SURF - 10, 2, 14, '#4a3020'); }
@@ -2736,13 +2746,13 @@ const Fishing = {
   /* ---- çizim (dünya koordinatı; cam = kamera x) ---- */
   render(g, cam) {
     if (!this.ctx) return;
-    const surf = this.ctx.surf; const tip = this.ctx.tip();
+    const surf = this.ctx.surf; const tip = this.ctx.tip(); const LC = LINE_COL[Math.max(0, LINES.findIndex(l => l.id === S.gear.line))]; const lineC = mix(LC, '#ffffff', 0.25);
     for (const r of this.rip) { const k = r.t / 1.2, rx = 4 + k * 18 * r.s; g.globalAlpha = (1 - k) * 0.8; pxEllipse(g, Math.round(r.x - cam), surf + 1, rx, Math.max(1, rx * 0.22), '#e8f8ff'); }
     g.globalAlpha = 1;
     const b = this.bob;
     // misina
     if (b && ['CAST_FLYING', 'WAITING', 'BITE_WINDOW', 'OUTCOME'].includes(this.phase)) {
-      const sag = this.phase === 'CAST_FLYING' ? 4 : 10; pxCurve(g, tip[0] - cam, tip[1], b.x - cam, b.y + (this.phase === 'CAST_FLYING' ? 0 : b.dip), sag, 'rgba(240,248,255,0.85)');
+      const sag = this.phase === 'CAST_FLYING' ? 4 : 10; pxCurve(g, tip[0] - cam, tip[1], b.x - cam, b.y + (this.phase === 'CAST_FLYING' ? 0 : b.dip), sag, lineC);
     }
     if (this.fishPos && ['WAITING', 'BITE_WINDOW', 'QUICK_PULL', 'REELING'].includes(this.phase) && S.pendingCast && S.pendingCast.fish) {
       const sil = this.phase === 'WAITING' ? fishSil(S.pendingCast.fish) : fishSil(S.pendingCast.fish);
@@ -2750,7 +2760,7 @@ const Fishing = {
       g.globalAlpha = this.phase === 'WAITING' ? 0.45 : 0.75;
       g.drawImage(flip ? fishSilR(S.pendingCast.fish) : sil, Math.round(fp.x - cam - (flip ? sil.width - 4 : 4)), Math.round(fp.y - sil.height / 2));
       g.globalAlpha = 1;
-      if (this.phase === 'QUICK_PULL' || this.phase === 'REELING') pxLine(g, tip[0] - cam, tip[1], fp.x - cam, fp.y, this.tension > 75 ? 'rgba(255,220,200,0.95)' : 'rgba(240,248,255,0.9)');
+      if (this.phase === 'QUICK_PULL' || this.phase === 'REELING') pxLine(g, tip[0] - cam, tip[1], fp.x - cam, fp.y, this.tension > 75 ? '#ffd8c8' : lineC);
     }
     if (b && ['CAST_FLYING', 'WAITING', 'BITE_WINDOW', 'OUTCOME'].includes(this.phase)) drawBobber(g, Math.round(b.x - cam), Math.round(b.y + (this.phase === 'CAST_FLYING' ? 0 : b.dip)), this.phase === 'BITE_WINDOW');
     if (this.phase === 'BITE_WINDOW' && b) { const k = 1 - this.t / (RC.reaction_window_sec * (SETTINGS.comfort ? 1.5 : 1)); drawBang(g, Math.round(b.x - cam), surf - 26, k); }
@@ -2776,7 +2786,7 @@ const Fishing = {
       const lbl = this.power <= B.near[1] ? 'YAKIN' : this.power <= B.mid[1] ? 'ORTA' : 'UZAK'; drawText(g, lbl + ' ' + Math.round(this.power) + '%', x - 30, y + h + 8, '#ffffff', 1, '#1a1426');
     }
     if (this.phase === 'REELING' || this.phase === 'QUICK_PULL') {
-      const x0 = 170, y0 = 40, w = 300;
+      const x0 = 170, y0 = 66, w = 300;
       g.fillStyle = 'rgba(20,14,26,0.75)'; g.fillRect(x0 - 6, y0 - 6, w + 12, this.phase === 'REELING' ? 44 : 24);
       // ilerleme
       g.fillStyle = '#3a3048'; g.fillRect(x0, y0, w, 6); g.fillStyle = '#5fc46a'; g.fillRect(x0, y0, Math.round(this.progress / 100 * w), 6);
@@ -2801,7 +2811,7 @@ const Fishing = {
     if (this.msgT > 0 && this.msg) {
       const words = this.msg.split(' '); const lines = []; let cur = '';
       for (const w of words) { if ((cur + ' ' + w).length > 52) { lines.push(cur); cur = w; } else cur = cur ? cur + ' ' + w : w; } lines.push(cur);
-      const h = lines.length * 8 + 6; const y = 70;
+      const h = lines.length * 8 + 6; const y = (this.phase === 'REELING' || this.phase === 'QUICK_PULL') ? 116 : 70;
       g.fillStyle = 'rgba(20,14,26,0.72)'; g.fillRect(110, y, 420, h);
       lines.forEach((l, i) => drawText(g, l, 320 - textWidth(l) / 2, y + 4 + i * 8, '#fff6e0', 1));
     }
@@ -2828,7 +2838,7 @@ function drawRod(g, hx, hy, pose, tension, rodId, flip) {
   const tipX = hx + Math.cos(ang) * len + bend * 6, tipY = hy + Math.sin(ang) * len + bend * 14;
   const n = 14; let px = hx, py = hy;
   for (let k = 1; k <= n; k++) { const t = k / n; const x = lerp(hx, tipX, t), y = lerp(hy, tipY, t) - Math.sin(t * Math.PI) * (2 - bend * 6) + t * t * bend * 6; g.fillStyle = t < 0.3 ? c2 : c1; pxLine(g, px, py, x, y, t < 0.3 ? c2 : c1); px = x; py = y; }
-  g.fillStyle = '#8a94a0'; g.fillRect(Math.round(hx) + 1, Math.round(hy) + 1, 3, 3); g.fillStyle = '#d8dce0'; g.fillRect(Math.round(hx) + 2, Math.round(hy) + 2, 1, 1);
+  const rc = REEL_COL[Math.max(0, REELS.findIndex(r => r.id === S.gear.reel))]; g.fillStyle = dark(rc, 0.3); g.fillRect(Math.round(hx), Math.round(hy) + 1, 5, 4); g.fillStyle = rc; g.fillRect(Math.round(hx) + 1, Math.round(hy) + 1, 3, 3); g.fillStyle = '#e8ecf0'; g.fillRect(Math.round(hx) + 2, Math.round(hy) + 2, 1, 1);
   return [Math.round(px), Math.round(py)];
 }
 
@@ -2869,6 +2879,23 @@ function drawWeatherFx(g, wx, surf, dt) {
   if (wx === 'rain') { g.fillStyle = 'rgba(200,220,255,0.55)'; for (const d of RAIN) { d.y += d.s * dt; d.x -= d.s * 0.18 * dt; if (d.y > LH) { d.y = -10; d.x = Math.random() * 700; } g.fillRect(Math.round(d.x), Math.round(d.y), 1, 5); } }
   if (wx === 'fog') { for (let i = 0; i < 4; i++) { g.globalAlpha = 0.16; g.fillStyle = '#e8eef2'; const y = 120 + i * 40 + Math.sin(Game.t * 0.2 + i) * 6; const x = ((Game.t * (6 + i * 3)) % 200) - 200; for (let k = 0; k < 6; k++) g.fillRect(Math.round(x + k * 200), Math.round(y), 160, 26); } g.globalAlpha = 0.12; g.fillStyle = '#dfe6ea'; g.fillRect(0, 0, LW, LH); g.globalAlpha = 1; }
   if (wx === 'wind') { g.fillStyle = 'rgba(255,255,255,0.5)'; for (let i = 0; i < 12; i++) { const x = ((Game.t * 260 + i * 97) % 760) - 60, y = 30 + (i * 53) % (surf - 40); g.fillRect(Math.round(x), y, 14 + (i % 3) * 6, 1); } }
+}
+
+/* bölgesel ambiyans canlıları ve mevsim efektleri */
+const dolphinPB = () => { const p = new PB(18, 8); p.ellipse(9, 4.5, 7.5, 2.6, '#5a6a80', (x, y) => y > 4 ? '#c8d0dc' : '#5a6a80'); p.poly([[8, 2], [11, -1], [11, 2]], '#4a5a70'); p.poly([[1, 4], [-1, 1], [3, 3]], '#4a5a70'); p.poly([[1, 5], [-1, 7], [3, 5]], '#4a5a70'); p.set(14, 4, '#1a1426'); p.rect(16, 5, 2, 1, '#5a6a80'); p.outline(null, 0.5); return p; };
+const SNOW = Array.from({ length: 70 }, (_, i) => ({ x: (i * 97) % 680, y: (i * 61) % 360, s: 14 + (i % 5) * 6, w: i % 3 }));
+function seasonFx(g, season, dt, top) {
+  if (SETTINGS.reduced) return;
+  const col = season === 'winter' ? '#ffffff' : season === 'autumn' ? '#d8843a' : season === 'spring' ? '#f8b8d0' : null; if (!col) return;
+  const n = season === 'winter' ? 70 : 14;
+  for (let i = 0; i < n; i++) { const d = SNOW[i]; d.y += d.s * dt * (season === 'winter' ? 1 : 0.8); d.x += Math.sin(Game.t + i) * 8 * dt - (season === 'winter' ? 2 : 10) * dt; if (d.y > top) { d.y = -4; d.x = Math.random() * 680; } if (d.x < -10) d.x = 650; g.fillStyle = col; g.fillRect(Math.round(d.x), Math.round(d.y), d.w ? 2 : 1, d.w === 2 ? 2 : 1); }
+}
+function regionAmbient(g, rid, cam, surf) {
+  const n = rid === 'derin_mavi' ? 1 : 2;
+  for (let i = 0; i < n; i++) { const f = Math.floor(Game.t * 5 + i) % 3; const gx = ((Game.t * (26 + i * 9) + i * 380) % (LW + 220)) - 110; g.drawImage(Atlas.get('gull' + f, () => gullPB(f)), Math.round(gx), 34 + i * 26 + Math.round(Math.sin(Game.t * 0.9 + i) * 5)); }
+  if (rid === 'gunes_adalari' || rid === 'kayalik_adalar') { for (let i = 0; i < 2; i++) { const ph = (Game.t + i * 3.1) % 7; if (ph < 1.1) { const k = ph / 1.1; const fid = rid === 'gunes_adalari' ? 'ucan_balik' : 'zargana'; const sp = fishSprR(fid); const x = 330 + i * 150 + k * 70, y = surf - Math.sin(k * Math.PI) * 22 - 4; g.drawImage(sp, Math.round(x), Math.round(y), Math.round(sp.width / 2), Math.round(sp.height / 2)); if (k > 0.9) Fishing.splash(x + cam, surf, 1); } } }
+  if (rid === 'derin_mavi' || rid === 'serin_akintilar') { const ph = (Game.t + 2) % 11; if (ph < 1.4) { const k = ph / 1.4; const sp = Atlas.get('dolphin', dolphinPB); const x = 420 + k * 90, y = surf - Math.sin(k * Math.PI) * 16 + 2; g.save(); g.beginPath(); g.rect(0, 0, LW, surf + 1); g.clip(); g.drawImage(sp, Math.round(x), Math.round(y)); g.restore(); } }
+  if (rid === 'derin_mavi') { const ph = Game.t % 13; if (ph < 1.6) { const x = 560 - cam * 0.15 % 200; for (let i = 0; i < 10; i++) { const h = Math.sin(ph / 1.6 * Math.PI) * 14; g.fillStyle = 'rgba(255,255,255,0.7)'; g.fillRect(Math.round(x + Math.sin(i * 1.7) * 4), Math.round(surf - 4 - h * (i / 10)), 1, 1); } g.fillStyle = '#4a5a70'; g.fillRect(Math.round(x - 6), surf - 2, 14, 2); } }
 }
 function drawPerson(g, look, pose, x, footY, flip) { const sp = personSprite(look, pose, flip); g.drawImage(sp, Math.round(x - CH_W / 2), Math.round(footY - 30)); return sp; }
 function handPt(look, pose, x, footY, flip) { const sp = personSprite(look, pose, flip); return [Math.round(x - CH_W / 2) + sp._hand[0], Math.round(footY - 30) + sp._hand[1]]; }
@@ -2920,6 +2947,10 @@ Game.scenes.CharacterCreator = {
 };
 /* ================= Town ================= */
 const TOWN_NPC = { zeynep: 372, nihat: 640, bora: 930, bahar: 1268 };
+const VILLAGERS = [
+  { look: { skin: 4, hair: 7, hairColor: 0, body: 0, outfit: { shirt: '#d87a4a', shirt2: '#a85a32', pants: '#3a4a5a', shoes: '#3a2a22', pat: 'plain' }, hat: 'none' }, x: 520, a: 420, b: 1150, v: 18 },
+  { look: { skin: 1, hair: 3, hairColor: 4, body: 0, outfit: { shirt: '#8a6ac8', shirt2: '#6a4aa8', pants: '#4a3a3a', shoes: '#2a2226', pat: 'flower' }, hat: 'hasir' }, x: 900, a: 240, b: 1240, v: -14 }
+];
 Game.scenes.Town = {
   p: null, cam: 0, target: null, onArrive: null, efeX: 1590, efeDir: 1, cat: { x: 210, t: 0 }, near: null,
   enter(prm) {
@@ -2977,6 +3008,7 @@ Game.scenes.Town = {
     // NPC'ler
     for (const id in TOWN_NPC) drawPerson(g, NPCS[id].look, Math.floor(Game.t * 1.5 + id.length) % 2 ? 'idle0' : 'idle1', TOWN_NPC[id] - cam, TOWN_GROUND + 2, this.p.x < TOWN_NPC[id]);
     const ef = Math.floor(Game.t * 4) % 4; drawPerson(g, NPCS.efe.look, 'walk' + ef, this.efeX - cam, TOWN_GROUND - 2, this.efeDir < 0);
+    for (const v of VILLAGERS) { if (dt) { v.x += v.v * dt; if (v.x > v.b) v.v = -Math.abs(v.v); if (v.x < v.a) v.v = Math.abs(v.v); } const sx = v.x - cam; if (sx > -20 && sx < LW + 20) drawPerson(g, v.look, 'walk' + (Math.floor(Game.t * 5 + v.a) % 4), sx, TOWN_GROUND + 6, v.v < 0); }
     // kedi ve martılar
     const cf = Math.floor(Game.t * 3) % 2; g.drawImage(Atlas.get('cat' + cf, () => catPB(cf)), Math.round(this.cat.x + Math.sin(Game.t * 0.3) * 30 - cam), TOWN_GROUND + 12);
     g.drawImage(Atlas.get('gullS', gullStandPB), 1388 - cam, TOWN_GROUND - 20); g.drawImage(Atlas.get('gullS', gullStandPB), 1508 - cam, TOWN_GROUND - 20);
@@ -2985,7 +3017,7 @@ Game.scenes.Town = {
     const p = this.p; const pose = p.moving ? 'walk' + (Math.floor(p.walkT * 8) % 4) : (Math.floor(Game.t * 1.2) % 2 ? 'idle0' : 'idle1');
     drawPerson(g, S.player, pose, p.x - cam, p.x > TOWN_WATER_X - 40 ? TOWN_GROUND - 2 : TOWN_GROUND + 2, p.dir < 0);
     if (this.near) { const dx = (this.near.id === 'efe' ? this.efeX : this.near.x) - cam; const bob = Math.round(Math.sin(Game.t * 5) * 2); g.drawImage(iconCanvas(this.near.icon), Math.round(dx - 8), TOWN_GROUND - 100 + bob); }
-    drawWeatherFx(g, wx, 300, dt);
+    drawWeatherFx(g, wx, 300, dt); seasonFx(g, season, dt, LH);
   }
 };
 /* ================= PierFishing ================= */
@@ -3018,9 +3050,9 @@ Game.scenes.PierFishing = {
     drawPerson(g, S.player, pose, sx, sy, this.trans > 0 && this.transDir < 0);
     if (this.trans === 0) { const h = handPt(S.player, pose, sx, sy); this.tipPt = drawRod(g, h[0], h[1], pose, Fishing.phase === 'REELING' ? Fishing.tension : (Fishing.phase === 'QUICK_PULL' ? 40 : 0), S.gear.rod); }
     Fishing.render(g, 0);
-    drawWeatherFx(g, wx, PIER_SURF, dt);
+    drawWeatherFx(g, wx, PIER_SURF, dt); seasonFx(g, season, dt, LH);
     if (this.trans > 0) { const a = this.trans < 1.4 ? clamp((this.trans - 0.9) / 0.5, 0, 1) : clamp(1 - (this.trans - 1.4) / 0.8, 0, 1); g.globalAlpha = a; g.fillStyle = '#100c18'; g.fillRect(0, 0, LW, LH); g.globalAlpha = 1; }
-    drawText(g, 'SAKİN LİMAN · ' + SPOTS[PIER_SPOTS[this.idx]].name, 8, 46, '#fff6e0', 1, '#1a1426');
+    drawText(g, 'SAKİN LİMAN · ' + SPOTS[PIER_SPOTS[this.idx]].name, 8, 56, '#fff6e0', 1, '#1a1426');
     Fishing.renderHUD(g);
   }
 };
@@ -3083,6 +3115,7 @@ Game.scenes.BoatFishing = {
   atSpot() { return Math.abs(SPOT_X[this.spotIdx()] - this.x) < 70; },
   input(dir) { if (Fishing.locked()) { if (dir) Fishing.say('Önce oltayı topla / avı bitir.', 1.4); this.move = 0; return; } this.move = dir; if (dir) this.target = null; },
   goSpot(i) { if (Fishing.locked()) return; this.target = SPOT_X[i]; },
+  tap(x, y) { if (Fishing.locked() || this.arrive > 0) return; for (let i = 0; i < 3; i++) { const bx = SPOT_X[i] + 150 - this.cam; if (Math.abs(x - bx) < 34 && y > SURF - 50 && y < SURF + 40) { this.goSpot(i); return; } } if (y > 90 && y < 300) this.target = clamp(x + this.cam - 150, 120, RW - 140); },
   autoAnim(e) { this.dev[e.dev] = { type: e.type, t: 0, fid: e.fid }; },
   update(dt) {
     if (this.arrive > 0) { this.arrive -= dt; }
@@ -3106,6 +3139,7 @@ Game.scenes.BoatFishing = {
     // ortam balıkları
     for (let i = 0; i < 6; i++) { const fid = REGION[rid].fish_ids[i % 6]; const sil = fishSil(fid); const sp = 10 + i * 3; const W = RW + 200; const fx = ((i * 260 + Game.t * sp * (i % 2 ? 1 : -1)) % W + W) % W - 100; const fy = SURF + 40 + (i * 23) % 80 + Math.sin(Game.t * 0.8 + i) * 3; g.globalAlpha = 0.22; g.drawImage(i % 2 ? fishSilR(fid) : sil, Math.round(fx - cam), Math.round(fy), Math.round(sil.width * 0.6), Math.round(sil.height * 0.6)); } g.globalAlpha = 1;
     g.drawImage(art.near, -cam, 0);
+    regionAmbient(g, rid, cam, SURF);
     // av noktası şamandıraları
     SPOT_X.forEach((sx, i) => { const x = sx + 150 - cam; if (x < -20 || x > LW + 20) return; const by = SURF - 10 + Math.round(Math.sin(Game.t * 2 + i) * 1.5); g.fillStyle = '#3a3a42'; g.fillRect(x, by - 12, 1, 12); g.fillStyle = ['#e8483a', '#f2c230', '#4f86c6'][i]; g.fillRect(x + 1, by - 12, 7, 5); g.fillStyle = '#f4f0e4'; g.fillRect(x - 3, by, 7, 4); g.fillStyle = ['#e8483a', '#f2c230', '#4f86c6'][i]; g.fillRect(x - 3, by + 2, 7, 2); });
     // tekne
@@ -3136,8 +3170,8 @@ Game.scenes.BoatFishing = {
     drawUnderTint(g, pal, SURF); drawSurface(g, rid, pal, SURF, cam);
     if (Math.abs(this.v) > 6) { g.fillStyle = 'rgba(255,255,255,0.8)'; for (let i = 0; i < 8; i++) g.fillRect(bx + bs.motor[0] - i * 6 - Math.round(Game.t * 30) % 6, SURF - 1 + (i % 2), 4, 1); }
     Fishing.render(g, cam);
-    drawWeatherFx(g, wx, SURF, dt);
-    drawText(g, REGION[rid].name + ' · ' + SPOTS[this.spotId()].name + (this.atSpot() ? '' : ' (yaklaşıyor)'), 8, 46, '#fff6e0', 1, '#1a1426');
+    drawWeatherFx(g, wx, SURF, dt); if (rid === 'sisli_kuzey' || season === 'winter') seasonFx(g, rid === 'sisli_kuzey' && season !== 'summer' ? 'winter' : season, dt, LH);
+    drawText(g, REGION[rid].name + ' · ' + SPOTS[this.spotId()].name + (this.atSpot() ? '' : ' (yaklaşıyor)'), 8, 56, '#fff6e0', 1, '#1a1426');
     Fishing.renderHUD(g);
     if (this.arrive > 0) { g.globalAlpha = clamp(this.arrive - 0.5, 0, 1); g.fillStyle = '#100c18'; g.fillRect(0, 0, LW, LH); g.globalAlpha = 1; }
   }
@@ -3281,13 +3315,13 @@ const UI = {
   },
   /* -------- panel sistemi -------- */
   openPanel(name, args) { if (Fishing.ctx && !['READY', 'OUTCOME'].includes(Fishing.phase) && !['Settings', 'Help'].includes(name)) { Fishing.say('Önce avı tamamla.', 1.4); return; } if (this.panel !== name) for (const k in this.npcLines) delete this.npcLines[k]; this.panel = name; this.args = args || {}; this.renderPanel(); },
-  closePanel(silent) { this.panel = null; this.panelEl.innerHTML = ''; this.panelEl.classList.remove('on'); if (!silent && Game.sceneName) this.refresh(); },
+  closePanel(silent) { this.panel = null; this.frame.classList.remove('haspanel'); this.panelEl.innerHTML = ''; this.panelEl.classList.remove('on'); if (!silent && Game.sceneName) this.refresh(); },
   renderPanel(keep) {
     const fn = this.P[this.panel]; if (!fn) return;
     const body = this.panelEl.querySelector('.body'); const st = keep && body ? body.scrollTop : 0;
     const r = fn.call(this, this.args);
     this.panelEl.innerHTML = `<div class="win ${r.cls || ''}"><div class="head">${r.icon ? img(r.icon, 2) : ''}<h2>${esc(r.title)}</h2>${r.tabs || ''}<span class="sp"></span><button class="x" data-a="closePanel">✕</button></div>${r.npc ? this.npcBubble(r.npc) : ''}<div class="body scroll">${r.html}</div>${r.foot ? `<div class="foot">${r.foot}</div>` : ''}</div>`;
-    this.panelEl.classList.add('on');
+    this.panelEl.classList.add('on'); this.frame.classList.add('haspanel');
     const nb = this.panelEl.querySelector('.body'); if (nb && keep) nb.scrollTop = st;
   },
   npcLines: {},
@@ -3299,8 +3333,8 @@ const UI = {
   tabsHtml(id, list) { const cur = this.tab[id] || list[0][0]; return `<div class="tabs">${list.map(([k, n]) => `<button class="${k === cur ? 'on' : ''}" data-a="tab" data-t="${id}" data-v="${k}">${n}</button>`).join('')}</div>`; },
   curTab(id, def) { return this.tab[id] || def; },
   /* -------- modal -------- */
-  showModal(html, cls) { this.modal = true; this.modalEl.innerHTML = `<div class="dlg ${cls || ''}">${html}</div>`; this.modalEl.classList.add('on'); },
-  closeModal() { this.modal = null; this.modalEl.innerHTML = ''; this.modalEl.classList.remove('on'); this._onOk = null; },
+  showModal(html, cls) { this.modal = true; this.frame.classList.add('hasmodal'); this.modalEl.innerHTML = `<div class="dlg scroll ${cls || ''}">${html}</div>`; this.modalEl.classList.add('on'); },
+  closeModal() { this.modal = null; this.frame.classList.remove('hasmodal'); this.modalEl.innerHTML = ''; this.modalEl.classList.remove('on'); this._onOk = null; },
   confirm(o) {
     this._onOk = o.onOk; this._onCancel = o.onCancel;
     const price = o.price != null ? `<div class="price">${img('coin', 2)}<b>${fmt(o.price)}</b></div><div class="dim">Bakiye: ${fmt(S.cash)} → <b class="${S.cash - o.price < 0 ? 'bad' : ''}">${fmt(S.cash - o.price)}</b></div>` : '';
@@ -3407,7 +3441,7 @@ const UI = {
       <div class="kv"><span>Keşfedilen türler</span><b>${disc}/6</b></div>
       <div class="fishrow">${R.fish_ids.map(f => `<span title="${esc(S.ency[f] && S.ency[f].caught ? FISH[f].name_tr : '???')}">${fishImg(f, 1, 'mini')}</span>`).join('')}</div>
       <div class="kv"><span>Av noktaları</span><b>${R.spot_ids.map(s => esc(SPOTS[s].name) + (S.stats.spotsVisited[s] ? ' ✓' : '')).join(' · ')}</b></div>
-      <div class="btns"><button class="btn" data-a="mapBack">${img('home', 1, 'ic')} Limana Dön</button><button class="btn g" data-a="depart" ${re.ok && S.cash >= R.trip_fuel_cost ? '' : 'disabled'}>${img('boat', 1, 'ic')} Yola Çık (${fmt(R.trip_fuel_cost)})</button></div>
+      <div class="btns">${Object.keys(S.auto.devices).length ? `<button class="btn sm" data-a="openPanel" data-p="BoatLoadout">${img('auto1', 1, 'ic')} Donanım</button>` : ''}<button class="btn" data-a="mapBack">${img('home', 1, 'ic')} Limana Dön</button><button class="btn g" data-a="depart" ${re.ok && S.cash >= R.trip_fuel_cost ? '' : 'disabled'}>${img('boat', 1, 'ic')} Yola Çık (${fmt(R.trip_fuel_cost)})</button></div>
       <div class="dim small">Limana dönüş ücretsizdir. ${R.id === 'sakin_liman' ? 'Sakin Liman\'da tekneyle de avlanabilirsin; iskele avı her zaman ücretsiz.' : ''}</div></div>`;
   },
   endDay(rep) {
@@ -3423,7 +3457,7 @@ const UI = {
       </div>${exp ? `<div class="dim small">${esc(exp)}</div>` : ''}
       ${rep.newSpecies.length ? `<h4>Yeni türler</h4><div class="fishrow">${rep.newSpecies.map(f => fishImgAlways(f, 1, 'mini')).join('')} ${rep.newSpecies.map(f => esc(FISH[f].name_tr)).join(', ')}</div>` : ''}
       ${rep.records.length ? `<h4>Rekorlar</h4><div>${[...new Set(rep.records)].map(f => esc(FISH[f].name_tr) + ' ' + S.ency[f].maxLen + ' cm').join(' · ')}</div>` : ''}
-      ${rep.achievements.length ? `<h4>Başarımlar</h4><div>${rep.achievements.map(a => '🏆 ' + esc(ACHS.find(x => x.id === a).name)).join(' · ')}</div>` : ''}
+      ${rep.achievements.length ? `<h4>Başarımlar</h4><div>${rep.achievements.map(a => img('trophy', 1, 'ic') + ' ' + esc(ACHS.find(x => x.id === a).name)).join(' · ')}</div>` : ''}
       <hr><div class="next">${rep.newYear ? '<b class="ok">Yeni yıl başladı! </b>' : ''}${rep.newSeason ? `<b class="ok">${SEASON_TR[rep.season]} geldi! </b>` : ''}Yarın: <b>Gün ${rep.newDay}</b> · ${SEASON_TR[rep.season]} · Sakin Liman ${WEATHER_TR[rep.weather]}${ev ? ` · Olay: <b>${esc(ev.name)}</b>` : ''}</div>
       <div class="btns"><button class="btn g big" data-a="wake">${img('sunny', 2)} Yeni Güne Başla</button></div></div>`;
   },
@@ -3464,7 +3498,7 @@ const UI = {
       const tab = this.curTab('inv', 'fish');
       const box = (key) => {
         const arr = Inv.arr(key), cap = Inv.cap(key); let cells = '';
-        for (let i = 0; i < cap; i++) { const s = arr[i]; cells += s ? `<button class="slot ${this.sel.slot === key + ':' + i ? 'sel' : ''}" data-a="slotSel" data-k="${key}" data-i="${i}">${fishImgAlways(s.f, 1)}<i>${s.q}</i>${S.favorites[s.f] ? '<em>★</em>' : ''}</button>` : `<div class="slot empty"></div>`; }
+        for (let i = 0; i < cap; i++) { const s = arr[i]; cells += s ? `<button class="slot ${this.sel.slot === key + ':' + i ? 'sel' : ''}" data-a="slotSel" data-k="${key}" data-i="${i}">${fishImgAlways(s.f, 1)}<i>${s.q}</i>${S.favorites[s.f] ? '<em>' + img('star', 1, 'ic') + '</em>' : ''}</button>` : `<div class="slot empty"></div>`; }
         return `<div class="invbox"><div class="sub">${esc(Inv.label(key))} <span class="dim">${arr.length}/${cap} yuva · ${Inv.total(key)} balık</span></div><div class="slots">${cells}</div></div>`;
       };
       let html = '';
@@ -3485,7 +3519,7 @@ const UI = {
       const src = Market.sources(!!this.sel.mChest); const sp = Inv.species(src); const ids = Object.keys(sp).sort((a, b) => FISH[a].base_price - FISH[b].base_price);
       let rows = ids.map(f => {
         const n = sp[f], q = clamp(this.qty['m' + f] || n, 1, n); const bo = Market.betterOffer(f);
-        return `<div class="row"><button class="fav" data-a="fav" data-f="${f}">${S.favorites[f] ? '★' : '☆'}</button>${fishImgAlways(f, 1, 'mini')}<div class="grow"><b>${esc(FISH[f].name_tr)}</b> <span class="dim">×${n} · ${fmt(FISH[f].base_price)}/adet</span>${bo ? `<div class="warn small">${img('event', 1, 'ic')} ${esc(CUST[bo.customerId].name)} ilanında ${fmt(bo.unitPrice)}/adet!</div>` : ''}</div>
+        return `<div class="row"><button class="fav" data-a="fav" data-f="${f}" title="Favori">${img(S.favorites[f] ? 'star' : 'starOff', 1, 'ic')}</button>${fishImgAlways(f, 1, 'mini')}<div class="grow"><b>${esc(FISH[f].name_tr)}</b> <span class="dim">×${n} · ${fmt(FISH[f].base_price)}/adet</span>${bo ? `<div class="warn small">${img('event', 1, 'ic')} ${esc(CUST[bo.customerId].name)} ilanında ${fmt(bo.unitPrice)}/adet!</div>` : ''}</div>
           <div class="step"><button data-a="qty" data-k="m${f}" data-d="-1" data-max="${n}">−</button><b>${q}</b><button data-a="qty" data-k="m${f}" data-d="1" data-max="${n}">+</button><button data-a="qty" data-k="m${f}" data-d="999" data-max="${n}">Max</button></div>
           <button class="btn g sm" data-a="mSell" data-f="${f}" data-n="${q}">Sat ${coin(q * FISH[f].base_price)}</button></div>`;
       }).join('');
@@ -3564,7 +3598,7 @@ const UI = {
         const desc = { auto1: '4 manuel atışta 1 deneme · %55 başarı · güç ≤2', auto_reel: 'Tüm cihazlar: 3 atışta 1 deneme · %65 · güç ≤3', sensing: 'Tüm cihazlar: başarı %75', auto2: 'Yeni bağımsız cihaz (global yükseltmeleri kullanır)', auto3: 'Yeni bağımsız cihaz (global yükseltmeleri kullanır)', deep_sea_gear: 'Yalnızca Açık Deniz Teknesi\'nde güç 4 otomatik av' };
         html += `<div class="evbox">Şu anki ayar: her <b>${Auto.every()}</b> manuel atışta 1 deneme · başarı <b>%${Math.round(Auto.success() * 100)}</b> · güç sınırı <b>${Auto.maxPower(S.boats.active)}</b> (aktif tekne) · bugün <b>${S.auto.dailyCaught}/${CORE.auto_daily_catch_cap}</b> otomatik av</div>`;
         html += AUTOS.map(a => { const s = Auto.state(a.id); return `<div class="row">${img(a.id, 2)}<div class="grow"><b>${esc(a.name)}</b> <span class="dim small">${a.type === 'device' ? 'cihaz' : 'global yükseltme'}</span><div class="dim small">${desc[a.id]}</div></div>${s === 'owned' ? '<span class="ok">Sahip</span>' : s === 'locked' ? `<span class="dim">Önce ${esc(AUTO[a.requires].name)}</span>` : `<button class="btn g sm" data-a="buyAuto" data-id="${a.id}" ${s === 'poor' ? 'disabled' : ''}>Satın Al ${coin(a.price)}</button>`}</div>`; }).join('');
-        html += this.loadoutHtml();
+        html += `<div class="btns left"><button class="btn sm" data-a="openPanel" data-p="BoatLoadout">${img('auto1', 1, 'ic')} Tekne Donanımı paneli</button></div>` + this.loadoutHtml();
         html += '<p class="dim small">Otomatik oltalar yalnızca denizde, sen geçerli manuel atış yaptıkça ilerler; çevrimdışı ya da beklerken balık üretmez. Her denemede 1 ücretli yem harcanır. Güç 5 balıklar daima manueldir. Tüm cihazlar toplam günde en çok 6 başarılı av yapabilir.</p>';
       }
       if (tab === 'look') {
@@ -3626,7 +3660,7 @@ const UI = {
         <h4>Ticaret</h4><p>Balık fiyatı türe göre sabittir; boy fiyatı değiştirmez. Nihat'ın hali her balığı alır. Panodaki ilanlar daha iyi fiyat verir ve kısmi teslim kabul eder: 100 isteyen alıcıya 3 balık satabilirsin.</p>
         <h4>Tekneler ve bölgeler</h4><p>Bora'dan tekne al, limandan haritaya çık. Sefer bedeli ödenir, dönüş ücretsiz. Motor/navigasyon yükseltmeleri yeni bölgeleri açar. Her bölgede 3 av noktası var; ◀ ▶ ile tekneyi sür.</p>
         <h4>Otomatik oltalar</h4><p>Teknede, manuel atışların eşliğinde deneme yapar, ücretli yem harcar ve günde toplam en çok 6 balık yakalar. Güç 5 balıklar hep manueldir.</p>
-        <h4>Kontroller</h4><p>Dokunmatik: düğmeler, binalara dokunarak yürüme. Klavye: ←/→ veya A/D yürü/sür, Boşluk olta at/çek, E veya Enter etkileşim, I envanter, Esc kapat/iptal, F3 test paneli.</p>`;
+        <h4>Kontroller</h4><p>Dokunmatik: düğmeler, binalara dokunarak yürüme. Klavye: ←/→ veya A/D yürü/sür, Boşluk olta at/çek, E veya Enter etkileşim, I envanter, Esc kapat/iptal, 1/2/3 teknede av noktası.</p><h4>İpuçları</h4><p>Şamandıralara dokunarak tekneyi o noktaya sürebilirsin. Navigasyon yükseltmesi av noktasındaki en olası türleri (II. seviyede yüzdeleriyle) gösterir. Ücretli yem bitince oyun otomatik olarak ücretsiz temel yeme geçer.</p>`;
       return { title: 'Nasıl Oynanır', icon: 'help', html };
     },
     Dialog(a) {
