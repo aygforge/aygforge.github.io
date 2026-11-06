@@ -463,7 +463,7 @@ function genTown(season) {
   far.outline(null, 0.15); mid.outline(null, 0.25);
   return { far: far.canvas(), mid: mid.canvas(), main: main.canvas(), FW, MW };
 }
-const townArt = season => { const k = 'town:' + season; let v = Atlas.cache.get(k); if (!v) { evict('town:', k, 1); v = genTown(season); Atlas.cache.set(k, v); } return v; };
+const townArt = season => { const pm = (typeof Projects !== 'undefined' && S) ? Projects.mask() : '0000'; const k = 'town:' + season + ':' + pm; let v = Atlas.cache.get(k); if (!v) { evict('town:', k, 1); v = genTown(season); if (typeof decorateTown === 'function') decorateTown(v, season, pm); Atlas.cache.set(k, v); } return v; };
 
 /* ---------- İSKELE AVI (3 sahne) ---------- */
 const PIER_SPOTS = ['liman_kiyi', 'liman_iskele', 'liman_dalgakiran'];
@@ -489,7 +489,7 @@ function genPier(spotIdx, season) {
   pb.outline(null, 0.4);
   return pb;
 }
-const pierArt = (i, season) => Atlas.get('pier:' + i + season, () => genPier(i, season));
+const pierArt = (i, season) => { const pm = (typeof Projects !== 'undefined' && S) ? Projects.mask() : '0000'; return Atlas.get('pier:' + i + season + ':' + pm, () => { const pb = genPier(i, season); if (typeof decoratePier === 'function') decoratePier(pb, i, season, pm); return pb; }); };
 const PIER_STAND = [[262, PIER_SURF - 2], [182, PIER_SURF - 32], [200, PIER_SURF - 30]];
 
 /* ---------- EV İÇİ ---------- */

@@ -6,7 +6,7 @@
 const DB = window.FISHDB_DATA, CFG = window.GAMECONFIG_DATA, EXP = window.EXPANSION_DATA;
 Object.assign(CFG.npc_dialogues, EXP.npc_dialogues);
 const LW = CFG.platform.logical_resolution[0], LH = CFG.platform.logical_resolution[1];
-const SCHEMA = 3;
+const SCHEMA = 4;
 
 /* ---------- Config: veri kaynaklarından türetilmiş tablolar ---------- */
 const FISH_LIST = DB.fish;
@@ -214,7 +214,7 @@ function wpick(list, wf, r) { const tot = sum(list.map(wf)); let x = r * tot; fo
 /* ---------- GameState ---------- */
 let S = null;
 function newToday(s) {
-  return { day: s.day, manualCatches: 0, autoCatches: 0, casts: 0, marketIncome: 0, orderIncome: 0, teaIncome: 0, prizeIncome: 0, expenses: 0, expBy: {}, newSpecies: [], records: [], achievements: [], startCash: s.cash, released: 0 };
+  return { day: s.day, manualCatches: 0, autoCatches: 0, casts: 0, marketIncome: 0, orderIncome: 0, teaIncome: 0, prizeIncome: 0, fleetFish: 0, expenses: 0, expBy: {}, newSpecies: [], records: [], achievements: [], startCash: s.cash, released: 0 };
 }
 function newState(look) {
   const seed = (Math.random() * 4294967296) >>> 0;
@@ -247,6 +247,10 @@ function newState(look) {
     journal: { fav: {}, log: {} }, plan: { goals: [], keep: true }, mastery: {}, rivals: {}, rivalLog: {}, compHist: [],
     records: [], recWall: [], recSeq: 0, gearSets: [{ name: 'Kıyı Avı' }, { name: 'Kayalık Avı' }, { name: 'Açık Deniz' }], fin: [],
     aq: { owned: {}, tanks: {}, decor: ['sand'], seen: {} }, ui: { photoLabel: true },
+    method: 'float', daypart: 'day', trip: null, tripLog: [], tripSeq: 0, lastCast: null, quickCast: true,
+    projects: { pier: { paid: 0, done: 0 }, market: { paid: 0, done: 0 }, lighthouse: { paid: 0, done: 0, fc: [] }, terrace: { paid: 0, done: 0 } },
+    wild: { seen: {}, log: {}, day: 0, n: 0 }, guest: null, guestLog: {},
+    fleet: { cand: { day: 0, ids: [] }, missions: [], log: [], seq: 0, stats: { missions: 0, fish: 0, value: 0, wages: 0, fuel: 0 } },
     flags: {}
   };
   s.today = newToday(s);

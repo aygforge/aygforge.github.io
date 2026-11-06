@@ -178,7 +178,8 @@ Game.scenes.Town = {
     clipW(() => drawWater(g, 'town', pal, wx, 300, cam));
     g.drawImage(art.main, -cam, 0);
     // tekneler (iskelenin önünde bağlı)
-    let mx = 2422; S.boats.owned.forEach((id, i) => { const bs = boatSprite(id); const bx = mx - cam; mx += Math.round(bs.w * 0.8); const by = Math.round(300 - bs.water + 6 + Math.sin(Game.t * 1.2 + i) * 1.2); if (bx > -200 && bx < LW + 20) { g.drawImage(bs.back, Math.round(bx), by); g.drawImage(bs.front, Math.round(bx), by); if (id === S.boats.active) drawText(g, 'AKTİF', Math.round(bx + bs.w / 2 - 10), by + bs.deck - 36, '#ffe08a', 1, '#1a1426'); } });
+    let mx = 2422; S.boats.owned.filter(id => Fleet.status(id) !== 'out').forEach((id, i) => { const bs = boatSprite(id); const bx = mx - cam + Fleet.boatOx(id); mx += Math.round(bs.w * 0.8); const by = Math.round(300 - bs.water + 6 + Math.sin(Game.t * 1.2 + i) * 1.2); if (bx > -200 && bx < LW + 20) { g.drawImage(bs.back, Math.round(bx), by); g.drawImage(bs.front, Math.round(bx), by); if (id === S.boats.active) drawText(g, 'AKTİF', Math.round(bx + bs.w / 2 - 10), by + bs.deck - 36, '#ffe08a', 1, '#1a1426'); } });
+    Fleet.renderLeave(g, cam, mx);
     clipW(() => { drawUnderTint(g, pal, 306); drawSurface(g, 'town', pal, 306, cam); });
     // panodaki ilanlar
     const nOrd = Orders.active().length; for (let i = 0; i < nOrd; i++) { const px = 2268 + (i % 3) * 16 - cam, py = TOWN_GROUND - 78 + Math.floor(i / 3) * 18; g.fillStyle = ['#f6eed8', '#f2e2c0', '#fffaf0'][i % 3]; g.fillRect(px, py, 12, 14); g.fillStyle = '#c4473f'; g.fillRect(px + 5, py, 2, 2); g.fillStyle = '#a89878'; g.fillRect(px + 2, py + 5, 8, 1); g.fillRect(px + 2, py + 8, 6, 1); }
@@ -200,7 +201,7 @@ Game.scenes.Town = {
       FEST_CROWD.forEach(([cx, k]) => { const v = VILLAGERS[k % VILLAGERS.length]; const look = Object.assign({}, v.look, { skin: (k * 2) % 6, hair: k % 8, hairColor: (k * 3) % 8 }); drawPerson(g, look, Math.floor(Game.t * 2 + k) % 2 ? 'idle0' : 'catch', cx - cam, TOWN_GROUND + 4 + (k % 2) * 3, k % 2 === 0); });
     }
     // NPC'ler
-    for (const f of PIER_FISHERS) { const fx = Routine.x(f.id); if (fx - cam < -60 || fx - cam > LW + 60) continue; if (Routine.atPier(f.id)) npcFisher(g, f.id, fx, TOWN_GROUND - 2, 306, f.per, cam, false); else drawPerson(g, NPCS[f.id].look, Math.floor(Game.t * 1.3 + fx) % 2 ? 'idle0' : 'idle1', fx - cam, TOWN_GROUND + 4, this.p.x < fx); }
+    for (const f of PIER_FISHERS) { const fx = Routine.x(f.id); if (fx - cam < -60 || fx - cam > LW + 60) continue; if (Routine.atPier(f.id)) npcFisher(g, f.id, fx, TOWN_GROUND - 2, 306, f.per, cam, false); else drawPerson(g, NPCS[f.id].look, Math.floor(Game.t * 1.3 + fx) % 2 ? 'idle0' : 'idle1', fx - cam, Routine.place(f.id) === 'terrace' ? TOWN_GROUND - 20 : TOWN_GROUND + 4, this.p.x < fx); }
     for (const id of ['hasan', 'bahar']) { const rx = Routine.x(id); if (rx != null && rx - cam > -30 && rx - cam < LW + 30) drawPerson(g, NPCS[id].look, Math.floor(Game.t * 1.5 + id.length) % 2 ? 'idle0' : 'idle1', rx - cam, TOWN_GROUND + 3, this.p.x < rx); }
     for (const id in TOWN_NPC) if (id !== 'hasan' && id !== 'bahar') drawPerson(g, NPCS[id].look, Math.floor(Game.t * 1.5 + id.length) % 2 ? 'idle0' : 'idle1', TOWN_NPC[id] - cam, TOWN_GROUND + 2, this.p.x < TOWN_NPC[id]);
     if (Routine.atPier('efe')) { const ef = Math.floor(Game.t * 4) % 4; drawPerson(g, NPCS.efe.look, 'walk' + ef, this.efeX - cam, TOWN_GROUND - 2, this.efeDir < 0); } else drawPerson(g, NPCS.efe.look, Math.floor(Game.t * 1.2) % 2 ? 'idle0' : 'idle1', this.efeX - cam, TOWN_GROUND + 4, this.p.x < this.efeX);
@@ -248,12 +249,12 @@ Game.scenes.PierFishing = {
     if (this.trans > 0) { const k = this.trans < 1.4 ? this.trans / 1.4 : 0; sx += this.transDir * k * 300; }
     const pose = this.trans > 0 ? 'walk' + (Math.floor(Game.t * 8) % 4) : fishingPose(Fishing.phase, Fishing.t);
     drawPerson(g, S.player, pose, sx, sy, this.trans > 0 && this.transDir < 0);
-    if (this.trans === 0) { const h = handPt(S.player, pose, sx, sy); this.tipPt = drawRod(g, h[0], h[1], pose, Fishing.phase === 'REELING' ? Fishing.tension : (Fishing.phase === 'QUICK_PULL' ? 40 : 0), S.gear.rod); }
+    if (this.trans === 0) { const h = handPt(S.player, pose, sx, sy); this.tipPt = drawRod(g, h[0], h[1], pose, Fishing.rodBend(), S.gear.rod); }
     Fishing.render(g, 0);
     drawWeatherFx(g, wx, PIER_SURF, dt); seasonFx(g, season, dt, LH);
     if (this.trans > 0) { const a = this.trans < 1.4 ? clamp((this.trans - 0.9) / 0.5, 0, 1) : clamp(1 - (this.trans - 1.4) / 0.8, 0, 1); g.globalAlpha = a; g.fillStyle = '#100c18'; g.fillRect(0, 0, LW, LH); g.globalAlpha = 1; }
     if (S.comp && FEST[S.comp.fest]) { const c = S.comp, f = FEST[c.fest]; const st = Comp.standings(); const x = 470, y = 44; g.fillStyle = 'rgba(20,14,26,0.78)'; g.fillRect(x, y, 166, 20 + st.length * 9); drawText(g, f.comp_name, x + 4, y + 4, '#ffe08a'); drawText(g, 'KALAN ATIŞ: ' + c.castsLeft + '/' + COMP.casts, x + 4, y + 12, '#e8e0f0'); st.forEach((r, i) => { const yy = y + 21 + i * 9; if (r.player) { g.fillStyle = 'rgba(255,224,138,0.25)'; g.fillRect(x + 2, yy - 2, 162, 9); } drawText(g, (i + 1) + '. ' + r.name.split(' (')[0], x + 4, yy, i === 0 ? '#ffe070' : '#ffffff'); const sc = Comp.fmt(f.comp, r.score); drawText(g, sc, x + 162 - textWidth(sc), yy, '#c8e8ff'); }); }
-    drawText(g, 'SAKİN LİMAN · ' + SPOTS[PIER_SPOTS[this.idx]].name, 8, 56, '#fff6e0', 1, '#1a1426');
+    drawText(g, 'SAKİN LİMAN · ' + SPOTS[PIER_SPOTS[this.idx]].name + ' · ' + V3.dayparts[Dayparts.cur()].name + ' · ' + V3.methods[Methods.cur()].short, 8, 56, '#fff6e0', 1, '#1a1426');
     Fishing.renderHUD(g);
   }
 };
@@ -365,14 +366,16 @@ Game.scenes.BoatFishing = {
     const pose = fishingPose(Fishing.phase, Fishing.t);
     const px = bx + bs.stand[0], py = by + bs.stand[1];
     drawPerson(g, S.player, pose, px, py);
+    if (S.trip && S.trip.guest && NPCS[S.trip.guest]) drawPerson(g, NPCS[S.trip.guest].look, Fishing.phase === 'CATCH_RESULT' ? 'catch' : (Math.floor(Game.t * 1.1) % 2 ? 'idle0' : 'idle1'), px - 15, py, true);
     const h = handPt(S.player, pose, px, py);
     g.drawImage(bs.front, bx, by);
-    this.tipPt = drawRod(g, h[0], h[1], pose, Fishing.phase === 'REELING' ? Fishing.tension : (Fishing.phase === 'QUICK_PULL' ? 40 : 0), S.gear.rod); this.tipPt = [this.tipPt[0] + cam, this.tipPt[1]];
+    this.tipPt = drawRod(g, h[0], h[1], pose, Fishing.rodBend(), S.gear.rod); this.tipPt = [this.tipPt[0] + cam, this.tipPt[1]];
     drawUnderTint(g, pal, SURF); drawSurface(g, rid, pal, SURF, cam);
     if (Math.abs(this.v) > 6) { g.fillStyle = 'rgba(255,255,255,0.8)'; for (let i = 0; i < 8; i++) g.fillRect(bx + bs.motor[0] - i * 6 - Math.round(Game.t * 30) % 6, SURF - 1 + (i % 2), 4, 1); }
     Fishing.render(g, cam);
     drawWeatherFx(g, wx, SURF, dt); if (rid === 'sisli_kuzey' || season === 'winter') seasonFx(g, rid === 'sisli_kuzey' && season !== 'summer' ? 'winter' : season, dt, LH);
-    drawText(g, REGION[rid].name + ' · ' + SPOTS[this.spotId()].name + (this.atSpot() ? '' : ' (yaklaşıyor)'), 8, 56, '#fff6e0', 1, '#1a1426');
+    v3BoatOverlay(g, px, py);
+    drawText(g, REGION[rid].name + ' · ' + SPOTS[this.spotId()].name + (this.atSpot() ? '' : ' (yaklaşıyor)') + ' · ' + V3.dayparts[Dayparts.cur()].name + (S.trip ? ' · Durak ' + S.trip.stops.length + '/' + Trips.maxStops(S.trip.boat) : ''), 8, 56, '#fff6e0', 1, '#1a1426');
     Fishing.renderHUD(g);
     if (this.arrive > 0) { g.globalAlpha = clamp(this.arrive - 0.5, 0, 1); g.fillStyle = '#100c18'; g.fillRect(0, 0, LW, LH); g.globalAlpha = 1; }
   }

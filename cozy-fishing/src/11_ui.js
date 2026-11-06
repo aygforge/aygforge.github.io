@@ -32,7 +32,7 @@ const UI = {
     this.refresh();
   },
   refresh() {
-    if (!S) return;
+    if (!S || (typeof QA !== 'undefined' && QA.silent)) return;
     this.hud(); this.objective();
     if (this.panel) this.renderPanel(true);
     if (Game.sceneName === 'PierFishing' || Game.sceneName === 'BoatFishing') this.fishBarUpdate();
@@ -60,8 +60,9 @@ const UI = {
     const t = S && Tutorial.current(); if (!t || !this.objEl || this.objEl.style.display === 'none') { this.objEl.innerHTML = ''; return; }
     this.objEl.innerHTML = `<div class="obj">${img('star', 1, 'ic')}<span>${esc(t.t)}</span><button data-a="skipTut" title="Öğreticiyi atla">✕</button></div>`;
   },
-  toastNow(msg, kind, icon) { Bus.toast(msg, kind, icon); this.pump(); },
+  toastNow(msg, kind, icon) { if (typeof QA !== 'undefined' && QA.silent) return; Bus.toast(msg, kind, icon); this.pump(); },
   pump() {
+    if (typeof QA !== 'undefined' && QA.silent) return;
     const q = Bus.take();
     for (const t of q) {
       const d = document.createElement('div'); d.className = 'toast ' + (t.kind || 'info'); d.innerHTML = (t.icon ? img(t.icon, 2) : '') + '<span>' + esc(t.msg) + '</span>';

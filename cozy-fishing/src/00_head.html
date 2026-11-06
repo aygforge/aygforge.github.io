@@ -181,6 +181,11 @@ body.portrait #rotate{display:flex}
 #photoui{position:absolute;left:0;right:0;bottom:calc(var(--u)*4px);z-index:30;display:flex;justify-content:center;pointer-events:none}.photobar{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;pointer-events:auto;background:rgba(26,20,38,.55);padding:4px;border-radius:6px}.photobar .btn{min-height:2.4em}.photobar .btn.on{outline:2px solid #ffe08a}
 #frame.photo #hud,#frame.photo #objective,#frame.photo #sceneui,#frame.photo #bottom,#frame.photo #toasts,#frame.photo #plantrack,#frame.photo #panel{display:none!important}
 .menu-tiles .tile span{font-size:.9em}
+.wildgrid{grid-template-columns:repeat(4,1fr)}.wildgrid .ecard{min-height:6em;padding:.3em;text-align:center}.wildgrid .ecard img{height:2.6em}.wildgrid small{font-size:.78em;line-height:1.2}
+.win .head{flex-wrap:nowrap}.win .head h2{white-space:nowrap;flex-shrink:0}.win .head .tabs{flex-wrap:nowrap;overflow-x:auto;min-width:0;flex:0 1 auto;scrollbar-width:thin}.win .head .tabs button{flex-shrink:0;white-space:nowrap}.win .head .x{flex-shrink:0}
+.order.done2{background:rgba(226,242,216,.7);border-color:#3f9a4a}
+#bottom .btn .lbl{font-size:.72em}
+@media (max-width:800px){.wildgrid{grid-template-columns:repeat(3,1fr)}#bottom.fishing .btn{padding-left:.25em;padding-right:.25em}#bottom.fishing .btn .lbl{display:none}}
 @media (max-height:420px){#plantrack{font-size:calc(var(--u)*8px);top:calc(var(--u)*26px)}.chart{height:5em}.tiles .tile{padding:.2em}}
 </style>
 </head>

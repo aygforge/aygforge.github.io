@@ -178,7 +178,7 @@ const Rivals = {
 const Records = {
   MAX: 10,
   consider(fid, size, auto, meta) {
-    const spot = meta.spot || null; const rec = { id: ++S.recSeq, fid, cm: size.cm, kg: size.kg, rid: spot ? SPOTS[spot].region_id : null, spot, day: S.day, rod: auto ? null : (meta.rod || S.gear.rod), dev: auto ? (meta.dev || null) : null, auto: !!auto };
+    const spot = meta.spot && SPOTS[meta.spot] ? meta.spot : null; const rec = { id: ++S.recSeq, fid, cm: size.cm, kg: size.kg, rid: spot ? SPOTS[spot].region_id : null, spot, day: S.day, rod: auto ? null : (meta.rod || S.gear.rod), dev: auto ? (meta.dev || null) : null, auto: !!auto };
     S.records.push(rec); this.prune();
     return S.records.includes(rec);
   },

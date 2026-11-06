@@ -2,7 +2,7 @@ COZY FISHING — Tam Sürüm (tek dosya, çevrimdışı)
 ================================================
 
 ÇALIŞTIRMA
-- v2.0: cozyfishing_v2.html dosyasını açın (yenilikler için CHANGES_v2.md). index.html v1 sürümüdür.
+- v3.0: cozyfishing_v3.html dosyasını açın (yenilikler için CHANGES_v3.md). cozyfishing_v2.html v2, index.html v1 sürümüdür.
 - index.html dosyasını herhangi bir modern tarayıcıda açın (çift tıklama / file:// yeterli).
 - İnternet bağlantısı gerekmez. Tüm oyun verisi (70 balık, 21 av noktası, 4 tekne, 40 başarım,
   13 NPC'nin koşullu diyalogları, 4 mevsim şenliği), tüm piksel sanat ve tüm sesler dosyanın içinde üretilir.
