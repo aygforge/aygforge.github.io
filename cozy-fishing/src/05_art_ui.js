@@ -292,6 +292,7 @@ function boatParts(id, cfg) {
     res = { deck, stand: [44, deck + 3], mounts: [[14, deck - 2], [36, deck - 2], [58, deck - 2]], motor: [2, deck + 24], water: deck + 22 };
   }
   // isim levhası
+  if (cfg.ornament && typeof ornamentPB === 'function') { const ox = { coastal_skiff: 64, motorboat: 92, cabin: 112, offshore: 142 }[id]; front.rect(ox + 6, res.deck - 3, 1, 4, '#5a3a1e'); ornamentPB(front, cfg.ornament.slice(4), ox, res.deck - 14); }
   const name = (cfg.name || '').slice(0, 12);
   if (name) {
     const tw = textWidth(name) + 4; const px = { coastal_skiff: 52, motorboat: 80, cabin: 100, offshore: 128 }[id] - tw / 2, py = res.deck + 4;
@@ -302,7 +303,7 @@ function boatParts(id, cfg) {
 }
 function boatCfgOf(id) {
   const b = S.boats.byId[id]; const info = Boats.stats(id);
-  return { color: b ? b.color : 'sea_green', name: b ? b.name : '', motor: info.motor, hull: info.hull, nav: info.nav, storage: info.storage };
+  return { color: b ? b.color : 'sea_green', name: b ? b.name : '', motor: info.motor, hull: info.hull, nav: info.nav, storage: info.storage, ornament: b ? (b.ornament || null) : null };
 }
 function boatSprite(id, cfg) {
   cfg = cfg || boatCfgOf(id);

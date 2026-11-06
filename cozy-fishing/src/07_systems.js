@@ -374,26 +374,26 @@ const Auto = {
     for (const dev of this.mountedOn(bid)) {
       const d = S.auto.devices[dev]; d.counter = Math.min(every, d.counter + 1);
       if (d.counter < every) { ev.push({ dev, type: 'tick' }); continue; }
-      const reason = this.blocker(spotId, bid);
+      const reason = this.blocker(spotId, bid, dev);
       if (reason) { d.paused = reason; ev.push({ dev, type: 'paused', reason }); continue; }
       d.paused = null;
-      const bait = this.pickBait(); S.baitStock[bait]--; S.stats.baitUsed++; d.counter = 0; S.auto.attempts++; S.stats.autoAttempts++;
+      const bait = this.pickBaitFor(dev, spotId, bid); if (!bait || !(S.baitStock[bait] > 0)) throw new Error('auto bait'); S.baitStock[bait]--; S.stats.baitUsed++; d.baitUsed = (d.baitUsed || 0) + 1; d.baitBy = d.baitBy || {}; d.baitBy[bait] = (d.baitBy[bait] || 0) + 1; d.counter = 0; S.auto.attempts++; S.stats.autoAttempts++;
       if (rand() < this.success()) {
         const sel = Selector.weights(spotId, { auto: true, maxPower: this.maxPower(bid), bait });
         let list = sel.list.filter(x => Inv.canPlace(Inv.autoOrder(), x.id));
         const tot = sum(list.map(x => x.w)); list.forEach(x => x.p = x.w / tot);
         const fid = Selector.pick(list); const size = Selector.rollSize(fid);
         const where = Inv.place(Inv.autoOrder(), fid); if (!where) throw new Error('auto place fail');
-        const rec = Catch.record(fid, size, true); S.auto.dailyCaught++; S.auto.total++;
+        const rec = Catch.record(fid, size, true, { bait, spot: spotId, dev }); S.auto.dailyCaught++; S.auto.total++;
         ev.push({ dev, type: 'catch', fid, size, where, rec });
       } else { S.stats.autoFails++; ev.push({ dev, type: 'miss' }); }
     }
     return ev;
   },
-  blocker(spotId, bid) {
+  blocker(spotId, bid, dev) {
     if (S.auto.dailyCaught >= CORE.auto_daily_catch_cap) return 'cap';
     const sel = Selector.weights(spotId, { auto: true, maxPower: this.maxPower(bid), bait: 'worm' }); if (!sel.list.length) return 'power';
-    if (!this.pickBait()) return 'bait';
+    if (!(dev ? this.pickBaitFor(dev, spotId, bid) : this.pickBait())) return 'bait';
     const keys = Inv.autoOrder(); if (!keys.some(k => Inv.hasRoomAny(k)) && !sel.list.some(x => Inv.canPlace(keys, x.id))) return 'full';
     return null;
   },
@@ -442,6 +442,7 @@ const World = {
       if (S.pendingCast) S.pendingCast = null;
       rep = deepClone(S.today); rep.endCash = S.cash; rep.energyLeft = S.energy; rep.prevDay = S.day;
       S.stats.daysCompleted++; S.day++; this.startDay(); S.scene = 'Home';
+      if (typeof Finance !== 'undefined') Finance.close(rep);
       rep.newDay = S.day; rep.season = this.season(); rep.weather = S.world.weather.sakin_liman; rep.event = S.world.eventId;
       rep.newSeason = this.seasonDay() === 1; rep.newYear = rep.newSeason && this.season() === 'spring';
       return { ok: true };

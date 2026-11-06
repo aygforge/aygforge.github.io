@@ -171,6 +171,17 @@ body.portrait #rotate{display:flex}
 #boot{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#100c18;color:#ffe08a;font-size:20px;z-index:200}
 @media (max-width:800px){#hud .chip .dim,#hud .chip.evt span,#hud .chip.fest span,#hud .chip .wxn{display:none}#hud .ebar{width:calc(var(--u)*28px)}#hud{gap:2px}#hud .chip{padding:0 .3em}}
 @media (max-height:420px){.win{top:calc(var(--u)*24px);bottom:2px}.win.wide{left:4px;right:4px}.win{left:calc(var(--u)*18px);right:calc(var(--u)*18px)}}
+/* v2 */
+.chart{display:flex;align-items:flex-end;gap:2px;height:7em;border-bottom:2px solid #c8a870;margin:.3em 0}.chart .col{flex:1;display:flex;align-items:flex-end;gap:1px;height:100%;position:relative;min-width:6px}.chart .col i{flex:1;display:block;min-height:1px}.chart i.inc{background:#3f9a4a}.chart i.exp{background:#c8503a}.chart .col span{position:absolute;bottom:-1.3em;left:0;right:0;text-align:center;font-size:.6em;opacity:.7}
+.tablewrap{overflow-x:auto;margin-top:1.2em}.tablewrap .qt{white-space:nowrap}
+.aqwrap{display:flex;gap:.5em;align-items:flex-start;flex-wrap:wrap}.aqwrap canvas{width:min(100%,320px);border:3px solid #6a4a2a;border-radius:4px;background:#1a3a5a;image-rendering:pixelated}
+.hint2{display:inline-flex;opacity:.8}.dimimg img{opacity:.35;filter:grayscale(1)}.wfull{width:100%;text-align:left}
+.step.big{justify-content:center;font-size:1.25em;margin:.5em 0}
+#plantrack{position:absolute;right:calc(var(--u)*6px);top:calc(var(--u)*30px);z-index:6;background:rgba(26,20,38,.72);color:#fff6e0;border:2px solid #ffe08a;border-radius:4px;padding:.2em .45em;font-size:calc(var(--u)*9px);pointer-events:none;max-width:38%;line-height:1.3}#plantrack b{color:#ffe08a;font-size:.85em}#plantrack .ok{color:#8ef09a}
+#photoui{position:absolute;left:0;right:0;bottom:calc(var(--u)*4px);z-index:30;display:flex;justify-content:center;pointer-events:none}.photobar{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;pointer-events:auto;background:rgba(26,20,38,.55);padding:4px;border-radius:6px}.photobar .btn{min-height:2.4em}.photobar .btn.on{outline:2px solid #ffe08a}
+#frame.photo #hud,#frame.photo #objective,#frame.photo #sceneui,#frame.photo #bottom,#frame.photo #toasts,#frame.photo #plantrack,#frame.photo #panel{display:none!important}
+.menu-tiles .tile span{font-size:.9em}
+@media (max-height:420px){#plantrack{font-size:calc(var(--u)*8px);top:calc(var(--u)*26px)}.chart{height:5em}.tiles .tile{padding:.2em}}
 </style>
 </head>
 <body>
@@ -184,6 +195,8 @@ body.portrait #rotate{display:flex}
 <div id="toasts"></div>
 <div id="panel"></div>
 <div id="modal"></div>
+<div id="plantrack" style="display:none"></div>
+<div id="photoui"></div>
 </div></div>
 <div id="rotate"><div class="ph"></div><div><b>Lütfen telefonu yatay çevirin</b><br><span style="opacity:.8;font-size:15px">Cozy Fishing yatay ekranda oynanır. Çevirdiğinde oyun kaldığı yerden devam eder.</span></div><button onclick="toggleFullscreen()" style="font-size:16px;padding:10px 18px;border-radius:6px;border:2px solid #ffe08a;background:#3a2a4a;color:#fff6e0">Tam ekran + yatay kilit</button></div>
 <div id="boot">Cozy Fishing yükleniyor…</div>

@@ -6,7 +6,7 @@
 const DB = window.FISHDB_DATA, CFG = window.GAMECONFIG_DATA, EXP = window.EXPANSION_DATA;
 Object.assign(CFG.npc_dialogues, EXP.npc_dialogues);
 const LW = CFG.platform.logical_resolution[0], LH = CFG.platform.logical_resolution[1];
-const SCHEMA = 2;
+const SCHEMA = 3;
 
 /* ---------- Config: veri kaynaklarından türetilmiş tablolar ---------- */
 const FISH_LIST = DB.fish;
@@ -214,7 +214,7 @@ function wpick(list, wf, r) { const tot = sum(list.map(wf)); let x = r * tot; fo
 /* ---------- GameState ---------- */
 let S = null;
 function newToday(s) {
-  return { day: s.day, manualCatches: 0, autoCatches: 0, casts: 0, marketIncome: 0, orderIncome: 0, expenses: 0, expBy: {}, newSpecies: [], records: [], achievements: [], startCash: s.cash, released: 0 };
+  return { day: s.day, manualCatches: 0, autoCatches: 0, casts: 0, marketIncome: 0, orderIncome: 0, teaIncome: 0, prizeIncome: 0, expenses: 0, expBy: {}, newSpecies: [], records: [], achievements: [], startCash: s.cash, released: 0 };
 }
 function newState(look) {
   const seed = (Math.random() * 4294967296) >>> 0;
@@ -237,13 +237,16 @@ function newState(look) {
       manualCasts: 0, manualCatches: 0, autoCatches: 0, released: 0, lineBreaks: 0, escapes: 0, missed: 0, noBite: 0, cancels: 0,
       totalSales: 0, marketSales: 0, orderSales: 0, fishSoldMarket: 0, ordersDelivered: 0, buyers: {}, records: 0,
       daysCompleted: 0, trips: 0, fuelSpent: 0, baitUsed: 0, regionsVisited: {}, spotsVisited: {}, gearBought: 0, spent: 0,
-      biggestCm: 0, biggestId: null, power4: 0, power5: 0, autoAttempts: 0, autoFails: 0, prizes: 0, comps: 0, festSeasons: {}, snacks: 0, teaSold: 0
+      biggestCm: 0, biggestId: null, power4: 0, power5: 0, autoAttempts: 0, autoFails: 0, teaSales: 0, prizes: 0, comps: 0, festSeasons: {}, snacks: 0, teaSold: 0
     },
     today: null,
     home: { decor: { wall: null, shelf: null, table: null, window: null, board: null }, owned: [] },
     cosmetics: { boatColors: ['sea_green'] },
     tutorial: { step: 0, skipped: false },
     pendingCast: null, trophies: [], fest: {}, comp: null, buff: null, tea: { day: 0, n: 0 },
+    journal: { fav: {}, log: {} }, plan: { goals: [], keep: true }, mastery: {}, rivals: {}, rivalLog: {}, compHist: [],
+    records: [], recWall: [], recSeq: 0, gearSets: [{ name: 'Kıyı Avı' }, { name: 'Kayalık Avı' }, { name: 'Açık Deniz' }], fin: [],
+    aq: { owned: {}, tanks: {}, decor: ['sand'], seen: {} }, ui: { photoLabel: true },
     flags: {}
   };
   s.today = newToday(s);

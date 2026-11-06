@@ -19,6 +19,19 @@ const Fishing = {
   pop(text, color, life) { (this.pops = this.pops || []).push({ text, color: color || '#ffffff', t: 0, life: life || 1.2 }); if (this.pops.length > 4) this.pops.shift(); },
   biteWin() { return RC.reaction_window_sec * (SETTINGS.comfort ? 1.5 : 1) + Shop.buffVal('bite_window_bonus_sec', 0); },
   setTilt(d) { this.tilt = d; },
+  burst(x, y, c, n) { for (let i = 0; i < n; i++) { const a = Math.random() * Math.PI * 2, v = 30 + Math.random() * 60; this.fx.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 30, t: 0, life: 0.5 + Math.random() * 0.4, c }); } },
+  /* davranışa özgü ipuçları (tür adı açık edilmez) */
+  styleCue(st, kind) {
+    const fp = this.fishPos || { x: 0, y: 0 }; const surf = this.ctx.surf;
+    if (kind === 'dir') {
+      if (st === 'dart') { Sound.sfx('dart'); for (let i = 0; i < 8; i++) this.fx.push({ x: fp.x, y: fp.y, vx: (Math.random() - 0.5) * 160, vy: -20 - Math.random() * 30, t: 0, life: 0.35, c: '#e8f8ff' }); this.cue = { k: 'dart', t: 0.5 }; }
+      else if (st === 'zigzag') { Sound.sfx('zig'); this.cue = { k: 'zig', t: 0.8 }; }
+      else if (st === 'steady') this.cue = { k: 'heavy', t: 1.0 };
+    } else if (kind === 'surge') {
+      if (st === 'diver') { Sound.sfx('dive'); this.cue = { k: 'dive', t: 1.2 }; for (let i = 0; i < 10; i++) this.fx.push({ x: fp.x + (Math.random() - 0.5) * 10, y: fp.y, vx: 0, vy: -60 - Math.random() * 40, t: 0, life: 0.6, c: '#c8eeff' }); }
+      else if (st === 'steady') { Sound.sfx('surge'); this.cue = { k: 'heavy', t: 1.2 }; }
+    }
+  },
   canCast(atRelease) {
     if (!atRelease && this.phase !== 'READY') return { ok: false };
     const rod = rodOf();
@@ -80,9 +93,10 @@ const Fishing = {
     this.style = fightStyle(f.id); this.stam = perfect ? 80 : 100; this.tired = 0; this.combo = 0; this.comboT = 0; this.tilt = this.tilt || 0;
     this.dir = 0; this.dirT = 1.2 + Math.random(); this.jumpS = { st: 'none', t: 0, next: 2.2 + Math.random() * 2, held: false };
     this.fishPos = { x: this.bob.tx, y: this.ctx.surf + 16, vx: 0 }; this.pops = [];
-    if (perfect) { this.pop('MÜKEMMEL TASMA!', '#ffe070', 1.4); S.stats.perfectHooks = (S.stats.perfectHooks || 0) + 1; }
+    if (perfect) { this.burst(this.bob.tx, this.ctx.surf - 4, '#ffe070', 22); Sound.sfx('perfect');
+      this.pop('MÜKEMMEL TASMA!', '#ffe070', 1.4); S.stats.perfectHooks = (S.stats.perfectHooks || 0) + 1; }
     if (f.power <= 1) { this.pop('HIZLI SAR: ART ARDA DOKUN!', '#c8ffb0', 1.6); this.phase = 'QUICK_PULL'; return; }
-    this.pop(upTR(f.name_tr) + ' · ' + upTR(STYLE_TR[this.style]), '#e8f4ff', 1.8);
+    this.pop('BALIK: ' + upTR(STYLE_TR[this.style]), '#e8f4ff', 1.8);
     const rod = rodOf(), line = LINES.find(l => l.id === S.gear.line), reel = REELS.find(l => l.id === S.gear.reel), hook = HOOKS.find(l => l.id === S.gear.hook);
     const sz = S.pendingCast.size; const weak = f.power === rod.power + 1; const rid = SPOTS[S.pendingCast.spotId].region_id;
     const wx = S.world.weather[rid]; const ev = World.event(); const hull = this.ctx.mode === 'boat' && S.boats.active ? Boats.stats(S.boats.active).hull : 0;
@@ -146,22 +160,24 @@ const Fishing = {
         if (P.power >= 3 && st !== 'jumper' && !tired) {
           sg.t += dt;
           if (sg.st === 'none') { sg.next -= dt; if (sg.next <= 0) { sg.st = 'warn'; sg.t = 0; Sound.sfx('warn'); } }
-          else if (sg.st === 'warn' && sg.t >= RC.surge_preview_sec) { sg.st = 'pull'; sg.t = 0; sg.dur = (st === 'steady' ? 0.9 : 0.55) + 0.12 * (P.power - 3) + Math.random() * 0.3; Sound.sfx('surge'); if (navigator.vibrate) try { navigator.vibrate(80); } catch (e) { } }
+          else if (sg.st === 'warn' && sg.t >= RC.surge_preview_sec) { this.styleCue(st, 'surge'); sg.st = 'pull'; sg.t = 0; sg.dur = (st === 'steady' ? 0.9 : 0.55) + 0.12 * (P.power - 3) + Math.random() * 0.3; Sound.sfx('surge'); if (navigator.vibrate) try { navigator.vibrate(80); } catch (e) { } }
           else if (sg.st === 'pull' && sg.t >= sg.dur) { sg.st = 'none'; sg.next = (st === 'steady' ? 4 : 2.3) + Math.random() * 2.6; sg.next /= Math.pow(P.power - 2, 0.35); }
         } else if (sg.st !== 'none' && (tired || st === 'jumper')) sg.st = 'none';
         /* zıplama */
         if (st === 'jumper' && !tired) {
           js.t += dt;
-          if (js.st === 'none') { js.next -= dt; if (js.next <= 0) { js.st = 'warn'; js.t = 0; Sound.sfx('warn'); } }
+          if (js.st === 'none') { js.next -= dt; if (js.next <= 0) { js.st = 'warn'; js.t = 0; Sound.sfx('jumpwarn'); } }
+          if (js.st === 'warn' && Math.random() < dt * 30) this.rip.push({ x: this.fishPos.x, t: 0.4, s: 0.6 });
           else if (js.st === 'warn' && js.t >= 0.5) { js.st = 'air'; js.t = 0; js.held = false; this.splash(this.fishPos.x, this.ctx.surf, 14); Sound.sfx('splash'); }
-          else if (js.st === 'air') { if (this.holding) { js.held = true; this.tension += 34 * dt; } if (js.t >= 0.9) { js.st = 'none'; js.next = 3 + Math.random() * 3; this.splash(this.fishPos.x, this.ctx.surf, 18); if (!js.held) { this.progress += 9; this.stam -= 15; this.pop('USTA HAMLE! +İLERLEME', '#ffe070', 1.3); Sound.sfx('coin'); } else this.pop('ZIPLARKEN GEVŞETMELİYDİN', '#ffb0a0', 1.3); } }
+          else if (js.st === 'air') { if (this.holding) { js.held = true; this.tension += 34 * dt; } if (js.t >= 0.9) { js.st = 'none'; js.next = 3 + Math.random() * 3; this.splash(this.fishPos.x, this.ctx.surf, 18); if (!js.held) { this.progress += 9; this.stam -= 15; this.pop('USTA HAMLE! +İLERLEME', '#ffe070', 1.3); Sound.sfx('coin'); this.burst(this.fishPos.x, this.ctx.surf - 6, '#ffe070', 16); } else this.pop('ZIPLARKEN GEVŞETMELİYDİN', '#ffb0a0', 1.3); } }
         }
         /* yön mücadelesi */
         this.dirT -= dt;
+        if (this.dirT <= 0 && !tired) this.styleCue(st, 'dir');
         if (this.dirT <= 0) { const [a, b2] = { dart: [1.2, 2.2], zigzag: [0.75, 1.3], jumper: [2, 3.2], steady: [3.5, 5.5], diver: [2.4, 4] }[st] || [1.5, 2.5]; this.dirT = a + Math.random() * (b2 - a); this.dir = (st === 'steady' && Math.random() < 0.35) ? 0 : (Math.random() < 0.5 ? -1 : 1); }
         if (tired) this.dir = 0;
         let spd = 1, gm = 1;
-        if (this.dir) { if (this.tilt === -this.dir) { spd = 1.25; gm = 0.85; this.stam -= 4 * dt; } else if (this.tilt === this.dir) { spd = 0.7; gm = 1.15; } else spd = 0.85; }
+        if (this.dir) { if (this.tilt === -this.dir) { spd = 1.25; gm = 0.85; this.stam -= 4 * dt; this.goodT = (this.goodT || 0) + dt; if (this.goodT > 0.35) { this.goodT = 0; const tp = this.ctx.tip(); this.burst(tp[0], tp[1], '#8af08a', 4); Sound.sfx('tick'); } } else if (this.tilt === this.dir) { spd = 0.7; gm = 1.15; } else spd = 0.85; }
         if (tired) { spd *= 1.9; gm *= 0.55; }
         spd *= 1 + 0.08 * this.combo;
         if (sg.st === 'pull') { this.tension += (this.holding ? P.gain * 2.8 : 9) * dt; this.progress -= (st === 'diver' ? 9 : 6) * dt; if (Math.random() < dt * 10) this.splash(this.fishPos.x, this.ctx.surf, 3); }
@@ -181,7 +197,7 @@ const Fishing = {
         const tip = this.ctx.tip(); const k = this.progress / 100;
         const away = sg.st === 'pull' ? 14 : 0; const side = this.dir * 16;
         const airY = js.st === 'air' ? -Math.sin(js.t / 0.9 * Math.PI) * 34 - 22 : 0;
-        this.fishPos = { x: lerp(b.tx + 10, tip[0] + 22, k) + away + side + Math.sin(this.t * 7) * 3, y: this.ctx.surf + 22 + Math.sin(this.t * 5) * 4 - k * 8 + airY + (sg.st === 'pull' && st === 'diver' ? 10 : 0), vx: (sg.st === 'pull' || this.dir > 0) ? 1 : -1, air: js.st === 'air' };
+        this.fishPos = { x: lerp(b.tx + 10, tip[0] + 22, k) + away + side + Math.sin(this.t * 7) * 3, y: this.ctx.surf + 22 + Math.sin(this.t * 5) * 4 - k * 8 + airY + (sg.st === 'pull' && st === 'diver' ? 22 : 0) + (js.st === 'warn' ? -10 : 0), vx: (sg.st === 'pull' || this.dir > 0) ? 1 : -1, air: js.st === 'air' };
         if (this.overT >= P.breakT) { this.finish('LINE_BREAK', 'Misina gerildi ve koptu! Ekipmanın sağlam, balık kaçtı.'); Sound.sfx('snap'); }
         else if (this.underT >= P.slackT) { this.finish('FISH_ESCAPED', 'Misina çok gevşek kaldı, balık kancadan kurtuldu.'); Sound.sfx('escape'); }
         else if (this.progress >= 100) this.success();
@@ -194,6 +210,7 @@ const Fishing = {
       case 'OUTCOME': if (this.t > 1.0) { this.phase = 'READY'; this.bob = null; this.fishPos = null; } break;
     }
     if (this.pops) this.pops = this.pops.filter(p => (p.t += dt) < p.life);
+    if (this.cue) { this.cue.t -= dt; if (this.cue.t <= 0) this.cue = null; }
     if (this.phase === 'READY' && this.autoQ.length) { const a = this.autoQ.shift(); if (a) this.announceAuto(a); }
     if (this.phase === 'READY' && S.comp && S.comp.done && !UI.modal && !QA.silent) UI.showCompResult();
   },
@@ -210,7 +227,7 @@ const Fishing = {
   success() {
     const pc = S.pendingCast; const fid = pc.fish, size = pc.size; let res = null;
     Tx.run('catch', () => {
-      const rec = Catch.record(fid, size, false);
+      const rec = Catch.record(fid, size, false, { bait: pc.bait, spot: pc.spotId, rod: S.gear.rod });
       const where = Inv.place(Inv.manualOrder(), fid);
       res = { fid, size, rec, where };
       if (!where) S.pendingCatch = { fid, size, rec };
@@ -278,9 +295,15 @@ const Fishing = {
     if (this.fishPos && ['WAITING', 'BITE_WINDOW', 'QUICK_PULL', 'REELING'].includes(this.phase) && S.pendingCast && S.pendingCast.fish) {
       const sil = this.phase === 'WAITING' ? fishSil(S.pendingCast.fish) : fishSil(S.pendingCast.fish);
       const fp = this.fishPos; const flip = fp.vx > 0;
-      if (fp.air) { const sp = flip ? fishSprR(S.pendingCast.fish) : fishSprite(S.pendingCast.fish); g.drawImage(sp, Math.round(fp.x - cam - sp.width / 2), Math.round(fp.y - sp.height / 2)); }
+      if (fp.air) { const sp = flip ? fishSilR(S.pendingCast.fish) : fishSil(S.pendingCast.fish); /* tür yakalanana kadar gizli: havada yalnızca koyu silüet */ g.drawImage(sp, Math.round(fp.x - cam - sp.width / 2), Math.round(fp.y - sp.height / 2)); }
       else { g.globalAlpha = this.phase === 'WAITING' ? 0.45 : (this.tired > 0 ? 0.55 : 0.75); g.drawImage(flip ? fishSilR(S.pendingCast.fish) : sil, Math.round(fp.x - cam - (flip ? sil.width - 4 : 4)), Math.round(fp.y - sil.height / 2)); g.globalAlpha = 1; }
       if (this.phase === 'REELING' && this.jumpS && this.jumpS.st === 'warn') drawText(g, '!', Math.round(fp.x - cam), Math.round(surf - 14), (Math.floor(this.t * 10) % 2) ? '#ffe070' : '#ffffff', 2, '#1a1426');
+      if (this.phase === 'REELING' && this.cue) { const c = this.cue; const fx = Math.round(fp.x - cam), fy = Math.round(fp.y);
+        if (c.k === 'zig') { g.fillStyle = 'rgba(232,248,255,0.8)'; for (let i = 0; i < 6; i++) g.fillRect(fx + 8 + i * 4, fy + ((i % 2) ? -2 : 2), 2, 1); }
+        if (c.k === 'dart') { g.fillStyle = 'rgba(255,255,255,0.85)'; for (let i = 0; i < 3; i++) g.fillRect(fx - 14 - i * 6, fy - 2 + i * 2, 5, 1); }
+        if (c.k === 'dive') { drawText(g, 'DALIYOR', fx - 12, fy + 12, '#8ac8ff', 1, '#1a1426'); }
+        if (c.k === 'heavy') { drawText(g, 'AĞIR ÇEKİŞ', fx - 18, fy + 12, '#ffc880', 1, '#1a1426'); } }
+      if (this.phase === 'REELING' && this.jumpS && this.jumpS.st === 'warn') { g.fillStyle = 'rgba(232,248,255,0.8)'; for (let i = 0; i < 5; i++) g.fillRect(Math.round(fp.x - cam - 6 + i * 3), Math.round(surf - 1 - (i % 2)), 2, 1); }
       if (this.phase === 'REELING' && this.tired > 0) for (let i = 0; i < 3; i++) { g.fillStyle = '#c8eeff'; g.fillRect(Math.round(fp.x - cam + 6 + i * 3), Math.round(fp.y - 8 - ((this.t * 20 + i * 5) % 10)), 1, 1); }
       if (this.phase === 'QUICK_PULL' || this.phase === 'REELING') pxLine(g, tip[0] - cam, tip[1], fp.x - cam, fp.y, this.tension > 75 ? '#ffd8c8' : lineC);
     }

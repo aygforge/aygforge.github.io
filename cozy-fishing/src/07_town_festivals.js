@@ -60,7 +60,7 @@ const Comp = {
   finishIn() {
     const c = S.comp; const f = FEST[c.fest]; const st = this.standings(); const place = st.findIndex(r => r.player) + 1;
     const prize = place <= 3 ? this.prizes(c.year)[place - 1] : 0;
-    if (prize) { S.cash += prize; S.stats.prizes += prize; S.today.marketIncome += 0; }
+    if (prize) { S.cash += prize; S.stats.prizes += prize; S.today.prizeIncome = (S.today.prizeIncome || 0) + prize; }
     if (place <= 3) S.trophies.push({ fest: f.id, year: c.year, place, score: st[place - 1].score, day: S.day });
     S.fest[festKey(f, c.day)] = { entered: true, place, score: st.find(r => r.player).score };
     c.done = true; c.result = { fest: f.id, place, prize, standings: st };
@@ -107,7 +107,7 @@ const Tea = {
       const fid = this.special(); const k = Math.min(n | 0, this.left(), Inv.count(src, fid)); if (k <= 0) return { ok: false, msg: 'Satılacak balık yok ya da günlük alım doldu.' };
       if (S.tea.day !== S.day) S.tea = { day: S.day, n: 0 };
       const got = Inv.remove(src, fid, k); const inc = got * this.price(fid); S.tea.n += got; S.cash += inc;
-      S.stats.totalSales += inc; S.stats.marketSales += inc; S.stats.fishSoldMarket += got; S.stats.teaSold += got; S.today.marketIncome += inc;
+      S.stats.totalSales += inc; S.stats.teaSales = (S.stats.teaSales || 0) + inc; S.stats.fishSoldMarket += got; S.stats.teaSold += got; S.today.teaIncome = (S.today.teaIncome || 0) + inc;
       Sound.sfx('coin'); return { ok: true, n: got, income: inc };
     });
   }

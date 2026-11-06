@@ -275,6 +275,7 @@ const TOWN_DOORS = [
   { id: 'square', x: 1715, name: 'Şenlik Meydanı · Muhtarlık', icon: 'square', npc: 'hasan' },
   { id: 'teahouse', x: 1955, name: 'Halil Usta\'nın Çay Bahçesi', icon: 'teahouse', npc: 'halil' },
   { id: 'board', x: 2292, name: 'Sipariş Panosu · Bahar Lokantası', icon: 'order', npc: 'bahar' },
+  { id: 'plan', x: 2450, name: 'Sefer Planı Panosu', icon: 'plan' },
   { id: 'harbor', x: 2520, name: 'Liman (Teknen)', icon: 'anchor' },
   { id: 'ali', x: 2600, name: 'Ali Dayı', icon: 'help', npc: 'ali' },
   { id: 'efe', x: 2690, name: 'Efe', icon: 'help', npc: 'efe' },
@@ -497,12 +498,14 @@ const HOME_SPOTS = {
   door: { x: 240, w: 40, name: 'Kasabaya Çık', icon: 'exit' }, trophy: { x: 330, w: 50, name: 'Kupa Dolabı', icon: 'cup_1' }, desk: { x: 420, w: 60, name: 'İstatistikler & Ansiklopedi', icon: 'book' }
 };
 const DECOR_POS = { wall: [300, 120], shelf: [350, 170], table: [440, 238], window: [460, 150], board: [170, 120] };
+const HOME_W = 960;
 function genHome(season) {
-  const pb = new PB(LW, LH);
-  for (let y = 40; y < 280; y++) for (let x = 0; x < LW; x++) pb.set(x, y, (x % 32 < 1) ? '#c8a878' : ((y + Math.floor(x / 32) * 7) % 40 === 0 ? '#d8b888' : '#e8d0a0'));
-  for (let x = 0; x < LW; x++) { pb.set(x, 40, '#8a6a42'); for (let y = 30; y < 40; y++) pb.set(x, y, '#7a5228'); for (let y = 0; y < 30; y++) pb.set(x, y, y % 10 === 9 ? '#5a3a1e' : '#6a4628'); }
-  for (let y = 280; y < LH; y++) for (let x = 0; x < LW; x++) pb.set(x, y, (y - 280) % 10 === 0 ? '#6a4628' : (((x + Math.floor((y - 280) / 10) * 37) % 60) === 0 ? '#7a5228' : '#a8743e'));
-  pb.rect(0, 272, LW, 8, '#8a5a2a'); pb.rect(0, 272, LW, 2, '#c8925a');
+  const pb = new PB(HOME_W, LH);
+  for (let y = 40; y < 280; y++) for (let x = 0; x < HOME_W; x++) pb.set(x, y, (x % 32 < 1) ? '#c8a878' : ((y + Math.floor(x / 32) * 7) % 40 === 0 ? '#d8b888' : '#e8d0a0'));
+  for (let x = 0; x < HOME_W; x++) { pb.set(x, 40, '#8a6a42'); for (let y = 30; y < 40; y++) pb.set(x, y, '#7a5228'); for (let y = 0; y < 30; y++) pb.set(x, y, y % 10 === 9 ? '#5a3a1e' : '#6a4628'); }
+  for (let y = 280; y < LH; y++) for (let x = 0; x < HOME_W; x++) pb.set(x, y, (y - 280) % 10 === 0 ? '#6a4628' : (((x + Math.floor((y - 280) / 10) * 37) % 60) === 0 ? '#7a5228' : '#a8743e'));
+  pb.rect(0, 272, HOME_W, 8, '#8a5a2a'); pb.rect(0, 272, HOME_W, 2, '#c8925a');
+  homeCorner(pb, season);
   // pencere
   pb.rect(440, 90, 80, 64, '#8a5a2a'); pb.rect(444, 94, 72, 56, season === 'winter' ? '#c8dcea' : '#9ad0f0'); pb.rect(478, 94, 4, 56, '#8a5a2a'); pb.rect(444, 120, 72, 3, '#8a5a2a');
   pb.ellipse(500, 108, 8, 5, '#ffffff'); pb.ellipse(460, 136, 12, 4, season === 'winter' ? '#f4f8fb' : '#6ab05a'); pb.rect(436, 154, 88, 6, '#7a4a28');
