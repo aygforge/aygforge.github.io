@@ -121,13 +121,34 @@ const DECOR_ICON = {
   mercan_parca: p => { p.ellipse(8, 9, 6, 6, '#5fb8a8'); p.ellipse(6, 7, 2.5, 2.5, '#a8f0e0'); p.rect(4, 3, 8, 1, '#8a6a3a'); p.line(2, 6, 4, 3, '#8a6a3a'); p.line(14, 6, 12, 3, '#8a6a3a'); },
   rekor_pano: p => { p.rect(1, 1, 14, 14, '#9a6a36'); p.rect(2, 2, 12, 12, '#d8c8a0'); p.poly([[3, 8], [7, 6], [11, 6], [13, 8], [11, 10], [7, 10]], '#4f86c6'); p.rect(4, 12, 8, 1, '#c4473f'); drawText(p, '1', 7, 2, '#c4473f'); },
   harita_pano: p => { p.rect(1, 1, 14, 14, '#9a6a36'); p.rect(2, 2, 12, 12, '#e8d8a8'); p.ellipse(6, 7, 3, 2, '#6a9a5a'); p.ellipse(11, 10, 2, 2, '#6a9a5a'); for (const [x, y] of [[5, 5], [9, 9], [12, 4], [4, 11]]) p.set(x, y, '#c4473f'); },
-  kartpostal: p => { p.rect(1, 2, 9, 7, '#f6eed8'); p.rect(2, 3, 7, 3, '#7ab0d8'); p.rect(6, 7, 9, 7, '#f2e2c0'); p.rect(7, 8, 4, 3, '#f2a030'); p.rect(12, 8, 2, 2, '#c4473f'); }
+  kartpostal: p => { p.rect(1, 2, 9, 7, '#f6eed8'); p.rect(2, 3, 7, 3, '#7ab0d8'); p.rect(6, 7, 9, 7, '#f2e2c0'); p.rect(7, 8, 4, 3, '#f2a030'); p.rect(12, 8, 2, 2, '#c4473f'); },
+  ahsap_saat: p => { p.rect(5, 1, 6, 14, '#8a5a2a'); p.ellipse(8, 5, 2.6, 2.6, '#f6eed8'); p.line(8, 5, 8, 3, '#2a2226'); p.line(8, 5, 9, 6, '#2a2226'); p.rect(7, 9, 2, 4, '#e8c050'); p.ellipse(8, 13, 1.5, 1.5, '#e8c050'); },
+  gemi_maketi: p => { p.poly([[2, 11], [14, 11], [12, 14], [4, 14]], '#8a5a2a'); p.rect(8, 2, 1, 9, '#5a3a1e'); p.poly([[9, 2], [14, 9], [9, 9]], '#f4f0e4'); p.poly([[7, 3], [3, 9], [7, 9]], '#e8e0d0'); p.rect(8, 1, 3, 1, '#c4473f'); p.rect(1, 14, 14, 1, '#5a3a1e'); },
+  gaz_lambasi: p => { p.rect(5, 12, 6, 3, '#c8922a'); p.ellipse(8, 8, 3.5, 4, '#f6e27a'); p.ellipse(8, 8, 1.5, 2, '#fff8c0'); p.rect(6, 3, 4, 2, '#8a94a0'); p.rect(7, 1, 2, 2, '#5a6470'); },
+  ruzgar_cani: p => { p.rect(3, 1, 10, 2, '#8a5a2a'); for (let i = 0; i < 4; i++) { p.vline(4 + i * 2.6, 3, 6 + i * 2, '#a8b0b8'); p.rect(3 + i * 2.6, 6 + i * 2, 3, 3, ['#7ab0d8', '#f2d030', '#e86a8a', '#5fc46a'][i]); } },
+  balik_posteri: p => { p.rect(1, 1, 14, 14, '#f6eed8'); p.rect(1, 1, 14, 1, '#c4473f'); for (let i = 0; i < 3; i++) { p.poly([[3, 4 + i * 4], [7, 3 + i * 4], [10, 4 + i * 4], [12, 3 + i * 4], [12, 6 + i * 4], [10, 5 + i * 4], [7, 6 + i * 4]], ['#4f86c6', '#d6707a', '#e6c64a'][i]); } },
+  sampiyon_flama: p => { p.rect(2, 1, 12, 1, '#5a3a1e'); p.poly([[3, 2], [13, 2], [13, 9], [8, 14], [3, 9]], '#c4473f'); p.poly([[5, 4], [11, 4], [11, 8], [8, 11], [5, 8]], '#e8b830'); p.rect(7, 5, 2, 3, '#fff0a0'); }
 };
 for (const k in DECOR_ICON) ic('decor_' + k, DECOR_ICON[k]);
 ic('swatch', p => { });
 BOAT_COLORS.forEach(bc => ic('bc_' + bc.id, p => { p.poly([[1, 6], [15, 5], [13, 12], [3, 12]], bc.c[0]); p.rect(2, 5, 13, 1, '#7a5228'); p.rect(3, 11, 10, 1, bc.c[1]); p.rect(3, 7, 10, 1, bc.c[2]); }));
 EVENTS.forEach(e => { if (!ICONS['ev_' + e.id]) ic('ev_' + e.id, ICONS.event.fn); });
 
+
+/* kupalar (yarışma) */
+const CUP_COL = { 1: ['#f2c230', '#fff0a0', '#c8922a'], 2: ['#c8d0d8', '#ffffff', '#8a94a0'], 3: ['#d8864a', '#f8c098', '#a85a2a'] };
+[1, 2, 3].forEach(k => ic('cup_' + k, p => { const [a, b, c] = CUP_COL[k]; p.poly([[3, 2], [13, 2], [12, 7], [9, 9], [7, 9], [4, 7]], a); p.rect(5, 3, 2, 4, b); p.rect(1, 3, 2, 3, c); p.rect(13, 3, 2, 3, c); p.rect(7, 9, 2, 3, c); p.rect(5, 12, 6, 1, c); p.rect(4, 13, 8, 2, '#5a3a1e'); drawText(p, String(k), 7, 4, dark(a, .5)); }));
+/* yeni dükkânlar */
+ic('bakery', p => { p.ellipse(8, 9, 6.5, 4.5, '#d8a050'); p.ellipse(8, 9, 2.6, 1.8, null); for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) { const dx = (x - 8) / 2.4, dy = (y - 9) / 1.6; if (dx * dx + dy * dy < 1) p.d[y * 16 + x] = 0; } for (let i = 0; i < 9; i++) { const a = i / 9 * Math.PI * 2; p.set(8 + Math.round(Math.cos(a) * 5), 9 + Math.round(Math.sin(a) * 3.4), '#f6eed8'); } });
+ic('boutique', p => { p.rect(7, 1, 2, 2, '#8a94a0'); p.line(8, 3, 2, 8, '#8a94a0'); p.line(8, 3, 14, 8, '#8a94a0'); p.rect(2, 8, 12, 1, '#8a94a0'); p.poly([[4, 9], [12, 9], [13, 15], [3, 15]], '#c85a9a'); p.rect(4, 10, 8, 1, '#e88aba'); });
+ic('homegoods', p => { p.rect(3, 7, 10, 2, '#a8743e'); p.rect(3, 9, 2, 6, '#7a5228'); p.rect(11, 9, 2, 6, '#7a5228'); p.rect(3, 2, 2, 6, '#7a5228'); p.rect(3, 2, 7, 2, '#a8743e'); });
+ic('square', p => { p.line(1, 3, 15, 3, '#5a3a1e'); ['#e8483a', '#f2c230', '#4f86c6', '#5fc46a', '#c87af0'].forEach((c, i) => p.poly([[2 + i * 3, 3], [4 + i * 3, 3], [3 + i * 3, 6]], c)); p.rect(4, 9, 8, 6, '#c8b89a'); p.rect(5, 8, 6, 1, '#a89878'); p.rect(7, 6, 2, 3, '#7ab0d8'); p.set(8, 5, '#c8e8ff'); });
+ic('teahouse', p => { p.poly([[5, 5], [11, 5], [10, 13], [6, 13]], '#f4f0e4'); p.poly([[6, 7], [10, 7], [9.6, 12], [6.4, 12]], '#c8402a'); p.rect(4, 13, 8, 2, '#c8922a'); p.rect(6, 4, 4, 1, '#e8e0d0'); p.set(7, 2, '#d8d8e0'); p.set(9, 1, '#d8d8e0'); p.set(8, 3, '#d8d8e0'); });
+ic('snack_simit', p => { ICONS.bakery.fn(p); });
+ic('snack_pogaca', p => { p.ellipse(8, 9, 6, 4.5, '#e8b860', (x, y) => y < 7 ? '#f6d890' : '#e8b860'); p.set(6, 7, '#5a3a1e'); p.set(9, 6, '#5a3a1e'); p.set(11, 8, '#5a3a1e'); });
+ic('snack_borek', p => { p.poly([[2, 12], [8, 3], [14, 12]], '#e8b860'); p.line(5, 9, 11, 9, '#c8902a'); p.line(6, 7, 10, 7, '#c8902a'); p.rect(4, 10, 8, 1, '#4a8a3a'); });
+ic('festival', p => { ICONS.square.fn(p); });
+ic('tilt', p => { p.line(2, 14, 13, 2, '#a8743e'); p.poly([[10, 1], [15, 1], [15, 6]], '#f2c230'); });
 /* ---------- UI kenarlık (9-dilim) görselleri ---------- */
 function frameSkin(kind) {
   const pb = new PB(24, 24);

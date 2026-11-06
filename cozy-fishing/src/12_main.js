@@ -34,7 +34,7 @@ function frame(ts) {
     if (Game.fade > 0) { G.globalAlpha = Game.fade; G.fillStyle = '#100c18'; G.fillRect(0, 0, LW, LH); G.globalAlpha = 1; Game.fade = Math.max(0, Game.fade - dt * 3.5); }
     sctx.imageSmoothingEnabled = false; sctx.drawImage(BUF, 0, 0, cvs.width, cvs.height);
   } catch (e) { console.error(e); if (!Game._errShown) { Game._errShown = true; UI.toastNow('Bir çizim hatası oluştu: ' + e.message, 'warn'); } }
-  UI.pump();
+  UI.pump(); UI.tiltHint();
   if (Fishing.phase !== lastPhase) { lastPhase = Fishing.phase; UI.fishBarUpdate(); }
   requestAnimationFrame(frame);
 }
@@ -71,7 +71,7 @@ const Input = {
       if (e.code === 'Escape') { if (UI.modal) { if (Fishing.phase === 'CATCH_RESULT') UI.A.catchClose.call(UI); else if (Fishing.phase !== 'STORAGE_DECISION') UI.closeModal(); } else if (UI.panel) UI.closePanel(); else if (Fishing.phase === 'CHARGING') Fishing.cancel(); return; }
       if (UI.modalOpen()) return;
       if (e.code === 'Space') { e.preventDefault(); if (!e.repeat && Fishing.ctx) { Fishing.press(); UI.fishBarUpdate(); } return; }
-      if (keyMove[e.code] != null && !e.repeat) { const sc = Game.scene; if (Game.sceneName === 'PierFishing') sc.switchSpot(keyMove[e.code]); else if (sc && sc.input) sc.input(keyMove[e.code]); return; }
+      if (keyMove[e.code] != null && !e.repeat) { const sc = Game.scene; if (sc && sc.input) sc.input(keyMove[e.code]); return; }
       if ((e.code === 'KeyE' || e.code === 'Enter') && !e.repeat) { if (Game.sceneName === 'Town') Game.scene.interact(); else if (Game.sceneName === 'Home' && Game.scene.near) Game.scene.act(Game.scene.near); }
       if (e.code === 'KeyI' && S && Game.sceneName !== 'MainMenu') UI.openPanel('Inventory');
       if (e.code === 'Digit1' && Game.sceneName === 'BoatFishing') Game.scene.goSpot(0);
@@ -141,7 +141,7 @@ const QA = {
   panelHtml() {
     const B = (k, n, extra) => `<button class="btn sm" data-a="dbg" data-k="${k}" ${extra || ''}>${n}</button>`;
     let h = `<p class="dim small">Bu panel normal oyuncuya görünmez. Hile düğmeleri kayda "debug kullanıldı" işareti koyar; ilerleme için gerekmez.</p>`;
-    if (S && Game.sceneName !== 'MainMenu') h += `<h4>Oyun denetimleri</h4><div class="btns left">${B('cash1k', '+1.000 para')}${B('cash10k', '+10.000')}${B('cash100k', '+100.000')}${B('energy', 'Enerji 100')}${B('sleep', 'Günü bitir (+1)')}${B('season', '+28 gün')}${B('boats', 'Tüm tekneler + yükseltmeler')}${B('rod5', 'Tüm ekipman')}${B('bait', '+50 her yem')}${B('autos', 'Tüm otomasyon')}${B('fish42', '42 türü keşfet')}${B('wx', 'Havayı değiştir')}${B('event', 'Olay değiştir')}</div>
+    if (S && Game.sceneName !== 'MainMenu') h += `<h4>Oyun denetimleri</h4><div class="btns left">${B('cash1k', '+1.000 para')}${B('cash10k', '+10.000')}${B('cash100k', '+100.000')}${B('energy', 'Enerji 100')}${B('sleep', 'Günü bitir (+1)')}${B('season', '+28 gün')}${B('boats', 'Tüm tekneler + yükseltmeler')}${B('rod5', 'Tüm ekipman')}${B('bait', '+50 her yem')}${B('autos', 'Tüm otomasyon')}${B('fish42', 'Tüm türleri keşfet')}${B('wx', 'Havayı değiştir')}${B('event', 'Olay değiştir')}${B('fest', 'Şenlik gününe git')}</div>
       <h4>Bölgeye ışınlan</h4><div class="btns left">${REGIONS.map(r => B('tp', r.name, `data-r="${r.id}"`)).join('')}</div>
       <h4>Tür olasılıkları (mevcut nokta: ${esc(S.spotId)})</h4>${this.probTable()}`;
     h += `<h4>Kabul testleri</h4><div class="btns left">${B('tests', 'Tüm testleri çalıştır')}</div>`;
@@ -166,6 +166,7 @@ const QA = {
       case 'autos': for (const a of AUTOS) { if (a.type === 'device') { if (!S.auto.devices[a.id]) S.auto.devices[a.id] = { boat: null, counter: 0 }; } else S.auto.globals[a.id] = true; } if (S.boats.active) for (const dv of Auto.DEV) if (!S.auto.devices[dv].boat && Auto.slotsFree(S.boats.active) > 0) S.auto.devices[dv].boat = S.boats.active; break;
       case 'fish42': for (const f of FISH_LIST) { if (!S.ency[f.id] || !S.ency[f.id].caught) S.ency[f.id] = { caught: 1, maxLen: f.size_game_range.length_cm[0], maxKg: f.size_game_range.weight_kg[0], firstDay: S.day }; } break;
       case 'wx': { const ty = CFG.weather.types; for (const r of REGIONS) S.world.weather[r.id] = ty[(ty.indexOf(S.world.weather[r.id]) + 1) % ty.length]; Sound.setScene(Sound.mode, S.world.weather.sakin_liman); break; }
+      case 'fest': { const nf = World.nextFestival(); for (let i = 0; i < nf.inDays; i++) { S.stats.daysCompleted++; S.day++; World.startDay(); } break; }
       case 'event': { const ids = [null].concat(EVENTS.map(e => e.id)); S.world.eventId = ids[(ids.indexOf(S.world.eventId) + 1) % ids.length]; break; }
       case 'tp': { const rid = d.r; if (rid === 'sakin_liman') { UI.closePanel(true); go('PierFishing', { spot: 1 }); return; } if (!S.boats.active) { S.boats.owned.push('offshore'); S.boats.byId.offshore = { ups: {}, storage: [], color: 'sea_green', name: '' }; S.boats.active = 'offshore'; } S.world.unlocked[rid] = true; S.regionId = rid; S.spotId = REGION[rid].spot_ids[0]; UI.closePanel(true); go('BoatFishing', { rid }); return; }
     }
@@ -185,7 +186,7 @@ const QA = {
       T('2b. Profesyonel olta: 20 atış', () => { fresh(); S.gear.owned.rod.push('professional'); S.gear.rod = 'professional'; let n = 0; while (castOnce() && n < 30) n++; return { ok: n === 20 && S.energy === 0, info: n + ' atış' }; });
       T('3a. Atış iptali ücretsiz ve otomasyon sayacını ilerletmez', () => { fresh(); Fishing.attach(ctx); Fishing.press(); Fishing.t = 0.5; Fishing.cancel(); return S.energy === 100 && S.stats.manualCasts === 0; });
       T('3b. Başarısız geçerli atış enerji+yem harcar, balık eklemez', () => { fresh(); S.baitStock.worm = 10; S.gear.bait = 'worm'; castOnce(); return { ok: S.energy === 92 && S.baitStock.worm === 9 && Inv.total('bag') === 0, info: 'enerji ' + S.energy + ' yem ' + S.baitStock.worm }; });
-      T('4a. FishDB: 42 tür, 7 bölge, 21 nokta; her nokta toplamı 100', () => { const bad = SPOT_LIST.filter(s => sum(Object.values(s.weights)) !== 100); return { ok: FISH_LIST.length === 42 && REGIONS.length === 7 && SPOT_LIST.length === 21 && !bad.length && SPOT_LIST.every(s => Object.keys(s.weights).every(f => FISH[f])), info: bad.map(b => b.id).join(',') }; });
+      T('4a. FishDB v1.2: 70 tür (bölge başına 10), 7 bölge, 21 nokta; her nokta toplamı 100', () => { const bad = SPOT_LIST.filter(s => sum(Object.values(s.weights)) !== 100); return { ok: FISH_LIST.length === 70 && REGIONS.every(r => r.fish_ids.length === 10 && r.fish_ids.every(f => FISH[f])) && REGIONS.length === 7 && SPOT_LIST.length === 21 && !bad.length && SPOT_LIST.every(s => Object.keys(s.weights).every(f => FISH[f])), info: bad.map(b => b.id).join(',') }; });
       T('4b. Tüm çarpanlardan sonra olasılıklar 1\'e normalize', () => { fresh(); let worst = 0; for (const sp of SPOT_LIST) for (const b of BAITS) for (const band of ['near', 'mid', 'far']) for (const wx of CFG.weather.types) { S.world.weather[sp.region_id] = wx; const w = Selector.weights(sp.id, { rodPower: 5, bait: b.id, band }); worst = Math.max(worst, Math.abs(sum(w.list.map(x => x.p)) - 1)); } return { ok: worst < 1e-9, info: 'max sapma ' + worst }; });
       T('4c. Olta gücü filtresi: güç ≤ olta+1; boşsa atış engellenir (enerji harcanmaz)', () => { fresh(); const w = Selector.weights('adalar_derin', { rodPower: 1 }); const ok1 = w.list.every(x => FISH[x.id].power <= 2) && w.list.length > 0; const w2 = Selector.weights('derin_cukur', { rodPower: 1 }); const c2 = Object.assign({}, ctx, { spotId: () => 'derin_cukur' }); Fishing.attach(c2); Fishing.press(); return { ok: ok1 && w2.list.length === 0 && Fishing.phase === 'READY' && S.energy === 100, info: 'liste ' + w.list.length }; });
       T('4d. Mevsim hiçbir türü sıfırlamaz', () => { fresh(); for (let d = 1; d <= 112; d += 28) { S.day = d; for (const sp of SPOT_LIST) { const w = Selector.weights(sp.id, { rodPower: 5, bait: 'basic' }); if (w.list.length !== Object.keys(sp.weights).length || w.list.some(x => !(x.p > 0))) return false; } } return true; });
@@ -193,7 +194,7 @@ const QA = {
       T('5b. Mücadele: hiç çekmemek balığı kaçırır', () => { fresh(); return this.simFight('levrek', () => false) === 'FISH_ESCAPED'; });
       T('5c. Mücadele: gerilimi 30–75 aralığında tutmak başarı getirir + ansiklopedi', () => { fresh(); S.gear.owned.rod.push('light'); S.gear.rod = 'light'; const r = this.simFight('levrek', () => Fishing.tension < 60); return { ok: r === 'CATCH_RESULT' && S.ency.levrek && S.ency.levrek.caught === 1 && Inv.count(['bag'], 'levrek') === 1, info: r }; });
       T('5d. Rekor: daha büyük boy kişisel rekoru günceller', () => { fresh(); Catch.record('kefal', { cm: 30, kg: 1, t: 0.2 }, false); const r = Catch.record('kefal', { cm: 40, kg: 1.4, t: 0.4 }, false); return r.isRecord && S.stats.records === 1 && S.ency.kefal.maxLen === 40; });
-      T('5e. 42 türün sprite\'ı birbirinden farklı', () => { const set = new Set(FISH_LIST.map(f => fishSprite(f.id).toDataURL())); return { ok: set.size === 42, info: set.size + ' benzersiz' }; });
+      T('5e. Tüm türlerin sprite\'ı birbirinden farklı', () => { const set = new Set(FISH_LIST.map(f => fishSprite(f.id).toDataURL())); return { ok: set.size === FISH_LIST.length, info: set.size + ' benzersiz' }; });
       T('5f. Boy satış fiyatını değiştirmez', () => { fresh(); Inv.add('bag', 'kefal', 2); const r = Market.sell('kefal', 2, ['bag']); return r.income === 2 * FISH.kefal.base_price; });
       T('6a. 11 aynı balık = 10+1 yığın', () => { fresh(); Inv.add('bag', 'sardalya', 11); return S.bag.length === 2 && S.bag[0].q === 10 && S.bag[1].q === 1; });
       T('6b. Kapasite asla aşılmaz; dolu depoda yerleştirme null', () => { fresh(); const n = Inv.add('bag', 'istavrit', 999); const p = Inv.place(['bag'], 'kefal'); return n === 60 && S.bag.length === 6 && p === null && !Inv.validate().length; });
@@ -235,8 +236,9 @@ const QA = {
         return { ok: c1 === 6 && S.auto.dailyCaught === 6 && S.auto.total === 6 && pier, info: c1 + '/' + S.auto.dailyCaught };
       });
       T('11b. Güç 5 asla otomatik; güç 4 yalnızca Açık Deniz + Derin Deniz Dişlisi', () => {
-        fresh(); S.auto.globals.auto_reel = true; const cab = Selector.weights('derin_cukur', { auto: true, maxPower: Auto.maxPower('cabin') }).list.length; S.auto.globals.deep_sea_gear = true;
-        const cab2 = Auto.maxPower('cabin'); const off = Selector.weights('derin_cukur', { auto: true, maxPower: Auto.maxPower('offshore') }).list; return { ok: cab === 0 && cab2 === 3 && off.length === 3 && off.every(x => FISH[x.id].power === 4), info: off.map(x => x.id).join(',') };
+        fresh(); S.auto.globals.auto_reel = true; const cab = Selector.weights('derin_cukur', { auto: true, maxPower: Auto.maxPower('cabin') }).list; S.auto.globals.deep_sea_gear = true;
+        const cab2 = Auto.maxPower('cabin'); const off = Selector.weights('derin_cukur', { auto: true, maxPower: Auto.maxPower('offshore') }).list; const all5 = FISH_LIST.filter(f => f.power === 5).every(f => !SPOT_LIST.some(sp => Selector.weights(sp.id, { auto: true, maxPower: 9 }).list.some(x => x.id === f.id)));
+        return { ok: cab.every(x => FISH[x.id].power <= 3) && cab2 === 3 && off.some(x => FISH[x.id].power === 4) && off.every(x => FISH[x.id].power <= 4) && all5, info: off.map(x => x.id).join(',') };
       });
       T('11c. Ücretsiz temel yem otomatikte kullanılmaz; depo doluysa yem harcanmaz', () => {
         fresh(); S.cash = 1e6; Boats.buy('coastal_skiff'); Auto.buy('auto1'); S.gear.bait = 'basic'; for (let i = 0; i < 8; i++) Auto.onCastComplete('liman_iskele', 'boat'); const noBait = S.auto.attempts === 0 && S.auto.devices.auto1.paused === 'bait';
@@ -248,15 +250,16 @@ const QA = {
         let ev = 0; for (let d = 200; d < 700; d++) { if (World.rollEvent(d)) ev++; } return { ok: a && b && c && ev > 150 && ev < 250, info: 'olay oranı ' + (ev / 500).toFixed(2) };
       });
       T('12b. Hava deterministik: aynı gün tekrar hesap aynı', () => { fresh(); const w1 = World.weatherFor('yesil_koy', 5), w2 = World.weatherFor('yesil_koy', 5); return w1 === w2; });
-      T('13a. 36 başarımın her biri koşul izler ve açılabilir', () => {
+      T('13a. Tüm başarımlar (36 + 4 şenlik) koşul izler ve açılabilir', () => {
         fresh(); const miss = ACHS.filter(a => !ACH_DEF[a.id]); if (miss.length) return { ok: false, info: miss.map(a => a.id).join() };
         Object.assign(S.stats, { manualCatches: 1000, autoCatches: 0, fishSoldMarket: 1, ordersDelivered: 500, daysCompleted: 100, gearBought: 1, power4: 1, power5: 1, trips: 1, totalSales: 100000, records: 10 });
         REGIONS.forEach(r => S.stats.regionsVisited[r.id] = true); SPOT_LIST.forEach(s => S.stats.spotsVisited[s.id] = true); SEASONS.forEach(s => S.world.seasonsSeen[s] = true); CUSTOMERS.forEach(c => { S.stats.buyers[c.id] = true; S.customers[c.id] = { delivered: 400 }; });
         FISH_LIST.forEach(f => S.ency[f.id] = { caught: 1, maxLen: 1, maxKg: 1 }); BOATS.forEach(b => { S.boats.owned.push(b.id); S.boats.byId[b.id] = { ups: {}, storage: [], color: 'sea_green', name: '' }; }); S.boats.byId.offshore.ups.motor_V = true; S.auto.total = 100;
         S.home.decor = { wall: 'tablo_deniz', shelf: 'fener_maket', table: 'cicek', window: null, board: null };
-        Ach.check(); const n = Object.keys(S.ach).length; return { ok: n === 36, info: n + '/36' };
+        for (let i = 0; i < 8; i++) S.trophies.push({ fest: FESTIVALS[i % 4].id, year: 1 + (i >> 2), place: 1 + (i % 3), score: 1, day: 1 }); SEASONS.forEach(x => S.stats.festSeasons[x] = true);
+        Ach.check(); const n = Object.keys(S.ach).length; return { ok: n === ACHS.length && ACHS.length === 40, info: n + '/' + ACHS.length };
       });
-      T('13b. 5 NPC × 15 = 75 diyalog; tüm tetikleyiciler tanımlı', () => { let n = 0, bad = []; for (const npc in CFG.npc_dialogues) for (const d of CFG.npc_dialogues[npc]) { n++; if (!NPC_TRIG[d.trigger] && !CFG.weather.types.includes(d.trigger) && !d.trigger.startsWith('day_generic') && d.trigger !== 'generic_after') bad.push(d.trigger); } fresh(); const l = NPCDialog.line('zeynep'); return { ok: n === 75 && !bad.length && Object.keys(CFG.npc_dialogues).length === 5 && l.trigger === 'first_meet', info: n + ' ' + bad.join() }; });
+      T('13b. Özgün 5 NPC × 15 = 75 diyalog + 8 yeni NPC; tüm tetikleyiciler tanımlı', () => { let n = 0, n0 = 0, bad = []; for (const npc in CFG.npc_dialogues) { if (['zeynep', 'nihat', 'bora', 'bahar', 'efe'].includes(npc)) n0 += CFG.npc_dialogues[npc].length; } for (const npc in CFG.npc_dialogues) for (const d of CFG.npc_dialogues[npc]) { n++; if (!NPC_TRIG[d.trigger] && !CFG.weather.types.includes(d.trigger) && !d.trigger.startsWith('day_generic') && d.trigger !== 'generic_after') bad.push(d.trigger); } fresh(); const l = NPCDialog.line('zeynep'); return { ok: n0 === 75 && n > 75 && !bad.length && Object.keys(CFG.npc_dialogues).length === 13 && Object.keys(CFG.npc_dialogues).every(k => NPCS[k]) && l.trigger === 'first_meet', info: n + ' ' + bad.join() }; });
       T('13c. 7 müşterinin ilanı üretilebilir; en fazla 1 gelecek bölge ilanı', () => { fresh(); REGIONS.forEach(r => S.world.unlocked[r.id] = true); const ok = CUSTOMERS.every(c => { const o = Orders.gen(S.day, { customerId: c.id }); return o.customerId === c.id && o.unitPrice >= Math.floor(FISH[o.fishId].base_price * 1.1) && o.bonus <= 0.4; }); fresh(); let maxF = 0; for (let d = 1; d < 60; d++) { S.day = d; Orders.refresh(d, null); maxF = Math.max(maxF, S.orders.filter(o => o.future).length); } return { ok: ok && maxF <= 1, info: 'gelecek ilan ' + maxF }; });
       T('14. Kayıt paketle/aç: para, balık, gün, kıyafet, tekne, ilan, ilişki, rekor, sayaç korunur; bozuk kayıt reddedilir', () => {
         fresh(); S.cash = 1234; S.day = 7; S.player.outfit = 'ekose'; Inv.add('bag', 'kefal', 3); S.boats.owned.push('coastal_skiff'); S.boats.byId.coastal_skiff = { ups: { motor_II: true }, storage: [{ f: 'levrek', q: 2 }], color: 'navy', name: 'MARTI' }; S.boats.active = 'coastal_skiff'; S.customers.bahar = { delivered: 60 }; S.ency.kefal = { caught: 3, maxLen: 44, maxKg: 1.2 }; S.auto.devices.auto1 = { boat: 'coastal_skiff', counter: 2 };
@@ -265,6 +268,21 @@ const QA = {
       });
       T('14b. Atomik işlem: çift dokunmada çifte para yok', () => { fresh(); Inv.add('bag', 'kefal', 1); const c = S.cash; Market.sell('kefal', 1, ['bag']); Market.sell('kefal', 1, ['bag']); return S.cash === c + FISH.kefal.base_price; });
       T('15. Ölçekleme: 640×360 oranı korunur', () => { const fr = $('frame'); const w = parseFloat(fr.style.width), h = parseFloat(fr.style.height); return { ok: Math.abs(w / h - 16 / 9) < 0.02, info: w + '×' + h }; });
+      T('18. Şenlik takvimi: her mevsimde 14–15. gün birer şenlik', () => { fresh(); const found = []; for (let d = 1; d <= 112; d++) { const f = World.festival(d); if (f) found.push(f.season + World.seasonDay(d)); } return { ok: found.join() === 'spring14,spring15,summer14,summer15,autumn14,autumn15,winter14,winter15', info: found.join() }; });
+      T('19. Yarışma: 8 atış enerji harcamaz, rakipler puan toplar, ilk üçe kupa ve ödül, ikinci kez katılınamaz', () => {
+        fresh(); S.day = 14; World.startDay(); const f = World.festival(); if (!f) return false;
+        const r1 = Comp.start(); const ctxC = Object.assign({}, ctx); let casts = 0; while (Comp.active() && casts < 20) { if (!castOnce()) break; casts++; }
+        const res = S.comp && S.comp.result; const again = Comp.start();
+        const rivalsScored = res && res.standings.filter(x => !x.player && x.score > 0).length >= 3;
+        return { ok: r1.ok && casts === 8 && S.energy === 100 && res && rivalsScored && !again.ok && (res.place > 3 || (S.trophies.length === 1 && S.cash === 100 + res.prize)), info: 'atış ' + casts + ' sıra ' + (res && res.place) };
+      });
+      T('19b. Yarışmada kazanmak kupa + para verir (yakalanan balıkla)', () => { fresh(); S.day = 14; World.startDay(); Comp.start(); for (let i = 0; i < 8; i++) Tx.run('t', () => { Comp.onCast('liman_iskele', 'zargana', { kg: 1.2, cm: 80 }); return { ok: true }; }); const r = S.comp.result; return { ok: r.place === 1 && S.trophies.length === 1 && S.trophies[0].place === 1 && S.cash === 100 + Comp.prizes(1)[0] && S.ach.first_trophy && S.ach.gold_trophy, info: r.place + '. ' + S.cash }; });
+      T('20. Fırın: günde tek atıştırmalık; simit tasma penceresini uzatır', () => { fresh(); const w0 = Fishing.biteWin(); const a = Shop.buySnack('simit'); const b = Shop.buySnack('borek'); const w1 = Fishing.biteWin(); S.day = 2; return { ok: a.ok && !b.ok && Math.abs(w1 - w0 - 0.4) < 1e-9 && Math.abs(Fishing.biteWin() - w0) < 1e-9, info: w0 + '→' + w1 }; });
+      T('21. Çay bahçesi: günün balığı ×1,5 fiyat, günde en çok 5 adet', () => { fresh(); const fid = Tea.special(); Inv.add('bag', fid, 8); const c0 = S.cash; const r = Tea.sell(8, ['bag']); const r2 = Tea.sell(1, ['bag']); return { ok: r.ok && r.n === 5 && S.cash === c0 + 5 * roundHalfUp(FISH[fid].base_price * 1.5) && !r2.ok && Inv.count(['bag'], fid) === 3, info: fid }; });
+      T('22a. Mini oyun: mükemmel tasma ilerlemeyle başlar', () => { fresh(); S.gear.owned.rod.push('light'); S.gear.rod = 'light'; Fishing.attach(ctx); S.pendingCast = { spotId: 'koy_derin', mode: 'pier', fish: 'levrek', size: { cm: 40, kg: 1, t: .3, cls: 'normal' } }; Fishing.bob = { tx: 400 }; Fishing.phase = 'BITE_WINDOW'; Fishing.t = 0.2; Fishing.hook(); const p1 = Fishing.progress; Fishing.phase = 'BITE_WINDOW'; Fishing.t = 1.0; Fishing.hook(); const p2 = Fishing.progress; Fishing.detach(); S.pendingCast = null; return { ok: p1 === 12 && p2 === 0, info: p1 + '/' + p2 }; });
+      T('22b. Mini oyun: yönü doğru karşılamak avı hızlandırır, yanlış yön yavaşlatır', () => { fresh(); S.gear.owned.rod.push('fiberglass'); S.gear.rod = 'fiberglass'; const ctrl = () => Fishing.tension < 60; const a = this.simFight('karagoz', ctrl, { dir: 1, tilt: -1 }), b = this.simFight('karagoz', ctrl, { dir: 1, tilt: 1 }); return { ok: a.r === 'CATCH_RESULT' && a.n < b.n, info: a.n + ' < ' + b.n + ' kare' }; });
+      T('22c. Mini oyun: zıplarken gevşetmek "Usta Hamle" ilerlemesi verir', () => { fresh(); S.gear.owned.rod.push('fiberglass'); S.gear.rod = 'fiberglass'; Fishing.attach(ctx); S.pendingCast = { spotId: 'koy_derin', mode: 'pier', fish: 'levrek', size: { cm: 40, kg: 1, t: .3, cls: 'normal' } }; Fishing.bob = { tx: 400 }; Fishing.phase = 'BITE_WINDOW'; Fishing.t = 1; Fishing.hook(); Fishing.dirT = 1e9; Fishing.dir = 0; Fishing.jumpS = { st: 'air', t: 0, next: 1e9, held: false }; Fishing.tension = 50; const p0 = Fishing.progress; Fishing.holding = false; for (let i = 0; i < 60; i++) Fishing.update(1 / 60); const gain = Fishing.progress - p0; Fishing.detach(); S.pendingCast = null; return { ok: gain >= 8, info: '+' + gain.toFixed(1) }; });
+      T('22d. Her türün bir mücadele karakteri var', () => FISH_LIST.every(f => STYLE_TR[fightStyle(f.id)]));
       T('17. Dış kaynak yok (ağ isteği / uzak URL kullanılmıyor)', () => { const re = new RegExp(['\\bfet' + 'ch\\(', 'XMLHttp' + 'Request', 'htt' + 'ps?:/' + '/', 'Web' + 'Socket', 'import' + 'Scripts'].join('|')); const src = [...document.scripts].map(s => s.textContent).join('\n') + [...document.styleSheets].map(s => { try { return [...s.cssRules].map(r => r.cssText).join(''); } catch (e) { return ''; } }).join(''); return { ok: !re.test(src.replace(/url\(data:[^)]*\)/g, '')) && ![...document.querySelectorAll('[src]')].some(e => !/^(data:|blob:|$)/.test(e.getAttribute('src'))), info: src.length + ' karakter tarandı' }; });
     } finally {
       S = real; Save.suspended = realSusp; this.silent = false; Fishing.autoQ = realQ; Bus.take(); Tx.busy = false;
@@ -272,13 +290,13 @@ const QA = {
     }
     return out;
   },
-  simFight(fid, holdFn) {
-    const ctx = { mode: 'pier', surf: 236, minCast: 40, maxCast: 300, spotId: () => 'koy_derin', tip: () => [200, 200], moving: () => false };
+  simFight(fid, holdFn, o) {
+    o = o || {}; const ctx = { mode: 'pier', surf: 236, minCast: 40, maxCast: 300, spotId: () => 'koy_derin', tip: () => [200, 200], moving: () => false };
     Fishing.attach(ctx); S.pendingCast = { id: 1, spotId: 'koy_derin', mode: 'pier', band: 'far', bait: 'basic', fish: fid, size: { cm: 40, kg: 1, t: 0.3, cls: 'normal' }, bite: true, wait: 2 };
-    Fishing.bob = { x0: 200, y0: 200, x: 400, y: 236, tx: 400, ty: 236, dip: 0 }; Fishing.phase = 'BITE_WINDOW'; Fishing.hook();
-    Fishing.surge.next = 1e9; let n = 0;
+    Fishing.bob = { x0: 200, y0: 200, x: 400, y: 236, tx: 400, ty: 236, dip: 0 }; Fishing.phase = 'BITE_WINDOW'; Fishing.t = 1; Fishing.hook();
+    Fishing.surge.next = 1e9; if (Fishing.jumpS) Fishing.jumpS.next = 1e9; if (o.dir != null) { Fishing.dir = o.dir; Fishing.dirT = 1e9; } else { Fishing.dir = 0; Fishing.dirT = 1e9; } Fishing.tilt = o.tilt || 0; let n = 0;
     while ((Fishing.phase === 'REELING' || Fishing.phase === 'QUICK_PULL') && n++ < 20000) { Fishing.holding = holdFn(); Fishing.update(1 / 60); }
-    const ph = Fishing.phase; Fishing.detach(); return ph === 'OUTCOME' ? Fishing.lastOutcome : ph;
+    const ph = Fishing.phase; Fishing.tilt = 0; Fishing.detach(); const r = ph === 'OUTCOME' ? Fishing.lastOutcome : ph; return o.dir != null ? { r, n } : r;
   }
 };
 boot();

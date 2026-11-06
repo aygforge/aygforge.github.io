@@ -263,16 +263,24 @@ function evict(prefix, keep, max) { const ks = [...Atlas.cache.keys()].filter(k 
 const regionArt = (rid, season) => { const k = 'region:' + rid + ':' + season; let v = Atlas.cache.get(k); if (!v) { evict('region:', k, 2); v = genRegion(rid, season); Atlas.cache.set(k, v); } return v; };
 
 /* ---------- KASABA ---------- */
-const TOWN_W = 1800, TOWN_GROUND = 296, TOWN_WATER_X = 1330;
+const TOWN_W = 2960, TOWN_GROUND = 296, TOWN_WATER_X = 2400;
 const TOWN_DOORS = [
   { id: 'home', x: 128, name: 'Ev', icon: 'home' },
   { id: 'shop', x: 338, name: 'Zeynep\'in Olta Dükkânı', icon: 'shop', npc: 'zeynep' },
-  { id: 'market', x: 580, name: 'Nihat\'ın Balık Hali', icon: 'market', npc: 'nihat' },
-  { id: 'yard', x: 862, name: 'Bora\'nın Tekne Atölyesi', icon: 'yard', npc: 'bora' },
-  { id: 'board', x: 1222, name: 'Sipariş Panosu · Bahar Lokantası', icon: 'order', npc: 'bahar' },
-  { id: 'harbor', x: 1450, name: 'Liman (Teknen)', icon: 'anchor' },
-  { id: 'efe', x: 1590, name: 'Efe', icon: 'help', npc: 'efe' },
-  { id: 'pier', x: 1716, name: 'İskele Ucu – Balık Tut', icon: 'cast' }
+  { id: 'bakery', x: 520, name: 'Fatma Teyze\'nin Fırını', icon: 'bakery', npc: 'fatma' },
+  { id: 'market', x: 746, name: 'Nihat\'ın Balık Hali', icon: 'market', npc: 'nihat' },
+  { id: 'boutique', x: 970, name: 'Selin\'in Butiği', icon: 'boutique', npc: 'selin' },
+  { id: 'yard', x: 1202, name: 'Bora\'nın Tekne Atölyesi', icon: 'yard', npc: 'bora' },
+  { id: 'homegoods', x: 1475, name: 'Kerem\'in Ev Eşyaları', icon: 'homegoods', npc: 'kerem' },
+  { id: 'square', x: 1715, name: 'Şenlik Meydanı · Muhtarlık', icon: 'square', npc: 'hasan' },
+  { id: 'teahouse', x: 1955, name: 'Halil Usta\'nın Çay Bahçesi', icon: 'teahouse', npc: 'halil' },
+  { id: 'board', x: 2292, name: 'Sipariş Panosu · Bahar Lokantası', icon: 'order', npc: 'bahar' },
+  { id: 'harbor', x: 2520, name: 'Liman (Teknen)', icon: 'anchor' },
+  { id: 'ali', x: 2600, name: 'Ali Dayı', icon: 'help', npc: 'ali' },
+  { id: 'efe', x: 2690, name: 'Efe', icon: 'help', npc: 'efe' },
+  { id: 'mert', x: 2780, name: 'Mert', icon: 'help', npc: 'mert' },
+  { id: 'elif', x: 2840, name: 'Elif', icon: 'help', npc: 'elif' },
+  { id: 'pier', x: 2900, name: 'İskele Ucu – Balık Tut', icon: 'cast' }
 ];
 function bHouse(pb, x0, g, season) {
   const W = 140; const wall = '#f2ead8', roof = '#c8643a', roofD = '#a04a2a';
@@ -374,6 +382,58 @@ function bPier(pb, g) {
   // kıyı taş duvar
   for (let y = g - 2; y < LH; y++) for (let x = TOWN_WATER_X - 60; x < TOWN_WATER_X; x++) pb.set(x, y, ((x + Math.floor(y / 6) * 5) % 10 < 1 || y % 6 === 0) ? '#7a7268' : '#a8a090');
 }
+
+function sign(pb, x, y, w, txt, wood, paper) { pb.rect(x, y, w, 14, wood || '#7a4a28'); pb.rect(x + 2, y + 2, w - 4, 10, paper || '#f2e2b8'); drawText(pb, txt, Math.round(x + w / 2 - textWidth(txt) / 2), y + 4, '#3a2414'); }
+function bBakery(pb, x0, g) {
+  const W = 130; for (let y = g - 92; y < g; y++) for (let x = x0; x < x0 + W; x++) pb.set(x, y, ((x + (Math.floor((y - g) / 4) % 2) * 4) % 8 === 0 || (y - g) % 4 === 0) ? '#8a4a32' : (ihash(x >> 3, y >> 2, 4) < 0.5 ? '#b8644a' : '#a8583e'));
+  pb.rect(x0 - 4, g - 98, W + 8, 6, '#5a3020');
+  for (let x = x0 - 6; x < x0 + W + 6; x++) { const st = Math.floor((x - x0) / 8) % 2; for (let y = g - 72; y < g - 62; y++) pb.set(x, y, st ? '#f4f0e4' : '#d87a3a'); }
+  pb.rect(x0 + 10, g - 56, 60, 40, '#e8dcc0'); pb.rect(x0 + 13, g - 53, 54, 34, '#f6d890'); pb.rect(x0 + 13, g - 26, 54, 7, '#8a5a2a');
+  for (let i = 0; i < 5; i++) { pb.ellipse(x0 + 20 + i * 10, g - 30, 4, 2.5, '#d8a050'); pb.set(x0 + 20 + i * 10, g - 30, '#f6d890'); } for (let i = 0; i < 4; i++) pb.ellipse(x0 + 24 + i * 11, g - 42, 4, 3, '#e8b860');
+  pb.rect(x0 + 84, g - 52, 30, 52, '#6a3a22'); pb.rect(x0 + 87, g - 49, 24, 20, '#f6d890'); pb.set(x0 + 107, g - 26, '#e8c050');
+  sign(pb, x0 + 20, g - 90, 90, 'FIRIN'); pb.ellipse(x0 + 102, g - 83, 4, 3, '#d8a050');
+  pb.rect(x0 + 96, g - 118, 10, 22, '#6a3020');
+}
+function bBoutique(pb, x0, g) {
+  const W = 140; pb.rect(x0, g - 104, W, 104, '#d8a8c8'); for (let x = x0; x < x0 + W; x += 6) pb.vline(x, g - 104, g - 1, '#c898b8');
+  pb.rect(x0 - 4, g - 112, W + 8, 8, '#f4f0e4'); pb.rect(x0, g - 104, 3, 104, '#b888a8');
+  pb.rect(x0 + 10, g - 70, 66, 56, '#f4f0e4'); pb.rect(x0 + 13, g - 67, 60, 50, '#bfe0f0');
+  for (const mx of [x0 + 26, x0 + 56]) { pb.ellipse(mx, g - 58, 3, 3, '#e8d0b8'); pb.poly([[mx - 7, g - 54], [mx + 7, g - 54], [mx + 9, g - 30], [mx - 9, g - 30]], mx < x0 + 40 ? '#4f86c6' : '#e86a8a'); pb.rect(mx - 1, g - 30, 2, 12, '#8a94a0'); }
+  pb.rect(x0 + 90, g - 62, 32, 62, '#7a3a6a'); pb.rect(x0 + 93, g - 59, 26, 24, '#bfe0f0'); pb.set(x0 + 116, g - 30, '#e8c050');
+  sign(pb, x0 + 22, g - 96, 96, 'BUTİK', '#7a3a6a', '#fbeaf4'); pb.rect(x0 + 10, g - 14, 8, 14, '#c85a9a');
+}
+function bHomeGoods(pb, x0, g) {
+  const W = 150; for (let y = g - 100; y < g; y++) for (let x = x0; x < x0 + W; x++) pb.set(x, y, (y - g) % 5 === 0 ? '#7a5a38' : (x === x0 ? '#8a6640' : '#b08454'));
+  pb.poly([[x0 - 8, g - 100], [x0 + W / 2, g - 128], [x0 + W + 8, g - 100]], '#5a6a4a', (x, y) => y % 4 === 0 ? '#4a5a3a' : '#5a6a4a');
+  pb.rect(x0 + 10, g - 66, 70, 50, '#e8dcc0'); pb.rect(x0 + 13, g - 63, 64, 44, '#f6eed8');
+  pb.rect(x0 + 18, g - 40, 18, 3, '#8a5a2a'); pb.rect(x0 + 19, g - 37, 2, 14, '#6a4420'); pb.rect(x0 + 33, g - 37, 2, 14, '#6a4420'); pb.rect(x0 + 19, g - 55, 2, 15, '#6a4420'); pb.rect(x0 + 19, g - 55, 12, 3, '#8a5a2a');
+  pb.rect(x0 + 50, g - 58, 2, 34, '#3a3a42'); pb.poly([[x0 + 44, g - 58], [x0 + 58, g - 58], [x0 + 55, g - 66], [x0 + 47, g - 66]], '#f2d468'); pb.rect(x0 + 46, g - 24, 10, 3, '#3a3a42');
+  pb.ellipse(x0 + 68, g - 30, 5, 6, '#5a8a4a'); pb.rect(x0 + 65, g - 26, 6, 7, '#c8643a');
+  pb.rect(x0 + 96, g - 60, 32, 60, '#5a3a22'); pb.rect(x0 + 99, g - 57, 26, 24, '#f6eed8'); pb.set(x0 + 122, g - 30, '#e8c050');
+  sign(pb, x0 + 24, g - 94, 102, 'EV EŞYASI');
+}
+function bSquare(pb, x0, g) {
+  const W = 240;
+  for (let y = g - 4; y < g + 20; y++) for (let x = x0; x < x0 + W; x++) if (((x - x0) + (y - g)) % 10 < 5 && y > g) pb.set(x, y, '#c8bca8');
+  pb.rect(x0 + 10, g - 34, 100, 34, '#a8743e'); pb.rect(x0 + 10, g - 34, 100, 4, '#c8925a'); for (let x = x0 + 12; x < x0 + 110; x += 12) pb.vline(x, g - 30, g - 1, '#8a5a2a');
+  pb.rect(x0 + 12, g - 96, 4, 62, '#6a4420'); pb.rect(x0 + 104, g - 96, 4, 62, '#6a4420'); pb.rect(x0 + 6, g - 102, 108, 8, '#c4473f'); pb.rect(x0 + 6, g - 94, 108, 2, '#8a2e2a');
+  for (let x = x0 + 8; x < x0 + 112; x += 8) pb.poly([[x, g - 94], [x + 8, g - 94], [x + 4, g - 88]], ['#f2c230', '#4f86c6', '#5fc46a', '#f4f0e4'][((x - x0) / 8) % 4]);
+  pb.ellipse(x0 + 170, g - 6, 34, 8, '#a8a090'); pb.ellipse(x0 + 170, g - 8, 30, 6, '#5ab0d8'); pb.rect(x0 + 166, g - 44, 8, 36, '#c8c0b0'); pb.ellipse(x0 + 170, g - 46, 12, 4, '#a8a090'); pb.ellipse(x0 + 170, g - 47, 9, 2.5, '#7ac8e8');
+  for (let i = 0; i < 6; i++) { pb.set(x0 + 168 + (i % 3), g - 54 - i, '#c8eefa'); }
+  pb.rect(x0 + 212, g - 110, 18, 110, '#e8dcc0'); pb.rect(x0 + 208, g - 116, 26, 8, '#8a3a2a'); pb.ellipse(x0 + 221, g - 90, 6, 6, '#f6eed8'); pb.line(x0 + 221, g - 90, x0 + 221, g - 94, '#2a2226'); pb.line(x0 + 221, g - 90, x0 + 224, g - 88, '#2a2226');
+  sign(pb, x0 + 20, g - 130, 82, 'MEYDAN', '#4a3a5a', '#f6ecd2'); pb.rect(x0 + 30, g - 116, 2, 16, '#4a3a5a'); pb.rect(x0 + 90, g - 116, 2, 16, '#4a3a5a');
+  for (const bx of [x0 + 124, x0 + 196]) { pb.rect(bx, g - 10, 18, 3, '#7a5228'); pb.rect(bx + 1, g - 7, 2, 7, '#5a3a1e'); pb.rect(bx + 15, g - 7, 2, 7, '#5a3a1e'); }
+}
+function bTeahouse(pb, x0, g) {
+  const W = 156; pb.rect(x0 + 6, g - 84, 70, 84, '#e8d8b0'); pb.rect(x0 + 6, g - 84, 3, 84, '#c8b890'); pb.poly([[x0, g - 84], [x0 + 41, g - 104], [x0 + 82, g - 84]], '#a84a3a');
+  pb.rect(x0 + 24, g - 50, 26, 50, '#5a7a4a'); pb.rect(x0 + 27, g - 47, 20, 20, '#f6d890');
+  for (let x = x0 + 82; x < x0 + W; x += 22) pb.rect(x, g - 70, 3, 70, '#6a4420'); pb.rect(x0 + 80, g - 74, W - 80, 4, '#7a5228');
+  for (let x = x0 + 80; x < x0 + W; x++) for (let y = g - 84; y < g - 72; y++) if (ihash(x, y, 9) < 0.55) pb.set(x, y, ihash(x, y, 3) < 0.5 ? '#4a8a3a' : '#5fa84a');
+  for (let i = 0; i < 6; i++) pb.set(x0 + 86 + i * 11, g - 72 + (i % 2) * 2, '#7a3a8a');
+  for (const tx of [x0 + 92, x0 + 126]) { pb.rect(tx, g - 18, 20, 3, '#c8925a'); pb.rect(tx + 9, g - 15, 2, 15, '#7a5228'); pb.rect(tx + 4, g - 23, 3, 5, '#f4f0e4'); pb.rect(tx + 4, g - 22, 3, 3, '#c8402a'); pb.rect(tx + 13, g - 23, 3, 5, '#f4f0e4'); pb.rect(tx + 13, g - 22, 3, 3, '#c8402a'); }
+  pb.rect(x0 + 60, g - 30, 10, 14, '#c8c0b0'); pb.rect(x0 + 62, g - 36, 6, 6, '#a8a090'); pb.rect(x0 + 58, g - 16, 14, 3, '#8a94a0');
+  sign(pb, x0 + 2, g - 122, 112, 'ÇAY BAHÇESİ', '#5a3a1e');
+}
 function genTown(season) {
   const winter = season === 'winter', autumn = season === 'autumn', summer = season === 'summer';
   const FW = 640 + Math.round((TOWN_W - 640) * 0.15), MW = 640 + Math.round((TOWN_W - 640) * 0.45);
@@ -382,8 +442,8 @@ function genTown(season) {
   ridge(far, 0, FW, 250, 70, 50, 0.007, 3, '#8aa4b8', '#a8bfd0', winter ? 85 : 110);
   ridge(mid, 0, MW, 280, 46, 30, 0.012, 4, leaf[1], leaf[0]);
   const r = mulberry(99);
-  for (let i = 0; i < 34; i++) house(mid, 20 + i * 32 + r() * 8, 250 - r() * 24, 12 + r() * 8, 9 + r() * 6, ['#f2ead8', '#e8d8b8', '#d8e4ec', '#f0d8c8'][i % 4], winter ? '#f4f8fb' : ['#c8643a', '#a84a3a', '#d8784a'][i % 3]);
-  for (let i = 0; i < 30; i++) (i % 3 ? treeRound(mid, 10 + i * 36 + r() * 10, 262 - r() * 14, 7, leaf[0], leaf[1]) : cypress(mid, 10 + i * 36, 262, 22, winter ? '#4a6a5a' : '#3a6a3a', '#2a5030'));
+  for (let i = 0; i < 52; i++) house(mid, 20 + i * 32 + r() * 8, 250 - r() * 24, 12 + r() * 8, 9 + r() * 6, ['#f2ead8', '#e8d8b8', '#d8e4ec', '#f0d8c8'][i % 4], winter ? '#f4f8fb' : ['#c8643a', '#a84a3a', '#d8784a'][i % 3]);
+  for (let i = 0; i < 46; i++) (i % 3 ? treeRound(mid, 10 + i * 36 + r() * 10, 262 - r() * 14, 7, leaf[0], leaf[1]) : cypress(mid, 10 + i * 36, 262, 22, winter ? '#4a6a5a' : '#3a6a3a', '#2a5030'));
   lighthouse(mid, MW - 60, 250, 46, '#f4f0e4', '#c4473f');
   // ana katman: yol & zemin
   const g = TOWN_GROUND;
@@ -394,11 +454,11 @@ function genTown(season) {
     main.set(x, y, c);
   }
   if (!winter) for (let x = 6; x < TOWN_WATER_X - 70; x += 7 + Math.round(r() * 9)) { const y = g + 26 + Math.round(r() * 30); main.set(x, y, season === 'spring' ? ['#f2a0c0', '#f2f2f2', '#f2d030'][x % 3] : summer ? '#f2d030' : '#c8643a'); main.set(x, y + 1, '#3a6a2a'); }
-  bHouse(main, 58, g, season); bShop(main, 262, g); bMarket(main, 474, g); bYard(main, 748, g); bLokanta(main, 1010, g); bBoard(main, 1188, g); bPier(main, g);
+  bHouse(main, 58, g, season); bShop(main, 262, g); bBakery(main, 456, g); bMarket(main, 640, g); bBoutique(main, 900, g); bYard(main, 1088, g); bHomeGoods(main, 1400, g); bSquare(main, 1600, g); bTeahouse(main, 1876, g); bLokanta(main, 2080, g); bBoard(main, 2258, g); bPier(main, g);
   // sokak lambaları & çit
-  for (const lx of [230, 450, 720, 990, 1170]) { main.rect(lx, g - 64, 2, 64, '#3a3a42'); main.rect(lx - 3, g - 70, 8, 6, '#f6e27a'); main.rect(lx - 4, g - 72, 10, 2, '#3a3a42'); }
+  for (const lx of [230, 436, 620, 880, 1062, 1380, 1580, 1858, 2058, 2236]) { main.rect(lx, g - 64, 2, 64, '#3a3a42'); main.rect(lx - 3, g - 70, 8, 6, '#f6e27a'); main.rect(lx - 4, g - 72, 10, 2, '#3a3a42'); }
   for (let x = 2; x < 50; x += 6) { main.rect(x, g - 14, 2, 14, '#f4f0e4'); } main.rect(0, g - 10, 52, 2, '#f4f0e4');
-  if (winter) for (const [bx, bw] of [[262, 156], [474, 216], [748, 232], [1010, 150]]) for (let x = bx - 4; x < bx + bw + 4; x++) { const top = (() => { for (let y = 120; y < g; y++) if (main.has(x, y)) return y; return null; })(); if (top != null) { main.set(x, top - 1, '#f4f8fb'); main.set(x, top, '#f4f8fb'); } }
+  if (winter) for (const [bx, bw] of [[262, 156], [456, 130], [640, 216], [900, 140], [1088, 232], [1400, 150], [1876, 156], [2080, 150]]) for (let x = bx - 4; x < bx + bw + 4; x++) { const top = (() => { for (let y = 120; y < g; y++) if (main.has(x, y)) return y; return null; })(); if (top != null) { main.set(x, top - 1, '#f4f8fb'); main.set(x, top, '#f4f8fb'); } }
   far.outline(null, 0.15); mid.outline(null, 0.25);
   return { far: far.canvas(), mid: mid.canvas(), main: main.canvas(), FW, MW };
 }
@@ -434,7 +494,7 @@ const PIER_STAND = [[262, PIER_SURF - 2], [182, PIER_SURF - 32], [200, PIER_SURF
 /* ---------- EV İÇİ ---------- */
 const HOME_SPOTS = {
   bed: { x: 520, w: 110, name: 'Yatak – Uyu', icon: 'sleep' }, wardrobe: { x: 60, w: 60, name: 'Gardırop', icon: 'wardrobe' }, chest: { x: 150, w: 50, name: 'Balık Sandığı', icon: 'chest' },
-  door: { x: 240, w: 40, name: 'Kasabaya Çık', icon: 'exit' }, trophy: { x: 330, w: 50, name: 'Başarımlar', icon: 'trophy' }, desk: { x: 420, w: 60, name: 'İstatistikler & Ansiklopedi', icon: 'book' }
+  door: { x: 240, w: 40, name: 'Kasabaya Çık', icon: 'exit' }, trophy: { x: 330, w: 50, name: 'Kupa Dolabı', icon: 'cup_1' }, desk: { x: 420, w: 60, name: 'İstatistikler & Ansiklopedi', icon: 'book' }
 };
 const DECOR_POS = { wall: [300, 120], shelf: [350, 170], table: [440, 238], window: [460, 150], board: [170, 120] };
 function genHome(season) {

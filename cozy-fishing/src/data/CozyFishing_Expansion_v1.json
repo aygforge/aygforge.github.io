@@ -1,0 +1,146 @@
+{
+  "game": "Cozy Fishing",
+  "version": "expansion-1",
+  "notes": [
+    "Kasaba genişlemesi: 5 yeni dükkân/mekân ve 3 iskele balıkçısı.",
+    "Her mevsimin 14-15. günleri kasaba şenliği; şenlikte 8 atışlık balık tutma yarışması ve kupa.",
+    "Yarışma atışları günlük enerji harcamaz; ücretli yem seçiliyse yem harcanır. Her şenliğe yılda bir kez katılınır."
+  ],
+  "shops": [
+    { "id": "bakery", "name": "Fatma Teyze'nin Fırını", "npc": "fatma" },
+    { "id": "boutique", "name": "Selin'in Butiği", "npc": "selin" },
+    { "id": "homegoods", "name": "Kerem'in Ev Eşyaları", "npc": "kerem" },
+    { "id": "square", "name": "Şenlik Meydanı · Muhtarlık", "npc": "hasan" },
+    { "id": "teahouse", "name": "Halil Usta'nın Çay Bahçesi", "npc": "halil" }
+  ],
+  "snacks": [
+    { "id": "simit", "name": "Susamlı Simit", "price": 15, "effect": "bite_window_bonus_sec", "value": 0.4, "desc": "Bugün vuruşta dokunma süren +0,4 sn uzar." },
+    { "id": "pogaca", "name": "Peynirli Poğaça", "price": 25, "effect": "tension_gain_multiplier", "value": 0.92, "desc": "Bugün mücadelede gerilim artışı %8 azalır." },
+    { "id": "borek", "name": "Ispanaklı Börek", "price": 40, "effect": "reel_speed_multiplier", "value": 1.08, "desc": "Bugün makara çekme hızın %8 artar." }
+  ],
+  "teahouse": { "daily_special_qty": 5, "daily_special_multiplier": 1.5 },
+  "festivals": [
+    { "id": "bahar_senligi", "season": "spring", "days": [14, 15], "name": "Bahar Balık Şenliği", "comp": "weight", "comp_name": "Toplam Ağırlık Yarışması", "rule": "8 atışta yakaladığın balıkların toplam ağırlığı (kg)", "stall": { "kind": "hat", "id": "cicek_taci", "price": 400 } },
+    { "id": "yaz_festivali", "season": "summer", "days": [14, 15], "name": "Yaz Deniz Festivali", "comp": "species", "comp_name": "Tür Avcısı Yarışması", "rule": "8 atışta yakaladığın farklı tür sayısı (eşitlikte toplam ağırlık)", "stall": { "kind": "outfit", "id": "festival_tisort", "price": 500 } },
+    { "id": "hasat_senligi", "season": "autumn", "days": [14, 15], "name": "Hasat ve Lüfer Şenliği", "comp": "biggest", "comp_name": "Dev Balık Yarışması", "rule": "8 atışta yakaladığın en ağır tek balık (kg)", "stall": { "kind": "outfit", "id": "orgu_hirka", "price": 700 } },
+    { "id": "fener_senligi", "season": "winter", "days": [14, 15], "name": "Kış Fener Şenliği", "comp": "value", "comp_name": "Usta Balıkçı Kupası", "rule": "8 atışta yakaladığın balıkların toplam taban değeri", "stall": { "kind": "hat", "id": "fener_beresi", "price": 600 } }
+  ],
+  "competition": { "casts": 8, "prizes": [800, 400, 200], "prize_growth_per_year": 0.5, "energy_cost": 0 },
+  "rivals": [
+    { "id": "ali", "name": "Ali Dayı", "skill": 0.72 },
+    { "id": "mert", "name": "Mert", "skill": 0.58 },
+    { "id": "elif", "name": "Elif", "skill": 0.64 },
+    { "id": "efe", "name": "Efe", "skill": 0.84 },
+    { "id": "selcuk", "name": "Selçuk (Kayalıköy şampiyonu)", "skill": 0.9 }
+  ],
+  "achievements": [
+    { "id": "first_trophy", "name": "İlk Kupa", "condition_tr": "Bir şenlik yarışmasında ilk üçe gir", "category": "Şenlikler" },
+    { "id": "gold_trophy", "name": "Şampiyon", "condition_tr": "Bir şenlik yarışmasını birinci bitir", "category": "Şenlikler" },
+    { "id": "festival4", "name": "Şenlik Ruhu", "condition_tr": "Dört farklı mevsim şenliğinde yarış", "category": "Şenlikler" },
+    { "id": "trophies8", "name": "Kupa Koleksiyonu", "condition_tr": "8 kupa kazan", "category": "Şenlikler" }
+  ],
+  "npc_dialogues": {
+    "fatma": [
+      { "trigger": "first_meet", "text_tr": "Hoş geldin evladım! Sıcacık simidim balıkçıların uğur getiren dostudur." },
+      { "trigger": "day_generic1", "text_tr": "Sabah erken açarım; denize çıkmadan bir şey atıştır." },
+      { "trigger": "day_generic2", "text_tr": "Poğaçamı yiyen elini titretmez, misinayı da yormaz." },
+      { "trigger": "day_generic3", "text_tr": "Böreğin içine bol ıspanak koydum, makarayı rahat çevirirsin." },
+      { "trigger": "sunny", "text_tr": "Güneşli günde tezgâhın önü balıkçı dolu oluyor." },
+      { "trigger": "rain", "text_tr": "Yağmurda fırının sıcaklığı içini ısıtır, gel otur biraz." },
+      { "trigger": "wind", "text_tr": "Rüzgâr kapıyı çarpıyor ama hamur tutuyor maşallah." },
+      { "trigger": "festival_soon", "text_tr": "Şenlik yaklaşıyor, şimdiden çörek siparişleri başladı!" },
+      { "trigger": "festival_today", "text_tr": "Bugün şenlik var! Yarışmadan önce bir simit al, şans getirir." },
+      { "trigger": "first_boat", "text_tr": "Duydum tekne almışsın! Teknede yemek için börek sarayım mı?" },
+      { "trigger": "trophy_first", "text_tr": "Kupanı gördüm, tüm mahalle seninle gurur duyuyor." }
+    ],
+    "selin": [
+      { "trigger": "first_meet", "text_tr": "Merhaba! Denizde de şık olmak mümkün, inan bana." },
+      { "trigger": "day_generic1", "text_tr": "Yeni kumaşlar geldi; çizgili tişörtler tam denizci işi." },
+      { "trigger": "day_generic2", "text_tr": "Şapka seçerken güneşi düşün, rengi sonra gelir." },
+      { "trigger": "day_generic3", "text_tr": "Kıyafetlerim av gücü vermez ama özgüven verir!" },
+      { "trigger": "sunny", "text_tr": "Böyle güneşte hasır şapka bir numara." },
+      { "trigger": "rain", "text_tr": "Yağmurluk mevsimi! Vitrini sarıya boyadım." },
+      { "trigger": "wind", "text_tr": "Rüzgârlı günde bere kafada kalır, şapka uçar." },
+      { "trigger": "festival_today", "text_tr": "Şenlik günü herkes en güzel kıyafetini giyer, sen de giy!" },
+      { "trigger": "trophy_gold", "text_tr": "Şampiyon geldi! Sana özel bir indirim yapmalıyım aslında." },
+      { "trigger": "sales10k", "text_tr": "İşlerin açılmış, gardırobunu yenilemenin tam zamanı." }
+    ],
+    "kerem": [
+      { "trigger": "first_meet", "text_tr": "Hoş geldin. Ev dediğin biraz da içindeki eşyalardır." },
+      { "trigger": "day_generic1", "text_tr": "Bu raflar ceviz ağacından, yüz yıl dayanır." },
+      { "trigger": "day_generic2", "text_tr": "Sandığın dolduysa büyüğünü de yaparım." },
+      { "trigger": "day_generic3", "text_tr": "Pencere kenarına bir saksı koy, ev hemen gülümser." },
+      { "trigger": "sunny", "text_tr": "Güneşte cilalı ahşap ne güzel parlıyor, değil mi?" },
+      { "trigger": "rain", "text_tr": "Yağmur sesiyle rende çekmek bana huzur verir." },
+      { "trigger": "wind", "text_tr": "Rüzgâr çanlarım bugün kendi kendine şarkı söylüyor." },
+      { "trigger": "decor1", "text_tr": "Evine eşya yerleştirmişsin, sıcak bir yuva oluyor." },
+      { "trigger": "festival_today", "text_tr": "Şenlik standlarını ben çaktım, sağlam olduklarına söz veririm." },
+      { "trigger": "trophy_first", "text_tr": "Kupalarına güzel bir dolap lazım, evdeki rafa yakışır." }
+    ],
+    "halil": [
+      { "trigger": "first_meet", "text_tr": "Buyur otur, demlik yeni demlendi. Günün balığını da sorarım sana." },
+      { "trigger": "day_generic1", "text_tr": "Çay içmeden ağ atılmaz derdi rahmetli babam." },
+      { "trigger": "day_generic2", "text_tr": "Bugünkü balığımı getirene iyi para veririm." },
+      { "trigger": "day_generic3", "text_tr": "Masalarda en çok konuşulan şey dünkü av oluyor." },
+      { "trigger": "sunny", "text_tr": "Güneşte çay bahçesi şenlik yeri gibi oluyor." },
+      { "trigger": "rain", "text_tr": "Yağmurda çardağın altında çay keyfi bir başka." },
+      { "trigger": "wind", "text_tr": "Rüzgârda bardaklar tıngırdıyor, sıkı tut." },
+      { "trigger": "festival_soon", "text_tr": "Şenlik yaklaştı; masalarda herkes kimin kazanacağını tartışıyor." },
+      { "trigger": "festival_today", "text_tr": "Bugün yarışma var! Selçuk yine iddialı geldi, dikkat et." },
+      { "trigger": "north", "text_tr": "Kuzeye mi gidiyorsun? Termosuna çay koyayım." },
+      { "trigger": "tropics", "text_tr": "Ada balıklarının rengi çay bahçemi bile süsler." },
+      { "trigger": "record", "text_tr": "Rekor balığın masalarda konuşuluyor, aferin!" }
+    ],
+    "hasan": [
+      { "trigger": "first_meet", "text_tr": "Ben muhtar Hasan. Şenliklerimizi de yarışmaları da ben düzenlerim." },
+      { "trigger": "day_generic1", "text_tr": "Her mevsimin ortasında kasabamız şenlik yapar, kaçırma." },
+      { "trigger": "day_generic2", "text_tr": "Kazanan kupasını evine götürür, adı da panoya yazılır." },
+      { "trigger": "day_generic3", "text_tr": "Yarışmada sekiz atış hakkın olur, enerjin harcanmaz." },
+      { "trigger": "sunny", "text_tr": "Böyle güzel havada meydan cıvıl cıvıl." },
+      { "trigger": "rain", "text_tr": "Yağmur yağsa da şenlik yapılır, çadırlar hazır." },
+      { "trigger": "wind", "text_tr": "Bayraklar rüzgârla dans ediyor bugün." },
+      { "trigger": "festival_soon", "text_tr": "Şenliğe az kaldı, hazırlıklar tamam sayılır." },
+      { "trigger": "festival_today", "text_tr": "Şenliğimiz başladı! Yarışmaya katılmak için kaydını hemen yapalım." },
+      { "trigger": "trophy_first", "text_tr": "İlk kupan hayırlı olsun, kasabanın gururusun." },
+      { "trigger": "trophy_gold", "text_tr": "Birincilik! Adını altın harflerle panoya yazdırdım." },
+      { "trigger": "festival4", "text_tr": "Dört mevsimin şenliğinde de yarıştın, gerçek bir kasabalısın artık." }
+    ],
+    "ali": [
+      { "trigger": "first_meet", "text_tr": "Gel yanıma otur. Bu iskelede kırk yıldır balık tutarım." },
+      { "trigger": "day_generic1", "text_tr": "Şamandıra iki kere oynarsa üçüncüde çek." },
+      { "trigger": "day_generic2", "text_tr": "Balık sola kaçıyorsa oltanı sağa yatır, yorulur." },
+      { "trigger": "day_generic3", "text_tr": "Acele eden balıkçı misinasını kaybeder." },
+      { "trigger": "sunny", "text_tr": "Güneşte sardalyalar yüzeye vurur." },
+      { "trigger": "rain", "text_tr": "Yağmurda izmarit iştahlanır, şimdi tam zamanı." },
+      { "trigger": "wind", "text_tr": "Rüzgâr dalga yapınca kefal kıyıya yanaşır." },
+      { "trigger": "festival_today", "text_tr": "Bu yıl kupayı ben alacağım evlat, haberin olsun!" },
+      { "trigger": "first_catch", "text_tr": "İlk balığını gördüm, bileğin iyiymiş." },
+      { "trigger": "record", "text_tr": "O boyda balığı ben bile az gördüm!" },
+      { "trigger": "trophy_gold", "text_tr": "Kupayı kaptırdım ama sana kaptırdığıma sevindim." }
+    ],
+    "mert": [
+      { "trigger": "first_meet", "text_tr": "Selam! Ben de yeni sayılırım, birlikte öğreniriz." },
+      { "trigger": "day_generic1", "text_tr": "Dün bir zargana zıpladı, az kalsın suya düşüyordum!" },
+      { "trigger": "day_generic2", "text_tr": "Balık zıplarken misinayı gevşetmek lazımmış, Ali Dayı söyledi." },
+      { "trigger": "day_generic3", "text_tr": "Bir gün kendi teknemle açıklara çıkacağım." },
+      { "trigger": "sunny", "text_tr": "Bugün hava çok güzel, kesin bir şey vuracak." },
+      { "trigger": "rain", "text_tr": "Islandım ama pes etmiyorum!" },
+      { "trigger": "wind", "text_tr": "Rüzgâr şamandıramı sürekli kaydırıyor." },
+      { "trigger": "festival_today", "text_tr": "İlk yarışmam! Heyecandan yemimi unuttum." },
+      { "trigger": "rod3", "text_tr": "Fiberglas olta mı aldın? Bir tutabilir miyim?" },
+      { "trigger": "first_boat", "text_tr": "Teknen varmış! Beni de bir gün götür olur mu?" }
+    ],
+    "elif": [
+      { "trigger": "first_meet", "text_tr": "Merhaba! Gördüğüm her balığı defterime çiziyorum." },
+      { "trigger": "day_generic1", "text_tr": "Defterimde yirmi farklı balık var, sende kaç tane?" },
+      { "trigger": "day_generic2", "text_tr": "Ağır balıklar dibe dalar; sabırla sar, kaçmasın." },
+      { "trigger": "day_generic3", "text_tr": "Mükemmel tasma yapınca balık daha çabuk geliyor!" },
+      { "trigger": "sunny", "text_tr": "Güneşte suyun altı kristal gibi görünüyor." },
+      { "trigger": "rain", "text_tr": "Yağmur damlaları suya çizim yapıyor sanki." },
+      { "trigger": "wind", "text_tr": "Rüzgârda defterimin sayfaları uçuşuyor." },
+      { "trigger": "festival_today", "text_tr": "Tür avcısı yarışmasını çok seviyorum, bol şans!" },
+      { "trigger": "species20", "text_tr": "Yirmi türü geçmişsin! Ansiklopedin benimkinden kalın." },
+      { "trigger": "record", "text_tr": "Rekor balığını defterime çizebilir miyim?" }
+    ]
+  }
+}

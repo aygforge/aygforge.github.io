@@ -47,6 +47,7 @@ const UI = {
     h += `<div class="chip" title="Gün / mevsim">${img(World.season(), 1, 'ic')}<b>Gün ${S.day}</b><span class="dim">${SEASON_TR[World.season()]} ${World.seasonDay()}/28 · Yıl ${World.year()}</span></div>`;
     h += `<div class="chip" title="Hava: ${WEATHER_TR[wx]}">${img(wx, 1, 'ic')}<span class="wxn">${WEATHER_TR[wx]}</span></div>`;
     if (ev) h += `<button class="chip evt" data-a="showEvent" title="Günün olayı">${img('event', 1, 'ic')}<span>${esc(ev.name)}</span></button>`;
+    { const fe = World.festival(), nf = World.nextFestival(); if (fe) h += `<button class="chip fest" data-a="festInfo" title="Şenlik">${img('festival', 1, 'ic')}<span>${esc(fe.name)}</span></button>`; else if (nf && nf.inDays <= 5) h += `<button class="chip" data-a="festInfo" title="Yaklaşan şenlik">${img('festival', 1, 'ic')}<span>${nf.inDays} gün</span></button>`; }
     h += `<div class="chip">${img('coin', 1, 'ic')}<b>${fmt(S.cash)}</b></div>`;
     h += `<div class="chip" title="Enerji">${img('energy', 1, 'ic')}<div class="ebar"><i style="width:${S.energy}%"></i></div><b>${S.energy}</b><span class="dim">(${casts} atış)</span></div>`;
     h += `<button class="chip" data-a="openPanel" data-p="Inventory">${img('bag', 1, 'ic')}<span>${Inv.used('bag')}/${Inv.cap('bag')}</span></button>`;
@@ -156,7 +157,7 @@ const UI = {
   fishBar(sc) {
     const boat = Game.sceneName === 'BoatFishing';
     const left = boat ? `<button class="btn" data-a="backHarbor">${img('anchor', 2)}<span class="lbl">Liman</span></button><button class="btn mv" data-hold="-1">${img('left', 2)}</button><button class="btn mv" data-hold="1">${img('right', 2)}</button>`
-      : `<button class="btn" data-a="backTown">${img('exit', 2)}<span class="lbl">Kasaba</span></button><button class="btn mv" data-a="pierSpot" data-d="-1" ${sc.idx === 0 ? 'disabled' : ''}>${img('left', 2)}</button><button class="btn mv" data-a="pierSpot" data-d="1" ${sc.idx === 2 ? 'disabled' : ''}>${img('right', 2)}</button>`;
+      : `<button class="btn" data-a="backTown">${img('exit', 2)}<span class="lbl">Kasaba</span></button><button class="btn mv" data-hold="-1">${img('left', 2)}</button><button class="btn mv" data-hold="1">${img('right', 2)}</button>`;
     const spots = boat ? `<div class="spots">${REGION[sc.rid].spot_ids.map((id, i) => `<button class="btn sm ${sc.spotIdx() === i ? 'on' : ''}" data-a="goSpot" data-i="${i}">${['A', 'B', 'C'][i]}</button>`).join('')}</div>` : '';
     this.bottom.classList.add('fishing'); this.bottom.innerHTML = `<div class="bl">${left}${spots}</div><div class="bc"><div id="sonar"></div></div>
       <div class="br"><button class="btn" id="baitBtn" data-a="baitPick"></button><button class="btn" data-a="openPanel" data-p="Inventory">${img('bag', 2)}</button><button class="btn sm" id="giveUp" data-a="giveUp" style="display:none">Topla</button><button id="castBtn" class="cast"><span></span></button></div>`;
@@ -204,7 +205,7 @@ const UI = {
       <div class="kv"><span>Aktif tekne</span><b>${bid ? esc(BOAT[bid].name) : '—'} ${S.boats.owned.length > 1 ? '<button class="btn sm" data-a="cycleBoat">Değiştir</button>' : ''}</b></div>
       ${re.ok ? '<div class="ok">✓ Bu tekneyle gidilebilir</div>' : `<div class="bad">✗ Eksik: ${esc(re.miss.join(', '))}</div>`}
       ${evHere ? `<div class="evbox">${img('event', 1, 'ic')} ${esc(ev.name)}: ${esc(World.eventText(ev))}</div>` : ''}
-      <div class="kv"><span>Keşfedilen türler</span><b>${disc}/6</b></div>
+      <div class="kv"><span>Keşfedilen türler</span><b>${disc}/${R.fish_ids.length}</b></div>
       <div class="fishrow">${R.fish_ids.map(f => `<span title="${esc(S.ency[f] && S.ency[f].caught ? FISH[f].name_tr : '???')}">${fishImg(f, 1, 'mini')}</span>`).join('')}</div>
       <div class="kv"><span>Av noktaları</span><b>${R.spot_ids.map(s => esc(SPOTS[s].name) + (S.stats.spotsVisited[s] ? ' ✓' : '')).join(' · ')}</b></div>
       <div class="btns">${Object.keys(S.auto.devices).length ? `<button class="btn sm" data-a="openPanel" data-p="BoatLoadout">${img('auto1', 1, 'ic')} Donanım</button>` : ''}<button class="btn" data-a="mapBack">${img('home', 1, 'ic')} Limana Dön</button><button class="btn g" data-a="depart" ${re.ok && S.cash >= R.trip_fuel_cost ? '' : 'disabled'}>${img('boat', 1, 'ic')} Yola Çık (${fmt(R.trip_fuel_cost)})</button></div>
@@ -236,6 +237,18 @@ const UI = {
     const rod = rodOf(); const left = Math.floor(S.energy / rod.energy);
     this.confirm({ title: 'Uyu ve günü bitir', icon: 'sleep', html: `<p>${left > 0 ? `Hâlâ <b>${S.energy}</b> enerjin var (${left} atış). Kullanılmayan enerji ertesi güne aktarılmaz.` : 'Bugün güzel bir gündü. Dinlenme vakti!'}</p><p class="dim">Uyuyunca: enerji 100 olur, ilanlar ve hava yenilenir, otomatik av sınırı sıfırlanır.</p>`, ok: 'Uyu', onOk: () => { const rep = World.sleep(); if (rep) { Save.backup(); go('EndDay', { rep }); } } });
   },
+  showCompResult() {
+    const c = S.comp; if (!c || !c.done || !c.result) return; const r = c.result, f = FEST[r.fest];
+    this.showModal(`<div class="card"><div class="shine"></div>${r.place <= 3 ? img('cup_' + r.place, 5) : img('festival', 4)}<h2>${esc(f.comp_name)}</h2><div>${r.place <= 3 ? `<span class="badge rec">${r.place}. OLDUN!</span>` : `<span class="badge big">${r.place}. sıra</span>`}</div>
+      <table class="qt">${r.standings.map((x, i) => `<tr${x.player ? ' style="background:#ffe9b0"' : ''}><td>${i + 1}. ${esc(x.name)}</td><td>${esc(Comp.fmt(f.comp, x.score))}</td><td>${x.n} balık</td></tr>`).join('')}</table>
+      ${r.prize ? `<div class="price">${img('coin', 2)}<b>+${fmt(r.prize)}</b></div><div class="ok">Kupan evindeki Kupa Dolabı'na kondu!</div>` : '<p class="dim">Bu sefer kupa yok; bir sonraki şenlikte tekrar dene!</p>'}
+      <div class="btns"><button class="btn g big" data-a="compDone">Harika!</button></div></div>`, 'catch');
+  },
+  tiltHint() {
+    const want = Fishing.phase === 'REELING' && Fishing.dir && !(Fishing.tired > 0) ? -Fishing.dir : 0;
+    if (want === this._tiltWant) return; this._tiltWant = want;
+    this.bottom.querySelectorAll('[data-hold]').forEach(b => b.classList.toggle('hintpulse', +b.dataset.hold === want));
+  },
   /* CatchResult */
   showCatch(c, storage) {
     const f = FISH[c.fid]; const sp = fishSprite(c.fid); const sc = sp.width > 70 ? 2 : 3;
@@ -255,7 +268,7 @@ const UI = {
   P: {
     Menu() {
       const b = (p, ic, n) => `<button class="btn tile" data-a="openPanel" data-p="${p}">${img(ic, 3)}<span>${n}</span></button>`;
-      return { title: 'Menü', icon: 'menu', html: `<div class="tiles">${b('Inventory', 'bag', 'Envanter')}${b('Encyclopedia', 'book', 'Ansiklopedi')}${b('Achievements', 'trophy', 'Başarımlar')}${b('Statistics', 'chart', 'İstatistikler')}${b('Orders', 'order', 'İlanlar')}${b('Settings', 'gear', 'Ayarlar')}${b('Help', 'help', 'Yardım')}<button class="btn tile" data-a="saveQuit">${img('exit', 3)}<span>Kaydet ve Ana Menü</span></button></div><p class="dim small">Kayıt otomatik yapılır (av, satış, satın alma, ilan, uyku, aktarım ve sahne değişiminde). Son kayıt: devir #${S.revision}.</p>` };
+      return { title: 'Menü', icon: 'menu', html: `<div class="tiles">${b('Inventory', 'bag', 'Envanter')}${b('Encyclopedia', 'book', 'Ansiklopedi')}${b('Achievements', 'trophy', 'Başarımlar')}${b('Statistics', 'chart', 'İstatistikler')}${b('Orders', 'order', 'İlanlar')}${b('Settings', 'gear', 'Ayarlar')}${b('Trophies', 'cup_1', 'Kupalar')}${b('Help', 'help', 'Yardım')}<button class="btn tile" data-a="saveQuit">${img('exit', 3)}<span>Kaydet ve Ana Menü</span></button></div><p class="dim small">Kayıt otomatik yapılır (av, satış, satın alma, ilan, uyku, aktarım ve sahne değişiminde). Son kayıt: devir #${S.revision}.</p>` };
     },
     Inventory(a) {
       const acc = Inv.accessible(); const others = acc.filter(k => k !== 'bag');
@@ -385,13 +398,13 @@ const UI = {
         const spots = SPOT_LIST.filter(s => s.weights[det]).map(s => esc(s.name) + ' (%' + s.weights[det] + ')').join(' · ');
         const sp = fishSprite(det); const sc = sp.width > 60 ? 2 : 3;
         return { title: known ? f.name_tr : 'Bilinmeyen tür', icon: 'book', html: `<button class="btn sm" data-a="encyBack">← Liste</button><div class="center"><img class="pix" style="width:${sp.width * sc}px" src="${known ? fishUrl(det, sc) : fishSilUrl(det, sc)}" alt=""></div>
-          ${known ? `<p>${esc(f.encyclopedia_tr)}</p><div class="grid3"><div class="kv"><span>Bölge</span><b>${esc(REGION[f.home_region].name)}</b></div><div class="kv"><span>Güç</span><b>${powerStr(f.power)}</b></div><div class="kv"><span>En az olta</span><b>Güç ${f.minimum_rod_power}</b></div><div class="kv"><span>Taban fiyat</span><b>${coin(f.base_price)}</b></div><div class="kv"><span>Uygun yem</span><b>${f.favored_baits.map(b => esc(BAIT[b].name)).join(', ')}</b></div><div class="kv"><span>Atış mesafesi</span><b>${BAND_TR[f.preferred_cast_band]}</b></div><div class="kv"><span>Sevdiği hava</span><b>${f.weather_boost ? WEATHER_TR[f.weather_boost] : '—'}</b></div><div class="kv"><span>Mevsim</span><b>${f.season_boost ? SEASON_TR[f.season_boost] + ' ×' + String(f.season_modifier).replace('.', ',') : '—'}</b></div><div class="kv"><span>Yakalama</span><b>${e.caught}</b></div><div class="kv"><span>Boy rekoru</span><b>${e.maxLen} cm</b></div><div class="kv"><span>Ağırlık rekoru</span><b>${fmtKg(e.maxKg)} kg</b></div><div class="kv"><span>Boy aralığı</span><b>${f.size_game_range.length_cm.join('–')} cm</b></div></div><p class="small">Av noktaları: ${spots}</p>`
+          ${known ? `<p>${esc(f.encyclopedia_tr)}</p><div class="grid3"><div class="kv"><span>Bölge</span><b>${esc(REGION[f.home_region].name)}</b></div><div class="kv"><span>Güç</span><b>${powerStr(f.power)}</b></div><div class="kv"><span>En az olta</span><b>Güç ${f.minimum_rod_power}</b></div><div class="kv"><span>Taban fiyat</span><b>${coin(f.base_price)}</b></div><div class="kv"><span>Uygun yem</span><b>${f.favored_baits.map(b => esc(BAIT[b].name)).join(', ')}</b></div><div class="kv"><span>Atış mesafesi</span><b>${BAND_TR[f.preferred_cast_band]}</b></div><div class="kv"><span>Sevdiği hava</span><b>${f.weather_boost ? WEATHER_TR[f.weather_boost] : '—'}</b></div><div class="kv"><span>Mevsim</span><b>${f.season_boost ? SEASON_TR[f.season_boost] + ' ×' + String(f.season_modifier).replace('.', ',') : '—'}</b></div><div class="kv"><span>Yakalama</span><b>${e.caught}</b></div><div class="kv"><span>Boy rekoru</span><b>${e.maxLen} cm</b></div><div class="kv"><span>Ağırlık rekoru</span><b>${fmtKg(e.maxKg)} kg</b></div><div class="kv"><span>Boy aralığı</span><b>${f.size_game_range.length_cm.join('–')} cm</b></div><div class="kv"><span>Mücadele</span><b>${STYLE_TR[fightStyle(det)]}</b></div></div><p class="small">Av noktaları: ${spots}</p>`
             : `<p class="dim">Bu türü henüz yakalamadın. İpucu: ${esc(REGION[f.home_region].name)} sularında yaşar. Güç ${f.power}.</p>`}`
         };
       }
       const n = discovered();
-      const html = REGIONS.map(r => `<h4>${esc(r.name)} <span class="dim">${r.fish_ids.filter(f => S.ency[f] && S.ency[f].caught).length}/6</span></h4><div class="ency">${r.fish_ids.map(f => { const k = S.ency[f] && S.ency[f].caught; return `<button class="ecard ${k ? '' : 'lock'}" data-a="ency" data-id="${f}">${fishImg(f, 1)}<span>${k ? esc(FISH[f].name_tr) : '???'}</span>${k ? `<i>×${S.ency[f].caught}</i>` : ''}</button>`; }).join('')}</div>`).join('');
-      return { title: 'Balık Ansiklopedisi', icon: 'book', html: `<div class="evbox">Keşif: <b>${n}/42</b> tür</div>${html}`, cls: 'wide' };
+      const html = REGIONS.map(r => `<h4>${esc(r.name)} <span class="dim">${r.fish_ids.filter(f => S.ency[f] && S.ency[f].caught).length}/${r.fish_ids.length}</span></h4><div class="ency">${r.fish_ids.map(f => { const k = S.ency[f] && S.ency[f].caught; return `<button class="ecard ${k ? '' : 'lock'}" data-a="ency" data-id="${f}">${fishImg(f, 1)}<span>${k ? esc(FISH[f].name_tr) : '???'}</span>${k ? `<i>×${S.ency[f].caught}</i>` : ''}</button>`; }).join('')}</div>`).join('');
+      return { title: 'Balık Ansiklopedisi', icon: 'book', html: `<div class="evbox">Keşif: <b>${n}/${FISH_LIST.length}</b> tür</div>${html}`, cls: 'wide' };
     },
     Achievements() {
       const cats = [...new Set(ACHS.map(a => a.category))]; const n = Object.keys(S.ach).length;
@@ -403,7 +416,7 @@ const UI = {
       const html = `<div class="grid3">${kv('Gün', S.day + ' (Yıl ' + World.year() + ', ' + SEASON_TR[World.season()] + ')')}${kv('Tamamlanan gün', s.daysCompleted)}${kv('Para', fmt(S.cash))}
         ${kv('Manuel atış', s.manualCasts)}${kv('Manuel av', s.manualCatches)}${kv('Otomatik av', s.autoCatches)}${kv('Otomatik deneme', s.autoAttempts)}${kv('Vurmayan', s.noBite)}${kv('Kaçırılan vuruş', s.missed)}${kv('Kopan misina', s.lineBreaks)}${kv('Kaçan balık', s.escapes)}${kv('Serbest bırakılan', s.released)}${kv('İptal edilen atış', s.cancels)}
         ${kv('Toplam satış', fmt(s.totalSales))}${kv('Hal satışı', fmt(s.marketSales))}${kv('İlan satışı', fmt(s.orderSales))}${kv('İlana teslim', s.ordersDelivered + ' balık')}${kv('Harcama', fmt(s.spent))}${kv('Yakıt', fmt(s.fuelSpent))}${kv('Kullanılan yem', s.baitUsed)}
-        ${kv('Keşfedilen tür', discovered() + '/42')}${kv('Rekor geliştirme', s.records)}${kv('En büyük balık', s.biggestId ? FISH[s.biggestId].name_tr + ' ' + s.biggestCm + ' cm' : '—')}${kv('Seferler', s.trips)}${kv('Ziyaret edilen bölge', Object.keys(s.regionsVisited).length + '/7')}${kv('Av noktası', Object.keys(s.spotsVisited).length + '/21')}${kv('Tekneler', S.boats.owned.length + '/4')}${kv('Başarımlar', Object.keys(S.ach).length + '/36')}${kv('Yaşanan mevsim', Object.keys(S.world.seasonsSeen).length + '/4')}</div>
+        ${kv('Keşfedilen tür', discovered() + '/' + FISH_LIST.length)}${kv('Rekor geliştirme', s.records)}${kv('En büyük balık', s.biggestId ? FISH[s.biggestId].name_tr + ' ' + s.biggestCm + ' cm' : '—')}${kv('Seferler', s.trips)}${kv('Ziyaret edilen bölge', Object.keys(s.regionsVisited).length + '/7')}${kv('Av noktası', Object.keys(s.spotsVisited).length + '/21')}${kv('Tekneler', S.boats.owned.length + '/4')}${kv('Başarımlar', Object.keys(S.ach).length + '/36')}${kv('Yaşanan mevsim', Object.keys(S.world.seasonsSeen).length + '/4')}</div>
         <div class="btns left"><button class="btn" data-a="openPanel" data-p="Encyclopedia">${img('book', 1, 'ic')} Ansiklopedi</button><button class="btn" data-a="openPanel" data-p="Achievements">${img('trophy', 1, 'ic')} Başarımlar</button></div>`;
       return { title: 'İstatistikler', icon: 'chart', html, cls: 'wide' };
     },
@@ -426,7 +439,7 @@ const UI = {
         <h4>Ticaret</h4><p>Balık fiyatı türe göre sabittir; boy fiyatı değiştirmez. Nihat'ın hali her balığı alır. Panodaki ilanlar daha iyi fiyat verir ve kısmi teslim kabul eder: 100 isteyen alıcıya 3 balık satabilirsin.</p>
         <h4>Tekneler ve bölgeler</h4><p>Bora'dan tekne al, limandan haritaya çık. Sefer bedeli ödenir, dönüş ücretsiz. Motor/navigasyon yükseltmeleri yeni bölgeleri açar. Her bölgede 3 av noktası var; ◀ ▶ ile tekneyi sür.</p>
         <h4>Otomatik oltalar</h4><p>Teknede, manuel atışların eşliğinde deneme yapar, ücretli yem harcar ve günde toplam en çok 6 balık yakalar. Güç 5 balıklar hep manueldir.</p>
-        <h4>Kontroller</h4><p>Dokunmatik: düğmeler, binalara dokunarak yürüme. Klavye: ←/→ veya A/D yürü/sür, Boşluk olta at/çek, E veya Enter etkileşim, I envanter, Esc kapat/iptal, 1/2/3 teknede av noktası.</p><h4>İpuçları</h4><p>Şamandıralara dokunarak tekneyi o noktaya sürebilirsin. Navigasyon yükseltmesi av noktasındaki en olası türleri (II. seviyede yüzdeleriyle) gösterir. Ücretli yem bitince oyun otomatik olarak ücretsiz temel yeme geçer.</p>`;
+        <h4>Balıkla mücadele</h4><p><b>Mükemmel tasma:</b> şamandıra dalar dalmaz (ilk 0,45 sn) dokunursan avantajlı başlarsın. <b>Yön:</b> balık sola/sağa çekerken ◀ ▶ ile oltayı ters yöne yatır; doğru yön hızlandırır, yanlış yön yavaşlatır. <b>Zıplama:</b> zıplayan türler sudan fırlarken düğmeyi bırak, “Usta Hamle” kazan. <b>Ustalık:</b> ideal bölgede sararken kombo yıldızları dolar ve çekiş hızlanır. <b>Yorgunluk:</b> dayanıklılık çubuğu bitince balık yorulur; hızla sar! Küçük balıkları art arda dokunarak hızlıca sarabilirsin.</p><h4>Şenlikler</h4><p>Her mevsimin 14–15. günleri kasabada şenlik olur. Şenlik Meydanı'nda Muhtar Hasan'a kaydolup iskelede 8 atışlık yarışmaya katıl (enerji harcamaz). İlk üçe girersen kupa ve para ödülü kazanırsın; kupaların evindeki Kupa Dolabı'nda sergilenir.</p><h4>Kontroller</h4><p>Dokunmatik: düğmeler, binalara dokunarak yürüme. Klavye: ←/→ veya A/D yürü/sür, Boşluk olta at/çek, E veya Enter etkileşim, I envanter, Esc kapat/iptal, 1/2/3 teknede av noktası.</p><h4>İpuçları</h4><p>Şamandıralara dokunarak tekneyi o noktaya sürebilirsin. Navigasyon yükseltmesi av noktasındaki en olası türleri (II. seviyede yüzdeleriyle) gösterir. Ücretli yem bitince oyun otomatik olarak ücretsiz temel yeme geçer.</p>`;
       return { title: 'Nasıl Oynanır', icon: 'help', html };
     },
     Dialog(a) {
@@ -435,14 +448,62 @@ const UI = {
     },
     Wardrobe() {
       const L = S.player; const prev = Atlas.url('p:' + lookKey(L) + ':idle0', () => personPB(L, 'idle0'), 5);
-      const item = (kind, it, cur) => { const own = (kind === 'outfit' ? S.wardrobe.outfits : S.wardrobe.hats).includes(it.id); return `<button class="opt ${cur === it.id ? 'on' : ''} ${own ? '' : 'lock'}" data-a="${own ? 'wear' : (it.price ? 'buyCos' : 'noop')}" data-k="${kind}" data-id="${it.id}"><b>${esc(it.name)}</b><small>${own ? (cur === it.id ? 'Giyili' : 'Giy') : it.price ? fmt(it.price) + ' para' : 'Kilit: ' + esc(it.unlockTr || '')}</small></button>`; };
+      const item = (kind, it, cur) => { const own = (kind === 'outfit' ? S.wardrobe.outfits : S.wardrobe.hats).includes(it.id); return `<button class="opt ${cur === it.id ? 'on' : ''} ${own ? '' : 'lock'}" data-a="${own ? 'wear' : 'noop'}" data-k="${kind}" data-id="${it.id}"><b>${esc(it.name)}</b><small>${own ? (cur === it.id ? 'Giyili' : 'Giy') : it.price ? 'Selin\'in butiğinde · ' + fmt(it.price) : it.fest ? 'Şenlik standında: ' + esc(FEST[it.fest].name) : 'Kilit: ' + esc(it.unlockTr || '')}</small></button>`; };
       const ch = (k, arr, lab) => `<h4>${lab}</h4><div class="opts">${arr.map((n, i) => `<button class="${L[k] === i ? 'on' : ''}" data-a="look" data-k="${k}" data-v="${i}">${esc(n)}</button>`).join('')}</div>`;
       const sw = (k, arr, lab) => `<h4>${lab}</h4><div class="opts">${arr.map((c, i) => `<button class="sw ${L[k] === i ? 'on' : ''}" style="background:${c}" data-a="look" data-k="${k}" data-v="${i}"></button>`).join('')}</div>`;
       return { title: 'Gardırop', icon: 'wardrobe', cls: 'wide', html: `<div class="wardrobe"><img class="pix" src="${prev}" alt=""><div class="grow"><h4>Kıyafetler</h4><div class="optgrid">${OUTFITS.map(o => item('outfit', o, L.outfit)).join('')}</div><h4>Şapkalar</h4><div class="optgrid">${HATS.map(o => item('hat', o, L.hat)).join('')}</div>${ch('hair', HAIR_STYLES, 'Saç modeli')}${sw('hairColor', HAIR_COLORS.map(c => c[0]), 'Saç rengi')}${sw('skin', SKINS.map(c => c[0]), 'Ten')}${ch('body', BODY_TYPES, 'Beden')}</div></div><p class="dim small">Kıyafetler yalnızca görseldir; av gücü vermez.</p>` };
     },
     Decor() {
-      const html = Object.entries(DECOR_SLOTS).map(([slot, nm]) => { const cur = S.home.decor[slot]; return `<h4>${esc(nm)} ${cur ? '· ' + esc(DECOR_BY[cur].name) : '<span class="dim">· boş</span>'}</h4><div class="optgrid">${DECOR.filter(d => d.slot === slot).map(d => { const own = S.home.owned.includes(d.id); return `<button class="opt ${cur === d.id ? 'on' : ''} ${own ? '' : 'lock'}" data-a="${own ? 'placeDecor' : (d.price ? 'buyDecor' : 'noop')}" data-s="${slot}" data-id="${d.id}">${img('decor_' + d.id, 2)}<b>${esc(d.name)}</b><small>${own ? (cur === d.id ? 'Yerleşik (kaldır)' : 'Yerleştir') : d.price ? fmt(d.price) + ' para' : 'Başarım: ' + esc((ACHS.find(a => a.id === d.ach) || {}).name || '')}</small></button>`; }).join('')}</div>`; }).join('');
-      return { title: 'Ev Dekorasyonu', icon: 'decor', cls: 'wide', html: `<div class="evbox">Yerleşik eşya: ${Object.values(S.home.decor).filter(Boolean).length}/5 · Sandık: ${Inv.cap('chest')} yuva ${INVC.home_chest[S.chestLevel + 1] ? `<button class="btn sm g" data-a="buyChest">Sandığı büyüt ${coin(INVC.home_chest[S.chestLevel + 1][2])}</button>` : ''}</div>${html}` };
+      const html = Object.entries(DECOR_SLOTS).map(([slot, nm]) => { const cur = S.home.decor[slot]; return `<h4>${esc(nm)} ${cur ? '· ' + esc(DECOR_BY[cur].name) : '<span class="dim">· boş</span>'}</h4><div class="optgrid">${DECOR.filter(d => d.slot === slot).map(d => { const own = S.home.owned.includes(d.id); return `<button class="opt ${cur === d.id ? 'on' : ''} ${own ? '' : 'lock'}" data-a="${own ? 'placeDecor' : 'noop'}" data-s="${slot}" data-id="${d.id}">${img('decor_' + d.id, 2)}<b>${esc(d.name)}</b><small>${own ? (cur === d.id ? 'Yerleşik (kaldır)' : 'Yerleştir') : d.price ? 'Kerem\'in dükkânında · ' + fmt(d.price) : 'Başarım: ' + esc((ACHS.find(a => a.id === d.ach) || {}).name || '')}</small></button>`; }).join('')}</div>`; }).join('');
+      return { title: 'Ev Dekorasyonu', icon: 'decor', cls: 'wide', html: `<div class="evbox">Yerleşik eşya: ${Object.values(S.home.decor).filter(Boolean).length}/5 · Sandık: ${Inv.cap('chest')} yuva ${INVC.home_chest[S.chestLevel + 1] ? '<span class="dim">· büyütmek için Kerem\'in Ev Eşyaları</span>' : ''}</div>${html}` };
+    },
+    Bakery() {
+      const cur = Shop.snackToday();
+      const html = `${cur ? `<div class="evbox">${img('snack_' + cur.id, 2)} Bugün: <b>${esc(cur.name)}</b> — ${esc(cur.desc)}</div>` : '<div class="evbox">Günde bir atıştırmalık alabilirsin; etkisi o gün boyunca sürer.</div>'}` + SNACKS.map(sn => `<div class="row">${img('snack_' + sn.id, 2)}<div class="grow"><b>${esc(sn.name)}</b><div class="dim small">${esc(sn.desc)}</div></div>${cur && cur.id === sn.id ? '<span class="ok">Afiyet olsun</span>' : `<button class="btn g sm" data-a="buySnack" data-id="${sn.id}" ${cur || S.cash < sn.price ? 'disabled' : ''}>Al ${coin(sn.price)}</button>`}</div>`).join('') + '<p class="dim small">Atıştırmalıklar enerji vermez; yalnızca o günkü mücadeleyi biraz kolaylaştırır.</p>';
+      return { title: 'Fatma Teyze\'nin Fırını', icon: 'bakery', npc: 'fatma', html };
+    },
+    Boutique() {
+      const L = S.player; const fe = World.festival();
+      const prev = (kind, it) => { const look = Object.assign({}, L, kind === 'outfit' ? { outfit: it.id } : { hat: it.id }); return Atlas.url('p:' + lookKey(look) + ':idle0', () => personPB(look, 'idle0'), 2); };
+      const row = (kind, it) => { const own = (kind === 'outfit' ? S.wardrobe.outfits : S.wardrobe.hats).includes(it.id); const worn = (kind === 'outfit' ? L.outfit : L.hat) === it.id; return `<div class="opt ${worn ? 'on' : ''}"><img class="pix" src="${prev(kind, it)}" alt=""><b>${esc(it.name)}</b>${own ? (worn ? '<small class="ok">Giyili</small>' : `<button class="btn sm" data-a="wear" data-k="${kind}" data-id="${it.id}">Giy</button>`) : `<button class="btn g sm" data-a="buyCos" data-k="${kind}" data-id="${it.id}" ${S.cash < it.price ? 'disabled' : ''}>${coin(it.price)}</button>`}</div>`; };
+      let html = '';
+      if (fe) { const st = fe.stall; const it = (st.kind === 'hat' ? HATS : OUTFITS).find(x => x.id === st.id); const own = (st.kind === 'hat' ? S.wardrobe.hats : S.wardrobe.outfits).includes(st.id); html += `<div class="evbox">${img('festival', 2)} <b>${esc(fe.name)} standı:</b> ${esc(it.name)} — yalnızca şenlik günlerinde! ${own ? '<span class="ok">Sahipsin</span>' : `<button class="btn g sm" data-a="buyFest" ${S.cash < st.price ? 'disabled' : ''}>Al ${coin(st.price)}</button>`}</div>`; }
+      html += `<h4>Kıyafetler</h4><div class="optgrid">${OUTFITS.filter(o => o.price).map(o => row('outfit', o)).join('')}</div><h4>Şapkalar</h4><div class="optgrid">${HATS.filter(o => o.price).map(o => row('hat', o)).join('')}</div><p class="dim small">Önizlemeler senin karakterinle gösterilir. Kıyafetler yalnızca görseldir. Şenlik ürünleri şenlik günlerinde standa gelir.</p>`;
+      return { title: 'Selin\'in Butiği', icon: 'boutique', npc: 'selin', html, cls: 'wide' };
+    },
+    HomeGoods() {
+      const nx = INVC.home_chest[S.chestLevel + 1];
+      let html = `<div class="row">${img('chestUp', 2)}<div class="grow"><b>Ev sandığı</b><div class="dim small">Şu an ${Inv.cap('chest')} yuva</div></div>${nx ? `<button class="btn g sm" data-a="buyChest" ${S.cash < nx[2] ? 'disabled' : ''}>${nx[1]} yuvaya büyüt ${coin(nx[2])}</button>` : '<span class="ok">En büyük</span>'}</div>`;
+      html += Object.entries(DECOR_SLOTS).map(([slot, nm]) => `<h4>${esc(nm)}</h4><div class="optgrid">${DECOR.filter(d => d.slot === slot && d.price).map(d => { const own = S.home.owned.includes(d.id); return `<div class="opt">${img('decor_' + d.id, 2)}<b>${esc(d.name)}</b>${own ? '<small class="ok">Sahipsin · evde yerleştir</small>' : `<button class="btn g sm" data-a="buyDecor" data-id="${d.id}" ${S.cash < d.price ? 'disabled' : ''}>${coin(d.price)}</button>`}</div>`; }).join('')}</div>`).join('');
+      return { title: 'Kerem\'in Ev Eşyaları', icon: 'homegoods', npc: 'kerem', html: html + '<p class="dim small">Aldığın eşyaları evdeki Dekor menüsünden yerleştirebilirsin.</p>', cls: 'wide' };
+    },
+    Teahouse() {
+      const fid = Tea.special(), f = FISH[fid], src = Market.sources(!!this.sel.tChest), have = Inv.count(src, fid), left = Tea.left(), mx = Math.min(have, left); const q = clamp(this.qty.tea || mx, mx ? 1 : 0, mx);
+      const nf = World.nextFestival();
+      const html = `<div class="evbox">${img('teahouse', 2)} <b>Günün balığı:</b> ${fishImg(fid, 1, 'mini')} <b>${esc(f.name_tr)}</b> · ${coin(Tea.price(fid))}/adet <span class="dim">(hal ${fmt(f.base_price)})</span> · bugün kalan alım: <b>${left}</b></div>
+        <div class="row"><span class="grow">Elinde: <b>${have}</b> <label class="small"><input type="checkbox" data-chk="tChest" ${this.sel.tChest ? 'checked' : ''}> sandığı dahil et</label></span>${mx ? `<div class="step"><button data-a="qty" data-k="tea" data-d="-1" data-max="${mx}">−</button><b>${q}</b><button data-a="qty" data-k="tea" data-d="1" data-max="${mx}">+</button></div><button class="btn g sm" data-a="teaSell" data-n="${q}">Sat ${coin(q * Tea.price(fid))}</button>` : '<span class="dim">Satılacak yok</span>'}</div>
+        <h4>Masalardaki sohbet</h4><p>${img('upg_navigation', 1, 'ic')} ${esc(NPCDialog.tip())}</p>${nf ? `<p>${img('festival', 1, 'ic')} ${nf.inDays ? esc(nf.f.name) + ' ' + nf.inDays + ' gün sonra (' + SEASON_TR[nf.f.season] + ' ' + nf.f.days[0] + '. gün): ' + esc(nf.f.comp_name) : esc(nf.f.name) + ' bugün! Meydana uğra.'}</p>` : ''}<p class="dim small">Halil Usta her gün tek bir türü günde ${Tea.cfg.daily_special_qty} adede kadar taban fiyatın ${String(Tea.cfg.daily_special_multiplier).replace('.', ',')} katına alır.</p>`;
+      return { title: 'Halil Usta\'nın Çay Bahçesi', icon: 'teahouse', npc: 'halil', html };
+    },
+    Square() {
+      const fe = World.festival(); let html = '';
+      if (fe) {
+        const ent = Comp.entered(fe), res = S.fest[festKey(fe)], act = Comp.active(); const pz = Comp.prizes(World.year());
+        html += `<div class="evbox">${img('festival', 2)} <b>${esc(fe.name)}</b> bugün! · <b>${esc(fe.comp_name)}</b><br>${esc(fe.rule)} · ${COMP.casts} atış · enerji harcamaz · İskele'de yapılır</div>
+          <div class="grid3"><div class="kv">${img('cup_1', 1, 'ic')}<span>1.</span><b>${coin(pz[0])}</b></div><div class="kv">${img('cup_2', 1, 'ic')}<span>2.</span><b>${coin(pz[1])}</b></div><div class="kv">${img('cup_3', 1, 'ic')}<span>3.</span><b>${coin(pz[2])}</b></div></div>
+          <h4>Rakipler</h4><div class="grid3">${RIVALS.map(r => `<div class="kv"><span>${esc(r.name)}</span><b class="lv">${'★'.repeat(Math.round(r.skill * 5))}</b></div>`).join('')}</div>
+          <div class="btns">${act ? '<button class="btn g big" data-a="compGo">Yarışmaya Dön</button>' : ent ? `<span class="ok">Katıldın${res && res.place ? ' · ' + res.place + '. oldun' : ''}</span>` : '<button class="btn g big" data-a="compStart">Kaydol ve Yarış</button>'}</div>`;
+      } else {
+        const nf = World.nextFestival(); html += `<div class="evbox">${img('festival', 2)} Bir sonraki şenlik: <b>${esc(nf.f.name)}</b> — ${nf.inDays} gün sonra (${SEASON_TR[nf.f.season]} ${nf.f.days[0]}–${nf.f.days[1]}. günler)</div>`;
+      }
+      html += `<h4>Şenlik takvimi</h4>${FESTIVALS.map(f => { const r = S.fest[f.id + ':' + World.year()]; return `<div class="row">${img(f.season, 2)}<div class="grow"><b>${esc(f.name)}</b> <span class="dim">· ${SEASON_TR[f.season]} ${f.days.join('–')}. gün</span><div class="small">${esc(f.comp_name)}: ${esc(f.rule)}</div></div>${r && r.place ? img('cup_' + Math.min(3, r.place), 2) + `<span class="small">${r.place}.</span>` : ''}</div>`; }).join('')}`;
+      html += `<p class="dim small">Kupaların: ${S.trophies.length} · Şenlik standındaki özel ürünler Selin'in butiğinde, yalnızca şenlik günlerinde satılır.</p>`;
+      return { title: 'Şenlik Meydanı', icon: 'square', npc: 'hasan', html, cls: 'wide' };
+    },
+    Trophies() {
+      const t = S.trophies.slice().sort((a, b) => a.place - b.place || b.year - a.year);
+      const html = (t.length ? `<div class="tiles">${t.map(x => { const f = FEST[x.fest]; return `<div class="btn tile">${img('cup_' + x.place, 3)}<span><b>${x.place}.</b> ${esc(f.name)}</span><small class="dim">Yıl ${x.year} · ${esc(Comp.fmt(f.comp, x.score))}</small></div>`; }).join('')}</div>` : '<p class="dim">Henüz kupan yok. Her mevsimin 14–15. günlerinde Şenlik Meydanı\'ndaki yarışmalara katıl!</p>') + `<div class="btns left"><button class="btn" data-a="openPanel" data-p="Achievements">${img('trophy', 1, 'ic')} Başarımlar</button></div>`;
+      return { title: 'Kupa Dolabı', icon: 'cup_1', html, cls: 'wide' };
     },
     Debug() { return { title: 'QA / Test Paneli', icon: 'gear', html: QA.panelHtml(), cls: 'wide' }; }
   },
@@ -524,7 +585,7 @@ const UI = {
     mapBack() { go('Town', { at: 'harbor' }); },
     depart() { Game.scene.depart(); },
     mapSkip() { Game.scene.skip(); },
-    backTown() { if (Fishing.locked()) return; go('Town', { at: 'pier' }); },
+    backTown() { if (Fishing.locked()) return; if (Comp.active()) { this.confirm({ title: 'Yarışmadan çık?', danger: true, icon: 'festival', text: 'Kalan ' + S.comp.castsLeft + ' atış hakkın yanacak ve sıralaman şu anki puanınla belirlenecek.', ok: 'Yarışmayı bitir', onOk: () => { Comp.leave(); this.showCompResult(); } }); return; } go('Town', { at: 'pier' }); },
     backHarbor() { if (Fishing.locked()) return; this.confirm({ title: 'Limana dön', icon: 'anchor', text: 'Limana dönüş ücretsiz. Tekrar denize çıkmak için yeni sefer bedeli ödenir.', ok: 'Limana Dön', onOk: () => go('Town', { at: 'harbor' }) }); },
     pierSpot(d) { Game.scene.switchSpot(+d.d); },
     goSpot(d) { Game.scene.goSpot(+d.i); },
@@ -557,6 +618,13 @@ const UI = {
       else this.toastNow('Önce bir dosya seç ya da metin yapıştır.', 'warn');
     },
     async restoreBackup() { const st = await Save.loadBackup(); if (!st) { this.toastNow('Geçerli bir gün yedeği bulunamadı.', 'warn'); return; } this.confirm({ title: 'Yedekten yükle?', danger: true, text: 'Son uyku anındaki yedek (Gün ' + st.day + ') yüklenecek.', ok: 'Yükle', onOk: () => { Save.keepPrevious(); S = st; Save.now(); startFromState(); } }); },
+    buySnack(d) { const sn = SNACK[d.id]; this.buy(sn.name, 'snack_' + sn.id, sn.price, sn.desc, () => Shop.buySnack(d.id)); },
+    buyFest() { const fe = World.festival(); if (!fe) return; const st = fe.stall; const it = (st.kind === 'hat' ? HATS : OUTFITS).find(x => x.id === st.id); this.buy(it.name, 'festival', st.price, 'Şenliğe özel kozmetik.', () => Shop.buyFestivalItem()); },
+    teaSell(d) { const r = Tea.sell(+d.n, Market.sources(!!this.sel.tChest)); if (r.ok) { this.toastNow(r.n + ' balık Halil Usta\'ya satıldı: +' + fmt(r.income), 'good', 'teahouse'); delete this.qty.tea; } else this.toastNow(r.msg, 'warn'); },
+    compStart() { const r = Comp.start(); if (!r.ok) { this.toastNow(r.msg, 'warn'); return; } this.closePanel(true); go('PierFishing', { spot: 1 }); this.toastNow('Yarışma başladı! ' + COMP.casts + ' atış hakkın var. Rakiplerin de iskelede.', 'good', 'festival'); },
+    compGo() { this.closePanel(true); go('PierFishing', { spot: 1 }); },
+    compDone() { this.closeModal(); Comp.clearDone(); this.refresh(); },
+    festInfo() { if (Game.sceneName === 'Town') { this.openPanel('Square'); return; } const fe = World.festival(), nf = World.nextFestival(); this.confirm({ title: fe ? fe.name : 'Yaklaşan şenlik', icon: 'festival', text: fe ? fe.comp_name + ': ' + fe.rule + '. Kaydolmak için kasabadaki Şenlik Meydanı\'na git.' : nf.f.name + ' ' + nf.inDays + ' gün sonra başlıyor.', ok: 'Tamam', cancel: 'Kapat' }); },
     dbg(d) { QA.act(d.k, d); }
   }
 };

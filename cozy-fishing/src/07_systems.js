@@ -501,6 +501,7 @@ const NPCDialog = {
     if (!trig) for (const d of list) { const t = NPC_TRIG[d.trigger]; if (t && t[0] && !st.seen[d.trigger] && t[1]()) { trig = d.trigger; break; } }
     if (!trig && by.record && S.stats.records > st.lastRecord) trig = 'record';
     if (!trig && by.big_order && st.bigDay !== S.day && NPC_TRIG.big_order[1]()) { trig = 'big_order'; st.bigDay = S.day; }
+    for (const ft of ['festival_today', 'festival_soon']) if (!trig && by[ft] && st[ft + 'Day'] !== S.day && NPC_TRIG[ft] && NPC_TRIG[ft][1]()) { trig = ft; st[ft + 'Day'] = S.day; }
     if (!trig && st.lastDay === S.day && st.lastTrig && by[st.lastTrig]) trig = st.lastTrig;
     if (!trig) {
       const wx = S.world.weather.sakin_liman;

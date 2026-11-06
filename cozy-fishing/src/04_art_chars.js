@@ -28,7 +28,10 @@ function drawHat(pb, id, ox, oy) {
     case 'hasir': { const c = '#e8cf7a', d = '#c8aa52', b = '#b84a3a'; for (let y = 0; y <= 3; y++) for (let x = 5; x <= 11; x++) { if (y === 0 && (x === 5 || x === 11)) continue; P(x, y, y === 3 ? b : ((x + y) % 2 ? c : d)); } for (let x = 1; x <= 15; x++) P(x, 4, (x % 2) ? c : d); P(1, 5, d); P(15, 5, d); break; }
     case 'kaptan': { const w = '#f4f2ea', g = '#d8d4c8'; for (let y = 0; y <= 3; y++) for (let x = 4; x <= 12; x++) { if (y === 0 && (x < 5 || x > 11)) continue; P(x, y, y === 3 ? '#1e2230' : (y === 0 ? g : w)); } for (let x = 9; x <= 14; x++) P(x, 4, '#1a1c26'); P(8, 1, '#e8b830'); P(8, 2, '#c89820'); break; }
     case 'usta': { const c = '#4a7a5a', d = '#355a42'; for (let y = 0; y <= 3; y++) for (let x = 5; x <= 11; x++) { if (y === 0 && (x === 5 || x === 11)) continue; P(x, y, y === 3 ? d : c); } for (let x = 3; x <= 13; x++) P(x, 4, d); P(6, 1, '#e8483a'); P(9, 0, '#f2d030'); P(10, 2, '#3a8ae8'); P(7, 2, '#f0f0f0'); break; }
-    case 'flat': { const c = '#6a6258', d = '#4e4840'; for (let y = 2; y <= 4; y++) for (let x = 4; x <= 12; x++) { if (y === 2 && (x < 5 || x > 11)) continue; P(x, y, y === 4 ? d : c); } for (let x = 10; x <= 14; x++) P(x, 4, d); break; }
+    case 'kasket': case 'flat': { const c = '#6a6258', d = '#4e4840'; for (let y = 2; y <= 4; y++) for (let x = 4; x <= 12; x++) { if (y === 2 && (x < 5 || x > 11)) continue; P(x, y, y === 4 ? d : c); } for (let x = 10; x <= 14; x++) P(x, 4, d); break; }
+    case 'denizci_bere': { const c = '#2a3a66', d = '#1c2848'; for (let y = 1; y <= 4; y++) for (let x = 4; x <= 12; x++) { if (y === 1 && (x < 6 || x > 10)) continue; P(x, y, y === 4 ? '#f4f0e4' : (x % 3 ? c : d)); } P(8, 0, '#c4473f'); P(7, 0, '#c4473f'); break; }
+    case 'cicek_taci': { const fl = ['#f26a8a', '#f2d030', '#f4f0f8', '#c87af0']; for (let x = 4; x <= 12; x++) { P(x, 3, '#4a8a3a'); if (x % 2 === 0) { P(x, 2, fl[(x / 2) % 4]); P(x, 1, light(fl[(x / 2) % 4], .3)); } } break; }
+    case 'fener_beresi': { const c = '#6a3a8a', d = '#4a2a6a'; for (let y = 1; y <= 4; y++) for (let x = 4; x <= 12; x++) { if (y === 1 && (x < 6 || x > 10)) continue; P(x, y, y === 4 ? d : ((x + y) % 2 ? c : light(c, .15))); } P(8, -0, '#f6d838'); P(8, 0, '#ffe870'); P(7, 0, '#f2a830'); P(9, 0, '#f2a830'); break; }
     case 'bandana': { const c = '#c8423a', d = '#9a2e28'; for (let y = 2; y <= 4; y++) for (let x = 4; x <= 12; x++) { if (y === 2 && (x < 5 || x > 11)) continue; P(x, y, (x + y) % 3 === 0 ? '#f0e0d0' : c); } P(3, 4, d); P(2, 5, d); P(2, 4, c); P(3, 6, d); break; }
   }
 }
@@ -63,6 +66,8 @@ function personPB(look, pose) {
     else if (of.pat === 'flower') c = ihash(x, y, 4) < 0.18 ? sh2 : (ihash(x, y, 8) < 0.1 ? '#f8f4e8' : sh);
     else if (of.pat === 'buttons' && x === 9) c = (y % 2) ? '#e8c050' : dark(sh, 0.15);
     else if (of.pat === 'rain') c = x === 9 ? sh2 : sh;
+    else if (of.pat === 'stripes') c = (y % 2) ? sh2 : (x === tx0 ? dark(sh, 0.15) : sh);
+    else if (of.pat === 'logo') c = (y >= ty0 + 2 && y <= ty0 + 4 && x >= 8 && x <= 10) ? sh2 : (x === tx0 ? dark(sh, .2) : sh);
     if (y === ty0 && x > tx0 + 1 && x < tx1 - 1) c = light(c, 0.18);
     if (y === ty1) c = dark(c, 0.18);
     P(x, y, c);
@@ -141,6 +146,8 @@ function portraitPB(look) {
   if (of.pat === 'buttons') { for (let y = 33; y < 40; y += 2) pb.set(20, y, '#e8c050'); }
   if (of.pat === 'nordic') { for (let x = 6; x < 34; x++) pb.set(x, 35, (x % 2) ? of.shirt2 : of.shirt); pb.rect(6, 34, 28, 1, of.shirt2); pb.rect(6, 36, 28, 1, of.shirt2); }
   if (of.pat === 'rain') { pb.rect(19, 32, 2, 8, of.shirt2); }
+  if (of.pat === 'stripes') { for (let y = 32; y < 40; y += 2) for (let x = 2; x < 38; x++) if (pb.has(x, y)) pb.set(x, y, of.shirt2); }
+  if (of.pat === 'logo') { pb.ellipse(20, 36, 3, 2.5, of.shirt2); }
   if (look.scarf) { pb.rect(13, 30, 14, 3, look.scarf); pb.rect(13, 33, 3, 4, dark(look.scarf, .2)); }
   /* boyun & kafa */
   pb.rect(16, 26, 8, 6, SD);
@@ -172,6 +179,10 @@ function portraitPB(look) {
   if (hat === 'hasir') { pb.ellipse(20, 6, 8, 5, '#e8cf7a', (x, y) => (x + y) % 2 ? '#e8cf7a' : '#c8aa52'); pb.rect(12, 8, 16, 2, '#b84a3a'); pb.rect(1, 10, 38, 2, '#d8bc62'); }
   if (hat === 'kaptan') { pb.ellipse(20, 6, 12, 5, '#f4f2ea'); pb.rect(8, 8, 24, 3, '#1e2230'); pb.rect(18, 3, 4, 4, '#e8b830'); pb.rect(20, 11, 13, 2, '#1a1c26'); }
   if (hat === 'usta') { pb.ellipse(20, 7, 10, 6, '#4a7a5a'); pb.rect(5, 9, 30, 3, '#355a42'); pb.set(14, 5, '#e8483a'); pb.set(20, 3, '#f2d030'); pb.set(25, 6, '#3a8ae8'); }
+  if (hat === 'denizci_bere') { pb.ellipse(20, 8, 12, 7, '#2a3a66', (x) => x % 3 ? '#2a3a66' : '#1c2848'); pb.rect(8, 9, 24, 3, '#f4f0e4'); pb.ellipse(20, 1.5, 3, 2, '#c4473f'); }
+  if (hat === 'cicek_taci') { pb.rect(9, 8, 22, 2, '#4a8a3a'); ['#f26a8a', '#f2d030', '#f4f0f8', '#c87af0', '#f26a8a', '#f2d030'].forEach((c, i) => pb.ellipse(11 + i * 3.6, 7, 2, 2, c)); }
+  if (hat === 'fener_beresi') { pb.ellipse(20, 8, 12, 7, '#6a3a8a', (x, y) => (x + y) % 2 ? '#6a3a8a' : '#7a4a9a'); pb.rect(8, 9, 24, 3, '#4a2a6a'); pb.ellipse(20, 1.5, 3, 2.5, '#ffe870'); pb.set(20, 1, '#ffffff'); }
+  if (hat === 'kasket') { pb.ellipse(20, 8, 11, 5, '#6a6258'); pb.rect(18, 10, 16, 2, '#4e4840'); }
   if (hat === 'flat') { pb.ellipse(20, 8, 11, 5, '#6a6258'); pb.rect(18, 10, 16, 2, '#4e4840'); }
   if (hat === 'bandana') { pb.ellipse(20, 9, 11, 5.5, '#c8423a', (x, y) => (x + y) % 4 === 0 ? '#f0e0d0' : '#c8423a'); pb.rect(5, 11, 5, 3, '#9a2e28'); }
   pb.outline(null, 0.55);

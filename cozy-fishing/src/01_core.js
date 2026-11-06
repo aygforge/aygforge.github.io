@@ -3,9 +3,10 @@
    COZY FISHING — Tam Sürüm (tek dosya, çevrimdışı)
    01_core.js : Config / FishDB bağlantısı, yardımcılar, RNG, içerik verisi, GameState
    ===================================================================== */
-const DB = window.FISHDB_DATA, CFG = window.GAMECONFIG_DATA;
+const DB = window.FISHDB_DATA, CFG = window.GAMECONFIG_DATA, EXP = window.EXPANSION_DATA;
+Object.assign(CFG.npc_dialogues, EXP.npc_dialogues);
 const LW = CFG.platform.logical_resolution[0], LH = CFG.platform.logical_resolution[1];
-const SCHEMA = 1;
+const SCHEMA = 2;
 
 /* ---------- Config: veri kaynaklarından türetilmiş tablolar ---------- */
 const FISH_LIST = DB.fish;
@@ -21,7 +22,10 @@ const BOATS = CFG.boats, BOAT = Object.fromEntries(BOATS.map(b => [b.id, b]));
 const AUTOS = CFG.automation, AUTO = Object.fromEntries(AUTOS.map(a => [a.id, a]));
 const CUSTOMERS = CFG.customers, CUST = Object.fromEntries(CUSTOMERS.map(c => [c.id, c]));
 const EVENTS = CFG.events, EVENT = Object.fromEntries(EVENTS.map(e => [e.id, e]));
-const ACHS = CFG.achievements;
+const ACHS = CFG.achievements.concat(EXP.achievements);
+const FESTIVALS = EXP.festivals, RIVALS = EXP.rivals, SNACKS = EXP.snacks, COMP = EXP.competition;
+const FEST = Object.fromEntries(FESTIVALS.map(f => [f.id, f]));
+{ const a = ACHS.find(x => x.id === 'species42'); if (a) a.condition_tr = 'Tüm ' + DB.fish.length + ' türü keşfet'; }
 const RC = CFG.reeling, CORE = CFG.core, INVC = CFG.inventory, K = DB.constants;
 const STACK = INVC.fish_stack_per_slot;
 const SEASONS = ['spring', 'summer', 'autumn', 'winter'];
@@ -90,15 +94,24 @@ const OUTFITS = [
   { id: 'yagmurluk', name: 'Yağmurluk', price: 650, shirt: '#f2c230', shirt2: '#c8961c', pants: '#3b4656', shoes: '#2a2f3a', pat: 'rain' },
   { id: 'denizci', name: 'Denizci Montu', price: 1200, shirt: '#2a3a66', shirt2: '#1c2848', pants: '#e8e4da', shoes: '#2a2226', pat: 'buttons' },
   { id: 'kuzey', name: 'Kuzey Kazağı', unlock: 'visit:sisli_kuzey', unlockTr: 'Sisli Kuzey keşfi', shirt: '#9a2f34', shirt2: '#f0eadc', pants: '#3a3a44', shoes: '#3a2a22', pat: 'nordic' },
-  { id: 'tropik', name: 'Tropik Gömlek', unlock: 'visit:gunes_adalari', unlockTr: 'Güneş Adaları keşfi', shirt: '#2fa39a', shirt2: '#f2d04a', pants: '#e0d2b0', shoes: '#8a5a3a', pat: 'flower' }
+  { id: 'tropik', name: 'Tropik Gömlek', unlock: 'visit:gunes_adalari', unlockTr: 'Güneş Adaları keşfi', shirt: '#2fa39a', shirt2: '#f2d04a', pants: '#e0d2b0', shoes: '#8a5a3a', pat: 'flower' },
+  { id: 'cizgili', name: 'Çizgili Denizci Tişörtü', price: 450, shirt: '#f4f0e4', shirt2: '#2a4a8a', pants: '#3b4656', shoes: '#2a2226', pat: 'stripes' },
+  { id: 'tulum', name: 'Kot Tulum', price: 800, shirt: '#e8dcc0', shirt2: '#c8b898', pants: '#3a5a8a', shoes: '#5a3b2a', pat: 'overalls', apron: '#3a5a8a' },
+  { id: 'keten', name: 'Keten Gömlek', price: 950, shirt: '#e8e0c8', shirt2: '#c8bca0', pants: '#8a7a5a', shoes: '#6a4a32', pat: 'buttons' },
+  { id: 'festival_tisort', name: 'Festival Tişörtü', fest: 'yaz_festivali', shirt: '#f28a3a', shirt2: '#f2d030', pants: '#3a4a6a', shoes: '#2a2226', pat: 'logo' },
+  { id: 'orgu_hirka', name: 'Örgü Hırka', fest: 'hasat_senligi', shirt: '#9a5a3a', shirt2: '#c8844a', pants: '#4a3a3a', shoes: '#3a2a22', pat: 'knit' }
 ];
 const HATS = [
   { id: 'none', name: 'Şapkasız', start: true },
   { id: 'klasik', name: 'Klasik Şapka', start: true },
   { id: 'bere', name: 'Yün Bere', start: true },
   { id: 'hasir', name: 'Hasır Şapka', price: 300 },
-  { id: 'usta', name: 'Usta Balıkçı Şapkası', unlock: 'ach:species42', unlockTr: '42 tür keşfi' },
-  { id: 'kaptan', name: 'Kaptan Şapkası', unlock: 'ach:all_boats', unlockTr: '4 tekneye sahip ol' }
+  { id: 'usta', name: 'Usta Balıkçı Şapkası', unlock: 'ach:species42', unlockTr: 'tüm türleri keşfet' },
+  { id: 'kaptan', name: 'Kaptan Şapkası', unlock: 'ach:all_boats', unlockTr: '4 tekneye sahip ol' },
+  { id: 'kasket', name: 'Kasket', price: 250 },
+  { id: 'denizci_bere', name: 'Denizci Beresi', price: 400 },
+  { id: 'cicek_taci', name: 'Çiçek Tacı', fest: 'bahar_senligi' },
+  { id: 'fener_beresi', name: 'Fenerli Bere', fest: 'fener_senligi' }
 ];
 const BOAT_COLORS = [
   { id: 'sea_green', name: 'Deniz Yeşili', price: 0, c: ['#3f9a86', '#2c7466', '#6cc2ac'] },
@@ -124,7 +137,13 @@ const DECOR = [
   { id: 'mercan_parca', name: 'Cam Şamandıra', slot: 'window', ach: 'visit7' },
   { id: 'rekor_pano', name: 'Rekor Panosu', slot: 'board', ach: 'records10' },
   { id: 'harita_pano', name: 'Av Noktaları Haritası', slot: 'board', ach: 'spots10' },
-  { id: 'kartpostal', name: 'Müşteri Kartpostalları', slot: 'board', ach: 'buyers5' }
+  { id: 'kartpostal', name: 'Müşteri Kartpostalları', slot: 'board', ach: 'buyers5' },
+  { id: 'ahsap_saat', name: 'Ahşap Duvar Saati', slot: 'wall', price: 350 },
+  { id: 'gemi_maketi', name: 'Yelkenli Maketi', slot: 'shelf', price: 600 },
+  { id: 'gaz_lambasi', name: 'Gaz Lambası', slot: 'table', price: 260 },
+  { id: 'ruzgar_cani', name: 'Rüzgâr Çanı', slot: 'window', price: 180 },
+  { id: 'balik_posteri', name: 'Balık Türleri Posteri', slot: 'board', price: 220 },
+  { id: 'sampiyon_flama', name: 'Şampiyonluk Flaması', slot: 'wall', ach: 'gold_trophy' }
 ];
 const DECOR_BY = Object.fromEntries(DECOR.map(d => [d.id, d]));
 /* Başarım → kozmetik ödül eşlemesi */
@@ -145,7 +164,15 @@ const NPCS = {
   nihat: { name: 'Nihat', role: 'Balık Hali', look: { skin: 2, hair: 0, hairColor: 6, body: 1, outfit: { shirt: '#6a8aa8', shirt2: '#4a6a88', pants: '#2f3a4a', shoes: '#2a2226', pat: 'apron', apron: '#f0f0ea' }, hat: 'flat', mustache: true } },
   bora: { name: 'Bora', role: 'Tekne Atölyesi', look: { skin: 3, hair: 1, hairColor: 0, body: 1, outfit: { shirt: '#c8643a', shirt2: '#9a4a2a', pants: '#3a5a8a', shoes: '#3a2a22', pat: 'overalls', apron: '#3a5a8a' }, hat: 'bandana', beard: true } },
   bahar: { name: 'Bahar', role: 'Bahar Lokantası', look: { skin: 0, hair: 5, hairColor: 3, body: 0, outfit: { shirt: '#f0eadc', shirt2: '#d8cfb8', pants: '#5a3a4a', shoes: '#3a2a22', pat: 'apron', apron: '#c8423a' }, hat: 'none', scarf: '#c8423a' } },
-  efe: { name: 'Efe', role: 'Deneyimli Balıkçı', look: { skin: 2, hair: 0, hairColor: 6, body: 0, outfit: { shirt: '#3a4e6a', shirt2: '#26364e', pants: '#4a4a3a', shoes: '#2a2226', pat: 'buttons' }, hat: 'klasik', beard: true, beardColor: '#e8e8e8' } }
+  efe: { name: 'Efe', role: 'Deneyimli Balıkçı', look: { skin: 2, hair: 0, hairColor: 6, body: 0, outfit: { shirt: '#3a4e6a', shirt2: '#26364e', pants: '#4a4a3a', shoes: '#2a2226', pat: 'buttons' }, hat: 'klasik', beard: true, beardColor: '#e8e8e8' } },
+  fatma: { name: 'Fatma Teyze', role: 'Fırın', look: { skin: 1, hair: 5, hairColor: 6, body: 1, outfit: { shirt: '#c86a5a', shirt2: '#a84a3a', pants: '#4a3a4a', shoes: '#3a2a22', pat: 'apron', apron: '#f4f0e4' }, hat: 'none', scarf: '#e8b830' } },
+  selin: { name: 'Selin', role: 'Butik', look: { skin: 0, hair: 7, hairColor: 0, body: 0, outfit: { shirt: '#c85a9a', shirt2: '#a83a7a', pants: '#2a2a3a', shoes: '#1a1a22', pat: 'plain' }, hat: 'none' } },
+  kerem: { name: 'Kerem', role: 'Ev Eşyaları', look: { skin: 2, hair: 2, hairColor: 2, body: 1, outfit: { shirt: '#6a8a4a', shirt2: '#4a6a32', pants: '#4a3a2a', shoes: '#3a2a22', pat: 'apron', apron: '#a8743e' }, hat: 'none', mustache: true } },
+  hasan: { name: 'Muhtar Hasan', role: 'Şenlik Meydanı', look: { skin: 3, hair: 0, hairColor: 6, body: 1, outfit: { shirt: '#4a3a5a', shirt2: '#2e2440', pants: '#2a2a3a', shoes: '#1a1a22', pat: 'buttons' }, hat: 'flat', mustache: true } },
+  halil: { name: 'Halil Usta', role: 'Çay Bahçesi', look: { skin: 4, hair: 0, hairColor: 0, body: 1, outfit: { shirt: '#f0eadc', shirt2: '#d8cfb8', pants: '#3a3a3a', shoes: '#2a2226', pat: 'vest' }, hat: 'none', mustache: true } },
+  ali: { name: 'Ali Dayı', role: 'İskele balıkçısı', look: { skin: 3, hair: 0, hairColor: 6, body: 0, outfit: { shirt: '#5a6a4a', shirt2: '#3e4a32', pants: '#3a3a44', shoes: '#2a2226', pat: 'vest' }, hat: 'klasik', beard: true, beardColor: '#c8c8c8' } },
+  mert: { name: 'Mert', role: 'İskele balıkçısı', look: { skin: 1, hair: 1, hairColor: 1, body: 0, outfit: { shirt: '#e86a3a', shirt2: '#c84a2a', pants: '#3a4a6a', shoes: '#2a2226', pat: 'plain' }, hat: 'none' } },
+  elif: { name: 'Elif', role: 'İskele balıkçısı', look: { skin: 2, hair: 4, hairColor: 3, body: 0, outfit: { shirt: '#5ab8c8', shirt2: '#3a98a8', pants: '#4a3a5a', shoes: '#2a2226', pat: 'plain' }, hat: 'hasir' } }
 };
 
 /* ---------- yardımcılar ---------- */
@@ -210,13 +237,13 @@ function newState(look) {
       manualCasts: 0, manualCatches: 0, autoCatches: 0, released: 0, lineBreaks: 0, escapes: 0, missed: 0, noBite: 0, cancels: 0,
       totalSales: 0, marketSales: 0, orderSales: 0, fishSoldMarket: 0, ordersDelivered: 0, buyers: {}, records: 0,
       daysCompleted: 0, trips: 0, fuelSpent: 0, baitUsed: 0, regionsVisited: {}, spotsVisited: {}, gearBought: 0, spent: 0,
-      biggestCm: 0, biggestId: null, power4: 0, power5: 0, autoAttempts: 0, autoFails: 0
+      biggestCm: 0, biggestId: null, power4: 0, power5: 0, autoAttempts: 0, autoFails: 0, prizes: 0, comps: 0, festSeasons: {}, snacks: 0, teaSold: 0
     },
     today: null,
     home: { decor: { wall: null, shelf: null, table: null, window: null, board: null }, owned: [] },
     cosmetics: { boatColors: ['sea_green'] },
     tutorial: { step: 0, skipped: false },
-    pendingCast: null,
+    pendingCast: null, trophies: [], fest: {}, comp: null, buff: null, tea: { day: 0, n: 0 },
     flags: {}
   };
   s.today = newToday(s);

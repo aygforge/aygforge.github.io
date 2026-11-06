@@ -1,0 +1,2709 @@
+{
+  "game": "Cozy Fishing",
+  "schema_version": "design-1.2",
+  "status": "gdd_v1_reference_balancing_pending",
+  "language": "tr",
+  "notes": [
+    "Türlerin fiyatları, av güçleri, boy ve ağırlık aralıkları oyun tasarımıdır; gerçek piyasa fiyatları, yasal limitler veya biyolojik maksimumlar değildir.",
+    "Bir bölgedeki üç av noktası seçili yerel altı türü içerir; iki komşu bölge geçişi için düşük olasılıklı misafir türler de vardır.",
+    "Ağırlıklar türün oltaya vurmaya karar verildiği koşulda normalize edilir; gerçek nihai yakalama oranını tasma ve minigame belirler.",
+    "Mevsim, yem ve hava çarpanları sonradan uygulanır, ardından toplam ağırlık yeniden %100 edilir.",
+    "Uygunsuz güçteki balıklar ekipman uygunluğu aşamasında filtrelenir ve kalan türler yeniden normalize edilir.",
+    "v1.1 düzeltmesi: Derin Deniz Dişlisi, Açık Deniz Teknesi üzerinde otomatik güç 4 avına izin verir; güç 5 yalnızca manuel.",
+    "Balık boyu/ağırlığı satış fiyatını değiştirmez. İstif yalnızca tür kimliğine bağlıdır.",
+    "Bölge av ağırlıkları temeldir, ana olasılık sıralamasında uygunluk filtresinden sonra yeniden normalize edilir.",
+    "v1.2 genişlemesi: her bölgeye 4 yeni gerçek tür eklendi (toplam 70). Noktaların eski ağırlıkları orantılı küçültüldü; her nokta yine tam 100 eder."
+  ],
+  "constants": {
+    "day_energy": 100,
+    "stack_size": 10,
+    "base_bite_chance": 0.88,
+    "season_length_days": 28,
+    "year_length_days": 112,
+    "bite_reaction_seconds": 1.6,
+    "default_fishing_time_seconds": [
+      2,
+      6
+    ],
+    "gear_pool_rule": "fish.power <= rod.power + 1",
+    "power_penalty_rule": "fish.power == rod.power + 1: tension gain +20%, reel progress speed -20%",
+    "season_boost_multiplier": 1.15,
+    "weather_favorable_multiplier": 1.1,
+    "weather_unfavorable_multiplier": 0.9,
+    "bait_favorable_multiplier": 1.6,
+    "bait_unfavorable_multiplier": 0.8,
+    "basic_bait_multiplier": 1.0,
+    "cast_band_species_rule": "Fish whose preferred_cast_band matches cast distance get a 1.25x weight multiplier; mismatched species get a 0.85x multiplier (mid-distance crossovers 1.0x). This is separate from the selected fishing spot.",
+    "size_distribution": {
+      "normal": {
+        "prob": 0.88,
+        "t_range": [
+          0.08,
+          0.73
+        ]
+      },
+      "large": {
+        "prob": 0.1,
+        "t_range": [
+          0.73,
+          0.9
+        ]
+      },
+      "exceptional": {
+        "prob": 0.02,
+        "t_range": [
+          0.9,
+          1.0
+        ]
+      }
+    },
+    "size_length_formula": "round(min_length + t * (max_length-min_length))",
+    "size_weight_formula": "round(min_weight + t^3 * (max_weight-min_weight), 2)",
+    "size_affects_sale_price": false,
+    "species_base_price_constant": true,
+    "automatic_daily_total_catch_cap": 6,
+    "automatic_max_fish_power": 4,
+    "automatic_power_4_requires": "deep_sea_gear_on_offshore_boat",
+    "automatic_power_5_allowed": false,
+    "automatic_free_basic_bait_allowed": false,
+    "cast_energy_charged_at": "valid_cast_release",
+    "automatic_progress_trigger": "completed_manual_cast"
+  },
+  "bait_catalog": [
+    {
+      "id": "basic",
+      "name": "Temel Yem",
+      "purchase_price": 0,
+      "consumed_per_cast": 0,
+      "stock": "unlimited"
+    },
+    {
+      "id": "worm",
+      "name": "Solucan",
+      "purchase_price": 3,
+      "consumed_per_cast": 1
+    },
+    {
+      "id": "shrimp",
+      "name": "Karides",
+      "purchase_price": 6,
+      "consumed_per_cast": 1
+    },
+    {
+      "id": "fish",
+      "name": "Balık Parçası",
+      "purchase_price": 9,
+      "consumed_per_cast": 1
+    },
+    {
+      "id": "lure",
+      "name": "Metal Sahte Yem",
+      "purchase_price": 12,
+      "consumed_per_cast": 1
+    },
+    {
+      "id": "deep",
+      "name": "Derin Su Yemi",
+      "purchase_price": 20,
+      "consumed_per_cast": 1
+    }
+  ],
+  "regions": [
+    {
+      "id": "sakin_liman",
+      "name": "Sakin Liman",
+      "fish_ids": [
+        "sardalya",
+        "gumus_baligi",
+        "istavrit",
+        "izmarit",
+        "kefal",
+        "zargana",
+        "hamsi",
+        "kaya_baligi",
+        "sarpan",
+        "iskorpit"
+      ],
+      "spot_ids": [
+        "liman_kiyi",
+        "liman_iskele",
+        "liman_dalgakiran"
+      ]
+    },
+    {
+      "id": "yesil_koy",
+      "name": "Yeşil Koy",
+      "fish_ids": [
+        "isparoz",
+        "melanur",
+        "karagoz",
+        "cipura",
+        "sargoz",
+        "levrek",
+        "kupes",
+        "mirmir",
+        "dil_baligi",
+        "minakop"
+      ],
+      "spot_ids": [
+        "koy_giris",
+        "koy_kayalik",
+        "koy_derin"
+      ]
+    },
+    {
+      "id": "kayalik_adalar",
+      "name": "Kayalık Adalar",
+      "fish_ids": [
+        "tekir",
+        "barbun",
+        "eskina",
+        "mercan",
+        "fangri",
+        "sinarit",
+        "hanos",
+        "kirlangic",
+        "lahoz",
+        "orfoz"
+      ],
+      "spot_ids": [
+        "adalar_sig",
+        "adalar_resif",
+        "adalar_derin"
+      ]
+    },
+    {
+      "id": "serin_akintilar",
+      "name": "Serin Akıntılar",
+      "fish_ids": [
+        "kolyoz",
+        "uskumru",
+        "lufer",
+        "palamut",
+        "yazili_orkinos",
+        "akya",
+        "tirsi",
+        "dulger",
+        "kalkan",
+        "sarikuyruk"
+      ],
+      "spot_ids": [
+        "akinti_kiyi",
+        "akinti_orta",
+        "akinti_acik"
+      ]
+    },
+    {
+      "id": "sisli_kuzey",
+      "name": "Sisli Kuzey",
+      "fish_ids": [
+        "ringa",
+        "mezgit",
+        "pisi_baligi",
+        "morina",
+        "komur_baligi",
+        "halibut",
+        "kapelin",
+        "topak_baligi",
+        "kizil_levrek",
+        "kurt_baligi"
+      ],
+      "spot_ids": [
+        "kuzey_fiyort",
+        "kuzey_kiyi",
+        "kuzey_derin"
+      ]
+    },
+    {
+      "id": "gunes_adalari",
+      "name": "Güneş Adaları",
+      "fish_ids": [
+        "ucan_balik",
+        "sari_kuyruklu_fusilier",
+        "mavi_yuzgecli_trevally",
+        "kirmizi_snapper",
+        "lambuka",
+        "barrakuda",
+        "mavi_cerrah",
+        "papagan_baligi",
+        "mercan_hanisi",
+        "dev_trevally"
+      ],
+      "spot_ids": [
+        "gunes_lagun",
+        "gunes_resif",
+        "gunes_acik"
+      ]
+    },
+    {
+      "id": "derin_mavi",
+      "name": "Derin Mavi",
+      "fish_ids": [
+        "albakor",
+        "sari_yuzgecli_orkinos",
+        "wahoo",
+        "buyuk_gozlu_orkinos",
+        "kilic_baligi",
+        "yelken_baligi",
+        "cizgili_orkinos",
+        "pervane_baligi",
+        "opah",
+        "mavi_marlin"
+      ],
+      "spot_ids": [
+        "derin_shelf",
+        "derin_mavi_su",
+        "derin_cukur"
+      ]
+    }
+  ],
+  "fish": [
+    {
+      "id": "sardalya",
+      "name_tr": "Sardalya",
+      "home_region": "sakin_liman",
+      "base_price": 13,
+      "power": 1,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "sunny",
+      "favored_baits": [
+        "basic",
+        "worm"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          10,
+          22
+        ],
+        "weight_kg": [
+          0.02,
+          0.15
+        ]
+      },
+      "season_boost": "spring",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_sardalya",
+      "silhouette_key": "fish_sardalya_silhouette",
+      "encyclopedia_tr": "Sürüler halinde dolaşan küçük, gümüş renkli bir balık. Kıyı balıkçılığının tanıdık türlerinden biridir."
+    },
+    {
+      "id": "gumus_baligi",
+      "name_tr": "Gümüş balığı",
+      "home_region": "sakin_liman",
+      "base_price": 14,
+      "power": 1,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": null,
+      "favored_baits": [
+        "basic",
+        "worm"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          7,
+          16
+        ],
+        "weight_kg": [
+          0.005,
+          0.055
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_gumus_baligi",
+      "silhouette_key": "fish_gumus_baligi_silhouette",
+      "encyclopedia_tr": "İnce ve parlak gövdesiyle dikkat çeker. Sığ kıyı sularında görülebilir."
+    },
+    {
+      "id": "istavrit",
+      "name_tr": "İstavrit",
+      "home_region": "sakin_liman",
+      "base_price": 16,
+      "power": 1,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "mid",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "basic",
+        "worm"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          12,
+          32
+        ],
+        "weight_kg": [
+          0.03,
+          0.55
+        ]
+      },
+      "season_boost": "autumn",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_istavrit",
+      "silhouette_key": "fish_istavrit_silhouette",
+      "encyclopedia_tr": "Hareketli sürüler oluşturan, kıyı ve açık sular arasında dolaşabilen bir balık."
+    },
+    {
+      "id": "izmarit",
+      "name_tr": "İzmarit",
+      "home_region": "sakin_liman",
+      "base_price": 17,
+      "power": 1,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "mid",
+      "weather_boost": "rain",
+      "favored_baits": [
+        "basic",
+        "shrimp"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          10,
+          25
+        ],
+        "weight_kg": [
+          0.02,
+          0.25
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_izmarit",
+      "silhouette_key": "fish_izmarit_silhouette",
+      "encyclopedia_tr": "Küçük gövdeli, kıyı bölgelerinde rastlanabilen bir tür."
+    },
+    {
+      "id": "kefal",
+      "name_tr": "Kefal",
+      "home_region": "sakin_liman",
+      "base_price": 21,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "far",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "worm",
+        "basic"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          20,
+          65
+        ],
+        "weight_kg": [
+          0.15,
+          3.5
+        ]
+      },
+      "season_boost": "spring",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_kefal",
+      "silhouette_key": "fish_kefal_silhouette",
+      "encyclopedia_tr": "Dayanıklı yapısıyla bilinir. Liman ve kıyı sularında sıkça karşılaşılır."
+    },
+    {
+      "id": "zargana",
+      "name_tr": "Zargana",
+      "home_region": "sakin_liman",
+      "base_price": 28,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "far",
+      "weather_boost": "sunny",
+      "favored_baits": [
+        "fish",
+        "lure"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          25,
+          85
+        ],
+        "weight_kg": [
+          0.1,
+          1.2
+        ]
+      },
+      "season_boost": "summer",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_zargana",
+      "silhouette_key": "fish_zargana_silhouette",
+      "encyclopedia_tr": "Uzun ve ince gövdesiyle kolayca tanınır. Su yüzeyine yakın avlanabilir."
+    },
+    {
+      "id": "isparoz",
+      "name_tr": "İsparoz",
+      "home_region": "yesil_koy",
+      "base_price": 27,
+      "power": 1,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "sunny",
+      "favored_baits": [
+        "worm",
+        "shrimp"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          10,
+          22
+        ],
+        "weight_kg": [
+          0.04,
+          0.25
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_isparoz",
+      "silhouette_key": "fish_isparoz_silhouette",
+      "encyclopedia_tr": "Küçük bir kıyı balığı. Kayalık ve sığ alanlarda görülebilir."
+    },
+    {
+      "id": "melanur",
+      "name_tr": "Melanur",
+      "home_region": "yesil_koy",
+      "base_price": 32,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": null,
+      "favored_baits": [
+        "shrimp",
+        "worm"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          15,
+          35
+        ],
+        "weight_kg": [
+          0.1,
+          0.65
+        ]
+      },
+      "season_boost": "summer",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_melanur",
+      "silhouette_key": "fish_melanur_silhouette",
+      "encyclopedia_tr": "Gümüş renkli gövdesi ve kuyruğa yakın koyu işaretiyle tanınır."
+    },
+    {
+      "id": "karagoz",
+      "name_tr": "Karagöz",
+      "home_region": "yesil_koy",
+      "base_price": 34,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "mid",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "shrimp",
+        "worm"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          18,
+          45
+        ],
+        "weight_kg": [
+          0.15,
+          1.6
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_karagoz",
+      "silhouette_key": "fish_karagoz_silhouette",
+      "encyclopedia_tr": "Kıyı kayalıkları ve taşlık alanların tanıdık balıklarından biridir."
+    },
+    {
+      "id": "cipura",
+      "name_tr": "Çipura",
+      "home_region": "yesil_koy",
+      "base_price": 40,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "mid",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "shrimp",
+        "worm"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          18,
+          55
+        ],
+        "weight_kg": [
+          0.14,
+          3.2
+        ]
+      },
+      "season_boost": "autumn",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_cipura",
+      "silhouette_key": "fish_cipura_silhouette",
+      "encyclopedia_tr": "Güçlü çeneleri ve altın renkli alın bandıyla ayırt edilir."
+    },
+    {
+      "id": "sargoz",
+      "name_tr": "Sargoz",
+      "home_region": "yesil_koy",
+      "base_price": 43,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "far",
+      "weather_boost": "rain",
+      "favored_baits": [
+        "shrimp",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          15,
+          40
+        ],
+        "weight_kg": [
+          0.12,
+          1.3
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_sargoz",
+      "silhouette_key": "fish_sargoz_silhouette",
+      "encyclopedia_tr": "Belirgin çizgileriyle tanınan, kayalık bölgelerle ilişkili bir balık."
+    },
+    {
+      "id": "levrek",
+      "name_tr": "Levrek",
+      "home_region": "yesil_koy",
+      "base_price": 48,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "far",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "fish",
+        "lure"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          25,
+          85
+        ],
+        "weight_kg": [
+          0.2,
+          6.0
+        ]
+      },
+      "season_boost": "spring",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_levrek",
+      "silhouette_key": "fish_levrek_silhouette",
+      "encyclopedia_tr": "Güçlü ve çevik bir avcı. Kıyı sularındaki en sevilen mücadelelerden birini sunar."
+    },
+    {
+      "id": "tekir",
+      "name_tr": "Tekir",
+      "home_region": "kayalik_adalar",
+      "base_price": 46,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "sunny",
+      "favored_baits": [
+        "shrimp",
+        "worm"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          12,
+          28
+        ],
+        "weight_kg": [
+          0.04,
+          0.5
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_tekir",
+      "silhouette_key": "fish_tekir_silhouette",
+      "encyclopedia_tr": "Dipte beslenen, çizgili gövdesiyle tanınan küçük bir balık."
+    },
+    {
+      "id": "barbun",
+      "name_tr": "Barbun",
+      "home_region": "kayalik_adalar",
+      "base_price": 54,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "rain",
+      "favored_baits": [
+        "shrimp",
+        "worm"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          13,
+          35
+        ],
+        "weight_kg": [
+          0.05,
+          0.8
+        ]
+      },
+      "season_boost": "summer",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_barbun",
+      "silhouette_key": "fish_barbun_silhouette",
+      "encyclopedia_tr": "Kırmızımsı tonları ve çene bıyıklarıyla ayırt edilir."
+    },
+    {
+      "id": "eskina",
+      "name_tr": "Eşkina",
+      "home_region": "kayalik_adalar",
+      "base_price": 62,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "mid",
+      "weather_boost": "fog",
+      "favored_baits": [
+        "shrimp",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          20,
+          70
+        ],
+        "weight_kg": [
+          0.2,
+          4.5
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_eskina",
+      "silhouette_key": "fish_eskina_silhouette",
+      "encyclopedia_tr": "Kayalık bölgelerle ilişkili, sağlam yapılı bir balık."
+    },
+    {
+      "id": "mercan",
+      "name_tr": "Mercan",
+      "home_region": "kayalik_adalar",
+      "base_price": 70,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "mid",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "shrimp",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          18,
+          55
+        ],
+        "weight_kg": [
+          0.15,
+          3.5
+        ]
+      },
+      "season_boost": "spring",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_mercan",
+      "silhouette_key": "fish_mercan_silhouette",
+      "encyclopedia_tr": "Pembemsi ve kırmızımsı tonlarıyla dikkat çeken değerli bir dip balığı."
+    },
+    {
+      "id": "fangri",
+      "name_tr": "Fangri",
+      "home_region": "kayalik_adalar",
+      "base_price": 92,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "far",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "fish",
+        "shrimp"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          25,
+          80
+        ],
+        "weight_kg": [
+          0.4,
+          6.5
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_fangri",
+      "silhouette_key": "fish_fangri_silhouette",
+      "encyclopedia_tr": "Güçlü gövdesiyle bilinen, derinleşen kayalık sularda görülebilen bir tür."
+    },
+    {
+      "id": "sinarit",
+      "name_tr": "Sinarit",
+      "home_region": "kayalik_adalar",
+      "base_price": 125,
+      "power": 4,
+      "minimum_rod_power": 3,
+      "preferred_cast_band": "far",
+      "weather_boost": "wind",
+      "favored_baits": [
+        "fish",
+        "lure"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          30,
+          120
+        ],
+        "weight_kg": [
+          0.7,
+          15
+        ]
+      },
+      "season_boost": "autumn",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_sinarit",
+      "silhouette_key": "fish_sinarit_silhouette",
+      "encyclopedia_tr": "Güçlü çeneleri ve dirençli yapısıyla zorlu bir av sunar."
+    },
+    {
+      "id": "kolyoz",
+      "name_tr": "Kolyoz",
+      "home_region": "serin_akintilar",
+      "base_price": 58,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "wind",
+      "favored_baits": [
+        "basic",
+        "lure"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          20,
+          45
+        ],
+        "weight_kg": [
+          0.1,
+          1
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_kolyoz",
+      "silhouette_key": "fish_kolyoz_silhouette",
+      "encyclopedia_tr": "Akıcı gövde yapısına sahip, sürüler halinde dolaşabilen bir balık."
+    },
+    {
+      "id": "uskumru",
+      "name_tr": "Uskumru",
+      "home_region": "serin_akintilar",
+      "base_price": 65,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "lure",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          18,
+          55
+        ],
+        "weight_kg": [
+          0.1,
+          1.5
+        ]
+      },
+      "season_boost": "autumn",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_uskumru",
+      "silhouette_key": "fish_uskumru_silhouette",
+      "encyclopedia_tr": "Hızlı yüzer ve sırtındaki koyu dalgalı desenlerle tanınır."
+    },
+    {
+      "id": "lufer",
+      "name_tr": "Lüfer",
+      "home_region": "serin_akintilar",
+      "base_price": 85,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "mid",
+      "weather_boost": "wind",
+      "favored_baits": [
+        "lure",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          20,
+          110
+        ],
+        "weight_kg": [
+          0.15,
+          11
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_lufer",
+      "silhouette_key": "fish_lufer_silhouette",
+      "encyclopedia_tr": "Keskin dişleri ve çevik hareketleriyle bilinen güçlü bir avcı."
+    },
+    {
+      "id": "palamut",
+      "name_tr": "Palamut",
+      "home_region": "serin_akintilar",
+      "base_price": 95,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "mid",
+      "weather_boost": "wind",
+      "favored_baits": [
+        "lure",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          28,
+          85
+        ],
+        "weight_kg": [
+          0.3,
+          8
+        ]
+      },
+      "season_boost": "autumn",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_palamut",
+      "silhouette_key": "fish_palamut_silhouette",
+      "encyclopedia_tr": "Hızlı yüzebilen, göç hareketleriyle tanınan değerli bir deniz balığı."
+    },
+    {
+      "id": "yazili_orkinos",
+      "name_tr": "Yazılı orkinos",
+      "home_region": "serin_akintilar",
+      "base_price": 115,
+      "power": 4,
+      "minimum_rod_power": 3,
+      "preferred_cast_band": "far",
+      "weather_boost": "wind",
+      "favored_baits": [
+        "lure",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          35,
+          100
+        ],
+        "weight_kg": [
+          0.8,
+          13
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_yazili_orkinos",
+      "silhouette_key": "fish_yazili_orkinos_silhouette",
+      "encyclopedia_tr": "Gövdesindeki belirgin desenleri ve güçlü yüzüşüyle dikkat çeker."
+    },
+    {
+      "id": "akya",
+      "name_tr": "Akya",
+      "home_region": "serin_akintilar",
+      "base_price": 160,
+      "power": 4,
+      "minimum_rod_power": 3,
+      "preferred_cast_band": "far",
+      "weather_boost": "wind",
+      "favored_baits": [
+        "lure",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          35,
+          140
+        ],
+        "weight_kg": [
+          0.8,
+          25
+        ]
+      },
+      "season_boost": "summer",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_akya",
+      "silhouette_key": "fish_akya_silhouette",
+      "encyclopedia_tr": "Büyük ve güçlü bir avcı. İyi ekipman ve sabırlı mücadele gerektirir."
+    },
+    {
+      "id": "ringa",
+      "name_tr": "Ringa",
+      "home_region": "sisli_kuzey",
+      "base_price": 55,
+      "power": 1,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "fog",
+      "favored_baits": [
+        "basic",
+        "worm"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          15,
+          35
+        ],
+        "weight_kg": [
+          0.05,
+          0.5
+        ]
+      },
+      "season_boost": "winter",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_ringa",
+      "silhouette_key": "fish_ringa_silhouette",
+      "encyclopedia_tr": "Soğuk denizlerde büyük sürüler halinde bulunabilen gümüş renkli bir balık."
+    },
+    {
+      "id": "mezgit",
+      "name_tr": "Mezgit",
+      "home_region": "sisli_kuzey",
+      "base_price": 75,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "shrimp",
+        "worm"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          18,
+          60
+        ],
+        "weight_kg": [
+          0.07,
+          1.6
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_mezgit",
+      "silhouette_key": "fish_mezgit_silhouette",
+      "encyclopedia_tr": "Dip bölgelerinde yaşayan, ince gövdeli bir av balığı."
+    },
+    {
+      "id": "pisi_baligi",
+      "name_tr": "Pisi balığı",
+      "home_region": "sisli_kuzey",
+      "base_price": 92,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "mid",
+      "weather_boost": "fog",
+      "favored_baits": [
+        "shrimp",
+        "worm"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          20,
+          55
+        ],
+        "weight_kg": [
+          0.12,
+          2
+        ]
+      },
+      "season_boost": "winter",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_pisi_baligi",
+      "silhouette_key": "fish_pisi_baligi_silhouette",
+      "encyclopedia_tr": "Yassı gövdesi ve deniz tabanına uyumlu görünümüyle tanınır."
+    },
+    {
+      "id": "morina",
+      "name_tr": "Morina",
+      "home_region": "sisli_kuzey",
+      "base_price": 110,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "mid",
+      "weather_boost": "fog",
+      "favored_baits": [
+        "fish",
+        "deep"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          30,
+          130
+        ],
+        "weight_kg": [
+          0.4,
+          20
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_morina",
+      "silhouette_key": "fish_morina_silhouette",
+      "encyclopedia_tr": "Soğuk sularda yaşayan, balıkçılık açısından önemli bir tür."
+    },
+    {
+      "id": "komur_baligi",
+      "name_tr": "Kömür balığı",
+      "home_region": "sisli_kuzey",
+      "base_price": 125,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "far",
+      "weather_boost": "fog",
+      "favored_baits": [
+        "fish",
+        "lure"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          30,
+          120
+        ],
+        "weight_kg": [
+          0.3,
+          15
+        ]
+      },
+      "season_boost": "spring",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_komur_baligi",
+      "silhouette_key": "fish_komur_baligi_silhouette",
+      "encyclopedia_tr": "Koyu sırtı ve güçlü yüzüşüyle tanınan kuzey denizi balığı."
+    },
+    {
+      "id": "halibut",
+      "name_tr": "Halibut",
+      "home_region": "sisli_kuzey",
+      "base_price": 210,
+      "power": 4,
+      "minimum_rod_power": 3,
+      "preferred_cast_band": "far",
+      "weather_boost": "fog",
+      "favored_baits": [
+        "deep",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          50,
+          200
+        ],
+        "weight_kg": [
+          2,
+          80
+        ]
+      },
+      "season_boost": "winter",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_halibut",
+      "silhouette_key": "fish_halibut_silhouette",
+      "encyclopedia_tr": "Büyük boyutlara ulaşabilen yassı bir balık. Kuzeyin en zorlu avlarından biridir."
+    },
+    {
+      "id": "ucan_balik",
+      "name_tr": "Uçan balık",
+      "home_region": "gunes_adalari",
+      "base_price": 80,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "sunny",
+      "favored_baits": [
+        "basic",
+        "lure"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          15,
+          35
+        ],
+        "weight_kg": [
+          0.05,
+          0.5
+        ]
+      },
+      "season_boost": "summer",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_ucan_balik",
+      "silhouette_key": "fish_ucan_balik_silhouette",
+      "encyclopedia_tr": "Uzun göğüs yüzgeçleri sayesinde kısa süre suyun üzerinde süzülebilir."
+    },
+    {
+      "id": "sari_kuyruklu_fusilier",
+      "name_tr": "Sarı kuyruklu fusilier",
+      "home_region": "gunes_adalari",
+      "base_price": 90,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "sunny",
+      "favored_baits": [
+        "shrimp",
+        "basic"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          12,
+          30
+        ],
+        "weight_kg": [
+          0.04,
+          0.45
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_sari_kuyruklu_fusilier",
+      "silhouette_key": "fish_sari_kuyruklu_fusilier_silhouette",
+      "encyclopedia_tr": "Canlı renkleri ve sürü davranışıyla tropik sularda dikkat çeker."
+    },
+    {
+      "id": "mavi_yuzgecli_trevally",
+      "name_tr": "Mavi yüzgeçli trevally",
+      "home_region": "gunes_adalari",
+      "base_price": 105,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "mid",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "lure",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          20,
+          75
+        ],
+        "weight_kg": [
+          0.2,
+          8
+        ]
+      },
+      "season_boost": "summer",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_mavi_yuzgecli_trevally",
+      "silhouette_key": "fish_mavi_yuzgecli_trevally_silhouette",
+      "encyclopedia_tr": "Parlak mavi yüzgeçleri ve hareketli avcılığıyla tanınır."
+    },
+    {
+      "id": "kirmizi_snapper",
+      "name_tr": "Kırmızı snapper",
+      "home_region": "gunes_adalari",
+      "base_price": 130,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "mid",
+      "weather_boost": "sunny",
+      "favored_baits": [
+        "fish",
+        "shrimp"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          25,
+          90
+        ],
+        "weight_kg": [
+          0.4,
+          12
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_kirmizi_snapper",
+      "silhouette_key": "fish_kirmizi_snapper_silhouette",
+      "encyclopedia_tr": "Kırmızımsı gövdesiyle dikkat çeken, tropik sularda yaşayan bir balık."
+    },
+    {
+      "id": "lambuka",
+      "name_tr": "Lambuka",
+      "home_region": "gunes_adalari",
+      "base_price": 150,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "far",
+      "weather_boost": "sunny",
+      "favored_baits": [
+        "lure",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          40,
+          150
+        ],
+        "weight_kg": [
+          0.8,
+          20
+        ]
+      },
+      "season_boost": "summer",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_lambuka",
+      "silhouette_key": "fish_lambuka_silhouette",
+      "encyclopedia_tr": "Parlak mavi, yeşil ve altın renkleriyle tanınan hızlı bir açık su avcısı."
+    },
+    {
+      "id": "barrakuda",
+      "name_tr": "Barrakuda",
+      "home_region": "gunes_adalari",
+      "base_price": 180,
+      "power": 4,
+      "minimum_rod_power": 3,
+      "preferred_cast_band": "far",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "lure",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          35,
+          150
+        ],
+        "weight_kg": [
+          0.6,
+          20
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_barrakuda",
+      "silhouette_key": "fish_barrakuda_silhouette",
+      "encyclopedia_tr": "Uzun gövdesi ve keskin dişleriyle tanınan çevik bir yırtıcı."
+    },
+    {
+      "id": "albakor",
+      "name_tr": "Albakor",
+      "home_region": "derin_mavi",
+      "base_price": 230,
+      "power": 4,
+      "minimum_rod_power": 3,
+      "preferred_cast_band": "near",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "lure",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          50,
+          130
+        ],
+        "weight_kg": [
+          2,
+          35
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_albakor",
+      "silhouette_key": "fish_albakor_silhouette",
+      "encyclopedia_tr": "Uzun göğüs yüzgeçleriyle tanınan, açık denizlerde dolaşan bir orkinos türü."
+    },
+    {
+      "id": "sari_yuzgecli_orkinos",
+      "name_tr": "Sarı yüzgeçli orkinos",
+      "home_region": "derin_mavi",
+      "base_price": 260,
+      "power": 4,
+      "minimum_rod_power": 3,
+      "preferred_cast_band": "near",
+      "weather_boost": "wind",
+      "favored_baits": [
+        "lure",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          60,
+          190
+        ],
+        "weight_kg": [
+          4,
+          90
+        ]
+      },
+      "season_boost": "summer",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_sari_yuzgecli_orkinos",
+      "silhouette_key": "fish_sari_yuzgecli_orkinos_silhouette",
+      "encyclopedia_tr": "Sarı yüzgeçleri ve güçlü yüzüşüyle dikkat çeken bir açık deniz balığı."
+    },
+    {
+      "id": "wahoo",
+      "name_tr": "Wahoo",
+      "home_region": "derin_mavi",
+      "base_price": 290,
+      "power": 4,
+      "minimum_rod_power": 3,
+      "preferred_cast_band": "mid",
+      "weather_boost": "wind",
+      "favored_baits": [
+        "lure",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          65,
+          190
+        ],
+        "weight_kg": [
+          4,
+          60
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_wahoo",
+      "silhouette_key": "fish_wahoo_silhouette",
+      "encyclopedia_tr": "İnce ve uzun gövdesiyle çok hızlı yüzebilen bir avcı."
+    },
+    {
+      "id": "buyuk_gozlu_orkinos",
+      "name_tr": "Büyük gözlü orkinos",
+      "home_region": "derin_mavi",
+      "base_price": 310,
+      "power": 5,
+      "minimum_rod_power": 4,
+      "preferred_cast_band": "mid",
+      "weather_boost": "fog",
+      "favored_baits": [
+        "deep",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          80,
+          210
+        ],
+        "weight_kg": [
+          8,
+          110
+        ]
+      },
+      "season_boost": "winter",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_buyuk_gozlu_orkinos",
+      "silhouette_key": "fish_buyuk_gozlu_orkinos_silhouette",
+      "encyclopedia_tr": "Büyük gözleriyle ayırt edilen, açık ve derin sularda yaşayan güçlü bir tür."
+    },
+    {
+      "id": "kilic_baligi",
+      "name_tr": "Kılıç balığı",
+      "home_region": "derin_mavi",
+      "base_price": 360,
+      "power": 5,
+      "minimum_rod_power": 4,
+      "preferred_cast_band": "far",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "deep",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          100,
+          350
+        ],
+        "weight_kg": [
+          10,
+          300
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_kilic_baligi",
+      "silhouette_key": "fish_kilic_baligi_silhouette",
+      "encyclopedia_tr": "Uzun, kılıç biçimindeki üst çenesiyle kolayca tanınır."
+    },
+    {
+      "id": "yelken_baligi",
+      "name_tr": "Yelken balığı",
+      "home_region": "derin_mavi",
+      "base_price": 410,
+      "power": 5,
+      "minimum_rod_power": 4,
+      "preferred_cast_band": "far",
+      "weather_boost": "sunny",
+      "favored_baits": [
+        "lure",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          110,
+          290
+        ],
+        "weight_kg": [
+          10,
+          120
+        ]
+      },
+      "season_boost": "summer",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_yelken_baligi",
+      "silhouette_key": "fish_yelken_baligi_silhouette",
+      "encyclopedia_tr": "Büyük sırt yüzgeciyle dikkat çeken, hızlı ve etkileyici bir açık deniz balığı."
+    },
+    {
+      "id": "hamsi",
+      "name_tr": "Hamsi",
+      "home_region": "sakin_liman",
+      "base_price": 12,
+      "power": 1,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "basic",
+        "worm"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          8,
+          16
+        ],
+        "weight_kg": [
+          0.005,
+          0.03
+        ]
+      },
+      "season_boost": "winter",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_hamsi",
+      "silhouette_key": "fish_hamsi_silhouette",
+      "encyclopedia_tr": "Küçük, ince ve gümüş renkli bir sürü balığı. Soğuk aylarda kıyıya yaklaşan sürüleri bilinir."
+    },
+    {
+      "id": "kaya_baligi",
+      "name_tr": "Kaya balığı",
+      "home_region": "sakin_liman",
+      "base_price": 15,
+      "power": 1,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "rain",
+      "favored_baits": [
+        "worm",
+        "basic"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          8,
+          18
+        ],
+        "weight_kg": [
+          0.01,
+          0.12
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_kaya_baligi",
+      "silhouette_key": "fish_kaya_baligi_silhouette",
+      "encyclopedia_tr": "Taşların arasında saklanan, benekli ve iri başlı küçük bir balık. İskele dibinde sık görülür."
+    },
+    {
+      "id": "sarpan",
+      "name_tr": "Sarpan",
+      "home_region": "sakin_liman",
+      "base_price": 24,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "mid",
+      "weather_boost": "sunny",
+      "favored_baits": [
+        "basic",
+        "shrimp"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          15,
+          40
+        ],
+        "weight_kg": [
+          0.1,
+          1.2
+        ]
+      },
+      "season_boost": "summer",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_sarpan",
+      "silhouette_key": "fish_sarpan_silhouette",
+      "encyclopedia_tr": "Gövdesindeki altın sarısı çizgilerle tanınır. Sığ sularda yosun otlayarak dolaşır."
+    },
+    {
+      "id": "iskorpit",
+      "name_tr": "İskorpit",
+      "home_region": "sakin_liman",
+      "base_price": 30,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "far",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "shrimp",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          10,
+          30
+        ],
+        "weight_kg": [
+          0.05,
+          0.6
+        ]
+      },
+      "season_boost": "autumn",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_iskorpit",
+      "silhouette_key": "fish_iskorpit_silhouette",
+      "encyclopedia_tr": "Dikenli yüzgeçleri ve kamuflajlı kızıl kahve rengiyle kayalara karışır. Dikkatli tutmak gerekir."
+    },
+    {
+      "id": "kupes",
+      "name_tr": "Kupes",
+      "home_region": "yesil_koy",
+      "base_price": 25,
+      "power": 1,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "sunny",
+      "favored_baits": [
+        "basic",
+        "worm"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          12,
+          30
+        ],
+        "weight_kg": [
+          0.05,
+          0.4
+        ]
+      },
+      "season_boost": "spring",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_kupes",
+      "silhouette_key": "fish_kupes_silhouette",
+      "encyclopedia_tr": "İri gözlü, sarımsı çizgili bir sürü balığı. Koyların sığ sularında hareketli gruplar oluşturur."
+    },
+    {
+      "id": "mirmir",
+      "name_tr": "Mırmır",
+      "home_region": "yesil_koy",
+      "base_price": 36,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "rain",
+      "favored_baits": [
+        "worm",
+        "shrimp"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          15,
+          45
+        ],
+        "weight_kg": [
+          0.1,
+          1.4
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_mirmir",
+      "silhouette_key": "fish_mirmir_silhouette",
+      "encyclopedia_tr": "Gümüşi gövdesindeki koyu dikey çizgilerle tanınır. Kumlu dipleri burnuyla eşeler."
+    },
+    {
+      "id": "dil_baligi",
+      "name_tr": "Dil balığı",
+      "home_region": "yesil_koy",
+      "base_price": 55,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "far",
+      "weather_boost": "fog",
+      "favored_baits": [
+        "worm",
+        "shrimp"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          20,
+          60
+        ],
+        "weight_kg": [
+          0.1,
+          2.5
+        ]
+      },
+      "season_boost": "winter",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_dil_baligi",
+      "silhouette_key": "fish_dil_baligi_silhouette",
+      "encyclopedia_tr": "Uzun oval yassı gövdesi ve kuma uyumlu rengiyle dipte gizlenir. Lezzetiyle ünlüdür."
+    },
+    {
+      "id": "minakop",
+      "name_tr": "Minakop",
+      "home_region": "yesil_koy",
+      "base_price": 52,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "far",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "shrimp",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          25,
+          90
+        ],
+        "weight_kg": [
+          0.3,
+          9
+        ]
+      },
+      "season_boost": "autumn",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_minakop",
+      "silhouette_key": "fish_minakop_silhouette",
+      "encyclopedia_tr": "Çenesindeki kısa bıyığı ve eğik dalgalı çizgileriyle ayırt edilir. Akşamüstü kıyıya yaklaşır."
+    },
+    {
+      "id": "hanos",
+      "name_tr": "Hanos",
+      "home_region": "kayalik_adalar",
+      "base_price": 44,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "sunny",
+      "favored_baits": [
+        "shrimp",
+        "worm"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          10,
+          30
+        ],
+        "weight_kg": [
+          0.05,
+          0.4
+        ]
+      },
+      "season_boost": "summer",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_hanos",
+      "silhouette_key": "fish_hanos_silhouette",
+      "encyclopedia_tr": "Karnındaki mavi leke ve yanlarındaki koyu bantlarla renkli bir kaya balığıdır."
+    },
+    {
+      "id": "kirlangic",
+      "name_tr": "Kırlangıç",
+      "home_region": "kayalik_adalar",
+      "base_price": 66,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "mid",
+      "weather_boost": "wind",
+      "favored_baits": [
+        "shrimp",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          20,
+          70
+        ],
+        "weight_kg": [
+          0.2,
+          5
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_kirlangic",
+      "silhouette_key": "fish_kirlangic_silhouette",
+      "encyclopedia_tr": "Mavi kenarlı kocaman göğüs yüzgeçleri kanat gibi açılır. Dipte bu yüzgeçlerle yürüyebilir."
+    },
+    {
+      "id": "lahoz",
+      "name_tr": "Lahoz",
+      "home_region": "kayalik_adalar",
+      "base_price": 88,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "mid",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "fish",
+        "shrimp"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          25,
+          80
+        ],
+        "weight_kg": [
+          0.3,
+          8
+        ]
+      },
+      "season_boost": "spring",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_lahoz",
+      "silhouette_key": "fish_lahoz_silhouette",
+      "encyclopedia_tr": "Kuyruğa yakın altın sarısı lekesiyle tanınan bir orfoz akrabası. Mağaramsı kayalıkları sever."
+    },
+    {
+      "id": "orfoz",
+      "name_tr": "Orfoz",
+      "home_region": "kayalik_adalar",
+      "base_price": 145,
+      "power": 4,
+      "minimum_rod_power": 3,
+      "preferred_cast_band": "far",
+      "weather_boost": "fog",
+      "favored_baits": [
+        "fish",
+        "deep"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          40,
+          140
+        ],
+        "weight_kg": [
+          1,
+          40
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_orfoz",
+      "silhouette_key": "fish_orfoz_silhouette",
+      "encyclopedia_tr": "Kayalık derinliklerin iri, sabırlı avcısı. Benekli kahverengi gövdesiyle oyuklara saklanır."
+    },
+    {
+      "id": "tirsi",
+      "name_tr": "Tirsi",
+      "home_region": "serin_akintilar",
+      "base_price": 52,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "rain",
+      "favored_baits": [
+        "lure",
+        "basic"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          25,
+          55
+        ],
+        "weight_kg": [
+          0.2,
+          1.8
+        ]
+      },
+      "season_boost": "spring",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_tirsi",
+      "silhouette_key": "fish_tirsi_silhouette",
+      "encyclopedia_tr": "Sırtı mavimsi, yanları gümüşi bir sürü balığı. Yanındaki koyu benek sırasıyla tanınır."
+    },
+    {
+      "id": "dulger",
+      "name_tr": "Dülger",
+      "home_region": "serin_akintilar",
+      "base_price": 98,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "mid",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "fish",
+        "shrimp"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          20,
+          60
+        ],
+        "weight_kg": [
+          0.3,
+          3.5
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_dulger",
+      "silhouette_key": "fish_dulger_silhouette",
+      "encyclopedia_tr": "İnce ve derin gövdesinin ortasında yuvarlak koyu bir leke taşır. Uzun sırt dikenleri dikkat çeker."
+    },
+    {
+      "id": "kalkan",
+      "name_tr": "Kalkan",
+      "home_region": "serin_akintilar",
+      "base_price": 120,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "far",
+      "weather_boost": "fog",
+      "favored_baits": [
+        "fish",
+        "deep"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          30,
+          90
+        ],
+        "weight_kg": [
+          0.5,
+          14
+        ]
+      },
+      "season_boost": "winter",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_kalkan",
+      "silhouette_key": "fish_kalkan_silhouette",
+      "encyclopedia_tr": "Neredeyse yuvarlak, yassı ve sırtı kemik düğmeli bir dip balığı. Değerli bir avdır."
+    },
+    {
+      "id": "sarikuyruk",
+      "name_tr": "Sarıkuyruk",
+      "home_region": "serin_akintilar",
+      "base_price": 175,
+      "power": 4,
+      "minimum_rod_power": 3,
+      "preferred_cast_band": "far",
+      "weather_boost": "wind",
+      "favored_baits": [
+        "lure",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          50,
+          170
+        ],
+        "weight_kg": [
+          2,
+          50
+        ]
+      },
+      "season_boost": "summer",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_sarikuyruk",
+      "silhouette_key": "fish_sarikuyruk_silhouette",
+      "encyclopedia_tr": "Gözünden kuyruğuna uzanan kehribar renkli bantlı, çok güçlü bir avcı."
+    },
+    {
+      "id": "kapelin",
+      "name_tr": "Kapelin",
+      "home_region": "sisli_kuzey",
+      "base_price": 48,
+      "power": 1,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "fog",
+      "favored_baits": [
+        "basic",
+        "worm"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          10,
+          22
+        ],
+        "weight_kg": [
+          0.01,
+          0.06
+        ]
+      },
+      "season_boost": "spring",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_kapelin",
+      "silhouette_key": "fish_kapelin_silhouette",
+      "encyclopedia_tr": "Soğuk sularda dev sürüler oluşturan küçük, yeşilimsi bir balık. Kuzeyin besin zincirinin temelidir."
+    },
+    {
+      "id": "topak_baligi",
+      "name_tr": "Topak balığı",
+      "home_region": "sisli_kuzey",
+      "base_price": 85,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "shrimp",
+        "worm"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          20,
+          55
+        ],
+        "weight_kg": [
+          0.4,
+          5
+        ]
+      },
+      "season_boost": "spring",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_topak_baligi",
+      "silhouette_key": "fish_topak_baligi_silhouette",
+      "encyclopedia_tr": "Yuvarlak, düğmeli gövdesi ve karnındaki vantuzla kayalara tutunur. Sevimli görünümlüdür."
+    },
+    {
+      "id": "kizil_levrek",
+      "name_tr": "Kızıl levrek",
+      "home_region": "sisli_kuzey",
+      "base_price": 98,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "mid",
+      "weather_boost": "fog",
+      "favored_baits": [
+        "fish",
+        "shrimp"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          25,
+          60
+        ],
+        "weight_kg": [
+          0.3,
+          4
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_kizil_levrek",
+      "silhouette_key": "fish_kizil_levrek_silhouette",
+      "encyclopedia_tr": "Parlak kırmızı rengi ve iri gözleriyle derin ve soğuk suların balığıdır."
+    },
+    {
+      "id": "kurt_baligi",
+      "name_tr": "Kurt balığı",
+      "home_region": "sisli_kuzey",
+      "base_price": 135,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "far",
+      "weather_boost": "wind",
+      "favored_baits": [
+        "fish",
+        "deep"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          50,
+          140
+        ],
+        "weight_kg": [
+          1.5,
+          20
+        ]
+      },
+      "season_boost": "winter",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_kurt_baligi",
+      "silhouette_key": "fish_kurt_baligi_silhouette",
+      "encyclopedia_tr": "Güçlü çeneleri ve köpek dişleriyle kabuklu avları kırar. Gri gövdesinde koyu bantlar bulunur."
+    },
+    {
+      "id": "mavi_cerrah",
+      "name_tr": "Mavi cerrah balığı",
+      "home_region": "gunes_adalari",
+      "base_price": 86,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "sunny",
+      "favored_baits": [
+        "basic",
+        "shrimp"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          12,
+          30
+        ],
+        "weight_kg": [
+          0.1,
+          0.6
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_mavi_cerrah",
+      "silhouette_key": "fish_mavi_cerrah_silhouette",
+      "encyclopedia_tr": "Canlı mavi gövdesi ve sarı kuyruğuyla resiflerin en renkli balıklarından biridir."
+    },
+    {
+      "id": "papagan_baligi",
+      "name_tr": "Papağan balığı",
+      "home_region": "gunes_adalari",
+      "base_price": 95,
+      "power": 2,
+      "minimum_rod_power": 1,
+      "preferred_cast_band": "near",
+      "weather_boost": "sunny",
+      "favored_baits": [
+        "shrimp",
+        "basic"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          20,
+          60
+        ],
+        "weight_kg": [
+          0.3,
+          4
+        ]
+      },
+      "season_boost": "summer",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_papagan_baligi",
+      "silhouette_key": "fish_papagan_baligi_silhouette",
+      "encyclopedia_tr": "Gaga gibi birleşik dişleriyle mercan yosunlarını kemirir. Yeşil, mavi ve pembe tonlarda parlar."
+    },
+    {
+      "id": "mercan_hanisi",
+      "name_tr": "Mercan hanisi",
+      "home_region": "gunes_adalari",
+      "base_price": 125,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "mid",
+      "weather_boost": "cloudy",
+      "favored_baits": [
+        "fish",
+        "shrimp"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          20,
+          45
+        ],
+        "weight_kg": [
+          0.3,
+          1.8
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_mercan_hanisi",
+      "silhouette_key": "fish_mercan_hanisi_silhouette",
+      "encyclopedia_tr": "Kırmızı gövdesine serpiştirilmiş mavi beneklerle süslü küçük bir orfoz türü."
+    },
+    {
+      "id": "dev_trevally",
+      "name_tr": "Dev trevally",
+      "home_region": "gunes_adalari",
+      "base_price": 195,
+      "power": 4,
+      "minimum_rod_power": 3,
+      "preferred_cast_band": "far",
+      "weather_boost": "wind",
+      "favored_baits": [
+        "lure",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          50,
+          170
+        ],
+        "weight_kg": [
+          3,
+          70
+        ]
+      },
+      "season_boost": "summer",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_dev_trevally",
+      "silhouette_key": "fish_dev_trevally_silhouette",
+      "encyclopedia_tr": "Resif kenarlarının iri ve inatçı avcısı. Dik alnı ve gümüşi gövdesiyle tanınır."
+    },
+    {
+      "id": "cizgili_orkinos",
+      "name_tr": "Çizgili orkinos",
+      "home_region": "derin_mavi",
+      "base_price": 190,
+      "power": 3,
+      "minimum_rod_power": 2,
+      "preferred_cast_band": "near",
+      "weather_boost": "sunny",
+      "favored_baits": [
+        "lure",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          40,
+          100
+        ],
+        "weight_kg": [
+          1.5,
+          20
+        ]
+      },
+      "season_boost": "summer",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_cizgili_orkinos",
+      "silhouette_key": "fish_cizgili_orkinos_silhouette",
+      "encyclopedia_tr": "Karnındaki koyu boyuna çizgilerle tanınan, hızlı ve sürü halinde dolaşan küçük bir orkinos."
+    },
+    {
+      "id": "pervane_baligi",
+      "name_tr": "Pervane balığı",
+      "home_region": "derin_mavi",
+      "base_price": 240,
+      "power": 4,
+      "minimum_rod_power": 3,
+      "preferred_cast_band": "mid",
+      "weather_boost": "sunny",
+      "favored_baits": [
+        "deep",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          80,
+          250
+        ],
+        "weight_kg": [
+          30,
+          500
+        ]
+      },
+      "season_boost": null,
+      "season_modifier": 1.0,
+      "sprite_key": "fish_pervane_baligi",
+      "silhouette_key": "fish_pervane_baligi_silhouette",
+      "encyclopedia_tr": "Kuyruğu kesilmiş gibi görünen yuvarlak dev gövdesiyle yüzeyde güneşlenir. Dünyanın en ağır kemikli balıklarındandır."
+    },
+    {
+      "id": "opah",
+      "name_tr": "Opah",
+      "home_region": "derin_mavi",
+      "base_price": 275,
+      "power": 4,
+      "minimum_rod_power": 3,
+      "preferred_cast_band": "mid",
+      "weather_boost": "fog",
+      "favored_baits": [
+        "deep",
+        "fish"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          70,
+          180
+        ],
+        "weight_kg": [
+          10,
+          90
+        ]
+      },
+      "season_boost": "winter",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_opah",
+      "silhouette_key": "fish_opah_silhouette",
+      "encyclopedia_tr": "Disk şeklindeki gümüşi kırmızı gövdesi ve beyaz beneklerle süslüdür. Kırmızı yüzgeçleri parlar."
+    },
+    {
+      "id": "mavi_marlin",
+      "name_tr": "Mavi marlin",
+      "home_region": "derin_mavi",
+      "base_price": 480,
+      "power": 5,
+      "minimum_rod_power": 4,
+      "preferred_cast_band": "far",
+      "weather_boost": "sunny",
+      "favored_baits": [
+        "lure",
+        "deep"
+      ],
+      "size_game_range": {
+        "length_cm": [
+          150,
+          430
+        ],
+        "weight_kg": [
+          40,
+          400
+        ]
+      },
+      "season_boost": "summer",
+      "season_modifier": 1.15,
+      "sprite_key": "fish_mavi_marlin",
+      "silhouette_key": "fish_mavi_marlin_silhouette",
+      "encyclopedia_tr": "Mızrak gibi üst çenesi ve kobalt mavisi sırtıyla açık denizin efsanevi avıdır."
+    }
+  ],
+  "spots": [
+    {
+      "id": "liman_kiyi",
+      "name": "Kumlu Kıyı",
+      "region_id": "sakin_liman",
+      "cast_band": "near",
+      "weights": {
+        "hamsi": 10,
+        "kaya_baligi": 9,
+        "sarpan": 4,
+        "iskorpit": 2,
+        "sardalya": 22,
+        "gumus_baligi": 18,
+        "istavrit": 18,
+        "izmarit": 11,
+        "kefal": 4,
+        "zargana": 2
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "liman_iskele",
+      "name": "İskele Ucu",
+      "region_id": "sakin_liman",
+      "cast_band": "mid",
+      "weights": {
+        "hamsi": 6,
+        "kaya_baligi": 6,
+        "sarpan": 8,
+        "iskorpit": 5,
+        "sardalya": 17,
+        "gumus_baligi": 10,
+        "istavrit": 18,
+        "izmarit": 13,
+        "kefal": 12,
+        "zargana": 5
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "liman_dalgakiran",
+      "name": "Dalgakıran",
+      "region_id": "sakin_liman",
+      "cast_band": "far",
+      "weights": {
+        "hamsi": 4,
+        "kaya_baligi": 4,
+        "sarpan": 7,
+        "iskorpit": 11,
+        "sardalya": 11,
+        "gumus_baligi": 7,
+        "istavrit": 13,
+        "izmarit": 16,
+        "kefal": 18,
+        "zargana": 9
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "koy_giris",
+      "name": "Koy Girişi",
+      "region_id": "yesil_koy",
+      "cast_band": "near",
+      "weights": {
+        "kupes": 12,
+        "mirmir": 9,
+        "dil_baligi": 3,
+        "minakop": 2,
+        "isparoz": 19,
+        "melanur": 18,
+        "karagoz": 13,
+        "cipura": 10,
+        "sargoz": 7,
+        "levrek": 3,
+        "kefal": 4
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "koy_kayalik",
+      "name": "Kayalık Kıyı",
+      "region_id": "yesil_koy",
+      "cast_band": "mid",
+      "weights": {
+        "kupes": 8,
+        "mirmir": 7,
+        "dil_baligi": 6,
+        "minakop": 5,
+        "isparoz": 18,
+        "melanur": 15,
+        "karagoz": 13,
+        "cipura": 13,
+        "sargoz": 10,
+        "levrek": 5
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "koy_derin",
+      "name": "Derin Koy",
+      "region_id": "yesil_koy",
+      "cast_band": "far",
+      "weights": {
+        "kupes": 4,
+        "mirmir": 3,
+        "dil_baligi": 11,
+        "minakop": 8,
+        "isparoz": 9,
+        "melanur": 7,
+        "karagoz": 11,
+        "cipura": 18,
+        "sargoz": 13,
+        "levrek": 16
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "adalar_sig",
+      "name": "Sığ Kayalıklar",
+      "region_id": "kayalik_adalar",
+      "cast_band": "near",
+      "weights": {
+        "hanos": 13,
+        "kirlangic": 6,
+        "lahoz": 6,
+        "orfoz": 2,
+        "tekir": 17,
+        "barbun": 18,
+        "eskina": 15,
+        "mercan": 11,
+        "fangri": 6,
+        "sinarit": 3,
+        "levrek": 3
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "adalar_resif",
+      "name": "Resif Kenarı",
+      "region_id": "kayalik_adalar",
+      "cast_band": "mid",
+      "weights": {
+        "hanos": 7,
+        "kirlangic": 8,
+        "lahoz": 8,
+        "orfoz": 3,
+        "tekir": 15,
+        "barbun": 17,
+        "eskina": 16,
+        "mercan": 15,
+        "fangri": 7,
+        "sinarit": 4
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "adalar_derin",
+      "name": "Derin Ada Suyu",
+      "region_id": "kayalik_adalar",
+      "cast_band": "far",
+      "weights": {
+        "hanos": 4,
+        "kirlangic": 7,
+        "lahoz": 7,
+        "orfoz": 8,
+        "tekir": 6,
+        "barbun": 9,
+        "eskina": 15,
+        "mercan": 18,
+        "fangri": 16,
+        "sinarit": 10
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "akinti_kiyi",
+      "name": "Akıntı Kenarı",
+      "region_id": "serin_akintilar",
+      "cast_band": "near",
+      "weights": {
+        "tirsi": 14,
+        "dulger": 6,
+        "kalkan": 3,
+        "sarikuyruk": 2,
+        "kolyoz": 19,
+        "uskumru": 20,
+        "lufer": 16,
+        "palamut": 13,
+        "yazili_orkinos": 5,
+        "akya": 2
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "akinti_orta",
+      "name": "Akıntı Kanalı",
+      "region_id": "serin_akintilar",
+      "cast_band": "mid",
+      "weights": {
+        "tirsi": 7,
+        "dulger": 9,
+        "kalkan": 6,
+        "sarikuyruk": 4,
+        "kolyoz": 13,
+        "uskumru": 13,
+        "lufer": 19,
+        "palamut": 17,
+        "yazili_orkinos": 7,
+        "akya": 5
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "akinti_acik",
+      "name": "Açık Akıntı",
+      "region_id": "serin_akintilar",
+      "cast_band": "far",
+      "weights": {
+        "tirsi": 4,
+        "dulger": 6,
+        "kalkan": 10,
+        "sarikuyruk": 6,
+        "kolyoz": 6,
+        "uskumru": 9,
+        "lufer": 15,
+        "palamut": 17,
+        "yazili_orkinos": 16,
+        "akya": 11
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "kuzey_fiyort",
+      "name": "Fiyort Ağzı",
+      "region_id": "sisli_kuzey",
+      "cast_band": "near",
+      "weights": {
+        "kapelin": 11,
+        "topak_baligi": 8,
+        "kizil_levrek": 5,
+        "kurt_baligi": 2,
+        "ringa": 24,
+        "mezgit": 16,
+        "pisi_baligi": 15,
+        "morina": 10,
+        "komur_baligi": 7,
+        "halibut": 2
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "kuzey_kiyi",
+      "name": "Soğuk Kıyı",
+      "region_id": "sisli_kuzey",
+      "cast_band": "mid",
+      "weights": {
+        "kapelin": 7,
+        "topak_baligi": 6,
+        "kizil_levrek": 9,
+        "kurt_baligi": 4,
+        "ringa": 15,
+        "mezgit": 15,
+        "pisi_baligi": 18,
+        "morina": 13,
+        "komur_baligi": 10,
+        "halibut": 3
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "kuzey_derin",
+      "name": "Kuzey Derinliği",
+      "region_id": "sisli_kuzey",
+      "cast_band": "far",
+      "weights": {
+        "kapelin": 5,
+        "topak_baligi": 4,
+        "kizil_levrek": 8,
+        "kurt_baligi": 9,
+        "ringa": 7,
+        "mezgit": 10,
+        "pisi_baligi": 13,
+        "morina": 17,
+        "komur_baligi": 16,
+        "halibut": 11
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "gunes_lagun",
+      "name": "Lagün Kıyısı",
+      "region_id": "gunes_adalari",
+      "cast_band": "near",
+      "weights": {
+        "mavi_cerrah": 10,
+        "papagan_baligi": 10,
+        "mercan_hanisi": 5,
+        "dev_trevally": 1,
+        "ucan_balik": 21,
+        "sari_kuyruklu_fusilier": 22,
+        "mavi_yuzgecli_trevally": 15,
+        "kirmizi_snapper": 9,
+        "lambuka": 5,
+        "barrakuda": 2
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "gunes_resif",
+      "name": "Mercan Resifi",
+      "region_id": "gunes_adalari",
+      "cast_band": "mid",
+      "weights": {
+        "mavi_cerrah": 7,
+        "papagan_baligi": 7,
+        "mercan_hanisi": 8,
+        "dev_trevally": 3,
+        "ucan_balik": 12,
+        "sari_kuyruklu_fusilier": 18,
+        "mavi_yuzgecli_trevally": 15,
+        "kirmizi_snapper": 15,
+        "lambuka": 9,
+        "barrakuda": 6
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "gunes_acik",
+      "name": "Ada Açıkları",
+      "region_id": "gunes_adalari",
+      "cast_band": "far",
+      "weights": {
+        "mavi_cerrah": 5,
+        "papagan_baligi": 5,
+        "mercan_hanisi": 8,
+        "dev_trevally": 8,
+        "ucan_balik": 6,
+        "sari_kuyruklu_fusilier": 7,
+        "mavi_yuzgecli_trevally": 15,
+        "kirmizi_snapper": 15,
+        "lambuka": 17,
+        "barrakuda": 14
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "derin_shelf",
+      "name": "Kıta Sahanlığı",
+      "region_id": "derin_mavi",
+      "cast_band": "near",
+      "weights": {
+        "cizgili_orkinos": 14,
+        "pervane_baligi": 5,
+        "opah": 5,
+        "mavi_marlin": 2,
+        "albakor": 22,
+        "sari_yuzgecli_orkinos": 20,
+        "wahoo": 16,
+        "buyuk_gozlu_orkinos": 8,
+        "kilic_baligi": 5,
+        "yelken_baligi": 3
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "derin_mavi_su",
+      "name": "Mavi Su Hattı",
+      "region_id": "derin_mavi",
+      "cast_band": "mid",
+      "weights": {
+        "cizgili_orkinos": 7,
+        "pervane_baligi": 8,
+        "opah": 8,
+        "mavi_marlin": 3,
+        "albakor": 15,
+        "sari_yuzgecli_orkinos": 19,
+        "wahoo": 17,
+        "buyuk_gozlu_orkinos": 12,
+        "kilic_baligi": 7,
+        "yelken_baligi": 4
+      },
+      "base_bite_chance": 0.88
+    },
+    {
+      "id": "derin_cukur",
+      "name": "Derin Okyanus",
+      "region_id": "derin_mavi",
+      "cast_band": "far",
+      "weights": {
+        "cizgili_orkinos": 5,
+        "pervane_baligi": 7,
+        "opah": 6,
+        "mavi_marlin": 8,
+        "albakor": 9,
+        "sari_yuzgecli_orkinos": 14,
+        "wahoo": 14,
+        "buyuk_gozlu_orkinos": 16,
+        "kilic_baligi": 12,
+        "yelken_baligi": 9
+      },
+      "base_bite_chance": 0.88
+    }
+  ],
+  "economy_rough_balance": {
+    "prices_are_game_currency": true,
+    "expected_fish_per_start_day": [
+      9,
+      10
+    ],
+    "starting_cash": 100,
+    "first_boat_cost": 2200,
+    "target_first_boat_day_range": [
+      13,
+      18
+    ],
+    "method": "design target, not playtested or guaranteed"
+  }
+}

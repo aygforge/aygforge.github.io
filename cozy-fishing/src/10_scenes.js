@@ -101,13 +101,30 @@ Game.scenes.CharacterCreator = {
   }
 };
 /* ================= Town ================= */
-const TOWN_NPC = { zeynep: 372, nihat: 640, bora: 930, bahar: 1268 };
+const TOWN_NPC = { zeynep: 372, fatma: 556, nihat: 806, selin: 1010, bora: 1270, kerem: 1520, hasan: 1760, halil: 2000, bahar: 2338 };
+const PIER_FISHERS = [{ id: 'ali', x: 2600, per: 11 }, { id: 'mert', x: 2780, per: 14 }, { id: 'elif', x: 2840, per: 9 }];
+const FEST_CROWD = [[1640, 0], [1668, 1], [1700, 2], [1800, 3], [1830, 4], [1612, 5], [1740, 6]];
+/* NPC balıkçı: zamana bağlı döngü (bekle → vuruş → çekiş → balık) — yalnızca görsel canlılık */
+function npcFisher(g, npc, x, footY, surfY, per, cam, flip, region) {
+  const ph = ((Game.t + x * 0.37) % per) / per; const fids = REGION[region || 'sakin_liman'].fish_ids; const fid = fids[Math.floor((Game.t + x) / per) % 4];
+  let pose = 'hold', tension = 0; if (ph > 0.72 && ph < 0.9) { pose = Math.floor(Game.t * 8) % 2 ? 'reel0' : 'reel1'; tension = 50; } else if (ph >= 0.9) pose = 'catch';
+  drawPerson(g, NPCS[npc].look, pose, x - cam, footY, flip);
+  const h = handPt(NPCS[npc].look, pose, x - cam, footY, flip); const tip = drawRod(g, h[0], h[1], pose === 'catch' ? 'hold' : pose, tension, ['old_bamboo', 'light', 'fiberglass'][x % 3], true);
+  const bx = tip[0] + (flip ? -1 : 1) * (60 - (ph > 0.72 ? (ph - 0.72) / 0.18 * 40 : 0)); let by = surfY - 1 + (ph > 0.6 && ph < 0.72 ? 3 : Math.round(Math.sin(Game.t * 3 + x) * 0.8));
+  if (ph < 0.9) { pxCurve(g, tip[0], tip[1], bx, by, ph > 0.72 ? 2 : 8, 'rgba(240,248,255,0.7)'); if (ph <= 0.72) drawBobber(g, Math.round(bx), Math.round(by), false); }
+  else { const k = (ph - 0.9) / 0.1; const sp = fishSprite(fid); g.drawImage(sp, Math.round(h[0] - sp.width / 4), Math.round(h[1] - 10 - k * 4), Math.round(sp.width / 2), Math.round(sp.height / 2)); }
+}
+function festBunting(g, cam, x0, x1, y, fest) {
+  const cols = fest && fest.season === 'winter' ? ['#f6d838', '#f2a830', '#e8483a'] : ['#e8483a', '#f2c230', '#4f86c6', '#5fc46a', '#c87af0'];
+  for (let x = Math.max(x0, cam - 10); x < Math.min(x1, cam + LW + 10); x += 1) { const yy = y + Math.round(Math.sin((x - x0) / 60 * Math.PI) * 6); g.fillStyle = '#5a3a1e'; g.fillRect(Math.round(x - cam), yy, 1, 1); if ((x - x0) % 12 === 0) { g.fillStyle = cols[((x - x0) / 12) % cols.length]; if (fest && fest.season === 'winter') { g.fillRect(Math.round(x - cam) - 2, yy + 1, 5, 6); g.fillStyle = '#fff8c0'; g.fillRect(Math.round(x - cam), yy + 3, 1, 2); } else for (let k = 0; k < 6; k++) g.fillRect(Math.round(x - cam) - 3 + Math.ceil(k / 2), yy + 1 + k, 7 - k, 1); } }
+}
 const VILLAGERS = [
-  { look: { skin: 4, hair: 7, hairColor: 0, body: 0, outfit: { shirt: '#d87a4a', shirt2: '#a85a32', pants: '#3a4a5a', shoes: '#3a2a22', pat: 'plain' }, hat: 'none' }, x: 520, a: 420, b: 1150, v: 18 },
-  { look: { skin: 1, hair: 3, hairColor: 4, body: 0, outfit: { shirt: '#8a6ac8', shirt2: '#6a4aa8', pants: '#4a3a3a', shoes: '#2a2226', pat: 'flower' }, hat: 'hasir' }, x: 900, a: 240, b: 1240, v: -14 }
+  { look: { skin: 4, hair: 7, hairColor: 0, body: 0, outfit: { shirt: '#d87a4a', shirt2: '#a85a32', pants: '#3a4a5a', shoes: '#3a2a22', pat: 'plain' }, hat: 'none' }, x: 520, a: 420, b: 2200, v: 18 },
+  { look: { skin: 1, hair: 3, hairColor: 4, body: 0, outfit: { shirt: '#8a6ac8', shirt2: '#6a4aa8', pants: '#4a3a3a', shoes: '#2a2226', pat: 'flower' }, hat: 'hasir' }, x: 900, a: 240, b: 2250, v: -14 },
+  { look: { skin: 3, hair: 0, hairColor: 2, body: 1, outfit: { shirt: '#4a8a8a', shirt2: '#2e6a6a', pants: '#3a3a44', shoes: '#2a2226', pat: 'stripes' }, hat: 'kasket' }, x: 1500, a: 300, b: 2280, v: 12 }
 ];
 Game.scenes.Town = {
-  p: null, cam: 0, target: null, onArrive: null, efeX: 1590, efeDir: 1, cat: { x: 210, t: 0 }, near: null,
+  p: null, cam: 0, target: null, onArrive: null, efeX: 2690, efeDir: 1, cat: { x: 210, t: 0 }, near: null,
   enter(prm) {
     const at = prm.at ? TOWN_DOORS.find(d => d.id === prm.at) : null;
     this.p = { x: at ? at.x : (S.townX || 330), dir: 1, walkT: 0, moving: false }; this.target = null; this.onArrive = null;
@@ -123,7 +140,7 @@ Game.scenes.Town = {
     if (UI.modalOpen()) v = 0;
     p.moving = v !== 0; if (v) { p.dir = Math.sign(v); p.x = clamp(p.x + v * dt, 20, TOWN_W - 40); p.walkT += dt; if (Math.floor(p.walkT * 8) !== Math.floor((p.walkT - dt) * 8) && Math.floor(p.walkT * 8) % 2 === 0) Sound.sfx('step'); }
     this.cam = clamp(Math.round(p.x - 300), 0, TOWN_W - LW);
-    this.efeX += this.efeDir * 10 * dt; if (this.efeX > 1640) this.efeDir = -1; if (this.efeX < 1560) this.efeDir = 1;
+    this.efeX += this.efeDir * 10 * dt; if (this.efeX > 2730) this.efeDir = -1; if (this.efeX < 2650) this.efeDir = 1;
     let near = null; for (const d of TOWN_DOORS) { const dx = d.id === 'efe' ? this.efeX : d.x; if (Math.abs(p.x - dx) < 34) near = d; }
     if (near !== this.near) { this.near = near; UI.townBar(this); }
   },
@@ -136,12 +153,17 @@ Game.scenes.Town = {
       case 'yard': S.flags.sawBoatyard = true; UI.openPanel('Boatyard'); break;
       case 'board': UI.openPanel('Orders'); break;
       case 'harbor': if (!S.boats.owned.length) { UI.toastNow('Henüz bir teknen yok. Bora\'nın atölyesinden Kıyı Kayığı (2.200) alabilirsin. İskelede ücretsiz balık tutabilirsin!', 'warn'); } else go('SeaMap', {}); break;
-      case 'efe': UI.openPanel('Dialog', { npc: 'efe' }); break;
+      case 'efe': case 'ali': case 'mert': case 'elif': UI.openPanel('Dialog', { npc: d.id }); break;
+      case 'bakery': UI.openPanel('Bakery'); break;
+      case 'boutique': UI.openPanel('Boutique'); break;
+      case 'homegoods': UI.openPanel('HomeGoods'); break;
+      case 'square': UI.openPanel('Square'); break;
+      case 'teahouse': UI.openPanel('Teahouse'); break;
       case 'pier': go('PierFishing', { spot: 1 }); break;
     }
   },
   tap(wx, wy) {
-    let best = null, bd = 1e9; for (const d of TOWN_DOORS) { const dx = d.id === 'efe' ? this.efeX : d.x; const dist = Math.abs(wx - dx); const range = d.id === 'efe' ? 24 : 70; if (dist < range && dist < bd) { bd = dist; best = d; } }
+    let best = null, bd = 1e9; for (const d of TOWN_DOORS) { const dx = d.id === 'efe' ? this.efeX : d.x; const dist = Math.abs(wx - dx); const range = ['efe', 'ali', 'mert', 'elif'].includes(d.id) ? 24 : 70; if (dist < range && dist < bd) { bd = dist; best = d; } }
     if (best) { const dx = best.id === 'efe' ? this.efeX : best.x; this.walkTo(dx, () => this.interact(best)); }
     else this.walkTo(wx);
   },
@@ -154,20 +176,29 @@ Game.scenes.Town = {
     clipW(() => drawWater(g, 'town', pal, wx, 300, cam));
     g.drawImage(art.main, -cam, 0);
     // tekneler (iskelenin önünde bağlı)
-    let mx = 1352; S.boats.owned.forEach((id, i) => { const bs = boatSprite(id); const bx = mx - cam; mx += Math.round(bs.w * 0.8); const by = Math.round(300 - bs.water + 6 + Math.sin(Game.t * 1.2 + i) * 1.2); if (bx > -200 && bx < LW + 20) { g.drawImage(bs.back, Math.round(bx), by); g.drawImage(bs.front, Math.round(bx), by); if (id === S.boats.active) drawText(g, 'AKTİF', Math.round(bx + bs.w / 2 - 10), by + bs.deck - 36, '#ffe08a', 1, '#1a1426'); } });
+    let mx = 2422; S.boats.owned.forEach((id, i) => { const bs = boatSprite(id); const bx = mx - cam; mx += Math.round(bs.w * 0.8); const by = Math.round(300 - bs.water + 6 + Math.sin(Game.t * 1.2 + i) * 1.2); if (bx > -200 && bx < LW + 20) { g.drawImage(bs.back, Math.round(bx), by); g.drawImage(bs.front, Math.round(bx), by); if (id === S.boats.active) drawText(g, 'AKTİF', Math.round(bx + bs.w / 2 - 10), by + bs.deck - 36, '#ffe08a', 1, '#1a1426'); } });
     clipW(() => { drawUnderTint(g, pal, 306); drawSurface(g, 'town', pal, 306, cam); });
     // panodaki ilanlar
-    const nOrd = Orders.active().length; for (let i = 0; i < nOrd; i++) { const px = 1198 + (i % 3) * 16 - cam, py = TOWN_GROUND - 78 + Math.floor(i / 3) * 18; g.fillStyle = ['#f6eed8', '#f2e2c0', '#fffaf0'][i % 3]; g.fillRect(px, py, 12, 14); g.fillStyle = '#c4473f'; g.fillRect(px + 5, py, 2, 2); g.fillStyle = '#a89878'; g.fillRect(px + 2, py + 5, 8, 1); g.fillRect(px + 2, py + 8, 6, 1); }
+    const nOrd = Orders.active().length; for (let i = 0; i < nOrd; i++) { const px = 2268 + (i % 3) * 16 - cam, py = TOWN_GROUND - 78 + Math.floor(i / 3) * 18; g.fillStyle = ['#f6eed8', '#f2e2c0', '#fffaf0'][i % 3]; g.fillRect(px, py, 12, 14); g.fillStyle = '#c4473f'; g.fillRect(px + 5, py, 2, 2); g.fillStyle = '#a89878'; g.fillRect(px + 2, py + 5, 8, 1); g.fillRect(px + 2, py + 8, 6, 1); }
     // baca dumanı
-    for (let i = 0; i < 5; i++) { const k = ((Game.t * 0.35 + i / 5) % 1); g.globalAlpha = 0.5 * (1 - k); g.fillStyle = '#e8e8f0'; const r = 2 + k * 5; g.fillRect(Math.round(58 + 106 - cam + Math.sin(k * 6 + i) * 4 - r / 2), Math.round(TOWN_GROUND - 130 - k * 40), Math.round(r), Math.round(r)); } g.globalAlpha = 1;
+    for (const [chx, chy] of [[164, 130], [557, 120]]) for (let i = 0; i < 5; i++) { const k = ((Game.t * 0.35 + i / 5 + chx) % 1); g.globalAlpha = 0.5 * (1 - k); g.fillStyle = '#e8e8f0'; const r = 2 + k * 5; g.fillRect(Math.round(chx - cam + Math.sin(k * 6 + i) * 4 - r / 2), Math.round(TOWN_GROUND - chy - k * 40), Math.round(r), Math.round(r)); } g.globalAlpha = 1;
+    // şenlik süsleri
+    const fest = World.festival();
+    if (fest) {
+      festBunting(g, cam, 230, 2300, TOWN_GROUND - 150, fest);
+      for (let i = 0; i < 3; i++) { const sx2 = 1610 + i * 76 - cam; if (sx2 < -80 || sx2 > LW) continue; g.fillStyle = '#7a5228'; g.fillRect(sx2, TOWN_GROUND - 40, 2, 40); g.fillRect(sx2 + 44, TOWN_GROUND - 40, 2, 40); for (let x = 0; x < 50; x++) { g.fillStyle = Math.floor(x / 6) % 2 ? '#f4f0e4' : ['#e8483a', '#4f86c6', '#5fc46a'][i]; g.fillRect(sx2 - 2 + x, TOWN_GROUND - 46, 1, 7); } g.fillStyle = '#a8743e'; g.fillRect(sx2, TOWN_GROUND - 18, 46, 4); }
+      const tw = textWidth(upTR(fest.name), 2) + 10; const bx = Math.round(1715 - tw / 2 - cam); if (bx > -tw && bx < LW) { g.fillStyle = '#c4473f'; g.fillRect(bx, TOWN_GROUND - 176, tw, 18); g.fillStyle = '#8a2e2a'; g.fillRect(bx, TOWN_GROUND - 160, tw, 2); drawText(g, fest.name, bx + 5, TOWN_GROUND - 172, '#fff6e0', 2); }
+      FEST_CROWD.forEach(([cx, k]) => { const v = VILLAGERS[k % VILLAGERS.length]; const look = Object.assign({}, v.look, { skin: (k * 2) % 6, hair: k % 8, hairColor: (k * 3) % 8 }); drawPerson(g, look, Math.floor(Game.t * 2 + k) % 2 ? 'idle0' : 'catch', cx - cam, TOWN_GROUND + 4 + (k % 2) * 3, k % 2 === 0); });
+    }
     // NPC'ler
+    for (const f of PIER_FISHERS) if (f.x - cam > -60 && f.x - cam < LW + 60) npcFisher(g, f.id, f.x, TOWN_GROUND - 2, 306, f.per, cam, false);
     for (const id in TOWN_NPC) drawPerson(g, NPCS[id].look, Math.floor(Game.t * 1.5 + id.length) % 2 ? 'idle0' : 'idle1', TOWN_NPC[id] - cam, TOWN_GROUND + 2, this.p.x < TOWN_NPC[id]);
     const ef = Math.floor(Game.t * 4) % 4; drawPerson(g, NPCS.efe.look, 'walk' + ef, this.efeX - cam, TOWN_GROUND - 2, this.efeDir < 0);
     for (const v of VILLAGERS) { if (dt) { v.x += v.v * dt; if (v.x > v.b) v.v = -Math.abs(v.v); if (v.x < v.a) v.v = Math.abs(v.v); } const sx = v.x - cam; if (sx > -20 && sx < LW + 20) drawPerson(g, v.look, 'walk' + (Math.floor(Game.t * 5 + v.a) % 4), sx, TOWN_GROUND + 6, v.v < 0); }
     // kedi ve martılar
     const cf = Math.floor(Game.t * 3) % 2; g.drawImage(Atlas.get('cat' + cf, () => catPB(cf)), Math.round(this.cat.x + Math.sin(Game.t * 0.3) * 30 - cam), TOWN_GROUND + 12);
-    g.drawImage(Atlas.get('gullS', gullStandPB), 1388 - cam, TOWN_GROUND - 20); g.drawImage(Atlas.get('gullS', gullStandPB), 1508 - cam, TOWN_GROUND - 20);
-    for (let i = 0; i < 2; i++) { const f = Math.floor(Game.t * 5 + i) % 3; const gx = ((Game.t * (30 + i * 9) + i * 400) % 2000) - 100 - cam * 0.5; g.drawImage(Atlas.get('gull' + f, () => gullPB(f)), Math.round(gx), 60 + i * 30 + Math.round(Math.sin(Game.t + i) * 5)); }
+    g.drawImage(Atlas.get('gullS', gullStandPB), 2458 - cam, TOWN_GROUND - 20); g.drawImage(Atlas.get('gullS', gullStandPB), 2878 - cam, TOWN_GROUND - 20);
+    for (let i = 0; i < 2; i++) { const f = Math.floor(Game.t * 5 + i) % 3; const gx = ((Game.t * (30 + i * 9) + i * 400) % 3200) - 100 - cam * 0.5; g.drawImage(Atlas.get('gull' + f, () => gullPB(f)), Math.round(gx), 60 + i * 30 + Math.round(Math.sin(Game.t + i) * 5)); }
     // oyuncu
     const p = this.p; const pose = p.moving ? 'walk' + (Math.floor(p.walkT * 8) % 4) : (Math.floor(Game.t * 1.2) % 2 ? 'idle0' : 'idle1');
     drawPerson(g, S.player, pose, p.x - cam, p.x > TOWN_WATER_X - 40 ? TOWN_GROUND - 2 : TOWN_GROUND + 2, p.dir < 0);
@@ -186,6 +217,7 @@ Game.scenes.PierFishing = {
     UI.fishBar(this);
   },
   exit() { },
+  input(dir) { if (Fishing.phase === 'REELING') { Fishing.setTilt(dir); return; } Fishing.setTilt(0); if (dir) this.switchSpot(dir); },
   switchSpot(dir) { if (Fishing.phase !== 'READY' || this.trans > 0) return; const n = this.idx + dir; if (n < 0 || n > 2) return; this.trans = 1; this.transDir = dir; },
   update(dt) {
     if (this.trans > 0) { this.trans += dt; if (this.trans > 1.4 && this.trans - dt <= 1.4) { this.idx += this.transDir; visitSpot(PIER_SPOTS[this.idx]); UI.fishBar(this); } if (this.trans > 2.2) this.trans = 0; }
@@ -198,6 +230,8 @@ Game.scenes.PierFishing = {
     g.drawImage(art.far, -Math.round(cam * 0.15), PIER_SURF - SURF); g.drawImage(art.mid, -Math.round(cam * 0.45), PIER_SURF - SURF);
     drawWater(g, 'pier', pal, wx, PIER_SURF, cam); g.drawImage(art.bed, -cam, PIER_SURF + 10);
     g.drawImage(pierArt(this.idx, season), 0, 0);
+    { const PF = [['elif', 196], ['ali', 96], ['mert', 132]][this.idx]; const fx = PF[1]; const fy = this.idx === 0 ? Math.round(PIER_SURF - 30 + Math.pow(fx / 300, 1.6) * 36) : PIER_STAND[this.idx][1]; npcFisher(g, PF[0], fx, fy, PIER_SURF, 12 + this.idx * 2, 0, false); }
+    if (Comp.active() || (S.comp && S.comp.done)) festBunting(g, 0, 0, LW, 30, World.festival());
     drawUnderTint(g, pal, PIER_SURF); drawSurface(g, 'pier', pal, PIER_SURF, cam);
     let [sx, sy] = PIER_STAND[this.idx];
     if (this.trans > 0) { const k = this.trans < 1.4 ? this.trans / 1.4 : 0; sx += this.transDir * k * 300; }
@@ -207,6 +241,7 @@ Game.scenes.PierFishing = {
     Fishing.render(g, 0);
     drawWeatherFx(g, wx, PIER_SURF, dt); seasonFx(g, season, dt, LH);
     if (this.trans > 0) { const a = this.trans < 1.4 ? clamp((this.trans - 0.9) / 0.5, 0, 1) : clamp(1 - (this.trans - 1.4) / 0.8, 0, 1); g.globalAlpha = a; g.fillStyle = '#100c18'; g.fillRect(0, 0, LW, LH); g.globalAlpha = 1; }
+    if (S.comp && FEST[S.comp.fest]) { const c = S.comp, f = FEST[c.fest]; const st = Comp.standings(); const x = 470, y = 44; g.fillStyle = 'rgba(20,14,26,0.78)'; g.fillRect(x, y, 166, 20 + st.length * 9); drawText(g, f.comp_name, x + 4, y + 4, '#ffe08a'); drawText(g, 'KALAN ATIŞ: ' + c.castsLeft + '/' + COMP.casts, x + 4, y + 12, '#e8e0f0'); st.forEach((r, i) => { const yy = y + 21 + i * 9; if (r.player) { g.fillStyle = 'rgba(255,224,138,0.25)'; g.fillRect(x + 2, yy - 2, 162, 9); } drawText(g, (i + 1) + '. ' + r.name.split(' (')[0], x + 4, yy, i === 0 ? '#ffe070' : '#ffffff'); const sc = Comp.fmt(f.comp, r.score); drawText(g, sc, x + 162 - textWidth(sc), yy, '#c8e8ff'); }); }
     drawText(g, 'SAKİN LİMAN · ' + SPOTS[PIER_SPOTS[this.idx]].name, 8, 56, '#fff6e0', 1, '#1a1426');
     Fishing.renderHUD(g);
   }
@@ -268,7 +303,7 @@ Game.scenes.BoatFishing = {
   spotIdx() { let bi = 0, bd = 1e9; SPOT_X.forEach((sx, i) => { const d = Math.abs(sx - this.x); if (d < bd) { bd = d; bi = i; } }); return bi; },
   spotId() { return REGION[this.rid].spot_ids[this.spotIdx()]; },
   atSpot() { return Math.abs(SPOT_X[this.spotIdx()] - this.x) < 70; },
-  input(dir) { if (Fishing.locked()) { if (dir) Fishing.say('Önce oltayı topla / avı bitir.', 1.4); this.move = 0; return; } this.move = dir; if (dir) this.target = null; },
+  input(dir) { if (Fishing.phase === 'REELING') { Fishing.setTilt(dir); this.move = 0; return; } Fishing.setTilt(0); if (Fishing.locked()) { if (dir) Fishing.say('Önce oltayı topla / avı bitir.', 1.4); this.move = 0; return; } this.move = dir; if (dir) this.target = null; },
   goSpot(i) { if (Fishing.locked()) return; this.target = SPOT_X[i]; },
   tap(x, y) { if (Fishing.locked() || this.arrive > 0) return; for (let i = 0; i < 3; i++) { const bx = SPOT_X[i] + 150 - this.cam; if (Math.abs(x - bx) < 34 && y > SURF - 50 && y < SURF + 40) { this.goSpot(i); return; } } if (y > 90 && y < 300) this.target = clamp(x + this.cam - 150, 120, RW - 140); },
   autoAnim(e) { this.dev[e.dev] = { type: e.type, t: 0, fid: e.fid }; },
@@ -344,7 +379,7 @@ Game.scenes.Home = {
       case 'wardrobe': UI.openPanel('Wardrobe'); break;
       case 'chest': UI.openPanel('Inventory', { right: 'chest' }); break;
       case 'door': go('Town', { at: 'home' }); break;
-      case 'trophy': UI.openPanel('Achievements'); break;
+      case 'trophy': UI.openPanel('Trophies'); break;
       case 'desk': UI.openPanel('Statistics'); break;
       case 'decor': UI.openPanel('Decor'); break;
     }
@@ -366,7 +401,8 @@ Game.scenes.Home = {
     g.drawImage(homeArt(World.season()), 0, 0);
     g.globalAlpha = 0.12; g.fillStyle = '#fff2c0'; g.beginPath(); g.moveTo(444, 94); g.lineTo(516, 94); g.lineTo(420, 280); g.lineTo(300, 280); g.fill(); g.globalAlpha = 1;
     for (const k in DECOR_POS) { const id = S.home.decor[k]; const [x, y] = DECOR_POS[k]; if (id) g.drawImage(iconCanvas('decor_' + id), x, y, 32, 32); else { g.globalAlpha = 0.35 + Math.sin(Game.t * 3) * 0.1; g.strokeStyle = '#fff6e0'; g.setLineDash([2, 2]); g.strokeRect(x + 0.5, y + 0.5, 31, 31); g.setLineDash([]); g.globalAlpha = 1; } }
-    const nAch = Object.keys(S.ach).length; for (let i = 0; i < Math.min(12, nAch); i++) g.drawImage(iconCanvas('trophy'), 306 + (i % 6) * 10, i < 6 ? 220 : 256 - 0, 10, 12);
+    const cups = S.trophies.slice().sort((a, b) => a.place - b.place).slice(0, 12); cups.forEach((t, i) => g.drawImage(iconCanvas('cup_' + t.place), 304 + (i % 6) * 10, i < 6 ? 186 : 222, 12, 14));
+    if (!cups.length) drawText(g, 'KUPA YOK', 314, 222, '#8a6a42');
     const p = this.p; const pose = p.moving ? 'walk' + (Math.floor(p.walkT * 8) % 4) : (Math.floor(Game.t * 1.2) % 2 ? 'idle0' : 'idle1');
     const sp = personSprite(S.player, pose, p.dir < 0); g.drawImage(sp, Math.round(p.x - CH_W), 272 - 60, CH_W * 2, CH_H * 2);
     if (this.near) { const s = HOME_SPOTS[this.near]; g.drawImage(iconCanvas(s.icon), s.x - 8, 120 + Math.round(Math.sin(Game.t * 5) * 2)); }
