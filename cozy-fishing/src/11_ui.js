@@ -45,7 +45,7 @@ const UI = {
     const ab = S.boats.active; const inBoat = Game.sceneName === 'BoatFishing';
     let h = `<button class="hb" data-a="openPanel" data-p="Menu" title="Menü">${img('menu', 2)}</button>`;
     h += `<div class="chip" title="Gün / mevsim">${img(World.season(), 1, 'ic')}<b>Gün ${S.day}</b><span class="dim">${SEASON_TR[World.season()]} ${World.seasonDay()}/28 · Yıl ${World.year()}</span></div>`;
-    h += `<div class="chip" title="Hava">${img(wx, 1, 'ic')}<span>${WEATHER_TR[wx]}</span></div>`;
+    h += `<div class="chip" title="Hava: ${WEATHER_TR[wx]}">${img(wx, 1, 'ic')}<span class="wxn">${WEATHER_TR[wx]}</span></div>`;
     if (ev) h += `<button class="chip evt" data-a="showEvent" title="Günün olayı">${img('event', 1, 'ic')}<span>${esc(ev.name)}</span></button>`;
     h += `<div class="chip">${img('coin', 1, 'ic')}<b>${fmt(S.cash)}</b></div>`;
     h += `<div class="chip" title="Enerji">${img('energy', 1, 'ic')}<div class="ebar"><i style="width:${S.energy}%"></i></div><b>${S.energy}</b><span class="dim">(${casts} atış)</span></div>`;

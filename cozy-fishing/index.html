@@ -167,6 +167,7 @@ input[type=range]{touch-action:pan-x}
 @keyframes rot{0%,30%{transform:rotate(0)}60%,100%{transform:rotate(-90deg)}}
 body.portrait #rotate{display:flex}
 #boot{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#100c18;color:#ffe08a;font-size:20px;z-index:200}
+@media (max-width:800px){#hud .chip .dim,#hud .chip.evt span,#hud .chip .wxn{display:none}#hud .ebar{width:calc(var(--u)*28px)}#hud{gap:2px}#hud .chip{padding:0 .3em}}
 @media (max-height:420px){.win{top:calc(var(--u)*24px);bottom:2px}.win.wide{left:4px;right:4px}.win{left:calc(var(--u)*18px);right:calc(var(--u)*18px)}}
 </style>
 </head>
@@ -1565,7 +1566,8 @@ function genRegion(rid, season) {
   const out = { far: far.canvas(), mid: mid.canvas(), near: near.canvas(), bed: bed.canvas(), FW, MW };
   return out;
 }
-const regionArt = (rid, season) => { const k = 'region:' + rid + ':' + season; let v = Atlas.cache.get(k); if (!v) { v = genRegion(rid, season); Atlas.cache.set(k, v); } return v; };
+function evict(prefix, keep, max) { const ks = [...Atlas.cache.keys()].filter(k => k.startsWith(prefix) && k !== keep); while (ks.length >= max) Atlas.cache.delete(ks.shift()); }
+const regionArt = (rid, season) => { const k = 'region:' + rid + ':' + season; let v = Atlas.cache.get(k); if (!v) { evict('region:', k, 2); v = genRegion(rid, season); Atlas.cache.set(k, v); } return v; };
 
 /* ---------- KASABA ---------- */
 const TOWN_W = 1800, TOWN_GROUND = 296, TOWN_WATER_X = 1330;
@@ -1707,7 +1709,7 @@ function genTown(season) {
   far.outline(null, 0.15); mid.outline(null, 0.25);
   return { far: far.canvas(), mid: mid.canvas(), main: main.canvas(), FW, MW };
 }
-const townArt = season => { const k = 'town:' + season; let v = Atlas.cache.get(k); if (!v) { v = genTown(season); Atlas.cache.set(k, v); } return v; };
+const townArt = season => { const k = 'town:' + season; let v = Atlas.cache.get(k); if (!v) { evict('town:', k, 1); v = genTown(season); Atlas.cache.set(k, v); } return v; };
 
 /* ---------- İSKELE AVI (3 sahne) ---------- */
 const PIER_SPOTS = ['liman_kiyi', 'liman_iskele', 'liman_dalgakiran'];
@@ -1820,7 +1822,7 @@ const Tx = {
       }
     } catch (e) { console.error('Tx hata', name, e); S = JSON.parse(snap); r = { ok: false, msg: 'Beklenmeyen hata, işlem geri alındı.' }; }
     finally { this.busy = false; }
-    if (typeof UI !== 'undefined' && UI.refresh) UI.refresh();
+    try { if (typeof UI !== 'undefined' && UI.refresh) UI.refresh(); } catch (e) { console.error('UI yenileme', e); }
     return r;
   }
 };
@@ -3279,7 +3281,7 @@ const UI = {
     const ab = S.boats.active; const inBoat = Game.sceneName === 'BoatFishing';
     let h = `<button class="hb" data-a="openPanel" data-p="Menu" title="Menü">${img('menu', 2)}</button>`;
     h += `<div class="chip" title="Gün / mevsim">${img(World.season(), 1, 'ic')}<b>Gün ${S.day}</b><span class="dim">${SEASON_TR[World.season()]} ${World.seasonDay()}/28 · Yıl ${World.year()}</span></div>`;
-    h += `<div class="chip" title="Hava">${img(wx, 1, 'ic')}<span>${WEATHER_TR[wx]}</span></div>`;
+    h += `<div class="chip" title="Hava: ${WEATHER_TR[wx]}">${img(wx, 1, 'ic')}<span class="wxn">${WEATHER_TR[wx]}</span></div>`;
     if (ev) h += `<button class="chip evt" data-a="showEvent" title="Günün olayı">${img('event', 1, 'ic')}<span>${esc(ev.name)}</span></button>`;
     h += `<div class="chip">${img('coin', 1, 'ic')}<b>${fmt(S.cash)}</b></div>`;
     h += `<div class="chip" title="Enerji">${img('energy', 1, 'ic')}<div class="ebar"><i style="width:${S.energy}%"></i></div><b>${S.energy}</b><span class="dim">(${casts} atış)</span></div>`;
@@ -3870,7 +3872,7 @@ const Input = {
       if (e.target.matches && e.target.matches('input,textarea')) return;
       Sound.start();
       if (e.code === 'F3' || (e.code === 'Backquote' && e.shiftKey)) { e.preventDefault(); QA.enable(); UI.openPanel('Debug'); return; }
-      if (e.code === 'Escape') { if (UI.modal) UI.closeModal(); else if (UI.panel) UI.closePanel(); else if (Fishing.phase === 'CHARGING') Fishing.cancel(); return; }
+      if (e.code === 'Escape') { if (UI.modal) { if (Fishing.phase === 'CATCH_RESULT') UI.A.catchClose.call(UI); else if (Fishing.phase !== 'STORAGE_DECISION') UI.closeModal(); } else if (UI.panel) UI.closePanel(); else if (Fishing.phase === 'CHARGING') Fishing.cancel(); return; }
       if (UI.modalOpen()) return;
       if (e.code === 'Space') { e.preventDefault(); if (!e.repeat && Fishing.ctx) { Fishing.press(); UI.fishBarUpdate(); } return; }
       if (keyMove[e.code] != null && !e.repeat) { const sc = Game.scene; if (Game.sceneName === 'PierFishing') sc.switchSpot(keyMove[e.code]); else if (sc && sc.input) sc.input(keyMove[e.code]); return; }

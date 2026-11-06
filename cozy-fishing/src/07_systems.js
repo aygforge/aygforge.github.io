@@ -19,7 +19,7 @@ const Tx = {
       }
     } catch (e) { console.error('Tx hata', name, e); S = JSON.parse(snap); r = { ok: false, msg: 'Beklenmeyen hata, işlem geri alındı.' }; }
     finally { this.busy = false; }
-    if (typeof UI !== 'undefined' && UI.refresh) UI.refresh();
+    try { if (typeof UI !== 'undefined' && UI.refresh) UI.refresh(); } catch (e) { console.error('UI yenileme', e); }
     return r;
   }
 };

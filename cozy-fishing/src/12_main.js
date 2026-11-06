@@ -68,7 +68,7 @@ const Input = {
       if (e.target.matches && e.target.matches('input,textarea')) return;
       Sound.start();
       if (e.code === 'F3' || (e.code === 'Backquote' && e.shiftKey)) { e.preventDefault(); QA.enable(); UI.openPanel('Debug'); return; }
-      if (e.code === 'Escape') { if (UI.modal) UI.closeModal(); else if (UI.panel) UI.closePanel(); else if (Fishing.phase === 'CHARGING') Fishing.cancel(); return; }
+      if (e.code === 'Escape') { if (UI.modal) { if (Fishing.phase === 'CATCH_RESULT') UI.A.catchClose.call(UI); else if (Fishing.phase !== 'STORAGE_DECISION') UI.closeModal(); } else if (UI.panel) UI.closePanel(); else if (Fishing.phase === 'CHARGING') Fishing.cancel(); return; }
       if (UI.modalOpen()) return;
       if (e.code === 'Space') { e.preventDefault(); if (!e.repeat && Fishing.ctx) { Fishing.press(); UI.fishBarUpdate(); } return; }
       if (keyMove[e.code] != null && !e.repeat) { const sc = Game.scene; if (Game.sceneName === 'PierFishing') sc.switchSpot(keyMove[e.code]); else if (sc && sc.input) sc.input(keyMove[e.code]); return; }

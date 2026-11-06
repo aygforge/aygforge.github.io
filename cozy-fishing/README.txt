@@ -27,3 +27,7 @@ QA / TEST
 KAYNAK
 - Oyun, CozyFishing_Tam_Surum_GDD_v1.0.md, CozyFishing_FishDB_v1.1.json ve
   CozyFishing_GameConfig_v1.0.json tasarım paketinden üretilmiştir.
+
+GELİŞTİRİCİ NOTU
+- Kaynak kod src/ klasöründe modüller halinde durur (01_core … 12_main). `python3 build.py`
+  komutu JSON verilerini ve tüm modülleri tek index.html dosyasına gömer ve bu ZIP'i yeniden üretir.

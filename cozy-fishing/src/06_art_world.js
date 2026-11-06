@@ -259,7 +259,8 @@ function genRegion(rid, season) {
   const out = { far: far.canvas(), mid: mid.canvas(), near: near.canvas(), bed: bed.canvas(), FW, MW };
   return out;
 }
-const regionArt = (rid, season) => { const k = 'region:' + rid + ':' + season; let v = Atlas.cache.get(k); if (!v) { v = genRegion(rid, season); Atlas.cache.set(k, v); } return v; };
+function evict(prefix, keep, max) { const ks = [...Atlas.cache.keys()].filter(k => k.startsWith(prefix) && k !== keep); while (ks.length >= max) Atlas.cache.delete(ks.shift()); }
+const regionArt = (rid, season) => { const k = 'region:' + rid + ':' + season; let v = Atlas.cache.get(k); if (!v) { evict('region:', k, 2); v = genRegion(rid, season); Atlas.cache.set(k, v); } return v; };
 
 /* ---------- KASABA ---------- */
 const TOWN_W = 1800, TOWN_GROUND = 296, TOWN_WATER_X = 1330;
@@ -401,7 +402,7 @@ function genTown(season) {
   far.outline(null, 0.15); mid.outline(null, 0.25);
   return { far: far.canvas(), mid: mid.canvas(), main: main.canvas(), FW, MW };
 }
-const townArt = season => { const k = 'town:' + season; let v = Atlas.cache.get(k); if (!v) { v = genTown(season); Atlas.cache.set(k, v); } return v; };
+const townArt = season => { const k = 'town:' + season; let v = Atlas.cache.get(k); if (!v) { evict('town:', k, 1); v = genTown(season); Atlas.cache.set(k, v); } return v; };
 
 /* ---------- İSKELE AVI (3 sahne) ---------- */
 const PIER_SPOTS = ['liman_kiyi', 'liman_iskele', 'liman_dalgakiran'];
