@@ -38,6 +38,7 @@ const Save = {
     if (from < 3) { Records.legacyFill(st); st.migratedFrom = from; }
     if (from < 4) { st.migratedFrom = st.migratedFrom || from; st.method = 'float'; st.daypart = 'day'; st.trip = null; }
     if (st.trip && !st.trip.stops) st.trip = null;
+    if (from < 5) { st.migratedFrom = st.migratedFrom || from; if (!['flow', 'classic'].includes(st.tempo)) st.tempo = 'flow'; }
     for (const d in st.auto.devices) { const dv = st.auto.devices[d]; if (!dv.policy) dv.policy = { mode: 'econ', bait: null, backup: null, target: null }; }
     while (st.gearSets.length < 3) st.gearSets.push({ name: 'Set ' + (st.gearSets.length + 1) });
     for (const id of st.boats.owned) { const b = st.boats.byId[id]; if (b) { b.ups = b.ups || {}; b.storage = b.storage || []; b.color = b.color || 'sea_green'; b.name = b.name || ''; } }
@@ -53,7 +54,7 @@ const Save = {
     if (!Array.isArray(st.orders)) e.push('ilanlar');
     for (const id of st.boats.owned) if (!BOAT[id] || !st.boats.byId[id]) e.push('tekne ' + id);
     for (const d in st.auto.devices) { const b = st.auto.devices[d].boat; if (b && !st.boats.owned.includes(b)) e.push('cihaz teknesi'); }
-    e.push(...Aq.validate(st)); if (!Array.isArray(st.records) || !Array.isArray(st.fin) || !Array.isArray(st.plan.goals) || st.plan.goals.length > 3) e.push('v2 alanları'); if (typeof V3 !== 'undefined') e.push(...V3.validate(st));
+    e.push(...Aq.validate(st)); if (!Array.isArray(st.records) || !Array.isArray(st.fin) || !Array.isArray(st.plan.goals) || st.plan.goals.length > 3) e.push('v2 alanları'); if (typeof V3 !== 'undefined') e.push(...V3.validate(st)); if (typeof V4 !== 'undefined') e.push(...V4.validate(st));
     if (!e.length) { const prev = S; S = st; try { e.push(...Inv.validate(st)); const per = {}; for (const d in st.auto.devices) { const b = st.auto.devices[d].boat; if (b) per[b] = (per[b] || 0) + 1; } for (const b in per) if (per[b] > BOAT[b].slots) e.push('yuva aşımı'); } catch (x) { e.push('iç hata'); } S = prev; }
     return e;
   },
