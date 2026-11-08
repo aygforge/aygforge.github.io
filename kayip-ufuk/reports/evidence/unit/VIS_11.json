@@ -16,8 +16,8 @@
   "ANIMAL_HERMIT_CRAB": {
    "aiProfile": "HIDE_IN_SHELL",
    "observedClips": [
-    "idle",
     "move",
+    "idle",
     "react"
    ]
   },
@@ -32,24 +32,24 @@
   "ANIMAL_LIZARD": {
    "aiProfile": "FLEE",
    "observedClips": [
-    "move",
     "idle",
+    "move",
     "react"
    ]
   },
   "ANIMAL_FROG": {
    "aiProfile": "HOP_AND_FLEE",
    "observedClips": [
-    "move",
     "idle",
-    "react"
+    "react",
+    "move"
    ]
   },
   "ANIMAL_FOREST_BIRD": {
    "aiProfile": "GROUND_FEED_FLY",
    "observedClips": [
-    "idle",
     "move",
+    "idle",
     "react"
    ]
   },
@@ -65,8 +65,8 @@
    "aiProfile": "NOCTURNAL_FLY",
    "observedClips": [
     "move",
-    "react",
-    "idle"
+    "idle",
+    "react"
    ]
   },
   "ANIMAL_MONKEY": {
@@ -98,7 +98,6 @@
    "aiProfile": "TERRITORIAL_AMBUSH",
    "observedClips": [
     "move",
-    "idle",
     "warn",
     "attack"
    ]

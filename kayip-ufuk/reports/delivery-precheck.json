@@ -7,10 +7,10 @@
     "atlasPagesPresent": 24,
     "spriteRecordsPlanned": 3180,
     "nonTransparentSpriteRects": 3180,
-    "uniquePixelRectHashes": 2083,
+    "uniquePixelRectHashes": 2319,
     "runtimeTestStatuses": {
-      "PASS": 89,
-      "NOT_RUN": 3
+      "PASS": 88,
+      "NOT_RUN": 4
     },
     "visualTestStatuses": {
       "PASS": 26,

@@ -1,17 +1,17 @@
 {
  "sourceVersion": "v2.0",
- "generatedUtc": "2026-11-08T08:13:16.802Z",
+ "generatedUtc": "2026-11-08T09:34:30.918Z",
  "generator": "tools/make_test_report.mjs",
  "environment": {
   "browser": "Chromium headless (Playwright 1.63.0)",
   "device": "Linux cloud container, headless, no GPU, no physical mobile device",
-  "build": "dist (2.0.0, built 2026-11-08T07:17:14.307Z)",
+  "build": "dist (2.0.0, built 2026-11-08T09:31:28.689Z)",
   "node": "v22.23.4"
  },
  "summary": {
   "runtime": {
-   "PASS": 89,
-   "NOT_RUN": 3
+   "PASS": 88,
+   "NOT_RUN": 4
   },
   "visual": {
    "PASS": 26,
@@ -24,6 +24,7 @@
   "p0NotPassed": [],
   "p1NotPassed": [
    "AT_PERFORMANCE_01",
+   "AT_PERFORMANCE_02",
    "AT_PERFORMANCE_03",
    "AT_PERFORMANCE_04",
    "VIS_22",
@@ -35,6 +36,7 @@
   "p0NotPassed": [],
   "p1NotPassedWithoutApprovedAlternative": [
    "AT_PERFORMANCE_01",
+   "AT_PERFORMANCE_02",
    "AT_PERFORMANCE_03",
    "AT_PERFORMANCE_04",
    "VIS_22",
@@ -163,7 +165,7 @@
     "reports/evidence/e2e/movement.png",
     "reports/evidence/e2e-results.json"
    ],
-   "notes": "[browser E2E (Chromium headless)] kb=44,44 joy=46,46 staminaIdleSprint=100.0 afterRun=95.4",
+   "notes": "[browser E2E (Chromium headless)] kb=44,44 joy=36,36 staminaIdleSprint=100.0 afterRun=95.2",
    "sources": [
     "browser E2E (Chromium headless)"
    ]
@@ -202,7 +204,7 @@
     "reports/evidence/e2e/inventory_pause.png",
     "reports/evidence/e2e-results.json"
    ],
-   "notes": "[browser E2E (Chromium headless)] {\"a\":{\"t\":70.89999999999938,\"p\":[8027.387094345302,9072.887301627792],\"h\":84.67703703703492},\"b\":{\"t\":70.89999999999938,\"p\":[8027.387094345302,9072.887301627792],\"h\":84.67703703703492,\"open\":\"UI_INVENTORY\"}}",
+   "notes": "[browser E2E (Chromium headless)] {\"a\":{\"t\":70.73333333333272,\"p\":[8025.516563268678,9072.887301627792],\"h\":84.68197530863989},\"b\":{\"t\":70.73333333333272,\"p\":[8025.516563268678,9072.887301627792],\"h\":84.68197530863989,\"open\":\"UI_INVENTORY\"}}",
    "sources": [
     "browser E2E (Chromium headless)"
    ]
@@ -244,7 +246,7 @@
     "reports/evidence/e2e/hud_night.png",
     "reports/evidence/e2e-results.json"
    ],
-   "notes": "[browser E2E (Chromium headless)] bars=80,29.9921,14.9896 lowWarning=true",
+   "notes": "[browser E2E (Chromium headless)] bars=80,29.9911,14.9883 lowWarning=true",
    "sources": [
     "browser E2E (Chromium headless)"
    ]
@@ -772,7 +774,7 @@
     "tests/unit/survival_eco.test.mjs#AT_SURVIVAL_ECO_15",
     "reports/evidence/e2e-results.json"
    ],
-   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_15 paused clock (hidden tab): no hunger, production, growth or cooldown | [browser E2E (Chromium headless)] browser visibilitychange: frozen=true resumed=true",
+   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_15 paused clock (hidden tab): no hunger, production, growth or cooldown | [browser E2E (Chromium headless)] browser visibilitychange: frozen=true (clock 117.16666666666538→117.16666666666538 over 3 s hidden) paused=true resumed=true",
    "sources": [
     "unit (node --test)",
     "browser E2E (Chromium headless)"
@@ -1076,7 +1078,7 @@
     "reports/evidence/e2e/export_sample_head.json",
     "reports/evidence/e2e-results.json"
    ],
-   "notes": "[browser E2E (Chromium headless)] {\"imp\":{\"ok\":true},\"same\":true,\"badCode\":\"CHECKSUM_MISMATCH\",\"checksum\":\"0cf4211783b4\"}",
+   "notes": "[browser E2E (Chromium headless)] {\"imp\":{\"ok\":true},\"same\":true,\"badCode\":\"CHECKSUM_MISMATCH\",\"checksum\":\"cdabb6bebe9c\"}",
    "sources": [
     "browser E2E (Chromium headless)"
    ]
@@ -1222,7 +1224,7 @@
     "reports/evidence/e2e/perf_desktop_headless.json",
     "reports/evidence/e2e-results.json"
    ],
-   "notes": "No physical mobile device or GPU is available in this cloud container; only headless desktop Chromium. Requires midrange Android hardware (procedure). Headless reference in reports/evidence/e2e/perf_desktop_headless.json. | [browser E2E (Chromium headless)] Requires midrange Android hardware. Headless container reference only: median 59.9 FPS, p95 16.8 ms, heap 43 MiB",
+   "notes": "No physical mobile device or GPU is available in this cloud container; only headless desktop Chromium. Requires midrange Android hardware (procedure). Headless reference in reports/evidence/e2e/perf_desktop_headless.json. | [browser E2E (Chromium headless)] Requires midrange Android hardware. Headless container reference only: median 59.9 FPS, p95 16.7 ms, heap 43 MiB",
    "sources": [
     "browser E2E (Chromium headless)"
    ]
@@ -1230,15 +1232,10 @@
   {
    "id": "AT_PERFORMANCE_02",
    "priority": "P1",
-   "status": "PASS",
-   "evidence": [
-    "reports/evidence/perf-longsession.json",
-    "tests/e2e/longsession.mjs"
-   ],
-   "notes": "[long session (Chromium headless, container)] 60 min real time, 448 visits over 12 regions + 3 caves; heap 8.28→8.97 MiB (max 9.13), 2nd-half slope 0.011 MiB/10 min; caches bounded (chunks ≤81, decor ≤115, avatar ≤63); errors 0. Headless desktop Chromium, NOT a phone — repeat on target Android.",
-   "sources": [
-    "long session (Chromium headless, container)"
-   ]
+   "status": "NOT_RUN",
+   "evidence": [],
+   "notes": "No automated or manual execution recorded.",
+   "sources": []
   },
   {
    "id": "AT_PERFORMANCE_03",
@@ -1269,7 +1266,7 @@
     "reports/evidence/visual/vis01.json",
     "reports/evidence/visual-results.json"
    ],
-   "notes": "[browser visual (Chromium headless)] served from /html/7204511/; atlases 24/24 decoded; 404s=0; missing sprites=0; canvas colors=136",
+   "notes": "[browser visual (Chromium headless)] served from /html/7204511/; atlases 24/24 decoded; 404s=0; missing sprites=0; canvas colors=67",
    "sources": [
     "browser visual (Chromium headless)"
    ]
@@ -1288,7 +1285,7 @@
     "reports/evidence/visual/vis02_*.png (20)",
     "reports/evidence/visual-results.json"
    ],
-   "notes": "[browser visual (Chromium headless)] 20 terrain ids: rendered chunk texture = TerrainDB tile sprite (min match 100%), walk/swim/raft flags agree; map-absent (verified on temporary in-memory patch): REED_PATCH; closest mean colours OCEAN_SHALLOW,SEA_REEF Δ=13.9; bad=[]",
+   "notes": "[browser visual (Chromium headless)] 20 terrain ids: rendered chunk texture = TerrainDB tile sprite (min match 100%), walk/swim/raft flags agree; map-absent (verified on temporary in-memory patch): REED_PATCH; closest mean colours MEADOW,LAGOON_SOIL Δ=11.0; bad=[]",
    "sources": [
     "browser visual (Chromium headless)"
    ]
@@ -1303,7 +1300,7 @@
     "reports/evidence/visual/vis03.json",
     "reports/evidence/visual-results.json"
    ],
-   "notes": "[browser visual (Chromium headless)] masks in map: shore 12, river 9; all 4×15 transition sprites present; 3×3 renders: black=0 gaps=0 seams=0; sub-pixel cam frames=0/40; water overlay on land=0/15",
+   "notes": "[browser visual (Chromium headless)] masks in map: shore 12, river 9; all 4×15 transition sprites present; 3×3 renders: black=0 gaps=0 seams=0; sub-pixel cam frames=0/40; water overlay on land=0/0",
    "sources": [
     "browser visual (Chromium headless)"
    ]
@@ -1492,7 +1489,7 @@
     "reports/evidence/visual/vis15.json",
     "reports/evidence/visual-results.json"
    ],
-   "notes": "[browser visual (Chromium headless)] raft 4 dirs: sprite dir = facing, constant hull offset to collider {\"up\":[\"0,30\"],\"down\":[\"0,30\"],\"left\":[\"0,30\"],\"right\":[\"0,30\"]}, collider never on land; boat sprite centre Δ=0px bottom Δ=1px",
+   "notes": "[browser visual (Chromium headless)] raft 4 dirs: sprite dir = facing, constant hull offset to collider {\"up\":[\"0,30\"],\"down\":[\"0,30\"],\"left\":[\"0,30\"],\"right\":[\"0,30\"]}, collider never on land; boat sprite centre Δ=0px bottom Δ=0px",
    "sources": [
     "browser visual (Chromium headless)"
    ]
