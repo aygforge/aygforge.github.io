@@ -98,6 +98,7 @@ export class FishingSystem {
     const cw = this.cfg.castWaitSeconds;
     let wait = rare ? rng.range(cw.rareMin, cw.rareMax) : rng.range(cw.commonMin, cw.commonMax);
     wait *= this.g.skills.perk('SKILL_FISHING', 'biteWaitMultiplier', 1) / this.g.climate.fishingMul();
+    if (this.g.inventory.hasItem('SAL_PLASTIC')) wait *= 0.9; // plastic float (ItemDB uses: yüzer balık avı malzemesi)
     const fight = pick.fightSeconds.min + rng.next() * (pick.fightSeconds.max - pick.fightSeconds.min);
     const sizeT = rng.next();
     this.session = { phase: 'WAIT', t: 0, wait, fish: pick, zone, fight, progress: 0, tension: 40, outT: 0, slackT: 0, biteT: 0, sizeT, reeling: false, water, rodUid: rod.uid };

@@ -341,7 +341,7 @@ export class UIMenus {
   // ---------- map ----------
   openMap() {
     const g = this.g; const terr = this.content.terrain;
-    this.openPanel('UI_MAP', 'Harita', '<canvas id="mapcv"></canvas><div class="legend small">● Keşfedilen noktalar · ▲ Sen · ⛺ Kamplar · Kesik çizgiler: sal rotaları</div>', null, { wide: true });
+    this.openPanel('UI_MAP', 'Harita', '<canvas id="mapcv"></canvas><div class="legend small">● Keşfedilen noktalar · ▲ Sen · ■ Kamplar (kırmızı) · Kesik çizgiler: sal rotaları</div>', null, { wide: true });
     const cv = this.panelEl.querySelector('#mapcv'); const grid = g.world.grid;
     const cave = grid.isCave; const W = grid.w, H = grid.h;
     cv.width = W; cv.height = H; const c = cv.getContext('2d'); const img = c.createImageData(W, H);
@@ -582,6 +582,7 @@ export class UIMenus {
 
   // ================= feedback =================
   toast(text, kind = '') {
+    (this.toastLog ||= []).push(text); if (this.toastLog.length > 100) this.toastLog.shift();
     const d = document.createElement('div'); d.className = `toast ${kind}`; d.textContent = text;
     this.toastEl.appendChild(d); while (this.toastEl.children.length > 4) this.toastEl.firstChild.remove();
     setTimeout(() => d.classList.add('out'), 2600); setTimeout(() => d.remove(), 3200);

@@ -1,0 +1,78 @@
+{
+ "cropStageSprites": 48,
+ "sharedOverlays": 3,
+ "observedStageSequences": {
+  "CROP_ROOT": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "CROP_GREENS": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "CROP_BEAN": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "CROP_PEPPER": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "CROP_HERB": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "CROP_FIBER": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "CROP_PUMPKIN": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "CROP_PINEAPPLE": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "CROP_BANANA": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "CROP_CANE": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "CROP_SPICE": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "CROP_SWEET_POTATO": [
+   0,
+   1,
+   2,
+   3
+  ]
+ }
+}

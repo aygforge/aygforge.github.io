@@ -1,0 +1,10 @@
+{
+ "fish": 10,
+ "codexUnique": 10,
+ "maxSwimSilhouetteIoU": 1,
+ "closestPair": [
+  "FISH_MULLET",
+  "FISH_MACKEREL"
+ ],
+ "note": "fish of similar body plan are separated by colour/pattern; pixel difference > 2% for every pair"
+}

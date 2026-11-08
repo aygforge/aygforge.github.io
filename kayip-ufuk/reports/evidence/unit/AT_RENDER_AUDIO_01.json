@@ -1,0 +1,22 @@
+[
+ [
+  "intact",
+  0,
+  "packaging verification OK: 24 atlas pages, 3180 sprites physically validated"
+ ],
+ [
+  "png_removed",
+  1,
+  "PACKAGING VERIFICATION FAILED (../../../../tmp/ku-pack-jpXJ8Q): 1 errors\n  MISSING_PNG assets/atlases/crops_00.png"
+ ],
+ [
+  "meta_removed",
+  1,
+  "  MISSING_META assets/atlases/icons_00.json"
+ ],
+ [
+  "index_entry_removed",
+  1,
+  "  icon/MAT_FIBER: atlas_index disagrees with AtlasLayout"
+ ]
+]

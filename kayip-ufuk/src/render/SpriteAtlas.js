@@ -63,7 +63,8 @@ export class SpriteAtlas {
     }
     ctx.putImageData(img, 0, 0);
     const mask = this.extract(`avatar/clothing_mask/${clip}/${dir}/${frame}`);
-    if (mask) ctx.drawImage(this.tint(mask, OUTFITS[app.outfit][0]), 0, 0);
+    // the clothing mask is shared by both bodies: clip it to the body's own pixels (never paint outside the silhouette)
+    if (mask) { ctx.globalCompositeOperation = 'source-atop'; ctx.drawImage(this.tint(mask, OUTFITS[app.outfit][0]), 0, 0); ctx.globalCompositeOperation = 'source-over'; }
     this.avatarCache.set(key, body);
     return body;
   }

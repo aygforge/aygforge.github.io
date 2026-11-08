@@ -181,8 +181,8 @@ class App {
 
   dropSelected(uid) {
     const g = this.game; const inv = g.inventory; const loc = inv.locate(uid); if (!loc) return;
-    const [tx, ty] = g.world.playerTile(); const id = `drop_${g.store.nextUid('bag')}`;
-    g.store.transaction(null, (tx) => { const c = inv.createContainer(tx, `c_${id}`, 12, {}); inv.moveSlot(tx, loc[0], loc[1], c.id); tx.set(g.state.world.dropBags, id, { id, sceneId: g.world.sceneId, tile: [tx, ty], containerId: c.id }); });
+    const [px, py] = g.world.playerTile(); const id = `drop_${g.store.nextUid('bag')}`;
+    g.store.transaction(null, (tx) => { const c = inv.createContainer(tx, `c_${id}`, 12, {}); inv.moveSlot(tx, loc[0], loc[1], c.id); tx.set(g.state.world.dropBags, id, { id, sceneId: g.world.sceneId, tile: [px, py], containerId: c.id }); });
   }
   /** Tool repair: stone tools with 1 stone + 1 branch; metal tools with repair kit (−20) + matching ingot. Atomic. */
   repairTool(uid) {
@@ -217,7 +217,7 @@ class App {
   applySettings() {
     try { localStorage.setItem('ku_settings', JSON.stringify(this.settings)); } catch { /* storage blocked */ }
     this.audio.applyVolumes();
-    if (this.renderer) this.renderer.quality = this.settings.graphicsQuality;
+    if (this.renderer) { this.renderer.quality = this.settings.graphicsQuality; this.renderer.reducedMotion = !!this.settings.reducedMotion; }
     document.body.classList.toggle('reduced-motion', !!this.settings.reducedMotion);
   }
   download(name, text) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type: 'application/json' })); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); }

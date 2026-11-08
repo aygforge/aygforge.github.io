@@ -1,0 +1,300 @@
+{
+ "base": "dist over local static HTTP",
+ "browser": "Chromium (Playwright, headless)",
+ "ranUtc": "2026-11-08T01:56:16.238Z",
+ "consoleErrors": [],
+ "results": {
+  "AT_BOOT_DATA_01": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/boot_menu.png"
+   ],
+   "notes": "boot={\"items\":179,\"recipes\":183,\"builds\":58,\"pois\":38,\"puzzles\":12,\"stories\":15,\"species\":25,\"crops\":12,\"skills\":8,\"endings\":2,\"blueprints\":20,\"maps\":7,\"sprites\":3180,\"atlasPages\":24,\"audioCues\":63} errors=0"
+  },
+  "AT_BOOT_DATA_06": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/offline_play.png"
+   ],
+   "notes": "blockedExternal=0 errors=0"
+  },
+  "AT_RENDER_AUDIO_06": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/offline_play.png"
+   ],
+   "notes": "external requests attempted: 0"
+  },
+  "AT_BOOT_DATA_03": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/missing_db_error.png",
+    "tests/unit/boot_nav.test.mjs#AT_BOOT_DATA_03"
+   ],
+   "notes": "visible error, code=DB_MISSING"
+  },
+  "VIS_20": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/missing_atlas_error.png"
+   ],
+   "notes": "boot error: Atlas yüklenemedi: assets/atlases/poi_01.png"
+  },
+  "AT_INPUT_UI_02": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/movement.png"
+   ],
+   "notes": "kb=44,44 joy=37,37 staminaIdleSprint=100.0 afterRun=95.2"
+  },
+  "AT_INPUT_UI_03": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/context_target.png"
+   ],
+   "notes": "targets=2 left=\"Topla: Taş\" right=\"Düşen çanta\" hud=\"Topla: Taş\" acted on facing target: 0→3"
+  },
+  "AT_INPUT_UI_04": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/tap_to_approach.png"
+   ],
+   "notes": "{\"ok\":true,\"len\":10,\"corner\":false,\"moving\":true,\"cancelled\":true}"
+  },
+  "AT_INPUT_UI_05": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/inventory_pause.png"
+   ],
+   "notes": "{\"a\":{\"t\":70.76666666666605,\"p\":[8025.516563268678,9072.887301627792],\"h\":84.6809876543189},\"b\":{\"t\":70.76666666666605,\"p\":[8025.516563268678,9072.887301627792],\"h\":84.6809876543189,\"open\":\"UI_INVENTORY\"}}"
+  },
+  "AT_INPUT_UI_08": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/hud_day.png",
+    "reports/evidence/e2e/hud_night.png"
+   ],
+   "notes": "bars=80,29.9921,14.9896 lowWarning=true"
+  },
+  "AT_INPUT_UI_09": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/quality_high.png",
+    "reports/evidence/e2e/quality_low.png"
+   ],
+   "notes": "interactables per setting=0,0,0,0,0,0"
+  },
+  "AT_INPUT_UI_07": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/fullscreen.png"
+   ],
+   "notes": "fullscreen=true feedback=\"\""
+  },
+  "AT_RENDER_AUDIO_05": {
+   "status": "PASS",
+   "evidence": [],
+   "notes": "{\"pre\":{\"started\":false},\"post\":{\"started\":true,\"ctx\":\"running\",\"before\":[0.6000000238418579,0.800000011920929],\"after\":[0.20000000298023224,0.8999999761581421],\"muted\":0}}"
+  },
+  "VIS_24": {
+   "status": "PASS",
+   "evidence": [
+    "reports/audio-provenance.json"
+   ],
+   "notes": "63/63 cues decoded+played after gesture; bad="
+  },
+  "AT_RENDER_AUDIO_02": {
+   "status": "PASS",
+   "evidence": [
+    "public/assets/avatar_anchors.json"
+   ],
+   "notes": "{\"clips\":16,\"frames\":644,\"empty\":0,\"missingAnchor\":0}"
+  },
+  "VIS_04": {
+   "status": "PASS",
+   "evidence": [
+    "public/assets/atlases/avatar_00.png",
+    "public/assets/atlases/avatar_01.png"
+   ],
+   "notes": "16 clips, 644 composed body frames (2 bodies × 322), none empty"
+  },
+  "VIS_06": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/appearance.png"
+   ],
+   "notes": "distinct composed appearances=240 saved appearance round-trip=true"
+  },
+  "AT_PERSIST_01": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/slots.png"
+   ],
+   "notes": "{\"slot-1\":{\"seed\":101,\"flags\":[]},\"slot-2\":{\"seed\":202,\"flags\":[\"SLOT2\"]},\"slot-3\":{\"seed\":303,\"flags\":[\"SLOT3\"]}}"
+  },
+  "AT_PERSIST_02": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/backup_recovery.png"
+   ],
+   "notes": "{\"ok\":true,\"recovered\":true,\"revBInBackup\":true} toast=Günlüğe eklendi: Kıyıda Uyandığım Gün | Kıyıda uyandın. Önce barınak, su ve ateş"
+  },
+  "AT_PERSIST_07": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/export_sample_head.json"
+   ],
+   "notes": "{\"imp\":{\"ok\":true},\"same\":true,\"badCode\":\"CHECKSUM_MISMATCH\",\"checksum\":\"cb9337b24ea3\"}"
+  },
+  "AT_PERSIST_08": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/second_tab_readonly.png"
+   ],
+   "notes": "{\"readOnly\":true,\"before\":4,\"after\":4}"
+  },
+  "AT_PERSIST_09": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/transition_recovery.png"
+   ],
+   "notes": "{\"scene\":\"CAVE_COPPER\",\"status\":\"COMMITTED\",\"rafts\":0,\"passable\":true}"
+  },
+  "AT_PERSIST_11": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/ending_sea.png"
+   ],
+   "notes": "{\"endings\":[\"ESCAPE_SAIL\"],\"inGame\":[\"ESCAPE_SAIL\"],\"boatKept\":true}"
+  },
+  "AT_SURVIVAL_ECO_15": {
+   "status": "PASS",
+   "evidence": [
+    "tests/unit/survival_eco.test.mjs#AT_SURVIVAL_ECO_15"
+   ],
+   "notes": "browser visibilitychange: frozen=true resumed=true"
+  },
+  "AT_INPUT_UI_06": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/layout_1280x720.png",
+    "reports/evidence/e2e/layout_740x360.png",
+    "reports/evidence/e2e/layout_640x360.png"
+   ],
+   "notes": "[{\"vp\":{\"width\":1280,\"height\":720},\"slots\":6,\"small\":[],\"clipped\":0},{\"vp\":{\"width\":740,\"height\":360},\"slots\":6,\"small\":[],\"clipped\":0},{\"vp\":{\"width\":640,\"height\":360},\"slots\":6,\"small\":[],\"clipped\":0}]"
+  },
+  "VIS_18": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/layout_1280x720.png",
+    "reports/evidence/e2e/layout_740x360.png",
+    "reports/evidence/e2e/layout_640x360.png"
+   ],
+   "notes": "360 px tall landscape: all HUD hit targets ≥48 CSS px and on screen"
+  },
+  "AT_INPUT_UI_01": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/portrait_prompt.png",
+    "reports/evidence/e2e/landscape_menu.png"
+   ],
+   "notes": "portraitPrompt=true landscapeOk=true"
+  },
+  "AT_RENDER_AUDIO_04": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/night_low_rain.png",
+    "reports/evidence/e2e/cave_cave_bats.png",
+    "reports/evidence/e2e/storm_high.png"
+   ],
+   "notes": "Night + heavy rain on LOW and caves rendered with player light radius; interactables stay outlined by target highlight. Visual judgement from screenshots."
+  },
+  "VIS_21": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/world_beach_day.png",
+    "reports/evidence/e2e/night_low_rain.png",
+    "reports/evidence/e2e/storm_high.png"
+   ],
+   "notes": "Day/dusk/night grade and 5 weather states share the same render path; LOW reduces rain density to 1/3."
+  },
+  "VIS_25": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/world_beach_day.png",
+    "reports/evidence/e2e/world_forest.png",
+    "reports/evidence/e2e/world_swamp.png",
+    "reports/evidence/e2e/world_redcliff.png",
+    "reports/evidence/e2e/world_mountain.png",
+    "reports/evidence/e2e/world_settlement.png",
+    "reports/evidence/e2e/world_lagoon.png",
+    "reports/evidence/e2e/world_valley.png",
+    "reports/evidence/e2e/world_grove.png",
+    "reports/evidence/e2e/islet_lighthouse.png",
+    "reports/evidence/e2e/islet_wreck.png",
+    "reports/evidence/e2e/islet_fertile.png"
+   ],
+   "notes": "12 regions captured (9 main + 3 islets) with distinct palettes/decor."
+  },
+  "VIS_09": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/house_out_BUILD_BAMBOO_HUT.png",
+    "reports/evidence/e2e/house_in_BUILD_BAMBOO_HUT.png",
+    "reports/evidence/e2e/house_out_BUILD_WOOD_HUT.png",
+    "reports/evidence/e2e/house_in_BUILD_WOOD_HUT.png",
+    "reports/evidence/e2e/house_out_BUILD_LARGE_HOUSE.png",
+    "reports/evidence/e2e/house_in_BUILD_LARGE_HOUSE.png",
+    "reports/evidence/e2e/house_out_BUILD_FISH_HUT.png",
+    "reports/evidence/e2e/house_in_BUILD_FISH_HUT.png"
+   ],
+   "notes": "[\"BUILD_BAMBOO_HUT:ok\",\"BUILD_WOOD_HUT:ok\",\"BUILD_LARGE_HOUSE:ok\",\"BUILD_FISH_HUT:ok\"]"
+  },
+  "AT_WORLD_NAV_08": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/house_out_BUILD_BAMBOO_HUT.png",
+    "reports/evidence/e2e/house_in_BUILD_BAMBOO_HUT.png",
+    "tests/unit/boot_nav.test.mjs#AT_WORLD_NAV_08"
+   ],
+   "notes": "Roof fades only while the player tile is inside the house footprint (unit + screenshots)"
+  },
+  "VIS_14": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/poi_POI_CRASH_BOAT.png",
+    "reports/evidence/e2e/poi_POI_WATERPROOF_BAG.png",
+    "reports/evidence/e2e/poi_POI_SHORE_CRATE.png",
+    "reports/evidence/e2e/poi_POI_BROKEN_LOOKOUT.png",
+    "reports/evidence/e2e/poi_POI_FISHER_HUT.png",
+    "reports/evidence/e2e/poi_POI_FRUIT_HILL.png",
+    "reports/evidence/e2e/ (poi_*.png ×38)"
+   ],
+   "notes": "38 POIs visited by canonical id; missing sprites=0"
+  },
+  "AT_EXPLORATION_01": {
+   "status": "PASS",
+   "evidence": [
+    "tests/unit/explore_endings.test.mjs#AT_EXPLORATION_01",
+    "reports/evidence/e2e/poi_POI_CRASH_BOAT.png"
+   ],
+   "notes": "canonical POI ids → poi/<id>/<state> sprites in all 38 screenshots"
+  },
+  "AT_RENDER_AUDIO_03": {
+   "status": "PASS",
+   "evidence": [
+    "tools/assetgen/",
+    "reports/evidence/e2e/hud_day.png"
+   ],
+   "notes": "UI uses 14 atlas icon elements, emoji glyphs=0; all art generated by tools/assetgen (original code)"
+  },
+  "AT_PERFORMANCE_01": {
+   "status": "NOT_RUN",
+   "evidence": [
+    "reports/evidence/e2e/perf_desktop_headless.json"
+   ],
+   "notes": "Requires midrange Android hardware. Headless container reference only: median 59.9 FPS, p95 16.7 ms, heap 43 MiB"
+  }
+ },
+ "finalShot": "reports/evidence/e2e/final_state.png"
+}

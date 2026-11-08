@@ -55,11 +55,11 @@ export class WorldScene {
     for (const [isl, tl] of targets) {
       const s = this.terrain.localToAtlas(isl, ...starts[isl]);
       const t = this.terrain.localToAtlas(isl, ...tl);
-      const path = this.pf.findPath(g, s, t, { adjacentOk: true });
+      const path = this.pf.findPath(g, s, t, { adjacentOk: true, radius: 2 });
       if (path) continue;
       // path ignoring node solids, then clear blockers on it
       for (const n of this.nodeDefs) if (n._solidApplied && n.sceneId === 'OVERWORLD') g.solid[g.i(n.tile[0], n.tile[1])]--;
-      const p2 = this.pf.findPath(g, s, t, { adjacentOk: true });
+      const p2 = this.pf.findPath(g, s, t, { adjacentOk: true, radius: 2 });
       for (const n of this.nodeDefs) if (n._solidApplied && n.sceneId === 'OVERWORLD') g.solid[g.i(n.tile[0], n.tile[1])]++;
       if (!p2) continue;
       for (const [x, y] of p2) {
@@ -164,10 +164,10 @@ export class WorldScene {
   }
 
   /** Tap-to-approach: A* to a tile adjacent to target. */
-  approach(tile, onArrive = null) {
+  approach(tile, onArrive = null, radius = 0) {
     const g = this.grid; const start = this.playerTile();
     const mode = this.p.mode === 'RAFT' ? 'RAFT' : this.p.mode === 'SWIM' ? 'SWIM' : 'WALK';
-    const path = this.pf.findPath(g, start, tile, { mode, adjacentOk: true, maxNodes: 40000 });
+    const path = this.pf.findPath(g, start, tile, { mode, adjacentOk: true, maxNodes: 40000, radius });
     if (!path) { this.g.bus.emit('ui.toast', { text: 'Oraya yürüyerek ulaşılamıyor' }); this.g.audio?.play('snd_ui_error'); return false; }
     path.shift();
     this.path = path.length ? path : null; this.pathTarget = tile; this.onArriveCb = onArrive;
@@ -214,6 +214,10 @@ export class WorldScene {
       if (bag.sceneId !== scene) continue;
       const d = Math.hypot(bag.tile[0] + 0.5 - tx, bag.tile[1] + 0.5 - ty);
       if (d <= range) out.push({ kind: 'bag', id: bag.id, d, label: 'Düşen çanta', tile: bag.tile });
+    }
+    if (scene === 'OVERWORLD') for (const f of Object.values(this.s.world.flotsam || {})) {
+      const d = Math.hypot(f.tile[0] + 0.5 - tx, f.tile[1] + 0.5 - ty);
+      if (d <= range + 0.3) out.push({ kind: 'flotsam', id: f.id, d, label: 'Kıyıya vuran enkazı topla', tile: f.tile });
     }
     const extra = this.g.extraInteractables(scene, tx, ty, range);
     out.push(...extra);

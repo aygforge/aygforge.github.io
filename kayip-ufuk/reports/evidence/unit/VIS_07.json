@@ -1,0 +1,10 @@
+{
+ "icons": 179,
+ "uniqueHashes": 179,
+ "minPairwisePixelDiff": 0.0517578125,
+ "closestPair": [
+  "SEED_PEPPER",
+  "SEED_ROOT"
+ ],
+ "emojiOffenders": []
+}

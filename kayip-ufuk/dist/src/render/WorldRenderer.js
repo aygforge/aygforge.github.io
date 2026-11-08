@@ -128,14 +128,15 @@ export class WorldRenderer {
       list.push({ y: (poi.ay + 1) * TILE, draw: () => this.atlas.draw(ctx, `poi/${poi.id}/${g.exploration.visualState(poi.id)}`, (poi.ax + 0.5) * TILE - camX, (poi.ay + 1.2) * TILE - camY, { alpha: 1 }) });
     }
     for (const a of g.world.animals) list.push({ y: a.y + (a.flying ? 30 : 0), draw: () => this.drawAnimal(a) });
+    if (scene === 'OVERWORLD') for (const f of Object.values(g.state.world.flotsam || {})) { if (f.tile[0] < tx0 || f.tile[0] > tx1 || f.tile[1] < ty0 || f.tile[1] > ty1) continue; list.push({ y: (f.tile[1] + 1) * TILE, draw: () => { this.atlas.draw(ctx, 'icon/SAL_SCRAP', (f.tile[0] + 0.3) * TILE - camX, (f.tile[1] + 1) * TILE - camY, { scale: 0.7 }); this.atlas.draw(ctx, `icon/${Object.keys(f.items)[0]}`, (f.tile[0] + 0.7) * TILE - camX, (f.tile[1] + 0.95) * TILE - camY, { scale: 0.7 }); } }); }
     for (const bag of Object.values(g.state.world.dropBags || {})) if (bag.sceneId === scene) list.push({ y: (bag.tile[1] + 1) * TILE, draw: () => this.atlas.draw(ctx, 'icon/EQ_BAG_SMALL', (bag.tile[0] + 0.5) * TILE - camX, (bag.tile[1] + 1) * TILE - camY) });
     for (const r of Object.values(g.state.vehicles.raftsById)) {
       if (r.sceneId !== scene) continue;
       const moving = p.mode === 'RAFT' && g.state.vehicles.activeVehicleId === r.buildUid;
-      const dir = moving ? p.facing : 'right'; const f = Math.floor(this.time * 5) % 8;
+      const dir = moving ? p.facing : 'right'; const f = Math.floor(this.time * 5) % 4;
       list.push({ y: r.atlasPx[1] + 18, draw: () => this.atlas.draw(ctx, `boat/BUILD_RAFT/${dir}/${f}`, (moving ? px : r.atlasPx[0]) - camX, (moving ? py : r.atlasPx[1]) + 30 - camY, { scale: 0.5 }) });
     }
-    if (scene === 'OVERWORLD' && g.escape.rescueAvailable()) { const [rx, ry] = g.escape.rescueBoatPx(); list.push({ y: ry, draw: () => { this.atlas.draw(ctx, `boat/BUILD_ESCAPE_BOAT/left/${Math.floor(this.time * 4) % 8}`, rx - camX, ry - camY, { scale: 0.75 }); this.atlas.draw(ctx, 'ui/warning', rx - camX, ry - 110 - camY, { scale: 0.5 }); } }); }
+    if (scene === 'OVERWORLD' && g.escape.rescueAvailable()) { const [rx, ry] = g.escape.rescueBoatPx(); list.push({ y: ry, draw: () => { this.atlas.draw(ctx, `boat/BUILD_ESCAPE_BOAT/left/${Math.floor(this.time * 4) % 4}`, rx - camX, ry - camY, { scale: 0.75 }); this.atlas.draw(ctx, 'ui/warning', rx - camX, ry - 110 - camY, { scale: 0.5 }); } }); }
     if (scene === 'OVERWORLD') for (const [k] of Object.entries(g.state.waterInfrastructure.byBuildUid)) void k;
     // player
     if (p.mode !== 'RAFT') list.push({ y: py, draw: () => this.drawPlayer(px - camX, py - camY) });
@@ -148,7 +149,7 @@ export class WorldRenderer {
     if (g.world.path && this.quality !== 'LOW') { ctx.fillStyle = 'rgba(255,255,255,0.35)'; for (const [x, y] of g.world.path) ctx.fillRect((x + 0.5) * TILE - camX - 1, (y + 0.5) * TILE - camY - 1, 3, 3); }
     // target highlight
     const tgt = g.ui?.currentTarget;
-    if (tgt) { ctx.strokeStyle = 'rgba(255,240,150,0.9)'; ctx.lineWidth = 1; const pulse = 2 + Math.sin(this.time * 6); ctx.strokeRect(tgt.tile[0] * TILE - camX - pulse, tgt.tile[1] * TILE - camY - pulse, TILE + pulse * 2, TILE + pulse * 2); }
+    if (tgt) { ctx.strokeStyle = 'rgba(255,240,150,0.9)'; ctx.lineWidth = 1; const pulse = this.reducedMotion ? 2 : 2 + Math.sin(this.time * 6); ctx.lineWidth = this.reducedMotion ? 2 : 1; ctx.strokeRect(tgt.tile[0] * TILE - camX - pulse, tgt.tile[1] * TILE - camY - pulse, TILE + pulse * 2, TILE + pulse * 2); }
     for (const f of g.world.fx) { const fr = Math.min(5, Math.floor((f.t / f.life) * 6)); this.atlas.draw(ctx, `${f.id}/${fr}`, f.x - camX, f.y - camY, { ay: 0.75 }); }
     this.weather(W, H);
     this.lighting(W, H, camX, camY, px, py);
@@ -186,7 +187,7 @@ export class WorldRenderer {
     } else if (ready) {
       ctx.fillStyle = 'rgba(30,40,30,0.28)'; ctx.beginPath(); ctx.ellipse(x, y - 6, 11, 5, 0, 0, Math.PI * 2); ctx.fill();
       this.atlas.draw(ctx, `icon/${n.itemId}`, x, y - 4, { scale: 0.75 });
-      if (this.quality !== 'LOW' && Math.floor(this.time * 2 + n.tile[0]) % 5 === 0) { ctx.fillStyle = 'rgba(255,255,220,0.8)'; ctx.fillRect(x + 7, y - 26, 2, 2); }
+      if (this.quality !== 'LOW' && !this.reducedMotion && Math.floor(this.time * 2 + n.tile[0]) % 5 === 0) { ctx.fillStyle = 'rgba(255,255,220,0.8)'; ctx.fillRect(x + 7, y - 26, 2, 2); }
     }
   }
   drawBuild(b) {
@@ -201,12 +202,12 @@ export class WorldRenderer {
       return;
     }
     let dy = 0;
-    if (b.buildId === 'BUILD_ESCAPE_BOAT' || b.buildId === 'BUILD_PIER') dy = Math.round(Math.sin(this.time * 2) * 1);
+    if (!this.reducedMotion && (b.buildId === 'BUILD_ESCAPE_BOAT' || b.buildId === 'BUILD_PIER')) dy = Math.round(Math.sin(this.time * 2) * 1);
     this.atlas.draw(ctx, `build/${b.buildId}/complete`, x, y + dy);
     const q = g.state.productionState.queuesByStation[b.uid];
     const active = q && q.entries.some((e) => !e.completed);
     const fx = `build/${b.buildId}/active_fx`;
-    if ((active || b.buildId === 'BUILD_CAMPFIRE') && this.atlas.has(fx) && this.quality !== 'LOW') this.atlas.draw(ctx, fx, x, y + dy, { alpha: 0.75 + 0.25 * Math.sin(this.time * 9) });
+    if ((active || b.buildId === 'BUILD_CAMPFIRE') && this.atlas.has(fx) && this.quality !== 'LOW') this.atlas.draw(ctx, fx, x, y + dy, { alpha: this.reducedMotion ? 0.9 : 0.75 + 0.25 * Math.sin(this.time * 9) });
     if (q && q.entries.some((e) => e.completed && !e.claimed)) this.atlas.draw(ctx, 'ui/success', x, y - b.h * TILE - 8, { scale: 0.4 });
     if (b.upgrades?.length) { ctx.fillStyle = '#e7c15a'; ctx.fillRect(x - 3, y - 6, 6, 3); }
     const plot = g.state.productionState.cropPlotsById[b.uid];
@@ -234,6 +235,8 @@ export class WorldRenderer {
     const f = Math.floor((a.animT || 0) * 8) % Math.max(1, n);
     const underwater = a.fish || sp.startsWith('MARINE_');
     this.atlas.draw(this.ctx, `animal/${sp}/${valid}/${a.dir}/${f}`, a.x - cx, a.y - cy + (a.fish ? 8 : sp.startsWith('MARINE') ? 24 : 8) - (a.flying ? 14 : 0), { alpha: underwater ? 0.75 : 1 });
+    // threat readability (independent of animation/decor/quality): hazard marker while warning or attacking
+    if (!a.pet && (a.state === 'warn' || a.state === 'attack')) this.atlas.draw(this.ctx, 'ui/warning', a.x - cx, a.y - cy - (sp.startsWith('MARINE') ? 4 : 34), { scale: 0.32 });
     if (a.pet) { this.ctx.fillStyle = '#ffd04a'; this.ctx.fillRect(a.x - cx - 2, a.y - cy - 40, 4, 4); }
   }
 
@@ -272,7 +275,8 @@ export class WorldRenderer {
         const [hx, hy] = dir === 'left' ? an.leftHand : an.rightHand;
         ctx.save(); ctx.translate(ox + hx, oy + hy);
         const ang = (an.toolAngle || 0) * (dir === 'left' ? -1 : 1);
-        ctx.rotate(ang); this.atlas.draw(ctx, `avatar/held/${heldIt}/${dir}`, dir === 'left' ? 8 : -8, 8, { ax: 0, ay: 1 }); ctx.restore();
+        // held sprites are 32×32 with the grip at (8,24); the left-facing sprite is mirrored so its grip is at (23,24)
+        ctx.rotate(ang); this.atlas.draw(ctx, `avatar/held/${heldIt}/${dir}`, dir === 'left' ? -23 : -8, 8, { ax: 0, ay: 1 }); ctx.restore();
       }
     }
     ctx.globalAlpha = 1;
@@ -300,9 +304,10 @@ export class WorldRenderer {
     const g = this.g; const ctx = this.ctx;
     if (g.world.grid.isCave || !g.climate.isRaining()) { this.rain.length = 0; return; }
     const w = g.climate.weather(); const dens = { LIGHT_RAIN: 40, RAIN: 80, HEAVY_RAIN: 130, STORM: 160 }[w] || 0;
-    const target = this.quality === 'LOW' ? dens / 3 : dens;
+    const target = this.quality === 'LOW' ? Math.floor(dens / 3) : dens;
     while (this.rain.length < target) this.rain.push({ x: Math.random() * W, y: Math.random() * H, v: 260 + Math.random() * 120 });
     this.rain.length = Math.min(this.rain.length, target);
+    if (this.reducedMotion) { this.rain.length = 0; ctx.fillStyle = `rgba(40,60,80,${w === 'STORM' ? 0.28 : w === 'HEAVY_RAIN' ? 0.18 : 0.08})`; ctx.fillRect(0, 0, W, H); return; }
     ctx.strokeStyle = 'rgba(200,230,245,0.55)'; ctx.lineWidth = 1; ctx.beginPath();
     const wind = w === 'STORM' ? 70 : 25;
     for (const r of this.rain) { r.y += r.v / 60; r.x += wind / 60; if (r.y > H) { r.y = -8; r.x = Math.random() * W; } if (r.x > W) r.x -= W; ctx.moveTo(r.x, r.y); ctx.lineTo(r.x - wind * 0.04, r.y - 7); }
@@ -367,7 +372,7 @@ export class WorldRenderer {
     }
     if (a.segment === 'BOAT_OPEN_SEA') { ctx.fillStyle = '#ffd04a'; ctx.fillRect(W / 2 - 3, 20 + Math.max(0, 40 - a.segT * 4), 6, 18); }
     const bx = W / 2 + a.x * (W / 2 - laneW); const by = H * 0.72;
-    this.atlas.draw(ctx, `boat/BUILD_ESCAPE_BOAT/up/${Math.floor(this.time * 6) % 8}`, bx, by + 50, { scale: 0.55 });
+    this.atlas.draw(ctx, `boat/BUILD_ESCAPE_BOAT/up/${Math.floor(this.time * 6) % 4}`, bx, by + 50, { scale: 0.55 });
     // hull bar
     ctx.fillStyle = 'rgba(10,20,30,0.6)'; ctx.fillRect(10, 10, 104, 10); ctx.fillStyle = a.hull > 50 ? '#5cdc7a' : '#e84a3a'; ctx.fillRect(12, 12, Math.max(0, 100 * a.hull / a.maxHull), 6);
     if (a.done && a.result) this.atlas.draw(ctx, 'scene/sea_success/title_art', W / 2, H * 0.6, { scale: 0.8 });

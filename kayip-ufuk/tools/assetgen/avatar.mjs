@@ -171,7 +171,7 @@ export function drawHeld(kind, dir) {
       case 'axe': p.line(8, 24, 20, 6, P.wood, 2); p.poly([[17, 4], [25, 6], [24, 13], [19, 10]], P.stone_light); break;
       case 'pickaxe': p.line(8, 24, 18, 8, P.wood, 2); for (let a = -1; a <= 1; a += 0.1) p.rect(18 + a * 8, 8 - (1 - a * a) * 2 + a * 4, 2, 2, P.iron); break;
       case 'spear': p.line(6, 26, 24, 4, P.wood, 2); p.poly([[24, 4], [21, 4], [27, 0], [25, 7]], P.stone_light); break;
-      case 'bow': for (let a = -1.1; a <= 1.1; a += 0.05) p.rect(10 + Math.cos(a) * 10, 16 + Math.sin(a) * 10, 2, 2, '#9cc95a'); p.line(14, 6, 14, 26, '#e9e1c8'); break;
+      case 'bow': for (let a = -1.1; a <= 1.1; a += 0.05) p.rect(-1 + Math.cos(a) * 9, 23 + Math.sin(a) * 9, 2, 2, '#9cc95a'); p.line(3, 15, 3, 31, '#e9e1c8'); p.rect(7, 22, 3, 3, P.leather); break; // grip (8,24) = middle of the limb
       case 'fishing_rod': p.line(6, 26, 26, 2, '#9cc95a', 2); p.line(26, 2, 28, 18, '#e9e1c8'); p.circle(9, 23, 2, P.iron); break;
       case 'hammer': p.line(8, 24, 16, 10, P.wood, 2); p.rect(12, 6, 9, 5, P.iron); break;
       case 'knife': p.line(8, 24, 11, 20, P.wood_dark, 2); p.poly([[10, 21], [19, 11], [17, 16], [12, 22]], P.stone_light); break;

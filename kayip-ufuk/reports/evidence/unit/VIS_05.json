@@ -1,0 +1,14 @@
+{
+ "framesChecked": 360,
+ "worstHandToToolPx": {
+  "chop/axe": 0.7071067811865476,
+  "mine/pickaxe": 0.7071067811865476,
+  "build/hammer": 0.7071067811865476,
+  "fish_cast/fishing_rod": 0.7071067811865476,
+  "fish_idle/fishing_rod": 0.7071067811865476,
+  "fish_reel/fishing_rod": 0.7071067811865476,
+  "bow/bow": 0.7071067811865476,
+  "spear/spear": 0.7071067811865476
+ },
+ "rule": "nearest opaque tool pixel ≤3.5px from hand anchor; hand anchor ≤2.5px from body pixels"
+}

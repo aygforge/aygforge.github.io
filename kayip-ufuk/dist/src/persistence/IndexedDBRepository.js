@@ -17,7 +17,13 @@ export function cleanState(state) {
 }
 
 export class IndexedDBRepository {
-  constructor(idb = globalThis.indexedDB) { this.idb = idb; this.db = null; this.ownerId = `tab_${Math.random().toString(36).slice(2)}_${Date.now().toString(36)}`; }
+  constructor(idb = globalThis.indexedDB) {
+    this.idb = idb; this.db = null;
+    // per-tab owner id survives a reload of the same tab (sessionStorage), so a crashed/reloaded tab reclaims its own lease
+    let id = null; try { id = sessionStorage.getItem('ku_owner'); } catch { /* storage blocked */ }
+    if (!id) { id = `tab_${Math.random().toString(36).slice(2)}_${Date.now().toString(36)}`; try { sessionStorage.setItem('ku_owner', id); } catch { /* storage blocked */ } }
+    this.ownerId = id;
+  }
 
   async open() {
     if (this.db) return this.db;

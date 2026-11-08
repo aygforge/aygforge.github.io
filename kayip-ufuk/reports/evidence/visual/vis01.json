@@ -1,0 +1,160 @@
+{
+ "base": "http://localhost:38183/html/7204511/",
+ "served": 112,
+ "notFound": [],
+ "pages": [
+  {
+   "src": "animals_00.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "animals_01.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "animals_02.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "animals_03.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "avatar_00.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "avatar_01.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "boats_00.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "boats_01.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "builds_00.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "builds_01.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "crops_00.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "foliage_00.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "icons_00.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "poi_00.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "poi_01.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "poi_02.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "scenes_00.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "scenes_01.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "scenes_02.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "scenes_03.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "scenes_04.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "terrain_00.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "ui_00.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "src": "vfx_00.png",
+   "complete": true,
+   "w": 1024,
+   "h": 1024
+  }
+ ],
+ "missingSprites": [],
+ "stats": {
+  "w": 1280,
+  "h": 720,
+  "black": 0,
+  "transparent": 0,
+  "colors": 136
+ },
+ "absolute": 0
+}

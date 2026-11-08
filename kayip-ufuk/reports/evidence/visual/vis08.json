@@ -1,0 +1,1196 @@
+[
+ {
+  "id": "BUILD_ANIMAL_TRAP",
+  "footprint": [
+   1,
+   1
+  ],
+  "placed": true,
+  "at": [
+   236,
+   248
+  ],
+  "size": [
+   1,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 0,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_BAMBOO_HUT",
+  "footprint": [
+   3,
+   3
+  ],
+  "placed": true,
+  "at": [
+   250,
+   258
+  ],
+  "size": [
+   3,
+   3
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 7,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_BENCH",
+  "footprint": [
+   2,
+   1
+  ],
+  "placed": true,
+  "at": [
+   250,
+   261
+  ],
+  "size": [
+   2,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 2,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_BRIDGE",
+  "footprint": [
+   3,
+   2
+  ],
+  "placed": true,
+  "at": [
+   226,
+   238
+  ],
+  "size": [
+   3,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 0,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_CAMPFIRE",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": true,
+  "at": [
+   245,
+   258
+  ],
+  "size": [
+   2,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 4,
+  "solidUncovered": 2,
+  "err": null
+ },
+ {
+  "id": "BUILD_CAMP_MARKER",
+  "footprint": [
+   1,
+   1
+  ],
+  "placed": true,
+  "at": [
+   246,
+   260
+  ],
+  "size": [
+   1,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 0,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_CARPENTER_BENCH",
+  "footprint": [
+   3,
+   2
+  ],
+  "placed": true,
+  "at": [
+   245,
+   263
+  ],
+  "size": [
+   3,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 6,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_CHAIR",
+  "footprint": [
+   1,
+   1
+  ],
+  "placed": true,
+  "at": [
+   246,
+   261
+  ],
+  "size": [
+   1,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 1,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_CHEST_LARGE",
+  "footprint": [
+   2,
+   1
+  ],
+  "placed": true,
+  "at": [
+   250,
+   262
+  ],
+  "size": [
+   2,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 2,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_CHEST_SMALL",
+  "footprint": [
+   1,
+   1
+  ],
+  "placed": true,
+  "at": [
+   246,
+   262
+  ],
+  "size": [
+   1,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 1,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_COMFORT_BED",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": true,
+  "at": [
+   250,
+   256
+  ],
+  "size": [
+   2,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 4,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_COMPOST_BIN",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": true,
+  "at": [
+   252,
+   256
+  ],
+  "size": [
+   2,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 4,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_CRAB_TRAP",
+  "footprint": [
+   1,
+   1
+  ],
+  "placed": true,
+  "at": [
+   225,
+   237
+  ],
+  "size": [
+   1,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 0,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_DRYING_RACK",
+  "footprint": [
+   2,
+   1
+  ],
+  "placed": true,
+  "at": [
+   244,
+   256
+  ],
+  "size": [
+   2,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 2,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_ESCAPE_BOAT",
+  "footprint": [
+   7,
+   3
+  ],
+  "placed": false,
+  "at": [
+   228,
+   235
+  ],
+  "size": null,
+  "ghost": true,
+  "complete": true,
+  "solids": 0,
+  "solidUncovered": 0,
+  "err": "LOCKED "
+ },
+ {
+  "id": "BUILD_FEED_BOWL",
+  "footprint": [
+   1,
+   1
+  ],
+  "placed": true,
+  "at": [
+   246,
+   257
+  ],
+  "size": [
+   1,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 1,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_FENCE",
+  "footprint": [
+   1,
+   1
+  ],
+  "placed": true,
+  "at": [
+   251,
+   259
+  ],
+  "size": [
+   1,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 1,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_FISH_HUT",
+  "footprint": [
+   5,
+   5
+  ],
+  "placed": true,
+  "at": [
+   222,
+   291
+  ],
+  "size": [
+   5,
+   5
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 15,
+  "solidUncovered": 2,
+  "err": null
+ },
+ {
+  "id": "BUILD_FISH_TRAP",
+  "footprint": [
+   1,
+   1
+  ],
+  "placed": true,
+  "at": [
+   226,
+   237
+  ],
+  "size": [
+   1,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 0,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_FOOD_CHEST",
+  "footprint": [
+   1,
+   1
+  ],
+  "placed": true,
+  "at": [
+   251,
+   259
+  ],
+  "size": [
+   1,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 1,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_GATE",
+  "footprint": [
+   1,
+   1
+  ],
+  "placed": true,
+  "at": [
+   251,
+   259
+  ],
+  "size": [
+   1,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 1,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_IRRIGATION",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": false,
+  "at": [
+   244,
+   260
+  ],
+  "size": null,
+  "ghost": true,
+  "complete": true,
+  "solids": 0,
+  "solidUncovered": 0,
+  "err": "LOCKED "
+ },
+ {
+  "id": "BUILD_KILN",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": true,
+  "at": [
+   244,
+   260
+  ],
+  "size": [
+   2,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 4,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_LAMP_POST",
+  "footprint": [
+   1,
+   1
+  ],
+  "placed": true,
+  "at": [
+   251,
+   259
+  ],
+  "size": [
+   1,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 1,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_LARGE_HOUSE",
+  "footprint": [
+   7,
+   6
+  ],
+  "placed": true,
+  "at": [
+   238,
+   250
+  ],
+  "size": [
+   7,
+   6
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 21,
+  "solidUncovered": 4,
+  "err": null
+ },
+ {
+  "id": "BUILD_LEAF_BED",
+  "footprint": [
+   2,
+   1
+  ],
+  "placed": true,
+  "at": [
+   252,
+   261
+  ],
+  "size": [
+   2,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 2,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_LEAF_SHELTER",
+  "footprint": [
+   3,
+   2
+  ],
+  "placed": true,
+  "at": [
+   251,
+   264
+  ],
+  "size": [
+   3,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 0,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_LOG_STORE",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": true,
+  "at": [
+   243,
+   257
+  ],
+  "size": [
+   2,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 4,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_LOOM",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": true,
+  "at": [
+   253,
+   258
+  ],
+  "size": [
+   2,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 4,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_MAP_TABLE",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": false,
+  "at": [
+   243,
+   262
+  ],
+  "size": null,
+  "ghost": true,
+  "complete": true,
+  "solids": 0,
+  "solidUncovered": 0,
+  "err": "LOCKED "
+ },
+ {
+  "id": "BUILD_MATERIAL_SHELF",
+  "footprint": [
+   2,
+   1
+  ],
+  "placed": true,
+  "at": [
+   244,
+   262
+  ],
+  "size": [
+   2,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 2,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_MECHANICAL_BENCH",
+  "footprint": [
+   3,
+   2
+  ],
+  "placed": true,
+  "at": [
+   253,
+   262
+  ],
+  "size": [
+   3,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 6,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_MONKEY_PLATFORM",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": true,
+  "at": [
+   243,
+   263
+  ],
+  "size": [
+   2,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 4,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_NAV_TABLE",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": true,
+  "at": [
+   245,
+   265
+  ],
+  "size": [
+   2,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 4,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_ORE_STORE",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": true,
+  "at": [
+   249,
+   254
+  ],
+  "size": [
+   2,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 4,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_PANTRY",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": false,
+  "at": [
+   251,
+   254
+  ],
+  "size": null,
+  "ghost": true,
+  "complete": true,
+  "solids": 0,
+  "solidUncovered": 0,
+  "err": "LOCKED "
+ },
+ {
+  "id": "BUILD_PARROT_HOUSE",
+  "footprint": [
+   2,
+   1
+  ],
+  "placed": true,
+  "at": [
+   251,
+   255
+  ],
+  "size": [
+   2,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 2,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_PARROT_PERCH",
+  "footprint": [
+   1,
+   1
+  ],
+  "placed": true,
+  "at": [
+   251,
+   259
+  ],
+  "size": [
+   1,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 1,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_PATH",
+  "footprint": [
+   1,
+   1
+  ],
+  "placed": true,
+  "at": [
+   251,
+   259
+  ],
+  "size": [
+   1,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 1,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_PIER",
+  "footprint": [
+   4,
+   2
+  ],
+  "placed": true,
+  "at": [
+   227,
+   236
+  ],
+  "size": [
+   4,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 0,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_PLANTER",
+  "footprint": [
+   1,
+   1
+  ],
+  "placed": true,
+  "at": [
+   251,
+   259
+  ],
+  "size": [
+   1,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 1,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_PLANT_POT",
+  "footprint": [
+   1,
+   1
+  ],
+  "placed": true,
+  "at": [
+   251,
+   259
+  ],
+  "size": [
+   1,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 1,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_PLAY_POST",
+  "footprint": [
+   1,
+   1
+  ],
+  "placed": true,
+  "at": [
+   251,
+   259
+  ],
+  "size": [
+   1,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 1,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_RAFT",
+  "footprint": [
+   3,
+   2
+  ],
+  "placed": true,
+  "at": [
+   224,
+   240
+  ],
+  "size": [
+   3,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 0,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_RAIN_CATCHER",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": true,
+  "at": [
+   253,
+   254
+  ],
+  "size": [
+   2,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 4,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_RAIN_CATCHER_L",
+  "footprint": [
+   3,
+   2
+  ],
+  "placed": true,
+  "at": [
+   254,
+   256
+  ],
+  "size": [
+   3,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 6,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_RUG",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": true,
+  "at": [
+   241,
+   253
+  ],
+  "size": [
+   2,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 0,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_SIGNAL_STATION",
+  "footprint": [
+   4,
+   4
+  ],
+  "placed": false,
+  "at": null,
+  "size": null,
+  "ghost": true,
+  "complete": true,
+  "solids": 0,
+  "solidUncovered": 0,
+  "err": "no valid spot"
+ },
+ {
+  "id": "BUILD_SMELTER",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": true,
+  "at": [
+   242,
+   259
+  ],
+  "size": [
+   2,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 4,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_TABLE",
+  "footprint": [
+   2,
+   1
+  ],
+  "placed": true,
+  "at": [
+   253,
+   260
+  ],
+  "size": [
+   2,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 2,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_TANNING_RACK",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": true,
+  "at": [
+   242,
+   261
+  ],
+  "size": [
+   2,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 4,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_TOOL_RACK",
+  "footprint": [
+   2,
+   1
+  ],
+  "placed": true,
+  "at": [
+   243,
+   265
+  ],
+  "size": [
+   2,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 2,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_WATER_FILTER",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": false,
+  "at": [
+   254,
+   264
+  ],
+  "size": null,
+  "ghost": true,
+  "complete": true,
+  "solids": 0,
+  "solidUncovered": 0,
+  "err": "LOCKED "
+ },
+ {
+  "id": "BUILD_WATER_TANK",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": true,
+  "at": [
+   254,
+   264
+  ],
+  "size": [
+   2,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 4,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_WINCH",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": false,
+  "at": [
+   184,
+   174
+  ],
+  "size": null,
+  "ghost": true,
+  "complete": true,
+  "solids": 0,
+  "solidUncovered": 0,
+  "err": "LOCKED "
+ },
+ {
+  "id": "BUILD_WOOD_BED",
+  "footprint": [
+   2,
+   1
+  ],
+  "placed": true,
+  "at": [
+   242,
+   254
+  ],
+  "size": [
+   2,
+   1
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 2,
+  "solidUncovered": 0,
+  "err": null
+ },
+ {
+  "id": "BUILD_WOOD_HUT",
+  "footprint": [
+   5,
+   4
+  ],
+  "placed": true,
+  "at": [
+   255,
+   258
+  ],
+  "size": [
+   5,
+   4
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 13,
+  "solidUncovered": 2,
+  "err": null
+ },
+ {
+  "id": "BUILD_WORKBENCH",
+  "footprint": [
+   2,
+   2
+  ],
+  "placed": true,
+  "at": [
+   242,
+   266
+  ],
+  "size": [
+   2,
+   2
+  ],
+  "ghost": true,
+  "complete": true,
+  "solids": 4,
+  "solidUncovered": 0,
+  "err": null
+ }
+]

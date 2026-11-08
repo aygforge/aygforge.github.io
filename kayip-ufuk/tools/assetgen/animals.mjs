@@ -82,18 +82,19 @@ export function drawAnimal(id, anim, dir, f, n) {
       break;
     }
     case 'ANIMAL_FOREST_BIRD': case 'ANIMAL_SEABIRD': case 'ANIMAL_FRUIT_BAT': {
-      const bat = id === 'ANIMAL_FRUIT_BAT';
+      const bat = id === 'ANIMAL_FRUIT_BAT'; const sea = id === 'ANIMAL_SEABIRD';
       const fly = moving || bat; const lift = fly ? 8 + Math.round(Math.sin(ph) * 2) : 0;
       const flap = fly ? Math.sin(ph * 2) : 0;
-      const by = gy - 8 - lift;
+      const by = gy - 8 - lift - (sea && !fly ? 5 : 0); // gull stands tall on long legs
       if (fly) {
-        const span = bat ? 14 : 12;
+        const span = bat ? 14 : sea ? 19 : 9; // gull: long narrow wings; forest bird: short rounded wings
         p.poly([[cx - 2, by], [cx - span, by - 6 * flap - 2], [cx - span + 4, by + 3]], L.wing || shade(L.c, -0.2));
         p.poly([[cx + 2, by], [cx + span, by - 6 * flap - 2], [cx + span - 4, by + 3]], L.wing || shade(L.c, -0.2));
         if (bat) { p.line(cx - span, by - 6 * flap - 2, cx - span + 2, by + 4, shade(L.c, -0.3)); p.line(cx + span, by - 6 * flap - 2, cx + span - 2, by + 4, shade(L.c, -0.3)); }
       }
-      p.ellipse(cx, by, 5, 4, L.c);
-      const hx = side ? cx + (dir === 'right' ? 5 : -5) : cx, hy = by - 4;
+      if (sea) p.ellipse(cx, by, side ? 8 : 5, side ? 3.5 : 4.5, L.c); else p.ellipse(cx, by, 5, 4, L.c);
+      const hx = side ? cx + (dir === 'right' ? (sea ? 8 : 5) : (sea ? -8 : -5)) : cx, hy = by - (sea ? 5 : 4);
+      if (sea && side) p.line(cx + (dir === 'right' ? 5 : -5), by - 1, hx, hy + 2, L.c, 3); // long neck
       p.circle(hx, hy, 3.4, bat ? L.c : shade(L.c, 0.05));
       if (bat) { p.poly([[hx - 3, hy - 2], [hx - 2, hy - 6], [hx - 1, hy - 2]], L.c); p.poly([[hx + 1, hy - 2], [hx + 2, hy - 6], [hx + 3, hy - 2]], L.c); p.set(hx - 1, hy, '#e84a3a'); p.set(hx + 1, hy, '#e84a3a'); }
       else {
@@ -102,6 +103,10 @@ export function drawAnimal(id, anim, dir, f, n) {
         if (!fly) { p.ellipse(cx + (side ? (dir === 'right' ? -4 : 4) : 0), by + 1, 4, 2.5, L.wing || shade(L.c, -0.2)); p.line(cx - 1, by + 4, cx - 1 - (f % 2), gy, '#e8a040'); p.line(cx + 1, by + 4, cx + 1 + (f % 2), gy, '#e8a040'); }
         if (L.belly && dir === 'down') p.ellipse(cx, by + 1, 3, 2, L.belly);
         if (id === 'ANIMAL_FOREST_BIRD' && !fly) p.line(cx + (dir === 'right' ? -5 : 5), by, cx + (dir === 'right' ? -9 : 9), by + 4, L.wing, 2);
+        if (id === 'ANIMAL_FOREST_BIRD') { const cs = side ? (dir === 'right' ? -1 : 1) : 0; p.poly([[hx - 1, hy - 3], [hx + cs * 3, hy - 8], [hx + 2, hy - 3]], L.wing); p.poly([[hx + cs * 2, hy - 3], [hx + cs * 4 + (cs ? 0 : -3), hy - 7], [hx + 1, hy - 2]], L.wing); } // crest
+        if (sea && !fly) { const back = side ? (dir === 'right' ? -1 : 1) : 0; // long dark folded wingtips crossing past the tail
+          if (back) p.poly([[cx - back * 2, by - 2], [cx + back * 13, by + 1], [cx + back * 4, by + 3]], '#4a5560');
+          else { p.line(cx - 4, by - 1, cx - 6, by + 9, '#4a5560', 2); p.line(cx + 4, by - 1, cx + 6, by + 9, '#4a5560', 2); } }
       }
       break;
     }

@@ -105,8 +105,45 @@ export class ResourceSystem {
     });
   }
 
+  /** LootSpawnDB.salvageDaily + LootTableDB.stormSalvage: drifting salvage on eligible shores.
+   * AFTER_STORM: up to 2 nodes/region the day after a storm; LOW_CHANCE_DAILY: 15 % one node. Lifetime 3 days.
+   * SAL_BOTTLE has no DB source, so each drift node has a 25 % chance of an extra bottle (spec-issues SI-02). */
+  spawnFlotsam(day) {
+    const s = this.s; const c = this.c; if (!s.world.flotsam) s.world.flotsam = {};
+    for (const [id, f] of Object.entries(s.world.flotsam)) if (f.expiresDay < day) delete s.world.flotsam[id];
+    const prevStorm = this.g.climate.weatherFor(Math.max(1, day - 1)) === 'STORM';
+    const pool = c.lootPools.get(c.db.LootTableDB.globalPolicies.stormSalvage.poolId);
+    const g = this.g.terrain.overworld;
+    for (const regionId of c.db.LootSpawnDB.salvageDaily.eligibleRegions) {
+      const rng = RngStreams.keyed(s.world.worldSeed, 'flotsam', regionId, day);
+      const n = prevStorm ? c.db.LootSpawnDB.salvageDaily.maxNewNodesPerDayPerRegion : rng.next() < 0.15 ? 1 : 0;
+      const code = c.regions.get(regionId).mapZoneOrder;
+      for (let k = 0; k < n; k++) {
+        for (let tries = 0; tries < 60; tries++) {
+          const x = rng.int(0, g.w - 1), y = rng.int(0, g.h - 1); const i = g.i(x, y);
+          if (g.region[i] !== code || g.tiles[i] !== 2 || g.occupied[i] || g.solid[i]) continue; // BEACH_SAND only
+          if (this.g.world.sceneId === 'OVERWORLD' && this.g.world.distToTile(x, y) < 14) continue; // off-camera spawn
+          const e = rng.weighted(pool.entries);
+          const id = `FLOT_${day}_${regionId}_${k}`;
+          s.world.flotsam[id] = { id, tile: [x, y], items: { [e.itemId]: rng.int(e.min, e.max), ...(rng.next() < 0.25 ? { SAL_BOTTLE: 1 } : {}) }, expiresDay: day + c.db.LootTableDB.globalPolicies.stormSalvage.lifetimeGameDays };
+          break;
+        }
+      }
+    }
+  }
+  collectFlotsam(id) {
+    const f = this.s.world.flotsam?.[id]; if (!f) return { ok: false };
+    return this.g.store.transaction(`FLOTSAM:${id}`, (tx) => {
+      for (const [itemId, q] of Object.entries(f.items)) this.g.giveOrDrop(tx, itemId, q);
+      tx.del(this.s.world.flotsam, id);
+      this.g.skills.award(tx, 'SKILL_EXPLORATION', null, `flotsam:${id}`, 2);
+      tx.emit('node.harvested', { nodeId: id, itemId: Object.keys(f.items)[0], qty: Object.values(f.items)[0], kind: 'FORAGE', flotsam: true });
+    });
+  }
+
   /** Daily tick: mark nodes due. Actual reappearance waits until spot is free of buildings and off-camera. */
   onDay(day) {
+    this.spawnFlotsam(day);
     for (const [id, st] of Object.entries(this.s.productionState.resourceNodesById)) {
       if (st.depleted && st.respawnGameDay <= day) this.pendingRespawn.add(id);
     }

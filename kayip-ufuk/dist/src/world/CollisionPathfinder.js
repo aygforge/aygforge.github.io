@@ -49,10 +49,10 @@ export class CollisionPathfinder {
    * A* on tiles. goal can be [x,y] or a predicate; `adjacentOk` accepts any tile within Chebyshev 1 of goal
    * (tap-to-approach "astar_to_valid_adjacent_tile"). Returns array of [x,y] or null.
    */
-  findPath(g, start, goal, { mode = 'WALK', adjacentOk = false, maxNodes = 60000 } = {}) {
+  findPath(g, start, goal, { mode = 'WALK', adjacentOk = false, maxNodes = 60000, radius = 0 } = {}) {
     const [sx, sy] = start, [gx, gy] = goal;
     if (!g.inb(sx, sy)) return null;
-    const isGoal = (x, y) => (adjacentOk ? Math.max(Math.abs(x - gx), Math.abs(y - gy)) <= 1 && this.terrain.passable(g, x, y, mode) : x === gx && y === gy);
+    const isGoal = (x, y) => (radius > 0 ? Math.hypot(x - gx, y - gy) <= radius && this.terrain.passable(g, x, y, mode) : adjacentOk ? Math.max(Math.abs(x - gx), Math.abs(y - gy)) <= 1 && this.terrain.passable(g, x, y, mode) : x === gx && y === gy);
     const W = g.w;
     const open = new MinHeap();
     const gScore = new Map();

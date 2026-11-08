@@ -86,7 +86,12 @@ const S = {
   // tools
   axe(p, o) { p.line(9, 27, 21, 7, P.wood, 2); p.line(10, 27, 22, 7, P.wood_dark); p.poly([[17, 4], [27, 6], [26, 15], [19, 11]], o.head); p.line(26, 6, 25, 14, shade(o.head, 0.5)); if (o.lashing) p.rect(17, 9, 4, 3, P.rope); },
   pick(p, o) { p.line(16, 28, 16, 8, P.wood, 2); for (let a = -1; a <= 1; a += 0.05) p.rect(16 + a * 11 - 1, 8 - (1 - a * a) * 3, 3, 3, o.head); p.poly([[3, 10], [6, 8], [6, 12]], shade(o.head, 0.3)); p.poly([[29, 10], [26, 8], [26, 12]], shade(o.head, 0.3)); if (o.lashing) p.rect(15, 8, 3, 3, P.rope); },
-  spear(p, o) { p.line(6, 28, 24, 8, P.wood, 2); p.poly([[24, 8], [21, 6], [29, 2], [26, 10]], o.head); if (o.lashing) p.rect(21, 9, 3, 3, P.rope); },
+  spear(p, o) {
+    if (o.iron) { // forged leaf blade with socket and lugs on a dark hardwood shaft
+      p.line(4, 29, 20, 12, '#5a3e2a', 2); p.line(15, 13, 21, 19, '#8e959e', 2); p.rect(19, 10, 4, 4, '#7d848c');
+      p.poly([[21, 10], [24, 4], [30, 1], [27, 7], [23, 13]], o.head); p.line(23, 10, 29, 2, '#eef2f5'); return;
+    }
+    p.line(6, 28, 24, 8, P.wood, 2); p.poly([[24, 8], [21, 6], [29, 2], [26, 10]], o.head); if (o.lashing) { p.rect(21, 9, 3, 3, P.rope); p.line(8, 26, 11, 23, P.rope_dark || P.rope, 2); } },
   bow(p, o) { for (let a = -1.2; a <= 1.2; a += 0.04) p.rect(10 + Math.cos(a) * 12 - 1, 16 + Math.sin(a) * 12 - 1, 2.4, 2.4, o.c); p.line(14, 5, 14, 27, '#e9e1c8'); if (o.grip) p.rect(20, 14, 3, 5, o.grip); },
   rod(p, o) { p.line(5, 28, 26, 4, o.c || '#9cc95a', 2); p.line(26, 4, 27, 20, '#e9e1c8'); p.circle(9, 23, 3, o.reel || '#7a8088'); p.poly([[25, 20], [29, 20], [27, 24]], '#b5bcc4'); if (o.adv) p.line(14, 17, 19, 12, P.copper, 2); },
   knife(p) { p.line(8, 26, 14, 20, P.wood_dark, 3); p.poly([[13, 21], [26, 6], [24, 12], [15, 23]], P.stone_light); },
@@ -161,7 +166,7 @@ const I = {
   TOOL_BAMBOO_CUP: ['cup'], TOOL_BOW: ['bow', { c: '#9cc95a' }], TOOL_CLIMB_KIT: ['climbkit'], TOOL_COMPASS: ['compass'],
   TOOL_COPPER_AXE: ['axe', { head: P.copper }], TOOL_COPPER_PICK: ['pick', { head: P.copper }], TOOL_CROWBAR: ['crowbar'], TOOL_DIVING_KIT: ['mask', { tube: true }], TOOL_DIVING_MASK: ['mask'],
   TOOL_FISH_ROD: ['rod'], TOOL_FISH_ROD_ADV: ['rod', { c: '#6c5340', reel: P.copper, adv: true }], TOOL_HUNTER_BOW: ['bow', { c: '#5a3a24', grip: P.leather }],
-  TOOL_IRON_AXE: ['axe', { head: '#b8bec6' }], TOOL_IRON_PICK: ['pick', { head: '#b8bec6' }], TOOL_IRON_SPEAR: ['spear', { head: '#c9cfd6' }], TOOL_MACHETE: ['machete'], TOOL_NAV_KIT: ['navkit'],
+  TOOL_IRON_AXE: ['axe', { head: '#b8bec6' }], TOOL_IRON_PICK: ['pick', { head: '#b8bec6' }], TOOL_IRON_SPEAR: ['spear', { head: '#c9cfd6', iron: true }], TOOL_MACHETE: ['machete'], TOOL_NAV_KIT: ['navkit'],
   TOOL_PORTABLE_LAMP: ['lamp'], TOOL_REPAIR_KIT: ['repairkit'], TOOL_SHOVEL: ['shovel'], TOOL_SLING: ['sling'], TOOL_STONE_AXE: ['axe', { head: P.stone, lashing: true }],
   TOOL_STONE_KNIFE: ['knife'], TOOL_STONE_PICK: ['pick', { head: P.stone, lashing: true }], TOOL_TORCH: ['torch'], TOOL_WATERING_CAN: ['wateringcan'], TOOL_WOOD_SPEAR: ['spear', { head: P.stone, lashing: true }],
   WATER_CLEAN: ['water', { c: P.water_clean }], WATER_DIRTY: ['water', { c: P.water_dirty, dirty: true }],

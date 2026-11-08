@@ -1,0 +1,10 @@
+{
+ "hairPlacementsChecked": 3840,
+ "worst": {
+  "hairGap": 0,
+  "clothingOutside": 12,
+  "bagGap": 0
+ },
+ "clothing": "shared mask clipped to body alpha at runtime (source-atop); worst raw overflow px reported above is discarded",
+ "layering": "down: backpack→body→hair→held; up: held→body→backpack→hair (bag drawn over back); left/right ordered by facing (WorldRenderer.drawPlayer)"
+}

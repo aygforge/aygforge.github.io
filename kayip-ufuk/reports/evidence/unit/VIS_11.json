@@ -1,0 +1,106 @@
+{
+ "maxSilhouetteIoU": 0.8240740740740741,
+ "closestPair": [
+  "ANIMAL_CRAB",
+  "ANIMAL_HERMIT_CRAB"
+ ],
+ "species": {
+  "ANIMAL_CRAB": {
+   "aiProfile": "FORAGE_FLEE",
+   "observedClips": [
+    "move",
+    "idle",
+    "react"
+   ]
+  },
+  "ANIMAL_HERMIT_CRAB": {
+   "aiProfile": "HIDE_IN_SHELL",
+   "observedClips": [
+    "move",
+    "idle",
+    "react"
+   ]
+  },
+  "ANIMAL_RABBIT": {
+   "aiProfile": "FLEE",
+   "observedClips": [
+    "move",
+    "idle",
+    "react"
+   ]
+  },
+  "ANIMAL_LIZARD": {
+   "aiProfile": "FLEE",
+   "observedClips": [
+    "move",
+    "idle",
+    "react"
+   ]
+  },
+  "ANIMAL_FROG": {
+   "aiProfile": "HOP_AND_FLEE",
+   "observedClips": [
+    "move",
+    "react",
+    "idle"
+   ]
+  },
+  "ANIMAL_FOREST_BIRD": {
+   "aiProfile": "GROUND_FEED_FLY",
+   "observedClips": [
+    "idle",
+    "move",
+    "react"
+   ]
+  },
+  "ANIMAL_SEABIRD": {
+   "aiProfile": "FLY_AND_LAND",
+   "observedClips": [
+    "move",
+    "idle",
+    "react"
+   ]
+  },
+  "ANIMAL_FRUIT_BAT": {
+   "aiProfile": "NOCTURNAL_FLY",
+   "observedClips": [
+    "idle",
+    "move",
+    "react"
+   ]
+  },
+  "ANIMAL_MONKEY": {
+   "aiProfile": "TREE_HOP_CURIOUS",
+   "observedClips": [
+    "idle",
+    "move"
+   ]
+  },
+  "ANIMAL_BOAR": {
+   "aiProfile": "WARN_CHARGE",
+   "observedClips": [
+    "move",
+    "warn",
+    "attack"
+   ]
+  },
+  "ANIMAL_SNAKE": {
+   "aiProfile": "WARN_BITE",
+   "observedClips": [
+    "move",
+    "idle",
+    "warn",
+    "attack"
+   ]
+  },
+  "ANIMAL_CROCODILE": {
+   "aiProfile": "TERRITORIAL_AMBUSH",
+   "observedClips": [
+    "idle",
+    "move",
+    "warn",
+    "attack"
+   ]
+  }
+ }
+}

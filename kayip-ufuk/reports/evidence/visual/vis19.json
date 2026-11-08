@@ -1,0 +1,176 @@
+[
+ {
+  "viewport": [
+   712,
+   400
+  ],
+  "scale": 1,
+  "smoothing": false,
+  "frames": [
+   {
+    "cam": [
+     8220,
+     7276
+    ],
+    "blocks": 31892,
+    "mixedPct": 0
+   },
+   {
+    "cam": [
+     8221,
+     7277
+    ],
+    "blocks": 31892,
+    "mixedPct": 0
+   },
+   {
+    "cam": [
+     8221,
+     7277
+    ],
+    "blocks": 31892,
+    "mixedPct": 0
+   },
+   {
+    "cam": [
+     8222,
+     7277
+    ],
+    "blocks": 31892,
+    "mixedPct": 0
+   },
+   {
+    "cam": [
+     8222,
+     7277
+    ],
+    "blocks": 31892,
+    "mixedPct": 0
+   },
+   {
+    "cam": [
+     8223,
+     7278
+    ],
+    "blocks": 31892,
+    "mixedPct": 0
+   }
+  ]
+ },
+ {
+  "viewport": [
+   1422,
+   800
+  ],
+  "scale": 2,
+  "smoothing": false,
+  "frames": [
+   {
+    "cam": [
+     8221,
+     7276
+    ],
+    "blocks": 31758,
+    "mixedPct": 0.135
+   },
+   {
+    "cam": [
+     8221,
+     7277
+    ],
+    "blocks": 31758,
+    "mixedPct": 0.239
+   },
+   {
+    "cam": [
+     8222,
+     7277
+    ],
+    "blocks": 31758,
+    "mixedPct": 0.148
+   },
+   {
+    "cam": [
+     8222,
+     7277
+    ],
+    "blocks": 31758,
+    "mixedPct": 0.148
+   },
+   {
+    "cam": [
+     8223,
+     7277
+    ],
+    "blocks": 31758,
+    "mixedPct": 0.202
+   },
+   {
+    "cam": [
+     8223,
+     7278
+    ],
+    "blocks": 31758,
+    "mixedPct": 0.161
+   }
+  ]
+ },
+ {
+  "viewport": [
+   2133,
+   1200
+  ],
+  "scale": 3,
+  "smoothing": false,
+  "frames": [
+   {
+    "cam": [
+     8221,
+     7276
+    ],
+    "blocks": 31758,
+    "mixedPct": 0.142
+   },
+   {
+    "cam": [
+     8221,
+     7277
+    ],
+    "blocks": 31758,
+    "mixedPct": 0.239
+   },
+   {
+    "cam": [
+     8222,
+     7277
+    ],
+    "blocks": 31758,
+    "mixedPct": 0.148
+   },
+   {
+    "cam": [
+     8222,
+     7277
+    ],
+    "blocks": 31758,
+    "mixedPct": 0.148
+   },
+   {
+    "cam": [
+     8223,
+     7277
+    ],
+    "blocks": 31758,
+    "mixedPct": 0.23
+   },
+   {
+    "cam": [
+     8223,
+     7278
+    ],
+    "blocks": 31758,
+    "mixedPct": 0.214
+   }
+  ]
+ }
+]

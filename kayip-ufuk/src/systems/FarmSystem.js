@@ -13,7 +13,11 @@ export class FarmSystem {
     if (!plot.cropId) return -1;
     const crop = this.c.crops.get(plot.cropId);
     if (plot.ready) return 3;
-    const f = plot.growthDays / crop.growGameDays;
+    // visual progress: growth is credited per processed day (no retroactive growth); while today's water is assured
+    // (watered / rain / irrigation available) the in-day share is shown so 2-day crops also pass through every stage.
+    const today = this.s.clock.dayIndex;
+    const wetToday = plot.wateredDay === today || this.c.db.WeatherDB.states[this.g.climate.weatherFor(today)].plantRainWatered || this.irrigate(Object.keys(this.s.productionState.cropPlotsById).find((k) => this.s.productionState.cropPlotsById[k] === plot), true);
+    const f = Math.min(0.999, (plot.growthDays + (wetToday ? this.s.clock.timeOfDaySeconds / 1080 : 0)) / crop.growGameDays);
     const fr = crop.growthStageFractions; let st = 0;
     for (let i = 0; i < fr.length; i++) if (f >= fr[i]) st = i;
     return Math.min(2, st);
@@ -82,7 +86,7 @@ export class FarmSystem {
   }
 
   /** Irrigation unit within 6 tiles consumes RAW water from a tank within 5 tiles of it. */
-  irrigate(plotUid) {
+  irrigate(plotUid, dryRun = false) {
     const b = this.s.buildingState.byId[plotUid]; if (!b) return false;
     const blds = Object.values(this.s.buildingState.byId);
     const need = Math.round(100 * this.g.skills.perk('SKILL_FARMING', 'wateringUnitMultiplier', 1));
@@ -93,7 +97,7 @@ export class FarmSystem {
         if (tank.buildId !== 'BUILD_WATER_TANK' || tank.stage !== 'complete') continue;
         if (Math.hypot(tank.tile[0] - irr.tile[0], tank.tile[1] - irr.tile[1]) > this.c.db.WaterEconomyDB.tank.transferRadiusTiles + 1) continue;
         const w = this.s.waterInfrastructure.byBuildUid[tank.uid];
-        if (w && w.mode === 'RAW' && w.volumeCenti >= need) { w.volumeCenti -= need; if (!w.volumeCenti) w.mode = null; return true; }
+        if (w && w.mode === 'RAW' && w.volumeCenti >= need) { if (dryRun) return true; w.volumeCenti -= need; if (!w.volumeCenti) w.mode = null; return true; }
       }
     }
     // garden POI irrigation channels fixed: fertile islet planters are auto-watered

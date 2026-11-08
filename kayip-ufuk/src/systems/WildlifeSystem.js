@@ -191,7 +191,7 @@ export class WildlifeSystem {
           const dh = fromHome || 1; mvx = (a.home[0] - ax) / dh * 0.6; mvy = (a.home[1] - ay) / dh * 0.6; anim = water ? 'swim' : 'move';
           if (fromHome < 1.5) a.state = 'idle';
         } else {
-          if (dp < trigger && (prof !== 'RARE_TERRITORIAL' || playerSwim)) { a.state = 'warn'; a.warnT = 1.2; this.g.bus.emit('animal.warn', { speciesId: a.speciesId }); }
+          if (dp < trigger && (prof !== 'RARE_TERRITORIAL' || playerSwim)) { a.state = 'warn'; a.warnT = 1.2; anim = 'warn'; this.g.bus.emit('animal.warn', { speciesId: a.speciesId }); }
           else wander(water ? 0.4 : 0.25);
           if (a.hurt > 0 && prof === 'WARN_CHARGE') a.state = 'attack';
         }

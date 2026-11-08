@@ -29,13 +29,23 @@ function icon(p, id, x, y, f = 0.6) { p.blit(scaleDown(drawItemIcon(id), f), x, 
 function pole(p, x, y0, y1, c = P.wood) { p.rect(x, y0, 3, y1 - y0, c); p.rect(x, y0, 1, y1 - y0, shade(c, 0.25)); }
 
 // ---------- houses (prefab, 4 models + leaf shelter) ----------
+/** Hip roof seen in 3/4 top-down view: covers the back of the footprint so every wall cell has visible art. */
+function hipRoof(p, x, y0, w, y1, c) {
+  const h = y1 - y0; const inset = Math.min(Math.round(h * 0.55), Math.round(w * 0.3));
+  p.rect(x, y0, w, h, c);
+  p.poly([[x, y0], [x + inset, y0 + Math.round(h / 2)], [x, y1]], shade(c, -0.18));
+  p.poly([[x + w, y0], [x + w - inset, y0 + Math.round(h / 2)], [x + w, y1]], shade(c, 0.12));
+  for (let yy = y0 + 4; yy < y1; yy += 5) p.line(x + 1, yy, x + w - 2, yy, shade(c, -0.08));
+  p.line(x + inset, y0 + Math.round(h / 2), x + w - inset, y0 + Math.round(h / 2), shade(c, 0.3), 2);
+  p.rect(x, y0, w, 2, shade(c, 0.22)); p.rect(x, y1 - 3, w, 3, shade(c, -0.3));
+}
 function houseCommon(p, W, H, kind, stage, part) {
   const base = H - 6; const wallTop = Math.round(H * 0.38); const wx = 6, ww = W - 12;
   const wallFn = kind === 'bamboo' ? (x, y, w, h) => bambooWall(p, x, y, w, h) : (x, y, w, h) => plankWall(p, x, y, w, h, kind === 'fisher' ? '#7a8a96' : kind === 'large' ? '#9a7552' : P.wood);
   const roofC = { bamboo: '#c9a64a', wood: '#8a4a3a', large: '#3d7a8a', fisher: '#5a6a7a', leaf: P.palm }[kind];
   if (part === 'interior_floor') { p.rect(wx, wallTop + 8, ww, base - wallTop - 8, kind === 'bamboo' || kind === 'leaf' ? '#c9a676' : '#a87a52'); for (let y = wallTop + 12; y < base; y += 6) p.line(wx, y, wx + ww - 1, y, shade('#a87a52', -0.2)); return; }
   if (part === 'interior_wall') { wallFn(wx, wallTop, ww, 10); p.rect(wx, wallTop, 3, base - wallTop, shade(P.wood, -0.2)); p.rect(wx + ww - 3, wallTop, 3, base - wallTop, shade(P.wood, -0.2)); return; }
-  if (part === 'roof') { if (kind === 'leaf' || kind === 'bamboo') thatch(p, wx, 4, ww, wallTop + 10, roofC); else { roofTri(p, wx - 4, 2, ww + 8, wallTop + 12, roofC); p.rect(wx - 4, wallTop + 12, ww + 8, 3, shade(roofC, -0.3)); } return; }
+  if (part === 'roof') { if (kind === 'leaf' || kind === 'bamboo') thatch(p, wx, 4, ww, wallTop + 10, roofC); else hipRoof(p, wx - 4, 8, ww + 8, wallTop + 12, roofC); return; }
   shadowE(p, W / 2, base + 2, W / 2 - 4, 4);
   // foundation
   p.rect(wx - 2, base - 4, ww + 4, 6, P.stone); for (let x = wx; x < wx + ww; x += 6) p.rect(x, base - 4, 1, 6, P.stone_dark);
@@ -49,8 +59,8 @@ function houseCommon(p, W, H, kind, stage, part) {
   if (kind === 'large') { p.rect(wx - 4, base - 8, ww + 8, 4, '#c9a676'); for (let x = wx - 2; x < wx + ww + 2; x += 12) pole(p, x, wallTop + 6, base - 8, P.wood_light); }
   if (kind === 'fisher') { for (let i = 0; i < 3; i++) p.line(wx + ww - 8 + i * 3, wallTop + 6, wx + ww - 8 + i * 3, wallTop + 20, P.rope); p.rect(wx + 2, base - 6, ww - 4, 2, P.wood_light); icon(p, 'FOOD_DRIED_FISH', wx + ww - 14, wallTop + 8, 0.4); }
   if (kind === 'leaf' || kind === 'bamboo') thatch(p, wx, 4, ww, wallTop + 6, roofC);
-  else { roofTri(p, wx - 4, 2, ww + 8, wallTop + 4, roofC); p.rect(wx - 4, wallTop + 4, ww + 8, 3, shade(roofC, -0.3)); }
-  if (kind === 'large') p.rect(W / 2 + 14, 6, 6, 12, P.stone_dark);
+  else hipRoof(p, wx - 4, 8, ww + 8, wallTop + 4, roofC);
+  if (kind === 'large') { p.rect(W / 2 + 30, 2, 7, 14, P.stone_dark); p.rect(W / 2 + 30, 2, 7, 2, P.stone); }
 }
 const HOUSE_KIND = { BUILD_BAMBOO_HUT: 'bamboo', BUILD_WOOD_HUT: 'wood', BUILD_LARGE_HOUSE: 'large', BUILD_FISH_HUT: 'fisher', BUILD_LEAF_SHELTER: 'leaf' };
 
@@ -70,7 +80,7 @@ const B = {
   BUILD_PLANT_POT(p) { shadowE(p, 16, 44, 7); p.poly([[9, 32], [23, 32], [21, 44], [11, 44]], P.clay); p.rect(8, 30, 16, 3, P.clay_light); for (let i = 0; i < 5; i++) p.ellipse(10 + i * 3, 26 - (i % 2) * 3, 3, 4, P.leaf); },
   BUILD_PLAY_POST(p) { shadowE(p, 16, 44, 7); pole(p, 15, 8, 44); p.line(17, 14, 26, 24, P.rope, 2); p.circle(26, 26, 3, P.red); p.rect(10, 40, 12, 4, P.wood); },
   BUILD_PARROT_PERCH(p) { shadowE(p, 16, 44, 6); pole(p, 15, 14, 44); p.rect(6, 14, 20, 3, P.wood_light); p.ellipse(16, 44, 6, 2, P.stone); icon(p, 'FOOD_BERRY', 20, 6, 0.3); },
-  BUILD_CAMPFIRE(p, W, H, s) { shadowE(p, 32, 70, 18, 5); stonesRing(p, 32, 66, 14); logs(p, 32, 64); if (s !== 'cold') fire(p, 32, 60, 1.4); },
+  BUILD_CAMPFIRE(p, W, H, s) { p.ellipse(32, 56, 28, 21, '#6a5a48'); p.ellipse(32, 57, 20, 14, '#4a3e34'); for (let a = 0; a < Math.PI * 2; a += 0.42) p.ellipse(32 + Math.cos(a) * 24, 56 + Math.sin(a) * 17, 4, 3, a % 0.84 < 0.42 ? P.stone : P.stone_light); logs(p, 32, 58); if (s !== 'cold') fire(p, 32, 54, 1.6); },
   BUILD_KILN(p) { shadowE(p, 32, 72, 22, 5); p.ellipse(32, 52, 22, 20, P.clay); p.ellipse(28, 44, 10, 8, P.clay_light); p.rect(24, 54, 16, 14, '#3a2a20'); fire(p, 32, 66, 0.9); p.rect(40, 26, 6, 12, '#8a4f35'); },
   BUILD_SMELTER(p) { shadowE(p, 32, 72, 22, 5); p.rect(14, 30, 36, 40, P.stone); for (let y = 34; y < 70; y += 6) p.line(14, y, 49, y, P.stone_dark); p.rect(22, 50, 20, 16, '#2a1a10'); fire(p, 32, 64, 1); p.rect(26, 16, 12, 16, P.clay); p.rect(46, 44, 10, 4, P.iron); p.rect(52, 48, 4, 10, P.copper); },
   BUILD_WORKBENCH(p) { shadowE(p, 32, 72, 24, 5); table(p, 8, 46, 48, 26, P.wood_light); p.rect(14, 40, 14, 6, P.wood); icon(p, 'TOOL_STONE_AXE', 30, 30, 0.6); icon(p, 'CMP_ROPE', 40, 34, 0.45); p.rect(8, 64, 48, 2, P.wood_dark); },

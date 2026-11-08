@@ -1,0 +1,23 @@
+{
+ "silhouettesIoU": [
+  0.5873925501432665,
+  0.5490196078431373,
+  0.5930962343096234
+ ],
+ "observedClipsWhileSwimming": {
+  "MARINE_TURTLE": [
+   "swim"
+  ],
+  "MARINE_RAY": [
+   "swim"
+  ],
+  "MARINE_REEF_SHARK": [
+   "swim",
+   "warn",
+   "attack"
+  ]
+ },
+ "sharkOnLand": [
+  "swim"
+ ]
+}

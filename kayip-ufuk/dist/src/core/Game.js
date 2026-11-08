@@ -27,6 +27,7 @@ import { PuzzleSystem } from '../systems/PuzzleSystem.js';
 import { EscapeSystem } from '../systems/EscapeSystem.js';
 import { SeaVehicleSystem } from '../systems/SeaVehicleSystem.js';
 
+import { DISMANTLE } from '../data/SystemUses.js';
 export const SAVE_VERSION = 5;
 export const SIM_HZ = 30;
 
@@ -35,7 +36,7 @@ export function newGameState(content, { slotId = 'slot-1', seed = 1, name = 'Kaz
   const now = new Date().toISOString();
   const st = {
     saveVersion: SAVE_VERSION, saveSlotId: slotId, revision: 0, slotDisplayName: name, createdAtUtc: now, lastSavedUtc: now, contentVersion: 'v2.0',
-    world: { worldSeed: seed >>> 0, worldAtlasVersion: 'v1.2', worldDeltaByEntityId: {}, visitedIslands: ['MAIN'], visitedPoiIds: [], visitedRegions: [], regionPopulation: {}, worldFlags: {}, openedShortcuts: [], exploredCells: {}, dropBags: {}, caveVisits: {}, sos: null },
+    world: { worldSeed: seed >>> 0, worldAtlasVersion: 'v1.2', worldDeltaByEntityId: {}, visitedIslands: ['MAIN'], visitedPoiIds: [], visitedRegions: [], regionPopulation: {}, worldFlags: {}, openedShortcuts: [], exploredCells: {}, dropBags: {}, caveVisits: {}, sos: null, flotsam: {} },
     clock: GameClock.initial(),
     player: {
       name, appearance: { body: 'body_a', skin: 0, hair: 0, hairColor: 0, outfit: 0, ...appearance },
@@ -250,6 +251,7 @@ export class Game {
     const s = this.state;
     switch (target.kind) {
       case 'node': return this.resources.gather(target.id);
+      case 'flotsam': return this.resources.collectFlotsam(target.id);
       case 'poi': return this.exploration.interact(target.id);
       case 'cave_exit': return this.caves.exit();
       case 'cave_enter': return this.caves.enter(target.id);
@@ -327,6 +329,16 @@ export class Game {
     const r = this.store.transaction(null, (tx) => { this.inventory.add(tx, PLAYER_INV, 'WATER_DIRTY', n); tx.emit('water.taken', { n }); });
     if (can && (can.metadata.water || 0) < 10) this.farm.refillCan();
     return r;
+  }
+
+  /** Salvage processing for items whose only role is raw salvage (SystemUses.DISMANTLE). */
+  dismantle(uid) {
+    const a = this.inventory.item(uid); const out = a && DISMANTLE[a.itemId]; if (!out) return { ok: false };
+    return this.store.transaction(null, (tx) => {
+      this.inventory.remove(tx, [this.inventory.locate(uid)[0]], a.itemId, 1);
+      for (const [id, n] of Object.entries(out)) this.giveOrDrop(tx, id, n);
+      tx.emit('item.dismantled', { itemId: a.itemId });
+    });
   }
 
   /** Replace state (load, finale restore). */

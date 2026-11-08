@@ -63,6 +63,16 @@ function draw(rec) {
 const pages = new Map(layout.pages.map((pg) => [pg.pageId, new Pix(pg.width, pg.height)]));
 const pageMeta = new Map(layout.pages.map((pg) => [pg.pageId, {}]));
 let n = 0; const errors = [];
+// AtlasLayout.paddingPixels: copy each sprite's border pixels outward into its 2px margin (edge extrusion)
+const PAD = layout.paddingPixels || 2;
+function extrude(page, r, pad) {
+  const W = page.w, d = page.d;
+  const cp = (sx, sy, dx, dy) => { if (dx < 0 || dy < 0 || dx >= W || dy >= page.h) return; const s = (sy * W + sx) * 4, t = (dy * W + dx) * 4; for (let k = 0; k < 4; k++) d[t + k] = d[s + k]; };
+  for (let k = 1; k <= pad; k++) {
+    for (let x = r.x; x < r.x + r.w; x++) { cp(x, r.y, x, r.y - k); cp(x, r.y + r.h - 1, x, r.y + r.h - 1 + k); }
+    for (let y = r.y - pad; y < r.y + r.h + pad; y++) { const cy = Math.max(r.y, Math.min(r.y + r.h - 1, y)); cp(r.x, cy, r.x - k, y); cp(r.x + r.w - 1, cy, r.x + r.w - 1 + k, y); }
+  }
+}
 const t0 = Date.now();
 for (const rec of catalog) {
   const rect = layout.sprites[rec.spriteId];
@@ -76,6 +86,7 @@ for (const rec of catalog) {
     const src = y * img.w * 4, dst = ((rect.y + y) * page.w + rect.x) * 4;
     page.d.set(img.d.subarray(src, src + Math.min(img.w, rect.w) * 4), dst);
   }
+  extrude(page, rect, PAD);
   pageMeta.get(rect.pageId)[rec.spriteId] = { x: rect.x, y: rect.y, w: rect.w, h: rect.h, anchor: rec.anchor, frames: rec.frames, fps: rec.fps };
   n++;
 }

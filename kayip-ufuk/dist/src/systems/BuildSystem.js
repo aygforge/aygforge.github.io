@@ -38,7 +38,7 @@ export class BuildSystem {
       if (g.gate[i]) reasons.push('Geçit üzerine kurulamaz');
       if (g.interior[i]) interiorCells++;
       if (g.occupied[i] && !(g.interior[i] && !HOUSES.has(buildId) && p !== 'coastal_water')) reasons.push('Alan dolu');
-      if (this.g.world.nodeAtTile(x, y)) reasons.push('Kaynak düğümü üzerinde');
+      { const nd = this.g.world.nodeAtTile(x, y); if (nd && this.g.world.nodeReady(nd)) reasons.push('Kaynak düğümü üzerinde (önce topla)'); }
       if (t.isWater) waterCells++; else landCells++;
       if (code === T.RIVER_DEEP || code === T.RIVER_BANK || code === T.RIVER_FORD) riverCells++;
       if (code === T.CLIFF_WALL) reasons.push('Kayalık üzerinde');

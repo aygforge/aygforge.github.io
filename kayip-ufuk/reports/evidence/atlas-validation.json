@@ -1,0 +1,326 @@
+{
+ "ok": true,
+ "assetsRoot": "public",
+ "paddingPixels": 2,
+ "pagesChecked": 24,
+ "spritesChecked": 3180,
+ "layoutSprites": 3180,
+ "semiTransparentPixels": 689891,
+ "pages": [
+  {
+   "pageId": "animals_00",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 265,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "animals_01",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 361,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "animals_02",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 498,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "animals_03",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 112,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "avatar_00",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 532,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "avatar_01",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 506,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "boats_00",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 21,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "boats_01",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 11,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "builds_00",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 37,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "builds_01",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 104,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "crops_00",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 51,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "foliage_00",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 70,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "icons_00",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 204,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "poi_00",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 42,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "poi_01",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 42,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "poi_02",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 1,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "scenes_00",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 3,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "scenes_01",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 3,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "scenes_02",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 3,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "scenes_03",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 3,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "scenes_04",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 3,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "terrain_00",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 168,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "ui_00",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 27,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  },
+  {
+   "pageId": "vfx_00",
+   "size": [
+    1024,
+    1024
+   ],
+   "sprites": 113,
+   "emptySprites": 0,
+   "paddingMismatches": 0,
+   "overlaps": 0,
+   "outOfBounds": 0,
+   "strayPixels": 0
+  }
+ ],
+ "errors": [],
+ "errorCount": 0,
+ "ms": 986
+}

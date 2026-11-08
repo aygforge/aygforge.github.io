@@ -1,0 +1,19 @@
+{
+ "world_beach_day": "reports/evidence/e2e/world_beach_day.png",
+ "world_forest": "reports/evidence/e2e/world_forest.png",
+ "world_swamp": "reports/evidence/e2e/world_swamp.png",
+ "world_redcliff": "reports/evidence/e2e/world_redcliff.png",
+ "world_mountain": "reports/evidence/e2e/world_mountain.png",
+ "world_settlement": "reports/evidence/e2e/world_settlement.png",
+ "world_lagoon": "reports/evidence/e2e/world_lagoon.png",
+ "world_valley": "reports/evidence/e2e/world_valley.png",
+ "world_grove": "reports/evidence/e2e/world_grove.png",
+ "islet_lighthouse": "reports/evidence/e2e/islet_lighthouse.png",
+ "islet_wreck": "reports/evidence/e2e/islet_wreck.png",
+ "islet_fertile": "reports/evidence/e2e/islet_fertile.png",
+ "night_low_rain": "reports/evidence/e2e/night_low_rain.png",
+ "storm_high": "reports/evidence/e2e/storm_high.png",
+ "cave_cave_copper": "reports/evidence/e2e/cave_cave_copper.png",
+ "cave_cave_bats": "reports/evidence/e2e/cave_cave_bats.png",
+ "cave_cave_pond": "reports/evidence/e2e/cave_cave_pond.png"
+}
