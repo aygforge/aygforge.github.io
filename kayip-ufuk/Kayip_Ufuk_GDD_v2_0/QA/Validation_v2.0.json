@@ -361,12 +361,7 @@
       "detail": ""
     },
     {
-      "id": "Map_RLE_CaveGrid_CAVE_COPPER_v1.4",
-      "status": "PASS",
-      "detail": ""
-    },
-    {
-      "id": "Map_RLE_CaveGrid_CAVE_BATS_v1.4",
+      "id": "Map_RLE_TerrainGrid_FERTILE_v1.2",
       "status": "PASS",
       "detail": ""
     },
@@ -376,7 +371,7 @@
       "detail": ""
     },
     {
-      "id": "Map_RLE_CaveGrid_CAVE_POND_v1.4",
+      "id": "Map_RLE_CaveGrid_CAVE_BATS_v1.4",
       "status": "PASS",
       "detail": ""
     },
@@ -386,7 +381,12 @@
       "detail": ""
     },
     {
-      "id": "Map_RLE_TerrainGrid_FERTILE_v1.2",
+      "id": "Map_RLE_CaveGrid_CAVE_COPPER_v1.4",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Map_RLE_CaveGrid_CAVE_POND_v1.4",
       "status": "PASS",
       "detail": ""
     },

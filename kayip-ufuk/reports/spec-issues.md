@@ -1,0 +1,23 @@
+# Kayıp Ufuk — spec-issues (GDD v2.0 eksik/çelişki kararları)
+
+`Kayip_Ufuk_GDD_v2_0/` **değiştirilmedi** (yüklenen paketle `diff -rq` birebir aynı). Çelişkilerde `ProductionTruth_v2.0.json` öncelik sırası uygulandı: güncel DB kimlikleri/değerleri anlatı metnine üstün tutuldu. Her kararın uygulandığı dosya belirtilmiştir.
+
+| ID | Kaynak / kimlik | Sorun | Karar (uygulama) | Doğrulama |
+|---|---|---|---|---|
+| SI-01 | ItemDB `MAT_FAT`, `MAT_TENDON` | LootTableDB/ResourceEconomyDB içinde hiçbir kaynak yok; tariflerde girdi olarak kullanılıyor | Av yan ürünleri: `src/systems/WildlifeSystem.js` `BYPRODUCTS` (yaban domuzu, tavşan, orman kuşu); tuzaklar da aynı tabloyu kullanır (`TrapSystem`) | `tests/unit/craft.test.mjs` "CONTENT all 179 items have a world source…" |
+| SI-02 | ItemDB `SAL_BOTTLE` | Dünya kaynağı yok, su kabı ve tarif girdisi | Fırtına sonrası kıyıya vuran enkaz: `ResourceSystem.spawnFlotsam` (LootTableDB `globalPolicies.stormSalvage` havuzu, %25 şişe) | aynı test + AT_SURVIVAL_ECO testleri |
+| SI-03 | ItemDB `SAL_PLASTIC`, `SAL_ROPE` | Kaynağı var, kullanımı yok | Plastik: olta şamandırası (ısırma bekleme ×0.9, harcanmaz) `FishingSystem.js:101`; ip: söküm → 2 `MAT_FIBER` `src/data/SystemUses.js` `DISMANTLE` | "CONTENT all 179 items…" |
+| SI-04 | PuzzleDB `startCondition.repairMaterialsDeposited` (`POI_STONE_BRIDGE`, `POI_CABLE_CAR`) | Hangi malzemenin bırakılacağı tanımsız | `ExplorationSystem.js` `POI_DEPOSITS`: taş köprü 6 `CMP_PLANK` + 4 `CMP_ROPE`; teleferik 2 `CMP_ROPE` + 2 `CMP_PLANK` | AT_EXPLORATION testleri |
+| SI-05 | WeatherDB `kumDiliPoi: "POI_SAND_TONGUE"` | POIDB'de böyle bir kimlik yok; mevcut kimlik `POI_SAND_SPIT` | POIDB kimliği esas alındı; kum dili geçidi `GATE_SANDSPIT` + gelgit durumu (`ClimateSystem.isLowTide` → `TerrainSystem.lowTide`) | AT_WORLD_NAV gelgit testi |
+| SI-06 | ItemDB meta `counts.recipes = 175` | RecipeDB 183 tarif içeriyor | RecipeDB (183) esas; 114 eşya tarifi + 60 yapı tarifi + 9 yükseltme | "CONTENT all 183 recipes…" |
+| SI-07 | GDD anlatısı "59 yapı / 10 yükseltme" | BuildDB 58 yapı, RecipeDB 60 yapı tarifi (alternatifler dahil) ve 9 yükseltme | DB değerleri esas alındı | aynı test |
+| SI-08 | ItemDB su kapları | Kap kapasitesi tanımsız | `InventorySystem.js` `WATER_VESSELS`: bambu bardak 2, şişe 2, teneke 1 porsiyon | AT_SURVIVAL_ECO su testleri |
+| SI-09 | Art/AtlasLayout `rotation` | Tüm kareler döndürmesiz; elde tutulan aletlerin pozlara göre açısı gerekir | Alet sprite'ı çalışma anında ölçülen `toolAngle` ile döndürülür (`WorldRenderer.drawPlayer`); kavrama noktası (8,24), sola bakan aynalı sprite'ta (23,24) | VIS_05 (`tests/unit/assets.test.mjs`) |
+| SI-10 | Art/AvatarRig geçici çapalar | Çapalar üretilen çizimle uyuşmuyor | Çapalar üretici tarafından çizimden ölçülür: `public/assets/avatar_anchors.json` (644 kare) | AT_RENDER_AUDIO_02, VIS_05, VIS_28 |
+| SI-11 | AtlasLayout tek `clothing_mask` (gövde başına değil) | Maske geniş gövdeye (body_b) göre; body_a'da 1 px taşar | Maske çalışma anında gövde alfasına kırpılır (`SpriteAtlas.avatarFrame`, `source-atop`) | VIS_28 |
+| SI-12 | TerrainDB `REED_PATCH` (kod 17) + SpriteCatalog kareleri | Maps RLE ızgaralarında tek bir hücre bile yok | Harita değiştirilmedi; doku ve kurallar VIS_02'de bellek içi geçici 3×3 yama ile doğrulandı, oyunda görünmez | VIS_02 notu |
+| SI-13 | TerrainDB `RIVER_BANK` `isWater: true`, `raftNavigable: false` | `coastal_water` yerleşimi nehir kıyısını su sayıyordu → sal hiç yüzemeyen yere kurulabiliyordu | `BuildSystem.validatePlacement`: sal için gövde boyu yüzülebilir deniz suyu şartı; sal çapası su karosuna oturur (`SeaVehicleSystem.raftAnchor`) | 2 REGRESSION testi (`boot_nav.test.mjs`), VIS_15 |
+| SI-14 | CropDB `growGameDays: 2` + 4 görsel evre | Günlük büyüme ile 2 günlük bitkiler 2. evreyi atlıyordu | Büyüme günlük kalır (geriye dönük büyüme yok); sulanmış/yağmurlu günde gün içi pay yalnızca görsele eklenir (`FarmSystem.stage`) | VIS_10, AT_SURVIVAL_ECO_08 |
+| SI-15 | AtlasLayout `theoreticalFullDecodedMiB: 96` vs AssetAcceptanceTests VIS_22 48 MiB hedefi | 24 sayfanın tamamı yüklenince hedefin üstü | Sayfalar açılışta bir kez yüklenir; sahne bazlı tahliye uygulanmadı → VIS_22 cihazda NOT_RUN | `reports/NEXT_STEPS.md` |
+| SI-16 | ProductionTruth/Contracts finale süreleri | Deniz finali segment süreleri net değil | Kalkış 30 s, resif 12 kapı (6,5 s arayla), açık deniz 25 s; telsiz finali 3 segment (~13 s) — `FinaleScene.js` | AT_ENDINGS_* , VIS_16 |
+| SI-17 | BalanceDB `methodology.harvestNodeAssumptions` | Kuvars/çakmaktaşı alet katmanı belirsiz | Kuvars 2. kademe kazma; taş/çakmaktaşı elle toplanabilir (`EntityIndex.TOOL_RULE`) | AT_ITEM_CRAFT_01 |

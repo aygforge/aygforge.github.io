@@ -1,7 +1,7 @@
 {
  "base": "dist over local static HTTP",
  "browser": "Chromium (Playwright, headless)",
- "ranUtc": "2026-11-08T07:15:28.368Z",
+ "ranUtc": "2026-11-08T07:20:46.493Z",
  "consoleErrors": [],
  "results": {
   "AT_BOOT_DATA_01": {
@@ -45,7 +45,7 @@
    "evidence": [
     "reports/evidence/e2e/movement.png"
    ],
-   "notes": "kb=44,44 joy=45,45 staminaIdleSprint=100.0 afterRun=95.2"
+   "notes": "kb=44,44 joy=46,46 staminaIdleSprint=100.0 afterRun=95.4"
   },
   "AT_INPUT_UI_03": {
    "status": "PASS",
@@ -66,7 +66,7 @@
    "evidence": [
     "reports/evidence/e2e/inventory_pause.png"
    ],
-   "notes": "{\"a\":{\"t\":70.89999999999938,\"p\":[8025.516563268678,9072.887301627792],\"h\":84.67703703703492},\"b\":{\"t\":70.89999999999938,\"p\":[8025.516563268678,9072.887301627792],\"h\":84.67703703703492,\"open\":\"UI_INVENTORY\"}}"
+   "notes": "{\"a\":{\"t\":70.89999999999938,\"p\":[8027.387094345302,9072.887301627792],\"h\":84.67703703703492},\"b\":{\"t\":70.89999999999938,\"p\":[8027.387094345302,9072.887301627792],\"h\":84.67703703703492,\"open\":\"UI_INVENTORY\"}}"
   },
   "AT_INPUT_UI_08": {
    "status": "PASS",
@@ -144,7 +144,7 @@
    "evidence": [
     "reports/evidence/e2e/export_sample_head.json"
    ],
-   "notes": "{\"imp\":{\"ok\":true},\"same\":true,\"badCode\":\"CHECKSUM_MISMATCH\",\"checksum\":\"3aaf75c74e5f\"}"
+   "notes": "{\"imp\":{\"ok\":true},\"same\":true,\"badCode\":\"CHECKSUM_MISMATCH\",\"checksum\":\"0cf4211783b4\"}"
   },
   "AT_PERSIST_08": {
    "status": "PASS",

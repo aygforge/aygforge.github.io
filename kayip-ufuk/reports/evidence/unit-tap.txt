@@ -1,0 +1,484 @@
+TAP version 13
+# Subtest: VIS_27 physical PNG validator: alpha, bounds, extruded padding and per-page metadata agree with AtlasLayout
+ok 1 - VIS_27 physical PNG validator: alpha, bounds, extruded padding and per-page metadata agree with AtlasLayout
+  ---
+  duration_ms: 1044.033545
+  type: 'test'
+  ...
+# Subtest: AT_RENDER_AUDIO_01 packaging fails when one PNG is removed or an atlas is damaged (no silent missing sprite)
+ok 2 - AT_RENDER_AUDIO_01 packaging fails when one PNG is removed or an atlas is damaged (no silent missing sprite)
+  ---
+  duration_ms: 4532.086759
+  type: 'test'
+  ...
+# Subtest: VIS_07 all 179 item icons exist, are non-empty and unique; UI uses no emoji
+ok 3 - VIS_07 all 179 item icons exist, are non-empty and unique; UI uses no emoji
+  ---
+  duration_ms: 502.072945
+  type: 'test'
+  ...
+# Subtest: VIS_10 12 crops × 4 stage sprites + shared moisture overlays; each crop shows every stage in order while growing
+ok 4 - VIS_10 12 crops × 4 stage sprites + shared moisture overlays; each crop shows every stage in order while growing
+  ---
+  duration_ms: 278.946206
+  type: 'test'
+  ...
+# Subtest: VIS_11 12 land species: distinct silhouettes, every clip in 4 directions, AI states map to real clips
+ok 5 - VIS_11 12 land species: distinct silhouettes, every clip in 4 directions, AI states map to real clips
+  ---
+  duration_ms: 168.394532
+  type: 'test'
+  ...
+# Subtest: VIS_12 10 fish: distinct, swim+turn animation in 4 directions, matching codex icon
+ok 6 - VIS_12 10 fish: distinct, swim+turn animation in 4 directions, matching codex icon
+  ---
+  duration_ms: 220.0409
+  type: 'test'
+  ...
+# Subtest: VIS_13 marine turtle, stingray, reef shark: separate silhouettes; only the shark shows threat behaviour (vs swimmer)
+ok 7 - VIS_13 marine turtle, stingray, reef shark: separate silhouettes; only the shark shows threat behaviour (vs swimmer)
+  ---
+  duration_ms: 244.763961
+  type: 'test'
+  ...
+# Subtest: VIS_05 axe/pickaxe/hammer/bow/rod/spear stay attached to the hand in every frame of their clips
+ok 8 - VIS_05 axe/pickaxe/hammer/bow/rod/spear stay attached to the hand in every frame of their clips
+  ---
+  duration_ms: 29.593018
+  type: 'test'
+  ...
+# Subtest: VIS_28 avatar variants (2 bodies × 6 hair × clips incl. work/swim): hair attached, clothing inside body, bag on back
+ok 9 - VIS_28 avatar variants (2 bodies × 6 hair × clips incl. work/swim): hair attached, clothing inside body, bag on back
+  ---
+  duration_ms: 304.637272
+  type: 'test'
+  ...
+# Subtest: AT_BOOT_DATA_02 data counts and unique keys
+ok 10 - AT_BOOT_DATA_02 data counts and unique keys
+  ---
+  duration_ms: 51.962018
+  type: 'test'
+  ...
+# Subtest: AT_BOOT_DATA_03 missing data aborts visibly
+ok 11 - AT_BOOT_DATA_03 missing data aborts visibly
+  ---
+  duration_ms: 82.955337
+  type: 'test'
+  ...
+# Subtest: AT_BOOT_DATA_04 new game deterministic start (same seed, two slots) + 63 starter fiber
+ok 12 - AT_BOOT_DATA_04 new game deterministic start (same seed, two slots) + 63 starter fiber
+  ---
+  duration_ms: 673.344353
+  type: 'test'
+  ...
+# Subtest: AT_BOOT_DATA_05 twenty seeds keep critical POIs/story items fixed; optional loot varies
+ok 13 - AT_BOOT_DATA_05 twenty seeds keep critical POIs/story items fixed; optional loot varies
+  ---
+  duration_ms: 3751.232295
+  type: 'test'
+  ...
+# Subtest: AT_BOOT_DATA_06 no external runtime URLs in shipped sources
+ok 14 - AT_BOOT_DATA_06 no external runtime URLs in shipped sources
+  ---
+  duration_ms: 0.718146
+  type: 'test'
+  ...
+# Subtest: AT_BOOT_DATA_07 source overlay precedence: canonical POI sprite ids, R_SEA_CHEST creates new
+ok 15 - AT_BOOT_DATA_07 source overlay precedence: canonical POI sprite ids, R_SEA_CHEST creates new
+  ---
+  duration_ms: 1.259675
+  type: 'test'
+  ...
+# Subtest: AT_WORLD_NAV_01 nine biome anchors reachable on foot from spawn, no raft, no shortcut
+ok 16 - AT_WORLD_NAV_01 nine biome anchors reachable on foot from spawn, no raft, no shortcut
+  ---
+  duration_ms: 223.329812
+  type: 'test'
+  ...
+# Subtest: AT_WORLD_NAV_02 all 38 POI approach anchors reachable (dynamic colliders included)
+ok 17 - AT_WORLD_NAV_02 all 38 POI approach anchors reachable (dynamic colliders included)
+  ---
+  duration_ms: 274.000337
+  type: 'test'
+  ...
+# Subtest: AT_WORLD_NAV_03 raft reaches all 3 islands over water and lands on valid tiles
+ok 18 - AT_WORLD_NAV_03 raft reaches all 3 islands over water and lands on valid tiles
+  ---
+  duration_ms: 192.564437
+  type: 'test'
+  ...
+# Subtest: AT_WORLD_NAV_04 public fords walkable; bridge is only a shortcut
+ok 19 - AT_WORLD_NAV_04 public fords walkable; bridge is only a shortcut
+  ---
+  duration_ms: 187.910314
+  type: 'test'
+  ...
+# Subtest: AT_WORLD_NAV_05 no diagonal corner cutting through cliffs/obstacles
+ok 20 - AT_WORLD_NAV_05 no diagonal corner cutting through cliffs/obstacles
+  ---
+  duration_ms: 173.331719
+  type: 'test'
+  ...
+# Subtest: AT_WORLD_NAV_06 20 seeds: starter materials within 22 tiles reachable and safe
+ok 21 - AT_WORLD_NAV_06 20 seeds: starter materials within 22 tiles reachable and safe
+  ---
+  duration_ms: 3934.406679
+  type: 'test'
+  ...
+# Subtest: AT_WORLD_NAV_07 prefab cannot block cave exit/critical corridor; no materials consumed
+ok 22 - AT_WORLD_NAV_07 prefab cannot block cave exit/critical corridor; no materials consumed
+  ---
+  duration_ms: 193.278267
+  type: 'test'
+  ...
+# Subtest: AT_WORLD_NAV_08 roof hides only inside the house footprint
+ok 23 - AT_WORLD_NAV_08 roof hides only inside the house footprint
+  ---
+  duration_ms: 170.052989
+  type: 'test'
+  ...
+# Subtest: AT_WORLD_NAV_09 resource respawn per ResourceEconomyDB, never inside buildings
+ok 24 - AT_WORLD_NAV_09 resource respawn per ResourceEconomyDB, never inside buildings
+  ---
+  duration_ms: 179.08427
+  type: 'test'
+  ...
+# Subtest: AT_WORLD_NAV_10 all three caves escapable without tool or torch
+ok 25 - AT_WORLD_NAV_10 all three caves escapable without tool or torch
+  ---
+  duration_ms: 214.357979
+  type: 'test'
+  ...
+# Subtest: AT_WORLD_NAV_11 water mode transitions: walk → swim → dive (oxygen) → raft
+ok 26 - AT_WORLD_NAV_11 water mode transitions: walk → swim → dive (oxygen) → raft
+  ---
+  duration_ms: 256.031807
+  type: 'test'
+  ...
+# Subtest: AT_WORLD_NAV_12 save mid sea route and reload: raft + player restored, no duplicate
+ok 27 - AT_WORLD_NAV_12 save mid sea route and reload: raft + player restored, no duplicate
+  ---
+  duration_ms: 385.105667
+  type: 'test'
+  ...
+# Subtest: AT_EXPLORATION_07 sand spit tide window opens at least once per day and is predictable
+ok 28 - AT_EXPLORATION_07 sand spit tide window opens at least once per day and is predictable
+  ---
+  duration_ms: 206.797196
+  type: 'test'
+  ...
+# Subtest: REGRESSION raft built on the shoreline is anchored on water and can sail away after boarding
+ok 29 - REGRESSION raft built on the shoreline is anchored on water and can sail away after boarding
+  ---
+  duration_ms: 192.193583
+  type: 'test'
+  ...
+# Subtest: REGRESSION a raft cannot be placed on river-bank "water" where its hull could never float
+ok 30 - REGRESSION a raft cannot be placed on river-bank "water" where its hull could never float
+  ---
+  duration_ms: 192.256985
+  type: 'test'
+  ...
+# Subtest: AT_ITEM_CRAFT_01 starter guaranteed nodes cover the first eight basics with ≥21 fiber spare
+ok 31 - AT_ITEM_CRAFT_01 starter guaranteed nodes cover the first eight basics with ≥21 fiber spare
+  ---
+  duration_ms: 505.005831
+  type: 'test'
+  ...
+# Subtest: AT_ITEM_CRAFT_02 no free crafts: missing inputs/station/knowledge are blocked
+ok 32 - AT_ITEM_CRAFT_02 no free crafts: missing inputs/station/knowledge are blocked
+  ---
+  duration_ms: 251.542443
+  type: 'test'
+  ...
+# Subtest: AT_ITEM_CRAFT_03 workbench shares chests within 10 tiles, not at 11
+ok 33 - AT_ITEM_CRAFT_03 workbench shares chests within 10 tiles, not at 11
+  ---
+  duration_ms: 243.565318
+  type: 'test'
+  ...
+# Subtest: AT_ITEM_CRAFT_04 atomic multi-source reserve survives save/load exactly once
+ok 34 - AT_ITEM_CRAFT_04 atomic multi-source reserve survives save/load exactly once
+  ---
+  duration_ms: 483.919867
+  type: 'test'
+  ...
+# Subtest: AT_ITEM_CRAFT_05 output stays claimable at station when inventory is full
+ok 35 - AT_ITEM_CRAFT_05 output stays claimable at station when inventory is full
+  ---
+  duration_ms: 168.535229
+  type: 'test'
+  ...
+# Subtest: AT_ITEM_CRAFT_06 MAT/STATION/BP unlock rules
+ok 36 - AT_ITEM_CRAFT_06 MAT/STATION/BP unlock rules
+  ---
+  duration_ms: 183.106636
+  type: 'test'
+  ...
+# Subtest: AT_ITEM_CRAFT_07 20 unique blueprints learned once; none required for escapes
+ok 37 - AT_ITEM_CRAFT_07 20 unique blueprints learned once; none required for escapes
+  ---
+  duration_ms: 197.269485
+  type: 'test'
+  ...
+# Subtest: AT_ITEM_CRAFT_08 upgrade keeps building UID and contents, capacity changes, no duplication
+ok 38 - AT_ITEM_CRAFT_08 upgrade keeps building UID and contents, capacity changes, no duplication
+  ---
+  duration_ms: 367.259412
+  type: 'test'
+  ...
+# Subtest: AT_ITEM_CRAFT_09 R_SEA_CHEST builds a distinct new chest
+ok 39 - AT_ITEM_CRAFT_09 R_SEA_CHEST builds a distinct new chest
+  ---
+  duration_ms: 192.575653
+  type: 'test'
+  ...
+# Subtest: AT_ITEM_CRAFT_10 tool breaks at 0 without deletion, cannot work, repairs predictably
+ok 40 - AT_ITEM_CRAFT_10 tool breaks at 0 without deletion, cannot work, repairs predictably
+  ---
+  duration_ms: 198.286791
+  type: 'test'
+  ...
+# Subtest: AT_ITEM_CRAFT_11 stacks split/merge/transfer and death never create negative or duplicate UIDs
+ok 41 - AT_ITEM_CRAFT_11 stacks split/merge/transfer and death never create negative or duplicate UIDs
+  ---
+  duration_ms: 225.084222
+  type: 'test'
+  ...
+# Subtest: AT_ITEM_CRAFT_12 boat stage escrow: deliver 2 hulls, reload, still 2, no double charge
+ok 42 - AT_ITEM_CRAFT_12 boat stage escrow: deliver 2 hulls, reload, still 2, no double charge
+  ---
+  duration_ms: 387.29687
+  type: 'test'
+  ...
+# Subtest: CONTENT all 179 items have a world source or a craft/recipe use
+ok 43 - CONTENT all 179 items have a world source or a craft/recipe use
+  ---
+  duration_ms: 200.417229
+  type: 'test'
+  ...
+# Subtest: CONTENT all 183 recipes have executable station/unlock paths; all 58 builds constructible
+ok 44 - CONTENT all 183 recipes have executable station/unlock paths; all 58 builds constructible
+  ---
+  duration_ms: 227.221019
+  type: 'test'
+  ...
+# Subtest: AT_EXPLORATION_01 all 38 POIs have canonical visual + reward identity
+ok 45 - AT_EXPLORATION_01 all 38 POIs have canonical visual + reward identity
+  ---
+  duration_ms: 454.389236
+  type: 'test'
+  ...
+# Subtest: AT_EXPLORATION_02 guaranteed loot always obtainable; full inventory defers safely
+ok 46 - AT_EXPLORATION_02 guaranteed loot always obtainable; full inventory defers safely
+  ---
+  duration_ms: 476.83562
+  type: 'test'
+  ...
+# Subtest: AT_EXPLORATION_03 one-time reward ledger across reopen + reload
+ok 47 - AT_EXPLORATION_03 one-time reward ledger across reopen + reload
+  ---
+  duration_ms: 175.514264
+  type: 'test'
+  ...
+# Subtest: AT_EXPLORATION_04 all 12 puzzles playable, retryable (abandon), effects persisted
+ok 48 - AT_EXPLORATION_04 all 12 puzzles playable, retryable (abandon), effects persisted
+  ---
+  duration_ms: 340.104724
+  type: 'test'
+  ...
+# Subtest: AT_EXPLORATION_05 wrong puzzle inputs never consume items or soft-lock
+ok 49 - AT_EXPLORATION_05 wrong puzzle inputs never consume items or soft-lock
+  ---
+  duration_ms: 158.052108
+  type: 'test'
+  ...
+# Subtest: AT_EXPLORATION_06 fifteen records collectable out of order, saved and rereadable
+ok 50 - AT_EXPLORATION_06 fifteen records collectable out of order, saved and rereadable
+  ---
+  duration_ms: 339.086899
+  type: 'test'
+  ...
+# Subtest: AT_ENDINGS_01 any two nav sources (fisher+observatory, no captain) unlock nav kit & boat
+ok 51 - AT_ENDINGS_01 any two nav sources (fisher+observatory, no captain) unlock nav kit & boat
+  ---
+  duration_ms: 204.238983
+  type: 'test'
+  ...
+# Subtest: AT_ENDINGS_02 boat requires exactly 4 hull + sail + rudder + nav kit + 6 rations + 8 water
+ok 52 - AT_ENDINGS_02 boat requires exactly 4 hull + sail + rudder + nav kit + 6 rations + 8 water
+  ---
+  duration_ms: 170.824436
+  type: 'test'
+  ...
+# Subtest: AT_ENDINGS_03 storm blocks departure with warning; valid window within ≤3 days
+ok 53 - AT_ENDINGS_03 storm blocks departure with warning; valid window within ≤3 days
+  ---
+  duration_ms: 303.623249
+  type: 'test'
+  ...
+# Subtest: AT_ENDINGS_04 reef crash restores pre-finale checkpoint; boat and charts kept
+ok 54 - AT_ENDINGS_04 reef crash restores pre-finale checkpoint; boat and charts kept
+  ---
+  duration_ms: 172.224153
+  type: 'test'
+  ...
+# Subtest: AT_ENDINGS_05 radio with solar only (no generator) sends SOS
+ok 55 - AT_ENDINGS_05 radio with solar only (no generator) sends SOS
+  ---
+  duration_ms: 221.334412
+  type: 'test'
+  ...
+# Subtest: AT_ENDINGS_06 radio with generator only (no solar core) sends SOS
+ok 56 - AT_ENDINGS_06 radio with generator only (no solar core) sends SOS
+  ---
+  duration_ms: 188.159339
+  type: 'test'
+  ...
+# Subtest: AT_ENDINGS_07 radio path has only automatic signal; no speaking or island NPC
+ok 57 - AT_ENDINGS_07 radio path has only automatic signal; no speaking or island NPC
+  ---
+  duration_ms: 220.925264
+  type: 'test'
+  ...
+# Subtest: AT_ENDINGS_08 rescue ready exactly after 2 game days, not early, playable until boarding
+ok 58 - AT_ENDINGS_08 rescue ready exactly after 2 game days, not early, playable until boarding
+  ---
+  duration_ms: 226.256751
+  type: 'test'
+  ...
+# Subtest: AT_ENDINGS_09 finish boat, continue, then radio in same save; both kept; world intact
+ok 59 - AT_ENDINGS_09 finish boat, continue, then radio in same save; both kept; world intact
+  ---
+  duration_ms: 213.133934
+  type: 'test'
+  ...
+# Subtest: AT_PERSIST_03 cave save: same cave/position, looted chest stays looted, return valid
+ok 60 - AT_PERSIST_03 cave save: same cave/position, looted chest stays looted, return valid
+  ---
+  duration_ms: 416.539865
+  type: 'test'
+  ...
+# Subtest: AT_PERSIST_04 partial puzzle (2 valves) restored exactly
+ok 61 - AT_PERSIST_04 partial puzzle (2 valves) restored exactly
+  ---
+  duration_ms: 362.644317
+  type: 'test'
+  ...
+# Subtest: AT_PERSIST_05 death keeps unique story parts; recovery bag is reachable
+ok 62 - AT_PERSIST_05 death keeps unique story parts; recovery bag is reachable
+  ---
+  duration_ms: 182.616377
+  type: 'test'
+  ...
+# Subtest: AT_PERSIST_06 v4 snapshot migrates to v5 with weather/water defaults, no loss
+ok 63 - AT_PERSIST_06 v4 snapshot migrates to v5 with weather/water defaults, no loss
+  ---
+  duration_ms: 187.365396
+  type: 'test'
+  ...
+# Subtest: AT_PERSIST_10 unknown mod entity is quarantined, save not discarded
+ok 64 - AT_PERSIST_10 unknown mod entity is quarantined, save not discarded
+  ---
+  duration_ms: 184.535371
+  type: 'test'
+  ...
+# Subtest: AT_SURVIVAL_ECO_01 1080 game seconds drain hunger 32 / thirst 42 / rest 35
+ok 65 - AT_SURVIVAL_ECO_01 1080 game seconds drain hunger 32 / thirst 42 / rest 35
+  ---
+  duration_ms: 395.4351
+  type: 'test'
+  ...
+# Subtest: AT_SURVIVAL_ECO_02 eat/drink clamp to [0,100]
+ok 66 - AT_SURVIVAL_ECO_02 eat/drink clamp to [0,100]
+  ---
+  duration_ms: 211.313899
+  type: 'test'
+  ...
+# Subtest: AT_SURVIVAL_ECO_03 weather deterministic after reload; ≤3 dry days, safe window ≤3 days
+ok 67 - AT_SURVIVAL_ECO_03 weather deterministic after reload; ≤3 dry days, safe window ≤3 days
+  ---
+  duration_ms: 356.833155
+  type: 'test'
+  ...
+# Subtest: AT_SURVIVAL_ECO_04 collectors yield 0/2/4/6/6 and 0/5/10/16/16, capacity bounded, slices once
+ok 68 - AT_SURVIVAL_ECO_04 collectors yield 0/2/4/6/6 and 0/5/10/16/16, capacity bounded, slices once
+  ---
+  duration_ms: 364.739853
+  type: 'test'
+  ...
+# Subtest: AT_SURVIVAL_ECO_05 tank never mixes clean and dirty water
+ok 69 - AT_SURVIVAL_ECO_05 tank never mixes clean and dirty water
+  ---
+  duration_ms: 180.053323
+  type: 'test'
+  ...
+# Subtest: AT_SURVIVAL_ECO_06 campfire boiling: 1 dirty + 1 branch → 1 clean, repeatable on dry days
+ok 70 - AT_SURVIVAL_ECO_06 campfire boiling: 1 dirty + 1 branch → 1 clean, repeatable on dry days
+  ---
+  duration_ms: 152.546049
+  type: 'test'
+  ...
+# Subtest: AT_SURVIVAL_ECO_07 all 12 crops grow and harvest with ≥1 renewable seed
+ok 71 - AT_SURVIVAL_ECO_07 all 12 crops grow and harvest with ≥1 renewable seed
+  ---
+  duration_ms: 180.771088
+  type: 'test'
+  ...
+# Subtest: AT_SURVIVAL_ECO_08 no water → growth pauses, plant survives, no retroactive growth
+ok 72 - AT_SURVIVAL_ECO_08 no water → growth pauses, plant survives, no retroactive growth
+  ---
+  duration_ms: 173.828373
+  type: 'test'
+  ...
+# Subtest: AT_SURVIVAL_ECO_09 six traps: one persisted roll/day, one reward+XP per claim across save/load
+ok 73 - AT_SURVIVAL_ECO_09 six traps: one persisted roll/day, one reward+XP per claim across save/load
+  ---
+  duration_ms: 345.325923
+  type: 'test'
+  ...
+# Subtest: AT_SURVIVAL_ECO_10 all 25 species spawn with species-appropriate AI/interaction (no humans)
+ok 74 - AT_SURVIVAL_ECO_10 all 25 species spawn with species-appropriate AI/interaction (no humans)
+  ---
+  duration_ms: 195.781808
+  type: 'test'
+  ...
+# Subtest: AT_SURVIVAL_ECO_11 parrot + monkey: one active follower, trust/name kept, never die
+ok 75 - AT_SURVIVAL_ECO_11 parrot + monkey: one active follower, trust/name kept, never die
+  ---
+  duration_ms: 355.099842
+  type: 'test'
+  ...
+# Subtest: AT_SURVIVAL_ECO_12 fishing tension game (sardine easy, tuna rod tier 2); all 10 fish exist
+ok 76 - AT_SURVIVAL_ECO_12 fishing tension game (sardine easy, tuna rod tier 2); all 10 fish exist
+  ---
+  duration_ms: 151.775089
+  type: 'test'
+  ...
+# Subtest: AT_SURVIVAL_ECO_13 skills: 5 ranks 0/80/220/450/800, XP once per completed action, repeat caps
+ok 77 - AT_SURVIVAL_ECO_13 skills: 5 ranks 0/80/220/450/800, XP once per completed action, repeat caps
+  ---
+  duration_ms: 163.787153
+  type: 'test'
+  ...
+# Subtest: AT_SURVIVAL_ECO_14 sleep across days: every day-based system once; save/load at boundary no double
+ok 78 - AT_SURVIVAL_ECO_14 sleep across days: every day-based system once; save/load at boundary no double
+  ---
+  duration_ms: 349.478267
+  type: 'test'
+  ...
+# Subtest: AT_SURVIVAL_ECO_15 paused clock (hidden tab): no hunger, production, growth or cooldown
+ok 79 - AT_SURVIVAL_ECO_15 paused clock (hidden tab): no hunger, production, growth or cooldown
+  ---
+  duration_ms: 190.564661
+  type: 'test'
+  ...
+1..79
+# tests 79
+# suites 0
+# pass 79
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 12255.873355

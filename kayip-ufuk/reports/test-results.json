@@ -1,853 +1,1695 @@
 {
-  "sourceVersion": "v2.0",
-  "runtime": [
-    {
-      "id": "AT_BOOT_DATA_01",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_BOOT_DATA_02",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_BOOT_DATA_03",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_BOOT_DATA_04",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_BOOT_DATA_05",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_BOOT_DATA_06",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_BOOT_DATA_07",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_INPUT_UI_01",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_INPUT_UI_02",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_INPUT_UI_03",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_INPUT_UI_04",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_INPUT_UI_05",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_INPUT_UI_06",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_INPUT_UI_07",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_INPUT_UI_08",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_INPUT_UI_09",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_WORLD_NAV_01",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_WORLD_NAV_02",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_WORLD_NAV_03",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_WORLD_NAV_04",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_WORLD_NAV_05",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_WORLD_NAV_06",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_WORLD_NAV_07",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_WORLD_NAV_08",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_WORLD_NAV_09",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_WORLD_NAV_10",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_WORLD_NAV_11",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_WORLD_NAV_12",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ITEM_CRAFT_01",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ITEM_CRAFT_02",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ITEM_CRAFT_03",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ITEM_CRAFT_04",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ITEM_CRAFT_05",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ITEM_CRAFT_06",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ITEM_CRAFT_07",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ITEM_CRAFT_08",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ITEM_CRAFT_09",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ITEM_CRAFT_10",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ITEM_CRAFT_11",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ITEM_CRAFT_12",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_SURVIVAL_ECO_01",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_SURVIVAL_ECO_02",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_SURVIVAL_ECO_03",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_SURVIVAL_ECO_04",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_SURVIVAL_ECO_05",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_SURVIVAL_ECO_06",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_SURVIVAL_ECO_07",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_SURVIVAL_ECO_08",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_SURVIVAL_ECO_09",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_SURVIVAL_ECO_10",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_SURVIVAL_ECO_11",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_SURVIVAL_ECO_12",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_SURVIVAL_ECO_13",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_SURVIVAL_ECO_14",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_SURVIVAL_ECO_15",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_EXPLORATION_01",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_EXPLORATION_02",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_EXPLORATION_03",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_EXPLORATION_04",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_EXPLORATION_05",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_EXPLORATION_06",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_EXPLORATION_07",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ENDINGS_01",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ENDINGS_02",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ENDINGS_03",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ENDINGS_04",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ENDINGS_05",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ENDINGS_06",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ENDINGS_07",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ENDINGS_08",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_ENDINGS_09",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_PERSIST_01",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_PERSIST_02",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_PERSIST_03",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_PERSIST_04",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_PERSIST_05",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_PERSIST_06",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_PERSIST_07",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_PERSIST_08",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_PERSIST_09",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_PERSIST_10",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_PERSIST_11",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_RENDER_AUDIO_01",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_RENDER_AUDIO_02",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_RENDER_AUDIO_03",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_RENDER_AUDIO_04",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_RENDER_AUDIO_05",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_RENDER_AUDIO_06",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_PERFORMANCE_01",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_PERFORMANCE_02",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_PERFORMANCE_03",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "AT_PERFORMANCE_04",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    }
-  ],
-  "visual": [
-    {
-      "id": "VIS_01",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_02",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_03",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_04",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_05",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_06",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_07",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_08",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_09",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_10",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_11",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_12",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_13",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_14",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_15",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_16",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_17",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_18",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_19",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_20",
-      "priority": "P0",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_21",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_22",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_23",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_24",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_25",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_26",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_27",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    },
-    {
-      "id": "VIS_28",
-      "priority": "P1",
-      "status": "NOT_RUN",
-      "evidence": [],
-      "notes": ""
-    }
-  ],
-  "environment": {
-    "browser": null,
-    "device": null,
-    "build": "dist"
+ "sourceVersion": "v2.0",
+ "generatedUtc": "2026-11-08T07:21:23.649Z",
+ "generator": "tools/make_test_report.mjs",
+ "environment": {
+  "browser": "Chromium headless (Playwright 1.63.0)",
+  "device": "Linux cloud container, headless, no GPU, no physical mobile device",
+  "build": "dist (2.0.0, built 2026-11-08T07:17:14.307Z)",
+  "node": "v22.23.4"
+ },
+ "summary": {
+  "runtime": {
+   "PASS": 88,
+   "NOT_RUN": 4
   },
-  "releaseReady": false
+  "visual": {
+   "PASS": 26,
+   "NOT_RUN": 2
+  },
+  "unitTests": {
+   "pass": 79,
+   "fail": 0
+  },
+  "p0NotPassed": [],
+  "p1NotPassed": [
+   "AT_PERFORMANCE_01",
+   "AT_PERFORMANCE_02",
+   "AT_PERFORMANCE_03",
+   "AT_PERFORMANCE_04",
+   "VIS_22",
+   "VIS_23"
+  ]
+ },
+ "releaseReady": false,
+ "releaseReadyBlockers": {
+  "p0NotPassed": [],
+  "p1NotPassedWithoutApprovedAlternative": [
+   "AT_PERFORMANCE_01",
+   "AT_PERFORMANCE_02",
+   "AT_PERFORMANCE_03",
+   "AT_PERFORMANCE_04",
+   "VIS_22",
+   "VIS_23"
+  ]
+ },
+ "releaseReadyNote": "Contracts/AcceptanceTests.json blocking rule: all P0 PASS; all P1 PASS or a documented, APPROVED alternative (approval is the product owner's, not the developer's). P1 tests that need a physical phone stay NOT_RUN here.",
+ "runtime": [
+  {
+   "id": "AT_BOOT_DATA_01",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/boot_menu.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] boot={\"items\":179,\"recipes\":183,\"builds\":58,\"pois\":38,\"puzzles\":12,\"stories\":15,\"species\":25,\"crops\":12,\"skills\":8,\"endings\":2,\"blueprints\":20,\"maps\":7,\"sprites\":3180,\"atlasPages\":24,\"audioCues\":63} errors=0",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_BOOT_DATA_02",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_BOOT_DATA_02 data counts and unique keys",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_BOOT_DATA_03",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt",
+    "reports/evidence/e2e/missing_db_error.png",
+    "tests/unit/boot_nav.test.mjs#AT_BOOT_DATA_03",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[unit (node --test)] AT_BOOT_DATA_03 missing data aborts visibly | [browser E2E (Chromium headless)] visible error, code=DB_MISSING",
+   "sources": [
+    "unit (node --test)",
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_BOOT_DATA_04",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_BOOT_DATA_04 new game deterministic start (same seed, two slots) + 63 starter fiber",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_BOOT_DATA_05",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_BOOT_DATA_05 twenty seeds keep critical POIs/story items fixed; optional loot varies",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_BOOT_DATA_06",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt",
+    "reports/evidence/e2e/offline_play.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[unit (node --test)] AT_BOOT_DATA_06 no external runtime URLs in shipped sources | [browser E2E (Chromium headless)] blockedExternal=0 errors=0",
+   "sources": [
+    "unit (node --test)",
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_BOOT_DATA_07",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_BOOT_DATA_07 source overlay precedence: canonical POI sprite ids, R_SEA_CHEST creates new",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_INPUT_UI_01",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/portrait_prompt.png",
+    "reports/evidence/e2e/landscape_menu.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] portraitPrompt=true landscapeOk=true",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_INPUT_UI_02",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/movement.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] kb=44,44 joy=46,46 staminaIdleSprint=100.0 afterRun=95.4",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_INPUT_UI_03",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/context_target.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] targets=2 left=\"Topla: Taş\" right=\"Düşen çanta\" hud=\"Topla: Taş\" acted on facing target: 0→3",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_INPUT_UI_04",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/tap_to_approach.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] {\"ok\":true,\"len\":10,\"corner\":false,\"moving\":true,\"cancelled\":true}",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_INPUT_UI_05",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/inventory_pause.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] {\"a\":{\"t\":70.89999999999938,\"p\":[8027.387094345302,9072.887301627792],\"h\":84.67703703703492},\"b\":{\"t\":70.89999999999938,\"p\":[8027.387094345302,9072.887301627792],\"h\":84.67703703703492,\"open\":\"UI_INVENTORY\"}}",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_INPUT_UI_06",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/layout_1280x720.png",
+    "reports/evidence/e2e/layout_740x360.png",
+    "reports/evidence/e2e/layout_640x360.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] [{\"vp\":{\"width\":1280,\"height\":720},\"slots\":6,\"small\":[],\"clipped\":0},{\"vp\":{\"width\":740,\"height\":360},\"slots\":6,\"small\":[],\"clipped\":0},{\"vp\":{\"width\":640,\"height\":360},\"slots\":6,\"small\":[],\"clipped\":0}]",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_INPUT_UI_07",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/fullscreen.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] fullscreen=true feedback=\"\"",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_INPUT_UI_08",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/hud_day.png",
+    "reports/evidence/e2e/hud_night.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] bars=80,29.9921,14.9896 lowWarning=true",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_INPUT_UI_09",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/quality_high.png",
+    "reports/evidence/e2e/quality_low.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] interactables per setting=0,0,0,0,0,0",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_WORLD_NAV_01",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_WORLD_NAV_01 nine biome anchors reachable on foot from spawn, no raft, no shortcut",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_WORLD_NAV_02",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_WORLD_NAV_02 all 38 POI approach anchors reachable (dynamic colliders included)",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_WORLD_NAV_03",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_WORLD_NAV_03 raft reaches all 3 islands over water and lands on valid tiles",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_WORLD_NAV_04",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_WORLD_NAV_04 public fords walkable; bridge is only a shortcut",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_WORLD_NAV_05",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_WORLD_NAV_05 no diagonal corner cutting through cliffs/obstacles",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_WORLD_NAV_06",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_WORLD_NAV_06 20 seeds: starter materials within 22 tiles reachable and safe",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_WORLD_NAV_07",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_WORLD_NAV_07 prefab cannot block cave exit/critical corridor; no materials consumed",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_WORLD_NAV_08",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt",
+    "reports/evidence/e2e/house_out_BUILD_BAMBOO_HUT.png",
+    "reports/evidence/e2e/house_in_BUILD_BAMBOO_HUT.png",
+    "tests/unit/boot_nav.test.mjs#AT_WORLD_NAV_08",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[unit (node --test)] AT_WORLD_NAV_08 roof hides only inside the house footprint | [browser E2E (Chromium headless)] Roof fades only while the player tile is inside the house footprint (unit + screenshots)",
+   "sources": [
+    "unit (node --test)",
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_WORLD_NAV_09",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_WORLD_NAV_09 resource respawn per ResourceEconomyDB, never inside buildings",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_WORLD_NAV_10",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_WORLD_NAV_10 all three caves escapable without tool or torch",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_WORLD_NAV_11",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_WORLD_NAV_11 water mode transitions: walk → swim → dive (oxygen) → raft",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_WORLD_NAV_12",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_WORLD_NAV_12 save mid sea route and reload: raft + player restored, no duplicate",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ITEM_CRAFT_01",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ITEM_CRAFT_01 starter guaranteed nodes cover the first eight basics with ≥21 fiber spare",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ITEM_CRAFT_02",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ITEM_CRAFT_02 no free crafts: missing inputs/station/knowledge are blocked",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ITEM_CRAFT_03",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ITEM_CRAFT_03 workbench shares chests within 10 tiles, not at 11",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ITEM_CRAFT_04",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ITEM_CRAFT_04 atomic multi-source reserve survives save/load exactly once",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ITEM_CRAFT_05",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ITEM_CRAFT_05 output stays claimable at station when inventory is full",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ITEM_CRAFT_06",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ITEM_CRAFT_06 MAT/STATION/BP unlock rules",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ITEM_CRAFT_07",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ITEM_CRAFT_07 20 unique blueprints learned once; none required for escapes",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ITEM_CRAFT_08",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ITEM_CRAFT_08 upgrade keeps building UID and contents, capacity changes, no duplication",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ITEM_CRAFT_09",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ITEM_CRAFT_09 R_SEA_CHEST builds a distinct new chest",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ITEM_CRAFT_10",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ITEM_CRAFT_10 tool breaks at 0 without deletion, cannot work, repairs predictably",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ITEM_CRAFT_11",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ITEM_CRAFT_11 stacks split/merge/transfer and death never create negative or duplicate UIDs",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ITEM_CRAFT_12",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ITEM_CRAFT_12 boat stage escrow: deliver 2 hulls, reload, still 2, no double charge",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_SURVIVAL_ECO_01",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_01 1080 game seconds drain hunger 32 / thirst 42 / rest 35",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_SURVIVAL_ECO_02",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_02 eat/drink clamp to [0,100]",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_SURVIVAL_ECO_03",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_03 weather deterministic after reload; ≤3 dry days, safe window ≤3 days",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_SURVIVAL_ECO_04",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_04 collectors yield 0/2/4/6/6 and 0/5/10/16/16, capacity bounded, slices once",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_SURVIVAL_ECO_05",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_05 tank never mixes clean and dirty water",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_SURVIVAL_ECO_06",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_06 campfire boiling: 1 dirty + 1 branch → 1 clean, repeatable on dry days",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_SURVIVAL_ECO_07",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_07 all 12 crops grow and harvest with ≥1 renewable seed",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_SURVIVAL_ECO_08",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_08 no water → growth pauses, plant survives, no retroactive growth",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_SURVIVAL_ECO_09",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_09 six traps: one persisted roll/day, one reward+XP per claim across save/load",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_SURVIVAL_ECO_10",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_10 all 25 species spawn with species-appropriate AI/interaction (no humans)",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_SURVIVAL_ECO_11",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_11 parrot + monkey: one active follower, trust/name kept, never die",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_SURVIVAL_ECO_12",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_12 fishing tension game (sardine easy, tuna rod tier 2); all 10 fish exist",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_SURVIVAL_ECO_13",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_13 skills: 5 ranks 0/80/220/450/800, XP once per completed action, repeat caps",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_SURVIVAL_ECO_14",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_14 sleep across days: every day-based system once; save/load at boundary no double",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_SURVIVAL_ECO_15",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt",
+    "tests/unit/survival_eco.test.mjs#AT_SURVIVAL_ECO_15",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_15 paused clock (hidden tab): no hunger, production, growth or cooldown | [browser E2E (Chromium headless)] browser visibilitychange: frozen=true resumed=true",
+   "sources": [
+    "unit (node --test)",
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_EXPLORATION_01",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt",
+    "tests/unit/explore_endings.test.mjs#AT_EXPLORATION_01",
+    "reports/evidence/e2e/poi_POI_CRASH_BOAT.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[unit (node --test)] AT_EXPLORATION_01 all 38 POIs have canonical visual + reward identity | [browser E2E (Chromium headless)] canonical POI ids → poi/<id>/<state> sprites in all 38 screenshots",
+   "sources": [
+    "unit (node --test)",
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_EXPLORATION_02",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_EXPLORATION_02 guaranteed loot always obtainable; full inventory defers safely",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_EXPLORATION_03",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_EXPLORATION_03 one-time reward ledger across reopen + reload",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_EXPLORATION_04",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_EXPLORATION_04 all 12 puzzles playable, retryable (abandon), effects persisted",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_EXPLORATION_05",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_EXPLORATION_05 wrong puzzle inputs never consume items or soft-lock",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_EXPLORATION_06",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_EXPLORATION_06 fifteen records collectable out of order, saved and rereadable",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_EXPLORATION_07",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_EXPLORATION_07 sand spit tide window opens at least once per day and is predictable",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ENDINGS_01",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ENDINGS_01 any two nav sources (fisher+observatory, no captain) unlock nav kit & boat",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ENDINGS_02",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ENDINGS_02 boat requires exactly 4 hull + sail + rudder + nav kit + 6 rations + 8 water",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ENDINGS_03",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ENDINGS_03 storm blocks departure with warning; valid window within ≤3 days",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ENDINGS_04",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ENDINGS_04 reef crash restores pre-finale checkpoint; boat and charts kept",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ENDINGS_05",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ENDINGS_05 radio with solar only (no generator) sends SOS",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ENDINGS_06",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ENDINGS_06 radio with generator only (no solar core) sends SOS",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ENDINGS_07",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ENDINGS_07 radio path has only automatic signal; no speaking or island NPC",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ENDINGS_08",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ENDINGS_08 rescue ready exactly after 2 game days, not early, playable until boarding",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_ENDINGS_09",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_ENDINGS_09 finish boat, continue, then radio in same save; both kept; world intact",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_PERSIST_01",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/slots.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] {\"slot-1\":{\"seed\":101,\"flags\":[]},\"slot-2\":{\"seed\":202,\"flags\":[\"SLOT2\"]},\"slot-3\":{\"seed\":303,\"flags\":[\"SLOT3\"]}}",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_PERSIST_02",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/backup_recovery.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] {\"ok\":true,\"recovered\":true,\"revBInBackup\":true} toast=Günlüğe eklendi: Kıyıda Uyandığım Gün | Kıyıda uyandın. Önce barınak, su ve ateş",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_PERSIST_03",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_PERSIST_03 cave save: same cave/position, looted chest stays looted, return valid",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_PERSIST_04",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_PERSIST_04 partial puzzle (2 valves) restored exactly",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_PERSIST_05",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_PERSIST_05 death keeps unique story parts; recovery bag is reachable",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_PERSIST_06",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_PERSIST_06 v4 snapshot migrates to v5 with weather/water defaults, no loss",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_PERSIST_07",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/export_sample_head.json",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] {\"imp\":{\"ok\":true},\"same\":true,\"badCode\":\"CHECKSUM_MISMATCH\",\"checksum\":\"0cf4211783b4\"}",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_PERSIST_08",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/second_tab_readonly.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] {\"readOnly\":true,\"before\":4,\"after\":4}",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_PERSIST_09",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/transition_recovery.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] {\"scene\":\"CAVE_COPPER\",\"status\":\"COMMITTED\",\"rafts\":0,\"passable\":true}",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_PERSIST_10",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt"
+   ],
+   "notes": "[unit (node --test)] AT_PERSIST_10 unknown mod entity is quarantined, save not discarded",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_PERSIST_11",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/ending_sea.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] {\"endings\":[\"ESCAPE_SAIL\"],\"inGame\":[\"ESCAPE_SAIL\"],\"boatKept\":true}",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_RENDER_AUDIO_01",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt",
+    "reports/evidence/unit/AT_RENDER_AUDIO_01.json"
+   ],
+   "notes": "[unit (node --test)] AT_RENDER_AUDIO_01 packaging fails when one PNG is removed or an atlas is damaged (no silent missing sprite)",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "AT_RENDER_AUDIO_02",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "public/assets/avatar_anchors.json",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] {\"clips\":16,\"frames\":644,\"empty\":0,\"missingAnchor\":0}",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_RENDER_AUDIO_03",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "tools/assetgen/",
+    "reports/evidence/e2e/hud_day.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] UI uses 14 atlas icon elements, emoji glyphs=0; all art generated by tools/assetgen (original code)",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_RENDER_AUDIO_04",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/night_low_rain.png",
+    "reports/evidence/e2e/cave_cave_bats.png",
+    "reports/evidence/e2e/storm_high.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] Night + heavy rain on LOW and caves rendered with player light radius; interactables stay outlined by target highlight. Visual judgement from screenshots.",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_RENDER_AUDIO_05",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] {\"pre\":{\"started\":false},\"post\":{\"started\":true,\"ctx\":\"running\",\"before\":[0.6000000238418579,0.800000011920929],\"after\":[0.20000000298023224,0.8999999761581421],\"muted\":0}}",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_RENDER_AUDIO_06",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/offline_play.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] external requests attempted: 0",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_PERFORMANCE_01",
+   "priority": "P1",
+   "status": "NOT_RUN",
+   "evidence": [
+    "reports/evidence/e2e/perf_desktop_headless.json",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "No physical mobile device or GPU is available in this cloud container; only headless desktop Chromium. Requires midrange Android hardware (procedure). Headless reference in reports/evidence/e2e/perf_desktop_headless.json. | [browser E2E (Chromium headless)] Requires midrange Android hardware. Headless container reference only: median 59.9 FPS, p95 16.8 ms, heap 43 MiB",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "AT_PERFORMANCE_02",
+   "priority": "P1",
+   "status": "NOT_RUN",
+   "evidence": [],
+   "notes": "No automated or manual execution recorded.",
+   "sources": []
+  },
+  {
+   "id": "AT_PERFORMANCE_03",
+   "priority": "P1",
+   "status": "NOT_RUN",
+   "evidence": [
+    "reports/evidence/mobile-reference.json"
+   ],
+   "notes": "No physical mobile device or GPU is available in this cloud container; only headless desktop Chromium. Cold boot must be measured on the supported mobile device. Emulated reference (Pixel-class viewport, 4× CPU throttle) in reports/evidence/mobile-reference.json.",
+   "sources": []
+  },
+  {
+   "id": "AT_PERFORMANCE_04",
+   "priority": "P1",
+   "status": "NOT_RUN",
+   "evidence": [],
+   "notes": "No physical mobile device or GPU is available in this cloud container; only headless desktop Chromium. Requires a human 30-minute playtest at the smallest landscape width. Automated partial evidence: touch-target audit (AT_INPUT_UI_06) and first shelter/tools craftable (AT_ITEM_CRAFT_01) both PASS.",
+   "sources": []
+  }
+ ],
+ "visual": [
+  {
+   "id": "VIS_01",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/visual/vis01_nested_path_boot.png",
+    "reports/evidence/visual/vis01.json",
+    "reports/evidence/visual-results.json"
+   ],
+   "notes": "[browser visual (Chromium headless)] served from /html/7204511/; atlases 24/24 decoded; 404s=0; missing sprites=0; canvas colors=136",
+   "sources": [
+    "browser visual (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_02",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/visual/vis02_terrain_sheet_top_sprite_bottom_rendered.png",
+    "reports/evidence/visual/vis02_ocean_deep.png",
+    "reports/evidence/visual/vis02_ocean_shallow.png",
+    "reports/evidence/visual/vis02_beach_sand.png",
+    "reports/evidence/visual/vis02_meadow.png",
+    "reports/evidence/visual/vis02.json",
+    "reports/evidence/visual/vis02_*.png (20)",
+    "reports/evidence/visual-results.json"
+   ],
+   "notes": "[browser visual (Chromium headless)] 20 terrain ids: rendered chunk texture = TerrainDB tile sprite (min match 100%), walk/swim/raft flags agree; map-absent (verified on temporary in-memory patch): REED_PATCH; closest mean colours OCEAN_SHALLOW,SEA_REEF Δ=13.9; bad=[]",
+   "sources": [
+    "browser visual (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_03",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/visual/vis03_edge_masks_shore_row1_river_row2.png",
+    "reports/evidence/visual/vis03_coast_ingame.png",
+    "reports/evidence/visual/vis03.json",
+    "reports/evidence/visual-results.json"
+   ],
+   "notes": "[browser visual (Chromium headless)] masks in map: shore 12, river 9; all 4×15 transition sprites present; 3×3 renders: black=0 gaps=0 seams=0; sub-pixel cam frames=0/40; water overlay on land=0/15",
+   "sources": [
+    "browser visual (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_04",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "public/assets/atlases/avatar_00.png",
+    "public/assets/atlases/avatar_01.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] 16 clips, 644 composed body frames (2 bodies × 322), none empty",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_05",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt",
+    "reports/evidence/unit/VIS_05.json"
+   ],
+   "notes": "[unit (node --test)] VIS_05 axe/pickaxe/hammer/bow/rod/spear stay attached to the hand in every frame of their clips",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "VIS_06",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/appearance.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] distinct composed appearances=240 saved appearance round-trip=true",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_07",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt",
+    "reports/evidence/unit/VIS_07.json"
+   ],
+   "notes": "[unit (node --test)] VIS_07 all 179 item icons exist, are non-empty and unique; UI uses no emoji",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "VIS_08",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/visual/vis08_58_builds_ghost_and_complete.png",
+    "reports/evidence/visual/vis08_build_large_house.png",
+    "reports/evidence/visual/vis08_build_workbench.png",
+    "reports/evidence/visual/vis08_build_pier.png",
+    "reports/evidence/visual/vis08_build_escape_boat.png",
+    "reports/evidence/visual/vis08_build_signal_station.png",
+    "reports/evidence/visual/vis08_build_planter.png",
+    "reports/evidence/visual/vis08_ghost_preview.png",
+    "reports/evidence/visual/vis08.json",
+    "reports/evidence/visual-results.json"
+   ],
+   "notes": "[browser visual (Chromium headless)] 58/58 placed+completed in world with ghost & complete sprites; footprint matches BuildDB; solid cells=201, uncovered by sprite=0; bad=",
+   "sources": [
+    "browser visual (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_09",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/house_out_BUILD_BAMBOO_HUT.png",
+    "reports/evidence/e2e/house_in_BUILD_BAMBOO_HUT.png",
+    "reports/evidence/e2e/house_out_BUILD_WOOD_HUT.png",
+    "reports/evidence/e2e/house_in_BUILD_WOOD_HUT.png",
+    "reports/evidence/e2e/house_out_BUILD_LARGE_HOUSE.png",
+    "reports/evidence/e2e/house_in_BUILD_LARGE_HOUSE.png",
+    "reports/evidence/e2e/house_out_BUILD_FISH_HUT.png",
+    "reports/evidence/e2e/house_in_BUILD_FISH_HUT.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] [\"BUILD_BAMBOO_HUT:ok\",\"BUILD_WOOD_HUT:ok\",\"BUILD_LARGE_HOUSE:ok\",\"BUILD_FISH_HUT:ok\"]",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_10",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt",
+    "reports/evidence/unit/VIS_10.json"
+   ],
+   "notes": "[unit (node --test)] VIS_10 12 crops × 4 stage sprites + shared moisture overlays; each crop shows every stage in order while growing",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "VIS_11",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt",
+    "reports/evidence/unit/VIS_11.json"
+   ],
+   "notes": "[unit (node --test)] VIS_11 12 land species: distinct silhouettes, every clip in 4 directions, AI states map to real clips",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "VIS_12",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt",
+    "reports/evidence/unit/VIS_12.json"
+   ],
+   "notes": "[unit (node --test)] VIS_12 10 fish: distinct, swim+turn animation in 4 directions, matching codex icon",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "VIS_13",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt",
+    "reports/evidence/unit/VIS_13.json"
+   ],
+   "notes": "[unit (node --test)] VIS_13 marine turtle, stingray, reef shark: separate silhouettes; only the shark shows threat behaviour (vs swimmer)",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "VIS_14",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/poi_POI_CRASH_BOAT.png",
+    "reports/evidence/e2e/poi_POI_WATERPROOF_BAG.png",
+    "reports/evidence/e2e/poi_POI_SHORE_CRATE.png",
+    "reports/evidence/e2e/poi_POI_BROKEN_LOOKOUT.png",
+    "reports/evidence/e2e/poi_POI_FISHER_HUT.png",
+    "reports/evidence/e2e/poi_POI_FRUIT_HILL.png",
+    "reports/evidence/e2e/ (poi_*.png ×38)",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] 38 POIs visited by canonical id; missing sprites=0",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_15",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/visual/vis15_raft_up.png",
+    "reports/evidence/visual/vis15_raft_down.png",
+    "reports/evidence/visual/vis15_raft_left.png",
+    "reports/evidence/visual/vis15_raft_right.png",
+    "reports/evidence/visual/vis15_escape_boat.png",
+    "reports/evidence/visual/vis15.json",
+    "reports/evidence/visual-results.json"
+   ],
+   "notes": "[browser visual (Chromium headless)] raft 4 dirs: sprite dir = facing, constant hull offset to collider {\"up\":[\"0,30\"],\"down\":[\"0,30\"],\"left\":[\"0,30\"],\"right\":[\"0,30\"]}, collider never on land; boat sprite centre Δ=0px bottom Δ=1px",
+   "sources": [
+    "browser visual (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_16",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/visual/vis16_sea_boat_castoff.png",
+    "reports/evidence/visual/vis16_sea_boat_reef.png",
+    "reports/evidence/visual/vis16_sea_boat_open_sea.png",
+    "reports/evidence/visual/vis16_sea_end.png",
+    "reports/evidence/visual/vis16_radio_rescue_approach.png",
+    "reports/evidence/visual/vis16_radio_boarding.png",
+    "reports/evidence/visual/vis16_radio_departure.png",
+    "reports/evidence/visual/vis16_radio_end.png",
+    "reports/evidence/visual/vis16.json",
+    "reports/evidence/visual-results.json"
+   ],
+   "notes": "[browser visual (Chromium headless)] sea segments BOAT_CASTOFF,BOAT_REEF,BOAT_OPEN_SEA → radio segments RESCUE_APPROACH,BOARDING,DEPARTURE; endings=ESCAPE_SAIL,ESCAPE_RADIO; shared scene art=0; non-species entities before finale=0; SOS is an automatic packet (no voice/dialogue)",
+   "sources": [
+    "browser visual (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_17",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/visual/vis17_cave_before.png",
+    "reports/evidence/visual/vis17_cave_after_reload.png",
+    "reports/evidence/visual/vis17_raft_before.png",
+    "reports/evidence/visual/vis17_raft_after_reload.png",
+    "reports/evidence/visual/vis17_house_before.png",
+    "reports/evidence/visual/vis17_house_after_reload.png",
+    "reports/evidence/visual/vis17_puzzle_before.png",
+    "reports/evidence/visual/vis17_puzzle_after_reload.png",
+    "reports/evidence/visual/vis17.json",
+    "reports/evidence/visual-results.json"
+   ],
+   "notes": "[browser visual (Chromium headless)] cave:identical; raft:identical; house:identical; puzzle:identical (custom appearance body_b/skin3/hair4/col2/outfit2 kept)",
+   "sources": [
+    "browser visual (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_18",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/layout_1280x720.png",
+    "reports/evidence/e2e/layout_740x360.png",
+    "reports/evidence/e2e/layout_640x360.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] 360 px tall landscape: all HUD hit targets ≥48 CSS px and on screen",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_19",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/visual/vis19_zoom_1x.png",
+    "reports/evidence/visual/vis19_zoom_2x.png",
+    "reports/evidence/visual/vis19_zoom_3x.png",
+    "reports/evidence/visual/vis19.json",
+    "reports/evidence/visual-results.json"
+   ],
+   "notes": "[browser visual (Chromium headless)] 1×: smoothing=false non-uniform 1×1 blocks max 0% cams integer=true | 2×: smoothing=false non-uniform 2×2 blocks max 0.239% cams integer=true | 3×: smoothing=false non-uniform 3×3 blocks max 0.239% cams integer=true",
+   "sources": [
+    "browser visual (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_20",
+   "priority": "P0",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/missing_atlas_error.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] boot error: Atlas yüklenemedi: assets/atlases/poi_01.png",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_21",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/world_beach_day.png",
+    "reports/evidence/e2e/night_low_rain.png",
+    "reports/evidence/e2e/storm_high.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] Day/dusk/night grade and 5 weather states share the same render path; LOW reduces rain density to 1/3.",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_22",
+   "priority": "P1",
+   "status": "NOT_RUN",
+   "evidence": [],
+   "notes": "No physical mobile device or GPU is available in this cloud container; only headless desktop Chromium. Decoded-asset budget must be profiled on device. Container run shows bounded caches (perf-longsession.json) but all 24 atlas pages stay resident (96 MiB worst-case decoded vs 48 MiB target; no scene-scoped eviction implemented).",
+   "sources": []
+  },
+  {
+   "id": "VIS_23",
+   "priority": "P1",
+   "status": "NOT_RUN",
+   "evidence": [],
+   "notes": "No physical mobile device or GPU is available in this cloud container; only headless desktop Chromium. Requires the lowest target Android device (cave, rain, swarm, busy camp).",
+   "sources": []
+  },
+  {
+   "id": "VIS_24",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "reports/audio-provenance.json",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] 63/63 cues decoded+played after gesture; bad=",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_25",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/e2e/world_beach_day.png",
+    "reports/evidence/e2e/world_forest.png",
+    "reports/evidence/e2e/world_swamp.png",
+    "reports/evidence/e2e/world_redcliff.png",
+    "reports/evidence/e2e/world_mountain.png",
+    "reports/evidence/e2e/world_settlement.png",
+    "reports/evidence/e2e/world_lagoon.png",
+    "reports/evidence/e2e/world_valley.png",
+    "reports/evidence/e2e/world_grove.png",
+    "reports/evidence/e2e/islet_lighthouse.png",
+    "reports/evidence/e2e/islet_wreck.png",
+    "reports/evidence/e2e/islet_fertile.png",
+    "reports/evidence/e2e-results.json"
+   ],
+   "notes": "[browser E2E (Chromium headless)] 12 regions captured (9 main + 3 islets) with distinct palettes/decor.",
+   "sources": [
+    "browser E2E (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_26",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/visual/vis26_reduced_motion_puzzle.png",
+    "reports/evidence/visual/vis26_reduced_motion_world.png",
+    "reports/evidence/visual/vis26.json",
+    "reports/evidence/visual-results.json"
+   ],
+   "notes": "[browser visual (Chromium headless)] {\"reduced\":true,\"quality\":\"LOW\",\"target\":\"Topla: Taş\",\"highlight\":true,\"decor\":0,\"pickup\":true,\"rainStreaks\":0,\"warn\":1,\"puzzle\":\"PZ_WATER_VALVES\",\"puzzleChanged\":true,\"cssAnim\":true}",
+   "sources": [
+    "browser visual (Chromium headless)"
+   ]
+  },
+  {
+   "id": "VIS_27",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt",
+    "reports/evidence/atlas-validation.json"
+   ],
+   "notes": "[unit (node --test)] VIS_27 physical PNG validator: alpha, bounds, extruded padding and per-page metadata agree with AtlasLayout",
+   "sources": [
+    "unit (node --test)"
+   ]
+  },
+  {
+   "id": "VIS_28",
+   "priority": "P1",
+   "status": "PASS",
+   "evidence": [
+    "tests/unit",
+    "reports/evidence/unit-tap.txt",
+    "reports/evidence/unit/VIS_28.json"
+   ],
+   "notes": "[unit (node --test)] VIS_28 avatar variants (2 bodies × 6 hair × clips incl. work/swim): hair attached, clothing inside body, bag on back",
+   "sources": [
+    "unit (node --test)"
+   ]
+  }
+ ]
 }

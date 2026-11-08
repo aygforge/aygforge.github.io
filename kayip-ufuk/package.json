@@ -11,7 +11,16 @@
     "serve": "python3 -m http.server 8000 -d dist",
     "test": "node --test tests/unit/*.test.mjs",
     "test:e2e": "node tests/e2e/run-e2e.mjs",
-    "qa": "python3 tools/preflight.py && python3 tools/validate_delivery.py"
+    "qa": "python3 tools/preflight.py && python3 tools/validate_delivery.py",
+    "test:visual": "node tests/e2e/visual.mjs",
+    "test:longsession": "node tests/e2e/longsession.mjs",
+    "test:mobile-ref": "node tests/e2e/mobile-ref.mjs",
+    "test:all": "npm test && npm run test:e2e && npm run test:visual",
+    "validate:atlases": "node tools/validate_atlases.mjs public",
+    "report": "node tools/make_test_report.mjs",
+    "package": "npm run build && python3 tools/validate_delivery.py && python3 tools/package_zip.py"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  }
 }

@@ -89,14 +89,16 @@ const merge = (t) => {
 const runtime = runtimeSrc.map(merge), visual = visualSrc.map(merge);
 const count = (l) => l.reduce((a, t) => ((a[t.status] = (a[t.status] || 0) + 1), a), {});
 const p0open = [...runtime, ...visual].filter((t) => t.priority === 'P0' && t.status !== 'PASS').map((t) => t.id);
+const p1open = [...runtime, ...visual].filter((t) => t.priority === 'P1' && t.status !== 'PASS').map((t) => t.id);
 const chromium = (() => { try { const req = createRequire(import.meta.url); const pkg = path.join(path.dirname(req.resolve('playwright')), 'package.json'); return `Chromium headless (Playwright ${JSON.parse(readFileSync(pkg, 'utf8')).version})`; } catch { return 'Chromium headless (Playwright)'; } })();
 const version = existsSync(path.join(ROOT, 'dist/version.json')) ? rd('dist/version.json') : {};
 const report = {
   sourceVersion: 'v2.0', generatedUtc: new Date().toISOString(), generator: 'tools/make_test_report.mjs',
   environment: { browser: chromium, device: 'Linux cloud container, headless, no GPU, no physical mobile device', build: `dist (${version.version || '?'}, built ${version.builtUtc || '?'})`, node: process.version },
-  summary: { runtime: count(runtime), visual: count(visual), unitTests: unitSummary, p0NotPassed: p0open },
-  releaseReady: p0open.length === 0 && ![...runtime, ...visual].some((t) => t.status === 'FAIL'),
-  releaseReadyNote: 'RELEASE_READY requires every P0 PASS and no FAIL. P1 device/performance tests that are NOT_RUN are listed in reports/STATUS.md and reports/NEXT_STEPS.md.',
+  summary: { runtime: count(runtime), visual: count(visual), unitTests: unitSummary, p0NotPassed: p0open, p1NotPassed: p1open },
+  releaseReady: p0open.length === 0 && p1open.length === 0 && ![...runtime, ...visual].some((t) => t.status === 'FAIL'),
+  releaseReadyBlockers: { p0NotPassed: p0open, p1NotPassedWithoutApprovedAlternative: p1open },
+  releaseReadyNote: 'Contracts/AcceptanceTests.json blocking rule: all P0 PASS; all P1 PASS or a documented, APPROVED alternative (approval is the product owner\'s, not the developer\'s). P1 tests that need a physical phone stay NOT_RUN here.',
   runtime, visual,
 };
 writeFileSync(path.join(ROOT, 'reports/test-results.json'), JSON.stringify(report, null, 1));

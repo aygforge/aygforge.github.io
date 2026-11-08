@@ -69,13 +69,13 @@
   "colliderCx": 7408,
   "colliderBottom": 7616,
   "drawnCx": 7408,
-  "drawnBottom": 7615,
+  "drawnBottom": 7617,
   "spriteSize": [
    224,
    112
   ],
   "bob": [
-   286
+   290
   ]
  }
 }

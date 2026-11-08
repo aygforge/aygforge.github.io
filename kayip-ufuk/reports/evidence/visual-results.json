@@ -1,7 +1,7 @@
 {
- "base": "http://localhost:38247/html/7204511/",
+ "base": "http://localhost:44183/html/7204511/",
  "browser": "Chromium (Playwright, headless)",
- "ranUtc": "2026-11-08T07:17:21.440Z",
+ "ranUtc": "2026-11-08T07:18:10.688Z",
  "consoleErrors": [],
  "results": {
   "VIS_01": {
@@ -11,6 +11,28 @@
     "reports/evidence/visual/vis01.json"
    ],
    "notes": "served from /html/7204511/; atlases 24/24 decoded; 404s=0; missing sprites=0; canvas colors=136"
+  },
+  "VIS_02": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/visual/vis02_terrain_sheet_top_sprite_bottom_rendered.png",
+    "reports/evidence/visual/vis02_ocean_deep.png",
+    "reports/evidence/visual/vis02_ocean_shallow.png",
+    "reports/evidence/visual/vis02_beach_sand.png",
+    "reports/evidence/visual/vis02_meadow.png",
+    "reports/evidence/visual/vis02.json",
+    "reports/evidence/visual/vis02_*.png (20)"
+   ],
+   "notes": "20 terrain ids: rendered chunk texture = TerrainDB tile sprite (min match 100%), walk/swim/raft flags agree; map-absent (verified on temporary in-memory patch): REED_PATCH; closest mean colours OCEAN_SHALLOW,SEA_REEF Δ=13.9; bad=[]"
+  },
+  "VIS_03": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/visual/vis03_edge_masks_shore_row1_river_row2.png",
+    "reports/evidence/visual/vis03_coast_ingame.png",
+    "reports/evidence/visual/vis03.json"
+   ],
+   "notes": "masks in map: shore 12, river 9; all 4×15 transition sprites present; 3×3 renders: black=0 gaps=0 seams=0; sub-pixel cam frames=0/40; water overlay on land=0/15"
   },
   "VIS_08": {
    "status": "PASS",
@@ -37,7 +59,68 @@
     "reports/evidence/visual/vis15_escape_boat.png",
     "reports/evidence/visual/vis15.json"
    ],
-   "notes": "raft 4 dirs: sprite dir = facing, constant hull offset to collider {\"up\":[\"0,30\"],\"down\":[\"0,30\"],\"left\":[\"0,30\"],\"right\":[\"0,30\"]}, collider never on land; boat sprite centre Δ=0px bottom Δ=-1px"
+   "notes": "raft 4 dirs: sprite dir = facing, constant hull offset to collider {\"up\":[\"0,30\"],\"down\":[\"0,30\"],\"left\":[\"0,30\"],\"right\":[\"0,30\"]}, collider never on land; boat sprite centre Δ=0px bottom Δ=1px"
+  },
+  "VIS_16": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/visual/vis16_sea_boat_castoff.png",
+    "reports/evidence/visual/vis16_sea_boat_reef.png",
+    "reports/evidence/visual/vis16_sea_boat_open_sea.png",
+    "reports/evidence/visual/vis16_sea_end.png",
+    "reports/evidence/visual/vis16_radio_rescue_approach.png",
+    "reports/evidence/visual/vis16_radio_boarding.png",
+    "reports/evidence/visual/vis16_radio_departure.png",
+    "reports/evidence/visual/vis16_radio_end.png",
+    "reports/evidence/visual/vis16.json"
+   ],
+   "notes": "sea segments BOAT_CASTOFF,BOAT_REEF,BOAT_OPEN_SEA → radio segments RESCUE_APPROACH,BOARDING,DEPARTURE; endings=ESCAPE_SAIL,ESCAPE_RADIO; shared scene art=0; non-species entities before finale=0; SOS is an automatic packet (no voice/dialogue)"
+  },
+  "VIS_17": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/visual/vis17_cave_before.png",
+    "reports/evidence/visual/vis17_cave_after_reload.png",
+    "reports/evidence/visual/vis17_raft_before.png",
+    "reports/evidence/visual/vis17_raft_after_reload.png",
+    "reports/evidence/visual/vis17_house_before.png",
+    "reports/evidence/visual/vis17_house_after_reload.png",
+    "reports/evidence/visual/vis17_puzzle_before.png",
+    "reports/evidence/visual/vis17_puzzle_after_reload.png",
+    "reports/evidence/visual/vis17.json"
+   ],
+   "notes": "cave:identical; raft:identical; house:identical; puzzle:identical (custom appearance body_b/skin3/hair4/col2/outfit2 kept)"
+  },
+  "VIS_19": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/visual/vis19_zoom_1x.png",
+    "reports/evidence/visual/vis19_zoom_2x.png",
+    "reports/evidence/visual/vis19_zoom_3x.png",
+    "reports/evidence/visual/vis19.json"
+   ],
+   "notes": "1×: smoothing=false non-uniform 1×1 blocks max 0% cams integer=true | 2×: smoothing=false non-uniform 2×2 blocks max 0.239% cams integer=true | 3×: smoothing=false non-uniform 3×3 blocks max 0.239% cams integer=true"
+  },
+  "VIS_26": {
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/visual/vis26_reduced_motion_puzzle.png",
+    "reports/evidence/visual/vis26_reduced_motion_world.png",
+    "reports/evidence/visual/vis26.json"
+   ],
+   "notes": "{\"reduced\":true,\"quality\":\"LOW\",\"target\":\"Topla: Taş\",\"highlight\":true,\"decor\":0,\"pickup\":true,\"rainStreaks\":0,\"warn\":1,\"puzzle\":\"PZ_WATER_VALVES\",\"puzzleChanged\":true,\"cssAnim\":true}"
+  },
+  "SHEETS": {
+   "status": "INFO",
+   "evidence": [
+    "reports/evidence/visual/sheet_items.png",
+    "reports/evidence/visual/sheet_crops.png",
+    "reports/evidence/visual/sheet_animals.png",
+    "reports/evidence/visual/sheet_fish.png",
+    "reports/evidence/visual/sheet_marine.png",
+    "reports/evidence/visual/sheet_avatars.png"
+   ],
+   "notes": "Contact sheets rendered by the game atlas in Chromium (VIS_05/07/10/11/12/13/28 visual evidence)."
   }
  }
 }
