@@ -1,7 +1,7 @@
 {
  "base": "dist over local static HTTP",
  "browser": "Chromium (Playwright, headless)",
- "ranUtc": "2026-11-08T07:20:46.493Z",
+ "ranUtc": "2026-11-08T09:32:55.830Z",
  "consoleErrors": [],
  "results": {
   "AT_BOOT_DATA_01": {
@@ -45,7 +45,7 @@
    "evidence": [
     "reports/evidence/e2e/movement.png"
    ],
-   "notes": "kb=44,44 joy=46,46 staminaIdleSprint=100.0 afterRun=95.4"
+   "notes": "kb=44,44 joy=36,36 staminaIdleSprint=100.0 afterRun=95.2"
   },
   "AT_INPUT_UI_03": {
    "status": "PASS",
@@ -66,7 +66,7 @@
    "evidence": [
     "reports/evidence/e2e/inventory_pause.png"
    ],
-   "notes": "{\"a\":{\"t\":70.89999999999938,\"p\":[8027.387094345302,9072.887301627792],\"h\":84.67703703703492},\"b\":{\"t\":70.89999999999938,\"p\":[8027.387094345302,9072.887301627792],\"h\":84.67703703703492,\"open\":\"UI_INVENTORY\"}}"
+   "notes": "{\"a\":{\"t\":70.73333333333272,\"p\":[8025.516563268678,9072.887301627792],\"h\":84.68197530863989},\"b\":{\"t\":70.73333333333272,\"p\":[8025.516563268678,9072.887301627792],\"h\":84.68197530863989,\"open\":\"UI_INVENTORY\"}}"
   },
   "AT_INPUT_UI_08": {
    "status": "PASS",
@@ -74,7 +74,7 @@
     "reports/evidence/e2e/hud_day.png",
     "reports/evidence/e2e/hud_night.png"
    ],
-   "notes": "bars=80,29.9921,14.9896 lowWarning=true"
+   "notes": "bars=80,29.9911,14.9883 lowWarning=true"
   },
   "AT_INPUT_UI_09": {
    "status": "PASS",
@@ -144,7 +144,7 @@
    "evidence": [
     "reports/evidence/e2e/export_sample_head.json"
    ],
-   "notes": "{\"imp\":{\"ok\":true},\"same\":true,\"badCode\":\"CHECKSUM_MISMATCH\",\"checksum\":\"0cf4211783b4\"}"
+   "notes": "{\"imp\":{\"ok\":true},\"same\":true,\"badCode\":\"CHECKSUM_MISMATCH\",\"checksum\":\"cdabb6bebe9c\"}"
   },
   "AT_PERSIST_08": {
    "status": "PASS",
@@ -172,7 +172,7 @@
    "evidence": [
     "tests/unit/survival_eco.test.mjs#AT_SURVIVAL_ECO_15"
    ],
-   "notes": "browser visibilitychange: frozen=true resumed=true"
+   "notes": "browser visibilitychange: frozen=true (clock 117.16666666666538→117.16666666666538 over 3 s hidden) paused=true resumed=true"
   },
   "AT_INPUT_UI_06": {
    "status": "PASS",
@@ -293,7 +293,7 @@
    "evidence": [
     "reports/evidence/e2e/perf_desktop_headless.json"
    ],
-   "notes": "Requires midrange Android hardware. Headless container reference only: median 59.9 FPS, p95 16.8 ms, heap 43 MiB"
+   "notes": "Requires midrange Android hardware. Headless container reference only: median 59.9 FPS, p95 16.7 ms, heap 43 MiB"
   }
  },
  "finalShot": "reports/evidence/e2e/final_state.png"

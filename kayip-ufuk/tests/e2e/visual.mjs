@@ -234,12 +234,13 @@ await run('VIS_08', async () => {
       let solids = 0, solidsOutside = 0, solidUncovered = 0;
       if (b) {
         // every solid cell must lie inside the footprint and under opaque pixels of the finished sprite
+        const k = R.atlas.native[`build/${def.id}/complete`]?.scale || 1; // imported x1 art is drawn at its native scale
         const dw = done.width, dh = done.height; const dd = done.getContext('2d').getImageData(0, 0, dw, dh).data;
-        const sx0 = (b.tile[0] + b.w / 2) * 32 - dw / 2, sy0 = (b.tile[1] + b.h) * 32 - dh;
+        const sx0 = (b.tile[0] + b.w / 2) * 32 - (dw * k) / 2, sy0 = (b.tile[1] + b.h) * 32 - dh * k;
         for (let y = b.tile[1] - 1; y <= b.tile[1] + b.h; y++) for (let x = b.tile[0] - 1; x <= b.tile[0] + b.w; x++) {
           if (!grid.inb(x, y) || !grid.solid[grid.i(x, y)]) continue;
           const own = x >= b.tile[0] && x < b.tile[0] + b.w && y >= b.tile[1] && y < b.tile[1] + b.h; if (!own) continue; solids++;
-          let cov = 0; for (let py = y * 32; py < y * 32 + 32; py += 4) for (let px = x * 32; px < x * 32 + 32; px += 4) { const lx = Math.floor(px - sx0), ly = Math.floor(py - sy0); if (lx >= 0 && ly >= 0 && lx < dw && ly < dh && dd[(ly * dw + lx) * 4 + 3]) cov++; }
+          let cov = 0; for (let py = y * 32; py < y * 32 + 32; py += 4) for (let px = x * 32; px < x * 32 + 32; px += 4) { const lx = Math.floor((px - sx0) / k), ly = Math.floor((py - sy0) / k); if (lx >= 0 && ly >= 0 && lx < dw && ly < dh && dd[(ly * dw + lx) * 4 + 3]) cov++; }
           if (cov < 8) solidUncovered++;
         }
         void solidsOutside;

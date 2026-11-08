@@ -44,7 +44,9 @@ export class UIMenus {
         <button class="big" data-a="new">Yeni Oyun</button>
         <button data-a="settings">Ayarlar</button>
         <button data-a="fullscreen">${this.ico('ui/fullscreen', 24)} Tam ekran</button>
+        <button data-a="credits">Emeği geçenler</button>
         <p class="small">Sürüm 2.0 · Tek oyunculu · Kayıtlar bu tarayıcıda (IndexedDB) saklanır.</p>
+        <p class="small credit">Görseller: “Farm RPG – Tiny Asset Pack”, <a href="https://emanuelledev.itch.io" target="_blank" rel="noopener">EmanuelleDev</a></p>
       </div>`);
     const bg = this.screenEl.querySelector('.bgart'); if (bg) bg.removeAttribute('style'), bg.setAttribute('style', `${this.atlas.css('scene/intro_shipwreck/backdrop', 1536)}`);
     this.screenEl.onclick = (e) => {
@@ -54,7 +56,20 @@ export class UIMenus {
       if (a === 'new') this.showSlots('new');
       if (a === 'settings') this.openSettings(true);
       if (a === 'fullscreen') this.app.toggleFullscreen();
+      if (a === 'credits') this.openCredits();
     };
+  }
+
+  /** Credits (asset licence requires crediting EmanuelleDev for the Farm RPG Tiny Asset Pack art). */
+  openCredits() {
+    const html = `<div class="credits">
+      <h3>Kayıp Ufuk</h3><p>Oyun tasarımı: GDD v2.0 · Kod, sistemler ve prosedürel varlık üretimi: proje ekibi.</p>
+      <h3>Pixel art</h3>
+      <p><b>“Farm RPG – Tiny Asset Pack (All in One)”</b> — <a href="https://emanuelledev.itch.io" target="_blank" rel="noopener">EmanuelleDev</a> (emanuelledev.itch.io)</p>
+      <p class="small">Arazi ve kıyılar, ağaçlar, kaynak düğümleri, ekinler, eşya ikonları, eşyalar/tezgâhlar, bazı hayvanlar ve oyuncu karakteri bu paketten uyarlanmıştır. Paketteki varlıklar ayrıca dağıtılamaz veya satılamaz.</p>
+      <p class="small">Paketten karşılığı olmayan görseller (ilgi noktaları, evler, tekne, deniz canlılarının çoğu, sahne çizimleri, arayüz simgeleri) projenin kendi prosedürel üreticisiyle çizildi.</p>
+      <h3>Ses</h3><p class="small">63 ses tetikleyicisi tarayıcıda Web Audio ile özgün olarak sentezlenir.</p></div>`;
+    this.openPanel('UI_CREDITS', 'Emeği geçenler', html, () => {});
   }
 
   async showSlots(mode) {
@@ -424,7 +439,9 @@ export class UIMenus {
         <div class="opt"><span>FPS hedefi</span>${[30, 60].map((f) => `<button class="chip ${st.fpsTarget === f ? 'on' : ''}" data-fps="${f}">${f}</button>`).join('')}</div>
         <div class="opt"><span>Titreşim</span><button class="chip ${st.vibration ? 'on' : ''}" data-tog="vibration">${st.vibration ? 'Açık' : 'Kapalı'}</button><span>Hareket azalt</span><button class="chip ${st.reducedMotion ? 'on' : ''}" data-tog="reducedMotion">${st.reducedMotion ? 'Açık' : 'Kapalı'}</button></div>
         <div class="row wrap"><button data-s="fullscreen">${this.ico('ui/fullscreen', 22)} Tam ekran</button>${fromMenu ? '' : `<button data-s="save">${this.ico('ui/save', 22)} Kaydet</button><button data-s="export">Dışa aktar (JSON)</button><button data-s="menu">Ana menü</button>`}</div>
-        <p class="small">Tarayıcı depolaması temizlenebilir; düzenli olarak JSON yedeği al.</p>`;
+        <p class="small">Tarayıcı depolaması temizlenebilir; düzenli olarak JSON yedeği al.</p>
+        <p class="small credit">Görseller: “Farm RPG – Tiny Asset Pack”, <a href="https://emanuelledev.itch.io" target="_blank" rel="noopener">EmanuelleDev</a></p>
+        <div class="row wrap"><button data-s="credits">Emeği geçenler</button></div>`;
     };
     const onClick = (e) => {
       const t = e.target.closest('[data-tog],[data-q],[data-fps],[data-s]'); if (!t) return;
@@ -435,6 +452,7 @@ export class UIMenus {
       if (t.dataset.s === 'save') this.app.persistence.checkpoint('manual').then(() => this.toast('Kaydedildi'));
       if (t.dataset.s === 'export') this.app.exportCurrent();
       if (t.dataset.s === 'menu') { this.closePanel(); this.app.toMenu(); return; }
+      if (t.dataset.s === 'credits') { this.openCredits(); return; }
       this.app.applySettings(); draw();
     };
     this.openPanel('UI_SETTINGS', 'Ayarlar', '', onClick);

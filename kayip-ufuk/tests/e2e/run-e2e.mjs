@@ -277,13 +277,14 @@ await run('AT_PERSIST_11', async () => {
   await p2.ctx.close();
 });
 await run('AT_SURVIVAL_ECO_15_BROWSER', async () => {
-  const a = await G(page, () => ({ t: window.__KU.game.state.clock.gameElapsedSeconds, h: window.__KU.game.state.player.hunger }));
   await page.evaluate(() => { Object.defineProperty(document, 'hidden', { configurable: true, get: () => true }); document.dispatchEvent(new Event('visibilitychange')); });
+  await page.waitForTimeout(150); // baseline after the pause took effect (a frame may still be in flight when the event fires)
+  const a = await G(page, () => ({ t: window.__KU.game.state.clock.gameElapsedSeconds, h: window.__KU.game.state.player.hunger }));
   await page.waitForTimeout(3000);
   const b = await G(page, () => ({ t: window.__KU.game.state.clock.gameElapsedSeconds, h: window.__KU.game.state.player.hunger, paused: window.__KU.game.clock.hiddenPaused }));
   await page.evaluate(() => { Object.defineProperty(document, 'hidden', { configurable: true, get: () => false }); document.dispatchEvent(new Event('visibilitychange')); });
   await page.waitForTimeout(300); const c = await G(page, () => window.__KU.game.state.clock.gameElapsedSeconds);
-  results.AT_SURVIVAL_ECO_15 = { status: a.t === b.t && a.h === b.h && b.paused && c > b.t ? 'PASS' : 'FAIL', evidence: ['tests/unit/survival_eco.test.mjs#AT_SURVIVAL_ECO_15'], notes: `browser visibilitychange: frozen=${a.t === b.t} resumed=${c > b.t}` };
+  results.AT_SURVIVAL_ECO_15 = { status: a.t === b.t && a.h === b.h && b.paused && c > b.t ? 'PASS' : 'FAIL', evidence: ['tests/unit/survival_eco.test.mjs#AT_SURVIVAL_ECO_15'], notes: `browser visibilitychange: frozen=${a.t === b.t} (clock ${a.t}→${b.t} over 3 s hidden) paused=${b.paused} resumed=${c > b.t}` };
 });
 
 // ---------- mobile / layout ----------

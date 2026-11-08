@@ -1,7 +1,7 @@
 {
- "base": "http://localhost:44183/html/7204511/",
+ "base": "http://localhost:38077/html/7204511/",
  "browser": "Chromium (Playwright, headless)",
- "ranUtc": "2026-11-08T07:18:10.688Z",
+ "ranUtc": "2026-11-08T09:33:23.011Z",
  "consoleErrors": [],
  "results": {
   "VIS_01": {
@@ -10,7 +10,7 @@
     "reports/evidence/visual/vis01_nested_path_boot.png",
     "reports/evidence/visual/vis01.json"
    ],
-   "notes": "served from /html/7204511/; atlases 24/24 decoded; 404s=0; missing sprites=0; canvas colors=136"
+   "notes": "served from /html/7204511/; atlases 24/24 decoded; 404s=0; missing sprites=0; canvas colors=67"
   },
   "VIS_02": {
    "status": "PASS",
@@ -23,7 +23,7 @@
     "reports/evidence/visual/vis02.json",
     "reports/evidence/visual/vis02_*.png (20)"
    ],
-   "notes": "20 terrain ids: rendered chunk texture = TerrainDB tile sprite (min match 100%), walk/swim/raft flags agree; map-absent (verified on temporary in-memory patch): REED_PATCH; closest mean colours OCEAN_SHALLOW,SEA_REEF Δ=13.9; bad=[]"
+   "notes": "20 terrain ids: rendered chunk texture = TerrainDB tile sprite (min match 100%), walk/swim/raft flags agree; map-absent (verified on temporary in-memory patch): REED_PATCH; closest mean colours MEADOW,LAGOON_SOIL Δ=11.0; bad=[]"
   },
   "VIS_03": {
    "status": "PASS",
@@ -32,7 +32,7 @@
     "reports/evidence/visual/vis03_coast_ingame.png",
     "reports/evidence/visual/vis03.json"
    ],
-   "notes": "masks in map: shore 12, river 9; all 4×15 transition sprites present; 3×3 renders: black=0 gaps=0 seams=0; sub-pixel cam frames=0/40; water overlay on land=0/15"
+   "notes": "masks in map: shore 12, river 9; all 4×15 transition sprites present; 3×3 renders: black=0 gaps=0 seams=0; sub-pixel cam frames=0/40; water overlay on land=0/0"
   },
   "VIS_08": {
    "status": "PASS",
@@ -59,7 +59,7 @@
     "reports/evidence/visual/vis15_escape_boat.png",
     "reports/evidence/visual/vis15.json"
    ],
-   "notes": "raft 4 dirs: sprite dir = facing, constant hull offset to collider {\"up\":[\"0,30\"],\"down\":[\"0,30\"],\"left\":[\"0,30\"],\"right\":[\"0,30\"]}, collider never on land; boat sprite centre Δ=0px bottom Δ=1px"
+   "notes": "raft 4 dirs: sprite dir = facing, constant hull offset to collider {\"up\":[\"0,30\"],\"down\":[\"0,30\"],\"left\":[\"0,30\"],\"right\":[\"0,30\"]}, collider never on land; boat sprite centre Δ=0px bottom Δ=0px"
   },
   "VIS_16": {
    "status": "PASS",

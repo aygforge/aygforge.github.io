@@ -34,7 +34,9 @@ Manuel test sayısı: **0**. Tüm kanıtlar otomatik (Node `node --test`, Playwr
 - **Keşif (M05):** 38 POI (hepsi ekran görüntülü), 12 bulmaca, 15 günlük, 20 plan, 3 mağara, kalıcı köprü/kestirmeler, sal + 3 adacık.
 - **Finaller (M06):** yelkenli + resif geçişi ve güneş/jeneratör telsizle otomatik SOS; ikisi de oyundan uçtan uca oynatıldı (VIS_16), final sonrası ada yaşamı devam eder.
 - **Kayıt (M07):** IndexedDB v5, 3 slot, checksum, 2 yedek, bozuk kayıttan kurtarma, v1→v5 göç, içe/dışa aktarma, çoklu sekme kilidi; mağara/sal/ev/yarım bulmaca kaydet-yeniden yükle (VIS_17).
-- **Varlıklar (M08):** 24 atlas × 1024² PNG, 3180 kare, üretici kaynağı `tools/assetgen/`; 2 px kenar uzatmalı dolgu; 63 ses Web Audio sentezi (`reports/audio-provenance.json`); emoji yok (VIS_07).
+- **Varlıklar (M08):** 24 atlas × 1024² PNG, 3180 kare; 2 px kenar uzatmalı dolgu; 63 ses Web Audio sentezi (`reports/audio-provenance.json`); emoji yok (VIS_07).
+  - **Farm RPG – Tiny Asset Pack (EmanuelleDev) entegrasyonu:** 3180 karenin **1644**'ü paketten uyarlandı (`tools/farmpack/`, kaynak/hücre listesi `public/assets/farmpack_manifest.json`): 99 eşya/kodeks ikonu, 11 ekin × 4 evre + toprak, 14 kaynak düğümü × 2 durum, 21 bitki/dekor, 80 arazi dokusu + 48 kıyı/nehir/patika geçişi + 24 su dalgası karesi, 31 yapı (+hayalet ve ateş efektleri), 5 tür hayvan (244 kare), oyuncu karakteri (990 kare: 2 gövde × 16 klip × 4 yön, kıyafet maskesi, 6 saç). Kalan 1536 kare (ilgi noktaları, evler, tekneler, deniz canlılarının çoğu, sahne çizimleri, arayüz simgeleri) prosedürel üreticiden (`tools/assetgen/`).
+  - Lisans gereği paket depoda yok (`vendor/` git-ignore); oyunda ana menü + ayarlar + "Emeği geçenler" panelinde ve `CREDITS.md`'de EmanuelleDev kredisi var. Kullanılmayan paket bölümleri ve gerekçeleri: `tools/farmpack/README.md`.
 
 ## Bu turda bulunup düzeltilen hatalar
 1. Düşürülen çantanın karosu yerine işlem nesnesi kaydediliyordu → kayıt `DataCloneError` (`src/main.js dropSelected`).
@@ -53,13 +55,14 @@ Manuel test sayısı: **0**. Tüm kanıtlar otomatik (Node `node --test`, Playwr
 - AT_PERFORMANCE_02 **PASS** (masaüstü Chromium, sözleşmedeki cihaz hedeflerinden biri): 60 dk gerçek süre, 448 ziyaret (9 bölge + 3 adacık + 3 mağara), heap 8,3 → 9,0 MiB (en çok 9,1), ikinci yarı eğimi 0,011 MiB/10 dk, önbellekler sınırlı, 0 hata (`reports/evidence/perf-longsession.json`). Telefonda tekrarlanmalı.
 - Atlas sayfaları sahne bazında boşaltılmıyor (SI-15).
 - `REED_PATCH` haritada yer almadığı için oyunda görünmez (SI-12, kaynak veri).
-- Görseller prosedürel üretilmiş özgün pixel art'tır; sanatsal kalite değerlendirmesi insan gözüyle yapılmalıdır.
+- Görsellerin 1644 karesi üçüncü taraf paketten (lisanslı, kredili), kalanı prosedürel; iki stil arasındaki geçişler (ör. evler, tekneler, deniz canlıları) insan gözüyle değerlendirilmelidir. Paket karakteri prosedürelden küçüktür (yaklaşık 22×36 ekran pikseli).
+- Asset paketini yeniden içe aktarmak için paket yerelde gerekir (`vendor/farmpack` veya `FARMPACK_DIR`); depodaki atlaslar hazır derlenmiş haldedir.
 
 ## Çalıştırma komutları
 ```bash
 cd kayip-ufuk
-npm run assets          # 24 atlas PNG + avatar çapaları (tools/assetgen)
-npm run build           # dist/ (atlas fiziksel doğrulaması başarısızsa derleme durur)
+npm run assets          # 24 atlas PNG (tools/assetgen) + Farm RPG paketi içe aktarımı (tools/farmpack; paket yerelde gerekir)
+npm run build           # dist/ (depodaki atlasları paketler; fiziksel doğrulama başarısızsa durur; --assets ile yeniden üretir)
 npm run dev             # yerel geliştirme sunucusu
 npm run serve           # python3 -m http.server 8000 -d dist
 npm test                # 79 birim/sistem testi

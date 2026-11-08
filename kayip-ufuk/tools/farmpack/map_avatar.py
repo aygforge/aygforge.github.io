@@ -171,7 +171,7 @@ def run(atlas, log):
                 mask = Image.new('RGBA', (32, 48))
                 if cloth:
                     cf = cloth[dir_]
-                    mask.alpha_composite(gray_ramp(cf[min(k, len(cf) - 1)]), (0, 16))
+                    mask.alpha_composite(gray_ramp(cf[min(k, len(cf) - 1)], keep_dark=45), (0, 16))  # outline (lum~37) stays, navy body colour (lum~50) becomes tintable
                 if not mask.getbbox():  # clips without an outfit layer (swim, sleep): invisible 1px placeholder keeps the atlas contract
                     hx, hy = head_point(src[k]); mask.putpixel((int(hx), min(47, int(hy) + 24)), (128, 128, 128, 1))
                 atlas.put(f'avatar/clothing_mask/{clip}/{dir_}/{i}', mask, scale=1, native=2, anchor=(0, 0), source=cloth_path if cloth else 'placeholder')

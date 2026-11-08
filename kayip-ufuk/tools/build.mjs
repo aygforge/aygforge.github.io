@@ -32,6 +32,7 @@ rmSync(DIST, { recursive: true, force: true });
 mkdirSync(DIST, { recursive: true });
 cpSync(path.join(ROOT, 'public'), DIST, { recursive: true });
 cpSync(path.join(ROOT, 'src'), path.join(DIST, 'src'), { recursive: true });
+if (existsSync(path.join(ROOT, 'CREDITS.md'))) cpSync(path.join(ROOT, 'CREDITS.md'), path.join(DIST, 'CREDITS.md')); // asset licence: credit ships with the game
 // runtime data copy (no QA scripts, no PNG previews, no CSV)
 const index = JSON.parse(readFileSync(path.join(SPEC, 'ContentIndex_v2.0.json'), 'utf8'));
 const files = ['ContentIndex_v2.0.json', 'ProductionTruth_v2.0.json', 'Art/AtlasLayout.json', 'Art/AudioManifest.json', 'Art/AvatarRig.json',

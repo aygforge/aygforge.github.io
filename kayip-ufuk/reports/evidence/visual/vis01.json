@@ -1,6 +1,6 @@
 {
- "base": "http://localhost:44183/html/7204511/",
- "served": 112,
+ "base": "http://localhost:38077/html/7204511/",
+ "served": 113,
  "notFound": [],
  "pages": [
   {
@@ -152,9 +152,9 @@
  "stats": {
   "w": 1280,
   "h": 720,
-  "black": 0,
+  "black": 64,
   "transparent": 0,
-  "colors": 136
+  "colors": 67
  },
  "absolute": 0
 }

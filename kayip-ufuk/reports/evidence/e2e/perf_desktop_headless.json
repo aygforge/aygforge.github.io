@@ -1,6 +1,6 @@
 {
  "medianFps": 59.880239520968516,
- "p95ms": 16.79999999998836,
+ "p95ms": 16.70000000001164,
  "heapMiB": 43,
  "device": "headless Chromium (container, no GPU) — NOT a phone"
 }
