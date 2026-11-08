@@ -53,6 +53,18 @@ export class WorldRenderer {
     const isW = (c) => WATER_CODES.has(c);
     const nb = (dx, dy) => g.tileAt(wx + dx, wy + dy);
     const mask = (pred) => (pred(nb(0, -1)) ? 1 : 0) | (pred(nb(1, 0)) ? 2 : 0) | (pred(nb(0, 1)) ? 4 : 0) | (pred(nb(-1, 0)) ? 8 : 0);
+    if (this.atlas.native?.__meta?.terrain === 'pack') {
+      // blob-autotile pieces from the farm asset pack are centred on the water / trail tile and carry the
+      // neighbouring land's edge, so they are drawn on the water/trail side (mask = which neighbours are land)
+      const land = (c) => c !== undefined && c >= 0 && !isW(c);
+      let fam = null, m = 0;
+      if (code === T.OCEAN_SHALLOW || code === T.SEA_REEF || code === T.OCEAN_DEEP) { fam = 'shore'; m = mask(land); }
+      else if (code === T.RIVER_DEEP || code === T.WETLAND_WADE) { fam = 'river_bank'; m = mask(land); }
+      else if (code === T.DIRT_TRAIL) { fam = 'path'; m = mask((c) => land(c) && c !== T.DIRT_TRAIL && c !== T.CLIFF_WALL); }
+      if (fam && m) this.atlas.draw(x, `terrain/transition/${fam}/${m}`, px, py, { ax: 0, ay: 0 });
+      if (code !== T.CLIFF_WALL && !isW(code)) { const mc = mask((c) => c === T.CLIFF_WALL); if (mc) this.atlas.draw(x, `terrain/transition/cliff/${mc}`, px, py, { ax: 0, ay: 0 }); }
+      return;
+    }
     if (!isW(code) && code !== T.CLIFF_WALL) { const m = mask((c) => c === T.OCEAN_SHALLOW || c === T.OCEAN_DEEP || c === T.SEA_REEF); if (m) this.atlas.draw(x, `terrain/transition/shore/${m}`, px, py, { ax: 0, ay: 0 }); }
     if (!isW(code) && code !== T.CLIFF_WALL) { const m = mask((c) => c === T.RIVER_DEEP || c === T.WETLAND_WADE); if (m) this.atlas.draw(x, `terrain/transition/river_bank/${m}`, px, py, { ax: 0, ay: 0 }); }
     if (code !== T.CLIFF_WALL) { const m = mask((c) => c === T.CLIFF_WALL); if (m) this.atlas.draw(x, `terrain/transition/cliff/${m}`, px, py, { ax: 0, ay: 0 }); }
@@ -159,7 +171,7 @@ export class WorldRenderer {
 
   waterOverlay(grid, camX, camY, W, H) {
     if (this.quality === 'LOW') return;
-    const ctx = this.ctx; const f = Math.floor(this.time * 6) % 6;
+    const ctx = this.ctx; const pack = this.atlas.native?.__meta?.terrain === 'pack'; const f = Math.floor(this.time * (pack ? 3 : 6)) % 6;
     const tx0 = Math.floor(camX / TILE), ty0 = Math.floor(camY / TILE);
     for (let ty = ty0; ty <= ty0 + H / TILE + 1; ty++) for (let tx = tx0; tx <= tx0 + W / TILE + 1; tx++) {
       if (!grid.inb(tx, ty)) continue; const code = grid.tiles[grid.i(tx, ty)];
@@ -168,8 +180,9 @@ export class WorldRenderer {
       else if (code === T.OCEAN_DEEP) { if ((tx + ty) % 2) id = 'terrain/water/deep_water/'; }
       else if (code === T.OCEAN_SHALLOW || code === T.SEA_REEF) id = 'terrain/water/shallow_water/';
       else if (code === T.RIVER_DEEP || code === T.WETLAND_WADE) id = 'terrain/water/river/';
+      if (id && pack && fastHash(tx, ty, 41) % 7) id = null; // pack ripple rings: sparse, not on every tile
       if (id) this.atlas.draw(ctx, id + ((f + tx + ty) % 6), tx * TILE - camX, ty * TILE - camY, { ax: 0, ay: 0 });
-      if (!grid.isCave && code === T.OCEAN_SHALLOW && !WATER_CODES.has(grid.tileAt(tx, ty - 1)) && grid.tileAt(tx, ty - 1) !== T.CLIFF_WALL) this.atlas.draw(ctx, 'terrain/water/shore_foam/' + f, tx * TILE - camX, ty * TILE - camY, { ax: 0, ay: 0 });
+      if (!pack && !grid.isCave && code === T.OCEAN_SHALLOW && !WATER_CODES.has(grid.tileAt(tx, ty - 1)) && grid.tileAt(tx, ty - 1) !== T.CLIFF_WALL) this.atlas.draw(ctx, 'terrain/water/shore_foam/' + f, tx * TILE - camX, ty * TILE - camY, { ax: 0, ay: 0 });
     }
   }
 
@@ -213,10 +226,18 @@ export class WorldRenderer {
     if (b.upgrades?.length) { ctx.fillStyle = '#e7c15a'; ctx.fillRect(x - 3, y - 6, 6, 3); }
     const plot = g.state.productionState.cropPlotsById[b.uid];
     if (plot?.cropId) {
-      const st = g.farm.stage(plot); this.atlas.draw(ctx, `crop/${plot.cropId}/${st}`, x, y + 4, { scale: 0.62 });
+      const st = g.farm.stage(plot); const cid = `crop/${plot.cropId}/${st}`;
       const wet = plot.wateredDay === g.state.clock.dayIndex || g.climate.state().plantRainWatered;
-      this.atlas.draw(ctx, `crop/shared/${wet ? 'wet' : 'dry'}`, x, y + 2, { scale: 0.9, alpha: 0.7 });
-      if (plot.fertilized) this.atlas.draw(ctx, 'crop/shared/fertilized', x, y, { scale: 0.6 });
+      if (this.atlas.native['crop/shared/dry']) { // tilled-soil tiles from the asset pack: soil under the plant, wet overlay on dry soil
+        this.atlas.draw(ctx, 'crop/shared/dry', x, y - 2, { ay: 1 });
+        if (wet) this.atlas.draw(ctx, 'crop/shared/wet', x, y - 2, { ay: 1, alpha: 0.85 });
+        if (plot.fertilized) this.atlas.draw(ctx, 'crop/shared/fertilized', x, y, { scale: 0.6 });
+        this.atlas.draw(ctx, cid, x, y - 4, { scale: this.atlas.isNative(cid) ? 1 : 0.62 });
+      } else {
+        this.atlas.draw(ctx, cid, x, y + 4, { scale: 0.62 });
+        this.atlas.draw(ctx, `crop/shared/${wet ? 'wet' : 'dry'}`, x, y + 2, { scale: 0.9, alpha: 0.7 });
+        if (plot.fertilized) this.atlas.draw(ctx, 'crop/shared/fertilized', x, y, { scale: 0.6 });
+      }
     }
     const trap = g.state.productionState.trapsById[b.uid];
     if (trap?.storedCatch?.length) this.atlas.draw(ctx, 'ui/success', x, y - 40, { scale: 0.35 });

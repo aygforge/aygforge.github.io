@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Kayıp Ufuk — mobil yatay HTML5 Canvas2D tropikal ada survival (GDD v2.0 tam sürüm)",
   "scripts": {
-    "assets": "node tools/assetgen/generate.mjs",
+    "assets": "node tools/assetgen/generate.mjs && python3 tools/farmpack/import_farmpack.py",
     "build": "node tools/build.mjs",
     "dev": "node tools/devserver.mjs",
     "serve": "python3 -m http.server 8000 -d dist",
@@ -18,7 +18,8 @@
     "test:all": "npm test && npm run test:e2e && npm run test:visual",
     "validate:atlases": "node tools/validate_atlases.mjs public",
     "report": "node tools/make_test_report.mjs",
-    "package": "npm run build && python3 tools/validate_delivery.py && python3 tools/package_zip.py"
+    "package": "npm run build && python3 tools/validate_delivery.py && python3 tools/package_zip.py",
+    "assets:procedural": "node tools/assetgen/generate.mjs"
   },
   "engines": {
     "node": ">=20"

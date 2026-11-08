@@ -8,8 +8,8 @@ const SKIN_RAMP = ['#f1c8a4', '#d9a886', '#b9876a'];
 const hexRgb = (h) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
 
 export class SpriteAtlas {
-  constructor(index, basePath = '') {
-    this.index = index; this.base = basePath; this.pages = []; this.missing = new Set(); this.avatarCache = new Map();
+  constructor(index, basePath = '', native = {}) {
+    this.index = index; this.base = basePath; this.native = native || {}; this.pages = []; this.missing = new Set(); this.avatarCache = new Map();
   }
   async load(onProgress) {
     let done = 0;
@@ -27,7 +27,8 @@ export class SpriteAtlas {
     const r = this.index.sprites[id];
     if (!r) { if (!this.missing.has(id)) { this.missing.add(id); console.error('[SpriteAtlas] missing sprite', id); } return false; }
     const [pi, sx, sy, w, h] = r;
-    const dw = w * scale, dh = h * scale;
+    const k = scale * (this.native[id]?.scale || 1); // imported x1 art is drawn at its native integer scale
+    const dw = w * k, dh = h * k;
     const dx = Math.round(x - dw * ax), dy = Math.round(y - dh * ay);
     if (alpha !== 1) ctx.globalAlpha = alpha;
     if (flip) { ctx.save(); ctx.translate(dx + dw, dy); ctx.scale(-1, 1); ctx.drawImage(this.pages[pi], sx, sy, w, h, 0, 0, dw, dh); ctx.restore(); }
@@ -38,9 +39,14 @@ export class SpriteAtlas {
   /** CSS background for DOM icons */
   css(id, size) {
     const r = this.index.sprites[id]; if (!r) return '';
-    const [pi, x, y, w] = r; const k = size / w;
+    let [pi, x, y, w, h] = r;
+    const bb = this.native[id]?.bbox; // crop DOM icons to the art's bounding box (x1 imports sit small inside big rects)
+    if (bb) { const side = Math.max(bb[2] - bb[0], bb[3] - bb[1]); x += Math.round((bb[0] + bb[2] - side) / 2); y += Math.round((bb[1] + bb[3] - side) / 2); w = side; h = side; }
+    const k = size / Math.max(w, h);
     return `background-image:url(${this.base}${this.index.pages[pi]});background-size:${1024 * k}px ${1024 * k}px;background-position:${-x * k}px ${-y * k}px;`;
   }
+  /** true when the sprite was imported from the farm asset pack at x1 (renderer then skips legacy down-scaling). */
+  isNative(id) { return (this.native[id]?.scale || 1) > 1; }
   /** Extract sprite to its own canvas (for compositing). */
   extract(id) {
     const r = this.index.sprites[id]; if (!r) return null;

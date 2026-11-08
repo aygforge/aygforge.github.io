@@ -21,8 +21,12 @@ function verifyPackage(dir) {
 if (args.has('--verify-dir')) { verifyPackage(path.resolve(argv[argv.indexOf('--verify-dir') + 1])); process.exit(0); }
 
 
-if (!args.has('--skip-assets') || !existsSync(path.join(ROOT, 'public/assets/atlas_index.json'))) {
+// Atlases are committed artefacts (procedural generator + farm asset pack import). Regenerate only on request:
+// `--assets` runs tools/assetgen/generate.mjs and then tools/farmpack/import_farmpack.py (needs the pack locally,
+// see tools/farmpack/README.md). Without --assets the committed public/assets are packaged as they are.
+if (args.has('--assets') || !existsSync(path.join(ROOT, 'public/assets/atlas_index.json'))) {
   execFileSync(process.execPath, [path.join(ROOT, 'tools/assetgen/generate.mjs')], { stdio: 'inherit' });
+  execFileSync('python3', [path.join(ROOT, 'tools/farmpack/import_farmpack.py')], { stdio: 'inherit' });
 }
 rmSync(DIST, { recursive: true, force: true });
 mkdirSync(DIST, { recursive: true });

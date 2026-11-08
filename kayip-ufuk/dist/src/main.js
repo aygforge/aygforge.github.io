@@ -32,7 +32,9 @@ class App {
       bar.style.width = '35%'; msg.textContent = 'Pixel art atlasları açılıyor…';
       const index = await fetchJson('../assets/atlas_index.json').catch(() => { throw new ContentError('ATLAS_INDEX_MISSING', 'assets/atlas_index.json'); });
       this.anchors = await fetchJson('../assets/avatar_anchors.json');
-      this.atlas = new SpriteAtlas(index, '');
+      // per-sprite native draw scale + content bbox for art imported at x1 (tools/farmpack); optional file
+      const native = await fetchJson('../assets/sprite_native.json').catch(() => ({}));
+      this.atlas = new SpriteAtlas(index, '', native);
       await this.atlas.load((f) => { bar.style.width = `${35 + f * 60}%`; });
       msg.textContent = 'Hazır';
     } catch (e) {
