@@ -1,7 +1,7 @@
 {
- "base": "http://localhost:38077/html/7204511/",
+ "base": "http://localhost:44951/html/7204511/",
  "browser": "Chromium (Playwright, headless)",
- "ranUtc": "2026-11-08T09:33:23.011Z",
+ "ranUtc": "2026-11-08T12:09:21.411Z",
  "consoleErrors": [],
  "results": {
   "VIS_01": {
@@ -32,7 +32,7 @@
     "reports/evidence/visual/vis03_coast_ingame.png",
     "reports/evidence/visual/vis03.json"
    ],
-   "notes": "masks in map: shore 12, river 9; all 4×15 transition sprites present; 3×3 renders: black=0 gaps=0 seams=0; sub-pixel cam frames=0/40; water overlay on land=0/0"
+   "notes": "masks in map: shore 12, river 9; all 4×15 transition sprites present; 3×3 renders: black=0 gaps=0 seams=0; sub-pixel cam frames=0/40; water overlay on land=0/2"
   },
   "VIS_08": {
    "status": "PASS",

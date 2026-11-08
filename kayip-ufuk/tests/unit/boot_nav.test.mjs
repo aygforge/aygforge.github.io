@@ -254,3 +254,27 @@ test('REGRESSION a raft cannot be placed on river-bank "water" where its hull co
   g.world.teleport('OVERWORLD', (site[0] + 1.5) * TILE, (site[1] + 3.5) * TILE);
   assert.ok(g.build.validatePlacement('BUILD_RAFT', site).some((r) => /yüzülebilir/.test(r)));
 });
+
+test('REGRESSION leaving the water: after swimming ashore the player can always walk inland (sea, river, wetland)', async () => {
+  const g = await makeGame(42); const gr = g.world.grid; const W = new Set([T.OCEAN_SHALLOW, T.RIVER_DEEP, T.WETLAND_WADE]);
+  const spots = [];
+  for (let y = 1; y < gr.h - 1; y++) for (let x = 1; x < gr.w - 1; x++) {
+    if (!g.terrain.passable(gr, x, y, 'WALK') || g.terrain.needsSwim(gr, x, y)) continue;
+    for (const [dx, dy] of [[0, 1], [0, -1], [1, 0], [-1, 0]]) if (W.has(gr.tileAt(x + dx, y + dy)) && g.world.canSwimTo(x + dx, y + dy)) { spots.push([x, y, dx, dy]); break; }
+  }
+  const sample = spots.filter((_, i) => i % Math.max(1, Math.floor(spots.length / 120)) === 0);
+  let landed = 0; const stuck = [];
+  for (const [x, y, dx, dy] of sample) {
+    g.world.teleport('OVERWORLD', (x + dx * 2 + 0.5) * TILE, (y + dy * 2 + 0.5) * TILE, 'SWIM');
+    if (!g.pathfinder.boxFree(gr, ...g.state.player.positionPx, 'SWIM', null)) continue;
+    for (let i = 0; i < 120 && g.state.player.mode !== 'WALK'; i++) g.tick(1 / 30, { x: -dx, y: -dy });
+    if (g.state.player.mode !== 'WALK') continue;
+    landed++;
+    assert.ok(g.pathfinder.boxFree(gr, ...g.state.player.positionPx, 'WALK', null), `landed with the foot box over water at ${x},${y}`);
+    const at = [...g.state.player.positionPx];
+    for (let i = 0; i < 30; i++) g.tick(1 / 30, { x: -dx, y: -dy });
+    if (Math.hypot(g.state.player.positionPx[0] - at[0], g.state.player.positionPx[1] - at[1]) < 6) stuck.push([x, y]);
+  }
+  assert.ok(landed >= 80, `landed ${landed}`);
+  assert.deepEqual(stuck, [], 'cannot walk inland after landing');
+});

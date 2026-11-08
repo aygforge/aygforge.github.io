@@ -1,7 +1,7 @@
 {
  "base": "dist over local static HTTP",
  "browser": "Chromium (Playwright, headless)",
- "ranUtc": "2026-11-08T09:32:55.830Z",
+ "ranUtc": "2026-11-08T12:08:55.156Z",
  "consoleErrors": [],
  "results": {
   "AT_BOOT_DATA_01": {
@@ -45,7 +45,7 @@
    "evidence": [
     "reports/evidence/e2e/movement.png"
    ],
-   "notes": "kb=44,44 joy=36,36 staminaIdleSprint=100.0 afterRun=95.2"
+   "notes": "kb=44,44 joy=37,37 staminaIdleSprint=100.0 afterRun=95.2"
   },
   "AT_INPUT_UI_03": {
    "status": "PASS",
@@ -66,7 +66,7 @@
    "evidence": [
     "reports/evidence/e2e/inventory_pause.png"
    ],
-   "notes": "{\"a\":{\"t\":70.73333333333272,\"p\":[8025.516563268678,9072.887301627792],\"h\":84.68197530863989},\"b\":{\"t\":70.73333333333272,\"p\":[8025.516563268678,9072.887301627792],\"h\":84.68197530863989,\"open\":\"UI_INVENTORY\"}}"
+   "notes": "{\"a\":{\"t\":70.76666666666605,\"p\":[8027.387094345302,9072.887301627792],\"h\":84.6809876543189},\"b\":{\"t\":70.76666666666605,\"p\":[8027.387094345302,9072.887301627792],\"h\":84.6809876543189,\"open\":\"UI_INVENTORY\"}}"
   },
   "AT_INPUT_UI_08": {
    "status": "PASS",
@@ -74,7 +74,7 @@
     "reports/evidence/e2e/hud_day.png",
     "reports/evidence/e2e/hud_night.png"
    ],
-   "notes": "bars=80,29.9911,14.9883 lowWarning=true"
+   "notes": "bars=80,29.9921,14.9896 lowWarning=true"
   },
   "AT_INPUT_UI_09": {
    "status": "PASS",
@@ -144,7 +144,7 @@
    "evidence": [
     "reports/evidence/e2e/export_sample_head.json"
    ],
-   "notes": "{\"imp\":{\"ok\":true},\"same\":true,\"badCode\":\"CHECKSUM_MISMATCH\",\"checksum\":\"cdabb6bebe9c\"}"
+   "notes": "{\"imp\":{\"ok\":true},\"same\":true,\"badCode\":\"CHECKSUM_MISMATCH\",\"checksum\":\"49b9e3c93c2e\"}"
   },
   "AT_PERSIST_08": {
    "status": "PASS",
@@ -172,7 +172,7 @@
    "evidence": [
     "tests/unit/survival_eco.test.mjs#AT_SURVIVAL_ECO_15"
    ],
-   "notes": "browser visibilitychange: frozen=true (clock 117.16666666666538→117.16666666666538 over 3 s hidden) paused=true resumed=true"
+   "notes": "browser visibilitychange: frozen=true (clock 116.56666666666541→116.56666666666541 over 3 s hidden) paused=true resumed=true"
   },
   "AT_INPUT_UI_06": {
    "status": "PASS",

@@ -5,7 +5,7 @@ Transition semantics in pack mode (renderer reads sprite_native.__meta.terrain =
   river_bank/<m>  drawn on river/wetland tiles, m = which neighbours are land            -> grass-over-water pieces
   path/<m>        drawn on trail tiles, m = which neighbours are not trail               -> dirt-in-grass pieces
   cliff/<m>       unchanged procedural shading on land next to cliff walls
-Water animation frames become sparse highlight layers so they never hide the baked shoreline edges."""
+Water animation: sparse, slow sun glints in the pack water's highlight colours (never hide the baked shoreline edges)."""
 from PIL import Image
 from core import load, cell
 from autotile import edge_pieces
@@ -132,7 +132,7 @@ def run(atlas, log):
 
     base('OCEAN_SHALLOW', sea_pure, BEACH + ' (pure sea pieces)')
     base('OCEAN_DEEP', [tint(t, (0.82, 0.82, 0.9)) for t in river], WATER + ' (darkened)')
-    base('SEA_REEF', [over(sea_pure[i], stone_in_water) if i % 2 == 0 else tint(sea_pure[i], (0.9, 0.95, 0.95)) for i in range(4)], BEACH + ' + ' + PROPS)
+    base('SEA_REEF', [over(sea_pure[0], stone_in_water)] + [tint(sea_pure[i], (0.9, 0.95, 0.95)) for i in range(1, 4)], BEACH + ' + ' + PROPS + ' (rock on 1 of 4 variants)')
     base('BEACH_SAND', sand, BEACH + ' (colours of the sand ripple tile, calm grain)')
     base('TIDAL_SANDBAR', [tint(s, (0.82, 0.86, 0.9)) for s in sand], BEACH + ' (sand, wet tint)')
     base('MEADOW', grass_light, GRASS)
@@ -168,22 +168,31 @@ def run(atlas, log):
                 tile = over(under, tile)
             put(f'terrain/transition/{fam}/{m}', tile, f'{sheet}#cell{pieces[m][0]} mask {m}'); t += 1
 
-    # --- water animation: sparse highlight frames (never hide baked edges) ---
+    # --- water animation: soft sun glints in the pack water's own highlight colours (sparse, never hide edges) ---
     w = 0
     wg = load(WATERGROUND)
-    sea_frames = [cell(beach, *p) for p in pure_tiles(beach, is_sea, (0, 0, 12, 16), limit=40)]
-    # ripple-ring tiles of the water-in-ground blob, 4 animation phases (rows 0/4/8/12) + 2 offsets
-    blue_frames = [cell(wg, *p) for p in [(16, 0), (16, 4), (16, 8), (16, 12), (14, 1), (14, 5)]]
-    for kind, frames in [('shallow_water', blue_frames), ('deep_water', blue_frames[::-1]), ('river', blue_frames), ('shore_foam', blue_frames[1:] + blue_frames[:1])]:
-        bl = lum(frames[0])
-        hi = [h for h in (highlights(f, bl) for f in frames) if h.getbbox()]
-        if not hi:
-            raise RuntimeError(f'no highlight pixels for {kind}')
+    from collections import Counter
+    def lightest_blue(im, region):
+        cols = Counter()
+        for ty in range(region[1], region[3]):
+            for tx in range(region[0], region[2]):
+                for p in cell(im, tx, ty).getdata():
+                    if p[3] and p[2] >= p[0] and p[2] > 150:
+                        cols[p[:3]] += 1
+        return max(cols, key=lambda c: c[0] * 3 + c[1] * 6 + c[2])
+    glint_sea = lightest_blue(beach, (0, 0, 12, 4))      # lightest foam/highlight colour of the sea sheet
+    glint_blue = lightest_blue(wg, (12, 0, 24, 4))       # lightest highlight of the deep-water sheet
+    # 6-phase glint: appears, stretches into a short shimmer line with a small echo, fades (16x16, stored x2)
+    PHASES = [[(7, 8, 1)], [(6, 8, 3)], [(5, 8, 5), (7, 7, 1)], [(6, 8, 3), (10, 11, 2)], [(7, 8, 1), (9, 11, 3)], [(10, 11, 1)]]
+    def glint(phase, colour, alpha):
+        im = Image.new('RGBA', (16, 16)); px = im.load()
+        for x0, y, n in PHASES[phase]:
+            for x in range(x0, x0 + n):
+                px[x, y] = colour + (alpha,)
+        return im
+    for kind, col, alpha in [('shallow_water', glint_sea, 200), ('deep_water', glint_blue, 150), ('river', glint_blue, 170), ('shore_foam', glint_sea, 200)]:
         for k in range(6):
-            frame = hi[(k * 3 + (1 if kind == 'deep_water' else 0)) % len(hi)]
-            if k % 2:
-                frame = frame.transpose(Image.FLIP_LEFT_RIGHT)
-            put(f'terrain/water/{kind}/{k}', frame, f'{BEACH if "sea" in kind or "shallow" in kind or "foam" in kind else WATERGROUND} highlights'); w += 1
+            put(f'terrain/water/{kind}/{k}', glint(k, col, alpha), f'glint in {BEACH if col == glint_sea else WATERGROUND} highlight colour {col}'); w += 1
     atlas.native['__meta'] = {'terrain': 'pack'}
     log['terrainBase'] = n
     log['terrainTransitions'] = t

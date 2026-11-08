@@ -128,8 +128,11 @@ export class WorldScene {
       speed *= mul * this.g.climate.moveSpeedMul();
     }
     p.sprintLatched = sprinting;
-    const mode = p.mode === 'RAFT' ? 'RAFT' : (p.mode === 'SWIM' || p.mode === 'DIVE') ? 'SWIM' : 'WALK';
+    let mode = p.mode === 'RAFT' ? 'RAFT' : (p.mode === 'SWIM' || p.mode === 'DIVE') ? 'SWIM' : 'WALK';
     const before = [...p.positionPx];
+    // safety net: a walker whose foot box already overlaps water (tide change, old save, shoreline edge case) moves with
+    // swim collision for this step so it can always step free instead of being locked in place
+    if (mode === 'WALK' && !g.isCave && !this.pf.boxFree(g, before[0], before[1], 'WALK', null) && this.pf.boxFree(g, before[0], before[1], 'SWIM', null)) mode = 'SWIM';
     let [nx, ny] = this.pf.move(g, p.positionPx[0], p.positionPx[1], ix * speed * dt, iy * speed * dt, mode);
     // walking into swimmable water switches to SWIM (shallow ocean / deep river / wetland)
     if (mode === 'WALK' && nx === before[0] && ny === before[1]) {
@@ -142,8 +145,9 @@ export class WorldScene {
     if (mode === 'SWIM') {
       const tx = Math.floor(nx / TILE), ty = Math.floor(ny / TILE);
       if (!this.canSwimTo(tx, ty)) { nx = before[0]; ny = before[1]; this.g.bus.emit('ui.toast', { text: 'Akıntı çok güçlü — açık denize sal ile çık', key: 'current' }); }
-      else if (!this.terrain.needsSwim(g, tx, ty) && this.terrain.passable(g, tx, ty, 'WALK')) {
-        p.mode = 'WALK'; p.oxygen = 100; this.g.bus.emit('mode.changed', { mode: 'WALK' });
+      else if (!this.terrain.needsSwim(g, tx, ty) && this.terrain.passable(g, tx, ty, 'WALK') && this.pf.boxFree(g, nx, ny, 'WALK', null)) {
+        // leave the water only when the whole foot box stands on walkable ground (else WALK collision would lock the player)
+        if (p.mode !== 'WALK') { p.mode = 'WALK'; p.oxygen = 100; this.g.bus.emit('mode.changed', { mode: 'WALK' }); }
       }
     }
     p.positionPx[0] = nx; p.positionPx[1] = ny;

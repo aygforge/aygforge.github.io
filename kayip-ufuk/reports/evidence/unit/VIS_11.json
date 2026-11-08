@@ -8,8 +8,8 @@
   "ANIMAL_CRAB": {
    "aiProfile": "FORAGE_FLEE",
    "observedClips": [
-    "move",
     "idle",
+    "move",
     "react"
    ]
   },
@@ -32,8 +32,8 @@
   "ANIMAL_LIZARD": {
    "aiProfile": "FLEE",
    "observedClips": [
-    "idle",
     "move",
+    "idle",
     "react"
    ]
   },
@@ -41,24 +41,24 @@
    "aiProfile": "HOP_AND_FLEE",
    "observedClips": [
     "idle",
-    "react",
-    "move"
+    "move",
+    "react"
    ]
   },
   "ANIMAL_FOREST_BIRD": {
    "aiProfile": "GROUND_FEED_FLY",
    "observedClips": [
-    "move",
     "idle",
+    "move",
     "react"
    ]
   },
   "ANIMAL_SEABIRD": {
    "aiProfile": "FLY_AND_LAND",
    "observedClips": [
-    "idle",
     "move",
-    "react"
+    "react",
+    "idle"
    ]
   },
   "ANIMAL_FRUIT_BAT": {
@@ -79,8 +79,8 @@
   "ANIMAL_BOAR": {
    "aiProfile": "WARN_CHARGE",
    "observedClips": [
-    "idle",
     "move",
+    "idle",
     "warn",
     "attack"
    ]
@@ -89,7 +89,6 @@
    "aiProfile": "WARN_BITE",
    "observedClips": [
     "move",
-    "idle",
     "warn",
     "attack"
    ]
@@ -98,6 +97,7 @@
    "aiProfile": "TERRITORIAL_AMBUSH",
    "observedClips": [
     "move",
+    "idle",
     "warn",
     "attack"
    ]

@@ -353,7 +353,7 @@
    "sameNeighbours": 4,
    "special": null,
    "matchPct": 100,
-   "variant": 0,
+   "variant": 1,
    "walk": false,
    "expectWalk": false,
    "swim": true,

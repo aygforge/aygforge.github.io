@@ -171,7 +171,7 @@ export class WorldRenderer {
 
   waterOverlay(grid, camX, camY, W, H) {
     if (this.quality === 'LOW') return;
-    const ctx = this.ctx; const pack = this.atlas.native?.__meta?.terrain === 'pack'; const f = Math.floor(this.time * (pack ? 3 : 6)) % 6;
+    const ctx = this.ctx; const pack = this.atlas.native?.__meta?.terrain === 'pack'; const f = Math.floor(this.time * 6) % 6; const gt = Math.floor(this.time * 5);
     const tx0 = Math.floor(camX / TILE), ty0 = Math.floor(camY / TILE);
     for (let ty = ty0; ty <= ty0 + H / TILE + 1; ty++) for (let tx = tx0; tx <= tx0 + W / TILE + 1; tx++) {
       if (!grid.inb(tx, ty)) continue; const code = grid.tiles[grid.i(tx, ty)];
@@ -180,7 +180,11 @@ export class WorldRenderer {
       else if (code === T.OCEAN_DEEP) { if ((tx + ty) % 2) id = 'terrain/water/deep_water/'; }
       else if (code === T.OCEAN_SHALLOW || code === T.SEA_REEF) id = 'terrain/water/shallow_water/';
       else if (code === T.RIVER_DEEP || code === T.WETLAND_WADE) id = 'terrain/water/river/';
-      if (id && pack && fastHash(tx, ty, 41) % 7) id = null; // pack ripple rings: sparse, not on every tile
+      if (id && pack) { // pack sun glints: ~1 in 5 tiles, own random phase, 6 frames of glint then a pause of 10
+        if (this.reducedMotion || fastHash(tx, ty, 41) % 5) continue;
+        const ph = (gt + fastHash(tx, ty, 9)) % 16; if (ph >= 6) continue;
+        this.atlas.draw(ctx, id + ph, tx * TILE - camX, ty * TILE - camY, { ax: 0, ay: 0 }); continue;
+      }
       if (id) this.atlas.draw(ctx, id + ((f + tx + ty) % 6), tx * TILE - camX, ty * TILE - camY, { ax: 0, ay: 0 });
       if (!pack && !grid.isCave && code === T.OCEAN_SHALLOW && !WATER_CODES.has(grid.tileAt(tx, ty - 1)) && grid.tileAt(tx, ty - 1) !== T.CLIFF_WALL) this.atlas.draw(ctx, 'terrain/water/shore_foam/' + f, tx * TILE - camX, ty * TILE - camY, { ax: 0, ay: 0 });
     }

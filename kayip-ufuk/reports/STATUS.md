@@ -8,7 +8,7 @@
 | 92 runtime kabul testi | **89** | 0 | 3 (P1, cihaz/performans) | unit + Chromium E2E |
 | 28 görsel kabul testi | **26** | 0 | 2 (P1, cihaz profili) | PNG çözümleyici + Chromium görsel |
 | P0 testleri | **hepsi PASS** | 0 | 0 | |
-| Birim/sistem testleri (`npm test`) | 79 | 0 | – | `reports/evidence/unit-tap.txt` |
+| Birim/sistem testleri (`npm test`) | 80 | 0 | – | `reports/evidence/unit-tap.txt` |
 | Tarayıcı E2E senaryoları (`npm run test:e2e`) | 35 | 0 | 1 (AT_PERFORMANCE_01) | `reports/evidence/e2e-results.json`, 94 ekran görüntüsü |
 | Tarayıcı görsel senaryoları (`npm run test:visual`) | 9 | 0 | – | `reports/evidence/visual-results.json`, 72 dosya |
 | Konsol hatası (E2E + görsel) | 0 | | | |
@@ -49,6 +49,8 @@ Manuel test sayısı: **0**. Tüm kanıtlar otomatik (Node `node --test`, Playwr
 8. Orman kuşu/martı silüetleri ve tahta/demir mızrak ikonları çok benzerdi → yeniden çizildi.
 9. Dekor önbelleği sınırsızdı → 160 parça ile sınırlandı.
 10. Erişilebilirlik: "Hareket azalt" ayarı artık dünyayı da etkiler; tehdit işareti eklendi (VIS_26).
+11. **Denizden/nehirden karaya çıkınca takılma** (oyuncu raporu): yüzme→yürüme geçişi oyuncunun merkezi karaya değince yapılıyordu; ayak kutusu hâlâ suyun üstündeyken yürüme çarpışması içeri doğru her adımı engelliyordu. Artık geçiş ayak kutusunun tamamı karadayken yapılıyor; ayrıca kutusu suya taşmış yürüyen oyuncu o adımı yüzme çarpışmasıyla atabiliyor (`WorldScene.movePlayer`). Harita genelinde 618 kıyı noktasında (deniz/nehir/sulak alan) 0 takılma; düzeltmeden önce 40/40 takılıyordu. Regresyon testi: `boot_nav.test.mjs` "leaving the water".
+12. Su animasyonu: koyu halka işaretleri yerine paketin açık su tonlarında seyrek, yavaş parıltılar; "Hareket azalt" açıkken kapalı.
 
 ## Bilinen eksikler / sınırlamalar
 - Gerçek Android cihaz testi yapılmadı (yukarıdaki 5 P1).

@@ -1,11 +1,11 @@
 {
  "sourceVersion": "v2.0",
- "generatedUtc": "2026-11-08T10:31:54.910Z",
+ "generatedUtc": "2026-11-08T12:09:46.801Z",
  "generator": "tools/make_test_report.mjs",
  "environment": {
   "browser": "Chromium headless (Playwright 1.63.0)",
   "device": "Linux cloud container, headless, no GPU, no physical mobile device",
-  "build": "dist (2.0.0, built 2026-11-08T09:34:32.330Z)",
+  "build": "dist (2.0.0, built 2026-11-08T12:07:30.869Z)",
   "node": "v22.23.4"
  },
  "summary": {
@@ -18,7 +18,7 @@
    "NOT_RUN": 2
   },
   "unitTests": {
-   "pass": 79,
+   "pass": 80,
    "fail": 0
   },
   "p0NotPassed": [],
@@ -163,7 +163,7 @@
     "reports/evidence/e2e/movement.png",
     "reports/evidence/e2e-results.json"
    ],
-   "notes": "[browser E2E (Chromium headless)] kb=44,44 joy=36,36 staminaIdleSprint=100.0 afterRun=95.2",
+   "notes": "[browser E2E (Chromium headless)] kb=44,44 joy=37,37 staminaIdleSprint=100.0 afterRun=95.2",
    "sources": [
     "browser E2E (Chromium headless)"
    ]
@@ -202,7 +202,7 @@
     "reports/evidence/e2e/inventory_pause.png",
     "reports/evidence/e2e-results.json"
    ],
-   "notes": "[browser E2E (Chromium headless)] {\"a\":{\"t\":70.73333333333272,\"p\":[8025.516563268678,9072.887301627792],\"h\":84.68197530863989},\"b\":{\"t\":70.73333333333272,\"p\":[8025.516563268678,9072.887301627792],\"h\":84.68197530863989,\"open\":\"UI_INVENTORY\"}}",
+   "notes": "[browser E2E (Chromium headless)] {\"a\":{\"t\":70.76666666666605,\"p\":[8027.387094345302,9072.887301627792],\"h\":84.6809876543189},\"b\":{\"t\":70.76666666666605,\"p\":[8027.387094345302,9072.887301627792],\"h\":84.6809876543189,\"open\":\"UI_INVENTORY\"}}",
    "sources": [
     "browser E2E (Chromium headless)"
    ]
@@ -244,7 +244,7 @@
     "reports/evidence/e2e/hud_night.png",
     "reports/evidence/e2e-results.json"
    ],
-   "notes": "[browser E2E (Chromium headless)] bars=80,29.9911,14.9883 lowWarning=true",
+   "notes": "[browser E2E (Chromium headless)] bars=80,29.9921,14.9896 lowWarning=true",
    "sources": [
     "browser E2E (Chromium headless)"
    ]
@@ -772,7 +772,7 @@
     "tests/unit/survival_eco.test.mjs#AT_SURVIVAL_ECO_15",
     "reports/evidence/e2e-results.json"
    ],
-   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_15 paused clock (hidden tab): no hunger, production, growth or cooldown | [browser E2E (Chromium headless)] browser visibilitychange: frozen=true (clock 117.16666666666538→117.16666666666538 over 3 s hidden) paused=true resumed=true",
+   "notes": "[unit (node --test)] AT_SURVIVAL_ECO_15 paused clock (hidden tab): no hunger, production, growth or cooldown | [browser E2E (Chromium headless)] browser visibilitychange: frozen=true (clock 116.56666666666541→116.56666666666541 over 3 s hidden) paused=true resumed=true",
    "sources": [
     "unit (node --test)",
     "browser E2E (Chromium headless)"
@@ -1076,7 +1076,7 @@
     "reports/evidence/e2e/export_sample_head.json",
     "reports/evidence/e2e-results.json"
    ],
-   "notes": "[browser E2E (Chromium headless)] {\"imp\":{\"ok\":true},\"same\":true,\"badCode\":\"CHECKSUM_MISMATCH\",\"checksum\":\"cdabb6bebe9c\"}",
+   "notes": "[browser E2E (Chromium headless)] {\"imp\":{\"ok\":true},\"same\":true,\"badCode\":\"CHECKSUM_MISMATCH\",\"checksum\":\"49b9e3c93c2e\"}",
    "sources": [
     "browser E2E (Chromium headless)"
    ]
@@ -1303,7 +1303,7 @@
     "reports/evidence/visual/vis03.json",
     "reports/evidence/visual-results.json"
    ],
-   "notes": "[browser visual (Chromium headless)] masks in map: shore 12, river 9; all 4×15 transition sprites present; 3×3 renders: black=0 gaps=0 seams=0; sub-pixel cam frames=0/40; water overlay on land=0/0",
+   "notes": "[browser visual (Chromium headless)] masks in map: shore 12, river 9; all 4×15 transition sprites present; 3×3 renders: black=0 gaps=0 seams=0; sub-pixel cam frames=0/40; water overlay on land=0/2",
    "sources": [
     "browser visual (Chromium headless)"
    ]

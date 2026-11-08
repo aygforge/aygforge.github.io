@@ -32,6 +32,6 @@
  "transparentPx": 0,
  "seamPx": 0,
  "fractional": 0,
- "overlayCalls": 0,
+ "overlayCalls": 2,
  "overlayOnLand": 0
 }
