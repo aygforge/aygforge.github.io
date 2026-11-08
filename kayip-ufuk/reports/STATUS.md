@@ -1,11 +1,11 @@
 # Kayıp Ufuk — Sürüm Durumu (GDD v2.0 tam sürüm)
 
-**RELEASE_READY: HAYIR (false)**: tüm P0 testleri PASS, FAIL yok. Ancak `Contracts/AcceptanceTests.json` kuralı *"tüm P1'ler PASS veya belgelenmiş ve **onaylanmış** alternatif"* der. Fiziksel telefon gerektiren 6 P1 testi bu bulut konteynerinde çalıştırılamadı (NOT_RUN). Bunlar gerçek Android cihazda koşulmadan ya da ürün sahibi bir alternatifi onaylamadan RELEASE_READY denmez. Ayrıntılı liste aşağıda ve `reports/test-results.json → releaseReadyBlockers` alanında.
+**RELEASE_READY: HAYIR (false)**: tüm P0 testleri PASS, FAIL yok. Ancak `Contracts/AcceptanceTests.json` kuralı *"tüm P1'ler PASS veya belgelenmiş ve **onaylanmış** alternatif"* der. Fiziksel telefon gerektiren 5 P1 testi bu bulut konteynerinde çalıştırılamadı (NOT_RUN). Bunlar gerçek Android cihazda koşulmadan ya da ürün sahibi bir alternatifi onaylamadan RELEASE_READY denmez. Ayrıntılı liste aşağıda ve `reports/test-results.json → releaseReadyBlockers` alanında.
 
 ## Test özeti (gerçek çalıştırmalar)
 | Küme | PASS | FAIL | NOT_RUN | Kaynak |
 |---|---|---|---|---|
-| 92 runtime kabul testi | **88** | 0 | 4 (P1, cihaz/performans) | unit + Chromium E2E |
+| 92 runtime kabul testi | **89** | 0 | 3 (P1, cihaz/performans) | unit + Chromium E2E |
 | 28 görsel kabul testi | **26** | 0 | 2 (P1, cihaz profili) | PNG çözümleyici + Chromium görsel |
 | P0 testleri | **hepsi PASS** | 0 | 0 | |
 | Birim/sistem testleri (`npm test`) | 79 | 0 | – | `reports/evidence/unit-tap.txt` |
@@ -22,7 +22,6 @@ Manuel test sayısı: **0**. Tüm kanıtlar otomatik (Node `node --test`, Playwr
 | ID | Neden | Elde olan referans kanıt |
 |---|---|---|
 | AT_PERFORMANCE_01 | Orta seviye Android gerekir | headless masaüstü: medyan 59,9 FPS, p95 16,8 ms, heap 43 MiB (`e2e/perf_desktop_headless.json`) |
-| AT_PERFORMANCE_02 | Bu raporu yazarken 60 dk'lık oturum sürüyordu; sonuç `perf-longsession.json` ve `test-results.json` içinde güncellenir (headless masaüstü, telefon değil) | 15 durak (9 bölge + 3 adacık + 3 mağara) döngüsü, heap/önbellek örnekleri |
 | AT_PERFORMANCE_03 | Soğuk açılış cihazda ölçülmeli | Pixel 5 yatay emülasyonu + 4× CPU kısma: menü ≈1,2 s, Devam görünür (`mobile-reference.json`) |
 | AT_PERFORMANCE_04 | En dar yatay ekranda 30 dk insan oyun testi gerekir | dokunma hedefi denetimi (AT_INPUT_UI_06) ve ilk barınak/aletler (AT_ITEM_CRAFT_01) PASS |
 | VIS_22 | Çözülmüş asset belleği cihazda profillenmeli | önbellekler sınırlı; 24 sayfa sürekli yüklü (en kötü 96 MiB > 48 MiB hedef, sahne bazlı tahliye yok; SI-15) |
@@ -50,7 +49,8 @@ Manuel test sayısı: **0**. Tüm kanıtlar otomatik (Node `node --test`, Playwr
 10. Erişilebilirlik: "Hareket azalt" ayarı artık dünyayı da etkiler; tehdit işareti eklendi (VIS_26).
 
 ## Bilinen eksikler / sınırlamalar
-- Gerçek Android cihaz testi yapılmadı (yukarıdaki 6 P1).
+- Gerçek Android cihaz testi yapılmadı (yukarıdaki 5 P1).
+- AT_PERFORMANCE_02 **PASS** (masaüstü Chromium, sözleşmedeki cihaz hedeflerinden biri): 60 dk gerçek süre, 448 ziyaret (9 bölge + 3 adacık + 3 mağara), heap 8,3 → 9,0 MiB (en çok 9,1), ikinci yarı eğimi 0,011 MiB/10 dk, önbellekler sınırlı, 0 hata (`reports/evidence/perf-longsession.json`). Telefonda tekrarlanmalı.
 - Atlas sayfaları sahne bazında boşaltılmıyor (SI-15).
 - `REED_PATCH` haritada yer almadığı için oyunda görünmez (SI-12, kaynak veri).
 - Görseller prosedürel üretilmiş özgün pixel art'tır; sanatsal kalite değerlendirmesi insan gözüyle yapılmalıdır.

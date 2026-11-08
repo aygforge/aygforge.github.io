@@ -5,7 +5,7 @@ Kod tarafında P0 eksiği yok. Kalan işlerin tamamı fiziksel cihaz veya ürün
 | Sıra | Test ID | Yapılacak | Dosya / araç |
 |---|---|---|---|
 | 1 | AT_PERFORMANCE_01 | Orta seviye Android Chrome (yatay 16:9) üzerinde `dist/` statik HTTP'den açılır; 10 dk oyun, FPS medyan/p95 kaydı (hedef 60, alt sınır 30 FPS seçeneği) | `chrome://inspect` + Performance; ayarlar → FPS hedefi 30/60, grafik LOW/HIGH |
-| 2 | AT_PERFORMANCE_02 | Konteyner sonucu `reports/evidence/perf-longsession.json` içinde; aynı döngü cihazda 60 dk | `tests/e2e/longsession.mjs` (DURATION_MIN) |
+| 2 | (AT_PERFORMANCE_02 masaüstü Chromium'da PASS) | Aynı 60 dk döngüyü telefonda da koşmak önerilir | `tests/e2e/longsession.mjs` (DURATION_MIN) |
 | 3 | AT_PERFORMANCE_03 | Telefonda soğuk açılış süresi + "Devam" görünürlüğü | referans: `reports/evidence/mobile-reference.json` |
 | 4 | AT_PERFORMANCE_04 | En dar desteklenen yatay ekranda 30 dk insan oyun testi (ilk barınak/aletler) | — |
 | 5 | VIS_22 | Cihazda plaj/orman/mağara geçişlerinde decoded image bellek profili. Gerekirse sahne bazlı atlas tahliyesi: `src/render/SpriteAtlas.js load()` sayfaları tembel yüklemeli, sahneye göre `img.src=''` ile boşaltmalı (SI-15) | `src/render/SpriteAtlas.js` |
