@@ -52,7 +52,7 @@ Manuel test sayısı: **0**. Tüm kanıtlar otomatik (Node `node --test`, Playwr
 
 ## Bilinen eksikler / sınırlamalar
 - Gerçek Android cihaz testi yapılmadı (yukarıdaki 5 P1).
-- AT_PERFORMANCE_02 **PASS** (masaüstü Chromium, sözleşmedeki cihaz hedeflerinden biri): 60 dk gerçek süre, 448 ziyaret (9 bölge + 3 adacık + 3 mağara), heap 8,3 → 9,0 MiB (en çok 9,1), ikinci yarı eğimi 0,011 MiB/10 dk, önbellekler sınırlı, 0 hata (`reports/evidence/perf-longsession.json`). Telefonda tekrarlanmalı.
+- AT_PERFORMANCE_02 **PASS** (masaüstü Chromium, sözleşmedeki cihaz hedeflerinden biri): 60 dk gerçek süre, 448 ziyaret (9 bölge + 3 adacık + 3 mağara), heap 8,4 → 9,1 MiB (en çok 9,35), ikinci yarı eğimi 0,012 MiB/10 dk (asset paketli son sürümle yeniden ölçüldü), önbellekler sınırlı, 0 hata (`reports/evidence/perf-longsession.json`). Telefonda tekrarlanmalı.
 - Atlas sayfaları sahne bazında boşaltılmıyor (SI-15).
 - `REED_PATCH` haritada yer almadığı için oyunda görünmez (SI-12, kaynak veri).
 - Görsellerin 1644 karesi üçüncü taraf paketten (lisanslı, kredili), kalanı prosedürel; iki stil arasındaki geçişler (ör. evler, tekneler, deniz canlıları) insan gözüyle değerlendirilmelidir. Paket karakteri prosedürelden küçüktür (yaklaşık 22×36 ekran pikseli).

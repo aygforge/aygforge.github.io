@@ -1,17 +1,17 @@
 {
  "sourceVersion": "v2.0",
- "generatedUtc": "2026-11-08T09:34:30.918Z",
+ "generatedUtc": "2026-11-08T10:31:54.910Z",
  "generator": "tools/make_test_report.mjs",
  "environment": {
   "browser": "Chromium headless (Playwright 1.63.0)",
   "device": "Linux cloud container, headless, no GPU, no physical mobile device",
-  "build": "dist (2.0.0, built 2026-11-08T09:31:28.689Z)",
+  "build": "dist (2.0.0, built 2026-11-08T09:34:32.330Z)",
   "node": "v22.23.4"
  },
  "summary": {
   "runtime": {
-   "PASS": 88,
-   "NOT_RUN": 4
+   "PASS": 89,
+   "NOT_RUN": 3
   },
   "visual": {
    "PASS": 26,
@@ -24,7 +24,6 @@
   "p0NotPassed": [],
   "p1NotPassed": [
    "AT_PERFORMANCE_01",
-   "AT_PERFORMANCE_02",
    "AT_PERFORMANCE_03",
    "AT_PERFORMANCE_04",
    "VIS_22",
@@ -36,7 +35,6 @@
   "p0NotPassed": [],
   "p1NotPassedWithoutApprovedAlternative": [
    "AT_PERFORMANCE_01",
-   "AT_PERFORMANCE_02",
    "AT_PERFORMANCE_03",
    "AT_PERFORMANCE_04",
    "VIS_22",
@@ -1232,10 +1230,15 @@
   {
    "id": "AT_PERFORMANCE_02",
    "priority": "P1",
-   "status": "NOT_RUN",
-   "evidence": [],
-   "notes": "No automated or manual execution recorded.",
-   "sources": []
+   "status": "PASS",
+   "evidence": [
+    "reports/evidence/perf-longsession.json",
+    "tests/e2e/longsession.mjs"
+   ],
+   "notes": "[long session (Chromium headless, container)] 60 min real time, 448 visits over 12 regions + 3 caves; heap 8.44→9.14 MiB (max 9.35), 2nd-half slope 0.012 MiB/10 min; caches bounded (chunks ≤81, decor ≤115, avatar ≤63); errors 0. Headless desktop Chromium, NOT a phone — repeat on target Android.",
+   "sources": [
+    "long session (Chromium headless, container)"
+   ]
   },
   {
    "id": "AT_PERFORMANCE_03",
