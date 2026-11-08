@@ -275,7 +275,7 @@ const Fishing = {
   },
   queueAutos(ev) { for (const e of ev || []) { if (e.type === 'tick') continue; this.autoQ.push(e); if (this.ctx && this.ctx.onAuto) this.ctx.onAuto(e); } },
   announceAuto(e) {
-    if (e.type === 'catch') { Bus.toast('Otomatik olta: ' + FISH[e.fid].name_tr + ' (' + e.size.cm + ' cm) → ' + (e.where === 'bag' ? 'çanta' : 'tekne deposu') + ' · Bugün ' + S.auto.dailyCaught + '/' + CORE.auto_daily_catch_cap, 'auto', 'auto1'); Sound.sfx('auto'); }
+    if (e.type === 'catch') { Bus.toast('Otomatik olta: ' + FISH[e.fid].name_tr + ' (' + e.size.cm + ' cm) → ' + (e.where === 'bag' ? 'çanta' : 'tekne deposu') + ' · Bugün ' + S.auto.dailyCaught + '/' + Auto.dayCap(), 'auto', 'auto1'); Sound.sfx('auto'); }
     else if (e.type === 'miss') Bus.toast('Otomatik olta denedi ama balık kaçtı (1 yem harcandı).', 'info', 'auto1');
     else if (e.type === 'paused') Bus.toast('Otomatik olta beklemede: ' + Auto.reasonTr[e.reason], 'warn', 'auto1');
   },

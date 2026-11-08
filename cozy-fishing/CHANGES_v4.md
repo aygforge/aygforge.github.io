@@ -9,7 +9,7 @@ başlangıç parası 100, günlük 100 enerji, 3 av yöntemi, sabah/gündüz/ak�
 Bölge Ustalığı, ansiklopedi ve rekorlar, depolar ve 10'lu yığın, hal/ilan/çay bahçesi, akıllı satış, Mali Günlük, ev ve kıyafet, akvaryumlar,
 kasaba projeleri, 24 deniz canlısı, NPC rutinleri, misafir gezileri, filo (8 NPC, 2–4 balık), festivaller ve 8 atış kuralı, rakipler,
 başarımlar, sefer raporları, fotoğraf modu, kayıt dışa/içe aktarma, IndexedDB + localStorage, sesler, mobil yatay ve tam ekran.
-Günlük 6 otomatik av sınırı ve filo sınırları değişmedi. Yeni para birimi, mikro ödeme veya reklam yok.
+Filo sınırları değişmedi. Günlük otomatik av sınırı v4.1'de oyuncu isteğiyle cihaz başına 6 oldu (aşağıya bakın). Yeni para birimi, mikro ödeme veya reklam yok.
 
 ## Yeni özellikler
 - **Akıcı Av** (varsayılan) / **Klasik Av** (Ayarlar): bekleme 1,5–3,5 sn / 2–6 sn. Enerji, yem, tür olasılığı (aynı rastgele sayı sırası), boy dağılımı, tasma penceresi ve fiyatlar iki modda aynı; değişiklik sonraki atıştan geçerli.
@@ -46,3 +46,11 @@ Günlük 6 otomatik av sınırı ve filo sınırları değişmedi. Yeni para bir
 - Gerçek iOS/Android cihazlarda denenmedi (masaüstü Chromium'da mobil boyut + dokunmatik emülasyonu).
 - Mücadele süreleri simüle edilmiş “iyi” ve “özensiz” oyuncu davranışıyla ölçüldü; gerçek insan oyuncu süreleri farklılık gösterebilir.
 - Dürbün etkinliğinde canlı görünme ihtimali %70'tir (terasla ×1,1); testlerin bazı turlarında canlı çıkmadı, bu beklenen davranıştır.
+
+## v4.1 — Otomatik av sınırı cihaz başına
+- Eskiden günlük 6 otomatik av sınırı **tüm cihazlar için ortaktı**; ikinci/üçüncü otomatik olta ve "3 atışta 1 deneme" yükseltmesi bu yüzden sınıra takılıp boşa gidiyordu.
+- Artık sınır **her cihaz için ayrı 6**: 1 cihaz → 6, 2 cihaz → 12, 3 cihaz → 18 otomatik av/gün. Her cihazın kendi günlük sayacı var; tekne değiştirmek veya cihazı söküp takmak sayacı sıfırlamaz, uyuyunca sıfırlanır.
+- Üst bilgi çipi, Tersane otomasyon kutusu ve otomatik av bildirimi toplamı "bugün / (6 × cihaz)" olarak gösterir; sınır dolunca "Bu cihazın günlük 6 otomatik av sınırı doldu" yazar.
+- Fiyatlar, deneme sıklığı, başarı oranları, enerji ve festival kuralları değişmedi. Eski kayıtlar ek göç gerektirmeden açılır (cihaz sayacı yoksa o gün 0'dan başlar).
+- Ölçüm (20 manuel tekne atışı/gün, 3 atışta 1 yükseltmesi, 20 gün ortalaması): 1 cihaz 3,8 · 2 cihaz 8,1 (eskiden 6'da kesiliyordu) · 3 cihaz 11,9 otomatik av/gün.
+- Testler: 11a, v2-8 ve v4-87/88/89 yeni kurala göre güncellendi; v4-92 eklendi (3 cihaz = 18, ertesi gün sıfırlama, sayaçsız eski kayıt). QA 149/149, 8 tekrarda hata yok.

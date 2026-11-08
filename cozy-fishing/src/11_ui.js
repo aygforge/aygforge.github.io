@@ -52,7 +52,7 @@ const UI = {
     h += `<div class="chip" title="Enerji">${img('energy', 1, 'ic')}<div class="ebar"><i style="width:${S.energy}%"></i></div><b>${S.energy}</b><span class="dim">(${casts} atış)</span></div>`;
     h += `<button class="chip" data-a="openPanel" data-p="Inventory">${img('bag', 1, 'ic')}<span>${Inv.used('bag')}/${Inv.cap('bag')}</span></button>`;
     if (ab && (inBoat || ['Town', 'SeaMap', 'PierFishing'].includes(Game.sceneName))) h += `<button class="chip" data-a="openPanel" data-p="Inventory">${img('boat', 1, 'ic')}<span>${Inv.used('boat:' + ab)}/${Inv.cap('boat:' + ab)}</span></button>`;
-    if (Object.keys(S.auto.devices).length) h += `<div class="chip" title="Günlük otomatik av">${img('auto1', 1, 'ic')}<span>${S.auto.dailyCaught}/${CORE.auto_daily_catch_cap}</span></div>`;
+    if (Object.keys(S.auto.devices).length) h += `<div class="chip" title="Günlük otomatik av">${img('auto1', 1, 'ic')}<span>${S.auto.dailyCaught}/${Auto.dayCap()}</span></div>`;
     h += `<span class="sp"></span><button class="hb" data-a="fullscreen" title="Tam ekran">${img('fullscreen', 2)}</button>`;
     this.hudEl.innerHTML = h;
   },
@@ -376,7 +376,7 @@ const UI = {
       }
       if (tab === 'auto') {
         const desc = { auto1: '4 manuel atışta 1 deneme · %55 başarı · güç ≤2', auto_reel: 'Tüm cihazlar: 3 atışta 1 deneme · %65 · güç ≤3', sensing: 'Tüm cihazlar: başarı %75', auto2: 'Yeni bağımsız cihaz (global yükseltmeleri kullanır)', auto3: 'Yeni bağımsız cihaz (global yükseltmeleri kullanır)', deep_sea_gear: 'Yalnızca Açık Deniz Teknesi\'nde güç 4 otomatik av' };
-        html += `<div class="evbox">Şu anki ayar: her <b>${Auto.every()}</b> manuel atışta 1 deneme · başarı <b>%${Math.round(Auto.success() * 100)}</b> · güç sınırı <b>${Auto.maxPower(S.boats.active)}</b> (aktif tekne) · bugün <b>${S.auto.dailyCaught}/${CORE.auto_daily_catch_cap}</b> otomatik av</div>`;
+        html += `<div class="evbox">Şu anki ayar: her <b>${Auto.every()}</b> manuel atışta 1 deneme · başarı <b>%${Math.round(Auto.success() * 100)}</b> · güç sınırı <b>${Auto.maxPower(S.boats.active)}</b> (aktif tekne) · bugün <b>${S.auto.dailyCaught}/${Auto.dayCap()}</b> otomatik av (cihaz başına günde en çok ${Auto.devCap()})</div>`;
         html += AUTOS.map(a => { const s = Auto.state(a.id); return `<div class="row">${img(a.id, 2)}<div class="grow"><b>${esc(a.name)}</b> <span class="dim small">${a.type === 'device' ? 'cihaz' : 'global yükseltme'}</span><div class="dim small">${desc[a.id]}</div></div>${s === 'owned' ? '<span class="ok">Sahip</span>' : s === 'locked' ? `<span class="dim">Önce ${esc(AUTO[a.requires].name)}</span>` : `<button class="btn g sm" data-a="buyAuto" data-id="${a.id}" ${s === 'poor' ? 'disabled' : ''}>Satın Al ${coin(a.price)}</button>`}</div>`; }).join('');
         html += `<div class="btns left"><button class="btn sm" data-a="openPanel" data-p="BoatLoadout">${img('auto1', 1, 'ic')} Tekne Donanımı paneli</button></div>` + this.loadoutHtml();
         html += '<p class="dim small">Otomatik oltalar yalnızca denizde, sen geçerli manuel atış yaptıkça ilerler; çevrimdışı ya da beklerken balık üretmez. Her denemede 1 ücretli yem harcanır. Güç 5 balıklar daima manueldir. Tüm cihazlar toplam günde en çok 6 başarılı av yapabilir.</p>';

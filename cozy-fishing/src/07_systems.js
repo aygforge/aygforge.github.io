@@ -364,6 +364,10 @@ const Auto = {
   every() { return S.auto.globals.auto_reel ? AUTO.auto_reel.attempt_every_casts : AUTO.auto1.attempt_every_casts; },
   success() { return S.auto.globals.sensing ? AUTO.sensing.success : S.auto.globals.auto_reel ? AUTO.auto_reel.success : AUTO.auto1.success; },
   maxPower(bid) { let p = AUTO.auto1.max_power; if (S.auto.globals.auto_reel) p = AUTO.auto_reel.max_power; if (S.auto.globals.deep_sea_gear && bid === AUTO.deep_sea_gear.only_boat) p = AUTO.deep_sea_gear.max_power; return Math.min(p, RC.hard_fish_only_manual_power - 1); },
+  /* v4.1: günlük 6 otomatik av sınırı artık cihaz başına (her cihazın kendi sayacı); toplam sınır = 6 × sahip olunan cihaz */
+  devCap() { return CORE.auto_daily_catch_cap; },
+  devDaily(dev) { const d = S.auto.devices[dev]; if (!d) return 0; if (d.dailyDay !== S.day) { d.dailyDay = S.day; d.daily = 0; } return d.daily || 0; },
+  dayCap() { return this.devCap() * Math.max(1, Object.keys(S.auto.devices).length); },
   pickBait() { const cur = S.gear.bait; if (cur !== 'basic' && S.baitStock[cur] > 0) return cur; for (const b of PAID_BAITS) if (S.baitStock[b] > 0) return b; return null; },
   /* tamamlanan her geçerli manuel atışta çağrılır */
   onCastComplete(spotId, mode) {
@@ -384,20 +388,20 @@ const Auto = {
         const tot = sum(list.map(x => x.w)); list.forEach(x => x.p = x.w / tot);
         const fid = Selector.pick(list); const size = Selector.rollSize(fid);
         const where = Inv.place(Inv.autoOrder(), fid); if (!where) throw new Error('auto place fail');
-        const rec = Catch.record(fid, size, true, { bait, spot: spotId, dev }); S.auto.dailyCaught++; S.auto.total++;
+        const rec = Catch.record(fid, size, true, { bait, spot: spotId, dev }); S.auto.dailyCaught++; S.auto.total++; d.daily = this.devDaily(dev) + 1;
         ev.push({ dev, type: 'catch', fid, size, where, rec });
       } else { S.stats.autoFails++; ev.push({ dev, type: 'miss' }); }
     }
     return ev;
   },
   blocker(spotId, bid, dev) {
-    if (S.auto.dailyCaught >= CORE.auto_daily_catch_cap) return 'cap';
+    if (dev ? this.devDaily(dev) >= this.devCap() : S.auto.dailyCaught >= this.dayCap()) return 'cap';
     const sel = Selector.weights(spotId, { auto: true, maxPower: this.maxPower(bid), bait: 'worm' }); if (!sel.list.length) return 'power';
     if (!(dev ? this.pickBaitFor(dev, spotId, bid) : this.pickBait())) return 'bait';
     const keys = Inv.autoOrder(); if (!keys.some(k => Inv.hasRoomAny(k)) && !sel.list.some(x => Inv.canPlace(keys, x.id))) return 'full';
     return null;
   },
-  reasonTr: { cap: 'Günlük 6 otomatik av sınırı doldu', power: 'Bu noktadaki türler cihaz gücünü aşıyor', bait: 'Ücretli yem yok (temel yem kullanılamaz)', full: 'Depo ve çanta dolu' }
+  reasonTr: { cap: 'Bu cihazın günlük 6 otomatik av sınırı doldu', power: 'Bu noktadaki türler cihaz gücünü aşıyor', bait: 'Ücretli yem yok (temel yem kullanılamaz)', full: 'Depo ve çanta dolu' }
 };
 
 /* ---------- Dünya saati, hava, olaylar ---------- */
