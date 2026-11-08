@@ -128,6 +128,7 @@ export class WorldRenderer {
       list.push({ y: (poi.ay + 1) * TILE, draw: () => this.atlas.draw(ctx, `poi/${poi.id}/${g.exploration.visualState(poi.id)}`, (poi.ax + 0.5) * TILE - camX, (poi.ay + 1.2) * TILE - camY, { alpha: 1 }) });
     }
     for (const a of g.world.animals) list.push({ y: a.y + (a.flying ? 30 : 0), draw: () => this.drawAnimal(a) });
+    if (scene === 'OVERWORLD') for (const f of Object.values(g.state.world.flotsam || {})) { if (f.tile[0] < tx0 || f.tile[0] > tx1 || f.tile[1] < ty0 || f.tile[1] > ty1) continue; list.push({ y: (f.tile[1] + 1) * TILE, draw: () => { this.atlas.draw(ctx, 'icon/SAL_SCRAP', (f.tile[0] + 0.3) * TILE - camX, (f.tile[1] + 1) * TILE - camY, { scale: 0.7 }); this.atlas.draw(ctx, `icon/${Object.keys(f.items)[0]}`, (f.tile[0] + 0.7) * TILE - camX, (f.tile[1] + 0.95) * TILE - camY, { scale: 0.7 }); } }); }
     for (const bag of Object.values(g.state.world.dropBags || {})) if (bag.sceneId === scene) list.push({ y: (bag.tile[1] + 1) * TILE, draw: () => this.atlas.draw(ctx, 'icon/EQ_BAG_SMALL', (bag.tile[0] + 0.5) * TILE - camX, (bag.tile[1] + 1) * TILE - camY) });
     for (const r of Object.values(g.state.vehicles.raftsById)) {
       if (r.sceneId !== scene) continue;

@@ -9,7 +9,7 @@
     "build": "node tools/build.mjs",
     "dev": "node tools/devserver.mjs",
     "serve": "python3 -m http.server 8000 -d dist",
-    "test": "node --test tests/unit/",
+    "test": "node --test tests/unit/*.test.mjs",
     "test:e2e": "node tests/e2e/run-e2e.mjs",
     "qa": "python3 tools/preflight.py && python3 tools/validate_delivery.py"
   },

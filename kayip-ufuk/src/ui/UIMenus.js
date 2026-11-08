@@ -62,7 +62,7 @@ export class UIMenus {
     this.showScreen(`<div class="menu wide"><h2>${mode === 'new' ? 'Yeni oyun için kayıt yuvası' : 'Kayıt yükle'}</h2>
       <div class="slots">${slots.map((s) => `<div class="slot-card ${s.empty ? 'empty' : ''}">
         <h3>${s.saveSlotId.replace('slot-', 'Yuva ')}</h3>
-        ${s.empty ? '<p>Boş</p>' : `<p><b>${esc(s.slotDisplayName)}</b></p><p>Gün ${s.day} · ${s.scene?.startsWith('CAVE') ? 'Mağara' : 'Ada'}</p><p class="small">${new Date(s.lastSavedUtc).toLocaleString('tr-TR')}</p>${s.endings?.length ? `<p class="small">Final: ${s.endings.map((e) => (e === 'ESCAPE_SAIL' ? '⛵' : '📡')).length} tamamlandı</p>` : ''}`}
+        ${s.empty ? '<p>Boş</p>' : `<p><b>${esc(s.slotDisplayName)}</b></p><p>Gün ${s.day} · ${s.scene?.startsWith('CAVE') ? 'Mağara' : 'Ada'}</p><p class="small">${new Date(s.lastSavedUtc).toLocaleString('tr-TR')}</p>${s.endings?.length ? `<p class="small">${s.endings.map((e) => this.ico(e === 'ESCAPE_SAIL' ? 'icon/CMP_SAIL' : 'icon/CMP_ANTENNA', 20)).join('')} ${s.endings.length}/2 final</p>` : ''}`}
         ${mode === 'new' ? `<button data-a="new" data-s="${s.saveSlotId}">${s.empty ? 'Burada başla' : 'Üzerine yaz'}</button>` : s.empty ? '' : `<button data-a="load" data-s="${s.saveSlotId}">Yükle</button>`}
         ${!s.empty ? `<button class="ghost" data-a="export" data-s="${s.saveSlotId}">Dışa aktar</button><button class="ghost danger" data-a="del" data-s="${s.saveSlotId}">Sil</button>` : `<button class="ghost" data-a="import" data-s="${s.saveSlotId}">İçe aktar</button>`}
       </div>`).join('')}</div>
@@ -230,6 +230,7 @@ export class UIMenus {
           <div class="row wrap">${usable ? `<button data-x="use">${d.equipmentSlot ? (Object.values(p.equipment).includes(sel) ? 'Çıkar' : 'Kuşan') : d.restore ? (d.restore.hunger ? 'Ye' : 'İç') : 'Kullan'}</button>` : ''}
           ${a.durability != null && a.durability < a.maxDurability ? '<button data-x="repair">Onar</button>' : ''}
           <button data-x="split" ${a.quantity > 1 ? '' : 'disabled'}>Böl</button>
+          ${a.itemId === 'SAL_ROPE' ? '<button data-x="dismantle">Sök (2 lif)</button>' : ''}
           ${d.category !== 'special' ? '<button class="ghost" data-x="drop">Bırak</button>' : ''}
           <span class="small">Hızlı slot:</span>${[0, 1, 2, 3, 4, 5].map((i) => `<button class="chip" data-qs="${i}">${i + 1}</button>`).join('')}</div>`;
       }
@@ -246,6 +247,7 @@ export class UIMenus {
       if (x === 'split') { const loc = inv.locate(this.selected); g.store.transaction(null, (tx) => inv.splitStack(tx, loc[0], loc[1])); }
       if (x === 'drop') this.app.dropSelected(this.selected);
       if (x === 'repair') this.app.repairTool(this.selected);
+      if (x === 'dismantle') g.dismantle(this.selected);
       if (!inv.item(this.selected)) this.selected = null;
       draw();
     }, { wide: true });
@@ -383,8 +385,8 @@ export class UIMenus {
         const k = g.knowledge; const nav = g.escape.navSources();
         const has = (id) => s.story.specialItemsGranted.includes(id) ? '✓' : '·';
         const boat = g.escape.boat(); const st = g.escape.station();
-        body = `<div class="esc"><h3>⛵ Kendi yelkenlinle</h3><p>${nav >= 2 ? '✓' : '·'} Seyir kayıtları: ${nav}/2 (Balıkçı kulübesi, Gözlem tepesi, Kaptan kamarası — herhangi ikisi)</p><p>${boat ? (boat.stage === 'complete' ? '✓ Yelkenli tamamlandı' : `· Yelkenli: aşama ${boat.stageIndex}/${boat.stages.length}`) : '· Yelkenli projesi başlamadı (Denizcilik masası + iki seyir kaydı)'}</p><p>· Uygun hava: açık veya hafif yağmur</p>${s.story.endingAchievements.includes('ESCAPE_SAIL') ? '<p class="done">FİNAL TAMAMLANDI</p>' : ''}
-          <h3>📡 Acil yardım sinyali</h3><p>${has('SPC_TX_MODULE')} Verici modülü (Radyo Atölyesi)</p><p>${has('SPC_RADIO_NOTE')} Frekans notu (Dağ Röle Sığınağı)</p><p>${has('SPC_SOLAR_CORE')} Güneş çekirdeği (Fener İstasyonu) <b>veya</b> ${has('SPC_GEN_CORE')} Jeneratör çekirdeği (Araştırma Meydanı)</p><p>${st ? (st.stage === 'complete' ? '✓ Haberleşme istasyonu kuruldu' : '· İstasyon inşa ediliyor') : '· Fener yanında haberleşme istasyonu'}</p><p>${s.world.worldFlags.SIGNAL_TUNED ? '✓' : '·'} Frekans ayarı</p><p>${s.world.sos?.sent ? `✓ SOS gönderildi (gün ${s.world.sos.signalDay}) — kurtarma gün ${s.world.sos.rescueDueDay}` : '· Otomatik SOS'}</p>${s.story.endingAchievements.includes('ESCAPE_RADIO') ? '<p class="done">FİNAL TAMAMLANDI</p>' : ''}
+        body = `<div class="esc"><h3>${this.ico('icon/CMP_SAIL', 24)} Kendi yelkenlinle</h3><p>${nav >= 2 ? '✓' : '·'} Seyir kayıtları: ${nav}/2 (Balıkçı kulübesi, Gözlem tepesi, Kaptan kamarası — herhangi ikisi)</p><p>${boat ? (boat.stage === 'complete' ? '✓ Yelkenli tamamlandı' : `· Yelkenli: aşama ${boat.stageIndex}/${boat.stages.length}`) : '· Yelkenli projesi başlamadı (Denizcilik masası + iki seyir kaydı)'}</p><p>· Uygun hava: açık veya hafif yağmur</p>${s.story.endingAchievements.includes('ESCAPE_SAIL') ? '<p class="done">FİNAL TAMAMLANDI</p>' : ''}
+          <h3>${this.ico('icon/CMP_ANTENNA', 24)} Acil yardım sinyali</h3><p>${has('SPC_TX_MODULE')} Verici modülü (Radyo Atölyesi)</p><p>${has('SPC_RADIO_NOTE')} Frekans notu (Dağ Röle Sığınağı)</p><p>${has('SPC_SOLAR_CORE')} Güneş çekirdeği (Fener İstasyonu) <b>veya</b> ${has('SPC_GEN_CORE')} Jeneratör çekirdeği (Araştırma Meydanı)</p><p>${st ? (st.stage === 'complete' ? '✓ Haberleşme istasyonu kuruldu' : '· İstasyon inşa ediliyor') : '· Fener yanında haberleşme istasyonu'}</p><p>${s.world.worldFlags.SIGNAL_TUNED ? '✓' : '·'} Frekans ayarı</p><p>${s.world.sos?.sent ? `✓ SOS gönderildi (gün ${s.world.sos.signalDay}) — kurtarma gün ${s.world.sos.rescueDueDay}` : '· Otomatik SOS'}</p>${s.story.endingAchievements.includes('ESCAPE_RADIO') ? '<p class="done">FİNAL TAMAMLANDI</p>' : ''}
           <p class="small">Adada başka insan yok; telsizde kimseyle konuşulmaz — yalnızca otomatik sinyal ve onay.</p><p class="small">${k.storyFlag('TWO_NAV_SOURCES') ? 'Tekne rotası tanındı. ' : ''}${k.storyFlag('RADIO_STATION_DISCOVERED') ? 'Telsiz rotası tanındı.' : ''}</p></div>`;
       } else {
         const st = g.escape.endingStats(s);

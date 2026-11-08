@@ -87,6 +87,10 @@ export function generateNodeDefs(content, terrain, worldSeed) {
     const isl = r.toRegion === 'REG_LIGHTHOUSE' ? 'LIGHTHOUSE' : r.toRegion === 'REG_WRECK' ? 'WRECK' : 'FERTILE';
     const [x, y] = terrain.localToAtlas(isl, ...r.arrivalDock.shoreFootTileLocal); block(x, y, 2);
   }
+  for (const pad of content.db.BuildPlacementDB.suggestedBuildPads) {
+    const [px, py] = terrain.localToAtlas(pad.islandId, ...pad.topLeftTile);
+    for (let y = py - 1; y <= py + pad.footprintTiles[1]; y++) for (let x = px - 1; x <= px + pad.footprintTiles[0]; x++) if (g.inb(x, y)) used[g.i(x, y)] = 1;
+  }
   // 4) seeded secondary nodes per region (LootSpawnDB regionSpawnProfiles)
   const candidates = new Map();
   for (let y = 0; y < g.h; y++) for (let x = 0; x < g.w; x++) {

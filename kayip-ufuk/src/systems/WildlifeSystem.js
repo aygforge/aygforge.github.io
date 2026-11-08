@@ -10,6 +10,7 @@ const WEAPONS = { TOOL_WOOD_SPEAR: { dmg: 15, range: 1.6 }, TOOL_IRON_SPEAR: { d
   TOOL_BOW: { dmg: 25, range: 6, ammo: 'CMP_ARROW' }, TOOL_HUNTER_BOW: { dmg: 40, range: 7, ammo: 'CMP_ARROW' }, TOOL_SLING: { dmg: 12, range: 5, ammo: 'CMP_SLING_STONE' },
   TOOL_STONE_AXE: { dmg: 10, range: 1.3 }, TOOL_COPPER_AXE: { dmg: 14, range: 1.3 }, TOOL_IRON_AXE: { dmg: 18, range: 1.3 } };
 let seq = 0;
+export const BYPRODUCTS = { ANIMAL_BOAR: { MAT_FAT: [1, 2, 1], MAT_TENDON: [1, 2, 1] }, ANIMAL_RABBIT: { MAT_TENDON: [1, 1, 0.5], MAT_FAT: [1, 1, 0.3] }, ANIMAL_FOREST_BIRD: { MAT_FAT: [1, 1, 0.2] } };
 
 export class WildlifeSystem {
   constructor(game) { this.g = game; this.spawnT = 0; this.fishT = 0; }
@@ -162,7 +163,7 @@ export class WildlifeSystem {
         if (noticed || a.hurt > 0) { fleeFrom(); if (a.state !== 'flee') { a.state = 'flee'; a.react = 0.5; } } else { a.state = 'idle'; wander(prof === 'HOP_AND_FLEE' ? 0.5 : 0.3); }
         break;
       case 'HIDE_IN_SHELL':
-        if (dp < 2.5) { a.state = 'hide'; anim = 'react'; } else { a.state = 'idle'; wander(0.25); }
+        if (dp < (sp.sightTiles || 2) + 1.6) { a.state = 'hide'; anim = 'react'; } else { a.state = 'idle'; wander(0.25); }
         break;
       case 'TREE_HOP_CURIOUS':
         if (a.hurt > 0) fleeFrom();
@@ -267,6 +268,8 @@ export class WildlifeSystem {
         const q = min + Math.floor(Math.random() * (max - min + 1));
         if (q > 0) this.g.giveOrDrop(tx, itemId, q);
       }
+      // carcass processing byproducts (MAT_FAT / MAT_TENDON have no DB source — spec-issues SI-01)
+      const by = BYPRODUCTS[a.speciesId]; if (by) for (const [id, [mn, mx, ch]] of Object.entries(by)) if (Math.random() < ch) this.g.giveOrDrop(tx, id, mn + Math.floor(Math.random() * (mx - mn + 1)));
       this.g.skills.award(tx, 'SKILL_HUNTING', 'successfulHunt', killId);
       const rp = this.s.world.regionPopulation;
       if (!rp[a.region]) tx.set(rp, a.region, {});
@@ -311,7 +314,7 @@ export class WildlifeSystem {
       const choice = itemId || [...food.favorite, ...food.fitting].find((id) => this.g.inventory.hasItem(id));
       if (!choice) { this.g.bus.emit('ui.error', { text: f.kind === 'parrot' ? 'Papağan meyve ister (yabani meyve/muz)' : 'Maymun muz veya meyve ister' }); return { ok: false }; }
       if (f.daily.feed >= cfg.dailyTrustLimits.feedActions) { this.g.bus.emit('ui.toast', { text: `${f.name} bugün tok` }); return { ok: false, code: 'DAILY_LIMIT' }; }
-      return this.g.store.transaction(`PETFEED:${petId}:${day}:${f.daily.feed}`, (tx) => {
+      return this.g.store.transaction(`PETFEED:${petId}:${(f.feedCount = (f.feedCount || 0) + 1)}`, (tx) => {
         this.g.inventory.remove(tx, [PLAYER_INV], choice, 1);
         const gain = food.favorite.includes(choice) ? cfg.trustEvents.feedFavorite : cfg.trustEvents.feedFitting;
         tx.set(f, 'trust', clamp(f.trust + gain, 0, 100));

@@ -158,7 +158,7 @@ class App {
       const hit = targets.find((t) => Math.abs(t.tile[0] - tile[0]) <= 1 && Math.abs(t.tile[1] + (t.kind === 'poi' ? 0 : 0) - tile[1]) <= 1);
       if (hit) {
         if (hit.d <= 1.9 || (hit.kind === 'poi' && hit.d <= 2.6)) { g.interact(hit); return; }
-        if (this.settings.autoWalk !== false) g.world.approach(hit.tile, () => { const again = g.world.interactables().find((t) => t.kind === hit.kind && t.id === hit.id); if (again) g.interact(again); });
+        if (this.settings.autoWalk !== false) g.world.approach(hit.tile, () => { const again = g.world.interactables().find((t) => t.kind === hit.kind && t.id === hit.id); if (again) g.interact(again); }, hit.kind === 'poi' ? 2 : 0);
       } else g.world.approach(tile);
     });
   }

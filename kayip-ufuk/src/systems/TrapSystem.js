@@ -1,6 +1,7 @@
 // 3 trap kinds, ≤6 active, one persisted roll per trap per day (2 if upgraded), bait rules, claim once.
 import { RngStreams } from '../core/RngStreams.js';
 import { PLAYER_INV } from './InventorySystem.js';
+import { BYPRODUCTS } from './WildlifeSystem.js';
 
 export class TrapSystem {
   constructor(game) { this.g = game; }
@@ -68,6 +69,7 @@ export class TrapSystem {
         } else {
           const sp = this.c.species.get(cth.id);
           for (const [itemId, { min, max }] of Object.entries(sp.loot)) { const q = rng.int(min, max); if (q > 0) this.g.giveOrDrop(tx, itemId, q); }
+          const by = BYPRODUCTS[cth.id]; if (by) for (const [id, [mn, mx, ch]] of Object.entries(by)) if (rng.next() < ch) this.g.giveOrDrop(tx, id, rng.int(mn, mx));
         }
       }
       tx.set(t, 'storedCatch', []);
