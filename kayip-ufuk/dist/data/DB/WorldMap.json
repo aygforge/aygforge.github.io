@@ -1,0 +1,943 @@
+{
+  "meta": {
+    "version": "v1.1",
+    "title": "Kayıp Ufuk Takımadaları — fiziki yerleşim taslağı",
+    "status": "COORDINATE_LAYOUT_CONCEPT; gameplay/navmesh testing pending",
+    "tilePx": 32,
+    "coordinateSystem": "0-based x east, y south. Local MAIN tile coords 0..255. Satellite local coords 0..63; atlas tile coordinates from island origin.",
+    "worldSeedAffects": [
+      "secondary nodes",
+      "optional chest contents",
+      "noncritical spawn anchors",
+      "minor nature events"
+    ],
+    "worldSeedDoesNotAffect": [
+      "coastlines",
+      "main road topology",
+      "14 major POIs",
+      "24 named side POIs",
+      "critical rewards",
+      "navigability of core paths",
+      "starting guarantee"
+    ],
+    "fixedStoryIndependentOfDayCounter": true
+  },
+  "atlas": {
+    "sizeTiles": [
+      512,
+      384
+    ],
+    "tilePx": 32,
+    "pixelSize": [
+      16384,
+      12288
+    ],
+    "chunkTiles": [
+      16,
+      16
+    ],
+    "mainIslandReservedTiles": 65536,
+    "render": "camera-view chunks only; atlas mainly ocean, not full per-frame updates"
+  },
+  "islands": {
+    "MAIN": {
+      "regionGroup": "main",
+      "tileSize": [
+        256,
+        256
+      ],
+      "atlasOrigin": [
+        128,
+        64
+      ],
+      "navAccess": "start"
+    },
+    "LIGHTHOUSE": {
+      "regionGroup": "satellite",
+      "tileSize": [
+        64,
+        64
+      ],
+      "atlasOrigin": [
+        424,
+        54
+      ],
+      "navAccess": "BUILD_RAFT"
+    },
+    "WRECK": {
+      "regionGroup": "satellite",
+      "tileSize": [
+        64,
+        64
+      ],
+      "atlasOrigin": [
+        25,
+        188
+      ],
+      "navAccess": "BUILD_RAFT"
+    },
+    "FERTILE": {
+      "regionGroup": "satellite",
+      "tileSize": [
+        64,
+        64
+      ],
+      "atlasOrigin": [
+        415,
+        286
+      ],
+      "navAccess": "BUILD_RAFT"
+    }
+  },
+  "coastlines": {
+    "MAIN": [
+      [
+        126,
+        18
+      ],
+      [
+        151,
+        14
+      ],
+      [
+        177,
+        22
+      ],
+      [
+        197,
+        34
+      ],
+      [
+        216,
+        50
+      ],
+      [
+        231,
+        77
+      ],
+      [
+        236,
+        101
+      ],
+      [
+        232,
+        129
+      ],
+      [
+        242,
+        152
+      ],
+      [
+        234,
+        184
+      ],
+      [
+        218,
+        206
+      ],
+      [
+        195,
+        225
+      ],
+      [
+        167,
+        236
+      ],
+      [
+        133,
+        244
+      ],
+      [
+        105,
+        237
+      ],
+      [
+        80,
+        228
+      ],
+      [
+        56,
+        210
+      ],
+      [
+        39,
+        186
+      ],
+      [
+        29,
+        159
+      ],
+      [
+        26,
+        131
+      ],
+      [
+        32,
+        102
+      ],
+      [
+        42,
+        73
+      ],
+      [
+        62,
+        50
+      ],
+      [
+        88,
+        35
+      ],
+      [
+        109,
+        23
+      ]
+    ],
+    "LIGHTHOUSE": [
+      [
+        14,
+        12
+      ],
+      [
+        28,
+        6
+      ],
+      [
+        44,
+        11
+      ],
+      [
+        54,
+        25
+      ],
+      [
+        50,
+        45
+      ],
+      [
+        37,
+        55
+      ],
+      [
+        18,
+        48
+      ],
+      [
+        10,
+        30
+      ]
+    ],
+    "WRECK": [
+      [
+        14,
+        14
+      ],
+      [
+        29,
+        7
+      ],
+      [
+        47,
+        13
+      ],
+      [
+        55,
+        28
+      ],
+      [
+        47,
+        47
+      ],
+      [
+        29,
+        55
+      ],
+      [
+        12,
+        44
+      ],
+      [
+        7,
+        27
+      ]
+    ],
+    "FERTILE": [
+      [
+        16,
+        9
+      ],
+      [
+        35,
+        6
+      ],
+      [
+        50,
+        20
+      ],
+      [
+        55,
+        39
+      ],
+      [
+        43,
+        55
+      ],
+      [
+        23,
+        56
+      ],
+      [
+        8,
+        39
+      ],
+      [
+        7,
+        20
+      ]
+    ]
+  },
+  "mainBiomeGeneration": {
+    "method": "FIXED_SEED_POINT_NEAREST_WITH_SMALL_FIXED_NOISE_ONLY_FOR_EDGES",
+    "sites": {
+      "REG_BEACH": [
+        122,
+        212
+      ],
+      "REG_GROVE": [
+        160,
+        180
+      ],
+      "REG_VALLEY": [
+        108,
+        153
+      ],
+      "REG_FOREST": [
+        137,
+        111
+      ],
+      "REG_SWAMP": [
+        55,
+        157
+      ],
+      "REG_RED_CLIFF": [
+        76,
+        84
+      ],
+      "REG_MOUNTAIN": [
+        151,
+        60
+      ],
+      "REG_SETTLEMENT": [
+        205,
+        117
+      ],
+      "REG_LAGOON": [
+        208,
+        190
+      ]
+    },
+    "mustKeepPointsInAuthoredBiome": "POI and path anchors assigned region deliberately override auto terrain",
+    "waterMask": "outside fixed coastline; coast beach band 3-5 tiles; wetland marsh patches",
+    "terrainOverridePriority": [
+      "criticalPOI",
+      "road",
+      "river",
+      "blockedCliff",
+      "biomeFill",
+      "decoration"
+    ]
+  },
+  "hydrology": {
+    "riverCenterlineLocal": [
+      [
+        143,
+        77
+      ],
+      [
+        135,
+        96
+      ],
+      [
+        123,
+        117
+      ],
+      [
+        110,
+        134
+      ],
+      [
+        112,
+        153
+      ],
+      [
+        94,
+        175
+      ],
+      [
+        71,
+        200
+      ]
+    ],
+    "riverWidthTiles": 3,
+    "waterFlow": "MOUNTAIN_TO_SW_COAST",
+    "fords": [
+      {
+        "tileMainLocal": [
+          114,
+          145
+        ],
+        "safeEarly": true
+      }
+    ],
+    "waterStationRelatedPoi": "POI_WATER_STATION",
+    "bridges": [
+      {
+        "poiId": "POI_STONE_BRIDGE",
+        "shortcutOnly": true
+      }
+    ]
+  },
+  "roads": [
+    {
+      "id": "ROAD_BEACH_GROVE",
+      "islandId": "MAIN",
+      "waypointsLocal": [
+        [
+          123,
+          215
+        ],
+        [
+          139,
+          204
+        ],
+        [
+          153,
+          192
+        ],
+        [
+          165,
+          181
+        ]
+      ],
+      "access": "FREE"
+    },
+    {
+      "id": "ROAD_BEACH_VALLEY",
+      "islandId": "MAIN",
+      "waypointsLocal": [
+        [
+          123,
+          215
+        ],
+        [
+          120,
+          195
+        ],
+        [
+          116,
+          175
+        ],
+        [
+          106,
+          149
+        ]
+      ],
+      "access": "FREE"
+    },
+    {
+      "id": "ROAD_GROVE_LAGOON",
+      "islandId": "MAIN",
+      "waypointsLocal": [
+        [
+          165,
+          181
+        ],
+        [
+          181,
+          186
+        ],
+        [
+          202,
+          190
+        ],
+        [
+          214,
+          196
+        ]
+      ],
+      "access": "FREE"
+    },
+    {
+      "id": "ROAD_GROVE_FOREST",
+      "islandId": "MAIN",
+      "waypointsLocal": [
+        [
+          165,
+          181
+        ],
+        [
+          156,
+          157
+        ],
+        [
+          142,
+          133
+        ],
+        [
+          137,
+          113
+        ]
+      ],
+      "access": "FREE"
+    },
+    {
+      "id": "ROAD_VALLEY_FOREST",
+      "islandId": "MAIN",
+      "waypointsLocal": [
+        [
+          106,
+          149
+        ],
+        [
+          119,
+          133
+        ],
+        [
+          137,
+          113
+        ]
+      ],
+      "access": "FREE"
+    },
+    {
+      "id": "ROAD_VALLEY_SWAMP",
+      "islandId": "MAIN",
+      "waypointsLocal": [
+        [
+          106,
+          149
+        ],
+        [
+          83,
+          150
+        ],
+        [
+          59,
+          151
+        ]
+      ],
+      "access": "FREE_HAZARD"
+    },
+    {
+      "id": "ROAD_FOREST_RED",
+      "islandId": "MAIN",
+      "waypointsLocal": [
+        [
+          137,
+          113
+        ],
+        [
+          109,
+          100
+        ],
+        [
+          80,
+          86
+        ]
+      ],
+      "access": "FREE"
+    },
+    {
+      "id": "ROAD_FOREST_MOUNTAIN",
+      "islandId": "MAIN",
+      "waypointsLocal": [
+        [
+          137,
+          113
+        ],
+        [
+          138,
+          92
+        ],
+        [
+          150,
+          71
+        ],
+        [
+          149,
+          50
+        ]
+      ],
+      "access": "FREE_SURFACE"
+    },
+    {
+      "id": "ROAD_FOREST_SETTLEMENT",
+      "islandId": "MAIN",
+      "waypointsLocal": [
+        [
+          137,
+          113
+        ],
+        [
+          163,
+          118
+        ],
+        [
+          188,
+          119
+        ],
+        [
+          199,
+          112
+        ]
+      ],
+      "access": "FREE"
+    },
+    {
+      "id": "ROAD_SETTLEMENT_LAGOON",
+      "islandId": "MAIN",
+      "waypointsLocal": [
+        [
+          199,
+          112
+        ],
+        [
+          210,
+          145
+        ],
+        [
+          211,
+          169
+        ],
+        [
+          204,
+          195
+        ]
+      ],
+      "access": "FREE"
+    },
+    {
+      "id": "ROAD_RED_MOUNTAIN",
+      "islandId": "MAIN",
+      "waypointsLocal": [
+        [
+          80,
+          86
+        ],
+        [
+          101,
+          75
+        ],
+        [
+          124,
+          60
+        ],
+        [
+          149,
+          50
+        ]
+      ],
+      "access": "GATE_CLIMB_SHORTCUT"
+    },
+    {
+      "id": "ROAD_VALLEY_RED_BRIDGE",
+      "islandId": "MAIN",
+      "waypointsLocal": [
+        [
+          106,
+          149
+        ],
+        [
+          116,
+          141
+        ],
+        [
+          96,
+          121
+        ],
+        [
+          80,
+          86
+        ]
+      ],
+      "access": "GATE_REPAIR_BRIDGE"
+    },
+    {
+      "id": "ROAD_RELAY_SHORTCUT",
+      "islandId": "MAIN",
+      "waypointsLocal": [
+        [
+          181,
+          75
+        ],
+        [
+          199,
+          94
+        ],
+        [
+          199,
+          112
+        ]
+      ],
+      "access": "GATE_RELAY_PATH"
+    },
+    {
+      "id": "ROAD_REEF_APPROACH",
+      "islandId": "MAIN",
+      "waypointsLocal": [
+        [
+          204,
+          195
+        ],
+        [
+          219,
+          191
+        ],
+        [
+          228,
+          180
+        ]
+      ],
+      "access": "SHALLOW_DIVE"
+    },
+    {
+      "id": "ROAD_WATERFALL",
+      "islandId": "MAIN",
+      "waypointsLocal": [
+        [
+          106,
+          149
+        ],
+        [
+          113,
+          132
+        ],
+        [
+          121,
+          117
+        ]
+      ],
+      "access": "FREE_HIDDEN"
+    }
+  ],
+  "regionAccessGraph": [
+    {
+      "a": "REG_BEACH",
+      "b": "REG_GROVE",
+      "gate": "FREE"
+    },
+    {
+      "a": "REG_BEACH",
+      "b": "REG_VALLEY",
+      "gate": "FREE"
+    },
+    {
+      "a": "REG_GROVE",
+      "b": "REG_FOREST",
+      "gate": "FREE"
+    },
+    {
+      "a": "REG_GROVE",
+      "b": "REG_LAGOON",
+      "gate": "FREE"
+    },
+    {
+      "a": "REG_VALLEY",
+      "b": "REG_FOREST",
+      "gate": "FREE"
+    },
+    {
+      "a": "REG_VALLEY",
+      "b": "REG_SWAMP",
+      "gate": "FREE_HAZARD"
+    },
+    {
+      "a": "REG_FOREST",
+      "b": "REG_RED_CLIFF",
+      "gate": "FREE"
+    },
+    {
+      "a": "REG_FOREST",
+      "b": "REG_MOUNTAIN",
+      "gate": "FREE"
+    },
+    {
+      "a": "REG_FOREST",
+      "b": "REG_SETTLEMENT",
+      "gate": "FREE"
+    },
+    {
+      "a": "REG_SETTLEMENT",
+      "b": "REG_LAGOON",
+      "gate": "FREE"
+    },
+    {
+      "a": "REG_RED_CLIFF",
+      "b": "REG_MOUNTAIN",
+      "gate": "TOOL_CLIMB_KIT_OPTIONAL"
+    },
+    {
+      "a": "REG_VALLEY",
+      "b": "REG_RED_CLIFF",
+      "gate": "BRIDGE_REPAIR_OPTIONAL"
+    },
+    {
+      "a": "REG_MOUNTAIN",
+      "b": "REG_SETTLEMENT",
+      "gate": "RELAY_SHORTCUT_OPTIONAL"
+    },
+    {
+      "a": "REG_LAGOON",
+      "b": "REG_LIGHTHOUSE",
+      "gate": "BUILD_RAFT"
+    },
+    {
+      "a": "REG_BEACH",
+      "b": "REG_WRECK",
+      "gate": "BUILD_RAFT"
+    },
+    {
+      "a": "REG_LAGOON",
+      "b": "REG_FERTILE",
+      "gate": "BUILD_RAFT"
+    }
+  ],
+  "seaRoutes": [
+    {
+      "id": "SEA_TO_LIGHTHOUSE",
+      "fromRegion": "REG_LAGOON",
+      "toRegion": "REG_LIGHTHOUSE",
+      "departureAtlas": [
+        356,
+        258
+      ],
+      "arrivalAtlas": [
+        447,
+        92
+      ],
+      "viaAtlas": [
+        [
+          390,
+          238
+        ],
+        [
+          423,
+          178
+        ],
+        [
+          442,
+          115
+        ]
+      ],
+      "vehicleId": "BUILD_RAFT",
+      "minPrereq": {
+        "raftBuilt": true
+      },
+      "weather": "rough sea blocks departing only"
+    },
+    {
+      "id": "SEA_TO_WRECK",
+      "fromRegion": "REG_BEACH",
+      "toRegion": "REG_WRECK",
+      "departureAtlas": [
+        245,
+        289
+      ],
+      "arrivalAtlas": [
+        49,
+        223
+      ],
+      "viaAtlas": [
+        [
+          180,
+          287
+        ],
+        [
+          118,
+          256
+        ],
+        [
+          72,
+          234
+        ]
+      ],
+      "vehicleId": "BUILD_RAFT",
+      "minPrereq": {
+        "raftBuilt": true
+      },
+      "weather": "rough sea blocks departing only"
+    },
+    {
+      "id": "SEA_TO_FERTILE",
+      "fromRegion": "REG_LAGOON",
+      "toRegion": "REG_FERTILE",
+      "departureAtlas": [
+        354,
+        257
+      ],
+      "arrivalAtlas": [
+        442,
+        321
+      ],
+      "viaAtlas": [
+        [
+          384,
+          268
+        ],
+        [
+          415,
+          290
+        ]
+      ],
+      "vehicleId": "BUILD_RAFT",
+      "minPrereq": {
+        "raftBuilt": true
+      },
+      "weather": "rough sea blocks departing only"
+    }
+  ],
+  "mandatoryProgression": {
+    "baseSpawnPoi": "POI_CRASH_BOAT",
+    "twoNavSourcesAnyTwo": [
+      "SPC_CHART_COAST",
+      "SPC_CHART_OBSERVATORY",
+      "SPC_CHART_CAPTAIN"
+    ],
+    "radioKeyItems": [
+      "SPC_TX_MODULE",
+      "SPC_RADIO_NOTE"
+    ],
+    "powerAlternatives": {
+      "solar": "SPC_SOLAR_CORE",
+      "generator": "SPC_GEN_CORE"
+    },
+    "raftCanReachAllSatelliteIslands": true,
+    "escapeRequiresAllOptionalBlueprints": false
+  },
+  "corePlayerSpawn": {
+    "islandId": "MAIN",
+    "tileLocal": [
+      122,
+      220
+    ],
+    "tileAtlas": [
+      250,
+      284
+    ],
+    "facing": "SOUTH",
+    "initialSafeRadiusTiles": 18,
+    "nearbyFreshWaterSourceMainLocal": [
+      116,
+      195
+    ]
+  },
+  "buildRestrictions": {
+    "4RegisteredCampsMax": true,
+    "prefabHousesOnly": true,
+    "noModularWalls": true,
+    "noPlacementWithinMajorPoiRadiusTiles": 5,
+    "noPlacementOnRoadCriticalWidthTiles": 2,
+    "noBuildingOnFishZones": true,
+    "nearbyTreeOcclusion": "camera overlays and fade"
+  },
+  "designCaveat": "Atlas, POI pins, routes and generation policy are an implementation blueprint; walkability and collider-free routes must be verified against final tile grid in engine."
+}

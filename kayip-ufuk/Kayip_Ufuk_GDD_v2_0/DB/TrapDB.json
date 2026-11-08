@@ -1,0 +1,89 @@
+{
+  "meta": {
+    "version": "v1.0",
+    "buildables": 3,
+    "upgrade": "R_FISH_TRAP_ADV",
+    "designStatus": "BALANCE_PROPOSAL"
+  },
+  "config": {
+    "maxActiveTrapsPerSave": 6,
+    "dailyRollsPerTrapBase": 1,
+    "dailyRollsPerTrapWhenUpgraded": 2,
+    "rollOnlyIfUnfilledAndSuitableHabitat": true,
+    "baitConsumedOnlyWhenRollOccurs": true,
+    "baitIsLostOnFailedRoll": true,
+    "catchStaysInTrapUntilCollected": true,
+    "trapClaimXpOnlyOnce": true,
+    "regionalOverfishingAffectsFishTraps": true
+  },
+  "traps": [
+    {
+      "buildId": "BUILD_ANIMAL_TRAP",
+      "name": "Küçük hayvan kapanı",
+      "habitats": [
+        "REG_GROVE",
+        "REG_VALLEY"
+      ],
+      "validBaitItemIds": [
+        "FOOD_BERRY",
+        "FOOD_BANANA"
+      ],
+      "capacity": 1,
+      "baseCatchChanceNoBait": 0.25,
+      "catchChanceFittingBait": 0.6,
+      "possibleAnimals": [
+        "ANIMAL_RABBIT"
+      ],
+      "xpSkillId": "SKILL_HUNTING",
+      "xpOnClaim": 8
+    },
+    {
+      "buildId": "BUILD_CRAB_TRAP",
+      "name": "Yengeç kapanı",
+      "habitats": [
+        "REG_BEACH",
+        "REG_LAGOON"
+      ],
+      "validBaitItemIds": [
+        "CMP_SIMPLE_BAIT",
+        "MAT_FISH_OFFCUT"
+      ],
+      "capacity": 1,
+      "baseCatchChanceNoBait": 0.3,
+      "catchChanceFittingBait": 0.65,
+      "possibleAnimals": [
+        "ANIMAL_CRAB"
+      ],
+      "xpSkillId": "SKILL_HUNTING",
+      "xpOnClaim": 8
+    },
+    {
+      "buildId": "BUILD_FISH_TRAP",
+      "name": "Balık sepeti",
+      "habitats": [
+        "REG_BEACH",
+        "REG_VALLEY",
+        "REG_LAGOON"
+      ],
+      "validBaitItemIds": [
+        "MAT_WORM",
+        "CMP_SIMPLE_BAIT",
+        "CMP_FISH_BAIT"
+      ],
+      "capacity": 1,
+      "baseCatchChanceNoBait": 0.25,
+      "catchChanceFittingBait": 0.6,
+      "possibleFishIds": [
+        "FISH_SARDINE",
+        "FISH_MULLET",
+        "FISH_FRESHWATER_BASS",
+        "FISH_REEF"
+      ],
+      "upgradeRecipeId": "R_FISH_TRAP_ADV",
+      "upgradedCapacity": 3,
+      "upgradedMaxCatchPerDay": 2,
+      "xpSkillId": "SKILL_FISHING",
+      "xpOnClaim": 5
+    }
+  ]
+}

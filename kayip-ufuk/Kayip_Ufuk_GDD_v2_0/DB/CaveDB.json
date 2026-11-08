@@ -1,0 +1,1461 @@
+{
+  "meta": {
+    "version": "v1.4",
+    "basedOn": "CaveDB_v1.1.json",
+    "caveCount": 3,
+    "tilePixelSize": 32,
+    "notNewMainPOIs": true,
+    "noExtraPuzzles": true,
+    "totalBonusCrates": 6
+  },
+  "tileCatalog": [
+    {
+      "id": "WALL",
+      "code": 0,
+      "walkable": false,
+      "swimmable": false,
+      "lightPenalty": 0.0,
+      "color": "#2c333a",
+      "description": "Masif mağara duvarı; çarpışma açık"
+    },
+    {
+      "id": "STONE_FLOOR",
+      "code": 1,
+      "walkable": true,
+      "swimmable": false,
+      "lightPenalty": 0.0,
+      "color": "#9c9181",
+      "description": "Ana geçiş zemini"
+    },
+    {
+      "id": "WOODEN_WALKWAY",
+      "code": 2,
+      "walkable": true,
+      "swimmable": false,
+      "lightPenalty": 0.0,
+      "color": "#a5784e",
+      "description": "Eski tahta platform"
+    },
+    {
+      "id": "SHALLOW_POOL",
+      "code": 3,
+      "walkable": true,
+      "swimmable": false,
+      "lightPenalty": 0.0,
+      "color": "#75aabb",
+      "description": "Sığ su; yürüyüş çarpanı 0.7"
+    },
+    {
+      "id": "DEEP_POOL",
+      "code": 4,
+      "walkable": false,
+      "swimmable": true,
+      "lightPenalty": 0.0,
+      "color": "#325e84",
+      "description": "Derin su; balık alanı; dalış yeteneğine göre girilebilir"
+    },
+    {
+      "id": "ORE_FLOOR",
+      "code": 5,
+      "walkable": true,
+      "swimmable": false,
+      "lightPenalty": 0.0,
+      "color": "#9e806a",
+      "description": "Maden görünümü"
+    },
+    {
+      "id": "DAMP_FLOOR",
+      "code": 6,
+      "walkable": true,
+      "swimmable": false,
+      "lightPenalty": 0.0,
+      "color": "#738a82",
+      "description": "Nemli zemin"
+    }
+  ],
+  "caves": [
+    {
+      "id": "CAVE_COPPER",
+      "name": "Kızıl Maden Galerisi",
+      "entrancePoi": "POI_COPPER_MINE",
+      "mapTiles": [
+        48,
+        40
+      ],
+      "entryTile": [
+        4,
+        21
+      ],
+      "returnTile": [
+        4,
+        22
+      ],
+      "exits": 1,
+      "internalSections": [
+        "Maden girişi",
+        "Cevher odası",
+        "Eski maden deposu"
+      ],
+      "resourceIds": [
+        "MAT_COPPER_ORE",
+        "MAT_COAL",
+        "MAT_STONE"
+      ],
+      "rareSourceId": "MAT_IRON_ORE",
+      "lightRequiredForFullExploration": true,
+      "criticalSafeReturnPath": true,
+      "maxExpectedMinutes": 9,
+      "version": "v1.4",
+      "objectIds": [
+        "RES_COP_01",
+        "RES_COP_02",
+        "RES_COP_03",
+        "RES_COAL_01",
+        "RES_STONE_01",
+        "RES_IRON_01",
+        "CHEST_COP_01",
+        "CHEST_COP_02"
+      ],
+      "sections": [
+        {
+          "name": "Giriş Ocağı",
+          "centerTile": [
+            10,
+            21
+          ],
+          "widthTiles": 11,
+          "heightTiles": 9
+        },
+        {
+          "name": "Bakır Galerisi",
+          "centerTile": [
+            24,
+            14
+          ],
+          "widthTiles": 13,
+          "heightTiles": 11
+        },
+        {
+          "name": "Eski Maden Deposu",
+          "centerTile": [
+            39,
+            26
+          ],
+          "widthTiles": 11,
+          "heightTiles": 9
+        },
+        {
+          "name": "Kömür Çatlağı",
+          "centerTile": [
+            27,
+            32
+          ],
+          "widthTiles": 9,
+          "heightTiles": 7
+        }
+      ],
+      "environmentalSetPieces": [
+        "Tahta destekler",
+        "Eski maden arabası",
+        "Paslı maden fenerleri"
+      ],
+      "dangerNotes": "Çatlak zeminde kısa kayma/sarsıntı; düşme ve ölümcül tuzak yok",
+      "roomReachability": {
+        "Giriş Ocağı": {
+          "target": [
+            10,
+            21
+          ],
+          "shortestWalkTiles": 6
+        },
+        "Bakır Galerisi": {
+          "target": [
+            24,
+            14
+          ],
+          "shortestWalkTiles": 27
+        },
+        "Eski Maden Deposu": {
+          "target": [
+            39,
+            26
+          ],
+          "shortestWalkTiles": 44
+        },
+        "Kömür Çatlağı": {
+          "target": [
+            27,
+            32
+          ],
+          "shortestWalkTiles": 34
+        }
+      },
+      "gatedSideDiscoveries": [
+        {
+          "id": "CAVE_COPPER_PRY_CRATE",
+          "tile": [
+            40,
+            28
+          ],
+          "toolRequired": "TOOL_CROWBAR",
+          "optional": true,
+          "blocksReturnPath": false
+        }
+      ],
+      "returnToWorld": {
+        "poiId": "POI_COPPER_MINE",
+        "islandId": "MAIN",
+        "worldTileLocal": [
+          80,
+          86
+        ],
+        "reenterFromWalkableTile": true
+      },
+      "entranceSafeRadiusTiles": 3,
+      "guaranteedExitAlwaysOpen": true,
+      "entryItemConsumption": false,
+      "camera": {
+        "zoom": 1.15,
+        "fogOfWar": true,
+        "mapRevealedPerPlayerSave": true
+      },
+      "regeneration": {
+        "offlineProgression": false,
+        "usesGameDayClock": true,
+        "resourcesCannotSpawnOnDynamicBuildings": true
+      },
+      "lootPolicy": {
+        "linkExteriorPoiRewardsOnlyOnce": true,
+        "interiorBonusOnly": true,
+        "neverRegrantSpecialBlueprint": true
+      },
+      "objects": [
+        {
+          "id": "RES_COP_01",
+          "type": "resource",
+          "tile": [
+            23,
+            13
+          ],
+          "itemId": "MAT_COPPER_ORE",
+          "lootPoolId": null,
+          "amountRange": [
+            3,
+            5
+          ],
+          "respawnGameDays": [
+            6,
+            9
+          ],
+          "oncePerSave": false,
+          "claimKey": "CAVE_COPPER:RES_COP_01:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "RES_COP_02",
+          "type": "resource",
+          "tile": [
+            29,
+            17
+          ],
+          "itemId": "MAT_COPPER_ORE",
+          "lootPoolId": null,
+          "amountRange": [
+            3,
+            5
+          ],
+          "respawnGameDays": [
+            6,
+            9
+          ],
+          "oncePerSave": false,
+          "claimKey": "CAVE_COPPER:RES_COP_02:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "RES_COP_03",
+          "type": "resource",
+          "tile": [
+            26,
+            9
+          ],
+          "itemId": "MAT_COPPER_ORE",
+          "lootPoolId": null,
+          "amountRange": [
+            3,
+            5
+          ],
+          "respawnGameDays": [
+            6,
+            9
+          ],
+          "oncePerSave": false,
+          "claimKey": "CAVE_COPPER:RES_COP_03:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "RES_COAL_01",
+          "type": "resource",
+          "tile": [
+            26,
+            33
+          ],
+          "itemId": "MAT_COAL",
+          "lootPoolId": null,
+          "amountRange": [
+            2,
+            4
+          ],
+          "respawnGameDays": [
+            6,
+            9
+          ],
+          "oncePerSave": false,
+          "claimKey": "CAVE_COPPER:RES_COAL_01:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "RES_STONE_01",
+          "type": "resource",
+          "tile": [
+            18,
+            16
+          ],
+          "itemId": "MAT_STONE",
+          "lootPoolId": null,
+          "amountRange": [
+            3,
+            5
+          ],
+          "respawnGameDays": [
+            6,
+            9
+          ],
+          "oncePerSave": false,
+          "claimKey": "CAVE_COPPER:RES_STONE_01:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "RES_IRON_01",
+          "type": "resource",
+          "tile": [
+            40,
+            24
+          ],
+          "itemId": "MAT_IRON_ORE",
+          "lootPoolId": null,
+          "amountRange": [
+            1,
+            2
+          ],
+          "respawnGameDays": [
+            6,
+            9
+          ],
+          "oncePerSave": false,
+          "claimKey": "CAVE_COPPER:RES_IRON_01:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "CHEST_COP_01",
+          "type": "chest",
+          "tile": [
+            39,
+            27
+          ],
+          "itemId": null,
+          "lootPoolId": "LP_MINING_COMMON",
+          "amountRange": null,
+          "respawnGameDays": null,
+          "oncePerSave": true,
+          "claimKey": "CAVE_COPPER:CHEST_COP_01:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "CHEST_COP_02",
+          "type": "chest",
+          "tile": [
+            28,
+            32
+          ],
+          "itemId": null,
+          "lootPoolId": "LP_MINING_COMMON",
+          "amountRange": null,
+          "respawnGameDays": null,
+          "oncePerSave": true,
+          "claimKey": "CAVE_COPPER:CHEST_COP_02:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        }
+      ],
+      "fishZone": null
+    },
+    {
+      "id": "CAVE_BATS",
+      "name": "Yarasa Mağarası",
+      "entrancePoi": "POI_BAT_CAVERN",
+      "mapTiles": [
+        44,
+        48
+      ],
+      "entryTile": [
+        7,
+        7
+      ],
+      "returnTile": [
+        7,
+        7
+      ],
+      "exits": 1,
+      "internalSections": [
+        "Giriş",
+        "Yarasa Galerisi",
+        "Kristal Damarı"
+      ],
+      "resourceIds": [
+        "MAT_QUARTZ",
+        "MAT_FLINT",
+        "MAT_SULFUR"
+      ],
+      "rareSourceId": "MAT_QUARTZ",
+      "lightRequiredForFullExploration": true,
+      "criticalSafeReturnPath": true,
+      "maxExpectedMinutes": 10,
+      "version": "v1.4",
+      "objectIds": [
+        "RES_QUARTZ_01",
+        "RES_QUARTZ_02",
+        "RES_FLINT_01",
+        "RES_SULFUR_01",
+        "CHEST_BATS_01",
+        "CHEST_BATS_02"
+      ],
+      "sections": [
+        {
+          "name": "Giriş Holü",
+          "centerTile": [
+            11,
+            11
+          ],
+          "widthTiles": 10,
+          "heightTiles": 9
+        },
+        {
+          "name": "Yarasa Galerisi",
+          "centerTile": [
+            22,
+            22
+          ],
+          "widthTiles": 13,
+          "heightTiles": 12
+        },
+        {
+          "name": "Kristal Damarı",
+          "centerTile": [
+            33,
+            36
+          ],
+          "widthTiles": 13,
+          "heightTiles": 11
+        },
+        {
+          "name": "Yankı Oyuğu",
+          "centerTile": [
+            12,
+            33
+          ],
+          "widthTiles": 8,
+          "heightTiles": 8
+        },
+        {
+          "name": "Gözetleme Çıkıntısı",
+          "centerTile": [
+            32,
+            12
+          ],
+          "widthTiles": 9,
+          "heightTiles": 8
+        }
+      ],
+      "environmentalSetPieces": [
+        "Dinlenmekte olan yarasalar",
+        "Koyu damlataşlar",
+        "Yerde işaretlenmiş güvenli patika"
+      ],
+      "dangerNotes": "Yarasa sürüsü görsel tepkisi; sürekli düşman akını yok",
+      "roomReachability": {
+        "Giriş Holü": {
+          "target": [
+            11,
+            11
+          ],
+          "shortestWalkTiles": 8
+        },
+        "Yarasa Galerisi": {
+          "target": [
+            22,
+            22
+          ],
+          "shortestWalkTiles": 30
+        },
+        "Kristal Damarı": {
+          "target": [
+            33,
+            36
+          ],
+          "shortestWalkTiles": 55
+        },
+        "Yankı Oyuğu": {
+          "target": [
+            12,
+            33
+          ],
+          "shortestWalkTiles": 41
+        },
+        "Gözetleme Çıkıntısı": {
+          "target": [
+            32,
+            12
+          ],
+          "shortestWalkTiles": 38
+        }
+      },
+      "gatedSideDiscoveries": [
+        {
+          "id": "CAVE_BATS_HIDDEN_MARK",
+          "tile": [
+            14,
+            32
+          ],
+          "toolRequired": "TOOL_TORCH",
+          "optional": true,
+          "blocksReturnPath": false,
+          "description": "Işıkla daha kolay görülen dekoratif iz"
+        }
+      ],
+      "returnToWorld": {
+        "poiId": "POI_BAT_CAVERN",
+        "islandId": "MAIN",
+        "worldTileLocal": [
+          130,
+          77
+        ],
+        "reenterFromWalkableTile": true
+      },
+      "entranceSafeRadiusTiles": 3,
+      "guaranteedExitAlwaysOpen": true,
+      "entryItemConsumption": false,
+      "camera": {
+        "zoom": 1.15,
+        "fogOfWar": true,
+        "mapRevealedPerPlayerSave": true
+      },
+      "regeneration": {
+        "offlineProgression": false,
+        "usesGameDayClock": true,
+        "resourcesCannotSpawnOnDynamicBuildings": true
+      },
+      "lootPolicy": {
+        "linkExteriorPoiRewardsOnlyOnce": true,
+        "interiorBonusOnly": true,
+        "neverRegrantSpecialBlueprint": true
+      },
+      "objects": [
+        {
+          "id": "RES_QUARTZ_01",
+          "type": "resource",
+          "tile": [
+            34,
+            35
+          ],
+          "itemId": "MAT_QUARTZ",
+          "lootPoolId": null,
+          "amountRange": [
+            1,
+            3
+          ],
+          "respawnGameDays": [
+            6,
+            9
+          ],
+          "oncePerSave": false,
+          "claimKey": "CAVE_BATS:RES_QUARTZ_01:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "RES_QUARTZ_02",
+          "type": "resource",
+          "tile": [
+            29,
+            39
+          ],
+          "itemId": "MAT_QUARTZ",
+          "lootPoolId": null,
+          "amountRange": [
+            1,
+            3
+          ],
+          "respawnGameDays": [
+            6,
+            9
+          ],
+          "oncePerSave": false,
+          "claimKey": "CAVE_BATS:RES_QUARTZ_02:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "RES_FLINT_01",
+          "type": "resource",
+          "tile": [
+            22,
+            20
+          ],
+          "itemId": "MAT_FLINT",
+          "lootPoolId": null,
+          "amountRange": [
+            2,
+            4
+          ],
+          "respawnGameDays": [
+            6,
+            9
+          ],
+          "oncePerSave": false,
+          "claimKey": "CAVE_BATS:RES_FLINT_01:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "RES_SULFUR_01",
+          "type": "resource",
+          "tile": [
+            34,
+            12
+          ],
+          "itemId": "MAT_SULFUR",
+          "lootPoolId": null,
+          "amountRange": [
+            1,
+            2
+          ],
+          "respawnGameDays": [
+            6,
+            9
+          ],
+          "oncePerSave": false,
+          "claimKey": "CAVE_BATS:RES_SULFUR_01:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "CHEST_BATS_01",
+          "type": "chest",
+          "tile": [
+            12,
+            33
+          ],
+          "itemId": null,
+          "lootPoolId": "LP_MOUNTAIN_COMMON",
+          "amountRange": null,
+          "respawnGameDays": null,
+          "oncePerSave": true,
+          "claimKey": "CAVE_BATS:CHEST_BATS_01:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "CHEST_BATS_02",
+          "type": "chest",
+          "tile": [
+            32,
+            13
+          ],
+          "itemId": null,
+          "lootPoolId": "LP_MOUNTAIN_COMMON",
+          "amountRange": null,
+          "respawnGameDays": null,
+          "oncePerSave": true,
+          "claimKey": "CAVE_BATS:CHEST_BATS_02:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        }
+      ],
+      "fishZone": null
+    },
+    {
+      "id": "CAVE_POND",
+      "name": "Yeraltı Göleti Mağarası",
+      "entrancePoi": "POI_UNDERGROUND_POND",
+      "mapTiles": [
+        48,
+        48
+      ],
+      "entryTile": [
+        5,
+        40
+      ],
+      "returnTile": [
+        5,
+        40
+      ],
+      "exits": 1,
+      "internalSections": [
+        "Yarma geçit",
+        "Göl kıyısı",
+        "Gizli cep"
+      ],
+      "resourceIds": [
+        "MAT_CLAY",
+        "MAT_QUARTZ",
+        "MAT_STONE"
+      ],
+      "rareSourceId": "MAT_IRON_ORE",
+      "fishWaterZoneId": "FISH_CAVE_POND",
+      "lightRequiredForFullExploration": true,
+      "criticalSafeReturnPath": true,
+      "maxExpectedMinutes": 10,
+      "version": "v1.4",
+      "objectIds": [
+        "RES_CLAY_01",
+        "RES_CLAY_02",
+        "RES_QUARTZ_POND",
+        "RES_STONE_POND",
+        "RES_IRON_POND",
+        "CHEST_POND_01",
+        "CHEST_POND_02"
+      ],
+      "sections": [
+        {
+          "name": "Yarma Geçit",
+          "centerTile": [
+            11,
+            39
+          ],
+          "widthTiles": 11,
+          "heightTiles": 9
+        },
+        {
+          "name": "Göl Kıyısı",
+          "centerTile": [
+            24,
+            31
+          ],
+          "widthTiles": 14,
+          "heightTiles": 11
+        },
+        {
+          "name": "Balıkçı Platformu",
+          "centerTile": [
+            30,
+            20
+          ],
+          "widthTiles": 12,
+          "heightTiles": 10
+        },
+        {
+          "name": "Gizli Mineral Cebi",
+          "centerTile": [
+            40,
+            12
+          ],
+          "widthTiles": 11,
+          "heightTiles": 10
+        },
+        {
+          "name": "Yan Gölet",
+          "centerTile": [
+            14,
+            14
+          ],
+          "widthTiles": 10,
+          "heightTiles": 8
+        }
+      ],
+      "environmentalSetPieces": [
+        "Göl kıyısı",
+        "Tahta balıkçı platformu",
+        "Şelale sesi"
+      ],
+      "dangerNotes": "Derin su çevresinde yüzme/nefes yönetimi; çıkış için dalış gerekmez",
+      "roomReachability": {
+        "Yarma Geçit": {
+          "target": [
+            11,
+            39
+          ],
+          "shortestWalkTiles": 7
+        },
+        "Göl Kıyısı": {
+          "target": [
+            24,
+            31
+          ],
+          "shortestWalkTiles": 28
+        },
+        "Balıkçı Platformu": {
+          "target": [
+            30,
+            20
+          ],
+          "shortestWalkTiles": 45
+        },
+        "Gizli Mineral Cebi": {
+          "target": [
+            40,
+            12
+          ],
+          "shortestWalkTiles": 63
+        },
+        "Yan Gölet": {
+          "target": [
+            14,
+            14
+          ],
+          "shortestWalkTiles": 39
+        }
+      },
+      "gatedSideDiscoveries": [
+        {
+          "id": "CAVE_POND_DIVING_POCKET",
+          "tile": [
+            34,
+            21
+          ],
+          "toolRequired": "TOOL_DIVING_KIT",
+          "optional": true,
+          "blocksReturnPath": false,
+          "description": "Sadece yan ganimet için su altı cebi"
+        }
+      ],
+      "returnToWorld": {
+        "poiId": "POI_UNDERGROUND_POND",
+        "islandId": "MAIN",
+        "worldTileLocal": [
+          169,
+          91
+        ],
+        "reenterFromWalkableTile": true
+      },
+      "entranceSafeRadiusTiles": 3,
+      "guaranteedExitAlwaysOpen": true,
+      "entryItemConsumption": false,
+      "camera": {
+        "zoom": 1.15,
+        "fogOfWar": true,
+        "mapRevealedPerPlayerSave": true
+      },
+      "regeneration": {
+        "offlineProgression": false,
+        "usesGameDayClock": true,
+        "resourcesCannotSpawnOnDynamicBuildings": true
+      },
+      "lootPolicy": {
+        "linkExteriorPoiRewardsOnlyOnce": true,
+        "interiorBonusOnly": true,
+        "neverRegrantSpecialBlueprint": true
+      },
+      "objects": [
+        {
+          "id": "RES_CLAY_01",
+          "type": "resource",
+          "tile": [
+            26,
+            34
+          ],
+          "itemId": "MAT_CLAY",
+          "lootPoolId": null,
+          "amountRange": [
+            2,
+            4
+          ],
+          "respawnGameDays": [
+            6,
+            9
+          ],
+          "oncePerSave": false,
+          "claimKey": "CAVE_POND:RES_CLAY_01:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "RES_CLAY_02",
+          "type": "resource",
+          "tile": [
+            13,
+            16
+          ],
+          "itemId": "MAT_CLAY",
+          "lootPoolId": null,
+          "amountRange": [
+            2,
+            4
+          ],
+          "respawnGameDays": [
+            6,
+            9
+          ],
+          "oncePerSave": false,
+          "claimKey": "CAVE_POND:RES_CLAY_02:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "RES_QUARTZ_POND",
+          "type": "resource",
+          "tile": [
+            39,
+            13
+          ],
+          "itemId": "MAT_QUARTZ",
+          "lootPoolId": null,
+          "amountRange": [
+            1,
+            2
+          ],
+          "respawnGameDays": [
+            6,
+            9
+          ],
+          "oncePerSave": false,
+          "claimKey": "CAVE_POND:RES_QUARTZ_POND:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "RES_STONE_POND",
+          "type": "resource",
+          "tile": [
+            18,
+            29
+          ],
+          "itemId": "MAT_STONE",
+          "lootPoolId": null,
+          "amountRange": [
+            2,
+            4
+          ],
+          "respawnGameDays": [
+            6,
+            9
+          ],
+          "oncePerSave": false,
+          "claimKey": "CAVE_POND:RES_STONE_POND:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "RES_IRON_POND",
+          "type": "resource",
+          "tile": [
+            40,
+            10
+          ],
+          "itemId": "MAT_IRON_ORE",
+          "lootPoolId": null,
+          "amountRange": [
+            1,
+            2
+          ],
+          "respawnGameDays": [
+            6,
+            9
+          ],
+          "oncePerSave": false,
+          "claimKey": "CAVE_POND:RES_IRON_POND:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "CHEST_POND_01",
+          "type": "chest",
+          "tile": [
+            41,
+            12
+          ],
+          "itemId": null,
+          "lootPoolId": "LP_MOUNTAIN_COMMON",
+          "amountRange": null,
+          "respawnGameDays": null,
+          "oncePerSave": true,
+          "claimKey": "CAVE_POND:CHEST_POND_01:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        },
+        {
+          "id": "CHEST_POND_02",
+          "type": "chest",
+          "tile": [
+            14,
+            14
+          ],
+          "itemId": null,
+          "lootPoolId": "LP_VALLEY_COMMON",
+          "amountRange": null,
+          "respawnGameDays": null,
+          "oncePerSave": true,
+          "claimKey": "CAVE_POND:CHEST_POND_02:claim",
+          "requires": [],
+          "collision": {
+            "type": "INTERACTION_ONLY",
+            "blocksFootpath": false
+          },
+          "saveState": {
+            "claimed": false,
+            "lastHarvestGameDay": null
+          }
+        }
+      ],
+      "fishZone": {
+        "id": "FISH_CAVE_POND",
+        "waterTiles": [
+          [
+            35,
+            17
+          ],
+          [
+            36,
+            17
+          ],
+          [
+            33,
+            18
+          ],
+          [
+            34,
+            18
+          ],
+          [
+            35,
+            18
+          ],
+          [
+            36,
+            18
+          ],
+          [
+            37,
+            18
+          ],
+          [
+            38,
+            18
+          ],
+          [
+            33,
+            19
+          ],
+          [
+            34,
+            19
+          ],
+          [
+            35,
+            19
+          ],
+          [
+            36,
+            19
+          ],
+          [
+            37,
+            19
+          ],
+          [
+            38,
+            19
+          ],
+          [
+            34,
+            20
+          ],
+          [
+            35,
+            20
+          ],
+          [
+            36,
+            20
+          ],
+          [
+            37,
+            20
+          ],
+          [
+            38,
+            20
+          ],
+          [
+            39,
+            20
+          ],
+          [
+            32,
+            21
+          ],
+          [
+            33,
+            21
+          ],
+          [
+            34,
+            21
+          ],
+          [
+            35,
+            21
+          ],
+          [
+            36,
+            21
+          ],
+          [
+            37,
+            21
+          ],
+          [
+            38,
+            21
+          ],
+          [
+            39,
+            21
+          ],
+          [
+            32,
+            22
+          ],
+          [
+            33,
+            22
+          ],
+          [
+            34,
+            22
+          ],
+          [
+            35,
+            22
+          ],
+          [
+            36,
+            22
+          ],
+          [
+            37,
+            22
+          ],
+          [
+            38,
+            22
+          ],
+          [
+            39,
+            22
+          ],
+          [
+            32,
+            23
+          ],
+          [
+            33,
+            23
+          ],
+          [
+            34,
+            23
+          ],
+          [
+            35,
+            23
+          ],
+          [
+            36,
+            23
+          ],
+          [
+            37,
+            23
+          ],
+          [
+            38,
+            23
+          ],
+          [
+            39,
+            23
+          ],
+          [
+            32,
+            24
+          ],
+          [
+            33,
+            24
+          ],
+          [
+            34,
+            24
+          ],
+          [
+            35,
+            24
+          ],
+          [
+            36,
+            24
+          ],
+          [
+            37,
+            24
+          ],
+          [
+            38,
+            24
+          ],
+          [
+            39,
+            24
+          ],
+          [
+            32,
+            25
+          ],
+          [
+            33,
+            25
+          ],
+          [
+            34,
+            25
+          ],
+          [
+            35,
+            25
+          ],
+          [
+            36,
+            25
+          ],
+          [
+            37,
+            25
+          ],
+          [
+            38,
+            25
+          ],
+          [
+            39,
+            25
+          ],
+          [
+            33,
+            26
+          ],
+          [
+            34,
+            26
+          ],
+          [
+            35,
+            26
+          ],
+          [
+            36,
+            26
+          ],
+          [
+            37,
+            26
+          ],
+          [
+            38,
+            26
+          ],
+          [
+            33,
+            27
+          ],
+          [
+            34,
+            27
+          ],
+          [
+            35,
+            27
+          ],
+          [
+            36,
+            27
+          ],
+          [
+            37,
+            27
+          ],
+          [
+            38,
+            27
+          ],
+          [
+            35,
+            28
+          ],
+          [
+            36,
+            28
+          ]
+        ],
+        "requiresFacingShore": true
+      }
+    }
+  ]
+}

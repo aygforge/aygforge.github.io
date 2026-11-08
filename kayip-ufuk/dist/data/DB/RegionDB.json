@@ -1,0 +1,660 @@
+{
+  "meta": {
+    "version": "v1.1",
+    "regionalCount": 12,
+    "mainRegions": 9,
+    "satelliteRegions": 3,
+    "poiCount": 38,
+    "basedOn": [
+      "AnimalDB_v1.0",
+      "FishDB_v1.0",
+      "CropDB_v1.0",
+      "ItemDB_v1.0"
+    ],
+    "status": "DESIGN_DATA pending rendered world collision tests"
+  },
+  "regions": [
+    {
+      "id": "REG_BEACH",
+      "name": "Gemi Kazası Sahili",
+      "islandId": "MAIN",
+      "mapZoneOrder": 1,
+      "biomeSeedPointLocal": [
+        122,
+        212
+      ],
+      "paletteHex": "#e5cc88",
+      "dangerClass": "SAFE",
+      "baselineRisk": 0.05,
+      "harvestableItemIds": [
+        "MAT_STONE",
+        "MAT_BRANCH",
+        "MAT_FIBER",
+        "MAT_PALM_LEAF",
+        "MAT_LOG",
+        "FOOD_COCONUT",
+        "MAT_SEASHELL",
+        "MAT_SAND"
+      ],
+      "fishSpeciesIds": [
+        "FISH_SARDINE",
+        "FISH_MULLET",
+        "FISH_MACKEREL"
+      ],
+      "animalSpeciesIds": [
+        "ANIMAL_CRAB",
+        "ANIMAL_HERMIT_CRAB",
+        "ANIMAL_SEABIRD"
+      ],
+      "fixedPoiIds": [
+        "POI_CRASH_BOAT",
+        "POI_WATERPROOF_BAG",
+        "POI_SHORE_CRATE",
+        "POI_BROKEN_LOOKOUT"
+      ],
+      "resourceProfile": {
+        "freebieNodesProtected": true,
+        "sourceRespawnRule": "Item-by-item respawn, only camera-off and no new nodes inside placed buildings",
+        "seedMayVary": "Only secondary sources and salvage; core route resources fixed"
+      },
+      "homeBuildingRules": {
+        "housesAllowed": true,
+        "outpostsAllowed": true,
+        "minClearAreaTiles": [
+          7,
+          6
+        ],
+        "avoidPoiRadiusTiles": 5,
+        "avoidRiverBankTiles": 2
+      },
+      "atmosphere": {
+        "weatherExposure": "NORMAL",
+        "lightTone": "#e5cc88"
+      }
+    },
+    {
+      "id": "REG_GROVE",
+      "name": "Palmiye Koruluğu",
+      "islandId": "MAIN",
+      "mapZoneOrder": 2,
+      "biomeSeedPointLocal": [
+        160,
+        180
+      ],
+      "paletteHex": "#a6c276",
+      "dangerClass": "SAFE",
+      "baselineRisk": 0.05,
+      "harvestableItemIds": [
+        "MAT_BAMBOO",
+        "MAT_LOG",
+        "MAT_RESIN",
+        "MAT_VINE",
+        "MAT_FIBER",
+        "FOOD_BANANA",
+        "FOOD_BERRY",
+        "MAT_PALM_LEAF"
+      ],
+      "fishSpeciesIds": [],
+      "animalSpeciesIds": [
+        "ANIMAL_RABBIT",
+        "ANIMAL_FOREST_BIRD",
+        "ANIMAL_MONKEY"
+      ],
+      "fixedPoiIds": [
+        "POI_FISHER_HUT",
+        "POI_FRUIT_HILL",
+        "POI_VINE_TUNNEL"
+      ],
+      "resourceProfile": {
+        "freebieNodesProtected": false,
+        "sourceRespawnRule": "Item-by-item respawn, only camera-off and no new nodes inside placed buildings",
+        "seedMayVary": "Only secondary sources and salvage; core route resources fixed"
+      },
+      "homeBuildingRules": {
+        "housesAllowed": true,
+        "outpostsAllowed": true,
+        "minClearAreaTiles": [
+          7,
+          6
+        ],
+        "avoidPoiRadiusTiles": 5,
+        "avoidRiverBankTiles": 2
+      },
+      "atmosphere": {
+        "weatherExposure": "NORMAL",
+        "lightTone": "#a6c276"
+      }
+    },
+    {
+      "id": "REG_VALLEY",
+      "name": "Tatlısu Vadisi",
+      "islandId": "MAIN",
+      "mapZoneOrder": 3,
+      "biomeSeedPointLocal": [
+        108,
+        153
+      ],
+      "paletteHex": "#86b579",
+      "dangerClass": "LOW",
+      "baselineRisk": 0.13,
+      "harvestableItemIds": [
+        "MAT_CLAY",
+        "MAT_STONE",
+        "MAT_BAMBOO",
+        "MAT_REED",
+        "MAT_FIBER",
+        "MAT_WORM",
+        "SEED_ROOT",
+        "SEED_GREENS",
+        "SEED_BEAN"
+      ],
+      "fishSpeciesIds": [
+        "FISH_MULLET",
+        "FISH_FRESHWATER_BASS"
+      ],
+      "animalSpeciesIds": [
+        "ANIMAL_RABBIT",
+        "ANIMAL_FROG",
+        "ANIMAL_BOAR"
+      ],
+      "fixedPoiIds": [
+        "POI_WATER_STATION",
+        "POI_STONE_BRIDGE",
+        "POI_WATERFALL_CAVE"
+      ],
+      "resourceProfile": {
+        "freebieNodesProtected": false,
+        "sourceRespawnRule": "Item-by-item respawn, only camera-off and no new nodes inside placed buildings",
+        "seedMayVary": "Only secondary sources and salvage; core route resources fixed"
+      },
+      "homeBuildingRules": {
+        "housesAllowed": true,
+        "outpostsAllowed": true,
+        "minClearAreaTiles": [
+          7,
+          6
+        ],
+        "avoidPoiRadiusTiles": 5,
+        "avoidRiverBankTiles": 2
+      },
+      "atmosphere": {
+        "weatherExposure": "NORMAL",
+        "lightTone": "#86b579"
+      }
+    },
+    {
+      "id": "REG_FOREST",
+      "name": "Yoğun Orman",
+      "islandId": "MAIN",
+      "mapZoneOrder": 4,
+      "biomeSeedPointLocal": [
+        137,
+        111
+      ],
+      "paletteHex": "#397f54",
+      "dangerClass": "MEDIUM",
+      "baselineRisk": 0.25,
+      "harvestableItemIds": [
+        "MAT_HARDWOOD",
+        "MAT_LOG",
+        "MAT_RESIN",
+        "MAT_VINE",
+        "MAT_TREE_BARK",
+        "MAT_MED_HERB",
+        "FOOD_MUSHROOM"
+      ],
+      "fishSpeciesIds": [],
+      "animalSpeciesIds": [
+        "ANIMAL_LIZARD",
+        "ANIMAL_FOREST_BIRD",
+        "ANIMAL_FRUIT_BAT",
+        "ANIMAL_MONKEY",
+        "ANIMAL_BOAR",
+        "ANIMAL_SNAKE"
+      ],
+      "fixedPoiIds": [
+        "POI_FORESTER_HUT",
+        "POI_TREEHOUSE",
+        "POI_HUNTER_CAMP"
+      ],
+      "resourceProfile": {
+        "freebieNodesProtected": false,
+        "sourceRespawnRule": "Item-by-item respawn, only camera-off and no new nodes inside placed buildings",
+        "seedMayVary": "Only secondary sources and salvage; core route resources fixed"
+      },
+      "homeBuildingRules": {
+        "housesAllowed": true,
+        "outpostsAllowed": true,
+        "minClearAreaTiles": [
+          7,
+          6
+        ],
+        "avoidPoiRadiusTiles": 5,
+        "avoidRiverBankTiles": 2
+      },
+      "atmosphere": {
+        "weatherExposure": "NORMAL",
+        "lightTone": "#397f54"
+      }
+    },
+    {
+      "id": "REG_SWAMP",
+      "name": "Mangrov Bataklığı",
+      "islandId": "MAIN",
+      "mapZoneOrder": 5,
+      "biomeSeedPointLocal": [
+        55,
+        157
+      ],
+      "paletteHex": "#658e73",
+      "dangerClass": "HIGH",
+      "baselineRisk": 0.42,
+      "harvestableItemIds": [
+        "MAT_CLAY",
+        "MAT_REED",
+        "MAT_MED_HERB",
+        "MAT_WORM",
+        "MAT_SEAWEED",
+        "MAT_SAP",
+        "MAT_FIBER"
+      ],
+      "fishSpeciesIds": [],
+      "animalSpeciesIds": [
+        "ANIMAL_FROG",
+        "ANIMAL_SNAKE",
+        "ANIMAL_CROCODILE"
+      ],
+      "fixedPoiIds": [
+        "POI_SWAMP_MEASURE",
+        "POI_FLOODED_STORE",
+        "POI_MANGROVE_COVE"
+      ],
+      "resourceProfile": {
+        "freebieNodesProtected": false,
+        "sourceRespawnRule": "Item-by-item respawn, only camera-off and no new nodes inside placed buildings",
+        "seedMayVary": "Only secondary sources and salvage; core route resources fixed"
+      },
+      "homeBuildingRules": {
+        "housesAllowed": false,
+        "outpostsAllowed": false,
+        "minClearAreaTiles": [
+          7,
+          6
+        ],
+        "avoidPoiRadiusTiles": 5,
+        "avoidRiverBankTiles": 2
+      },
+      "atmosphere": {
+        "weatherExposure": "WET",
+        "lightTone": "#658e73"
+      }
+    },
+    {
+      "id": "REG_RED_CLIFF",
+      "name": "Kızıl Kayalıklar",
+      "islandId": "MAIN",
+      "mapZoneOrder": 6,
+      "biomeSeedPointLocal": [
+        76,
+        84
+      ],
+      "paletteHex": "#b47c69",
+      "dangerClass": "MEDIUM",
+      "baselineRisk": 0.25,
+      "harvestableItemIds": [
+        "MAT_STONE",
+        "MAT_COAL",
+        "MAT_COPPER_ORE",
+        "MAT_FLINT",
+        "MAT_QUARTZ",
+        "MAT_CLAY"
+      ],
+      "fishSpeciesIds": [],
+      "animalSpeciesIds": [
+        "ANIMAL_LIZARD",
+        "ANIMAL_SNAKE"
+      ],
+      "fixedPoiIds": [
+        "POI_COPPER_MINE",
+        "POI_CABLE_CAR",
+        "POI_MINE_SHELTER"
+      ],
+      "resourceProfile": {
+        "freebieNodesProtected": false,
+        "sourceRespawnRule": "Item-by-item respawn, only camera-off and no new nodes inside placed buildings",
+        "seedMayVary": "Only secondary sources and salvage; core route resources fixed"
+      },
+      "homeBuildingRules": {
+        "housesAllowed": false,
+        "outpostsAllowed": true,
+        "minClearAreaTiles": [
+          7,
+          6
+        ],
+        "avoidPoiRadiusTiles": 5,
+        "avoidRiverBankTiles": 2
+      },
+      "atmosphere": {
+        "weatherExposure": "NORMAL",
+        "lightTone": "#b47c69"
+      }
+    },
+    {
+      "id": "REG_MOUNTAIN",
+      "name": "Kuzey Dağı ve Mağaralar",
+      "islandId": "MAIN",
+      "mapZoneOrder": 7,
+      "biomeSeedPointLocal": [
+        151,
+        60
+      ],
+      "paletteHex": "#89969d",
+      "dangerClass": "MEDIUM",
+      "baselineRisk": 0.25,
+      "harvestableItemIds": [
+        "MAT_IRON_ORE",
+        "MAT_COPPER_ORE",
+        "MAT_QUARTZ",
+        "MAT_COAL",
+        "MAT_STONE",
+        "MAT_SULFUR",
+        "MAT_FLINT"
+      ],
+      "fishSpeciesIds": [
+        "FISH_FRESHWATER_BASS"
+      ],
+      "animalSpeciesIds": [
+        "ANIMAL_FRUIT_BAT"
+      ],
+      "fixedPoiIds": [
+        "POI_OBSERVATORY",
+        "POI_RELAY_SHELTER",
+        "POI_BAT_CAVERN",
+        "POI_UNDERGROUND_POND"
+      ],
+      "resourceProfile": {
+        "freebieNodesProtected": false,
+        "sourceRespawnRule": "Item-by-item respawn, only camera-off and no new nodes inside placed buildings",
+        "seedMayVary": "Only secondary sources and salvage; core route resources fixed"
+      },
+      "homeBuildingRules": {
+        "housesAllowed": false,
+        "outpostsAllowed": true,
+        "minClearAreaTiles": [
+          7,
+          6
+        ],
+        "avoidPoiRadiusTiles": 5,
+        "avoidRiverBankTiles": 2
+      },
+      "atmosphere": {
+        "weatherExposure": "NORMAL",
+        "lightTone": "#89969d"
+      }
+    },
+    {
+      "id": "REG_SETTLEMENT",
+      "name": "Terk Edilmiş Yerleşim",
+      "islandId": "MAIN",
+      "mapZoneOrder": 8,
+      "biomeSeedPointLocal": [
+        205,
+        117
+      ],
+      "paletteHex": "#bbac85",
+      "dangerClass": "LOW",
+      "baselineRisk": 0.13,
+      "harvestableItemIds": [
+        "MAT_BRANCH",
+        "MAT_FIBER",
+        "MAT_LOG",
+        "MAT_STONE",
+        "MAT_CLAY"
+      ],
+      "fishSpeciesIds": [],
+      "animalSpeciesIds": [],
+      "fixedPoiIds": [
+        "POI_RESEARCH_SQUARE",
+        "POI_RADIO_WORKSHOP",
+        "POI_OLD_KITCHEN",
+        "POI_LOCKED_WAREHOUSE"
+      ],
+      "resourceProfile": {
+        "freebieNodesProtected": false,
+        "sourceRespawnRule": "Item-by-item respawn, only camera-off and no new nodes inside placed buildings",
+        "seedMayVary": "Only secondary sources and salvage; core route resources fixed"
+      },
+      "homeBuildingRules": {
+        "housesAllowed": true,
+        "outpostsAllowed": true,
+        "minClearAreaTiles": [
+          7,
+          6
+        ],
+        "avoidPoiRadiusTiles": 5,
+        "avoidRiverBankTiles": 2
+      },
+      "atmosphere": {
+        "weatherExposure": "NORMAL",
+        "lightTone": "#bbac85"
+      }
+    },
+    {
+      "id": "REG_LAGOON",
+      "name": "Doğu Lagünü",
+      "islandId": "MAIN",
+      "mapZoneOrder": 9,
+      "biomeSeedPointLocal": [
+        208,
+        190
+      ],
+      "paletteHex": "#6cb8a5",
+      "dangerClass": "LOW",
+      "baselineRisk": 0.13,
+      "harvestableItemIds": [
+        "MAT_SEAWEED",
+        "MAT_SEASHELL",
+        "MAT_SAND",
+        "MAT_SEA_SALT",
+        "MAT_BAMBOO",
+        "FOOD_COCONUT"
+      ],
+      "fishSpeciesIds": [
+        "FISH_SARDINE",
+        "FISH_MULLET",
+        "FISH_REEF",
+        "FISH_PARROT",
+        "FISH_GROUPER",
+        "FISH_BARRACUDA",
+        "FISH_PUFFER"
+      ],
+      "animalSpeciesIds": [
+        "ANIMAL_CRAB",
+        "MARINE_TURTLE",
+        "MARINE_RAY",
+        "MARINE_REEF_SHARK"
+      ],
+      "fixedPoiIds": [
+        "POI_SHALLOW_WRECK",
+        "POI_REEF_FISSURE",
+        "POI_SAND_SPIT"
+      ],
+      "resourceProfile": {
+        "freebieNodesProtected": false,
+        "sourceRespawnRule": "Item-by-item respawn, only camera-off and no new nodes inside placed buildings",
+        "seedMayVary": "Only secondary sources and salvage; core route resources fixed"
+      },
+      "homeBuildingRules": {
+        "housesAllowed": true,
+        "outpostsAllowed": true,
+        "minClearAreaTiles": [
+          7,
+          6
+        ],
+        "avoidPoiRadiusTiles": 5,
+        "avoidRiverBankTiles": 2
+      },
+      "atmosphere": {
+        "weatherExposure": "WET",
+        "lightTone": "#6cb8a5"
+      }
+    },
+    {
+      "id": "REG_LIGHTHOUSE",
+      "name": "Fener Adacığı",
+      "islandId": "LIGHTHOUSE",
+      "mapZoneOrder": 10,
+      "biomeSeedPointLocal": [
+        32,
+        32
+      ],
+      "paletteHex": "#c8b58b",
+      "dangerClass": "LOW",
+      "baselineRisk": 0.13,
+      "harvestableItemIds": [
+        "MAT_STONE",
+        "MAT_REED",
+        "MAT_SEASHELL",
+        "MAT_BRANCH"
+      ],
+      "fishSpeciesIds": [
+        "FISH_MACKEREL",
+        "FISH_TUNA"
+      ],
+      "animalSpeciesIds": [
+        "ANIMAL_SEABIRD"
+      ],
+      "fixedPoiIds": [
+        "POI_LIGHTHOUSE",
+        "POI_LIGHTHOUSE_KEEPER"
+      ],
+      "resourceProfile": {
+        "freebieNodesProtected": false,
+        "sourceRespawnRule": "Item-by-item respawn, only camera-off and no new nodes inside placed buildings",
+        "seedMayVary": "Only secondary sources and salvage; core route resources fixed"
+      },
+      "homeBuildingRules": {
+        "housesAllowed": false,
+        "outpostsAllowed": true,
+        "minClearAreaTiles": [
+          7,
+          6
+        ],
+        "avoidPoiRadiusTiles": 5,
+        "avoidRiverBankTiles": 2
+      },
+      "atmosphere": {
+        "weatherExposure": "NORMAL",
+        "lightTone": "#c8b58b"
+      }
+    },
+    {
+      "id": "REG_WRECK",
+      "name": "Batık Adası",
+      "islandId": "WRECK",
+      "mapZoneOrder": 11,
+      "biomeSeedPointLocal": [
+        32,
+        32
+      ],
+      "paletteHex": "#d4ba8e",
+      "dangerClass": "LOW",
+      "baselineRisk": 0.13,
+      "harvestableItemIds": [
+        "MAT_SEASHELL",
+        "MAT_SAND",
+        "MAT_SEAWEED",
+        "MAT_STONE"
+      ],
+      "fishSpeciesIds": [
+        "FISH_GROUPER",
+        "FISH_MACKEREL",
+        "FISH_BARRACUDA",
+        "FISH_TUNA"
+      ],
+      "animalSpeciesIds": [
+        "ANIMAL_SEABIRD",
+        "MARINE_REEF_SHARK"
+      ],
+      "fixedPoiIds": [
+        "POI_CAPTAIN_CABIN",
+        "POI_ENGINE_ROOM",
+        "POI_CORAL_CHEST"
+      ],
+      "resourceProfile": {
+        "freebieNodesProtected": false,
+        "sourceRespawnRule": "Item-by-item respawn, only camera-off and no new nodes inside placed buildings",
+        "seedMayVary": "Only secondary sources and salvage; core route resources fixed"
+      },
+      "homeBuildingRules": {
+        "housesAllowed": false,
+        "outpostsAllowed": true,
+        "minClearAreaTiles": [
+          7,
+          6
+        ],
+        "avoidPoiRadiusTiles": 5,
+        "avoidRiverBankTiles": 2
+      },
+      "atmosphere": {
+        "weatherExposure": "NORMAL",
+        "lightTone": "#d4ba8e"
+      }
+    },
+    {
+      "id": "REG_FERTILE",
+      "name": "Bereket Adası",
+      "islandId": "FERTILE",
+      "mapZoneOrder": 12,
+      "biomeSeedPointLocal": [
+        32,
+        32
+      ],
+      "paletteHex": "#8bbf7c",
+      "dangerClass": "SAFE",
+      "baselineRisk": 0.05,
+      "harvestableItemIds": [
+        "FOOD_BANANA",
+        "MAT_MED_HERB",
+        "MAT_FIBER",
+        "MAT_BAMBOO",
+        "SEED_PINEAPPLE",
+        "SEED_CANE",
+        "SEED_SPICE"
+      ],
+      "fishSpeciesIds": [
+        "FISH_REEF",
+        "FISH_PARROT",
+        "FISH_PUFFER"
+      ],
+      "animalSpeciesIds": [
+        "MARINE_TURTLE",
+        "MARINE_RAY"
+      ],
+      "fixedPoiIds": [
+        "POI_ABANDONED_GARDEN",
+        "POI_HERB_GREENHOUSE",
+        "POI_ROCK_SHELTER"
+      ],
+      "resourceProfile": {
+        "freebieNodesProtected": false,
+        "sourceRespawnRule": "Item-by-item respawn, only camera-off and no new nodes inside placed buildings",
+        "seedMayVary": "Only secondary sources and salvage; core route resources fixed"
+      },
+      "homeBuildingRules": {
+        "housesAllowed": true,
+        "outpostsAllowed": true,
+        "minClearAreaTiles": [
+          7,
+          6
+        ],
+        "avoidPoiRadiusTiles": 5,
+        "avoidRiverBankTiles": 2
+      },
+      "atmosphere": {
+        "weatherExposure": "NORMAL",
+        "lightTone": "#8bbf7c"
+      }
+    }
+  ]
+}

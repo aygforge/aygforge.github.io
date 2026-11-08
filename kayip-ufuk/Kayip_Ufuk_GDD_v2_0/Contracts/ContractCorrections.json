@@ -1,0 +1,40 @@
+{
+  "version": "v1.8",
+  "source": "RecipeDB_v1.7",
+  "effective": "RecipeDB_v1.8",
+  "sourceCount": 183,
+  "effectiveCount": 183,
+  "runtimeClassification": {
+    "item": 114,
+    "upgrade": 9,
+    "build": 60
+  },
+  "changes": [
+    {
+      "recipeId": "R_BRIDGE_ADV",
+      "fix": "Explicit mutate-existing semantics; preserve uid, slots, queue and escrow"
+    },
+    {
+      "recipeId": "R_DECOR_SET",
+      "fix": "Explicit mutate-existing semantics; preserve uid, slots, queue and escrow"
+    },
+    {
+      "recipeId": "R_DECOR_SHELL_POT",
+      "fix": "Explicit mutate-existing semantics; preserve uid, slots, queue and escrow"
+    },
+    {
+      "recipeId": "R_FISH_TRAP_ADV",
+      "fix": "Explicit mutate-existing semantics; preserve uid, slots, queue and escrow"
+    },
+    {
+      "recipeId": "R_SEA_CHEST",
+      "fix": "Alternative sea chest is new construction; changes outputType upgrade=>build"
+    }
+  ],
+  "assetIdentityRepair": {
+    "source": "AssetManifest_v1.7 poiScenes uses POI_01..POI_38 and different order than POIDB",
+    "fix": "Map by exact unique Turkish POI name, re-key to canonical POIDB id, derive canonical filename from ID; do not map by list ordinal",
+    "affected": 38
+  },
+  "note": "All previous v1.7 facts remain; only id/behavior contract repairs. No new gameplay items, POIs, puzzles or recipes."
+}

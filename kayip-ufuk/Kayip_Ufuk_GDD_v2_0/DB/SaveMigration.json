@@ -1,0 +1,30 @@
+{
+  "fromVersions": [
+    1,
+    2,
+    3
+  ],
+  "toVersion": 5,
+  "rules": [
+    {
+      "from": 1,
+      "step": "normalize inventory item instances with stable uid; map old POI bool to stage flags"
+    },
+    {
+      "from": 2,
+      "step": "populate clock.processedDailyEventIds, lastDailyUpdateIndex from known recorded game day; do not simulate offline"
+    },
+    {
+      "from": 3,
+      "step": "add cave scene per-player visit state; restore last-safe anchors for vehicle and cave return; add claimKey ledger"
+    }
+  ],
+  "policy": "If required state absent, use safe defaults that do not claim unearned story prizes. Keep backup and never overwrite on incomplete migration.",
+  "v4ToV5": {
+    "newClimateState": "deterministically derive weatherSeed from existing worldSeed and game day; DO NOT reroll already processed days",
+    "newWaterState": "migrate legacy build water stored quantity into centiportions with corresponding water type",
+    "newDurabilityState": "preserve existing item instance durability; fill missing max only from ItemDB",
+    "puzzleStartCondition": "do not reset puzzle progress; only change validation contract",
+    "fallback": "on invalid fields keep known-good v4 snapshot, prompt manual backup"
+  }
+}

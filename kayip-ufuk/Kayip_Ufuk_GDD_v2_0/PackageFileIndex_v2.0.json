@@ -1,0 +1,337 @@
+{
+  "version": "v2.0",
+  "note": "File index excludes itself and CHECKSUMS.sha256 to avoid self-reference",
+  "files": [
+    {
+      "path": "Art/ArtDirection.json",
+      "bytes": 2971,
+      "sha256": "eec77d9bec0849b839a3e33c6057080a67f92c1a445abbff0471106385ede9b1"
+    },
+    {
+      "path": "Art/AssetAcceptanceTests.json",
+      "bytes": 8537,
+      "sha256": "53f401b6b5ad4e40b37ae14f9f61d9e9f640304046d30dee72e25e20c552013d"
+    },
+    {
+      "path": "Art/AssetChecklist_v1.9.csv",
+      "bytes": 348586,
+      "sha256": "a3054883c1072f25910a9266d009dbb527213c095266e8cebd7d49ee4aa5aaa5"
+    },
+    {
+      "path": "Art/AssetPathCompatibility.json",
+      "bytes": 1222,
+      "sha256": "c645f78847c325c775538215a748b9ab594fe3fb5e4235e792c1cfac09e2774f"
+    },
+    {
+      "path": "Art/AssetTasks.json",
+      "bytes": 2216,
+      "sha256": "5988d003362b3af0b32ec59976878eeba99c29b00b3f692cd00b56babea3f4a5"
+    },
+    {
+      "path": "Art/AtlasLayout.json",
+      "bytes": 929326,
+      "sha256": "c97b5f9878d475d6ab341f7a3a8773910bd18da2a36c4926f21e12676cc6c1c3"
+    },
+    {
+      "path": "Art/AudioManifest.json",
+      "bytes": 30599,
+      "sha256": "49b282f34c5c1a8d96a08dd9435ece4f50e50e6a1bab9c62f2d43cc5d2432c8a"
+    },
+    {
+      "path": "Art/AvatarRig.json",
+      "bytes": 114601,
+      "sha256": "bd99e7a8dc4ba829485e517cbefab32d1fb9d73009fc4bd49f871a34faf03081"
+    },
+    {
+      "path": "Art/RegionVisualContract.json",
+      "bytes": 10043,
+      "sha256": "83b2f84563fcb2c41f3c843a1c8a5510a91ae4530b9b08d5906661f5f7bbd999"
+    },
+    {
+      "path": "Art/SpriteCatalog.json",
+      "bytes": 1725927,
+      "sha256": "9ff51e9ca55eb68501d40b012ce8c9c07aaf95c4b889e5d521e193ccbab0dbb7"
+    },
+    {
+      "path": "Art/SpriteProductionQueue_v2.0.csv",
+      "bytes": 407803,
+      "sha256": "fa86b1dde76f68ee76f27014870a29b02cf09e78a6963261d5b00604d4438e90"
+    },
+    {
+      "path": "Assets/README.md",
+      "bytes": 116,
+      "sha256": "5b5b436783b5404d731e468d75751813287c04ee7748eeaf47c0e77db79cef20"
+    },
+    {
+      "path": "ContentIndex_v2.0.json",
+      "bytes": 6151,
+      "sha256": "5bdc7bcde9755a317f2db07cf98d7f47b260acc0a148f6515e292788785d33ae"
+    },
+    {
+      "path": "Contracts/AcceptanceTests.json",
+      "bytes": 36696,
+      "sha256": "05bebbfb1f1f67348695fdf9f8f2f891a63209b1fd63ce2d3cdb827aeae11f4f"
+    },
+    {
+      "path": "Contracts/AssetBuildContract.json",
+      "bytes": 2758,
+      "sha256": "cade56e6d73421c52d1580a0b77c08aff5687b9ead8459179ef306374fadf238"
+    },
+    {
+      "path": "Contracts/ContentContract.json",
+      "bytes": 1836,
+      "sha256": "b1348701fe0388924ca6960e3a18fbbb48185b025cd7edcee6d01d7579e106f7"
+    },
+    {
+      "path": "Contracts/ContractCorrections.json",
+      "bytes": 1346,
+      "sha256": "0f0f2360e6c64ff9ae5579594bcd0dc321ee16980069c66414c7b7fcb102fa4a"
+    },
+    {
+      "path": "Contracts/ImplementationContract.json",
+      "bytes": 12571,
+      "sha256": "b5f782a2fc2ed62e81cdf42c9f4d21667692f86cbb1ac5d78c9fdf79e4dfc69a"
+    },
+    {
+      "path": "Contracts/IntegrationMilestones.json",
+      "bytes": 2212,
+      "sha256": "75a29f44c0c4282dd87e60ba97dbbb32c34bee6b2aed08dd77d5ea50aa3e6fcd"
+    },
+    {
+      "path": "Contracts/SceneFlow.json",
+      "bytes": 5528,
+      "sha256": "83543855d3cdb96c8ce1be962ee74997e06adb9913ceac096499a49910e7dac4"
+    },
+    {
+      "path": "DB/AnimalDB.json",
+      "bytes": 13568,
+      "sha256": "b06854c1b3b3db8e1c0b83ca86ccb94bcaa83ea3af1308fbe06e21f2d07a751a"
+    },
+    {
+      "path": "DB/ArtSpec.json",
+      "bytes": 6897,
+      "sha256": "3eb380afd0cf4445c839c0212b1997283867844b347a67f1d8aa3042480d7e6e"
+    },
+    {
+      "path": "DB/AssetManifest.json",
+      "bytes": 65964,
+      "sha256": "2e88b216551cdf767747688ce751cd679d7c8dfab9e31ea42a9e4c54eef2a5f4"
+    },
+    {
+      "path": "DB/BalanceDB.json",
+      "bytes": 45569,
+      "sha256": "888044d4b8501885bd9040d62bddacc6f7fa4204b9979b92fca4f15e8f6ccfb4"
+    },
+    {
+      "path": "DB/BuildDB.json",
+      "bytes": 24657,
+      "sha256": "4028e2c5373cc6600c4c0f6317101f685dd5879ecc0620d9554f1a83200f0bb2"
+    },
+    {
+      "path": "DB/BuildPlacementDB.json",
+      "bytes": 3064,
+      "sha256": "e2c38ca929492c6cb310208019c4a294a582977ea027e18b3cf4d5fca9a38c4b"
+    },
+    {
+      "path": "DB/CaveDB.json",
+      "bytes": 31434,
+      "sha256": "eceac72b38c122dd1795f8a561e3dc5915ab248ca8ad3a07f5e6ec22974f20db"
+    },
+    {
+      "path": "DB/CollisionNavDB.json",
+      "bytes": 21264,
+      "sha256": "509f86f93c174247cfa94068c52662b53d2883db253b139d55c1151a9d1a94c3"
+    },
+    {
+      "path": "DB/CropDB.json",
+      "bytes": 13257,
+      "sha256": "606385ad9312ed5ac18547affe2917589b599d5a23f96eec527f1a18a6a28598"
+    },
+    {
+      "path": "DB/DesignConstants.json",
+      "bytes": 1115,
+      "sha256": "df52c0b9fccadeee1b0a0e704e21dd7945bcab6b1efcecb8a09bd1e85eeebbb3"
+    },
+    {
+      "path": "DB/DurabilityDB.json",
+      "bytes": 5658,
+      "sha256": "5de9f328e64574bffa48581ef9be496d36300f211c0b5884604912cc53109ce5"
+    },
+    {
+      "path": "DB/EscapeDB.json",
+      "bytes": 8985,
+      "sha256": "6c5025d8ef73e27e20aa2041f8d94480fa2e3610f5a01c5deb4da1399e249f3a"
+    },
+    {
+      "path": "DB/FishDB.json",
+      "bytes": 11196,
+      "sha256": "ce5270dd7dfabf75234168e54bed2025708ca32b68d0b5d2a87b0ae54464c276"
+    },
+    {
+      "path": "DB/ItemDB.json",
+      "bytes": 37157,
+      "sha256": "f11001825cf3fd728ec57d78faacadcbda61cbeb0f1c60d418198655685d1ab5"
+    },
+    {
+      "path": "DB/LootSpawnDB.json",
+      "bytes": 27829,
+      "sha256": "88358f4c28ab4ffe9195392c35699cc610bfa73edcef49b6df8809071ec78021"
+    },
+    {
+      "path": "DB/LootTableDB.json",
+      "bytes": 53415,
+      "sha256": "5b53e6d858aa36f965decf15615bdad44541cbb9a0ba6fd8980ab54f7893284f"
+    },
+    {
+      "path": "DB/NavigationDB.json",
+      "bytes": 37448,
+      "sha256": "5479048ad0c659d954b95a3d6c311631e21f90d25dd59885919474472b51a4c8"
+    },
+    {
+      "path": "DB/POIDB.json",
+      "bytes": 44285,
+      "sha256": "0b92c480451dc4bb3fab1f6235a8c9bdc082473306020e5d9c11c4cb5b1943f9"
+    },
+    {
+      "path": "DB/PuzzleDB.json",
+      "bytes": 21959,
+      "sha256": "1362955ca756d2e74069680fc5f5e95f32c60e2ef4286cd97089861ca5757f3a"
+    },
+    {
+      "path": "DB/RecipeDB.json",
+      "bytes": 66085,
+      "sha256": "380389932108bd15a4304d09323b85540f94a521ac26a215f1a3dbe1d5b92f81"
+    },
+    {
+      "path": "DB/RegionDB.json",
+      "bytes": 16699,
+      "sha256": "4fe8810b0803e44a43eebbdfee3d836ea9ac3980a794ec5d1831b80670a3ed23"
+    },
+    {
+      "path": "DB/ResourceEconomyDB.json",
+      "bytes": 9247,
+      "sha256": "da8c2843d6da8c6cd09571e89d313672c1be6aa176fbbb8652eac2d6f7b0dcea"
+    },
+    {
+      "path": "DB/SaveMigration.json",
+      "bytes": 1249,
+      "sha256": "0de2910cc2fd3a2659d4fca5f0d010a2dc50d5cdd7f8d03e04ae6bbe817d5cb9"
+    },
+    {
+      "path": "DB/SaveSchema.json",
+      "bytes": 11108,
+      "sha256": "0fdb11e16f90a9eece85e3020780d41d6e9d3a8579e2a46fe6518b07c12bc35f"
+    },
+    {
+      "path": "DB/SkillDB.json",
+      "bytes": 7263,
+      "sha256": "c29e253fa41d5cfcea4fa3aa5d3128257909a1e550a636bd23d3fb62182ad433"
+    },
+    {
+      "path": "DB/StoryDB.json",
+      "bytes": 13312,
+      "sha256": "f710eee409f7aec69d989426cee2b9059513324747b127d78fab4673a9530a26"
+    },
+    {
+      "path": "DB/TerrainDB.json",
+      "bytes": 9619,
+      "sha256": "b6b09f70235a30356e0419d2b839de8bd4e649e1a46ffb18a089316782d99c37"
+    },
+    {
+      "path": "DB/TrapDB.json",
+      "bytes": 2117,
+      "sha256": "8628fc18e34229040c83edc4adf1a1df0d95ba041ca1079054ef64e7bc061ad7"
+    },
+    {
+      "path": "DB/WaterEconomyDB.json",
+      "bytes": 3572,
+      "sha256": "dc3ebafac802d531e28853850f614c40f5855adff0274f9fe9192d76e9e54480"
+    },
+    {
+      "path": "DB/WeatherDB.json",
+      "bytes": 3911,
+      "sha256": "83458a56cafa4e191e8b1a07a1b1177447489870bceb916f99c18e90a7f38dcf"
+    },
+    {
+      "path": "DB/WorldMap.json",
+      "bytes": 14725,
+      "sha256": "2412d0cda55922ba01ff0db73fa644fecbba1ebcdb5ffdd9ebfa29ed8dcb5140"
+    },
+    {
+      "path": "Docs/Kayip_Ufuk_GDD_v2.0_Tek_Kaynak_Tam_Surum.md",
+      "bytes": 76800,
+      "sha256": "9eaa468b768190d19daba712a74f3ad4e7c1331cd30f2a116222f44e8f2f3fdb"
+    },
+    {
+      "path": "Maps/CaveGrid_CAVE_BATS_v1.4.json",
+      "bytes": 8524,
+      "sha256": "82d096b8344166c830798f6f0a69b93313f5450d0359c96a809885ebf6ce3eba"
+    },
+    {
+      "path": "Maps/CaveGrid_CAVE_COPPER_v1.4.json",
+      "bytes": 6749,
+      "sha256": "6f9d92e649abf7a00ee2b59be159ff28f162516a9c8eef10e1b52933166ac919"
+    },
+    {
+      "path": "Maps/CaveGrid_CAVE_POND_v1.4.json",
+      "bytes": 8700,
+      "sha256": "1b9bc2d13a964ad639004f15486745e3dce6e3f7004313a735a384ef87a83503"
+    },
+    {
+      "path": "Maps/CaveMaps_v1.4_Teknik_Onizleme.png",
+      "bytes": 38454,
+      "sha256": "7d3303d1b736d52ad4eb3ce9eeaa0ca943b4a337e36d9c6412658e6ba43734e4"
+    },
+    {
+      "path": "Maps/TerrainGrid_FERTILE_v1.2.json",
+      "bytes": 39407,
+      "sha256": "2cc84d22d37b056ca7a12723e2999e167a5000d0e99cf71e56627ca0dc88d7e6"
+    },
+    {
+      "path": "Maps/TerrainGrid_LIGHTHOUSE_v1.2.json",
+      "bytes": 37874,
+      "sha256": "23bb326cbe95ae7ca24bdd9f1552cddd550f40ededd2c9f32cb84272c389028f"
+    },
+    {
+      "path": "Maps/TerrainGrid_MAIN_v1.2.json",
+      "bytes": 348069,
+      "sha256": "8ec91558b6f05fc86609ff96f94f320340feb787261c1b29045b7c308ce9a42b"
+    },
+    {
+      "path": "Maps/TerrainGrid_WRECK_v1.2.json",
+      "bytes": 36904,
+      "sha256": "ee034f5d5ea493d423fc19b815254aad49a07e574195b9e2108095292fcd1fa6"
+    },
+    {
+      "path": "Maps/Terrain_v1.2_Teknik_Harita.png",
+      "bytes": 79617,
+      "sha256": "c3489a1ebf59e265a2b50ed1df0fa25a27e7f7dbfeeb0d5f986c90c7c6e16683"
+    },
+    {
+      "path": "ProductionTruth_v2.0.json",
+      "bytes": 3037,
+      "sha256": "3e7f9cafcd9e2144d1a921b76d72bd37f7674e013be91636cdcd7ffe4718ea7e"
+    },
+    {
+      "path": "QA/RUNBOOK.md",
+      "bytes": 784,
+      "sha256": "6db2d2e555f9fb81c3a06351a37a51d9a460c56cd8139ced17998f3d455d9bd3"
+    },
+    {
+      "path": "QA/Validation_v2.0.json",
+      "bytes": 7256,
+      "sha256": "c57e5e696a046e698ea15d9919173c72b2c530446ef9b808d74191387a3b4ec9"
+    },
+    {
+      "path": "QA/audit_v20.py",
+      "bytes": 6171,
+      "sha256": "9e8c7d17cac35c0c146eda7132390612df332c0b76d8e687b54476e4ccc44f37"
+    },
+    {
+      "path": "README_BASLANGIC.md",
+      "bytes": 1331,
+      "sha256": "57a363613e4fde4582b96544a6349d7e7daa236cb5faf02a88ad886c2ecf1b7e"
+    }
+  ],
+  "count": 66
+}

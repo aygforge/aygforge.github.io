@@ -1,0 +1,45 @@
+{
+  "version": "1.7",
+  "game": "Kayıp Ufuk",
+  "platform": [
+    "mobile landscape HTML5 Canvas",
+    "desktop browser"
+  ],
+  "artStyle": "modern colorful pixel art",
+  "worldMode": "hand-crafted fixed critical geography + seeded optional loot",
+  "playerCount": 1,
+  "livingHumanNPCs": 0,
+  "shelterModel": "A prefab houses + freely placed furnishings and stations; NO modular wall/roof/floor",
+  "day": {
+    "realtimeMinutes": 18,
+    "daylightMinutes": 11,
+    "duskMinutes": 2,
+    "nightMinutes": 5
+  },
+  "needsDaily": {
+    "hunger": 32,
+    "thirst": 42,
+    "rest": 35
+  },
+  "proficiency": "8 skills; 5 ranks; 0/80/220/450/800 XP",
+  "startingBackpackSlots": 24,
+  "upgradedBackpackSlots": [
+    32,
+    40
+  ],
+  "quickbarSlots": 6,
+  "activePetsMax": 1,
+  "petsAvailable": [
+    "parrot",
+    "monkey"
+  ],
+  "activeTrapsMax": 6,
+  "campSlots": 4,
+  "ends": [
+    "ESCAPE_SAIL",
+    "ESCAPE_RADIO"
+  ],
+  "afterEnding": "continue playing world checkpoint; keep achievement",
+  "puzzleDensity": "B 12 environmental puzzles",
+  "craftingUnlocks": "C hybrid discovery + station + optional blueprint"
+}

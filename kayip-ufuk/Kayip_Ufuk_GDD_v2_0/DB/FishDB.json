@@ -1,0 +1,516 @@
+{
+  "meta": {
+    "version": "v1.0",
+    "basedOn": "ItemDB_v0.9",
+    "speciesCount": 10,
+    "designStatus": "BALANCE_PROPOSAL",
+    "clock": "18 real minutes = 1 in-game day; day-phase weights are game-time based",
+    "reference": "fish species remain a journal record; edible catch becomes existing MAT_RAW_FISH"
+  },
+  "config": {
+    "castWaitSeconds": {
+      "commonMin": 4,
+      "commonMax": 12,
+      "rareMin": 7,
+      "rareMax": 20
+    },
+    "tensionSafeRange": [
+      25,
+      75
+    ],
+    "tensionLoseThresholdSeconds": 1.6,
+    "hookFailureIfSlackSeconds": 4,
+    "habitatStockMin": 0.6,
+    "habitatStockMax": 1.0,
+    "stockCostPerCatch": 0.04,
+    "stockRegainPerGameDay": 0.08,
+    "fishSizeLootRule": "Portions scaled between species min/max by weight percentile; conservation-oriented releaseOnly yields zero",
+    "pufferPolicy": "Never food or MAT_RAW_FISH. Released; collection entry granted",
+    "baitConsumesOnCast": true,
+    "discoveredCaughtFishStaysInJournal": true,
+    "spearfishingRule": "Only spearAllowed fish in shallow visible waters. Aim and timed hit; never force full rod minigame",
+    "rodTierLevels": {
+      "TOOL_FISH_ROD": 1,
+      "TOOL_FISH_ROD_ADV": 2
+    },
+    "spearfishToolId": "TOOL_WOOD_SPEAR",
+    "fishBaitIds": [
+      "MAT_WORM",
+      "CMP_SIMPLE_BAIT",
+      "CMP_FISH_BAIT",
+      "CMP_ADV_BAIT"
+    ],
+    "noBaitAllowedForCommonFish": true,
+    "dailyFishTrapCap": "Determined by TrapDB; no catch if full"
+  },
+  "fish": [
+    {
+      "id": "FISH_SARDINE",
+      "name": "Sardalya",
+      "habitats": [
+        "SHALLOW_COAST",
+        "COAST"
+      ],
+      "regionIds": [
+        "REG_BEACH",
+        "REG_LAGOON"
+      ],
+      "difficulty": 1,
+      "sizeCm": {
+        "min": 12,
+        "max": 24
+      },
+      "rawFishPortions": {
+        "min": 1,
+        "max": 1
+      },
+      "outputItemId": "MAT_RAW_FISH",
+      "releaseOnly": false,
+      "catchWeight": 110,
+      "minRodTier": 1,
+      "spearAllowed": true,
+      "preferredPhases": [
+        "MORNING",
+        "DAY"
+      ],
+      "preferredBaits": [
+        "CMP_SIMPLE_BAIT",
+        "CMP_ADV_BAIT"
+      ],
+      "baitOverrides": {
+        "MAT_WORM": 1.12,
+        "CMP_SIMPLE_BAIT": 1.2,
+        "CMP_FISH_BAIT": 1.05,
+        "CMP_ADV_BAIT": 1.35
+      },
+      "fightSeconds": {
+        "min": 4,
+        "max": 8
+      },
+      "catchXp": 10,
+      "collectionCategory": "fish",
+      "iconKey": "fish_sardine"
+    },
+    {
+      "id": "FISH_MULLET",
+      "name": "Kefal",
+      "habitats": [
+        "COAST",
+        "ESTUARY"
+      ],
+      "regionIds": [
+        "REG_BEACH",
+        "REG_VALLEY",
+        "REG_LAGOON"
+      ],
+      "difficulty": 1,
+      "sizeCm": {
+        "min": 22,
+        "max": 55
+      },
+      "rawFishPortions": {
+        "min": 1,
+        "max": 2
+      },
+      "outputItemId": "MAT_RAW_FISH",
+      "releaseOnly": false,
+      "catchWeight": 100,
+      "minRodTier": 1,
+      "spearAllowed": true,
+      "preferredPhases": [
+        "MORNING",
+        "EVENING"
+      ],
+      "preferredBaits": [
+        "CMP_SIMPLE_BAIT",
+        "CMP_ADV_BAIT"
+      ],
+      "baitOverrides": {
+        "MAT_WORM": 1.12,
+        "CMP_SIMPLE_BAIT": 1.2,
+        "CMP_FISH_BAIT": 1.05,
+        "CMP_ADV_BAIT": 1.35
+      },
+      "fightSeconds": {
+        "min": 4,
+        "max": 8
+      },
+      "catchXp": 10,
+      "collectionCategory": "fish",
+      "iconKey": "fish_mullet"
+    },
+    {
+      "id": "FISH_FRESHWATER_BASS",
+      "name": "Tatlısu levreği",
+      "habitats": [
+        "RIVER",
+        "CAVE_POOL"
+      ],
+      "regionIds": [
+        "REG_VALLEY",
+        "REG_MOUNTAIN"
+      ],
+      "difficulty": 2,
+      "sizeCm": {
+        "min": 18,
+        "max": 48
+      },
+      "rawFishPortions": {
+        "min": 1,
+        "max": 2
+      },
+      "outputItemId": "MAT_RAW_FISH",
+      "releaseOnly": false,
+      "catchWeight": 85,
+      "minRodTier": 1,
+      "spearAllowed": false,
+      "preferredPhases": [
+        "DAY",
+        "EVENING"
+      ],
+      "preferredBaits": [
+        "CMP_SIMPLE_BAIT",
+        "CMP_ADV_BAIT"
+      ],
+      "baitOverrides": {
+        "MAT_WORM": 1.12,
+        "CMP_SIMPLE_BAIT": 1.2,
+        "CMP_FISH_BAIT": 1.05,
+        "CMP_ADV_BAIT": 1.35
+      },
+      "fightSeconds": {
+        "min": 4,
+        "max": 8
+      },
+      "catchXp": 10,
+      "collectionCategory": "fish",
+      "iconKey": "fish_freshwater_bass"
+    },
+    {
+      "id": "FISH_REEF",
+      "name": "Mercan balığı",
+      "habitats": [
+        "LAGOON",
+        "REEF"
+      ],
+      "regionIds": [
+        "REG_LAGOON",
+        "REG_FERTILE"
+      ],
+      "difficulty": 2,
+      "sizeCm": {
+        "min": 15,
+        "max": 35
+      },
+      "rawFishPortions": {
+        "min": 1,
+        "max": 2
+      },
+      "outputItemId": "MAT_RAW_FISH",
+      "releaseOnly": false,
+      "catchWeight": 95,
+      "minRodTier": 1,
+      "spearAllowed": true,
+      "preferredPhases": [
+        "DAY"
+      ],
+      "preferredBaits": [
+        "CMP_SIMPLE_BAIT",
+        "CMP_ADV_BAIT"
+      ],
+      "baitOverrides": {
+        "MAT_WORM": 1.12,
+        "CMP_SIMPLE_BAIT": 1.2,
+        "CMP_FISH_BAIT": 1.05,
+        "CMP_ADV_BAIT": 1.35
+      },
+      "fightSeconds": {
+        "min": 4,
+        "max": 8
+      },
+      "catchXp": 10,
+      "collectionCategory": "fish",
+      "iconKey": "fish_reef"
+    },
+    {
+      "id": "FISH_PARROT",
+      "name": "Papağan balığı",
+      "habitats": [
+        "REEF",
+        "LAGOON"
+      ],
+      "regionIds": [
+        "REG_LAGOON",
+        "REG_FERTILE"
+      ],
+      "difficulty": 2,
+      "sizeCm": {
+        "min": 25,
+        "max": 60
+      },
+      "rawFishPortions": {
+        "min": 2,
+        "max": 2
+      },
+      "outputItemId": "MAT_RAW_FISH",
+      "releaseOnly": false,
+      "catchWeight": 70,
+      "minRodTier": 1,
+      "spearAllowed": false,
+      "preferredPhases": [
+        "DAY"
+      ],
+      "preferredBaits": [
+        "CMP_SIMPLE_BAIT",
+        "CMP_ADV_BAIT"
+      ],
+      "baitOverrides": {
+        "MAT_WORM": 1.12,
+        "CMP_SIMPLE_BAIT": 1.2,
+        "CMP_FISH_BAIT": 1.05,
+        "CMP_ADV_BAIT": 1.35
+      },
+      "fightSeconds": {
+        "min": 4,
+        "max": 8
+      },
+      "catchXp": 10,
+      "collectionCategory": "fish",
+      "iconKey": "fish_parrot"
+    },
+    {
+      "id": "FISH_GROUPER",
+      "name": "Orfoz",
+      "habitats": [
+        "ROCKY",
+        "REEF"
+      ],
+      "regionIds": [
+        "REG_LAGOON",
+        "REG_WRECK"
+      ],
+      "difficulty": 3,
+      "sizeCm": {
+        "min": 35,
+        "max": 95
+      },
+      "rawFishPortions": {
+        "min": 2,
+        "max": 3
+      },
+      "outputItemId": "MAT_RAW_FISH",
+      "releaseOnly": false,
+      "catchWeight": 42,
+      "minRodTier": 1,
+      "spearAllowed": false,
+      "preferredPhases": [
+        "EVENING",
+        "NIGHT"
+      ],
+      "preferredBaits": [
+        "CMP_FISH_BAIT",
+        "CMP_ADV_BAIT"
+      ],
+      "baitOverrides": {
+        "MAT_WORM": 0.75,
+        "CMP_SIMPLE_BAIT": 0.8,
+        "CMP_FISH_BAIT": 1.25,
+        "CMP_ADV_BAIT": 1.35
+      },
+      "fightSeconds": {
+        "min": 7,
+        "max": 12
+      },
+      "catchXp": 10,
+      "collectionCategory": "fish",
+      "iconKey": "fish_grouper"
+    },
+    {
+      "id": "FISH_MACKEREL",
+      "name": "Uskumru",
+      "habitats": [
+        "COAST",
+        "OPEN_SEA"
+      ],
+      "regionIds": [
+        "REG_BEACH",
+        "REG_WRECK",
+        "REG_LIGHTHOUSE"
+      ],
+      "difficulty": 3,
+      "sizeCm": {
+        "min": 20,
+        "max": 50
+      },
+      "rawFishPortions": {
+        "min": 2,
+        "max": 2
+      },
+      "outputItemId": "MAT_RAW_FISH",
+      "releaseOnly": false,
+      "catchWeight": 56,
+      "minRodTier": 1,
+      "spearAllowed": false,
+      "preferredPhases": [
+        "MORNING",
+        "EVENING"
+      ],
+      "preferredBaits": [
+        "CMP_FISH_BAIT",
+        "CMP_ADV_BAIT"
+      ],
+      "baitOverrides": {
+        "MAT_WORM": 0.75,
+        "CMP_SIMPLE_BAIT": 0.8,
+        "CMP_FISH_BAIT": 1.25,
+        "CMP_ADV_BAIT": 1.35
+      },
+      "fightSeconds": {
+        "min": 7,
+        "max": 12
+      },
+      "catchXp": 10,
+      "collectionCategory": "fish",
+      "iconKey": "fish_mackerel"
+    },
+    {
+      "id": "FISH_BARRACUDA",
+      "name": "Baraküda",
+      "habitats": [
+        "REEF_EDGE",
+        "OPEN_SEA"
+      ],
+      "regionIds": [
+        "REG_LAGOON",
+        "REG_WRECK"
+      ],
+      "difficulty": 4,
+      "sizeCm": {
+        "min": 55,
+        "max": 125
+      },
+      "rawFishPortions": {
+        "min": 2,
+        "max": 3
+      },
+      "outputItemId": "MAT_RAW_FISH",
+      "releaseOnly": false,
+      "catchWeight": 20,
+      "minRodTier": 2,
+      "spearAllowed": false,
+      "preferredPhases": [
+        "DAY",
+        "EVENING"
+      ],
+      "preferredBaits": [
+        "CMP_FISH_BAIT",
+        "CMP_ADV_BAIT"
+      ],
+      "baitOverrides": {
+        "MAT_WORM": 0.75,
+        "CMP_SIMPLE_BAIT": 0.8,
+        "CMP_FISH_BAIT": 1.25,
+        "CMP_ADV_BAIT": 1.35
+      },
+      "fightSeconds": {
+        "min": 10,
+        "max": 18
+      },
+      "catchXp": 16,
+      "collectionCategory": "fish",
+      "iconKey": "fish_barracuda"
+    },
+    {
+      "id": "FISH_TUNA",
+      "name": "Ton balığı",
+      "habitats": [
+        "OPEN_SEA"
+      ],
+      "regionIds": [
+        "REG_WRECK",
+        "REG_LIGHTHOUSE"
+      ],
+      "difficulty": 5,
+      "sizeCm": {
+        "min": 80,
+        "max": 175
+      },
+      "rawFishPortions": {
+        "min": 3,
+        "max": 4
+      },
+      "outputItemId": "MAT_RAW_FISH",
+      "releaseOnly": false,
+      "catchWeight": 12,
+      "minRodTier": 2,
+      "spearAllowed": false,
+      "preferredPhases": [
+        "MORNING",
+        "DAY"
+      ],
+      "preferredBaits": [
+        "CMP_FISH_BAIT",
+        "CMP_ADV_BAIT"
+      ],
+      "baitOverrides": {
+        "MAT_WORM": 0.75,
+        "CMP_SIMPLE_BAIT": 0.8,
+        "CMP_FISH_BAIT": 1.25,
+        "CMP_ADV_BAIT": 1.35
+      },
+      "fightSeconds": {
+        "min": 10,
+        "max": 18
+      },
+      "catchXp": 16,
+      "collectionCategory": "fish",
+      "iconKey": "fish_tuna"
+    },
+    {
+      "id": "FISH_PUFFER",
+      "name": "Balon balığı",
+      "habitats": [
+        "REEF",
+        "LAGOON"
+      ],
+      "regionIds": [
+        "REG_LAGOON",
+        "REG_FERTILE"
+      ],
+      "difficulty": 3,
+      "sizeCm": {
+        "min": 12,
+        "max": 35
+      },
+      "rawFishPortions": {
+        "min": 0,
+        "max": 0
+      },
+      "outputItemId": null,
+      "releaseOnly": true,
+      "catchWeight": 38,
+      "minRodTier": 1,
+      "spearAllowed": false,
+      "preferredPhases": [
+        "DAY"
+      ],
+      "preferredBaits": [
+        "CMP_FISH_BAIT",
+        "CMP_ADV_BAIT"
+      ],
+      "baitOverrides": {
+        "MAT_WORM": 0.75,
+        "CMP_SIMPLE_BAIT": 0.8,
+        "CMP_FISH_BAIT": 1.25,
+        "CMP_ADV_BAIT": 1.35
+      },
+      "fightSeconds": {
+        "min": 7,
+        "max": 12
+      },
+      "catchXp": 10,
+      "collectionCategory": "fish",
+      "iconKey": "fish_puffer"
+    }
+  ]
+}

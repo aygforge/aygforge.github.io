@@ -1,0 +1,503 @@
+{
+  "meta": {
+    "version": "v1.0",
+    "basedOn": "ItemDB_v0.9 and BuildDB_v0.9",
+    "cropCount": 12,
+    "designStatus": "BALANCE_PROPOSAL"
+  },
+  "config": {
+    "dayDurationRealSeconds": 1080,
+    "oneWaterUnitPerCropPerGameDay": true,
+    "farmingWaterSavingsRule": "integer centiportions, level5 needs 85/100 per plot on dry day; matches SkillDB_v1.0",
+    "irrigationWaterSource": "LOCAL_TANK_OR_RIVER_SUPPLY_ONLY; drinkable WATER_CLEAN inventory not required",
+    "rainWateringOrder": "weather slices -> wet plot by day -> irrigation RAW -> manual -> growth tick; only 1 growth tick/day",
+    "dailyGrowthTick": "When in-game date advances (including sleep), water is consumed and growth increments by one day if watered",
+    "yieldSkillAndFertilizer": "Two independent chances, but absolute extra crop cap +1 per harvest",
+    "seedSecurity": "Guaranteed 1 seed at each harvest even for perennial crops; for repeatHarvest, existing plant also remains",
+    "cropDecay": "None while planted; harvested food per ItemDB spoils normally",
+    "offscreenGrowth": "Calculate elapsed in-game days from timestamps once, do not run animation on unloaded chunks",
+    "farmXpRule": "Plant 3 xp; harvest 10 xp; no XP for watering repeatedly"
+  },
+  "crops": [
+    {
+      "id": "CROP_ROOT",
+      "name": "Kök sebze",
+      "seedItemId": "SEED_ROOT",
+      "harvestItemId": "CROP_ROOT",
+      "growGameDays": 2,
+      "yieldMin": 2,
+      "yieldMax": 3,
+      "seedRefundMinPerHarvest": 1,
+      "repeatHarvest": false,
+      "regrowGameDays": null,
+      "waterUnitsPerGameDay": 1,
+      "rainAutoWaters": true,
+      "droughtEffect": "pause_progress_not_die",
+      "fertilizerId": "CMP_COMPOST",
+      "fertilizerBonusChance": 0.2,
+      "extraHarvestMax": 1,
+      "growthStageFractions": [
+        0,
+        0.25,
+        0.6,
+        1.0
+      ],
+      "canPlantIn": "BUILD_PLANTER",
+      "requiresDirectSunlight": false,
+      "suggestedDiscoveryRegion": "REG_VALLEY",
+      "cropSpriteFilePattern": "assets/generated/crops/crop_root_<stage>.png",
+      "farmingXp": {
+        "plant": 3,
+        "harvest": 10
+      },
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "visualOverhangTiles": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "CROP_GREENS",
+      "name": "Yeşillik",
+      "seedItemId": "SEED_GREENS",
+      "harvestItemId": "CROP_GREENS",
+      "growGameDays": 2,
+      "yieldMin": 3,
+      "yieldMax": 4,
+      "seedRefundMinPerHarvest": 1,
+      "repeatHarvest": false,
+      "regrowGameDays": null,
+      "waterUnitsPerGameDay": 1,
+      "rainAutoWaters": true,
+      "droughtEffect": "pause_progress_not_die",
+      "fertilizerId": "CMP_COMPOST",
+      "fertilizerBonusChance": 0.2,
+      "extraHarvestMax": 1,
+      "growthStageFractions": [
+        0,
+        0.25,
+        0.6,
+        1.0
+      ],
+      "canPlantIn": "BUILD_PLANTER",
+      "requiresDirectSunlight": false,
+      "suggestedDiscoveryRegion": "REG_VALLEY",
+      "cropSpriteFilePattern": "assets/generated/crops/crop_greens_<stage>.png",
+      "farmingXp": {
+        "plant": 3,
+        "harvest": 10
+      },
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "visualOverhangTiles": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "CROP_BEAN",
+      "name": "Fasulye",
+      "seedItemId": "SEED_BEAN",
+      "harvestItemId": "CROP_BEAN",
+      "growGameDays": 3,
+      "yieldMin": 3,
+      "yieldMax": 4,
+      "seedRefundMinPerHarvest": 1,
+      "repeatHarvest": false,
+      "regrowGameDays": null,
+      "waterUnitsPerGameDay": 1,
+      "rainAutoWaters": true,
+      "droughtEffect": "pause_progress_not_die",
+      "fertilizerId": "CMP_COMPOST",
+      "fertilizerBonusChance": 0.2,
+      "extraHarvestMax": 1,
+      "growthStageFractions": [
+        0,
+        0.25,
+        0.6,
+        1.0
+      ],
+      "canPlantIn": "BUILD_PLANTER",
+      "requiresDirectSunlight": false,
+      "suggestedDiscoveryRegion": "REG_VALLEY",
+      "cropSpriteFilePattern": "assets/generated/crops/crop_bean_<stage>.png",
+      "farmingXp": {
+        "plant": 3,
+        "harvest": 10
+      },
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "visualOverhangTiles": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "CROP_PEPPER",
+      "name": "Tropik biber",
+      "seedItemId": "SEED_PEPPER",
+      "harvestItemId": "CROP_PEPPER",
+      "growGameDays": 3,
+      "yieldMin": 2,
+      "yieldMax": 3,
+      "seedRefundMinPerHarvest": 1,
+      "repeatHarvest": true,
+      "regrowGameDays": 2,
+      "waterUnitsPerGameDay": 1,
+      "rainAutoWaters": true,
+      "droughtEffect": "pause_progress_not_die",
+      "fertilizerId": "CMP_COMPOST",
+      "fertilizerBonusChance": 0.2,
+      "extraHarvestMax": 1,
+      "growthStageFractions": [
+        0,
+        0.25,
+        0.6,
+        1.0
+      ],
+      "canPlantIn": "BUILD_PLANTER",
+      "requiresDirectSunlight": false,
+      "suggestedDiscoveryRegion": "REG_FOREST",
+      "cropSpriteFilePattern": "assets/generated/crops/crop_pepper_<stage>.png",
+      "farmingXp": {
+        "plant": 3,
+        "harvest": 10
+      },
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "visualOverhangTiles": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "CROP_HERB",
+      "name": "Şifalı ekin",
+      "seedItemId": "SEED_HERB",
+      "harvestItemId": "CROP_HERB",
+      "growGameDays": 3,
+      "yieldMin": 2,
+      "yieldMax": 3,
+      "seedRefundMinPerHarvest": 1,
+      "repeatHarvest": false,
+      "regrowGameDays": null,
+      "waterUnitsPerGameDay": 1,
+      "rainAutoWaters": true,
+      "droughtEffect": "pause_progress_not_die",
+      "fertilizerId": "CMP_COMPOST",
+      "fertilizerBonusChance": 0.2,
+      "extraHarvestMax": 1,
+      "growthStageFractions": [
+        0,
+        0.25,
+        0.6,
+        1.0
+      ],
+      "canPlantIn": "BUILD_PLANTER",
+      "requiresDirectSunlight": false,
+      "suggestedDiscoveryRegion": "REG_SWAMP",
+      "cropSpriteFilePattern": "assets/generated/crops/crop_herb_<stage>.png",
+      "farmingXp": {
+        "plant": 3,
+        "harvest": 10
+      },
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "visualOverhangTiles": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "CROP_FIBER",
+      "name": "Lif ekini",
+      "seedItemId": "SEED_FIBER",
+      "harvestItemId": "CROP_FIBER",
+      "growGameDays": 3,
+      "yieldMin": 2,
+      "yieldMax": 3,
+      "seedRefundMinPerHarvest": 1,
+      "repeatHarvest": false,
+      "regrowGameDays": null,
+      "waterUnitsPerGameDay": 1,
+      "rainAutoWaters": true,
+      "droughtEffect": "pause_progress_not_die",
+      "fertilizerId": "CMP_COMPOST",
+      "fertilizerBonusChance": 0.2,
+      "extraHarvestMax": 1,
+      "growthStageFractions": [
+        0,
+        0.25,
+        0.6,
+        1.0
+      ],
+      "canPlantIn": "BUILD_PLANTER",
+      "requiresDirectSunlight": false,
+      "suggestedDiscoveryRegion": "REG_GROVE",
+      "cropSpriteFilePattern": "assets/generated/crops/crop_fiber_<stage>.png",
+      "farmingXp": {
+        "plant": 3,
+        "harvest": 10
+      },
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "visualOverhangTiles": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "CROP_PUMPKIN",
+      "name": "Kabak",
+      "seedItemId": "SEED_PUMPKIN",
+      "harvestItemId": "CROP_PUMPKIN",
+      "growGameDays": 4,
+      "yieldMin": 2,
+      "yieldMax": 3,
+      "seedRefundMinPerHarvest": 1,
+      "repeatHarvest": false,
+      "regrowGameDays": null,
+      "waterUnitsPerGameDay": 1,
+      "rainAutoWaters": true,
+      "droughtEffect": "pause_progress_not_die",
+      "fertilizerId": "CMP_COMPOST",
+      "fertilizerBonusChance": 0.2,
+      "extraHarvestMax": 1,
+      "growthStageFractions": [
+        0,
+        0.25,
+        0.6,
+        1.0
+      ],
+      "canPlantIn": "BUILD_PLANTER",
+      "requiresDirectSunlight": false,
+      "suggestedDiscoveryRegion": "REG_VALLEY",
+      "cropSpriteFilePattern": "assets/generated/crops/crop_pumpkin_<stage>.png",
+      "farmingXp": {
+        "plant": 3,
+        "harvest": 10
+      },
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "visualOverhangTiles": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "CROP_PINEAPPLE",
+      "name": "Ananas",
+      "seedItemId": "SEED_PINEAPPLE",
+      "harvestItemId": "CROP_PINEAPPLE",
+      "growGameDays": 4,
+      "yieldMin": 1,
+      "yieldMax": 2,
+      "seedRefundMinPerHarvest": 1,
+      "repeatHarvest": true,
+      "regrowGameDays": 3,
+      "waterUnitsPerGameDay": 1,
+      "rainAutoWaters": true,
+      "droughtEffect": "pause_progress_not_die",
+      "fertilizerId": "CMP_COMPOST",
+      "fertilizerBonusChance": 0.2,
+      "extraHarvestMax": 1,
+      "growthStageFractions": [
+        0,
+        0.25,
+        0.6,
+        1.0
+      ],
+      "canPlantIn": "BUILD_PLANTER",
+      "requiresDirectSunlight": false,
+      "suggestedDiscoveryRegion": "REG_FERTILE",
+      "cropSpriteFilePattern": "assets/generated/crops/crop_pineapple_<stage>.png",
+      "farmingXp": {
+        "plant": 3,
+        "harvest": 10
+      },
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "visualOverhangTiles": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "CROP_BANANA",
+      "name": "Muz",
+      "seedItemId": "SEED_BANANA",
+      "harvestItemId": "CROP_BANANA",
+      "growGameDays": 4,
+      "yieldMin": 3,
+      "yieldMax": 4,
+      "seedRefundMinPerHarvest": 1,
+      "repeatHarvest": true,
+      "regrowGameDays": 3,
+      "waterUnitsPerGameDay": 1,
+      "rainAutoWaters": true,
+      "droughtEffect": "pause_progress_not_die",
+      "fertilizerId": "CMP_COMPOST",
+      "fertilizerBonusChance": 0.2,
+      "extraHarvestMax": 1,
+      "growthStageFractions": [
+        0,
+        0.25,
+        0.6,
+        1.0
+      ],
+      "canPlantIn": "BUILD_PLANTER",
+      "requiresDirectSunlight": false,
+      "suggestedDiscoveryRegion": "REG_GROVE",
+      "cropSpriteFilePattern": "assets/generated/crops/crop_banana_<stage>.png",
+      "farmingXp": {
+        "plant": 3,
+        "harvest": 10
+      },
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "visualOverhangTiles": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": "CROP_CANE",
+      "name": "Şeker kamışı",
+      "seedItemId": "SEED_CANE",
+      "harvestItemId": "CROP_CANE",
+      "growGameDays": 4,
+      "yieldMin": 3,
+      "yieldMax": 5,
+      "seedRefundMinPerHarvest": 1,
+      "repeatHarvest": true,
+      "regrowGameDays": 3,
+      "waterUnitsPerGameDay": 1,
+      "rainAutoWaters": true,
+      "droughtEffect": "pause_progress_not_die",
+      "fertilizerId": "CMP_COMPOST",
+      "fertilizerBonusChance": 0.2,
+      "extraHarvestMax": 1,
+      "growthStageFractions": [
+        0,
+        0.25,
+        0.6,
+        1.0
+      ],
+      "canPlantIn": "BUILD_PLANTER",
+      "requiresDirectSunlight": false,
+      "suggestedDiscoveryRegion": "REG_SWAMP",
+      "cropSpriteFilePattern": "assets/generated/crops/crop_cane_<stage>.png",
+      "farmingXp": {
+        "plant": 3,
+        "harvest": 10
+      },
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "visualOverhangTiles": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "CROP_SPICE",
+      "name": "Baharat ekini",
+      "seedItemId": "SEED_SPICE",
+      "harvestItemId": "CROP_SPICE",
+      "growGameDays": 3,
+      "yieldMin": 2,
+      "yieldMax": 3,
+      "seedRefundMinPerHarvest": 1,
+      "repeatHarvest": false,
+      "regrowGameDays": null,
+      "waterUnitsPerGameDay": 1,
+      "rainAutoWaters": true,
+      "droughtEffect": "pause_progress_not_die",
+      "fertilizerId": "CMP_COMPOST",
+      "fertilizerBonusChance": 0.2,
+      "extraHarvestMax": 1,
+      "growthStageFractions": [
+        0,
+        0.25,
+        0.6,
+        1.0
+      ],
+      "canPlantIn": "BUILD_PLANTER",
+      "requiresDirectSunlight": false,
+      "suggestedDiscoveryRegion": "REG_FOREST",
+      "cropSpriteFilePattern": "assets/generated/crops/crop_spice_<stage>.png",
+      "farmingXp": {
+        "plant": 3,
+        "harvest": 10
+      },
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "visualOverhangTiles": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "CROP_SWEET_POTATO",
+      "name": "Tatlı patates",
+      "seedItemId": "SEED_SWEET_POTATO",
+      "harvestItemId": "CROP_SWEET_POTATO",
+      "growGameDays": 3,
+      "yieldMin": 2,
+      "yieldMax": 3,
+      "seedRefundMinPerHarvest": 1,
+      "repeatHarvest": false,
+      "regrowGameDays": null,
+      "waterUnitsPerGameDay": 1,
+      "rainAutoWaters": true,
+      "droughtEffect": "pause_progress_not_die",
+      "fertilizerId": "CMP_COMPOST",
+      "fertilizerBonusChance": 0.2,
+      "extraHarvestMax": 1,
+      "growthStageFractions": [
+        0,
+        0.25,
+        0.6,
+        1.0
+      ],
+      "canPlantIn": "BUILD_PLANTER",
+      "requiresDirectSunlight": false,
+      "suggestedDiscoveryRegion": "REG_VALLEY",
+      "cropSpriteFilePattern": "assets/generated/crops/crop_sweet_potato_<stage>.png",
+      "farmingXp": {
+        "plant": 3,
+        "harvest": 10
+      },
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "visualOverhangTiles": [
+        1,
+        1
+      ]
+    }
+  ]
+}

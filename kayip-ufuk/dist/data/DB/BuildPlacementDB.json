@@ -1,0 +1,155 @@
+{
+  "version": "v1.2",
+  "model": "A: prefab houses, free-placement furniture/standalone utility structures, no modular walls/roofs/floors",
+  "houseFootprints": {
+    "BAMBOO_HUT": [
+      3,
+      3
+    ],
+    "WOOD_HUT": [
+      5,
+      4
+    ],
+    "BIG_ISLAND_HOUSE": [
+      7,
+      6
+    ],
+    "FISHER_HUT": [
+      5,
+      5
+    ]
+  },
+  "buildPlacementRules": {
+    "allowedTileIds": [
+      "BEACH_SAND",
+      "GROVE",
+      "MEADOW",
+      "FOREST_FLOOR",
+      "SWAMP_SOIL",
+      "ROCKY_GROUND",
+      "MOUNTAIN_SOIL",
+      "SETTLEMENT_GROUND",
+      "LAGOON_SOIL",
+      "ROCKY_GROUND",
+      "BEACH_SAND",
+      "GROVE"
+    ],
+    "dryFootprintAllCells": true,
+    "minDistanceFromMajorPoiTiles": 5,
+    "criticalRoadBufferTiles": 2,
+    "noPlacementOnGate": true,
+    "noPlacementOnHarvestNodes": true,
+    "noPlacementOnWaterOrCliff": true,
+    "maxHeightDifferenceAcrossFootprint": 1,
+    "colliderClearance": "enough room for entrance movement",
+    "prefabDoorValidExitRequired": true,
+    "rotationDegrees": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "houseUsesFixedPrefabInterior": true,
+    "insideRoofOpacityOnEnter": 0.0
+  },
+  "freePlacedObjects": {
+    "furnitureHalfGrid": true,
+    "tileStepPx": 16,
+    "snapToSurface": true,
+    "independentNonHouseObjects": [
+      "campfire",
+      "workbench",
+      "chest",
+      "drying rack",
+      "fence",
+      "dock",
+      "trap",
+      "farm bed",
+      "water collector"
+    ]
+  },
+  "campLimits": {
+    "main": 1,
+    "registeredOutpost": 3,
+    "unregisteredRemoteUtilityStructures": true
+  },
+  "suggestedBuildPads": [
+    {
+      "name": "Başlangıç Sahili",
+      "islandId": "MAIN",
+      "topLeftTile": [
+        137,
+        221
+      ],
+      "footprintTiles": [
+        7,
+        6
+      ],
+      "isSuggestedOnly": true
+    },
+    {
+      "name": "Tatlısu Bahçesi",
+      "islandId": "MAIN",
+      "topLeftTile": [
+        93,
+        163
+      ],
+      "footprintTiles": [
+        5,
+        4
+      ],
+      "isSuggestedOnly": true
+    },
+    {
+      "name": "Dağ Madeni Karakolu",
+      "islandId": "MAIN",
+      "topLeftTile": [
+        171,
+        67
+      ],
+      "footprintTiles": [
+        5,
+        4
+      ],
+      "isSuggestedOnly": true
+    },
+    {
+      "name": "Doğu Lagünü Balıkçı Kampı",
+      "islandId": "MAIN",
+      "topLeftTile": [
+        217,
+        179
+      ],
+      "footprintTiles": [
+        5,
+        5
+      ],
+      "isSuggestedOnly": true
+    }
+  ],
+  "largeProjectPhases": [
+    "ghost_plan",
+    "resources_committed",
+    "construction_state",
+    "completed"
+  ],
+  "testCases": [
+    {
+      "name": "large_house_on_water",
+      "expected": false
+    },
+    {
+      "name": "camp_over_major_poi",
+      "expected": false
+    },
+    {
+      "name": "starter_house_near_beach",
+      "expected": true
+    },
+    {
+      "name": "hut_near_valley",
+      "expected": true
+    }
+  ],
+  "safetyRule": "No construction may block all routes to a mandatory POI, sole cave exit, or only critical river ford."
+}

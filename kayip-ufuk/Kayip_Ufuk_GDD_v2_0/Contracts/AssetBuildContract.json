@@ -1,0 +1,70 @@
+{
+  "version": "v1.8",
+  "status": "ASSET_BUILD_RULES_ONLY_NOT_GENERATED",
+  "artStyle": "modern_colorful_pixel_art_original",
+  "atlasValidation": "Every sprite in manifest must have generated file/atlas region before release; no arbitrary missing icons",
+  "coverage": {
+    "itemIcons": 179,
+    "buildingDefs": 58,
+    "wildlife": 25,
+    "cropSpecies": 12,
+    "cropGrowthStates": 48,
+    "poiVisuals": 38,
+    "characterClips": 16,
+    "directions": 4,
+    "characterBaseFrames": 322
+  },
+  "visualStandard": {
+    "tileSizePx": [
+      32,
+      32
+    ],
+    "characterFramePx": [
+      32,
+      48
+    ],
+    "collisionFootPx": [
+      18,
+      14
+    ],
+    "pixelSnap": true,
+    "canvasSmoothing": false,
+    "safeTouchTargetCssPx": 48,
+    "layers": [
+      "terrain",
+      "groundDetails",
+      "entityFootShadows",
+      "buildingsBelowCharacter",
+      "wildlifePlayers",
+      "occludersAbovePlayer",
+      "weatherAndLighting",
+      "UI"
+    ]
+  },
+  "lookRules": [
+    "Vivid but readable original tropical pixel art, no emoji-based final gameplay assets",
+    "Named assets keep consistent scale and 4-direction character anchoring",
+    "Canvas procedural art may create source sprites but must export/cache images once; avoid per-frame detailed primitives",
+    "At home doorway, roof fades and furniture visible without changing scene",
+    "Night lights and water animation optional quality setting, never hidden gameplay requirement"
+  ],
+  "mandatoryAssets": {
+    "itemIcons": "179 unique canonical itemId bindings, iconKey exact",
+    "buildings": "58 building ids, at least ghost/complete; prefab houses interior/roof/construction stages",
+    "wildlife": "25 species ids with visible idle/move/react where applicable",
+    "crops": "12 species each 4 stages; wet/dry overlay tint can be reused",
+    "poi": "38 canonical POI IDs, each visible/reachable",
+    "character": "16 clips at declared frame sizes, all directions in ArtSpec; coherent layers",
+    "terrain": "20 terrain categories, transitions, river/ocean borders, collision and elevation indicators",
+    "effects": "fire, chop/mine impact, rain, tide, underwater visibility, hit and healing, water glint",
+    "ui": "touch joystick, contextual action, quickbar6, 9 menu entry icons, readable all panels"
+  },
+  "preReleaseAssetAudit": [
+    "All referenced asset files physically exist in build output, or are explicit sprites in bundled atlas",
+    "No missing texture error from fresh cache",
+    "No icon drawn solely as unicode emoji in shipped UI",
+    "All 38 POI visual identities match POIDB, not legacy POI_01 order",
+    "Character animations do not detach tools from hand",
+    "Low quality mode removes only ambience, not gameplay visibility"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "version": "v1.9",
+  "status": "SPEC_ONLY",
+  "productionTasks": [
+    {
+      "phase": "P0",
+      "name": "World art foundation",
+      "deliveryCheck": "Create terrain 20 styles, transitions, water six-frame loops, 12 biome palettes, 32px seam tests"
+    },
+    {
+      "phase": "P0",
+      "name": "Avatar movement",
+      "deliveryCheck": "Create 2 body silhouettes; 322 poses each, hair and outfit masks with common pivots"
+    },
+    {
+      "phase": "P0",
+      "name": "Usable touch HUD",
+      "deliveryCheck": "Replace emoji with coherent iconography; mobile 48 CSS px targets and 6 quickbar slots"
+    },
+    {
+      "phase": "P1",
+      "name": "Starter set and resource scenes",
+      "deliveryCheck": "Palm/grove/cave foliage and depletion states, starting objects, first hut exterior/interior"
+    },
+    {
+      "phase": "P1",
+      "name": "58 build definitions",
+      "deliveryCheck": "Render complete+ghost for every BuildDB ID; house construction/roof/interior layers"
+    },
+    {
+      "phase": "P2",
+      "name": "179 ItemDB icons",
+      "deliveryCheck": "Export 32px transparent icons, shared icon palette, distinct names and silhouettes"
+    },
+    {
+      "phase": "P3",
+      "name": "All wildlife",
+      "deliveryCheck": "Create 25 species including separate 10 swimming fish animation groups and 3 marine"
+    },
+    {
+      "phase": "P3",
+      "name": "12 crop species",
+      "deliveryCheck": "4 stages for each of 12; shared wet/dry/fertilized effects and ground anchors"
+    },
+    {
+      "phase": "P4",
+      "name": "38 POIs",
+      "deliveryCheck": "38 canonical POI_* scenes; default/searched/optional repaired visual states"
+    },
+    {
+      "phase": "P4",
+      "name": "Effects/boats/finales",
+      "deliveryCheck": "FX and raft/escape boat full directions; distinct sea/radio ending art"
+    }
+  ],
+  "gates": [
+    "P0 boot into walkable native-asset world",
+    "P1 build and repair with correct states",
+    "P2 every item and UI icon resolved",
+    "P3 living fauna and farm visuals",
+    "P4 every POI, both boats and endings fully depicted"
+  ],
+  "guidance": "Phases are implementation gates not separate MVP releases; all required for complete game."
+}

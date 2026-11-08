@@ -1,0 +1,799 @@
+{
+  "meta": {
+    "version": "1.3",
+    "count": 12,
+    "basedOn": "PuzzleDB_Map_v1.1",
+    "intendedPuzzleDensity": "B 12 encounters",
+    "noRandomizedMandatorySolutions": true,
+    "everyPuzzleRetryable": true
+  },
+  "puzzles": [
+    {
+      "id": "PZ_WATER_VALVES",
+      "name": "Üç Vana",
+      "poiId": "POI_WATER_STATION",
+      "uiWidget": "THREE_TOGGLE",
+      "difficulty": "easy",
+      "clueStoryId": "STORY_04",
+      "clueTextShownAtPoi": "Birinci ve üçüncü hat açık, tahliye hattı kapalı. ",
+      "stateSchema": {
+        "valves": [
+          false,
+          false,
+          false
+        ]
+      },
+      "solution": {
+        "valves": [
+          true,
+          false,
+          true
+        ]
+      },
+      "allowedActions": [
+        "TOGGLE_VALVE_A",
+        "TOGGLE_VALVE_B",
+        "TOGGLE_VALVE_C"
+      ],
+      "startCondition": {
+        "poiDiscovered": "POI_WATER_STATION",
+        "poiReachable": true
+      },
+      "completionFlag": "WATER_STATION_FIXED",
+      "rewardsTriggered": {},
+      "consumedItemsOnWrongAnswer": false,
+      "canRetryIndefinitely": true,
+      "saveEveryStateChange": true,
+      "mobileControls": "Large touch targets and explicit confirm / cancel; never drag tiny objects",
+      "estimatedSeconds": [
+        20,
+        75
+      ],
+      "hintLevels": [
+        {
+          "level": 1,
+          "hint": "Çevredeki yazılı veya görsel ipucunu incele."
+        },
+        {
+          "level": 2,
+          "hint": "Birinci ve üçüncü hat açık, tahliye hattı kapalı. "
+        },
+        {
+          "level": 3,
+          "hint": "Çözüm: {\"valves\": [true, false, true]}"
+        }
+      ],
+      "preconditionsPreservePriorPoiAccess": true,
+      "legacyV13StartConditionDO_NOT_ENFORCE": {
+        "world": "CLEAN_WATER_OUTLET_ENABLED"
+      },
+      "completionEffects": {
+        "setFlag": "WATER_STATION_FIXED",
+        "persistPuzzleSolution": true
+      },
+      "requiredEquipmentAndAccessFromPOI": true
+    },
+    {
+      "id": "PZ_WATERFALL_WHEEL",
+      "name": "Şelale Su Çarkı",
+      "poiId": "POI_WATERFALL_CAVE",
+      "uiWidget": "TWO_ROTATORS",
+      "difficulty": "easy",
+      "clueStoryId": null,
+      "clueTextShownAtPoi": "Oyulmuş iki ok suyun kaynağına ve çıkışına bakmalı.",
+      "stateSchema": {
+        "wheelAngles": [
+          0,
+          0
+        ]
+      },
+      "solution": {
+        "wheelAngles": [
+          1,
+          3
+        ]
+      },
+      "allowedActions": [
+        "ROTATE_LEFT",
+        "ROTATE_RIGHT"
+      ],
+      "startCondition": {
+        "poiDiscovered": "POI_WATERFALL_CAVE",
+        "poiReachable": true
+      },
+      "completionFlag": "WATERFALL_PASSAGE_OPEN",
+      "rewardsTriggered": {},
+      "consumedItemsOnWrongAnswer": false,
+      "canRetryIndefinitely": true,
+      "saveEveryStateChange": true,
+      "mobileControls": "Large touch targets and explicit confirm / cancel; never drag tiny objects",
+      "estimatedSeconds": [
+        20,
+        75
+      ],
+      "hintLevels": [
+        {
+          "level": 1,
+          "hint": "Çevredeki yazılı veya görsel ipucunu incele."
+        },
+        {
+          "level": 2,
+          "hint": "Oyulmuş iki ok suyun kaynağına ve çıkışına bakmalı."
+        },
+        {
+          "level": 3,
+          "hint": "Çözüm: {\"wheelAngles\": [1, 3]}"
+        }
+      ],
+      "preconditionsPreservePriorPoiAccess": true,
+      "legacyV13StartConditionDO_NOT_ENFORCE": {
+        "world": "WATERFALL_SECRET_PATH_OPEN"
+      },
+      "completionEffects": {
+        "setFlag": "WATERFALL_PASSAGE_OPEN",
+        "persistPuzzleSolution": true
+      },
+      "requiredEquipmentAndAccessFromPOI": true
+    },
+    {
+      "id": "PZ_FLOODED_LOCK",
+      "name": "Su Altındaki Kilit",
+      "poiId": "POI_FLOODED_STORE",
+      "uiWidget": "THREE_PINS",
+      "difficulty": "easy",
+      "clueStoryId": null,
+      "clueTextShownAtPoi": "Kapağın üstündeki çizikler: kısa, uzun, orta.",
+      "stateSchema": {
+        "pins": [
+          0,
+          0,
+          0
+        ]
+      },
+      "solution": {
+        "pins": [
+          1,
+          3,
+          2
+        ]
+      },
+      "allowedActions": [
+        "CYCLE_PIN_1",
+        "CYCLE_PIN_2",
+        "CYCLE_PIN_3"
+      ],
+      "startCondition": {
+        "poiDiscovered": "POI_FLOODED_STORE",
+        "poiReachable": true
+      },
+      "completionFlag": "FLOODED_STORE_OPEN",
+      "rewardsTriggered": {},
+      "consumedItemsOnWrongAnswer": false,
+      "canRetryIndefinitely": true,
+      "saveEveryStateChange": true,
+      "mobileControls": "Large touch targets and explicit confirm / cancel; never drag tiny objects",
+      "estimatedSeconds": [
+        20,
+        75
+      ],
+      "hintLevels": [
+        {
+          "level": 1,
+          "hint": "Çevredeki yazılı veya görsel ipucunu incele."
+        },
+        {
+          "level": 2,
+          "hint": "Kapağın üstündeki çizikler: kısa, uzun, orta."
+        },
+        {
+          "level": 3,
+          "hint": "Çözüm: {\"pins\": [1, 3, 2]}"
+        }
+      ],
+      "preconditionsPreservePriorPoiAccess": true,
+      "legacyV13StartConditionDO_NOT_ENFORCE": {
+        "world": "FLOODED_STORAGE_ACCESSIBLE"
+      },
+      "completionEffects": {
+        "setFlag": "FLOODED_STORE_OPEN",
+        "persistPuzzleSolution": true
+      },
+      "requiredEquipmentAndAccessFromPOI": true
+    },
+    {
+      "id": "PZ_CABLE_GEARS",
+      "name": "Teleferik Dişlileri",
+      "poiId": "POI_CABLE_CAR",
+      "uiWidget": "THREE_ROTATORS",
+      "difficulty": "easy",
+      "clueStoryId": null,
+      "clueTextShownAtPoi": "Dişli şeması: ilk sola, orta sağa, son sola dönmeli.",
+      "stateSchema": {
+        "gears": [
+          0,
+          0,
+          0
+        ]
+      },
+      "solution": {
+        "gears": [
+          3,
+          1,
+          3
+        ]
+      },
+      "allowedActions": [
+        "ROTATE_GEAR_1",
+        "ROTATE_GEAR_2",
+        "ROTATE_GEAR_3"
+      ],
+      "startCondition": {
+        "poiDiscovered": "POI_CABLE_CAR",
+        "poiReachable": true,
+        "repairMaterialsDeposited": true
+      },
+      "completionFlag": "CABLE_CAR_REPAIRED",
+      "rewardsTriggered": "ON_REQUIRED_REPAIR_MATERIALS_DEPOSITED",
+      "consumedItemsOnWrongAnswer": false,
+      "canRetryIndefinitely": true,
+      "saveEveryStateChange": true,
+      "mobileControls": "Large touch targets and explicit confirm / cancel; never drag tiny objects",
+      "estimatedSeconds": [
+        20,
+        75
+      ],
+      "hintLevels": [
+        {
+          "level": 1,
+          "hint": "Çevredeki yazılı veya görsel ipucunu incele."
+        },
+        {
+          "level": 2,
+          "hint": "Dişli şeması: ilk sola, orta sağa, son sola dönmeli."
+        },
+        {
+          "level": 3,
+          "hint": "Çözüm: {\"gears\": [3, 1, 3]}"
+        }
+      ],
+      "preconditionsPreservePriorPoiAccess": true,
+      "legacyV13StartConditionDO_NOT_ENFORCE": {
+        "world": "CABLE_CAR_SHORTCUT_ENABLED"
+      },
+      "completionEffects": {
+        "setFlag": "CABLE_CAR_REPAIRED",
+        "persistPuzzleSolution": true
+      },
+      "requiredEquipmentAndAccessFromPOI": true
+    },
+    {
+      "id": "PZ_OBSERVATION_ALIGN",
+      "name": "Üç Deniz İşareti",
+      "poiId": "POI_OBSERVATORY",
+      "uiWidget": "THREE_ROTATORS",
+      "difficulty": "medium",
+      "clueStoryId": "STORY_10",
+      "clueTextShownAtPoi": "Sıra: kuzey fener, doğu kaya, güneydoğu ada.",
+      "stateSchema": {
+        "directions": [
+          0,
+          0,
+          0
+        ]
+      },
+      "solution": {
+        "directions": [
+          0,
+          2,
+          3
+        ]
+      },
+      "allowedActions": [
+        "ROTATE_MARKER_1",
+        "ROTATE_MARKER_2",
+        "ROTATE_MARKER_3"
+      ],
+      "startCondition": {
+        "poiDiscovered": "POI_OBSERVATORY",
+        "poiReachable": true
+      },
+      "completionFlag": "OBSERVATORY_CHART_FOUND",
+      "rewardsTriggered": {},
+      "consumedItemsOnWrongAnswer": false,
+      "canRetryIndefinitely": true,
+      "saveEveryStateChange": true,
+      "mobileControls": "Large touch targets and explicit confirm / cancel; never drag tiny objects",
+      "estimatedSeconds": [
+        45,
+        120
+      ],
+      "hintLevels": [
+        {
+          "level": 1,
+          "hint": "Çevredeki yazılı veya görsel ipucunu incele."
+        },
+        {
+          "level": 2,
+          "hint": "Sıra: kuzey fener, doğu kaya, güneydoğu ada."
+        },
+        {
+          "level": 3,
+          "hint": "Çözüm: {\"directions\": [0, 2, 3]}"
+        }
+      ],
+      "preconditionsPreservePriorPoiAccess": true,
+      "legacyV13StartConditionDO_NOT_ENFORCE": {
+        "storySpecial": "SPC_CHART_OBSERVATORY"
+      },
+      "completionEffects": {
+        "setFlag": "OBSERVATORY_CHART_FOUND",
+        "persistPuzzleSolution": true
+      },
+      "requiredEquipmentAndAccessFromPOI": true
+    },
+    {
+      "id": "PZ_RELAY_POWER",
+      "name": "Dağ Rölesi",
+      "poiId": "POI_RELAY_SHELTER",
+      "uiWidget": "FOUR_CONNECTORS",
+      "difficulty": "medium",
+      "clueStoryId": "STORY_09",
+      "clueTextShownAtPoi": "Sol giriş → güvenlik → ana çıkış; terminal dört test hattı.",
+      "stateSchema": {
+        "contacts": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "solution": {
+        "contacts": [
+          1,
+          2,
+          3,
+          0
+        ]
+      },
+      "allowedActions": [
+        "CYCLE_CONTACT_1",
+        "CYCLE_CONTACT_2",
+        "CYCLE_CONTACT_3",
+        "CYCLE_CONTACT_4"
+      ],
+      "startCondition": {
+        "poiDiscovered": "POI_RELAY_SHELTER",
+        "poiReachable": true
+      },
+      "completionFlag": "RELAY_REPAIRED",
+      "rewardsTriggered": {},
+      "consumedItemsOnWrongAnswer": false,
+      "canRetryIndefinitely": true,
+      "saveEveryStateChange": true,
+      "mobileControls": "Large touch targets and explicit confirm / cancel; never drag tiny objects",
+      "estimatedSeconds": [
+        45,
+        120
+      ],
+      "hintLevels": [
+        {
+          "level": 1,
+          "hint": "Çevredeki yazılı veya görsel ipucunu incele."
+        },
+        {
+          "level": 2,
+          "hint": "Sol giriş → güvenlik → ana çıkış; terminal dört test hattı."
+        },
+        {
+          "level": 3,
+          "hint": "Çözüm: {\"contacts\": [1, 2, 3, 0]}"
+        }
+      ],
+      "preconditionsPreservePriorPoiAccess": true,
+      "legacyV13StartConditionDO_NOT_ENFORCE": {
+        "storySpecial": "SPC_RADIO_NOTE"
+      },
+      "completionEffects": {
+        "setFlag": "RELAY_REPAIRED",
+        "persistPuzzleSolution": true
+      },
+      "requiredEquipmentAndAccessFromPOI": true
+    },
+    {
+      "id": "PZ_RADIO_REPAIR",
+      "name": "Verici Kasası",
+      "poiId": "POI_RADIO_WORKSHOP",
+      "uiWidget": "THREE_STEP_SEQUENCE",
+      "difficulty": "easy",
+      "clueStoryId": "STORY_11",
+      "clueTextShownAtPoi": "Önce mandal, sonra kablo halkası, ardından test kolu.",
+      "stateSchema": {
+        "completedSteps": []
+      },
+      "solution": {
+        "completedSteps": [
+          "LATCH",
+          "WIRE_RING",
+          "TEST_LEVER"
+        ]
+      },
+      "allowedActions": [
+        "LATCH",
+        "WIRE_RING",
+        "TEST_LEVER",
+        "RESET"
+      ],
+      "startCondition": {
+        "poiDiscovered": "POI_RADIO_WORKSHOP",
+        "poiReachable": true
+      },
+      "completionFlag": "RADIO_MODULE_RETRIEVED",
+      "rewardsTriggered": {},
+      "consumedItemsOnWrongAnswer": false,
+      "canRetryIndefinitely": true,
+      "saveEveryStateChange": true,
+      "mobileControls": "Large touch targets and explicit confirm / cancel; never drag tiny objects",
+      "estimatedSeconds": [
+        20,
+        75
+      ],
+      "hintLevels": [
+        {
+          "level": 1,
+          "hint": "Çevredeki yazılı veya görsel ipucunu incele."
+        },
+        {
+          "level": 2,
+          "hint": "Önce mandal, sonra kablo halkası, ardından test kolu."
+        },
+        {
+          "level": 3,
+          "hint": "Çözüm: {\"completedSteps\": [\"LATCH\", \"WIRE_RING\", \"TEST_LEVER\"]}"
+        }
+      ],
+      "preconditionsPreservePriorPoiAccess": true,
+      "legacyV13StartConditionDO_NOT_ENFORCE": {
+        "storySpecial": "SPC_TX_MODULE"
+      },
+      "completionEffects": {
+        "setFlag": "RADIO_MODULE_RETRIEVED",
+        "persistPuzzleSolution": true
+      },
+      "requiredEquipmentAndAccessFromPOI": true
+    },
+    {
+      "id": "PZ_WAREHOUSE_PIN",
+      "name": "Eski Ambar Kilidi",
+      "poiId": "POI_LOCKED_WAREHOUSE",
+      "uiWidget": "THREE_PINS",
+      "difficulty": "easy",
+      "clueStoryId": null,
+      "clueTextShownAtPoi": "Kilitte soldan sağa 2, 1 ve 3 çizik var.",
+      "stateSchema": {
+        "pins": [
+          0,
+          0,
+          0
+        ]
+      },
+      "solution": {
+        "pins": [
+          2,
+          1,
+          3
+        ]
+      },
+      "allowedActions": [
+        "CYCLE_PIN_1",
+        "CYCLE_PIN_2",
+        "CYCLE_PIN_3"
+      ],
+      "startCondition": {
+        "poiDiscovered": "POI_LOCKED_WAREHOUSE",
+        "poiReachable": true
+      },
+      "completionFlag": "WAREHOUSE_OPEN",
+      "rewardsTriggered": {},
+      "consumedItemsOnWrongAnswer": false,
+      "canRetryIndefinitely": true,
+      "saveEveryStateChange": true,
+      "mobileControls": "Large touch targets and explicit confirm / cancel; never drag tiny objects",
+      "estimatedSeconds": [
+        20,
+        75
+      ],
+      "hintLevels": [
+        {
+          "level": 1,
+          "hint": "Çevredeki yazılı veya görsel ipucunu incele."
+        },
+        {
+          "level": 2,
+          "hint": "Kilitte soldan sağa 2, 1 ve 3 çizik var."
+        },
+        {
+          "level": 3,
+          "hint": "Çözüm: {\"pins\": [2, 1, 3]}"
+        }
+      ],
+      "preconditionsPreservePriorPoiAccess": true,
+      "legacyV13StartConditionDO_NOT_ENFORCE": {
+        "world": "WAREHOUSE_OPEN"
+      },
+      "completionEffects": {
+        "setFlag": "WAREHOUSE_OPEN",
+        "persistPuzzleSolution": true
+      },
+      "requiredEquipmentAndAccessFromPOI": true
+    },
+    {
+      "id": "PZ_SAND_SPIT_MARKERS",
+      "name": "Kumdaki İşaretler",
+      "poiId": "POI_SAND_SPIT",
+      "uiWidget": "THREE_SEQUENCE",
+      "difficulty": "easy",
+      "clueStoryId": null,
+      "clueTextShownAtPoi": "Yengeç kabuğu, dalga, pusula oku sırası izlenmeli.",
+      "stateSchema": {
+        "sequence": []
+      },
+      "solution": {
+        "sequence": [
+          "SHELL",
+          "WAVE",
+          "ARROW"
+        ]
+      },
+      "allowedActions": [
+        "SELECT_SHELL",
+        "SELECT_WAVE",
+        "SELECT_ARROW",
+        "RESET"
+      ],
+      "startCondition": {
+        "poiDiscovered": "POI_SAND_SPIT",
+        "poiReachable": true
+      },
+      "completionFlag": "SAND_SPIT_CHEST_FOUND",
+      "rewardsTriggered": {},
+      "consumedItemsOnWrongAnswer": false,
+      "canRetryIndefinitely": true,
+      "saveEveryStateChange": true,
+      "mobileControls": "Large touch targets and explicit confirm / cancel; never drag tiny objects",
+      "estimatedSeconds": [
+        20,
+        75
+      ],
+      "hintLevels": [
+        {
+          "level": 1,
+          "hint": "Çevredeki yazılı veya görsel ipucunu incele."
+        },
+        {
+          "level": 2,
+          "hint": "Yengeç kabuğu, dalga, pusula oku sırası izlenmeli."
+        },
+        {
+          "level": 3,
+          "hint": "Çözüm: {\"sequence\": [\"SHELL\", \"WAVE\", \"ARROW\"]}"
+        }
+      ],
+      "preconditionsPreservePriorPoiAccess": true,
+      "legacyV13StartConditionDO_NOT_ENFORCE": {
+        "world": "SAND_SPIT_CHEST_REVEALED"
+      },
+      "completionEffects": {
+        "setFlag": "SAND_SPIT_CHEST_FOUND",
+        "persistPuzzleSolution": true
+      },
+      "requiredEquipmentAndAccessFromPOI": true
+    },
+    {
+      "id": "PZ_LIGHTHOUSE_TUNE",
+      "name": "Acil Sinyal Ayarı",
+      "poiId": "POI_LIGHTHOUSE",
+      "uiWidget": "THREE_DIALS",
+      "difficulty": "medium",
+      "clueStoryId": "STORY_09",
+      "clueTextShownAtPoi": "Frekans kartının işaretleri: 2, 4, 1. Verici ve enerji kurulmadan ayarlama yapılamaz.",
+      "stateSchema": {
+        "dials": [
+          0,
+          0,
+          0
+        ]
+      },
+      "solution": {
+        "dials": [
+          2,
+          4,
+          1
+        ]
+      },
+      "allowedActions": [
+        "CYCLE_DIAL_1",
+        "CYCLE_DIAL_2",
+        "CYCLE_DIAL_3"
+      ],
+      "startCondition": {
+        "poiDiscovered": "POI_LIGHTHOUSE",
+        "escapeProjectBuilt": "BUILD_SIGNAL_STATION",
+        "energyAvailable": true,
+        "requiredStoryFlags": [
+          "SPC_TX_MODULE",
+          "SPC_RADIO_NOTE"
+        ]
+      },
+      "completionFlag": "SIGNAL_TUNED",
+      "rewardsTriggered": "ON_SIGNAL_STATION_BUILT_AND_POWERED_AND_NOTE_FOUND",
+      "consumedItemsOnWrongAnswer": false,
+      "canRetryIndefinitely": true,
+      "saveEveryStateChange": true,
+      "mobileControls": "Large touch targets and explicit confirm / cancel; never drag tiny objects",
+      "estimatedSeconds": [
+        45,
+        120
+      ],
+      "hintLevels": [
+        {
+          "level": 1,
+          "hint": "Çevredeki yazılı veya görsel ipucunu incele."
+        },
+        {
+          "level": 2,
+          "hint": "Frekans kartının işaretleri: 2, 4, 1. Verici ve enerji kurulmadan ayarlama yapılamaz."
+        },
+        {
+          "level": 3,
+          "hint": "Çözüm: {\"dials\": [2, 4, 1]}"
+        }
+      ],
+      "preconditionsPreservePriorPoiAccess": true,
+      "legacyV13StartConditionDO_NOT_ENFORCE": {
+        "escape": "RADIO_SIGNAL_CAN_TRANSMIT"
+      },
+      "completionEffects": {
+        "setFlag": "SIGNAL_TUNED",
+        "persistPuzzleSolution": true
+      },
+      "requiredEquipmentAndAccessFromPOI": true
+    },
+    {
+      "id": "PZ_ENGINE_VALVES",
+      "name": "Batık Makine Bölmesi",
+      "poiId": "POI_ENGINE_ROOM",
+      "uiWidget": "THREE_TOGGLE",
+      "difficulty": "easy",
+      "clueStoryId": null,
+      "clueTextShownAtPoi": "Sol ve orta vana açık, sağ kapalı.",
+      "stateSchema": {
+        "valves": [
+          false,
+          false,
+          false
+        ]
+      },
+      "solution": {
+        "valves": [
+          true,
+          true,
+          false
+        ]
+      },
+      "allowedActions": [
+        "TOGGLE_LEFT",
+        "TOGGLE_MIDDLE",
+        "TOGGLE_RIGHT"
+      ],
+      "startCondition": {
+        "poiDiscovered": "POI_ENGINE_ROOM",
+        "poiReachable": true
+      },
+      "completionFlag": "ENGINE_ROOM_OPEN",
+      "rewardsTriggered": {},
+      "consumedItemsOnWrongAnswer": false,
+      "canRetryIndefinitely": true,
+      "saveEveryStateChange": true,
+      "mobileControls": "Large touch targets and explicit confirm / cancel; never drag tiny objects",
+      "estimatedSeconds": [
+        20,
+        75
+      ],
+      "hintLevels": [
+        {
+          "level": 1,
+          "hint": "Çevredeki yazılı veya görsel ipucunu incele."
+        },
+        {
+          "level": 2,
+          "hint": "Sol ve orta vana açık, sağ kapalı."
+        },
+        {
+          "level": 3,
+          "hint": "Çözüm: {\"valves\": [true, true, false]}"
+        }
+      ],
+      "preconditionsPreservePriorPoiAccess": true,
+      "legacyV13StartConditionDO_NOT_ENFORCE": {
+        "world": "ENGINE_ROOM_ACCESSIBLE"
+      },
+      "completionEffects": {
+        "setFlag": "ENGINE_ROOM_OPEN",
+        "persistPuzzleSolution": true
+      },
+      "requiredEquipmentAndAccessFromPOI": true
+    },
+    {
+      "id": "PZ_GARDEN_CHANNEL",
+      "name": "Bahçe Su Olukları",
+      "poiId": "POI_ABANDONED_GARDEN",
+      "uiWidget": "THREE_ROTATORS",
+      "difficulty": "easy",
+      "clueStoryId": null,
+      "clueTextShownAtPoi": "Su soldaki girişten orta dala, oradan en sağdaki fidana gitmeli.",
+      "stateSchema": {
+        "channels": [
+          0,
+          0,
+          0
+        ]
+      },
+      "solution": {
+        "channels": [
+          1,
+          0,
+          2
+        ]
+      },
+      "allowedActions": [
+        "ROTATE_1",
+        "ROTATE_2",
+        "ROTATE_3"
+      ],
+      "startCondition": {
+        "poiDiscovered": "POI_ABANDONED_GARDEN",
+        "poiReachable": true
+      },
+      "completionFlag": "GARDEN_IRRIGATION_FIXED",
+      "rewardsTriggered": {},
+      "consumedItemsOnWrongAnswer": false,
+      "canRetryIndefinitely": true,
+      "saveEveryStateChange": true,
+      "mobileControls": "Large touch targets and explicit confirm / cancel; never drag tiny objects",
+      "estimatedSeconds": [
+        20,
+        75
+      ],
+      "hintLevels": [
+        {
+          "level": 1,
+          "hint": "Çevredeki yazılı veya görsel ipucunu incele."
+        },
+        {
+          "level": 2,
+          "hint": "Su soldaki girişten orta dala, oradan en sağdaki fidana gitmeli."
+        },
+        {
+          "level": 3,
+          "hint": "Çözüm: {\"channels\": [1, 0, 2]}"
+        }
+      ],
+      "preconditionsPreservePriorPoiAccess": true,
+      "legacyV13StartConditionDO_NOT_ENFORCE": {
+        "world": "FERTILE_GARDEN_WATER_ON"
+      },
+      "completionEffects": {
+        "setFlag": "GARDEN_IRRIGATION_FIXED",
+        "persistPuzzleSolution": true
+      },
+      "requiredEquipmentAndAccessFromPOI": true
+    }
+  ],
+  "saveRules": {
+    "stateByPuzzleId": "Store stateSchema, solved, collectedReward with stable puzzle IDs",
+    "completionAtomic": "Commit state flag and claimed reward exactly once",
+    "progressOutsidePoi": "Leaving a puzzle persists unfinished controls",
+    "materialsAreNotLostOnWrongInput": true,
+    "allCluesLocalOrFromGuaranteedDocuments": true
+  }
+}

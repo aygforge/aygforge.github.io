@@ -1,0 +1,277 @@
+{
+  "meta": {
+    "version": "1.3",
+    "count": 15,
+    "livingNpcOnIsland": false,
+    "dialogueFromLivingPeople": false,
+    "endingRescueOnly": true,
+    "setting": "Eski deniz haritacılığı ve meteoroloji araştırma takımı; büyük fırtına sonrasında 12 yıl önce tahliye"
+  },
+  "timeline": [
+    {
+      "order": 1,
+      "recordId": "STORY_07"
+    },
+    {
+      "order": 2,
+      "recordId": "STORY_02"
+    },
+    {
+      "order": 3,
+      "recordId": "STORY_03"
+    },
+    {
+      "order": 4,
+      "recordId": "STORY_06"
+    },
+    {
+      "order": 5,
+      "recordId": "STORY_05"
+    },
+    {
+      "order": 6,
+      "recordId": "STORY_09"
+    },
+    {
+      "order": 7,
+      "recordId": "STORY_08"
+    },
+    {
+      "order": 8,
+      "recordId": "STORY_13"
+    },
+    {
+      "order": 9,
+      "recordId": "STORY_14"
+    }
+  ],
+  "records": [
+    {
+      "id": "STORY_01",
+      "title": "Kıyıda Uyandığım Gün",
+      "sourcePoiId": "POI_CRASH_BOAT",
+      "recordType": "PLAYER_NOTE",
+      "language": "tr-TR",
+      "body": "Dalgaların sesine uyandım. Tekne parçalanmış, pusulam ıslanmış. Kıyıda birkaç sağlam eşya bulabildim. Şimdilik nereye düştüğümü bilmiyorum. Önce güvenli bir yer, temiz su ve ateş bulmalıyım. Güneş batmadan küçük bir barınak yaparsam yarını düşünmek için zamanım olacak.",
+      "discoveryRule": "ON_READ_OBJECT",
+      "canReadLater": true,
+      "objectivePointer": null,
+      "hintRole": "Başlangıç hayatta kalma; görev emri değildir.",
+      "saveFlag": "STORY_READ_STORY_01",
+      "doesNotGrantRequiredXp": true
+    },
+    {
+      "id": "STORY_02",
+      "title": "Kıyı Akıntıları",
+      "sourcePoiId": "POI_FISHER_HUT",
+      "recordType": "TECHNICAL_NOTE",
+      "language": "tr-TR",
+      "body": "Kuzey rüzgârında doğu kıyısındaki akıntı güçlenir. Kıyıya paralel ilerleyen güvenli bir sığlık vardır ama resiflerin arasından geçiş kolay değildir. Balıkçı tekneleri genellikle gözlem tepesinden görülen koyu kayayı hizalayarak yön bulurdu. Kaptanın haritası bulunursa açık deniz rotası doğrulanabilir.",
+      "discoveryRule": "ON_READ_OBJECT",
+      "canReadLater": true,
+      "objectivePointer": null,
+      "hintRole": "Tekne kaçışı için alternatif seyir bilgisinden biri.",
+      "saveFlag": "STORY_READ_STORY_02",
+      "doesNotGrantRequiredXp": true
+    },
+    {
+      "id": "STORY_03",
+      "title": "Ormancının Defteri",
+      "sourcePoiId": "POI_FORESTER_HUT",
+      "recordType": "PERSONAL_DIARY",
+      "language": "tr-TR",
+      "body": "Kuzey yamacında eski bir patika bulduk. Yağmurdan sonra sarmaşıklar geçidi kapatıyor ama keskin bir pala ya da balta işi görüyor. Dağdaki madenlere gidecek olanların vadiden değil orman sırtından yürümelerini söyledim. Dün işlediğimiz tahtalar, yeni iskele için ayrıldı. Yarın köyde marangozla konuşacağım.",
+      "discoveryRule": "ON_READ_OBJECT",
+      "canReadLater": true,
+      "objectivePointer": null,
+      "hintRole": "Dağa giden alternatif patika.",
+      "saveFlag": "STORY_READ_STORY_03",
+      "doesNotGrantRequiredXp": true
+    },
+    {
+      "id": "STORY_04",
+      "title": "Su Teknisyeninin Notu",
+      "sourcePoiId": "POI_WATER_STATION",
+      "recordType": "TECHNICAL_NOTE",
+      "language": "tr-TR",
+      "body": "Eski depoda üç vana var. Birinci ile üçüncü hat depoyu besler; ortadaki vana tahliye içindir ve kapalı tutulmalıdır. Yağmurdan sonra üst kanalda çamur birikiyor. Akış yeniden kurulduğunda depo süzülmüş su verebilir. Yalnızca su çıkışının temiz olduğunu doğrulayan işaret yanıyorsa içme kabını doldurun.",
+      "discoveryRule": "ON_READ_OBJECT",
+      "canReadLater": true,
+      "objectivePointer": null,
+      "hintRole": "Su vanaları bulmacasının sabit yerel ipucu.",
+      "saveFlag": "STORY_READ_STORY_04",
+      "doesNotGrantRequiredXp": true
+    },
+    {
+      "id": "STORY_05",
+      "title": "Fırtınanın İlk Gecesi",
+      "sourcePoiId": "POI_SWAMP_MEASURE",
+      "recordType": "PERSONAL_DIARY",
+      "language": "tr-TR",
+      "body": "Akşam saatlerinde basınç beklenmedik biçimde düştü. Ölçüm direği rüzgârdan sallanıyordu. Birkaç saat içinde yağmur bütün patikaları çamura çevirdi. Yerleşime haber göndermeye çalıştık ama dağdaki röle cevap vermedi. Önce bunun geçici bir kesinti olduğunu düşündük. Ertesi sabah bataklığa doğru giden yol tamamen su altındaydı.",
+      "discoveryRule": "ON_READ_OBJECT",
+      "canReadLater": true,
+      "objectivePointer": null,
+      "hintRole": "Geçmişteki fırtınanın başlangıcı.",
+      "saveFlag": "STORY_READ_STORY_05",
+      "doesNotGrantRequiredXp": true
+    },
+    {
+      "id": "STORY_06",
+      "title": "Maden İşletme Kaydı",
+      "sourcePoiId": "POI_COPPER_MINE",
+      "recordType": "TECHNICAL_NOTE",
+      "language": "tr-TR",
+      "body": "Son vardiyada giriş kirişleri ağır hasar aldı. Bakır ve kömür depoları içeride kaldı. Yüzeye yakın damarlardan kısa süreli çalışma yapılabilir ama ana galeride destekler incelenmeden ilerlemeyin. Eldeki hurda bağlantıları yeni onarımlarda kullanılmak üzere işaretlendi. Yerleşimin metal ihtiyacı artıyor; fırtına geçince yolu temizlemek gerekecek.",
+      "discoveryRule": "ON_READ_OBJECT",
+      "canReadLater": true,
+      "objectivePointer": null,
+      "hintRole": "Maden girişindeki onarım ve metal zinciri.",
+      "saveFlag": "STORY_READ_STORY_06",
+      "doesNotGrantRequiredXp": true
+    },
+    {
+      "id": "STORY_07",
+      "title": "Son Normal Gün",
+      "sourcePoiId": "POI_RESEARCH_SQUARE",
+      "recordType": "PERSONAL_DIARY",
+      "language": "tr-TR",
+      "body": "Bugün hava beklediğimizden daha sakindi. Balıkçılar öğleden önce döndü, bahçedeki muzlar nihayet olgunlaştı. Yarın kuzeydeki ölçüm cihazlarını kontrol edeceğiz. Burada geçen ayları düşündüğümde, bu küçük adanın ne kadar tanıdık geldiğine şaşırıyorum. Çocuklar için yaptığımız küçük ahşap bank hâlâ meydanda duruyor.",
+      "discoveryRule": "ON_READ_OBJECT",
+      "canReadLater": true,
+      "objectivePointer": null,
+      "hintRole": "Yerleşimin günlük yaşamı.",
+      "saveFlag": "STORY_READ_STORY_07",
+      "doesNotGrantRequiredXp": true
+    },
+    {
+      "id": "STORY_08",
+      "title": "Tahliye Kararı",
+      "sourcePoiId": "POI_RESEARCH_SQUARE",
+      "recordType": "OFFICIAL_LOG",
+      "language": "tr-TR",
+      "body": "Fırtına gece boyunca durmadı. Güney iskelesi kullanılamaz hâlde. Dağdaki bağlantı da kesildi. Merkezden tahliye emri geldi. Yanımıza yalnızca gerekli kayıtları alacağız. Geri kalan ekipmanlar korunaklı depolara taşınacak. Kıyıdaki bütün tekneler kontrol edildi; son ekip fener sorumlusunu alarak adadan ayrılacak.",
+      "discoveryRule": "ON_READ_OBJECT",
+      "canReadLater": true,
+      "objectivePointer": null,
+      "hintRole": "İnsanların adayı terk etme nedeni.",
+      "saveFlag": "STORY_READ_STORY_08",
+      "doesNotGrantRequiredXp": true
+    },
+    {
+      "id": "STORY_09",
+      "title": "Röle Arızası",
+      "sourcePoiId": "POI_RELAY_SHELTER",
+      "recordType": "TECHNICAL_NOTE",
+      "language": "tr-TR",
+      "body": "Rölenin üst bağlantısında iki hat kopmuş. Sol giriş önce güvenlik şalterine, sonra ana çıkışa bağlanmalı. Dördüncü terminal yalnızca test içindir. Frekans kayıt kartını kuru kutuya bıraktım; doğru ayar fenerdeki vericinin yeniden çalışmasını sağlayabilir. Kutu açıldığında bağlantıların yönünü tekrar kontrol edin.",
+      "discoveryRule": "ON_READ_OBJECT",
+      "canReadLater": true,
+      "objectivePointer": null,
+      "hintRole": "Röle bulmacası ve frekans özel eşyası.",
+      "saveFlag": "STORY_READ_STORY_09",
+      "doesNotGrantRequiredXp": true
+    },
+    {
+      "id": "STORY_10",
+      "title": "Gözlem Haritası",
+      "sourcePoiId": "POI_OBSERVATORY",
+      "recordType": "TECHNICAL_NOTE",
+      "language": "tr-TR",
+      "body": "Deniz işaretleri kuzeydeki fener, doğudaki tek kaya ve güneydoğudaki küçük ada üzerinden ölçüldü. Gözlem diski bu üç işarete hizalandığında güvenli rota şeridi beliriyor. Akıntılar aynı kalmayabilir; fırtına sırasında denize çıkmak risklidir. Bu kayıt kıyı defterinin yanına konursa açık deniz güzergâhı daha güvenli planlanabilir.",
+      "discoveryRule": "ON_READ_OBJECT",
+      "canReadLater": true,
+      "objectivePointer": null,
+      "hintRole": "İkinci alternatif navigasyon kaynağı.",
+      "saveFlag": "STORY_READ_STORY_10",
+      "doesNotGrantRequiredXp": true
+    },
+    {
+      "id": "STORY_11",
+      "title": "Verici Onarım Şeması",
+      "sourcePoiId": "POI_RADIO_WORKSHOP",
+      "recordType": "TECHNICAL_NOTE",
+      "language": "tr-TR",
+      "body": "Verici kutusu tamamen kayıp değil; ana modül koruyucu kabın içinde. Önce güvenlik mandalını kaldırın, sonra kablo halkasını sağ girişe oturtun ve son olarak test kolunu çevirin. Modül yerinden çıkarıldığında anten bağlantısı ve enerji kaynağı ayrı hazırlanmalıdır. Üretim masasındaki eski çizim parçaların sırasını gösteriyor.",
+      "discoveryRule": "ON_READ_OBJECT",
+      "canReadLater": true,
+      "objectivePointer": null,
+      "hintRole": "Verici modülü alma bulmacası.",
+      "saveFlag": "STORY_READ_STORY_11",
+      "doesNotGrantRequiredXp": true
+    },
+    {
+      "id": "STORY_12",
+      "title": "Kaptanın Son Kaydı",
+      "sourcePoiId": "POI_CAPTAIN_CABIN",
+      "recordType": "PERSONAL_DIARY",
+      "language": "tr-TR",
+      "body": "Batıdaki resifler haritalarda göründüğünden daha geniş. Kuzey geçidi açık ama güneydoğudaki kayalıkların yakınından uzak durmak gerekiyor. Yola çıkacak olan herkes bu notları yanında taşımalı. Bu adaların kıyılarını iyi tanıyorum; doğru hava koşulunda küçük bir yelkenli bile açık deniz yoluna ulaşabilir.",
+      "discoveryRule": "ON_READ_OBJECT",
+      "canReadLater": true,
+      "objectivePointer": null,
+      "hintRole": "Üçüncü alternatif navigasyon kaynağı.",
+      "saveFlag": "STORY_READ_STORY_12",
+      "doesNotGrantRequiredXp": true
+    },
+    {
+      "id": "STORY_13",
+      "title": "Fener Bekçisinin İlk Notu",
+      "sourcePoiId": "POI_LIGHTHOUSE_KEEPER",
+      "recordType": "PERSONAL_DIARY",
+      "language": "tr-TR",
+      "body": "Tahliye günü geldiğinde ışığı hemen söndürmedim. Son teknenin gece kıyıyı bulması gerekiyordu. Yeniden başlamak için kabloları ve küçük güneş düzeneğini kontrol ettim. Büyük fırtınada antenin tepe bağlantısı kopmuştu. Kulübenin içine yağmurlukla birlikte birkaç sağlam eşya sakladım; belki bir gün burada yine birileri çalışır.",
+      "discoveryRule": "ON_READ_OBJECT",
+      "canReadLater": true,
+      "objectivePointer": null,
+      "hintRole": "Fenerin geçmişi ve onarım ipucu.",
+      "saveFlag": "STORY_READ_STORY_13",
+      "doesNotGrantRequiredXp": true
+    },
+    {
+      "id": "STORY_14",
+      "title": "Son Işık",
+      "sourcePoiId": "POI_LIGHTHOUSE",
+      "recordType": "PERSONAL_DIARY",
+      "language": "tr-TR",
+      "body": "Bu gece feneri son kez yakıyorum. Son tekne yarın beni alacak. Atölyedeki verici hâlâ kullanılabilir durumda olabilir ama antenin bağlantıları onarılmalı. Bir gün buraya yolu düşen biri olursa, umarım ışığı yeniden yakabilir. Kıyıdaki gemilere yol gösteren bu yerin tamamen karanlık kalmasını istemiyorum.",
+      "discoveryRule": "ON_READ_OBJECT",
+      "canReadLater": true,
+      "objectivePointer": null,
+      "hintRole": "Fenerin kapanışı ve haberleşme rotası.",
+      "saveFlag": "STORY_READ_STORY_14",
+      "doesNotGrantRequiredXp": true
+    },
+    {
+      "id": "STORY_15",
+      "title": "Kurtuluş Hazırlıkları",
+      "sourcePoiId": "AUTOMATIC_JOURNAL",
+      "recordType": "PLAYER_NOTE",
+      "language": "tr-TR",
+      "body": "Artık adanın geçmişine ait yeterince iz buldum. Kendi yelkenlimi hazırlayıp güvenli resif geçişinden ayrılabilirim. Bir başka ihtimal de eski vericiyi ve fener antenini onarmak. İkisinden yalnızca birini seçmek zorunda değilim. Şimdilik hangi yolu deneyeceğime kendim karar vereceğim; adadaki evim ve bütün çalışmalarım yerinde kalacak.",
+      "discoveryRule": "AUTO_IF_ESCAPE_HINTS",
+      "canReadLater": true,
+      "objectivePointer": null,
+      "hintRole": "Oyuncunun kendi keşiflerinden birleştirilir; ancak hiçbir görev listesi açmaz.",
+      "saveFlag": "STORY_READ_STORY_15",
+      "doesNotGrantRequiredXp": true
+    }
+  ],
+  "readingRules": {
+    "noMandatoryReadingForGeneralCrafting": true,
+    "notesPersistAfterRead": true,
+    "storyJournalAccessibleOffline": true,
+    "noQuestXP": true,
+    "relatedCluesLinkViaFlags": true,
+    "radioLiveVoiceNeverPlays": true,
+    "ui": "Large mobile readable card, no forced popup"
+  },
+  "story15Generation": {
+    "triggerAny": [
+      "TWO_NAV_SOURCES",
+      "RADIO_STATION_DISCOVERED"
+    ],
+    "noDayGate": true,
+    "mayAppearWhenAnyEscapeRouteRecognized": true
+  }
+}

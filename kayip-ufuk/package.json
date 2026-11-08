@@ -1,0 +1,17 @@
+{
+  "name": "kayip-ufuk",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Kayıp Ufuk — mobil yatay HTML5 Canvas2D tropikal ada survival (GDD v2.0 tam sürüm)",
+  "scripts": {
+    "assets": "node tools/assetgen/generate.mjs",
+    "build": "node tools/build.mjs",
+    "dev": "node tools/devserver.mjs",
+    "serve": "python3 -m http.server 8000 -d dist",
+    "test": "node --test tests/unit/",
+    "test:e2e": "node tests/e2e/run-e2e.mjs",
+    "qa": "python3 tools/preflight.py && python3 tools/validate_delivery.py"
+  },
+  "engines": { "node": ">=20" }
+}

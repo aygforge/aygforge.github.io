@@ -1,0 +1,70 @@
+KAYIP UFUK — CLAUDE OPUS TAM SÜRÜM TEK GÖREV ÜRETİM TALİMATI
+
+<ROL>
+Sen kıdemli HTML5/Canvas2D oyun mühendisi, oyun sistem mimarı, mobil etkileşim tasarımcısı, özgün pixel-art üretim mühendisi ve QA liderisin. Bu klasörde sıfırdan "Kayıp Ufuk" adlı TAM SÜRÜM, yatay ekran mobil tarayıcıda oynanabilen, tek oyunculu 2D tropikal ada survival/keşif/crafting oyununu üret. Bir plan veya GDD özeti değil; çalıştırılabilir oyun kaynak kodu, yerel üretilmiş görsel/ses dosyaları, veri yükleyicileri, otomatik testler, gerçek test raporları ve dağıtılabilir HTML5 ZIP teslim et. Görev tek bir kapsamlı istektir; uygulama boyunca kendi kendine planla, dosya oluştur, kodu çalıştır, hataları düzelt ve doğrula. İşlem süren sınırlıysa uydurma tamamlanma raporu verme; kodu ve ilerlemeyi diskte korunacak şekilde bırak, eksikleri açıkça raporla.
+</ROL>
+
+<BAĞLAYICI_KAYNAK>
+Proje kökünde `Kayip_Ufuk_GDD_v2_0/` klasörü bulunuyor. ÖNCE GERÇEKTEN OKU:
+1. `Kayip_Ufuk_GDD_v2_0/README_BASLANGIC.md`
+2. `Kayip_Ufuk_GDD_v2_0/ProductionTruth_v2.0.json`
+3. `Kayip_Ufuk_GDD_v2_0/Docs/Kayip_Ufuk_GDD_v2.0_Tek_Kaynak_Tam_Surum.md`
+4. `Kayip_Ufuk_GDD_v2_0/ContentIndex_v2.0.json`
+5. `Kayip_Ufuk_GDD_v2_0/Contracts/ImplementationContract.json`, `SceneFlow.json`, `ContentContract.json`, `AcceptanceTests.json`, `IntegrationMilestones.json`
+6. `Kayip_Ufuk_GDD_v2_0/DB/*.json`, `Maps/*.json`, `Art/ArtDirection.json`, `SpriteCatalog.json`, `AtlasLayout.json`, `AvatarRig.json`, `AudioManifest.json`, `AssetAcceptanceTests.json`
+7. `CLAUDE.md` ve `.claude/skills/kayip-ufuk-build/SKILL.md`, `kayip-ufuk-assets/SKILL.md`, `kayip-ufuk-qa/SKILL.md` (mevcutsa).
+
+İlk terminal adımı mevcut dizini, referans klasörünü ve Python/Node imkanlarını tespit etmek olsun. `python Kayip_Ufuk_GDD_v2_0/QA/audit_v20.py` komutunu çalıştır ve statik kaynak denetimini raporla. Arşivler hâlâ ZIP biçimindeyse aç ve yukarıdaki klasör yapısına getir. ZIP okuma/araca erişim yoksa bunu açıkça bildir; dosyaları okumuş gibi davranma.
+
+`Kayip_Ufuk_GDD_v2_0/` TASARIM KAYNAĞIDIR ve değiştirilmeden korunmalıdır. v0.9–v1.9 yamalarını yeniden uygulama. Çelişki halinde `ProductionTruth_v2.0.json` öncelik düzenini uygula; eski anlatım metni güncel DB kimliğini geçersiz kılamaz. Bir eksik/çelişki bulursan `reports/spec-issues.md` içine somut dosya, kimlik, karar ve gerekçe yaz; gizlice kapsam eksiltme.
+</BAĞLAYICI_KAYNAK>
+
+<KİLİTLİ_OYUN_KİMLİĞİ>
+- Yalnızca MOBİL YATAY 16:9+ öncelikli HTML5 Canvas2D. PC fare/klavye desteği ikincil. Tam ekran düğmesi çalışmalı, ekran döndürme önerisi gerektiğinde gösterilmeli. İsteğe bağlı buton/menüden titreşim; dokunma hedefleri rahat.
+- 2D üstten hafif açılı, CANLI MODERN PIXEL ART, keskin pikseller. Özgün 32x32 zemin, 32x48 karakter animasyonu, gerçek karakter/eşya/yapı/hayvan sprite katmanları. Emoji, düz renk kutuları veya yer tutucu daireler final asseti değildir.
+- Ana ada 256x256 karo, 9 ana biyom; 3 küçük ada 64x64; 512x384 deniz atlası; 3 mağaranın gerçek RLE haritaları; 38 sabit POI, 12 çevresel bulmaca, 15 hikâye kaydı, 20 garantili isteğe bağlı plan. Genel coğrafyayı rastgele yeniden üretme; yalnızca ikincil loot/kaynakları seed ile çeşitlendir.
+- Tek oyunculu; adada başka YAŞAYAN insan NPC kesinlikle yok. Oynanışta canlı iki yönlü telsiz sohbeti yok. Geçmişin hikâyesi yazılı kayıtlar ve terk edilmiş binalardan öğrenilir. Evcil papağan ve maymun var; ikisi de ölümsüz, en fazla bir aktif takipçi.
+- Ev sistemi: 4 HAZIR EV şablonu; içeride ve dışarıda serbest eşya/mobilya yerleştirme; inşaat aşamaları ve ev içi çatı gizleme. Tek tek duvar/çatı/zemin inşa sistemi EKLEME.
+- 179 ItemDB kaydı, 183 RecipeDB tarifi (114 eşya, 60 inşa, 9 mevcut nesneyi yükseltme), 58 BuildDB yapısı. Hiçbiri yalnızca listede görünen ama işlevsiz bir UI girdisi olarak kalamaz. Eşya, tarif, istasyon, giriş/çıkış, tamir/upgrade ve kayıt işlemleri gerçek olmalı.
+- 25 canlı türü (10 balık dahil), 12 tarım bitkisi, 8 yaparak öğrenme ustalığı, 3 yöntemli balıkçılık, tuzaklar, avlanma, üretim, envanter, 10 iş istasyonu, 4 kamp sınırı, 6 tuzak sınırı.
+- 18 gerçek dakikalık oyun günü, açlık/susuzluk/uyku/dayanıklılık, gün/gece, 5 hava durumu, yağmur toplayıcı, ham/temiz su ayrımı, fırtına, tarım, kaynak yenilenmesi; arka planda ve oyun kapalıyken simülasyon/durum ilerlemesi YOK.
+- Tekneyle kaçış ve güneş ya da jeneratörle beslenen TELSİZ/SOS kaçışı bağımsız tamamlanır. Radyo sinyalinden sonra yaklaşık 2 oyun günü ada yaşamına devam edilir. Her iki finalden sonra aynı kayda dönülür. Zorunlu bileşenler yalnızca sabit ve garantili keşiflerden elde edilir; en iyi yan planlar kaçış zorunluluğu değildir.
+- Kayıt: 3 slot, IndexedDB şema v5, güvenilir işlemler, önceki sağlam snapshot, JSON export/import, 60 saniye otomatik kayıt ve kritik olay checkpoint'i, offline simülasyonsuz yeniden yükleme, çoklu sekme koruması.
+</KİLİTLİ_OYUN_KİMLİĞİ>
+
+<GERÇEK_ÜRETİM_PLANİ>
+Bu görevi tamamlanmış ürün odaklı aşamalara ayır; bunlar yayınlanacak MVP'ler DEĞİLDİR, TAM sürümün inşa sırasıdır. `Contracts/IntegrationMilestones.json` M01–M08'i referans al, her kilometre taşı sonrası gerçek doğrulama yap.
+1. Önce içerik yükleyici: 31 güncel DB, 7 RLE harita, değişmez kimlikler, doğrulayıcı, sabit random stream, hata ekranı. JSON kayıtlarını kendi kafana göre yeniden yaratma. Şemaları çalışma zamanında yükle, ID indekslerini kur.
+2. Canvas2D motoru: 30 Hz sabit mantık adımı, render interpolasyonu, chunk/culling, sprite atlas yükleyici, kamera, gerçek arazi ve nesne çarpışması, 8 yön A* köşe kesme engeli, yürüyüş/koşma/yüzme/dalış, dokunmalı otomatik yaklaşma (joystick iptal eder).
+3. Ana menü, karakter yaratma, üç kayıt slotu, yatay HUD, altı hızlı slot, harita, envanter, crafting, yapı, günlük, koleksiyon, ayarlar, dokunmatik joystick, Eylem/Koş/Saldır, tam ekran. Geliştirme için gereken kontrollü debug menüsünü yalnızca ayrı dev modunda sun.
+4. Eşyalar ve gerçek ekonomi: ItemDB, RecipeDB, BuildDB; input escrow; istasyon yakınındaki sandıkları kullanma; yığınlama/bozulma/dayanıklılık, tamir; üretim kuyruğu; inşa ve yükseltme. Bir `UPGRADE_EXISTING` tarifi aynı entity UID'yi koruyup içindeki eşyaları aynen muhafaza etmeli; iki kez ödül vermemeli. `R_SEA_CHEST` yeni sandık üretir, yükseltme değildir.
+5. Survival ve ekosistem: günlük su/yiyecek/dinlenme, kamp/uyku, gerçek hava ve yağmur suyu akışı, 12 bitki, kaynak yenilenmesi, 25 canlı, 10 balık türü, gerilimli olta mini oyunu, mızrak/tekne avcılığı, 3 tuzak, hayvan dostları, ustalıklar. Uyku ve kayıt yükleme günlük üretimi iki kez tetikleyemez.
+6. Dünya keşfi: 38 POI, 12 gerçek bulmaca, 15 tam Türkçe günlük, 20 garantili blueprint, tüm yan loot havuzları, 3 gerçek mağara, kalıcı köprü/kestirme değişiklikleri, sal ve üç adacık. Bütün ana POI ve garanti kaynak düğümleri ulaşılabilir olmalı. Başlangıç v1.5 yamasıyla 63 garanti life erişim korunmalı; dört eksik tarım tohumu için sabit kaynaklar korunmalı.
+7. İki final: kendi yelkenlisi ile yön bulup resif geçişi; alternatif olarak radyo antenini güneş/jeneratörle çalıştırıp otomatik SOS ve kurtarma. Oyuncuya zorunlu tekneyi radyo rotası için yaptırma; küçük sal yeterli. Hava uygunluk penceresi kalıcı softlock yaratamaz. Finalden sonra Save devam eder.
+8. Tüm özgün sprite atlaslarını ve özgün sesleri fiziksel dosya olarak üret. `Art/SpriteCatalog.json` -> `Art/AtlasLayout.json` spriteId ile gerçek 1024x1024 PNG yerleşimleri. 3180 sprite karesi/durumu, 24 atlas; görseller gerçek çizilmeli. Asset generator kaynak kodunu da teslim et. Aynı sembolü 3180 kez tekrarlamak, boş sayfa üretmek, CSS kutuları, emoji veya rastgele renkli placeholderları "tamamlandı" saymak yasak. 63 ses tetikleyicisini özgün yerel .ogg/.wav veya açıkça belgelenmiş ve gerçekten çalışan özgün Web Audio senteziyle karşıla. Dış CDN'a, dış görsel servisine, internete veya sunucu API'sine oyun çalışırken bağımlılık olmasın. Ses tarayıcı izinleri gereği ilk etkileşimden sonra başlatılsın.
+9. IndexedDB kayıt yükleme, v5 migrasyon, kurtarma, import/export; mağara içinde, salda, yarım puzzle ve production sırasında save/load testleri. `visibilitychange` ile duraklat ve checkpoint dene, offline catch-up yapma.
+10. Test/optimizasyon ve dağıtım: `dist/index.html` ve yerel JS/CSS/PNG/sesleri içeren itch.io uyumlu statik web paketi. Gerekirse Vite ile geliştir ve bundle al; `file://` çalışması garanti istenmiyor, statik HTTP'de çalışması şart. `npm run dev`, `npm run build`, `npm test` veya eşdeğer belgelenmiş komutlar; `python -m http.server 8000 -d dist` ile HTTP kontrolü. Mobil 60 FPS hedef, zayıf cihaz için 30 FPS/kalite seçenekleri. Ağdan rastgele içerik indirme yok. Dış kütüphane derleme için kullanılabilir, fakat runtime CDN şart değil.
+</GERÇEK_ÜRETİM_PLANİ>
+
+<VERİ_BÜTÜNLÜĞÜ_VE_KABUL>
+Kaynak klasöründeki 92 gerçek oyun testi (`Contracts/AcceptanceTests.json`) ve 28 görsel testi (`Art/AssetAcceptanceTests.json`) için oyun içerisinde veya ayrı testlerde uygulanabilir doğrulama oluştur. Statik kaynakta 79 test geçmiş olması oyunun çalıştığı anlamına GELMEZ.
+- P0 testlerini çalıştırmadan "bitti" deme. Gerçek Chrome/Playwright/telefon varsa çalıştır ve ekran görüntüsü/trace, save diff ve konsol çıktısı kanıtlarını sakla. Araç erişimi yoksa `NOT_RUN` göster; PASS uydurma.
+- Paketleme öncesi `python tools/validate_delivery.py` ile dosya/atlas ön denetimini çalıştır; ek tarayıcı testlerini mümkünse ayrı yürüt. Her eksik sistem ve kaynak için benzersiz ID, somut dosya ve neden raporla.
+- Eşya/loot işlemleri idempotent olmalı: çift tık, aynı karede iki eylem, uyku, yükleme ve sekme çakışmaları malzeme/XP çoğaltmamalı.
+- Tüm 179 eşyanın somut kaynak veya kullanımını, 183 tarifin tamamlanabilirliğini, 58 yapının işlevini, 38 POI'nin ödüllerini ve 2 ayrı finalin deterministik tamamlama senaryolarını test et.
+- `dist` içinde yalnızca final yayın dosyaları bulunsun; `reference`/kaynak GDD'yi oyunun indirmesi veya ağdan yüklemesi gerekmemeli. Uygulama verilerinin paketlenmiş yerel bir kopyası olabilir.
+- Geliştirme sonunda `reports/STATUS.md` dosyasına tamamlanan/eksik sistemleri, manuel ve otomatik test sayılarını, çalıştırma komutlarını, bilinen hataları ve `RELEASE_READY` durumunu dürüstçe yaz.
+</VERİ_BÜTÜNLÜĞÜ_VE_KABUL>
+
+<KOD_VE_SÜREKLİLİK>
+İlk olarak `reports/PLAN.md` oluştur; M01–M08'i izle. Her adımda çalışan dosyalar üret, bir sonraki aşamada mevcut kodun davranışlarını bozma. Yer tutucu sistemlerle ilerlediysen bunları final kabulünden önce gerçekten tamamla. Kapsamı sorup azaltma, aynı sistemi ikinci kez sıfırdan yazma, kaynak DB'yi sebepsiz düzeltme. Zaman/kontekst sınırında otomatik bitiremiyorsan `reports/STATUS.md` ve `reports/NEXT_STEPS.md` ile tam dosya düzeyinde kaldığın noktayı kaydet, gerçeği gizleme. Proje içindeki `.claude/skills/` talimatlarını ilgili işlerde kullan.
+</KOD_VE_SÜREKLİLİK>
+
+<TESLİMAT>
+1. `src/` kaynak kodu, özgün sprite/ses üretici kodu, `public/assets/` ya da eşdeğeri gerçek varlıklar.
+2. `dist/index.html` ile açılan, statik HTTP'de çalışan tam sürüm HTML5 oyunu ve ayrı `Kayip_Ufuk_HTML5_Tam_Surum.zip` dağıtım arşivi.
+3. Otomatik test kodu ve sonuçları; oyun içi/asset kabul testlerine kanıtlar; README ve sürüm raporu.
+4. Eksik özellik varsa tam sürüm olarak yanlış etiketleme; somut eksikliği test ID'leriyle bildir.
+
+Şimdi dosyaları inceleyerek çalışmaya başla ve klasörde gerçekten kod/asset oluştur. Cevap olarak yalnızca plan yazıp durma. Mevcut çalışma zamanı/araçlarla ilerleyebildiğin ölçüde tüm tam sürümü üret, ara testlerini yap ve kaynak dosyalarını teslim et.
+</TESLİMAT>

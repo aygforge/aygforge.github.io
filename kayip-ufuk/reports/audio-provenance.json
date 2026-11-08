@@ -1,0 +1,636 @@
+{
+ "generator": "src/audio/SynthBank.js",
+ "sampleRate": 22050,
+ "cues": [
+  {
+   "soundId": "snd_beach_waves",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_beach_waves",
+   "durationSec": 7.7,
+   "rms": 0.0766,
+   "loop": true,
+   "channel": "ambience",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_palm_wind",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_palm_wind",
+   "durationSec": 7.7,
+   "rms": 0.0352,
+   "loop": true,
+   "channel": "ambience",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_jungle_birds",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_jungle_birds",
+   "durationSec": 7.7,
+   "rms": 0.0432,
+   "loop": true,
+   "channel": "ambience",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_rain_light",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_rain_light",
+   "durationSec": 5.7,
+   "rms": 0.0955,
+   "loop": true,
+   "channel": "ambience",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_rain_heavy",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_rain_heavy",
+   "durationSec": 5.7,
+   "rms": 0.2091,
+   "loop": true,
+   "channel": "ambience",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_storm_wind",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_storm_wind",
+   "durationSec": 9.7,
+   "rms": 0.0827,
+   "loop": true,
+   "channel": "ambience",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_cave_drips",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_cave_drips",
+   "durationSec": 7.7,
+   "rms": 0.0518,
+   "loop": true,
+   "channel": "ambience",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_cave_bats",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_cave_bats",
+   "durationSec": 7.7,
+   "rms": 0.0119,
+   "loop": true,
+   "channel": "ambience",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_swamp_insects",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_swamp_insects",
+   "durationSec": 8,
+   "rms": 0.0601,
+   "loop": true,
+   "channel": "ambience",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_mountain_wind",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_mountain_wind",
+   "durationSec": 9.7,
+   "rms": 0.0441,
+   "loop": true,
+   "channel": "ambience",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_underwater_muffle",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_underwater_muffle",
+   "durationSec": 5.7,
+   "rms": 0.057,
+   "loop": true,
+   "channel": "ambience",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_campfire_crackle",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_campfire_crackle",
+   "durationSec": 5.7,
+   "rms": 0.0447,
+   "loop": true,
+   "channel": "ambience",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_foot_sand",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_foot_sand",
+   "durationSec": 0.12,
+   "rms": 0.0888,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_foot_grass",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_foot_grass",
+   "durationSec": 0.1,
+   "rms": 0.0648,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_foot_stone",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_foot_stone",
+   "durationSec": 0.08,
+   "rms": 0.1995,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_foot_wood",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_foot_wood",
+   "durationSec": 0.12,
+   "rms": 0.1748,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_swim_stroke",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_swim_stroke",
+   "durationSec": 0.4,
+   "rms": 0.0628,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_dive_bubble",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_dive_bubble",
+   "durationSec": 0.5,
+   "rms": 0.0703,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_raft_oar",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_raft_oar",
+   "durationSec": 0.5,
+   "rms": 0.0643,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_boat_wake",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_boat_wake",
+   "durationSec": 1.2,
+   "rms": 0.0441,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_axe_hit",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_axe_hit",
+   "durationSec": 0.25,
+   "rms": 0.2105,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_tree_fall",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_tree_fall",
+   "durationSec": 1.4,
+   "rms": 0.0796,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_pick_hit",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_pick_hit",
+   "durationSec": 0.3,
+   "rms": 0.2203,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_ore_break",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_ore_break",
+   "durationSec": 0.6,
+   "rms": 0.1303,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_item_collect",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_item_collect",
+   "durationSec": 0.25,
+   "rms": 0.1083,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_chest_open",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_chest_open",
+   "durationSec": 0.6,
+   "rms": 0.1203,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_workbench_finish",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_workbench_finish",
+   "durationSec": 0.5,
+   "rms": 0.1098,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_wood_build",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_wood_build",
+   "durationSec": 0.3,
+   "rms": 0.1633,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_build_finish",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_build_finish",
+   "durationSec": 0.9,
+   "rms": 0.0684,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_fish_cast",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_fish_cast",
+   "durationSec": 0.5,
+   "rms": 0.0543,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_fish_bite",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_fish_bite",
+   "durationSec": 0.3,
+   "rms": 0.0995,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_fish_reel",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_fish_reel",
+   "durationSec": 0.4,
+   "rms": 0.0888,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_fish_landed",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_fish_landed",
+   "durationSec": 0.7,
+   "rms": 0.0932,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_trap_set",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_trap_set",
+   "durationSec": 0.25,
+   "rms": 0.0776,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_trap_claim",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_trap_claim",
+   "durationSec": 0.4,
+   "rms": 0.0745,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_crop_plant",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_crop_plant",
+   "durationSec": 0.3,
+   "rms": 0.075,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_crop_harvest",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_crop_harvest",
+   "durationSec": 0.4,
+   "rms": 0.0622,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_eat",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_eat",
+   "durationSec": 0.5,
+   "rms": 0.0544,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_drink",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_drink",
+   "durationSec": 0.5,
+   "rms": 0.0935,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_water_pour",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_water_pour",
+   "durationSec": 0.8,
+   "rms": 0.1046,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_damage",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_damage",
+   "durationSec": 0.3,
+   "rms": 0.2046,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_healing",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_healing",
+   "durationSec": 0.7,
+   "rms": 0.0914,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_ui_confirm",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_ui_confirm",
+   "durationSec": 0.15,
+   "rms": 0.0888,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_ui_cancel",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_ui_cancel",
+   "durationSec": 0.15,
+   "rms": 0.0781,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_ui_error",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_ui_error",
+   "durationSec": 0.25,
+   "rms": 0.1039,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_door_open",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_door_open",
+   "durationSec": 0.5,
+   "rms": 0.0514,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_discovery",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_discovery",
+   "durationSec": 1.2,
+   "rms": 0.0477,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_blueprint_unlocked",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_blueprint_unlocked",
+   "durationSec": 1,
+   "rms": 0.0858,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_puzzle_correct",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_puzzle_correct",
+   "durationSec": 1,
+   "rms": 0.1055,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_puzzle_fail",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_puzzle_fail",
+   "durationSec": 0.5,
+   "rms": 0.0772,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_map_reveal",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_map_reveal",
+   "durationSec": 0.6,
+   "rms": 0.0619,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_sos_transmit",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_sos_transmit",
+   "durationSec": 3.2,
+   "rms": 0.0996,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_sos_received_indicator",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_sos_received_indicator",
+   "durationSec": 1,
+   "rms": 0.0577,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_sea_finale",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_sea_finale",
+   "durationSec": 9.75,
+   "rms": 0.0709,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_radio_finale",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_radio_finale",
+   "durationSec": 9.75,
+   "rms": 0.0791,
+   "loop": false,
+   "channel": "sfx",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_menu_theme",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_menu_theme",
+   "durationSec": 23.75,
+   "rms": 0.0789,
+   "loop": true,
+   "channel": "music",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_calm_day",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_calm_day",
+   "durationSec": 27.75,
+   "rms": 0.0715,
+   "loop": true,
+   "channel": "music",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_camp_evening",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_camp_evening",
+   "durationSec": 27.75,
+   "rms": 0.0739,
+   "loop": true,
+   "channel": "music",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_exploration",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_exploration",
+   "durationSec": 27.75,
+   "rms": 0.0701,
+   "loop": true,
+   "channel": "music",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_night_ambience",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_night_ambience",
+   "durationSec": 27.75,
+   "rms": 0.0661,
+   "loop": true,
+   "channel": "music",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_sea_journey",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_sea_journey",
+   "durationSec": 27.75,
+   "rms": 0.0828,
+   "loop": true,
+   "channel": "music",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_ending_sea",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_ending_sea",
+   "durationSec": 23.75,
+   "rms": 0.0723,
+   "loop": true,
+   "channel": "music",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  },
+  {
+   "soundId": "snd_ending_radio",
+   "mode": "web_audio",
+   "functionRef": "src/audio/SynthBank.js#CUES.snd_ending_radio",
+   "durationSec": 23.75,
+   "rms": 0.0929,
+   "loop": true,
+   "channel": "music",
+   "origin": "original procedural synthesis (Kayıp Ufuk), no samples, no network"
+  }
+ ]
+}

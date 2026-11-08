@@ -1,0 +1,1127 @@
+{
+  "version": "v1.2",
+  "tileGrid": "TerrainGrid_*_v1.2.json",
+  "layers": [
+    "terrain",
+    "world_object",
+    "placed_building",
+    "player",
+    "animal",
+    "projectile",
+    "interaction"
+  ],
+  "collisionMatrix": {
+    "PLAYER_WALK": {
+      "blocks": [
+        "CLIFF_WALL",
+        "RIVER_DEEP",
+        "OCEAN_SHALLOW",
+        "OCEAN_DEEP",
+        "SEA_REEF",
+        "DYNAMIC_SOLID",
+        "CLOSED_DOOR",
+        "GATE_CLOSED"
+      ],
+      "ignores": [
+        "ITEM_PICKUP",
+        "ANIMAL_SOFT"
+      ]
+    },
+    "PLAYER_SWIM": {
+      "permits": [
+        "OCEAN_SHALLOW",
+        "OCEAN_DEEP",
+        "SEA_REEF",
+        "RIVER_DEEP",
+        "WETLAND_WADE"
+      ],
+      "blocks": [
+        "CLIFF_WALL",
+        "SOLID_TERRAIN_OBJECT"
+      ]
+    },
+    "RAFT": {
+      "permits": [
+        "OCEAN_DEEP",
+        "OCEAN_SHALLOW",
+        "SEA_REEF"
+      ],
+      "blocks": [
+        "DRY_LAND",
+        "CLIFF_WALL",
+        "DOCK_SOLID",
+        "SUBMERGED_ROCK"
+      ]
+    },
+    "ANIMAL_LAND": {
+      "blocks": [
+        "OCEAN_DEEP",
+        "CLIFF_WALL",
+        "WALL",
+        "BUILDING"
+      ],
+      "movementMode": "species specific"
+    },
+    "PROJECTILE": {
+      "blocks": [
+        "SOLID_WORLD",
+        "WALL"
+      ],
+      "ignores": [
+        "NON_SOLID_DECOR"
+      ]
+    }
+  },
+  "obstacleFootprints": {
+    "treeTrunk": "small solid base; canopy decorative with fade",
+    "largeRock": "polygon/rectangle at ground",
+    "prefabHouse": "rectangular footprint with carved entrance door",
+    "door": "toggleable collision and interaction",
+    "campfire": "small solid perimeter to prevent overlapping structures"
+  },
+  "riverCrossings": [
+    {
+      "tileMainLocal": [
+        114,
+        145
+      ],
+      "type": "PUBLIC_FORD",
+      "source": "FIRST_PUBLIC_FORD"
+    },
+    {
+      "tileMainLocal": [
+        109,
+        154
+      ],
+      "type": "PUBLIC_FORD",
+      "source": "ROAD_BEACH_VALLEY"
+    },
+    {
+      "tileMainLocal": [
+        141,
+        85
+      ],
+      "type": "PUBLIC_FORD",
+      "source": "ROAD_FOREST_MOUNTAIN"
+    },
+    {
+      "tileMainLocal": [
+        137,
+        92
+      ],
+      "type": "PUBLIC_FORD",
+      "source": "ROAD_FOREST_MOUNTAIN"
+    },
+    {
+      "tileMainLocal": [
+        127,
+        108
+      ],
+      "type": "PUBLIC_FORD",
+      "source": "ROAD_FOREST_RED"
+    },
+    {
+      "tileMainLocal": [
+        112,
+        139
+      ],
+      "type": "PUBLIC_FORD",
+      "source": "ROAD_VALLEY_FOREST"
+    },
+    {
+      "tileMainLocal": [
+        121,
+        117
+      ],
+      "type": "PUBLIC_FORD",
+      "source": "ROAD_WATERFALL"
+    },
+    {
+      "tileMainLocal": [
+        117,
+        122
+      ],
+      "type": "PUBLIC_FORD",
+      "source": "ROAD_WATERFALL"
+    },
+    {
+      "tileMainLocal": [
+        115,
+        129
+      ],
+      "type": "PUBLIC_FORD",
+      "source": "ROAD_WATERFALL"
+    }
+  ],
+  "gates": [
+    {
+      "id": "GATE_BRIDGE",
+      "tileMainLocal": [
+        117,
+        140
+      ],
+      "unlockFlag": "STONE_BRIDGE_REPAIRED",
+      "roadId": "ROAD_VALLEY_RED_BRIDGE",
+      "type": "REPAIR",
+      "visual": "broken old bridge; shortcut only"
+    },
+    {
+      "id": "GATE_CLIMB",
+      "tileMainLocal": [
+        112,
+        66
+      ],
+      "unlockFlag": "CLIMB_KIT_EQUIPPED",
+      "roadId": "ROAD_RED_MOUNTAIN",
+      "type": "EQUIPMENT",
+      "visual": "steep climb; shortcut only"
+    },
+    {
+      "id": "GATE_RELAY",
+      "tileMainLocal": [
+        193,
+        89
+      ],
+      "unlockFlag": "RELAY_PATH_OPEN",
+      "roadId": "ROAD_RELAY_SHORTCUT",
+      "type": "REPAIR",
+      "visual": "locked relay trail; shortcut only"
+    },
+    {
+      "id": "GATE_SANDSPIT",
+      "tileMainLocal": [
+        227,
+        209
+      ],
+      "unlockFlag": "TIDE_LOW",
+      "roadId": null,
+      "type": "ENVIRONMENT",
+      "visual": "tidal reachability; SIDE POI only"
+    }
+  ],
+  "poiApproachAnchors": [
+    {
+      "poiId": "POI_CRASH_BOAT",
+      "islandId": "MAIN",
+      "poiTile": [
+        123,
+        215
+      ],
+      "footApproachTile": [
+        123,
+        215
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_WATERPROOF_BAG",
+      "islandId": "MAIN",
+      "poiTile": [
+        133,
+        209
+      ],
+      "footApproachTile": [
+        133,
+        209
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_SHORE_CRATE",
+      "islandId": "MAIN",
+      "poiTile": [
+        109,
+        222
+      ],
+      "footApproachTile": [
+        109,
+        222
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_BROKEN_LOOKOUT",
+      "islandId": "MAIN",
+      "poiTile": [
+        155,
+        206
+      ],
+      "footApproachTile": [
+        155,
+        206
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_FISHER_HUT",
+      "islandId": "MAIN",
+      "poiTile": [
+        164,
+        187
+      ],
+      "footApproachTile": [
+        164,
+        187
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_FRUIT_HILL",
+      "islandId": "MAIN",
+      "poiTile": [
+        165,
+        168
+      ],
+      "footApproachTile": [
+        165,
+        168
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_VINE_TUNNEL",
+      "islandId": "MAIN",
+      "poiTile": [
+        145,
+        160
+      ],
+      "footApproachTile": [
+        145,
+        160
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_WATER_STATION",
+      "islandId": "MAIN",
+      "poiTile": [
+        105,
+        150
+      ],
+      "footApproachTile": [
+        105,
+        150
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_STONE_BRIDGE",
+      "islandId": "MAIN",
+      "poiTile": [
+        117,
+        140
+      ],
+      "footApproachTile": [
+        117,
+        140
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_WATERFALL_CAVE",
+      "islandId": "MAIN",
+      "poiTile": [
+        121,
+        117
+      ],
+      "footApproachTile": [
+        121,
+        117
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_FORESTER_HUT",
+      "islandId": "MAIN",
+      "poiTile": [
+        137,
+        113
+      ],
+      "footApproachTile": [
+        137,
+        113
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_TREEHOUSE",
+      "islandId": "MAIN",
+      "poiTile": [
+        160,
+        102
+      ],
+      "footApproachTile": [
+        160,
+        102
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_HUNTER_CAMP",
+      "islandId": "MAIN",
+      "poiTile": [
+        110,
+        102
+      ],
+      "footApproachTile": [
+        110,
+        102
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_SWAMP_MEASURE",
+      "islandId": "MAIN",
+      "poiTile": [
+        59,
+        150
+      ],
+      "footApproachTile": [
+        59,
+        150
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_FLOODED_STORE",
+      "islandId": "MAIN",
+      "poiTile": [
+        50,
+        171
+      ],
+      "footApproachTile": [
+        50,
+        171
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_MANGROVE_COVE",
+      "islandId": "MAIN",
+      "poiTile": [
+        46,
+        186
+      ],
+      "footApproachTile": [
+        46,
+        186
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_COPPER_MINE",
+      "islandId": "MAIN",
+      "poiTile": [
+        80,
+        86
+      ],
+      "footApproachTile": [
+        80,
+        86
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_CABLE_CAR",
+      "islandId": "MAIN",
+      "poiTile": [
+        99,
+        70
+      ],
+      "footApproachTile": [
+        99,
+        70
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_MINE_SHELTER",
+      "islandId": "MAIN",
+      "poiTile": [
+        62,
+        105
+      ],
+      "footApproachTile": [
+        62,
+        105
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_OBSERVATORY",
+      "islandId": "MAIN",
+      "poiTile": [
+        149,
+        50
+      ],
+      "footApproachTile": [
+        149,
+        50
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_RELAY_SHELTER",
+      "islandId": "MAIN",
+      "poiTile": [
+        181,
+        75
+      ],
+      "footApproachTile": [
+        181,
+        75
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_BAT_CAVERN",
+      "islandId": "MAIN",
+      "poiTile": [
+        130,
+        77
+      ],
+      "footApproachTile": [
+        130,
+        77
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_UNDERGROUND_POND",
+      "islandId": "MAIN",
+      "poiTile": [
+        169,
+        91
+      ],
+      "footApproachTile": [
+        169,
+        91
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_RESEARCH_SQUARE",
+      "islandId": "MAIN",
+      "poiTile": [
+        199,
+        112
+      ],
+      "footApproachTile": [
+        199,
+        112
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_RADIO_WORKSHOP",
+      "islandId": "MAIN",
+      "poiTile": [
+        219,
+        130
+      ],
+      "footApproachTile": [
+        219,
+        130
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_OLD_KITCHEN",
+      "islandId": "MAIN",
+      "poiTile": [
+        194,
+        135
+      ],
+      "footApproachTile": [
+        194,
+        135
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_LOCKED_WAREHOUSE",
+      "islandId": "MAIN",
+      "poiTile": [
+        219,
+        107
+      ],
+      "footApproachTile": [
+        219,
+        107
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_SHALLOW_WRECK",
+      "islandId": "MAIN",
+      "poiTile": [
+        204,
+        195
+      ],
+      "footApproachTile": [
+        199,
+        191
+      ],
+      "needsSwimmingOrDiving": true,
+      "recommendedInteractRadiusTiles": 7,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_REEF_FISSURE",
+      "islandId": "MAIN",
+      "poiTile": [
+        228,
+        180
+      ],
+      "footApproachTile": [
+        227,
+        180
+      ],
+      "needsSwimmingOrDiving": true,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_SAND_SPIT",
+      "islandId": "MAIN",
+      "poiTile": [
+        229,
+        211
+      ],
+      "footApproachTile": [
+        229,
+        211
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_LIGHTHOUSE",
+      "islandId": "LIGHTHOUSE",
+      "poiTile": [
+        29,
+        27
+      ],
+      "footApproachTile": [
+        29,
+        27
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_LIGHTHOUSE_KEEPER",
+      "islandId": "LIGHTHOUSE",
+      "poiTile": [
+        39,
+        38
+      ],
+      "footApproachTile": [
+        39,
+        38
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_CAPTAIN_CABIN",
+      "islandId": "WRECK",
+      "poiTile": [
+        20,
+        34
+      ],
+      "footApproachTile": [
+        20,
+        34
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_ENGINE_ROOM",
+      "islandId": "WRECK",
+      "poiTile": [
+        29,
+        42
+      ],
+      "footApproachTile": [
+        29,
+        42
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_CORAL_CHEST",
+      "islandId": "WRECK",
+      "poiTile": [
+        41,
+        29
+      ],
+      "footApproachTile": [
+        40,
+        29
+      ],
+      "needsSwimmingOrDiving": true,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_ABANDONED_GARDEN",
+      "islandId": "FERTILE",
+      "poiTile": [
+        27,
+        35
+      ],
+      "footApproachTile": [
+        27,
+        35
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_HERB_GREENHOUSE",
+      "islandId": "FERTILE",
+      "poiTile": [
+        43,
+        29
+      ],
+      "footApproachTile": [
+        43,
+        29
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    },
+    {
+      "poiId": "POI_ROCK_SHELTER",
+      "islandId": "FERTILE",
+      "poiTile": [
+        18,
+        21
+      ],
+      "footApproachTile": [
+        18,
+        21
+      ],
+      "needsSwimmingOrDiving": false,
+      "recommendedInteractRadiusTiles": 2,
+      "fixedPoiCoordinatePreserved": true
+    }
+  ],
+  "poiTrailConnectors": [
+    {
+      "poiId": "POI_CRASH_BOAT",
+      "fromTile": [
+        123,
+        215
+      ],
+      "toTrailTile": [
+        123,
+        215
+      ],
+      "lengthTiles": 1
+    },
+    {
+      "poiId": "POI_WATERPROOF_BAG",
+      "fromTile": [
+        133,
+        209
+      ],
+      "toTrailTile": [
+        133,
+        209
+      ],
+      "lengthTiles": 1
+    },
+    {
+      "poiId": "POI_SHORE_CRATE",
+      "fromTile": [
+        109,
+        222
+      ],
+      "toTrailTile": [
+        122,
+        215
+      ],
+      "lengthTiles": 21
+    },
+    {
+      "poiId": "POI_BROKEN_LOOKOUT",
+      "fromTile": [
+        155,
+        206
+      ],
+      "toTrailTile": [
+        152,
+        195
+      ],
+      "lengthTiles": 15
+    },
+    {
+      "poiId": "POI_FISHER_HUT",
+      "fromTile": [
+        164,
+        187
+      ],
+      "toTrailTile": [
+        161,
+        187
+      ],
+      "lengthTiles": 4
+    },
+    {
+      "poiId": "POI_FRUIT_HILL",
+      "fromTile": [
+        165,
+        168
+      ],
+      "toTrailTile": [
+        161,
+        168
+      ],
+      "lengthTiles": 5
+    },
+    {
+      "poiId": "POI_VINE_TUNNEL",
+      "fromTile": [
+        145,
+        160
+      ],
+      "toTrailTile": [
+        156,
+        160
+      ],
+      "lengthTiles": 12
+    },
+    {
+      "poiId": "POI_WATER_STATION",
+      "fromTile": [
+        105,
+        150
+      ],
+      "toTrailTile": [
+        105,
+        150
+      ],
+      "lengthTiles": 1
+    },
+    {
+      "poiId": "POI_STONE_BRIDGE",
+      "fromTile": [
+        117,
+        140
+      ],
+      "toTrailTile": [
+        116,
+        139
+      ],
+      "lengthTiles": 3
+    },
+    {
+      "poiId": "POI_WATERFALL_CAVE",
+      "fromTile": [
+        121,
+        117
+      ],
+      "toTrailTile": [
+        121,
+        117
+      ],
+      "lengthTiles": 1
+    },
+    {
+      "poiId": "POI_FORESTER_HUT",
+      "fromTile": [
+        137,
+        113
+      ],
+      "toTrailTile": [
+        137,
+        113
+      ],
+      "lengthTiles": 1
+    },
+    {
+      "poiId": "POI_TREEHOUSE",
+      "fromTile": [
+        160,
+        102
+      ],
+      "toTrailTile": [
+        160,
+        117
+      ],
+      "lengthTiles": 16
+    },
+    {
+      "poiId": "POI_HUNTER_CAMP",
+      "fromTile": [
+        110,
+        102
+      ],
+      "toTrailTile": [
+        110,
+        101
+      ],
+      "lengthTiles": 2
+    },
+    {
+      "poiId": "POI_SWAMP_MEASURE",
+      "fromTile": [
+        59,
+        150
+      ],
+      "toTrailTile": [
+        59,
+        150
+      ],
+      "lengthTiles": 1
+    },
+    {
+      "poiId": "POI_FLOODED_STORE",
+      "fromTile": [
+        50,
+        171
+      ],
+      "toTrailTile": [
+        59,
+        152
+      ],
+      "lengthTiles": 31
+    },
+    {
+      "poiId": "POI_MANGROVE_COVE",
+      "fromTile": [
+        46,
+        186
+      ],
+      "toTrailTile": [
+        49,
+        171
+      ],
+      "lengthTiles": 19
+    },
+    {
+      "poiId": "POI_COPPER_MINE",
+      "fromTile": [
+        80,
+        86
+      ],
+      "toTrailTile": [
+        80,
+        85
+      ],
+      "lengthTiles": 2
+    },
+    {
+      "poiId": "POI_CABLE_CAR",
+      "fromTile": [
+        99,
+        70
+      ],
+      "toTrailTile": [
+        99,
+        94
+      ],
+      "lengthTiles": 25
+    },
+    {
+      "poiId": "POI_MINE_SHELTER",
+      "fromTile": [
+        62,
+        105
+      ],
+      "toTrailTile": [
+        80,
+        86
+      ],
+      "lengthTiles": 38
+    },
+    {
+      "poiId": "POI_OBSERVATORY",
+      "fromTile": [
+        149,
+        50
+      ],
+      "toTrailTile": [
+        148,
+        50
+      ],
+      "lengthTiles": 2
+    },
+    {
+      "poiId": "POI_RELAY_SHELTER",
+      "fromTile": [
+        181,
+        75
+      ],
+      "toTrailTile": [
+        149,
+        75
+      ],
+      "lengthTiles": 33
+    },
+    {
+      "poiId": "POI_BAT_CAVERN",
+      "fromTile": [
+        130,
+        77
+      ],
+      "toTrailTile": [
+        146,
+        76
+      ],
+      "lengthTiles": 18
+    },
+    {
+      "poiId": "POI_UNDERGROUND_POND",
+      "fromTile": [
+        169,
+        91
+      ],
+      "toTrailTile": [
+        169,
+        75
+      ],
+      "lengthTiles": 17
+    },
+    {
+      "poiId": "POI_RESEARCH_SQUARE",
+      "fromTile": [
+        199,
+        112
+      ],
+      "toTrailTile": [
+        198,
+        112
+      ],
+      "lengthTiles": 2
+    },
+    {
+      "poiId": "POI_RADIO_WORKSHOP",
+      "fromTile": [
+        219,
+        130
+      ],
+      "toTrailTile": [
+        206,
+        130
+      ],
+      "lengthTiles": 14
+    },
+    {
+      "poiId": "POI_OLD_KITCHEN",
+      "fromTile": [
+        194,
+        135
+      ],
+      "toTrailTile": [
+        205,
+        134
+      ],
+      "lengthTiles": 13
+    },
+    {
+      "poiId": "POI_LOCKED_WAREHOUSE",
+      "fromTile": [
+        219,
+        107
+      ],
+      "toTrailTile": [
+        219,
+        130
+      ],
+      "lengthTiles": 24
+    },
+    {
+      "poiId": "POI_SAND_SPIT",
+      "fromTile": [
+        229,
+        211
+      ],
+      "toTrailTile": [
+        214,
+        197
+      ],
+      "lengthTiles": 30
+    }
+  ],
+  "waterLandingPoints": {
+    "LIGHTHOUSE": [
+      17,
+      34
+    ],
+    "WRECK": [
+      14,
+      35
+    ],
+    "FERTILE": [
+      13,
+      34
+    ]
+  },
+  "runtimeRule": "Footpath grid is a base layer; placed structures must update local occupancy and navigation tiles; rebuilt bridges update gate state and collision immediately."
+}

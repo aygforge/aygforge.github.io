@@ -1,0 +1,597 @@
+{
+  "meta": {
+    "version": "v1.0",
+    "landCount": 12,
+    "marineCount": 3,
+    "fishSpeciesInSeparateDB": 10,
+    "speciesTotal": 25,
+    "designStatus": "BALANCE_PROPOSAL"
+  },
+  "config": {
+    "spawnMode": "regional virtual population with active near-camera simulation",
+    "maxNearbyActiveCreaturesTypical": [
+      3,
+      7
+    ],
+    "campCoreNoDangerSpawnTiles": 12,
+    "predatorLocations": "Crocodile at 2 or 3 fixed wetland habitat anchors; reef shark rare offshore zones only",
+    "neverSpawnInCameraView": true,
+    "predatorChaseLimitTiles": 8,
+    "animalPopulationRecovery": "Per-region capacity and respawnGameDays; no permanent extinction",
+    "lootGeneration": "Only on eligible successful hunt; never upon mere observation",
+    "petAnimalsImmortal": true,
+    "petVariantCannotBeHuntedOrDamaged": true,
+    "companionLimitFollowing": 1
+  },
+  "landAnimals": [
+    {
+      "id": "ANIMAL_CRAB",
+      "name": "Yengeç",
+      "group": "land",
+      "regions": [
+        "REG_BEACH",
+        "REG_LAGOON"
+      ],
+      "aiProfile": "FORAGE_FLEE",
+      "role": "SMALL_HUNT",
+      "hp": 8,
+      "walkSpeedTilesPerSecond": 2.0,
+      "sightTiles": 3,
+      "hearingTiles": 2,
+      "preferredPhases": [
+        "DAY",
+        "MORNING"
+      ],
+      "damagePerAttack": 0,
+      "attackCooldownSeconds": null,
+      "poisonChance": 0,
+      "loot": {
+        "MAT_CRAB_MEAT": {
+          "min": 1,
+          "max": 1
+        },
+        "MAT_SHELL": {
+          "min": 0,
+          "max": 1
+        }
+      },
+      "huntable": true,
+      "aggressiveByDefault": false,
+      "campSpawnExclusionRadiusTiles": 12,
+      "respawnGameDays": 2,
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "petVariant": null,
+      "assetKey": "animal_crab"
+    },
+    {
+      "id": "ANIMAL_HERMIT_CRAB",
+      "name": "Keşiş yengeci",
+      "group": "land",
+      "regions": [
+        "REG_BEACH"
+      ],
+      "aiProfile": "HIDE_IN_SHELL",
+      "role": "OBSERVE",
+      "hp": 5,
+      "walkSpeedTilesPerSecond": 1.1,
+      "sightTiles": 2,
+      "hearingTiles": 2,
+      "preferredPhases": [
+        "DAY"
+      ],
+      "damagePerAttack": 0,
+      "attackCooldownSeconds": null,
+      "poisonChance": 0,
+      "loot": {},
+      "huntable": false,
+      "aggressiveByDefault": false,
+      "campSpawnExclusionRadiusTiles": 12,
+      "respawnGameDays": 2,
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "petVariant": null,
+      "assetKey": "animal_hermit_crab"
+    },
+    {
+      "id": "ANIMAL_RABBIT",
+      "name": "Ada tavşanı",
+      "group": "land",
+      "regions": [
+        "REG_GROVE",
+        "REG_VALLEY"
+      ],
+      "aiProfile": "FLEE",
+      "role": "SMALL_HUNT",
+      "hp": 20,
+      "walkSpeedTilesPerSecond": 3.5,
+      "sightTiles": 7,
+      "hearingTiles": 5,
+      "preferredPhases": [
+        "MORNING",
+        "EVENING"
+      ],
+      "damagePerAttack": 0,
+      "attackCooldownSeconds": null,
+      "poisonChance": 0,
+      "loot": {
+        "MAT_RAW_MEAT": {
+          "min": 1,
+          "max": 2
+        },
+        "MAT_RAW_HIDE": {
+          "min": 0,
+          "max": 1
+        }
+      },
+      "huntable": true,
+      "aggressiveByDefault": false,
+      "campSpawnExclusionRadiusTiles": 12,
+      "respawnGameDays": 2,
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "petVariant": null,
+      "assetKey": "animal_rabbit"
+    },
+    {
+      "id": "ANIMAL_LIZARD",
+      "name": "Tropik kertenkele",
+      "group": "land",
+      "regions": [
+        "REG_RED_CLIFF",
+        "REG_FOREST"
+      ],
+      "aiProfile": "FLEE",
+      "role": "OBSERVE",
+      "hp": 8,
+      "walkSpeedTilesPerSecond": 3.1,
+      "sightTiles": 5,
+      "hearingTiles": 3,
+      "preferredPhases": [
+        "DAY"
+      ],
+      "damagePerAttack": 0,
+      "attackCooldownSeconds": null,
+      "poisonChance": 0,
+      "loot": {},
+      "huntable": false,
+      "aggressiveByDefault": false,
+      "campSpawnExclusionRadiusTiles": 12,
+      "respawnGameDays": 2,
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "petVariant": null,
+      "assetKey": "animal_lizard"
+    },
+    {
+      "id": "ANIMAL_FROG",
+      "name": "Kurbağa",
+      "group": "land",
+      "regions": [
+        "REG_VALLEY",
+        "REG_SWAMP"
+      ],
+      "aiProfile": "HOP_AND_FLEE",
+      "role": "OBSERVE",
+      "hp": 8,
+      "walkSpeedTilesPerSecond": 2.5,
+      "sightTiles": 4,
+      "hearingTiles": 2,
+      "preferredPhases": [
+        "EVENING",
+        "RAIN"
+      ],
+      "damagePerAttack": 0,
+      "attackCooldownSeconds": null,
+      "poisonChance": 0,
+      "loot": {},
+      "huntable": false,
+      "aggressiveByDefault": false,
+      "campSpawnExclusionRadiusTiles": 12,
+      "respawnGameDays": 2,
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "petVariant": null,
+      "assetKey": "animal_frog"
+    },
+    {
+      "id": "ANIMAL_FOREST_BIRD",
+      "name": "Orman kuşu",
+      "group": "land",
+      "regions": [
+        "REG_GROVE",
+        "REG_FOREST"
+      ],
+      "aiProfile": "GROUND_FEED_FLY",
+      "role": "SMALL_HUNT",
+      "hp": 12,
+      "walkSpeedTilesPerSecond": 4.3,
+      "sightTiles": 8,
+      "hearingTiles": 6,
+      "preferredPhases": [
+        "MORNING",
+        "DAY"
+      ],
+      "damagePerAttack": 0,
+      "attackCooldownSeconds": null,
+      "poisonChance": 0,
+      "loot": {
+        "MAT_RAW_MEAT": {
+          "min": 1,
+          "max": 1
+        },
+        "MAT_FEATHER": {
+          "min": 1,
+          "max": 2
+        }
+      },
+      "huntable": true,
+      "aggressiveByDefault": false,
+      "campSpawnExclusionRadiusTiles": 12,
+      "respawnGameDays": 2,
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "petVariant": "parrot",
+      "assetKey": "animal_forest_bird"
+    },
+    {
+      "id": "ANIMAL_SEABIRD",
+      "name": "Deniz kuşu",
+      "group": "land",
+      "regions": [
+        "REG_BEACH",
+        "REG_LIGHTHOUSE",
+        "REG_WRECK"
+      ],
+      "aiProfile": "FLY_AND_LAND",
+      "role": "OBSERVE",
+      "hp": 12,
+      "walkSpeedTilesPerSecond": 4.0,
+      "sightTiles": 7,
+      "hearingTiles": 5,
+      "preferredPhases": [
+        "MORNING",
+        "DAY"
+      ],
+      "damagePerAttack": 0,
+      "attackCooldownSeconds": null,
+      "poisonChance": 0,
+      "loot": {
+        "MAT_FEATHER": {
+          "min": 0,
+          "max": 1
+        }
+      },
+      "huntable": false,
+      "aggressiveByDefault": false,
+      "campSpawnExclusionRadiusTiles": 12,
+      "respawnGameDays": 2,
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "petVariant": null,
+      "assetKey": "animal_seabird"
+    },
+    {
+      "id": "ANIMAL_FRUIT_BAT",
+      "name": "Meyve yarasası",
+      "group": "land",
+      "regions": [
+        "REG_FOREST",
+        "REG_MOUNTAIN"
+      ],
+      "aiProfile": "NOCTURNAL_FLY",
+      "role": "OBSERVE",
+      "hp": 8,
+      "walkSpeedTilesPerSecond": 4.0,
+      "sightTiles": 6,
+      "hearingTiles": 4,
+      "preferredPhases": [
+        "EVENING",
+        "NIGHT"
+      ],
+      "damagePerAttack": 0,
+      "attackCooldownSeconds": null,
+      "poisonChance": 0,
+      "loot": {},
+      "huntable": false,
+      "aggressiveByDefault": false,
+      "campSpawnExclusionRadiusTiles": 12,
+      "respawnGameDays": 2,
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "petVariant": null,
+      "assetKey": "animal_fruit_bat"
+    },
+    {
+      "id": "ANIMAL_MONKEY",
+      "name": "Maymun",
+      "group": "land",
+      "regions": [
+        "REG_FOREST",
+        "REG_GROVE"
+      ],
+      "aiProfile": "TREE_HOP_CURIOUS",
+      "role": "PET_ELIGIBLE",
+      "hp": 30,
+      "walkSpeedTilesPerSecond": 4.0,
+      "sightTiles": 8,
+      "hearingTiles": 6,
+      "preferredPhases": [
+        "DAY"
+      ],
+      "damagePerAttack": 0,
+      "attackCooldownSeconds": null,
+      "poisonChance": 0,
+      "loot": {},
+      "huntable": false,
+      "aggressiveByDefault": false,
+      "campSpawnExclusionRadiusTiles": 12,
+      "respawnGameDays": 4,
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "petVariant": "companion",
+      "assetKey": "animal_monkey"
+    },
+    {
+      "id": "ANIMAL_BOAR",
+      "name": "Yaban domuzu",
+      "group": "land",
+      "regions": [
+        "REG_FOREST",
+        "REG_VALLEY"
+      ],
+      "aiProfile": "WARN_CHARGE",
+      "role": "DEFENSIVE_HUNT",
+      "hp": 75,
+      "walkSpeedTilesPerSecond": 3.4,
+      "sightTiles": 6,
+      "hearingTiles": 4,
+      "preferredPhases": [
+        "MORNING",
+        "DAY"
+      ],
+      "damagePerAttack": 15,
+      "attackCooldownSeconds": 3.0,
+      "poisonChance": 0,
+      "loot": {
+        "MAT_RAW_MEAT": {
+          "min": 4,
+          "max": 6
+        },
+        "MAT_RAW_HIDE": {
+          "min": 2,
+          "max": 2
+        },
+        "MAT_BONE": {
+          "min": 1,
+          "max": 2
+        }
+      },
+      "huntable": true,
+      "aggressiveByDefault": false,
+      "campSpawnExclusionRadiusTiles": 12,
+      "respawnGameDays": 4,
+      "animations": [
+        "idle",
+        "move",
+        "react",
+        "warn",
+        "attack"
+      ],
+      "petVariant": null,
+      "assetKey": "animal_boar"
+    },
+    {
+      "id": "ANIMAL_SNAKE",
+      "name": "Yılan",
+      "group": "land",
+      "regions": [
+        "REG_FOREST",
+        "REG_RED_CLIFF",
+        "REG_SWAMP"
+      ],
+      "aiProfile": "WARN_BITE",
+      "role": "DEFENSIVE_THREAT",
+      "hp": 25,
+      "walkSpeedTilesPerSecond": 2.5,
+      "sightTiles": 3,
+      "hearingTiles": 2,
+      "preferredPhases": [
+        "DAY",
+        "EVENING"
+      ],
+      "damagePerAttack": 8,
+      "attackCooldownSeconds": 3.0,
+      "poisonChance": 0.25,
+      "loot": {},
+      "huntable": false,
+      "aggressiveByDefault": false,
+      "campSpawnExclusionRadiusTiles": 12,
+      "respawnGameDays": 4,
+      "animations": [
+        "idle",
+        "move",
+        "react",
+        "warn",
+        "attack"
+      ],
+      "petVariant": null,
+      "assetKey": "animal_snake"
+    },
+    {
+      "id": "ANIMAL_CROCODILE",
+      "name": "Bataklık timsahı",
+      "group": "land",
+      "regions": [
+        "REG_SWAMP"
+      ],
+      "aiProfile": "TERRITORIAL_AMBUSH",
+      "role": "RARE_THREAT",
+      "hp": 135,
+      "walkSpeedTilesPerSecond": 2.7,
+      "sightTiles": 5,
+      "hearingTiles": 3,
+      "preferredPhases": [
+        "DAY",
+        "EVENING"
+      ],
+      "damagePerAttack": 22,
+      "attackCooldownSeconds": 3.0,
+      "poisonChance": 0,
+      "loot": {},
+      "huntable": false,
+      "aggressiveByDefault": false,
+      "campSpawnExclusionRadiusTiles": 12,
+      "respawnGameDays": 8,
+      "animations": [
+        "idle",
+        "move",
+        "react",
+        "warn",
+        "attack"
+      ],
+      "petVariant": null,
+      "assetKey": "animal_crocodile"
+    }
+  ],
+  "marineAnimals": [
+    {
+      "id": "MARINE_TURTLE",
+      "name": "Deniz kaplumbağası",
+      "regions": [
+        "REG_LAGOON",
+        "REG_FERTILE"
+      ],
+      "aiProfile": "SWIM_OBSERVE",
+      "hp": 100,
+      "damagePerAttack": 0,
+      "huntable": false,
+      "loot": {},
+      "animations": [
+        "swim",
+        "turn"
+      ],
+      "assetKey": "marine_turtle"
+    },
+    {
+      "id": "MARINE_RAY",
+      "name": "Vatoz",
+      "regions": [
+        "REG_LAGOON",
+        "REG_FERTILE"
+      ],
+      "aiProfile": "SWIM_FLEE",
+      "hp": 50,
+      "damagePerAttack": 0,
+      "huntable": false,
+      "loot": {},
+      "animations": [
+        "swim",
+        "turn"
+      ],
+      "assetKey": "marine_ray"
+    },
+    {
+      "id": "MARINE_REEF_SHARK",
+      "name": "Resif köpek balığı",
+      "regions": [
+        "REG_LAGOON",
+        "REG_WRECK"
+      ],
+      "aiProfile": "RARE_TERRITORIAL",
+      "hp": 150,
+      "damagePerAttack": 20,
+      "attackCooldownSeconds": 4,
+      "huntable": false,
+      "loot": {},
+      "animations": [
+        "swim",
+        "turn",
+        "warn",
+        "attack"
+      ],
+      "assetKey": "marine_reef_shark"
+    }
+  ],
+  "pets": {
+    "eligible": [
+      {
+        "speciesId": "ANIMAL_FOREST_BIRD",
+        "variant": "parrot",
+        "help": "Near optional hidden loot POI, max 2 alerts per in-game day, radius 6 tiles",
+        "homeBuildingId": "BUILD_PARROT_PERCH"
+      },
+      {
+        "speciesId": "ANIMAL_MONKEY",
+        "variant": "companion",
+        "help": "Once per day pick up one existing fallen fruit nearby; never create items out of nothing",
+        "homeBuildingId": "BUILD_MONKEY_PLATFORM"
+      }
+    ],
+    "trustThresholds": {
+      "shy": [
+        0,
+        29
+      ],
+      "familiar": [
+        30,
+        59
+      ],
+      "friend": [
+        60,
+        79
+      ],
+      "loyal": [
+        80,
+        100
+      ]
+    },
+    "trustEvents": {
+      "feedFitting": 6,
+      "feedFavorite": 10,
+      "calmInteraction": 4,
+      "nearbyCalm": 2
+    },
+    "dailyTrustLimits": {
+      "feedActions": 2,
+      "calmActions": 1,
+      "nearbyCalmActions": 1
+    },
+    "commands": [
+      "FOLLOW",
+      "STAY",
+      "RETURN_TO_CAMP"
+    ],
+    "petNeverDiesOrDisappears": true,
+    "companionVariantLootBlocked": true,
+    "noFarmAnimalBreeding": true,
+    "petFoodRule": "No health drain or departure; missing food temporarily disables optional help actions"
+  }
+}

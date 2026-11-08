@@ -1,0 +1,34 @@
+{
+  "version": "v1.9",
+  "sourceManifestVersion": "v1.8",
+  "policy": "Do not resolve via source filePattern directly. Resolve canonical logical sprite ID -> AtlasLayout rect -> atlas file. Generated PNGs are not present yet.",
+  "migrations": {
+    "itemIcon": {
+      "from": "assets/generated/icons/<itemIdLower>.png",
+      "to": "icon/<itemId>"
+    },
+    "building": {
+      "from": "assets/generated/builds/<buildIdLower>_<state>.png",
+      "to": "build/<buildId>/<state>"
+    },
+    "crops": {
+      "from": "assets/generated/crops/<cropIdLower>_<stage>.png",
+      "to": "crop/<cropId>/<stage>"
+    },
+    "wildlife": {
+      "from": "assets/generated/animals/<speciesIdLower>_<animation>_<direction>.png",
+      "to": "animal/<speciesId>/<animation>/<direction>/<frame>"
+    },
+    "poi": {
+      "from": "assets/generated/poi/<canonicalPoiIdLower>_<state>.png",
+      "to": "poi/<canonicalPoiId>/<state>"
+    },
+    "avatar": {
+      "from": "assets/generated/avatar/avatar_<clip>_<direction>_<frame>.png",
+      "to": "avatar/body_a/<clip>/<direction>/<frame> (or body_b + overlays)"
+    }
+  },
+  "requiresRendererMigration": true,
+  "stableItemBuildPoiIdsUnchanged": true,
+  "sourceJsonsNotModified": true
+}

@@ -1,0 +1,2576 @@
+{
+  "version": "v1.8-canonical-asset-contract",
+  "assetStatus": "PLANNED_PATHS_NOT_RENDERED",
+  "namingContract": {
+    "icons": "assets/generated/icons/<item_id>.png",
+    "buildings": "assets/generated/builds/<build_id>_<state>.png",
+    "wildlife": "assets/generated/wildlife/<species_id>_<animation>.png",
+    "crops": "assets/generated/crops/<crop_id>_<stage>.png",
+    "avatar": "assets/generated/avatar/<layer>_<clip>_<direction>.png",
+    "poi": "assets/generated/poi/<poi_id>.png"
+  },
+  "itemIcons": [
+    {
+      "itemId": "CMP_ADV_BAIT",
+      "name": "Gelişmiş yem",
+      "file": "assets/generated/icons/cmp_adv_bait.png"
+    },
+    {
+      "itemId": "CMP_ANTENNA",
+      "name": "Haberleşme anteni",
+      "file": "assets/generated/icons/cmp_antenna.png"
+    },
+    {
+      "itemId": "CMP_ARROW",
+      "name": "Ok",
+      "file": "assets/generated/icons/cmp_arrow.png"
+    },
+    {
+      "itemId": "CMP_BATTERY_PACK",
+      "name": "Pil paketi",
+      "file": "assets/generated/icons/cmp_battery_pack.png"
+    },
+    {
+      "itemId": "CMP_BEARING",
+      "name": "Rulman parçası",
+      "file": "assets/generated/icons/cmp_bearing.png"
+    },
+    {
+      "itemId": "CMP_BRICK",
+      "name": "Tuğla",
+      "file": "assets/generated/icons/cmp_brick.png"
+    },
+    {
+      "itemId": "CMP_CABLE_HARNESS",
+      "name": "Kablo demeti",
+      "file": "assets/generated/icons/cmp_cable_harness.png"
+    },
+    {
+      "itemId": "CMP_CHARCOAL",
+      "name": "Odun kömürü",
+      "file": "assets/generated/icons/cmp_charcoal.png"
+    },
+    {
+      "itemId": "CMP_CLOTH",
+      "name": "Kumaş",
+      "file": "assets/generated/icons/cmp_cloth.png"
+    },
+    {
+      "itemId": "CMP_COMPOST",
+      "name": "Kompost",
+      "file": "assets/generated/icons/cmp_compost.png"
+    },
+    {
+      "itemId": "CMP_COPPER_INGOT",
+      "name": "Bakır külçesi",
+      "file": "assets/generated/icons/cmp_copper_ingot.png"
+    },
+    {
+      "itemId": "CMP_COPPER_WIRE",
+      "name": "Bakır tel",
+      "file": "assets/generated/icons/cmp_copper_wire.png"
+    },
+    {
+      "itemId": "CMP_FISH_BAIT",
+      "name": "Balık parçası yem",
+      "file": "assets/generated/icons/cmp_fish_bait.png"
+    },
+    {
+      "itemId": "CMP_FISH_HOOK",
+      "name": "Balık iğnesi",
+      "file": "assets/generated/icons/cmp_fish_hook.png"
+    },
+    {
+      "itemId": "CMP_FUSE",
+      "name": "Sigorta",
+      "file": "assets/generated/icons/cmp_fuse.png"
+    },
+    {
+      "itemId": "CMP_GEAR",
+      "name": "Dişli",
+      "file": "assets/generated/icons/cmp_gear.png"
+    },
+    {
+      "itemId": "CMP_GENERATOR",
+      "name": "Jeneratör",
+      "file": "assets/generated/icons/cmp_generator.png"
+    },
+    {
+      "itemId": "CMP_HULL_REINFORCED",
+      "name": "Güçlendirilmiş gövde kiti",
+      "file": "assets/generated/icons/cmp_hull_reinforced.png"
+    },
+    {
+      "itemId": "CMP_HULL_SEGMENT",
+      "name": "Tekne gövde parçası",
+      "file": "assets/generated/icons/cmp_hull_segment.png"
+    },
+    {
+      "itemId": "CMP_IRON_INGOT",
+      "name": "Demir külçesi",
+      "file": "assets/generated/icons/cmp_iron_ingot.png"
+    },
+    {
+      "itemId": "CMP_LEATHER",
+      "name": "İşlenmiş deri",
+      "file": "assets/generated/icons/cmp_leather.png"
+    },
+    {
+      "itemId": "CMP_MECH_DRIVE",
+      "name": "Mekanik aktarım",
+      "file": "assets/generated/icons/cmp_mech_drive.png"
+    },
+    {
+      "itemId": "CMP_METAL_FASTENER",
+      "name": "Metal bağlantı",
+      "file": "assets/generated/icons/cmp_metal_fastener.png"
+    },
+    {
+      "itemId": "CMP_NAV_CHART",
+      "name": "Birleştirilmiş seyir haritası",
+      "file": "assets/generated/icons/cmp_nav_chart.png"
+    },
+    {
+      "itemId": "CMP_PLANK",
+      "name": "Tahta",
+      "file": "assets/generated/icons/cmp_plank.png"
+    },
+    {
+      "itemId": "CMP_ROPE",
+      "name": "İp",
+      "file": "assets/generated/icons/cmp_rope.png"
+    },
+    {
+      "itemId": "CMP_RUDDER",
+      "name": "Dümen seti",
+      "file": "assets/generated/icons/cmp_rudder.png"
+    },
+    {
+      "itemId": "CMP_SAIL",
+      "name": "Yelken",
+      "file": "assets/generated/icons/cmp_sail.png"
+    },
+    {
+      "itemId": "CMP_SIGNAL_BOOSTER",
+      "name": "Sinyal güçlendirici",
+      "file": "assets/generated/icons/cmp_signal_booster.png"
+    },
+    {
+      "itemId": "CMP_SIMPLE_BAIT",
+      "name": "Basit yem",
+      "file": "assets/generated/icons/cmp_simple_bait.png"
+    },
+    {
+      "itemId": "CMP_SLING_STONE",
+      "name": "Sapan taşı",
+      "file": "assets/generated/icons/cmp_sling_stone.png"
+    },
+    {
+      "itemId": "CMP_STORM_ANCHOR",
+      "name": "Fırtına çapası",
+      "file": "assets/generated/icons/cmp_storm_anchor.png"
+    },
+    {
+      "itemId": "CMP_THICK_ROPE",
+      "name": "Kalın halat",
+      "file": "assets/generated/icons/cmp_thick_rope.png"
+    },
+    {
+      "itemId": "CMP_TREATED_PLANK",
+      "name": "Koruyucu tahta",
+      "file": "assets/generated/icons/cmp_treated_plank.png"
+    },
+    {
+      "itemId": "CON_ADV_BANDAGE",
+      "name": "Gelişmiş sargı",
+      "file": "assets/generated/icons/con_adv_bandage.png"
+    },
+    {
+      "itemId": "CON_ANTIDOTE",
+      "name": "Panzehir",
+      "file": "assets/generated/icons/con_antidote.png"
+    },
+    {
+      "itemId": "CON_BANDAGE",
+      "name": "Basit bandaj",
+      "file": "assets/generated/icons/con_bandage.png"
+    },
+    {
+      "itemId": "CROP_BANANA",
+      "name": "Muz fidanı ürünü",
+      "file": "assets/generated/icons/crop_banana.png"
+    },
+    {
+      "itemId": "CROP_BEAN",
+      "name": "Fasulye",
+      "file": "assets/generated/icons/crop_bean.png"
+    },
+    {
+      "itemId": "CROP_CANE",
+      "name": "Şeker kamışı",
+      "file": "assets/generated/icons/crop_cane.png"
+    },
+    {
+      "itemId": "CROP_FIBER",
+      "name": "Lif ekini",
+      "file": "assets/generated/icons/crop_fiber.png"
+    },
+    {
+      "itemId": "CROP_GREENS",
+      "name": "Yeşillik",
+      "file": "assets/generated/icons/crop_greens.png"
+    },
+    {
+      "itemId": "CROP_HERB",
+      "name": "Şifalı ekin",
+      "file": "assets/generated/icons/crop_herb.png"
+    },
+    {
+      "itemId": "CROP_PEPPER",
+      "name": "Tropik biber",
+      "file": "assets/generated/icons/crop_pepper.png"
+    },
+    {
+      "itemId": "CROP_PINEAPPLE",
+      "name": "Ananas",
+      "file": "assets/generated/icons/crop_pineapple.png"
+    },
+    {
+      "itemId": "CROP_PUMPKIN",
+      "name": "Kabak",
+      "file": "assets/generated/icons/crop_pumpkin.png"
+    },
+    {
+      "itemId": "CROP_ROOT",
+      "name": "Kök sebze",
+      "file": "assets/generated/icons/crop_root.png"
+    },
+    {
+      "itemId": "CROP_SPICE",
+      "name": "Baharat ekini",
+      "file": "assets/generated/icons/crop_spice.png"
+    },
+    {
+      "itemId": "CROP_SWEET_POTATO",
+      "name": "Tatlı patates",
+      "file": "assets/generated/icons/crop_sweet_potato.png"
+    },
+    {
+      "itemId": "EQ_BAG_LARGE",
+      "name": "Büyük çanta",
+      "file": "assets/generated/icons/eq_bag_large.png"
+    },
+    {
+      "itemId": "EQ_BAG_SMALL",
+      "name": "Küçük çanta",
+      "file": "assets/generated/icons/eq_bag_small.png"
+    },
+    {
+      "itemId": "EQ_EXPLORER_BAG",
+      "name": "Keşif çantası",
+      "file": "assets/generated/icons/eq_explorer_bag.png"
+    },
+    {
+      "itemId": "EQ_LEAF_HAT",
+      "name": "Yaprak şapka",
+      "file": "assets/generated/icons/eq_leaf_hat.png"
+    },
+    {
+      "itemId": "EQ_LEATHER_BOOTS",
+      "name": "Dayanıklı bot",
+      "file": "assets/generated/icons/eq_leather_boots.png"
+    },
+    {
+      "itemId": "EQ_LEATHER_HAT",
+      "name": "Deri şapka",
+      "file": "assets/generated/icons/eq_leather_hat.png"
+    },
+    {
+      "itemId": "EQ_LEATHER_VEST",
+      "name": "Deri yelek",
+      "file": "assets/generated/icons/eq_leather_vest.png"
+    },
+    {
+      "itemId": "EQ_RAINCOAT",
+      "name": "Yağmurluk",
+      "file": "assets/generated/icons/eq_raincoat.png"
+    },
+    {
+      "itemId": "EQ_SANDALS",
+      "name": "Sandalet",
+      "file": "assets/generated/icons/eq_sandals.png"
+    },
+    {
+      "itemId": "FOOD_BANANA",
+      "name": "Muz",
+      "file": "assets/generated/icons/food_banana.png"
+    },
+    {
+      "itemId": "FOOD_BEAN_STEW",
+      "name": "Fasulye yemeği",
+      "file": "assets/generated/icons/food_bean_stew.png"
+    },
+    {
+      "itemId": "FOOD_BERRY",
+      "name": "Yabani meyve",
+      "file": "assets/generated/icons/food_berry.png"
+    },
+    {
+      "itemId": "FOOD_COCONUT",
+      "name": "Hindistan cevizi",
+      "file": "assets/generated/icons/food_coconut.png"
+    },
+    {
+      "itemId": "FOOD_COOKED_FISH",
+      "name": "Pişmiş balık",
+      "file": "assets/generated/icons/food_cooked_fish.png"
+    },
+    {
+      "itemId": "FOOD_COOKED_MEAT",
+      "name": "Pişmiş et",
+      "file": "assets/generated/icons/food_cooked_meat.png"
+    },
+    {
+      "itemId": "FOOD_DRIED_FISH",
+      "name": "Kurutulmuş balık",
+      "file": "assets/generated/icons/food_dried_fish.png"
+    },
+    {
+      "itemId": "FOOD_DRIED_MEAT",
+      "name": "Kurutulmuş et",
+      "file": "assets/generated/icons/food_dried_meat.png"
+    },
+    {
+      "itemId": "FOOD_FEAST",
+      "name": "Tropikal ziyafet",
+      "file": "assets/generated/icons/food_feast.png"
+    },
+    {
+      "itemId": "FOOD_FISH_SOUP",
+      "name": "Balık çorbası",
+      "file": "assets/generated/icons/food_fish_soup.png"
+    },
+    {
+      "itemId": "FOOD_FRUIT_SALAD",
+      "name": "Meyve salatası",
+      "file": "assets/generated/icons/food_fruit_salad.png"
+    },
+    {
+      "itemId": "FOOD_GRILLED_CRAB",
+      "name": "Izgara yengeç",
+      "file": "assets/generated/icons/food_grilled_crab.png"
+    },
+    {
+      "itemId": "FOOD_HERBAL_TEA",
+      "name": "Şifalı bitki çayı",
+      "file": "assets/generated/icons/food_herbal_tea.png"
+    },
+    {
+      "itemId": "FOOD_MUSHROOM",
+      "name": "Yenilebilir mantar",
+      "file": "assets/generated/icons/food_mushroom.png"
+    },
+    {
+      "itemId": "FOOD_PINEAPPLE_SNACK",
+      "name": "Ananas tabağı",
+      "file": "assets/generated/icons/food_pineapple_snack.png"
+    },
+    {
+      "itemId": "FOOD_RATION",
+      "name": "Keşif erzak paketi",
+      "file": "assets/generated/icons/food_ration.png"
+    },
+    {
+      "itemId": "FOOD_ROAST_ROOT",
+      "name": "Közlenmiş kök sebze",
+      "file": "assets/generated/icons/food_roast_root.png"
+    },
+    {
+      "itemId": "FOOD_SPICED_FISH",
+      "name": "Baharatlı balık",
+      "file": "assets/generated/icons/food_spiced_fish.png"
+    },
+    {
+      "itemId": "FOOD_VEG_STEW",
+      "name": "Sebze yemeği",
+      "file": "assets/generated/icons/food_veg_stew.png"
+    },
+    {
+      "itemId": "FOOD_WARM_TEA",
+      "name": "Isıtıcı bitki çayı",
+      "file": "assets/generated/icons/food_warm_tea.png"
+    },
+    {
+      "itemId": "MAT_BAMBOO",
+      "name": "Bambu",
+      "file": "assets/generated/icons/mat_bamboo.png"
+    },
+    {
+      "itemId": "MAT_BONE",
+      "name": "Kemik",
+      "file": "assets/generated/icons/mat_bone.png"
+    },
+    {
+      "itemId": "MAT_BRANCH",
+      "name": "Dal",
+      "file": "assets/generated/icons/mat_branch.png"
+    },
+    {
+      "itemId": "MAT_CLAY",
+      "name": "Kil",
+      "file": "assets/generated/icons/mat_clay.png"
+    },
+    {
+      "itemId": "MAT_COAL",
+      "name": "Taş kömürü",
+      "file": "assets/generated/icons/mat_coal.png"
+    },
+    {
+      "itemId": "MAT_COPPER_ORE",
+      "name": "Bakır cevheri",
+      "file": "assets/generated/icons/mat_copper_ore.png"
+    },
+    {
+      "itemId": "MAT_CRAB_MEAT",
+      "name": "Yengeç eti",
+      "file": "assets/generated/icons/mat_crab_meat.png"
+    },
+    {
+      "itemId": "MAT_FAT",
+      "name": "Hayvansal yağ",
+      "file": "assets/generated/icons/mat_fat.png"
+    },
+    {
+      "itemId": "MAT_FEATHER",
+      "name": "Tüy",
+      "file": "assets/generated/icons/mat_feather.png"
+    },
+    {
+      "itemId": "MAT_FIBER",
+      "name": "Bitki lifi",
+      "file": "assets/generated/icons/mat_fiber.png"
+    },
+    {
+      "itemId": "MAT_FISH_OFFCUT",
+      "name": "Balık artığı",
+      "file": "assets/generated/icons/mat_fish_offcut.png"
+    },
+    {
+      "itemId": "MAT_FLINT",
+      "name": "Çakmak taşı",
+      "file": "assets/generated/icons/mat_flint.png"
+    },
+    {
+      "itemId": "MAT_HARDWOOD",
+      "name": "Sert kütük",
+      "file": "assets/generated/icons/mat_hardwood.png"
+    },
+    {
+      "itemId": "MAT_IRON_ORE",
+      "name": "Demir cevheri",
+      "file": "assets/generated/icons/mat_iron_ore.png"
+    },
+    {
+      "itemId": "MAT_LOG",
+      "name": "Kütük",
+      "file": "assets/generated/icons/mat_log.png"
+    },
+    {
+      "itemId": "MAT_MED_HERB",
+      "name": "Şifalı ot",
+      "file": "assets/generated/icons/mat_med_herb.png"
+    },
+    {
+      "itemId": "MAT_ORGANIC_WASTE",
+      "name": "Organik atık",
+      "file": "assets/generated/icons/mat_organic_waste.png"
+    },
+    {
+      "itemId": "MAT_PALM_LEAF",
+      "name": "Palmiye yaprağı",
+      "file": "assets/generated/icons/mat_palm_leaf.png"
+    },
+    {
+      "itemId": "MAT_PEBBLE",
+      "name": "Küçük taş",
+      "file": "assets/generated/icons/mat_pebble.png"
+    },
+    {
+      "itemId": "MAT_QUARTZ",
+      "name": "Kuvars",
+      "file": "assets/generated/icons/mat_quartz.png"
+    },
+    {
+      "itemId": "MAT_RAW_FISH",
+      "name": "Çiğ balık porsiyonu",
+      "file": "assets/generated/icons/mat_raw_fish.png"
+    },
+    {
+      "itemId": "MAT_RAW_HIDE",
+      "name": "Ham deri",
+      "file": "assets/generated/icons/mat_raw_hide.png"
+    },
+    {
+      "itemId": "MAT_RAW_MEAT",
+      "name": "Çiğ et",
+      "file": "assets/generated/icons/mat_raw_meat.png"
+    },
+    {
+      "itemId": "MAT_REED",
+      "name": "Kamış",
+      "file": "assets/generated/icons/mat_reed.png"
+    },
+    {
+      "itemId": "MAT_RESIN",
+      "name": "Reçine",
+      "file": "assets/generated/icons/mat_resin.png"
+    },
+    {
+      "itemId": "MAT_SALT",
+      "name": "Tuz",
+      "file": "assets/generated/icons/mat_salt.png"
+    },
+    {
+      "itemId": "MAT_SAND",
+      "name": "Kum",
+      "file": "assets/generated/icons/mat_sand.png"
+    },
+    {
+      "itemId": "MAT_SAP",
+      "name": "Bitki özsuyu",
+      "file": "assets/generated/icons/mat_sap.png"
+    },
+    {
+      "itemId": "MAT_SEASHELL",
+      "name": "Deniz kabuğu",
+      "file": "assets/generated/icons/mat_seashell.png"
+    },
+    {
+      "itemId": "MAT_SEAWEED",
+      "name": "Deniz yosunu",
+      "file": "assets/generated/icons/mat_seaweed.png"
+    },
+    {
+      "itemId": "MAT_SEA_SALT",
+      "name": "Deniz tuzu",
+      "file": "assets/generated/icons/mat_sea_salt.png"
+    },
+    {
+      "itemId": "MAT_SHELL",
+      "name": "Sert kabuk",
+      "file": "assets/generated/icons/mat_shell.png"
+    },
+    {
+      "itemId": "MAT_SPICE_HERB",
+      "name": "Baharat otu",
+      "file": "assets/generated/icons/mat_spice_herb.png"
+    },
+    {
+      "itemId": "MAT_STONE",
+      "name": "Taş",
+      "file": "assets/generated/icons/mat_stone.png"
+    },
+    {
+      "itemId": "MAT_SULFUR",
+      "name": "Kükürt",
+      "file": "assets/generated/icons/mat_sulfur.png"
+    },
+    {
+      "itemId": "MAT_TENDON",
+      "name": "Tendon",
+      "file": "assets/generated/icons/mat_tendon.png"
+    },
+    {
+      "itemId": "MAT_TREE_BARK",
+      "name": "Ağaç kabuğu",
+      "file": "assets/generated/icons/mat_tree_bark.png"
+    },
+    {
+      "itemId": "MAT_VINE",
+      "name": "Sarmaşık",
+      "file": "assets/generated/icons/mat_vine.png"
+    },
+    {
+      "itemId": "MAT_WORM",
+      "name": "Solucan",
+      "file": "assets/generated/icons/mat_worm.png"
+    },
+    {
+      "itemId": "SAL_BATTERY",
+      "name": "Pil hücresi",
+      "file": "assets/generated/icons/sal_battery.png"
+    },
+    {
+      "itemId": "SAL_BEARING",
+      "name": "Rulman",
+      "file": "assets/generated/icons/sal_bearing.png"
+    },
+    {
+      "itemId": "SAL_BOTTLE",
+      "name": "Boş şişe",
+      "file": "assets/generated/icons/sal_bottle.png"
+    },
+    {
+      "itemId": "SAL_CANVAS",
+      "name": "Yelken kumaşı hurdası",
+      "file": "assets/generated/icons/sal_canvas.png"
+    },
+    {
+      "itemId": "SAL_CLOTH",
+      "name": "Bulunmuş kumaş",
+      "file": "assets/generated/icons/sal_cloth.png"
+    },
+    {
+      "itemId": "SAL_FUSE",
+      "name": "Sağlam sigorta",
+      "file": "assets/generated/icons/sal_fuse.png"
+    },
+    {
+      "itemId": "SAL_GEAR",
+      "name": "Paslı dişli",
+      "file": "assets/generated/icons/sal_gear.png"
+    },
+    {
+      "itemId": "SAL_GLASS",
+      "name": "Cam parçası",
+      "file": "assets/generated/icons/sal_glass.png"
+    },
+    {
+      "itemId": "SAL_NAIL",
+      "name": "Çivi",
+      "file": "assets/generated/icons/sal_nail.png"
+    },
+    {
+      "itemId": "SAL_PLASTIC",
+      "name": "Plastik parça",
+      "file": "assets/generated/icons/sal_plastic.png"
+    },
+    {
+      "itemId": "SAL_ROPE",
+      "name": "Bulunmuş halat",
+      "file": "assets/generated/icons/sal_rope.png"
+    },
+    {
+      "itemId": "SAL_SCRAP",
+      "name": "Hurda metal",
+      "file": "assets/generated/icons/sal_scrap.png"
+    },
+    {
+      "itemId": "SAL_TIN_CAN",
+      "name": "Boş konserve",
+      "file": "assets/generated/icons/sal_tin_can.png"
+    },
+    {
+      "itemId": "SAL_WIRE",
+      "name": "Bakır kablo hurdası",
+      "file": "assets/generated/icons/sal_wire.png"
+    },
+    {
+      "itemId": "SEED_BANANA",
+      "name": "Muz fidanı ürünü tohumu",
+      "file": "assets/generated/icons/seed_banana.png"
+    },
+    {
+      "itemId": "SEED_BEAN",
+      "name": "Fasulye tohumu",
+      "file": "assets/generated/icons/seed_bean.png"
+    },
+    {
+      "itemId": "SEED_CANE",
+      "name": "Şeker kamışı tohumu",
+      "file": "assets/generated/icons/seed_cane.png"
+    },
+    {
+      "itemId": "SEED_FIBER",
+      "name": "Lif ekini tohumu",
+      "file": "assets/generated/icons/seed_fiber.png"
+    },
+    {
+      "itemId": "SEED_GREENS",
+      "name": "Yeşillik tohumu",
+      "file": "assets/generated/icons/seed_greens.png"
+    },
+    {
+      "itemId": "SEED_HERB",
+      "name": "Şifalı ekin tohumu",
+      "file": "assets/generated/icons/seed_herb.png"
+    },
+    {
+      "itemId": "SEED_PEPPER",
+      "name": "Tropik biber tohumu",
+      "file": "assets/generated/icons/seed_pepper.png"
+    },
+    {
+      "itemId": "SEED_PINEAPPLE",
+      "name": "Ananas tohumu",
+      "file": "assets/generated/icons/seed_pineapple.png"
+    },
+    {
+      "itemId": "SEED_PUMPKIN",
+      "name": "Kabak tohumu",
+      "file": "assets/generated/icons/seed_pumpkin.png"
+    },
+    {
+      "itemId": "SEED_ROOT",
+      "name": "Kök sebze tohumu",
+      "file": "assets/generated/icons/seed_root.png"
+    },
+    {
+      "itemId": "SEED_SPICE",
+      "name": "Baharat ekini tohumu",
+      "file": "assets/generated/icons/seed_spice.png"
+    },
+    {
+      "itemId": "SEED_SWEET_POTATO",
+      "name": "Tatlı patates tohumu",
+      "file": "assets/generated/icons/seed_sweet_potato.png"
+    },
+    {
+      "itemId": "SPC_CHART_CAPTAIN",
+      "name": "Kaptanın seyir kaydı",
+      "file": "assets/generated/icons/spc_chart_captain.png"
+    },
+    {
+      "itemId": "SPC_CHART_COAST",
+      "name": "Kıyı akıntı kaydı",
+      "file": "assets/generated/icons/spc_chart_coast.png"
+    },
+    {
+      "itemId": "SPC_CHART_OBSERVATORY",
+      "name": "Gözlem rotası kaydı",
+      "file": "assets/generated/icons/spc_chart_observatory.png"
+    },
+    {
+      "itemId": "SPC_GEN_CORE",
+      "name": "Jeneratör gövdesi",
+      "file": "assets/generated/icons/spc_gen_core.png"
+    },
+    {
+      "itemId": "SPC_RADIO_NOTE",
+      "name": "Haberleşme frekans kaydı",
+      "file": "assets/generated/icons/spc_radio_note.png"
+    },
+    {
+      "itemId": "SPC_SOLAR_CORE",
+      "name": "Güneş paneli onarım çekirdeği",
+      "file": "assets/generated/icons/spc_solar_core.png"
+    },
+    {
+      "itemId": "SPC_TX_MODULE",
+      "name": "Özel verici modülü",
+      "file": "assets/generated/icons/spc_tx_module.png"
+    },
+    {
+      "itemId": "TOOL_BAMBOO_CUP",
+      "name": "Bambu su kabı",
+      "file": "assets/generated/icons/tool_bamboo_cup.png"
+    },
+    {
+      "itemId": "TOOL_BOW",
+      "name": "İlkel yay",
+      "file": "assets/generated/icons/tool_bow.png"
+    },
+    {
+      "itemId": "TOOL_CLIMB_KIT",
+      "name": "Tırmanma kiti",
+      "file": "assets/generated/icons/tool_climb_kit.png"
+    },
+    {
+      "itemId": "TOOL_COMPASS",
+      "name": "Pusula",
+      "file": "assets/generated/icons/tool_compass.png"
+    },
+    {
+      "itemId": "TOOL_COPPER_AXE",
+      "name": "Bakır balta",
+      "file": "assets/generated/icons/tool_copper_axe.png"
+    },
+    {
+      "itemId": "TOOL_COPPER_PICK",
+      "name": "Bakır kazma",
+      "file": "assets/generated/icons/tool_copper_pick.png"
+    },
+    {
+      "itemId": "TOOL_CROWBAR",
+      "name": "Levye",
+      "file": "assets/generated/icons/tool_crowbar.png"
+    },
+    {
+      "itemId": "TOOL_DIVING_KIT",
+      "name": "Sığ su dalış seti",
+      "file": "assets/generated/icons/tool_diving_kit.png"
+    },
+    {
+      "itemId": "TOOL_DIVING_MASK",
+      "name": "Dalış maskesi",
+      "file": "assets/generated/icons/tool_diving_mask.png"
+    },
+    {
+      "itemId": "TOOL_FISH_ROD",
+      "name": "Olta",
+      "file": "assets/generated/icons/tool_fish_rod.png"
+    },
+    {
+      "itemId": "TOOL_FISH_ROD_ADV",
+      "name": "Güçlendirilmiş olta",
+      "file": "assets/generated/icons/tool_fish_rod_adv.png"
+    },
+    {
+      "itemId": "TOOL_HUNTER_BOW",
+      "name": "Gelişmiş avcı yayı",
+      "file": "assets/generated/icons/tool_hunter_bow.png"
+    },
+    {
+      "itemId": "TOOL_IRON_AXE",
+      "name": "Demir balta",
+      "file": "assets/generated/icons/tool_iron_axe.png"
+    },
+    {
+      "itemId": "TOOL_IRON_PICK",
+      "name": "Demir kazma",
+      "file": "assets/generated/icons/tool_iron_pick.png"
+    },
+    {
+      "itemId": "TOOL_IRON_SPEAR",
+      "name": "Metal mızrak",
+      "file": "assets/generated/icons/tool_iron_spear.png"
+    },
+    {
+      "itemId": "TOOL_MACHETE",
+      "name": "Metal pala",
+      "file": "assets/generated/icons/tool_machete.png"
+    },
+    {
+      "itemId": "TOOL_NAV_KIT",
+      "name": "Navigasyon seti",
+      "file": "assets/generated/icons/tool_nav_kit.png"
+    },
+    {
+      "itemId": "TOOL_PORTABLE_LAMP",
+      "name": "Taşınabilir deniz feneri",
+      "file": "assets/generated/icons/tool_portable_lamp.png"
+    },
+    {
+      "itemId": "TOOL_REPAIR_KIT",
+      "name": "Onarım seti",
+      "file": "assets/generated/icons/tool_repair_kit.png"
+    },
+    {
+      "itemId": "TOOL_SHOVEL",
+      "name": "Kürek",
+      "file": "assets/generated/icons/tool_shovel.png"
+    },
+    {
+      "itemId": "TOOL_SLING",
+      "name": "Sapan",
+      "file": "assets/generated/icons/tool_sling.png"
+    },
+    {
+      "itemId": "TOOL_STONE_AXE",
+      "name": "Taş balta",
+      "file": "assets/generated/icons/tool_stone_axe.png"
+    },
+    {
+      "itemId": "TOOL_STONE_KNIFE",
+      "name": "Taş bıçak",
+      "file": "assets/generated/icons/tool_stone_knife.png"
+    },
+    {
+      "itemId": "TOOL_STONE_PICK",
+      "name": "Taş kazma",
+      "file": "assets/generated/icons/tool_stone_pick.png"
+    },
+    {
+      "itemId": "TOOL_TORCH",
+      "name": "Meşale",
+      "file": "assets/generated/icons/tool_torch.png"
+    },
+    {
+      "itemId": "TOOL_WATERING_CAN",
+      "name": "Sulama kabı",
+      "file": "assets/generated/icons/tool_watering_can.png"
+    },
+    {
+      "itemId": "TOOL_WOOD_SPEAR",
+      "name": "Basit mızrak",
+      "file": "assets/generated/icons/tool_wood_spear.png"
+    },
+    {
+      "itemId": "WATER_CLEAN",
+      "name": "Temiz su porsiyonu",
+      "file": "assets/generated/icons/water_clean.png"
+    },
+    {
+      "itemId": "WATER_DIRTY",
+      "name": "Kirli su porsiyonu",
+      "file": "assets/generated/icons/water_dirty.png"
+    }
+  ],
+  "buildSprites": [
+    {
+      "buildId": "BUILD_ANIMAL_TRAP",
+      "name": "Küçük hayvan kapanı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_animal_trap_<state>.png"
+    },
+    {
+      "buildId": "BUILD_BAMBOO_HUT",
+      "name": "Bambu kulübe",
+      "states": [
+        "ghost",
+        "construction_1",
+        "construction_2",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_bamboo_hut_<state>.png"
+    },
+    {
+      "buildId": "BUILD_BENCH",
+      "name": "Bank",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_bench_<state>.png"
+    },
+    {
+      "buildId": "BUILD_BRIDGE",
+      "name": "Ahşap köprü",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_bridge_<state>.png"
+    },
+    {
+      "buildId": "BUILD_CAMPFIRE",
+      "name": "Kamp ateşi",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_campfire_<state>.png"
+    },
+    {
+      "buildId": "BUILD_CAMP_MARKER",
+      "name": "Kamp işareti",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_camp_marker_<state>.png"
+    },
+    {
+      "buildId": "BUILD_CARPENTER_BENCH",
+      "name": "Marangoz tezgâhı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_carpenter_bench_<state>.png"
+    },
+    {
+      "buildId": "BUILD_CHAIR",
+      "name": "Sandalye",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_chair_<state>.png"
+    },
+    {
+      "buildId": "BUILD_CHEST_LARGE",
+      "name": "Büyük sandık",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_chest_large_<state>.png"
+    },
+    {
+      "buildId": "BUILD_CHEST_SMALL",
+      "name": "Küçük sandık",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_chest_small_<state>.png"
+    },
+    {
+      "buildId": "BUILD_COMFORT_BED",
+      "name": "Konforlu yatak",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_comfort_bed_<state>.png"
+    },
+    {
+      "buildId": "BUILD_COMPOST_BIN",
+      "name": "Kompost kutusu",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_compost_bin_<state>.png"
+    },
+    {
+      "buildId": "BUILD_CRAB_TRAP",
+      "name": "Yengeç kapanı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_crab_trap_<state>.png"
+    },
+    {
+      "buildId": "BUILD_DRYING_RACK",
+      "name": "Kurutma rafı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_drying_rack_<state>.png"
+    },
+    {
+      "buildId": "BUILD_ESCAPE_BOAT",
+      "name": "Kaçış yelkenlisi",
+      "states": [
+        "ghost",
+        "construction_1",
+        "construction_2",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_escape_boat_<state>.png"
+    },
+    {
+      "buildId": "BUILD_FEED_BOWL",
+      "name": "Besleme kabı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_feed_bowl_<state>.png"
+    },
+    {
+      "buildId": "BUILD_FENCE",
+      "name": "Ahşap çit",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_fence_<state>.png"
+    },
+    {
+      "buildId": "BUILD_FISH_HUT",
+      "name": "Balıkçı evi",
+      "states": [
+        "ghost",
+        "construction_1",
+        "construction_2",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_fish_hut_<state>.png"
+    },
+    {
+      "buildId": "BUILD_FISH_TRAP",
+      "name": "Balık sepeti",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_fish_trap_<state>.png"
+    },
+    {
+      "buildId": "BUILD_FOOD_CHEST",
+      "name": "Yiyecek sandığı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_food_chest_<state>.png"
+    },
+    {
+      "buildId": "BUILD_GATE",
+      "name": "Ahşap bahçe kapısı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_gate_<state>.png"
+    },
+    {
+      "buildId": "BUILD_IRRIGATION",
+      "name": "Gelişmiş sulama ünitesi",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_irrigation_<state>.png"
+    },
+    {
+      "buildId": "BUILD_KILN",
+      "name": "Seramik fırını",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_kiln_<state>.png"
+    },
+    {
+      "buildId": "BUILD_LAMP_POST",
+      "name": "Fener direği",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_lamp_post_<state>.png"
+    },
+    {
+      "buildId": "BUILD_LARGE_HOUSE",
+      "name": "Büyük ada evi",
+      "states": [
+        "ghost",
+        "construction_1",
+        "construction_2",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_large_house_<state>.png"
+    },
+    {
+      "buildId": "BUILD_LEAF_BED",
+      "name": "Yaprak yatak",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_leaf_bed_<state>.png"
+    },
+    {
+      "buildId": "BUILD_LEAF_SHELTER",
+      "name": "Yaprak barınak",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_leaf_shelter_<state>.png"
+    },
+    {
+      "buildId": "BUILD_LOG_STORE",
+      "name": "Odun deposu",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_log_store_<state>.png"
+    },
+    {
+      "buildId": "BUILD_LOOM",
+      "name": "Dokuma tezgâhı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_loom_<state>.png"
+    },
+    {
+      "buildId": "BUILD_MAP_TABLE",
+      "name": "Harita masası",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_map_table_<state>.png"
+    },
+    {
+      "buildId": "BUILD_MATERIAL_SHELF",
+      "name": "Malzeme rafı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_material_shelf_<state>.png"
+    },
+    {
+      "buildId": "BUILD_MECHANICAL_BENCH",
+      "name": "Mekanik tezgâh",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_mechanical_bench_<state>.png"
+    },
+    {
+      "buildId": "BUILD_MONKEY_PLATFORM",
+      "name": "Maymun platformu",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_monkey_platform_<state>.png"
+    },
+    {
+      "buildId": "BUILD_NAV_TABLE",
+      "name": "Denizcilik masası",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_nav_table_<state>.png"
+    },
+    {
+      "buildId": "BUILD_ORE_STORE",
+      "name": "Taş ve cevher deposu",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_ore_store_<state>.png"
+    },
+    {
+      "buildId": "BUILD_PANTRY",
+      "name": "Gelişmiş kiler",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_pantry_<state>.png"
+    },
+    {
+      "buildId": "BUILD_PARROT_HOUSE",
+      "name": "Papağan evi",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_parrot_house_<state>.png"
+    },
+    {
+      "buildId": "BUILD_PARROT_PERCH",
+      "name": "Papağan tüneği",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_parrot_perch_<state>.png"
+    },
+    {
+      "buildId": "BUILD_PATH",
+      "name": "Taş patika",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_path_<state>.png"
+    },
+    {
+      "buildId": "BUILD_PIER",
+      "name": "Ahşap iskele",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_pier_<state>.png"
+    },
+    {
+      "buildId": "BUILD_PLANTER",
+      "name": "Ekim yatağı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_planter_<state>.png"
+    },
+    {
+      "buildId": "BUILD_PLANT_POT",
+      "name": "Saksı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_plant_pot_<state>.png"
+    },
+    {
+      "buildId": "BUILD_PLAY_POST",
+      "name": "Oyun direği",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_play_post_<state>.png"
+    },
+    {
+      "buildId": "BUILD_RAFT",
+      "name": "Küçük sal",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_raft_<state>.png"
+    },
+    {
+      "buildId": "BUILD_RAIN_CATCHER",
+      "name": "Yağmur toplayıcı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_rain_catcher_<state>.png"
+    },
+    {
+      "buildId": "BUILD_RAIN_CATCHER_L",
+      "name": "Büyük yağmur toplayıcı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_rain_catcher_l_<state>.png"
+    },
+    {
+      "buildId": "BUILD_RUG",
+      "name": "Hasır halı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_rug_<state>.png"
+    },
+    {
+      "buildId": "BUILD_SIGNAL_STATION",
+      "name": "Haberleşme onarımı",
+      "states": [
+        "ghost",
+        "construction_1",
+        "construction_2",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_signal_station_<state>.png"
+    },
+    {
+      "buildId": "BUILD_SMELTER",
+      "name": "Metal eritme ocağı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_smelter_<state>.png"
+    },
+    {
+      "buildId": "BUILD_TABLE",
+      "name": "Ahşap masa",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_table_<state>.png"
+    },
+    {
+      "buildId": "BUILD_TANNING_RACK",
+      "name": "Deri işleme rafı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_tanning_rack_<state>.png"
+    },
+    {
+      "buildId": "BUILD_TOOL_RACK",
+      "name": "Ekipman askılığı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_tool_rack_<state>.png"
+    },
+    {
+      "buildId": "BUILD_WATER_FILTER",
+      "name": "Verimli su filtresi",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_water_filter_<state>.png"
+    },
+    {
+      "buildId": "BUILD_WATER_TANK",
+      "name": "Su deposu",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_water_tank_<state>.png"
+    },
+    {
+      "buildId": "BUILD_WINCH",
+      "name": "Tırmanma vinci",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_winch_<state>.png"
+    },
+    {
+      "buildId": "BUILD_WOOD_BED",
+      "name": "Ahşap yatak",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_wood_bed_<state>.png"
+    },
+    {
+      "buildId": "BUILD_WOOD_HUT",
+      "name": "Ahşap kulübe",
+      "states": [
+        "ghost",
+        "construction_1",
+        "construction_2",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_wood_hut_<state>.png"
+    },
+    {
+      "buildId": "BUILD_WORKBENCH",
+      "name": "Çalışma tezgâhı",
+      "states": [
+        "ghost",
+        "complete"
+      ],
+      "filePattern": "assets/generated/builds/build_workbench_<state>.png"
+    }
+  ],
+  "cropSprites": [
+    {
+      "cropId": "CROP_BANANA",
+      "name": "Muz",
+      "stages": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "filePattern": "assets/generated/crops/crop_banana_<stage>.png"
+    },
+    {
+      "cropId": "CROP_BEAN",
+      "name": "Fasulye",
+      "stages": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "filePattern": "assets/generated/crops/crop_bean_<stage>.png"
+    },
+    {
+      "cropId": "CROP_CANE",
+      "name": "Şeker kamışı",
+      "stages": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "filePattern": "assets/generated/crops/crop_cane_<stage>.png"
+    },
+    {
+      "cropId": "CROP_FIBER",
+      "name": "Lif ekini",
+      "stages": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "filePattern": "assets/generated/crops/crop_fiber_<stage>.png"
+    },
+    {
+      "cropId": "CROP_GREENS",
+      "name": "Yeşillik",
+      "stages": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "filePattern": "assets/generated/crops/crop_greens_<stage>.png"
+    },
+    {
+      "cropId": "CROP_HERB",
+      "name": "Şifalı ekin",
+      "stages": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "filePattern": "assets/generated/crops/crop_herb_<stage>.png"
+    },
+    {
+      "cropId": "CROP_PEPPER",
+      "name": "Tropik biber",
+      "stages": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "filePattern": "assets/generated/crops/crop_pepper_<stage>.png"
+    },
+    {
+      "cropId": "CROP_PINEAPPLE",
+      "name": "Ananas",
+      "stages": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "filePattern": "assets/generated/crops/crop_pineapple_<stage>.png"
+    },
+    {
+      "cropId": "CROP_PUMPKIN",
+      "name": "Kabak",
+      "stages": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "filePattern": "assets/generated/crops/crop_pumpkin_<stage>.png"
+    },
+    {
+      "cropId": "CROP_ROOT",
+      "name": "Kök sebze",
+      "stages": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "filePattern": "assets/generated/crops/crop_root_<stage>.png"
+    },
+    {
+      "cropId": "CROP_SPICE",
+      "name": "Baharat ekini",
+      "stages": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "filePattern": "assets/generated/crops/crop_spice_<stage>.png"
+    },
+    {
+      "cropId": "CROP_SWEET_POTATO",
+      "name": "Tatlı patates",
+      "stages": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "filePattern": "assets/generated/crops/crop_sweet_potato_<stage>.png"
+    }
+  ],
+  "wildlifeSprites": [
+    {
+      "speciesId": "ANIMAL_CRAB",
+      "name": "Yengeç",
+      "group": "land",
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "filePattern": "assets/generated/animals/animal_crab_<animation>_<direction>.png"
+    },
+    {
+      "speciesId": "ANIMAL_HERMIT_CRAB",
+      "name": "Keşiş yengeci",
+      "group": "land",
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "filePattern": "assets/generated/animals/animal_hermit_crab_<animation>_<direction>.png"
+    },
+    {
+      "speciesId": "ANIMAL_RABBIT",
+      "name": "Ada tavşanı",
+      "group": "land",
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "filePattern": "assets/generated/animals/animal_rabbit_<animation>_<direction>.png"
+    },
+    {
+      "speciesId": "ANIMAL_LIZARD",
+      "name": "Tropik kertenkele",
+      "group": "land",
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "filePattern": "assets/generated/animals/animal_lizard_<animation>_<direction>.png"
+    },
+    {
+      "speciesId": "ANIMAL_FROG",
+      "name": "Kurbağa",
+      "group": "land",
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "filePattern": "assets/generated/animals/animal_frog_<animation>_<direction>.png"
+    },
+    {
+      "speciesId": "ANIMAL_FOREST_BIRD",
+      "name": "Orman kuşu",
+      "group": "land",
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "filePattern": "assets/generated/animals/animal_forest_bird_<animation>_<direction>.png"
+    },
+    {
+      "speciesId": "ANIMAL_SEABIRD",
+      "name": "Deniz kuşu",
+      "group": "land",
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "filePattern": "assets/generated/animals/animal_seabird_<animation>_<direction>.png"
+    },
+    {
+      "speciesId": "ANIMAL_FRUIT_BAT",
+      "name": "Meyve yarasası",
+      "group": "land",
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "filePattern": "assets/generated/animals/animal_fruit_bat_<animation>_<direction>.png"
+    },
+    {
+      "speciesId": "ANIMAL_MONKEY",
+      "name": "Maymun",
+      "group": "land",
+      "animations": [
+        "idle",
+        "move",
+        "react"
+      ],
+      "filePattern": "assets/generated/animals/animal_monkey_<animation>_<direction>.png"
+    },
+    {
+      "speciesId": "ANIMAL_BOAR",
+      "name": "Yaban domuzu",
+      "group": "land",
+      "animations": [
+        "idle",
+        "move",
+        "react",
+        "warn",
+        "attack"
+      ],
+      "filePattern": "assets/generated/animals/animal_boar_<animation>_<direction>.png"
+    },
+    {
+      "speciesId": "ANIMAL_SNAKE",
+      "name": "Yılan",
+      "group": "land",
+      "animations": [
+        "idle",
+        "move",
+        "react",
+        "warn",
+        "attack"
+      ],
+      "filePattern": "assets/generated/animals/animal_snake_<animation>_<direction>.png"
+    },
+    {
+      "speciesId": "ANIMAL_CROCODILE",
+      "name": "Bataklık timsahı",
+      "group": "land",
+      "animations": [
+        "idle",
+        "move",
+        "react",
+        "warn",
+        "attack"
+      ],
+      "filePattern": "assets/generated/animals/animal_crocodile_<animation>_<direction>.png"
+    },
+    {
+      "speciesId": "FISH_SARDINE",
+      "name": "Sardalya",
+      "group": "fish",
+      "animations": [
+        "swim",
+        "turn"
+      ],
+      "filePattern": "assets/generated/fish/fish_sardine_<animation>.png"
+    },
+    {
+      "speciesId": "FISH_MULLET",
+      "name": "Kefal",
+      "group": "fish",
+      "animations": [
+        "swim",
+        "turn"
+      ],
+      "filePattern": "assets/generated/fish/fish_mullet_<animation>.png"
+    },
+    {
+      "speciesId": "FISH_FRESHWATER_BASS",
+      "name": "Tatlısu levreği",
+      "group": "fish",
+      "animations": [
+        "swim",
+        "turn"
+      ],
+      "filePattern": "assets/generated/fish/fish_freshwater_bass_<animation>.png"
+    },
+    {
+      "speciesId": "FISH_REEF",
+      "name": "Mercan balığı",
+      "group": "fish",
+      "animations": [
+        "swim",
+        "turn"
+      ],
+      "filePattern": "assets/generated/fish/fish_reef_<animation>.png"
+    },
+    {
+      "speciesId": "FISH_PARROT",
+      "name": "Papağan balığı",
+      "group": "fish",
+      "animations": [
+        "swim",
+        "turn"
+      ],
+      "filePattern": "assets/generated/fish/fish_parrot_<animation>.png"
+    },
+    {
+      "speciesId": "FISH_GROUPER",
+      "name": "Orfoz",
+      "group": "fish",
+      "animations": [
+        "swim",
+        "turn"
+      ],
+      "filePattern": "assets/generated/fish/fish_grouper_<animation>.png"
+    },
+    {
+      "speciesId": "FISH_MACKEREL",
+      "name": "Uskumru",
+      "group": "fish",
+      "animations": [
+        "swim",
+        "turn"
+      ],
+      "filePattern": "assets/generated/fish/fish_mackerel_<animation>.png"
+    },
+    {
+      "speciesId": "FISH_BARRACUDA",
+      "name": "Baraküda",
+      "group": "fish",
+      "animations": [
+        "swim",
+        "turn"
+      ],
+      "filePattern": "assets/generated/fish/fish_barracuda_<animation>.png"
+    },
+    {
+      "speciesId": "FISH_TUNA",
+      "name": "Ton balığı",
+      "group": "fish",
+      "animations": [
+        "swim",
+        "turn"
+      ],
+      "filePattern": "assets/generated/fish/fish_tuna_<animation>.png"
+    },
+    {
+      "speciesId": "FISH_PUFFER",
+      "name": "Balon balığı",
+      "group": "fish",
+      "animations": [
+        "swim",
+        "turn"
+      ],
+      "filePattern": "assets/generated/fish/fish_puffer_<animation>.png"
+    },
+    {
+      "speciesId": "MARINE_TURTLE",
+      "name": "Deniz kaplumbağası",
+      "group": "marine",
+      "animations": [
+        "swim",
+        "turn"
+      ],
+      "filePattern": "assets/generated/marine/marine_turtle_<animation>.png"
+    },
+    {
+      "speciesId": "MARINE_RAY",
+      "name": "Vatoz",
+      "group": "marine",
+      "animations": [
+        "swim",
+        "turn"
+      ],
+      "filePattern": "assets/generated/marine/marine_ray_<animation>.png"
+    },
+    {
+      "speciesId": "MARINE_REEF_SHARK",
+      "name": "Resif köpek balığı",
+      "group": "marine",
+      "animations": [
+        "swim",
+        "turn",
+        "warn",
+        "attack"
+      ],
+      "filePattern": "assets/generated/marine/marine_reef_shark_<animation>.png"
+    }
+  ],
+  "poiScenes": [
+    {
+      "poiId": "POI_CRASH_BOAT",
+      "index": 1,
+      "name": "Parçalanmış Tekne",
+      "importance": "main",
+      "assetId": "poi_crash_boat",
+      "filePattern": "assets/generated/poi/poi_crash_boat_<state>.png",
+      "legacyAlias": "POI_01",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_WATERPROOF_BAG",
+      "index": 2,
+      "name": "Su Geçirmez Seyir Çantası",
+      "importance": "main",
+      "assetId": "poi_waterproof_bag",
+      "filePattern": "assets/generated/poi/poi_waterproof_bag_<state>.png",
+      "legacyAlias": "POI_02",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_SHORE_CRATE",
+      "index": 3,
+      "name": "Kıyı Sandığı",
+      "importance": "side",
+      "assetId": "poi_shore_crate",
+      "filePattern": "assets/generated/poi/poi_shore_crate_<state>.png",
+      "legacyAlias": "POI_15",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_BROKEN_LOOKOUT",
+      "index": 4,
+      "name": "Kırık Gözetleme Noktası",
+      "importance": "side",
+      "assetId": "poi_broken_lookout",
+      "filePattern": "assets/generated/poi/poi_broken_lookout_<state>.png",
+      "legacyAlias": "POI_16",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_FISHER_HUT",
+      "index": 5,
+      "name": "Eski Balıkçı Kulübesi",
+      "importance": "main",
+      "assetId": "poi_fisher_hut",
+      "filePattern": "assets/generated/poi/poi_fisher_hut_<state>.png",
+      "legacyAlias": "POI_03",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_FRUIT_HILL",
+      "index": 6,
+      "name": "Meyve Tepesi",
+      "importance": "side",
+      "assetId": "poi_fruit_hill",
+      "filePattern": "assets/generated/poi/poi_fruit_hill_<state>.png",
+      "legacyAlias": "POI_17",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_VINE_TUNNEL",
+      "index": 7,
+      "name": "Sarmaşık Tüneli",
+      "importance": "side",
+      "assetId": "poi_vine_tunnel",
+      "filePattern": "assets/generated/poi/poi_vine_tunnel_<state>.png",
+      "legacyAlias": "POI_18",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_WATER_STATION",
+      "index": 8,
+      "name": "Terk Edilmiş Su İstasyonu",
+      "importance": "main",
+      "assetId": "poi_water_station",
+      "filePattern": "assets/generated/poi/poi_water_station_<state>.png",
+      "legacyAlias": "POI_04",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_STONE_BRIDGE",
+      "index": 9,
+      "name": "Eski Taş Köprü",
+      "importance": "side",
+      "assetId": "poi_stone_bridge",
+      "filePattern": "assets/generated/poi/poi_stone_bridge_<state>.png",
+      "legacyAlias": "POI_19",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_WATERFALL_CAVE",
+      "index": 10,
+      "name": "Şelale Arkası",
+      "importance": "side",
+      "assetId": "poi_waterfall_cave",
+      "filePattern": "assets/generated/poi/poi_waterfall_cave_<state>.png",
+      "legacyAlias": "POI_20",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_FORESTER_HUT",
+      "index": 11,
+      "name": "Ormancı Kulübesi",
+      "importance": "main",
+      "assetId": "poi_forester_hut",
+      "filePattern": "assets/generated/poi/poi_forester_hut_<state>.png",
+      "legacyAlias": "POI_05",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_TREEHOUSE",
+      "index": 12,
+      "name": "Yüksek Ağaç Evi",
+      "importance": "side",
+      "assetId": "poi_treehouse",
+      "filePattern": "assets/generated/poi/poi_treehouse_<state>.png",
+      "legacyAlias": "POI_21",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_HUNTER_CAMP",
+      "index": 13,
+      "name": "Eski Avcı Kampı",
+      "importance": "side",
+      "assetId": "poi_hunter_camp",
+      "filePattern": "assets/generated/poi/poi_hunter_camp_<state>.png",
+      "legacyAlias": "POI_22",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_SWAMP_MEASURE",
+      "index": 14,
+      "name": "Araştırma Ölçüm Barakası",
+      "importance": "main",
+      "assetId": "poi_swamp_measure",
+      "filePattern": "assets/generated/poi/poi_swamp_measure_<state>.png",
+      "legacyAlias": "POI_06",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_FLOODED_STORE",
+      "index": 15,
+      "name": "Su Basan Depo",
+      "importance": "side",
+      "assetId": "poi_flooded_store",
+      "filePattern": "assets/generated/poi/poi_flooded_store_<state>.png",
+      "legacyAlias": "POI_23",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_MANGROVE_COVE",
+      "index": 16,
+      "name": "Mangrov Koyu",
+      "importance": "side",
+      "assetId": "poi_mangrove_cove",
+      "filePattern": "assets/generated/poi/poi_mangrove_cove_<state>.png",
+      "legacyAlias": "POI_24",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_COPPER_MINE",
+      "index": 17,
+      "name": "Eski Bakır Ocağı",
+      "importance": "main",
+      "assetId": "poi_copper_mine",
+      "filePattern": "assets/generated/poi/poi_copper_mine_<state>.png",
+      "legacyAlias": "POI_07",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_CABLE_CAR",
+      "index": 18,
+      "name": "Kırık Teleferik",
+      "importance": "side",
+      "assetId": "poi_cable_car",
+      "filePattern": "assets/generated/poi/poi_cable_car_<state>.png",
+      "legacyAlias": "POI_25",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_MINE_SHELTER",
+      "index": 19,
+      "name": "Maden Sığınağı",
+      "importance": "side",
+      "assetId": "poi_mine_shelter",
+      "filePattern": "assets/generated/poi/poi_mine_shelter_<state>.png",
+      "legacyAlias": "POI_26",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_OBSERVATORY",
+      "index": 20,
+      "name": "Gözlem Tepesi",
+      "importance": "main",
+      "assetId": "poi_observatory",
+      "filePattern": "assets/generated/poi/poi_observatory_<state>.png",
+      "legacyAlias": "POI_08",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_RELAY_SHELTER",
+      "index": 21,
+      "name": "Dağ Röle Sığınağı",
+      "importance": "main",
+      "assetId": "poi_relay_shelter",
+      "filePattern": "assets/generated/poi/poi_relay_shelter_<state>.png",
+      "legacyAlias": "POI_09",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_BAT_CAVERN",
+      "index": 22,
+      "name": "Yarasa Galerisi",
+      "importance": "side",
+      "assetId": "poi_bat_cavern",
+      "filePattern": "assets/generated/poi/poi_bat_cavern_<state>.png",
+      "legacyAlias": "POI_27",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_UNDERGROUND_POND",
+      "index": 23,
+      "name": "Yeraltı Göleti",
+      "importance": "side",
+      "assetId": "poi_underground_pond",
+      "filePattern": "assets/generated/poi/poi_underground_pond_<state>.png",
+      "legacyAlias": "POI_28",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_RESEARCH_SQUARE",
+      "index": 24,
+      "name": "Araştırma Meydanı",
+      "importance": "main",
+      "assetId": "poi_research_square",
+      "filePattern": "assets/generated/poi/poi_research_square_<state>.png",
+      "legacyAlias": "POI_10",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_RADIO_WORKSHOP",
+      "index": 25,
+      "name": "Radyo Atölyesi",
+      "importance": "main",
+      "assetId": "poi_radio_workshop",
+      "filePattern": "assets/generated/poi/poi_radio_workshop_<state>.png",
+      "legacyAlias": "POI_11",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_OLD_KITCHEN",
+      "index": 26,
+      "name": "Eski Mutfak",
+      "importance": "side",
+      "assetId": "poi_old_kitchen",
+      "filePattern": "assets/generated/poi/poi_old_kitchen_<state>.png",
+      "legacyAlias": "POI_29",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_LOCKED_WAREHOUSE",
+      "index": 27,
+      "name": "Kilitli Ambar",
+      "importance": "side",
+      "assetId": "poi_locked_warehouse",
+      "filePattern": "assets/generated/poi/poi_locked_warehouse_<state>.png",
+      "legacyAlias": "POI_30",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_SHALLOW_WRECK",
+      "index": 28,
+      "name": "Sığ Su Batığı",
+      "importance": "main",
+      "assetId": "poi_shallow_wreck",
+      "filePattern": "assets/generated/poi/poi_shallow_wreck_<state>.png",
+      "legacyAlias": "POI_12",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_REEF_FISSURE",
+      "index": 29,
+      "name": "Resif Yarığı",
+      "importance": "side",
+      "assetId": "poi_reef_fissure",
+      "filePattern": "assets/generated/poi/poi_reef_fissure_<state>.png",
+      "legacyAlias": "POI_31",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_SAND_SPIT",
+      "index": 30,
+      "name": "Kum Dili",
+      "importance": "side",
+      "assetId": "poi_sand_spit",
+      "filePattern": "assets/generated/poi/poi_sand_spit_<state>.png",
+      "legacyAlias": "POI_32",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_LIGHTHOUSE",
+      "index": 31,
+      "name": "Fener İstasyonu",
+      "importance": "main",
+      "assetId": "poi_lighthouse",
+      "filePattern": "assets/generated/poi/poi_lighthouse_<state>.png",
+      "legacyAlias": "POI_13",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_LIGHTHOUSE_KEEPER",
+      "index": 32,
+      "name": "Fener Bekçisinin Kulübesi",
+      "importance": "side",
+      "assetId": "poi_lighthouse_keeper",
+      "filePattern": "assets/generated/poi/poi_lighthouse_keeper_<state>.png",
+      "legacyAlias": "POI_33",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_CAPTAIN_CABIN",
+      "index": 33,
+      "name": "Kaptan Kamarası",
+      "importance": "main",
+      "assetId": "poi_captain_cabin",
+      "filePattern": "assets/generated/poi/poi_captain_cabin_<state>.png",
+      "legacyAlias": "POI_14",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_ENGINE_ROOM",
+      "index": 34,
+      "name": "Makine Bölmesi",
+      "importance": "side",
+      "assetId": "poi_engine_room",
+      "filePattern": "assets/generated/poi/poi_engine_room_<state>.png",
+      "legacyAlias": "POI_34",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_CORAL_CHEST",
+      "index": 35,
+      "name": "Mercan Sandığı",
+      "importance": "side",
+      "assetId": "poi_coral_chest",
+      "filePattern": "assets/generated/poi/poi_coral_chest_<state>.png",
+      "legacyAlias": "POI_35",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_ABANDONED_GARDEN",
+      "index": 36,
+      "name": "Terk Edilmiş Bahçe",
+      "importance": "side",
+      "assetId": "poi_abandoned_garden",
+      "filePattern": "assets/generated/poi/poi_abandoned_garden_<state>.png",
+      "legacyAlias": "POI_36",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_HERB_GREENHOUSE",
+      "index": 37,
+      "name": "Şifalı Bitki Serası",
+      "importance": "side",
+      "assetId": "poi_herb_greenhouse",
+      "filePattern": "assets/generated/poi/poi_herb_greenhouse_<state>.png",
+      "legacyAlias": "POI_37",
+      "states": [
+        "default",
+        "searched"
+      ]
+    },
+    {
+      "poiId": "POI_ROCK_SHELTER",
+      "index": 38,
+      "name": "Kaya Sığınağı",
+      "importance": "side",
+      "assetId": "poi_rock_shelter",
+      "filePattern": "assets/generated/poi/poi_rock_shelter_<state>.png",
+      "legacyAlias": "POI_38",
+      "states": [
+        "default",
+        "searched"
+      ]
+    }
+  ],
+  "areas": [
+    "Gemi Kazası Sahili",
+    "Palmiye Koruluğu",
+    "Tatlısu Vadisi",
+    "Yoğun Orman",
+    "Bataklık",
+    "Kızıl Kayalıklar",
+    "Dağ ve Mağaralar",
+    "Terk Edilmiş Yerleşim",
+    "Doğu Lagünü",
+    "Fener Adacığı",
+    "Batık Adası",
+    "Bereket Adası"
+  ],
+  "requiresOriginalAssets": true,
+  "renderingStrategy": "Prefer build-time Canvas-generated spritesheets exported as PNG; fallback to cached offscreen atlas drawn once, not vector shapes each frame.",
+  "notIncluded": "Actual PNG/WAV assets are not generated in this planning package; Opus will create them later.",
+  "ecosystemDataRefs": [
+    "FishDB_v1.0.json",
+    "CropDB_v1.0.json",
+    "AnimalDB_v1.0.json",
+    "SkillDB_v1.0.json",
+    "TrapDB_v1.0.json"
+  ],
+  "fixNotes": [
+    "v0.9 W_01/W_02/W_03 species IDs were reused across land/fish/marine; now globally unique ANIMAL_*, FISH_*, MARINE_*",
+    "No sprite or audio assets are created by this package"
+  ],
+  "sourceContentVersion": "v1.7",
+  "areaRefs": [
+    {
+      "regionId": "REG_BEACH",
+      "name": "Gemi Kazası Sahili",
+      "sceneBgId": "area_reg_beach"
+    },
+    {
+      "regionId": "REG_GROVE",
+      "name": "Palmiye Koruluğu",
+      "sceneBgId": "area_reg_grove"
+    },
+    {
+      "regionId": "REG_VALLEY",
+      "name": "Tatlısu Vadisi",
+      "sceneBgId": "area_reg_valley"
+    },
+    {
+      "regionId": "REG_FOREST",
+      "name": "Yoğun Orman",
+      "sceneBgId": "area_reg_forest"
+    },
+    {
+      "regionId": "REG_SWAMP",
+      "name": "Mangrov Bataklığı",
+      "sceneBgId": "area_reg_swamp"
+    },
+    {
+      "regionId": "REG_RED_CLIFF",
+      "name": "Kızıl Kayalıklar",
+      "sceneBgId": "area_reg_red_cliff"
+    },
+    {
+      "regionId": "REG_MOUNTAIN",
+      "name": "Kuzey Dağı ve Mağaralar",
+      "sceneBgId": "area_reg_mountain"
+    },
+    {
+      "regionId": "REG_SETTLEMENT",
+      "name": "Terk Edilmiş Yerleşim",
+      "sceneBgId": "area_reg_settlement"
+    },
+    {
+      "regionId": "REG_LAGOON",
+      "name": "Doğu Lagünü",
+      "sceneBgId": "area_reg_lagoon"
+    },
+    {
+      "regionId": "REG_LIGHTHOUSE",
+      "name": "Fener Adacığı",
+      "sceneBgId": "area_reg_lighthouse"
+    },
+    {
+      "regionId": "REG_WRECK",
+      "name": "Batık Adası",
+      "sceneBgId": "area_reg_wreck"
+    },
+    {
+      "regionId": "REG_FERTILE",
+      "name": "Bereket Adası",
+      "sceneBgId": "area_reg_fertile"
+    }
+  ],
+  "characterClips": [
+    {
+      "id": "idle",
+      "framesPerDirection": 4,
+      "fps": 4,
+      "directions": 4,
+      "assetId": "avatar_idle",
+      "filePattern": "assets/generated/avatar/avatar_idle_<direction>_<frame>.png"
+    },
+    {
+      "id": "walk",
+      "framesPerDirection": 6,
+      "fps": 9,
+      "directions": 4,
+      "assetId": "avatar_walk",
+      "filePattern": "assets/generated/avatar/avatar_walk_<direction>_<frame>.png"
+    },
+    {
+      "id": "run",
+      "framesPerDirection": 6,
+      "fps": 12,
+      "directions": 4,
+      "assetId": "avatar_run",
+      "filePattern": "assets/generated/avatar/avatar_run_<direction>_<frame>.png"
+    },
+    {
+      "id": "gather",
+      "framesPerDirection": 5,
+      "fps": 10,
+      "directions": 4,
+      "assetId": "avatar_gather",
+      "filePattern": "assets/generated/avatar/avatar_gather_<direction>_<frame>.png"
+    },
+    {
+      "id": "chop",
+      "framesPerDirection": 6,
+      "fps": 12,
+      "directions": 4,
+      "assetId": "avatar_chop",
+      "filePattern": "assets/generated/avatar/avatar_chop_<direction>_<frame>.png"
+    },
+    {
+      "id": "mine",
+      "framesPerDirection": 6,
+      "fps": 12,
+      "directions": 4,
+      "assetId": "avatar_mine",
+      "filePattern": "assets/generated/avatar/avatar_mine_<direction>_<frame>.png"
+    },
+    {
+      "id": "spear",
+      "framesPerDirection": 5,
+      "fps": 12,
+      "directions": 4,
+      "assetId": "avatar_spear",
+      "filePattern": "assets/generated/avatar/avatar_spear_<direction>_<frame>.png"
+    },
+    {
+      "id": "bow",
+      "framesPerDirection": 6,
+      "fps": 12,
+      "directions": 4,
+      "assetId": "avatar_bow",
+      "filePattern": "assets/generated/avatar/avatar_bow_<direction>_<frame>.png"
+    },
+    {
+      "id": "fish_cast",
+      "framesPerDirection": 6,
+      "fps": 10,
+      "directions": 4,
+      "assetId": "avatar_fish_cast",
+      "filePattern": "assets/generated/avatar/avatar_fish_cast_<direction>_<frame>.png"
+    },
+    {
+      "id": "fish_idle",
+      "framesPerDirection": 4,
+      "fps": 4,
+      "directions": 4,
+      "assetId": "avatar_fish_idle",
+      "filePattern": "assets/generated/avatar/avatar_fish_idle_<direction>_<frame>.png"
+    },
+    {
+      "id": "fish_reel",
+      "framesPerDirection": 6,
+      "fps": 10,
+      "directions": 4,
+      "assetId": "avatar_fish_reel",
+      "filePattern": "assets/generated/avatar/avatar_fish_reel_<direction>_<frame>.png"
+    },
+    {
+      "id": "swim",
+      "framesPerDirection": 6,
+      "fps": 8,
+      "directions": 4,
+      "assetId": "avatar_swim",
+      "filePattern": "assets/generated/avatar/avatar_swim_<direction>_<frame>.png"
+    },
+    {
+      "id": "hurt",
+      "framesPerDirection": 3,
+      "fps": 10,
+      "directions": 4,
+      "assetId": "avatar_hurt",
+      "filePattern": "assets/generated/avatar/avatar_hurt_<direction>_<frame>.png"
+    },
+    {
+      "id": "eat",
+      "framesPerDirection": 5,
+      "fps": 8,
+      "directions": 4,
+      "assetId": "avatar_eat",
+      "filePattern": "assets/generated/avatar/avatar_eat_<direction>_<frame>.png"
+    },
+    {
+      "id": "sleep",
+      "framesPerDirection": 2,
+      "fps": 2,
+      "directions": 1,
+      "assetId": "avatar_sleep",
+      "filePattern": "assets/generated/avatar/avatar_sleep_<direction>_<frame>.png"
+    },
+    {
+      "id": "build",
+      "framesPerDirection": 6,
+      "fps": 10,
+      "directions": 4,
+      "assetId": "avatar_build",
+      "filePattern": "assets/generated/avatar/avatar_build_<direction>_<frame>.png"
+    }
+  ],
+  "assetBuildPolicy": {
+    "delivery": "Use local generated art, no network dependency, no brand/game copied sprites; at build time produce PNG atlas or cache offscreen Canvas once",
+    "assetsAreNotPresentInThisPackage": true,
+    "placeholderMayShipAsFinal": false,
+    "imageLoadError": "Show explicit blocking error with path; never silently use missing texture or emoji",
+    "validation": "Check generated PNG dimensions, alpha, path uniqueness and actual presence before release",
+    "fallbackForWeakDevices": "reduce overlay particles, weather fx and offscreen objects; preserve essential visuals and gameplay"
+  }
+}

@@ -1,0 +1,339 @@
+{
+  "project": "Kayip Ufuk",
+  "inputSpec": "v2.0",
+  "fileCount": 83,
+  "items": {
+    ".claude/skills/kayip-ufuk-assets/SKILL.md": {
+      "sha256": "eeed3bb8857db42d2c8b767fe7a1bc795ff398215c02301fa224f07bc4feb145",
+      "bytes": 2237
+    },
+    ".claude/skills/kayip-ufuk-assets/references/atlas-quality.md": {
+      "sha256": "994752a903e504c07194aa339a7056d870f5e8c161247c382974ac47f30b2092",
+      "bytes": 1119
+    },
+    ".claude/skills/kayip-ufuk-build/SKILL.md": {
+      "sha256": "2ec2b55e69f24ae902cb47886a77a280638d7f4383d828fb4cfc908ac5e0cfc6",
+      "bytes": 2496
+    },
+    ".claude/skills/kayip-ufuk-build/references/milestone-gates.md": {
+      "sha256": "912a875e3380812d0f31bd10265dc1234ae42035ecfebb6c39ca4d91da0a4b78",
+      "bytes": 1274
+    },
+    ".claude/skills/kayip-ufuk-qa/SKILL.md": {
+      "sha256": "6bda7d49c4a2223d483f39f7a9ba771e21f3bcd6535985b702822d4749692159",
+      "bytes": 1886
+    },
+    ".claude/skills/kayip-ufuk-qa/references/test-report.md": {
+      "sha256": "f1a4998c1963fc94c6ff9f426dd36178016a93308dfb6c036cb5a292f1d5d4a7",
+      "bytes": 687
+    },
+    "CLAUDE.md": {
+      "sha256": "4f0aaeb3a1513b9605b61ec8622dece8f36cbe1907e8ff120a64558841125150",
+      "bytes": 1878
+    },
+    "KURULUM_VE_EKLEME_REHBERI.md": {
+      "sha256": "c85b5bcc3b7a5437871db1c280eced537d1009b408f627b2ec4b3d28a7013c8a",
+      "bytes": 3349
+    },
+    "Kayip_Ufuk_GDD_v2_0/Art/ArtDirection.json": {
+      "sha256": "eec77d9bec0849b839a3e33c6057080a67f92c1a445abbff0471106385ede9b1",
+      "bytes": 2971
+    },
+    "Kayip_Ufuk_GDD_v2_0/Art/AssetAcceptanceTests.json": {
+      "sha256": "53f401b6b5ad4e40b37ae14f9f61d9e9f640304046d30dee72e25e20c552013d",
+      "bytes": 8537
+    },
+    "Kayip_Ufuk_GDD_v2_0/Art/AssetChecklist_v1.9.csv": {
+      "sha256": "a3054883c1072f25910a9266d009dbb527213c095266e8cebd7d49ee4aa5aaa5",
+      "bytes": 348586
+    },
+    "Kayip_Ufuk_GDD_v2_0/Art/AssetPathCompatibility.json": {
+      "sha256": "c645f78847c325c775538215a748b9ab594fe3fb5e4235e792c1cfac09e2774f",
+      "bytes": 1222
+    },
+    "Kayip_Ufuk_GDD_v2_0/Art/AssetTasks.json": {
+      "sha256": "5988d003362b3af0b32ec59976878eeba99c29b00b3f692cd00b56babea3f4a5",
+      "bytes": 2216
+    },
+    "Kayip_Ufuk_GDD_v2_0/Art/AtlasLayout.json": {
+      "sha256": "c97b5f9878d475d6ab341f7a3a8773910bd18da2a36c4926f21e12676cc6c1c3",
+      "bytes": 929326
+    },
+    "Kayip_Ufuk_GDD_v2_0/Art/AudioManifest.json": {
+      "sha256": "49b282f34c5c1a8d96a08dd9435ece4f50e50e6a1bab9c62f2d43cc5d2432c8a",
+      "bytes": 30599
+    },
+    "Kayip_Ufuk_GDD_v2_0/Art/AvatarRig.json": {
+      "sha256": "bd99e7a8dc4ba829485e517cbefab32d1fb9d73009fc4bd49f871a34faf03081",
+      "bytes": 114601
+    },
+    "Kayip_Ufuk_GDD_v2_0/Art/RegionVisualContract.json": {
+      "sha256": "83b2f84563fcb2c41f3c843a1c8a5510a91ae4530b9b08d5906661f5f7bbd999",
+      "bytes": 10043
+    },
+    "Kayip_Ufuk_GDD_v2_0/Art/SpriteCatalog.json": {
+      "sha256": "9ff51e9ca55eb68501d40b012ce8c9c07aaf95c4b889e5d521e193ccbab0dbb7",
+      "bytes": 1725927
+    },
+    "Kayip_Ufuk_GDD_v2_0/Art/SpriteProductionQueue_v2.0.csv": {
+      "sha256": "fa86b1dde76f68ee76f27014870a29b02cf09e78a6963261d5b00604d4438e90",
+      "bytes": 407803
+    },
+    "Kayip_Ufuk_GDD_v2_0/Assets/README.md": {
+      "sha256": "5b5b436783b5404d731e468d75751813287c04ee7748eeaf47c0e77db79cef20",
+      "bytes": 116
+    },
+    "Kayip_Ufuk_GDD_v2_0/CHECKSUMS.sha256": {
+      "sha256": "ae456dd13eee7c263e756e0ec15d72e8cb6fd162273715498cd9cf846be02295",
+      "bytes": 5951
+    },
+    "Kayip_Ufuk_GDD_v2_0/ContentIndex_v2.0.json": {
+      "sha256": "5bdc7bcde9755a317f2db07cf98d7f47b260acc0a148f6515e292788785d33ae",
+      "bytes": 6151
+    },
+    "Kayip_Ufuk_GDD_v2_0/Contracts/AcceptanceTests.json": {
+      "sha256": "05bebbfb1f1f67348695fdf9f8f2f891a63209b1fd63ce2d3cdb827aeae11f4f",
+      "bytes": 36696
+    },
+    "Kayip_Ufuk_GDD_v2_0/Contracts/AssetBuildContract.json": {
+      "sha256": "cade56e6d73421c52d1580a0b77c08aff5687b9ead8459179ef306374fadf238",
+      "bytes": 2758
+    },
+    "Kayip_Ufuk_GDD_v2_0/Contracts/ContentContract.json": {
+      "sha256": "b1348701fe0388924ca6960e3a18fbbb48185b025cd7edcee6d01d7579e106f7",
+      "bytes": 1836
+    },
+    "Kayip_Ufuk_GDD_v2_0/Contracts/ContractCorrections.json": {
+      "sha256": "0f0f2360e6c64ff9ae5579594bcd0dc321ee16980069c66414c7b7fcb102fa4a",
+      "bytes": 1346
+    },
+    "Kayip_Ufuk_GDD_v2_0/Contracts/ImplementationContract.json": {
+      "sha256": "b5f782a2fc2ed62e81cdf42c9f4d21667692f86cbb1ac5d78c9fdf79e4dfc69a",
+      "bytes": 12571
+    },
+    "Kayip_Ufuk_GDD_v2_0/Contracts/IntegrationMilestones.json": {
+      "sha256": "75a29f44c0c4282dd87e60ba97dbbb32c34bee6b2aed08dd77d5ea50aa3e6fcd",
+      "bytes": 2212
+    },
+    "Kayip_Ufuk_GDD_v2_0/Contracts/SceneFlow.json": {
+      "sha256": "83543855d3cdb96c8ce1be962ee74997e06adb9913ceac096499a49910e7dac4",
+      "bytes": 5528
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/AnimalDB.json": {
+      "sha256": "b06854c1b3b3db8e1c0b83ca86ccb94bcaa83ea3af1308fbe06e21f2d07a751a",
+      "bytes": 13568
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/ArtSpec.json": {
+      "sha256": "3eb380afd0cf4445c839c0212b1997283867844b347a67f1d8aa3042480d7e6e",
+      "bytes": 6897
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/AssetManifest.json": {
+      "sha256": "2e88b216551cdf767747688ce751cd679d7c8dfab9e31ea42a9e4c54eef2a5f4",
+      "bytes": 65964
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/BalanceDB.json": {
+      "sha256": "888044d4b8501885bd9040d62bddacc6f7fa4204b9979b92fca4f15e8f6ccfb4",
+      "bytes": 45569
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/BuildDB.json": {
+      "sha256": "4028e2c5373cc6600c4c0f6317101f685dd5879ecc0620d9554f1a83200f0bb2",
+      "bytes": 24657
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/BuildPlacementDB.json": {
+      "sha256": "e2c38ca929492c6cb310208019c4a294a582977ea027e18b3cf4d5fca9a38c4b",
+      "bytes": 3064
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/CaveDB.json": {
+      "sha256": "eceac72b38c122dd1795f8a561e3dc5915ab248ca8ad3a07f5e6ec22974f20db",
+      "bytes": 31434
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/CollisionNavDB.json": {
+      "sha256": "509f86f93c174247cfa94068c52662b53d2883db253b139d55c1151a9d1a94c3",
+      "bytes": 21264
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/CropDB.json": {
+      "sha256": "606385ad9312ed5ac18547affe2917589b599d5a23f96eec527f1a18a6a28598",
+      "bytes": 13257
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/DesignConstants.json": {
+      "sha256": "df52c0b9fccadeee1b0a0e704e21dd7945bcab6b1efcecb8a09bd1e85eeebbb3",
+      "bytes": 1115
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/DurabilityDB.json": {
+      "sha256": "5de9f328e64574bffa48581ef9be496d36300f211c0b5884604912cc53109ce5",
+      "bytes": 5658
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/EscapeDB.json": {
+      "sha256": "6c5025d8ef73e27e20aa2041f8d94480fa2e3610f5a01c5deb4da1399e249f3a",
+      "bytes": 8985
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/FishDB.json": {
+      "sha256": "ce5270dd7dfabf75234168e54bed2025708ca32b68d0b5d2a87b0ae54464c276",
+      "bytes": 11196
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/ItemDB.json": {
+      "sha256": "f11001825cf3fd728ec57d78faacadcbda61cbeb0f1c60d418198655685d1ab5",
+      "bytes": 37157
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/LootSpawnDB.json": {
+      "sha256": "88358f4c28ab4ffe9195392c35699cc610bfa73edcef49b6df8809071ec78021",
+      "bytes": 27829
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/LootTableDB.json": {
+      "sha256": "5b53e6d858aa36f965decf15615bdad44541cbb9a0ba6fd8980ab54f7893284f",
+      "bytes": 53415
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/NavigationDB.json": {
+      "sha256": "5479048ad0c659d954b95a3d6c311631e21f90d25dd59885919474472b51a4c8",
+      "bytes": 37448
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/POIDB.json": {
+      "sha256": "0b92c480451dc4bb3fab1f6235a8c9bdc082473306020e5d9c11c4cb5b1943f9",
+      "bytes": 44285
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/PuzzleDB.json": {
+      "sha256": "1362955ca756d2e74069680fc5f5e95f32c60e2ef4286cd97089861ca5757f3a",
+      "bytes": 21959
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/RecipeDB.json": {
+      "sha256": "380389932108bd15a4304d09323b85540f94a521ac26a215f1a3dbe1d5b92f81",
+      "bytes": 66085
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/RegionDB.json": {
+      "sha256": "4fe8810b0803e44a43eebbdfee3d836ea9ac3980a794ec5d1831b80670a3ed23",
+      "bytes": 16699
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/ResourceEconomyDB.json": {
+      "sha256": "da8c2843d6da8c6cd09571e89d313672c1be6aa176fbbb8652eac2d6f7b0dcea",
+      "bytes": 9247
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/SaveMigration.json": {
+      "sha256": "0de2910cc2fd3a2659d4fca5f0d010a2dc50d5cdd7f8d03e04ae6bbe817d5cb9",
+      "bytes": 1249
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/SaveSchema.json": {
+      "sha256": "0fdb11e16f90a9eece85e3020780d41d6e9d3a8579e2a46fe6518b07c12bc35f",
+      "bytes": 11108
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/SkillDB.json": {
+      "sha256": "c29e253fa41d5cfcea4fa3aa5d3128257909a1e550a636bd23d3fb62182ad433",
+      "bytes": 7263
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/StoryDB.json": {
+      "sha256": "f710eee409f7aec69d989426cee2b9059513324747b127d78fab4673a9530a26",
+      "bytes": 13312
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/TerrainDB.json": {
+      "sha256": "b6b09f70235a30356e0419d2b839de8bd4e649e1a46ffb18a089316782d99c37",
+      "bytes": 9619
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/TrapDB.json": {
+      "sha256": "8628fc18e34229040c83edc4adf1a1df0d95ba041ca1079054ef64e7bc061ad7",
+      "bytes": 2117
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/WaterEconomyDB.json": {
+      "sha256": "dc3ebafac802d531e28853850f614c40f5855adff0274f9fe9192d76e9e54480",
+      "bytes": 3572
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/WeatherDB.json": {
+      "sha256": "83458a56cafa4e191e8b1a07a1b1177447489870bceb916f99c18e90a7f38dcf",
+      "bytes": 3911
+    },
+    "Kayip_Ufuk_GDD_v2_0/DB/WorldMap.json": {
+      "sha256": "2412d0cda55922ba01ff0db73fa644fecbba1ebcdb5ffdd9ebfa29ed8dcb5140",
+      "bytes": 14725
+    },
+    "Kayip_Ufuk_GDD_v2_0/Docs/Kayip_Ufuk_GDD_v2.0_Tek_Kaynak_Tam_Surum.md": {
+      "sha256": "9eaa468b768190d19daba712a74f3ad4e7c1331cd30f2a116222f44e8f2f3fdb",
+      "bytes": 76800
+    },
+    "Kayip_Ufuk_GDD_v2_0/Maps/CaveGrid_CAVE_BATS_v1.4.json": {
+      "sha256": "82d096b8344166c830798f6f0a69b93313f5450d0359c96a809885ebf6ce3eba",
+      "bytes": 8524
+    },
+    "Kayip_Ufuk_GDD_v2_0/Maps/CaveGrid_CAVE_COPPER_v1.4.json": {
+      "sha256": "6f9d92e649abf7a00ee2b59be159ff28f162516a9c8eef10e1b52933166ac919",
+      "bytes": 6749
+    },
+    "Kayip_Ufuk_GDD_v2_0/Maps/CaveGrid_CAVE_POND_v1.4.json": {
+      "sha256": "1b9bc2d13a964ad639004f15486745e3dce6e3f7004313a735a384ef87a83503",
+      "bytes": 8700
+    },
+    "Kayip_Ufuk_GDD_v2_0/Maps/CaveMaps_v1.4_Teknik_Onizleme.png": {
+      "sha256": "7d3303d1b736d52ad4eb3ce9eeaa0ca943b4a337e36d9c6412658e6ba43734e4",
+      "bytes": 38454
+    },
+    "Kayip_Ufuk_GDD_v2_0/Maps/TerrainGrid_FERTILE_v1.2.json": {
+      "sha256": "2cc84d22d37b056ca7a12723e2999e167a5000d0e99cf71e56627ca0dc88d7e6",
+      "bytes": 39407
+    },
+    "Kayip_Ufuk_GDD_v2_0/Maps/TerrainGrid_LIGHTHOUSE_v1.2.json": {
+      "sha256": "23bb326cbe95ae7ca24bdd9f1552cddd550f40ededd2c9f32cb84272c389028f",
+      "bytes": 37874
+    },
+    "Kayip_Ufuk_GDD_v2_0/Maps/TerrainGrid_MAIN_v1.2.json": {
+      "sha256": "8ec91558b6f05fc86609ff96f94f320340feb787261c1b29045b7c308ce9a42b",
+      "bytes": 348069
+    },
+    "Kayip_Ufuk_GDD_v2_0/Maps/TerrainGrid_WRECK_v1.2.json": {
+      "sha256": "ee034f5d5ea493d423fc19b815254aad49a07e574195b9e2108095292fcd1fa6",
+      "bytes": 36904
+    },
+    "Kayip_Ufuk_GDD_v2_0/Maps/Terrain_v1.2_Teknik_Harita.png": {
+      "sha256": "c3489a1ebf59e265a2b50ed1df0fa25a27e7f7dbfeeb0d5f986c90c7c6e16683",
+      "bytes": 79617
+    },
+    "Kayip_Ufuk_GDD_v2_0/PackageFileIndex_v2.0.json": {
+      "sha256": "d7c5e0a0c23dba530633d822813dc053ef3bb49895b331ea95d3b8b890a2adff",
+      "bytes": 10620
+    },
+    "Kayip_Ufuk_GDD_v2_0/ProductionTruth_v2.0.json": {
+      "sha256": "3e7f9cafcd9e2144d1a921b76d72bd37f7674e013be91636cdcd7ffe4718ea7e",
+      "bytes": 3037
+    },
+    "Kayip_Ufuk_GDD_v2_0/QA/RUNBOOK.md": {
+      "sha256": "6db2d2e555f9fb81c3a06351a37a51d9a460c56cd8139ced17998f3d455d9bd3",
+      "bytes": 784
+    },
+    "Kayip_Ufuk_GDD_v2_0/QA/Validation_v2.0.json": {
+      "sha256": "c57e5e696a046e698ea15d9919173c72b2c530446ef9b808d74191387a3b4ec9",
+      "bytes": 7256
+    },
+    "Kayip_Ufuk_GDD_v2_0/QA/audit_v20.py": {
+      "sha256": "9e8c7d17cac35c0c146eda7132390612df332c0b76d8e687b54476e4ccc44f37",
+      "bytes": 6171
+    },
+    "Kayip_Ufuk_GDD_v2_0/README_BASLANGIC.md": {
+      "sha256": "57a363613e4fde4582b96544a6349d7e7daa236cb5faf02a88ad886c2ecf1b7e",
+      "bytes": 1331
+    },
+    "PROMPT_TEK_MESAJ.txt": {
+      "sha256": "985f6eb276c2e2af0c6c3e0c93154c9b531acd9f9dee6350a9d9341a9601497b",
+      "bytes": 12321
+    },
+    "README_BASLA.md": {
+      "sha256": "97209460c6591f3682ca622ba9902b3c0d22a2fd1b19162a6be5502fef81d363",
+      "bytes": 1512
+    },
+    "README_SKILL.md": {
+      "sha256": "01be753ebfee153da9d7429beec5a2cb8a34cb64c3dc628aaa3d54dc9fae17bd",
+      "bytes": 968
+    },
+    "reports/test-results.json": {
+      "sha256": "d81da858ab62dd56e8b57a8650130970d6ce3f1a63059b0093cebe633f3387d4",
+      "bytes": 16173
+    },
+    "tools/init_test_report.py": {
+      "sha256": "51a9bc7278efa016712bf03130163744bfaf798f92219a098ed8819fb3041c83",
+      "bytes": 1433
+    },
+    "tools/preflight.py": {
+      "sha256": "8486c29f1ee37df3d54772ab6439af2444a0baba969a65f073b228f4d6850548",
+      "bytes": 1791
+    },
+    "tools/validate_delivery.py": {
+      "sha256": "59e60fe7ff06047647496739f2cb83772a543b70314e91895dceb890781946cd",
+      "bytes": 7383
+    }
+  }
+}

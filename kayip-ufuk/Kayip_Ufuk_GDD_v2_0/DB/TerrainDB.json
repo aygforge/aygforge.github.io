@@ -1,0 +1,350 @@
+{
+  "version": "v1.2",
+  "sourceWorld": "WorldMap_v1.1.json",
+  "tilePixelSize": 32,
+  "referenceCanvas": [
+    1280,
+    720
+  ],
+  "worldSeedPolicy": "Fixed tile raster and critical roads; change only optional secondary decoration and minor resource nodes",
+  "tileIds": {
+    "OCEAN_DEEP": 0,
+    "OCEAN_SHALLOW": 1,
+    "BEACH_SAND": 2,
+    "MEADOW": 3,
+    "GROVE": 4,
+    "FOREST_FLOOR": 5,
+    "SWAMP_SOIL": 6,
+    "ROCKY_GROUND": 7,
+    "MOUNTAIN_SOIL": 8,
+    "SETTLEMENT_GROUND": 9,
+    "LAGOON_SOIL": 10,
+    "WETLAND_WADE": 11,
+    "RIVER_DEEP": 12,
+    "RIVER_FORD": 13,
+    "DIRT_TRAIL": 14,
+    "CLIFF_WALL": 15,
+    "TIDAL_SANDBAR": 16,
+    "REED_PATCH": 17,
+    "SEA_REEF": 18,
+    "RIVER_BANK": 19
+  },
+  "tiles": [
+    {
+      "id": "OCEAN_DEEP",
+      "tileCode": 0,
+      "colorHex": "#2f7698",
+      "footWalkable": false,
+      "swimPossible": true,
+      "raftNavigable": true,
+      "moveSpeedMultiplierFoot": 0.0,
+      "canPlacePrefabFootprintCell": false,
+      "isWater": true,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "OCEAN_SHALLOW",
+      "tileCode": 1,
+      "colorHex": "#74bdcf",
+      "footWalkable": false,
+      "swimPossible": true,
+      "raftNavigable": true,
+      "moveSpeedMultiplierFoot": 0.0,
+      "canPlacePrefabFootprintCell": false,
+      "isWater": true,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "BEACH_SAND",
+      "tileCode": 2,
+      "colorHex": "#e8cd8d",
+      "footWalkable": true,
+      "swimPossible": false,
+      "raftNavigable": false,
+      "moveSpeedMultiplierFoot": 1.0,
+      "canPlacePrefabFootprintCell": true,
+      "isWater": false,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "MEADOW",
+      "tileCode": 3,
+      "colorHex": "#8bb572",
+      "footWalkable": true,
+      "swimPossible": false,
+      "raftNavigable": false,
+      "moveSpeedMultiplierFoot": 1.0,
+      "canPlacePrefabFootprintCell": true,
+      "isWater": false,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "GROVE",
+      "tileCode": 4,
+      "colorHex": "#75a96f",
+      "footWalkable": true,
+      "swimPossible": false,
+      "raftNavigable": false,
+      "moveSpeedMultiplierFoot": 1.0,
+      "canPlacePrefabFootprintCell": true,
+      "isWater": false,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "FOREST_FLOOR",
+      "tileCode": 5,
+      "colorHex": "#397c54",
+      "footWalkable": true,
+      "swimPossible": false,
+      "raftNavigable": false,
+      "moveSpeedMultiplierFoot": 0.9,
+      "canPlacePrefabFootprintCell": true,
+      "isWater": false,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "SWAMP_SOIL",
+      "tileCode": 6,
+      "colorHex": "#527c64",
+      "footWalkable": true,
+      "swimPossible": false,
+      "raftNavigable": false,
+      "moveSpeedMultiplierFoot": 0.8,
+      "canPlacePrefabFootprintCell": true,
+      "isWater": false,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "ROCKY_GROUND",
+      "tileCode": 7,
+      "colorHex": "#b77865",
+      "footWalkable": true,
+      "swimPossible": false,
+      "raftNavigable": false,
+      "moveSpeedMultiplierFoot": 0.85,
+      "canPlacePrefabFootprintCell": true,
+      "isWater": false,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "MOUNTAIN_SOIL",
+      "tileCode": 8,
+      "colorHex": "#818b84",
+      "footWalkable": true,
+      "swimPossible": false,
+      "raftNavigable": false,
+      "moveSpeedMultiplierFoot": 0.8,
+      "canPlacePrefabFootprintCell": true,
+      "isWater": false,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "SETTLEMENT_GROUND",
+      "tileCode": 9,
+      "colorHex": "#b9b090",
+      "footWalkable": true,
+      "swimPossible": false,
+      "raftNavigable": false,
+      "moveSpeedMultiplierFoot": 1.0,
+      "canPlacePrefabFootprintCell": true,
+      "isWater": false,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "LAGOON_SOIL",
+      "tileCode": 10,
+      "colorHex": "#77c3aa",
+      "footWalkable": true,
+      "swimPossible": false,
+      "raftNavigable": false,
+      "moveSpeedMultiplierFoot": 1.0,
+      "canPlacePrefabFootprintCell": true,
+      "isWater": false,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "WETLAND_WADE",
+      "tileCode": 11,
+      "colorHex": "#559ca1",
+      "footWalkable": true,
+      "swimPossible": true,
+      "raftNavigable": false,
+      "moveSpeedMultiplierFoot": 0.55,
+      "canPlacePrefabFootprintCell": false,
+      "isWater": true,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "RIVER_DEEP",
+      "tileCode": 12,
+      "colorHex": "#367da5",
+      "footWalkable": false,
+      "swimPossible": true,
+      "raftNavigable": false,
+      "moveSpeedMultiplierFoot": 0.0,
+      "canPlacePrefabFootprintCell": false,
+      "isWater": true,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "RIVER_FORD",
+      "tileCode": 13,
+      "colorHex": "#aeceac",
+      "footWalkable": true,
+      "swimPossible": false,
+      "raftNavigable": false,
+      "moveSpeedMultiplierFoot": 0.65,
+      "canPlacePrefabFootprintCell": false,
+      "isWater": true,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "DIRT_TRAIL",
+      "tileCode": 14,
+      "colorHex": "#d8bb8b",
+      "footWalkable": true,
+      "swimPossible": false,
+      "raftNavigable": false,
+      "moveSpeedMultiplierFoot": 1.1,
+      "canPlacePrefabFootprintCell": false,
+      "isWater": false,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "CLIFF_WALL",
+      "tileCode": 15,
+      "colorHex": "#58595d",
+      "footWalkable": false,
+      "swimPossible": false,
+      "raftNavigable": false,
+      "moveSpeedMultiplierFoot": 0.0,
+      "canPlacePrefabFootprintCell": false,
+      "isWater": false,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "TIDAL_SANDBAR",
+      "tileCode": 16,
+      "colorHex": "#e4d798",
+      "footWalkable": true,
+      "swimPossible": false,
+      "raftNavigable": false,
+      "moveSpeedMultiplierFoot": 0.8,
+      "canPlacePrefabFootprintCell": false,
+      "isWater": false,
+      "requiresSpecialState": "low_tide"
+    },
+    {
+      "id": "REED_PATCH",
+      "tileCode": 17,
+      "colorHex": "#718d5e",
+      "footWalkable": true,
+      "swimPossible": false,
+      "raftNavigable": false,
+      "moveSpeedMultiplierFoot": 1.0,
+      "canPlacePrefabFootprintCell": false,
+      "isWater": false,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "SEA_REEF",
+      "tileCode": 18,
+      "colorHex": "#4eabb6",
+      "footWalkable": false,
+      "swimPossible": true,
+      "raftNavigable": true,
+      "moveSpeedMultiplierFoot": 0.0,
+      "canPlacePrefabFootprintCell": false,
+      "isWater": true,
+      "requiresSpecialState": null
+    },
+    {
+      "id": "RIVER_BANK",
+      "tileCode": 19,
+      "colorHex": "#8aaf8d",
+      "footWalkable": true,
+      "swimPossible": false,
+      "raftNavigable": false,
+      "moveSpeedMultiplierFoot": 1.0,
+      "canPlacePrefabFootprintCell": false,
+      "isWater": true,
+      "requiresSpecialState": null
+    }
+  ],
+  "movementModes": {
+    "WALK": {
+      "basePxPerSec": 88,
+      "diagonalNormalized": true,
+      "footCollider": "circle radius 7.5 px, anchored to feet",
+      "slideAlongWalls": true,
+      "alwaysAllowedFallback": "stand still if route invalid"
+    },
+    "SPRINT": {
+      "basePxPerSec": 137,
+      "staminaPerSec": 6,
+      "minimumStaminaToStart": 8,
+      "cancelsOnZero": true
+    },
+    "SWIM": {
+      "basePxPerSec": 52,
+      "staminaPerSec": 3,
+      "airWhenSubmerged": "breath meter 100, surface restores"
+    },
+    "RAFT": {
+      "basePxPerSec": 100,
+      "vehicleFootprintTiles": [
+        2,
+        3
+      ],
+      "waterOnly": true,
+      "landingNeedsMatchingWaterAndFootTiles": true
+    },
+    "DIVE": {
+      "basePxPerSec": 46,
+      "surfaceOnBreathLow": true
+    }
+  },
+  "collisionLayers": {
+    "terrainBlocked": "cliffs, deep river for WALK, sea unless SWIM/RAFT",
+    "dynamicSolid": "trees, buildings, stones, crates",
+    "interactionOnly": "POI anchors, pickups, plants without solid trunk",
+    "softObstacle": "non-hostile animal bodies do not pin or trap player",
+    "gateState": "broken bridges, climb shortcuts, relay trail, tidal passage"
+  },
+  "pathfinding": {
+    "algorithm": "8-neighbor A* for tap-to-walk; 4-neighbor flood fill for strict connectivity tests",
+    "noDiagonalCornerCutting": true,
+    "gridMovementCosts": {
+      "trail": 0.9,
+      "grass": 1.0,
+      "mountain": 1.3,
+      "swamp": 1.4,
+      "river_ford": 1.6
+    },
+    "manualJoystickOverridesAutoPath": true,
+    "replanOnDynamicObstacle": true
+  },
+  "water": {
+    "deepOceanOnFoot": "blocked unless SWIM mode",
+    "shallowOceanOnFoot": "enter SWIM mode",
+    "riverDeepOnFoot": "blocked until entering SWIM mode",
+    "riverFordOnFoot": "walk with speed .65",
+    "tideSandbar": "walk only low tide; swim at high tide"
+  },
+  "rendering": {
+    "chunkTiles": [
+      16,
+      16
+    ],
+    "loadedChunksNearCamera": true,
+    "spriteSort": "bottom y-value / feet origin",
+    "roofFadeWhenPlayerInsidePrefab": true,
+    "occludeTreeCanopyWhenCoveringPlayer": true,
+    "light": "day-night overlaid plus local light masks"
+  },
+  "knownLimitations": [
+    "Terrains and region masks are rasterized; decoration and prefab collision proxies are not yet placed in scene engine.",
+    "8-way A* must be exercised with full dynamic colliders in HTML5 implementation.",
+    "Optional gate blockers mark zones and state; scenic cliffs around each optional gate need final authored collider pass."
+  ]
+}

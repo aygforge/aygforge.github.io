@@ -1,0 +1,1673 @@
+{
+  "version": "v1.5",
+  "methodology": {
+    "type": "deterministic recipe expansion + 120 seed stochastic scheduling sensitivity per archetype",
+    "meaning": "scenario exploration estimates, not live playtesting or working game simulation",
+    "inputs": "RecipeDB v1.0 (182 rows), ItemDB v1.0, BuildDB v1.0, v1.1 spawn, EscapeDB v1.3",
+    "recipePolicy": "Use first permitted recipe by output except explicitly preferred R_CLOTH / R_CHARCOAL_COAL / R_FISH_HOOK_SCRAP; demand on crafting, durable workstation built once, byproduct inventory reused",
+    "assumptions": "No optional blueprint, no building decay, no tool replacement, no permanent raw stock cap, all recipes available once discovered, output costs global, all raw sources assumed reachable; movement model uses illustrative per-node yield and travel times, not generated physical 2D routes",
+    "explorationBaseMinutes": {
+      "starter": 12,
+      "homestead": 35,
+      "large_homestead": 95,
+      "metal": 125,
+      "sail": 85,
+      "boat_escape": 160,
+      "radio_solar": 180,
+      "radio_generator": 185
+    },
+    "regionVisits": {
+      "starter": 0,
+      "homestead": 2,
+      "large_homestead": 3,
+      "metal": 4,
+      "sail": 3,
+      "boat_escape": 7,
+      "radio_solar": 8,
+      "radio_generator": 9
+    },
+    "harvestNodeAssumptions": {
+      "MAT_BRANCH": {
+        "avgYield": 3.0,
+        "harvestSec": 6,
+        "travelSecPerNode": 5
+      },
+      "MAT_STONE": {
+        "avgYield": 3.0,
+        "harvestSec": 8,
+        "travelSecPerNode": 7
+      },
+      "MAT_FIBER": {
+        "avgYield": 3.0,
+        "harvestSec": 5,
+        "travelSecPerNode": 5
+      },
+      "MAT_PALM_LEAF": {
+        "avgYield": 5.0,
+        "harvestSec": 7,
+        "travelSecPerNode": 6
+      },
+      "MAT_LOG": {
+        "avgYield": 2.5,
+        "harvestSec": 11,
+        "travelSecPerNode": 12
+      },
+      "MAT_BAMBOO": {
+        "avgYield": 3.0,
+        "harvestSec": 10,
+        "travelSecPerNode": 10
+      },
+      "MAT_RESIN": {
+        "avgYield": 2.0,
+        "harvestSec": 11,
+        "travelSecPerNode": 16
+      },
+      "MAT_CLAY": {
+        "avgYield": 3.0,
+        "harvestSec": 9,
+        "travelSecPerNode": 12
+      },
+      "MAT_COPPER_ORE": {
+        "avgYield": 3.0,
+        "harvestSec": 12,
+        "travelSecPerNode": 20
+      },
+      "MAT_IRON_ORE": {
+        "avgYield": 2.5,
+        "harvestSec": 14,
+        "travelSecPerNode": 25
+      },
+      "MAT_HARDWOOD": {
+        "avgYield": 2.0,
+        "harvestSec": 12,
+        "travelSecPerNode": 18
+      },
+      "MAT_COAL": {
+        "avgYield": 3.0,
+        "harvestSec": 11,
+        "travelSecPerNode": 17
+      },
+      "MAT_QUARTZ": {
+        "avgYield": 2.0,
+        "harvestSec": 10,
+        "travelSecPerNode": 21
+      },
+      "SAL_SCRAP": {
+        "avgYield": 3.0,
+        "harvestSec": 14,
+        "travelSecPerNode": 30
+      },
+      "SAL_GLASS": {
+        "avgYield": 2.0,
+        "harvestSec": 10,
+        "travelSecPerNode": 20
+      },
+      "SAL_BATTERY": {
+        "avgYield": 1.0,
+        "harvestSec": 9,
+        "travelSecPerNode": 25
+      },
+      "MAT_FAT": {
+        "avgYield": 1.0,
+        "harvestSec": 28,
+        "travelSecPerNode": 24
+      },
+      "MAT_FEATHER": {
+        "avgYield": 1.0,
+        "harvestSec": 12,
+        "travelSecPerNode": 12
+      },
+      "MAT_SALT": {
+        "avgYield": 2.0,
+        "harvestSec": 11,
+        "travelSecPerNode": 15
+      },
+      "MAT_SAND": {
+        "avgYield": 4.0,
+        "harvestSec": 6,
+        "travelSecPerNode": 10
+      },
+      "MAT_MED_HERB": {
+        "avgYield": 2.0,
+        "harvestSec": 9,
+        "travelSecPerNode": 12
+      },
+      "MAT_RAW_FISH": {
+        "avgYield": 1.5,
+        "harvestSec": 22,
+        "travelSecPerNode": 10
+      },
+      "CROP_BANANA": {
+        "avgYield": 3.5,
+        "harvestSec": 9,
+        "travelSecPerNode": 8
+      },
+      "FOOD_BANANA": {
+        "avgYield": 3.5,
+        "harvestSec": 9,
+        "travelSecPerNode": 8
+      },
+      "WATER_DIRTY": {
+        "avgYield": 4.0,
+        "harvestSec": 10,
+        "travelSecPerNode": 5
+      },
+      "MAT_SEAWEED": {
+        "avgYield": 2.5,
+        "harvestSec": 8,
+        "travelSecPerNode": 10
+      },
+      "MAT_RAW_HIDE": {
+        "avgYield": 1.0,
+        "harvestSec": 25,
+        "travelSecPerNode": 22
+      },
+      "MAT_WORM": {
+        "avgYield": 2.0,
+        "harvestSec": 10,
+        "travelSecPerNode": 10
+      },
+      "SAL_CANVAS": {
+        "avgYield": 1.0,
+        "harvestSec": 13,
+        "travelSecPerNode": 28
+      },
+      "MAT_TREE_BARK": {
+        "avgYield": 3,
+        "harvestSec": 9,
+        "travelSecPerNode": 11
+      }
+    }
+  },
+  "starter": {
+    "guarantees": {
+      "MAT_STONE": 21,
+      "MAT_BRANCH": 30,
+      "MAT_PALM_LEAF": 35,
+      "MAT_FIBER": 45
+    },
+    "rawNeededFor8CoreRecipes": {
+      "MAT_STONE": 14,
+      "MAT_BRANCH": 24,
+      "MAT_PALM_LEAF": 20,
+      "MAT_FIBER": 42
+    },
+    "shortfalls": {}
+  },
+  "milestonePlans": {
+    "minimum_boat": {
+      "stages": [
+        "starter",
+        "homestead",
+        "metal",
+        "sail",
+        "boat_escape"
+      ],
+      "rawTotals": {
+        "FOOD_BANANA": 6,
+        "MAT_BAMBOO": 20,
+        "MAT_BRANCH": 38,
+        "MAT_CLAY": 14,
+        "MAT_COAL": 23,
+        "MAT_COPPER_ORE": 10,
+        "MAT_FIBER": 289,
+        "MAT_HARDWOOD": 2,
+        "MAT_IRON_ORE": 27,
+        "MAT_LOG": 52,
+        "MAT_PALM_LEAF": 40,
+        "MAT_RAW_FISH": 6,
+        "MAT_RESIN": 37,
+        "MAT_STONE": 38,
+        "MAT_TREE_BARK": 1,
+        "SAL_GLASS": 3,
+        "SAL_SCRAP": 4,
+        "WATER_DIRTY": 8
+      },
+      "craftSeconds": 1245,
+      "craftRuns": 243,
+      "stageDeltas": {
+        "starter": {
+          "deltaRaw": {
+            "MAT_BRANCH": 24,
+            "MAT_FIBER": 42,
+            "MAT_LOG": 6,
+            "MAT_PALM_LEAF": 20,
+            "MAT_STONE": 14
+          },
+          "deltaCraftSeconds": 49,
+          "deltaCraftJobs": 15,
+          "cumulativeRaw": {
+            "MAT_BRANCH": 24,
+            "MAT_FIBER": 42,
+            "MAT_LOG": 6,
+            "MAT_PALM_LEAF": 20,
+            "MAT_STONE": 14
+          }
+        },
+        "homestead": {
+          "deltaRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 4,
+            "MAT_FIBER": 81,
+            "MAT_LOG": 19,
+            "MAT_PALM_LEAF": 20,
+            "MAT_RESIN": 5,
+            "SAL_SCRAP": 1
+          },
+          "deltaCraftSeconds": 128,
+          "deltaCraftJobs": 19,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 28,
+            "MAT_FIBER": 123,
+            "MAT_LOG": 25,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RESIN": 5,
+            "MAT_STONE": 14,
+            "SAL_SCRAP": 1
+          }
+        },
+        "metal": {
+          "deltaRaw": {
+            "MAT_BRANCH": 2,
+            "MAT_CLAY": 14,
+            "MAT_COAL": 11,
+            "MAT_COPPER_ORE": 6,
+            "MAT_FIBER": 24,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 12,
+            "MAT_LOG": 8,
+            "MAT_RESIN": 2,
+            "MAT_STONE": 24,
+            "SAL_SCRAP": 3
+          },
+          "deltaCraftSeconds": 306,
+          "deltaCraftJobs": 21,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 30,
+            "MAT_CLAY": 14,
+            "MAT_COAL": 11,
+            "MAT_COPPER_ORE": 6,
+            "MAT_FIBER": 147,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 12,
+            "MAT_LOG": 33,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RESIN": 7,
+            "MAT_STONE": 38,
+            "SAL_SCRAP": 4
+          }
+        },
+        "sail": {
+          "deltaRaw": {
+            "MAT_FIBER": 36,
+            "MAT_LOG": 10,
+            "MAT_RESIN": 8
+          },
+          "deltaCraftSeconds": 58,
+          "deltaCraftJobs": 4,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 30,
+            "MAT_CLAY": 14,
+            "MAT_COAL": 11,
+            "MAT_COPPER_ORE": 6,
+            "MAT_FIBER": 183,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 12,
+            "MAT_LOG": 43,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RESIN": 15,
+            "MAT_STONE": 38,
+            "SAL_SCRAP": 4
+          }
+        },
+        "boat_escape": {
+          "deltaRaw": {
+            "FOOD_BANANA": 6,
+            "MAT_BRANCH": 8,
+            "MAT_COAL": 12,
+            "MAT_COPPER_ORE": 4,
+            "MAT_FIBER": 106,
+            "MAT_IRON_ORE": 15,
+            "MAT_LOG": 9,
+            "MAT_RAW_FISH": 6,
+            "MAT_RESIN": 22,
+            "MAT_TREE_BARK": 1,
+            "SAL_GLASS": 3,
+            "WATER_DIRTY": 8
+          },
+          "deltaCraftSeconds": 704,
+          "deltaCraftJobs": 36,
+          "cumulativeRaw": {
+            "FOOD_BANANA": 6,
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 38,
+            "MAT_CLAY": 14,
+            "MAT_COAL": 23,
+            "MAT_COPPER_ORE": 10,
+            "MAT_FIBER": 289,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 27,
+            "MAT_LOG": 52,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RAW_FISH": 6,
+            "MAT_RESIN": 37,
+            "MAT_STONE": 38,
+            "MAT_TREE_BARK": 1,
+            "SAL_GLASS": 3,
+            "SAL_SCRAP": 4,
+            "WATER_DIRTY": 8
+          }
+        }
+      },
+      "rawNotHarvestModeled": {}
+    },
+    "minimum_radio_solar": {
+      "stages": [
+        "starter",
+        "homestead",
+        "metal",
+        "sail",
+        "radio_solar"
+      ],
+      "rawTotals": {
+        "MAT_BAMBOO": 20,
+        "MAT_BRANCH": 30,
+        "MAT_CLAY": 14,
+        "MAT_COAL": 39,
+        "MAT_COPPER_ORE": 22,
+        "MAT_FIBER": 203,
+        "MAT_HARDWOOD": 2,
+        "MAT_IRON_ORE": 42,
+        "MAT_LOG": 47,
+        "MAT_PALM_LEAF": 40,
+        "MAT_QUARTZ": 1,
+        "MAT_RESIN": 15,
+        "MAT_STONE": 38,
+        "SAL_BATTERY": 2,
+        "SAL_GLASS": 4,
+        "SAL_SCRAP": 4
+      },
+      "craftSeconds": 1193,
+      "craftRuns": 215,
+      "stageDeltas": {
+        "starter": {
+          "deltaRaw": {
+            "MAT_BRANCH": 24,
+            "MAT_FIBER": 42,
+            "MAT_LOG": 6,
+            "MAT_PALM_LEAF": 20,
+            "MAT_STONE": 14
+          },
+          "deltaCraftSeconds": 49,
+          "deltaCraftJobs": 15,
+          "cumulativeRaw": {
+            "MAT_BRANCH": 24,
+            "MAT_FIBER": 42,
+            "MAT_LOG": 6,
+            "MAT_PALM_LEAF": 20,
+            "MAT_STONE": 14
+          }
+        },
+        "homestead": {
+          "deltaRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 4,
+            "MAT_FIBER": 81,
+            "MAT_LOG": 19,
+            "MAT_PALM_LEAF": 20,
+            "MAT_RESIN": 5,
+            "SAL_SCRAP": 1
+          },
+          "deltaCraftSeconds": 128,
+          "deltaCraftJobs": 19,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 28,
+            "MAT_FIBER": 123,
+            "MAT_LOG": 25,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RESIN": 5,
+            "MAT_STONE": 14,
+            "SAL_SCRAP": 1
+          }
+        },
+        "metal": {
+          "deltaRaw": {
+            "MAT_BRANCH": 2,
+            "MAT_CLAY": 14,
+            "MAT_COAL": 11,
+            "MAT_COPPER_ORE": 6,
+            "MAT_FIBER": 24,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 12,
+            "MAT_LOG": 8,
+            "MAT_RESIN": 2,
+            "MAT_STONE": 24,
+            "SAL_SCRAP": 3
+          },
+          "deltaCraftSeconds": 306,
+          "deltaCraftJobs": 21,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 30,
+            "MAT_CLAY": 14,
+            "MAT_COAL": 11,
+            "MAT_COPPER_ORE": 6,
+            "MAT_FIBER": 147,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 12,
+            "MAT_LOG": 33,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RESIN": 7,
+            "MAT_STONE": 38,
+            "SAL_SCRAP": 4
+          }
+        },
+        "sail": {
+          "deltaRaw": {
+            "MAT_FIBER": 36,
+            "MAT_LOG": 10,
+            "MAT_RESIN": 8
+          },
+          "deltaCraftSeconds": 58,
+          "deltaCraftJobs": 4,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 30,
+            "MAT_CLAY": 14,
+            "MAT_COAL": 11,
+            "MAT_COPPER_ORE": 6,
+            "MAT_FIBER": 183,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 12,
+            "MAT_LOG": 43,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RESIN": 15,
+            "MAT_STONE": 38,
+            "SAL_SCRAP": 4
+          }
+        },
+        "radio_solar": {
+          "deltaRaw": {
+            "MAT_COAL": 28,
+            "MAT_COPPER_ORE": 16,
+            "MAT_FIBER": 20,
+            "MAT_IRON_ORE": 30,
+            "MAT_LOG": 4,
+            "MAT_QUARTZ": 1,
+            "SAL_BATTERY": 2,
+            "SAL_GLASS": 4
+          },
+          "deltaCraftSeconds": 652,
+          "deltaCraftJobs": 33,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 30,
+            "MAT_CLAY": 14,
+            "MAT_COAL": 39,
+            "MAT_COPPER_ORE": 22,
+            "MAT_FIBER": 203,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 42,
+            "MAT_LOG": 47,
+            "MAT_PALM_LEAF": 40,
+            "MAT_QUARTZ": 1,
+            "MAT_RESIN": 15,
+            "MAT_STONE": 38,
+            "SAL_BATTERY": 2,
+            "SAL_GLASS": 4,
+            "SAL_SCRAP": 4
+          }
+        }
+      },
+      "rawNotHarvestModeled": {}
+    },
+    "minimum_radio_generator": {
+      "stages": [
+        "starter",
+        "homestead",
+        "metal",
+        "sail",
+        "radio_generator"
+      ],
+      "rawTotals": {
+        "MAT_BAMBOO": 20,
+        "MAT_BRANCH": 30,
+        "MAT_CLAY": 14,
+        "MAT_COAL": 60,
+        "MAT_COPPER_ORE": 28,
+        "MAT_FAT": 1,
+        "MAT_FIBER": 213,
+        "MAT_HARDWOOD": 2,
+        "MAT_IRON_ORE": 69,
+        "MAT_LOG": 47,
+        "MAT_PALM_LEAF": 40,
+        "MAT_QUARTZ": 1,
+        "MAT_RESIN": 15,
+        "MAT_STONE": 38,
+        "SAL_GLASS": 4,
+        "SAL_SCRAP": 4
+      },
+      "craftSeconds": 1582,
+      "craftRuns": 262,
+      "stageDeltas": {
+        "starter": {
+          "deltaRaw": {
+            "MAT_BRANCH": 24,
+            "MAT_FIBER": 42,
+            "MAT_LOG": 6,
+            "MAT_PALM_LEAF": 20,
+            "MAT_STONE": 14
+          },
+          "deltaCraftSeconds": 49,
+          "deltaCraftJobs": 15,
+          "cumulativeRaw": {
+            "MAT_BRANCH": 24,
+            "MAT_FIBER": 42,
+            "MAT_LOG": 6,
+            "MAT_PALM_LEAF": 20,
+            "MAT_STONE": 14
+          }
+        },
+        "homestead": {
+          "deltaRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 4,
+            "MAT_FIBER": 81,
+            "MAT_LOG": 19,
+            "MAT_PALM_LEAF": 20,
+            "MAT_RESIN": 5,
+            "SAL_SCRAP": 1
+          },
+          "deltaCraftSeconds": 128,
+          "deltaCraftJobs": 19,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 28,
+            "MAT_FIBER": 123,
+            "MAT_LOG": 25,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RESIN": 5,
+            "MAT_STONE": 14,
+            "SAL_SCRAP": 1
+          }
+        },
+        "metal": {
+          "deltaRaw": {
+            "MAT_BRANCH": 2,
+            "MAT_CLAY": 14,
+            "MAT_COAL": 11,
+            "MAT_COPPER_ORE": 6,
+            "MAT_FIBER": 24,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 12,
+            "MAT_LOG": 8,
+            "MAT_RESIN": 2,
+            "MAT_STONE": 24,
+            "SAL_SCRAP": 3
+          },
+          "deltaCraftSeconds": 306,
+          "deltaCraftJobs": 21,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 30,
+            "MAT_CLAY": 14,
+            "MAT_COAL": 11,
+            "MAT_COPPER_ORE": 6,
+            "MAT_FIBER": 147,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 12,
+            "MAT_LOG": 33,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RESIN": 7,
+            "MAT_STONE": 38,
+            "SAL_SCRAP": 4
+          }
+        },
+        "sail": {
+          "deltaRaw": {
+            "MAT_FIBER": 36,
+            "MAT_LOG": 10,
+            "MAT_RESIN": 8
+          },
+          "deltaCraftSeconds": 58,
+          "deltaCraftJobs": 4,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 30,
+            "MAT_CLAY": 14,
+            "MAT_COAL": 11,
+            "MAT_COPPER_ORE": 6,
+            "MAT_FIBER": 183,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 12,
+            "MAT_LOG": 43,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RESIN": 15,
+            "MAT_STONE": 38,
+            "SAL_SCRAP": 4
+          }
+        },
+        "radio_generator": {
+          "deltaRaw": {
+            "MAT_COAL": 49,
+            "MAT_COPPER_ORE": 22,
+            "MAT_FAT": 1,
+            "MAT_FIBER": 30,
+            "MAT_IRON_ORE": 57,
+            "MAT_LOG": 4,
+            "MAT_QUARTZ": 1,
+            "SAL_GLASS": 4
+          },
+          "deltaCraftSeconds": 1041,
+          "deltaCraftJobs": 54,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 30,
+            "MAT_CLAY": 14,
+            "MAT_COAL": 60,
+            "MAT_COPPER_ORE": 28,
+            "MAT_FAT": 1,
+            "MAT_FIBER": 213,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 69,
+            "MAT_LOG": 47,
+            "MAT_PALM_LEAF": 40,
+            "MAT_QUARTZ": 1,
+            "MAT_RESIN": 15,
+            "MAT_STONE": 38,
+            "SAL_GLASS": 4,
+            "SAL_SCRAP": 4
+          }
+        }
+      },
+      "rawNotHarvestModeled": {}
+    },
+    "builder_boat": {
+      "stages": [
+        "starter",
+        "homestead",
+        "large_homestead",
+        "metal",
+        "sail",
+        "boat_escape"
+      ],
+      "rawTotals": {
+        "FOOD_BANANA": 6,
+        "MAT_BAMBOO": 20,
+        "MAT_BRANCH": 38,
+        "MAT_CLAY": 32,
+        "MAT_COAL": 31,
+        "MAT_COPPER_ORE": 10,
+        "MAT_FIBER": 418,
+        "MAT_HARDWOOD": 4,
+        "MAT_IRON_ORE": 39,
+        "MAT_LOG": 109,
+        "MAT_MED_HERB": 2,
+        "MAT_PALM_LEAF": 40,
+        "MAT_RAW_FISH": 6,
+        "MAT_RESIN": 55,
+        "MAT_STONE": 58,
+        "MAT_TREE_BARK": 1,
+        "SAL_GLASS": 3,
+        "SAL_SCRAP": 7,
+        "WATER_DIRTY": 8
+      },
+      "craftSeconds": 1726,
+      "craftRuns": 373,
+      "stageDeltas": {
+        "starter": {
+          "deltaRaw": {
+            "MAT_BRANCH": 24,
+            "MAT_FIBER": 42,
+            "MAT_LOG": 6,
+            "MAT_PALM_LEAF": 20,
+            "MAT_STONE": 14
+          },
+          "deltaCraftSeconds": 49,
+          "deltaCraftJobs": 15,
+          "cumulativeRaw": {
+            "MAT_BRANCH": 24,
+            "MAT_FIBER": 42,
+            "MAT_LOG": 6,
+            "MAT_PALM_LEAF": 20,
+            "MAT_STONE": 14
+          }
+        },
+        "homestead": {
+          "deltaRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 4,
+            "MAT_FIBER": 81,
+            "MAT_LOG": 19,
+            "MAT_PALM_LEAF": 20,
+            "MAT_RESIN": 5,
+            "SAL_SCRAP": 1
+          },
+          "deltaCraftSeconds": 128,
+          "deltaCraftJobs": 19,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 28,
+            "MAT_FIBER": 123,
+            "MAT_LOG": 25,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RESIN": 5,
+            "MAT_STONE": 14,
+            "SAL_SCRAP": 1
+          }
+        },
+        "large_homestead": {
+          "deltaRaw": {
+            "MAT_CLAY": 18,
+            "MAT_COAL": 10,
+            "MAT_FIBER": 129,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 15,
+            "MAT_LOG": 57,
+            "MAT_MED_HERB": 2,
+            "MAT_RESIN": 18,
+            "MAT_STONE": 20,
+            "SAL_SCRAP": 3
+          },
+          "deltaCraftSeconds": 512,
+          "deltaCraftJobs": 42,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 28,
+            "MAT_CLAY": 18,
+            "MAT_COAL": 10,
+            "MAT_FIBER": 252,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 15,
+            "MAT_LOG": 82,
+            "MAT_MED_HERB": 2,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RESIN": 23,
+            "MAT_STONE": 34,
+            "SAL_SCRAP": 4
+          }
+        },
+        "metal": {
+          "deltaRaw": {
+            "MAT_BRANCH": 2,
+            "MAT_CLAY": 14,
+            "MAT_COAL": 11,
+            "MAT_COPPER_ORE": 6,
+            "MAT_FIBER": 24,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 12,
+            "MAT_LOG": 8,
+            "MAT_RESIN": 2,
+            "MAT_STONE": 24,
+            "SAL_SCRAP": 3
+          },
+          "deltaCraftSeconds": 306,
+          "deltaCraftJobs": 21,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 30,
+            "MAT_CLAY": 32,
+            "MAT_COAL": 21,
+            "MAT_COPPER_ORE": 6,
+            "MAT_FIBER": 276,
+            "MAT_HARDWOOD": 4,
+            "MAT_IRON_ORE": 27,
+            "MAT_LOG": 90,
+            "MAT_MED_HERB": 2,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RESIN": 25,
+            "MAT_STONE": 58,
+            "SAL_SCRAP": 7
+          }
+        },
+        "sail": {
+          "deltaRaw": {
+            "MAT_FIBER": 36,
+            "MAT_LOG": 10,
+            "MAT_RESIN": 8
+          },
+          "deltaCraftSeconds": 58,
+          "deltaCraftJobs": 4,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 30,
+            "MAT_CLAY": 32,
+            "MAT_COAL": 21,
+            "MAT_COPPER_ORE": 6,
+            "MAT_FIBER": 312,
+            "MAT_HARDWOOD": 4,
+            "MAT_IRON_ORE": 27,
+            "MAT_LOG": 100,
+            "MAT_MED_HERB": 2,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RESIN": 33,
+            "MAT_STONE": 58,
+            "SAL_SCRAP": 7
+          }
+        },
+        "boat_escape": {
+          "deltaRaw": {
+            "FOOD_BANANA": 6,
+            "MAT_BRANCH": 8,
+            "MAT_COAL": 10,
+            "MAT_COPPER_ORE": 4,
+            "MAT_FIBER": 106,
+            "MAT_IRON_ORE": 12,
+            "MAT_LOG": 9,
+            "MAT_RAW_FISH": 6,
+            "MAT_RESIN": 22,
+            "MAT_TREE_BARK": 1,
+            "SAL_GLASS": 3,
+            "WATER_DIRTY": 8
+          },
+          "deltaCraftSeconds": 673,
+          "deltaCraftJobs": 36,
+          "cumulativeRaw": {
+            "FOOD_BANANA": 6,
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 38,
+            "MAT_CLAY": 32,
+            "MAT_COAL": 31,
+            "MAT_COPPER_ORE": 10,
+            "MAT_FIBER": 418,
+            "MAT_HARDWOOD": 4,
+            "MAT_IRON_ORE": 39,
+            "MAT_LOG": 109,
+            "MAT_MED_HERB": 2,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RAW_FISH": 6,
+            "MAT_RESIN": 55,
+            "MAT_STONE": 58,
+            "MAT_TREE_BARK": 1,
+            "SAL_GLASS": 3,
+            "SAL_SCRAP": 7,
+            "WATER_DIRTY": 8
+          }
+        }
+      },
+      "rawNotHarvestModeled": {}
+    },
+    "builder_radio_solar": {
+      "stages": [
+        "starter",
+        "homestead",
+        "large_homestead",
+        "metal",
+        "sail",
+        "radio_solar"
+      ],
+      "rawTotals": {
+        "MAT_BAMBOO": 20,
+        "MAT_BRANCH": 30,
+        "MAT_CLAY": 32,
+        "MAT_COAL": 49,
+        "MAT_COPPER_ORE": 22,
+        "MAT_FIBER": 332,
+        "MAT_HARDWOOD": 4,
+        "MAT_IRON_ORE": 57,
+        "MAT_LOG": 104,
+        "MAT_MED_HERB": 2,
+        "MAT_PALM_LEAF": 40,
+        "MAT_QUARTZ": 1,
+        "MAT_RESIN": 33,
+        "MAT_STONE": 58,
+        "SAL_BATTERY": 2,
+        "SAL_GLASS": 4,
+        "SAL_SCRAP": 7
+      },
+      "craftSeconds": 1705,
+      "craftRuns": 349,
+      "stageDeltas": {
+        "starter": {
+          "deltaRaw": {
+            "MAT_BRANCH": 24,
+            "MAT_FIBER": 42,
+            "MAT_LOG": 6,
+            "MAT_PALM_LEAF": 20,
+            "MAT_STONE": 14
+          },
+          "deltaCraftSeconds": 49,
+          "deltaCraftJobs": 15,
+          "cumulativeRaw": {
+            "MAT_BRANCH": 24,
+            "MAT_FIBER": 42,
+            "MAT_LOG": 6,
+            "MAT_PALM_LEAF": 20,
+            "MAT_STONE": 14
+          }
+        },
+        "homestead": {
+          "deltaRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 4,
+            "MAT_FIBER": 81,
+            "MAT_LOG": 19,
+            "MAT_PALM_LEAF": 20,
+            "MAT_RESIN": 5,
+            "SAL_SCRAP": 1
+          },
+          "deltaCraftSeconds": 128,
+          "deltaCraftJobs": 19,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 28,
+            "MAT_FIBER": 123,
+            "MAT_LOG": 25,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RESIN": 5,
+            "MAT_STONE": 14,
+            "SAL_SCRAP": 1
+          }
+        },
+        "large_homestead": {
+          "deltaRaw": {
+            "MAT_CLAY": 18,
+            "MAT_COAL": 10,
+            "MAT_FIBER": 129,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 15,
+            "MAT_LOG": 57,
+            "MAT_MED_HERB": 2,
+            "MAT_RESIN": 18,
+            "MAT_STONE": 20,
+            "SAL_SCRAP": 3
+          },
+          "deltaCraftSeconds": 512,
+          "deltaCraftJobs": 42,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 28,
+            "MAT_CLAY": 18,
+            "MAT_COAL": 10,
+            "MAT_FIBER": 252,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 15,
+            "MAT_LOG": 82,
+            "MAT_MED_HERB": 2,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RESIN": 23,
+            "MAT_STONE": 34,
+            "SAL_SCRAP": 4
+          }
+        },
+        "metal": {
+          "deltaRaw": {
+            "MAT_BRANCH": 2,
+            "MAT_CLAY": 14,
+            "MAT_COAL": 11,
+            "MAT_COPPER_ORE": 6,
+            "MAT_FIBER": 24,
+            "MAT_HARDWOOD": 2,
+            "MAT_IRON_ORE": 12,
+            "MAT_LOG": 8,
+            "MAT_RESIN": 2,
+            "MAT_STONE": 24,
+            "SAL_SCRAP": 3
+          },
+          "deltaCraftSeconds": 306,
+          "deltaCraftJobs": 21,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 30,
+            "MAT_CLAY": 32,
+            "MAT_COAL": 21,
+            "MAT_COPPER_ORE": 6,
+            "MAT_FIBER": 276,
+            "MAT_HARDWOOD": 4,
+            "MAT_IRON_ORE": 27,
+            "MAT_LOG": 90,
+            "MAT_MED_HERB": 2,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RESIN": 25,
+            "MAT_STONE": 58,
+            "SAL_SCRAP": 7
+          }
+        },
+        "sail": {
+          "deltaRaw": {
+            "MAT_FIBER": 36,
+            "MAT_LOG": 10,
+            "MAT_RESIN": 8
+          },
+          "deltaCraftSeconds": 58,
+          "deltaCraftJobs": 4,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 30,
+            "MAT_CLAY": 32,
+            "MAT_COAL": 21,
+            "MAT_COPPER_ORE": 6,
+            "MAT_FIBER": 312,
+            "MAT_HARDWOOD": 4,
+            "MAT_IRON_ORE": 27,
+            "MAT_LOG": 100,
+            "MAT_MED_HERB": 2,
+            "MAT_PALM_LEAF": 40,
+            "MAT_RESIN": 33,
+            "MAT_STONE": 58,
+            "SAL_SCRAP": 7
+          }
+        },
+        "radio_solar": {
+          "deltaRaw": {
+            "MAT_COAL": 28,
+            "MAT_COPPER_ORE": 16,
+            "MAT_FIBER": 20,
+            "MAT_IRON_ORE": 30,
+            "MAT_LOG": 4,
+            "MAT_QUARTZ": 1,
+            "SAL_BATTERY": 2,
+            "SAL_GLASS": 4
+          },
+          "deltaCraftSeconds": 652,
+          "deltaCraftJobs": 33,
+          "cumulativeRaw": {
+            "MAT_BAMBOO": 20,
+            "MAT_BRANCH": 30,
+            "MAT_CLAY": 32,
+            "MAT_COAL": 49,
+            "MAT_COPPER_ORE": 22,
+            "MAT_FIBER": 332,
+            "MAT_HARDWOOD": 4,
+            "MAT_IRON_ORE": 57,
+            "MAT_LOG": 104,
+            "MAT_MED_HERB": 2,
+            "MAT_PALM_LEAF": 40,
+            "MAT_QUARTZ": 1,
+            "MAT_RESIN": 33,
+            "MAT_STONE": 58,
+            "SAL_BATTERY": 2,
+            "SAL_GLASS": 4,
+            "SAL_SCRAP": 7
+          }
+        }
+      },
+      "rawNotHarvestModeled": {}
+    }
+  },
+  "simulatedPacing": {
+    "explorer": {
+      "n": 120,
+      "p10Hours": 23.72,
+      "medianHours": 24.985,
+      "p90Hours": 26.32,
+      "minHours": 22.6,
+      "maxHours": 27.66,
+      "example": {
+        "minutes": 1529.9,
+        "hours": 25.5,
+        "steps": [
+          {
+            "stage": "starter",
+            "gatherMin": 8.6,
+            "exploreMin": 18.7,
+            "regionalTravelMin": 0.0,
+            "craftMin": 0.8,
+            "totalMin": 28.1,
+            "harvestNodes": 37,
+            "missingSourceAssumptions": []
+          },
+          {
+            "stage": "homestead",
+            "gatherMin": 15.8,
+            "exploreMin": 60.5,
+            "regionalTravelMin": 28.8,
+            "craftMin": 2.1,
+            "totalMin": 107.3,
+            "harvestNodes": 55,
+            "missingSourceAssumptions": []
+          },
+          {
+            "stage": "metal",
+            "gatherMin": 16.7,
+            "exploreMin": 218.2,
+            "regionalTravelMin": 96.8,
+            "craftMin": 5.1,
+            "totalMin": 336.8,
+            "harvestNodes": 42,
+            "missingSourceAssumptions": []
+          },
+          {
+            "stage": "sail",
+            "gatherMin": 5.5,
+            "exploreMin": 112.2,
+            "regionalTravelMin": 60.3,
+            "craftMin": 1.0,
+            "totalMin": 178.9,
+            "harvestNodes": 20,
+            "missingSourceAssumptions": []
+          },
+          {
+            "stage": "radio_solar",
+            "gatherMin": 23.0,
+            "exploreMin": 316.0,
+            "regionalTravelMin": 112.0,
+            "craftMin": 10.9,
+            "totalMin": 461.9,
+            "harvestNodes": 44,
+            "missingSourceAssumptions": []
+          }
+        ],
+        "unmodeledSources": {}
+      },
+      "assumptions": {
+        "gatherRate": 1.08,
+        "travelRate": 1.35,
+        "explorationRate": 1.55,
+        "distractionMin": 220,
+        "campUpkeepPerHour": 10,
+        "baseRoute": "minimum_radio_solar"
+      }
+    },
+    "balanced": {
+      "n": 120,
+      "p10Hours": 14.99,
+      "medianHours": 15.98,
+      "p90Hours": 16.8,
+      "minHours": 14.36,
+      "maxHours": 17.47,
+      "example": {
+        "minutes": 1036.4,
+        "hours": 17.27,
+        "steps": [
+          {
+            "stage": "starter",
+            "gatherMin": 8.0,
+            "exploreMin": 12.0,
+            "regionalTravelMin": 0.0,
+            "craftMin": 0.8,
+            "totalMin": 20.8,
+            "harvestNodes": 37,
+            "missingSourceAssumptions": []
+          },
+          {
+            "stage": "homestead",
+            "gatherMin": 14.7,
+            "exploreMin": 39.0,
+            "regionalTravelMin": 21.3,
+            "craftMin": 2.1,
+            "totalMin": 77.2,
+            "harvestNodes": 55,
+            "missingSourceAssumptions": []
+          },
+          {
+            "stage": "metal",
+            "gatherMin": 15.5,
+            "exploreMin": 140.8,
+            "regionalTravelMin": 71.7,
+            "craftMin": 5.1,
+            "totalMin": 233.0,
+            "harvestNodes": 42,
+            "missingSourceAssumptions": []
+          },
+          {
+            "stage": "sail",
+            "gatherMin": 5.1,
+            "exploreMin": 72.4,
+            "regionalTravelMin": 44.7,
+            "craftMin": 1.0,
+            "totalMin": 123.1,
+            "harvestNodes": 20,
+            "missingSourceAssumptions": []
+          },
+          {
+            "stage": "boat_escape",
+            "gatherMin": 25.4,
+            "exploreMin": 185.4,
+            "regionalTravelMin": 123.0,
+            "craftMin": 11.7,
+            "totalMin": 345.5,
+            "harvestNodes": 85,
+            "missingSourceAssumptions": []
+          }
+        ],
+        "unmodeledSources": {}
+      },
+      "assumptions": {
+        "gatherRate": 1.0,
+        "travelRate": 1.0,
+        "explorationRate": 1.0,
+        "distractionMin": 90,
+        "campUpkeepPerHour": 10,
+        "baseRoute": "minimum_boat"
+      }
+    },
+    "builder": {
+      "n": 120,
+      "p10Hours": 21.38,
+      "medianHours": 22.615000000000002,
+      "p90Hours": 23.89,
+      "minHours": 20.25,
+      "maxHours": 25.31,
+      "example": {
+        "minutes": 1317.2,
+        "hours": 21.95,
+        "steps": [
+          {
+            "stage": "starter",
+            "gatherMin": 9.4,
+            "exploreMin": 11.4,
+            "regionalTravelMin": 0.0,
+            "craftMin": 0.8,
+            "totalMin": 21.7,
+            "harvestNodes": 37,
+            "missingSourceAssumptions": []
+          },
+          {
+            "stage": "homestead",
+            "gatherMin": 17.3,
+            "exploreMin": 37.1,
+            "regionalTravelMin": 23.0,
+            "craftMin": 2.1,
+            "totalMin": 79.6,
+            "harvestNodes": 55,
+            "missingSourceAssumptions": []
+          },
+          {
+            "stage": "large_homestead",
+            "gatherMin": 36.6,
+            "exploreMin": 99.4,
+            "regionalTravelMin": 34.2,
+            "craftMin": 8.5,
+            "totalMin": 178.8,
+            "harvestNodes": 105,
+            "missingSourceAssumptions": []
+          },
+          {
+            "stage": "metal",
+            "gatherMin": 20.1,
+            "exploreMin": 136.8,
+            "regionalTravelMin": 52.6,
+            "craftMin": 5.1,
+            "totalMin": 214.5,
+            "harvestNodes": 46,
+            "missingSourceAssumptions": []
+          },
+          {
+            "stage": "sail",
+            "gatherMin": 6.0,
+            "exploreMin": 71.0,
+            "regionalTravelMin": 46.5,
+            "craftMin": 1.0,
+            "totalMin": 124.4,
+            "harvestNodes": 19,
+            "missingSourceAssumptions": []
+          },
+          {
+            "stage": "boat_escape",
+            "gatherMin": 30.7,
+            "exploreMin": 175.3,
+            "regionalTravelMin": 84.1,
+            "craftMin": 11.2,
+            "totalMin": 301.3,
+            "harvestNodes": 78,
+            "missingSourceAssumptions": []
+          }
+        ],
+        "unmodeledSources": {}
+      },
+      "assumptions": {
+        "gatherRate": 1.18,
+        "travelRate": 1.08,
+        "explorationRate": 0.95,
+        "distractionMin": 230,
+        "campUpkeepPerHour": 13,
+        "baseRoute": "builder_boat"
+      }
+    },
+    "focused": {
+      "n": 120,
+      "p10Hours": 10.51,
+      "medianHours": 11.24,
+      "p90Hours": 11.85,
+      "minHours": 10.1,
+      "maxHours": 12.29,
+      "example": {
+        "minutes": 729.0,
+        "hours": 12.15,
+        "steps": [
+          {
+            "stage": "starter",
+            "gatherMin": 7.0,
+            "exploreMin": 8.8,
+            "regionalTravelMin": 0.0,
+            "craftMin": 0.8,
+            "totalMin": 16.6,
+            "harvestNodes": 37,
+            "missingSourceAssumptions": []
+          },
+          {
+            "stage": "homestead",
+            "gatherMin": 12.9,
+            "exploreMin": 28.5,
+            "regionalTravelMin": 17.1,
+            "craftMin": 2.1,
+            "totalMin": 60.6,
+            "harvestNodes": 55,
+            "missingSourceAssumptions": []
+          },
+          {
+            "stage": "metal",
+            "gatherMin": 13.6,
+            "exploreMin": 102.8,
+            "regionalTravelMin": 57.3,
+            "craftMin": 5.1,
+            "totalMin": 178.8,
+            "harvestNodes": 42,
+            "missingSourceAssumptions": []
+          },
+          {
+            "stage": "sail",
+            "gatherMin": 4.4,
+            "exploreMin": 52.8,
+            "regionalTravelMin": 35.7,
+            "craftMin": 1.0,
+            "totalMin": 94.0,
+            "harvestNodes": 20,
+            "missingSourceAssumptions": []
+          },
+          {
+            "stage": "boat_escape",
+            "gatherMin": 22.4,
+            "exploreMin": 135.3,
+            "regionalTravelMin": 98.4,
+            "craftMin": 11.7,
+            "totalMin": 267.8,
+            "harvestNodes": 85,
+            "missingSourceAssumptions": []
+          }
+        ],
+        "unmodeledSources": {}
+      },
+      "assumptions": {
+        "gatherRate": 0.88,
+        "travelRate": 0.8,
+        "explorationRate": 0.73,
+        "distractionMin": 25,
+        "campUpkeepPerHour": 8,
+        "baseRoute": "minimum_boat"
+      }
+    }
+  },
+  "equalProfileRouteComparison": {
+    "balanced": {
+      "minimum_boat": {
+        "p10Hours": 14.99,
+        "medianHours": 15.98,
+        "p90Hours": 16.8
+      },
+      "minimum_radio_solar": {
+        "p10Hours": 15.62,
+        "medianHours": 16.384999999999998,
+        "p90Hours": 17.28
+      },
+      "minimum_radio_generator": {
+        "p10Hours": 16.27,
+        "medianHours": 17.12,
+        "p90Hours": 18.04
+      }
+    },
+    "focused": {
+      "minimum_boat": {
+        "p10Hours": 10.51,
+        "medianHours": 11.24,
+        "p90Hours": 11.85
+      },
+      "minimum_radio_solar": {
+        "p10Hours": 11.0,
+        "medianHours": 11.56,
+        "p90Hours": 12.22
+      },
+      "minimum_radio_generator": {
+        "p10Hours": 11.58,
+        "medianHours": 12.16,
+        "p90Hours": 12.87
+      }
+    },
+    "builder": {
+      "builder_boat": {
+        "p10Hours": 21.38,
+        "medianHours": 22.615000000000002,
+        "p90Hours": 23.89
+      },
+      "builder_radio_solar": {
+        "p10Hours": 22.17,
+        "medianHours": 23.215,
+        "p90Hours": 24.4
+      }
+    }
+  },
+  "survival": {
+    "gameDayRealMinutes": 18,
+    "hungerPerGameDay": 32,
+    "thirstPerGameDay": 42,
+    "per10GameDays": {
+      "hunger": 320,
+      "thirst": 420
+    },
+    "unsleptRealHoursTo10GameDays": 3,
+    "realHours20IfNoSleepGameDays": 66.7,
+    "restoringFoodExample": {
+      "FOOD_COOKED_FISH": 26,
+      "FOOD_BERRY": 12
+    },
+    "waterCleanPortionThirst": 25,
+    "foodRawNeedExamplePerDay": {
+      "cookedFish": 1,
+      "berry": 1
+    },
+    "waterCleanPortionsPerDay": 2,
+    "warning": "Sleep advances time, raising in-game days over fixed real-time; food needs per gameplay time depend on rest scheduling."
+  },
+  "skills": {
+    "SKILL_FORESTRY": {
+      "name": "Ormancılık",
+      "xpActions": {
+        "foragePlant": 2,
+        "chopTree": 8,
+        "chopHardwood": 12
+      },
+      "recommendedLevel5Repeats": {
+        "foragePlant": 400,
+        "chopTree": 100,
+        "chopHardwood": 67
+      }
+    },
+    "SKILL_MINING": {
+      "name": "Madencilik",
+      "xpActions": {
+        "mineStoneCluster": 5,
+        "mineOreNode": 10
+      },
+      "recommendedLevel5Repeats": {
+        "mineStoneCluster": 160,
+        "mineOreNode": 80
+      }
+    },
+    "SKILL_FISHING": {
+      "name": "Balıkçılık",
+      "xpActions": {
+        "catchCommon": 10,
+        "catchRare": 16,
+        "collectFishTrap": 5
+      },
+      "recommendedLevel5Repeats": {
+        "catchCommon": 80,
+        "catchRare": 50,
+        "collectFishTrap": 160
+      }
+    },
+    "SKILL_HUNTING": {
+      "name": "Avcılık",
+      "xpActions": {
+        "collectAnimalTrap": 8,
+        "successfulHunt": 12
+      },
+      "recommendedLevel5Repeats": {
+        "collectAnimalTrap": 100,
+        "successfulHunt": 67
+      }
+    },
+    "SKILL_FARMING": {
+      "name": "Tarım",
+      "xpActions": {
+        "plantSeed": 3,
+        "harvestMature": 10
+      },
+      "recommendedLevel5Repeats": {
+        "plantSeed": 267,
+        "harvestMature": 80
+      }
+    },
+    "SKILL_CRAFTING": {
+      "name": "Zanaatkârlık",
+      "xpActions": {
+        "craftOrdinary": 5,
+        "craftAdvanced": 12,
+        "firstPlacementOfBuildType": 20
+      },
+      "recommendedLevel5Repeats": {
+        "craftOrdinary": 160,
+        "craftAdvanced": 67,
+        "firstPlacementOfBuildType": 40
+      }
+    },
+    "SKILL_COOKING": {
+      "name": "Aşçılık",
+      "xpActions": {
+        "cookBasic": 5,
+        "cookAdvanced": 10
+      },
+      "recommendedLevel5Repeats": {
+        "cookBasic": 160,
+        "cookAdvanced": 80
+      }
+    },
+    "SKILL_EXPLORATION": {
+      "name": "Keşif",
+      "xpActions": {
+        "revealNew16By16Cell": 3,
+        "discoverUniquePoi": 20,
+        "discoverUniqueRegion": 25
+      },
+      "recommendedLevel5Repeats": {
+        "revealNew16By16Cell": 267,
+        "discoverUniquePoi": 40,
+        "discoverUniqueRegion": 32
+      }
+    }
+  },
+  "audit": [
+    {
+      "id": "BAL001",
+      "severity": "high",
+      "issue": "Tarif işleme süreleri 1-60 sn; 15-20 saati üretim sürelerinden beklemek mümkün değil.",
+      "evidence": {
+        "maxCraftSeconds": 60,
+        "medianCraftSeconds": 4.0,
+        "recipeCount": 182
+      },
+      "resolution": "Progression target should be encounter/travel/quest based; validate actual pacing by playable telemetry."
+    },
+    {
+      "id": "BAL002",
+      "severity": "high",
+      "issue": "Her erzak paketi kurutulmuş balık + muz + kumaş gerektiriyor; 6 paket için ayrıca 6 kumaş ve muz hasadı gerekir.",
+      "evidence": {
+        "FOOD_DRIED_FISH": 1,
+        "FOOD_BANANA": 1,
+        "CMP_CLOTH": 1
+      },
+      "resolution": "Ensure banana guaranteed access; consider reusable wrapping/leaf based ration recipe if player feedback shows unnecessary fabric grind."
+    },
+    {
+      "id": "BAL003",
+      "severity": "high",
+      "issue": "Radyo solar inşası SAL_BATTERY 2 tüketiyor, SPC_SOLAR_CORE yalnızca zorunlu bayrak olarak saklanıyor.",
+      "evidence": {
+        "recipeInputs": {
+          "CMP_ANTENNA": 1,
+          "CMP_SIGNAL_BOOSTER": 1,
+          "CMP_CABLE_HARNESS": 2,
+          "CMP_FUSE": 2,
+          "SAL_BATTERY": 2
+        },
+        "specialFlag": "SPC_SOLAR_CORE"
+      },
+      "resolution": "On build, require solar special flag and station mode solar, never consume unique core. Optional display solar panel assembly stage."
+    },
+    {
+      "id": "BAL004",
+      "severity": "medium",
+      "issue": "R_CHEST_REINFORCE ve R_SEA_CHEST aynı BUILD_CHEST_LARGE hedefini üretiyor; yükseltme/yerleştirme semantiği ayrı kayıt değil.",
+      "resolution": "Mark as upgradeExisting rather than creating fresh chest when applied; avoid duplication."
+    },
+    {
+      "id": "BAL005",
+      "severity": "medium",
+      "issue": "R_BED_SPECIAL ile R_COMFORT_BED aynı BUILD_COMFORT_BED çıkışını veriyor.",
+      "resolution": "Treat special recipe as alternative skin/perk on existing bed or explicit upgrade, not free duplication."
+    },
+    {
+      "id": "BAL006",
+      "severity": "high",
+      "issue": "R_HULL_FIT ve R_STORM_ANCHOR_FIT mevcut kaçış teknesine donanım takmalı; tarif çıktısı yeni BUILD_ESCAPE_BOAT olarak işaretli.",
+      "resolution": "Use targetExistingBuild + equipmentSlot and preserve unique boat ID."
+    },
+    {
+      "id": "BAL007",
+      "severity": "medium",
+      "issue": "Craft time fields alone cannot represent stage construction and travel real time.",
+      "resolution": "Use craftSeconds as work animation; construction escrow and camera travel modeled separately."
+    },
+    {
+      "id": "BAL008",
+      "severity": "info",
+      "issue": "Başlangıç sekiz temel tarifinin garanti kaynaklara göre durumu",
+      "evidence": {
+        "starterNeeded": {
+          "MAT_STONE": 14,
+          "MAT_BRANCH": 24,
+          "MAT_PALM_LEAF": 20,
+          "MAT_FIBER": 42
+        },
+        "starterGuarantees": {
+          "MAT_STONE": 21,
+          "MAT_BRANCH": 30,
+          "MAT_PALM_LEAF": 35,
+          "MAT_FIBER": 45
+        },
+        "starterShortage": {}
+      },
+      "resolution": "If shortage exists, add guaranteed source; log and some variants sourced by nearby harvest."
+    },
+    {
+      "id": "BAL009",
+      "severity": "medium",
+      "issue": "Enerji ve susuzluk her oyun günü 32/42; uyku esnasında zaman ilerletmek aynı günün ihtiyaç tüketimini çift saymamalı.",
+      "resolution": "single normalized in-game elapsed-seconds integrator; on sleep jump apply elapsed only once."
+    },
+    {
+      "id": "BAL010",
+      "severity": "medium",
+      "issue": "400+ resource harvesting nodes may lead to inventory trips depending stack/carry, not represented by closure audit.",
+      "resolution": "Travel multiplier and inventory loading must be measured in playable prototype; current math is planning estimate."
+    },
+    {
+      "id": "BAL011",
+      "severity": "medium",
+      "issue": "Aynı malzeme için alternatif tarifler kaynak kısıtına bağlı. Varsayılan plan kumaşı doğal toplanan liften, yakıtı kömürden üretir.",
+      "resolution": "Scenario with salvaged cloth/canvas and high availability of scavenged parts should be included."
+    },
+    {
+      "id": "BAL012",
+      "severity": "high",
+      "issue": "Balık/yoğun balık stoklarının ve bazı hayvan malzemelerinin toplanma hızları oyunda henüz denenmedi.",
+      "resolution": "Treat all scenario hours as calibrated assumptions, not observed gameplay."
+    }
+  ]
+}

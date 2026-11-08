@@ -1,0 +1,2680 @@
+{
+  "meta": {
+    "project": "Kayıp Ufuk Takımadaları — 2D mobil survival",
+    "version": "v1.8-runtime-semantics",
+    "status": "DESIGN_ONLY_NOT_IMPLEMENTED",
+    "rules": [
+      "Mobile landscape 16:9",
+      "Hybrid island, fixed macro-POIs",
+      "Material/station/blueprint unlocks",
+      "Preset houses; free-place interior/exterior objects; NO modular walls/floors/roof",
+      "No required recipe may depend on a randomized exclusive loot drop",
+      "Story collectibles cannot be discarded",
+      "One shared game clock",
+      "3 saves; IndexedDB with backups"
+    ],
+    "counts": {
+      "items": 179,
+      "recipes": 183,
+      "buildables": 58,
+      "blueprints": 20
+    },
+    "balance": {
+      "baseInventorySlots": 24,
+      "smallBagSlots": 32,
+      "largeBagSlots": 40,
+      "dayRealMinutes": 18,
+      "foodCostPerGameDay": 32,
+      "thirstCostPerGameDay": 42,
+      "craftStationNearbyChestRadiusTiles": 10,
+      "registeredCampsMax": 4,
+      "activeTrapsMax": 6
+    },
+    "unlockCodes": {
+      "START": "Starts known",
+      "MAT:ITEM_ID": "Knowledge gained from first acquiring this item",
+      "STATION:BUILD_ID": "Knowledge gained from first placing this station",
+      "BP:BP_ID": "Obtained guaranteed blueprint at fixed POI",
+      "STORY:FLAG": "Unlocked by world/story state, not random loot"
+    },
+    "notes": [
+      "Items include intermediates, raw sources, food, tools, seeds and special story items; actual per-biome source respawns are RegionDB responsibility.",
+      "Crops receive seeds via world loot/harvest, not through crafting recipes.",
+      "World-gathered fish become raw fish portions plus fish offcuts via catch-processing logic; fish species remain in FishDB.",
+      "All outputType=upgrade recipes modify an existing building without spawning another object; R_SEA_CHEST is outputType=build.",
+      "Construction recipes are total costs; stages are UI/visual subdivisions, not extra costs.",
+      "Some IDs are provisional; all cross references in this draft are validated."
+    ],
+    "type": "RecipeDB",
+    "basedOn": "v0.9",
+    "updateNote": "Four handheld crop-processing and three alternate food recipes appended; previous recipe IDs retained.",
+    "runtimeTypeCounts": {
+      "item": 114,
+      "upgrade": 9,
+      "build": 60
+    },
+    "v18Fixes": [
+      "R_SEA_CHEST: outputType build because it creates a new chest, not upgrades existing entity",
+      "Set explicit UPGRADE_EXISTING/targetBuildId/preserveTargetEntityUid for all other upgrade recipes"
+    ]
+  },
+  "blueprints": {
+    "BP_HUNTER_BOW": "Gelişmiş avcı yayı",
+    "BP_FISH_ROD_ADV": "Güçlendirilmiş olta",
+    "BP_RAINCOAT": "Yağmurluk",
+    "BP_EXPLORER_BAG": "Keşif çantası",
+    "BP_MACHETE": "Metal pala",
+    "BP_CHEST_REINFORCE": "Güçlendirilmiş sandık",
+    "BP_PANTRY": "Gelişmiş kiler",
+    "BP_PORTABLE_LAMP": "Taşınabilir deniz feneri",
+    "BP_FISH_TRAP_ADV": "Gelişmiş balık tuzağı",
+    "BP_WATER_FILTER": "Verimli su filtresi",
+    "BP_BRIDGE_ADV": "Gelişmiş köprü",
+    "BP_WINCH": "Tırmanma vinci",
+    "BP_BED_SPECIAL": "Özel yatak",
+    "BP_MAP_TABLE": "Harita masası",
+    "BP_HULL_REINFORCED": "Dayanıklı tekne gövdesi",
+    "BP_SEA_CHEST": "Deniz sandığı",
+    "BP_STORM_ANCHOR": "Fırtına çapası",
+    "BP_ADV_COOKER": "Gelişmiş ocak",
+    "BP_IRRIGATION": "Gelişmiş sulama",
+    "BP_DECOR_SET": "Dekoratif mobilya seti"
+  },
+  "blueprintSources": {
+    "BP_HUNTER_BOW": "Eski Avcı Kampı",
+    "BP_FISH_ROD_ADV": "Resif Yarığı",
+    "BP_RAINCOAT": "Fener Bekçisinin Kulübesi",
+    "BP_EXPLORER_BAG": "Yüksek Ağaç Evi",
+    "BP_MACHETE": "Maden Sığınağı",
+    "BP_CHEST_REINFORCE": "Su Basan Depo",
+    "BP_PANTRY": "Kilitli Ambar",
+    "BP_PORTABLE_LAMP": "Yarasa Galerisi",
+    "BP_FISH_TRAP_ADV": "Mangrov Koyu",
+    "BP_WATER_FILTER": "Şelale Arkası",
+    "BP_BRIDGE_ADV": "Eski Taş Köprü",
+    "BP_WINCH": "Kırık Teleferik",
+    "BP_BED_SPECIAL": "Kaya Sığınağı",
+    "BP_MAP_TABLE": "Kırık Gözetleme Noktası",
+    "BP_HULL_REINFORCED": "Makine Bölmesi",
+    "BP_SEA_CHEST": "Mercan Sandığı",
+    "BP_STORM_ANCHOR": "Kum Dili",
+    "BP_ADV_COOKER": "Eski Mutfak",
+    "BP_IRRIGATION": "Terk Edilmiş Bahçe",
+    "BP_DECOR_SET": "Şifalı Bitki Serası"
+  },
+  "recipes": [
+    {
+      "id": "R_ADV_BAIT",
+      "outputType": "item",
+      "outputId": "CMP_ADV_BAIT",
+      "outputAmount": 3,
+      "inputs": {
+        "CMP_FISH_BAIT": 2,
+        "MAT_FAT": 1,
+        "MAT_SPICE_HERB": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_SPICE_HERB",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_ADV_BANDAGE",
+      "outputType": "item",
+      "outputId": "CON_ADV_BANDAGE",
+      "outputAmount": 2,
+      "inputs": {
+        "CMP_CLOTH": 1,
+        "MAT_MED_HERB": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_CLOTH",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_ADV_COOKER",
+      "outputType": "upgrade",
+      "outputId": "BUILD_CAMPFIRE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_BRICK": 6,
+        "CMP_IRON_INGOT": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "BP:BP_ADV_COOKER",
+      "craftSeconds": 10,
+      "upgradeBuildId": "BUILD_CAMPFIRE",
+      "effect": "pişirme süresi %20 daha kısa",
+      "runtimeBehavior": "UPGRADE_EXISTING",
+      "targetBuildId": "BUILD_CAMPFIRE",
+      "preserveTargetEntityUid": true
+    },
+    {
+      "id": "R_ANIMAL_TRAP",
+      "outputType": "build",
+      "outputId": "BUILD_ANIMAL_TRAP",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BRANCH": 5,
+        "CMP_ROPE": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_ROPE",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_ANTENNA",
+      "outputType": "item",
+      "outputId": "CMP_ANTENNA",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_IRON_INGOT": 4,
+        "CMP_CABLE_HARNESS": 2,
+        "CMP_METAL_FASTENER": 3
+      },
+      "station": "BUILD_MECHANICAL_BENCH",
+      "unlock": "STATION:BUILD_MECHANICAL_BENCH",
+      "craftSeconds": 12
+    },
+    {
+      "id": "R_ANTIDOTE",
+      "outputType": "item",
+      "outputId": "CON_ANTIDOTE",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_MED_HERB": 2,
+        "CMP_CHARCOAL": 1,
+        "WATER_CLEAN": 1
+      },
+      "station": "BUILD_CAMPFIRE",
+      "unlock": "MAT:MAT_MED_HERB",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_ARROW",
+      "outputType": "item",
+      "outputId": "CMP_ARROW",
+      "outputAmount": 3,
+      "inputs": {
+        "MAT_BRANCH": 2,
+        "MAT_FLINT": 1,
+        "MAT_FEATHER": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_FLINT",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_ARROW_FEATHERED",
+      "outputType": "item",
+      "outputId": "CMP_ARROW",
+      "outputAmount": 4,
+      "inputs": {
+        "MAT_BRANCH": 2,
+        "MAT_FLINT": 1,
+        "MAT_FEATHER": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_FEATHER",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_BAG_LARGE",
+      "outputType": "item",
+      "outputId": "EQ_BAG_LARGE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_LEATHER": 5,
+        "CMP_THICK_ROPE": 4,
+        "CMP_METAL_FASTENER": 2
+      },
+      "station": "BUILD_TANNING_RACK",
+      "unlock": "MAT:CMP_LEATHER",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_BAG_SMALL",
+      "outputType": "item",
+      "outputId": "EQ_BAG_SMALL",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_CLOTH": 4,
+        "CMP_THICK_ROPE": 2
+      },
+      "station": "BUILD_LOOM",
+      "unlock": "STATION:BUILD_LOOM",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_BAMBOO_CUP",
+      "outputType": "item",
+      "outputId": "TOOL_BAMBOO_CUP",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BAMBOO": 2,
+        "CMP_ROPE": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_BAMBOO",
+      "craftSeconds": 2,
+      "note": "Alternative reusable water container; output token represents container class"
+    },
+    {
+      "id": "R_BAMBOO_HUT",
+      "outputType": "build",
+      "outputId": "BUILD_BAMBOO_HUT",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BAMBOO": 12,
+        "MAT_PALM_LEAF": 16,
+        "CMP_ROPE": 6
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_BAMBOO",
+      "craftSeconds": 18
+    },
+    {
+      "id": "R_BANDAGE",
+      "outputType": "item",
+      "outputId": "CON_BANDAGE",
+      "outputAmount": 2,
+      "inputs": {
+        "MAT_FIBER": 3,
+        "MAT_MED_HERB": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_MED_HERB",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_BATTERY_PACK",
+      "outputType": "item",
+      "outputId": "CMP_BATTERY_PACK",
+      "outputAmount": 1,
+      "inputs": {
+        "SAL_BATTERY": 2,
+        "CMP_COPPER_WIRE": 2
+      },
+      "station": "BUILD_MECHANICAL_BENCH",
+      "unlock": "STATION:BUILD_MECHANICAL_BENCH",
+      "craftSeconds": 8
+    },
+    {
+      "id": "R_BEAN_STEW",
+      "outputType": "item",
+      "outputId": "FOOD_BEAN_STEW",
+      "outputAmount": 1,
+      "inputs": {
+        "CROP_BEAN": 2,
+        "CROP_ROOT": 1,
+        "WATER_CLEAN": 1
+      },
+      "station": "BUILD_CAMPFIRE",
+      "unlock": "MAT:CROP_BEAN",
+      "craftSeconds": 10
+    },
+    {
+      "id": "R_BEARING",
+      "outputType": "item",
+      "outputId": "CMP_BEARING",
+      "outputAmount": 2,
+      "inputs": {
+        "CMP_IRON_INGOT": 1,
+        "MAT_FAT": 1
+      },
+      "station": "BUILD_MECHANICAL_BENCH",
+      "unlock": "STATION:BUILD_MECHANICAL_BENCH",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_BEARING_SALVAGE",
+      "outputType": "item",
+      "outputId": "CMP_BEARING",
+      "outputAmount": 1,
+      "inputs": {
+        "SAL_BEARING": 1,
+        "SAL_SCRAP": 1
+      },
+      "station": "BUILD_MECHANICAL_BENCH",
+      "unlock": "MAT:SAL_BEARING",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_BED_SPECIAL",
+      "outputType": "upgrade",
+      "outputId": "BUILD_COMFORT_BED",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_CLOTH": 5,
+        "CMP_LEATHER": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "BP:BP_BED_SPECIAL",
+      "craftSeconds": 10,
+      "upgradeBuildId": "BUILD_COMFORT_BED",
+      "effect": "uyku sonrası +2 oyun saati dinçlik bonusu",
+      "runtimeBehavior": "UPGRADE_EXISTING",
+      "targetBuildId": "BUILD_COMFORT_BED",
+      "preserveTargetEntityUid": true
+    },
+    {
+      "id": "R_BENCH",
+      "outputType": "build",
+      "outputId": "BUILD_BENCH",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 3,
+        "MAT_LOG": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_PLANK",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_BOW",
+      "outputType": "item",
+      "outputId": "TOOL_BOW",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BAMBOO": 3,
+        "CMP_ROPE": 3,
+        "MAT_RESIN": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_BAMBOO",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_BRICK",
+      "outputType": "item",
+      "outputId": "CMP_BRICK",
+      "outputAmount": 2,
+      "inputs": {
+        "MAT_CLAY": 2
+      },
+      "station": "BUILD_KILN",
+      "unlock": "STATION:BUILD_KILN",
+      "craftSeconds": 15
+    },
+    {
+      "id": "R_BRIDGE",
+      "outputType": "build",
+      "outputId": "BUILD_BRIDGE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 9,
+        "CMP_ROPE": 6,
+        "MAT_LOG": 3
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_PLANK",
+      "craftSeconds": 15
+    },
+    {
+      "id": "R_BRIDGE_ADV",
+      "outputType": "upgrade",
+      "outputId": "BUILD_BRIDGE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_TREATED_PLANK": 5,
+        "CMP_METAL_FASTENER": 4
+      },
+      "station": "BUILD_CARPENTER_BENCH",
+      "unlock": "BP:BP_BRIDGE_ADV",
+      "craftSeconds": 12,
+      "upgradeBuildId": "BUILD_BRIDGE",
+      "effect": "görsel sağlamlaşma ve daha geniş geçit",
+      "runtimeBehavior": "UPGRADE_EXISTING",
+      "targetBuildId": "BUILD_BRIDGE",
+      "preserveTargetEntityUid": true
+    },
+    {
+      "id": "R_CABLE_HARNESS",
+      "outputType": "item",
+      "outputId": "CMP_CABLE_HARNESS",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_COPPER_WIRE": 4,
+        "CMP_CLOTH": 1
+      },
+      "station": "BUILD_MECHANICAL_BENCH",
+      "unlock": "STATION:BUILD_MECHANICAL_BENCH",
+      "craftSeconds": 8
+    },
+    {
+      "id": "R_CAMPFIRE",
+      "outputType": "build",
+      "outputId": "BUILD_CAMPFIRE",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_STONE": 6,
+        "MAT_BRANCH": 4
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_STONE",
+      "craftSeconds": 3
+    },
+    {
+      "id": "R_CAMP_MARKER",
+      "outputType": "build",
+      "outputId": "BUILD_CAMP_MARKER",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_STONE": 3,
+        "MAT_BRANCH": 3
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_BRANCH",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_CANE_FRUIT_SALAD",
+      "outputType": "item",
+      "outputId": "FOOD_FRUIT_SALAD",
+      "outputAmount": 1,
+      "inputs": {
+        "CROP_CANE": 1,
+        "FOOD_BERRY": 1,
+        "FOOD_BANANA": 1
+      },
+      "station": "BUILD_CAMPFIRE",
+      "unlock": "MAT:CROP_CANE",
+      "craftSeconds": 5
+    },
+    {
+      "id": "R_CARPENTER_BENCH",
+      "outputType": "build",
+      "outputId": "BUILD_CARPENTER_BENCH",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 8,
+        "MAT_HARDWOOD": 2,
+        "CMP_METAL_FASTENER": 3
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_METAL_FASTENER",
+      "craftSeconds": 10
+    },
+    {
+      "id": "R_CHAIR",
+      "outputType": "build",
+      "outputId": "BUILD_CHAIR",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_PLANK",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_CHARCOAL",
+      "outputType": "item",
+      "outputId": "CMP_CHARCOAL",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_LOG": 2
+      },
+      "station": "BUILD_KILN",
+      "unlock": "STATION:BUILD_KILN",
+      "craftSeconds": 20
+    },
+    {
+      "id": "R_CHARCOAL_COAL",
+      "outputType": "item",
+      "outputId": "CMP_CHARCOAL",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_COAL": 1
+      },
+      "station": "BUILD_KILN",
+      "unlock": "MAT:MAT_COAL",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_CHEST_LARGE",
+      "outputType": "build",
+      "outputId": "BUILD_CHEST_LARGE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 10,
+        "CMP_ROPE": 4
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_PLANK",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_CHEST_REINFORCE",
+      "outputType": "upgrade",
+      "outputId": "BUILD_CHEST_LARGE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_IRON_INGOT": 2,
+        "CMP_TREATED_PLANK": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "BP:BP_CHEST_REINFORCE",
+      "craftSeconds": 8,
+      "upgradeBuildId": "BUILD_CHEST_LARGE",
+      "effect": "sandık dayanıklılığı ve +8 slot",
+      "runtimeBehavior": "UPGRADE_EXISTING",
+      "targetBuildId": "BUILD_CHEST_LARGE",
+      "preserveTargetEntityUid": true
+    },
+    {
+      "id": "R_CHEST_SMALL",
+      "outputType": "build",
+      "outputId": "BUILD_CHEST_SMALL",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 4,
+        "CMP_ROPE": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_PLANK",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_CLIMB_KIT",
+      "outputType": "item",
+      "outputId": "TOOL_CLIMB_KIT",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_THICK_ROPE": 2,
+        "CMP_METAL_FASTENER": 2,
+        "CMP_LEATHER": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_METAL_FASTENER",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_CLOTH",
+      "outputType": "item",
+      "outputId": "CMP_CLOTH",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_FIBER": 5
+      },
+      "station": "BUILD_LOOM",
+      "unlock": "STATION:BUILD_LOOM",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_CLOTH_SALVAGE",
+      "outputType": "item",
+      "outputId": "CMP_CLOTH",
+      "outputAmount": 1,
+      "inputs": {
+        "SAL_CLOTH": 2
+      },
+      "station": "HAND",
+      "unlock": "MAT:SAL_CLOTH",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_COMFORT_BED",
+      "outputType": "build",
+      "outputId": "BUILD_COMFORT_BED",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 8,
+        "CMP_CLOTH": 5,
+        "CMP_LEATHER": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_LEATHER",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_COMPASS",
+      "outputType": "item",
+      "outputId": "TOOL_COMPASS",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_COPPER_INGOT": 1,
+        "CMP_IRON_INGOT": 1,
+        "SAL_GLASS": 1
+      },
+      "station": "BUILD_NAV_TABLE",
+      "unlock": "STATION:BUILD_NAV_TABLE",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_COMPOST",
+      "outputType": "item",
+      "outputId": "CMP_COMPOST",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_ORGANIC_WASTE": 4
+      },
+      "station": "BUILD_COMPOST_BIN",
+      "unlock": "STATION:BUILD_COMPOST_BIN",
+      "craftSeconds": 25
+    },
+    {
+      "id": "R_COMPOST_BIN",
+      "outputType": "build",
+      "outputId": "BUILD_COMPOST_BIN",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 4,
+        "CMP_ROPE": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_PLANK",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_COOKED_FISH",
+      "outputType": "item",
+      "outputId": "FOOD_COOKED_FISH",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_RAW_FISH": 1,
+        "MAT_BRANCH": 1
+      },
+      "station": "BUILD_CAMPFIRE",
+      "unlock": "STATION:BUILD_CAMPFIRE",
+      "craftSeconds": 6
+    },
+    {
+      "id": "R_COOKED_MEAT",
+      "outputType": "item",
+      "outputId": "FOOD_COOKED_MEAT",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_RAW_MEAT": 1,
+        "MAT_BRANCH": 1
+      },
+      "station": "BUILD_CAMPFIRE",
+      "unlock": "STATION:BUILD_CAMPFIRE",
+      "craftSeconds": 7
+    },
+    {
+      "id": "R_COPPER_AXE",
+      "outputType": "item",
+      "outputId": "TOOL_COPPER_AXE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_COPPER_INGOT": 2,
+        "CMP_PLANK": 2,
+        "CMP_ROPE": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_COPPER_INGOT",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_COPPER_INGOT",
+      "outputType": "item",
+      "outputId": "CMP_COPPER_INGOT",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_COPPER_ORE": 2,
+        "CMP_CHARCOAL": 1
+      },
+      "station": "BUILD_SMELTER",
+      "unlock": "STATION:BUILD_SMELTER",
+      "craftSeconds": 20
+    },
+    {
+      "id": "R_COPPER_PICK",
+      "outputType": "item",
+      "outputId": "TOOL_COPPER_PICK",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_COPPER_INGOT": 3,
+        "CMP_PLANK": 2,
+        "CMP_ROPE": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_COPPER_INGOT",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_COPPER_WIRE",
+      "outputType": "item",
+      "outputId": "CMP_COPPER_WIRE",
+      "outputAmount": 3,
+      "inputs": {
+        "CMP_COPPER_INGOT": 1
+      },
+      "station": "BUILD_SMELTER",
+      "unlock": "STATION:BUILD_SMELTER",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_CRAB_TRAP",
+      "outputType": "build",
+      "outputId": "BUILD_CRAB_TRAP",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BAMBOO": 4,
+        "CMP_ROPE": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_BAMBOO",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_CROWBAR",
+      "outputType": "item",
+      "outputId": "TOOL_CROWBAR",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_IRON_INGOT": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_IRON_INGOT",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_DECOR_SET",
+      "outputType": "upgrade",
+      "outputId": "BUILD_TABLE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_TREATED_PLANK": 4,
+        "CMP_CLOTH": 2
+      },
+      "station": "BUILD_CARPENTER_BENCH",
+      "unlock": "BP:BP_DECOR_SET",
+      "craftSeconds": 10,
+      "upgradeBuildId": "BUILD_TABLE",
+      "effect": "masa için özel dekorasyon görünümü ve +3 konfor",
+      "runtimeBehavior": "UPGRADE_EXISTING",
+      "targetBuildId": "BUILD_TABLE",
+      "preserveTargetEntityUid": true
+    },
+    {
+      "id": "R_DECOR_SHELL_POT",
+      "outputType": "upgrade",
+      "outputId": "BUILD_PLANT_POT",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_SEASHELL": 3,
+        "MAT_CLAY": 1
+      },
+      "station": "BUILD_KILN",
+      "unlock": "MAT:MAT_SEASHELL",
+      "craftSeconds": 2,
+      "upgradeBuildId": "BUILD_PLANT_POT",
+      "effect": "deniz kabuğu temalı kozmetik görünüm",
+      "runtimeBehavior": "UPGRADE_EXISTING",
+      "targetBuildId": "BUILD_PLANT_POT",
+      "preserveTargetEntityUid": true
+    },
+    {
+      "id": "R_DIVING_KIT",
+      "outputType": "item",
+      "outputId": "TOOL_DIVING_KIT",
+      "outputAmount": 1,
+      "inputs": {
+        "TOOL_DIVING_MASK": 1,
+        "MAT_BAMBOO": 2,
+        "CMP_THICK_ROPE": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:TOOL_DIVING_MASK",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_DIVING_MASK",
+      "outputType": "item",
+      "outputId": "TOOL_DIVING_MASK",
+      "outputAmount": 1,
+      "inputs": {
+        "SAL_GLASS": 2,
+        "CMP_LEATHER": 2,
+        "CMP_ROPE": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:SAL_GLASS",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_DRIED_FISH",
+      "outputType": "item",
+      "outputId": "FOOD_DRIED_FISH",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_RAW_FISH": 1
+      },
+      "station": "BUILD_DRYING_RACK",
+      "unlock": "STATION:BUILD_DRYING_RACK",
+      "craftSeconds": 25
+    },
+    {
+      "id": "R_DRIED_MEAT",
+      "outputType": "item",
+      "outputId": "FOOD_DRIED_MEAT",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_RAW_MEAT": 1,
+        "MAT_SALT": 1
+      },
+      "station": "BUILD_DRYING_RACK",
+      "unlock": "STATION:BUILD_DRYING_RACK",
+      "craftSeconds": 25
+    },
+    {
+      "id": "R_DRYING_RACK",
+      "outputType": "build",
+      "outputId": "BUILD_DRYING_RACK",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BRANCH": 4,
+        "MAT_BAMBOO": 2,
+        "CMP_ROPE": 3
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_BAMBOO",
+      "craftSeconds": 6
+    },
+    {
+      "id": "R_ESCAPE_BOAT",
+      "outputType": "build",
+      "outputId": "BUILD_ESCAPE_BOAT",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_HULL_SEGMENT": 4,
+        "CMP_SAIL": 1,
+        "CMP_RUDDER": 1,
+        "TOOL_NAV_KIT": 1,
+        "FOOD_RATION": 6,
+        "WATER_CLEAN": 8
+      },
+      "station": "BUILD_NAV_TABLE",
+      "unlock": "STORY:TWO_NAV_SOURCES",
+      "craftSeconds": 60,
+      "constructionStages": [
+        {
+          "label": "Gövde iskeleti",
+          "requirements": {
+            "CMP_HULL_SEGMENT": 2
+          }
+        },
+        {
+          "label": "Kaplama ve bağlantılar",
+          "requirements": {
+            "CMP_HULL_SEGMENT": 2
+          }
+        },
+        {
+          "label": "Direk, yelken ve dümen",
+          "requirements": {
+            "CMP_SAIL": 1,
+            "CMP_RUDDER": 1
+          }
+        },
+        {
+          "label": "Navigasyon ve erzak",
+          "requirements": {
+            "TOOL_NAV_KIT": 1,
+            "FOOD_RATION": 6,
+            "WATER_CLEAN": 8
+          }
+        }
+      ],
+      "note": "Tekne için navigasyon aleti teslim edilir; rota bilgisi save flags üzerinden kontrol edilir."
+    },
+    {
+      "id": "R_EXPLORER_BAG",
+      "outputType": "item",
+      "outputId": "EQ_EXPLORER_BAG",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_CLOTH": 5,
+        "CMP_LEATHER": 3,
+        "CMP_THICK_ROPE": 2
+      },
+      "station": "BUILD_LOOM",
+      "unlock": "BP:BP_EXPLORER_BAG",
+      "craftSeconds": 8
+    },
+    {
+      "id": "R_EXTRACT_FIBER",
+      "outputType": "item",
+      "outputId": "MAT_FIBER",
+      "outputAmount": 2,
+      "inputs": {
+        "CROP_FIBER": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:CROP_FIBER",
+      "craftSeconds": 1
+    },
+    {
+      "id": "R_EXTRACT_MED_HERB",
+      "outputType": "item",
+      "outputId": "MAT_MED_HERB",
+      "outputAmount": 1,
+      "inputs": {
+        "CROP_HERB": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:CROP_HERB",
+      "craftSeconds": 1
+    },
+    {
+      "id": "R_EXTRACT_SPICE_HERB",
+      "outputType": "item",
+      "outputId": "MAT_SPICE_HERB",
+      "outputAmount": 1,
+      "inputs": {
+        "CROP_SPICE": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:CROP_SPICE",
+      "craftSeconds": 1
+    },
+    {
+      "id": "R_FEAST",
+      "outputType": "item",
+      "outputId": "FOOD_FEAST",
+      "outputAmount": 1,
+      "inputs": {
+        "FOOD_COOKED_FISH": 1,
+        "FOOD_COOKED_MEAT": 1,
+        "CROP_PUMPKIN": 1,
+        "CROP_SPICE": 1
+      },
+      "station": "BUILD_CAMPFIRE",
+      "unlock": "MAT:CROP_SPICE",
+      "craftSeconds": 12
+    },
+    {
+      "id": "R_FEED_BOWL",
+      "outputType": "build",
+      "outputId": "BUILD_FEED_BOWL",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_CLAY": 2
+      },
+      "station": "BUILD_KILN",
+      "unlock": "MAT:MAT_CLAY",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_FENCE",
+      "outputType": "build",
+      "outputId": "BUILD_FENCE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 2,
+        "MAT_BRANCH": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_PLANK",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_FISH_BAIT",
+      "outputType": "item",
+      "outputId": "CMP_FISH_BAIT",
+      "outputAmount": 2,
+      "inputs": {
+        "MAT_FISH_OFFCUT": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_FISH_OFFCUT",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_FISH_HOOK_BONE",
+      "outputType": "item",
+      "outputId": "CMP_FISH_HOOK",
+      "outputAmount": 2,
+      "inputs": {
+        "MAT_BONE": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_BONE",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_FISH_HOOK_SCRAP",
+      "outputType": "item",
+      "outputId": "CMP_FISH_HOOK",
+      "outputAmount": 2,
+      "inputs": {
+        "SAL_SCRAP": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:SAL_SCRAP",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_FISH_HUT",
+      "outputType": "build",
+      "outputId": "BUILD_FISH_HUT",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_LOG": 10,
+        "CMP_PLANK": 18,
+        "CMP_THICK_ROPE": 6,
+        "MAT_BAMBOO": 7
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "STATION:BUILD_WORKBENCH",
+      "craftSeconds": 30
+    },
+    {
+      "id": "R_FISH_ROD",
+      "outputType": "item",
+      "outputId": "TOOL_FISH_ROD",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BAMBOO": 2,
+        "CMP_ROPE": 2,
+        "CMP_FISH_HOOK": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_BAMBOO",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_FISH_ROD_ADV",
+      "outputType": "item",
+      "outputId": "TOOL_FISH_ROD_ADV",
+      "outputAmount": 1,
+      "inputs": {
+        "TOOL_FISH_ROD": 1,
+        "CMP_COPPER_INGOT": 1,
+        "CMP_THICK_ROPE": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "BP:BP_FISH_ROD_ADV",
+      "craftSeconds": 8
+    },
+    {
+      "id": "R_FISH_SOUP",
+      "outputType": "item",
+      "outputId": "FOOD_FISH_SOUP",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_RAW_FISH": 1,
+        "WATER_CLEAN": 1,
+        "CROP_ROOT": 1
+      },
+      "station": "BUILD_CAMPFIRE",
+      "unlock": "MAT:CROP_ROOT",
+      "craftSeconds": 10
+    },
+    {
+      "id": "R_FISH_TRAP",
+      "outputType": "build",
+      "outputId": "BUILD_FISH_TRAP",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BAMBOO": 4,
+        "CMP_ROPE": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_BAMBOO",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_FISH_TRAP_ADV",
+      "outputType": "upgrade",
+      "outputId": "BUILD_FISH_TRAP",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BAMBOO": 4,
+        "CMP_THICK_ROPE": 2,
+        "CMP_CLOTH": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "BP:BP_FISH_TRAP_ADV",
+      "craftSeconds": 8,
+      "upgradeBuildId": "BUILD_FISH_TRAP",
+      "effect": "kapasite 3 ve daha yüksek av ihtimali",
+      "runtimeBehavior": "UPGRADE_EXISTING",
+      "targetBuildId": "BUILD_FISH_TRAP",
+      "preserveTargetEntityUid": true
+    },
+    {
+      "id": "R_FOOD_CHEST",
+      "outputType": "build",
+      "outputId": "BUILD_FOOD_CHEST",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 5,
+        "MAT_PALM_LEAF": 4
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_PLANK",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_FRUIT_SALAD",
+      "outputType": "item",
+      "outputId": "FOOD_FRUIT_SALAD",
+      "outputAmount": 1,
+      "inputs": {
+        "FOOD_BANANA": 1,
+        "FOOD_BERRY": 1,
+        "FOOD_COCONUT": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:FOOD_BANANA",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_FUSE",
+      "outputType": "item",
+      "outputId": "CMP_FUSE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_COPPER_WIRE": 1,
+        "SAL_GLASS": 1
+      },
+      "station": "BUILD_MECHANICAL_BENCH",
+      "unlock": "STATION:BUILD_MECHANICAL_BENCH",
+      "craftSeconds": 5
+    },
+    {
+      "id": "R_FUSE_SALVAGE",
+      "outputType": "item",
+      "outputId": "CMP_FUSE",
+      "outputAmount": 1,
+      "inputs": {
+        "SAL_FUSE": 1
+      },
+      "station": "BUILD_MECHANICAL_BENCH",
+      "unlock": "MAT:SAL_FUSE",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_GATE",
+      "outputType": "build",
+      "outputId": "BUILD_GATE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 3,
+        "CMP_ROPE": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_PLANK",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_GEAR",
+      "outputType": "item",
+      "outputId": "CMP_GEAR",
+      "outputAmount": 2,
+      "inputs": {
+        "CMP_IRON_INGOT": 1
+      },
+      "station": "BUILD_SMELTER",
+      "unlock": "STATION:BUILD_SMELTER",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_GEAR_SALVAGE",
+      "outputType": "item",
+      "outputId": "CMP_GEAR",
+      "outputAmount": 1,
+      "inputs": {
+        "SAL_GEAR": 2,
+        "SAL_SCRAP": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:SAL_GEAR",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_GENERATOR",
+      "outputType": "item",
+      "outputId": "CMP_GENERATOR",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_IRON_INGOT": 4,
+        "CMP_GEAR": 3,
+        "CMP_MECH_DRIVE": 1,
+        "CMP_CABLE_HARNESS": 2
+      },
+      "station": "BUILD_MECHANICAL_BENCH",
+      "unlock": "STORY:GENERATOR_CORE_FOUND",
+      "craftSeconds": 16,
+      "requiredSpecialItems": [
+        "SPC_GEN_CORE"
+      ]
+    },
+    {
+      "id": "R_GRILLED_CRAB",
+      "outputType": "item",
+      "outputId": "FOOD_GRILLED_CRAB",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_CRAB_MEAT": 1,
+        "MAT_BRANCH": 1
+      },
+      "station": "BUILD_CAMPFIRE",
+      "unlock": "MAT:MAT_CRAB_MEAT",
+      "craftSeconds": 6
+    },
+    {
+      "id": "R_HARVEST_BANANA",
+      "outputType": "item",
+      "outputId": "FOOD_BANANA",
+      "outputAmount": 1,
+      "inputs": {
+        "CROP_BANANA": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:CROP_BANANA",
+      "craftSeconds": 1
+    },
+    {
+      "id": "R_HERBAL_TEA",
+      "outputType": "item",
+      "outputId": "FOOD_HERBAL_TEA",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_MED_HERB": 1,
+        "WATER_CLEAN": 1
+      },
+      "station": "BUILD_CAMPFIRE",
+      "unlock": "MAT:MAT_MED_HERB",
+      "craftSeconds": 7
+    },
+    {
+      "id": "R_HULL_FIT",
+      "outputType": "upgrade",
+      "outputId": "BUILD_ESCAPE_BOAT",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_HULL_REINFORCED": 1,
+        "CMP_METAL_FASTENER": 2
+      },
+      "station": "BUILD_CARPENTER_BENCH",
+      "unlock": "BP:BP_HULL_REINFORCED",
+      "craftSeconds": 2,
+      "upgradeBuildId": "BUILD_ESCAPE_BOAT",
+      "effect": "boat_hull_durability_plus_25_percent",
+      "runtimeBehavior": "UPGRADE_EXISTING",
+      "targetBuildId": "BUILD_ESCAPE_BOAT",
+      "preserveTargetEntityUid": true
+    },
+    {
+      "id": "R_HULL_REINFORCED",
+      "outputType": "item",
+      "outputId": "CMP_HULL_REINFORCED",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_TREATED_PLANK": 6,
+        "CMP_METAL_FASTENER": 4,
+        "MAT_RESIN": 3
+      },
+      "station": "BUILD_CARPENTER_BENCH",
+      "unlock": "BP:BP_HULL_REINFORCED",
+      "craftSeconds": 15
+    },
+    {
+      "id": "R_HULL_SEGMENT",
+      "outputType": "item",
+      "outputId": "CMP_HULL_SEGMENT",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_TREATED_PLANK": 4,
+        "MAT_RESIN": 2,
+        "CMP_METAL_FASTENER": 2
+      },
+      "station": "BUILD_CARPENTER_BENCH",
+      "unlock": "STATION:BUILD_CARPENTER_BENCH",
+      "craftSeconds": 12
+    },
+    {
+      "id": "R_HUNTER_BOW",
+      "outputType": "item",
+      "outputId": "TOOL_HUNTER_BOW",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_HARDWOOD": 3,
+        "CMP_THICK_ROPE": 2,
+        "CMP_LEATHER": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "BP:BP_HUNTER_BOW",
+      "craftSeconds": 8
+    },
+    {
+      "id": "R_IRON_AXE",
+      "outputType": "item",
+      "outputId": "TOOL_IRON_AXE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_IRON_INGOT": 2,
+        "CMP_PLANK": 2,
+        "CMP_THICK_ROPE": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_IRON_INGOT",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_IRON_INGOT",
+      "outputType": "item",
+      "outputId": "CMP_IRON_INGOT",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_IRON_ORE": 3,
+        "CMP_CHARCOAL": 2
+      },
+      "station": "BUILD_SMELTER",
+      "unlock": "STATION:BUILD_SMELTER",
+      "craftSeconds": 25
+    },
+    {
+      "id": "R_IRON_PICK",
+      "outputType": "item",
+      "outputId": "TOOL_IRON_PICK",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_IRON_INGOT": 3,
+        "CMP_PLANK": 2,
+        "CMP_THICK_ROPE": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_IRON_INGOT",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_IRON_SPEAR",
+      "outputType": "item",
+      "outputId": "TOOL_IRON_SPEAR",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_IRON_INGOT": 2,
+        "MAT_HARDWOOD": 2,
+        "CMP_THICK_ROPE": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_IRON_INGOT",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_IRRIGATION",
+      "outputType": "build",
+      "outputId": "BUILD_IRRIGATION",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BAMBOO": 10,
+        "CMP_PLANK": 6,
+        "CMP_METAL_FASTENER": 3
+      },
+      "station": "BUILD_CARPENTER_BENCH",
+      "unlock": "BP:BP_IRRIGATION",
+      "craftSeconds": 10
+    },
+    {
+      "id": "R_KILN",
+      "outputType": "build",
+      "outputId": "BUILD_KILN",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_STONE": 10,
+        "MAT_CLAY": 6,
+        "MAT_LOG": 4
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_CLAY",
+      "craftSeconds": 10
+    },
+    {
+      "id": "R_LAMP_POST",
+      "outputType": "build",
+      "outputId": "BUILD_LAMP_POST",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_LOG": 2,
+        "CMP_IRON_INGOT": 1,
+        "SAL_GLASS": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_IRON_INGOT",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_LARGE_HOUSE",
+      "outputType": "build",
+      "outputId": "BUILD_LARGE_HOUSE",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_LOG": 18,
+        "CMP_PLANK": 28,
+        "CMP_TREATED_PLANK": 8,
+        "CMP_THICK_ROPE": 12,
+        "CMP_METAL_FASTENER": 8
+      },
+      "station": "BUILD_CARPENTER_BENCH",
+      "unlock": "STATION:BUILD_CARPENTER_BENCH",
+      "craftSeconds": 40
+    },
+    {
+      "id": "R_LEAF_BED",
+      "outputType": "build",
+      "outputId": "BUILD_LEAF_BED",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_PALM_LEAF": 8,
+        "MAT_BRANCH": 4,
+        "CMP_ROPE": 2
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_PALM_LEAF",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_LEAF_HAT",
+      "outputType": "item",
+      "outputId": "EQ_LEAF_HAT",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_PALM_LEAF": 4,
+        "CMP_ROPE": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_PALM_LEAF",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_LEAF_SHELTER",
+      "outputType": "build",
+      "outputId": "BUILD_LEAF_SHELTER",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_PALM_LEAF": 12,
+        "MAT_BRANCH": 6,
+        "CMP_ROPE": 4
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_PALM_LEAF",
+      "craftSeconds": 8
+    },
+    {
+      "id": "R_LEATHER",
+      "outputType": "item",
+      "outputId": "CMP_LEATHER",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_RAW_HIDE": 2,
+        "MAT_SALT": 1
+      },
+      "station": "BUILD_TANNING_RACK",
+      "unlock": "STATION:BUILD_TANNING_RACK",
+      "craftSeconds": 18
+    },
+    {
+      "id": "R_LEATHER_BOOTS",
+      "outputType": "item",
+      "outputId": "EQ_LEATHER_BOOTS",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_LEATHER": 3,
+        "CMP_THICK_ROPE": 1
+      },
+      "station": "BUILD_TANNING_RACK",
+      "unlock": "MAT:CMP_LEATHER",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_LEATHER_HAT",
+      "outputType": "item",
+      "outputId": "EQ_LEATHER_HAT",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_LEATHER": 2,
+        "CMP_CLOTH": 1
+      },
+      "station": "BUILD_TANNING_RACK",
+      "unlock": "MAT:CMP_LEATHER",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_LEATHER_VEST",
+      "outputType": "item",
+      "outputId": "EQ_LEATHER_VEST",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_LEATHER": 4,
+        "CMP_CLOTH": 2
+      },
+      "station": "BUILD_TANNING_RACK",
+      "unlock": "MAT:CMP_LEATHER",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_LOG_STORE",
+      "outputType": "build",
+      "outputId": "BUILD_LOG_STORE",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_LOG": 5,
+        "CMP_THICK_ROPE": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_THICK_ROPE",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_LOOM",
+      "outputType": "build",
+      "outputId": "BUILD_LOOM",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BAMBOO": 6,
+        "CMP_PLANK": 3,
+        "CMP_ROPE": 4
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_BAMBOO",
+      "craftSeconds": 8
+    },
+    {
+      "id": "R_MACHETE",
+      "outputType": "item",
+      "outputId": "TOOL_MACHETE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_IRON_INGOT": 2,
+        "CMP_PLANK": 1,
+        "CMP_LEATHER": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "BP:BP_MACHETE",
+      "craftSeconds": 7
+    },
+    {
+      "id": "R_MAP_TABLE",
+      "outputType": "build",
+      "outputId": "BUILD_MAP_TABLE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 6,
+        "SAL_GLASS": 2,
+        "CMP_CLOTH": 2
+      },
+      "station": "BUILD_CARPENTER_BENCH",
+      "unlock": "BP:BP_MAP_TABLE",
+      "craftSeconds": 9
+    },
+    {
+      "id": "R_MATERIAL_SHELF",
+      "outputType": "build",
+      "outputId": "BUILD_MATERIAL_SHELF",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 6,
+        "SAL_NAIL": 3
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:SAL_NAIL",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_MECHANICAL_BENCH",
+      "outputType": "build",
+      "outputId": "BUILD_MECHANICAL_BENCH",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 10,
+        "CMP_IRON_INGOT": 4,
+        "CMP_GEAR": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_GEAR",
+      "craftSeconds": 14
+    },
+    {
+      "id": "R_MECH_DRIVE",
+      "outputType": "item",
+      "outputId": "CMP_MECH_DRIVE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_GEAR": 2,
+        "CMP_BEARING": 1,
+        "CMP_METAL_FASTENER": 2
+      },
+      "station": "BUILD_MECHANICAL_BENCH",
+      "unlock": "STATION:BUILD_MECHANICAL_BENCH",
+      "craftSeconds": 10
+    },
+    {
+      "id": "R_METAL_FASTENER",
+      "outputType": "item",
+      "outputId": "CMP_METAL_FASTENER",
+      "outputAmount": 3,
+      "inputs": {
+        "CMP_IRON_INGOT": 1
+      },
+      "station": "BUILD_SMELTER",
+      "unlock": "STATION:BUILD_SMELTER",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_MONKEY_PLATFORM",
+      "outputType": "build",
+      "outputId": "BUILD_MONKEY_PLATFORM",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 4,
+        "MAT_BAMBOO": 2,
+        "CMP_ROPE": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_BAMBOO",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_NAV_CHART",
+      "outputType": "item",
+      "outputId": "CMP_NAV_CHART",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_TREE_BARK": 1,
+        "CMP_CLOTH": 1
+      },
+      "station": "BUILD_NAV_TABLE",
+      "unlock": "STORY:TWO_NAV_SOURCES",
+      "craftSeconds": 2,
+      "note": "2 of 3 fixed chart discoveries required"
+    },
+    {
+      "id": "R_NAV_KIT",
+      "outputType": "item",
+      "outputId": "TOOL_NAV_KIT",
+      "outputAmount": 1,
+      "inputs": {
+        "TOOL_COMPASS": 1,
+        "CMP_NAV_CHART": 1,
+        "CMP_CLOTH": 1
+      },
+      "station": "BUILD_NAV_TABLE",
+      "unlock": "STORY:TWO_NAV_SOURCES",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_NAV_TABLE",
+      "outputType": "build",
+      "outputId": "BUILD_NAV_TABLE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 6,
+        "SAL_GLASS": 2,
+        "CMP_COPPER_WIRE": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_COPPER_WIRE",
+      "craftSeconds": 9
+    },
+    {
+      "id": "R_ORE_STORE",
+      "outputType": "build",
+      "outputId": "BUILD_ORE_STORE",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_STONE": 10,
+        "CMP_PLANK": 4
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_PLANK",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_PANTRY",
+      "outputType": "build",
+      "outputId": "BUILD_PANTRY",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 8,
+        "CMP_BRICK": 4,
+        "CMP_METAL_FASTENER": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "BP:BP_PANTRY",
+      "craftSeconds": 10
+    },
+    {
+      "id": "R_PARROT_HOUSE",
+      "outputType": "build",
+      "outputId": "BUILD_PARROT_HOUSE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 3,
+        "MAT_PALM_LEAF": 2,
+        "CMP_ROPE": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_PLANK",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_PARROT_PERCH",
+      "outputType": "build",
+      "outputId": "BUILD_PARROT_PERCH",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BRANCH": 3,
+        "CMP_ROPE": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_BRANCH",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_PATH",
+      "outputType": "build",
+      "outputId": "BUILD_PATH",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_STONE": 2
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_STONE",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_PIER",
+      "outputType": "build",
+      "outputId": "BUILD_PIER",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_LOG": 6,
+        "CMP_PLANK": 8,
+        "CMP_ROPE": 4
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_PLANK",
+      "craftSeconds": 15
+    },
+    {
+      "id": "R_PINEAPPLE_SNACK",
+      "outputType": "item",
+      "outputId": "FOOD_PINEAPPLE_SNACK",
+      "outputAmount": 1,
+      "inputs": {
+        "CROP_PINEAPPLE": 1,
+        "FOOD_COCONUT": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:CROP_PINEAPPLE",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_PLANK",
+      "outputType": "item",
+      "outputId": "CMP_PLANK",
+      "outputAmount": 3,
+      "inputs": {
+        "MAT_LOG": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_LOG",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_PLANTER",
+      "outputType": "build",
+      "outputId": "BUILD_PLANTER",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 3,
+        "CMP_ROPE": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:SEED_ROOT",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_PLANT_POT",
+      "outputType": "build",
+      "outputId": "BUILD_PLANT_POT",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_CLAY": 2,
+        "MAT_MED_HERB": 1
+      },
+      "station": "BUILD_KILN",
+      "unlock": "MAT:MAT_CLAY",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_PLAY_POST",
+      "outputType": "build",
+      "outputId": "BUILD_PLAY_POST",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_LOG": 2,
+        "CMP_ROPE": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_ROPE",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_PORTABLE_LAMP",
+      "outputType": "item",
+      "outputId": "TOOL_PORTABLE_LAMP",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_COPPER_WIRE": 2,
+        "SAL_GLASS": 1,
+        "CMP_BATTERY_PACK": 1
+      },
+      "station": "BUILD_MECHANICAL_BENCH",
+      "unlock": "BP:BP_PORTABLE_LAMP",
+      "craftSeconds": 12
+    },
+    {
+      "id": "R_RAFT",
+      "outputType": "build",
+      "outputId": "BUILD_RAFT",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_LOG": 8,
+        "CMP_PLANK": 6,
+        "CMP_THICK_ROPE": 6,
+        "MAT_RESIN": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_THICK_ROPE",
+      "craftSeconds": 18
+    },
+    {
+      "id": "R_RAINCOAT",
+      "outputType": "item",
+      "outputId": "EQ_RAINCOAT",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_CLOTH": 4,
+        "CMP_LEATHER": 2,
+        "MAT_RESIN": 2
+      },
+      "station": "BUILD_LOOM",
+      "unlock": "BP:BP_RAINCOAT",
+      "craftSeconds": 9
+    },
+    {
+      "id": "R_RAIN_CATCHER",
+      "outputType": "build",
+      "outputId": "BUILD_RAIN_CATCHER",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BAMBOO": 6,
+        "MAT_PALM_LEAF": 8,
+        "CMP_ROPE": 3
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_BAMBOO",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_RAIN_CATCHER_L",
+      "outputType": "build",
+      "outputId": "BUILD_RAIN_CATCHER_L",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BAMBOO": 10,
+        "CMP_PLANK": 5,
+        "CMP_CLOTH": 4,
+        "CMP_ROPE": 4
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_CLOTH",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_RATION",
+      "outputType": "item",
+      "outputId": "FOOD_RATION",
+      "outputAmount": 1,
+      "inputs": {
+        "FOOD_DRIED_FISH": 1,
+        "FOOD_BANANA": 1,
+        "CMP_CLOTH": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:FOOD_DRIED_FISH",
+      "craftSeconds": 5
+    },
+    {
+      "id": "R_REPAIR_KIT",
+      "outputType": "item",
+      "outputId": "TOOL_REPAIR_KIT",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_METAL_FASTENER": 2,
+        "CMP_PLANK": 2,
+        "CMP_ROPE": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_METAL_FASTENER",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_ROAST_ROOT",
+      "outputType": "item",
+      "outputId": "FOOD_ROAST_ROOT",
+      "outputAmount": 1,
+      "inputs": {
+        "CROP_ROOT": 1,
+        "MAT_BRANCH": 1
+      },
+      "station": "BUILD_CAMPFIRE",
+      "unlock": "MAT:CROP_ROOT",
+      "craftSeconds": 6
+    },
+    {
+      "id": "R_ROAST_SWEET_POTATO",
+      "outputType": "item",
+      "outputId": "FOOD_ROAST_ROOT",
+      "outputAmount": 1,
+      "inputs": {
+        "CROP_SWEET_POTATO": 1,
+        "MAT_BRANCH": 1
+      },
+      "station": "BUILD_CAMPFIRE",
+      "unlock": "MAT:CROP_SWEET_POTATO",
+      "craftSeconds": 5
+    },
+    {
+      "id": "R_ROPE",
+      "outputType": "item",
+      "outputId": "CMP_ROPE",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_FIBER": 3
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_FIBER",
+      "craftSeconds": 1
+    },
+    {
+      "id": "R_ROPE_TENDON",
+      "outputType": "item",
+      "outputId": "CMP_ROPE",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_TENDON": 1,
+        "MAT_FIBER": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_TENDON",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_ROPE_VINE",
+      "outputType": "item",
+      "outputId": "CMP_ROPE",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_VINE": 2,
+        "MAT_FIBER": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_VINE",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_RUDDER",
+      "outputType": "item",
+      "outputId": "CMP_RUDDER",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 4,
+        "CMP_METAL_FASTENER": 2,
+        "CMP_THICK_ROPE": 2
+      },
+      "station": "BUILD_CARPENTER_BENCH",
+      "unlock": "STATION:BUILD_CARPENTER_BENCH",
+      "craftSeconds": 12
+    },
+    {
+      "id": "R_RUG",
+      "outputType": "build",
+      "outputId": "BUILD_RUG",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_CLOTH": 3,
+        "MAT_FIBER": 2
+      },
+      "station": "BUILD_LOOM",
+      "unlock": "MAT:CMP_CLOTH",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_SAIL",
+      "outputType": "item",
+      "outputId": "CMP_SAIL",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_CLOTH": 6,
+        "CMP_THICK_ROPE": 4
+      },
+      "station": "BUILD_LOOM",
+      "unlock": "STATION:BUILD_LOOM",
+      "craftSeconds": 12
+    },
+    {
+      "id": "R_SAIL_SALVAGE",
+      "outputType": "item",
+      "outputId": "CMP_SAIL",
+      "outputAmount": 1,
+      "inputs": {
+        "SAL_CANVAS": 3,
+        "CMP_THICK_ROPE": 2
+      },
+      "station": "BUILD_LOOM",
+      "unlock": "MAT:SAL_CANVAS",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_SALT_FROM_SEA",
+      "outputType": "item",
+      "outputId": "MAT_SALT",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_SEA_SALT": 2
+      },
+      "station": "BUILD_KILN",
+      "unlock": "MAT:MAT_SEA_SALT",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_SANDALS",
+      "outputType": "item",
+      "outputId": "EQ_SANDALS",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_PALM_LEAF": 3,
+        "MAT_FIBER": 2
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_PALM_LEAF",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_SEAWEED_VEG_STEW",
+      "outputType": "item",
+      "outputId": "FOOD_VEG_STEW",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_SEAWEED": 1,
+        "CROP_ROOT": 1,
+        "WATER_CLEAN": 1
+      },
+      "station": "BUILD_CAMPFIRE",
+      "unlock": "MAT:MAT_SEAWEED",
+      "craftSeconds": 5
+    },
+    {
+      "id": "R_SEA_CHEST",
+      "outputType": "build",
+      "outputId": "BUILD_CHEST_LARGE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_TREATED_PLANK": 4,
+        "CMP_METAL_FASTENER": 2,
+        "CMP_THICK_ROPE": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "BP:BP_SEA_CHEST",
+      "craftSeconds": 8,
+      "effect": "sal / iskele kullanımına uygun, su dayanımı",
+      "runtimeBehavior": "CREATE_NEW"
+    },
+    {
+      "id": "R_SHELL_CHARM",
+      "outputType": "item",
+      "outputId": "EQ_LEAF_HAT",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_SHELL": 2,
+        "MAT_FIBER": 2
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_SHELL",
+      "craftSeconds": 2,
+      "note": "Shell-trim variant of starter hat; same equipment stats"
+    },
+    {
+      "id": "R_SHOVEL",
+      "outputType": "item",
+      "outputId": "TOOL_SHOVEL",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_IRON_INGOT": 1,
+        "CMP_PLANK": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_IRON_INGOT",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_SIGNAL_BOOSTER",
+      "outputType": "item",
+      "outputId": "CMP_SIGNAL_BOOSTER",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_COPPER_WIRE": 4,
+        "MAT_QUARTZ": 1,
+        "CMP_FUSE": 2
+      },
+      "station": "BUILD_MECHANICAL_BENCH",
+      "unlock": "STATION:BUILD_MECHANICAL_BENCH",
+      "craftSeconds": 12
+    },
+    {
+      "id": "R_SIGNAL_STATION",
+      "outputType": "build",
+      "outputId": "BUILD_SIGNAL_STATION",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_ANTENNA": 1,
+        "CMP_SIGNAL_BOOSTER": 1,
+        "CMP_CABLE_HARNESS": 2,
+        "CMP_FUSE": 2,
+        "SAL_BATTERY": 2
+      },
+      "station": "BUILD_MECHANICAL_BENCH",
+      "unlock": "STORY:RADIO_STATION_DISCOVERED",
+      "craftSeconds": 60,
+      "requiredSpecialItems": [
+        "SPC_TX_MODULE",
+        "SPC_RADIO_NOTE",
+        "SPC_SOLAR_CORE"
+      ],
+      "powerVariant": "solar",
+      "constructionStages": [
+        {
+          "label": "Anten onarımı",
+          "requirements": {
+            "CMP_ANTENNA": 1
+          }
+        },
+        {
+          "label": "Bağlantılar",
+          "requirements": {
+            "CMP_CABLE_HARNESS": 2,
+            "CMP_FUSE": 2
+          }
+        },
+        {
+          "label": "Verici ve test",
+          "requirements": {
+            "CMP_SIGNAL_BOOSTER": 1,
+            "SAL_BATTERY": 2
+          }
+        }
+      ],
+      "consumeSpecialItems": false
+    },
+    {
+      "id": "R_SIGNAL_STATION_GENERATOR",
+      "outputType": "build",
+      "outputId": "BUILD_SIGNAL_STATION",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_ANTENNA": 1,
+        "CMP_SIGNAL_BOOSTER": 1,
+        "CMP_CABLE_HARNESS": 2,
+        "CMP_FUSE": 2,
+        "CMP_GENERATOR": 1
+      },
+      "station": "BUILD_MECHANICAL_BENCH",
+      "unlock": "STORY:RADIO_STATION_DISCOVERED",
+      "craftSeconds": 60,
+      "powerVariant": "generator",
+      "requiredSpecialItems": [
+        "SPC_TX_MODULE",
+        "SPC_RADIO_NOTE",
+        "SPC_GEN_CORE"
+      ],
+      "consumeSpecialItems": false
+    },
+    {
+      "id": "R_SIMPLE_BAIT",
+      "outputType": "item",
+      "outputId": "CMP_SIMPLE_BAIT",
+      "outputAmount": 2,
+      "inputs": {
+        "MAT_WORM": 1,
+        "FOOD_BERRY": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_WORM",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_SLING",
+      "outputType": "item",
+      "outputId": "TOOL_SLING",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BRANCH": 2,
+        "CMP_ROPE": 2,
+        "MAT_RAW_HIDE": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_RAW_HIDE",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_SLING_STONE",
+      "outputType": "item",
+      "outputId": "CMP_SLING_STONE",
+      "outputAmount": 3,
+      "inputs": {
+        "MAT_PEBBLE": 3
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_PEBBLE",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_SMELTER",
+      "outputType": "build",
+      "outputId": "BUILD_SMELTER",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_STONE": 10,
+        "CMP_BRICK": 8,
+        "SAL_SCRAP": 3,
+        "CMP_PLANK": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_BRICK",
+      "craftSeconds": 12
+    },
+    {
+      "id": "R_SPICED_FISH",
+      "outputType": "item",
+      "outputId": "FOOD_SPICED_FISH",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_RAW_FISH": 1,
+        "CROP_PEPPER": 1,
+        "CROP_SPICE": 1
+      },
+      "station": "BUILD_CAMPFIRE",
+      "unlock": "MAT:CROP_PEPPER",
+      "craftSeconds": 8
+    },
+    {
+      "id": "R_SPICED_MUSHROOM",
+      "outputType": "item",
+      "outputId": "FOOD_VEG_STEW",
+      "outputAmount": 1,
+      "inputs": {
+        "FOOD_MUSHROOM": 2,
+        "CROP_ROOT": 1,
+        "WATER_CLEAN": 1
+      },
+      "station": "BUILD_CAMPFIRE",
+      "unlock": "MAT:FOOD_MUSHROOM",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_STONE_AXE",
+      "outputType": "item",
+      "outputId": "TOOL_STONE_AXE",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_STONE": 3,
+        "MAT_BRANCH": 2,
+        "CMP_ROPE": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_STONE",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_STONE_KNIFE",
+      "outputType": "item",
+      "outputId": "TOOL_STONE_KNIFE",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_STONE": 2,
+        "MAT_BRANCH": 1,
+        "CMP_ROPE": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_STONE",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_STONE_PICK",
+      "outputType": "item",
+      "outputId": "TOOL_STONE_PICK",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_STONE": 4,
+        "MAT_BRANCH": 2,
+        "CMP_ROPE": 2
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_STONE",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_STORM_ANCHOR",
+      "outputType": "item",
+      "outputId": "CMP_STORM_ANCHOR",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_IRON_INGOT": 3,
+        "CMP_THICK_ROPE": 2
+      },
+      "station": "BUILD_MECHANICAL_BENCH",
+      "unlock": "BP:BP_STORM_ANCHOR",
+      "craftSeconds": 9
+    },
+    {
+      "id": "R_STORM_ANCHOR_FIT",
+      "outputType": "upgrade",
+      "outputId": "BUILD_ESCAPE_BOAT",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_STORM_ANCHOR": 1,
+        "CMP_THICK_ROPE": 2
+      },
+      "station": "BUILD_NAV_TABLE",
+      "unlock": "BP:BP_STORM_ANCHOR",
+      "craftSeconds": 2,
+      "upgradeBuildId": "BUILD_ESCAPE_BOAT",
+      "effect": "safer_launch_during_marginal_weather",
+      "runtimeBehavior": "UPGRADE_EXISTING",
+      "targetBuildId": "BUILD_ESCAPE_BOAT",
+      "preserveTargetEntityUid": true
+    },
+    {
+      "id": "R_TABLE",
+      "outputType": "build",
+      "outputId": "BUILD_TABLE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 4
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_PLANK",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_TANNING_RACK",
+      "outputType": "build",
+      "outputId": "BUILD_TANNING_RACK",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BRANCH": 5,
+        "CMP_PLANK": 3,
+        "CMP_ROPE": 3
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_RAW_HIDE",
+      "craftSeconds": 8
+    },
+    {
+      "id": "R_THICK_ROPE",
+      "outputType": "item",
+      "outputId": "CMP_THICK_ROPE",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_ROPE": 2,
+        "MAT_RESIN": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_RESIN",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_TOOL_RACK",
+      "outputType": "build",
+      "outputId": "BUILD_TOOL_RACK",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 4,
+        "CMP_ROPE": 2,
+        "CMP_METAL_FASTENER": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_METAL_FASTENER",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_TORCH",
+      "outputType": "item",
+      "outputId": "TOOL_TORCH",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BRANCH": 1,
+        "MAT_RESIN": 1,
+        "MAT_FIBER": 2
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_RESIN",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_TORCH_SULFUR",
+      "outputType": "item",
+      "outputId": "TOOL_TORCH",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BRANCH": 1,
+        "MAT_RESIN": 1,
+        "MAT_SULFUR": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_SULFUR",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_TREATED_PLANK",
+      "outputType": "item",
+      "outputId": "CMP_TREATED_PLANK",
+      "outputAmount": 2,
+      "inputs": {
+        "CMP_PLANK": 2,
+        "MAT_RESIN": 1
+      },
+      "station": "BUILD_CARPENTER_BENCH",
+      "unlock": "STATION:BUILD_CARPENTER_BENCH",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_TREATED_PLANK_SAP",
+      "outputType": "item",
+      "outputId": "CMP_TREATED_PLANK",
+      "outputAmount": 2,
+      "inputs": {
+        "CMP_PLANK": 2,
+        "MAT_SAP": 2
+      },
+      "station": "BUILD_CARPENTER_BENCH",
+      "unlock": "MAT:MAT_SAP",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_VEG_STEW",
+      "outputType": "item",
+      "outputId": "FOOD_VEG_STEW",
+      "outputAmount": 1,
+      "inputs": {
+        "CROP_GREENS": 1,
+        "CROP_ROOT": 1,
+        "WATER_CLEAN": 1
+      },
+      "station": "BUILD_CAMPFIRE",
+      "unlock": "MAT:CROP_GREENS",
+      "craftSeconds": 10
+    },
+    {
+      "id": "R_WARM_TEA",
+      "outputType": "item",
+      "outputId": "FOOD_WARM_TEA",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_SPICE_HERB": 1,
+        "WATER_CLEAN": 1
+      },
+      "station": "BUILD_CAMPFIRE",
+      "unlock": "MAT:MAT_SPICE_HERB",
+      "craftSeconds": 7
+    },
+    {
+      "id": "R_WATERING_CAN",
+      "outputType": "item",
+      "outputId": "TOOL_WATERING_CAN",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BAMBOO": 2,
+        "MAT_REED": 2,
+        "CMP_ROPE": 1
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:MAT_BAMBOO",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_WATER_CLEAN",
+      "outputType": "item",
+      "outputId": "WATER_CLEAN",
+      "outputAmount": 1,
+      "inputs": {
+        "WATER_DIRTY": 1,
+        "MAT_BRANCH": 1
+      },
+      "station": "BUILD_CAMPFIRE",
+      "unlock": "STATION:BUILD_CAMPFIRE",
+      "craftSeconds": 10
+    },
+    {
+      "id": "R_WATER_FILTER",
+      "outputType": "build",
+      "outputId": "BUILD_WATER_FILTER",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_SAND": 4,
+        "CMP_CHARCOAL": 2,
+        "CMP_CLOTH": 2,
+        "CMP_PLANK": 3
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "BP:BP_WATER_FILTER",
+      "craftSeconds": 10
+    },
+    {
+      "id": "R_WATER_FILTER_V16",
+      "outputType": "item",
+      "outputId": "WATER_CLEAN",
+      "outputAmount": 1,
+      "inputs": {
+        "WATER_DIRTY": 1
+      },
+      "station": "BUILD_WATER_FILTER",
+      "unlock": "STATION:BUILD_WATER_FILTER",
+      "craftSeconds": 6,
+      "description": "Optional upgraded filtering uses no branch; does NOT gate survival"
+    },
+    {
+      "id": "R_WATER_TANK",
+      "outputType": "build",
+      "outputId": "BUILD_WATER_TANK",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 8,
+        "CMP_TREATED_PLANK": 4,
+        "CMP_METAL_FASTENER": 2
+      },
+      "station": "BUILD_CARPENTER_BENCH",
+      "unlock": "MAT:CMP_TREATED_PLANK",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_WINCH",
+      "outputType": "build",
+      "outputId": "BUILD_WINCH",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_IRON_INGOT": 4,
+        "CMP_GEAR": 2,
+        "CMP_THICK_ROPE": 4
+      },
+      "station": "BUILD_MECHANICAL_BENCH",
+      "unlock": "BP:BP_WINCH",
+      "craftSeconds": 15
+    },
+    {
+      "id": "R_WIRE_SALVAGE",
+      "outputType": "item",
+      "outputId": "CMP_COPPER_WIRE",
+      "outputAmount": 2,
+      "inputs": {
+        "SAL_WIRE": 2
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:SAL_WIRE",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_WOOD_BED",
+      "outputType": "build",
+      "outputId": "BUILD_WOOD_BED",
+      "outputAmount": 1,
+      "inputs": {
+        "CMP_PLANK": 6,
+        "CMP_CLOTH": 3,
+        "MAT_FIBER": 3
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "MAT:CMP_CLOTH",
+      "craftSeconds": 4
+    },
+    {
+      "id": "R_WOOD_HUT",
+      "outputType": "build",
+      "outputId": "BUILD_WOOD_HUT",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_LOG": 10,
+        "CMP_PLANK": 15,
+        "CMP_THICK_ROPE": 5,
+        "MAT_PALM_LEAF": 12
+      },
+      "station": "BUILD_WORKBENCH",
+      "unlock": "STATION:BUILD_WORKBENCH",
+      "craftSeconds": 25
+    },
+    {
+      "id": "R_WOOD_SPEAR",
+      "outputType": "item",
+      "outputId": "TOOL_WOOD_SPEAR",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_BRANCH": 2,
+        "MAT_STONE": 1,
+        "CMP_ROPE": 1
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_BRANCH",
+      "craftSeconds": 2
+    },
+    {
+      "id": "R_WORKBENCH",
+      "outputType": "build",
+      "outputId": "BUILD_WORKBENCH",
+      "outputAmount": 1,
+      "inputs": {
+        "MAT_LOG": 4,
+        "MAT_BRANCH": 4,
+        "CMP_ROPE": 4
+      },
+      "station": "HAND",
+      "unlock": "MAT:MAT_LOG",
+      "craftSeconds": 6
+    }
+  ]
+}

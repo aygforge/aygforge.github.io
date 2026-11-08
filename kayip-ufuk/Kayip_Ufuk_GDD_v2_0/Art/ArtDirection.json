@@ -1,0 +1,72 @@
+{
+  "version": "v1.9",
+  "visualIdentity": "original vibrant modern tropical pixel art; three-quarter-top-down",
+  "referenceCanvas": [
+    1280,
+    720
+  ],
+  "tilePixelSize": 32,
+  "spritePixelPerfect": true,
+  "canvasImageSmoothing": false,
+  "palette": {
+    "forest_dark": "#234d42",
+    "forest": "#3d7454",
+    "grass": "#69a66d",
+    "grass_light": "#a8c481",
+    "sand": "#e2bf7d",
+    "sand_light": "#f4dba8",
+    "water_shallow": "#45aeb5",
+    "water_deep": "#237c9f",
+    "wood": "#6c5340",
+    "coral": "#d58359",
+    "outline": "#243238",
+    "torch": "#f7b560",
+    "night": "#162b46"
+  },
+  "outlinePolicy": "1-2 native px deep neutral, no outlines on all floor tiles",
+  "shadowPolicy": "single soft pixel shadow under feet; not painterly drop shadows",
+  "antiCopy": "No borrowed proprietary sprites, traced game assets, or copyrighted UI icons",
+  "biomeMood": {
+    "REG_BEACH": "sunlit sand, turquoise water, worn driftwood",
+    "REG_GROVE": "bright palm canopy, resin and fruit",
+    "REG_VALLEY": "fresh river greens, clay, fields",
+    "REG_FOREST": "dense layered dark jungle, visible trails",
+    "REG_SWAMP": "olive mangrove, stagnant pools, amber dusk",
+    "REG_RED_CLIFF": "copper sandstone, fractured ledges",
+    "REG_MOUNTAIN": "blue slate, exposed quartz, thin fog",
+    "REG_SETTLEMENT": "decayed timber, oxidized machinery, nature reclaiming buildings",
+    "REG_LAGOON": "teal shallows, reef, corals",
+    "REG_LIGHTHOUSE": "weathered white lighthouse, strong horizon",
+    "REG_WRECK": "rust and torn sails, salt spray",
+    "REG_FERTILE": "lush farm terraces and fruit trees"
+  },
+  "dayNight": {
+    "day": "unobstructed color fidelity",
+    "dusk": "warm orange horizon and cool shadows",
+    "night": "navy color grade; gameplay items remain legible",
+    "lighting": "light sources support campfire, torches, lamps, sky ambient"
+  },
+  "weather": {
+    "rain": "limited density pixel streaks, puddles, roof shelter",
+    "storm": "strong wind/cloud shade + lightning, lower FX on weak phones",
+    "reducedMotion": "optional eliminate decorative motion while preserving state cues"
+  },
+  "technical": {
+    "atlasMaxPx": 1024,
+    "atlasPaddingPx": 2,
+    "noRotation": true,
+    "preferredTextureFormat": "RGBA PNG atlas",
+    "runtimeCache": "lazy per group/region; no generated PNGs in v1.9 ZIP",
+    "activeDecodedTargetMiB": 48,
+    "peakTargetDeviceNote": "Profile on low/mid-range device; budget is aspirational not verified",
+    "mobileHitCssPxMin": 48
+  },
+  "visualQA": {
+    "pixelPerfect": "compare snapshots at 1x/2x/3x, no blurred sprites",
+    "silhouette": "player identified at 720p reference canvas and 360px device height",
+    "biome": "terrain ID readability in night/weather",
+    "layers": "occlusion and house roof hide correct",
+    "style": "all original sprites pass common 13-color base palette with accents",
+    "crossAsset": "tool aligns to actual hands in every attack/work animation"
+  }
+}

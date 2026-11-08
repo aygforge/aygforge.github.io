@@ -1,0 +1,1215 @@
+{
+  "meta": {
+    "version": "v1.1",
+    "basedOn": "ItemDB_v1.0.json",
+    "scope": "design proposal, not final tile placement",
+    "startAreaGuaranteeIsSeparateFromRandomNodes": true,
+    "consolidatedVersion": "1.7"
+  },
+  "starterGuarantees": {
+    "centerMainLocal": [
+      122,
+      220
+    ],
+    "radiusTiles": 22,
+    "quantitiesMinimum": {
+      "MAT_STONE": 21,
+      "MAT_BRANCH": 30,
+      "MAT_PALM_LEAF": 35,
+      "MAT_FIBER": 63
+    },
+    "sourceObjects": [
+      {
+        "id": "START_MAT_STONE_01",
+        "itemId": "MAT_STONE",
+        "tileLocal": [
+          111,
+          227
+        ],
+        "tileAtlas": [
+          239,
+          291
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 4,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_STONE_02",
+        "itemId": "MAT_STONE",
+        "tileLocal": [
+          113,
+          216
+        ],
+        "tileAtlas": [
+          241,
+          280
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 4,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_STONE_03",
+        "itemId": "MAT_STONE",
+        "tileLocal": [
+          103,
+          220
+        ],
+        "tileAtlas": [
+          231,
+          284
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 4,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_STONE_04",
+        "itemId": "MAT_STONE",
+        "tileLocal": [
+          113,
+          230
+        ],
+        "tileAtlas": [
+          241,
+          294
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 4,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_STONE_05",
+        "itemId": "MAT_STONE",
+        "tileLocal": [
+          115,
+          233
+        ],
+        "tileAtlas": [
+          243,
+          297
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 4,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_STONE_06",
+        "itemId": "MAT_STONE",
+        "tileLocal": [
+          124,
+          203
+        ],
+        "tileAtlas": [
+          252,
+          267
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 4,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_STONE_07",
+        "itemId": "MAT_STONE",
+        "tileLocal": [
+          111,
+          201
+        ],
+        "tileAtlas": [
+          239,
+          265
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 4,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_BRANCH_01",
+        "itemId": "MAT_BRANCH",
+        "tileLocal": [
+          138,
+          232
+        ],
+        "tileAtlas": [
+          266,
+          296
+        ],
+        "guaranteedMinYield": 2,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_BRANCH_02",
+        "itemId": "MAT_BRANCH",
+        "tileLocal": [
+          113,
+          205
+        ],
+        "tileAtlas": [
+          241,
+          269
+        ],
+        "guaranteedMinYield": 2,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_BRANCH_03",
+        "itemId": "MAT_BRANCH",
+        "tileLocal": [
+          124,
+          209
+        ],
+        "tileAtlas": [
+          252,
+          273
+        ],
+        "guaranteedMinYield": 2,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_BRANCH_04",
+        "itemId": "MAT_BRANCH",
+        "tileLocal": [
+          129,
+          223
+        ],
+        "tileAtlas": [
+          257,
+          287
+        ],
+        "guaranteedMinYield": 2,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_BRANCH_05",
+        "itemId": "MAT_BRANCH",
+        "tileLocal": [
+          133,
+          201
+        ],
+        "tileAtlas": [
+          261,
+          265
+        ],
+        "guaranteedMinYield": 2,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_BRANCH_06",
+        "itemId": "MAT_BRANCH",
+        "tileLocal": [
+          120,
+          238
+        ],
+        "tileAtlas": [
+          248,
+          302
+        ],
+        "guaranteedMinYield": 2,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_BRANCH_07",
+        "itemId": "MAT_BRANCH",
+        "tileLocal": [
+          130,
+          234
+        ],
+        "tileAtlas": [
+          258,
+          298
+        ],
+        "guaranteedMinYield": 2,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_BRANCH_08",
+        "itemId": "MAT_BRANCH",
+        "tileLocal": [
+          136,
+          226
+        ],
+        "tileAtlas": [
+          264,
+          290
+        ],
+        "guaranteedMinYield": 2,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_BRANCH_09",
+        "itemId": "MAT_BRANCH",
+        "tileLocal": [
+          103,
+          211
+        ],
+        "tileAtlas": [
+          231,
+          275
+        ],
+        "guaranteedMinYield": 2,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_BRANCH_10",
+        "itemId": "MAT_BRANCH",
+        "tileLocal": [
+          125,
+          210
+        ],
+        "tileAtlas": [
+          253,
+          274
+        ],
+        "guaranteedMinYield": 2,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_BRANCH_11",
+        "itemId": "MAT_BRANCH",
+        "tileLocal": [
+          109,
+          234
+        ],
+        "tileAtlas": [
+          237,
+          298
+        ],
+        "guaranteedMinYield": 2,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_BRANCH_12",
+        "itemId": "MAT_BRANCH",
+        "tileLocal": [
+          123,
+          230
+        ],
+        "tileAtlas": [
+          251,
+          294
+        ],
+        "guaranteedMinYield": 2,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_BRANCH_13",
+        "itemId": "MAT_BRANCH",
+        "tileLocal": [
+          131,
+          204
+        ],
+        "tileAtlas": [
+          259,
+          268
+        ],
+        "guaranteedMinYield": 2,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_BRANCH_14",
+        "itemId": "MAT_BRANCH",
+        "tileLocal": [
+          130,
+          214
+        ],
+        "tileAtlas": [
+          258,
+          278
+        ],
+        "guaranteedMinYield": 2,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_BRANCH_15",
+        "itemId": "MAT_BRANCH",
+        "tileLocal": [
+          105,
+          228
+        ],
+        "tileAtlas": [
+          233,
+          292
+        ],
+        "guaranteedMinYield": 2,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_PALM_LEAF_01",
+        "itemId": "MAT_PALM_LEAF",
+        "tileLocal": [
+          127,
+          220
+        ],
+        "tileAtlas": [
+          255,
+          284
+        ],
+        "guaranteedMinYield": 5,
+        "respawnGameDays": 6,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_PALM_LEAF_02",
+        "itemId": "MAT_PALM_LEAF",
+        "tileLocal": [
+          102,
+          216
+        ],
+        "tileAtlas": [
+          230,
+          280
+        ],
+        "guaranteedMinYield": 5,
+        "respawnGameDays": 6,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_PALM_LEAF_03",
+        "itemId": "MAT_PALM_LEAF",
+        "tileLocal": [
+          117,
+          211
+        ],
+        "tileAtlas": [
+          245,
+          275
+        ],
+        "guaranteedMinYield": 5,
+        "respawnGameDays": 6,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_PALM_LEAF_04",
+        "itemId": "MAT_PALM_LEAF",
+        "tileLocal": [
+          119,
+          225
+        ],
+        "tileAtlas": [
+          247,
+          289
+        ],
+        "guaranteedMinYield": 5,
+        "respawnGameDays": 6,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_PALM_LEAF_05",
+        "itemId": "MAT_PALM_LEAF",
+        "tileLocal": [
+          124,
+          239
+        ],
+        "tileAtlas": [
+          252,
+          303
+        ],
+        "guaranteedMinYield": 5,
+        "respawnGameDays": 6,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_PALM_LEAF_06",
+        "itemId": "MAT_PALM_LEAF",
+        "tileLocal": [
+          120,
+          207
+        ],
+        "tileAtlas": [
+          248,
+          271
+        ],
+        "guaranteedMinYield": 5,
+        "respawnGameDays": 6,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_PALM_LEAF_07",
+        "itemId": "MAT_PALM_LEAF",
+        "tileLocal": [
+          132,
+          236
+        ],
+        "tileAtlas": [
+          260,
+          300
+        ],
+        "guaranteedMinYield": 5,
+        "respawnGameDays": 6,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_FIBER_01",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          116,
+          230
+        ],
+        "tileAtlas": [
+          244,
+          294
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_FIBER_02",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          128,
+          216
+        ],
+        "tileAtlas": [
+          256,
+          280
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_FIBER_03",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          124,
+          199
+        ],
+        "tileAtlas": [
+          252,
+          263
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_FIBER_04",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          108,
+          230
+        ],
+        "tileAtlas": [
+          236,
+          294
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_FIBER_05",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          119,
+          230
+        ],
+        "tileAtlas": [
+          247,
+          294
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_FIBER_06",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          129,
+          231
+        ],
+        "tileAtlas": [
+          257,
+          295
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_FIBER_07",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          128,
+          238
+        ],
+        "tileAtlas": [
+          256,
+          302
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_FIBER_08",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          110,
+          207
+        ],
+        "tileAtlas": [
+          238,
+          271
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_FIBER_09",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          116,
+          237
+        ],
+        "tileAtlas": [
+          244,
+          301
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_FIBER_10",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          143,
+          220
+        ],
+        "tileAtlas": [
+          271,
+          284
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_FIBER_11",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          134,
+          233
+        ],
+        "tileAtlas": [
+          262,
+          297
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_FIBER_12",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          140,
+          220
+        ],
+        "tileAtlas": [
+          268,
+          284
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_FIBER_13",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          116,
+          202
+        ],
+        "tileAtlas": [
+          244,
+          266
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_FIBER_14",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          104,
+          220
+        ],
+        "tileAtlas": [
+          232,
+          284
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_FIBER_15",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          127,
+          235
+        ],
+        "tileAtlas": [
+          255,
+          299
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 2,
+        "origin": "STARTER_GUARANTEE_NOT_RANDOM"
+      },
+      {
+        "id": "START_MAT_FIBER_EXTRA_01",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          117,
+          208
+        ],
+        "tileAtlas": [
+          245,
+          272
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 4,
+        "origin": "BALANCE_STARTER_EXTRA_FIXED_v1.5"
+      },
+      {
+        "id": "START_MAT_FIBER_EXTRA_02",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          127,
+          208
+        ],
+        "tileAtlas": [
+          255,
+          272
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 4,
+        "origin": "BALANCE_STARTER_EXTRA_FIXED_v1.5"
+      },
+      {
+        "id": "START_MAT_FIBER_EXTRA_03",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          111,
+          213
+        ],
+        "tileAtlas": [
+          239,
+          277
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 4,
+        "origin": "BALANCE_STARTER_EXTRA_FIXED_v1.5"
+      },
+      {
+        "id": "START_MAT_FIBER_EXTRA_04",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          134,
+          215
+        ],
+        "tileAtlas": [
+          262,
+          279
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 4,
+        "origin": "BALANCE_STARTER_EXTRA_FIXED_v1.5"
+      },
+      {
+        "id": "START_MAT_FIBER_EXTRA_05",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          135,
+          220
+        ],
+        "tileAtlas": [
+          263,
+          284
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 4,
+        "origin": "BALANCE_STARTER_EXTRA_FIXED_v1.5"
+      },
+      {
+        "id": "START_MAT_FIBER_EXTRA_06",
+        "itemId": "MAT_FIBER",
+        "tileLocal": [
+          133,
+          227
+        ],
+        "tileAtlas": [
+          261,
+          291
+        ],
+        "guaranteedMinYield": 3,
+        "respawnGameDays": 4,
+        "origin": "BALANCE_STARTER_EXTRA_FIXED_v1.5"
+      }
+    ],
+    "tutorialSafetyDays": 2,
+    "specialGuarantees": {
+      "POI_CRASH_BOAT": {
+        "MAT_BRANCH": 6,
+        "MAT_STONE": 5,
+        "MAT_FIBER": 6,
+        "FOOD_COCONUT": 2
+      }
+    }
+  },
+  "regionSpawnProfiles": {
+    "REG_BEACH": {
+      "targetAliveSourceNodes": 92,
+      "resourceItemIds": [
+        "MAT_STONE",
+        "MAT_BRANCH",
+        "MAT_FIBER",
+        "MAT_PALM_LEAF",
+        "MAT_LOG",
+        "FOOD_COCONUT",
+        "MAT_SEASHELL",
+        "MAT_SAND"
+      ],
+      "seedFunction": "SHA256(saveWorldSeed + regionId + nodeSlotIndex) then spawn in valid static placement mask",
+      "minDistanceBetweenNodesTiles": 2,
+      "distributionPolicy": "FIXED_CRITICAL + SEEDED_SECONDARY",
+      "respawnGameDaysByKind": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      },
+      "extraSalvageAlwaysRandom": true
+    },
+    "REG_GROVE": {
+      "targetAliveSourceNodes": 125,
+      "resourceItemIds": [
+        "MAT_BAMBOO",
+        "MAT_LOG",
+        "MAT_RESIN",
+        "MAT_VINE",
+        "MAT_FIBER",
+        "FOOD_BANANA",
+        "FOOD_BERRY",
+        "MAT_PALM_LEAF"
+      ],
+      "seedFunction": "SHA256(saveWorldSeed + regionId + nodeSlotIndex) then spawn in valid static placement mask",
+      "minDistanceBetweenNodesTiles": 2,
+      "distributionPolicy": "FIXED_CRITICAL + SEEDED_SECONDARY",
+      "respawnGameDaysByKind": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      },
+      "extraSalvageAlwaysRandom": false
+    },
+    "REG_VALLEY": {
+      "targetAliveSourceNodes": 112,
+      "resourceItemIds": [
+        "MAT_CLAY",
+        "MAT_STONE",
+        "MAT_BAMBOO",
+        "MAT_REED",
+        "MAT_FIBER",
+        "MAT_WORM",
+        "SEED_ROOT",
+        "SEED_GREENS",
+        "SEED_BEAN"
+      ],
+      "seedFunction": "SHA256(saveWorldSeed + regionId + nodeSlotIndex) then spawn in valid static placement mask",
+      "minDistanceBetweenNodesTiles": 2,
+      "distributionPolicy": "FIXED_CRITICAL + SEEDED_SECONDARY",
+      "respawnGameDaysByKind": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      },
+      "extraSalvageAlwaysRandom": false
+    },
+    "REG_FOREST": {
+      "targetAliveSourceNodes": 155,
+      "resourceItemIds": [
+        "MAT_HARDWOOD",
+        "MAT_LOG",
+        "MAT_RESIN",
+        "MAT_VINE",
+        "MAT_TREE_BARK",
+        "MAT_MED_HERB",
+        "FOOD_MUSHROOM"
+      ],
+      "seedFunction": "SHA256(saveWorldSeed + regionId + nodeSlotIndex) then spawn in valid static placement mask",
+      "minDistanceBetweenNodesTiles": 2,
+      "distributionPolicy": "FIXED_CRITICAL + SEEDED_SECONDARY",
+      "respawnGameDaysByKind": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      },
+      "extraSalvageAlwaysRandom": false
+    },
+    "REG_SWAMP": {
+      "targetAliveSourceNodes": 70,
+      "resourceItemIds": [
+        "MAT_CLAY",
+        "MAT_REED",
+        "MAT_MED_HERB",
+        "MAT_WORM",
+        "MAT_SEAWEED",
+        "MAT_SAP",
+        "MAT_FIBER"
+      ],
+      "seedFunction": "SHA256(saveWorldSeed + regionId + nodeSlotIndex) then spawn in valid static placement mask",
+      "minDistanceBetweenNodesTiles": 2,
+      "distributionPolicy": "FIXED_CRITICAL + SEEDED_SECONDARY",
+      "respawnGameDaysByKind": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      },
+      "extraSalvageAlwaysRandom": false
+    },
+    "REG_RED_CLIFF": {
+      "targetAliveSourceNodes": 95,
+      "resourceItemIds": [
+        "MAT_STONE",
+        "MAT_COAL",
+        "MAT_COPPER_ORE",
+        "MAT_FLINT",
+        "MAT_QUARTZ",
+        "MAT_CLAY"
+      ],
+      "seedFunction": "SHA256(saveWorldSeed + regionId + nodeSlotIndex) then spawn in valid static placement mask",
+      "minDistanceBetweenNodesTiles": 2,
+      "distributionPolicy": "FIXED_CRITICAL + SEEDED_SECONDARY",
+      "respawnGameDaysByKind": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      },
+      "extraSalvageAlwaysRandom": false
+    },
+    "REG_MOUNTAIN": {
+      "targetAliveSourceNodes": 96,
+      "resourceItemIds": [
+        "MAT_IRON_ORE",
+        "MAT_COPPER_ORE",
+        "MAT_QUARTZ",
+        "MAT_COAL",
+        "MAT_STONE",
+        "MAT_SULFUR",
+        "MAT_FLINT"
+      ],
+      "seedFunction": "SHA256(saveWorldSeed + regionId + nodeSlotIndex) then spawn in valid static placement mask",
+      "minDistanceBetweenNodesTiles": 2,
+      "distributionPolicy": "FIXED_CRITICAL + SEEDED_SECONDARY",
+      "respawnGameDaysByKind": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      },
+      "extraSalvageAlwaysRandom": false
+    },
+    "REG_SETTLEMENT": {
+      "targetAliveSourceNodes": 68,
+      "resourceItemIds": [
+        "MAT_BRANCH",
+        "MAT_FIBER",
+        "MAT_LOG",
+        "MAT_STONE",
+        "MAT_CLAY"
+      ],
+      "seedFunction": "SHA256(saveWorldSeed + regionId + nodeSlotIndex) then spawn in valid static placement mask",
+      "minDistanceBetweenNodesTiles": 2,
+      "distributionPolicy": "FIXED_CRITICAL + SEEDED_SECONDARY",
+      "respawnGameDaysByKind": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      },
+      "extraSalvageAlwaysRandom": true
+    },
+    "REG_LAGOON": {
+      "targetAliveSourceNodes": 83,
+      "resourceItemIds": [
+        "MAT_SEAWEED",
+        "MAT_SEASHELL",
+        "MAT_SAND",
+        "MAT_SEA_SALT",
+        "MAT_BAMBOO",
+        "FOOD_COCONUT"
+      ],
+      "seedFunction": "SHA256(saveWorldSeed + regionId + nodeSlotIndex) then spawn in valid static placement mask",
+      "minDistanceBetweenNodesTiles": 2,
+      "distributionPolicy": "FIXED_CRITICAL + SEEDED_SECONDARY",
+      "respawnGameDaysByKind": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      },
+      "extraSalvageAlwaysRandom": true
+    },
+    "REG_LIGHTHOUSE": {
+      "targetAliveSourceNodes": 30,
+      "resourceItemIds": [
+        "MAT_STONE",
+        "MAT_REED",
+        "MAT_SEASHELL",
+        "MAT_BRANCH"
+      ],
+      "seedFunction": "SHA256(saveWorldSeed + regionId + nodeSlotIndex) then spawn in valid static placement mask",
+      "minDistanceBetweenNodesTiles": 2,
+      "distributionPolicy": "FIXED_CRITICAL + SEEDED_SECONDARY",
+      "respawnGameDaysByKind": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      },
+      "extraSalvageAlwaysRandom": false
+    },
+    "REG_WRECK": {
+      "targetAliveSourceNodes": 35,
+      "resourceItemIds": [
+        "MAT_SEASHELL",
+        "MAT_SAND",
+        "MAT_SEAWEED",
+        "MAT_STONE"
+      ],
+      "seedFunction": "SHA256(saveWorldSeed + regionId + nodeSlotIndex) then spawn in valid static placement mask",
+      "minDistanceBetweenNodesTiles": 2,
+      "distributionPolicy": "FIXED_CRITICAL + SEEDED_SECONDARY",
+      "respawnGameDaysByKind": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      },
+      "extraSalvageAlwaysRandom": true
+    },
+    "REG_FERTILE": {
+      "targetAliveSourceNodes": 60,
+      "resourceItemIds": [
+        "FOOD_BANANA",
+        "MAT_MED_HERB",
+        "MAT_FIBER",
+        "MAT_BAMBOO",
+        "SEED_PINEAPPLE",
+        "SEED_CANE",
+        "SEED_SPICE"
+      ],
+      "seedFunction": "SHA256(saveWorldSeed + regionId + nodeSlotIndex) then spawn in valid static placement mask",
+      "minDistanceBetweenNodesTiles": 2,
+      "distributionPolicy": "FIXED_CRITICAL + SEEDED_SECONDARY",
+      "respawnGameDaysByKind": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      },
+      "extraSalvageAlwaysRandom": false
+    }
+  },
+  "salvageDaily": {
+    "eligibleRegions": [
+      "REG_BEACH",
+      "REG_LAGOON",
+      "REG_WRECK",
+      "REG_SETTLEMENT"
+    ],
+    "conditions": [
+      "AFTER_STORM",
+      "LOW_CHANCE_DAILY"
+    ],
+    "maxNewNodesPerDayPerRegion": 2,
+    "neverRollsCriticalSpecialItems": true,
+    "neverRollsExclusiveBlueprints": true
+  },
+  "chestRolls": {
+    "mainPoiGuaranteedFirst": true,
+    "sidePoiLootSlots": [
+      2,
+      4
+    ],
+    "doubleOpenPrevention": "lootClaimed flag by POI, atomic save",
+    "randomPoolMustReferenceExistingItemIds": true
+  },
+  "fishZones": [
+    {
+      "id": "FISH_BEACH_SHALLOWS",
+      "regionId": "REG_BEACH",
+      "island": "MAIN",
+      "tileLocal": [
+        133,
+        249
+      ],
+      "radiusTiles": 15,
+      "habitat": "SHALLOW_COAST"
+    },
+    {
+      "id": "FISH_VALLEY_RIVER",
+      "regionId": "REG_VALLEY",
+      "island": "MAIN",
+      "tileLocal": [
+        108,
+        153
+      ],
+      "radiusTiles": 9,
+      "habitat": "RIVER"
+    },
+    {
+      "id": "FISH_LAGOON_INNER",
+      "regionId": "REG_LAGOON",
+      "island": "MAIN",
+      "tileLocal": [
+        238,
+        196
+      ],
+      "radiusTiles": 18,
+      "habitat": "LAGOON"
+    },
+    {
+      "id": "FISH_REEF_OUTER",
+      "regionId": "REG_LAGOON",
+      "island": "MAIN",
+      "tileLocal": [
+        239,
+        183
+      ],
+      "radiusTiles": 10,
+      "habitat": "REEF"
+    },
+    {
+      "id": "FISH_WRECK_SHALLOWS",
+      "regionId": "REG_WRECK",
+      "island": "WRECK",
+      "tileLocal": [
+        50,
+        36
+      ],
+      "radiusTiles": 10,
+      "habitat": "REEF"
+    },
+    {
+      "id": "FISH_LIGHTHOUSE",
+      "regionId": "REG_LIGHTHOUSE",
+      "island": "LIGHTHOUSE",
+      "tileLocal": [
+        51,
+        32
+      ],
+      "radiusTiles": 10,
+      "habitat": "COAST"
+    },
+    {
+      "id": "FISH_FERTILE_COAST",
+      "regionId": "REG_FERTILE",
+      "island": "FERTILE",
+      "tileLocal": [
+        56,
+        42
+      ],
+      "radiusTiles": 9,
+      "habitat": "LAGOON"
+    },
+    {
+      "id": "FISH_OPEN_EAST",
+      "regionId": "REG_LAGOON",
+      "island": "ATLAS",
+      "tileAtlas": [
+        399,
+        232
+      ],
+      "radiusTiles": 22,
+      "habitat": "OPEN_SEA"
+    },
+    {
+      "id": "FISH_OPEN_WEST",
+      "regionId": "REG_BEACH",
+      "island": "ATLAS",
+      "tileAtlas": [
+        110,
+        232
+      ],
+      "radiusTiles": 20,
+      "habitat": "OPEN_SEA"
+    },
+    {
+      "id": "FISH_CAVE_POND",
+      "regionId": "REG_MOUNTAIN",
+      "island": "CAVE_POND",
+      "tileLocal": [
+        30,
+        29
+      ],
+      "radiusTiles": 10,
+      "habitat": "CAVE_POOL"
+    }
+  ]
+}

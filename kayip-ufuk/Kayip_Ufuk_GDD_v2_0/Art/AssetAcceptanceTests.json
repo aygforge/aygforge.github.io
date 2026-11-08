@@ -1,0 +1,232 @@
+{
+  "version": "v1.9",
+  "testCount": 28,
+  "blockingCount": 20,
+  "tests": [
+    {
+      "id": "VIS_01",
+      "priority": "P0",
+      "area": "boot",
+      "procedure": "Load game from clean itch.io-like HTTP path",
+      "expected": "All required sprite sheets resolved; no blank screen or missing atlas",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_02",
+      "priority": "P0",
+      "area": "data",
+      "procedure": "Walk all 20 TerrainDB IDs",
+      "expected": "Textures follow the right collision map tile and show distinct readable surfaces",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_03",
+      "priority": "P0",
+      "area": "transitions",
+      "procedure": "Inspect coastal river edges at each 4-neighbor mask",
+      "expected": "No seams, black edges, tile jitter or water clipping",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_04",
+      "priority": "P0",
+      "area": "avatar",
+      "procedure": "Run all 16 animation clips in their configured directions",
+      "expected": "Clips nonempty, visually consistent, correct FPS and pivot",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_05",
+      "priority": "P0",
+      "area": "avatar",
+      "procedure": "Equip axe/pickaxe/bow/rod through relevant clips",
+      "expected": "Hands and tool heads remain attached; attack feedback follows animation",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_06",
+      "priority": "P0",
+      "area": "character_creator",
+      "procedure": "Cycle 2 body shapes, 4 skin tones, 6 hair shapes, 5 hair colors, 3 outfit palettes",
+      "expected": "All choices visually distinct and remain after save/load",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_07",
+      "priority": "P0",
+      "area": "item",
+      "procedure": "Open item atlas for all 179 item IDs",
+      "expected": "All 179 icons unique in identity, no emojis or empty placeholders",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_08",
+      "priority": "P0",
+      "area": "structures",
+      "procedure": "Place and complete each of 58 BuildDB structures",
+      "expected": "Correct footprint/orientation, ghost + finished rendering, no game collisions hidden by visuals",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_09",
+      "priority": "P0",
+      "area": "houses",
+      "procedure": "Enter and exit four prefabricated houses",
+      "expected": "Roof fades or disappears and furniture remains visible/interactable without teleport scene",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_10",
+      "priority": "P0",
+      "area": "plants",
+      "procedure": "Watch 12 crops through 4 growth stages",
+      "expected": "48 matching crop stage sprites and shared moisture overlays; no skipped stage",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_11",
+      "priority": "P0",
+      "area": "animals",
+      "procedure": "Spawn each of the 12 land species and animate AI",
+      "expected": "Species silhouettes distinct and actions match AI state",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_12",
+      "priority": "P0",
+      "area": "fish",
+      "procedure": "Observe all 10 fish underwater and in catch journal",
+      "expected": "10 species individually identifiable, swim/turn animation and matching codex icon",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_13",
+      "priority": "P0",
+      "area": "marine",
+      "procedure": "Observe marine turtle, stingray, reef shark",
+      "expected": "Separate silhouette and threat behavior clearly readable",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_14",
+      "priority": "P0",
+      "area": "poi",
+      "procedure": "Visit each of 38 POIs with their canonical IDs",
+      "expected": "Correct visual and post-search/repaired changes; no POI_01 alias confusion",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_15",
+      "priority": "P0",
+      "area": "vehicles",
+      "procedure": "Build raft and escape boat and move in four directions",
+      "expected": "Visual hull matches physical collider, waves/wake anchored correctly",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_16",
+      "priority": "P0",
+      "area": "finales",
+      "procedure": "Complete sea and radio routes from game",
+      "expected": "Different ending visuals, no dialogue with live human NPC before finale",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_17",
+      "priority": "P0",
+      "area": "save",
+      "procedure": "Save in cave, boat, house, mid-puzzle then reload",
+      "expected": "Appearance and completed states persist with gameplay state",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_18",
+      "priority": "P0",
+      "area": "mobile",
+      "procedure": "Test 360 px tall landscape display with touch controls",
+      "expected": "No unclickable buttons; 48px CSS hit targets; critical UI stays on screen",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_19",
+      "priority": "P0",
+      "area": "scaling",
+      "procedure": "Test 1x,2x,3x zoom",
+      "expected": "Pixels crisp, no unintended blur or half-pixel flicker",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_20",
+      "priority": "P0",
+      "area": "error",
+      "procedure": "Remove one referenced atlas as negative test",
+      "expected": "Build/test fails explicitly and reports missing atlas; no silent emoji or gray box",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_21",
+      "priority": "P1",
+      "area": "weather",
+      "procedure": "Cycle daylight to night and 5 weather states",
+      "expected": "Routes and important resources identifiable; downscale particles on low-end mode",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_22",
+      "priority": "P1",
+      "area": "memory",
+      "procedure": "Profile atlas usage in beach/forest/cave with repeated transitions",
+      "expected": "No unbounded atlas memory leak; target 48MiB active decoded asset budget treated as target",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_23",
+      "priority": "P1",
+      "area": "performance",
+      "procedure": "Profile lowest target Android in cave, rain, swarm, busy camp",
+      "expected": "Stable simulation with quality degradation not impacting interactability",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_24",
+      "priority": "P1",
+      "area": "audio",
+      "procedure": "Trigger all sound IDs after player gesture",
+      "expected": "No autoplay failures; settings channels work; no copyrighted borrowed music",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_25",
+      "priority": "P1",
+      "area": "artQA",
+      "procedure": "Compare 12 biomes in sunrise/day/night against visual standard",
+      "expected": "Distinct original coherent pixel art color and foliage styling",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_26",
+      "priority": "P1",
+      "area": "accessibility",
+      "procedure": "Disable decorative effects and reduce motion",
+      "expected": "All pickups, threats, puzzle state changes still distinguishable",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_27",
+      "priority": "P1",
+      "area": "atlas",
+      "procedure": "Run physical PNG validator on all pages",
+      "expected": "Alpha, pixel bounds, extruded padding and per-page metadata agree with mapping",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    },
+    {
+      "id": "VIS_28",
+      "priority": "P1",
+      "area": "skins",
+      "procedure": "Open avatar all variants during work/swim",
+      "expected": "No hair detachment or overlapping body/bag effects, correct clothing layering",
+      "status": "NOT_RUN_REQUIRES_ASSETS_AND_BROWSER"
+    }
+  ],
+  "runStatus": "NOT_RUN_NO_PNG_OR_GAME"
+}

@@ -1,0 +1,1721 @@
+{
+  "meta": {
+    "version": "v1.1",
+    "total": 38,
+    "major": 14,
+    "side": 24,
+    "lockedBlueprints": 20,
+    "storyItemSources": "fixed guaranteed; inventory non-droppable; journal copy protected",
+    "puzzleIdsReferenced": 12
+  },
+  "pois": [
+    {
+      "id": "POI_CRASH_BOAT",
+      "index": 1,
+      "rank": "MAJOR",
+      "name": "Parçalanmış Tekne",
+      "regionId": "REG_BEACH",
+      "islandId": "MAIN",
+      "tileLocal": [
+        123,
+        215
+      ],
+      "tileAtlas": [
+        251,
+        279
+      ],
+      "interactionType": "SEARCH_WRECK",
+      "reward": {
+        "guaranteedItems": {
+          "MAT_BRANCH": 6,
+          "MAT_STONE": 5,
+          "MAT_FIBER": 6,
+          "FOOD_COCONUT": 2
+        },
+        "blueprintId": null,
+        "specialItemId": null,
+        "rolledExtras": "SMALL_POI_BONUS"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [
+        "STORY_01"
+      ],
+      "category": "START",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": false,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_WATERPROOF_BAG",
+      "index": 2,
+      "rank": "MAJOR",
+      "name": "Su Geçirmez Seyir Çantası",
+      "regionId": "REG_BEACH",
+      "islandId": "MAIN",
+      "tileLocal": [
+        133,
+        209
+      ],
+      "tileAtlas": [
+        261,
+        273
+      ],
+      "interactionType": "OPEN_CHEST",
+      "reward": {
+        "guaranteedItems": {
+          "CMP_ROPE": 2,
+          "TOOL_BAMBOO_CUP": 1
+        },
+        "blueprintId": null,
+        "specialItemId": null,
+        "rolledExtras": "SMALL_POI_BONUS"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "START",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": false,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_SHORE_CRATE",
+      "index": 3,
+      "rank": "SIDE",
+      "name": "Kıyı Sandığı",
+      "regionId": "REG_BEACH",
+      "islandId": "MAIN",
+      "tileLocal": [
+        109,
+        222
+      ],
+      "tileAtlas": [
+        237,
+        286
+      ],
+      "interactionType": "OPEN_CHEST",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": null,
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "COMMON_LOOT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": false,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_BROKEN_LOOKOUT",
+      "index": 4,
+      "rank": "SIDE",
+      "name": "Kırık Gözetleme Noktası",
+      "regionId": "REG_BEACH",
+      "islandId": "MAIN",
+      "tileLocal": [
+        155,
+        206
+      ],
+      "tileAtlas": [
+        283,
+        270
+      ],
+      "interactionType": "CLIMB_SHORT",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_MAP_TABLE",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_FISHER_HUT",
+      "index": 5,
+      "rank": "MAJOR",
+      "name": "Eski Balıkçı Kulübesi",
+      "regionId": "REG_GROVE",
+      "islandId": "MAIN",
+      "tileLocal": [
+        164,
+        187
+      ],
+      "tileAtlas": [
+        292,
+        251
+      ],
+      "interactionType": "SEARCH_HUT",
+      "reward": {
+        "guaranteedItems": {
+          "MAT_BAMBOO": 4,
+          "CMP_FISH_HOOK": 2,
+          "CMP_ROPE": 2
+        },
+        "blueprintId": null,
+        "specialItemId": "SPC_CHART_COAST",
+        "rolledExtras": "SMALL_POI_BONUS"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [
+        "STORY_02"
+      ],
+      "category": "NAV_SOURCE",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": true,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_FRUIT_HILL",
+      "index": 6,
+      "rank": "SIDE",
+      "name": "Meyve Tepesi",
+      "regionId": "REG_GROVE",
+      "islandId": "MAIN",
+      "tileLocal": [
+        165,
+        168
+      ],
+      "tileAtlas": [
+        293,
+        232
+      ],
+      "interactionType": "GATHER",
+      "reward": {
+        "guaranteedItems": {
+          "SEED_FIBER": 6
+        },
+        "blueprintId": null,
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "RENEWABLE",
+      "isFixed": true,
+      "isRepeatable": true,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": false,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_VINE_TUNNEL",
+      "index": 7,
+      "rank": "SIDE",
+      "name": "Sarmaşık Tüneli",
+      "regionId": "REG_GROVE",
+      "islandId": "MAIN",
+      "tileLocal": [
+        145,
+        160
+      ],
+      "tileAtlas": [
+        273,
+        224
+      ],
+      "interactionType": "CUT_VINES",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": null,
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "SHORTCUT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": false,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [
+          "TOOL_STONE_AXE",
+          "TOOL_MACHETE"
+        ],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_WATER_STATION",
+      "index": 8,
+      "rank": "MAJOR",
+      "name": "Terk Edilmiş Su İstasyonu",
+      "regionId": "REG_VALLEY",
+      "islandId": "MAIN",
+      "tileLocal": [
+        105,
+        150
+      ],
+      "tileAtlas": [
+        233,
+        214
+      ],
+      "interactionType": "REPAIR_WATER",
+      "reward": {
+        "guaranteedItems": {
+          "MAT_CLAY": 5,
+          "MAT_BAMBOO": 3
+        },
+        "blueprintId": null,
+        "specialItemId": null,
+        "rolledExtras": "SMALL_POI_BONUS"
+      },
+      "puzzleId": "PZ_WATER_VALVES",
+      "storyRecordIds": [
+        "STORY_04"
+      ],
+      "category": "WATER_REPAIR",
+      "isFixed": true,
+      "isRepeatable": true,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": false,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_STONE_BRIDGE",
+      "index": 9,
+      "rank": "SIDE",
+      "name": "Eski Taş Köprü",
+      "regionId": "REG_VALLEY",
+      "islandId": "MAIN",
+      "tileLocal": [
+        117,
+        140
+      ],
+      "tileAtlas": [
+        245,
+        204
+      ],
+      "interactionType": "REPAIR_BRIDGE",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_BRIDGE_ADV",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "SHORTCUT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_WATERFALL_CAVE",
+      "index": 10,
+      "rank": "SIDE",
+      "name": "Şelale Arkası",
+      "regionId": "REG_VALLEY",
+      "islandId": "MAIN",
+      "tileLocal": [
+        121,
+        117
+      ],
+      "tileAtlas": [
+        249,
+        181
+      ],
+      "interactionType": "FIND_HIDDEN_CAVE",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_WATER_FILTER",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": "PZ_WATERFALL_WHEEL",
+      "storyRecordIds": [],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [
+          "TOOL_TORCH"
+        ],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_FORESTER_HUT",
+      "index": 11,
+      "rank": "MAJOR",
+      "name": "Ormancı Kulübesi",
+      "regionId": "REG_FOREST",
+      "islandId": "MAIN",
+      "tileLocal": [
+        137,
+        113
+      ],
+      "tileAtlas": [
+        265,
+        177
+      ],
+      "interactionType": "REPAIR_BENCH",
+      "reward": {
+        "guaranteedItems": {
+          "MAT_LOG": 4,
+          "CMP_PLANK": 6
+        },
+        "blueprintId": null,
+        "specialItemId": null,
+        "rolledExtras": "SMALL_POI_BONUS"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [
+        "STORY_03"
+      ],
+      "category": "CRAFTING_KNOWLEDGE",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": false,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_TREEHOUSE",
+      "index": 12,
+      "rank": "SIDE",
+      "name": "Yüksek Ağaç Evi",
+      "regionId": "REG_FOREST",
+      "islandId": "MAIN",
+      "tileLocal": [
+        160,
+        102
+      ],
+      "tileAtlas": [
+        288,
+        166
+      ],
+      "interactionType": "CLIMB_ROPE",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_EXPLORER_BAG",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [
+          "TOOL_CLIMB_KIT",
+          "CMP_THICK_ROPE"
+        ],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_HUNTER_CAMP",
+      "index": 13,
+      "rank": "SIDE",
+      "name": "Eski Avcı Kampı",
+      "regionId": "REG_FOREST",
+      "islandId": "MAIN",
+      "tileLocal": [
+        110,
+        102
+      ],
+      "tileAtlas": [
+        238,
+        166
+      ],
+      "interactionType": "TRACK_SIGNS",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_HUNTER_BOW",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_SWAMP_MEASURE",
+      "index": 14,
+      "rank": "MAJOR",
+      "name": "Araştırma Ölçüm Barakası",
+      "regionId": "REG_SWAMP",
+      "islandId": "MAIN",
+      "tileLocal": [
+        59,
+        150
+      ],
+      "tileAtlas": [
+        187,
+        214
+      ],
+      "interactionType": "RETRIEVE_LOG",
+      "reward": {
+        "guaranteedItems": {
+          "MAT_MED_HERB": 3,
+          "MAT_CLAY": 4
+        },
+        "blueprintId": null,
+        "specialItemId": null,
+        "rolledExtras": "SMALL_POI_BONUS"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [
+        "STORY_05"
+      ],
+      "category": "STORY",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": false,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_FLOODED_STORE",
+      "index": 15,
+      "rank": "SIDE",
+      "name": "Su Basan Depo",
+      "regionId": "REG_SWAMP",
+      "islandId": "MAIN",
+      "tileLocal": [
+        50,
+        171
+      ],
+      "tileAtlas": [
+        178,
+        235
+      ],
+      "interactionType": "OPEN_UNDERWATER",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_CHEST_REINFORCE",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": "PZ_FLOODED_LOCK",
+      "storyRecordIds": [],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [
+          "TOOL_DIVING_MASK"
+        ],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_MANGROVE_COVE",
+      "index": 16,
+      "rank": "SIDE",
+      "name": "Mangrov Koyu",
+      "regionId": "REG_SWAMP",
+      "islandId": "MAIN",
+      "tileLocal": [
+        46,
+        186
+      ],
+      "tileAtlas": [
+        174,
+        250
+      ],
+      "interactionType": "SEARCH_PIER",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_FISH_TRAP_ADV",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_COPPER_MINE",
+      "index": 17,
+      "rank": "MAJOR",
+      "name": "Eski Bakır Ocağı",
+      "regionId": "REG_RED_CLIFF",
+      "islandId": "MAIN",
+      "tileLocal": [
+        80,
+        86
+      ],
+      "tileAtlas": [
+        208,
+        150
+      ],
+      "interactionType": "CLEAR_DEBRIS",
+      "reward": {
+        "guaranteedItems": {
+          "MAT_COPPER_ORE": 8,
+          "MAT_COAL": 5,
+          "SAL_SCRAP": 4
+        },
+        "blueprintId": null,
+        "specialItemId": null,
+        "rolledExtras": "SMALL_POI_BONUS"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [
+        "STORY_06"
+      ],
+      "category": "ORE_ACCESS",
+      "isFixed": true,
+      "isRepeatable": true,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": false,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_CABLE_CAR",
+      "index": 18,
+      "rank": "SIDE",
+      "name": "Kırık Teleferik",
+      "regionId": "REG_RED_CLIFF",
+      "islandId": "MAIN",
+      "tileLocal": [
+        99,
+        70
+      ],
+      "tileAtlas": [
+        227,
+        134
+      ],
+      "interactionType": "REPAIR_MECHANISM",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_WINCH",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": "PZ_CABLE_GEARS",
+      "storyRecordIds": [],
+      "category": "SHORTCUT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_MINE_SHELTER",
+      "index": 19,
+      "rank": "SIDE",
+      "name": "Maden Sığınağı",
+      "regionId": "REG_RED_CLIFF",
+      "islandId": "MAIN",
+      "tileLocal": [
+        62,
+        105
+      ],
+      "tileAtlas": [
+        190,
+        169
+      ],
+      "interactionType": "PRY_LOCK",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_MACHETE",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [
+          "TOOL_CROWBAR"
+        ],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_OBSERVATORY",
+      "index": 20,
+      "rank": "MAJOR",
+      "name": "Gözlem Tepesi",
+      "regionId": "REG_MOUNTAIN",
+      "islandId": "MAIN",
+      "tileLocal": [
+        149,
+        50
+      ],
+      "tileAtlas": [
+        277,
+        114
+      ],
+      "interactionType": "ALIGN_COMPASS",
+      "reward": {
+        "guaranteedItems": {
+          "SAL_GLASS": 2,
+          "MAT_QUARTZ": 2
+        },
+        "blueprintId": null,
+        "specialItemId": "SPC_CHART_OBSERVATORY",
+        "rolledExtras": "SMALL_POI_BONUS"
+      },
+      "puzzleId": "PZ_OBSERVATION_ALIGN",
+      "storyRecordIds": [
+        "STORY_10"
+      ],
+      "category": "NAV_SOURCE",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": true,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_RELAY_SHELTER",
+      "index": 21,
+      "rank": "MAJOR",
+      "name": "Dağ Röle Sığınağı",
+      "regionId": "REG_MOUNTAIN",
+      "islandId": "MAIN",
+      "tileLocal": [
+        181,
+        75
+      ],
+      "tileAtlas": [
+        309,
+        139
+      ],
+      "interactionType": "CONNECT_POWER",
+      "reward": {
+        "guaranteedItems": {
+          "SAL_BATTERY": 2,
+          "SAL_WIRE": 2
+        },
+        "blueprintId": null,
+        "specialItemId": "SPC_RADIO_NOTE",
+        "rolledExtras": "SMALL_POI_BONUS"
+      },
+      "puzzleId": "PZ_RELAY_POWER",
+      "storyRecordIds": [
+        "STORY_09"
+      ],
+      "category": "RADIO_SOURCE",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": true,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_BAT_CAVERN",
+      "index": 22,
+      "rank": "SIDE",
+      "name": "Yarasa Galerisi",
+      "regionId": "REG_MOUNTAIN",
+      "islandId": "MAIN",
+      "tileLocal": [
+        130,
+        77
+      ],
+      "tileAtlas": [
+        258,
+        141
+      ],
+      "interactionType": "EXPLORE_CAVE",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_PORTABLE_LAMP",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [
+          "TOOL_TORCH"
+        ],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_UNDERGROUND_POND",
+      "index": 23,
+      "rank": "SIDE",
+      "name": "Yeraltı Göleti",
+      "regionId": "REG_MOUNTAIN",
+      "islandId": "MAIN",
+      "tileLocal": [
+        169,
+        91
+      ],
+      "tileAtlas": [
+        297,
+        155
+      ],
+      "interactionType": "UNDERGROUND_FISH",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": null,
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "REVISIT",
+      "isFixed": true,
+      "isRepeatable": true,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": false,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [
+          "TOOL_TORCH"
+        ],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_RESEARCH_SQUARE",
+      "index": 24,
+      "rank": "MAJOR",
+      "name": "Araştırma Meydanı",
+      "regionId": "REG_SETTLEMENT",
+      "islandId": "MAIN",
+      "tileLocal": [
+        199,
+        112
+      ],
+      "tileAtlas": [
+        327,
+        176
+      ],
+      "interactionType": "READ_RECORDS",
+      "reward": {
+        "guaranteedItems": {
+          "SAL_SCRAP": 4,
+          "SAL_GLASS": 3,
+          "SAL_BATTERY": 2
+        },
+        "blueprintId": null,
+        "specialItemId": "SPC_GEN_CORE",
+        "rolledExtras": "SMALL_POI_BONUS"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [
+        "STORY_07",
+        "STORY_08"
+      ],
+      "category": "STORY_AND_GENERATOR",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": true,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_RADIO_WORKSHOP",
+      "index": 25,
+      "rank": "MAJOR",
+      "name": "Radyo Atölyesi",
+      "regionId": "REG_SETTLEMENT",
+      "islandId": "MAIN",
+      "tileLocal": [
+        219,
+        130
+      ],
+      "tileAtlas": [
+        347,
+        194
+      ],
+      "interactionType": "REPAIR_LOCKER",
+      "reward": {
+        "guaranteedItems": {
+          "SAL_WIRE": 4,
+          "SAL_BATTERY": 2,
+          "SAL_FUSE": 2
+        },
+        "blueprintId": null,
+        "specialItemId": "SPC_TX_MODULE",
+        "rolledExtras": "SMALL_POI_BONUS"
+      },
+      "puzzleId": "PZ_RADIO_REPAIR",
+      "storyRecordIds": [
+        "STORY_11"
+      ],
+      "category": "RADIO_SOURCE",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": true,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_OLD_KITCHEN",
+      "index": 26,
+      "rank": "SIDE",
+      "name": "Eski Mutfak",
+      "regionId": "REG_SETTLEMENT",
+      "islandId": "MAIN",
+      "tileLocal": [
+        194,
+        135
+      ],
+      "tileAtlas": [
+        322,
+        199
+      ],
+      "interactionType": "SEARCH_BUILDING",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_ADV_COOKER",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_LOCKED_WAREHOUSE",
+      "index": 27,
+      "rank": "SIDE",
+      "name": "Kilitli Ambar",
+      "regionId": "REG_SETTLEMENT",
+      "islandId": "MAIN",
+      "tileLocal": [
+        219,
+        107
+      ],
+      "tileAtlas": [
+        347,
+        171
+      ],
+      "interactionType": "OPEN_LOCK",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_PANTRY",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": "PZ_WAREHOUSE_PIN",
+      "storyRecordIds": [],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [
+          "TOOL_CROWBAR"
+        ],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_SHALLOW_WRECK",
+      "index": 28,
+      "rank": "MAJOR",
+      "name": "Sığ Su Batığı",
+      "regionId": "REG_LAGOON",
+      "islandId": "MAIN",
+      "tileLocal": [
+        204,
+        195
+      ],
+      "tileAtlas": [
+        332,
+        259
+      ],
+      "interactionType": "SHALLOW_DIVE",
+      "reward": {
+        "guaranteedItems": {
+          "SAL_SCRAP": 2,
+          "SAL_GLASS": 2
+        },
+        "blueprintId": null,
+        "specialItemId": null,
+        "rolledExtras": "SMALL_POI_BONUS"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "SEA_LOOT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": false,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [
+          "TOOL_DIVING_MASK"
+        ],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_REEF_FISSURE",
+      "index": 29,
+      "rank": "SIDE",
+      "name": "Resif Yarığı",
+      "regionId": "REG_LAGOON",
+      "islandId": "MAIN",
+      "tileLocal": [
+        228,
+        180
+      ],
+      "tileAtlas": [
+        356,
+        244
+      ],
+      "interactionType": "DIVE",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_FISH_ROD_ADV",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [
+          "TOOL_DIVING_KIT"
+        ],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_SAND_SPIT",
+      "index": 30,
+      "rank": "SIDE",
+      "name": "Kum Dili",
+      "regionId": "REG_LAGOON",
+      "islandId": "MAIN",
+      "tileLocal": [
+        229,
+        211
+      ],
+      "tileAtlas": [
+        357,
+        275
+      ],
+      "interactionType": "LOW_TIDE",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_STORM_ANCHOR",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": "PZ_SAND_SPIT_MARKERS",
+      "storyRecordIds": [],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": null,
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_LIGHTHOUSE",
+      "index": 31,
+      "rank": "MAJOR",
+      "name": "Fener İstasyonu",
+      "regionId": "REG_LIGHTHOUSE",
+      "islandId": "LIGHTHOUSE",
+      "tileLocal": [
+        29,
+        27
+      ],
+      "tileAtlas": [
+        453,
+        81
+      ],
+      "interactionType": "REPAIR_ANTENNA",
+      "reward": {
+        "guaranteedItems": {
+          "SAL_WIRE": 3,
+          "SAL_FUSE": 2
+        },
+        "blueprintId": null,
+        "specialItemId": "SPC_SOLAR_CORE",
+        "rolledExtras": "SMALL_POI_BONUS"
+      },
+      "puzzleId": "PZ_LIGHTHOUSE_TUNE",
+      "storyRecordIds": [
+        "STORY_14"
+      ],
+      "category": "SIGNAL_FINAL",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": true,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": "BUILD_RAFT",
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ],
+      "specialRewardTrigger": "ON_INSPECT_POWER_CABINET",
+      "finalPuzzleTrigger": "ON_SIGNAL_STATION_BUILT_AND_POWERED_AND_NOTE_FOUND"
+    },
+    {
+      "id": "POI_LIGHTHOUSE_KEEPER",
+      "index": 32,
+      "rank": "SIDE",
+      "name": "Fener Bekçisinin Kulübesi",
+      "regionId": "REG_LIGHTHOUSE",
+      "islandId": "LIGHTHOUSE",
+      "tileLocal": [
+        39,
+        38
+      ],
+      "tileAtlas": [
+        463,
+        92
+      ],
+      "interactionType": "SEARCH_HUT",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_RAINCOAT",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [
+        "STORY_13"
+      ],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": "BUILD_RAFT",
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_CAPTAIN_CABIN",
+      "index": 33,
+      "rank": "MAJOR",
+      "name": "Kaptan Kamarası",
+      "regionId": "REG_WRECK",
+      "islandId": "WRECK",
+      "tileLocal": [
+        20,
+        34
+      ],
+      "tileAtlas": [
+        45,
+        222
+      ],
+      "interactionType": "DIVE_AND_OPEN",
+      "reward": {
+        "guaranteedItems": {
+          "SAL_GLASS": 2,
+          "SAL_SCRAP": 3
+        },
+        "blueprintId": null,
+        "specialItemId": "SPC_CHART_CAPTAIN",
+        "rolledExtras": "SMALL_POI_BONUS"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [
+        "STORY_12"
+      ],
+      "category": "NAV_SOURCE",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": true,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": "BUILD_RAFT",
+        "toolsAnyOf": [
+          "TOOL_DIVING_MASK"
+        ],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_ENGINE_ROOM",
+      "index": 34,
+      "rank": "SIDE",
+      "name": "Makine Bölmesi",
+      "regionId": "REG_WRECK",
+      "islandId": "WRECK",
+      "tileLocal": [
+        29,
+        42
+      ],
+      "tileAtlas": [
+        54,
+        230
+      ],
+      "interactionType": "REPAIR_PANEL",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_HULL_REINFORCED",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": "PZ_ENGINE_VALVES",
+      "storyRecordIds": [],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": "BUILD_RAFT",
+        "toolsAnyOf": [
+          "TOOL_DIVING_KIT"
+        ],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_CORAL_CHEST",
+      "index": 35,
+      "rank": "SIDE",
+      "name": "Mercan Sandığı",
+      "regionId": "REG_WRECK",
+      "islandId": "WRECK",
+      "tileLocal": [
+        41,
+        29
+      ],
+      "tileAtlas": [
+        66,
+        217
+      ],
+      "interactionType": "DIVE",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_SEA_CHEST",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": "BUILD_RAFT",
+        "toolsAnyOf": [
+          "TOOL_DIVING_MASK"
+        ],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_ABANDONED_GARDEN",
+      "index": 36,
+      "rank": "SIDE",
+      "name": "Terk Edilmiş Bahçe",
+      "regionId": "REG_FERTILE",
+      "islandId": "FERTILE",
+      "tileLocal": [
+        27,
+        35
+      ],
+      "tileAtlas": [
+        442,
+        321
+      ],
+      "interactionType": "REPAIR_IRRIGATION",
+      "reward": {
+        "guaranteedItems": {
+          "SEED_PUMPKIN": 2,
+          "SEED_SWEET_POTATO": 2
+        },
+        "blueprintId": "BP_IRRIGATION",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": "PZ_GARDEN_CHANNEL",
+      "storyRecordIds": [],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": "BUILD_RAFT",
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_HERB_GREENHOUSE",
+      "index": 37,
+      "rank": "SIDE",
+      "name": "Şifalı Bitki Serası",
+      "regionId": "REG_FERTILE",
+      "islandId": "FERTILE",
+      "tileLocal": [
+        43,
+        29
+      ],
+      "tileAtlas": [
+        458,
+        315
+      ],
+      "interactionType": "SEARCH_GREENHOUSE",
+      "reward": {
+        "guaranteedItems": {
+          "SEED_PEPPER": 2
+        },
+        "blueprintId": "BP_DECOR_SET",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": "BUILD_RAFT",
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    },
+    {
+      "id": "POI_ROCK_SHELTER",
+      "index": 38,
+      "rank": "SIDE",
+      "name": "Kaya Sığınağı",
+      "regionId": "REG_FERTILE",
+      "islandId": "FERTILE",
+      "tileLocal": [
+        18,
+        21
+      ],
+      "tileAtlas": [
+        433,
+        307
+      ],
+      "interactionType": "SEARCH_SHELTER",
+      "reward": {
+        "guaranteedItems": {},
+        "blueprintId": "BP_BED_SPECIAL",
+        "specialItemId": null,
+        "rolledExtras": "BIOME_BASED_EXTRA_LOOT"
+      },
+      "puzzleId": null,
+      "storyRecordIds": [],
+      "category": "BLUEPRINT",
+      "isFixed": true,
+      "isRepeatable": false,
+      "specialItemNonDroppable": false,
+      "guaranteedRewardNeverRandom": true,
+      "access": {
+        "vehicleRequired": "BUILD_RAFT",
+        "toolsAnyOf": [],
+        "notes": "Tool list describes at-least-one for simple interactions; some dives are strictly specified in interactionType"
+      },
+      "saveFields": [
+        "discovered",
+        "searched",
+        "rewardClaimed",
+        "puzzleCompleted",
+        "permanentWorldChanges"
+      ]
+    }
+  ]
+}

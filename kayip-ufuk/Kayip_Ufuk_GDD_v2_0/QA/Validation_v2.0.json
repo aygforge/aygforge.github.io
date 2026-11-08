@@ -1,0 +1,408 @@
+{
+  "version": "v2.0",
+  "kind": "STATIC_PACKAGE_VALIDATION_ONLY",
+  "totalChecks": 79,
+  "passed": 79,
+  "failed": 0,
+  "checks": [
+    {
+      "id": "T01_Files",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "T02_Index",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_AnimalDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_ArtSpec",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_AssetManifest",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_BalanceDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_BuildDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_BuildPlacementDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_CaveDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_CollisionNavDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_CropDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_DesignConstants",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_DurabilityDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_EscapeDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_FishDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_ItemDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_LootSpawnDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_LootTableDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_NavigationDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_POIDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_PuzzleDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_RecipeDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_RegionDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_ResourceEconomyDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_SaveMigration",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_SaveSchema",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_SkillDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_StoryDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_TerrainDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_TrapDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_WaterEconomyDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_WeatherDB",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "SHA_WorldMap",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Count_Items",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Count_Recipes",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Count_Builds",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Count_POI",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Count_Puzzle",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Count_Story",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Count_Fish",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Count_Crop",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Count_Skills",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Blueprint_20",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Species_25",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Recipes_type",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Recipes_valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Recipes_unlock",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Upgrades_uid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Sea_chest_not_upgrade",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Build_recipe",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "POI_spatial",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Loot_POI",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Blueprints_fixed",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Puzzles_fixed",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "No_human_NPC",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Two_endings",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Art_item_manifest",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Art_build_manifest",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Art_POI_manifest",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Art_crop_manifest",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Art_anim_clips",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Asset_bookkeeping",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Sprite_unique",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Atlas_exact_match",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Atlas_pages",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Atlas_inside",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Atlas_no_overlap",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "No_real_assets",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Runtime_tests_spec_only",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Art_tests_spec_only",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Map_files",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Map_RLE_CaveGrid_CAVE_COPPER_v1.4",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Map_RLE_CaveGrid_CAVE_BATS_v1.4",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Map_RLE_TerrainGrid_LIGHTHOUSE_v1.2",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Map_RLE_CaveGrid_CAVE_POND_v1.4",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Map_RLE_TerrainGrid_MAIN_v1.2",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Map_RLE_TerrainGrid_FERTILE_v1.2",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "Map_RLE_TerrainGrid_WRECK_v1.2",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "No_game_claim",
+      "status": "PASS",
+      "detail": ""
+    }
+  ],
+  "runtimeTestsExecuted": 0,
+  "assetTestsExecuted": 0,
+  "realArtAssetsCreated": 0,
+  "scopeNote": "Static references, metadata, maps RLE, atlas planned boxes; no runtime, visual, gameplay, performance, or actual content availability simulation"
+}

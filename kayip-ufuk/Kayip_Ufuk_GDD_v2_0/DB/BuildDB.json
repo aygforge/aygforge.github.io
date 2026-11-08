@@ -1,0 +1,1088 @@
+{
+  "meta": {
+    "project": "Kayıp Ufuk Takımadaları — 2D mobil survival",
+    "version": "v1.7-consolidated",
+    "status": "design_data_NOT_Opus_prompt",
+    "rules": [
+      "Mobile landscape 16:9",
+      "Hybrid island, fixed macro-POIs",
+      "Material/station/blueprint unlocks",
+      "Preset houses; free-place interior/exterior objects; NO modular walls/floors/roof",
+      "No required recipe may depend on a randomized exclusive loot drop",
+      "Story collectibles cannot be discarded",
+      "One shared game clock",
+      "3 saves; IndexedDB with backups"
+    ],
+    "counts": {
+      "items": 179,
+      "recipes": 175,
+      "buildables": 58,
+      "blueprints": 20
+    },
+    "balance": {
+      "baseInventorySlots": 24,
+      "smallBagSlots": 32,
+      "largeBagSlots": 40,
+      "dayRealMinutes": 18,
+      "foodCostPerGameDay": 32,
+      "thirstCostPerGameDay": 42,
+      "craftStationNearbyChestRadiusTiles": 10,
+      "registeredCampsMax": 4,
+      "activeTrapsMax": 6
+    },
+    "unlockCodes": {
+      "START": "Starts known",
+      "MAT:ITEM_ID": "Knowledge gained from first acquiring this item",
+      "STATION:BUILD_ID": "Knowledge gained from first placing this station",
+      "BP:BP_ID": "Obtained guaranteed blueprint at fixed POI",
+      "STORY:FLAG": "Unlocked by world/story state, not random loot"
+    },
+    "notes": [
+      "Items include intermediates, raw sources, food, tools, seeds and special story items; actual per-biome source respawns are RegionDB responsibility.",
+      "Crops receive seeds via world loot/harvest, not through crafting recipes.",
+      "World-gathered fish become raw fish portions plus fish offcuts via catch-processing logic; fish species remain in FishDB.",
+      "Recipes with outputType upgrade modify an existing building without spawning another object.",
+      "Construction recipes are total costs; stages are UI/visual subdivisions, not extra costs.",
+      "Some IDs are provisional; all cross references in this draft are validated."
+    ],
+    "type": "BuildDB",
+    "basedOn": "v0.9"
+  },
+  "buildings": [
+    {
+      "id": "BUILD_ANIMAL_TRAP",
+      "name": "Küçük hayvan kapanı",
+      "category": "trap",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "placement": "suitable_habitat",
+      "ability": "Tavşan gibi küçük avları yakalar",
+      "recipeId": "R_ANIMAL_TRAP",
+      "iconKey": "build_animal_trap",
+      "capacity": 1
+    },
+    {
+      "id": "BUILD_BAMBOO_HUT",
+      "name": "Bambu kulübe",
+      "category": "house",
+      "footprintTiles": [
+        3,
+        3
+      ],
+      "placement": "ground",
+      "ability": "Küçük eve girme, iç mekân, çatı gizleme",
+      "recipeId": "R_BAMBOO_HUT",
+      "iconKey": "build_bamboo_hut",
+      "roofRule": "auto_fade_when_player_enters",
+      "interiorMode": "same_world_with_free_object_placement",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_BENCH",
+      "name": "Bank",
+      "category": "decor",
+      "footprintTiles": [
+        2,
+        1
+      ],
+      "placement": "ground",
+      "ability": "Dış mekân dinlenmesi",
+      "recipeId": "R_BENCH",
+      "iconKey": "build_bench",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_BRIDGE",
+      "name": "Ahşap köprü",
+      "category": "outdoor",
+      "footprintTiles": [
+        3,
+        2
+      ],
+      "placement": "river_bank",
+      "ability": "Kısa nehir geçişi",
+      "recipeId": "R_BRIDGE",
+      "iconKey": "build_bridge",
+      "availableUpgrades": [
+        "R_BRIDGE_ADV"
+      ]
+    },
+    {
+      "id": "BUILD_CAMPFIRE",
+      "name": "Kamp ateşi",
+      "category": "station",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "Pişirme ve kirli su kaynatma",
+      "recipeId": "R_CAMPFIRE",
+      "iconKey": "build_campfire",
+      "availableUpgrades": [
+        "R_ADV_COOKER"
+      ],
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_CAMP_MARKER",
+      "name": "Kamp işareti",
+      "category": "camp",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "placement": "ground",
+      "ability": "Kamp kaydı; yatak ve ateş ile aktifleştirme",
+      "recipeId": "R_CAMP_MARKER",
+      "iconKey": "build_camp_marker"
+    },
+    {
+      "id": "BUILD_CARPENTER_BENCH",
+      "name": "Marangoz tezgâhı",
+      "category": "station",
+      "footprintTiles": [
+        3,
+        2
+      ],
+      "placement": "ground",
+      "ability": "İleri ahşap üretimleri",
+      "recipeId": "R_CARPENTER_BENCH",
+      "iconKey": "build_carpenter_bench",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_CHAIR",
+      "name": "Sandalye",
+      "category": "decor",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "placement": "ground",
+      "ability": "Dinlenme ve konfor",
+      "recipeId": "R_CHAIR",
+      "iconKey": "build_chair",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_CHEST_LARGE",
+      "name": "Büyük sandık",
+      "category": "storage",
+      "footprintTiles": [
+        2,
+        1
+      ],
+      "placement": "ground",
+      "ability": "32 slot",
+      "recipeId": "R_CHEST_LARGE",
+      "iconKey": "build_chest_large",
+      "storageSlots": 32,
+      "availableUpgrades": [
+        "R_CHEST_REINFORCE",
+        "R_SEA_CHEST"
+      ],
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_CHEST_SMALL",
+      "name": "Küçük sandık",
+      "category": "storage",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "placement": "ground",
+      "ability": "16 slot",
+      "recipeId": "R_CHEST_SMALL",
+      "iconKey": "build_chest_small",
+      "storageSlots": 16,
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_COMFORT_BED",
+      "name": "Konforlu yatak",
+      "category": "sleep",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "Uyku +100 dinlenmişlik",
+      "recipeId": "R_COMFORT_BED",
+      "iconKey": "build_comfort_bed",
+      "availableUpgrades": [
+        "R_BED_SPECIAL"
+      ],
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_COMPOST_BIN",
+      "name": "Kompost kutusu",
+      "category": "farm",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "Organik atık -> kompost",
+      "recipeId": "R_COMPOST_BIN",
+      "iconKey": "build_compost_bin"
+    },
+    {
+      "id": "BUILD_CRAB_TRAP",
+      "name": "Yengeç kapanı",
+      "category": "trap",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "placement": "shallow_water",
+      "ability": "Kıyıda yengeç yakalar",
+      "recipeId": "R_CRAB_TRAP",
+      "iconKey": "build_crab_trap",
+      "capacity": 1
+    },
+    {
+      "id": "BUILD_DRYING_RACK",
+      "name": "Kurutma rafı",
+      "category": "station",
+      "footprintTiles": [
+        2,
+        1
+      ],
+      "placement": "ground",
+      "ability": "Balık ve et kurutma",
+      "recipeId": "R_DRYING_RACK",
+      "iconKey": "build_drying_rack",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_ESCAPE_BOAT",
+      "name": "Kaçış yelkenlisi",
+      "category": "escape",
+      "footprintTiles": [
+        7,
+        3
+      ],
+      "placement": "coastal_water",
+      "ability": "Deniz yoluyla final; çok aşamalı proje",
+      "recipeId": "R_ESCAPE_BOAT",
+      "iconKey": "build_escape_boat",
+      "availableUpgrades": [
+        "R_HULL_FIT",
+        "R_STORM_ANCHOR_FIT"
+      ]
+    },
+    {
+      "id": "BUILD_FEED_BOWL",
+      "name": "Besleme kabı",
+      "category": "pet",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "placement": "ground",
+      "ability": "Hayvan dostlarına yiyecek koyma",
+      "recipeId": "R_FEED_BOWL",
+      "iconKey": "build_feed_bowl",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_FENCE",
+      "name": "Ahşap çit",
+      "category": "outdoor",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "placement": "ground",
+      "ability": "Yol sınırı ve alan düzeni",
+      "recipeId": "R_FENCE",
+      "iconKey": "build_fence"
+    },
+    {
+      "id": "BUILD_FISH_HUT",
+      "name": "Balıkçı evi",
+      "category": "house",
+      "footprintTiles": [
+        5,
+        5
+      ],
+      "placement": "coastal_ground",
+      "ability": "Kıyıda ev ve iskele önü",
+      "recipeId": "R_FISH_HUT",
+      "iconKey": "build_fish_hut",
+      "roofRule": "auto_fade_when_player_enters",
+      "interiorMode": "same_world_with_free_object_placement",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_FISH_TRAP",
+      "name": "Balık sepeti",
+      "category": "trap",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "placement": "shallow_water",
+      "ability": "Sığ suda 1–2 balık/gün",
+      "recipeId": "R_FISH_TRAP",
+      "iconKey": "build_fish_trap",
+      "capacity": 1,
+      "availableUpgrades": [
+        "R_FISH_TRAP_ADV"
+      ]
+    },
+    {
+      "id": "BUILD_FOOD_CHEST",
+      "name": "Yiyecek sandığı",
+      "category": "storage",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "placement": "ground",
+      "ability": "20 slot yiyecek",
+      "recipeId": "R_FOOD_CHEST",
+      "iconKey": "build_food_chest",
+      "storageSlots": 20,
+      "filter": "food",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_GATE",
+      "name": "Ahşap bahçe kapısı",
+      "category": "outdoor",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "placement": "ground",
+      "ability": "Açılıp kapanan dış kapı",
+      "recipeId": "R_GATE",
+      "iconKey": "build_gate"
+    },
+    {
+      "id": "BUILD_IRRIGATION",
+      "name": "Gelişmiş sulama ünitesi",
+      "category": "farm",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "Bağlı depodan su tüketerek ekinleri sular",
+      "recipeId": "R_IRRIGATION",
+      "iconKey": "build_irrigation"
+    },
+    {
+      "id": "BUILD_KILN",
+      "name": "Seramik fırını",
+      "category": "station",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "Tuğla, kömür ve seramik",
+      "recipeId": "R_KILN",
+      "iconKey": "build_kiln",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_LAMP_POST",
+      "name": "Fener direği",
+      "category": "decor",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "placement": "ground",
+      "ability": "Gece aydınlatması",
+      "recipeId": "R_LAMP_POST",
+      "iconKey": "build_lamp_post",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_LARGE_HOUSE",
+      "name": "Büyük ada evi",
+      "category": "house",
+      "footprintTiles": [
+        7,
+        6
+      ],
+      "placement": "ground",
+      "ability": "Geniş iç mekân ve veranda",
+      "recipeId": "R_LARGE_HOUSE",
+      "iconKey": "build_large_house",
+      "roofRule": "auto_fade_when_player_enters",
+      "interiorMode": "same_world_with_free_object_placement",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_LEAF_BED",
+      "name": "Yaprak yatak",
+      "category": "sleep",
+      "footprintTiles": [
+        2,
+        1
+      ],
+      "placement": "ground",
+      "ability": "Uyku +55 dinlenmişlik",
+      "recipeId": "R_LEAF_BED",
+      "iconKey": "build_leaf_bed",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_LEAF_SHELTER",
+      "name": "Yaprak barınak",
+      "category": "shelter",
+      "footprintTiles": [
+        3,
+        2
+      ],
+      "placement": "ground",
+      "ability": "Yağmur koruması, basit kamp",
+      "recipeId": "R_LEAF_SHELTER",
+      "iconKey": "build_leaf_shelter"
+    },
+    {
+      "id": "BUILD_LOG_STORE",
+      "name": "Odun deposu",
+      "category": "storage",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "40 kütük kapasitesi",
+      "recipeId": "R_LOG_STORE",
+      "iconKey": "build_log_store",
+      "storageUnits": 40,
+      "filter": "logs",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_LOOM",
+      "name": "Dokuma tezgâhı",
+      "category": "station",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "Kumaş ve yelken",
+      "recipeId": "R_LOOM",
+      "iconKey": "build_loom",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_MAP_TABLE",
+      "name": "Harita masası",
+      "category": "decor",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "Keşif haritası ve konfor",
+      "recipeId": "R_MAP_TABLE",
+      "iconKey": "build_map_table",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_MATERIAL_SHELF",
+      "name": "Malzeme rafı",
+      "category": "storage",
+      "footprintTiles": [
+        2,
+        1
+      ],
+      "placement": "ground",
+      "ability": "24 slot malzeme",
+      "recipeId": "R_MATERIAL_SHELF",
+      "iconKey": "build_material_shelf",
+      "storageSlots": 24,
+      "filter": "material",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_MECHANICAL_BENCH",
+      "name": "Mekanik tezgâh",
+      "category": "station",
+      "footprintTiles": [
+        3,
+        2
+      ],
+      "placement": "ground",
+      "ability": "Elektrik ve mekanik üretimler",
+      "recipeId": "R_MECHANICAL_BENCH",
+      "iconKey": "build_mechanical_bench",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_MONKEY_PLATFORM",
+      "name": "Maymun platformu",
+      "category": "pet",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "Maymun kamp noktası",
+      "recipeId": "R_MONKEY_PLATFORM",
+      "iconKey": "build_monkey_platform",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_NAV_TABLE",
+      "name": "Denizcilik masası",
+      "category": "station",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "Pusula/navigasyon donanımı",
+      "recipeId": "R_NAV_TABLE",
+      "iconKey": "build_nav_table",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_ORE_STORE",
+      "name": "Taş ve cevher deposu",
+      "category": "storage",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "40 taş/cevher kapasitesi",
+      "recipeId": "R_ORE_STORE",
+      "iconKey": "build_ore_store",
+      "storageUnits": 40,
+      "filter": "ore",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_PANTRY",
+      "name": "Gelişmiş kiler",
+      "category": "storage",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "32 slot; bozulma yavaşlar",
+      "recipeId": "R_PANTRY",
+      "iconKey": "build_pantry",
+      "storageSlots": 32,
+      "filter": "food",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_PARROT_HOUSE",
+      "name": "Papağan evi",
+      "category": "pet",
+      "footprintTiles": [
+        2,
+        1
+      ],
+      "placement": "ground",
+      "ability": "Papağanın korunaklı dinlenmesi",
+      "recipeId": "R_PARROT_HOUSE",
+      "iconKey": "build_parrot_house",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_PARROT_PERCH",
+      "name": "Papağan tüneği",
+      "category": "pet",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "placement": "ground",
+      "ability": "Papağan kamp noktası",
+      "recipeId": "R_PARROT_PERCH",
+      "iconKey": "build_parrot_perch",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_PATH",
+      "name": "Taş patika",
+      "category": "outdoor",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "placement": "ground",
+      "ability": "Yürüyüş yolu, görsel düzen",
+      "recipeId": "R_PATH",
+      "iconKey": "build_path"
+    },
+    {
+      "id": "BUILD_PIER",
+      "name": "Ahşap iskele",
+      "category": "outdoor",
+      "footprintTiles": [
+        4,
+        2
+      ],
+      "placement": "coastal_water",
+      "ability": "Tekne yanaşma ve balıkçılık",
+      "recipeId": "R_PIER",
+      "iconKey": "build_pier"
+    },
+    {
+      "id": "BUILD_PLANTER",
+      "name": "Ekim yatağı",
+      "category": "farm",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "placement": "ground",
+      "ability": "Bir bitki türü yetiştirir",
+      "recipeId": "R_PLANTER",
+      "iconKey": "build_planter"
+    },
+    {
+      "id": "BUILD_PLANT_POT",
+      "name": "Saksı",
+      "category": "decor",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "placement": "ground",
+      "ability": "Dekorasyon ve konfor",
+      "recipeId": "R_PLANT_POT",
+      "iconKey": "build_plant_pot",
+      "availableUpgrades": [
+        "R_DECOR_SHELL_POT"
+      ],
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_PLAY_POST",
+      "name": "Oyun direği",
+      "category": "pet",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "placement": "ground",
+      "ability": "Hayvan dostu etkileşimleri",
+      "recipeId": "R_PLAY_POST",
+      "iconKey": "build_play_post",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_RAFT",
+      "name": "Küçük sal",
+      "category": "vehicle",
+      "footprintTiles": [
+        3,
+        2
+      ],
+      "placement": "coastal_water",
+      "ability": "Sığ denizde seyahat, adacık erişimi",
+      "recipeId": "R_RAFT",
+      "iconKey": "build_raft"
+    },
+    {
+      "id": "BUILD_RAIN_CATCHER",
+      "name": "Yağmur toplayıcı",
+      "category": "water",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "6 porsiyon temiz su",
+      "recipeId": "R_RAIN_CATCHER",
+      "iconKey": "build_rain_catcher",
+      "waterCapacity": 6
+    },
+    {
+      "id": "BUILD_RAIN_CATCHER_L",
+      "name": "Büyük yağmur toplayıcı",
+      "category": "water",
+      "footprintTiles": [
+        3,
+        2
+      ],
+      "placement": "ground",
+      "ability": "16 porsiyon temiz su",
+      "recipeId": "R_RAIN_CATCHER_L",
+      "iconKey": "build_rain_catcher_l",
+      "waterCapacity": 16
+    },
+    {
+      "id": "BUILD_RUG",
+      "name": "Hasır halı",
+      "category": "decor",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "inside_house",
+      "ability": "İç mekân konforu",
+      "recipeId": "R_RUG",
+      "iconKey": "build_rug",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_SIGNAL_STATION",
+      "name": "Haberleşme onarımı",
+      "category": "escape",
+      "footprintTiles": [
+        4,
+        4
+      ],
+      "placement": "poi_fener",
+      "ability": "Fener noktasında sabit kurulum; final",
+      "recipeId": "R_SIGNAL_STATION",
+      "iconKey": "build_signal_station",
+      "recipeVariants": [
+        "R_SIGNAL_STATION",
+        "R_SIGNAL_STATION_GENERATOR"
+      ],
+      "selectionRule": "Solar or generator, not both; build stages follow selected variant"
+    },
+    {
+      "id": "BUILD_SMELTER",
+      "name": "Metal eritme ocağı",
+      "category": "station",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "Bakır/demir külçe ve parçaları",
+      "recipeId": "R_SMELTER",
+      "iconKey": "build_smelter",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_TABLE",
+      "name": "Ahşap masa",
+      "category": "decor",
+      "footprintTiles": [
+        2,
+        1
+      ],
+      "placement": "ground",
+      "ability": "Konfor ve dekorasyon",
+      "recipeId": "R_TABLE",
+      "iconKey": "build_table",
+      "availableUpgrades": [
+        "R_DECOR_SET"
+      ],
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_TANNING_RACK",
+      "name": "Deri işleme rafı",
+      "category": "station",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "Deri işleme",
+      "recipeId": "R_TANNING_RACK",
+      "iconKey": "build_tanning_rack",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_TOOL_RACK",
+      "name": "Ekipman askılığı",
+      "category": "storage",
+      "footprintTiles": [
+        2,
+        1
+      ],
+      "placement": "ground",
+      "ability": "8 slot ekipman",
+      "recipeId": "R_TOOL_RACK",
+      "iconKey": "build_tool_rack",
+      "storageSlots": 8,
+      "filter": "equipment",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_WATER_FILTER",
+      "name": "Verimli su filtresi",
+      "category": "water",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "Kirli suyu filtreleyerek temizler",
+      "recipeId": "R_WATER_FILTER",
+      "iconKey": "build_water_filter"
+    },
+    {
+      "id": "BUILD_WATER_TANK",
+      "name": "Su deposu",
+      "category": "water",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "30 porsiyon su depolar",
+      "recipeId": "R_WATER_TANK",
+      "iconKey": "build_water_tank",
+      "waterCapacity": 30
+    },
+    {
+      "id": "BUILD_WINCH",
+      "name": "Tırmanma vinci",
+      "category": "outdoor",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "cliff",
+      "ability": "Kalıcı kayalık kestirmesi",
+      "recipeId": "R_WINCH",
+      "iconKey": "build_winch"
+    },
+    {
+      "id": "BUILD_WOOD_BED",
+      "name": "Ahşap yatak",
+      "category": "sleep",
+      "footprintTiles": [
+        2,
+        1
+      ],
+      "placement": "ground",
+      "ability": "Uyku +70 dinlenmişlik",
+      "recipeId": "R_WOOD_BED",
+      "iconKey": "build_wood_bed",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_WOOD_HUT",
+      "name": "Ahşap kulübe",
+      "category": "house",
+      "footprintTiles": [
+        5,
+        4
+      ],
+      "placement": "ground",
+      "ability": "Yatak ve mobilya alanı, iç mekân, çatı gizleme",
+      "recipeId": "R_WOOD_HUT",
+      "iconKey": "build_wood_hut",
+      "roofRule": "auto_fade_when_player_enters",
+      "interiorMode": "same_world_with_free_object_placement",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "BUILD_WORKBENCH",
+      "name": "Çalışma tezgâhı",
+      "category": "station",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "placement": "ground",
+      "ability": "Temel üretim ve aletler",
+      "recipeId": "R_WORKBENCH",
+      "iconKey": "build_workbench",
+      "rotationDegrees": [
+        0,
+        90,
+        180,
+        270
+      ]
+    }
+  ]
+}

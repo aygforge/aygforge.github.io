@@ -1,0 +1,1986 @@
+{
+  "meta": {
+    "project": "Kayıp Ufuk",
+    "version": "1.3",
+    "basedOn": "POIDB_v1.1 + ItemDB_v1.0 + LootSpawnDB_v1.1",
+    "poiCount": 38,
+    "poolCount": 13,
+    "important": "POI guarantees and unique story item sources are inherited and never randomized"
+  },
+  "globalPolicies": {
+    "bonusRollsTiming": "Generate at first eligible interaction; persist immutable item list in save before reward claim",
+    "storageFull": "Items remain in POI container/ground safe pickup state until collected; blueprints are learned in journal immediately",
+    "lootAtomicity": "Write encounterOutcome and grant status in one save transaction; idempotent eventId POI_ID:REWARD_V1",
+    "sourceIsolation": "POI special items/blueprints never appear in random pools, storm loot, animals or regenerated resource nodes",
+    "worldSeedDeterminism": "same seed + same POI id + same version => same optional bonus picks",
+    "lootRollStyle": "One guaranteed utility roll + extra rare roll when configured; rolled duplicates per POI are merged",
+    "noSoftlocks": "Story specials non-droppable, world guarantees remain even when inventory is full; special progression not reliant on random rolls",
+    "stormSalvage": {
+      "poolId": "LP_COAST_STORM",
+      "spawnOnlyAfterStorm": true,
+      "maxNodesPerEligibleCoastalRegionPerDay": 2,
+      "lifetimeGameDays": 3,
+      "offCameraSpawnOnly": true
+    },
+    "rarityBands": {
+      "common": "weight 10–18",
+      "uncommon": "weight 6–9",
+      "rare": "weight 4–5; strictly ordinary salvage"
+    },
+    "weightInterpretation": "Weights are relative within one pool, not global drop probabilities"
+  },
+  "pools": [
+    {
+      "id": "LP_COAST_COMMON",
+      "rollMode": "weighted_item_independent",
+      "allowDuplicateItemIdAcrossSlots": false,
+      "entries": [
+        {
+          "itemId": "MAT_BRANCH",
+          "weight": 15,
+          "min": 2,
+          "max": 5
+        },
+        {
+          "itemId": "MAT_FIBER",
+          "weight": 14,
+          "min": 2,
+          "max": 5
+        },
+        {
+          "itemId": "MAT_STONE",
+          "weight": 12,
+          "min": 2,
+          "max": 4
+        },
+        {
+          "itemId": "MAT_SEASHELL",
+          "weight": 7,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "FOOD_COCONUT",
+          "weight": 8,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_ROPE",
+          "weight": 5,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_CLOTH",
+          "weight": 6,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_TIN_CAN",
+          "weight": 6,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "MAT_PALM_LEAF",
+          "weight": 12,
+          "min": 2,
+          "max": 5
+        }
+      ]
+    },
+    {
+      "id": "LP_FOREST_COMMON",
+      "rollMode": "weighted_item_independent",
+      "allowDuplicateItemIdAcrossSlots": false,
+      "entries": [
+        {
+          "itemId": "MAT_LOG",
+          "weight": 10,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "MAT_HARDWOOD",
+          "weight": 5,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "MAT_RESIN",
+          "weight": 12,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "MAT_VINE",
+          "weight": 10,
+          "min": 2,
+          "max": 4
+        },
+        {
+          "itemId": "MAT_BAMBOO",
+          "weight": 12,
+          "min": 2,
+          "max": 5
+        },
+        {
+          "itemId": "MAT_MED_HERB",
+          "weight": 5,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "FOOD_BERRY",
+          "weight": 9,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "MAT_BRANCH",
+          "weight": 12,
+          "min": 2,
+          "max": 5
+        },
+        {
+          "itemId": "MAT_TREE_BARK",
+          "weight": 9,
+          "min": 1,
+          "max": 3
+        }
+      ]
+    },
+    {
+      "id": "LP_VALLEY_COMMON",
+      "rollMode": "weighted_item_independent",
+      "allowDuplicateItemIdAcrossSlots": false,
+      "entries": [
+        {
+          "itemId": "MAT_CLAY",
+          "weight": 15,
+          "min": 2,
+          "max": 5
+        },
+        {
+          "itemId": "MAT_REED",
+          "weight": 12,
+          "min": 2,
+          "max": 4
+        },
+        {
+          "itemId": "MAT_WORM",
+          "weight": 10,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SEED_ROOT",
+          "weight": 8,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SEED_BEAN",
+          "weight": 6,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "MAT_STONE",
+          "weight": 9,
+          "min": 2,
+          "max": 4
+        },
+        {
+          "itemId": "MAT_FIBER",
+          "weight": 12,
+          "min": 2,
+          "max": 5
+        },
+        {
+          "itemId": "FOOD_BERRY",
+          "weight": 10,
+          "min": 1,
+          "max": 3
+        }
+      ]
+    },
+    {
+      "id": "LP_SWAMP_COMMON",
+      "rollMode": "weighted_item_independent",
+      "allowDuplicateItemIdAcrossSlots": false,
+      "entries": [
+        {
+          "itemId": "MAT_CLAY",
+          "weight": 12,
+          "min": 1,
+          "max": 4
+        },
+        {
+          "itemId": "MAT_REED",
+          "weight": 13,
+          "min": 2,
+          "max": 5
+        },
+        {
+          "itemId": "MAT_MED_HERB",
+          "weight": 9,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "MAT_VINE",
+          "weight": 11,
+          "min": 2,
+          "max": 5
+        },
+        {
+          "itemId": "MAT_SEAWEED",
+          "weight": 7,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "MAT_WORM",
+          "weight": 8,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "MAT_SAP",
+          "weight": 7,
+          "min": 1,
+          "max": 2
+        }
+      ]
+    },
+    {
+      "id": "LP_MINING_COMMON",
+      "rollMode": "weighted_item_independent",
+      "allowDuplicateItemIdAcrossSlots": false,
+      "entries": [
+        {
+          "itemId": "MAT_STONE",
+          "weight": 11,
+          "min": 2,
+          "max": 5
+        },
+        {
+          "itemId": "MAT_COAL",
+          "weight": 12,
+          "min": 2,
+          "max": 4
+        },
+        {
+          "itemId": "MAT_COPPER_ORE",
+          "weight": 11,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "MAT_FLINT",
+          "weight": 8,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_SCRAP",
+          "weight": 9,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_NAIL",
+          "weight": 8,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "MAT_CLAY",
+          "weight": 8,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_GEAR",
+          "weight": 5,
+          "min": 1,
+          "max": 1
+        }
+      ]
+    },
+    {
+      "id": "LP_MOUNTAIN_COMMON",
+      "rollMode": "weighted_item_independent",
+      "allowDuplicateItemIdAcrossSlots": false,
+      "entries": [
+        {
+          "itemId": "MAT_IRON_ORE",
+          "weight": 12,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "MAT_COAL",
+          "weight": 11,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "MAT_QUARTZ",
+          "weight": 7,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "MAT_SULFUR",
+          "weight": 5,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "MAT_STONE",
+          "weight": 12,
+          "min": 2,
+          "max": 5
+        },
+        {
+          "itemId": "SAL_WIRE",
+          "weight": 7,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_GLASS",
+          "weight": 6,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "MAT_FLINT",
+          "weight": 8,
+          "min": 1,
+          "max": 2
+        }
+      ]
+    },
+    {
+      "id": "LP_SETTLEMENT_COMMON",
+      "rollMode": "weighted_item_independent",
+      "allowDuplicateItemIdAcrossSlots": false,
+      "entries": [
+        {
+          "itemId": "SAL_SCRAP",
+          "weight": 14,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_WIRE",
+          "weight": 9,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_GLASS",
+          "weight": 9,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_CLOTH",
+          "weight": 9,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_NAIL",
+          "weight": 12,
+          "min": 2,
+          "max": 4
+        },
+        {
+          "itemId": "SAL_FUSE",
+          "weight": 5,
+          "min": 1,
+          "max": 1
+        },
+        {
+          "itemId": "SAL_BATTERY",
+          "weight": 4,
+          "min": 1,
+          "max": 1
+        },
+        {
+          "itemId": "SAL_CANVAS",
+          "weight": 6,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_GEAR",
+          "weight": 5,
+          "min": 1,
+          "max": 1
+        },
+        {
+          "itemId": "SAL_PLASTIC",
+          "weight": 7,
+          "min": 1,
+          "max": 3
+        }
+      ]
+    },
+    {
+      "id": "LP_LAGOON_COMMON",
+      "rollMode": "weighted_item_independent",
+      "allowDuplicateItemIdAcrossSlots": false,
+      "entries": [
+        {
+          "itemId": "MAT_SEASHELL",
+          "weight": 11,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "MAT_SEAWEED",
+          "weight": 13,
+          "min": 2,
+          "max": 4
+        },
+        {
+          "itemId": "MAT_SEA_SALT",
+          "weight": 9,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "MAT_BAMBOO",
+          "weight": 8,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "MAT_FISH_OFFCUT",
+          "weight": 6,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_ROPE",
+          "weight": 7,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_SCRAP",
+          "weight": 5,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_GLASS",
+          "weight": 5,
+          "min": 1,
+          "max": 1
+        }
+      ]
+    },
+    {
+      "id": "LP_LIGHTHOUSE_COMMON",
+      "rollMode": "weighted_item_independent",
+      "allowDuplicateItemIdAcrossSlots": false,
+      "entries": [
+        {
+          "itemId": "SAL_WIRE",
+          "weight": 12,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_FUSE",
+          "weight": 9,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_GLASS",
+          "weight": 9,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_BATTERY",
+          "weight": 7,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_SCRAP",
+          "weight": 12,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_NAIL",
+          "weight": 8,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_CLOTH",
+          "weight": 8,
+          "min": 1,
+          "max": 2
+        }
+      ]
+    },
+    {
+      "id": "LP_WRECK_COMMON",
+      "rollMode": "weighted_item_independent",
+      "allowDuplicateItemIdAcrossSlots": false,
+      "entries": [
+        {
+          "itemId": "SAL_SCRAP",
+          "weight": 15,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_CANVAS",
+          "weight": 11,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_ROPE",
+          "weight": 10,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_GLASS",
+          "weight": 9,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_BEARING",
+          "weight": 7,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_GEAR",
+          "weight": 8,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_WIRE",
+          "weight": 8,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_BATTERY",
+          "weight": 4,
+          "min": 1,
+          "max": 1
+        }
+      ]
+    },
+    {
+      "id": "LP_FERTILE_COMMON",
+      "rollMode": "weighted_item_independent",
+      "allowDuplicateItemIdAcrossSlots": false,
+      "entries": [
+        {
+          "itemId": "SEED_BANANA",
+          "weight": 9,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SEED_CANE",
+          "weight": 9,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SEED_PINEAPPLE",
+          "weight": 8,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SEED_HERB",
+          "weight": 8,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SEED_SPICE",
+          "weight": 7,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "FOOD_BANANA",
+          "weight": 10,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "MAT_MED_HERB",
+          "weight": 8,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "MAT_FIBER",
+          "weight": 8,
+          "min": 2,
+          "max": 4
+        }
+      ]
+    },
+    {
+      "id": "LP_RARE_SALVAGE",
+      "rollMode": "weighted_item_independent",
+      "allowDuplicateItemIdAcrossSlots": false,
+      "entries": [
+        {
+          "itemId": "SAL_BATTERY",
+          "weight": 9,
+          "min": 1,
+          "max": 1
+        },
+        {
+          "itemId": "SAL_FUSE",
+          "weight": 10,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_GEAR",
+          "weight": 9,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_BEARING",
+          "weight": 10,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_CANVAS",
+          "weight": 13,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_GLASS",
+          "weight": 11,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_WIRE",
+          "weight": 12,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_SCRAP",
+          "weight": 18,
+          "min": 2,
+          "max": 4
+        }
+      ]
+    },
+    {
+      "id": "LP_COAST_STORM",
+      "rollMode": "weighted_item_independent",
+      "allowDuplicateItemIdAcrossSlots": false,
+      "entries": [
+        {
+          "itemId": "SAL_SCRAP",
+          "weight": 16,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_ROPE",
+          "weight": 13,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_CLOTH",
+          "weight": 11,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "MAT_LOG",
+          "weight": 13,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_TIN_CAN",
+          "weight": 12,
+          "min": 1,
+          "max": 3
+        },
+        {
+          "itemId": "SAL_PLASTIC",
+          "weight": 9,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_NAIL",
+          "weight": 9,
+          "min": 1,
+          "max": 2
+        },
+        {
+          "itemId": "SAL_CANVAS",
+          "weight": 5,
+          "min": 1,
+          "max": 2
+        }
+      ]
+    }
+  ],
+  "poiLoot": [
+    {
+      "poiId": "POI_CRASH_BOAT",
+      "islandId": "MAIN",
+      "regionId": "REG_BEACH",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "MAT_BRANCH": 6,
+        "MAT_STONE": 5,
+        "MAT_FIBER": 6,
+        "FOOD_COCONUT": 2
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_COAST_COMMON",
+          "rolls": 1
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_WATERPROOF_BAG",
+      "islandId": "MAIN",
+      "regionId": "REG_BEACH",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "CMP_ROPE": 2,
+        "TOOL_BAMBOO_CUP": 1
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_COAST_COMMON",
+          "rolls": 1
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_SHORE_CRATE",
+      "islandId": "MAIN",
+      "regionId": "REG_BEACH",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "SAL_CLOTH": 1
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_COAST_COMMON",
+          "rolls": 2
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_BROKEN_LOOKOUT",
+      "islandId": "MAIN",
+      "regionId": "REG_BEACH",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "SAL_NAIL": 2
+      },
+      "guaranteedBlueprintId": "BP_MAP_TABLE",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_COAST_COMMON",
+          "rolls": 2
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_FISHER_HUT",
+      "islandId": "MAIN",
+      "regionId": "REG_GROVE",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "MAT_BAMBOO": 4,
+        "CMP_FISH_HOOK": 2,
+        "CMP_ROPE": 2
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": "SPC_CHART_COAST",
+      "bonusRolls": [
+        {
+          "poolId": "LP_FOREST_COMMON",
+          "rolls": 1
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_FRUIT_HILL",
+      "islandId": "MAIN",
+      "regionId": "REG_GROVE",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "FOOD_BERRY": 2,
+        "SEED_BANANA": 1,
+        "SEED_FIBER": 6
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_FOREST_COMMON",
+          "rolls": 2
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_VINE_TUNNEL",
+      "islandId": "MAIN",
+      "regionId": "REG_GROVE",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "MAT_VINE": 3
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_FOREST_COMMON",
+          "rolls": 2
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_WATER_STATION",
+      "islandId": "MAIN",
+      "regionId": "REG_VALLEY",
+      "rewardClaimTrigger": "ON_PUZZLE_COMPLETED",
+      "guaranteedItems": {
+        "MAT_CLAY": 5,
+        "MAT_BAMBOO": 3
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_VALLEY_COMMON",
+          "rolls": 1
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_STONE_BRIDGE",
+      "islandId": "MAIN",
+      "regionId": "REG_VALLEY",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "MAT_STONE": 3
+      },
+      "guaranteedBlueprintId": "BP_BRIDGE_ADV",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_VALLEY_COMMON",
+          "rolls": 2
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_WATERFALL_CAVE",
+      "islandId": "MAIN",
+      "regionId": "REG_VALLEY",
+      "rewardClaimTrigger": "ON_PUZZLE_COMPLETED",
+      "guaranteedItems": {
+        "MAT_MED_HERB": 2
+      },
+      "guaranteedBlueprintId": "BP_WATER_FILTER",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_VALLEY_COMMON",
+          "rolls": 2
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_FORESTER_HUT",
+      "islandId": "MAIN",
+      "regionId": "REG_FOREST",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "MAT_LOG": 4,
+        "CMP_PLANK": 6
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_FOREST_COMMON",
+          "rolls": 1
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_TREEHOUSE",
+      "islandId": "MAIN",
+      "regionId": "REG_FOREST",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "CMP_ROPE": 2
+      },
+      "guaranteedBlueprintId": "BP_EXPLORER_BAG",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_FOREST_COMMON",
+          "rolls": 2
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_HUNTER_CAMP",
+      "islandId": "MAIN",
+      "regionId": "REG_FOREST",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "CMP_ARROW": 3
+      },
+      "guaranteedBlueprintId": "BP_HUNTER_BOW",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_FOREST_COMMON",
+          "rolls": 2
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_SWAMP_MEASURE",
+      "islandId": "MAIN",
+      "regionId": "REG_SWAMP",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "MAT_MED_HERB": 3,
+        "MAT_CLAY": 4
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_SWAMP_COMMON",
+          "rolls": 1
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_FLOODED_STORE",
+      "islandId": "MAIN",
+      "regionId": "REG_SWAMP",
+      "rewardClaimTrigger": "ON_PUZZLE_COMPLETED",
+      "guaranteedItems": {
+        "SAL_SCRAP": 2
+      },
+      "guaranteedBlueprintId": "BP_CHEST_REINFORCE",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_SWAMP_COMMON",
+          "rolls": 2
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_MANGROVE_COVE",
+      "islandId": "MAIN",
+      "regionId": "REG_SWAMP",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "MAT_REED": 3
+      },
+      "guaranteedBlueprintId": "BP_FISH_TRAP_ADV",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_SWAMP_COMMON",
+          "rolls": 2
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_COPPER_MINE",
+      "islandId": "MAIN",
+      "regionId": "REG_RED_CLIFF",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "MAT_COPPER_ORE": 8,
+        "MAT_COAL": 5,
+        "SAL_SCRAP": 4
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_MINING_COMMON",
+          "rolls": 1
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_CABLE_CAR",
+      "islandId": "MAIN",
+      "regionId": "REG_RED_CLIFF",
+      "rewardClaimTrigger": "ON_PUZZLE_COMPLETED",
+      "guaranteedItems": {
+        "SAL_GEAR": 1
+      },
+      "guaranteedBlueprintId": "BP_WINCH",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_MINING_COMMON",
+          "rolls": 2
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_MINE_SHELTER",
+      "islandId": "MAIN",
+      "regionId": "REG_RED_CLIFF",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "SAL_NAIL": 3
+      },
+      "guaranteedBlueprintId": "BP_MACHETE",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_MINING_COMMON",
+          "rolls": 2
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_OBSERVATORY",
+      "islandId": "MAIN",
+      "regionId": "REG_MOUNTAIN",
+      "rewardClaimTrigger": "ON_PUZZLE_COMPLETED",
+      "guaranteedItems": {
+        "SAL_GLASS": 2,
+        "MAT_QUARTZ": 2
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": "SPC_CHART_OBSERVATORY",
+      "bonusRolls": [
+        {
+          "poolId": "LP_MOUNTAIN_COMMON",
+          "rolls": 1
+        },
+        {
+          "poolId": "LP_RARE_SALVAGE",
+          "rolls": 1,
+          "chancePermille": 250
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_RELAY_SHELTER",
+      "islandId": "MAIN",
+      "regionId": "REG_MOUNTAIN",
+      "rewardClaimTrigger": "ON_PUZZLE_COMPLETED",
+      "guaranteedItems": {
+        "SAL_BATTERY": 2,
+        "SAL_WIRE": 2
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": "SPC_RADIO_NOTE",
+      "bonusRolls": [
+        {
+          "poolId": "LP_MOUNTAIN_COMMON",
+          "rolls": 1
+        },
+        {
+          "poolId": "LP_RARE_SALVAGE",
+          "rolls": 1,
+          "chancePermille": 250
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_BAT_CAVERN",
+      "islandId": "MAIN",
+      "regionId": "REG_MOUNTAIN",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "MAT_QUARTZ": 1
+      },
+      "guaranteedBlueprintId": "BP_PORTABLE_LAMP",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_MOUNTAIN_COMMON",
+          "rolls": 2
+        },
+        {
+          "poolId": "LP_RARE_SALVAGE",
+          "rolls": 1,
+          "chancePermille": 180
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_UNDERGROUND_POND",
+      "islandId": "MAIN",
+      "regionId": "REG_MOUNTAIN",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "MAT_WORM": 2
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_MOUNTAIN_COMMON",
+          "rolls": 2
+        },
+        {
+          "poolId": "LP_RARE_SALVAGE",
+          "rolls": 1,
+          "chancePermille": 180
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_RESEARCH_SQUARE",
+      "islandId": "MAIN",
+      "regionId": "REG_SETTLEMENT",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "SAL_SCRAP": 4,
+        "SAL_GLASS": 3,
+        "SAL_BATTERY": 2
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": "SPC_GEN_CORE",
+      "bonusRolls": [
+        {
+          "poolId": "LP_SETTLEMENT_COMMON",
+          "rolls": 1
+        },
+        {
+          "poolId": "LP_RARE_SALVAGE",
+          "rolls": 1,
+          "chancePermille": 250
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_RADIO_WORKSHOP",
+      "islandId": "MAIN",
+      "regionId": "REG_SETTLEMENT",
+      "rewardClaimTrigger": "ON_PUZZLE_COMPLETED",
+      "guaranteedItems": {
+        "SAL_WIRE": 4,
+        "SAL_BATTERY": 2,
+        "SAL_FUSE": 2
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": "SPC_TX_MODULE",
+      "bonusRolls": [
+        {
+          "poolId": "LP_SETTLEMENT_COMMON",
+          "rolls": 1
+        },
+        {
+          "poolId": "LP_RARE_SALVAGE",
+          "rolls": 1,
+          "chancePermille": 250
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_OLD_KITCHEN",
+      "islandId": "MAIN",
+      "regionId": "REG_SETTLEMENT",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "SAL_TIN_CAN": 2
+      },
+      "guaranteedBlueprintId": "BP_ADV_COOKER",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_SETTLEMENT_COMMON",
+          "rolls": 2
+        },
+        {
+          "poolId": "LP_RARE_SALVAGE",
+          "rolls": 1,
+          "chancePermille": 180
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_LOCKED_WAREHOUSE",
+      "islandId": "MAIN",
+      "regionId": "REG_SETTLEMENT",
+      "rewardClaimTrigger": "ON_PUZZLE_COMPLETED",
+      "guaranteedItems": {
+        "SAL_CLOTH": 2
+      },
+      "guaranteedBlueprintId": "BP_PANTRY",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_SETTLEMENT_COMMON",
+          "rolls": 2
+        },
+        {
+          "poolId": "LP_RARE_SALVAGE",
+          "rolls": 1,
+          "chancePermille": 180
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_SHALLOW_WRECK",
+      "islandId": "MAIN",
+      "regionId": "REG_LAGOON",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "SAL_SCRAP": 2,
+        "SAL_GLASS": 2
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_LAGOON_COMMON",
+          "rolls": 1
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_REEF_FISSURE",
+      "islandId": "MAIN",
+      "regionId": "REG_LAGOON",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "MAT_SEASHELL": 2
+      },
+      "guaranteedBlueprintId": "BP_FISH_ROD_ADV",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_LAGOON_COMMON",
+          "rolls": 2
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_SAND_SPIT",
+      "islandId": "MAIN",
+      "regionId": "REG_LAGOON",
+      "rewardClaimTrigger": "ON_PUZZLE_COMPLETED",
+      "guaranteedItems": {
+        "SAL_ROPE": 2
+      },
+      "guaranteedBlueprintId": "BP_STORM_ANCHOR",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_LAGOON_COMMON",
+          "rolls": 2
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_LIGHTHOUSE",
+      "islandId": "LIGHTHOUSE",
+      "regionId": "REG_LIGHTHOUSE",
+      "rewardClaimTrigger": "ON_INSPECT_POWER_CABINET",
+      "guaranteedItems": {
+        "SAL_WIRE": 3,
+        "SAL_FUSE": 2
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": "SPC_SOLAR_CORE",
+      "bonusRolls": [
+        {
+          "poolId": "LP_LIGHTHOUSE_COMMON",
+          "rolls": 1
+        },
+        {
+          "poolId": "LP_RARE_SALVAGE",
+          "rolls": 1,
+          "chancePermille": 250
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_LIGHTHOUSE_KEEPER",
+      "islandId": "LIGHTHOUSE",
+      "regionId": "REG_LIGHTHOUSE",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "SAL_CLOTH": 2
+      },
+      "guaranteedBlueprintId": "BP_RAINCOAT",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_LIGHTHOUSE_COMMON",
+          "rolls": 2
+        },
+        {
+          "poolId": "LP_RARE_SALVAGE",
+          "rolls": 1,
+          "chancePermille": 180
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_CAPTAIN_CABIN",
+      "islandId": "WRECK",
+      "regionId": "REG_WRECK",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "SAL_GLASS": 2,
+        "SAL_SCRAP": 3
+      },
+      "guaranteedBlueprintId": null,
+      "guaranteedStorySpecialId": "SPC_CHART_CAPTAIN",
+      "bonusRolls": [
+        {
+          "poolId": "LP_WRECK_COMMON",
+          "rolls": 1
+        },
+        {
+          "poolId": "LP_RARE_SALVAGE",
+          "rolls": 1,
+          "chancePermille": 250
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_ENGINE_ROOM",
+      "islandId": "WRECK",
+      "regionId": "REG_WRECK",
+      "rewardClaimTrigger": "ON_PUZZLE_COMPLETED",
+      "guaranteedItems": {
+        "SAL_BEARING": 1
+      },
+      "guaranteedBlueprintId": "BP_HULL_REINFORCED",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_WRECK_COMMON",
+          "rolls": 2
+        },
+        {
+          "poolId": "LP_RARE_SALVAGE",
+          "rolls": 1,
+          "chancePermille": 180
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_CORAL_CHEST",
+      "islandId": "WRECK",
+      "regionId": "REG_WRECK",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "SAL_GLASS": 1
+      },
+      "guaranteedBlueprintId": "BP_SEA_CHEST",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_WRECK_COMMON",
+          "rolls": 2
+        },
+        {
+          "poolId": "LP_RARE_SALVAGE",
+          "rolls": 1,
+          "chancePermille": 180
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_ABANDONED_GARDEN",
+      "islandId": "FERTILE",
+      "regionId": "REG_FERTILE",
+      "rewardClaimTrigger": "ON_PUZZLE_COMPLETED",
+      "guaranteedItems": {
+        "SEED_CANE": 2,
+        "SEED_PUMPKIN": 2,
+        "SEED_SWEET_POTATO": 2
+      },
+      "guaranteedBlueprintId": "BP_IRRIGATION",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_FERTILE_COMMON",
+          "rolls": 2
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_HERB_GREENHOUSE",
+      "islandId": "FERTILE",
+      "regionId": "REG_FERTILE",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "SEED_HERB": 2,
+        "SEED_PEPPER": 2
+      },
+      "guaranteedBlueprintId": "BP_DECOR_SET",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_FERTILE_COMMON",
+          "rolls": 2
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    },
+    {
+      "poiId": "POI_ROCK_SHELTER",
+      "islandId": "FERTILE",
+      "regionId": "REG_FERTILE",
+      "rewardClaimTrigger": "ON_SEARCH",
+      "guaranteedItems": {
+        "MAT_RESIN": 2
+      },
+      "guaranteedBlueprintId": "BP_BED_SPECIAL",
+      "guaranteedStorySpecialId": null,
+      "bonusRolls": [
+        {
+          "poolId": "LP_FERTILE_COMMON",
+          "rolls": 2
+        }
+      ],
+      "randomSeedPolicy": "HMAC_SHA256(worldSeed,poiId,lootTableVersion) ONCE then persist rolled items",
+      "uniqueRewardPolicy": "Unique plan and story special are never random, never lost, never rolled again; if already learned, no repeat grant",
+      "stages": [
+        "discovered",
+        "searched",
+        "puzzleCompleted",
+        "lootGenerated",
+        "rewardClaimed"
+      ],
+      "bonusLootNeverEmpty": true,
+      "isRepeatable": false
+    }
+  ],
+  "fixedStorySpecialSources": {
+    "SPC_CHART_COAST": "POI_FISHER_HUT",
+    "SPC_CHART_OBSERVATORY": "POI_OBSERVATORY",
+    "SPC_RADIO_NOTE": "POI_RELAY_SHELTER",
+    "SPC_GEN_CORE": "POI_RESEARCH_SQUARE",
+    "SPC_TX_MODULE": "POI_RADIO_WORKSHOP",
+    "SPC_SOLAR_CORE": "POI_LIGHTHOUSE",
+    "SPC_CHART_CAPTAIN": "POI_CAPTAIN_CABIN"
+  },
+  "fixedBlueprintSources": {
+    "BP_MAP_TABLE": "POI_BROKEN_LOOKOUT",
+    "BP_BRIDGE_ADV": "POI_STONE_BRIDGE",
+    "BP_WATER_FILTER": "POI_WATERFALL_CAVE",
+    "BP_EXPLORER_BAG": "POI_TREEHOUSE",
+    "BP_HUNTER_BOW": "POI_HUNTER_CAMP",
+    "BP_CHEST_REINFORCE": "POI_FLOODED_STORE",
+    "BP_FISH_TRAP_ADV": "POI_MANGROVE_COVE",
+    "BP_WINCH": "POI_CABLE_CAR",
+    "BP_MACHETE": "POI_MINE_SHELTER",
+    "BP_PORTABLE_LAMP": "POI_BAT_CAVERN",
+    "BP_ADV_COOKER": "POI_OLD_KITCHEN",
+    "BP_PANTRY": "POI_LOCKED_WAREHOUSE",
+    "BP_FISH_ROD_ADV": "POI_REEF_FISSURE",
+    "BP_STORM_ANCHOR": "POI_SAND_SPIT",
+    "BP_RAINCOAT": "POI_LIGHTHOUSE_KEEPER",
+    "BP_HULL_REINFORCED": "POI_ENGINE_ROOM",
+    "BP_SEA_CHEST": "POI_CORAL_CHEST",
+    "BP_IRRIGATION": "POI_ABANDONED_GARDEN",
+    "BP_DECOR_SET": "POI_HERB_GREENHOUSE",
+    "BP_BED_SPECIAL": "POI_ROCK_SHELTER"
+  },
+  "criticalMaterialGuarantees": {
+    "SAL_SCRAP": [
+      "POI_COPPER_MINE",
+      "POI_RESEARCH_SQUARE",
+      "POI_RADIO_WORKSHOP"
+    ],
+    "SAL_WIRE": [
+      "POI_RELAY_SHELTER",
+      "POI_RADIO_WORKSHOP",
+      "POI_LIGHTHOUSE"
+    ],
+    "SAL_BATTERY": [
+      "POI_RELAY_SHELTER",
+      "POI_RESEARCH_SQUARE",
+      "POI_RADIO_WORKSHOP"
+    ],
+    "SAL_FUSE": [
+      "POI_RADIO_WORKSHOP",
+      "POI_LIGHTHOUSE"
+    ],
+    "SAL_GLASS": [
+      "POI_OBSERVATORY",
+      "POI_RESEARCH_SQUARE",
+      "POI_SHALLOW_WRECK",
+      "POI_CAPTAIN_CABIN"
+    ],
+    "MAT_COPPER_ORE": [
+      "POI_COPPER_MINE",
+      "REG_RED_CLIFF"
+    ],
+    "MAT_IRON_ORE": [
+      "REG_MOUNTAIN"
+    ],
+    "MAT_CLAY": [
+      "POI_WATER_STATION",
+      "REG_VALLEY"
+    ]
+  }
+}

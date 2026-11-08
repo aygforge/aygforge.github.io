@@ -1,0 +1,171 @@
+{
+  "meta": {
+    "version": "1.6",
+    "source": "ItemDB_v1.0 actual durability maxima",
+    "noDurabilityOnMoveOrIdle": true
+  },
+  "tools": [
+    {
+      "itemId": "TOOL_STONE_AXE",
+      "durabilityMax": 30,
+      "actionCost": 1,
+      "actionUnit": "per_valid_hit_or_use",
+      "notes": "no wear during idle or failed interaction without action start"
+    },
+    {
+      "itemId": "TOOL_COPPER_AXE",
+      "durabilityMax": 65,
+      "actionCost": 1,
+      "actionUnit": "per_valid_hit_or_use",
+      "notes": "no wear during idle or failed interaction without action start"
+    },
+    {
+      "itemId": "TOOL_IRON_AXE",
+      "durabilityMax": 120,
+      "actionCost": 1,
+      "actionUnit": "per_valid_hit_or_use",
+      "notes": "no wear during idle or failed interaction without action start"
+    },
+    {
+      "itemId": "TOOL_STONE_PICK",
+      "durabilityMax": 25,
+      "actionCost": 2,
+      "actionUnit": "per_valid_hit_or_use",
+      "notes": "no wear during idle or failed interaction without action start"
+    },
+    {
+      "itemId": "TOOL_COPPER_PICK",
+      "durabilityMax": 65,
+      "actionCost": 2,
+      "actionUnit": "per_valid_hit_or_use",
+      "notes": "no wear during idle or failed interaction without action start"
+    },
+    {
+      "itemId": "TOOL_IRON_PICK",
+      "durabilityMax": 120,
+      "actionCost": 1,
+      "actionUnit": "per_valid_hit_or_use",
+      "notes": "no wear during idle or failed interaction without action start"
+    },
+    {
+      "itemId": "TOOL_FISH_ROD",
+      "durabilityMax": 80,
+      "actionCost": 1,
+      "actionUnit": "per_cast",
+      "notes": "no wear during idle or failed interaction without action start"
+    },
+    {
+      "itemId": "TOOL_FISH_ROD_ADV",
+      "durabilityMax": 100,
+      "actionCost": 1,
+      "actionUnit": "per_cast",
+      "notes": "no wear during idle or failed interaction without action start"
+    },
+    {
+      "itemId": "TOOL_WOOD_SPEAR",
+      "durabilityMax": 100,
+      "actionCost": 1,
+      "actionUnit": "per_valid_hit_or_use",
+      "notes": "no wear during idle or failed interaction without action start"
+    },
+    {
+      "itemId": "TOOL_IRON_SPEAR",
+      "durabilityMax": 100,
+      "actionCost": 1,
+      "actionUnit": "per_valid_hit_or_use",
+      "notes": "no wear during idle or failed interaction without action start"
+    },
+    {
+      "itemId": "TOOL_BOW",
+      "durabilityMax": 100,
+      "actionCost": 1,
+      "actionUnit": "per_valid_hit_or_use",
+      "notes": "no wear during idle or failed interaction without action start"
+    },
+    {
+      "itemId": "TOOL_HUNTER_BOW",
+      "durabilityMax": 100,
+      "actionCost": 1,
+      "actionUnit": "per_valid_hit_or_use",
+      "notes": "no wear during idle or failed interaction without action start"
+    },
+    {
+      "itemId": "TOOL_MACHETE",
+      "durabilityMax": 100,
+      "actionCost": 1,
+      "actionUnit": "per_valid_hit_or_use",
+      "notes": "no wear during idle or failed interaction without action start"
+    },
+    {
+      "itemId": "TOOL_CROWBAR",
+      "durabilityMax": 100,
+      "actionCost": 1,
+      "actionUnit": "per_valid_hit_or_use",
+      "notes": "no wear during idle or failed interaction without action start"
+    },
+    {
+      "itemId": "TOOL_TORCH",
+      "durabilityMax": 35,
+      "actionCost": 1,
+      "actionUnit": "per_completed_minute_active",
+      "notes": "no wear during idle or failed interaction without action start"
+    },
+    {
+      "itemId": "TOOL_PORTABLE_LAMP",
+      "durabilityMax": 100,
+      "actionCost": 1,
+      "actionUnit": "per_completed_minute_active",
+      "notes": "no wear during idle or failed interaction without action start"
+    },
+    {
+      "itemId": "TOOL_WATERING_CAN",
+      "durabilityMax": 100,
+      "actionCost": 1,
+      "actionUnit": "per_valid_hit_or_use",
+      "notes": "no wear during idle or failed interaction without action start"
+    },
+    {
+      "itemId": "TOOL_REPAIR_KIT",
+      "durabilityMax": 100,
+      "actionCost": 1,
+      "actionUnit": "per_valid_hit_or_use",
+      "notes": "no wear during idle or failed interaction without action start"
+    }
+  ],
+  "workProfiles": {
+    "tree": {
+      "stoneAxeHitsToFell": 3,
+      "copperAxeHitsToFell": 3,
+      "ironAxeHitsToFell": 2,
+      "expectedLogYieldPerTree": 3.5
+    },
+    "ore": {
+      "stonePickDurabilityPerNode": 2,
+      "copperPickDurabilityPerNode": 2,
+      "ironPickDurabilityPerNode": 1,
+      "completedNodeOnlyAwardsXP": true
+    },
+    "other": {
+      "bow": "one wear per valid fired shot; no loss if not fired",
+      "fishingRod": "one durability per cast, not per tension frame",
+      "torch": "one durability per active game-time illumination interval (time interval defined to ensure enough cave exploration, not per rendered frame)"
+    }
+  },
+  "breakHandling": {
+    "atZero": "tool unusable but remains in inventory; can be repaired, replaced or dismantled",
+    "cannotSoftlock": "stone tools can always be recrafted from renewable materials",
+    "noPermanentLossOfCriticalEquipment": true
+  },
+  "repair": {
+    "earlyStoneTools": "recraft or repair with 1 stone + 1 branch at workbench (not a new recipe; action context)",
+    "metalTools": "repair kit + 1 matching metal bar at workbench",
+    "toolRepairKitId": "TOOL_REPAIR_KIT",
+    "kitDurabilityCostPerRepair": 20,
+    "restorePercentOfToolMax": 0.65,
+    "repairUpToMax": true,
+    "noDuplicateOnUpgrade": true,
+    "repairAtomic": true
+  },
+  "weatherWear": "none beyond ordinary valid action cost; weather itself does not passively break equipment",
+  "save": "per instance durability and unique instance uid, queue repair is atomic"
+}

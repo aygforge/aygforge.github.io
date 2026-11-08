@@ -1,0 +1,420 @@
+{
+  "meta": {
+    "version": "1.6",
+    "source": "LootSpawnDB_v1.1 + ItemDB_v1.0 + GDD v1.5 material usage",
+    "simulationType": "deterministic design rules, not game engine"
+  },
+  "itemNodeRules": [
+    {
+      "itemId": "FOOD_BANANA",
+      "yieldMin": 2,
+      "yieldMax": 4,
+      "respawnGameDays": 3,
+      "renewable": true,
+      "regions": [
+        "REG_GROVE",
+        "REG_FERTILE"
+      ]
+    },
+    {
+      "itemId": "FOOD_BERRY",
+      "yieldMin": 2,
+      "yieldMax": 4,
+      "respawnGameDays": 2,
+      "renewable": true,
+      "regions": [
+        "REG_GROVE"
+      ]
+    },
+    {
+      "itemId": "FOOD_COCONUT",
+      "yieldMin": 2,
+      "yieldMax": 3,
+      "respawnGameDays": 3,
+      "renewable": true,
+      "regions": [
+        "REG_BEACH",
+        "REG_LAGOON"
+      ]
+    },
+    {
+      "itemId": "MAT_BAMBOO",
+      "yieldMin": 3,
+      "yieldMax": 5,
+      "respawnGameDays": 4,
+      "renewable": true,
+      "regions": [
+        "REG_GROVE",
+        "REG_VALLEY",
+        "REG_LAGOON",
+        "REG_FERTILE"
+      ]
+    },
+    {
+      "itemId": "MAT_BRANCH",
+      "yieldMin": 2,
+      "yieldMax": 4,
+      "respawnGameDays": 1,
+      "renewable": true,
+      "regions": [
+        "REG_BEACH",
+        "REG_SETTLEMENT",
+        "REG_LIGHTHOUSE"
+      ]
+    },
+    {
+      "itemId": "MAT_CLAY",
+      "yieldMin": 3,
+      "yieldMax": 4,
+      "respawnGameDays": 4,
+      "renewable": true,
+      "regions": [
+        "REG_VALLEY",
+        "REG_SWAMP",
+        "REG_RED_CLIFF",
+        "REG_SETTLEMENT"
+      ]
+    },
+    {
+      "itemId": "MAT_COAL",
+      "yieldMin": 3,
+      "yieldMax": 5,
+      "respawnGameDays": 8,
+      "renewable": true,
+      "regions": [
+        "REG_RED_CLIFF",
+        "REG_MOUNTAIN"
+      ]
+    },
+    {
+      "itemId": "MAT_COPPER_ORE",
+      "yieldMin": 3,
+      "yieldMax": 4,
+      "respawnGameDays": 8,
+      "renewable": true,
+      "regions": [
+        "REG_RED_CLIFF",
+        "REG_MOUNTAIN"
+      ]
+    },
+    {
+      "itemId": "MAT_FIBER",
+      "yieldMin": 2,
+      "yieldMax": 3,
+      "respawnGameDays": 2,
+      "renewable": true,
+      "regions": [
+        "REG_BEACH",
+        "REG_GROVE",
+        "REG_VALLEY",
+        "REG_SWAMP",
+        "REG_SETTLEMENT",
+        "REG_FERTILE"
+      ]
+    },
+    {
+      "itemId": "MAT_HARDWOOD",
+      "yieldMin": 2,
+      "yieldMax": 3,
+      "respawnGameDays": 8,
+      "renewable": true,
+      "regions": [
+        "REG_FOREST"
+      ]
+    },
+    {
+      "itemId": "MAT_IRON_ORE",
+      "yieldMin": 3,
+      "yieldMax": 4,
+      "respawnGameDays": 10,
+      "renewable": true,
+      "regions": [
+        "REG_MOUNTAIN"
+      ]
+    },
+    {
+      "itemId": "MAT_LOG",
+      "yieldMin": 3,
+      "yieldMax": 4,
+      "respawnGameDays": 6,
+      "renewable": true,
+      "regions": [
+        "REG_BEACH",
+        "REG_GROVE",
+        "REG_FOREST",
+        "REG_SETTLEMENT"
+      ]
+    },
+    {
+      "itemId": "MAT_PALM_LEAF",
+      "yieldMin": 3,
+      "yieldMax": 5,
+      "respawnGameDays": 6,
+      "renewable": true,
+      "regions": [
+        "REG_BEACH",
+        "REG_GROVE"
+      ]
+    },
+    {
+      "itemId": "MAT_QUARTZ",
+      "yieldMin": 2,
+      "yieldMax": 3,
+      "respawnGameDays": 12,
+      "renewable": true,
+      "regions": [
+        "REG_RED_CLIFF",
+        "REG_MOUNTAIN"
+      ]
+    },
+    {
+      "itemId": "MAT_RESIN",
+      "yieldMin": 1,
+      "yieldMax": 2,
+      "respawnGameDays": 4,
+      "renewable": true,
+      "regions": [
+        "REG_GROVE",
+        "REG_FOREST"
+      ]
+    },
+    {
+      "itemId": "MAT_STONE",
+      "yieldMin": 3,
+      "yieldMax": 5,
+      "respawnGameDays": 4,
+      "renewable": true,
+      "regions": [
+        "REG_BEACH",
+        "REG_VALLEY",
+        "REG_RED_CLIFF",
+        "REG_MOUNTAIN",
+        "REG_SETTLEMENT",
+        "REG_LIGHTHOUSE",
+        "REG_WRECK"
+      ]
+    },
+    {
+      "itemId": "MAT_VINE",
+      "yieldMin": 2,
+      "yieldMax": 3,
+      "respawnGameDays": 3,
+      "renewable": true,
+      "regions": [
+        "REG_GROVE",
+        "REG_FOREST"
+      ]
+    }
+  ],
+  "regionalDefaultsFromV1_1": {
+    "REG_BEACH": {
+      "sourceTarget": 92,
+      "respawnByCategory": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      }
+    },
+    "REG_GROVE": {
+      "sourceTarget": 125,
+      "respawnByCategory": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      }
+    },
+    "REG_VALLEY": {
+      "sourceTarget": 112,
+      "respawnByCategory": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      }
+    },
+    "REG_FOREST": {
+      "sourceTarget": 155,
+      "respawnByCategory": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      }
+    },
+    "REG_SWAMP": {
+      "sourceTarget": 70,
+      "respawnByCategory": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      }
+    },
+    "REG_RED_CLIFF": {
+      "sourceTarget": 95,
+      "respawnByCategory": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      }
+    },
+    "REG_MOUNTAIN": {
+      "sourceTarget": 96,
+      "respawnByCategory": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      }
+    },
+    "REG_SETTLEMENT": {
+      "sourceTarget": 68,
+      "respawnByCategory": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      }
+    },
+    "REG_LAGOON": {
+      "sourceTarget": 83,
+      "respawnByCategory": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      }
+    },
+    "REG_LIGHTHOUSE": {
+      "sourceTarget": 30,
+      "respawnByCategory": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      }
+    },
+    "REG_WRECK": {
+      "sourceTarget": 35,
+      "respawnByCategory": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      }
+    },
+    "REG_FERTILE": {
+      "sourceTarget": 60,
+      "respawnByCategory": {
+        "FIBER": 2,
+        "BRANCH": 1,
+        "FRUIT": 2,
+        "TREE": 6,
+        "STONE": 4,
+        "CLAY": 4,
+        "METAL": 9
+      }
+    }
+  },
+  "regionalNodeGeneration": {
+    "core": "fixed region and POI sources, never randomized",
+    "secondary": "seeded hash coordinates, 2-tile spacing, valid placement mask",
+    "budget": "v1.1 target alive nodes by region",
+    "regeneration": "same node uid and safe position; no spontaneous resource teleport at save load",
+    "conflictWithNewBuild": "delay growth until space clears; no item appears inside walls, houses, mandatory paths",
+    "camera": "respawn graphics only off camera; logical timestamp progresses offscreen",
+    "oreYield": "number of ore portions per completed mining node, not per click",
+    "criticalMetalAlternative": "ordinary ore processing remains available after fixed salvage consumed"
+  },
+  "farmingFiber": {
+    "seedItem": "SEED_FIBER",
+    "guaranteePoi": "POI_FRUIT_HILL",
+    "guaranteedSeeds": 6,
+    "cropId": "CROP_FIBER",
+    "growDays": 3,
+    "minFiberPerPlotYield": 4,
+    "expectedFiberPerPlotYield": 5,
+    "maxFiberPerPlotYield": 6,
+    "plotsExample": 6,
+    "expectedFiberPerHarvestCycle": 30,
+    "plotRecipeId": "R_PLANTER",
+    "starterFiberGuaranteeAfterV1_5Patch": 63,
+    "firstCoreRecipeFiberCost": 42
+  },
+  "depletionLimits": {
+    "regionNaturalYieldFloorFraction": 0.3,
+    "criticalSourcesReplenish": true,
+    "fishStockMin": 0.6,
+    "fishStockRecoveryPerGameDay": 0.08,
+    "fishStockPenaltyPerClaim": 0.04,
+    "trapActiveLimit": 6
+  },
+  "craftingSemantic": "Water and other ingredients consumed on craft action commit; raw input and reserved escrow cannot be double-spent",
+  "specialLootRules": {
+    "salvageAfterStorm": "bonus noncritical materials, max 2 eligible salvage events/region/day after storm; no guaranteed rare blueprints",
+    "finitePOIChests": true,
+    "blueprintsUniqueAndFixed": 20,
+    "fixedStorySpecialsNeverRandom": true
+  },
+  "starterFixedNodeExceptions": {
+    "START_MAT_FIBER_EXTRA_01": {
+      "respawnGameDays": 4
+    },
+    "START_MAT_FIBER_EXTRA_02": {
+      "respawnGameDays": 4
+    },
+    "START_MAT_FIBER_EXTRA_03": {
+      "respawnGameDays": 4
+    },
+    "START_MAT_FIBER_EXTRA_04": {
+      "respawnGameDays": 4
+    },
+    "START_MAT_FIBER_EXTRA_05": {
+      "respawnGameDays": 4
+    },
+    "START_MAT_FIBER_EXTRA_06": {
+      "respawnGameDays": 4
+    }
+  },
+  "precedence": [
+    "explicit fixed source node rule",
+    "per-item ResourceEconomyDB",
+    "biome defaults"
+  ]
+}

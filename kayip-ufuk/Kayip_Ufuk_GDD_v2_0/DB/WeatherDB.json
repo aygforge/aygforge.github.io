@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "version": "1.6",
+    "basedOn": [
+      "BalanceDB_v1.5",
+      "SaveSchema_v1.4",
+      "CropDB_v1.0",
+      "BuildDB_v1.0"
+    ],
+    "designStatus": "PROPOSED_RULES_VALIDATED_BY_SCENARIOS_NOT_GAMEPLAY"
+  },
+  "day": {
+    "dayLengthRealSeconds": 1080,
+    "daylightRealMinutes": 11,
+    "duskRealMinutes": 2,
+    "nightRealMinutes": 5,
+    "dayIndexStartsAt": 1,
+    "offlineGrowth": false,
+    "backgroundPausesGameTime": true
+  },
+  "weatherGenerator": {
+    "weightsPercent": {
+      "CLEAR": 38,
+      "LIGHT_RAIN": 24,
+      "RAIN": 20,
+      "HEAVY_RAIN": 13,
+      "STORM": 5
+    },
+    "selection": "one weather front per game day, independent deterministic RNG stream seeded by worldSeed; transitions persisted",
+    "maxConsecutiveClearDays": 3,
+    "stormProbabilityBasePercent": 5,
+    "safeBoatLaunch": [
+      "CLEAR",
+      "LIGHT_RAIN"
+    ],
+    "maxConsecutiveUnsafeLaunchDays": 2,
+    "weatherEventId": "WEATHER:<saveSlot>:<worldSeed>:<day>:<sliceIndex>:<buildUid>",
+    "rainEventSliceCount": 2,
+    "defaultFrontTimeFraction": {
+      "firstSlice": 0.4,
+      "secondSlice": 0.65
+    },
+    "antiDuplicate": "each collector/day/slice grants water exactly once, including sleep fast-forward",
+    "preset": "ISLAND_BALANCED_NO_SEASONS"
+  },
+  "states": {
+    "CLEAR": {
+      "name": "Açık",
+      "sky": "warm_sun",
+      "plantRainWatered": false,
+      "rainSmall": 0,
+      "rainLarge": 0,
+      "fishingCatchRateMultiplier": 1,
+      "movementSpeedMultiplier": 1,
+      "boatSpeedMultiplier": 1,
+      "boatLaunchAllowed": true,
+      "danger": "none"
+    },
+    "LIGHT_RAIN": {
+      "name": "Hafif yağmur",
+      "sky": "light_drizzle",
+      "plantRainWatered": true,
+      "rainSmall": 2,
+      "rainLarge": 5,
+      "fishingCatchRateMultiplier": 1,
+      "movementSpeedMultiplier": 1,
+      "boatSpeedMultiplier": 1,
+      "boatLaunchAllowed": true,
+      "danger": "none"
+    },
+    "RAIN": {
+      "name": "Yağmur",
+      "sky": "rain",
+      "plantRainWatered": true,
+      "rainSmall": 4,
+      "rainLarge": 10,
+      "fishingCatchRateMultiplier": 0.95,
+      "movementSpeedMultiplier": 0.98,
+      "boatSpeedMultiplier": 0.93,
+      "boatLaunchAllowed": false,
+      "danger": "dampness_only"
+    },
+    "HEAVY_RAIN": {
+      "name": "Şiddetli yağmur",
+      "sky": "heavy_rain",
+      "plantRainWatered": true,
+      "rainSmall": 6,
+      "rainLarge": 16,
+      "fishingCatchRateMultiplier": 0.8,
+      "movementSpeedMultiplier": 0.92,
+      "boatSpeedMultiplier": 0.82,
+      "boatLaunchAllowed": false,
+      "danger": "reduced_visibility"
+    },
+    "STORM": {
+      "name": "Tropik fırtına",
+      "sky": "thunder_storm",
+      "plantRainWatered": true,
+      "rainSmall": 6,
+      "rainLarge": 16,
+      "fishingCatchRateMultiplier": 0.65,
+      "movementSpeedMultiplier": 0.85,
+      "boatSpeedMultiplier": 0.65,
+      "boatLaunchAllowed": false,
+      "danger": "temporary_stamina_and_drift"
+    }
+  },
+  "stormSafety": {
+    "noCampStructureDestruction": true,
+    "noPermadeath": true,
+    "noAutomaticItemLoss": true,
+    "seaRule": "Disallow new launch; existing small raft may be auto-assisted toward nearest valid shoreline at low speed, no teleport without visible feedback",
+    "stormSalvageBonusDayOffset": 1,
+    "stormSalvagePerEligibleRegionMax": 2,
+    "stormSalvageDoesNotIncludeCriticalStoryItems": true
+  },
+  "tides": {
+    "periodsPerGameDay": 2,
+    "lowTideNormalizedWindows": [
+      [
+        0.15,
+        0.3
+      ],
+      [
+        0.65,
+        0.8
+      ]
+    ],
+    "lowTideAccessGuaranteedEveryGameDay": true,
+    "noWeatherPermanentBlock": true,
+    "tideDeterministicByGameTime": true,
+    "kumDiliPoi": "POI_SAND_TONGUE"
+  },
+  "forecast": {
+    "beforeObservatory": "sky and sound cues only",
+    "afterObservatory": "one game day lookahead in journal",
+    "usesFutureDeterministicWeather": true
+  }
+}

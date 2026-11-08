@@ -1,0 +1,93 @@
+{
+  "version": "v2.0",
+  "project": "Kayıp Ufuk",
+  "kind": "AUTHORITATIVE_DESIGN_SPECIFICATION",
+  "not": [
+    "game",
+    "rendered_sprite_pack",
+    "runtime_pass_report"
+  ],
+  "sourceOrder": [
+    {
+      "scope": "core gameplay/data",
+      "authoritative": "DB/<name>.json",
+      "basedOn": "v1.7 consolidated normalized DB"
+    },
+    {
+      "scope": "RecipeDB,AssetManifest",
+      "authoritative": "DB/RecipeDB.json, DB/AssetManifest.json",
+      "basedOn": "v1.8 corrected versions"
+    },
+    {
+      "scope": "asset runtime lookup",
+      "authoritative": "Art/SpriteCatalog.json + Art/AtlasLayout.json",
+      "basedOn": "v1.9 asset layout; v1.8 filePattern is a legacy hint only"
+    },
+    {
+      "scope": "visual style",
+      "authoritative": "Art/ArtDirection.json",
+      "basedOn": "v1.9 overrides older DB/ArtSpec.json for any conflicting art-field"
+    },
+    {
+      "scope": "delivery and gameplay gates",
+      "authoritative": "Contracts/ImplementationContract.json + Contracts/AcceptanceTests.json",
+      "basedOn": "v1.8"
+    },
+    {
+      "scope": "world/cave map grids",
+      "authoritative": "Maps/TerrainGrid_*_v1.2.json and Maps/CaveGrid_*_v1.4.json",
+      "basedOn": "v1.2 and v1.4 real RLE tile grids"
+    }
+  ],
+  "stableIdPolicy": "All ItemDB/BuildDB/POIDB/RecipeDB canonical ids are immutable. UI labels and legacy _v1.7 paths are not authoritative keys.",
+  "spriteResolution": "spriteId -> Art/AtlasLayout.json sprites[spriteId] -> pageId -> Art/AtlasLayout.json pages[].plannedPngPath; sprite files not present.",
+  "saveDataContract": "DB/SaveSchema.json is v1.7 consolidation based on v1.4 schema plus v1.6 updates; version migration must be implemented and verified at runtime.",
+  "noReapplyPatches": "v1.3-v1.6 patches are incorporated into consolidated DB; never apply raw patches over v2.0 DB again.",
+  "immutableDecisions": {
+    "mobileLandscape": true,
+    "singlePlayer": true,
+    "humanNPCsOnIsland": false,
+    "liveRadioHumanVoices": false,
+    "houseConstruction": "PREBUILT_HOMES_ONLY",
+    "visualStyle": "VIBRANT_MODERN_PIXEL_ART",
+    "optionalBlueprintNotEscapeGate": true,
+    "saveCanContinueAfterEitherEnding": true,
+    "noBackgroundTime": true,
+    "puzzleCount": 12
+  },
+  "counts": {
+    "items": 179,
+    "recipes": 183,
+    "recipeTypeCounts": {
+      "item": 114,
+      "upgrade": 9,
+      "build": 60
+    },
+    "builds": 58,
+    "regions": 12,
+    "pois": 38,
+    "puzzles": 12,
+    "storyRecords": 15,
+    "blueprints": 20,
+    "crops": 12,
+    "fish": 10,
+    "wildlifeSpecies": 25,
+    "skills": 8,
+    "escapeRoutes": 2,
+    "worldMapFiles": 7,
+    "avatarClips": 16,
+    "spritesPlanned": 3180,
+    "atlasPagesPlanned": 24,
+    "audioCuesPlanned": 63,
+    "runtimeTestsDefined": 92,
+    "assetTestsDefined": 28
+  },
+  "status": {
+    "dataIndex": "READY_FOR_IMPLEMENTATION",
+    "images": "NOT_RENDERED",
+    "audio": "NOT_RENDERED",
+    "game": "NOT_IMPLEMENTED",
+    "runtimeAcceptance": "NOT_EXECUTED",
+    "release": "NOT_RELEASE_READY"
+  }
+}

@@ -1,0 +1,13 @@
+import { createRequire } from 'node:module'; const { chromium } = createRequire(import.meta.url)('playwright');
+const b = await chromium.launch(); const page = await b.newPage({ viewport: { width: 1280, height: 720 } });
+const errs = []; page.on('console', m => { if (m.type() === 'error') errs.push(m.text()); }); page.on('pageerror', e => errs.push('PAGEERROR ' + e.message));
+await page.goto('http://localhost:8000/?test=1'); await page.waitForFunction(() => window.__KU_BOOT, null, { timeout: 30000 });
+console.log(await page.evaluate(() => JSON.stringify(window.__KU_BOOT)));
+await page.screenshot({ path: process.argv[2] + '/menu.png' });
+await page.evaluate(() => window.__KU.newGame('slot-1', 42));
+await page.waitForTimeout(1500);
+await page.screenshot({ path: process.argv[2] + '/game.png' });
+await page.keyboard.down('KeyD'); await page.waitForTimeout(1200); await page.keyboard.up('KeyD');
+await page.screenshot({ path: process.argv[2] + '/game2.png' });
+console.log('errors', errs.slice(0, 20));
+await b.close();

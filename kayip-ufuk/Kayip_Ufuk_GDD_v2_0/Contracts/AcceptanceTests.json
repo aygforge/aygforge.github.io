@@ -1,0 +1,950 @@
+{
+  "version": "v1.8",
+  "status": "SPECIFICATION_ONLY_NOT_A_TEST_EXECUTION",
+  "total": 92,
+  "blocking": "All P0 tests must pass; all P1 tests pass or have documented, approved alternative; P2 not blockers",
+  "verificationMatrix": {
+    "static": "Run QA/validate_v18.py on the design/data package",
+    "unit": "Implement project-level deterministic assertions against game systems",
+    "integration": "Exercise linked world/crafting/persistence systems",
+    "browserE2E": "Run real Chrome/Android WebView/mobile browser",
+    "manual": "Visual and control quality on actual supported phones"
+  },
+  "deviceTargets": [
+    "Android Chrome, landscape 16:9, midrange",
+    "Android Chrome, landscape narrower usable viewport",
+    "Desktop Chromium, keyboard/mouse",
+    "itch.io HTML5 embedded/fullscreen; requires real test"
+  ],
+  "seedSuite": [
+    1,
+    7,
+    42,
+    20261108,
+    4294967295
+  ],
+  "runtimeTests": [
+    {
+      "id": "AT_BOOT_DATA_01",
+      "category": "BOOT_DATA",
+      "priority": "P0",
+      "title": "Boot on itch-compatible HTTP",
+      "procedure": "Load clean browser storage; open dist/index.html served over HTTP",
+      "expected": "Main menu appears and no uncaught console error",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_BOOT_DATA_02",
+      "category": "BOOT_DATA",
+      "priority": "P0",
+      "title": "Data counts and unique keys",
+      "procedure": "Load all effective DBs and make index maps",
+      "expected": "179 items,183 recipes,58 builds,38 POIs,12 puzzles,15 story,25 species,12 crops,8 skills,2 endings; no duplicate IDs",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_BOOT_DATA_03",
+      "category": "BOOT_DATA",
+      "priority": "P0",
+      "title": "Missing data aborts visibly",
+      "procedure": "Remove required DB and attempt boot",
+      "expected": "Clear data error; no playable incomplete world",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_BOOT_DATA_04",
+      "category": "BOOT_DATA",
+      "priority": "P0",
+      "title": "New game deterministic start",
+      "procedure": "Start same seed with two slots and compare fixed POIs/resources",
+      "expected": "Fixed POIs same positions; 63 starter fiber guarantee",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_BOOT_DATA_05",
+      "category": "BOOT_DATA",
+      "priority": "P0",
+      "title": "Different seeds preserve criticals",
+      "procedure": "Create 20 seeded worlds and inspect fixed POIs/story items",
+      "expected": "All critical POIs same coordinates, side optional loot can differ",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_BOOT_DATA_06",
+      "category": "BOOT_DATA",
+      "priority": "P0",
+      "title": "No external runtime URLs",
+      "procedure": "Disable Internet after serving files and reload",
+      "expected": "Game, sprites, audio and all UI remain functional",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_BOOT_DATA_07",
+      "category": "BOOT_DATA",
+      "priority": "P0",
+      "title": "Source overlays precedence",
+      "procedure": "Load v1.7 core + v1.8 effective overrides",
+      "expected": "POI artwork uses canonical ids; R_SEA_CHEST is create-new build",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_INPUT_UI_01",
+      "category": "INPUT_UI",
+      "priority": "P1",
+      "title": "Landscape orientation",
+      "procedure": "Launch portrait then landscape",
+      "expected": "Helpful rotate prompt and full UI on landscape",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_INPUT_UI_02",
+      "category": "INPUT_UI",
+      "priority": "P1",
+      "title": "Joystick and keyboard",
+      "procedure": "Move diagonally with joystick then arrows/WASD",
+      "expected": "Equivalent normalized movement, sprint consumes stamina only while moving",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_INPUT_UI_03",
+      "category": "INPUT_UI",
+      "priority": "P1",
+      "title": "Context interaction",
+      "procedure": "Stand between two interactables and change target",
+      "expected": "Correct target named; no unintended action",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_INPUT_UI_04",
+      "category": "INPUT_UI",
+      "priority": "P1",
+      "title": "Tap-to-approach",
+      "procedure": "Tap chest across trees and switch to joystick",
+      "expected": "Valid A* path, no corner clipping, joystick cancels",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_INPUT_UI_05",
+      "category": "INPUT_UI",
+      "priority": "P1",
+      "title": "Panel pause and no input leak",
+      "procedure": "Open inventory/map/puzzle near danger and tap through UI",
+      "expected": "World and survival clock paused; no avatar movement or attack",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_INPUT_UI_06",
+      "category": "INPUT_UI",
+      "priority": "P1",
+      "title": "Quickbar and touch targets",
+      "procedure": "Test 1280x720 and narrow landscape viewport",
+      "expected": "6 usable slots, essential targets at least 48 CSSpx; no clipped buttons",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_INPUT_UI_07",
+      "category": "INPUT_UI",
+      "priority": "P1",
+      "title": "Fullscreen fallback",
+      "procedure": "Click fullscreen in supported and unsupported browser",
+      "expected": "Works when supported, clear nonfatal feedback otherwise",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_INPUT_UI_08",
+      "category": "INPUT_UI",
+      "priority": "P1",
+      "title": "Readable HUD",
+      "procedure": "Switch day/night and all survival indicators",
+      "expected": "Icons legible and bars reflect actual stats",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_INPUT_UI_09",
+      "category": "INPUT_UI",
+      "priority": "P1",
+      "title": "Quality settings",
+      "procedure": "Switch LOW/MED/HIGH and 30/60 target",
+      "expected": "No loss of gameplay hitboxes or visibility",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_WORLD_NAV_01",
+      "category": "WORLD_NAV",
+      "priority": "P0",
+      "title": "Main island reachable graph",
+      "procedure": "Spawn on beach and path to nine biome anchors",
+      "expected": "All 9 regions accessible without raft and without mandatory shortcut",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_WORLD_NAV_02",
+      "category": "WORLD_NAV",
+      "priority": "P0",
+      "title": "All POI approach tiles",
+      "procedure": "Find path from legal entry to 38 saved POI approach anchors",
+      "expected": "No unreachable POI because of water, prop collider or cliff",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_WORLD_NAV_03",
+      "category": "WORLD_NAV",
+      "priority": "P0",
+      "title": "Raft reaches islands",
+      "procedure": "Craft/board raft, sail all 3 water routes and disembark",
+      "expected": "All 3 islands reached by water navigation; all landing tiles valid",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_WORLD_NAV_04",
+      "category": "WORLD_NAV",
+      "priority": "P0",
+      "title": "River fords and bridges",
+      "procedure": "Walk public fords before and after building bridge",
+      "expected": "9 public fords valid; bridge is a bonus shortcut",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_WORLD_NAV_05",
+      "category": "WORLD_NAV",
+      "priority": "P0",
+      "title": "Elevation cliffs and corners",
+      "procedure": "Try diagonal movement at cliff and obstruction corners",
+      "expected": "No passing through collision or wrong elevation",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_WORLD_NAV_06",
+      "category": "WORLD_NAV",
+      "priority": "P0",
+      "title": "Player never stuck on spawn",
+      "procedure": "Initialize 20 test seeds and walk 22 tile radius",
+      "expected": "Guaranteed starter materials accessible and safe",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_WORLD_NAV_07",
+      "category": "WORLD_NAV",
+      "priority": "P0",
+      "title": "Prefab blocking protection",
+      "procedure": "Attempt house construction across cave exit and critical corridor",
+      "expected": "Placement rejected without consuming materials",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_WORLD_NAV_08",
+      "category": "WORLD_NAV",
+      "priority": "P0",
+      "title": "Roof visibility",
+      "procedure": "Enter prefab, stand behind wall, exit",
+      "expected": "Roof hides only for correct footprint; furniture and player ordering correct",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_WORLD_NAV_09",
+      "category": "WORLD_NAV",
+      "priority": "P0",
+      "title": "Resource node respawn",
+      "procedure": "Mine ore, skip days, revisit with and without nearby building",
+      "expected": "Respawns according to ResourceEconomyDB, never inside buildings",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_WORLD_NAV_10",
+      "category": "WORLD_NAV",
+      "priority": "P0",
+      "title": "Cave exits",
+      "procedure": "Enter each of 3 caves; break tool; remove torch; leave",
+      "expected": "All caves remain escapable",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_WORLD_NAV_11",
+      "category": "WORLD_NAV",
+      "priority": "P0",
+      "title": "Water mode transitions",
+      "procedure": "Walk into shallow, swim, dive, board raft",
+      "expected": "Correct movement type, oxygen and collision",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_WORLD_NAV_12",
+      "category": "WORLD_NAV",
+      "priority": "P0",
+      "title": "Sea route state",
+      "procedure": "Save mid-route and reload",
+      "expected": "Original raft and player positions restored, no duplication",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ITEM_CRAFT_01",
+      "category": "ITEM_CRAFT",
+      "priority": "P0",
+      "title": "Starting eight recipes",
+      "procedure": "Gather only guaranteed starter nodes, craft first eight basics",
+      "expected": "Enough resources with at least 21 extra fiber",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ITEM_CRAFT_02",
+      "category": "ITEM_CRAFT",
+      "priority": "P0",
+      "title": "No free crafts",
+      "procedure": "Attempt craft without inputs, station or knowledge",
+      "expected": "Craft blocked with clear missing requirements; no accidental outputs",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ITEM_CRAFT_03",
+      "category": "ITEM_CRAFT",
+      "priority": "P0",
+      "title": "Nearby chest radius",
+      "procedure": "Place storage at 9 and 11 tiles from workbench",
+      "expected": "9 tile accessible; 11 not automatically shared",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ITEM_CRAFT_04",
+      "category": "ITEM_CRAFT",
+      "priority": "P0",
+      "title": "Atomic multi-source reserve",
+      "procedure": "Queue craft using backpack and chest; interrupt save",
+      "expected": "Inputs reserved exactly once, no duplicate/loss",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ITEM_CRAFT_05",
+      "category": "ITEM_CRAFT",
+      "priority": "P0",
+      "title": "Full station output",
+      "procedure": "Complete craft with no available destination slots",
+      "expected": "Outputs remain claimable at station, not deleted",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ITEM_CRAFT_06",
+      "category": "ITEM_CRAFT",
+      "priority": "P0",
+      "title": "Recipe unlock rules",
+      "procedure": "First material, then station, then optional blueprint",
+      "expected": "Only matching MAT/STATION/BP recipes unlock",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ITEM_CRAFT_07",
+      "category": "ITEM_CRAFT",
+      "priority": "P0",
+      "title": "20 unique blueprints",
+      "procedure": "Claim 20 plan POIs and re-open them",
+      "expected": "Each plan learned once; none required for either escape",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ITEM_CRAFT_08",
+      "category": "ITEM_CRAFT",
+      "priority": "P0",
+      "title": "Upgrades preserve unique builds",
+      "procedure": "Upgrade large chest filled with items",
+      "expected": "Same building UID and contents; capacity changes, no item duplication",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ITEM_CRAFT_09",
+      "category": "ITEM_CRAFT",
+      "priority": "P0",
+      "title": "Alternative sea chest",
+      "procedure": "Craft R_SEA_CHEST and compare existing chests",
+      "expected": "New distinct chest built; no mutation of unrelated chest",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ITEM_CRAFT_10",
+      "category": "ITEM_CRAFT",
+      "priority": "P0",
+      "title": "Tool breaks without deletion",
+      "procedure": "Wear copper pick to 0, repair it",
+      "expected": "Tool remains owned, cannot work at 0, repairs predictably",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ITEM_CRAFT_11",
+      "category": "ITEM_CRAFT",
+      "priority": "P0",
+      "title": "Stack and unique ids",
+      "procedure": "Split/merge stacks, transfer, die while full",
+      "expected": "No negative quantities or two owners for one UID",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ITEM_CRAFT_12",
+      "category": "ITEM_CRAFT",
+      "priority": "P0",
+      "title": "Building stage escrow",
+      "procedure": "Partially deliver 4 hull sections, reload after 2",
+      "expected": "Still 2 deposited; never double charge completed stage",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_SURVIVAL_ECO_01",
+      "category": "SURVIVAL_ECO",
+      "priority": "P0",
+      "title": "Daily needs",
+      "procedure": "Run controlled 1080 game seconds without eating/drinking/sleep",
+      "expected": "Hunger -32, thirst -42, rest -35 except defined modifiers",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_SURVIVAL_ECO_02",
+      "category": "SURVIVAL_ECO",
+      "priority": "P0",
+      "title": "One source one time",
+      "procedure": "Eat food and drink water at low and max indicators",
+      "expected": "Needs clamp to [0,100]; no wasted negative or >100",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_SURVIVAL_ECO_03",
+      "category": "SURVIVAL_ECO",
+      "priority": "P0",
+      "title": "Weather deterministic",
+      "procedure": "Same seed + saved weather RNG then reload",
+      "expected": "Same future weather; max 3 dry days and safe boat window ≤3 days",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_SURVIVAL_ECO_04",
+      "category": "SURVIVAL_ECO",
+      "priority": "P0",
+      "title": "Water collector production",
+      "procedure": "Run every weather on empty collector at day boundary",
+      "expected": "Small 0/2/4/6/6, large 0/5/10/16/16 capacity bounded",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_SURVIVAL_ECO_05",
+      "category": "SURVIVAL_ECO",
+      "priority": "P0",
+      "title": "Tank water mixing",
+      "procedure": "Fill tank with dirty and attempt to add clean",
+      "expected": "No mixing of clean/dirty types or silent duplication",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_SURVIVAL_ECO_06",
+      "category": "SURVIVAL_ECO",
+      "priority": "P0",
+      "title": "Water manual recovery",
+      "procedure": "Use campfire with 1 dirty water + 1 branch",
+      "expected": "One clean water; can repeat in dry weather",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_SURVIVAL_ECO_07",
+      "category": "SURVIVAL_ECO",
+      "priority": "P0",
+      "title": "Farming 12 species",
+      "procedure": "Grow each species and inspect harvest+seed",
+      "expected": "All 12 grow/harvest; ≥1 renewable seed at mature harvest",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_SURVIVAL_ECO_08",
+      "category": "SURVIVAL_ECO",
+      "priority": "P0",
+      "title": "Farming water pause",
+      "procedure": "Omit water for two days then resume",
+      "expected": "Growth pauses, plant not destroyed, no retroactive growth",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_SURVIVAL_ECO_09",
+      "category": "SURVIVAL_ECO",
+      "priority": "P0",
+      "title": "Traps daily idempotence",
+      "procedure": "Place 6 traps, advance day; save-load-save",
+      "expected": "One persisted roll/day and one XP/reward when claimed",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_SURVIVAL_ECO_10",
+      "category": "SURVIVAL_ECO",
+      "priority": "P0",
+      "title": "Wildlife 25 species",
+      "procedure": "Travel all legal habitats, force controlled spawns",
+      "expected": "All registered species use AI/interaction appropriate to species",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_SURVIVAL_ECO_11",
+      "category": "SURVIVAL_ECO",
+      "priority": "P0",
+      "title": "Pet permanence and safety",
+      "procedure": "Tame parrot and monkey, swap follower, save, die",
+      "expected": "1 active follower; friendship/name preserved; no death/loss",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_SURVIVAL_ECO_12",
+      "category": "SURVIVAL_ECO",
+      "priority": "P0",
+      "title": "Fishing mini game",
+      "procedure": "Test sardine and tuna with tension gauge",
+      "expected": "Tap/hold affects tension; catch/fail conditions work; all 10 fish exist",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_SURVIVAL_ECO_13",
+      "category": "SURVIVAL_ECO",
+      "priority": "P0",
+      "title": "Skills and anti-exploit",
+      "procedure": "Perform valid actions vs cancelled/repeated actions",
+      "expected": "8 skill XP once for completed valid actions, five ranks 0/80/220/450/800",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_SURVIVAL_ECO_14",
+      "category": "SURVIVAL_ECO",
+      "priority": "P0",
+      "title": "Sleep one daily tick",
+      "procedure": "Sleep across day, save/load during boundary",
+      "expected": "Each day-based system applies precisely once",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_SURVIVAL_ECO_15",
+      "category": "SURVIVAL_ECO",
+      "priority": "P0",
+      "title": "Hidden tab freeze",
+      "procedure": "Hide tab 1 minute then restore",
+      "expected": "No hunger, production, growth or cooldown tick while hidden",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_EXPLORATION_01",
+      "category": "EXPLORATION",
+      "priority": "P0",
+      "title": "POI art identity",
+      "procedure": "Visit all 38 POIs with canonical asset registry",
+      "expected": "Each has correct named visual and reward identity, no order mixing",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_EXPLORATION_02",
+      "category": "EXPLORATION",
+      "priority": "P0",
+      "title": "Guaranteed loot protected",
+      "procedure": "Open major POI at two seeds; empty inventory then claim",
+      "expected": "Guaranteed items always obtainable, full inventory deferred safely",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_EXPLORATION_03",
+      "category": "EXPLORATION",
+      "priority": "P0",
+      "title": "One-time reward ledger",
+      "procedure": "Reopen chest 3 times and reload between tries",
+      "expected": "Special items, plans, random roll awarded at most once",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_EXPLORATION_04",
+      "category": "EXPLORATION",
+      "priority": "P0",
+      "title": "Twelve puzzles",
+      "procedure": "Start, abandon and solve each PuzzleDB entry",
+      "expected": "All 12 playable, retryable and effects persisted",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_EXPLORATION_05",
+      "category": "EXPLORATION",
+      "priority": "P0",
+      "title": "Puzzle mistakes safe",
+      "procedure": "Wrong valve/frequency actions repeatedly",
+      "expected": "No unique item destroyed or permanent softlock",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_EXPLORATION_06",
+      "category": "EXPLORATION",
+      "priority": "P0",
+      "title": "Fifteen diary entries",
+      "procedure": "Collect and reread story notes out of order",
+      "expected": "All 15 records accessible, text saved, logical clues retained",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_EXPLORATION_07",
+      "category": "EXPLORATION",
+      "priority": "P0",
+      "title": "Weather/tide side discovery",
+      "procedure": "Visit Sand Spit at low/high tide",
+      "expected": "Approach window predictable, opens at least once per game day",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ENDINGS_01",
+      "category": "ENDINGS",
+      "priority": "P0",
+      "title": "Nav any two sources",
+      "procedure": "Collect Fisherman+Observatory without Captain",
+      "expected": "Navigation kit and boat can unlock",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ENDINGS_02",
+      "category": "ENDINGS",
+      "priority": "P0",
+      "title": "Boat materials and phases",
+      "procedure": "Deliver each of four boat stages",
+      "expected": "Exactly 4 hull + sail+rudder+nav+6 ration+8 water overall, no doubling",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ENDINGS_03",
+      "category": "ENDINGS",
+      "priority": "P0",
+      "title": "Boat safe weather",
+      "procedure": "Prepare boat during storm then wait ≤3 days",
+      "expected": "Blocked with warning during storm; valid weather window appears",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ENDINGS_04",
+      "category": "ENDINGS",
+      "priority": "P0",
+      "title": "Reef finale retry",
+      "procedure": "Crash on reef then restart",
+      "expected": "No permanent loss of boat/story item, checkpoint recovered",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ENDINGS_05",
+      "category": "ENDINGS",
+      "priority": "P0",
+      "title": "Radio solar path",
+      "procedure": "Fix transmitter+antenna and solar, tune",
+      "expected": "SOS sent with only solar energy, generator not required",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ENDINGS_06",
+      "category": "ENDINGS",
+      "priority": "P0",
+      "title": "Radio generator path",
+      "procedure": "Fix transmitter+antenna and generator, tune",
+      "expected": "SOS sent without solar path",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ENDINGS_07",
+      "category": "ENDINGS",
+      "priority": "P0",
+      "title": "No radio NPC conversation",
+      "procedure": "Run complete radio path",
+      "expected": "Only automatic signal/status; no speaking human NPC or on-island NPC",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ENDINGS_08",
+      "category": "ENDINGS",
+      "priority": "P0",
+      "title": "Rescue day timing",
+      "procedure": "Send SOS and advance 2 unique game days",
+      "expected": "Rescue becomes ready once; not early; playable until boarding",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_ENDINGS_09",
+      "category": "ENDINGS",
+      "priority": "P0",
+      "title": "Both endings and free roam",
+      "procedure": "Finish boat, continue, then finish radio in same save",
+      "expected": "Achievements retain both, world and builds remain intact",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_PERSIST_01",
+      "category": "PERSIST",
+      "priority": "P0",
+      "title": "3 independent slots",
+      "procedure": "Create 3 seeds, change slot 1, load 2 and 3",
+      "expected": "No cross-slot contamination",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_PERSIST_02",
+      "category": "PERSIST",
+      "priority": "P0",
+      "title": "Snapshot checksum and backup",
+      "procedure": "Interrupt write and corrupt newest snapshot",
+      "expected": "Last valid backup loaded and player informed",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_PERSIST_03",
+      "category": "PERSIST",
+      "priority": "P0",
+      "title": "Cave load",
+      "procedure": "Loot cave chest then save while inside and reload",
+      "expected": "Same cave/location; chest remains looted and return route valid",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_PERSIST_04",
+      "category": "PERSIST",
+      "priority": "P0",
+      "title": "Partial puzzle load",
+      "procedure": "Set 2 valves then save/load",
+      "expected": "Exactly those 2 valve states restored",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_PERSIST_05",
+      "category": "PERSIST",
+      "priority": "P0",
+      "title": "Corpse bag safe criticals",
+      "procedure": "Die with unique story part and normal loot",
+      "expected": "Unique stays; optional retrieval bag is reachable",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_PERSIST_06",
+      "category": "PERSIST",
+      "priority": "P0",
+      "title": "State migration v4 to v5",
+      "procedure": "Load valid v4 snapshot, run migration, save as v5",
+      "expected": "Weather and water defaults added; no loss of items/flags",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_PERSIST_07",
+      "category": "PERSIST",
+      "priority": "P0",
+      "title": "Export and import",
+      "procedure": "Export live game to JSON, clear slot, import",
+      "expected": "Character, buildings, story and vehicle same, checksum validated",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_PERSIST_08",
+      "category": "PERSIST",
+      "priority": "P0",
+      "title": "Multitab write lock",
+      "procedure": "Open same slot in two browser tabs",
+      "expected": "Only one writer; second warned/read-only",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_PERSIST_09",
+      "category": "PERSIST",
+      "priority": "P0",
+      "title": "Scene transition crash",
+      "procedure": "Kill page between prepare and commit",
+      "expected": "Restores one consistent scene, no duplicated vehicle or loot",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_PERSIST_10",
+      "category": "PERSIST",
+      "priority": "P0",
+      "title": "One-way content corruption",
+      "procedure": "Load save containing unknown mod entity id",
+      "expected": "Safe quarantine/visible error; never silently discard whole save",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_PERSIST_11",
+      "category": "PERSIST",
+      "priority": "P0",
+      "title": "Finish during save",
+      "procedure": "Trigger final achievement while autosave pending",
+      "expected": "At most one committed ending and world remains resumable",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_RENDER_AUDIO_01",
+      "category": "RENDER_AUDIO",
+      "priority": "P1",
+      "title": "Asset build complete",
+      "procedure": "Remove one PNG and run packaging verification",
+      "expected": "Packaging fails; no missing sprite silently shipped",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_RENDER_AUDIO_02",
+      "category": "RENDER_AUDIO",
+      "priority": "P1",
+      "title": "Character animation coverage",
+      "procedure": "Play all 16 clips in 4 directions and outfit variants",
+      "expected": "Frame pivots aligned; tools attached, no invisible avatar",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_RENDER_AUDIO_03",
+      "category": "RENDER_AUDIO",
+      "priority": "P1",
+      "title": "Original visuals",
+      "procedure": "Inspect all required art and final UI icons",
+      "expected": "No third-party copy or emoji-only placeholders as final art",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_RENDER_AUDIO_04",
+      "category": "RENDER_AUDIO",
+      "priority": "P1",
+      "title": "Weather scene visibility",
+      "procedure": "Night, cave and rain in LOW settings",
+      "expected": "Interactables and hazards remain readable",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_RENDER_AUDIO_05",
+      "category": "RENDER_AUDIO",
+      "priority": "P1",
+      "title": "Audio is optional and controlled",
+      "procedure": "Mute and adjust separate sliders before/after gesture",
+      "expected": "No unwanted autoplay; music and SFX levels work",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_RENDER_AUDIO_06",
+      "category": "RENDER_AUDIO",
+      "priority": "P1",
+      "title": "No missing resource network",
+      "procedure": "Run from local static server with network blocked",
+      "expected": "No failed remote CDN/font/image/audio request",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "browser trace/screenshot/save diff"
+    },
+    {
+      "id": "AT_PERFORMANCE_01",
+      "category": "PERFORMANCE",
+      "priority": "P1",
+      "title": "Mobile frame pacing",
+      "procedure": "10-minute traversal on target midrange Android",
+      "expected": "Median ≥~50 FPS 60 setting and stable ≥30 FPS low, recorded actual results required",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "device logs and frame time recording"
+    },
+    {
+      "id": "AT_PERFORMANCE_02",
+      "category": "PERFORMANCE",
+      "priority": "P1",
+      "title": "Long session memory",
+      "procedure": "Travel 12 regions and 3 caves for 60 minutes",
+      "expected": "Memory remains bounded; no steady unbounded object/atlas growth",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "device logs and frame time recording"
+    },
+    {
+      "id": "AT_PERFORMANCE_03",
+      "category": "PERFORMANCE",
+      "priority": "P1",
+      "title": "Cold boot usability",
+      "procedure": "Open 3-slot game on supported mobile device",
+      "expected": "Main menu and Continue available without black screen; cold boot duration measured",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "device logs and frame time recording"
+    },
+    {
+      "id": "AT_PERFORMANCE_04",
+      "category": "PERFORMANCE",
+      "priority": "P1",
+      "title": "Touch/playability acceptance",
+      "procedure": "Play first 30 minutes on smallest supported landscape width",
+      "expected": "No impossible touch target, first shelter and tools buildable",
+      "execution": "RUNTIME_NOT_RUN",
+      "evidenceRequired": "device logs and frame time recording"
+    }
+  ],
+  "runtimeTestsPassed": 0,
+  "reason": "No HTML5 game exists in this design package; no runtime acceptance tests have been executed."
+}

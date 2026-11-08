@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "version": "1.6",
+    "purpose": "Hydration and irrigation economy; all containers reference v1.0 BuildDB IDs"
+  },
+  "hydration": {
+    "maxThirst": 100,
+    "drainPerGameDay": 42,
+    "restoreCleanWaterPortion": 25,
+    "targetCleanPortionsDailyAverage": 1.68,
+    "targetCleanPortionsPer10Days": 16.8,
+    "coconutThirstRestore": 8,
+    "noForcedFixedDrinkingSchedule": true
+  },
+  "collectors": [
+    {
+      "buildId": "BUILD_RAIN_CATCHER",
+      "capacityPortions": 6,
+      "dailyYieldByWeather": {
+        "CLEAR": 0,
+        "LIGHT_RAIN": 2,
+        "RAIN": 4,
+        "HEAVY_RAIN": 6,
+        "STORM": 6
+      },
+      "freeStandingCleanWater": true
+    },
+    {
+      "buildId": "BUILD_RAIN_CATCHER_L",
+      "capacityPortions": 16,
+      "dailyYieldByWeather": {
+        "CLEAR": 0,
+        "LIGHT_RAIN": 5,
+        "RAIN": 10,
+        "HEAVY_RAIN": 16,
+        "STORM": 16
+      },
+      "freeStandingCleanWater": true
+    }
+  ],
+  "tank": {
+    "buildId": "BUILD_WATER_TANK",
+    "capacityPortions": 30,
+    "modeChosenByFirstFill": [
+      "RAW",
+      "CLEAN"
+    ],
+    "mixingAllowed": false,
+    "transferRadiusTiles": 5,
+    "transferOrder": [
+      "collector_to_clean_tank_if_connected",
+      "otherwise_own_storage"
+    ],
+    "overflowPolicy": "excess_discarded",
+    "waterCanBeTakenForHydrationOnlyIfClean": true
+  },
+  "sources": {
+    "freshwaterRiver": "WATER_DIRTY infinite extraction at valid freshwater shore, 1 portion per 2 game seconds; no backpack auto-refill",
+    "freshwaterSpringRestored": "WATER_CLEAN through repaired water station; throughput 6/day; accessible also via basic boiling without repair",
+    "rainCatch": "WATER_CLEAN directly; no filtering required",
+    "seaWater": "cannot drink or irrigate"
+  },
+  "purification": {
+    "basicRecipeId": "R_WATER_CLEAN",
+    "inputs": {
+      "WATER_DIRTY": 1,
+      "MAT_BRANCH": 1
+    },
+    "output": {
+      "WATER_CLEAN": 1
+    },
+    "seconds": 10,
+    "optionalFilterRecipeAdd": {
+      "id": "R_WATER_FILTER_V16",
+      "station": "BUILD_WATER_FILTER",
+      "unlock": "STATION:BUILD_WATER_FILTER",
+      "inputs": {
+        "WATER_DIRTY": 1
+      },
+      "outputId": "WATER_CLEAN",
+      "outputAmount": 1,
+      "craftSeconds": 6
+    },
+    "filterOptionalAndBlueprintLocked": true
+  },
+  "cropWater": {
+    "cropNeedUnitsPerPlotDryDay": 1,
+    "anyRainDayCoversOneWholeCropDailyNeed": true,
+    "processingOrder": [
+      "rain_wets_plots",
+      "irrigation_draws_raw_water_for_unwatered_plots",
+      "manual_water",
+      "end_of_day_advance_growth_if_watered"
+    ],
+    "rainToCropDoesNotDrainCollector": true,
+    "irrigationSource": "RAW local tank, never consume drinking CLEAN unless player explicitly switches tank mode via fully emptying",
+    "farmingEfficiencyRule": "Save fractional water credits in centiportions, do not round 0.85 -> 1 per crop",
+    "skillLevel5WaterNeedMultiplier": 0.85,
+    "noWaterEffect": "pause_growth_no_crop_death"
+  },
+  "manualWaterRecovery": {
+    "guarantee": "Freshwater and boiling always available; no rain is required for progression",
+    "manualRefillPromptThresholdPortions": 2,
+    "cleanWaterPriority": "camp collector then clean tank then inventory, never silently drain drinkable water for plants"
+  },
+  "persistence": {
+    "collectorFill": "stored per build uid",
+    "tankVolume": "integer centiportions and mode",
+    "oneRainSliceOnce": "weatherEventId in SaveSchema event ledger",
+    "sleep": "process only elapsed day and front slices",
+    "offline": "no water accumulation"
+  }
+}

@@ -1,0 +1,321 @@
+{
+  "status": "DESIGN_ONLY_NO_IMAGES",
+  "style": "modern_colorful_pixel_art_original",
+  "referenceResolution": [
+    1280,
+    720
+  ],
+  "tilePixels": 32,
+  "camera": "top_down_three_quarter",
+  "character": {
+    "framePixels": [
+      32,
+      48
+    ],
+    "pivot": "feet_center",
+    "collisionFootprintPixels": [
+      18,
+      14
+    ],
+    "directions": [
+      "down",
+      "up",
+      "left",
+      "right"
+    ],
+    "bodySilhouettes": 2,
+    "skinTones": 4,
+    "hairStyles": 6,
+    "hairColors": 5,
+    "initialOutfitVariants": 3,
+    "layers": [
+      "shadow",
+      "body",
+      "hair",
+      "clothes",
+      "backpack",
+      "held_item_behind",
+      "held_item_front",
+      "effects"
+    ],
+    "clips": [
+      {
+        "id": "idle",
+        "framesPerDirection": 4,
+        "fps": 4,
+        "directions": 4
+      },
+      {
+        "id": "walk",
+        "framesPerDirection": 6,
+        "fps": 9,
+        "directions": 4
+      },
+      {
+        "id": "run",
+        "framesPerDirection": 6,
+        "fps": 12,
+        "directions": 4
+      },
+      {
+        "id": "gather",
+        "framesPerDirection": 5,
+        "fps": 10,
+        "directions": 4
+      },
+      {
+        "id": "chop",
+        "framesPerDirection": 6,
+        "fps": 12,
+        "directions": 4
+      },
+      {
+        "id": "mine",
+        "framesPerDirection": 6,
+        "fps": 12,
+        "directions": 4
+      },
+      {
+        "id": "spear",
+        "framesPerDirection": 5,
+        "fps": 12,
+        "directions": 4
+      },
+      {
+        "id": "bow",
+        "framesPerDirection": 6,
+        "fps": 12,
+        "directions": 4
+      },
+      {
+        "id": "fish_cast",
+        "framesPerDirection": 6,
+        "fps": 10,
+        "directions": 4
+      },
+      {
+        "id": "fish_idle",
+        "framesPerDirection": 4,
+        "fps": 4,
+        "directions": 4
+      },
+      {
+        "id": "fish_reel",
+        "framesPerDirection": 6,
+        "fps": 10,
+        "directions": 4
+      },
+      {
+        "id": "swim",
+        "framesPerDirection": 6,
+        "fps": 8,
+        "directions": 4
+      },
+      {
+        "id": "hurt",
+        "framesPerDirection": 3,
+        "fps": 10,
+        "directions": 4
+      },
+      {
+        "id": "eat",
+        "framesPerDirection": 5,
+        "fps": 8,
+        "directions": 4
+      },
+      {
+        "id": "sleep",
+        "framesPerDirection": 2,
+        "fps": 2,
+        "directions": 1
+      },
+      {
+        "id": "build",
+        "framesPerDirection": 6,
+        "fps": 10,
+        "directions": 4
+      }
+    ]
+  },
+  "atlases": [
+    {
+      "group": "terrain",
+      "contents": "Sand, grass, soil, rock, beach, river edge, ocean tile transitions, paths",
+      "pixelGrid": [
+        32,
+        32
+      ]
+    },
+    {
+      "group": "foliage",
+      "contents": "Palms, canopy trees, bamboo, grasses, vines, flowers, roots, resource states"
+    },
+    {
+      "group": "water",
+      "contents": "Shore foam, shallow water, deep water, river current, surface sparkle, waves"
+    },
+    {
+      "group": "avatar",
+      "contents": "All character animation layers; consistent feet pivot across clips"
+    },
+    {
+      "group": "wildlife",
+      "contents": "12 land/coastal animals, 10 fish, 3 marine observational creatures; behavioral poses"
+    },
+    {
+      "group": "crop",
+      "contents": "12 crop species x 4 stages plus wet/dry highlights"
+    },
+    {
+      "group": "houses",
+      "contents": "4 preset houses x completed exterior/interior/roof and 3 construction states"
+    },
+    {
+      "group": "structures",
+      "contents": "All BuildDB entries, work states, furniture, storage, camps, docks, bridges"
+    },
+    {
+      "group": "equipment",
+      "contents": "All tool/equipment sprites in hands and avatar overlays"
+    },
+    {
+      "group": "icons",
+      "contents": "All ItemDB iconKey refs at 32px or 48px; no emoji icons in shipped game"
+    },
+    {
+      "group": "ui",
+      "contents": "Buttons, tabs, inventory slots, badges, contextual interaction, map markers"
+    },
+    {
+      "group": "vfx",
+      "contents": "Fire, smoke, chop dust, hit flash, rain drops, lightning, soft light cones"
+    },
+    {
+      "group": "poi",
+      "contents": "38 handcrafted POIs: cabins, mines, research facilities, wrecks and caches"
+    },
+    {
+      "group": "boats",
+      "contents": "Raft and final sailing craft, waterline and construction progress"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "SC_MAIN_MENU",
+      "type": "overlay",
+      "features": [
+        "New game",
+        "Continue",
+        "3 save slots",
+        "Settings",
+        "Fullscreen"
+      ]
+    },
+    {
+      "id": "SC_CHARACTER_CREATOR",
+      "type": "overlay",
+      "features": [
+        "Name",
+        "body silhouette",
+        "skin",
+        "hair",
+        "outfit"
+      ]
+    },
+    {
+      "id": "SC_WORLD_MAIN",
+      "type": "world",
+      "features": [
+        "9 continuous main-island biomes",
+        "player",
+        "structures",
+        "wildlife",
+        "day/night"
+      ]
+    },
+    {
+      "id": "SC_CAVE_MINES",
+      "type": "interior",
+      "features": [
+        "3 cave complexes",
+        "light radius",
+        "resource veins"
+      ]
+    },
+    {
+      "id": "SC_FACILITY_INTERIOR",
+      "type": "interior",
+      "features": [
+        "research station",
+        "radio workshop",
+        "abandoned buildings"
+      ]
+    },
+    {
+      "id": "SC_OCEAN_ROUTE",
+      "type": "world",
+      "features": [
+        "raft sailing",
+        "floating salvage",
+        "small-island transitions"
+      ]
+    },
+    {
+      "id": "SC_ISLETS",
+      "type": "world",
+      "features": [
+        "lighthouse",
+        "wreck",
+        "fertile island"
+      ]
+    },
+    {
+      "id": "SC_BUILD_INTERIOR",
+      "type": "inline_world_layer",
+      "features": [
+        "roof hide/fade",
+        "preset floor collision",
+        "free furniture placement"
+      ]
+    },
+    {
+      "id": "SC_ESCAPE_SEA",
+      "type": "ending",
+      "features": [
+        "reef traversal",
+        "open sea",
+        "credits"
+      ]
+    },
+    {
+      "id": "SC_ESCAPE_RADIO",
+      "type": "ending",
+      "features": [
+        "signal calibration",
+        "rescue boat",
+        "credits"
+      ]
+    },
+    {
+      "id": "SC_UI_OVERLAYS",
+      "type": "overlay",
+      "features": [
+        "Inventory",
+        "Crafting",
+        "Build",
+        "Map",
+        "Journal",
+        "Skills",
+        "Pet",
+        "Collections"
+      ]
+    }
+  ],
+  "strictRules": [
+    "Do not copy third-party art/characters",
+    "All sprites have canonical pivots and collision bounding boxes",
+    "No emoji as final asset",
+    "Use nearest-neighbor scaling; ctx.imageSmoothingEnabled=false",
+    "Persist visual construction stage, crops, furniture placement and opened POIs"
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "version": "v1.8",
+  "status": "DESIGN_ONLY_NOT_IMPLEMENTED",
+  "scope": "Full game; milestones are implementation order, not features to drop",
+  "milestones": [
+    {
+      "id": "M01",
+      "name": "Boot/harita/karakter",
+      "deliverables": "Üç kayıt slotu, veri yükleme, kamera, hareket, arazi ve 4 ada/3 mağara geometri",
+      "gate": "P0 temel veri, spawn, bölge erişimi, collision"
+    },
+    {
+      "id": "M02",
+      "name": "Envanter/üretim",
+      "deliverables": "179 eşya, 183 tarif, 10 istasyon, escrow, 58 yapı, mevcut yapı yükseltmeleri",
+      "gate": "P0 crafting, item korunumu, sahte çıktı olmaması"
+    },
+    {
+      "id": "M03",
+      "name": "Survival/iklim/tarım",
+      "deliverables": "18 dk gün, ihtiyaçlar, yağış, depolama, su arıtma, 12 bitki",
+      "gate": "P0 günlük idempotans, tüketim, üretim sürekliliği"
+    },
+    {
+      "id": "M04",
+      "name": "Canlılar ve avcılık",
+      "deliverables": "25 canlı, tuzak, balık tutma, papağan/maymun ve 8 ustalık",
+      "gate": "P0 balıkçılık, NPC yok, pet kalıcılığı, anti-exploit"
+    },
+    {
+      "id": "M05",
+      "name": "Keşif/maceralar",
+      "deliverables": "38 POI, 12 bulmaca, 15 günlük, 20 özel plan, mağara loot",
+      "gate": "P0 asset-POI ID doğruluğu, garantili loot tekil"
+    },
+    {
+      "id": "M06",
+      "name": "Denizcilik ve sonlar",
+      "deliverables": "Sal, 3 rota, tekne finali ve alternatif güneş/jeneratör telsiz",
+      "gate": "P0 tüm rotalar, final geri dönüş, SOS iki gün serbest yaşam"
+    },
+    {
+      "id": "M07",
+      "name": "Kayıt ve hata kurtarma",
+      "deliverables": "IndexedDB v5, 3 slot, yedek, JSON import/export, çoklu sekme",
+      "gate": "P0 mağara/sal/loot/yarım üretim kayıt round-trip"
+    },
+    {
+      "id": "M08",
+      "name": "Görsel/ses ve yayın",
+      "deliverables": "Özgün atlaslar, animasyon, HUD, ses miksleri, kalite, itch.io ZIP",
+      "gate": "P1 gerçek Android/fps/okunabilirlik, P0 içerik eksiksizliği"
+    }
+  ],
+  "rule": "A milestone may be implemented, but do not declare full release until all 92 runtime acceptance tests and required assets are validated."
+}

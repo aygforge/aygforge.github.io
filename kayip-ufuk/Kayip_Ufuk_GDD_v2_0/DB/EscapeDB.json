@@ -1,0 +1,296 @@
+{
+  "meta": {
+    "version": "1.3",
+    "escapeRoutes": 2,
+    "sceneSetting": "Completely alone on island; no living NPC dialogue or traders",
+    "escapeRoutesMutuallyExclusive": false,
+    "noDayLocks": true
+  },
+  "unlocks": {
+    "TWO_NAV_SOURCES": {
+      "type": "COUNT_UNIQUE_STORY_SPECIAL",
+      "minimum": 2,
+      "of": [
+        {
+          "poiId": "POI_FISHER_HUT",
+          "itemId": "SPC_CHART_COAST"
+        },
+        {
+          "poiId": "POI_OBSERVATORY",
+          "itemId": "SPC_CHART_OBSERVATORY"
+        },
+        {
+          "poiId": "POI_CAPTAIN_CABIN",
+          "itemId": "SPC_CHART_CAPTAIN"
+        }
+      ],
+      "flagsPersistAfterEquipmentConsumed": true
+    },
+    "RADIO_STATION_DISCOVERED": {
+      "type": "POI_DISCOVERED",
+      "poiId": "POI_RADIO_WORKSHOP"
+    },
+    "GENERATOR_CORE_FOUND": {
+      "type": "SPECIAL_DISCOVERED",
+      "itemId": "SPC_GEN_CORE"
+    },
+    "POWER_SOLAR": {
+      "type": "SPECIAL_DISCOVERED",
+      "itemId": "SPC_SOLAR_CORE"
+    },
+    "POWER_GENERATOR": {
+      "type": "BUILT_OR_CRAFTED",
+      "itemId": "CMP_GENERATOR"
+    }
+  },
+  "routes": [
+    {
+      "id": "ESCAPE_SAIL",
+      "title": "Kendi Yelkenlinle Kaçış",
+      "mode": "BOAT",
+      "optionalBlueprintsNeeded": [],
+      "access": {
+        "requireCraft": "BUILD_RAFT",
+        "criticalNote": "Raft only needed to reach alternate captain route, not obligatory for first two chart sources"
+      },
+      "navigator": {
+        "rule": "TWO_NAV_SOURCES",
+        "requiresItem": "TOOL_NAV_KIT",
+        "recipeId": "R_NAV_KIT",
+        "notes": "Pusula + iki seyir kaydıyla açılan rota; üç kaynak sabit"
+      },
+      "project": {
+        "buildId": "BUILD_ESCAPE_BOAT",
+        "recipeId": "R_ESCAPE_BOAT",
+        "stationId": "BUILD_NAV_TABLE",
+        "inputTotals": {
+          "CMP_HULL_SEGMENT": 4,
+          "CMP_SAIL": 1,
+          "CMP_RUDDER": 1,
+          "TOOL_NAV_KIT": 1,
+          "FOOD_RATION": 6,
+          "WATER_CLEAN": 8
+        },
+        "stages": [
+          {
+            "label": "Gövde iskeleti",
+            "requirements": {
+              "CMP_HULL_SEGMENT": 2
+            }
+          },
+          {
+            "label": "Kaplama ve bağlantılar",
+            "requirements": {
+              "CMP_HULL_SEGMENT": 2
+            }
+          },
+          {
+            "label": "Direk, yelken ve dümen",
+            "requirements": {
+              "CMP_SAIL": 1,
+              "CMP_RUDDER": 1
+            }
+          },
+          {
+            "label": "Navigasyon ve erzak",
+            "requirements": {
+              "TOOL_NAV_KIT": 1,
+              "FOOD_RATION": 6,
+              "WATER_CLEAN": 8
+            }
+          }
+        ],
+        "stageEscrowRules": "On deposit, subtract once, store stage escrow and future requirements; stage sums must match recipe inputs",
+        "place": "BEACH_VALID_COASTAL_ZONE",
+        "noOpenWaterOnlyBuilding": true
+      },
+      "departure": {
+        "needed": {
+          "buildComplete": true,
+          "navSources": 2,
+          "foodRationsDeposited": 6,
+          "cleanWaterDeposited": 8,
+          "weather": "CALM_OR_NORMAL"
+        },
+        "stormDeparture": "Disallowed with readable weather warning; calm weather guaranteed at least once per 3 in-game days"
+      },
+      "finale": {
+        "segments": [
+          {
+            "id": "BOAT_CASTOFF",
+            "secondsTarget": 45,
+            "interaction": "BOARD_AND_LEAVE_COAST"
+          },
+          {
+            "id": "BOAT_REEF",
+            "secondsTarget": 120,
+            "interaction": "STEER_THROUGH_REEF_GATES_WITH_CHART_CLUES"
+          },
+          {
+            "id": "BOAT_OPEN_SEA",
+            "secondsTarget": 40,
+            "interaction": "SAIL_TO_EXIT_MARKER"
+          }
+        ],
+        "failCondition": "BOAT_REEF_COLLISION_OR_HEALTH_ZERO",
+        "onFailure": "Return to safe departure checkpoint; never permanently destroy unique build",
+        "retryResourceLoss": "Optional small repair materials only if player has renewable supply; no new story items required",
+        "onSuccess": "Set ESCAPE_BY_BOAT; play short closing, save ending stats and allow resume to pre-departure world"
+      },
+      "neverConsumeStoryItems": [
+        "SPC_CHART_COAST",
+        "SPC_CHART_OBSERVATORY",
+        "SPC_CHART_CAPTAIN"
+      ]
+    },
+    {
+      "id": "ESCAPE_RADIO",
+      "title": "Acil Yardım Sinyali",
+      "mode": "SIGNAL",
+      "optionalBlueprintsNeeded": [],
+      "access": {
+        "requireCraft": "BUILD_RAFT",
+        "mustReach": [
+          "POI_RADIO_WORKSHOP",
+          "POI_RELAY_SHELTER",
+          "POI_LIGHTHOUSE"
+        ],
+        "noAnotherLivingCharacterInteraction": true
+      },
+      "fixedSignals": {
+        "transmitter": "SPC_TX_MODULE",
+        "frequency": "SPC_RADIO_NOTE",
+        "powerSolar": "SPC_SOLAR_CORE",
+        "powerGenerator": "SPC_GEN_CORE",
+        "generatorCoreBuild": "CMP_GENERATOR"
+      },
+      "powerPaths": [
+        {
+          "id": "SOLAR",
+          "recipeId": "R_SIGNAL_STATION",
+          "requiresSpecial": [
+            "SPC_TX_MODULE",
+            "SPC_RADIO_NOTE",
+            "SPC_SOLAR_CORE"
+          ],
+          "materials": {
+            "CMP_ANTENNA": 1,
+            "CMP_SIGNAL_BOOSTER": 1,
+            "CMP_CABLE_HARNESS": 2,
+            "CMP_FUSE": 2,
+            "SAL_BATTERY": 2
+          },
+          "stages": [
+            {
+              "label": "Anten onarımı",
+              "requirements": {
+                "CMP_ANTENNA": 1
+              }
+            },
+            {
+              "label": "Bağlantılar",
+              "requirements": {
+                "CMP_CABLE_HARNESS": 2,
+                "CMP_FUSE": 2
+              }
+            },
+            {
+              "label": "Verici ve test",
+              "requirements": {
+                "CMP_SIGNAL_BOOSTER": 1,
+                "SAL_BATTERY": 2
+              }
+            }
+          ]
+        },
+        {
+          "id": "GENERATOR",
+          "recipeId": "R_SIGNAL_STATION_GENERATOR",
+          "requiresSpecial": [
+            "SPC_TX_MODULE",
+            "SPC_RADIO_NOTE",
+            "SPC_GEN_CORE"
+          ],
+          "preCraftId": "CMP_GENERATOR",
+          "preCraftRecipeId": "R_GENERATOR",
+          "materials": {
+            "CMP_ANTENNA": 1,
+            "CMP_SIGNAL_BOOSTER": 1,
+            "CMP_CABLE_HARNESS": 2,
+            "CMP_FUSE": 2,
+            "CMP_GENERATOR": 1
+          },
+          "stages": [
+            {
+              "label": "Anten onarımı",
+              "requirements": {
+                "CMP_ANTENNA": 1
+              }
+            },
+            {
+              "label": "Kablo bağlantıları",
+              "requirements": {
+                "CMP_CABLE_HARNESS": 2,
+                "CMP_FUSE": 2
+              }
+            },
+            {
+              "label": "Sinyal güçlendirici ve jeneratör",
+              "requirements": {
+                "CMP_SIGNAL_BOOSTER": 1,
+                "CMP_GENERATOR": 1
+              }
+            }
+          ]
+        }
+      ],
+      "sharedProject": {
+        "buildId": "BUILD_SIGNAL_STATION",
+        "placementPoiId": "POI_LIGHTHOUSE",
+        "mustPickExactlyOnePowerPathAtBuildStart": true,
+        "recipesAreAlternative_NotAdditive": true,
+        "blueprintsNotRequired": true,
+        "solvingLightHouseTuneRequiresBuiltStation": true,
+        "puzzleId": "PZ_LIGHTHOUSE_TUNE"
+      },
+      "transmission": {
+        "requiresPuzzleSolved": "PZ_LIGHTHOUSE_TUNE",
+        "onTransmit": "Set SOS_SENT and START_RESCUE_TIMER",
+        "broadcast": "Automated SOS packet without conversation with living person",
+        "acknowledgment": "Device displays automatic relay delivery confirmation; no human voice"
+      },
+      "rescue": {
+        "arrivalDelayGameDays": 2,
+        "arrivalIfGameActiveOrSleepSkips": true,
+        "landingArea": "REG_BEACH_FIXED_SAFE_SHORE",
+        "requiresPlayerBoarding": true,
+        "noNPCFreeRoam": true,
+        "cinematic": "Rescue vessel silhouette approaches, character leaves alone; no conversations",
+        "onSuccess": "Set ESCAPE_BY_RADIO and save ending stats; return to pre-boarding persistent world for freeplay"
+      },
+      "neverConsumeStoryItems": [
+        "SPC_TX_MODULE",
+        "SPC_RADIO_NOTE",
+        "SPC_SOLAR_CORE",
+        "SPC_GEN_CORE"
+      ]
+    }
+  ],
+  "terminalState": {
+    "canFinishBothRoutesInSameSave": true,
+    "epilogueAvailableFromMenu": true,
+    "saveBeforeEndingTransition": true,
+    "freeRoamAfterEnding": "Restore final checkpoint world safely, keep structures, pets, crops, items and achieved-ending flags",
+    "noSoftlockIfPlayerDies": true,
+    "noItemLossInFinaleForStoryItems": true,
+    "rescuerNpcOnIsland": false,
+    "achievementStats": [
+      "daysSurvived",
+      "poisDiscovered",
+      "skillsMastered",
+      "craftsLearned",
+      "animalSpeciesObserved",
+      "buildsPlaced"
+    ]
+  }
+}

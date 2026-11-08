@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#162b46">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="description" content="Kayıp Ufuk — mobil yatay tropikal ada hayatta kalma, keşif ve üretim oyunu.">
+<title>Kayıp Ufuk</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <canvas id="world" aria-label="Oyun dünyası"></canvas>
+  <div id="hud" class="hidden"></div>
+  <div id="placebar" class="hidden"></div>
+  <div id="fishing" class="hidden"></div>
+  <div id="toasts" aria-live="polite"></div>
+  <div id="panel" class="panel hidden" role="dialog"></div>
+  <div id="screen"></div>
+  <div id="boot"><div class="bootbox"><h1 class="logo">Kayıp Ufuk</h1><div class="bar"><i class="fill"></i></div><p class="msg">Başlatılıyor…</p><noscript>Bu oyun JavaScript gerektirir.</noscript></div></div>
+  <div id="rotate"><div><div class="phone"></div><p>Lütfen cihazını <b>yatay</b> çevir</p><p class="small">Kayıp Ufuk yatay ekran için tasarlandı.</p></div></div>
+</div>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

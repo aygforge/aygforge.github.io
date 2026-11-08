@@ -1,0 +1,390 @@
+{
+  "version": "v1.8",
+  "status": "DESIGN_CONTRACT_NOT_EXECUTABLE_GAME",
+  "baseline": "v1.7 consolidated DB and raster maps; only v1.8 AssetManifest/RecipeDB override baseline",
+  "priorityOfTruth": [
+    "Locked decisions in GDD v1.7",
+    "v1.8 runtime overrides",
+    "v1.7 DB canonical IDs and map raster files",
+    "UI strings/localization; never derive logic from displayed names"
+  ],
+  "platform": {
+    "target": "mobile HTML5 Canvas2D landscape; mouse/keyboard secondary",
+    "referenceCanvas": [
+      1280,
+      720
+    ],
+    "tilePixels": 32,
+    "dataAtlasTiles": [
+      512,
+      384
+    ],
+    "mainIslandTiles": [
+      256,
+      256
+    ],
+    "satelliteIslandTiles": [
+      64,
+      64
+    ],
+    "renderFpsTarget": 60,
+    "reducedDeviceFpsTarget": 30,
+    "simulationHz": 30,
+    "dayLengthSeconds": 1080,
+    "chunkTiles": 16,
+    "backgroundPolicy": "pause all game clock, physics, crafting, hunger, cooldown and RNG when hidden; attempt checkpoint",
+    "offlineProgress": false
+  },
+  "delivery": {
+    "entry": "dist/index.html",
+    "workingMode": "static HTTP origin or itch.io HTML5 upload; file:// not guaranteed because modules/fetch may be blocked",
+    "artifact": "ZIP with dist/index.html, JavaScript bundle, local PNG/atlas/audio, data or inlined JSON; no external servers or accounts",
+    "development": "ES modules in src + deterministic build script; do not assume a live CDN or remote sprites",
+    "optional": "standalone one-file index.html if build tooling can reliably embed all assets; not a replacement for validated ZIP release"
+  },
+  "rootScenes": [
+    "SC_MAIN_MENU",
+    "SC_CHARACTER_CREATOR",
+    "SC_WORLD_MAIN",
+    "SC_CAVE_MINES",
+    "SC_FACILITY_INTERIOR",
+    "SC_OCEAN_ROUTE",
+    "SC_ISLETS",
+    "SC_ESCAPE_SEA",
+    "SC_ESCAPE_RADIO"
+  ],
+  "inlineWorldLayers": [
+    "SC_BUILD_INTERIOR"
+  ],
+  "overlayRoot": "SC_UI_OVERLAYS",
+  "uiScreens": [
+    "UI_SAVE_SELECT",
+    "UI_SETTINGS",
+    "UI_INVENTORY",
+    "UI_CRAFT",
+    "UI_BUILD",
+    "UI_MAP",
+    "UI_JOURNAL",
+    "UI_CHARACTER",
+    "UI_PETS",
+    "UI_COLLECTION",
+    "UI_PAUSE",
+    "UI_PUZZLE",
+    "UI_STORAGE",
+    "UI_FISHING",
+    "UI_TRAP",
+    "UI_ENDING_STATS"
+  ],
+  "uiPausePolicy": {
+    "pauseWorldWhileOpen": [
+      "UI_SAVE_SELECT",
+      "UI_SETTINGS",
+      "UI_INVENTORY",
+      "UI_CRAFT",
+      "UI_BUILD",
+      "UI_MAP",
+      "UI_JOURNAL",
+      "UI_CHARACTER",
+      "UI_PETS",
+      "UI_COLLECTION",
+      "UI_PAUSE",
+      "UI_PUZZLE",
+      "UI_STORAGE",
+      "UI_ENDING_STATS"
+    ],
+    "fishing": "UI_FISHING is active gameplay; fish timer and world sim run as one single game clock; stop world motion for player, not whole game",
+    "closingOverlay": "restore prior simulation state exactly, never apply offline catch-up"
+  },
+  "mainGameLoopOrder": [
+    "Input sampling and per-frame UI actions",
+    "30Hz player & vehicle movement with collision",
+    "30Hz interactions/projectiles/wildlife AI near camera",
+    "Commit completed world actions and transactional inventory moves",
+    "Advance single in-game clock and triggered day slices",
+    "Advance weather, water, crop, trap, resource respawn and production from idempotent event ids",
+    "Advance story/POI/puzzles/escapes",
+    "Queue autosave/checkpoints from immutable simulation snapshot",
+    "Camera culling, sprite render ordering, lighting, UI draw"
+  ],
+  "rng": {
+    "worldSeed": "uint32 assigned once on New Game",
+    "streams": [
+      "terrain_secondary",
+      "poi_optional_loot",
+      "wildlife_spawn",
+      "fish_bites",
+      "daily_weather",
+      "trap_daily",
+      "cosmetic"
+    ],
+    "storyLoot": "fixed guaranteed regardless of RNG",
+    "persistence": "persist state/counter of gameplay streams; no Date.now or unseeded Math.random for gameplay rewards",
+    "instanceIds": "stable persisted or deterministic source-prefixed ids",
+    "rerollPrevention": "all rolls claimed exactly once by stable claimKey and transaction ledger"
+  },
+  "ownership": {
+    "singleAuthoritativeState": "GameState/StateStore",
+    "gameSystemsDoNotModifyUIStateDirectly": true,
+    "uiSendsCommands": "all UI actions validated centrally; authoritative result event drives UI",
+    "singleTimeAuthority": "GameClock",
+    "buildingAndInventory": "one atomic transactional state mutation",
+    "save": "single current writer per save slot"
+  },
+  "modules": [
+    {
+      "path": "src/core/Boot.js",
+      "owns": "startup, data loading and splash errors"
+    },
+    {
+      "path": "src/core/GameLoop.js",
+      "owns": "fixed step, accumulator limit, render interpolation"
+    },
+    {
+      "path": "src/core/GameClock.js",
+      "owns": "18 min day, pause/sleep, daily event ids"
+    },
+    {
+      "path": "src/core/StateStore.js",
+      "owns": "authoritative game state and atomic commands"
+    },
+    {
+      "path": "src/core/EventBus.js",
+      "owns": "typed actions and completed event publication"
+    },
+    {
+      "path": "src/core/RngStreams.js",
+      "owns": "seeded deterministic independently persisted gameplay RNG streams"
+    },
+    {
+      "path": "src/data/ContentRegistry.js",
+      "owns": "31 canonical DB, v1.8 overrides, seven map grids, schema refs"
+    },
+    {
+      "path": "src/scenes/SceneRouter.js",
+      "owns": "scene transitions, return anchors and transition checkpointing"
+    },
+    {
+      "path": "src/scenes/WorldScene.js",
+      "owns": "main island and 3 islets; coordinate transform"
+    },
+    {
+      "path": "src/scenes/CaveScene.js",
+      "owns": "three cave raster maps and exits"
+    },
+    {
+      "path": "src/world/TerrainSystem.js",
+      "owns": "terrain RLE decoding, spatial chunks and water/height tags"
+    },
+    {
+      "path": "src/world/CollisionPathfinder.js",
+      "owns": "footpoint collision, route A*, nav gate checks and anti-corner-cut"
+    },
+    {
+      "path": "src/world/EntityIndex.js",
+      "owns": "dynamic objects and spatial hash"
+    },
+    {
+      "path": "src/systems/SurvivalSystem.js",
+      "owns": "needs, stamina, swimming, oxygen, death"
+    },
+    {
+      "path": "src/systems/InventorySystem.js",
+      "owns": "unique itemInstances, stack, slot, storage transfer"
+    },
+    {
+      "path": "src/systems/CraftSystem.js",
+      "owns": "unlock, station, recipe, input escrow, progress and output"
+    },
+    {
+      "path": "src/systems/BuildSystem.js",
+      "owns": "prefab placement, phases, occupancy and upgrades"
+    },
+    {
+      "path": "src/systems/ClimateSystem.js",
+      "owns": "weather, tides, rain collection, forecast"
+    },
+    {
+      "path": "src/systems/ResourceSystem.js",
+      "owns": "harvest, depletion, respawn and tool wear"
+    },
+    {
+      "path": "src/systems/FarmSystem.js",
+      "owns": "12 crops, wetness and daily transitions"
+    },
+    {
+      "path": "src/systems/WildlifeSystem.js",
+      "owns": "12 land + 3 marine entities; pets and combat"
+    },
+    {
+      "path": "src/systems/FishingSystem.js",
+      "owns": "10 fish, tension minigame and zone supply"
+    },
+    {
+      "path": "src/systems/TrapSystem.js",
+      "owns": "3 trap kinds, daily claim ledger and 6 active cap"
+    },
+    {
+      "path": "src/systems/ExplorationSystem.js",
+      "owns": "38 fixed POIs, guaranteed + rolled loot, story records"
+    },
+    {
+      "path": "src/systems/PuzzleSystem.js",
+      "owns": "12 replayable puzzles with persisted UIState"
+    },
+    {
+      "path": "src/systems/EscapeSystem.js",
+      "owns": "sail/radio projects, stage escrow, both endings"
+    },
+    {
+      "path": "src/systems/SkillSystem.js",
+      "owns": "8 skill XP rank, daily anti-farm"
+    },
+    {
+      "path": "src/systems/SeaVehicleSystem.js",
+      "owns": "raft docking and ocean navigation"
+    },
+    {
+      "path": "src/render/SpriteAtlas.js",
+      "owns": "image load/decode, cache, missing asset reporting"
+    },
+    {
+      "path": "src/render/WorldRenderer.js",
+      "owns": "occlusion, four direction avatar, chunks, vfx"
+    },
+    {
+      "path": "src/ui/TouchController.js",
+      "owns": "joystick, contextual action, quickbar, landscape handling"
+    },
+    {
+      "path": "src/ui/UIMenus.js",
+      "owns": "all menus/overlays and gameplay feedback"
+    },
+    {
+      "path": "src/persistence/IndexedDBRepository.js",
+      "owns": "3 slot save snapshots, backups, read lock, export/import and migration"
+    },
+    {
+      "path": "src/audio/AudioMixer.js",
+      "owns": "gesture-start audio, independent music/SFX sliders"
+    }
+  ],
+  "publicContracts": [
+    {
+      "command": "MOVE_VECTOR",
+      "input": "{x:-1..1,y:-1..1,sprint:boolean}",
+      "result": "movement collision resolved; stamina decreases only on actual sprint movement"
+    },
+    {
+      "command": "INTERACT",
+      "input": "{entityUid,action,sceneId}",
+      "result": "distance, occupancy, tool and scene validated then unique interaction event"
+    },
+    {
+      "command": "GATHER",
+      "input": "{nodeUid,toolUid}",
+      "result": "transaction harvest + durability + depletion + skill XP once"
+    },
+    {
+      "command": "CRAFT_START",
+      "input": "{recipeId,stationUid,quantity,sourceContainerUids}",
+      "result": "reserve precise ingredients once; station and unlock checked"
+    },
+    {
+      "command": "CRAFT_CLAIM",
+      "input": "{queueEntryUid,destinationContainerUid}",
+      "result": "claimed output once; if full, retains completed output at station"
+    },
+    {
+      "command": "PLACE_BUILD",
+      "input": "{buildId,islandId,rotation,originTile}",
+      "result": "terrain/collision/POI/navigability check; reserves site"
+    },
+    {
+      "command": "PROJECT_DELIVER",
+      "input": "{projectUid,itemQuantities,sourceContainers}",
+      "result": "escrow once per transaction; never duplicate stage costs"
+    },
+    {
+      "command": "APPLY_UPGRADE",
+      "input": "{recipeId,targetBuildUid}",
+      "result": "mutate same building UID, preserving storage/queues/items; reject duplicate installed upgrade"
+    },
+    {
+      "command": "OPEN_POI",
+      "input": "{poiId}",
+      "result": "guaranteed story item/blueprint and RNG bonus each at most once"
+    },
+    {
+      "command": "PUZZLE_ACTION",
+      "input": "{puzzleId,actionId}",
+      "result": "persist progress; completion flag & reward in one commit"
+    },
+    {
+      "command": "CROP_HARVEST",
+      "input": "{plotUid}",
+      "result": "one crop reward/seed per ready state; applies skill XP once"
+    },
+    {
+      "command": "TRAP_CLAIM",
+      "input": "{trapUid}",
+      "result": "one catch reward per saved roll, cap, XP once"
+    },
+    {
+      "command": "BOARD_VEHICLE",
+      "input": "{vehicleUid}",
+      "result": "RAFT mode and vehicle anchor persisted atomically"
+    },
+    {
+      "command": "SLEEP",
+      "input": "{bedUid}",
+      "result": "one time jump; each daily event processed once"
+    },
+    {
+      "command": "SAVE",
+      "input": "{slotId,reason}",
+      "result": "immutable revision and previous valid backup; no partial transaction"
+    },
+    {
+      "command": "END_ESCAPE",
+      "input": "{routeId}",
+      "result": "achievement + pre-ending world snapshot; return to island possible"
+    }
+  ],
+  "immutableGameplayDecisions": {
+    "noLivingHumanNPC": true,
+    "radioVoiceFromHuman": false,
+    "noModularHouseWalls": true,
+    "optionalBlueprintsNeverMandatoryForEscape": true,
+    "noBackgroundTime": true,
+    "repeatableMainLoot": false,
+    "mainAndRadioEndingsIndependent": true,
+    "art": "modern colorful original pixel art"
+  },
+  "risks": [
+    {
+      "id": "RISK_01",
+      "issue": "Static map connectivity tests do not cover dynamic trees/builds",
+      "mitigation": "Runtime nav mesh rebuild and route existence tests after placements and updates"
+    },
+    {
+      "id": "RISK_02",
+      "issue": "Single-turn model generation could truncate asset catalog",
+      "mitigation": "Machine-readable manifest and release acceptance gate reject missing any content"
+    },
+    {
+      "id": "RISK_03",
+      "issue": "Browser storage can be cleared/evicted",
+      "mitigation": "3 slots, backups, JSON export/import and explicit backup warnings"
+    },
+    {
+      "id": "RISK_04",
+      "issue": "file:// module loading can fail",
+      "mitigation": "Test itch.io/localhost HTTP; optional standalone bundle only if validated"
+    },
+    {
+      "id": "RISK_05",
+      "issue": "Pacing simulations are not playtests",
+      "mitigation": "Capture gameplay telemetry and tune observed bottlenecks in working build"
+    }
+  ]
+}

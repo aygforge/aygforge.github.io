@@ -1,0 +1,238 @@
+{
+  "meta": {
+    "version": 5,
+    "format": "JSON snapshot held in IndexedDB transactional record",
+    "game": "Kayıp Ufuk",
+    "worldMapVersion": "v1.2 + v1.5 starter locations",
+    "caveVersion": "v1.4",
+    "supportedPreviousVersions": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "playerSlots": 3,
+    "noRealTimeOfflineProgression": true,
+    "atomicCommit": "IDB single readwrite transaction for checkpoint and metadata",
+    "consolidatedContentVersion": "v1.7"
+  },
+  "recordLayout": {
+    "saveSlotsStore": "saves",
+    "snapshotStore": "snapshots",
+    "journalStore": "pendingTransactions",
+    "backupsStore": "backups",
+    "activeSessionStore": "leases",
+    "primaryKey": "saveSlotId",
+    "snapshotId": "slotId:revision"
+  },
+  "coreFields": {
+    "saveVersion": {
+      "type": "integer",
+      "required": true,
+      "equals": 5
+    },
+    "saveSlotId": {
+      "type": "string",
+      "pattern": "slot-[1-3]"
+    },
+    "revision": {
+      "type": "integer",
+      "min": 1
+    },
+    "slotDisplayName": {
+      "type": "string"
+    },
+    "createdAtUtc": {
+      "type": "ISO_8601",
+      "realTimeUsedOnlyForUI": true
+    },
+    "lastSavedUtc": {
+      "type": "ISO_8601",
+      "realTimeUsedOnlyForUI": true
+    },
+    "world": {
+      "worldSeed": "uint32",
+      "worldAtlasVersion": "string",
+      "worldDeltaByEntityId": "dictionary<entityId, data>",
+      "visitedIslands": "array<islandId>",
+      "visitedPoiIds": "set",
+      "regionPopulation": "dictionary<regionId,populationState>",
+      "worldFlags": "dictionary<flag,bool>",
+      "openedShortcuts": "array<gateId>"
+    },
+    "clock": {
+      "gameElapsedSeconds": "integer >=0",
+      "dayIndex": "integer >=1",
+      "timeOfDaySeconds": "integer [0,1080)",
+      "lastDailyUpdateIndex": "integer",
+      "processedDailyEventIds": "array<string>",
+      "freezeWhenPageHidden": true,
+      "inGameDayRealSeconds": 1080
+    },
+    "player": {
+      "sceneId": "islandId|caveId|sea",
+      "islandId": "string|null",
+      "positionPx": "[x,y]",
+      "facing": "UP|RIGHT|DOWN|LEFT",
+      "mode": "WALK|SWIM|DIVE|RAFT|INTERACT|SLEEP",
+      "health": "0..100",
+      "hunger": "0..100",
+      "thirst": "0..100",
+      "rest": "0..100",
+      "stamina": "0..100",
+      "oxygen": "0..100",
+      "effects": "array",
+      "inventoryId": "containerId",
+      "quickbar": "6 inventory slot refs",
+      "equipment": "dictionary equipmentSlot:itemInstanceId",
+      "skillsXpById": "dictionary skillId:int",
+      "learnedRecipes": "set recipeId",
+      "lastSafeBedId": "string|null",
+      "lostBagId": "string|null"
+    },
+    "containers": {
+      "byId": "dictionary<containerId,{slots,items[],ownerEntityId,capacity,filter}>",
+      "itemInstance": {
+        "uid": "string unique",
+        "itemId": "string valid ItemDB id",
+        "quantity": "int >0",
+        "durability": "int|null",
+        "perishAtGameSeconds": "int|null",
+        "metadata": "dictionary"
+      },
+      "lockedMaterialsByProject": "dictionary<projectId,item quantities>"
+    },
+    "buildingState": {
+      "byId": "dictionary<buildingEntityId,{buildId,islandId,positionTile,rotation,buildStage,deliveredItems,containerIds,productionQueueIds}>",
+      "campById": "dictionary<campId,{name,mainCamp,bedId,comfortScore,connectedContainers}>",
+      "prefabInteriorFurniture": "dictionary<buildingEntityId,array<placed entity>>"
+    },
+    "productionState": {
+      "queuesByStation": "dictionary<stationEntityId,{queueEntries,consumedInputs,startedGameSeconds,progressSeconds,completedOutputs}>",
+      "cropPlotsById": "dictionary<plotId,{seedId,plantGameSecond,waterState,lastProcessedDay,ready,regrowState}>",
+      "trapsById": "dictionary<trapId,{bait,storedCatchIds,lastRolledDay,dailyRolls}>",
+      "resourceNodesById": "dictionary<nodeId,{depleted,respawnGameDay,lastHarvestEventId}>"
+    },
+    "story": {
+      "poiStates": "dictionary<poiId,{discovered,interacted,puzzleCompleted,bonusRolled,guaranteedClaimed,selectedLoot,lootedItemKeys}>",
+      "puzzlesById": "dictionary<puzzleId,{uiState,solved,appliedWorldFlag,claimTransactionId}>",
+      "storyRecordsRead": "set storyId",
+      "specialItemsGranted": "set itemId",
+      "learnedBlueprints": "set blueprintId",
+      "escapeRoutes": "dictionary<escapeId,{unlocked,stages,ready,completed}>",
+      "endingAchievements": "set escapeId"
+    },
+    "ecosystem": {
+      "tamedFriends": "dictionary<friendId,{speciesId,name,trust,activeFollower,campId,lastHelperGameDay}>",
+      "fishJournal": "dictionary<fishId,{caughtCount,bestWeight}>",
+      "natureJournal": "set speciesId",
+      "fishHabitatStock": "dictionary<zoneId,healthIndex>",
+      "animalPopulationDayTicks": "dictionary<regionId,int>"
+    },
+    "vehicles": {
+      "raftsById": "dictionary<vehicleId,{islandId,atlasPx,rotation,durability,anchored,passengerId}>",
+      "boatsById": "dictionary<vehicleId,...>",
+      "activeVehicleId": "string|null",
+      "landingRecovery": {
+        "lastSafeLandingIslandId": "string",
+        "lastSafeLandingTile": "[x,y]"
+      }
+    },
+    "sessionTransition": {
+      "status": "NONE|PREPARED|COMMITTED",
+      "transitionId": "string|null",
+      "fromScene": "string|null",
+      "toScene": "string|null",
+      "destinationTile": "[x,y]|null",
+      "snapshotRevisionOnPrepare": "int|null"
+    },
+    "transactionLedger": {
+      "committedIds": "array<string> rolling checkpoint",
+      "pendingById": "dictionary<id,action>",
+      "claimKeys": "set entity reward keys",
+      "rules": "All item consumption, reward grant and flag update must happen atomically in one transaction"
+    },
+    "settings": {
+      "musicVolume": "0..1",
+      "sfxVolume": "0..1",
+      "graphicsQuality": "LOW|MID|HIGH",
+      "touchLayout": "default|leftHanded",
+      "autoWalk": "bool",
+      "language": "tr"
+    },
+    "climate": {
+      "weatherSeed": "uint32 deterministic from worldSeed",
+      "dayState": "CLEAR|LIGHT_RAIN|RAIN|HEAVY_RAIN|STORM",
+      "lastWeatherDay": "int",
+      "appliedRainEventIds": "set<string>",
+      "tidePhase": "phaseId"
+    },
+    "waterInfrastructure": {
+      "byBuildUid": "dictionary<uid,{type,mode:CLEAN|RAW,volumeCenti,capacityCenti}>",
+      "lastDayProcessed": "int"
+    },
+    "durabilityRuntime": {
+      "toolsByInstanceUid": "dictionary<uid,{durability,maxDurability}>",
+      "lastRepairTransactionIds": "set<string>"
+    },
+    "resourceEconomyRuntime": {
+      "nodeRespawnByUid": "dictionary<nodeUID,gameDay>",
+      "fixedNodeExceptionOverrides": "dictionary<nodeUid,respawnDays>"
+    }
+  },
+  "invariants": [
+    "All itemInstance.uid values globally unique within save; no negative quantities or duplicate ownership",
+    "All ids reference canonical ItemDB, RecipeDB, BuildDB, CaveDB, POIDB, PuzzleDB, SkillDB",
+    "A unique POI, story item or blueprint may be claimed only once per save with idempotent claimKey",
+    "Partial project deliveries removed once from player/container inventory and stored once in project escrow",
+    "A completed crafting output cannot appear before consumed input is committed",
+    "Save time does not advance while tab hidden or browser offline; sleeping advances clock by explicit eventId once",
+    "Player cannot spawn inside solid tile, water without appropriate mode or disabled cave exit",
+    "Cave return transition always resolves to corresponding entrancePoi walkable anchor",
+    "Vehicle mode and player position match; on invalid coordinate restore last safe landing and keep vehicle",
+    "POI puzzle world flags and story rewards committed together; game restart cannot regrant the same reward",
+    "Weather, rain collector yields, crop growth and traps use distinct idempotent daily event keys",
+    "A replaced or upgraded building retains its entity UID, inventory contents and production queues",
+    "Installed critical story power parts are persistent story flags, never consumable duplicate items"
+  ],
+  "checkpointProtocol": [
+    "Build immutable snapshot copy from single simulation tick (pause mutations during capture)",
+    "Validate ids, quantities, scene and current clock; serialize typed object to JSON",
+    "In one IndexedDB transaction write new snapshot revision, updated slot pointer and metadata; keep prior known-good revision",
+    "Only after commit mark visible saved status; on failure retain prior revision and offer manual export",
+    "On load verify version + content hashes + all entity IDs; migrate into memory then validate before overwriting",
+    "On conflicting second tab, acquire lease with owner id and lease heartbeat while visible; if not owner, disallow writes",
+    "At game pause (visibilitychange hidden) stop simulation and checkpoint if possible; not rely on unload events alone"
+  ],
+  "sleepDailyTick": {
+    "dayLengthRealSeconds": 1080,
+    "eventIdFormat": "SLEEP:<saveSlotId>:<sleepCounter>",
+    "safeguard": "Store lastProcessedDay + processedEventId; crops/traps/weather/resource regen advance by integer day boundary only once; explicit leap through each affected day with capped batch if long sleep",
+    "offlineSim": "disabled"
+  },
+  "transitionProtocol": {
+    "caveEnter": "Validate door anchor; prepare from/to; write checkpoint; place at stored entrance; commit transition; never save intermediate void position",
+    "caveExit": "Return to walkable POI approach tile on MAIN; if POI location blocked use nearest valid tile from CollisionNavDB",
+    "raftBoard": "Save raft id and player entity binding atomically; engine transports one shared state",
+    "raftDisembark": "Check foot walkable landing and persist vehicle anchor before changing player mode",
+    "deathInCave": "Respawn at most recent valid bed, create recoverable bag at reachable floor tile near death; no loss of quest items"
+  },
+  "errorRecovery": {
+    "backupRevisions": 2,
+    "invalidCurrentSnapshot": "load newest valid previous snapshot, never overwrite without user confirmation",
+    "unknownOldEntityIds": "quarantine unknown entities to migration report, keep owner items in recovery container if valid",
+    "crashMidTransaction": "idempotency id and previous good revision prevent duplicate grants"
+  },
+  "testCases": [
+    "Save in cave then load: same caveId, floor tile, mined resource states and chest status",
+    "Save on wooden platform in pond cave: same walkable floor, no forced swim",
+    "Save on raft mid sea then load: same raft/passenger, valid water tile and closest safe landing exists",
+    "Save mid puzzle: toggles retained; solving and restarting does not re-award",
+    "Delivery to unfinished boat + crash: ingredients consumed once, project progress retained",
+    "Sleep crossing 3 days with crop/trap queue: each day updated once, no double yields",
+    "Open unique blueprint chest with full inventory: reward held in escrow until player collects",
+    "Death in cave/drowning: quest items preserved and lost bag reachable",
+    "Manual export-import of slot 2 never overwrites slot 1 silently",
+    "Two browser tabs never write conflicting revisions to same save"
+  ]
+}

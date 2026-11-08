@@ -1,0 +1,311 @@
+{
+  "version": "v1.9",
+  "regions": [
+    {
+      "regionId": "REG_BEACH",
+      "name": "Gemi Kazası Sahili",
+      "biomeMood": "sunlit sand, turquoise water, worn driftwood",
+      "terrainVisualRecipe": "TerrainDB tile ID + biome palette + deterministic foliage variants + authored POI sprites",
+      "requiredLandmarkSprites": [
+        "poi/POI_CRASH_BOAT/default",
+        "poi/POI_WATERPROOF_BAG/default",
+        "poi/POI_SHORE_CRATE/default",
+        "poi/POI_BROKEN_LOOKOUT/default"
+      ],
+      "timeOfDayVariants": [
+        "day",
+        "dusk",
+        "night"
+      ],
+      "weatherOverlay": [
+        "clear",
+        "light_rain",
+        "rain",
+        "heavy_rain",
+        "storm"
+      ],
+      "noFullScreenStaticScreenshot": true,
+      "gameplayVisibility": "Always preserve navigable trails, resource highlights and hostile tells under foliage/weather"
+    },
+    {
+      "regionId": "REG_GROVE",
+      "name": "Palmiye Koruluğu",
+      "biomeMood": "bright palm canopy, resin and fruit",
+      "terrainVisualRecipe": "TerrainDB tile ID + biome palette + deterministic foliage variants + authored POI sprites",
+      "requiredLandmarkSprites": [
+        "poi/POI_FISHER_HUT/default",
+        "poi/POI_FRUIT_HILL/default",
+        "poi/POI_VINE_TUNNEL/default"
+      ],
+      "timeOfDayVariants": [
+        "day",
+        "dusk",
+        "night"
+      ],
+      "weatherOverlay": [
+        "clear",
+        "light_rain",
+        "rain",
+        "heavy_rain",
+        "storm"
+      ],
+      "noFullScreenStaticScreenshot": true,
+      "gameplayVisibility": "Always preserve navigable trails, resource highlights and hostile tells under foliage/weather"
+    },
+    {
+      "regionId": "REG_VALLEY",
+      "name": "Tatlısu Vadisi",
+      "biomeMood": "fresh river greens, clay, fields",
+      "terrainVisualRecipe": "TerrainDB tile ID + biome palette + deterministic foliage variants + authored POI sprites",
+      "requiredLandmarkSprites": [
+        "poi/POI_WATER_STATION/default",
+        "poi/POI_STONE_BRIDGE/default",
+        "poi/POI_WATERFALL_CAVE/default"
+      ],
+      "timeOfDayVariants": [
+        "day",
+        "dusk",
+        "night"
+      ],
+      "weatherOverlay": [
+        "clear",
+        "light_rain",
+        "rain",
+        "heavy_rain",
+        "storm"
+      ],
+      "noFullScreenStaticScreenshot": true,
+      "gameplayVisibility": "Always preserve navigable trails, resource highlights and hostile tells under foliage/weather"
+    },
+    {
+      "regionId": "REG_FOREST",
+      "name": "Yoğun Orman",
+      "biomeMood": "dense layered dark jungle, visible trails",
+      "terrainVisualRecipe": "TerrainDB tile ID + biome palette + deterministic foliage variants + authored POI sprites",
+      "requiredLandmarkSprites": [
+        "poi/POI_FORESTER_HUT/default",
+        "poi/POI_TREEHOUSE/default",
+        "poi/POI_HUNTER_CAMP/default"
+      ],
+      "timeOfDayVariants": [
+        "day",
+        "dusk",
+        "night"
+      ],
+      "weatherOverlay": [
+        "clear",
+        "light_rain",
+        "rain",
+        "heavy_rain",
+        "storm"
+      ],
+      "noFullScreenStaticScreenshot": true,
+      "gameplayVisibility": "Always preserve navigable trails, resource highlights and hostile tells under foliage/weather"
+    },
+    {
+      "regionId": "REG_SWAMP",
+      "name": "Mangrov Bataklığı",
+      "biomeMood": "olive mangrove, stagnant pools, amber dusk",
+      "terrainVisualRecipe": "TerrainDB tile ID + biome palette + deterministic foliage variants + authored POI sprites",
+      "requiredLandmarkSprites": [
+        "poi/POI_SWAMP_MEASURE/default",
+        "poi/POI_FLOODED_STORE/default",
+        "poi/POI_MANGROVE_COVE/default"
+      ],
+      "timeOfDayVariants": [
+        "day",
+        "dusk",
+        "night"
+      ],
+      "weatherOverlay": [
+        "clear",
+        "light_rain",
+        "rain",
+        "heavy_rain",
+        "storm"
+      ],
+      "noFullScreenStaticScreenshot": true,
+      "gameplayVisibility": "Always preserve navigable trails, resource highlights and hostile tells under foliage/weather"
+    },
+    {
+      "regionId": "REG_RED_CLIFF",
+      "name": "Kızıl Kayalıklar",
+      "biomeMood": "copper sandstone, fractured ledges",
+      "terrainVisualRecipe": "TerrainDB tile ID + biome palette + deterministic foliage variants + authored POI sprites",
+      "requiredLandmarkSprites": [
+        "poi/POI_COPPER_MINE/default",
+        "poi/POI_CABLE_CAR/default",
+        "poi/POI_MINE_SHELTER/default"
+      ],
+      "timeOfDayVariants": [
+        "day",
+        "dusk",
+        "night"
+      ],
+      "weatherOverlay": [
+        "clear",
+        "light_rain",
+        "rain",
+        "heavy_rain",
+        "storm"
+      ],
+      "noFullScreenStaticScreenshot": true,
+      "gameplayVisibility": "Always preserve navigable trails, resource highlights and hostile tells under foliage/weather"
+    },
+    {
+      "regionId": "REG_MOUNTAIN",
+      "name": "Kuzey Dağı ve Mağaralar",
+      "biomeMood": "blue slate, exposed quartz, thin fog",
+      "terrainVisualRecipe": "TerrainDB tile ID + biome palette + deterministic foliage variants + authored POI sprites",
+      "requiredLandmarkSprites": [
+        "poi/POI_OBSERVATORY/default",
+        "poi/POI_RELAY_SHELTER/default",
+        "poi/POI_BAT_CAVERN/default",
+        "poi/POI_UNDERGROUND_POND/default"
+      ],
+      "timeOfDayVariants": [
+        "day",
+        "dusk",
+        "night"
+      ],
+      "weatherOverlay": [
+        "clear",
+        "light_rain",
+        "rain",
+        "heavy_rain",
+        "storm"
+      ],
+      "noFullScreenStaticScreenshot": true,
+      "gameplayVisibility": "Always preserve navigable trails, resource highlights and hostile tells under foliage/weather"
+    },
+    {
+      "regionId": "REG_SETTLEMENT",
+      "name": "Terk Edilmiş Yerleşim",
+      "biomeMood": "decayed timber, oxidized machinery, nature reclaiming buildings",
+      "terrainVisualRecipe": "TerrainDB tile ID + biome palette + deterministic foliage variants + authored POI sprites",
+      "requiredLandmarkSprites": [
+        "poi/POI_RESEARCH_SQUARE/default",
+        "poi/POI_RADIO_WORKSHOP/default",
+        "poi/POI_OLD_KITCHEN/default",
+        "poi/POI_LOCKED_WAREHOUSE/default"
+      ],
+      "timeOfDayVariants": [
+        "day",
+        "dusk",
+        "night"
+      ],
+      "weatherOverlay": [
+        "clear",
+        "light_rain",
+        "rain",
+        "heavy_rain",
+        "storm"
+      ],
+      "noFullScreenStaticScreenshot": true,
+      "gameplayVisibility": "Always preserve navigable trails, resource highlights and hostile tells under foliage/weather"
+    },
+    {
+      "regionId": "REG_LAGOON",
+      "name": "Doğu Lagünü",
+      "biomeMood": "teal shallows, reef, corals",
+      "terrainVisualRecipe": "TerrainDB tile ID + biome palette + deterministic foliage variants + authored POI sprites",
+      "requiredLandmarkSprites": [
+        "poi/POI_SHALLOW_WRECK/default",
+        "poi/POI_REEF_FISSURE/default",
+        "poi/POI_SAND_SPIT/default"
+      ],
+      "timeOfDayVariants": [
+        "day",
+        "dusk",
+        "night"
+      ],
+      "weatherOverlay": [
+        "clear",
+        "light_rain",
+        "rain",
+        "heavy_rain",
+        "storm"
+      ],
+      "noFullScreenStaticScreenshot": true,
+      "gameplayVisibility": "Always preserve navigable trails, resource highlights and hostile tells under foliage/weather"
+    },
+    {
+      "regionId": "REG_LIGHTHOUSE",
+      "name": "Fener Adacığı",
+      "biomeMood": "weathered white lighthouse, strong horizon",
+      "terrainVisualRecipe": "TerrainDB tile ID + biome palette + deterministic foliage variants + authored POI sprites",
+      "requiredLandmarkSprites": [
+        "poi/POI_LIGHTHOUSE/default",
+        "poi/POI_LIGHTHOUSE_KEEPER/default"
+      ],
+      "timeOfDayVariants": [
+        "day",
+        "dusk",
+        "night"
+      ],
+      "weatherOverlay": [
+        "clear",
+        "light_rain",
+        "rain",
+        "heavy_rain",
+        "storm"
+      ],
+      "noFullScreenStaticScreenshot": true,
+      "gameplayVisibility": "Always preserve navigable trails, resource highlights and hostile tells under foliage/weather"
+    },
+    {
+      "regionId": "REG_WRECK",
+      "name": "Batık Adası",
+      "biomeMood": "rust and torn sails, salt spray",
+      "terrainVisualRecipe": "TerrainDB tile ID + biome palette + deterministic foliage variants + authored POI sprites",
+      "requiredLandmarkSprites": [
+        "poi/POI_CAPTAIN_CABIN/default",
+        "poi/POI_ENGINE_ROOM/default",
+        "poi/POI_CORAL_CHEST/default"
+      ],
+      "timeOfDayVariants": [
+        "day",
+        "dusk",
+        "night"
+      ],
+      "weatherOverlay": [
+        "clear",
+        "light_rain",
+        "rain",
+        "heavy_rain",
+        "storm"
+      ],
+      "noFullScreenStaticScreenshot": true,
+      "gameplayVisibility": "Always preserve navigable trails, resource highlights and hostile tells under foliage/weather"
+    },
+    {
+      "regionId": "REG_FERTILE",
+      "name": "Bereket Adası",
+      "biomeMood": "lush farm terraces and fruit trees",
+      "terrainVisualRecipe": "TerrainDB tile ID + biome palette + deterministic foliage variants + authored POI sprites",
+      "requiredLandmarkSprites": [
+        "poi/POI_ABANDONED_GARDEN/default",
+        "poi/POI_HERB_GREENHOUSE/default",
+        "poi/POI_ROCK_SHELTER/default"
+      ],
+      "timeOfDayVariants": [
+        "day",
+        "dusk",
+        "night"
+      ],
+      "weatherOverlay": [
+        "clear",
+        "light_rain",
+        "rain",
+        "heavy_rain",
+        "storm"
+      ],
+      "noFullScreenStaticScreenshot": true,
+      "gameplayVisibility": "Always preserve navigable trails, resource highlights and hostile tells under foliage/weather"
+    }
+  ],
+  "tileBasedBackgrounds": true,
+  "regionsRequireDistinctFoliageAndColorRules": true,
+  "rendering": "tile + prop + entity + occlusion + light + weather overlay",
+  "nightGameplayGuaranteedReadable": true
+}

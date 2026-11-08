@@ -1,0 +1,2709 @@
+{
+  "version": "v1.2",
+  "seaRoutes": [
+    {
+      "id": "SEA_TO_LIGHTHOUSE",
+      "fromRegion": "REG_LAGOON",
+      "toRegion": "REG_LIGHTHOUSE",
+      "originalDepartureAtlas": [
+        356,
+        258
+      ],
+      "originalArrivalAtlas": [
+        447,
+        92
+      ],
+      "departureAtlas": [
+        356,
+        258
+      ],
+      "arrivalAtlas": [
+        440,
+        99
+      ],
+      "arrivalFootTileLocal": [
+        17,
+        34
+      ],
+      "raftPathAtlas": [
+        [
+          356,
+          258
+        ],
+        [
+          357,
+          257
+        ],
+        [
+          358,
+          256
+        ],
+        [
+          359,
+          255
+        ],
+        [
+          360,
+          254
+        ],
+        [
+          361,
+          253
+        ],
+        [
+          362,
+          252
+        ],
+        [
+          363,
+          251
+        ],
+        [
+          364,
+          250
+        ],
+        [
+          365,
+          249
+        ],
+        [
+          366,
+          248
+        ],
+        [
+          367,
+          247
+        ],
+        [
+          368,
+          246
+        ],
+        [
+          369,
+          245
+        ],
+        [
+          370,
+          244
+        ],
+        [
+          371,
+          243
+        ],
+        [
+          371,
+          242
+        ],
+        [
+          371,
+          241
+        ],
+        [
+          371,
+          240
+        ],
+        [
+          371,
+          239
+        ],
+        [
+          371,
+          238
+        ],
+        [
+          371,
+          237
+        ],
+        [
+          371,
+          236
+        ],
+        [
+          371,
+          235
+        ],
+        [
+          371,
+          234
+        ],
+        [
+          371,
+          233
+        ],
+        [
+          372,
+          232
+        ],
+        [
+          372,
+          231
+        ],
+        [
+          372,
+          230
+        ],
+        [
+          372,
+          229
+        ],
+        [
+          372,
+          228
+        ],
+        [
+          372,
+          227
+        ],
+        [
+          372,
+          226
+        ],
+        [
+          372,
+          225
+        ],
+        [
+          372,
+          224
+        ],
+        [
+          372,
+          223
+        ],
+        [
+          372,
+          222
+        ],
+        [
+          372,
+          221
+        ],
+        [
+          372,
+          220
+        ],
+        [
+          372,
+          219
+        ],
+        [
+          372,
+          218
+        ],
+        [
+          372,
+          217
+        ],
+        [
+          372,
+          216
+        ],
+        [
+          372,
+          215
+        ],
+        [
+          372,
+          214
+        ],
+        [
+          372,
+          213
+        ],
+        [
+          372,
+          212
+        ],
+        [
+          372,
+          211
+        ],
+        [
+          372,
+          210
+        ],
+        [
+          372,
+          209
+        ],
+        [
+          372,
+          208
+        ],
+        [
+          372,
+          207
+        ],
+        [
+          372,
+          206
+        ],
+        [
+          372,
+          205
+        ],
+        [
+          372,
+          204
+        ],
+        [
+          372,
+          203
+        ],
+        [
+          372,
+          202
+        ],
+        [
+          372,
+          201
+        ],
+        [
+          372,
+          200
+        ],
+        [
+          373,
+          199
+        ],
+        [
+          374,
+          198
+        ],
+        [
+          375,
+          197
+        ],
+        [
+          376,
+          196
+        ],
+        [
+          377,
+          195
+        ],
+        [
+          378,
+          194
+        ],
+        [
+          379,
+          193
+        ],
+        [
+          380,
+          192
+        ],
+        [
+          381,
+          191
+        ],
+        [
+          382,
+          190
+        ],
+        [
+          383,
+          189
+        ],
+        [
+          384,
+          188
+        ],
+        [
+          385,
+          187
+        ],
+        [
+          386,
+          186
+        ],
+        [
+          387,
+          185
+        ],
+        [
+          388,
+          184
+        ],
+        [
+          389,
+          183
+        ],
+        [
+          390,
+          182
+        ],
+        [
+          391,
+          181
+        ],
+        [
+          392,
+          180
+        ],
+        [
+          393,
+          179
+        ],
+        [
+          394,
+          178
+        ],
+        [
+          395,
+          177
+        ],
+        [
+          396,
+          176
+        ],
+        [
+          397,
+          175
+        ],
+        [
+          398,
+          174
+        ],
+        [
+          399,
+          173
+        ],
+        [
+          400,
+          172
+        ],
+        [
+          401,
+          171
+        ],
+        [
+          402,
+          170
+        ],
+        [
+          403,
+          169
+        ],
+        [
+          404,
+          168
+        ],
+        [
+          405,
+          167
+        ],
+        [
+          406,
+          166
+        ],
+        [
+          407,
+          165
+        ],
+        [
+          408,
+          164
+        ],
+        [
+          409,
+          163
+        ],
+        [
+          410,
+          162
+        ],
+        [
+          411,
+          161
+        ],
+        [
+          412,
+          160
+        ],
+        [
+          413,
+          159
+        ],
+        [
+          413,
+          158
+        ],
+        [
+          414,
+          157
+        ],
+        [
+          414,
+          156
+        ],
+        [
+          415,
+          155
+        ],
+        [
+          415,
+          154
+        ],
+        [
+          415,
+          153
+        ],
+        [
+          416,
+          152
+        ],
+        [
+          416,
+          151
+        ],
+        [
+          417,
+          150
+        ],
+        [
+          417,
+          149
+        ],
+        [
+          418,
+          148
+        ],
+        [
+          418,
+          147
+        ],
+        [
+          419,
+          146
+        ],
+        [
+          419,
+          145
+        ],
+        [
+          420,
+          144
+        ],
+        [
+          420,
+          143
+        ],
+        [
+          420,
+          142
+        ],
+        [
+          421,
+          141
+        ],
+        [
+          421,
+          140
+        ],
+        [
+          422,
+          139
+        ],
+        [
+          422,
+          138
+        ],
+        [
+          423,
+          137
+        ],
+        [
+          423,
+          136
+        ],
+        [
+          424,
+          135
+        ],
+        [
+          424,
+          134
+        ],
+        [
+          425,
+          133
+        ],
+        [
+          425,
+          132
+        ],
+        [
+          425,
+          131
+        ],
+        [
+          426,
+          130
+        ],
+        [
+          426,
+          129
+        ],
+        [
+          427,
+          128
+        ],
+        [
+          427,
+          127
+        ],
+        [
+          428,
+          126
+        ],
+        [
+          428,
+          125
+        ],
+        [
+          429,
+          124
+        ],
+        [
+          429,
+          123
+        ],
+        [
+          430,
+          122
+        ],
+        [
+          430,
+          121
+        ],
+        [
+          430,
+          120
+        ],
+        [
+          431,
+          119
+        ],
+        [
+          431,
+          118
+        ],
+        [
+          432,
+          117
+        ],
+        [
+          432,
+          116
+        ],
+        [
+          433,
+          115
+        ],
+        [
+          433,
+          114
+        ],
+        [
+          434,
+          113
+        ],
+        [
+          434,
+          112
+        ],
+        [
+          435,
+          111
+        ],
+        [
+          435,
+          110
+        ],
+        [
+          435,
+          109
+        ],
+        [
+          436,
+          108
+        ],
+        [
+          436,
+          107
+        ],
+        [
+          437,
+          106
+        ],
+        [
+          437,
+          105
+        ],
+        [
+          438,
+          104
+        ],
+        [
+          438,
+          103
+        ],
+        [
+          439,
+          102
+        ],
+        [
+          439,
+          101
+        ],
+        [
+          440,
+          100
+        ],
+        [
+          440,
+          99
+        ]
+      ],
+      "pathLengthTiles": 160,
+      "prerequisite": {
+        "raftBuilt": true
+      },
+      "weatherGate": "canBlockDeparturesDuringStorm",
+      "continuousNavigableWater": true,
+      "departureDock": {
+        "waterAtlas": [
+          356,
+          258
+        ],
+        "shoreFootTileLocal": [
+          228,
+          192
+        ],
+        "waterToShoreManhattanTiles": 2,
+        "reachableOnFoot": true
+      },
+      "arrivalDock": {
+        "waterAtlas": [
+          440,
+          99
+        ],
+        "shoreFootTileLocal": [
+          16,
+          44
+        ],
+        "waterToShoreManhattanTiles": 1,
+        "reachableOnFoot": true
+      }
+    },
+    {
+      "id": "SEA_TO_WRECK",
+      "fromRegion": "REG_BEACH",
+      "toRegion": "REG_WRECK",
+      "originalDepartureAtlas": [
+        245,
+        289
+      ],
+      "originalArrivalAtlas": [
+        49,
+        223
+      ],
+      "departureAtlas": [
+        236,
+        302
+      ],
+      "arrivalAtlas": [
+        38,
+        233
+      ],
+      "arrivalFootTileLocal": [
+        14,
+        35
+      ],
+      "raftPathAtlas": [
+        [
+          236,
+          302
+        ],
+        [
+          235,
+          302
+        ],
+        [
+          234,
+          302
+        ],
+        [
+          233,
+          302
+        ],
+        [
+          232,
+          302
+        ],
+        [
+          231,
+          302
+        ],
+        [
+          230,
+          302
+        ],
+        [
+          229,
+          302
+        ],
+        [
+          228,
+          302
+        ],
+        [
+          227,
+          302
+        ],
+        [
+          226,
+          302
+        ],
+        [
+          225,
+          302
+        ],
+        [
+          224,
+          302
+        ],
+        [
+          223,
+          302
+        ],
+        [
+          222,
+          302
+        ],
+        [
+          221,
+          302
+        ],
+        [
+          220,
+          302
+        ],
+        [
+          219,
+          302
+        ],
+        [
+          218,
+          302
+        ],
+        [
+          217,
+          302
+        ],
+        [
+          216,
+          302
+        ],
+        [
+          215,
+          302
+        ],
+        [
+          214,
+          302
+        ],
+        [
+          213,
+          302
+        ],
+        [
+          212,
+          302
+        ],
+        [
+          211,
+          302
+        ],
+        [
+          210,
+          302
+        ],
+        [
+          209,
+          302
+        ],
+        [
+          208,
+          302
+        ],
+        [
+          207,
+          302
+        ],
+        [
+          206,
+          302
+        ],
+        [
+          205,
+          302
+        ],
+        [
+          204,
+          302
+        ],
+        [
+          203,
+          302
+        ],
+        [
+          202,
+          302
+        ],
+        [
+          201,
+          302
+        ],
+        [
+          200,
+          302
+        ],
+        [
+          199,
+          302
+        ],
+        [
+          198,
+          302
+        ],
+        [
+          197,
+          302
+        ],
+        [
+          196,
+          302
+        ],
+        [
+          195,
+          302
+        ],
+        [
+          194,
+          302
+        ],
+        [
+          193,
+          302
+        ],
+        [
+          192,
+          302
+        ],
+        [
+          191,
+          302
+        ],
+        [
+          190,
+          302
+        ],
+        [
+          189,
+          302
+        ],
+        [
+          188,
+          301
+        ],
+        [
+          187,
+          301
+        ],
+        [
+          186,
+          301
+        ],
+        [
+          185,
+          301
+        ],
+        [
+          184,
+          301
+        ],
+        [
+          183,
+          301
+        ],
+        [
+          182,
+          301
+        ],
+        [
+          181,
+          301
+        ],
+        [
+          180,
+          301
+        ],
+        [
+          179,
+          301
+        ],
+        [
+          178,
+          301
+        ],
+        [
+          177,
+          301
+        ],
+        [
+          176,
+          301
+        ],
+        [
+          175,
+          301
+        ],
+        [
+          174,
+          301
+        ],
+        [
+          173,
+          301
+        ],
+        [
+          172,
+          301
+        ],
+        [
+          171,
+          300
+        ],
+        [
+          170,
+          299
+        ],
+        [
+          169,
+          298
+        ],
+        [
+          168,
+          297
+        ],
+        [
+          167,
+          296
+        ],
+        [
+          166,
+          295
+        ],
+        [
+          165,
+          294
+        ],
+        [
+          164,
+          293
+        ],
+        [
+          163,
+          292
+        ],
+        [
+          162,
+          291
+        ],
+        [
+          161,
+          290
+        ],
+        [
+          160,
+          289
+        ],
+        [
+          159,
+          288
+        ],
+        [
+          158,
+          288
+        ],
+        [
+          157,
+          287
+        ],
+        [
+          156,
+          287
+        ],
+        [
+          155,
+          286
+        ],
+        [
+          154,
+          286
+        ],
+        [
+          153,
+          285
+        ],
+        [
+          152,
+          285
+        ],
+        [
+          151,
+          284
+        ],
+        [
+          150,
+          284
+        ],
+        [
+          149,
+          284
+        ],
+        [
+          148,
+          283
+        ],
+        [
+          147,
+          283
+        ],
+        [
+          146,
+          282
+        ],
+        [
+          145,
+          282
+        ],
+        [
+          144,
+          281
+        ],
+        [
+          143,
+          281
+        ],
+        [
+          142,
+          280
+        ],
+        [
+          141,
+          280
+        ],
+        [
+          140,
+          279
+        ],
+        [
+          139,
+          279
+        ],
+        [
+          138,
+          279
+        ],
+        [
+          137,
+          278
+        ],
+        [
+          136,
+          278
+        ],
+        [
+          135,
+          277
+        ],
+        [
+          134,
+          277
+        ],
+        [
+          133,
+          276
+        ],
+        [
+          132,
+          276
+        ],
+        [
+          131,
+          275
+        ],
+        [
+          130,
+          275
+        ],
+        [
+          129,
+          274
+        ],
+        [
+          128,
+          274
+        ],
+        [
+          127,
+          274
+        ],
+        [
+          126,
+          273
+        ],
+        [
+          125,
+          273
+        ],
+        [
+          124,
+          272
+        ],
+        [
+          123,
+          272
+        ],
+        [
+          122,
+          271
+        ],
+        [
+          121,
+          271
+        ],
+        [
+          120,
+          270
+        ],
+        [
+          119,
+          270
+        ],
+        [
+          118,
+          269
+        ],
+        [
+          117,
+          269
+        ],
+        [
+          116,
+          268
+        ],
+        [
+          115,
+          268
+        ],
+        [
+          114,
+          268
+        ],
+        [
+          113,
+          267
+        ],
+        [
+          112,
+          267
+        ],
+        [
+          111,
+          266
+        ],
+        [
+          110,
+          266
+        ],
+        [
+          109,
+          265
+        ],
+        [
+          108,
+          265
+        ],
+        [
+          107,
+          264
+        ],
+        [
+          106,
+          264
+        ],
+        [
+          105,
+          263
+        ],
+        [
+          104,
+          263
+        ],
+        [
+          103,
+          263
+        ],
+        [
+          102,
+          262
+        ],
+        [
+          101,
+          262
+        ],
+        [
+          100,
+          261
+        ],
+        [
+          99,
+          261
+        ],
+        [
+          98,
+          260
+        ],
+        [
+          97,
+          260
+        ],
+        [
+          96,
+          259
+        ],
+        [
+          95,
+          259
+        ],
+        [
+          94,
+          258
+        ],
+        [
+          93,
+          258
+        ],
+        [
+          92,
+          258
+        ],
+        [
+          91,
+          257
+        ],
+        [
+          90,
+          257
+        ],
+        [
+          89,
+          256
+        ],
+        [
+          88,
+          256
+        ],
+        [
+          87,
+          255
+        ],
+        [
+          86,
+          255
+        ],
+        [
+          85,
+          254
+        ],
+        [
+          84,
+          254
+        ],
+        [
+          83,
+          253
+        ],
+        [
+          82,
+          253
+        ],
+        [
+          81,
+          253
+        ],
+        [
+          80,
+          252
+        ],
+        [
+          79,
+          252
+        ],
+        [
+          78,
+          251
+        ],
+        [
+          77,
+          251
+        ],
+        [
+          76,
+          250
+        ],
+        [
+          75,
+          250
+        ],
+        [
+          74,
+          249
+        ],
+        [
+          73,
+          249
+        ],
+        [
+          72,
+          248
+        ],
+        [
+          71,
+          248
+        ],
+        [
+          70,
+          248
+        ],
+        [
+          69,
+          247
+        ],
+        [
+          68,
+          247
+        ],
+        [
+          67,
+          246
+        ],
+        [
+          66,
+          246
+        ],
+        [
+          65,
+          245
+        ],
+        [
+          64,
+          245
+        ],
+        [
+          63,
+          244
+        ],
+        [
+          62,
+          244
+        ],
+        [
+          61,
+          244
+        ],
+        [
+          60,
+          244
+        ],
+        [
+          59,
+          244
+        ],
+        [
+          58,
+          244
+        ],
+        [
+          57,
+          244
+        ],
+        [
+          56,
+          244
+        ],
+        [
+          55,
+          244
+        ],
+        [
+          54,
+          244
+        ],
+        [
+          53,
+          244
+        ],
+        [
+          52,
+          243
+        ],
+        [
+          51,
+          243
+        ],
+        [
+          50,
+          242
+        ],
+        [
+          49,
+          241
+        ],
+        [
+          48,
+          241
+        ],
+        [
+          47,
+          240
+        ],
+        [
+          46,
+          239
+        ],
+        [
+          45,
+          239
+        ],
+        [
+          44,
+          238
+        ],
+        [
+          43,
+          237
+        ],
+        [
+          42,
+          237
+        ],
+        [
+          41,
+          236
+        ],
+        [
+          40,
+          235
+        ],
+        [
+          39,
+          235
+        ],
+        [
+          38,
+          234
+        ],
+        [
+          38,
+          233
+        ]
+      ],
+      "pathLengthTiles": 200,
+      "prerequisite": {
+        "raftBuilt": true
+      },
+      "weatherGate": "canBlockDeparturesDuringStorm",
+      "continuousNavigableWater": true,
+      "departureDock": {
+        "waterAtlas": [
+          236,
+          302
+        ],
+        "shoreFootTileLocal": [
+          108,
+          237
+        ],
+        "waterToShoreManhattanTiles": 1,
+        "reachableOnFoot": true
+      },
+      "arrivalDock": {
+        "waterAtlas": [
+          38,
+          233
+        ],
+        "shoreFootTileLocal": [
+          13,
+          44
+        ],
+        "waterToShoreManhattanTiles": 1,
+        "reachableOnFoot": true
+      }
+    },
+    {
+      "id": "SEA_TO_FERTILE",
+      "fromRegion": "REG_LAGOON",
+      "toRegion": "REG_FERTILE",
+      "originalDepartureAtlas": [
+        354,
+        257
+      ],
+      "originalArrivalAtlas": [
+        442,
+        321
+      ],
+      "departureAtlas": [
+        354,
+        257
+      ],
+      "arrivalAtlas": [
+        429,
+        333
+      ],
+      "arrivalFootTileLocal": [
+        13,
+        34
+      ],
+      "raftPathAtlas": [
+        [
+          354,
+          257
+        ],
+        [
+          355,
+          258
+        ],
+        [
+          356,
+          259
+        ],
+        [
+          357,
+          260
+        ],
+        [
+          358,
+          261
+        ],
+        [
+          359,
+          262
+        ],
+        [
+          360,
+          263
+        ],
+        [
+          361,
+          264
+        ],
+        [
+          362,
+          265
+        ],
+        [
+          363,
+          266
+        ],
+        [
+          364,
+          267
+        ],
+        [
+          365,
+          268
+        ],
+        [
+          366,
+          269
+        ],
+        [
+          367,
+          270
+        ],
+        [
+          368,
+          271
+        ],
+        [
+          369,
+          272
+        ],
+        [
+          370,
+          273
+        ],
+        [
+          371,
+          274
+        ],
+        [
+          372,
+          275
+        ],
+        [
+          373,
+          276
+        ],
+        [
+          374,
+          277
+        ],
+        [
+          375,
+          278
+        ],
+        [
+          376,
+          279
+        ],
+        [
+          377,
+          280
+        ],
+        [
+          378,
+          281
+        ],
+        [
+          379,
+          282
+        ],
+        [
+          380,
+          283
+        ],
+        [
+          381,
+          284
+        ],
+        [
+          382,
+          285
+        ],
+        [
+          383,
+          286
+        ],
+        [
+          384,
+          287
+        ],
+        [
+          385,
+          288
+        ],
+        [
+          386,
+          289
+        ],
+        [
+          387,
+          290
+        ],
+        [
+          388,
+          291
+        ],
+        [
+          389,
+          292
+        ],
+        [
+          390,
+          293
+        ],
+        [
+          391,
+          294
+        ],
+        [
+          392,
+          295
+        ],
+        [
+          393,
+          296
+        ],
+        [
+          394,
+          297
+        ],
+        [
+          395,
+          298
+        ],
+        [
+          396,
+          299
+        ],
+        [
+          397,
+          300
+        ],
+        [
+          398,
+          301
+        ],
+        [
+          398,
+          302
+        ],
+        [
+          398,
+          303
+        ],
+        [
+          399,
+          304
+        ],
+        [
+          400,
+          305
+        ],
+        [
+          401,
+          306
+        ],
+        [
+          402,
+          307
+        ],
+        [
+          403,
+          308
+        ],
+        [
+          404,
+          309
+        ],
+        [
+          405,
+          310
+        ],
+        [
+          406,
+          311
+        ],
+        [
+          407,
+          312
+        ],
+        [
+          408,
+          313
+        ],
+        [
+          409,
+          314
+        ],
+        [
+          410,
+          315
+        ],
+        [
+          411,
+          316
+        ],
+        [
+          412,
+          317
+        ],
+        [
+          413,
+          318
+        ],
+        [
+          414,
+          319
+        ],
+        [
+          415,
+          320
+        ],
+        [
+          416,
+          321
+        ],
+        [
+          417,
+          322
+        ],
+        [
+          418,
+          323
+        ],
+        [
+          419,
+          324
+        ],
+        [
+          420,
+          325
+        ],
+        [
+          421,
+          326
+        ],
+        [
+          422,
+          327
+        ],
+        [
+          423,
+          328
+        ],
+        [
+          424,
+          329
+        ],
+        [
+          425,
+          330
+        ],
+        [
+          426,
+          331
+        ],
+        [
+          427,
+          332
+        ],
+        [
+          428,
+          333
+        ],
+        [
+          429,
+          333
+        ]
+      ],
+      "pathLengthTiles": 78,
+      "prerequisite": {
+        "raftBuilt": true
+      },
+      "weatherGate": "canBlockDeparturesDuringStorm",
+      "continuousNavigableWater": true,
+      "departureDock": {
+        "waterAtlas": [
+          354,
+          257
+        ],
+        "shoreFootTileLocal": [
+          226,
+          191
+        ],
+        "waterToShoreManhattanTiles": 2,
+        "reachableOnFoot": true
+      },
+      "arrivalDock": {
+        "waterAtlas": [
+          429,
+          333
+        ],
+        "shoreFootTileLocal": [
+          14,
+          46
+        ],
+        "waterToShoreManhattanTiles": 1,
+        "reachableOnFoot": true
+      }
+    }
+  ],
+  "landPublicRoutes": [
+    {
+      "roadId": "ROAD_BEACH_GROVE",
+      "access": "FREE",
+      "tilePath": [
+        [
+          123,
+          215
+        ],
+        [
+          139,
+          204
+        ],
+        [
+          153,
+          192
+        ],
+        [
+          165,
+          181
+        ]
+      ],
+      "widthTiles": 3
+    },
+    {
+      "roadId": "ROAD_BEACH_VALLEY",
+      "access": "FREE",
+      "tilePath": [
+        [
+          123,
+          215
+        ],
+        [
+          120,
+          195
+        ],
+        [
+          116,
+          175
+        ],
+        [
+          106,
+          149
+        ]
+      ],
+      "widthTiles": 3
+    },
+    {
+      "roadId": "ROAD_GROVE_LAGOON",
+      "access": "FREE",
+      "tilePath": [
+        [
+          165,
+          181
+        ],
+        [
+          181,
+          186
+        ],
+        [
+          202,
+          190
+        ],
+        [
+          214,
+          196
+        ]
+      ],
+      "widthTiles": 3
+    },
+    {
+      "roadId": "ROAD_GROVE_FOREST",
+      "access": "FREE",
+      "tilePath": [
+        [
+          165,
+          181
+        ],
+        [
+          156,
+          157
+        ],
+        [
+          142,
+          133
+        ],
+        [
+          137,
+          113
+        ]
+      ],
+      "widthTiles": 3
+    },
+    {
+      "roadId": "ROAD_VALLEY_FOREST",
+      "access": "FREE",
+      "tilePath": [
+        [
+          106,
+          149
+        ],
+        [
+          119,
+          133
+        ],
+        [
+          137,
+          113
+        ]
+      ],
+      "widthTiles": 3
+    },
+    {
+      "roadId": "ROAD_VALLEY_SWAMP",
+      "access": "FREE_HAZARD",
+      "tilePath": [
+        [
+          106,
+          149
+        ],
+        [
+          83,
+          150
+        ],
+        [
+          59,
+          151
+        ]
+      ],
+      "widthTiles": 3
+    },
+    {
+      "roadId": "ROAD_FOREST_RED",
+      "access": "FREE",
+      "tilePath": [
+        [
+          137,
+          113
+        ],
+        [
+          109,
+          100
+        ],
+        [
+          80,
+          86
+        ]
+      ],
+      "widthTiles": 3
+    },
+    {
+      "roadId": "ROAD_FOREST_MOUNTAIN",
+      "access": "FREE_SURFACE",
+      "tilePath": [
+        [
+          137,
+          113
+        ],
+        [
+          138,
+          92
+        ],
+        [
+          150,
+          71
+        ],
+        [
+          149,
+          50
+        ]
+      ],
+      "widthTiles": 3
+    },
+    {
+      "roadId": "ROAD_FOREST_SETTLEMENT",
+      "access": "FREE",
+      "tilePath": [
+        [
+          137,
+          113
+        ],
+        [
+          163,
+          118
+        ],
+        [
+          188,
+          119
+        ],
+        [
+          199,
+          112
+        ]
+      ],
+      "widthTiles": 3
+    },
+    {
+      "roadId": "ROAD_SETTLEMENT_LAGOON",
+      "access": "FREE",
+      "tilePath": [
+        [
+          199,
+          112
+        ],
+        [
+          210,
+          145
+        ],
+        [
+          211,
+          169
+        ],
+        [
+          204,
+          195
+        ]
+      ],
+      "widthTiles": 3
+    },
+    {
+      "roadId": "ROAD_RED_MOUNTAIN",
+      "access": "GATE_CLIMB_SHORTCUT",
+      "tilePath": [
+        [
+          80,
+          86
+        ],
+        [
+          101,
+          75
+        ],
+        [
+          124,
+          60
+        ],
+        [
+          149,
+          50
+        ]
+      ],
+      "widthTiles": 2
+    },
+    {
+      "roadId": "ROAD_VALLEY_RED_BRIDGE",
+      "access": "GATE_REPAIR_BRIDGE",
+      "tilePath": [
+        [
+          106,
+          149
+        ],
+        [
+          116,
+          141
+        ],
+        [
+          96,
+          121
+        ],
+        [
+          80,
+          86
+        ]
+      ],
+      "widthTiles": 2
+    },
+    {
+      "roadId": "ROAD_RELAY_SHORTCUT",
+      "access": "GATE_RELAY_PATH",
+      "tilePath": [
+        [
+          181,
+          75
+        ],
+        [
+          199,
+          94
+        ],
+        [
+          199,
+          112
+        ]
+      ],
+      "widthTiles": 2
+    },
+    {
+      "roadId": "ROAD_REEF_APPROACH",
+      "access": "SHALLOW_DIVE",
+      "tilePath": [
+        [
+          204,
+          195
+        ],
+        [
+          219,
+          191
+        ],
+        [
+          228,
+          180
+        ]
+      ],
+      "widthTiles": 2
+    },
+    {
+      "roadId": "ROAD_WATERFALL",
+      "access": "FREE_HIDDEN",
+      "tilePath": [
+        [
+          106,
+          149
+        ],
+        [
+          113,
+          132
+        ],
+        [
+          121,
+          117
+        ]
+      ],
+      "widthTiles": 3
+    }
+  ],
+  "poiLandApproachRoutes": [
+    {
+      "poiId": "POI_CRASH_BOAT",
+      "fromTile": [
+        123,
+        215
+      ],
+      "toTrailTile": [
+        123,
+        215
+      ],
+      "lengthTiles": 1
+    },
+    {
+      "poiId": "POI_WATERPROOF_BAG",
+      "fromTile": [
+        133,
+        209
+      ],
+      "toTrailTile": [
+        133,
+        209
+      ],
+      "lengthTiles": 1
+    },
+    {
+      "poiId": "POI_SHORE_CRATE",
+      "fromTile": [
+        109,
+        222
+      ],
+      "toTrailTile": [
+        122,
+        215
+      ],
+      "lengthTiles": 21
+    },
+    {
+      "poiId": "POI_BROKEN_LOOKOUT",
+      "fromTile": [
+        155,
+        206
+      ],
+      "toTrailTile": [
+        152,
+        195
+      ],
+      "lengthTiles": 15
+    },
+    {
+      "poiId": "POI_FISHER_HUT",
+      "fromTile": [
+        164,
+        187
+      ],
+      "toTrailTile": [
+        161,
+        187
+      ],
+      "lengthTiles": 4
+    },
+    {
+      "poiId": "POI_FRUIT_HILL",
+      "fromTile": [
+        165,
+        168
+      ],
+      "toTrailTile": [
+        161,
+        168
+      ],
+      "lengthTiles": 5
+    },
+    {
+      "poiId": "POI_VINE_TUNNEL",
+      "fromTile": [
+        145,
+        160
+      ],
+      "toTrailTile": [
+        156,
+        160
+      ],
+      "lengthTiles": 12
+    },
+    {
+      "poiId": "POI_WATER_STATION",
+      "fromTile": [
+        105,
+        150
+      ],
+      "toTrailTile": [
+        105,
+        150
+      ],
+      "lengthTiles": 1
+    },
+    {
+      "poiId": "POI_STONE_BRIDGE",
+      "fromTile": [
+        117,
+        140
+      ],
+      "toTrailTile": [
+        116,
+        139
+      ],
+      "lengthTiles": 3
+    },
+    {
+      "poiId": "POI_WATERFALL_CAVE",
+      "fromTile": [
+        121,
+        117
+      ],
+      "toTrailTile": [
+        121,
+        117
+      ],
+      "lengthTiles": 1
+    },
+    {
+      "poiId": "POI_FORESTER_HUT",
+      "fromTile": [
+        137,
+        113
+      ],
+      "toTrailTile": [
+        137,
+        113
+      ],
+      "lengthTiles": 1
+    },
+    {
+      "poiId": "POI_TREEHOUSE",
+      "fromTile": [
+        160,
+        102
+      ],
+      "toTrailTile": [
+        160,
+        117
+      ],
+      "lengthTiles": 16
+    },
+    {
+      "poiId": "POI_HUNTER_CAMP",
+      "fromTile": [
+        110,
+        102
+      ],
+      "toTrailTile": [
+        110,
+        101
+      ],
+      "lengthTiles": 2
+    },
+    {
+      "poiId": "POI_SWAMP_MEASURE",
+      "fromTile": [
+        59,
+        150
+      ],
+      "toTrailTile": [
+        59,
+        150
+      ],
+      "lengthTiles": 1
+    },
+    {
+      "poiId": "POI_FLOODED_STORE",
+      "fromTile": [
+        50,
+        171
+      ],
+      "toTrailTile": [
+        59,
+        152
+      ],
+      "lengthTiles": 31
+    },
+    {
+      "poiId": "POI_MANGROVE_COVE",
+      "fromTile": [
+        46,
+        186
+      ],
+      "toTrailTile": [
+        49,
+        171
+      ],
+      "lengthTiles": 19
+    },
+    {
+      "poiId": "POI_COPPER_MINE",
+      "fromTile": [
+        80,
+        86
+      ],
+      "toTrailTile": [
+        80,
+        85
+      ],
+      "lengthTiles": 2
+    },
+    {
+      "poiId": "POI_CABLE_CAR",
+      "fromTile": [
+        99,
+        70
+      ],
+      "toTrailTile": [
+        99,
+        94
+      ],
+      "lengthTiles": 25
+    },
+    {
+      "poiId": "POI_MINE_SHELTER",
+      "fromTile": [
+        62,
+        105
+      ],
+      "toTrailTile": [
+        80,
+        86
+      ],
+      "lengthTiles": 38
+    },
+    {
+      "poiId": "POI_OBSERVATORY",
+      "fromTile": [
+        149,
+        50
+      ],
+      "toTrailTile": [
+        148,
+        50
+      ],
+      "lengthTiles": 2
+    },
+    {
+      "poiId": "POI_RELAY_SHELTER",
+      "fromTile": [
+        181,
+        75
+      ],
+      "toTrailTile": [
+        149,
+        75
+      ],
+      "lengthTiles": 33
+    },
+    {
+      "poiId": "POI_BAT_CAVERN",
+      "fromTile": [
+        130,
+        77
+      ],
+      "toTrailTile": [
+        146,
+        76
+      ],
+      "lengthTiles": 18
+    },
+    {
+      "poiId": "POI_UNDERGROUND_POND",
+      "fromTile": [
+        169,
+        91
+      ],
+      "toTrailTile": [
+        169,
+        75
+      ],
+      "lengthTiles": 17
+    },
+    {
+      "poiId": "POI_RESEARCH_SQUARE",
+      "fromTile": [
+        199,
+        112
+      ],
+      "toTrailTile": [
+        198,
+        112
+      ],
+      "lengthTiles": 2
+    },
+    {
+      "poiId": "POI_RADIO_WORKSHOP",
+      "fromTile": [
+        219,
+        130
+      ],
+      "toTrailTile": [
+        206,
+        130
+      ],
+      "lengthTiles": 14
+    },
+    {
+      "poiId": "POI_OLD_KITCHEN",
+      "fromTile": [
+        194,
+        135
+      ],
+      "toTrailTile": [
+        205,
+        134
+      ],
+      "lengthTiles": 13
+    },
+    {
+      "poiId": "POI_LOCKED_WAREHOUSE",
+      "fromTile": [
+        219,
+        107
+      ],
+      "toTrailTile": [
+        219,
+        130
+      ],
+      "lengthTiles": 24
+    },
+    {
+      "poiId": "POI_SAND_SPIT",
+      "fromTile": [
+        229,
+        211
+      ],
+      "toTrailTile": [
+        214,
+        197
+      ],
+      "lengthTiles": 30
+    }
+  ],
+  "publicFordTiles": [
+    {
+      "x": 114,
+      "y": 145,
+      "origin": "FIRST_PUBLIC_FORD"
+    },
+    {
+      "x": 109,
+      "y": 154,
+      "origin": "ROAD_BEACH_VALLEY"
+    },
+    {
+      "x": 141,
+      "y": 85,
+      "origin": "ROAD_FOREST_MOUNTAIN"
+    },
+    {
+      "x": 137,
+      "y": 92,
+      "origin": "ROAD_FOREST_MOUNTAIN"
+    },
+    {
+      "x": 127,
+      "y": 108,
+      "origin": "ROAD_FOREST_RED"
+    },
+    {
+      "x": 112,
+      "y": 139,
+      "origin": "ROAD_VALLEY_FOREST"
+    },
+    {
+      "x": 121,
+      "y": 117,
+      "origin": "ROAD_WATERFALL"
+    },
+    {
+      "x": 117,
+      "y": 122,
+      "origin": "ROAD_WATERFALL"
+    },
+    {
+      "x": 115,
+      "y": 129,
+      "origin": "ROAD_WATERFALL"
+    }
+  ],
+  "spawnTileLocal": [
+    122,
+    220
+  ],
+  "satelliteDockLandings": {
+    "LIGHTHOUSE": [
+      17,
+      34
+    ],
+    "WRECK": [
+      14,
+      35
+    ],
+    "FERTILE": [
+      13,
+      34
+    ]
+  },
+  "gateFlags": [
+    {
+      "id": "GATE_BRIDGE",
+      "tileMainLocal": [
+        117,
+        140
+      ],
+      "unlockFlag": "STONE_BRIDGE_REPAIRED",
+      "roadId": "ROAD_VALLEY_RED_BRIDGE",
+      "type": "REPAIR",
+      "visual": "broken old bridge; shortcut only"
+    },
+    {
+      "id": "GATE_CLIMB",
+      "tileMainLocal": [
+        112,
+        66
+      ],
+      "unlockFlag": "CLIMB_KIT_EQUIPPED",
+      "roadId": "ROAD_RED_MOUNTAIN",
+      "type": "EQUIPMENT",
+      "visual": "steep climb; shortcut only"
+    },
+    {
+      "id": "GATE_RELAY",
+      "tileMainLocal": [
+        193,
+        89
+      ],
+      "unlockFlag": "RELAY_PATH_OPEN",
+      "roadId": "ROAD_RELAY_SHORTCUT",
+      "type": "REPAIR",
+      "visual": "locked relay trail; shortcut only"
+    },
+    {
+      "id": "GATE_SANDSPIT",
+      "tileMainLocal": [
+        227,
+        209
+      ],
+      "unlockFlag": "TIDE_LOW",
+      "roadId": null,
+      "type": "ENVIRONMENT",
+      "visual": "tidal reachability; SIDE POI only"
+    }
+  ],
+  "autoMovementControls": {
+    "tapToApproach": "astar_to_valid_adjacent_tile",
+    "directJoystick": "cancels auto path",
+    "pathUnknown": "show blocked feedback; allow manual movement"
+  },
+  "navigationWarnings": [
+    "The sea route coordinates in v1.1 were inside land in some cases. They are corrected here with genuine water-cell routes.",
+    "Satellite landing coordinates are dry foot anchors; boat approaches are separately defined."
+  ]
+}

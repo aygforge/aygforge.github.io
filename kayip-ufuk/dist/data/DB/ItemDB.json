@@ -1,0 +1,1557 @@
+{
+  "meta": {
+    "project": "Kayıp Ufuk Takımadaları — 2D mobil survival",
+    "version": "v1.7-consolidated",
+    "status": "design_data_NOT_Opus_prompt",
+    "rules": [
+      "Mobile landscape 16:9",
+      "Hybrid island, fixed macro-POIs",
+      "Material/station/blueprint unlocks",
+      "Preset houses; free-place interior/exterior objects; NO modular walls/floors/roof",
+      "No required recipe may depend on a randomized exclusive loot drop",
+      "Story collectibles cannot be discarded",
+      "One shared game clock",
+      "3 saves; IndexedDB with backups"
+    ],
+    "counts": {
+      "items": 179,
+      "recipes": 175,
+      "buildables": 58,
+      "blueprints": 20
+    },
+    "balance": {
+      "baseInventorySlots": 24,
+      "smallBagSlots": 32,
+      "largeBagSlots": 40,
+      "dayRealMinutes": 18,
+      "foodCostPerGameDay": 32,
+      "thirstCostPerGameDay": 42,
+      "craftStationNearbyChestRadiusTiles": 10,
+      "registeredCampsMax": 4,
+      "activeTrapsMax": 6
+    },
+    "unlockCodes": {
+      "START": "Starts known",
+      "MAT:ITEM_ID": "Knowledge gained from first acquiring this item",
+      "STATION:BUILD_ID": "Knowledge gained from first placing this station",
+      "BP:BP_ID": "Obtained guaranteed blueprint at fixed POI",
+      "STORY:FLAG": "Unlocked by world/story state, not random loot"
+    },
+    "notes": [
+      "Items include intermediates, raw sources, food, tools, seeds and special story items; actual per-biome source respawns are RegionDB responsibility.",
+      "Crops receive seeds via world loot/harvest, not through crafting recipes.",
+      "World-gathered fish become raw fish portions plus fish offcuts via catch-processing logic; fish species remain in FishDB.",
+      "Recipes with outputType upgrade modify an existing building without spawning another object.",
+      "Construction recipes are total costs; stages are UI/visual subdivisions, not extra costs.",
+      "Some IDs are provisional; all cross references in this draft are validated."
+    ],
+    "type": "ItemDB",
+    "basedOn": "v0.9",
+    "updateNote": "Crop outputs normalized; four conversion recipes added; all previous item IDs retained."
+  },
+  "items": [
+    {
+      "id": "CMP_ADV_BAIT",
+      "name": "Gelişmiş yem",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_adv_bait"
+    },
+    {
+      "id": "CMP_ANTENNA",
+      "name": "Haberleşme anteni",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_antenna"
+    },
+    {
+      "id": "CMP_ARROW",
+      "name": "Ok",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_arrow"
+    },
+    {
+      "id": "CMP_BATTERY_PACK",
+      "name": "Pil paketi",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_battery_pack"
+    },
+    {
+      "id": "CMP_BEARING",
+      "name": "Rulman parçası",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_bearing"
+    },
+    {
+      "id": "CMP_BRICK",
+      "name": "Tuğla",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_brick"
+    },
+    {
+      "id": "CMP_CABLE_HARNESS",
+      "name": "Kablo demeti",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_cable_harness"
+    },
+    {
+      "id": "CMP_CHARCOAL",
+      "name": "Odun kömürü",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_charcoal"
+    },
+    {
+      "id": "CMP_CLOTH",
+      "name": "Kumaş",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_cloth"
+    },
+    {
+      "id": "CMP_COMPOST",
+      "name": "Kompost",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_compost"
+    },
+    {
+      "id": "CMP_COPPER_INGOT",
+      "name": "Bakır külçesi",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_copper_ingot"
+    },
+    {
+      "id": "CMP_COPPER_WIRE",
+      "name": "Bakır tel",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_copper_wire"
+    },
+    {
+      "id": "CMP_FISH_BAIT",
+      "name": "Balık parçası yem",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_fish_bait"
+    },
+    {
+      "id": "CMP_FISH_HOOK",
+      "name": "Balık iğnesi",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_fish_hook"
+    },
+    {
+      "id": "CMP_FUSE",
+      "name": "Sigorta",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_fuse"
+    },
+    {
+      "id": "CMP_GEAR",
+      "name": "Dişli",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_gear"
+    },
+    {
+      "id": "CMP_GENERATOR",
+      "name": "Jeneratör",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_generator"
+    },
+    {
+      "id": "CMP_HULL_REINFORCED",
+      "name": "Güçlendirilmiş gövde kiti",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_hull_reinforced"
+    },
+    {
+      "id": "CMP_HULL_SEGMENT",
+      "name": "Tekne gövde parçası",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_hull_segment"
+    },
+    {
+      "id": "CMP_IRON_INGOT",
+      "name": "Demir külçesi",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_iron_ingot"
+    },
+    {
+      "id": "CMP_LEATHER",
+      "name": "İşlenmiş deri",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_leather"
+    },
+    {
+      "id": "CMP_MECH_DRIVE",
+      "name": "Mekanik aktarım",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_mech_drive"
+    },
+    {
+      "id": "CMP_METAL_FASTENER",
+      "name": "Metal bağlantı",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_metal_fastener"
+    },
+    {
+      "id": "CMP_NAV_CHART",
+      "name": "Birleştirilmiş seyir haritası",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_nav_chart"
+    },
+    {
+      "id": "CMP_PLANK",
+      "name": "Tahta",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_plank"
+    },
+    {
+      "id": "CMP_ROPE",
+      "name": "İp",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_rope"
+    },
+    {
+      "id": "CMP_RUDDER",
+      "name": "Dümen seti",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_rudder"
+    },
+    {
+      "id": "CMP_SAIL",
+      "name": "Yelken",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_sail"
+    },
+    {
+      "id": "CMP_SIGNAL_BOOSTER",
+      "name": "Sinyal güçlendirici",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_signal_booster"
+    },
+    {
+      "id": "CMP_SIMPLE_BAIT",
+      "name": "Basit yem",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_simple_bait"
+    },
+    {
+      "id": "CMP_SLING_STONE",
+      "name": "Sapan taşı",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_sling_stone"
+    },
+    {
+      "id": "CMP_STORM_ANCHOR",
+      "name": "Fırtına çapası",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_storm_anchor"
+    },
+    {
+      "id": "CMP_THICK_ROPE",
+      "name": "Kalın halat",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_thick_rope"
+    },
+    {
+      "id": "CMP_TREATED_PLANK",
+      "name": "Koruyucu tahta",
+      "category": "processed_material",
+      "stackMax": 40,
+      "iconKey": "cmp_treated_plank"
+    },
+    {
+      "id": "CON_ADV_BANDAGE",
+      "name": "Gelişmiş sargı",
+      "category": "consumable",
+      "stackMax": 20,
+      "iconKey": "con_adv_bandage"
+    },
+    {
+      "id": "CON_ANTIDOTE",
+      "name": "Panzehir",
+      "category": "consumable",
+      "stackMax": 20,
+      "iconKey": "con_antidote"
+    },
+    {
+      "id": "CON_BANDAGE",
+      "name": "Basit bandaj",
+      "category": "consumable",
+      "stackMax": 20,
+      "iconKey": "con_bandage"
+    },
+    {
+      "id": "CROP_BANANA",
+      "name": "Muz hasadı",
+      "category": "crop",
+      "stackMax": 20,
+      "iconKey": "crop_banana",
+      "perishGameDays": 4
+    },
+    {
+      "id": "CROP_BEAN",
+      "name": "Fasulye",
+      "category": "crop",
+      "stackMax": 20,
+      "iconKey": "crop_bean",
+      "perishGameDays": 4
+    },
+    {
+      "id": "CROP_CANE",
+      "name": "Şeker kamışı",
+      "category": "crop",
+      "stackMax": 20,
+      "iconKey": "crop_cane",
+      "perishGameDays": 4
+    },
+    {
+      "id": "CROP_FIBER",
+      "name": "Lif demeti",
+      "category": "crop",
+      "stackMax": 20,
+      "iconKey": "crop_fiber"
+    },
+    {
+      "id": "CROP_GREENS",
+      "name": "Yeşillik",
+      "category": "crop",
+      "stackMax": 20,
+      "iconKey": "crop_greens",
+      "perishGameDays": 4
+    },
+    {
+      "id": "CROP_HERB",
+      "name": "Şifalı bitki hasadı",
+      "category": "crop",
+      "stackMax": 20,
+      "iconKey": "crop_herb",
+      "perishGameDays": 7
+    },
+    {
+      "id": "CROP_PEPPER",
+      "name": "Tropik biber",
+      "category": "crop",
+      "stackMax": 20,
+      "iconKey": "crop_pepper",
+      "perishGameDays": 4
+    },
+    {
+      "id": "CROP_PINEAPPLE",
+      "name": "Ananas",
+      "category": "crop",
+      "stackMax": 20,
+      "iconKey": "crop_pineapple",
+      "perishGameDays": 4
+    },
+    {
+      "id": "CROP_PUMPKIN",
+      "name": "Kabak",
+      "category": "crop",
+      "stackMax": 20,
+      "iconKey": "crop_pumpkin",
+      "perishGameDays": 4
+    },
+    {
+      "id": "CROP_ROOT",
+      "name": "Kök sebze",
+      "category": "crop",
+      "stackMax": 20,
+      "iconKey": "crop_root",
+      "perishGameDays": 4
+    },
+    {
+      "id": "CROP_SPICE",
+      "name": "Baharat bitkisi hasadı",
+      "category": "crop",
+      "stackMax": 20,
+      "iconKey": "crop_spice",
+      "perishGameDays": 7
+    },
+    {
+      "id": "CROP_SWEET_POTATO",
+      "name": "Tatlı patates",
+      "category": "crop",
+      "stackMax": 20,
+      "iconKey": "crop_sweet_potato",
+      "perishGameDays": 4
+    },
+    {
+      "id": "EQ_BAG_LARGE",
+      "name": "Büyük çanta",
+      "category": "equipment",
+      "stackMax": 1,
+      "iconKey": "eq_bag_large",
+      "equipmentSlot": "backpack",
+      "inventoryCapacity": 40
+    },
+    {
+      "id": "EQ_BAG_SMALL",
+      "name": "Küçük çanta",
+      "category": "equipment",
+      "stackMax": 1,
+      "iconKey": "eq_bag_small",
+      "equipmentSlot": "backpack",
+      "inventoryCapacity": 32
+    },
+    {
+      "id": "EQ_EXPLORER_BAG",
+      "name": "Keşif çantası",
+      "category": "equipment",
+      "stackMax": 1,
+      "iconKey": "eq_explorer_bag",
+      "equipmentSlot": "backpack",
+      "inventoryCapacity": 40,
+      "specialEffect": "nearby_hidden_loot_hint"
+    },
+    {
+      "id": "EQ_LEAF_HAT",
+      "name": "Yaprak şapka",
+      "category": "equipment",
+      "stackMax": 1,
+      "iconKey": "eq_leaf_hat",
+      "equipmentSlot": "head"
+    },
+    {
+      "id": "EQ_LEATHER_BOOTS",
+      "name": "Dayanıklı bot",
+      "category": "equipment",
+      "stackMax": 1,
+      "iconKey": "eq_leather_boots",
+      "equipmentSlot": "feet",
+      "specialEffect": "swamp_slow_reduction"
+    },
+    {
+      "id": "EQ_LEATHER_HAT",
+      "name": "Deri şapka",
+      "category": "equipment",
+      "stackMax": 1,
+      "iconKey": "eq_leather_hat",
+      "equipmentSlot": "head"
+    },
+    {
+      "id": "EQ_LEATHER_VEST",
+      "name": "Deri yelek",
+      "category": "equipment",
+      "stackMax": 1,
+      "iconKey": "eq_leather_vest",
+      "equipmentSlot": "body",
+      "specialEffect": "animal_damage_resistance"
+    },
+    {
+      "id": "EQ_RAINCOAT",
+      "name": "Yağmurluk",
+      "category": "equipment",
+      "stackMax": 1,
+      "iconKey": "eq_raincoat",
+      "equipmentSlot": "body",
+      "specialEffect": "rain_chill_resistance"
+    },
+    {
+      "id": "EQ_SANDALS",
+      "name": "Sandalet",
+      "category": "equipment",
+      "stackMax": 1,
+      "iconKey": "eq_sandals",
+      "equipmentSlot": "feet"
+    },
+    {
+      "id": "FOOD_BANANA",
+      "name": "Muz",
+      "category": "foraged_food",
+      "stackMax": 20,
+      "iconKey": "food_banana",
+      "perishGameDays": 4,
+      "restore": {
+        "hunger": 12
+      }
+    },
+    {
+      "id": "FOOD_BEAN_STEW",
+      "name": "Fasulye yemeği",
+      "category": "food",
+      "stackMax": 20,
+      "iconKey": "food_bean_stew",
+      "restore": {
+        "hunger": 38
+      },
+      "perishGameDays": 3
+    },
+    {
+      "id": "FOOD_BERRY",
+      "name": "Yabani meyve",
+      "category": "foraged_food",
+      "stackMax": 20,
+      "iconKey": "food_berry",
+      "perishGameDays": 4,
+      "restore": {
+        "hunger": 12
+      }
+    },
+    {
+      "id": "FOOD_COCONUT",
+      "name": "Hindistan cevizi",
+      "category": "foraged_food",
+      "stackMax": 20,
+      "iconKey": "food_coconut",
+      "restore": {
+        "hunger": 10,
+        "thirst": 8
+      }
+    },
+    {
+      "id": "FOOD_COOKED_FISH",
+      "name": "Pişmiş balık",
+      "category": "food",
+      "stackMax": 20,
+      "iconKey": "food_cooked_fish",
+      "restore": {
+        "hunger": 26
+      },
+      "perishGameDays": 3
+    },
+    {
+      "id": "FOOD_COOKED_MEAT",
+      "name": "Pişmiş et",
+      "category": "food",
+      "stackMax": 20,
+      "iconKey": "food_cooked_meat",
+      "restore": {
+        "hunger": 35
+      },
+      "perishGameDays": 3
+    },
+    {
+      "id": "FOOD_DRIED_FISH",
+      "name": "Kurutulmuş balık",
+      "category": "food",
+      "stackMax": 20,
+      "iconKey": "food_dried_fish",
+      "restore": {
+        "hunger": 22
+      },
+      "perishGameDays": 8
+    },
+    {
+      "id": "FOOD_DRIED_MEAT",
+      "name": "Kurutulmuş et",
+      "category": "food",
+      "stackMax": 20,
+      "iconKey": "food_dried_meat",
+      "restore": {
+        "hunger": 30
+      },
+      "perishGameDays": 12
+    },
+    {
+      "id": "FOOD_FEAST",
+      "name": "Tropikal ziyafet",
+      "category": "food",
+      "stackMax": 20,
+      "iconKey": "food_feast",
+      "restore": {
+        "hunger": 70
+      },
+      "perishGameDays": 3
+    },
+    {
+      "id": "FOOD_FISH_SOUP",
+      "name": "Balık çorbası",
+      "category": "food",
+      "stackMax": 20,
+      "iconKey": "food_fish_soup",
+      "restore": {
+        "hunger": 45,
+        "thirst": 8
+      },
+      "perishGameDays": 3
+    },
+    {
+      "id": "FOOD_FRUIT_SALAD",
+      "name": "Meyve salatası",
+      "category": "food",
+      "stackMax": 20,
+      "iconKey": "food_fruit_salad",
+      "restore": {
+        "hunger": 24,
+        "thirst": 5
+      },
+      "perishGameDays": 2
+    },
+    {
+      "id": "FOOD_GRILLED_CRAB",
+      "name": "Izgara yengeç",
+      "category": "food",
+      "stackMax": 20,
+      "iconKey": "food_grilled_crab",
+      "restore": {
+        "hunger": 18
+      },
+      "perishGameDays": 3
+    },
+    {
+      "id": "FOOD_HERBAL_TEA",
+      "name": "Şifalı bitki çayı",
+      "category": "food",
+      "stackMax": 20,
+      "iconKey": "food_herbal_tea",
+      "restore": {
+        "thirst": 15,
+        "health": 6
+      },
+      "perishGameDays": 3
+    },
+    {
+      "id": "FOOD_MUSHROOM",
+      "name": "Yenilebilir mantar",
+      "category": "foraged_food",
+      "stackMax": 20,
+      "iconKey": "food_mushroom",
+      "perishGameDays": 3,
+      "restore": {
+        "hunger": 8
+      }
+    },
+    {
+      "id": "FOOD_PINEAPPLE_SNACK",
+      "name": "Ananas tabağı",
+      "category": "food",
+      "stackMax": 20,
+      "iconKey": "food_pineapple_snack",
+      "restore": {
+        "hunger": 18,
+        "thirst": 6
+      },
+      "perishGameDays": 2
+    },
+    {
+      "id": "FOOD_RATION",
+      "name": "Keşif erzak paketi",
+      "category": "food",
+      "stackMax": 20,
+      "iconKey": "food_ration",
+      "restore": {
+        "hunger": 45
+      },
+      "perishGameDays": 12
+    },
+    {
+      "id": "FOOD_ROAST_ROOT",
+      "name": "Közlenmiş kök sebze",
+      "category": "food",
+      "stackMax": 20,
+      "iconKey": "food_roast_root",
+      "restore": {
+        "hunger": 17
+      },
+      "perishGameDays": 3
+    },
+    {
+      "id": "FOOD_SPICED_FISH",
+      "name": "Baharatlı balık",
+      "category": "food",
+      "stackMax": 20,
+      "iconKey": "food_spiced_fish",
+      "restore": {
+        "hunger": 36
+      },
+      "perishGameDays": 3
+    },
+    {
+      "id": "FOOD_VEG_STEW",
+      "name": "Sebze yemeği",
+      "category": "food",
+      "stackMax": 20,
+      "iconKey": "food_veg_stew",
+      "restore": {
+        "hunger": 32
+      },
+      "perishGameDays": 3
+    },
+    {
+      "id": "FOOD_WARM_TEA",
+      "name": "Isıtıcı bitki çayı",
+      "category": "food",
+      "stackMax": 20,
+      "iconKey": "food_warm_tea",
+      "restore": {
+        "thirst": 15
+      },
+      "perishGameDays": 3
+    },
+    {
+      "id": "MAT_BAMBOO",
+      "name": "Bambu",
+      "category": "plant_material",
+      "stackMax": 50,
+      "iconKey": "mat_bamboo"
+    },
+    {
+      "id": "MAT_BONE",
+      "name": "Kemik",
+      "category": "animal_material",
+      "stackMax": 50,
+      "iconKey": "mat_bone"
+    },
+    {
+      "id": "MAT_BRANCH",
+      "name": "Dal",
+      "category": "plant_material",
+      "stackMax": 50,
+      "iconKey": "mat_branch"
+    },
+    {
+      "id": "MAT_CLAY",
+      "name": "Kil",
+      "category": "mineral",
+      "stackMax": 50,
+      "iconKey": "mat_clay",
+      "guaranteedSource": "Tatlısu Vadisi",
+      "minimumGuaranteedQuantity": 8
+    },
+    {
+      "id": "MAT_COAL",
+      "name": "Taş kömürü",
+      "category": "mineral",
+      "stackMax": 50,
+      "iconKey": "mat_coal"
+    },
+    {
+      "id": "MAT_COPPER_ORE",
+      "name": "Bakır cevheri",
+      "category": "mineral",
+      "stackMax": 50,
+      "iconKey": "mat_copper_ore",
+      "guaranteedSource": "Kızıl Kayalıklar / Eski Bakır Ocağı",
+      "minimumGuaranteedQuantity": 8
+    },
+    {
+      "id": "MAT_CRAB_MEAT",
+      "name": "Yengeç eti",
+      "category": "animal_material",
+      "stackMax": 50,
+      "iconKey": "mat_crab_meat",
+      "perishGameDays": 2
+    },
+    {
+      "id": "MAT_FAT",
+      "name": "Hayvansal yağ",
+      "category": "animal_material",
+      "stackMax": 50,
+      "iconKey": "mat_fat"
+    },
+    {
+      "id": "MAT_FEATHER",
+      "name": "Tüy",
+      "category": "animal_material",
+      "stackMax": 50,
+      "iconKey": "mat_feather"
+    },
+    {
+      "id": "MAT_FIBER",
+      "name": "Bitki lifi",
+      "category": "plant_material",
+      "stackMax": 50,
+      "iconKey": "mat_fiber"
+    },
+    {
+      "id": "MAT_FISH_OFFCUT",
+      "name": "Balık artığı",
+      "category": "animal_material",
+      "stackMax": 50,
+      "iconKey": "mat_fish_offcut"
+    },
+    {
+      "id": "MAT_FLINT",
+      "name": "Çakmak taşı",
+      "category": "mineral",
+      "stackMax": 50,
+      "iconKey": "mat_flint"
+    },
+    {
+      "id": "MAT_HARDWOOD",
+      "name": "Sert kütük",
+      "category": "plant_material",
+      "stackMax": 50,
+      "iconKey": "mat_hardwood"
+    },
+    {
+      "id": "MAT_IRON_ORE",
+      "name": "Demir cevheri",
+      "category": "mineral",
+      "stackMax": 50,
+      "iconKey": "mat_iron_ore",
+      "guaranteedSource": "Dağ ve Mağaralar",
+      "minimumGuaranteedQuantity": 12
+    },
+    {
+      "id": "MAT_LOG",
+      "name": "Kütük",
+      "category": "plant_material",
+      "stackMax": 50,
+      "iconKey": "mat_log"
+    },
+    {
+      "id": "MAT_MED_HERB",
+      "name": "Şifalı ot",
+      "category": "plant_material",
+      "stackMax": 50,
+      "iconKey": "mat_med_herb"
+    },
+    {
+      "id": "MAT_ORGANIC_WASTE",
+      "name": "Organik atık",
+      "category": "plant_material",
+      "stackMax": 50,
+      "iconKey": "mat_organic_waste"
+    },
+    {
+      "id": "MAT_PALM_LEAF",
+      "name": "Palmiye yaprağı",
+      "category": "plant_material",
+      "stackMax": 50,
+      "iconKey": "mat_palm_leaf"
+    },
+    {
+      "id": "MAT_PEBBLE",
+      "name": "Küçük taş",
+      "category": "mineral",
+      "stackMax": 50,
+      "iconKey": "mat_pebble"
+    },
+    {
+      "id": "MAT_QUARTZ",
+      "name": "Kuvars",
+      "category": "mineral",
+      "stackMax": 50,
+      "iconKey": "mat_quartz"
+    },
+    {
+      "id": "MAT_RAW_FISH",
+      "name": "Çiğ balık porsiyonu",
+      "category": "animal_material",
+      "stackMax": 50,
+      "iconKey": "mat_raw_fish",
+      "perishGameDays": 2
+    },
+    {
+      "id": "MAT_RAW_HIDE",
+      "name": "Ham deri",
+      "category": "animal_material",
+      "stackMax": 50,
+      "iconKey": "mat_raw_hide"
+    },
+    {
+      "id": "MAT_RAW_MEAT",
+      "name": "Çiğ et",
+      "category": "animal_material",
+      "stackMax": 50,
+      "iconKey": "mat_raw_meat",
+      "perishGameDays": 2
+    },
+    {
+      "id": "MAT_REED",
+      "name": "Kamış",
+      "category": "plant_material",
+      "stackMax": 50,
+      "iconKey": "mat_reed"
+    },
+    {
+      "id": "MAT_RESIN",
+      "name": "Reçine",
+      "category": "plant_material",
+      "stackMax": 50,
+      "iconKey": "mat_resin",
+      "guaranteedSource": "Palmiye Koruluğu / Yoğun Orman",
+      "minimumGuaranteedQuantity": 12
+    },
+    {
+      "id": "MAT_SALT",
+      "name": "Tuz",
+      "category": "mineral",
+      "stackMax": 50,
+      "iconKey": "mat_salt"
+    },
+    {
+      "id": "MAT_SAND",
+      "name": "Kum",
+      "category": "mineral",
+      "stackMax": 50,
+      "iconKey": "mat_sand"
+    },
+    {
+      "id": "MAT_SAP",
+      "name": "Bitki özsuyu",
+      "category": "plant_material",
+      "stackMax": 50,
+      "iconKey": "mat_sap",
+      "uses": [
+        "İşlenmiş ahşap yüzey",
+        "Tuzak yemi"
+      ]
+    },
+    {
+      "id": "MAT_SEASHELL",
+      "name": "Deniz kabuğu",
+      "category": "marine_material",
+      "stackMax": 50,
+      "iconKey": "mat_seashell"
+    },
+    {
+      "id": "MAT_SEAWEED",
+      "name": "Deniz yosunu",
+      "category": "marine_material",
+      "stackMax": 50,
+      "iconKey": "mat_seaweed"
+    },
+    {
+      "id": "MAT_SEA_SALT",
+      "name": "Deniz tuzu",
+      "category": "marine_material",
+      "stackMax": 50,
+      "iconKey": "mat_sea_salt"
+    },
+    {
+      "id": "MAT_SHELL",
+      "name": "Sert kabuk",
+      "category": "animal_material",
+      "stackMax": 50,
+      "iconKey": "mat_shell"
+    },
+    {
+      "id": "MAT_SPICE_HERB",
+      "name": "Baharat otu",
+      "category": "plant_material",
+      "stackMax": 50,
+      "iconKey": "mat_spice_herb"
+    },
+    {
+      "id": "MAT_STONE",
+      "name": "Taş",
+      "category": "mineral",
+      "stackMax": 50,
+      "iconKey": "mat_stone"
+    },
+    {
+      "id": "MAT_SULFUR",
+      "name": "Kükürt",
+      "category": "mineral",
+      "stackMax": 50,
+      "iconKey": "mat_sulfur",
+      "uses": [
+        "Özel fener yakıtı"
+      ]
+    },
+    {
+      "id": "MAT_TENDON",
+      "name": "Tendon",
+      "category": "animal_material",
+      "stackMax": 50,
+      "iconKey": "mat_tendon"
+    },
+    {
+      "id": "MAT_TREE_BARK",
+      "name": "Ağaç kabuğu",
+      "category": "plant_material",
+      "stackMax": 50,
+      "iconKey": "mat_tree_bark"
+    },
+    {
+      "id": "MAT_VINE",
+      "name": "Sarmaşık",
+      "category": "plant_material",
+      "stackMax": 50,
+      "iconKey": "mat_vine"
+    },
+    {
+      "id": "MAT_WORM",
+      "name": "Solucan",
+      "category": "marine_material",
+      "stackMax": 50,
+      "iconKey": "mat_worm"
+    },
+    {
+      "id": "SAL_BATTERY",
+      "name": "Pil hücresi",
+      "category": "salvage",
+      "stackMax": 50,
+      "iconKey": "sal_battery",
+      "guaranteedSource": "Radyo Atölyesi + Dağ Röle Sığınağı",
+      "minimumGuaranteedQuantity": 4
+    },
+    {
+      "id": "SAL_BEARING",
+      "name": "Rulman",
+      "category": "salvage",
+      "stackMax": 50,
+      "iconKey": "sal_bearing"
+    },
+    {
+      "id": "SAL_BOTTLE",
+      "name": "Boş şişe",
+      "category": "salvage",
+      "stackMax": 50,
+      "iconKey": "sal_bottle",
+      "uses": [
+        "Su toplama ve taşıma; 2 porsiyon kapasite"
+      ]
+    },
+    {
+      "id": "SAL_CANVAS",
+      "name": "Yelken kumaşı hurdası",
+      "category": "salvage",
+      "stackMax": 50,
+      "iconKey": "sal_canvas"
+    },
+    {
+      "id": "SAL_CLOTH",
+      "name": "Bulunmuş kumaş",
+      "category": "salvage",
+      "stackMax": 50,
+      "iconKey": "sal_cloth"
+    },
+    {
+      "id": "SAL_FUSE",
+      "name": "Sağlam sigorta",
+      "category": "salvage",
+      "stackMax": 50,
+      "iconKey": "sal_fuse"
+    },
+    {
+      "id": "SAL_GEAR",
+      "name": "Paslı dişli",
+      "category": "salvage",
+      "stackMax": 50,
+      "iconKey": "sal_gear"
+    },
+    {
+      "id": "SAL_GLASS",
+      "name": "Cam parçası",
+      "category": "salvage",
+      "stackMax": 50,
+      "iconKey": "sal_glass",
+      "guaranteedSource": "Terk Edilmiş Yerleşim + Kaptan Kamarası",
+      "minimumGuaranteedQuantity": 3
+    },
+    {
+      "id": "SAL_NAIL",
+      "name": "Çivi",
+      "category": "salvage",
+      "stackMax": 50,
+      "iconKey": "sal_nail"
+    },
+    {
+      "id": "SAL_PLASTIC",
+      "name": "Plastik parça",
+      "category": "salvage",
+      "stackMax": 50,
+      "iconKey": "sal_plastic",
+      "uses": [
+        "Yüzer balık avı malzemeleri"
+      ]
+    },
+    {
+      "id": "SAL_ROPE",
+      "name": "Bulunmuş halat",
+      "category": "salvage",
+      "stackMax": 50,
+      "iconKey": "sal_rope"
+    },
+    {
+      "id": "SAL_SCRAP",
+      "name": "Hurda metal",
+      "category": "salvage",
+      "stackMax": 50,
+      "iconKey": "sal_scrap",
+      "guaranteedSource": "Başlangıç enkazı + Eski Bakır Ocağı",
+      "minimumGuaranteedQuantity": 3
+    },
+    {
+      "id": "SAL_TIN_CAN",
+      "name": "Boş konserve",
+      "category": "salvage",
+      "stackMax": 50,
+      "iconKey": "sal_tin_can",
+      "uses": [
+        "Kaynatma için erken oyun kap alternatifi"
+      ]
+    },
+    {
+      "id": "SAL_WIRE",
+      "name": "Bakır kablo hurdası",
+      "category": "salvage",
+      "stackMax": 50,
+      "iconKey": "sal_wire"
+    },
+    {
+      "id": "SEED_BANANA",
+      "name": "Muz fidanı",
+      "category": "seed",
+      "stackMax": 50,
+      "iconKey": "seed_banana"
+    },
+    {
+      "id": "SEED_BEAN",
+      "name": "Fasulye tohumu",
+      "category": "seed",
+      "stackMax": 50,
+      "iconKey": "seed_bean"
+    },
+    {
+      "id": "SEED_CANE",
+      "name": "Şeker kamışı tohumu",
+      "category": "seed",
+      "stackMax": 50,
+      "iconKey": "seed_cane"
+    },
+    {
+      "id": "SEED_FIBER",
+      "name": "Lif bitkisi tohumu",
+      "category": "seed",
+      "stackMax": 50,
+      "iconKey": "seed_fiber"
+    },
+    {
+      "id": "SEED_GREENS",
+      "name": "Yeşillik tohumu",
+      "category": "seed",
+      "stackMax": 50,
+      "iconKey": "seed_greens"
+    },
+    {
+      "id": "SEED_HERB",
+      "name": "Şifalı ekin tohumu",
+      "category": "seed",
+      "stackMax": 50,
+      "iconKey": "seed_herb"
+    },
+    {
+      "id": "SEED_PEPPER",
+      "name": "Tropik biber tohumu",
+      "category": "seed",
+      "stackMax": 50,
+      "iconKey": "seed_pepper"
+    },
+    {
+      "id": "SEED_PINEAPPLE",
+      "name": "Ananas tohumu",
+      "category": "seed",
+      "stackMax": 50,
+      "iconKey": "seed_pineapple"
+    },
+    {
+      "id": "SEED_PUMPKIN",
+      "name": "Kabak tohumu",
+      "category": "seed",
+      "stackMax": 50,
+      "iconKey": "seed_pumpkin"
+    },
+    {
+      "id": "SEED_ROOT",
+      "name": "Kök sebze tohumu",
+      "category": "seed",
+      "stackMax": 50,
+      "iconKey": "seed_root",
+      "guaranteedSource": "Tatlısu Vadisi",
+      "minimumGuaranteedQuantity": 2
+    },
+    {
+      "id": "SEED_SPICE",
+      "name": "Baharat ekini tohumu",
+      "category": "seed",
+      "stackMax": 50,
+      "iconKey": "seed_spice"
+    },
+    {
+      "id": "SEED_SWEET_POTATO",
+      "name": "Tatlı patates tohumu",
+      "category": "seed",
+      "stackMax": 50,
+      "iconKey": "seed_sweet_potato"
+    },
+    {
+      "id": "SPC_CHART_CAPTAIN",
+      "name": "Kaptanın seyir kaydı",
+      "category": "special",
+      "stackMax": 1,
+      "iconKey": "spc_chart_captain",
+      "nonDroppable": true,
+      "unique": true,
+      "guaranteedPOI": "Kaptan Kamarası"
+    },
+    {
+      "id": "SPC_CHART_COAST",
+      "name": "Kıyı akıntı kaydı",
+      "category": "special",
+      "stackMax": 1,
+      "iconKey": "spc_chart_coast",
+      "nonDroppable": true,
+      "unique": true,
+      "guaranteedPOI": "Eski Balıkçı Kulübesi"
+    },
+    {
+      "id": "SPC_CHART_OBSERVATORY",
+      "name": "Gözlem rotası kaydı",
+      "category": "special",
+      "stackMax": 1,
+      "iconKey": "spc_chart_observatory",
+      "nonDroppable": true,
+      "unique": true,
+      "guaranteedPOI": "Gözlem Tepesi"
+    },
+    {
+      "id": "SPC_GEN_CORE",
+      "name": "Jeneratör gövdesi",
+      "category": "special",
+      "stackMax": 1,
+      "iconKey": "spc_gen_core",
+      "nonDroppable": true,
+      "unique": true,
+      "guaranteedPOI": "Araştırma Meydanı"
+    },
+    {
+      "id": "SPC_RADIO_NOTE",
+      "name": "Haberleşme frekans kaydı",
+      "category": "special",
+      "stackMax": 1,
+      "iconKey": "spc_radio_note",
+      "nonDroppable": true,
+      "unique": true,
+      "guaranteedPOI": "Dağ Röle Sığınağı / Fener İstasyonu"
+    },
+    {
+      "id": "SPC_SOLAR_CORE",
+      "name": "Güneş paneli onarım çekirdeği",
+      "category": "special",
+      "stackMax": 1,
+      "iconKey": "spc_solar_core",
+      "nonDroppable": true,
+      "unique": true,
+      "guaranteedPOI": "Fener İstasyonu"
+    },
+    {
+      "id": "SPC_TX_MODULE",
+      "name": "Özel verici modülü",
+      "category": "special",
+      "stackMax": 1,
+      "iconKey": "spc_tx_module",
+      "nonDroppable": true,
+      "unique": true,
+      "guaranteedPOI": "Radyo Atölyesi"
+    },
+    {
+      "id": "TOOL_BAMBOO_CUP",
+      "name": "Bambu su kabı",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_bamboo_cup",
+      "durabilityMax": 0,
+      "equipmentSlot": "accessory",
+      "waterPortionsCapacity": 2
+    },
+    {
+      "id": "TOOL_BOW",
+      "name": "İlkel yay",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_bow",
+      "durabilityMax": 100,
+      "equipmentSlot": "main_hand"
+    },
+    {
+      "id": "TOOL_CLIMB_KIT",
+      "name": "Tırmanma kiti",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_climb_kit",
+      "durabilityMax": 100,
+      "equipmentSlot": "main_hand"
+    },
+    {
+      "id": "TOOL_COMPASS",
+      "name": "Pusula",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_compass",
+      "durabilityMax": 0,
+      "equipmentSlot": "accessory"
+    },
+    {
+      "id": "TOOL_COPPER_AXE",
+      "name": "Bakır balta",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_copper_axe",
+      "durabilityMax": 65,
+      "equipmentSlot": "main_hand",
+      "gatherTier": 2,
+      "chopSecondsMultiplier": 0.75
+    },
+    {
+      "id": "TOOL_COPPER_PICK",
+      "name": "Bakır kazma",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_copper_pick",
+      "durabilityMax": 65,
+      "equipmentSlot": "main_hand",
+      "gatherTier": 2,
+      "mines": [
+        "stone",
+        "copper",
+        "iron"
+      ]
+    },
+    {
+      "id": "TOOL_CROWBAR",
+      "name": "Levye",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_crowbar",
+      "durabilityMax": 100,
+      "equipmentSlot": "main_hand"
+    },
+    {
+      "id": "TOOL_DIVING_KIT",
+      "name": "Sığ su dalış seti",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_diving_kit",
+      "durabilityMax": 0,
+      "equipmentSlot": "accessory",
+      "specialEffect": "extended_shallow_dive_breath"
+    },
+    {
+      "id": "TOOL_DIVING_MASK",
+      "name": "Dalış maskesi",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_diving_mask",
+      "durabilityMax": 0,
+      "equipmentSlot": "accessory"
+    },
+    {
+      "id": "TOOL_FISH_ROD",
+      "name": "Olta",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_fish_rod",
+      "durabilityMax": 80,
+      "equipmentSlot": "main_hand"
+    },
+    {
+      "id": "TOOL_FISH_ROD_ADV",
+      "name": "Güçlendirilmiş olta",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_fish_rod_adv",
+      "durabilityMax": 100,
+      "equipmentSlot": "main_hand"
+    },
+    {
+      "id": "TOOL_HUNTER_BOW",
+      "name": "Gelişmiş avcı yayı",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_hunter_bow",
+      "durabilityMax": 100,
+      "equipmentSlot": "main_hand"
+    },
+    {
+      "id": "TOOL_IRON_AXE",
+      "name": "Demir balta",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_iron_axe",
+      "durabilityMax": 120,
+      "equipmentSlot": "main_hand",
+      "gatherTier": 3,
+      "chopSecondsMultiplier": 0.55
+    },
+    {
+      "id": "TOOL_IRON_PICK",
+      "name": "Demir kazma",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_iron_pick",
+      "durabilityMax": 120,
+      "equipmentSlot": "main_hand",
+      "gatherTier": 3,
+      "mines": [
+        "stone",
+        "copper",
+        "iron",
+        "hard_minerals"
+      ]
+    },
+    {
+      "id": "TOOL_IRON_SPEAR",
+      "name": "Metal mızrak",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_iron_spear",
+      "durabilityMax": 100,
+      "equipmentSlot": "main_hand"
+    },
+    {
+      "id": "TOOL_MACHETE",
+      "name": "Metal pala",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_machete",
+      "durabilityMax": 100,
+      "equipmentSlot": "main_hand"
+    },
+    {
+      "id": "TOOL_NAV_KIT",
+      "name": "Navigasyon seti",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_nav_kit",
+      "durabilityMax": 0,
+      "equipmentSlot": "accessory"
+    },
+    {
+      "id": "TOOL_PORTABLE_LAMP",
+      "name": "Taşınabilir deniz feneri",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_portable_lamp",
+      "durabilityMax": 100,
+      "equipmentSlot": "main_hand"
+    },
+    {
+      "id": "TOOL_REPAIR_KIT",
+      "name": "Onarım seti",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_repair_kit",
+      "durabilityMax": 100,
+      "equipmentSlot": "main_hand"
+    },
+    {
+      "id": "TOOL_SHOVEL",
+      "name": "Kürek",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_shovel",
+      "durabilityMax": 100,
+      "equipmentSlot": "main_hand"
+    },
+    {
+      "id": "TOOL_SLING",
+      "name": "Sapan",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_sling",
+      "durabilityMax": 100,
+      "equipmentSlot": "main_hand"
+    },
+    {
+      "id": "TOOL_STONE_AXE",
+      "name": "Taş balta",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_stone_axe",
+      "durabilityMax": 30,
+      "equipmentSlot": "main_hand",
+      "gatherTier": 1,
+      "chopSecondsMultiplier": 1.0
+    },
+    {
+      "id": "TOOL_STONE_KNIFE",
+      "name": "Taş bıçak",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_stone_knife",
+      "durabilityMax": 100,
+      "equipmentSlot": "main_hand"
+    },
+    {
+      "id": "TOOL_STONE_PICK",
+      "name": "Taş kazma",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_stone_pick",
+      "durabilityMax": 25,
+      "equipmentSlot": "main_hand",
+      "gatherTier": 1,
+      "mines": [
+        "stone",
+        "copper"
+      ]
+    },
+    {
+      "id": "TOOL_TORCH",
+      "name": "Meşale",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_torch",
+      "durabilityMax": 35,
+      "equipmentSlot": "main_hand"
+    },
+    {
+      "id": "TOOL_WATERING_CAN",
+      "name": "Sulama kabı",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_watering_can",
+      "durabilityMax": 100,
+      "equipmentSlot": "main_hand"
+    },
+    {
+      "id": "TOOL_WOOD_SPEAR",
+      "name": "Basit mızrak",
+      "category": "tool",
+      "stackMax": 1,
+      "iconKey": "tool_wood_spear",
+      "durabilityMax": 100,
+      "equipmentSlot": "main_hand"
+    },
+    {
+      "id": "WATER_CLEAN",
+      "name": "Temiz su porsiyonu",
+      "category": "water",
+      "stackMax": 20,
+      "iconKey": "water_clean",
+      "restore": {
+        "thirst": 25
+      }
+    },
+    {
+      "id": "WATER_DIRTY",
+      "name": "Kirli su porsiyonu",
+      "category": "water",
+      "stackMax": 20,
+      "iconKey": "water_dirty"
+    }
+  ]
+}

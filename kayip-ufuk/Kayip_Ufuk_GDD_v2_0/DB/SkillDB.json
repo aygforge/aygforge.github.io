@@ -1,0 +1,369 @@
+{
+  "meta": {
+    "version": "v1.0",
+    "skillCount": 8,
+    "model": "USE_TO_LEARN_NO_SKILL_GATES",
+    "designStatus": "BALANCE_PROPOSAL"
+  },
+  "config": {
+    "levels": 5,
+    "thresholdsTotalXp": [
+      0,
+      80,
+      220,
+      450,
+      800
+    ],
+    "alwaysUnlockedSkillFromStart": true,
+    "noCraftOrStoryLevelLock": true,
+    "perkStackPolicy": "Same stat is replaced by highest unlocked value, not cumulative sum; different perk types can coexist",
+    "activityCompletionOnly": true,
+    "craftingRepeatDailyFullXp": 5,
+    "craftingRepeatDailyHalfXp": 10,
+    "craftingRepeatAfterCapXp": 0,
+    "buildTypeFirstPlacementXpOnlyOnce": true,
+    "miningAndForestryAwardOnCompletedNode": true,
+    "farmingAwardOnPlantAndMatureHarvestOnly": true,
+    "explorationCellTiles": [
+      16,
+      16
+    ],
+    "explorationOnlyFirstVisit": true,
+    "petActivityXp": false,
+    "trapXpOnClaimedCatchOnly": true,
+    "xpAwardTransactionId": "Event id recorded on claim to prevent duplicate XP after save/load"
+  },
+  "skills": [
+    {
+      "id": "SKILL_FORESTRY",
+      "name": "Ormancılık",
+      "levelThresholdsTotalXp": [
+        0,
+        80,
+        220,
+        450,
+        800
+      ],
+      "perks": [
+        {
+          "level": 2,
+          "cutTimeMultiplier": 0.95
+        },
+        {
+          "level": 3,
+          "cutTimeMultiplier": 0.9
+        },
+        {
+          "level": 4,
+          "bonusLogChance": 0.1
+        },
+        {
+          "level": 5,
+          "cutTimeMultiplier": 0.8,
+          "bonusLogChance": 0.15
+        }
+      ],
+      "xpActions": {
+        "foragePlant": 2,
+        "chopTree": 8,
+        "chopHardwood": 12
+      },
+      "levels": [
+        "Acemi",
+        "Çırak",
+        "Deneyimli",
+        "Uzman",
+        "Usta"
+      ]
+    },
+    {
+      "id": "SKILL_MINING",
+      "name": "Madencilik",
+      "levelThresholdsTotalXp": [
+        0,
+        80,
+        220,
+        450,
+        800
+      ],
+      "perks": [
+        {
+          "level": 2,
+          "miningTimeMultiplier": 0.95
+        },
+        {
+          "level": 3,
+          "miningTimeMultiplier": 0.9
+        },
+        {
+          "level": 4,
+          "pickWearMultiplier": 0.9
+        },
+        {
+          "level": 5,
+          "miningTimeMultiplier": 0.82,
+          "bonusOreChance": 0.12
+        }
+      ],
+      "xpActions": {
+        "mineStoneCluster": 5,
+        "mineOreNode": 10
+      },
+      "levels": [
+        "Acemi",
+        "Çırak",
+        "Deneyimli",
+        "Uzman",
+        "Usta"
+      ]
+    },
+    {
+      "id": "SKILL_FISHING",
+      "name": "Balıkçılık",
+      "levelThresholdsTotalXp": [
+        0,
+        80,
+        220,
+        450,
+        800
+      ],
+      "perks": [
+        {
+          "level": 2,
+          "biteWaitMultiplier": 0.95
+        },
+        {
+          "level": 3,
+          "biteWaitMultiplier": 0.9
+        },
+        {
+          "level": 4,
+          "tensionSafeWindowMultiplier": 1.1
+        },
+        {
+          "level": 5,
+          "biteWaitMultiplier": 0.85,
+          "baitPreservationChance": 0.15
+        }
+      ],
+      "xpActions": {
+        "catchCommon": 10,
+        "catchRare": 16,
+        "collectFishTrap": 5
+      },
+      "levels": [
+        "Acemi",
+        "Çırak",
+        "Deneyimli",
+        "Uzman",
+        "Usta"
+      ]
+    },
+    {
+      "id": "SKILL_HUNTING",
+      "name": "Avcılık",
+      "levelThresholdsTotalXp": [
+        0,
+        80,
+        220,
+        450,
+        800
+      ],
+      "perks": [
+        {
+          "level": 2,
+          "trapSetupTimeMultiplier": 0.9
+        },
+        {
+          "level": 3,
+          "trackHighlight": true
+        },
+        {
+          "level": 4,
+          "huntWeaponWearMultiplier": 0.9
+        },
+        {
+          "level": 5,
+          "trapSuccessMultiplier": 1.15
+        }
+      ],
+      "xpActions": {
+        "collectAnimalTrap": 8,
+        "successfulHunt": 12
+      },
+      "levels": [
+        "Acemi",
+        "Çırak",
+        "Deneyimli",
+        "Uzman",
+        "Usta"
+      ]
+    },
+    {
+      "id": "SKILL_FARMING",
+      "name": "Tarım",
+      "levelThresholdsTotalXp": [
+        0,
+        80,
+        220,
+        450,
+        800
+      ],
+      "perks": [
+        {
+          "level": 2,
+          "wateringUnitMultiplier": 0.9
+        },
+        {
+          "level": 3,
+          "bonusSeedChance": 0.1
+        },
+        {
+          "level": 4,
+          "bonusCropChance": 0.1
+        },
+        {
+          "level": 5,
+          "bonusCropChance": 0.2,
+          "wateringUnitMultiplier": 0.85
+        }
+      ],
+      "xpActions": {
+        "plantSeed": 3,
+        "harvestMature": 10
+      },
+      "levels": [
+        "Acemi",
+        "Çırak",
+        "Deneyimli",
+        "Uzman",
+        "Usta"
+      ]
+    },
+    {
+      "id": "SKILL_CRAFTING",
+      "name": "Zanaatkârlık",
+      "levelThresholdsTotalXp": [
+        0,
+        80,
+        220,
+        450,
+        800
+      ],
+      "perks": [
+        {
+          "level": 2,
+          "craftTimeMultiplier": 0.95
+        },
+        {
+          "level": 3,
+          "craftTimeMultiplier": 0.9
+        },
+        {
+          "level": 4,
+          "madeToolDurabilityMultiplier": 1.05
+        },
+        {
+          "level": 5,
+          "craftTimeMultiplier": 0.85,
+          "madeToolDurabilityMultiplier": 1.1
+        }
+      ],
+      "xpActions": {
+        "craftOrdinary": 5,
+        "craftAdvanced": 12,
+        "firstPlacementOfBuildType": 20
+      },
+      "levels": [
+        "Acemi",
+        "Çırak",
+        "Deneyimli",
+        "Uzman",
+        "Usta"
+      ]
+    },
+    {
+      "id": "SKILL_COOKING",
+      "name": "Aşçılık",
+      "levelThresholdsTotalXp": [
+        0,
+        80,
+        220,
+        450,
+        800
+      ],
+      "perks": [
+        {
+          "level": 2,
+          "cookTimeMultiplier": 0.95
+        },
+        {
+          "level": 3,
+          "cookTimeMultiplier": 0.9
+        },
+        {
+          "level": 4,
+          "mealRestoreMultiplier": 1.05
+        },
+        {
+          "level": 5,
+          "mealRestoreMultiplier": 1.1,
+          "preparedMealShelfLifeDaysBonus": 1
+        }
+      ],
+      "xpActions": {
+        "cookBasic": 5,
+        "cookAdvanced": 10
+      },
+      "levels": [
+        "Acemi",
+        "Çırak",
+        "Deneyimli",
+        "Uzman",
+        "Usta"
+      ]
+    },
+    {
+      "id": "SKILL_EXPLORATION",
+      "name": "Keşif",
+      "levelThresholdsTotalXp": [
+        0,
+        80,
+        220,
+        450,
+        800
+      ],
+      "perks": [
+        {
+          "level": 2,
+          "revealRadiusMultiplier": 1.05
+        },
+        {
+          "level": 3,
+          "revealRadiusMultiplier": 1.1
+        },
+        {
+          "level": 4,
+          "optionalHiddenPoiHint": true
+        },
+        {
+          "level": 5,
+          "revealRadiusMultiplier": 1.15,
+          "climbStaminaCostMultiplier": 0.9
+        }
+      ],
+      "xpActions": {
+        "revealNew16By16Cell": 3,
+        "discoverUniquePoi": 20,
+        "discoverUniqueRegion": 25
+      },
+      "levels": [
+        "Acemi",
+        "Çırak",
+        "Deneyimli",
+        "Uzman",
+        "Usta"
+      ]
+    }
+  ]
+}

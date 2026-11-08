@@ -1,0 +1,188 @@
+{
+  "version": "v1.8",
+  "source": "ArtSpec v1.7 scene identifiers",
+  "rule": "A scene is a persistent game mode; overlays are not independent saveable worlds",
+  "entry": {
+    "init": "BOOT",
+    "onValidData": "SC_MAIN_MENU",
+    "onFail": "ERROR_DATA_ASSET_FATAL"
+  },
+  "transitions": [
+    {
+      "from": "SC_MAIN_MENU",
+      "event": "NEW_GAME",
+      "to": "UI_SAVE_SELECT",
+      "guard": "slot available or explicit overwrite confirmation",
+      "checkpoint": "none"
+    },
+    {
+      "from": "SC_MAIN_MENU",
+      "event": "CONTINUE",
+      "to": "UI_SAVE_SELECT",
+      "guard": "save exists; lock writer",
+      "checkpoint": "none"
+    },
+    {
+      "from": "UI_SAVE_SELECT",
+      "event": "NEW_SLOT_SELECTED",
+      "to": "SC_CHARACTER_CREATOR",
+      "guard": "valid empty slot",
+      "checkpoint": "create deterministic seed at commit"
+    },
+    {
+      "from": "SC_CHARACTER_CREATOR",
+      "event": "CONFIRM_CHARACTER",
+      "to": "SC_WORLD_MAIN",
+      "guard": "appearance and name valid",
+      "checkpoint": "initial snapshot; fixed spawn tile (122,220)"
+    },
+    {
+      "from": "UI_SAVE_SELECT",
+      "event": "LOAD_SLOT",
+      "to": "RESTORED_GAME_SCENE",
+      "guard": "snapshot validated/migrated; locale and asset checks",
+      "checkpoint": "none"
+    },
+    {
+      "from": "SC_WORLD_MAIN",
+      "event": "ENTER_CAVE",
+      "to": "SC_CAVE_MINES",
+      "guard": "valid cave entry, transition saved",
+      "checkpoint": "PREPARED then COMMITTED"
+    },
+    {
+      "from": "SC_CAVE_MINES",
+      "event": "EXIT_CAVE",
+      "to": "SC_WORLD_MAIN",
+      "guard": "safe return anchor",
+      "checkpoint": "COMMITTED before visible destination"
+    },
+    {
+      "from": "SC_WORLD_MAIN",
+      "event": "ENTER_FACILITY",
+      "to": "SC_FACILITY_INTERIOR",
+      "guard": "facility access",
+      "checkpoint": "transition boundary"
+    },
+    {
+      "from": "SC_FACILITY_INTERIOR",
+      "event": "EXIT_FACILITY",
+      "to": "SC_WORLD_MAIN",
+      "guard": "safe exit",
+      "checkpoint": "transition boundary"
+    },
+    {
+      "from": "SC_WORLD_MAIN",
+      "event": "ENTER_PREFAB_HOUSE",
+      "to": "SC_BUILD_INTERIOR",
+      "guard": "player passes through door",
+      "checkpoint": "none; inline roof visibility only"
+    },
+    {
+      "from": "SC_BUILD_INTERIOR",
+      "event": "EXIT_PREFAB_HOUSE",
+      "to": "SC_WORLD_MAIN",
+      "guard": "door is accessible",
+      "checkpoint": "none"
+    },
+    {
+      "from": "SC_WORLD_MAIN",
+      "event": "BOARD_RAFT",
+      "to": "SC_OCEAN_ROUTE",
+      "guard": "raft exists and water adjacent",
+      "checkpoint": "vehicle transform + boarded status in one revision"
+    },
+    {
+      "from": "SC_OCEAN_ROUTE",
+      "event": "LAND_AT_ISLET",
+      "to": "SC_ISLETS",
+      "guard": "safe landing point",
+      "checkpoint": "vehicle retained at last real position"
+    },
+    {
+      "from": "SC_ISLETS",
+      "event": "BOARD_RAFT",
+      "to": "SC_OCEAN_ROUTE",
+      "guard": "raft accessible",
+      "checkpoint": "transition boundary"
+    },
+    {
+      "from": "SC_OCEAN_ROUTE",
+      "event": "LAND_AT_MAIN",
+      "to": "SC_WORLD_MAIN",
+      "guard": "main island landing reachable",
+      "checkpoint": "transition boundary"
+    },
+    {
+      "from": "SC_WORLD_MAIN",
+      "event": "BOAT_CASTOFF",
+      "to": "SC_ESCAPE_SEA",
+      "guard": "boat completed, navigation 2 sources, stores delivered, acceptable weather",
+      "checkpoint": "pre-finale safe snapshot"
+    },
+    {
+      "from": "SC_ESCAPE_SEA",
+      "event": "REEF_FAIL",
+      "to": "SC_WORLD_MAIN",
+      "guard": "none",
+      "checkpoint": "restore pre-finale safe snapshot; no unique item lost"
+    },
+    {
+      "from": "SC_ESCAPE_SEA",
+      "event": "REEF_PASS",
+      "to": "UI_ENDING_STATS",
+      "guard": "final gate reached",
+      "checkpoint": "achievement and island resume bookmark"
+    },
+    {
+      "from": "SC_ISLETS",
+      "event": "SEND_SOS",
+      "to": "SC_ISLETS",
+      "guard": "transmitter fixed, antenna powered, tuning solved",
+      "checkpoint": "record SOS and rescueDueDay=signalGameDay+2; player can freely explore islands and main world while waiting"
+    },
+    {
+      "from": "SC_WORLD_MAIN",
+      "event": "BOARD_RESCUE",
+      "to": "SC_ESCAPE_RADIO",
+      "guard": "SOS sent at least two distinct game days ago; rescue marker at safe beach; player explicitly boards",
+      "checkpoint": "pre-finale safe snapshot"
+    },
+    {
+      "from": "SC_ESCAPE_RADIO",
+      "event": "RADIO_RESCUE_COMPLETE",
+      "to": "UI_ENDING_STATS",
+      "guard": "short rescue finale scene completed",
+      "checkpoint": "achievement and island resume bookmark"
+    },
+    {
+      "from": "UI_ENDING_STATS",
+      "event": "CONTINUE_ISLAND",
+      "to": "RESTORED_GAME_SCENE",
+      "guard": "safe pre-finale bookmark",
+      "checkpoint": "ends remain in achievements; no ending content lock"
+    }
+  ],
+  "overlayActions": [
+    "UI_INVENTORY",
+    "UI_CRAFT",
+    "UI_BUILD",
+    "UI_MAP",
+    "UI_JOURNAL",
+    "UI_CHARACTER",
+    "UI_PETS",
+    "UI_COLLECTION",
+    "UI_SETTINGS",
+    "UI_STORAGE",
+    "UI_PUZZLE",
+    "UI_PAUSE",
+    "UI_FISHING",
+    "UI_TRAP"
+  ],
+  "rules": [
+    "On modal open focus and pointer capture belong to UI; no underlying world input leakage",
+    "Background pause and hidden tab pause are independent of opening overlays",
+    "Only the story/escape flags unlock endings; no forcing all 38 POIs",
+    "No rescue NPC can appear as a walkable island entity"
+  ]
+}
