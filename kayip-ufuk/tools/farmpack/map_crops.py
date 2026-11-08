@@ -19,12 +19,32 @@ CROPS = {
 SOIL = 'Tileset/Tilled Soil and wet soil.png'
 
 
+def art_diff(a, b):
+    pa, pb = a.load(), b.load(); n = u = 0
+    for y in range(a.height):
+        for x in range(a.width):
+            if pa[x, y][3] or pb[x, y][3]:
+                u += 1; n += pa[x, y] != pb[x, y]
+    return n / u if u else 0
+
+
+def best_stages(frames):
+    """keep first and last chosen frames; pick the two middle frames (in order) maximising the smallest neighbour diff"""
+    first, last = frames[0], frames[-1]
+    def score(seq):
+        return min(art_diff(seq[i], seq[i + 1]) for i in range(len(seq) - 1))
+    return lambda ims: max(([ims[first], ims[a], ims[b], ims[last]] for a in range(first + 1, last) for b in range(a + 1, last)), key=score)
+
+
 def run(atlas, log):
     n = 0
     for crop, (f, fw, fh, frames) in CROPS.items():
         im = load(f)
-        for stage, idx in enumerate(frames):
-            atlas.put(f'crop/{crop}/{stage}', cell(im, idx, 0, fw, fh), scale=1, native=2, anchor='bottom', source=f'{f}#frame{idx}')
+        ims = {i: cell(im, i, 0, fw, fh) for i in range(frames[0], frames[-1] + 1)}
+        chosen = best_stages(frames)(ims)
+        for stage, art in enumerate(chosen):
+            idx = [k for k, v in ims.items() if v is art][0]
+            atlas.put(f'crop/{crop}/{stage}', art, scale=1, native=2, anchor='bottom', source=f'{f}#frame{idx}')
             n += 1
     # planter moisture states: isolated tilled-soil tile (dry) and the wet overlay tile, x2 into 32x32
     atlas.put('crop/shared/dry', cell(SOIL, 0, 3), scale=2, anchor='center', source=SOIL + '#cell(0,3)')

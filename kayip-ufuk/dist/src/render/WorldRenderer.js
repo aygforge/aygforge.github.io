@@ -229,7 +229,7 @@ export class WorldRenderer {
       const st = g.farm.stage(plot); const cid = `crop/${plot.cropId}/${st}`;
       const wet = plot.wateredDay === g.state.clock.dayIndex || g.climate.state().plantRainWatered;
       if (this.atlas.native['crop/shared/dry']) { // tilled-soil tiles from the asset pack: soil under the plant, wet overlay on dry soil
-        this.atlas.draw(ctx, 'crop/shared/dry', x, y - 2, { ay: 1 });
+        if (!this.atlas.isNative('build/BUILD_PLANTER/complete')) this.atlas.draw(ctx, 'crop/shared/dry', x, y - 2, { ay: 1 }); // the planter sprite itself is tilled soil
         if (wet) this.atlas.draw(ctx, 'crop/shared/wet', x, y - 2, { ay: 1, alpha: 0.85 });
         if (plot.fertilized) this.atlas.draw(ctx, 'crop/shared/fertilized', x, y, { scale: 0.6 });
         this.atlas.draw(ctx, cid, x, y - 4, { scale: this.atlas.isNative(cid) ? 1 : 0.62 });
@@ -282,7 +282,11 @@ export class WorldRenderer {
     const f = Math.floor(this.time * (CLIP_FPS[clip] || 8)) % n;
     const body = this.atlas.avatarFrame(app, clip, dir, f);
     const an = this.anchors?.anchors?.[`${app.body}/${clip}/${dir}/${f}`] || { head: [16, 9], rightHand: [22, 27], leftHand: [10, 27], backpack: [16, 24], toolAngle: 0 };
-    const ox = Math.round(sx - 16), oy = Math.round(sy - 45);
+    // imported pack character: frames stored at x1, drawn at native x2 with the measured feet anchor; its tools are baked
+    // into the action frames, so the separate held-tool / backpack overlays are not drawn for it
+    const k = this.atlas.native[`avatar/${app.body}/idle/down/0`]?.scale || 1; const packAvatar = k > 1;
+    const feet = this.anchors?.feetCenterPx || [16, 45];
+    const ox = Math.round(sx - feet[0] * k), oy = Math.round(sy - feet[1] * k);
     const bagIt = p.equipment.backpack ? this.g.inventory.item(p.equipment.backpack) : null;
     const bagKind = bagIt ? (bagIt.itemId === 'EQ_BAG_SMALL' ? 'small_bag' : bagIt.itemId === 'EQ_BAG_LARGE' ? 'medium_bag' : 'large_bag') : null;
     const heldIt = this.heldItem(clip);
@@ -290,10 +294,10 @@ export class WorldRenderer {
     if (p.mode === 'DIVE') ctx.globalAlpha = 0.6;
     for (const layer of order) {
       if (layer === 'shadow' && !onRaft && p.mode === 'WALK') { /* shadow included in body frame */ }
-      if (layer === 'body') ctx.drawImage(body, ox, oy);
-      if (layer === 'hair' && clip !== 'sleep') { const h = this.atlas.hairFrame(app, dir); ctx.drawImage(h, ox + an.head[0] - 16, oy + an.head[1] - 12); }
-      if (layer === 'backpack' && bagKind && clip !== 'sleep' && clip !== 'swim') this.atlas.draw(ctx, `avatar/bag/${bagKind}/${dir}`, ox + an.backpack[0], oy + an.backpack[1] + 10);
-      if (layer === 'held' && heldIt && clip !== 'sleep' && clip !== 'swim') {
+      if (layer === 'body') ctx.drawImage(body, ox, oy, body.width * k, body.height * k);
+      if (layer === 'hair' && clip !== 'sleep') { const h = this.atlas.hairFrame(app, dir); ctx.drawImage(h, ox + (an.head[0] - 16) * k, oy + (an.head[1] - 12) * k, h.width * k, h.height * k); }
+      if (layer === 'backpack' && !packAvatar && bagKind && clip !== 'sleep' && clip !== 'swim') this.atlas.draw(ctx, `avatar/bag/${bagKind}/${dir}`, ox + an.backpack[0], oy + an.backpack[1] + 10);
+      if (layer === 'held' && !packAvatar && heldIt && clip !== 'sleep' && clip !== 'swim') {
         const [hx, hy] = dir === 'left' ? an.leftHand : an.rightHand;
         ctx.save(); ctx.translate(ox + hx, oy + hy);
         const ang = (an.toolAngle || 0) * (dir === 'left' ? -1 : 1);

@@ -5,7 +5,7 @@
  "pagesChecked": 24,
  "spritesChecked": 3180,
  "layoutSprites": 3180,
- "semiTransparentPixels": 708180,
+ "semiTransparentPixels": 629017,
  "pages": [
   {
    "pageId": "animals_00",
@@ -322,5 +322,5 @@
  ],
  "errors": [],
  "errorCount": 0,
- "ms": 948
+ "ms": 913
 }

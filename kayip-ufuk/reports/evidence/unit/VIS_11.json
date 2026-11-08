@@ -24,9 +24,9 @@
   "ANIMAL_RABBIT": {
    "aiProfile": "FLEE",
    "observedClips": [
+    "move",
     "idle",
-    "react",
-    "move"
+    "react"
    ]
   },
   "ANIMAL_LIZARD": {
@@ -56,40 +56,40 @@
   "ANIMAL_SEABIRD": {
    "aiProfile": "FLY_AND_LAND",
    "observedClips": [
-    "move",
     "idle",
+    "move",
     "react"
    ]
   },
   "ANIMAL_FRUIT_BAT": {
    "aiProfile": "NOCTURNAL_FLY",
    "observedClips": [
-    "idle",
     "move",
-    "react"
+    "react",
+    "idle"
    ]
   },
   "ANIMAL_MONKEY": {
    "aiProfile": "TREE_HOP_CURIOUS",
    "observedClips": [
-    "move",
-    "idle"
+    "idle",
+    "move"
    ]
   },
   "ANIMAL_BOAR": {
    "aiProfile": "WARN_CHARGE",
    "observedClips": [
     "idle",
+    "move",
     "warn",
-    "attack",
-    "move"
+    "attack"
    ]
   },
   "ANIMAL_SNAKE": {
    "aiProfile": "WARN_BITE",
    "observedClips": [
-    "idle",
     "move",
+    "idle",
     "warn",
     "attack"
    ]

@@ -88,7 +88,7 @@ export class UIMenus {
         <div class="opts">
           <label>Ad <input id="cc-name" maxlength="16" value="${esc(name)}"></label>
           ${this.optRow('Vücut', 'body', ['body_a', 'body_b'], app.body, (v) => (v === 'body_a' ? 'İnce' : 'Geniş'))}
-          ${this.optRow('Ten', 'skin', [0, 1, 2, 3], app.skin, (v) => `<i class="sw" style="background:${SKIN_TONES[v][0]}"></i>`)}
+          ${this.optRow('Ten', 'skin', [0, 1, 2, 3], app.skin, (v) => `<i class="sw" style="background:${this.atlas.skinTones()[v][0]}"></i>`)}
           ${this.optRow('Saç', 'hair', [0, 1, 2, 3, 4, 5], app.hair, (v) => ['Kısa', 'Uzun', 'Diken', 'Topuz', 'Kıvırcık', 'At kuyruğu'][v])}
           ${this.optRow('Saç rengi', 'hairColor', [0, 1, 2, 3, 4], app.hairColor, (v) => `<i class="sw" style="background:${HAIR_COLORS[v]}"></i>`)}
           ${this.optRow('Kıyafet', 'outfit', [0, 1, 2], app.outfit, (v) => `<i class="sw" style="background:${OUTFITS[v][0]}"></i>`)}

@@ -18,6 +18,22 @@ const EVD = path.join(ROOT, 'reports/evidence/unit'); mkdirSync(EVD, { recursive
 const index = JSON.parse(readFileSync(path.join(PUB, 'assets/atlas_index.json'), 'utf8'));
 const anchors = JSON.parse(readFileSync(path.join(PUB, 'assets/avatar_anchors.json'), 'utf8')).anchors;
 const pages = index.pages.map((p) => decodePNG(readFileSync(path.join(PUB, p))));
+const NATIVE = (() => { try { return JSON.parse(readFileSync(path.join(PUB, 'assets/sprite_native.json'), 'utf8')); } catch { return {}; } })();
+const PACK_AVATAR = NATIVE.__meta?.avatar === 'pack';
+/** number of 8-connected opaque regions, bridging 1 transparent pixel */
+const SKIN = new Set(['241,200,164', '217,168,134', '185,135,106']); // runtime-recoloured skin ramp (tools/assetgen/avatar.mjs)
+/** islands (>= minPx, 8-connected bridging 1px) that contain NO skin pixel = tool parts not held by a hand */
+function regions(sp, minPx = 6) {
+  // islands smaller than minPx are sparkle specks of the pack's motion trails
+  const solid = (x, y) => sp.a(x, y) > 0;
+  const seen = new Uint8Array(sp.w * sp.h); let n = 0;
+  for (let y = 0; y < sp.h; y++) for (let x = 0; x < sp.w; x++) {
+    if (seen[y * sp.w + x] || !solid(x, y)) continue; let size = 0, skin = false, fx = true; const st = [[x, y]]; seen[y * sp.w + x] = 1;
+    while (st.length) { const [cx, cy] = st.pop(); size++; const i = (cy * sp.w + cx) * 4; if (SKIN.has(`${sp.d[i]},${sp.d[i + 1]},${sp.d[i + 2]}`)) skin = true; if (!(sp.d[i] > 215 && sp.d[i + 1] > 215 && sp.d[i + 2] > 215)) fx = false; for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) { const nx = cx + dx, ny = cy + dy; if (nx >= 0 && ny >= 0 && nx < sp.w && ny < sp.h && !seen[ny * sp.w + nx] && solid(nx, ny)) { seen[ny * sp.w + nx] = 1; st.push([nx, ny]); } } }
+    if (size >= minPx && !skin && !fx) n++; // pure-white islands are the pack's swing/slash motion trails
+  }
+  return n;
+}
 
 /** RGBA pixels of a sprite: { w, h, d, a(x,y) } */
 function sprite(id) {
@@ -37,6 +53,8 @@ function iou(a, b) {
   }
   return u ? i / u : 1;
 }
+/** fraction of differing pixels relative to the union of opaque pixels (independent of how much empty rect surrounds the art) */
+const artDiff = (a, b) => { if (a.w !== b.w || a.h !== b.h) return 1; let n = 0, u = 0; for (let i = 0; i < a.d.length; i += 4) { if (a.d[i + 3] || b.d[i + 3]) { u++; if (a.d[i] !== b.d[i] || a.d[i + 1] !== b.d[i + 1] || a.d[i + 2] !== b.d[i + 2] || a.d[i + 3] !== b.d[i + 3]) n++; } } return u ? n / u : 0; };
 const pixDiff = (a, b) => { if (a.w !== b.w || a.h !== b.h) return 1; let n = 0; for (let i = 0; i < a.d.length; i += 4) if (a.d[i] !== b.d[i] || a.d[i + 1] !== b.d[i + 1] || a.d[i + 2] !== b.d[i + 2] || a.d[i + 3] !== b.d[i + 3]) n++; return n / (a.w * a.h); };
 const DIRS = ['down', 'left', 'right', 'up'];
 const frames = (base) => { let n = 0; while (index.sprites[`${base}/${n}`]) n++; return n; };
@@ -96,7 +114,7 @@ test('VIS_10 12 crops × 4 stage sprites + shared moisture overlays; each crop s
   const crops = [...g.content.crops.values()]; assert.equal(crops.length, 12);
   for (const c of crops) {
     const st = [0, 1, 2, 3].map((k) => sprite(`crop/${c.id}/${k}`)); st.forEach((s, k) => assert.ok(s && opaque(s) > 20, `${c.id} stage ${k}`));
-    for (let a = 0; a < 4; a++) for (let b = a + 1; b < 4; b++) assert.ok(pixDiff(st[a], st[b]) > 0.03, `${c.id} stages ${a}/${b} identical`);
+    for (let a = 0; a < 4; a++) for (let b = a + 1; b < 4; b++) assert.ok(artDiff(st[a], st[b]) > 0.1, `${c.id} stages ${a}/${b} too similar (${(artDiff(st[a], st[b]) * 100).toFixed(1)}% of art pixels differ)`);
   }
   for (const o of ['dry', 'wet', 'fertilized']) assert.ok(opaque(sprite(`crop/shared/${o}`)) > 10, o);
   const seen = {};
@@ -183,6 +201,24 @@ const HELD = { chop: 'axe', mine: 'pickaxe', build: 'hammer', fish_cast: 'fishin
 const nearest = (s, px, py, dx = 0, dy = 0) => { let m = 1e9; for (let y = 0; y < s.h; y++) for (let x = 0; x < s.w; x++) if (s.a(x, y)) m = Math.min(m, Math.hypot(x + dx + 0.5 - px, y + dy + 0.5 - py)); return m; };
 
 test('VIS_05 axe/pickaxe/hammer/bow/rod/spear stay attached to the hand in every frame of their clips', () => {
+  if (PACK_AVATAR) { // imported character: the artist's per-frame tool layer is baked into each action frame
+    assert.match(readFileSync(path.join(ROOT, 'src/render/WorldRenderer.js'), 'utf8'), /layer === 'held' && !packAvatar/, 'no separate held overlay for the baked character');
+    const worst = {}; let checked = 0;
+    for (const body of ['body_a', 'body_b']) for (const clip of Object.keys(HELD)) for (const dir of DIRS) {
+      const n = frames(`avatar/${body}/${clip}/${dir}`); assert.ok(n >= 2, `${body} ${clip} ${dir}`);
+      const idle = opaque(sprite(`avatar/${body}/idle/${dir}/0`));
+      for (let f = 0; f < n; f++) {
+        const sp = sprite(`avatar/${body}/${clip}/${dir}/${f}`); const extra = opaque(sp) - idle; const parts = regions(sp);
+        assert.equal(parts, 0, `${body}/${clip}/${dir}/${f}: ${parts} tool part(s) not touching any hand/body pixel`);
+        worst[clip] = Math.min(worst[clip] ?? 1e9, extra); checked++;
+      }
+      assert.ok(worst[clip] > -40, `${clip}: frames lost body pixels`);
+    }
+    const toolPixels = Object.fromEntries(Object.keys(HELD).map((c) => [c, Math.max(...DIRS.map((d) => opaque(sprite(`avatar/body_a/${c}/${d}/1`)) - opaque(sprite(`avatar/body_a/idle/${d}/0`))))]));
+    for (const c of ['chop', 'mine', 'build', 'bow', 'spear', 'fish_cast']) assert.ok(toolPixels[c] >= 8, `${c}: no tool pixels visible (${toolPixels[c]})`);
+    writeFileSync(path.join(EVD, 'VIS_05.json'), JSON.stringify({ mode: 'pack character, tool layer baked per frame', framesChecked: checked, rule: 'every pixel island (>=6px, 1px gaps bridged) of an action frame contains skin, i.e. each tool part is held by a hand/body; tool adds pixels vs idle', maxExtraToolPixels: toolPixels }, null, 1));
+    return;
+  }
   const worst = {}; let checked = 0;
   for (const body of ['body_a', 'body_b']) for (const [clip, held] of Object.entries(HELD)) for (const dir of DIRS) {
     const n = frames(`avatar/${body}/${clip}/${dir}`); assert.ok(n >= 2, `${body} ${clip} ${dir}`);
@@ -220,12 +256,13 @@ test('VIS_28 avatar variants (2 bodies × 6 hair × clips incl. work/swim): hair
         assert.ok(overlap >= 8, `${body}/${clip}/${dir}/${f} hair ${hair} detached (overlap ${overlap}px)`);
         checked++;
       }
-      if (clip !== 'swim') for (const bag of ['small_bag', 'medium_bag', 'large_bag']) {
+      if (clip !== 'swim' && !PACK_AVATAR) for (const bag of ['small_bag', 'medium_bag', 'large_bag']) {
         const b = sprite(`avatar/bag/${bag}/${dir}`); const bx = an.backpack[0] - (b.w >> 1), by = an.backpack[1] + 10 - b.h; // anchor (0.5,1)
         let overlap = 0; for (let y = 0; y < b.h; y++) for (let x = 0; x < b.w; x++) if (b.a(x, y) && bs.a(x + bx, y + by)) overlap++;
         assert.ok(overlap >= 6, `${body}/${clip}/${dir}/${f} ${bag} not on the body (overlap ${overlap})`);
       }
     }
   }
-  writeFileSync(path.join(EVD, 'VIS_28.json'), JSON.stringify({ hairPlacementsChecked: checked, worst, clothing: 'shared mask clipped to body alpha at runtime (source-atop); worst raw overflow px reported above is discarded', layering: 'down: backpack→body→hair→held; up: held→body→backpack→hair (bag drawn over back); left/right ordered by facing (WorldRenderer.drawPlayer)' }, null, 1));
+  if (PACK_AVATAR) assert.match(readFileSync(path.join(ROOT, 'src/render/WorldRenderer.js'), 'utf8'), /layer === 'backpack' && !packAvatar/, 'backpack overlay hidden for the imported character (no matching bag art)');
+  writeFileSync(path.join(EVD, 'VIS_28.json'), JSON.stringify({ avatar: PACK_AVATAR ? 'pack' : 'procedural', hairPlacementsChecked: checked, worst, clothing: 'shared mask clipped to body alpha at runtime (source-atop); worst raw overflow px reported above is discarded', layering: 'down: backpack→body→hair→held; up: held→body→backpack→hair (bag drawn over back); left/right ordered by facing (WorldRenderer.drawPlayer)' }, null, 1));
 });

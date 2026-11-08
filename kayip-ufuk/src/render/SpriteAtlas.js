@@ -45,6 +45,8 @@ export class SpriteAtlas {
     const k = size / Math.max(w, h);
     return `background-image:url(${this.base}${this.index.pages[pi]});background-size:${1024 * k}px ${1024 * k}px;background-position:${-x * k}px ${-y * k}px;`;
   }
+  /** skin tone ramps: the imported character's own palettes when present, else the procedural defaults */
+  skinTones() { return this.native.__meta?.skinTones || SKIN_TONES; }
   /** true when the sprite was imported from the farm asset pack at x1 (renderer then skips legacy down-scaling). */
   isNative(id) { return (this.native[id]?.scale || 1) > 1; }
   /** Extract sprite to its own canvas (for compositing). */
@@ -62,7 +64,7 @@ export class SpriteAtlas {
     const bodyId = `avatar/${app.body}/${clip}/${dir}/${frame}`;
     const body = this.extract(bodyId) || this.extract(`avatar/${app.body}/idle/down/0`);
     const ctx = body.getContext('2d'); const img = ctx.getImageData(0, 0, body.width, body.height);
-    const tone = SKIN_TONES[app.skin].map(hexRgb); const ramp = SKIN_RAMP.map(hexRgb);
+    const tone = this.skinTones()[app.skin].map(hexRgb); const ramp = SKIN_RAMP.map(hexRgb);
     for (let i = 0; i < img.data.length; i += 4) {
       if (!img.data[i + 3]) continue;
       for (let k = 0; k < 3; k++) if (img.data[i] === ramp[k][0] && img.data[i + 1] === ramp[k][1] && img.data[i + 2] === ramp[k][2]) { img.data[i] = tone[k][0]; img.data[i + 1] = tone[k][1]; img.data[i + 2] = tone[k][2]; break; }
