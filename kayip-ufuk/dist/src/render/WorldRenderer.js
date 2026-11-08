@@ -61,6 +61,7 @@ export class WorldRenderer {
   /** deterministic non-colliding decor per chunk */
   decorFor(scene, cx, cy) {
     const key = `${scene}:${cx}:${cy}`; let d = this.decor.get(key); if (d) return d;
+    if (this.decor.size > 160) this.decor.delete(this.decor.keys().next().value); // bounded like the chunk cache
     d = []; const g = this.g.terrain.grid(scene);
     for (let ty = 0; ty < CH; ty++) for (let tx = 0; tx < CH; tx++) {
       const wx = cx * CH + tx, wy = cy * CH + ty; if (!g.inb(wx, wy)) continue;

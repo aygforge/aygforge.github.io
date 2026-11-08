@@ -116,7 +116,16 @@ const B = {
   BUILD_BRIDGE(p, W, H, s) { const c = s === 'adv' ? '#7a6a52' : P.wood_light; p.rect(4, 26, 88, 30, c); for (let x = 4; x < 92; x += 6) p.rect(x, 26, 1, 30, shade(c, -0.3)); for (const y of [24, 56]) { p.rect(2, y, 92, 3, s === 'adv' ? P.iron : P.wood_dark); for (let x = 4; x < 92; x += 14) pole(p, x, y - 8, y + 2, s === 'adv' ? P.iron_dark : P.wood_dark); } },
   BUILD_PIER(p) { p.rect(4, 28, 120, 30, P.wood_light); for (let x = 4; x < 124; x += 6) p.rect(x, 28, 1, 30, shade(P.wood_light, -0.3)); for (let x = 8; x < 124; x += 24) { pole(p, x, 56, 76, P.wood_dark); } p.line(110, 30, 116, 20, P.rope, 2); },
   BUILD_RAFT(p) { shadowE(p, 48, 72, 40, 6); for (let i = 0; i < 8; i++) { p.rect(10 + i * 10, 38, 9, 32, i % 2 ? P.wood : '#8a6a48'); p.ellipse(14 + i * 10, 38, 4.5, 2, '#9a7552'); } p.rect(8, 44, 82, 3, P.rope); p.rect(8, 62, 82, 3, P.rope); pole(p, 46, 6, 40); p.poly([[50, 8], [78, 30], [50, 34]], P.canvas); },
-  BUILD_ESCAPE_BOAT(p) { shadowE(p, 112, 108, 96, 6); p.poly([[8, 70], [216, 70], [196, 104], [28, 104]], '#7a5a3e'); for (let y = 74; y < 104; y += 6) p.line(14, y, 210, y, P.wood_dark); p.rect(8, 66, 208, 6, P.wood_light); p.rect(100, 4, 5, 66, P.wood_dark); p.poly([[106, 6], [176, 62], [106, 62]], P.canvas); p.poly([[98, 10], [40, 60], [98, 60]], '#efe8d4'); p.rect(186, 50, 16, 16, P.wood); p.rect(20, 90, 6, 14, P.iron); p.poly([[0, 70], [8, 70], [12, 86]], P.wood_dark); },
+  BUILD_ESCAPE_BOAT(p) { // 3/4 view: deck plan fills the 7×3 footprint (y 16..112), hull side below, mast + sails on top
+    shadowE(p, 112, 108, 100, 6);
+    p.poly([[6, 30], [180, 24], [220, 58], [198, 88], [24, 88], [6, 66]], '#6a4a32');
+    p.poly([[10, 34], [178, 29], [212, 58], [194, 82], [26, 82], [10, 63]], P.wood_light);
+    for (let y = 40; y < 82; y += 7) p.line(14, y, 196, y - 1, shade(P.wood_light, -0.22));
+    p.poly([[24, 88], [198, 88], [186, 106], [36, 106]], '#7a5a3e'); for (let y = 92; y < 106; y += 5) p.line(30, y, 192, y, P.wood_dark);
+    p.rect(146, 42, 30, 22, P.wood); p.rect(146, 42, 30, 3, shade(P.wood, 0.25)); p.rect(154, 50, 8, 6, '#3a5a6a');
+    p.rect(14, 44, 10, 24, P.iron_dark); p.rect(30, 70, 14, 8, P.rope);
+    p.rect(100, 4, 5, 58, P.wood_dark); p.poly([[106, 6], [172, 52], [106, 52]], P.canvas); p.poly([[98, 10], [44, 50], [98, 50]], '#efe8d4');
+  },
   BUILD_SIGNAL_STATION(p) { shadowE(p, 64, 140, 44, 5); p.rect(30, 90, 68, 50, '#5c6b7a'); p.rect(30, 90, 68, 4, '#7d8a96'); p.rect(40, 100, 20, 14, '#2b8a56'); p.rect(66, 100, 24, 30, '#3a4550'); for (let i = 0; i < 3; i++) p.rect(70, 104 + i * 8, 16, 4, [P.red, P.yellow, P.green][i]); p.line(64, 6, 64, 90, P.iron, 3); for (let y = 16; y < 90; y += 14) p.line(64 - (90 - y) / 6, y, 64 + (90 - y) / 6, y, P.iron); p.circle(64, 6, 4, P.red); p.poly([[96, 70], [124, 62], [124, 84], [96, 92]], '#2a4d8a'); for (let i = 0; i < 3; i++) p.line(98, 76 + i * 5, 122, 68 + i * 5, '#4a8ed8'); },
   BUILD_WINCH(p) { shadowE(p, 32, 72, 22, 5); p.rect(14, 46, 36, 24, P.iron_dark); p.circle(32, 44, 12, P.iron); p.circle(32, 44, 4, P.iron_dark); for (let a = 0; a < 8; a++) p.line(32, 44, 32 + Math.cos(a) * 12, 44 + Math.sin(a) * 12, P.iron_dark); p.line(32, 32, 40, 2, P.rope, 2); },
 };

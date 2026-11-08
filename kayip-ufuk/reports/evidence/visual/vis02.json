@@ -1,0 +1,389 @@
+{
+ "out": [
+  {
+   "id": "OCEAN_DEEP",
+   "code": 0,
+   "found": [
+    2,
+    2
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 0,
+   "walk": false,
+   "expectWalk": false,
+   "swim": true,
+   "expectSwim": true,
+   "raft": true,
+   "expectRaft": true
+  },
+  {
+   "id": "OCEAN_SHALLOW",
+   "code": 1,
+   "found": [
+    449,
+    55
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 1,
+   "walk": false,
+   "expectWalk": false,
+   "swim": true,
+   "expectSwim": true,
+   "raft": true,
+   "expectRaft": true
+  },
+  {
+   "id": "BEACH_SAND",
+   "code": 2,
+   "found": [
+    452,
+    61
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 1,
+   "walk": true,
+   "expectWalk": true,
+   "swim": true,
+   "expectSwim": true,
+   "raft": false,
+   "expectRaft": false
+  },
+  {
+   "id": "MEADOW",
+   "code": 3,
+   "found": [
+    226,
+    181
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 3,
+   "walk": true,
+   "expectWalk": true,
+   "swim": true,
+   "expectSwim": true,
+   "raft": false,
+   "expectRaft": false
+  },
+  {
+   "id": "GROVE",
+   "code": 4,
+   "found": [
+    296,
+    204
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 1,
+   "walk": true,
+   "expectWalk": true,
+   "swim": true,
+   "expectSwim": true,
+   "raft": false,
+   "expectRaft": false
+  },
+  {
+   "id": "FOREST_FLOOR",
+   "code": 5,
+   "found": [
+    244,
+    143
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 0,
+   "walk": true,
+   "expectWalk": true,
+   "swim": true,
+   "expectSwim": true,
+   "raft": false,
+   "expectRaft": false
+  },
+  {
+   "id": "SWAMP_SOIL",
+   "code": 6,
+   "found": [
+    161,
+    177
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 2,
+   "walk": true,
+   "expectWalk": true,
+   "swim": true,
+   "expectSwim": true,
+   "raft": false,
+   "expectRaft": false
+  },
+  {
+   "id": "ROCKY_GROUND",
+   "code": 7,
+   "found": [
+    451,
+    64
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 3,
+   "walk": true,
+   "expectWalk": true,
+   "swim": true,
+   "expectSwim": true,
+   "raft": false,
+   "expectRaft": false
+  },
+  {
+   "id": "MOUNTAIN_SOIL",
+   "code": 8,
+   "found": [
+    274,
+    82
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 2,
+   "walk": true,
+   "expectWalk": true,
+   "swim": true,
+   "expectSwim": true,
+   "raft": false,
+   "expectRaft": false
+  },
+  {
+   "id": "SETTLEMENT_GROUND",
+   "code": 9,
+   "found": [
+    343,
+    119
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 0,
+   "walk": true,
+   "expectWalk": true,
+   "swim": true,
+   "expectSwim": true,
+   "raft": false,
+   "expectRaft": false
+  },
+  {
+   "id": "LAGOON_SOIL",
+   "code": 10,
+   "found": [
+    347,
+    218
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 3,
+   "walk": true,
+   "expectWalk": true,
+   "swim": true,
+   "expectSwim": true,
+   "raft": false,
+   "expectRaft": false
+  },
+  {
+   "id": "WETLAND_WADE",
+   "code": 11,
+   "found": [
+    158,
+    179
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 2,
+   "walk": true,
+   "expectWalk": true,
+   "swim": true,
+   "expectSwim": true,
+   "raft": false,
+   "expectRaft": false
+  },
+  {
+   "id": "RIVER_DEEP",
+   "code": 12,
+   "found": [
+    271,
+    142
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 1,
+   "walk": false,
+   "expectWalk": false,
+   "swim": true,
+   "expectSwim": true,
+   "raft": false,
+   "expectRaft": false
+  },
+  {
+   "id": "RIVER_FORD",
+   "code": 13,
+   "found": [
+    268,
+    147
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 3,
+   "walk": true,
+   "expectWalk": true,
+   "swim": true,
+   "expectSwim": true,
+   "raft": false,
+   "expectRaft": false
+  },
+  {
+   "id": "DIRT_TRAIL",
+   "code": 14,
+   "found": [
+    276,
+    115
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 0,
+   "walk": true,
+   "expectWalk": true,
+   "swim": true,
+   "expectSwim": true,
+   "raft": false,
+   "expectRaft": false
+  },
+  {
+   "id": "CLIFF_WALL",
+   "code": 15,
+   "found": [
+    281,
+    94
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 3,
+   "walk": false,
+   "expectWalk": false,
+   "swim": false,
+   "expectSwim": false,
+   "raft": false,
+   "expectRaft": false
+  },
+  {
+   "id": "TIDAL_SANDBAR",
+   "code": 16,
+   "found": [
+    357,
+    273
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": "low_tide",
+   "matchPct": 100,
+   "variant": 2,
+   "walk": true,
+   "expectWalk": true,
+   "swim": true,
+   "expectSwim": true,
+   "raft": false,
+   "expectRaft": false
+  },
+  {
+   "id": "REED_PATCH",
+   "code": 17,
+   "found": [
+    219,
+    186
+   ],
+   "synthetic": true,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 3,
+   "walk": true,
+   "expectWalk": true,
+   "swim": true,
+   "expectSwim": true,
+   "raft": false,
+   "expectRaft": false
+  },
+  {
+   "id": "SEA_REEF",
+   "code": 18,
+   "found": [
+    53,
+    193
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 2,
+   "walk": false,
+   "expectWalk": false,
+   "swim": true,
+   "expectSwim": true,
+   "raft": true,
+   "expectRaft": true
+  },
+  {
+   "id": "RIVER_BANK",
+   "code": 19,
+   "found": [
+    268,
+    142
+   ],
+   "synthetic": false,
+   "sameNeighbours": 4,
+   "special": null,
+   "matchPct": 100,
+   "variant": 0,
+   "walk": true,
+   "expectWalk": true,
+   "swim": true,
+   "expectSwim": true,
+   "raft": false,
+   "expectRaft": false
+  }
+ ],
+ "minDist": 13.924299309461157,
+ "pair": [
+  "OCEAN_SHALLOW",
+  "SEA_REEF"
+ ]
+}

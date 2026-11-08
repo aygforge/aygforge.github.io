@@ -1,7 +1,7 @@
 {
  "base": "dist over local static HTTP",
  "browser": "Chromium (Playwright, headless)",
- "ranUtc": "2026-11-08T01:56:16.238Z",
+ "ranUtc": "2026-11-08T07:15:28.368Z",
  "consoleErrors": [],
  "results": {
   "AT_BOOT_DATA_01": {
@@ -45,7 +45,7 @@
    "evidence": [
     "reports/evidence/e2e/movement.png"
    ],
-   "notes": "kb=44,44 joy=37,37 staminaIdleSprint=100.0 afterRun=95.2"
+   "notes": "kb=44,44 joy=45,45 staminaIdleSprint=100.0 afterRun=95.2"
   },
   "AT_INPUT_UI_03": {
    "status": "PASS",
@@ -66,7 +66,7 @@
    "evidence": [
     "reports/evidence/e2e/inventory_pause.png"
    ],
-   "notes": "{\"a\":{\"t\":70.76666666666605,\"p\":[8025.516563268678,9072.887301627792],\"h\":84.6809876543189},\"b\":{\"t\":70.76666666666605,\"p\":[8025.516563268678,9072.887301627792],\"h\":84.6809876543189,\"open\":\"UI_INVENTORY\"}}"
+   "notes": "{\"a\":{\"t\":70.89999999999938,\"p\":[8025.516563268678,9072.887301627792],\"h\":84.67703703703492},\"b\":{\"t\":70.89999999999938,\"p\":[8025.516563268678,9072.887301627792],\"h\":84.67703703703492,\"open\":\"UI_INVENTORY\"}}"
   },
   "AT_INPUT_UI_08": {
    "status": "PASS",
@@ -144,7 +144,7 @@
    "evidence": [
     "reports/evidence/e2e/export_sample_head.json"
    ],
-   "notes": "{\"imp\":{\"ok\":true},\"same\":true,\"badCode\":\"CHECKSUM_MISMATCH\",\"checksum\":\"cb9337b24ea3\"}"
+   "notes": "{\"imp\":{\"ok\":true},\"same\":true,\"badCode\":\"CHECKSUM_MISMATCH\",\"checksum\":\"3aaf75c74e5f\"}"
   },
   "AT_PERSIST_08": {
    "status": "PASS",
@@ -293,7 +293,7 @@
    "evidence": [
     "reports/evidence/e2e/perf_desktop_headless.json"
    ],
-   "notes": "Requires midrange Android hardware. Headless container reference only: median 59.9 FPS, p95 16.7 ms, heap 43 MiB"
+   "notes": "Requires midrange Android hardware. Headless container reference only: median 59.9 FPS, p95 16.8 ms, heap 43 MiB"
   }
  },
  "finalShot": "reports/evidence/e2e/final_state.png"

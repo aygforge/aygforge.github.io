@@ -1,0 +1,53 @@
+{
+ "sea": {
+  "ok": true,
+  "npcBefore": 0
+ },
+ "seaSegments": {
+  "BOAT_CASTOFF": [
+   "boat/BUILD_ESCAPE_BOAT"
+  ],
+  "BOAT_REEF": [
+   "boat/BUILD_ESCAPE_BOAT"
+  ],
+  "BOAT_OPEN_SEA": [
+   "boat/BUILD_ESCAPE_BOAT"
+  ]
+ },
+ "seaEnd": {
+  "endings": [
+   "ESCAPE_SAIL"
+  ],
+  "toast": [
+   "Tamamlandı: Kaçış yelkenlisi",
+   "Yelkenli hazır! Uygun havada yola çıkabilirsin.",
+   "Günlüğe eklendi: Kurtuluş Hazırlıkları"
+  ]
+ },
+ "radio": {
+  "placed": {
+   "uid": "b_1pq_2"
+  },
+  "sos": true,
+  "avail": true,
+  "boarded": true,
+  "sosText": "automatic packet",
+  "npc": 0
+ },
+ "radioSegments": {
+  "RESCUE_APPROACH": [
+   "scene/radio_signal"
+  ],
+  "BOARDING": [
+   "scene/radio_rescue"
+  ],
+  "DEPARTURE": [
+   "scene/radio_rescue"
+  ]
+ },
+ "endings": [
+  "ESCAPE_SAIL",
+  "ESCAPE_RADIO"
+ ],
+ "sharedSceneArt": []
+}

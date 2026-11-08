@@ -7,8 +7,18 @@ export class SeaVehicleSystem {
   get s() { return this.g.store.state; }
   rafts() { return this.s.vehicles.raftsById; }
 
+  /** Raft anchor = centre of a raft-navigable footprint tile (closest to the footprint centre) so the hull/foot box sits fully on water. */
+  raftAnchor(b) {
+    const g = this.g.terrain.overworld; const cx = b.tile[0] + b.w / 2, cy = b.tile[1] + b.h / 2; let best = null, bd = 1e9;
+    for (let y = b.tile[1] - 1; y <= b.tile[1] + b.h; y++) for (let x = b.tile[0] - 1; x <= b.tile[0] + b.w; x++) {
+      const px = (x + 0.5) * TILE, py = (y + 0.5) * TILE;
+      if (!this.g.pathfinder.boxFree(g, px, py, 'RAFT', null)) continue;
+      const d = Math.hypot(x + 0.5 - cx, y + 0.5 - cy); if (d < bd) { bd = d; best = [px, py]; }
+    }
+    return best || [cx * TILE, cy * TILE];
+  }
   registerRaft(tx, b) {
-    const px = [(b.tile[0] + b.w / 2) * TILE, (b.tile[1] + b.h / 2) * TILE];
+    const px = this.raftAnchor(b);
     tx.set(this.rafts(), b.uid, { buildUid: b.uid, sceneId: 'OVERWORLD', atlasPx: px, rotation: 0, durability: 100, anchored: true, passengerId: null });
   }
   raftNear() {
@@ -21,6 +31,11 @@ export class SeaVehicleSystem {
   board(raftId) {
     const r = this.rafts()[raftId]; if (!r) return { ok: false };
     if (!this.g.climate.launchAllowed() && this.g.climate.weather() === 'STORM') { this.g.bus.emit('ui.error', { text: 'Fırtınada denize açılamazsın' }); return { ok: false, code: 'STORM' }; }
+    // older saves anchored rafts on the shore line: move the hull onto free water before boarding
+    if (!this.g.pathfinder.boxFree(this.g.terrain.overworld, r.atlasPx[0], r.atlasPx[1], 'RAFT', null)) {
+      const n = this.g.pathfinder.nearestTile(this.g.terrain.overworld, Math.floor(r.atlasPx[0] / TILE), Math.floor(r.atlasPx[1] / TILE), (x, y) => this.g.pathfinder.boxFree(this.g.terrain.overworld, (x + 0.5) * TILE, (y + 0.5) * TILE, 'RAFT', null), 3);
+      if (n) r.atlasPx = [(n[0] + 0.5) * TILE, (n[1] + 0.5) * TILE];
+    }
     const res = this.g.store.transaction(null, (tx) => {
       tx.set(r, 'anchored', false); tx.set(r, 'passengerId', 'player');
       tx.set(this.s.vehicles, 'activeVehicleId', raftId);

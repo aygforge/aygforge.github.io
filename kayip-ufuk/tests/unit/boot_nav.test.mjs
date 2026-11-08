@@ -233,3 +233,24 @@ test('AT_EXPLORATION_07 sand spit tide window opens at least once per day and is
   assert.equal(g.climate.isLowTide(0.2), true); assert.equal(g.climate.isLowTide(0.5), false);
   void SPEC;
 });
+
+test('REGRESSION raft built on the shoreline is anchored on water and can sail away after boarding', async () => {
+  const { construct } = await import('../helpers/tools.mjs');
+  const g = await makeGame(42);
+  const shore = g.terrain.localToAtlas('MAIN', ...g.content.seaRoutes.get('SEA_TO_WRECK').departureDock.shoreFootTileLocal);
+  g.world.teleport('OVERWORLD', (shore[0] + 0.5) * TILE, (shore[1] + 0.5) * TILE);
+  construct(g, 'BUILD_RAFT'); const id = Object.keys(g.state.vehicles.raftsById)[0]; const r = g.state.vehicles.raftsById[id];
+  assert.ok(g.pathfinder.boxFree(g.world.grid, r.atlasPx[0], r.atlasPx[1], 'RAFT', null), 'raft anchor fully on water');
+  assert.ok(g.sea.board(id).ok);
+  const start = [...g.state.player.positionPx]; let moved = 0;
+  for (const inp of [{ x: 0, y: 1 }, { x: 1, y: 0 }, { x: -1, y: 0 }]) { const b = [...g.state.player.positionPx]; for (let i = 0; i < 30; i++) g.tick(1 / 30, inp); if (Math.hypot(g.state.player.positionPx[0] - b[0], g.state.player.positionPx[1] - b[1]) > 20) moved++; }
+  assert.ok(moved >= 2, `raft moved in ${moved}/3 directions from ${start}`);
+  assert.equal(g.state.player.mode, 'RAFT');
+});
+
+test('REGRESSION a raft cannot be placed on river-bank "water" where its hull could never float', async () => {
+  const g = await makeGame(42);
+  const site = [224, 240]; // RIVER_BANK + MEADOW: isWater cells but not raft-navigable
+  g.world.teleport('OVERWORLD', (site[0] + 1.5) * TILE, (site[1] + 3.5) * TILE);
+  assert.ok(g.build.validatePlacement('BUILD_RAFT', site).some((r) => /yüzülebilir/.test(r)));
+});

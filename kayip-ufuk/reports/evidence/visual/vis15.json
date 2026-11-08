@@ -1,0 +1,81 @@
+{
+ "setup": {
+  "ok": true,
+  "raftId": "b_16_1n",
+  "tile": [
+   238,
+   302
+  ],
+  "open": [
+   7664,
+   9962.000000000045
+  ]
+ },
+ "raft": {
+  "up": {
+   "facing": "up",
+   "mode": "RAFT",
+   "offsets": [
+    "0,30"
+   ],
+   "spriteDir": [
+    "up"
+   ],
+   "landTiles": 0
+  },
+  "down": {
+   "facing": "down",
+   "mode": "RAFT",
+   "offsets": [
+    "0,30"
+   ],
+   "spriteDir": [
+    "down"
+   ],
+   "landTiles": 0
+  },
+  "left": {
+   "facing": "left",
+   "mode": "RAFT",
+   "offsets": [
+    "0,30"
+   ],
+   "spriteDir": [
+    "left"
+   ],
+   "landTiles": 0
+  },
+  "right": {
+   "facing": "right",
+   "mode": "RAFT",
+   "offsets": [
+    "0,30"
+   ],
+   "spriteDir": [
+    "right"
+   ],
+   "landTiles": 0
+  }
+ },
+ "boat": {
+  "footprint": [
+   7,
+   3
+  ],
+  "tile": [
+   228,
+   235
+  ],
+  "colliderCx": 7408,
+  "colliderBottom": 7616,
+  "drawnCx": 7408,
+  "drawnBottom": 7615,
+  "spriteSize": [
+   224,
+   112
+  ],
+  "bob": [
+   286
+  ]
+ }
+}

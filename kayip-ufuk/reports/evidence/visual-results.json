@@ -1,7 +1,7 @@
 {
- "base": "http://localhost:38183/html/7204511/",
+ "base": "http://localhost:38247/html/7204511/",
  "browser": "Chromium (Playwright, headless)",
- "ranUtc": "2026-11-08T02:08:44.747Z",
+ "ranUtc": "2026-11-08T07:17:21.440Z",
  "consoleErrors": [],
  "results": {
   "VIS_01": {
@@ -12,75 +12,32 @@
    ],
    "notes": "served from /html/7204511/; atlases 24/24 decoded; 404s=0; missing sprites=0; canvas colors=136"
   },
-  "VIS_02": {
-   "status": "FAIL",
-   "evidence": [],
-   "notes": "page.evaluate: TypeError: Failed to execute 'drawImage' on 'CanvasRenderingContext2D': Overload resolution failed.\n    at eval (eval at evaluate (:311:30), <anonymous>:25:66)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at G (/home/user/aygforge.github.io/kayip-ufuk/tests/e2e/visual.mjs:41:35)\n    at /home/user/aygforge.github.io/kayip-ufuk/tests/e2e/visual.mjs:99:19\n    at run (/home/user/aygforge.github.io/kayip-ufuk/tests/e2e/visua"
-  },
-  "VIS_03": {
-   "status": "FAIL",
-   "evidence": [
-    "reports/evidence/visual/vis03_edge_masks_shore_row1_river_row2.png",
-    "reports/evidence/visual/vis03_coast_ingame.png",
-    "reports/evidence/visual/vis03.json"
-   ],
-   "notes": "masks in map: shore 12, river 9; all 4×15 transition sprites present; 3×3 renders: black=0 gaps=0 seams=192; sub-pixel cam frames=0/40; water overlay on land=0/0"
-  },
   "VIS_08": {
-   "status": "FAIL",
+   "status": "PASS",
    "evidence": [
     "reports/evidence/visual/vis08_58_builds_ghost_and_complete.png",
     "reports/evidence/visual/vis08_build_large_house.png",
     "reports/evidence/visual/vis08_build_workbench.png",
     "reports/evidence/visual/vis08_build_pier.png",
     "reports/evidence/visual/vis08_build_escape_boat.png",
+    "reports/evidence/visual/vis08_build_signal_station.png",
     "reports/evidence/visual/vis08_build_planter.png",
     "reports/evidence/visual/vis08_ghost_preview.png",
     "reports/evidence/visual/vis08.json"
    ],
-   "notes": "51/58 placed+completed in world with ghost & complete sprites; footprint matches BuildDB; solid cells=160, uncovered by sprite=10; bad=BUILD_CAMPFIRE:2,BUILD_ESCAPE_BOAT:LOCKED ,BUILD_FISH_HUT:2,BUILD_IRRIGATION:LOCKED ,BUILD_LARGE_HOUSE:4,BUILD_MAP_TABLE:LOCKED ,BUILD_PANTRY:LOCKED ,BUILD_SIGNAL_STATION:no valid spot,BUILD_WATER_FILTER:LOCKED ,BUILD_WINCH:LOCKED ,BUILD_WOOD_HUT:2"
+   "notes": "58/58 placed+completed in world with ghost & complete sprites; footprint matches BuildDB; solid cells=201, uncovered by sprite=0; bad="
   },
   "VIS_15": {
-   "status": "FAIL",
-   "evidence": [],
-   "notes": "page.evaluate: TypeError: Cannot read properties of undefined (reading 'tile')\n    at eval (eval at evaluate (:311:30), <anonymous>:6:74)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at G (/home/user/aygforge.github.io/kayip-ufuk/tests/e2e/visual.mjs:41:35)\n    at /home/user/aygforge.github.io/kayip-ufuk/tests/e2e/visual.mjs:262:22\n    at async run (/home/user/aygforge.github.io/kayip-ufuk/tests/e2e/visual.mjs:30:36)\n    at async file"
-  },
-  "VIS_16": {
-   "status": "FAIL",
-   "evidence": [],
-   "notes": "page.evaluate: TypeError: Cannot read properties of undefined (reading 'data')\n    at eval (eval at evaluate (:311:30), <anonymous>:6:112)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at G (/home/user/aygforge.github.io/kayip-ufuk/tests/e2e/visual.mjs:41:35)\n    at /home/user/aygforge.github.io/kayip-ufuk/tests/e2e/visual.mjs:303:23\n    at async run (/home/user/aygforge.github.io/kayip-ufuk/tests/e2e/visual.mjs:30:36)\n    at async fil"
-  },
-  "VIS_17": {
-   "status": "FAIL",
-   "evidence": [],
-   "notes": "page.evaluate: TypeError: Cannot read properties of undefined (reading 'footprintTiles')\n    at BuildSystem.footprint (http://localhost:38183/html/7204511/src/systems/BuildSystem.js:18:60)\n    at BuildSystem.validatePlacement (http://localhost:38183/html/7204511/src/systems/BuildSystem.js:29:25)\n    at Object.spot (eval at evaluate (:311:30), <anonymous>:7:22)\n    at eval (eval at evaluate (:311:30), <anonymous>:1:241)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anon"
-  },
-  "VIS_19": {
    "status": "PASS",
    "evidence": [
-    "reports/evidence/visual/vis19_zoom_1x.png",
-    "reports/evidence/visual/vis19_zoom_2x.png",
-    "reports/evidence/visual/vis19_zoom_3x.png",
-    "reports/evidence/visual/vis19.json"
+    "reports/evidence/visual/vis15_raft_up.png",
+    "reports/evidence/visual/vis15_raft_down.png",
+    "reports/evidence/visual/vis15_raft_left.png",
+    "reports/evidence/visual/vis15_raft_right.png",
+    "reports/evidence/visual/vis15_escape_boat.png",
+    "reports/evidence/visual/vis15.json"
    ],
-   "notes": "1×: smoothing=false non-uniform 1×1 blocks max 0% cams integer=true | 2×: smoothing=false non-uniform 2×2 blocks max 0.239% cams integer=true | 3×: smoothing=false non-uniform 3×3 blocks max 0.239% cams integer=true"
-  },
-  "VIS_26": {
-   "status": "FAIL",
-   "evidence": [],
-   "notes": "page.evaluate: TypeError: Cannot read properties of undefined (reading 'name')\n    at UIMenus.openPuzzle (http://localhost:38183/html/7204511/src/ui/UIMenus.js:496:37)\n    at eval (eval at evaluate (:311:30), <anonymous>:18:12)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at G (/home/user/aygforge.github.io/kayip-ufuk/tests/e2e/visual.mjs:41:35)\n    at /home/user/aygforge.github.io/kayip-ufuk/tests/e2e/visual.mjs:392:19\n    at run (/h"
-  },
-  "SHEETS": {
-   "status": "INFO",
-   "evidence": [
-    "reports/evidence/visual/sheet_items.png",
-    "reports/evidence/visual/sheet_crops.png",
-    "reports/evidence/visual/sheet_animals.png",
-    "reports/evidence/visual/sheet_fish.png",
-    "reports/evidence/visual/sheet_marine.png",
-    "reports/evidence/visual/sheet_avatars.png"
-   ],
-   "notes": "Contact sheets rendered by the game atlas in Chromium (VIS_05/07/10/11/12/13/28 visual evidence)."
+   "notes": "raft 4 dirs: sprite dir = facing, constant hull offset to collider {\"up\":[\"0,30\"],\"down\":[\"0,30\"],\"left\":[\"0,30\"],\"right\":[\"0,30\"]}, collider never on land; boat sprite centre Δ=0px bottom Δ=-1px"
   }
  }
 }

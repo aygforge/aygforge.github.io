@@ -30,8 +30,8 @@
  "tilesChecked": 21,
  "blackPx": 0,
  "transparentPx": 0,
- "seamPx": 192,
+ "seamPx": 0,
  "fractional": 0,
- "overlayCalls": 0,
+ "overlayCalls": 15,
  "overlayOnLand": 0
 }

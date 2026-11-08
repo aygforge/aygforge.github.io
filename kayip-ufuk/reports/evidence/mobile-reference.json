@@ -1,0 +1,23 @@
+{
+ "note": "Emulation only: desktop CPU throttled 4×, Pixel 5 landscape profile. Not a substitute for AT_PERFORMANCE_03 on a real device.",
+ "runs": [
+  {
+   "run": 1,
+   "coldBootToMenuMs": 1160,
+   "continueVisible": null,
+   "bodyBackground": "rgb(22, 43, 70)"
+  },
+  {
+   "run": 2,
+   "coldBootToMenuMs": 1215,
+   "continueVisible": true,
+   "bodyBackground": "rgb(22, 43, 70)"
+  },
+  {
+   "run": 3,
+   "coldBootToMenuMs": 1200,
+   "continueVisible": true,
+   "bodyBackground": "rgb(22, 43, 70)"
+  }
+ ]
+}

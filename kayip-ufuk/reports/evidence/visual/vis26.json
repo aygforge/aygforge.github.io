@@ -1,0 +1,13 @@
+{
+ "reduced": true,
+ "quality": "LOW",
+ "target": "Topla: Taş",
+ "highlight": true,
+ "decor": 0,
+ "pickup": true,
+ "rainStreaks": 0,
+ "warn": 1,
+ "puzzle": "PZ_WATER_VALVES",
+ "puzzleChanged": true,
+ "cssAnim": true
+}

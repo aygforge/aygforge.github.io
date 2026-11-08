@@ -1,0 +1,117 @@
+{
+ "cave": {
+  "before": {
+   "scene": "CAVE_BATS"
+  },
+  "snap": {
+   "app": "{\"body\":\"body_b\",\"skin\":3,\"hair\":4,\"hairColor\":2,\"outfit\":2}",
+   "scene": "CAVE_BATS",
+   "mode": "WALK",
+   "pos": [
+    720,
+    720
+   ],
+   "builds": 0,
+   "puzzles": "{}"
+  },
+  "after": {
+   "app": "{\"body\":\"body_b\",\"skin\":3,\"hair\":4,\"hairColor\":2,\"outfit\":2}",
+   "scene": "CAVE_BATS",
+   "mode": "WALK",
+   "pos": [
+    720,
+    720
+   ],
+   "builds": 0,
+   "puzzles": "{}"
+  },
+  "same": true
+ },
+ "raft": {
+  "before": {
+   "mode": "RAFT"
+  },
+  "snap": {
+   "app": "{\"body\":\"body_b\",\"skin\":3,\"hair\":4,\"hairColor\":2,\"outfit\":2}",
+   "scene": "OVERWORLD",
+   "mode": "RAFT",
+   "pos": [
+    7664,
+    9779
+   ],
+   "builds": 1,
+   "puzzles": "{}"
+  },
+  "after": {
+   "app": "{\"body\":\"body_b\",\"skin\":3,\"hair\":4,\"hairColor\":2,\"outfit\":2}",
+   "scene": "OVERWORLD",
+   "mode": "RAFT",
+   "pos": [
+    7664,
+    9779
+   ],
+   "builds": 1,
+   "puzzles": "{}"
+  },
+  "same": true
+ },
+ "house": {
+  "before": {
+   "inside": true,
+   "uid": "b_2kl_2"
+  },
+  "snap": {
+   "app": "{\"body\":\"body_b\",\"skin\":3,\"hair\":4,\"hairColor\":2,\"outfit\":2}",
+   "scene": "OVERWORLD",
+   "mode": "WALK",
+   "pos": [
+    8048,
+    8304
+   ],
+   "builds": 2,
+   "puzzles": "{}"
+  },
+  "after": {
+   "app": "{\"body\":\"body_b\",\"skin\":3,\"hair\":4,\"hairColor\":2,\"outfit\":2}",
+   "scene": "OVERWORLD",
+   "mode": "WALK",
+   "pos": [
+    8048,
+    8304
+   ],
+   "builds": 2,
+   "puzzles": "{}"
+  },
+  "same": true
+ },
+ "puzzle": {
+  "before": {
+   "id": "PZ_WATER_VALVES",
+   "ui": "{\"valves\":[true,false,false]}",
+   "solved": false
+  },
+  "snap": {
+   "app": "{\"body\":\"body_b\",\"skin\":3,\"hair\":4,\"hairColor\":2,\"outfit\":2}",
+   "scene": "OVERWORLD",
+   "mode": "WALK",
+   "pos": [
+    8048,
+    8304
+   ],
+   "builds": 2,
+   "puzzles": "{\"PZ_WATER_VALVES\":{\"uiState\":{\"valves\":[true,false,false]},\"solved\":false,\"appliedWorldFlag\":false,\"claimTransactionId\":null,\"attempts\":1}}"
+  },
+  "after": {
+   "app": "{\"body\":\"body_b\",\"skin\":3,\"hair\":4,\"hairColor\":2,\"outfit\":2}",
+   "scene": "OVERWORLD",
+   "mode": "WALK",
+   "pos": [
+    8048,
+    8304
+   ],
+   "builds": 2,
+   "puzzles": "{\"PZ_WATER_VALVES\":{\"uiState\":{\"valves\":[true,false,false]},\"solved\":false,\"appliedWorldFlag\":false,\"claimTransactionId\":null,\"attempts\":1}}"
+  },
+  "same": true
+ }
+}

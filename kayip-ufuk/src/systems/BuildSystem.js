@@ -1,7 +1,7 @@
 // Prefab placement (4 ready-made houses, no modular walls), staged construction with escrow, occupancy,
 // upgrades that mutate the SAME entity uid, storage/water/trap/planter/bed entity data, camps.
 import { PLAYER_INV } from './InventorySystem.js';
-import { T } from '../world/TerrainSystem.js';
+import { T, TILE } from '../world/TerrainSystem.js';
 
 export const HOUSES = new Set(['BUILD_BAMBOO_HUT', 'BUILD_WOOD_HUT', 'BUILD_LARGE_HOUSE', 'BUILD_FISH_HUT']);
 export const NON_SOLID = new Set(['BUILD_PATH', 'BUILD_RUG', 'BUILD_BRIDGE', 'BUILD_PIER', 'BUILD_PLANTER', 'BUILD_ANIMAL_TRAP', 'BUILD_CRAB_TRAP', 'BUILD_FISH_TRAP', 'BUILD_CAMP_MARKER', 'BUILD_GATE', 'BUILD_LEAF_SHELTER', 'BUILD_RAFT', 'BUILD_SIGNAL_STATION']);
@@ -64,6 +64,11 @@ export class BuildSystem {
           const code = g.tileAt(x, y); if (code === T.CLIFF_WALL || code === T.RIVER_DEEP) reasons.push('Uygun kıyı suyu değil');
         }
       }
+    }
+    if (buildId === 'BUILD_RAFT') { // the hull must be able to float: a raft-navigable spot (whole foot box) in or next to the footprint
+      let ok = false;
+      for (let y = y0 - 1; y <= y0 + h && !ok; y++) for (let x = x0 - 1; x <= x0 + w && !ok; x++) if (this.g.pathfinder.boxFree(g, (x + 0.5) * TILE, (y + 0.5) * TILE, 'RAFT', null)) ok = true;
+      if (!ok) reasons.push('Sal için yüzülebilir deniz suyu gerekli');
     }
     if (p === 'river_bank' && riverCells === 0) reasons.push('Nehir kenarı gerekli');
     if (p === 'cliff' && !this.adjacentTo(g, x0, y0, w, h, (code) => code === T.CLIFF_WALL, 1)) reasons.push('Kayalık dibinde olmalı');
