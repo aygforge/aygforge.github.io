@@ -280,6 +280,20 @@
    "fx": 0,
    "toasts": 24,
    "day": 1
+  },
+  {
+   "tMin": 10.32,
+   "visits": 77,
+   "heapMiB": 8.86,
+   "heap": 9290151,
+   "dom": 115,
+   "chunks": 81,
+   "decor": 113,
+   "avatarCache": 63,
+   "animals": 4,
+   "fx": 0,
+   "toasts": 24,
+   "day": 1
   }
  ]
 }
