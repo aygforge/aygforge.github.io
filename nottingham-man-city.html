@@ -1,0 +1,1112 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Nottingham Forest – Man City · Attacking Pressure 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#06070a; --panel:#10121a; --panel2:#171a24; --line:#262a38;
+    --text:#e9ebf2; --muted:#8b91a4; --home:#3b5bdb; --away:#e5323f; --accent:#f5c518;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
+    font-family:Barlow,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  #app{display:flex;flex-direction:column;height:100vh;height:100dvh;background:var(--bg)}
+  #stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:14px 16px 8px;position:relative}
+  #out{display:block;border-radius:8px;background:#000;box-shadow:0 20px 60px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.05)}
+  #msg{position:absolute;left:50%;top:22px;transform:translateX(-50%);background:rgba(16,18,26,.94);border:1px solid var(--line);
+    padding:9px 14px;border-radius:8px;font-size:14px;max-width:min(92vw,620px);text-align:center;opacity:0;pointer-events:none;transition:opacity .25s}
+  #msg.show{opacity:1}
+  #msg.err{border-color:#7a2730;color:#ffd5d8}
+  #controls{flex:none;background:var(--panel);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+    display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center}
+  .grp{display:flex;gap:6px;align-items:center}
+  button,select{font:600 14px Barlow,system-ui,sans-serif;color:var(--text);background:var(--panel2);border:1px solid var(--line);
+    border-radius:7px;height:36px;padding:0 12px;cursor:pointer;white-space:nowrap}
+  button:hover:not(:disabled),select:hover:not(:disabled){border-color:#3a4052;background:#1d2130}
+  button:disabled,select:disabled{opacity:.45;cursor:not-allowed}
+  button.on{background:#25304f;border-color:#3b5bdb}
+  #btnRec.rec{background:#5a1820;border-color:#e5323f}
+  #btnRec .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#e5323f;margin-right:7px;vertical-align:0}
+  #btnRec.rec .dot{animation:blink 1s infinite}
+  @keyframes blink{50%{opacity:.25}}
+  #scrubWrap{flex:1 1 260px;display:flex;align-items:center;gap:10px;min-width:200px}
+  #scrub{flex:1;accent-color:var(--accent);height:24px;cursor:pointer}
+  #timeLbl{font:600 14px "Barlow Condensed",Barlow,sans-serif;color:var(--muted);min-width:118px;text-align:right;font-variant-numeric:tabular-nums}
+  label.sm{font-size:13px;color:var(--muted)}
+  details{flex-basis:100%;font-size:14px;color:var(--muted)}
+  summary{cursor:pointer;user-select:none;padding:2px 0}
+  #goalEditor{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;align-items:center}
+  .goalRow{display:flex;gap:4px;align-items:center;background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:3px 4px 3px 8px}
+  .goalRow input{width:52px;height:28px;background:#0c0e14;color:var(--text);border:1px solid var(--line);border-radius:5px;font:600 14px Barlow,sans-serif;padding:0 6px}
+  .goalRow select,.goalRow button{height:28px;padding:0 8px;font-size:13px}
+  .note{flex-basis:100%;font-size:12px;color:#6d7386;margin-top:6px}
+  :fullscreen #stage,:-webkit-full-screen #stage{padding:0}
+  :fullscreen #out{border-radius:0}
+  @media (max-width:640px){
+    #controls{padding:8px 10px calc(8px + env(safe-area-inset-bottom));gap:6px}
+    button,select{height:34px;padding:0 10px;font-size:13px}
+    #scrubWrap{order:-1;flex-basis:100%}
+    #stage{padding:8px}
+  }
+</style>
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+</script>
+</head>
+<body>
+<div id="app">
+  <div id="stage">
+    <canvas id="out" width="1920" height="1080" aria-label="3D attacking pressure animasyonu"></canvas>
+    <div id="msg" role="status"></div>
+  </div>
+  <div id="controls">
+    <div class="grp">
+      <button id="btnPlay" title="Oynat / Duraklat (Boşluk)">▶ Oynat</button>
+      <button id="btnRestart" title="Baştan başlat">↺ Baştan</button>
+    </div>
+    <div id="scrubWrap">
+      <input id="scrub" type="range" min="0" max="1000" step="1" value="0" aria-label="Zaman çizelgesi">
+      <span id="timeLbl">0' · 0.0 / 50s</span>
+    </div>
+    <div class="grp">
+      <button id="fmt169" class="on" title="Yatay 1920×1080">16:9</button>
+      <button id="fmt916" title="Dikey 1080×1920">9:16</button>
+    </div>
+    <div class="grp">
+      <label class="sm" for="dur">Süre</label>
+      <select id="dur">
+        <option value="30">30 sn</option>
+        <option value="45">45 sn</option>
+        <option value="50" selected>50 sn</option>
+        <option value="60">60 sn</option>
+      </select>
+    </div>
+    <div class="grp">
+      <button id="btnFull" title="Tam ekran (F)">⛶ Tam ekran</button>
+      <button id="btnRec" title="Animasyonu baştan sona WebM olarak kaydet"><span class="dot"></span>WebM Kaydet</button>
+    </div>
+    <details id="goalDetails">
+      <summary>Gol olayları (kaynak grafikteki top işaretlerinden yaklaşık dakikalar — düzenlenebilir)</summary>
+      <div id="goalEditor"></div>
+      <div class="note">Baskı değerleri ikinci görseldeki çubukların piksel yüksekliklerinden ölçülüp 0–1 aralığına normalize edilmiştir. Göreli bir baskı endeksidir; gerçek xG veya resmi istatistik değildir.</div>
+    </details>
+  </div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+
+/* =====================================================================
+   1) MAÇ VERİSİ
+   Kaynak: ikinci görsel (attacking pressure grafiği). Her çubuk kolonu
+   piksel olarak ölçüldü. Yatay eksen iki parçalı doğrusal eşlendi:
+   0' → x≈61px, İY (45') → x≈630px, MS (90') → x≈1185px.
+   Üst (kırmızı) çubuklar = Takım A (ev sahibi), alt (koyu) = Takım B.
+   Değerler, en yüksek çubuğa (≈109px) göre 0–1 normalize edilmiştir.
+   minute: m  → [m, m+1) dakika aralığındaki baskı.
+   ===================================================================== */
+const RAW = [
+ [0,0.82,0.0],[1,0.84,0.27],[2,0.0,0.28],[3,0.0,0.26],[4,0.94,0.09],[5,0.94,0.0],[6,0.74,0.6],[7,0.0,0.62],[8,0.0,0.68],[9,0.39,0.66],
+ [10,0.37,0.37],[11,0.0,0.52],[12,0.33,0.54],[13,0.34,0.0],[14,0.06,0.39],[15,1.0,0.39],[16,1.0,0.0],[17,0.41,0.07],[18,0.19,0.06],[19,0.17,0.51],
+ [20,0.74,0.5],[21,0.42,0.32],[22,0.44,0.12],[23,0.5,0.14],[24,0.5,0.0],[25,0.46,0.06],[26,0.0,0.26],[27,0.0,0.48],[28,0.0,0.47],[29,0.0,0.39],
+ [30,0.0,0.38],[31,0.42,0.68],[32,0.0,0.7],[33,0.57,0.42],[34,0.58,0.0],[35,0.29,0.0],[36,0.29,0.32],[37,0.0,0.31],[38,0.0,0.7],[39,0.0,0.7],
+ [40,0.0,0.58],[41,0.44,0.56],[42,0.58,0.0],[43,0.44,0.0],[44,0.0,0.0],[45,0.0,0.0],[46,0.0,0.42],[47,0.0,0.46],[48,0.0,0.39],[49,0.38,0.42],
+ [50,0.39,0.0],[51,0.0,0.84],[52,0.0,0.94],[53,0.0,0.96],[54,0.0,0.78],[55,0.25,0.39],[56,0.26,0.13],[57,0.21,0.14],[58,0.22,0.37],[59,0.0,0.75],
+ [60,0.0,0.76],[61,0.0,0.63],[62,0.0,0.64],[63,0.0,0.44],[64,0.0,0.34],[65,0.31,0.34],[66,0.32,0.07],[67,0.84,0.07],[68,0.84,0.64],[69,0.0,0.64],
+ [70,0.0,0.32],[71,0.0,0.58],[72,0.0,0.58],[73,1.0,0.54],[74,1.0,0.0],[75,0.75,0.28],[76,0.0,0.52],[77,0.0,0.86],[78,0.0,0.94],[79,0.0,0.94],
+ [80,0.28,0.43],[81,0.27,0.39],[82,0.92,0.39],[83,0.92,0.0],[84,0.0,0.12],[85,0.0,0.1],[86,0.0,0.42],[87,0.0,0.76],[88,0.29,0.74],[89,0.28,0.16],
+ [90,0,0]
+];
+const matchData = RAW.map(([minute, home, away]) => ({ minute, home, away }));
+
+/* Gol olayları: grafikteki top simgelerinin yatay konumlarından (yaklaşık).
+   Üstteki toplar → Takım A, alttaki toplar → Takım B. Alttaki editörden değiştirilebilir. */
+let GOALS = [
+  { minute: 6,  team: 'home' },   // üst top, x≈133px
+  { minute: 18, team: 'home' },   // üst top, x≈281px
+  { minute: 53, team: 'away' },   // alt top, x≈728px
+  { minute: 73, team: 'home' },   // üst top, x≈988px
+];
+
+const TEAMS = {
+  home: { code: 'NFO', name: 'Nottingham Forest', upper: 'NOTTINGHAM FOREST', short: 'NOTT\'M FOREST', ui: '#e53233', base: '#c8102e', stripeA: '#d01226', stripeB: '#f4f4f6', mark: '#e53233' },
+  away: { code: 'MCI', name: 'Manchester City',   upper: 'MANCHESTER CITY', short: 'MAN CITY', ui: '#6cabdd', base: '#5d9fd6', stripeA: '#7ab6e6', stripeB: '#1c2c5b' },
+};
+const MATCH = { title: 'Nottingham Forest – Manchester City', competition: 'PREMIER LEAGUE',
+  // Premier League teması: koyu mor zemin, pembe/camgöbeği ışıma
+  bgInner: '#2a0a33', bgOuter: '#08020b', glow: '#e90052', glow2: '#04f5ff', accent: '#00ff85' };
+
+/* =====================================================================
+   2) YARDIMCILAR
+   ===================================================================== */
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+const easeOutCubic = t => 1 - Math.pow(1 - clamp(t, 0, 1), 3);
+const easeInOut = t => { t = clamp(t, 0, 1); return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+const DEG = Math.PI / 180;
+const $ = id => document.getElementById(id);
+
+function catmull(p0, p1, p2, p3, t) {
+  const t2 = t * t, t3 = t2 * t;
+  return 0.5 * ((2 * p1) + (-p0 + p2) * t + (2 * p0 - 5 * p1 + 4 * p2 - p3) * t2 + (-p0 + 3 * p1 - 3 * p2 + p3) * t3);
+}
+/* Dakika m'deki baskı: dakika merkezleri arasında Catmull-Rom (zirveleri korur) */
+function pressureAt(key, m) {
+  if (m <= 0) return 0;
+  const x = m - 0.5, i = Math.floor(x), f = x - i;
+  const g = k => matchData[clamp(k, 0, 90)][key];
+  const v = catmull(g(i - 1), g(i), g(i + 1), g(i + 2), f);
+  return clamp(v, 0, 1) * smooth(0, 0.7, m);
+}
+/* Genel üstünlük (renk tonu için daha geniş pencere) */
+function dominanceAt(m) {
+  let s = 0, a = 0, ws = 0;
+  const sig = 1.6;
+  for (let k = Math.floor(m - 6); k <= Math.ceil(m + 6); k++) {
+    if (k < 0 || k > 89) continue;
+    const c = k + 0.5, w = Math.exp(-((c - m) ** 2) / (2 * sig * sig));
+    s += w * (matchData[k].home - matchData[k].away);
+    a += w * Math.max(matchData[k].home, matchData[k].away);
+    ws += w;
+  }
+  const e = smooth(0, 1.5, m);
+  return ws ? { d: (s / ws) * e, act: (a / ws) * e } : { d: 0, act: 0 };
+}
+
+/* =====================================================================
+   3) ZAMAN ÇİZELGESİ (saniye ↔ dakika)
+   50 sn referans: 0–2 giriş | 2–24.5 1. yarı | 24.5–25.5 devre | 25.5–48 2. yarı | 48–50 maç sonu
+   ===================================================================== */
+const state = { t: 0, duration: 50, playing: false, format: '16:9', recording: false };
+function phases() {
+  const s = state.duration / 50;
+  return { intro: 2 * s, h1: 24.5 * s, ht: 25.5 * s, h2: 48 * s, end: state.duration };
+}
+function minuteAt(t) {
+  const p = phases();
+  if (t <= p.intro) return 0;
+  if (t < p.h1) return 45 * (t - p.intro) / (p.h1 - p.intro);
+  if (t < p.ht) return 45;
+  if (t < p.h2) return 45 + 45 * (t - p.ht) / (p.h2 - p.ht);
+  return 90;
+}
+function timeAtMinute(m) {
+  const p = phases();
+  if (m <= 45) return p.intro + (m / 45) * (p.h1 - p.intro);
+  return p.ht + ((m - 45) / 45) * (p.h2 - p.ht);
+}
+function periodAt(t) {
+  const p = phases();
+  if (t < p.intro) return 'pre';
+  if (t < p.h1) return 'h1';
+  if (t < p.ht) return 'ht';
+  if (t < p.h2) return 'h2';
+  return 'ft';
+}
+function clockText(t) {
+  const per = periodAt(t), m = minuteAt(t);
+  if (per === 'pre') return "0'";
+  if (per === 'h1') return Math.min(45, Math.floor(m) + 1) + "'";
+  if (per === 'ht') return "45'";
+  if (per === 'h2') return Math.min(90, Math.floor(m) + 1) + "'";
+  return "90'";
+}
+const PERIOD_LABEL = { pre: 'Kick-off', h1: '1st Half', ht: 'Half-Time', h2: '2nd Half', ft: 'Full-Time' };
+
+/* Gol zamanı: "28'" golü, saatin 28' gösterdiği aralığın ortasında (27.5 dk) tetiklenir */
+const goalTime = g => timeAtMinute(clamp(g.minute - 0.5, 0, 90));
+/* t anındaki skor ve son gol — tamamen saf fonksiyon (ileri/geri sarmada bozulmaz) */
+function goalState(t) {
+  const score = { home: 0, away: 0 }, lastAge = { home: Infinity, away: Infinity };
+  let last = null, age = Infinity;
+  for (const g of GOALS) {
+    const tg = goalTime(g);
+    if (t >= tg) {
+      score[g.team]++;
+      lastAge[g.team] = Math.min(lastAge[g.team], t - tg);
+      if (t - tg < age) { age = t - tg; last = g; }
+    }
+  }
+  return { score, last, age, lastAge };
+}
+
+/* =====================================================================
+   4) RENDERER / SAHNE
+   ===================================================================== */
+const out = $('out');
+const octx = out.getContext('2d', { alpha: false });
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
+} catch (e) {
+  showMsg('WebGL başlatılamadı. Lütfen WebGL destekleyen bir tarayıcı kullanın.', true, 0);
+  throw e;
+}
+THREE.ColorManagement.enabled = false;
+renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+renderer.setPixelRatio(1);
+renderer.setClearColor(0x000000, 0);
+const gl = renderer.domElement;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(30, 16 / 9, 1, 3000);
+
+const FIELD_L = 105, FIELD_W = 68;
+const MESH_L = 112, MESH_W = 75;           // saha + kenar payı
+const SEG_L = 176, SEG_W = 118;
+const BASE_Y = -2.6;                        // yan yüzeylerin alt kenarı
+const HEIGHT = 15;
+
+const col3 = hex => new THREE.Color(hex);
+const uniforms = {
+  uTime: { value: 0 }, uHome: { value: 0 }, uAway: { value: 0 }, uHeight: { value: HEIGHT },
+  uGoalAge: { value: 99 }, uGoalSide: { value: 0 }, uGoalAmp: { value: 0 }, uGoalGlow: { value: 0 },
+  uGoalColor: { value: col3(TEAMS.home.ui) }, uReveal: { value: 1.2 }, uBase: { value: BASE_Y },
+  uNeutral: { value: col3('#3a4050') }, uTint: { value: col3(TEAMS.away.base) }, uTintAmt: { value: 0 },
+  uHomeA: { value: col3(TEAMS.home.stripeA) }, uHomeB: { value: col3(TEAMS.home.stripeB) },
+  uAwayA: { value: col3(TEAMS.away.stripeA) }, uAwayB: { value: col3(TEAMS.away.stripeB) },
+  uLines: { value: null },
+};
+
+const COMMON = /* glsl */`
+  uniform float uTime, uHome, uAway, uHeight, uGoalAge, uGoalSide, uGoalAmp, uBase, uReveal;
+  const float HL = ${(FIELD_L / 2).toFixed(2)};
+  const float HW = ${(FIELD_W / 2).toFixed(2)};
+  // Baskı zarfı: d=0 hücum edilen kale çizgisi. Güçlü baskı → dalga sahaya daha çok yayılır.
+  float env(float d, float p){ float w = 0.15 + 0.42 * p; return exp(-(d * d) / (w * w) * 1.8); }
+  float goalRing(vec2 q){
+    if (uGoalAmp <= 0.0) return 0.0;
+    vec2 gp = vec2(uGoalSide < 0.5 ? -HL : HL, 0.0);
+    float r = length(q - gp);
+    float front = uGoalAge * 62.0;
+    return exp(-pow((r - front) / 8.0, 2.0)) * uGoalAmp * exp(-uGoalAge * 0.85);
+  }
+  float heightAt(vec2 q){
+    // Takım A (ev) -x kalesine, Takım B (dep) +x kalesine hücum eder.
+    float dH = (q.x + HL) / (2.0 * HL);
+    float dA = (HL - q.x) / (2.0 * HL);
+    float zN = q.y / HW;
+    float latH = 0.80 + 0.20 * cos(zN * 2.3 + sin(uTime * 0.7) * 0.8);
+    float latA = 0.80 + 0.20 * cos(zN * 2.3 - cos(uTime * 0.6) * 0.8 + 1.0);
+    // Kaleye doğru ilerleyen dalgacıklar
+    float rH = 0.72 + 0.28 * sin(dH * 25.0 + uTime * 5.2);
+    float rA = 0.72 + 0.28 * sin(dA * 25.0 + uTime * 5.2 + 1.7);
+    float h = uHeight * uHome * env(dH, uHome) * rH * latH;
+    h      += uHeight * uAway * env(dA, uAway) * rA * latA;
+    // Çok güçlü baskıda saha ucu yukarı kıvrılır
+    h += uHeight * 0.45 * uHome * uHome * exp(-max(dH, 0.0) * 15.0);
+    h += uHeight * 0.45 * uAway * uAway * exp(-max(dA, 0.0) * 15.0);
+    // Sakin ortam hareketi
+    h += 0.32 * sin(q.x * 0.09 + uTime * 0.9) * cos(q.y * 0.11 - uTime * 0.7);
+    // Gol şok dalgası
+    h += goalRing(q) * 8.5;
+    return h;
+  }
+`;
+
+const VERT = /* glsl */`
+  ${COMMON}
+  attribute float aSkY;       // yan yüzey: 1 üst kenar, 0 alt kenar
+  varying vec3 vN; varying vec2 vUv; varying vec2 vQ; varying float vH; varying float vSkY;
+  void main(){
+    vec2 q = position.xz;
+    float h = heightAt(q);
+    vec3 p = vec3(q.x, h, q.y);
+  #ifdef SKIRT
+    if (aSkY < 0.5) p.y = uBase;
+    vN = normalize(normal + vec3(0.0, 0.25, 0.0));
+  #else
+    float e = 0.6;
+    float hx = heightAt(q + vec2(e, 0.0)) - heightAt(q - vec2(e, 0.0));
+    float hz = heightAt(q + vec2(0.0, e)) - heightAt(q - vec2(0.0, e));
+    vN = normalize(vec3(-hx / (2.0 * e), 1.0, -hz / (2.0 * e)));
+  #endif
+    vUv = uv; vQ = q; vH = h; vSkY = aSkY;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+  }
+`;
+
+const FRAG = /* glsl */`
+  ${COMMON}
+  uniform vec3 uNeutral, uTint, uHomeA, uHomeB, uAwayA, uAwayB, uGoalColor;
+  uniform float uTintAmt, uGoalGlow;
+  uniform sampler2D uLines;
+  varying vec3 vN; varying vec2 vUv; varying vec2 vQ; varying float vH; varying float vSkY;
+  float bands(float x){
+    float f = fract(x);
+    float aa = fwidth(x) * 1.5 + 0.01;
+    return smoothstep(0.5 - aa, 0.5 + aa, f) * (1.0 - smoothstep(1.0 - aa, 1.0, f));
+  }
+  void main(){
+    float xN = (vQ.x + HL + 3.5) / (2.0 * HL + 7.0);
+    if (xN > uReveal) discard;
+    float dH = (vQ.x + HL) / (2.0 * HL);
+    float dA = 1.0 - dH;
+    vec3 col = mix(uNeutral, uTint, uTintAmt);
+    float iH = uHome * env(dH, uHome);
+    float iA = uAway * env(dA, uAway);
+    // Takım renk şeritleri (kale çizgisine paralel), baskı yönünde akar
+    vec3 cH = mix(uHomeA, uHomeB, bands(dH * 9.0 + uTime * 0.55));
+    vec3 cA = mix(uAwayA, uAwayB, bands(dA * 9.0 + uTime * 0.55));
+    col = mix(col, cA, smoothstep(0.04, 0.42, iA));
+    col = mix(col, cH, smoothstep(0.04, 0.42, iH));
+    // Aydınlatma
+    vec3 n = normalize(vN);
+    vec3 L = normalize(vec3(-0.35, 1.0, -0.45));
+    float dif = max(dot(n, L), 0.0);
+    float crest = clamp(vH / (uHeight * 1.2), 0.0, 1.0);
+    vec3 V = normalize(vec3(-0.5, 0.8, 0.6));
+    float spec = pow(max(dot(n, normalize(L + V)), 0.0), 28.0) * 0.18;
+    float light = 0.50 + 0.52 * dif + 0.22 * crest;
+  #ifdef SKIRT
+    light = mix(0.32, 0.72, vSkY);
+    spec = 0.0;
+  #endif
+    col = col * light + spec;
+  #ifndef SKIRT
+    float a = texture2D(uLines, vUv).a;
+    float lum = dot(col, vec3(0.299, 0.587, 0.114));
+    vec3 lc = mix(vec3(0.97), vec3(0.07, 0.08, 0.14), smoothstep(0.58, 0.78, lum));
+    col = mix(col, lc, a * 0.93);
+  #endif
+    // Gol ışığı
+    col += uGoalColor * (uGoalGlow * 0.35 + goalRing(vQ) * 0.55);
+    // Açılış süpürmesinin parlak kenarı
+    col += vec3(1.0) * smoothstep(uReveal - 0.035, uReveal, xN) * step(uReveal, 1.05) * 0.6;
+    gl_FragColor = vec4(col, 1.0);
+  }
+`;
+
+/* --- Saha çizgileri dokusu (prosedürel) --- */
+function makeLinesTexture() {
+  const pxm = 20, cw = MESH_L * pxm, ch = MESH_W * pxm;
+  const c = document.createElement('canvas'); c.width = cw; c.height = ch;
+  const x = c.getContext('2d');
+  const ox = (MESH_L - FIELD_L) / 2 * pxm, oy = (MESH_W - FIELD_W) / 2 * pxm;
+  const X = m => ox + m * pxm, Y = m => oy + m * pxm;
+  x.strokeStyle = '#fff'; x.fillStyle = '#fff'; x.lineWidth = 0.26 * pxm; x.lineJoin = 'round';
+  x.strokeRect(X(0), Y(0), FIELD_L * pxm, FIELD_W * pxm);
+  x.beginPath(); x.moveTo(X(52.5), Y(0)); x.lineTo(X(52.5), Y(68)); x.stroke();
+  x.beginPath(); x.arc(X(52.5), Y(34), 9.15 * pxm, 0, Math.PI * 2); x.stroke();
+  x.beginPath(); x.arc(X(52.5), Y(34), 0.35 * pxm, 0, Math.PI * 2); x.fill();
+  const a = Math.acos(5.5 / 9.15);
+  for (const [x0, dir] of [[0, 1], [105, -1]]) {
+    const r = (xa, ya, w, h) => x.strokeRect(Math.min(X(xa), X(xa + w)), Y(ya), Math.abs(w) * pxm, h * pxm);
+    r(x0, 34 - 20.16, dir * 16.5, 40.32);
+    r(x0, 34 - 9.16, dir * 5.5, 18.32);
+    r(x0, 34 - 3.66, -dir * 2.0, 7.32);
+    x.beginPath(); x.arc(X(x0 + dir * 11), Y(34), 0.3 * pxm, 0, Math.PI * 2); x.fill();
+    x.beginPath();
+    if (dir > 0) x.arc(X(x0 + 11), Y(34), 9.15 * pxm, -a, a);
+    else x.arc(X(x0 - 11), Y(34), 9.15 * pxm, Math.PI - a, Math.PI + a);
+    x.stroke();
+  }
+  for (const [cx, cy, s] of [[0, 0, 0], [105, 0, 0.5], [105, 68, 1], [0, 68, 1.5]]) {
+    x.beginPath(); x.arc(X(cx), Y(cy), 1 * pxm, s * Math.PI, (s + 0.5) * Math.PI); x.stroke();
+  }
+  const tex = new THREE.CanvasTexture(c);
+  tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  tex.generateMipmaps = true; tex.minFilter = THREE.LinearMipmapLinearFilter;
+  return tex;
+}
+uniforms.uLines.value = makeLinesTexture();
+
+/* --- Yüzey mesh'i --- */
+const surfGeo = new THREE.PlaneGeometry(MESH_L, MESH_W, SEG_L, SEG_W);
+surfGeo.rotateX(-Math.PI / 2);
+surfGeo.setAttribute('aSkY', new THREE.Float32BufferAttribute(new Float32Array(surfGeo.attributes.position.count).fill(1), 1));
+const surfMat = new THREE.ShaderMaterial({ uniforms, vertexShader: VERT, fragmentShader: FRAG, side: THREE.DoubleSide });
+const surface = new THREE.Mesh(surfGeo, surfMat);
+surface.frustumCulled = false;
+scene.add(surface);
+
+/* --- Yan yüzeyler (kalınlık / katman etkisi) --- */
+function makeSkirt() {
+  const hx = MESH_L / 2, hz = MESH_W / 2, pts = [];
+  const side = (x0, z0, x1, z1, n, nx, nz) => {
+    for (let i = 0; i < n; i++) { const t = i / n; pts.push([lerp(x0, x1, t), lerp(z0, z1, t), nx, nz]); }
+  };
+  side(-hx, hz, hx, hz, SEG_L, 0, 1);     // ön (+z)
+  side(hx, hz, hx, -hz, SEG_W, 1, 0);     // sağ
+  side(hx, -hz, -hx, -hz, SEG_L, 0, -1);  // arka
+  side(-hx, -hz, -hx, hz, SEG_W, -1, 0);  // sol
+  const pos = [], nor = [], sky = [], uv = [], idx = [];
+  const add = (x, z, nx, nz, y) => { pos.push(x, 0, z); nor.push(nx, 0, nz); sky.push(y); uv.push(0, 0); };
+  for (let i = 0; i < pts.length; i++) {
+    const a = pts[i], b = pts[(i + 1) % pts.length];
+    const nx = a[2], nz = a[3], base = pos.length / 3;
+    add(a[0], a[1], nx, nz, 1); add(a[0], a[1], nx, nz, 0);
+    add(b[0], b[1], nx, nz, 1); add(b[0], b[1], nx, nz, 0);
+    idx.push(base, base + 1, base + 2, base + 2, base + 1, base + 3);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('normal', new THREE.Float32BufferAttribute(nor, 3));
+  g.setAttribute('aSkY', new THREE.Float32BufferAttribute(sky, 1));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  g.setIndex(idx);
+  return g;
+}
+const skirtMat = new THREE.ShaderMaterial({ uniforms, vertexShader: VERT, fragmentShader: FRAG, side: THREE.DoubleSide, defines: { SKIRT: 1 } });
+const skirt = new THREE.Mesh(makeSkirt(), skirtMat);
+skirt.frustumCulled = false;
+scene.add(skirt);
+
+/* --- Yumuşak zemin gölgesi --- */
+function makeShadowTex() {
+  const c = document.createElement('canvas'); c.width = 512; c.height = 360;
+  const x = c.getContext('2d');
+  // shadowBlur ile yumuşak kenarlı dikdörtgen (filter desteği gerektirmez)
+  x.shadowColor = '#fff'; x.shadowBlur = 38; x.shadowOffsetX = 1000;
+  x.fillStyle = '#fff';
+  x.fillRect(80 - 1000, 70, 352, 220);
+  const t = new THREE.CanvasTexture(c);
+  return t;
+}
+const shadowMat = new THREE.MeshBasicMaterial({ color: 0x000000, alphaMap: makeShadowTex(), transparent: true, opacity: 0.7, depthWrite: false });
+const shadow = new THREE.Mesh(new THREE.PlaneGeometry(MESH_L * 1.32, MESH_W * 1.5), shadowMat);
+shadow.rotation.x = -Math.PI / 2;
+shadow.position.set(3, BASE_Y - 3.5, 7);
+scene.add(shadow);
+
+/* =====================================================================
+   5) FORMAT / KAMERA YERLEŞİMİ
+   ===================================================================== */
+const FORMATS = {
+  '16:9': { w: 1920, h: 1080, fov: 30, el: 37, az: -30, sx: 0.92, top: 0.60, bot: -0.64 },
+  '9:16': { w: 1080, h: 1920, fov: 34, el: 44, az: -63, sx: 0.94, top: 0.52, bot: -0.64 },
+};
+const BOX = [];
+for (const sx of [-1, 1]) for (const sz of [-1, 1]) for (const y of [BASE_Y, 17]) BOX.push(new THREE.Vector3(sx * MESH_L / 2, y, sz * MESH_W / 2));
+const tmpV = new THREE.Vector3();
+let fitDist = 200;
+let quality = 1;
+
+function placeCamera(d, el, az, target) {
+  camera.position.set(target.x + d * Math.cos(el) * Math.sin(az), target.y + d * Math.sin(el), target.z + d * Math.cos(el) * Math.cos(az));
+  camera.lookAt(target);
+  camera.updateMatrixWorld();
+}
+function projBox() {
+  let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+  for (const p of BOX) { tmpV.copy(p).project(camera); x0 = Math.min(x0, tmpV.x); x1 = Math.max(x1, tmpV.x); y0 = Math.min(y0, tmpV.y); y1 = Math.max(y1, tmpV.y); }
+  return { x0, x1, y0, y1 };
+}
+function computeFit() {
+  const F = FORMATS[state.format];
+  camera.fov = F.fov; camera.aspect = F.w / F.h; camera.clearViewOffset(); camera.updateProjectionMatrix();
+  let lo = 20, hi = 3000;
+  const tgt = new THREE.Vector3(0, 3, 0);
+  for (let i = 0; i < 40; i++) {
+    const mid = (lo + hi) / 2;
+    placeCamera(mid, F.el * DEG, F.az * DEG, tgt);
+    const b = projBox();
+    if (b.x1 - b.x0 <= 2 * F.sx && b.y1 - b.y0 <= F.top - F.bot) hi = mid; else lo = mid;
+  }
+  fitDist = hi;
+}
+function applyFormat(fmt) {
+  state.format = fmt;
+  const F = FORMATS[fmt];
+  out.width = F.w; out.height = F.h;
+  renderer.setSize(Math.round(F.w * quality), Math.round(F.h * quality), false);
+  $('fmt169').classList.toggle('on', fmt === '16:9');
+  $('fmt916').classList.toggle('on', fmt === '9:16');
+  computeFit();
+  buildTimelineCache();
+  layoutCanvas();
+}
+function layoutCanvas() {
+  const st = $('stage'), cs = getComputedStyle(st);
+  const aw = st.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  const ah = st.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+  const r = out.width / out.height;
+  let w = aw, h = aw / r;
+  if (h > ah) { h = ah; w = ah * r; }
+  out.style.width = Math.max(10, Math.floor(w)) + 'px';
+  out.style.height = Math.max(10, Math.floor(h)) + 'px';
+}
+
+/* =====================================================================
+   6) YAYIN GRAFİKLERİ (2D, video kaydına dahil)
+   ===================================================================== */
+const FONT_C = '"Barlow Condensed", "Arial Narrow", sans-serif';
+const FONT = 'Barlow, system-ui, sans-serif';
+let tlCache = null;   // {bright, x, w, mid, amp}
+
+function U() { return Math.min(out.width, out.height) / 1080; }
+function setLS(ctx, v) { if ('letterSpacing' in ctx) ctx.letterSpacing = v + 'px'; }
+function hexA(hex, a) {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${n >> 16 & 255},${n >> 8 & 255},${n & 255},${a})`;
+}
+function rr(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  if (ctx.roundRect) ctx.roundRect(x, y, w, h, r);
+  else { ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+}
+function timelineGeom() {
+  const u = U(), W = out.width, H = out.height;
+  if (state.format === '16:9') return { x: 72 * u, w: W - 144 * u, mid: H - 98 * u, amp: 40 * u, lblY: H - 166 * u, subY: H - 34 * u };
+  return { x: 60 * u, w: W - 120 * u, mid: H - 190 * u, amp: 60 * u, lblY: H - 340 * u, subY: H - 62 * u };
+}
+function buildTimelineCache() {
+  const g = timelineGeom(), u = U();
+  const c = document.createElement('canvas'); c.width = out.width; c.height = out.height;
+  const x = c.getContext('2d');
+  const bw = g.w / 90;
+  x.fillStyle = 'rgba(255,255,255,0.035)';
+  rr(x, g.x - 6 * u, g.mid - g.amp - 8 * u, g.w + 12 * u, (g.amp + 8 * u) * 2, 8 * u); x.fill();
+  for (let k = 0; k < 90; k++) {
+    const d = matchData[k], cx = g.x + (k + 0.5) * bw, w = Math.max(2, bw * 0.62);
+    if (d.home > 0) { x.fillStyle = TEAMS.home.ui; rr(x, cx - w / 2, g.mid - d.home * g.amp - 1, w, d.home * g.amp, Math.min(w / 2, 3 * u)); x.fill(); }
+    if (d.away > 0) { x.fillStyle = TEAMS.away.ui; rr(x, cx - w / 2, g.mid + 1, w, d.away * g.amp, Math.min(w / 2, 3 * u)); x.fill(); }
+  }
+  x.fillStyle = 'rgba(255,255,255,0.28)'; x.fillRect(g.x, g.mid - 0.5 * u, g.w, 1 * u);
+  tlCache = { canvas: c, ...g };
+}
+function drawBall(ctx, x, y, r, color) {
+  ctx.save();
+  ctx.fillStyle = '#fff'; ctx.strokeStyle = color; ctx.lineWidth = r * 0.32;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#14161d';
+  ctx.beginPath();
+  for (let i = 0; i < 5; i++) { const a = -Math.PI / 2 + i * 2 * Math.PI / 5; ctx.lineTo(x + Math.cos(a) * r * 0.42, y + Math.sin(a) * r * 0.42); }
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+function drawTimeline(ctx, t, m, gs, alpha) {
+  const g = tlCache, u = U();
+  ctx.save(); ctx.globalAlpha = alpha;
+  const playX = g.x + (m / 90) * g.w;
+  ctx.globalAlpha = alpha * 0.22; ctx.drawImage(g.canvas, 0, 0);
+  ctx.globalAlpha = alpha;
+  ctx.save(); ctx.beginPath(); ctx.rect(0, 0, playX, out.height); ctx.clip(); ctx.drawImage(g.canvas, 0, 0); ctx.restore();
+  // devre çizgisi
+  const hx = g.x + g.w / 2;
+  ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 1.5 * u; ctx.setLineDash([4 * u, 4 * u]);
+  ctx.beginPath(); ctx.moveTo(hx, g.mid - g.amp - 10 * u); ctx.lineTo(hx, g.mid + g.amp + 10 * u); ctx.stroke(); ctx.setLineDash([]);
+  // gol işaretleri
+  for (const ev of GOALS) {
+    const gx = g.x + (clamp(ev.minute - 0.5, 0, 90) / 90) * g.w;
+    const scored = t >= goalTime(ev);
+    const gy = ev.team === 'home' ? g.mid - g.amp - 20 * u : g.mid + g.amp + 20 * u;
+    ctx.globalAlpha = alpha * (scored ? 1 : 0.35);
+    drawBall(ctx, gx, gy, 9 * u, TEAMS[ev.team].ui);
+  }
+  ctx.globalAlpha = alpha;
+  // oynatma çizgisi
+  ctx.shadowColor = 'rgba(255,255,255,0.8)'; ctx.shadowBlur = 10 * u;
+  ctx.fillStyle = '#fff'; ctx.fillRect(playX - 1.25 * u, g.mid - g.amp - 12 * u, 2.5 * u, (g.amp + 12 * u) * 2);
+  ctx.shadowBlur = 0;
+  ctx.beginPath(); ctx.arc(playX, g.mid, 4.5 * u, 0, Math.PI * 2); ctx.fill();
+  // etiketler
+  ctx.fillStyle = 'rgba(255,255,255,0.55)'; ctx.font = `600 ${17 * u}px ${FONT}`; ctx.textBaseline = 'alphabetic';
+  setLS(ctx, 1.5 * u);
+  ctx.textAlign = 'left'; ctx.fillText("0'", g.x, g.subY);
+  ctx.textAlign = 'center'; ctx.fillText('HT', hx, g.subY);
+  ctx.textAlign = 'right'; ctx.fillText('FT', g.x + g.w, g.subY);
+  ctx.font = `600 ${19 * u}px ${FONT}`; setLS(ctx, 2.5 * u);
+  ctx.fillStyle = 'rgba(255,255,255,0.62)'; ctx.textAlign = 'left';
+  ctx.fillText('ATTACKING PRESSURE', g.x, g.lblY);
+  setLS(ctx, 0.5 * u);
+  ctx.textAlign = 'right'; ctx.font = `600 ${19 * u}px ${FONT}`; ctx.fillStyle = 'rgba(255,255,255,0.78)';
+  ctx.fillText('Taller wave → stronger pressure', g.x + g.w, g.lblY);
+  // küçük takım anahtarı
+  ctx.font = `600 ${15 * u}px ${FONT}`; ctx.fillStyle = 'rgba(255,255,255,0.45)';
+  const kx = state.format === '16:9' ? g.x + 250 * u : g.x;
+  const ky = state.format === '16:9' ? g.lblY : g.lblY + 30 * u;
+  ctx.textAlign = 'left';
+  ctx.fillStyle = TEAMS.home.ui; ctx.fillRect(kx, ky - 11 * u, 10 * u, 10 * u);
+  ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.fillText('▲ ' + TEAMS.home.code, kx + 15 * u, ky);
+  ctx.fillStyle = TEAMS.away.ui; ctx.fillRect(kx + 80 * u, ky - 11 * u, 10 * u, 10 * u);
+  ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.fillText('▼ ' + TEAMS.away.code, kx + 95 * u, ky);
+  ctx.textAlign = 'right';
+  if (state.format === '16:9') { ctx.textAlign = 'center'; ctx.fillText('Relative index from source chart · not xG', g.x + g.w / 2, g.lblY); }
+  else ctx.fillText('Relative index from source chart · not xG', g.x + g.w, g.lblY + 30 * u);
+  ctx.restore();
+}
+
+function drawTeamMark(ctx, team, x, y, u) {
+  if (team === 'home') {
+    ctx.fillStyle = TEAMS.home.mark || TEAMS.home.stripeB;
+    for (let i = 0; i < 3; i++) ctx.fillRect(x + i * 14 * u, y, 9 * u, 5 * u);
+  } else { ctx.fillStyle = TEAMS.away.ui; ctx.fillRect(x, y, 37 * u, 5 * u); }
+}
+function scoreText(ctx, val, x, y, size, pop, color, align) {
+  const s = 1 + 0.28 * pop;
+  ctx.save();
+  ctx.translate(x, y); ctx.scale(s, s);
+  ctx.textAlign = align;
+  ctx.font = `800 ${size}px ${FONT_C}`;
+  if (pop > 0.01) { ctx.shadowColor = color; ctx.shadowBlur = 40 * pop; }
+  ctx.fillStyle = '#fff';
+  ctx.fillText(String(val), 0, 0);
+  ctx.restore();
+}
+const popOf = age => (isFinite(age) && age >= 0 && age < 0.9) ? Math.exp(-age * 5) * Math.sin(Math.min(age / 0.12, 1) * Math.PI / 2) : 0;
+
+function drawScoreboard(ctx, t, gs, alpha) {
+  const u = U(), W = out.width;
+  const per = periodAt(t), p = phases();
+  const prog = clamp(minuteAt(t) / 90, 0, 1);
+  ctx.save(); ctx.globalAlpha = alpha; ctx.textBaseline = 'alphabetic';
+  if (state.format === '16:9') {
+    const x0 = 72 * u, y0 = 66 * u;
+    for (const [i, team] of [[0, 'home'], [1, 'away']]) {
+      const x = x0 + i * 165 * u;
+      drawTeamMark(ctx, team, x, y0, u);
+      ctx.fillStyle = '#fff'; ctx.font = `700 ${40 * u}px ${FONT_C}`; ctx.textAlign = 'left'; setLS(ctx, 1 * u);
+      ctx.fillText(TEAMS[team].code, x, y0 + 46 * u);
+      setLS(ctx, 0);
+      scoreText(ctx, gs.score[team], x + 2 * u, y0 + 158 * u, 120 * u, popOf(gs.lastAge[team]), TEAMS[team].ui, 'left');
+    }
+    ctx.textAlign = 'center'; ctx.fillStyle = MATCH.accent;
+    ctx.font = `700 ${25 * u}px ${FONT}`; setLS(ctx, 3 * u);
+    ctx.fillText(MATCH.competition, W / 2, 78 * u);
+    setLS(ctx, 0.5 * u);
+    ctx.font = `500 ${23 * u}px ${FONT}`; ctx.fillStyle = 'rgba(255,255,255,0.72)';
+    ctx.fillText(MATCH.title, W / 2, 110 * u);
+    ctx.font = `500 ${19 * u}px ${FONT}`; ctx.fillStyle = 'rgba(255,255,255,0.45)';
+    ctx.fillText('Attacking pressure · 90 minutes', W / 2, 138 * u);
+    // dakika
+    setLS(ctx, 0);
+    const rx = W - 72 * u;
+    ctx.textAlign = 'right'; ctx.fillStyle = '#fff'; ctx.font = `800 ${112 * u}px ${FONT_C}`;
+    ctx.fillText(clockText(t), rx, 160 * u);
+    ctx.font = `600 ${24 * u}px ${FONT}`; ctx.fillStyle = 'rgba(255,255,255,0.75)';
+    ctx.fillText(PERIOD_LABEL[per], rx, 194 * u);
+    ctx.fillStyle = 'rgba(255,255,255,0.16)'; ctx.fillRect(rx - 120 * u, 210 * u, 120 * u, 3 * u);
+    ctx.fillStyle = '#fff'; ctx.fillRect(rx - 120 * u, 210 * u, 120 * u * prog, 3 * u);
+  } else {
+    const cx = W / 2;
+    ctx.textAlign = 'center'; ctx.fillStyle = MATCH.accent;
+    ctx.font = `700 ${30 * u}px ${FONT}`; setLS(ctx, 4 * u);
+    ctx.fillText(MATCH.competition, cx, 108 * u);
+    setLS(ctx, 0.5 * u);
+    ctx.font = `500 ${27 * u}px ${FONT}`; ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.fillText(MATCH.title, cx, 148 * u);
+    setLS(ctx, 0);
+    const sy = 318 * u;
+    for (const [team, sign] of [['home', -1], ['away', 1]]) {
+      const codeX = cx + sign * 300 * u;
+      drawTeamMark(ctx, team, codeX - (team === 'home' ? 18 : 18.5) * u, sy - 92 * u, u);
+      ctx.fillStyle = '#fff'; ctx.font = `700 ${52 * u}px ${FONT_C}`; ctx.textAlign = 'center'; setLS(ctx, 1.5 * u);
+      ctx.fillText(TEAMS[team].code, codeX, sy - 22 * u);
+      setLS(ctx, 0);
+      scoreText(ctx, gs.score[team], cx + sign * 105 * u, sy, 150 * u, popOf(gs.lastAge[team]), TEAMS[team].ui, 'center');
+    }
+    ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font = `700 ${90 * u}px ${FONT_C}`; ctx.textAlign = 'center';
+    ctx.fillText('–', cx, sy - 14 * u);
+    // dakika hapı
+    const txt = `${clockText(t)}   ${PERIOD_LABEL[per]}`;
+    ctx.font = `700 ${36 * u}px ${FONT_C}`; setLS(ctx, 1 * u);
+    const tw = ctx.measureText(txt).width + 54 * u;
+    ctx.fillStyle = 'rgba(255,255,255,0.07)'; rr(ctx, cx - tw / 2, 372 * u, tw, 56 * u, 28 * u); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.fillText(txt, cx, 412 * u);
+    setLS(ctx, 0);
+    ctx.fillStyle = 'rgba(255,255,255,0.16)'; ctx.fillRect(cx - 110 * u, 446 * u, 220 * u, 3 * u);
+    ctx.fillStyle = '#fff'; ctx.fillRect(cx - 110 * u, 446 * u, 220 * u * prog, 3 * u);
+  }
+  ctx.restore();
+}
+
+function drawGoalBanner(ctx, gs) {
+  if (!gs.last || gs.age > 2.3) return;
+  const u = U(), W = out.width, H = out.height, a = gs.age;
+  const team = TEAMS[gs.last.team];
+  const inP = easeOutCubic(a / 0.28), outP = 1 - smooth(1.85, 2.3, a);
+  const alpha = inP * outP;
+  const cy = state.format === '16:9' ? H * 0.255 : H * 0.285;
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  // şerit
+  const bw = W * (state.format === '16:9' ? 0.42 : 0.8) * easeOutCubic(a / 0.4);
+  const grd = ctx.createLinearGradient(W / 2 - bw / 2, 0, W / 2 + bw / 2, 0);
+  grd.addColorStop(0, hexA(team.ui, 0)); grd.addColorStop(0.5, hexA(team.ui, 0.75)); grd.addColorStop(1, hexA(team.ui, 0));
+  ctx.fillStyle = grd; ctx.fillRect(W / 2 - bw / 2, cy - 78 * u, bw, 150 * u);
+  const s = lerp(1.5, 1, inP);
+  ctx.translate(W / 2, cy); ctx.scale(s, s);
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.shadowColor = team.ui; ctx.shadowBlur = 50 * u;
+  ctx.fillStyle = '#fff'; ctx.font = `italic 800 ${132 * u}px ${FONT_C}`; setLS(ctx, 8 * u);
+  ctx.fillText('GOAL', 0, -12 * u);
+  ctx.shadowBlur = 0; setLS(ctx, 3 * u);
+  ctx.font = `700 ${32 * u}px ${FONT}`;
+  ctx.fillText(`${team.upper}  ·  ${gs.last.minute}'`, 0, 62 * u);
+  ctx.restore();
+}
+
+function drawCenterCard(ctx, t, gs) {
+  const p = phases(), u = U(), W = out.width, H = out.height;
+  let alpha = 0, title = '', big = false;
+  if (t >= p.h1 - 0.15 && t < p.ht + 0.35) { alpha = smooth(p.h1 - 0.15, p.h1 + 0.1, t) * (1 - smooth(p.ht, p.ht + 0.35, t)); title = 'HALF-TIME'; }
+  if (t >= p.h2) { alpha = smooth(p.h2, p.h2 + 0.5, t); title = 'FULL-TIME'; big = true; }
+  if (alpha <= 0.001) return;
+  const cy = state.format === '16:9' ? H * 0.47 : H * 0.5;
+  const cw = (big ? 760 : 560) * u, ch = (big ? 230 : 150) * u;
+  ctx.save(); ctx.globalAlpha = alpha;
+  ctx.fillStyle = 'rgba(8,9,14,0.82)'; rr(ctx, W / 2 - cw / 2, cy - ch / 2, cw, ch, 14 * u); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 1.5 * u; ctx.stroke();
+  ctx.fillStyle = TEAMS.home.ui; ctx.fillRect(W / 2 - cw / 2, cy - ch / 2, cw / 2, 4 * u);
+  ctx.fillStyle = TEAMS.away.ui; ctx.fillRect(W / 2, cy - ch / 2, cw / 2, 4 * u);
+  ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.font = `700 ${(big ? 26 : 22) * u}px ${FONT}`; setLS(ctx, 5 * u);
+  ctx.fillText(title, W / 2, cy - ch / 2 + (big ? 56 : 46) * u);
+  setLS(ctx, 0);
+  const sy = cy + (big ? 70 : 50) * u, fs = (big ? 110 : 76) * u;
+  ctx.fillStyle = '#fff'; ctx.font = `800 ${fs}px ${FONT_C}`;
+  ctx.fillText(`${gs.score.home}  –  ${gs.score.away}`, W / 2, sy);
+  ctx.font = `700 ${(big ? 34 : 28) * u}px ${FONT_C}`; setLS(ctx, 1 * u);
+  const off = (big ? 250 : 175) * u;
+  ctx.textAlign = 'right'; ctx.fillText(big ? (TEAMS.home.short || TEAMS.home.upper) : TEAMS.home.code, W / 2 - off + (big ? 70 : 40) * u, sy - fs * 0.3);
+  ctx.textAlign = 'left'; ctx.fillText(big ? (TEAMS.away.short || TEAMS.away.upper) : TEAMS.away.code, W / 2 + off - (big ? 70 : 40) * u, sy - fs * 0.3);
+  ctx.restore();
+}
+
+function drawIntro(ctx, t) {
+  const p = phases(), u = U(), W = out.width, H = out.height;
+  const a = (1 - smooth(p.intro * 0.62, p.intro * 0.98, t)) * smooth(0, p.intro * 0.15, t + 0.0001);
+  if (a <= 0.001) return;
+  ctx.save(); ctx.globalAlpha = a; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  const cy = H * 0.5;
+  const s = state.format === '16:9' ? 1 : 0.82;
+  const bd = ctx.createRadialGradient(W / 2, cy + 20 * u, 0, W / 2, cy + 20 * u, 560 * u);
+  bd.addColorStop(0, 'rgba(5,6,10,0.78)'); bd.addColorStop(1, 'rgba(5,6,10,0)');
+  ctx.fillStyle = bd; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = MATCH.accent; ctx.font = `700 ${24 * u * s}px ${FONT}`; setLS(ctx, 6 * u);
+  ctx.fillText(MATCH.competition, W / 2, cy - 92 * u * s);
+  setLS(ctx, 2 * u);
+  ctx.fillStyle = '#fff'; ctx.font = `800 ${96 * u * s}px ${FONT_C}`;
+  ctx.shadowColor = 'rgba(0,0,0,0.6)'; ctx.shadowBlur = 30 * u;
+  const hw = ctx.measureText(TEAMS.home.upper).width;
+  if (state.format === '16:9') {
+    ctx.textAlign = 'right'; ctx.fillText(TEAMS.home.upper, W / 2 - 46 * u, cy);
+    ctx.textAlign = 'left'; ctx.fillText(TEAMS.away.upper, W / 2 + 46 * u, cy);
+    ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font = `600 ${40 * u}px ${FONT_C}`; ctx.fillText('VS', W / 2, cy + 4 * u);
+  } else {
+    ctx.fillText(TEAMS.home.upper, W / 2, cy - 10 * u);
+    ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font = `600 ${40 * u}px ${FONT_C}`; ctx.fillText('VS', W / 2, cy + 62 * u);
+    ctx.fillStyle = '#fff'; ctx.font = `800 ${96 * u * s}px ${FONT_C}`; ctx.fillText(TEAMS.away.upper, W / 2, cy + 136 * u);
+  }
+  ctx.shadowBlur = 0; setLS(ctx, 3 * u);
+  ctx.fillStyle = 'rgba(255,255,255,0.55)'; ctx.font = `600 ${22 * u}px ${FONT}`;
+  ctx.fillText('ATTACKING PRESSURE · 90 MINUTES', W / 2, cy + (state.format === '16:9' ? 92 : 214) * u);
+  void hw;
+  ctx.restore();
+}
+
+/* =====================================================================
+   7) KARE OLUŞTURMA — her şey yalnızca t'den yeniden hesaplanır
+   ===================================================================== */
+const tgtV = new THREE.Vector3();
+const goalWorld = new THREE.Vector3();
+function renderFrame(t) {
+  const F = FORMATS[state.format], p = phases();
+  const m = minuteAt(t);
+  const home = pressureAt('home', m), away = pressureAt('away', m);
+  const dom = dominanceAt(m);
+  const gs = goalState(t);
+
+  // --- shader uniformları
+  uniforms.uTime.value = t;
+  uniforms.uHome.value = home;
+  uniforms.uAway.value = away;
+  const tintAmt = smooth(0.02, 0.30, Math.abs(dom.d)) * 0.9 * smooth(0.03, 0.18, dom.act);
+  uniforms.uTint.value.set(dom.d >= 0 ? TEAMS.home.base : TEAMS.away.base);
+  uniforms.uTintAmt.value = tintAmt;
+  const gAge = gs.last ? gs.age : 99;
+  const goalActive = gs.last && gAge < 3;
+  uniforms.uGoalAge.value = gAge;
+  uniforms.uGoalAmp.value = goalActive ? 1 : 0;
+  uniforms.uGoalSide.value = gs.last && gs.last.team === 'away' ? 1 : 0;
+  uniforms.uGoalGlow.value = goalActive ? Math.exp(-gAge * 2.4) : 0;
+  if (gs.last) uniforms.uGoalColor.value.set(TEAMS[gs.last.team].ui);
+  uniforms.uReveal.value = lerp(-0.05, 1.25, easeInOut((t - p.intro * 0.1) / (p.intro * 0.75)));
+
+  // --- kamera
+  const ip = easeOutCubic(t / p.intro);
+  let zoom = lerp(1.5, 1.045, ip) - 0.035 * clamp((t - p.intro) / (p.h2 - p.intro), 0, 1);
+  const pulse = goalActive ? Math.sin(clamp(gAge / 1.8, 0, 1) * Math.PI) : 0;
+  zoom -= 0.03 * pulse;
+  const endP = easeInOut((t - p.h2) / (p.end - p.h2));
+  if (t > p.h2) zoom = lerp(zoom, 1.03, endP);
+  const sway = 1 - endP;
+  const el = (F.el + lerp(16, 0, ip) + 1.0 * Math.sin(t * 0.23) * sway) * DEG;
+  const az = (F.az + lerp(-20, 0, ip) + 1.6 * Math.sin(t * 0.17) * sway) * DEG;
+  const gx = gs.last ? (gs.last.team === 'home' ? -1 : 1) * 4 * pulse : 0;
+  tgtV.set(gx, 3, 0);
+  camera.clearViewOffset();
+  placeCamera(fitDist * zoom, el, az, tgtV);
+  const b = projBox();
+  const cxN = (b.x0 + b.x1) / 2, cyN = (b.y0 + b.y1) / 2, wantY = (F.top + F.bot) / 2;
+  const rw = gl.width, rh = gl.height;
+  camera.setViewOffset(rw, rh, cxN * rw / 2, (cyN - wantY) * rh / 2, rw, rh);
+
+  // --- gölge
+  shadowMat.opacity = (0.55 + 0.25 * Math.max(home, away)) * smooth(0.1, 0.9, uniforms.uReveal.value);
+  shadow.scale.setScalar(1 + 0.05 * Math.max(home, away));
+
+  renderer.render(scene, camera);
+
+  // --- 2D kompozisyon
+  const W = out.width, H = out.height, u = U();
+  const bg = octx.createRadialGradient(W * 0.5, H * 0.48, 0, W * 0.5, H * 0.48, Math.max(W, H) * 0.75);
+  bg.addColorStop(0, MATCH.bgInner); bg.addColorStop(1, MATCH.bgOuter);
+  octx.globalCompositeOperation = 'source-over';
+  octx.globalAlpha = 1;
+  octx.fillStyle = bg; octx.fillRect(0, 0, W, H);
+  // turnuva ışıması: üstten ve alttan yumuşak turuncu hale
+  for (const [gy, r, a, gc] of [[-0.05, 0.72, 0.26, MATCH.glow], [1.08, 0.62, 0.16, MATCH.glow2 || MATCH.glow]]) {
+    const gg = octx.createRadialGradient(W * 0.5, H * gy, 0, W * 0.5, H * gy, Math.max(W, H) * r);
+    gg.addColorStop(0, hexA(gc, a)); gg.addColorStop(1, hexA(gc, 0));
+    octx.fillStyle = gg; octx.fillRect(0, 0, W, H);
+  }
+  // ince turuncu çapraz ışık çizgileri
+  octx.save(); octx.globalAlpha = 0.05; octx.strokeStyle = MATCH.glow; octx.lineWidth = 2 * u;
+  for (let i = -6; i <= 12; i++) { const x = i * 180 * u + (t * 12 * u) % (180 * u); octx.beginPath(); octx.moveTo(x, 0); octx.lineTo(x - H * 0.6, H); octx.stroke(); }
+  octx.restore();
+  // baskın takım için hafif ortam rengi
+  const tintCol = dom.d >= 0 ? TEAMS.home.ui : TEAMS.away.ui;
+  const amb = octx.createRadialGradient(W * 0.5, H * 0.55, 0, W * 0.5, H * 0.55, Math.max(W, H) * 0.6);
+  amb.addColorStop(0, hexA(tintCol, 0.10 * tintAmt)); amb.addColorStop(1, hexA(tintCol, 0));
+  octx.fillStyle = amb; octx.fillRect(0, 0, W, H);
+
+  octx.drawImage(gl, 0, 0, W, H);
+
+  // gol ışık patlaması (hücum edilen kalenin ekran konumundan)
+  if (goalActive && gAge < 1.6) {
+    goalWorld.set(gs.last.team === 'home' ? -FIELD_L / 2 : FIELD_L / 2, 4, 0).project(camera);
+    const sx = (goalWorld.x + 1) / 2 * W, sy = (1 - goalWorld.y) / 2 * H;
+    const k = Math.pow(1 - gAge / 1.6, 2);
+    const col = TEAMS[gs.last.team].ui;
+    octx.globalCompositeOperation = 'lighter';
+    const rg = octx.createRadialGradient(sx, sy, 0, sx, sy, (260 + 900 * easeOutCubic(gAge / 1.2)) * u);
+    rg.addColorStop(0, hexA(col, 0.85 * k)); rg.addColorStop(0.35, hexA(col, 0.35 * k)); rg.addColorStop(1, hexA(col, 0));
+    octx.fillStyle = rg; octx.fillRect(0, 0, W, H);
+    octx.fillStyle = `rgba(255,255,255,${0.18 * Math.pow(1 - clamp(gAge / 0.35, 0, 1), 2)})`; octx.fillRect(0, 0, W, H);
+    octx.globalCompositeOperation = 'source-over';
+  }
+  // vinyet
+  const vg = octx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.45, W / 2, H / 2, Math.max(W, H) * 0.78);
+  vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,0.5)');
+  octx.fillStyle = vg; octx.fillRect(0, 0, W, H);
+
+  const hudA = smooth(p.intro * 0.55, p.intro, t);
+  drawScoreboard(octx, t, gs, hudA);
+  drawTimeline(octx, t, m, gs, hudA);
+  drawGoalBanner(octx, gs);
+  drawCenterCard(octx, t, gs);
+  drawIntro(octx, t);
+}
+
+/* =====================================================================
+   8) OYNATMA DÖNGÜSÜ, KONTROLLER, KAYIT
+   ===================================================================== */
+let last = performance.now(), frameAcc = 0, frameN = 0, lowTime = 0;
+let dirty = true;
+function loop(now) {
+  const dt = Math.min(state.recording ? 0.25 : 0.1, (now - last) / 1000);
+  last = now;
+  if (state.playing) {
+    state.t += dt;
+    if (state.t >= state.duration) {
+      state.t = state.duration; setPlaying(false);
+      if (state.recording) stopRecording();
+    }
+    dirty = true;
+  }
+  if (dirty) {
+    const t0 = performance.now();
+    renderFrame(state.t);
+    adaptQuality(performance.now() - t0, dt);
+    syncUI();
+    dirty = state.playing;
+  }
+  requestAnimationFrame(loop);
+}
+/* Cihaz yavaşsa WebGL çözünürlüğünü düşür (çıktı canvas'ı sabit kalır) */
+function adaptQuality(cost, dt) {
+  if (!state.playing || state.recording) return;
+  frameAcc += dt; frameN++;
+  if (frameN >= 45) {
+    const avg = frameAcc / frameN;
+    if (avg > 0.024) lowTime++; else lowTime = 0;
+    if (lowTime >= 2 && quality > 0.5) {
+      quality = Math.max(0.5, quality - 0.25);
+      const F = FORMATS[state.format];
+      renderer.setSize(Math.round(F.w * quality), Math.round(F.h * quality), false);
+      lowTime = 0;
+    }
+    frameAcc = 0; frameN = 0;
+  }
+}
+
+const btnPlay = $('btnPlay'), scrub = $('scrub'), timeLbl = $('timeLbl'), btnRec = $('btnRec');
+function setPlaying(v) {
+  state.playing = v;
+  btnPlay.textContent = v ? '❚❚ Duraklat' : '▶ Oynat';
+  if (recorder && recorder.state !== 'inactive') {
+    if (!v && recorder.state === 'recording' && state.t < state.duration) recorder.pause();
+    if (v && recorder.state === 'paused') recorder.resume();
+  }
+  last = performance.now();
+  dirty = true;
+}
+function syncUI() {
+  if (!scrubbing) scrub.value = Math.round(state.t / state.duration * 1000);
+  timeLbl.textContent = `${clockText(state.t)} · ${state.t.toFixed(1)} / ${state.duration}s`;
+}
+btnPlay.onclick = () => {
+  if (!state.playing && state.t >= state.duration) state.t = 0;
+  setPlaying(!state.playing);
+};
+$('btnRestart').onclick = () => { state.t = 0; setPlaying(true); };
+let scrubbing = false;
+scrub.addEventListener('pointerdown', () => scrubbing = true);
+window.addEventListener('pointerup', () => scrubbing = false);
+scrub.addEventListener('input', () => { state.t = scrub.value / 1000 * state.duration; dirty = true; });
+$('fmt169').onclick = () => { applyFormat('16:9'); dirty = true; };
+$('fmt916').onclick = () => { applyFormat('9:16'); dirty = true; };
+$('dur').onchange = e => {
+  const r = state.t / state.duration;
+  state.duration = +e.target.value;
+  state.t = r * state.duration;
+  dirty = true;
+};
+$('btnFull').onclick = () => {
+  const el = $('app');
+  const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+  if (fsEl) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
+  const req = el.requestFullscreen || el.webkitRequestFullscreen;
+  if (!req) { showMsg('Bu tarayıcı tam ekran modunu desteklemiyor.', true); return; }
+  try { const r = req.call(el); if (r && r.catch) r.catch(() => showMsg('Tam ekran açılamadı.', true)); } catch { showMsg('Tam ekran açılamadı.', true); }
+};
+['fullscreenchange', 'webkitfullscreenchange'].forEach(ev => document.addEventListener(ev, () => setTimeout(layoutCanvas, 50)));
+window.addEventListener('resize', layoutCanvas);
+if (window.ResizeObserver) new ResizeObserver(layoutCanvas).observe($('stage'));
+window.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' && e.target.type !== 'range' || e.target.tagName === 'SELECT') return;
+  if (e.code === 'Space') { e.preventDefault(); btnPlay.click(); }
+  else if (e.code === 'ArrowRight' && !state.recording) { state.t = clamp(state.t + 1, 0, state.duration); dirty = true; }
+  else if (e.code === 'ArrowLeft' && !state.recording) { state.t = clamp(state.t - 1, 0, state.duration); dirty = true; }
+  else if (e.key === 'f' || e.key === 'F') $('btnFull').click();
+});
+
+let msgTimer = 0;
+function showMsg(text, err = false, ms = 4000) {
+  const el = $('msg'); el.textContent = text; el.classList.toggle('err', err); el.classList.add('show');
+  clearTimeout(msgTimer); if (ms) msgTimer = setTimeout(() => el.classList.remove('show'), ms);
+}
+
+/* --- WebM kaydı: yalnızca kompozit çıktı canvas'ı (kontroller hariç) --- */
+let recorder = null, chunks = [];
+function pickMime() {
+  const c = ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'];
+  for (const m of c) if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m)) return m;
+  return '';
+}
+function lockForRecording(v) {
+  state.recording = v;
+  for (const id of ['fmt169', 'fmt916', 'dur', 'btnRestart']) $(id).disabled = v;
+  scrub.disabled = v;
+  btnRec.classList.toggle('rec', v);
+  btnRec.innerHTML = v ? '<span class="dot"></span>Kaydı durdur' : '<span class="dot"></span>WebM Kaydet';
+}
+function startRecording() {
+  if (!out.captureStream || typeof MediaRecorder === 'undefined') {
+    showMsg('Bu tarayıcı Canvas video kaydını (captureStream / MediaRecorder) desteklemiyor. Chrome, Edge veya Firefox deneyin.', true, 7000);
+    return;
+  }
+  const mime = pickMime();
+  if (!mime) { showMsg('Bu tarayıcı WebM kaydını desteklemiyor (ör. Safari). Chrome, Edge veya Firefox deneyin.', true, 7000); return; }
+  let stream;
+  try { stream = out.captureStream(30); } catch (e) { showMsg('Canvas akışı başlatılamadı: ' + e.message, true, 7000); return; }
+  chunks = [];
+  try {
+    recorder = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: state.format === '16:9' ? 14e6 : 12e6 });
+  } catch (e) { showMsg('MediaRecorder başlatılamadı: ' + e.message, true, 7000); return; }
+  recorder.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+  recorder.onstop = () => {
+    stream.getTracks().forEach(tr => tr.stop());
+    const blob = new Blob(chunks, { type: 'video/webm' });
+    lockForRecording(false);
+    if (!blob.size) { showMsg('Kayıt boş oluştu.', true); return; }
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `nottingham-man-city-attacking-pressure-${state.format === '16:9' ? '1920x1080' : '1080x1920'}.webm`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    showMsg(`Video hazır: ${(blob.size / 1048576).toFixed(1)} MB WebM indirildi.`);
+    recorder = null;
+  };
+  // Yüksek kalite kayıt için tam çözünürlük
+  quality = 1;
+  const F = FORMATS[state.format];
+  renderer.setSize(F.w, F.h, false);
+  lockForRecording(true);
+  state.t = 0; renderFrame(0);
+  recorder.start(500);
+  setPlaying(true);
+  showMsg(`Kayıt başladı (${F.w}×${F.h}, ${state.duration} sn). Bitince WebM otomatik indirilecek.`);
+}
+function stopRecording() {
+  if (recorder && recorder.state !== 'inactive') { renderFrame(state.t); recorder.stop(); }
+  setPlaying(false);
+}
+btnRec.onclick = () => { if (state.recording) stopRecording(); else startRecording(); };
+
+/* --- Gol editörü --- */
+function renderGoalEditor() {
+  const box = $('goalEditor'); box.innerHTML = '';
+  GOALS.forEach((g, i) => {
+    const row = document.createElement('div'); row.className = 'goalRow';
+    const inp = document.createElement('input'); inp.type = 'number'; inp.min = 1; inp.max = 90; inp.value = g.minute; inp.title = 'Dakika';
+    const sel = document.createElement('select');
+    for (const k of ['home', 'away']) { const o = document.createElement('option'); o.value = k; o.textContent = TEAMS[k].code; if (g.team === k) o.selected = true; sel.appendChild(o); }
+    const del = document.createElement('button'); del.textContent = '✕'; del.title = 'Golü sil';
+    inp.onchange = () => { g.minute = clamp(Math.round(+inp.value || 1), 1, 90); inp.value = g.minute; sortGoals(); };
+    sel.onchange = () => { g.team = sel.value; sortGoals(); };
+    del.onclick = () => { GOALS.splice(i, 1); sortGoals(); };
+    row.append(document.createTextNode("dk "), inp, sel, del);
+    box.appendChild(row);
+  });
+  const add = document.createElement('button'); add.textContent = '+ Gol ekle';
+  add.onclick = () => { GOALS.push({ minute: Math.max(1, Math.min(90, Math.round(minuteAt(state.t)) || 1)), team: 'home' }); sortGoals(); };
+  box.appendChild(add);
+}
+function sortGoals() { GOALS.sort((a, b) => a.minute - b.minute); renderGoalEditor(); dirty = true; }
+
+/* --- Temizlik --- */
+window.addEventListener('pagehide', () => {
+  if (recorder && recorder.state !== 'inactive') recorder.stop();
+  surfGeo.dispose(); skirt.geometry.dispose(); surfMat.dispose(); skirtMat.dispose();
+  shadow.geometry.dispose(); shadowMat.dispose(); uniforms.uLines.value.dispose(); renderer.dispose();
+});
+gl.addEventListener('webglcontextlost', e => { e.preventDefault(); setPlaying(false); showMsg('WebGL bağlamı kayboldu; sayfayı yenileyin.', true, 0); });
+
+/* --- Başlat --- */
+if (Math.min(screen.width, screen.height) < 700) quality = 0.75;
+applyFormat('16:9');
+renderGoalEditor();
+const fontsReady = document.fonts ? Promise.race([
+  Promise.all([document.fonts.load(`800 100px "Barlow Condensed"`), document.fonts.load(`700 40px "Barlow Condensed"`), document.fonts.load(`600 20px Barlow`), document.fonts.load(`700 20px Barlow`)]),
+  new Promise(r => setTimeout(r, 2500)),
+]) : Promise.resolve();
+fontsReady.then(() => {
+  buildTimelineCache();
+  dirty = true;
+  requestAnimationFrame(t => { last = t; loop(t); });
+  setPlaying(true);
+});
+// test/otomasyon için
+window.__pressure = { state, renderFrame, minuteAt, goalState, pressureAt, setPlaying, applyFormat };
+</script>
+</body>
+</html>
