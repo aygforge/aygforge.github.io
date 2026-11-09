@@ -126,21 +126,25 @@ const matchData = RAW.map(([minute, home, away]) => ({ minute, home, away }));
 
 /* Gol olayları: grafikteki top simgelerinin yatay konumlarından (yaklaşık).
    Üstteki toplar → Takım A, alttaki toplar → Takım B. Alttaki editörden değiştirilebilir. */
+/* Goller: maç detayından (Ofsayt). minute = zaman çizelgesindeki dakika (uzatma: 90+2 → 92),
+   label = ekranda yazan dakika, scorer = golü atan, assist = asist, pen = penaltı */
 let GOALS = [
-  { minute: 1,  team: 'away' },   // alt top, x≈72px
-  { minute: 4,  team: 'away' },   // alt top, x≈108px
-  { minute: 16, team: 'home' },   // üst top, x≈256px
-  { minute: 45, team: 'home' },   // üst top, İY yazısının yanında (45+) x≈601px
-  { minute: 49, team: 'away' },   // alt top, x≈679px
-  { minute: 54, team: 'away' },   // alt top, x≈741px
-  { minute: 90, team: 'home' },   // üst top, MS yazısının yanında (90+) x≈1185px
+  { minute: 1,  team: 'away', scorer: 'Alysson',      assist: 'J. McGinn' },
+  { minute: 4,  team: 'away', scorer: 'N. Jackson' },
+  { minute: 16, team: 'home', scorer: 'B. Fernandes', pen: true },
+  { minute: 44, team: 'home', scorer: 'Y. Tielemans', assist: 'N. Mazraoui' },
+  { minute: 48, team: 'away', scorer: 'J. McGinn',    pen: true },
+  { minute: 53, team: 'away', scorer: 'L. Goretzka',  assist: 'N. Jackson' },
+  { minute: 92, label: '90+2', team: 'home', scorer: 'J. Zirkzee', assist: 'P. Dorgu' },
+  { minute: 96, label: '90+6', team: 'home', scorer: 'P. Dorgu',   assist: 'B. Fernandes' },
 ];
+const goalLabel = g => (g.label || String(g.minute)) + "'";
 
 const TEAMS = {
   home: { code: 'MUN', name: 'Manchester United', upper: 'MANCHESTER UNITED', short: 'MAN UTD', ui: '#e0322a', base: '#c8201a', stripeA: '#da291c', stripeB: '#141414', mark: '#e0322a' },
   away: { code: 'AVL', name: 'Aston Villa', upper: 'ASTON VILLA', short: 'ASTON VILLA', ui: '#95bfe5', base: '#7a1440', stripeA: '#6e1137', stripeB: '#9cc8ec' },
 };
-const MATCH = { title: 'Manchester United – Aston Villa', competition: 'PREMIER LEAGUE',
+const MATCH = { stop2: 7, title: 'Manchester United – Aston Villa', competition: 'PREMIER LEAGUE',
   // Premier League teması: koyu mor zemin, pembe/camgöbeği ışıma
   bgInner: '#2a0a33', bgOuter: '#08020b', glow: '#e90052', glow2: '#04f5ff', accent: '#00ff85' };
 
@@ -189,7 +193,8 @@ function dominanceAt(m) {
 const state = { t: 0, duration: 50, playing: false, format: '16:9', recording: false };
 function phases() {
   const s = state.duration / 50;
-  return { intro: 2 * s, h1: 24.5 * s, ht: 25.5 * s, h2: 48 * s, end: state.duration };
+  const st = (MATCH.stop2 || 0) > 0;
+  return { intro: 2 * s, h1: 24.5 * s, ht: 25.5 * s, h2: (st ? 46 : 48) * s, ft: 48 * s, end: state.duration };
 }
 function minuteAt(t) {
   const p = phases();
@@ -197,19 +202,21 @@ function minuteAt(t) {
   if (t < p.h1) return 45 * (t - p.intro) / (p.h1 - p.intro);
   if (t < p.ht) return 45;
   if (t < p.h2) return 45 + 45 * (t - p.ht) / (p.h2 - p.ht);
-  return 90;
+  if (t < p.ft) return 90 + (MATCH.stop2 || 0) * (t - p.h2) / (p.ft - p.h2);   // 2. yarı uzatması
+  return 90 + (MATCH.stop2 || 0);
 }
 function timeAtMinute(m) {
   const p = phases();
   if (m <= 45) return p.intro + (m / 45) * (p.h1 - p.intro);
-  return p.ht + ((m - 45) / 45) * (p.h2 - p.ht);
+  if (m <= 90 || !MATCH.stop2) return p.ht + ((Math.min(m, 90) - 45) / 45) * (p.h2 - p.ht);
+  return p.h2 + (Math.min(m - 90, MATCH.stop2) / MATCH.stop2) * (p.ft - p.h2);
 }
 function periodAt(t) {
   const p = phases();
   if (t < p.intro) return 'pre';
   if (t < p.h1) return 'h1';
   if (t < p.ht) return 'ht';
-  if (t < p.h2) return 'h2';
+  if (t < p.ft) return 'h2';
   return 'ft';
 }
 function clockText(t) {
@@ -217,13 +224,13 @@ function clockText(t) {
   if (per === 'pre') return "0'";
   if (per === 'h1') return Math.min(45, Math.floor(m) + 1) + "'";
   if (per === 'ht') return "45'";
-  if (per === 'h2') return Math.min(90, Math.floor(m) + 1) + "'";
+  if (per === 'h2') return m < 90 ? Math.min(90, Math.floor(m) + 1) + "'" : `90+${Math.min(MATCH.stop2, Math.floor(m - 90) + 1)}'`;
   return "90'";
 }
 const PERIOD_LABEL = { pre: 'Kick-off', h1: '1st Half', ht: 'Half-Time', h2: '2nd Half', ft: 'Full-Time' };
 
 /* Gol zamanı: "28'" golü, saatin 28' gösterdiği aralığın ortasında (27.5 dk) tetiklenir */
-const goalTime = g => timeAtMinute(clamp(g.minute - 0.5, 0, 90));
+const goalTime = g => timeAtMinute(clamp(g.minute - 0.5, 0, 90 + (MATCH.stop2 || 0)));
 /* t anındaki skor ve son gol — tamamen saf fonksiyon (ileri/geri sarmada bozulmaz) */
 function goalState(t) {
   const score = { home: 0, away: 0 }, lastAge = { home: Infinity, away: Infinity };
@@ -587,7 +594,7 @@ function drawBall(ctx, x, y, r, color) {
 function drawTimeline(ctx, t, m, gs, alpha) {
   const g = tlCache, u = U();
   ctx.save(); ctx.globalAlpha = alpha;
-  const playX = g.x + (m / 90) * g.w;
+  const playX = g.x + (Math.min(m, 90) / 90) * g.w;
   ctx.globalAlpha = alpha * 0.22; ctx.drawImage(g.canvas, 0, 0);
   ctx.globalAlpha = alpha;
   ctx.save(); ctx.beginPath(); ctx.rect(0, 0, playX, out.height); ctx.clip(); ctx.drawImage(g.canvas, 0, 0); ctx.restore();
@@ -596,10 +603,12 @@ function drawTimeline(ctx, t, m, gs, alpha) {
   ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 1.5 * u; ctx.setLineDash([4 * u, 4 * u]);
   ctx.beginPath(); ctx.moveTo(hx, g.mid - g.amp - 10 * u); ctx.lineTo(hx, g.mid + g.amp + 10 * u); ctx.stroke(); ctx.setLineDash([]);
   // gol işaretleri
+  const stack = { home: 0, away: 0 };
   for (const ev of GOALS) {
     const gx = g.x + (clamp(ev.minute - 0.5, 0, 90) / 90) * g.w;
     const scored = t >= goalTime(ev);
-    const gy = ev.team === 'home' ? g.mid - g.amp - 20 * u : g.mid + g.amp + 20 * u;
+    const k = ev.minute > 90 ? stack[ev.team]++ : 0;      // uzatma golleri sonda üst üste
+    const gy = ev.team === 'home' ? g.mid - g.amp - (20 + 21 * k) * u : g.mid + g.amp + (20 + 21 * k) * u;
     ctx.globalAlpha = alpha * (scored ? 1 : 0.35);
     drawBall(ctx, gx, gy, 9 * u, TEAMS[ev.team].ui);
   }
@@ -733,7 +742,7 @@ function drawGoalBanner(ctx, gs) {
   const bw = W * (state.format === '16:9' ? 0.42 : 0.8) * easeOutCubic(a / 0.4);
   const grd = ctx.createLinearGradient(W / 2 - bw / 2, 0, W / 2 + bw / 2, 0);
   grd.addColorStop(0, hexA(team.ui, 0)); grd.addColorStop(0.5, hexA(team.ui, 0.75)); grd.addColorStop(1, hexA(team.ui, 0));
-  ctx.fillStyle = grd; ctx.fillRect(W / 2 - bw / 2, cy - 78 * u, bw, 150 * u);
+  ctx.fillStyle = grd; ctx.fillRect(W / 2 - bw / 2, cy - 78 * u, bw, 196 * u);
   const s = lerp(1.5, 1, inP);
   ctx.translate(W / 2, cy); ctx.scale(s, s);
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -741,8 +750,17 @@ function drawGoalBanner(ctx, gs) {
   ctx.fillStyle = '#fff'; ctx.font = `italic 800 ${132 * u}px ${FONT_C}`; setLS(ctx, 8 * u);
   ctx.fillText('GOAL', 0, -12 * u);
   ctx.shadowBlur = 0; setLS(ctx, 3 * u);
-  ctx.font = `700 ${32 * u}px ${FONT}`;
-  ctx.fillText(`${team.upper}  ·  ${gs.last.minute}'`, 0, 62 * u);
+  const g = gs.last;
+  if (g.scorer) {
+    ctx.font = `800 ${50 * u}px ${FONT_C}`; setLS(ctx, 2 * u);
+    ctx.fillText(g.scorer.toUpperCase() + (g.pen ? '  (P)' : ''), 0, 66 * u);
+    setLS(ctx, 2.5 * u);
+    ctx.font = `600 ${25 * u}px ${FONT}`; ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.fillText(`${team.upper}  ·  ${goalLabel(g)}` + (g.pen ? '  ·  PENALTY' : g.assist ? `  ·  ASSIST ${g.assist.toUpperCase()}` : ''), 0, 106 * u);
+  } else {
+    ctx.font = `700 ${32 * u}px ${FONT}`;
+    ctx.fillText(`${team.upper}  ·  ${goalLabel(g)}`, 0, 62 * u);
+  }
   ctx.restore();
 }
 
@@ -750,10 +768,11 @@ function drawCenterCard(ctx, t, gs) {
   const p = phases(), u = U(), W = out.width, H = out.height;
   let alpha = 0, title = '', big = false;
   if (t >= p.h1 - 0.15 && t < p.ht + 0.35) { alpha = smooth(p.h1 - 0.15, p.h1 + 0.1, t) * (1 - smooth(p.ht, p.ht + 0.35, t)); title = 'HALF-TIME'; }
-  if (t >= p.h2) { alpha = smooth(p.h2, p.h2 + 0.5, t); title = 'FULL-TIME'; big = true; }
+  if (t >= p.ft) { alpha = smooth(p.ft, p.ft + 0.5, t); title = 'FULL-TIME'; big = true; }
   if (alpha <= 0.001) return;
-  const cy = state.format === '16:9' ? H * 0.47 : H * 0.5;
-  const cw = (big ? 760 : 560) * u, ch = (big ? 230 : 150) * u;
+  const rows = big ? Math.max(...['home', 'away'].map(k => GOALS.filter(g => g.team === k && g.scorer).length)) : 0;
+  const cy = state.format === '16:9' ? H * (big ? 0.56 : 0.47) : H * 0.5;
+  const cw = (big ? 760 : 560) * u, ch = ((big ? 230 : 150) + (rows ? 30 + rows * 42 : 0)) * u;
   ctx.save(); ctx.globalAlpha = alpha;
   ctx.fillStyle = 'rgba(8,9,14,0.82)'; rr(ctx, W / 2 - cw / 2, cy - ch / 2, cw, ch, 14 * u); ctx.fill();
   ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 1.5 * u; ctx.stroke();
@@ -763,13 +782,27 @@ function drawCenterCard(ctx, t, gs) {
   ctx.font = `700 ${(big ? 26 : 22) * u}px ${FONT}`; setLS(ctx, 5 * u);
   ctx.fillText(title, W / 2, cy - ch / 2 + (big ? 56 : 46) * u);
   setLS(ctx, 0);
-  const sy = cy + (big ? 70 : 50) * u, fs = (big ? 110 : 76) * u;
+  const sy = cy - ch / 2 + (big ? 185 : 125) * u, fs = (big ? 110 : 76) * u;
   ctx.fillStyle = '#fff'; ctx.font = `800 ${fs}px ${FONT_C}`;
   ctx.fillText(`${gs.score.home}  –  ${gs.score.away}`, W / 2, sy);
   ctx.font = `700 ${(big ? 34 : 28) * u}px ${FONT_C}`; setLS(ctx, 1 * u);
   const off = (big ? 250 : 175) * u;
   ctx.textAlign = 'right'; ctx.fillText(big ? (TEAMS.home.short || TEAMS.home.upper) : TEAMS.home.code, W / 2 - off + (big ? 70 : 40) * u, sy - fs * 0.3);
   ctx.textAlign = 'left'; ctx.fillText(big ? (TEAMS.away.short || TEAMS.away.upper) : TEAMS.away.code, W / 2 + off - (big ? 70 : 40) * u, sy - fs * 0.3);
+  if (rows) {
+    // gol atanlar listesi
+    ctx.fillStyle = 'rgba(255,255,255,0.12)'; ctx.fillRect(W / 2 - cw / 2 + 30 * u, sy + 26 * u, cw - 60 * u, 1.5 * u);
+    ctx.fillRect(W / 2 - 0.75 * u, sy + 46 * u, 1.5 * u, rows * 42 * u - 8 * u);
+    ctx.font = `600 ${31 * u}px ${FONT_C}`; setLS(ctx, 0.5 * u);
+    for (const [k, sign] of [['home', -1], ['away', 1]]) {
+      GOALS.filter(g => g.team === k && g.scorer).forEach((g, i) => {
+        const y = sy + (76 + i * 42) * u;
+        ctx.textAlign = sign < 0 ? 'right' : 'left';
+        ctx.fillStyle = '#fff';
+        ctx.fillText(`${g.scorer}${g.pen ? ' (P)' : ''}  ${goalLabel(g)}`, W / 2 + sign * 26 * u, y);
+      });
+    }
+  }
   ctx.restore();
 }
 
@@ -838,8 +871,8 @@ function renderFrame(t) {
   let zoom = lerp(1.5, 1.045, ip) - 0.035 * clamp((t - p.intro) / (p.h2 - p.intro), 0, 1);
   const pulse = goalActive ? Math.sin(clamp(gAge / 1.8, 0, 1) * Math.PI) : 0;
   zoom -= 0.03 * pulse;
-  const endP = easeInOut((t - p.h2) / (p.end - p.h2));
-  if (t > p.h2) zoom = lerp(zoom, 1.03, endP);
+  const endP = easeInOut((t - p.ft) / (p.end - p.ft));
+  if (t > p.ft) zoom = lerp(zoom, 1.03, endP);
   const sway = 1 - endP;
   const el = (F.el + lerp(16, 0, ip) + 1.0 * Math.sin(t * 0.23) * sway) * DEG;
   const az = (F.az + lerp(-20, 0, ip) + 1.6 * Math.sin(t * 0.17) * sway) * DEG;
@@ -1070,11 +1103,11 @@ function renderGoalEditor() {
   const box = $('goalEditor'); box.innerHTML = '';
   GOALS.forEach((g, i) => {
     const row = document.createElement('div'); row.className = 'goalRow';
-    const inp = document.createElement('input'); inp.type = 'number'; inp.min = 1; inp.max = 90; inp.value = g.minute; inp.title = 'Dakika';
+    const inp = document.createElement('input'); inp.type = 'number'; inp.min = 1; inp.max = 90 + (MATCH.stop2 || 0); inp.value = g.minute; inp.title = 'Dakika';
     const sel = document.createElement('select');
     for (const k of ['home', 'away']) { const o = document.createElement('option'); o.value = k; o.textContent = TEAMS[k].code; if (g.team === k) o.selected = true; sel.appendChild(o); }
     const del = document.createElement('button'); del.textContent = '✕'; del.title = 'Golü sil';
-    inp.onchange = () => { g.minute = clamp(Math.round(+inp.value || 1), 1, 90); inp.value = g.minute; sortGoals(); };
+    inp.onchange = () => { g.minute = clamp(Math.round(+inp.value || 1), 1, 90 + (MATCH.stop2 || 0)); if (g.minute <= 90) delete g.label; else g.label = '90+' + (g.minute - 90); inp.value = g.minute; sortGoals(); };
     sel.onchange = () => { g.team = sel.value; sortGoals(); };
     del.onclick = () => { GOALS.splice(i, 1); sortGoals(); };
     row.append(document.createTextNode("dk "), inp, sel, del);
