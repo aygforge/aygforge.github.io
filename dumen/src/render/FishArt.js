@@ -386,6 +386,15 @@
       try { drawLocal(c, b, opts.t || 0, opts); } finally { SILMODE = false; }
       c.restore();
     },
+    // Su altında seçim için tek tip basit balık silueti (her tür aynı; ağız sağda, merkez 0,0, boy = len)
+    genericSil(c, len, t) {
+      const k = len / 200, wag = Math.sin((t || 0) * 6) * 6;
+      c.save(); c.scale(k, k); c.fillStyle = 'rgba(8,22,34,0.88)';
+      c.beginPath(); c.moveTo(95, 0); c.bezierCurveTo(80, -38, 10, -46, -45, -26); c.bezierCurveTo(-62, -18, -66, 18, -45, 26); c.bezierCurveTo(10, 46, 80, 38, 95, 0); c.fill();   // gövde
+      c.beginPath(); c.moveTo(-50, 0); c.lineTo(-100, -34 + wag); c.lineTo(-88, 0); c.lineTo(-100, 34 + wag); c.closePath(); c.fill();   // kuyruk
+      c.beginPath(); c.moveTo(-5, -36); c.quadraticCurveTo(15, -62, 40, -38); c.closePath(); c.fill();   // sırt yüzgeci
+      c.restore();
+    },
     // Önbellekli sprite (silüet / küçük ikon) — sabit poz
     sprite(fishId, sil, px) {
       px = px || 220;

@@ -83,7 +83,7 @@
       this.setState('CASTING');
     },
     buildSelect(s) {
-      this.root.append(h('div', { class: 'banner', style: { left: '26%', top: 'calc(var(--hudH) + 104px)', maxWidth: '900px' } }, 'Bir hedef seç! Siluete dokun.' + (this.enc.candidates.length > 1 ? ' (Büyük siluet = büyük/nadir av olabilir)' : '')));
+      this.root.append(h('div', { class: 'banner', style: { left: '26%', top: 'calc(var(--hudH) + 104px)', maxWidth: '900px' } }, 'Bir hedef seç! Siluete dokun. Ne çıkacağı sürpriz!'));
       // Su altı panelinin tamamı dokunma alanı: basıldığı anda (pointerdown) en yakın siluet seçilir.
       // Hareketli küçük düğmeler yerine tek alan → parmak kayınca da kaçırmaz, yanlış/boş dokunuş ölü ekran yaratmaz.
       const P = this.pr();
@@ -360,11 +360,10 @@
           const flick = (L && (L.decoys || L.fog)) ? 0.55 + 0.45 * Math.abs(Math.sin(t * 2.3 + i)) : 0.92;
           c.save(); c.globalAlpha = flick;
           if (cand.type === 'fish') {
-            const b = D.FishBalanceDB[cand.fishId];
-            const len = D.clamp(80 + Math.log(cand.size) * 26 + (D.rarityRank(b.rarity) >= 4 ? 40 : 0), 90, 260);
-            const spr = D.FishArt.sprite(cand.fishId, true, 220);
+            // Tek tip, basit siluet: tür/boy/nadirlik ipucu vermez — çıkacak balık sürprizdir
+            const b = D.FishBalanceDB[cand.fishId], len = 170;
             c.translate(x, y); if (flip) c.scale(-1, 1); c.rotate(Math.sin(t * 4 + i) * 0.06);
-            const k = len / 220; c.drawImage(spr, -spr.width * k / 2, -spr.height * k / 2, spr.width * k, spr.height * k);
+            D.FishArt.genericSil(c, len, t + i);
             if (L && L.rarityHint) { c.globalAlpha = 1; c.lineWidth = 6; c.strokeStyle = D.RARITY_COLOR[b.rarity]; D.Art.ellipse(c, 0, 0, len * 0.6, len * 0.36); c.stroke(); }
           } else if (cand.type === 'chest') { c.translate(x, y); c.fillStyle = '#0b1824'; D.Art.rr(c, -50, -30, 100, 60, 10); c.fill(); D.Art.sparkles(c, [[30, -30, 0, 10]], t * 2, '#ffe08a'); }
           else if (cand.type === 'trash') { c.translate(x, y); c.fillStyle = '#0b1824'; D.Art.wobblyPoly(c, [[-40, 10], [-20, -30], [30, -24], [44, 14], [0, 30]], i + 5, 8); c.fill(); }
