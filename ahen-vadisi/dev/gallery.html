@@ -1,0 +1,37 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{background:#223;margin:0;color:#fff;font:12px sans-serif}canvas{image-rendering:pixelated}</style></head>
+<body><canvas id="c" width="1600" height="2600"></canvas>
+<script type="module">
+import { buildTileset } from '../src/art/tiles.js';
+import { humanSheet, playerLook, npcSheet, NPC_LOOKS, weaponSprite, offhandSprite } from '../src/art/characters.js';
+import { monsterSheet, MONSTER_SPRITES } from '../src/art/monsters.js';
+import { ITEM_LIST } from '../src/data/items.js';
+import { iconURL } from '../src/art/icons.js';
+import { STACKABLES } from '../src/data/materials.js';
+import { OBJECT_SPRITES, EFFECT_SPRITES } from '../src/art/objects.js';
+const c = document.getElementById('c'); const ctx = c.getContext('2d'); ctx.imageSmoothingEnabled=false;
+const mode = location.hash.slice(1) || 'chars';
+if (mode === 'tiles') { const ts = buildTileset(); c.width = ts.width; c.height = ts.height; c.getContext('2d').drawImage(ts,0,0); }
+else if (mode === 'icons') {
+  const keys = [...ITEM_LIST.map(t=>t.id), ...Object.keys(STACKABLES), ...['heavy_strike','whirlwind','iron_skin','war_charge','fireball','ice_blast','mana_shield','meteor','weapon_discipline','hard_skin','battle_rhythm','elemental_mastery','mana_control','frozen_target','unyielding_will','arcane_resonance'].map(k=>'skill:'+k), ...['bag','char','skills','quests','map','settings','gold','lock','star','sword','target','menu','storage','hammer','pending','sort','exit'].map(k=>'ui:'+k)];
+  document.body.style.cssText='background:#2a2433'; c.remove();
+  for (const k of keys) { const im = new Image(); im.src = iconURL(k); im.title=k; im.style.margin='3px'; im.style.background='#3a3046'; document.body.appendChild(im); }
+  const d = document.createElement('canvas'); d.width=1500; d.height=700; document.body.appendChild(d); const cx = d.getContext('2d');
+  let x=4,y=4,h=0; for (const [k,f] of [...Object.entries(OBJECT_SPRITES), ...Object.entries(EFFECT_SPRITES)]) { for (const pb of f()) { if (x+pb.w*3>1490){x=4;y+=h+6;h=0;} pb.drawTo(cx,x,y,3); x+=pb.w*3+4; h=Math.max(h,pb.h*3);} }
+}
+else {
+  let y = 4;
+  const row = (sheets, scale=3) => { let x = 4, h=0; for (const pb of sheets) { pb.drawTo(ctx, x, y, scale); x += pb.w*scale + 4; h=Math.max(h,pb.h*scale); if (x > 1500) { x=4; y+=h+4; } } y += h + 6; };
+  const eqW = (ids) => Object.fromEntries(ids.map(id => { const t = ITEM_LIST.find(i=>i.id===id); return [t.slot, {tid:id}]; }));
+  row(humanSheet(playerLook('warrior', {})));
+  row(humanSheet(playerLook('warrior', eqW(['C03','H03','G03','B03']))));
+  row(humanSheet(playerLook('warrior', eqW(['C04','H02']))));
+  row(humanSheet(playerLook('mage', {})));
+  row(humanSheet(playerLook('mage', eqW(['C07','H06']))));
+  row(humanSheet(playerLook('mage', eqW(['C08','H04']))));
+  row(Object.keys(NPC_LOOKS).flatMap(k => npcSheet(k)));
+  for (const s of MONSTER_SPRITES) row(monsterSheet(s).frames, 3);
+  row(ITEM_LIST.filter(t=>t.slot==='weapon').map(t => weaponSprite(t.id).pb), 3);
+  row(ITEM_LIST.filter(t=>t.slot==='offhand').map(t => offhandSprite(t.id).pb), 3);
+}
+document.title = 'ready';
+</script></body></html>
