@@ -1,5 +1,28 @@
 # Ahen Vadisi — Test Raporu
 
+## 4.5.4 — Çevrimiçi bağlantı takılması (oyuncu bildirimi, 11 Kasım 2026)
+- **Canlı ortam kontrolü:**
+  - Render sunucusu uykudan ~22 sn'de kalktı: `/health` → 4.5.3, `"web": true`.
+  - Supabase giriş servisi ve tablolar yanıt veriyor.
+  - Canlı sunucuya geçersiz belirteçle bağlanıldı: "Oturum doğrulanamadı" geldi, bağlantı 15 sn sonra hâlâ açıktı
+    (takılmanın kaynağı).
+- **Birim:** 234/234. Yeniler:
+  - Reddedilen girişte bağlantı kapanır.
+  - Supabase'e ulaşılamazsa "authsvc" bildirilir.
+  - Doğrulayıcı 401'i "geçersiz", 5xx/540/ağ hatasını "servis yok" sayar.
+  - 503/540/ağ hatasında oturum silinmez.
+- **Yeni E2E `run-e2e-reconnect.mjs`:** gerçek sunucu süreci ve tarayıcıyla. **4.5.3 kodunda 4/6** (geçersiz belirteçte ve
+  Supabase kesintisinden sonra "bağlanıyor"da takılı), **4.5.4'te 6/6**. Doğrulananlar:
+  - Geçersiz belirteç yenilenip yeniden bağlanılıyor.
+  - Supabase kesintisinde oturum korunuyor, dönünce bağlanılıyor.
+  - Gerçekten geçersiz oturumda yeniden giriş isteniyor.
+- **Diğer e2e takımlarının hepsi geçti:**
+  - ana 61/61, V2 32/32, V3 37/37, V4 39/39, kayıt 14/14, parti 25/25, ortak dünya 15/15, raid 17/17, hata 6/6,
+    ekran 15/15;
+  - çevrimiçi takımında bir kez Ayarlar'daki "Buluta kaydet" düğmesine dokunma zaman aşımına uğradı; takım hemen tekrar
+    koşulunca 27/27 geçti.
+- `run-e2e-screen.mjs` sürüm numarasını artık sabit yazmıyor, oyundan okuyor.
+
 ## 4.5.3 — iPhone'da tam ekran ve dar ekran (oyuncu bildirimi, 25 Ekim 2026)
 - Birim: 232/232.
 - Yeni E2E `run-e2e-screen.mjs` 15/15. Gerçek oyun sunucusu süreci ve iPhone Safari kimliğiyle tarayıcı:

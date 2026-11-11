@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-25T10:12:31.549Z",
+  "date": "2026-11-11T08:02:05.584Z",
   "passed": 25,
   "total": 25,
   "results": [
@@ -21,7 +21,7 @@
     {
       "name": "Parti kur: 6 karakterli kod, durum \"bağlı\"",
       "ok": true,
-      "info": "TD8L5P"
+      "info": "A7L95K"
     },
     {
       "name": "Davet yalnız hedef oyuncuya ulaşır ve pencere açılır",
@@ -36,7 +36,7 @@
     {
       "name": "Davet eden \"katılıyor/katıldı\" bildirimi alır",
       "ok": true,
-      "info": "Partidesin — kod: TD8L5P | Bora davet edildi | Bora partiye katılıyor | Bora partiye katıldı"
+      "info": "Partidesin — kod: A7L95K | Bora davet edildi | Bora partiye katılıyor | Bora partiye katıldı"
     },
     {
       "name": "Aynı haritada arkadaş görünür: ad + seviye etiketi, doğru konumda",
@@ -116,7 +116,7 @@
     {
       "name": "Sahte Realtime: istemci ikili (binary) yayın biçimini kullandı (gerçek sunucuyla aynı yol)",
       "ok": true,
-      "info": "{\"broadcasts\":23,\"delivered\":22,\"joins\":6,\"presence\":3,\"frames\":34,\"binary\":23}"
+      "info": "{\"broadcasts\":24,\"delivered\":23,\"joins\":6,\"presence\":3,\"frames\":35,\"binary\":24}"
     },
     {
       "name": "Konsol hatası yok (oyuncu A)",

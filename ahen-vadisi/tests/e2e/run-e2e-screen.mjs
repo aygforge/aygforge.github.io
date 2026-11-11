@@ -8,6 +8,7 @@ import { spawn } from 'node:child_process';
 import { mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { GAME_VERSION } from '../../src/data/constants.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..', '..');
@@ -69,7 +70,7 @@ const tabFit = (page) => ev(page, () => {
 try {
   // ---------------------------------------------------------------- sunucu oyunu sunar
   const health = await fetch(HOME + 'health').then((r) => r.json());
-  record('Sunucu /health: sürüm ve web oyunu açık', health.ok && health.version === '4.5.3' && health.web === true, JSON.stringify(health).slice(0, 120));
+  record('Sunucu /health: sürüm ve web oyunu açık', health.ok && health.version === GAME_VERSION && health.web === true, JSON.stringify(health).slice(0, 120));
   const idx = await fetch(HOME);
   const idxText = await idx.text();
   record('Sunucu kök adreste oyunun sayfasını verir', idx.ok && /text\/html/.test(idx.headers.get('content-type')) && idxText.includes('Ahen Vadisi') && idx.headers.get('cache-control') === 'no-cache');
