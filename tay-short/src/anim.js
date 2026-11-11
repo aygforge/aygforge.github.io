@@ -1,6 +1,6 @@
 'use strict';
 // ================= TIMELINE (from narration silences) =================
-const T = { s1: 0, s2: 8.80, s3: 11.70, s4: 19.92, s5: 26.33, s6: 31.58, s7: 39.51, s8: 45.41, s9: 53.79, s10: 59.21, s11: 66.95, s12: 71.84, s13: 81.30, s14: 85.25, end: 88.9 };
+const T = { s1: 0, s2: 8.80, s3: 11.70, s4: 19.92, s5: 26.33, s6: 31.58, s7: 39.51, s8: 45.41, s9: 53.79, s10: 59.21, s11: 66.95, s12: 71.84, s13: 81.30, s14: 81.80, end: 87.2 };
 const FPS = 30, DURATION = T.end;
 const SIL = [[4.27, 4.96], [8.04, 8.80], [10.78, 11.70], [12.36, 12.69], [15.19, 15.56], [19.11, 19.92], [22.88, 23.23], [25.50, 26.33], [30.65, 31.58], [34.78, 35.11], [38.65, 39.51], [44.42, 45.41], [48.96, 49.42], [52.75, 53.79], [56.41, 56.72], [58.36, 59.21], [60.60, 61.00], [65.96, 66.95], [70.76, 71.84], [76.13, 76.60], [78.50, 78.85], [80.18, 81.30], [82.24, 82.74]];
 const CAPS = [
@@ -72,7 +72,7 @@ function drawCaptions(t) {
   }
   // final two-tone line
   if (t >= FINAL1[0] - .1) {
-    const al = 1 - seg(t, T.s14, T.s14 + .5);
+    const al = 1;
     const draw = (F, y, size, weight, color, bold) => {
       const wt = wordTimes(F[0], F[1], F[2]); g.save(); g.font = `${weight} ${size}px Kalam`; g.textAlign = 'left'; g.fillStyle = color;
       const sp = g.measureText(' ').width; const ws = wt.words.map(w => g.measureText(w).width); const tot = ws.reduce((s, x) => s + x, 0) + sp * (ws.length - 1);
@@ -87,7 +87,6 @@ function drawCaptions(t) {
     draw(FINAL1, 190, 70, 400, '#77739c', false);
     draw(FINAL2, 318, 96, 700, '#1b1842', true);
   }
-  if (t >= T.s14) { A(seg(t, T.s14 + .5, T.s14 + .95), () => txt('Gerçek görüntü', 540, 290, 78, 700, '#1b1842')); }
 }
 
 // ================= PAPER =================

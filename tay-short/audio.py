@@ -6,8 +6,8 @@ import numpy as np
 from scipy import signal
 
 SR = 44100
-DUR = 88.9
-S14 = 85.25
+DUR = 87.2
+S14 = 81.80
 SIL = [[4.27, 4.96], [8.04, 8.80], [10.78, 11.70], [12.36, 12.69], [15.19, 15.56], [19.11, 19.92], [22.88, 23.23], [25.50, 26.33], [30.65, 31.58], [34.78, 35.11], [38.65, 39.51], [44.42, 45.41], [48.96, 49.42], [52.75, 53.79], [56.41, 56.72], [58.36, 59.21], [60.60, 61.00], [65.96, 66.95], [70.76, 71.84], [76.13, 76.60], [78.50, 78.85], [80.18, 81.30], [82.24, 82.74]]
 
 
@@ -179,7 +179,7 @@ def music_env(n):
     for a, b in SIL:                                                                # transitions / reveals
         if b - a >= 0.6: g[(t >= a - 0.05) & (t < b - 0.12)] = 0.34
     g[(t >= 57.45) & (t < 58.9)] = 0.15                                             # quiet beat when Tay goes offline
-    g[t >= 84.75] = 0.29                                                            # real-image ending
+    g[t >= 84.75] = 0.29                                                            # music under the real image after narration ends
     k = int(0.3 * SR); g = np.convolve(np.pad(g, k, mode='edge'), np.hanning(k) / np.hanning(k).sum(), mode='same')[k:-k]
     g *= np.clip((DUR - 0.05 - t) / 1.6, 0, 1) ** 1.5                               # smooth final fade-out
     g *= np.clip(t / 0.05, 0, 1)

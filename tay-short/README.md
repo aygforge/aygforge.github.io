@@ -13,7 +13,7 @@
 npm install            # fonts (Kalam); Playwright + Chromium must be available
 pip install numpy scipy
 mkdir -p build
-node render.js 0 2667 build/video.mp4
+node render.js 0 2616 build/video.mp4
 python3 audio.py audio/narration.mp3 audio/music.mp3 build/mix.wav
 ffmpeg -i build/video.mp4 -i build/mix.wav -c:v libx264 -preset slow -crf 22 -maxrate 6M -bufsize 12M -c:a aac -b:a 224k -movflags +faststart tay_16_saat.mp4
 ```
