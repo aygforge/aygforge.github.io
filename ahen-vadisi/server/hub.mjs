@@ -93,8 +93,17 @@ export class Hub {
       this.send(c, { t: 'err', code: 'version', msg: `Oyun sürümün (${m.v || '?'}) sunucuyla (${GAME_VERSION}) uyuşmuyor — oyunu güncelle (sayfayı yenile).` });
       return;
     }
-    const who = await this.verify(String(m.token || '')).catch(() => null);
-    if (!who?.uid) { this.send(c, { t: 'err', code: 'auth', msg: 'Oturum doğrulanamadı — yeniden giriş yap' }); return; }
+    // Doğrulama servisine (Supabase) ulaşılamadıysa belirteç suçlanmaz: istemci beklemeden yeniden dener. Her iki
+    // durumda bağlantı kapatılır; açık bırakılırsa istemci "bağlanıyor"da takılı kalıyordu (4.5.4).
+    let who = null, svcDown = false;
+    try { who = await this.verify(String(m.token || '')); } catch { svcDown = true; }
+    if (!who?.uid) {
+      this.send(c, svcDown
+        ? { t: 'err', code: 'authsvc', msg: 'Giriş sunucusuna ulaşılamadı — yeniden deneniyor' }
+        : { t: 'err', code: 'auth', msg: 'Oturum doğrulanamadı — yeniden giriş yap' });
+      try { c.ws.close(svcDown ? 4002 : 4001); } catch { /* */ }
+      return;
+    }
     // aynı hesap ikinci kez bağlanırsa eski bağlantı kapanır
     const old = this.byUid.get(who.uid);
     if (old && old !== c) { this.send(old, { t: 'err', code: 'dup', msg: 'Bu hesapla başka bir yerden girildi' }); old.ws.close(); this.detach(old); }
@@ -284,8 +293,11 @@ export function supabaseVerifier(url, key, fetchImpl = fetch) {
     if (!token) return null;
     const hit = cache.get(token);
     if (hit && hit.until > Date.now()) return hit.who;
-    const r = await fetchImpl(url.replace(/\/+$/, '') + '/auth/v1/user', { headers: { apikey: key, Authorization: `Bearer ${token}` } });
-    if (!r.ok) return null;
+    // 401/403: belirteç geçersiz ya da süresi dolmuş → null. Ağ hatası, zaman aşımı ve 5xx (ör. uykudaki proje) → hata
+    // fırlatır; çağıran bunu "servis yok" sayar.
+    const r = await fetchImpl(url.replace(/\/+$/, '') + '/auth/v1/user', { headers: { apikey: key, Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(8000) });
+    if (r.status === 401 || r.status === 403 || r.status === 400) return null;
+    if (!r.ok) throw new Error('auth service ' + r.status);
     const u = await r.json();
     const who = u?.id ? { uid: u.id, email: u.email } : null;
     if (who) cache.set(token, { who, until: Date.now() + 5 * 60 * 1000 });

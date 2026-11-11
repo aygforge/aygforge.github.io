@@ -23,7 +23,7 @@ const IPHONE_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleW
 const gs = spawn('node', ['server/index.mjs'], { cwd: root, stdio: 'pipe', env: { ...process.env, PORT: String(SPORT), DEV_AUTH: '1', SUPABASE_URL: 'http://127.0.0.1:9', SUPABASE_KEY: 'x' } });
 gs.stderr.on('data', (d) => process.stderr.write(d));
 await new Promise((res) => { gs.stdout.on('data', (d) => { if (String(d).includes('web oyunu')) res(); }); setTimeout(res, 6000); });
-const pv = spawn('npx', ['vite', 'preview', '--port', String(PPORT), '--strictPort'], { cwd: root, stdio: 'pipe' });
+const pv = spawn(process.execPath, [join(root, 'node_modules', 'vite', 'bin', 'vite.js'), 'preview', '--port', String(PPORT), '--strictPort'], { cwd: root, stdio: 'pipe' });
 await new Promise((res) => { pv.stdout.on('data', (d) => { if (String(d).includes(String(PPORT))) res(); }); setTimeout(res, 6000); });
 const browser = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader'] });
 

@@ -128,6 +128,15 @@ describe('REST istemcisi (sahte Supabase)', () => {
     fake.expireAll(); a.session.refresh_token = 'gecersiz'; a.session.expires_at = 0;
     expect((await a.getCloudMeta()).ok).toBe(false);
     expect(a.loggedIn).toBe(false);
+    // 4.5.4: Supabase geçici olarak yanıt vermezse (5xx, uykudaki proje 540, ağ hatası) oturum silinmez
+    const b = new OnlineApi(cfg, { fetchImpl: fake.fetchImpl });
+    await b.signIn('a@x.com', 'gizli123');
+    for (const status of [503, 540, 0]) {
+      b.session.expires_at = 0;
+      b.fetch = async () => { if (!status) throw new TypeError('Failed to fetch'); return new Response('{}', { status }); };
+      expect(await b.ensureFresh()).toBe(false);
+      expect(b.loggedIn).toBe(true);
+    }
     const down = new OnlineApi(cfg, { fetchImpl: async () => { throw new TypeError('Failed to fetch'); } });
     const r = await down.signIn('a@x.com', 'gizli123');
     expect(r.ok).toBe(false); expect(r.msg).toMatch(/ulaşılamadı/);

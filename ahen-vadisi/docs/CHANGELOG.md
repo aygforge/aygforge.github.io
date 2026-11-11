@@ -1,5 +1,21 @@
 # Değişiklik Günlüğü
 
+## 4.5.4 — Çevrimiçi bağlantı "bağlanıyor"da takılı kalıyordu
+- **Sorun:** oyun günlerce açılmayınca çevrimiçi bölüm sunucuya bağlanmıyor, "sunucuya bağlanıyor…" ya da "Oturum
+  doğrulanamadı" yazıp öyle kalıyordu.
+- **Kaynak:** sunucu giriş belirtecini kabul etmediğinde bağlantıyı açık bırakıyordu; oyun da yeniden denemiyordu.
+  Sayfa yenilenene kadar bağlantı kurulmuyordu. Belirteç iki durumda reddediliyordu:
+  - Belirtecin süresi dolmuş, oyun bunu henüz fark etmemiş.
+  - Supabase o an yanıt vermiyor (ör. ücretsiz projenin uyanması ya da geçici kesinti).
+- **Düzeltme:**
+  - Sunucu reddettiği bağlantıyı kapatır. "Belirteç geçersiz" ile "Supabase'e ulaşılamadı" ayrı bildirilir; Supabase
+    sorgusu 8 sn'de zaman aşımına uğrar.
+  - Oyun reddedilen belirteci yeniler ve kendiliğinden yeniden bağlanır. Üç kez üst üste reddedilirse yeniden giriş
+    ister.
+  - Supabase geçici olarak yanıt vermezse (5xx, uykudaki proje, ağ hatası) oturum artık silinmez. Yalnız Supabase
+    yenileme belirtecini açıkça reddederse çıkış yapılır.
+
+
 ## 4.5.3 — iPhone'da tam ekran ve dar ekran düzeni
 - **Sorun:** iPhone 15 Safari'de oyun tam ekran olmuyordu. Menü sekmeleri ekrana sığmadığı için **Ayarlar** sekmesi (ve
   içindeki "Tam ekrana geç") ekran dışında kalıyordu.

@@ -76,7 +76,9 @@ export class OnlineApi {
     if ((this.session.expires_at || 0) - 60 > Date.now() / 1000) return true;
     const r = await this.raw('POST', '/auth/v1/token?grant_type=refresh_token', { body: { refresh_token: this.session.refresh_token }, auth: false });
     if (r.ok && r.data?.access_token) { this.saveSession(r.data); return true; }
-    if (r.status !== 0) this.saveSession(null);   // yenileme reddedildi: oturum kapanır (ağ hatasında oturum korunur)
+    // Yalnız Supabase yenileme belirtecini açıkça reddederse oturum kapanır. Ağ hatası, 5xx, 429 ya da uykudaki
+    // ücretsiz proje (540) oturumu silmez; sonra yeniden denenir.
+    if (r.status === 400 || r.status === 401 || r.status === 403) this.saveSession(null);
     return false;
   }
 

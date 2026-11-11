@@ -30,7 +30,7 @@ export const net = {
   ws: null, status: 'off',        // off | connecting | ready | error
   uid: null, count: 0, err: null, fatal: false,
   zoneMap: null,                  // sunucunun bizi koyduğu bölge
-  retry: 0, retryTimer: null, menuSince: 0,
+  retry: 0, retryTimer: null, menuSince: 0, authFails: 0,
   lastPos: null, lastPosAt: 0,
   subs: new Map(),                // topic → { onBroadcast, onPresence, onStatus, meta }
   WebSocketImpl: typeof WebSocket !== 'undefined' ? WebSocket : null,
@@ -43,7 +43,13 @@ export const net = {
 
   init() {
     bus.on('mapEnter', () => { this.sync(); this.enterCurrent(); });
-    bus.on('online', () => this.sync());
+    // yeniden giriş yapılınca (yeni oturum) önceki oturum hatası kalkar
+    let lastTok = online.api?.session?.refresh_token || null;
+    bus.on('online', () => {
+      const tok = online.api?.session?.refresh_token || null;
+      if (tok !== lastTok) { lastTok = tok; if (this.authFails >= 3) { this.fatal = false; this.err = null; this.authFails = 0; } }
+      this.sync();
+    });
     setInterval(() => this.loop(), POS_MS);
   },
 
@@ -108,7 +114,7 @@ export const net = {
   onMessage(m) {
     switch (m.t) {
       case 'welcome':
-        this.uid = m.uid; this.count = m.n || 1; this.retry = 0; this.fatal = false;
+        this.uid = m.uid; this.count = m.n || 1; this.retry = 0; this.fatal = false; this.authFails = 0;
         this.status = 'ready';
         bus.emit('net');
         toast('Oyun sunucusuna bağlandın — ortak dünya', 'ok');
@@ -118,6 +124,19 @@ export const net = {
       case 'err':
         this.err = m.msg;
         if (m.code === 'version' || m.code === 'dup') this.fatal = true;
+        // Giriş belirteci reddedildi (ör. günlerce açılmayan oyunda süresi dolmuş): belirteci yenileyip yeniden bağlan.
+        // Üç kez üst üste reddedilirse oturum gerçekten geçersizdir: yeniden giriş istenir. Giriş sunucusuna
+        // ulaşılamadıysa (authsvc) yalnız yeniden denenir. Eski sunucu bağlantıyı kapatmasa da istemci kapatır.
+        if (m.code === 'auth' || m.code === 'authsvc') {
+          if (m.code === 'auth') {
+            if (online.api?.session) online.api.session.expires_at = 0;
+            if (++this.authFails >= 3) { this.fatal = true; this.err = 'Oturum doğrulanamadı — Çevrimiçi bölümünden çıkış yapıp yeniden giriş yap'; }
+          }
+          if (this.fatal || this.authFails === 1 || m.code === 'authsvc') toast(this.err, 'warn');
+          bus.emit('net');
+          try { this.ws?.close(); } catch { /* */ }
+          return;
+        }
         toast(m.msg, 'warn');
         bus.emit('net');
         return;

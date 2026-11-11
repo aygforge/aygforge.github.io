@@ -70,7 +70,7 @@ Sunucu kapanırsa ya da uyursa oyun **durmaz**: tek oyunculu devam eder, sunucu 
 3. **Apply** → kurulum birkaç dakika sürer.
    - Hizmet adı `ahen-vadisi-sunucu`, plan **Free**, bölge Frankfurt.
    - Supabase adresi ve herkese açık anahtar depodaki `public/online.json`'dan okunur; ek ayar gerekmez.
-4. Bitince adresi açarak doğrula: `https://ahen-vadisi-sunucu.onrender.com/health` → `{"ok":true,"version":"4.5.3","web":true,…}`.
+4. Bitince adresi açarak doğrula: `https://ahen-vadisi-sunucu.onrender.com/health` → `{"ok":true,"version":"4.5.4","web":true,…}`.
    Render adresi farklı verdiyse onu kullan.
 5. Oyuna bağla — iki yol:
    - **En kolayı:** adresi bana gönder. `public/online.json` dosyasına

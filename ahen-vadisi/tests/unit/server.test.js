@@ -2,7 +2,7 @@
 // merkez (kimlik, sürüm, kanallar, parti bilgisi).
 import { describe, it, expect } from 'vitest';
 import { Zone, sharePerMember, isSharedMap, SHARE_RANGE, bossHpMult, playerWeight } from '../../server/sim/zone.mjs';
-import { Hub } from '../../server/hub.mjs';
+import { Hub, supabaseVerifier } from '../../server/hub.mjs';
 import { ENEMIES } from '../../src/data/enemies.js';
 import { ELITE_RULE } from '../../src/data/maps/index.js';
 import { TILE, GAME_VERSION } from '../../src/data/constants.js';
@@ -171,8 +171,27 @@ describe('Sunucu merkezi', () => {
     expect(a.last('err').code).toBe('version');
     a.msg({ t: 'hello', token: 'yanlis', v: GAME_VERSION }); await tick();
     expect(a.last('err').code).toBe('auth');
-    a.msg({ t: 'hello', token: 'ok:u1', v: GAME_VERSION, nick: 'Ayg' }); await tick();
-    expect(a.last('welcome')).toMatchObject({ uid: 'u1', n: 1 });
+    expect(a.closed).toBe(true);                   // 4.5.4: açık bırakılınca istemci "bağlanıyor"da takılıyordu
+    const b = fakeWs(); hub.attach(b);
+    b.msg({ t: 'hello', token: 'ok:u1', v: GAME_VERSION, nick: 'Ayg' }); await tick();
+    expect(b.last('welcome')).toMatchObject({ uid: 'u1', n: 1 });
+  });
+
+  it('giriş servisine ulaşılamazsa "authsvc" denir (belirteç suçlanmaz) ve bağlantı kapanır', async () => {
+    const hub = new Hub({ verify: async () => { throw new Error('supabase yok'); } });
+    const a = fakeWs(); hub.attach(a);
+    a.msg({ t: 'hello', token: 'ok:u1', v: GAME_VERSION }); await tick();
+    expect(a.last('err').code).toBe('authsvc');
+    expect(a.closed).toBe(true);
+  });
+
+  it('Supabase doğrulayıcısı: 401 geçersiz belirteç, 5xx/ağ hatası servis hatası', async () => {
+    const mk = (fn) => supabaseVerifier('https://x.supabase.co', 'k', fn);
+    expect(await mk(async () => ({ ok: false, status: 401 }))('t')).toBe(null);
+    expect(await mk(async () => ({ ok: true, status: 200, json: async () => ({ id: 'u1', email: 'a@x' }) }))('t')).toEqual({ uid: 'u1', email: 'a@x' });
+    await expect(mk(async () => ({ ok: false, status: 503 }))('t')).rejects.toThrow();
+    await expect(mk(async () => ({ ok: false, status: 540 }))('t')).rejects.toThrow();
+    await expect(mk(async () => { throw new TypeError('fetch failed'); })('t')).rejects.toThrow();
   });
 
   it('aynı hesap ikinci kez bağlanırsa eskisi kapanır; giriş yapmadan oyun mesajı işlenmez', async () => {
