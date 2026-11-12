@@ -14,7 +14,7 @@ const URL_ = 'file://' + path.resolve(__dirname, '../../football-wars.html');
   fs.writeFileSync(OUT + '/test_logo.png', Buffer.from(png, 'base64'));
   await p.click('#cardA [data-up]');
   await p.setInputFiles('#logoFile', OUT + '/test_logo.png');
-  await p.waitForFunction(() => document.querySelector('#cardA .badge') && document.querySelector('#cardA .badge').textContent === 'KULLANICI', null, { timeout: 10000 });
+  await p.waitForFunction(() => document.querySelector('#cardA .badge') && document.querySelector('#cardA .badge').textContent === 'YOUR LOGO', null, { timeout: 10000 });
   console.log('logo upload ok');
   // 60 fps, short battle, 720p
   await p.click('#adv summary');
@@ -28,7 +28,7 @@ const URL_ = 'file://' + path.resolve(__dirname, '../../football-wars.html');
   const [dl] = await Promise.all([p.waitForEvent('download'), p.click('#btnDownload')]); const f = OUT + '/' + dl.suggestedFilename(); await dl.saveAs(f); console.log('saved', f);
   await p.locator('.stage').screenshot({ path: OUT + '/stage_done.png' });
   // diagnostics + self test
-  await p.click('#btnDiag'); await p.click('#btnSelfTest'); await p.waitForFunction(() => /farklı seed/.test(document.getElementById('selfTest').textContent), null, { timeout: 60000 });
+  await p.click('#btnDiag'); await p.click('#btnSelfTest'); await p.waitForFunction(() => /different seed/.test(document.getElementById('selfTest').textContent), null, { timeout: 60000 });
   console.log('SELFTEST', await p.evaluate(() => document.getElementById('selfTest').innerText));
   await p.screenshot({ path: OUT + '/diag.png', fullPage: false });
   await p.click('#modalDiag [data-close]'); await p.click('#btnAbout'); await p.screenshot({ path: OUT + '/about.png' }); await p.click('#modalAbout [data-close]');

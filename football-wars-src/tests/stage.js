@@ -16,7 +16,7 @@ const OUT = '/tmp/claude-0/-home-user-aygforge-github-io/191a4712-9ac7-5807-a3c4
     const mkLogo = (src) => new Promise(r => { const im = new Image(); im.onload = () => { const s = document.createElement('canvas'); s.width = s.height = 26; s.getContext('2d').drawImage(im, 0, 0, 26, 26); const bg = document.createElement('canvas'); bg.width = bg.height = 96; bg.getContext('2d').drawImage(im, 0, 0, 96, 96); r({ small: s, big: bg }); }; im.src = src; });
     const logos = [await mkLogo(thumbs[0]), await mkLogo(thumbs[1])];
     const w = E.createWorld({ seed: 4242, teamA: ta, teamB: tb, cfg: window.FW_ENGINE_CONFIG, duration: 'standard', fxLevel: 1 });
-    const rr = R.createRenderer({ world: w, teams: [ta, tb], kits, atlases: atl, logos, lang: 'tr', labels: true, modeLabel: 'SÜPER LİG', fictional: false });
+    const rr = R.createRenderer({ world: w, teams: [ta, tb], kits, atlases: atl, logos, lang: 'en', labels: true, modeLabel: 'SÜPER LIG', fictional: false });
     const cv = document.createElement('canvas'); cv.width = 1080; cv.height = 1920; const ctx = cv.getContext('2d');
     const out = [];
     for (const T of times) { E.advanceTo(w, T); rr.render(ctx, T, 1080, 1920); out.push([T, cv.toDataURL('image/png')]); }

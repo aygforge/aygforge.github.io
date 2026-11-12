@@ -108,9 +108,9 @@ function createRenderer(o) {
   const balls = { white: ballSprite('#ffffff', '#20232e'), pass: ballSprite('#9ff6ff', '#2bd1ff'), power: ballSprite('#ffd166', '#ff6b1a'), cross: ballSprite('#fff27a', '#ff3d6e') };
   const tc = [C.vivid(o.teams[0].visual.primary_color), C.vivid(o.teams[1].visual.primary_color)];
   const tcL = tc.map(c => C.lum(c) < 0.12 ? C.bright(c, 0.45) : c);
-  const L = TXT[o.lang] || TXT.tr;
-  const names = o.teams.map(t => t.display_name_tr || t.name);
-  const shorts = o.teams.map(t => S.shortName(t, 98));
+  const L = TXT[o.lang] || TXT.en;
+  const names = o.teams.map(t => o.lang === 'tr' ? (t.display_name_tr || t.name) : t.name);
+  const shorts = o.teams.map(t => S.shortName(t, 98, o.lang));
   let lastCrowd = -1;
   const sorted = w.units.slice();
 

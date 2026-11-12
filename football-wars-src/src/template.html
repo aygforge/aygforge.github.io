@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FOOTBALL WARS — 100 VS 100</title>
-<meta name="description" content="Football Wars: 100'e 100 pixel futbol savaşı simülasyonu ve dikey video stüdyosu (tek dosya, çevrimdışı).">
+<meta name="description" content="Football Wars: 100 vs 100 pixel football battle simulator and vertical video studio (single file, offline).">
 <style>
 :root{
   --bg:#070912; --bg2:#0d1120; --panel:#111628; --panel2:#161c33; --line:#232b4a; --text:#e8ecff; --dim:#8f99c2;
@@ -158,63 +158,63 @@ video{width:100%;border-radius:12px;background:#000;margin-top:10px;max-height:6
   <header class="top">
     <div class="brand"><canvas id="brandCv" width="10" height="10" aria-label="FOOTBALL WARS"></canvas><div><div class="sub">100 VS 100 PIXEL BATTLE</div><div class="note" id="dbChip" style="margin-top:2px"></div></div></div>
     <div class="spacer"></div>
-    <span class="chip" id="fmtChip">Video: kontrol ediliyor…</span>
-    <button class="btn small ghost" id="btnDiag">Teşhis</button>
-    <button class="btn small ghost" id="btnAbout">Hakkında / Lisanslar</button>
+    <span class="chip" id="fmtChip">Video: checking…</span>
+    <button class="btn small ghost" id="btnDiag">Diagnostics</button>
+    <button class="btn small ghost" id="btnAbout">About / Licenses</button>
   </header>
   <div id="globalMsg"></div>
   <div class="grid">
     <!-- LEFT: setup -->
     <div class="col-left">
       <div class="card">
-        <h2><span class="n">1</span>Turnuva</h2>
+        <h2><span class="n">1</span>Competition</h2>
         <select id="mode"></select>
         <div class="note" id="modeNote"></div>
-        <div id="leagueWrap"><label class="f" id="leagueLbl" for="league">Lig</label><select id="league"></select></div>
-        <div id="typeWrap" class="hidden"><label class="f" for="typeFilter">Takım türü</label><select id="typeFilter"><option value="">Tümü (kulüp + milli)</option><option value="club">Sadece kulüpler</option><option value="national">Sadece milli takımlar</option></select></div>
-        <label class="toggle hidden" id="mixedWrap"><input type="checkbox" id="mixed"> Kulüp–milli takım karma eşleşmeye izin ver <span class="note">(farklı derecelendirme sistemleri)</span></label>
+        <div id="leagueWrap"><label class="f" id="leagueLbl" for="league">League</label><select id="league"></select></div>
+        <div id="typeWrap" class="hidden"><label class="f" for="typeFilter">Team type</label><select id="typeFilter"><option value="">All (clubs + national teams)</option><option value="club">Clubs only</option><option value="national">National teams only</option></select></div>
+        <label class="toggle hidden" id="mixedWrap"><input type="checkbox" id="mixed"> Allow club vs national team <span class="note">(different rating systems)</span></label>
       </div>
       <div class="card">
-        <h2><span class="n">2</span>Takımlar</h2>
+        <h2><span class="n">2</span>Teams</h2>
         <div class="picker a" id="pickA">
-          <div class="lbl"><span class="side">TAKIM A</span><span class="note">altta • sol skor</span></div>
-          <input type="text" id="searchA" placeholder="Ara: Galatasaray, fenerbahce, FB, Almanya…" autocomplete="off" spellcheck="false">
+          <div class="lbl"><span class="side">TEAM A</span><span class="note">bottom • left score</span></div>
+          <input type="text" id="searchA" placeholder="Search: Real Madrid, barca, Galatasaray, Germany…" autocomplete="off" spellcheck="false">
           <div class="results" id="resA"></div>
           <div class="tcard" id="cardA"></div>
         </div>
-        <div class="swap"><button class="btn small ghost" id="btnSwap" title="Takımları değiştir">⇅ Yer değiştir</button></div>
+        <div class="swap"><button class="btn small ghost" id="btnSwap" title="Swap teams">⇅ Swap</button></div>
         <div class="picker b" id="pickB">
-          <div class="lbl"><span class="side">TAKIM B</span><span class="note">üstte • sağ skor</span></div>
-          <input type="text" id="searchB" placeholder="Ara: Real Madrid, barca, Türkiye…" autocomplete="off" spellcheck="false">
+          <div class="lbl"><span class="side">TEAM B</span><span class="note">top • right score</span></div>
+          <input type="text" id="searchB" placeholder="Search: Liverpool, Inter, PSG, France…" autocomplete="off" spellcheck="false">
           <div class="results" id="resB"></div>
           <div class="tcard" id="cardB"></div>
         </div>
       </div>
       <div class="card">
-        <h2><span class="n">3</span>Başlat</h2>
-        <label class="f" for="seed">Seed (boş = her savaşta yeni rastgele seed)</label>
-        <div class="row"><input type="text" id="seed" inputmode="numeric" placeholder="otomatik" maxlength="10"><button class="btn small" id="btnSeedRnd">Rastgele</button><button class="btn small" id="btnSeedCopy">Kopyala</button></div>
+        <h2><span class="n">3</span>Start</h2>
+        <label class="f" for="seed">Seed (empty = new random seed every battle)</label>
+        <div class="row"><input type="text" id="seed" inputmode="numeric" placeholder="automatic" maxlength="10"><button class="btn small" id="btnSeedRnd">Random</button><button class="btn small" id="btnSeedCopy">Copy</button></div>
         <details class="adv" id="adv">
-          <summary>Gelişmiş ayarlar</summary>
-          <label class="f">Video çözünürlüğü</label>
+          <summary>Advanced settings</summary>
+          <label class="f">Video resolution</label>
           <div class="seg" id="resSeg"><label><input type="radio" name="res" value="1080" checked><span>1080×1920</span></label><label><input type="radio" name="res" value="720"><span>720×1280</span></label></div>
           <label class="f">FPS</label>
           <div class="seg" id="fpsSeg"><label><input type="radio" name="fps" value="30" checked><span>30 FPS</span></label><label id="fps60l"><input type="radio" name="fps" value="60"><span>60 FPS</span></label></div>
-          <label class="f">Savaş süresi hedefi</label>
-          <div class="seg" id="durSeg"><label><input type="radio" name="dur" value="short"><span>Kısa</span></label><label><input type="radio" name="dur" value="standard" checked><span>Standart</span></label><label><input type="radio" name="dur" value="long"><span>Uzun</span></label></div>
-          <div class="note">Hasar ölçeği ve anti-stall zamanlaması değişir; toplam video her zaman ≤ 65 sn.</div>
-          <label class="f">Efekt yoğunluğu</label>
-          <div class="seg" id="fxSeg"><label><input type="radio" name="fx" value="0"><span>Düşük</span></label><label><input type="radio" name="fx" value="1" checked><span>Normal</span></label><label><input type="radio" name="fx" value="2"><span>Yüksek</span></label></div>
-          <label class="f">Jenerik dili</label>
-          <div class="seg" id="langSeg"><label><input type="radio" name="lang" value="tr" checked><span>Türkçe</span></label><label><input type="radio" name="lang" value="en"><span>English</span></label></div>
-          <label class="toggle"><input type="checkbox" id="optSound" checked> Ses (canlı + videoya kayıt)</label>
-          <label class="toggle"><input type="checkbox" id="optLabels" checked> Taktik bilgi etiketleri (özel yetenek adları, SAVE!, CUT!)</label>
+          <label class="f">Battle length target</label>
+          <div class="seg" id="durSeg"><label><input type="radio" name="dur" value="short"><span>Short</span></label><label><input type="radio" name="dur" value="standard" checked><span>Standard</span></label><label><input type="radio" name="dur" value="long"><span>Long</span></label></div>
+          <div class="note">Changes damage scale and anti-stall timing; the whole video is always ≤ 65 s.</div>
+          <label class="f">Effects intensity</label>
+          <div class="seg" id="fxSeg"><label><input type="radio" name="fx" value="0"><span>Low</span></label><label><input type="radio" name="fx" value="1" checked><span>Normal</span></label><label><input type="radio" name="fx" value="2"><span>High</span></label></div>
+          <label class="f">Video text language</label>
+          <div class="seg" id="langSeg"><label><input type="radio" name="lang" value="en" checked><span>English</span></label><label><input type="radio" name="lang" value="tr"><span>Türkçe</span></label></div>
+          <label class="toggle"><input type="checkbox" id="optSound" checked> Sound (live + recorded into the video)</label>
+          <label class="toggle"><input type="checkbox" id="optLabels" checked> Tactical labels (special move names, SAVE!, CUT!)</label>
           <div class="opts">
-            <div><label class="f" for="volMusic">Müzik sesi</label><input type="range" id="volMusic" min="0" max="100" value="70"></div>
-            <div><label class="f" for="volSfx">Efekt sesi</label><input type="range" id="volSfx" min="0" max="100" value="90"></div>
+            <div><label class="f" for="volMusic">Music volume</label><input type="range" id="volMusic" min="0" max="100" value="70"></div>
+            <div><label class="f" for="volSfx">SFX volume</label><input type="range" id="volSfx" min="0" max="100" value="90"></div>
           </div>
         </details>
-        <div style="margin-top:12px"><button class="btn primary" id="btnStart" disabled>SAVAŞI BAŞLAT VE VİDEO OLUŞTUR</button></div>
+        <div style="margin-top:12px"><button class="btn primary" id="btnStart" disabled>START BATTLE &amp; CREATE VIDEO</button></div>
         <div class="note" id="startReason"></div>
       </div>
     </div>
@@ -223,43 +223,43 @@ video{width:100%;border-radius:12px;background:#000;margin-top:10px;max-height:6
       <div class="stage"><canvas id="stage" width="360" height="640"></canvas></div>
       <div class="live">
         <div class="tm"><img id="liveLogoA" alt=""><div><div class="c" id="liveA">100</div><div class="note" id="liveNameA">—</div></div></div>
-        <div class="mid"><div class="t" id="liveTime">00:00</div><div class="s">kalan <b id="liveTotal">200</b></div><div class="s">seed <b id="liveSeed">—</b></div><div style="margin-top:4px"><span class="badge-state" id="stateBadge">HAZIR</span></div></div>
+        <div class="mid"><div class="t" id="liveTime">00:00</div><div class="s">left <b id="liveTotal">200</b></div><div class="s">seed <b id="liveSeed">—</b></div><div style="margin-top:4px"><span class="badge-state" id="stateBadge">READY</span></div></div>
         <div class="tm r"><img id="liveLogoB" alt=""><div><div class="c" id="liveB">100</div><div class="note" id="liveNameB">—</div></div></div>
       </div>
     </div>
     <!-- RIGHT: status / result -->
     <div class="col-right">
       <div class="card">
-        <h2>Durum</h2>
-        <div id="statusText" style="font-weight:700">Takımları seç ve başlat.</div>
+        <h2>Status</h2>
+        <div id="statusText" style="font-weight:700">Pick two teams and press start.</div>
         <div class="prog"><i id="progBar"></i></div>
         <dl class="kv" id="statusKv"></dl>
         <div id="statusMsgs"></div>
       </div>
       <div class="card hidden" id="resultCard">
-        <h2>Sonuç</h2>
-        <div class="winner"><img id="resLogo" alt=""><div><div class="w1" id="resW1">KAZANAN</div><div class="w2" id="resName">—</div><div class="w3" id="resSub">—</div></div></div>
+        <h2>Result</h2>
+        <div class="winner"><img id="resLogo" alt=""><div><div class="w1" id="resW1">WINNER</div><div class="w2" id="resName">—</div><div class="w3" id="resSub">—</div></div></div>
         <table class="roles" id="resRoles"></table>
         <dl class="kv" id="resKv" style="margin-top:10px"></dl>
         <div id="videoBox" class="hidden">
           <video id="resVideo" controls playsinline preload="metadata"></video>
           <div class="note" id="videoInfo"></div>
-          <a class="btn dl" id="btnDownload" href="#" download>VİDEOYU İNDİR</a>
+          <a class="btn dl" id="btnDownload" href="#" download>DOWNLOAD VIDEO</a>
         </div>
         <div class="btns">
-          <button class="btn" id="btnReplay">AYNI SAVAŞI TEKRAR İZLE</button>
-          <button class="btn" id="btnRematch">AYNI TAKIMLARLA YENİDEN SAVAŞ</button>
-          <button class="btn" id="btnNew" style="grid-column:1 / -1">YENİ SAVAŞ</button>
+          <button class="btn" id="btnReplay">WATCH THE SAME BATTLE AGAIN</button>
+          <button class="btn" id="btnRematch">REMATCH (NEW SEED)</button>
+          <button class="btn" id="btnNew" style="grid-column:1 / -1">NEW BATTLE</button>
         </div>
       </div>
       <div class="card">
-        <h2>Son 5 savaş</h2>
+        <h2>Last 5 battles</h2>
         <ul class="recent" id="recent"></ul>
-        <div class="note">Yalnızca kısa özet bu tarayıcıda (localStorage) saklanır; video saklanmaz.</div>
+        <div class="note">Only a short summary is kept in this browser (localStorage); videos are not stored.</div>
       </div>
     </div>
   </div>
-  <div class="foot">FOOTBALL WARS — bağımsız hayran/eğlence aracıdır; hiçbir kulüp, federasyon, UEFA veya FIFA ile bağlantılı ya da onaylı değildir. Tüm savaş, ses ve görseller tarayıcıda üretilir; internet gerekmez.</div>
+  <div class="foot">FOOTBALL WARS is an independent fan/entertainment tool, not affiliated with or endorsed by any club, federation, UEFA or FIFA. All battles, sound and graphics are generated in your browser; no internet needed.</div>
 </div>
 
 <div class="modal" id="modalAbout"><div class="box" id="aboutBox"></div></div>

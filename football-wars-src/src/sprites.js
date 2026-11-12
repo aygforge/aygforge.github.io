@@ -287,8 +287,8 @@ function initials(team) {
   if (core.length === 1) return root.FWFont.upper(core[0]).replace(/[^A-ZÇĞİÖŞÜ0-9]/g, '').slice(0, 3);
   return core.slice(0, 3).map(w => root.FWFont.upper(w)[0]).join('');
 }
-function shortName(team, max) {
-  const n = team.display_name_tr || team.name;
+function shortName(team, max, lang) {
+  const n = lang === 'tr' ? (team.display_name_tr || team.name) : team.name;
   const f = root.FWFont;
   if (f.measure(n) <= max) return n;
   // drop common prefixes then truncate

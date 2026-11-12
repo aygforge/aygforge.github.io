@@ -17,19 +17,19 @@ const DIAG = { matches: 0, exports: 0, urls: new Set(), lastLive: null, lastExpo
 function dataChecks() {
   const c = [];
   const m = DB.metadata.counts;
-  c.push({ k: 'Lig sayısı', v: DB.leagues.length, ok: DB.leagues.length === 11 && m.leagues === 11 });
-  c.push({ k: 'Kulüp sayısı', v: DB.clubs.length, ok: DB.clubs.length === 194 && m.clubs === 194 });
-  c.push({ k: 'Milli takım sayısı', v: DB.national_teams.length, ok: DB.national_teams.length === 55 && m.national_teams === 55 });
-  c.push({ k: 'Toplam takım', v: ALL.length, ok: ALL.length === 249 && m.total === 249 });
-  c.push({ k: 'Benzersiz ID', v: BY_ID.size, ok: BY_ID.size === ALL.length });
+  c.push({ k: 'Leagues', v: DB.leagues.length, ok: DB.leagues.length === 11 && m.leagues === 11 });
+  c.push({ k: 'Clubs', v: DB.clubs.length, ok: DB.clubs.length === 194 && m.clubs === 194 });
+  c.push({ k: 'National teams', v: DB.national_teams.length, ok: DB.national_teams.length === 55 && m.national_teams === 55 });
+  c.push({ k: 'Total teams', v: ALL.length, ok: ALL.length === 249 && m.total === 249 });
+  c.push({ k: 'Unique IDs', v: BY_ID.size, ok: BY_ID.size === ALL.length });
   const rolesOk = ALL.filter(t => Object.values(t.battle_profile.roles_per_100).reduce((a, b) => a + b, 0) === 100).length;
-  c.push({ k: 'roles_per_100 toplamı = 100', v: rolesOk + '/' + ALL.length, ok: rolesOk === ALL.length });
+  c.push({ k: 'roles_per_100 sums to 100', v: rolesOk + '/' + ALL.length, ok: rolesOk === ALL.length });
   const attrOk = ALL.filter(t => E.ATTRS.every(a => typeof t.battle_profile.attributes[a] === 'number')).length;
-  c.push({ k: '10 özellik alanı mevcut', v: attrOk + '/' + ALL.length, ok: attrOk === ALL.length });
+  c.push({ k: 'All 10 attributes present', v: attrOk + '/' + ALL.length, ok: attrOk === ALL.length });
   const leagueOk = DB.leagues.every(l => l.team_ids.length === l.club_count && l.team_ids.every(id => BY_ID.has(id) && BY_ID.get(id).league_id === l.id));
-  c.push({ k: 'Lig ↔ kulüp bağları', v: leagueOk ? 'tutarlı' : 'HATA', ok: leagueOk });
+  c.push({ k: 'League ↔ club links', v: leagueOk ? 'consistent' : 'ERROR', ok: leagueOk });
   const arch = ALL.every(t => CFG.archetype_definitions[t.battle_profile.archetype]);
-  c.push({ k: 'Taktik arketipleri config’te tanımlı', v: arch ? 'evet' : 'HAYIR', ok: arch });
+  c.push({ k: 'Tactical archetypes defined in config', v: arch ? 'yes' : 'NO', ok: arch });
   return c;
 }
 
@@ -63,32 +63,32 @@ function search(q, f) {
 
 // ======================= modes / validation =======================
 const MODES = [
-  ['domestic_league', 'Lig maçı (aynı lig) — Süper Lig ve diğer ligler', { tr: null, en: null }],
-  ['champions_league', 'Şampiyonlar Ligi — kurgusal eşleşme', { tr: 'ŞAMPİYONLAR LİGİ', en: 'CHAMPIONS LEAGUE' }],
-  ['europa_league', 'Avrupa Ligi — kurgusal eşleşme', { tr: 'AVRUPA LİGİ', en: 'EUROPA LEAGUE' }],
-  ['conference_league', 'Konferans Ligi — kurgusal eşleşme', { tr: 'KONFERANS LİGİ', en: 'CONFERENCE LEAGUE' }],
-  ['national_match', 'Milli maç', { tr: 'MİLLİ MAÇ', en: 'INTERNATIONAL' }],
-  ['custom_exhibition', 'Serbest gösteri maçı', { tr: 'GÖSTERİ MAÇI', en: 'EXHIBITION' }]
+  ['domestic_league', 'League match (same league)', { tr: null, en: null }],
+  ['champions_league', 'Champions League — fictional match-up', { tr: 'ŞAMPİYONLAR LİGİ', en: 'CHAMPIONS LEAGUE' }],
+  ['europa_league', 'Europa League — fictional match-up', { tr: 'AVRUPA LİGİ', en: 'EUROPA LEAGUE' }],
+  ['conference_league', 'Conference League — fictional match-up', { tr: 'KONFERANS LİGİ', en: 'CONFERENCE LEAGUE' }],
+  ['national_match', 'International match', { tr: 'MİLLİ MAÇ', en: 'INTERNATIONAL' }],
+  ['custom_exhibition', 'Free exhibition match', { tr: 'GÖSTERİ MAÇI', en: 'EXHIBITION' }]
 ];
 const MODE_NOTES = {
-  domestic_league: 'İki kulüp aynı ligden olmalı. Lig seçin (varsayılan: Süper Lig).',
-  champions_league: 'KURGUSAL EŞLEŞME: Veri tabanındaki herhangi iki kulübü seçebilirsiniz. Gerçek UEFA fikstürü, resmî katılımcı listesi veya uygunluk doğrulanmaz/iddia edilmez.',
-  europa_league: 'KURGUSAL EŞLEŞME: Herhangi iki kulüp seçilebilir. Gerçek fikstür veya katılımcı listesi iddiası yoktur.',
-  conference_league: 'KURGUSAL EŞLEŞME: Herhangi iki kulüp seçilebilir. Gerçek fikstür veya katılımcı listesi iddiası yoktur.',
-  national_match: 'İki UEFA milli takımı. Kaynak: FIFA erkekler dünya sıralaması (7 Ekim 2026); savaş gücü oyun için türetilmiş endekstir.',
-  custom_exhibition: 'Serbest eşleşme. Kulüp ile milli takım karışık maç varsayılan olarak kapalıdır; Elo ve FIFA puanları aynı ölçeğe konmaz, yalnız oyunun güç endeksi kullanılır.'
+  domestic_league: 'Both clubs must be from the same league. Pick a league first.',
+  champions_league: 'FICTIONAL MATCH-UP: you can pick any two clubs in the database. No real UEFA fixture, official participant list or eligibility is checked or claimed.',
+  europa_league: 'FICTIONAL MATCH-UP: any two clubs can be picked. No real fixture or participant list is claimed.',
+  conference_league: 'FICTIONAL MATCH-UP: any two clubs can be picked. No real fixture or participant list is claimed.',
+  national_match: 'Two UEFA national teams. Source: FIFA men’s world ranking (7 Oct 2026); battle power is a derived game index.',
+  custom_exhibition: 'Free match-up. Club vs national team is off by default; Elo and FIFA points are never put on the same scale — only the game power index is used.'
 };
 function modeType(mode) { return mode === 'national_match' ? 'national' : mode === 'custom_exhibition' ? null : 'club'; }
 function validate(a, b, mode, mixed) {
-  const cfg = DB.metadata.modes[mode]; if (!cfg) return { ok: false, error: 'Bilinmeyen turnuva tipi' };
-  if (!a && !b) return { ok: false, error: 'Takım A ve Takım B seçilmedi.' };
-  if (!a) return { ok: false, error: 'Takım A seçilmedi.' };
-  if (!b) return { ok: false, error: 'Takım B seçilmedi.' };
-  if (a.id === b.id) return { ok: false, error: 'Bir takım kendisiyle eşleştirilemez.' };
-  if (mode === 'domestic_league' && (a.type !== 'club' || b.type !== 'club' || a.league_id !== b.league_id)) return { ok: false, error: 'Lig maçı modu aynı ligdeki iki kulübü gerektirir.' };
-  if (mode === 'national_match' && (a.type !== 'national' || b.type !== 'national')) return { ok: false, error: 'Milli maç modu iki milli takım gerektirir.' };
-  if (['champions_league', 'europa_league', 'conference_league'].includes(mode) && (a.type !== 'club' || b.type !== 'club')) return { ok: false, error: 'UEFA kulüp turnuvası modları iki kulüp gerektirir.' };
-  if (mode === 'custom_exhibition' && a.type !== b.type && !mixed) return { ok: false, error: 'Kulüp–milli takım karma maçı için “karma eşleşmeye izin ver” seçeneğini açın.' };
+  const cfg = DB.metadata.modes[mode]; if (!cfg) return { ok: false, error: 'Unknown competition type' };
+  if (!a && !b) return { ok: false, error: 'Pick Team A and Team B.' };
+  if (!a) return { ok: false, error: 'Pick Team A.' };
+  if (!b) return { ok: false, error: 'Pick Team B.' };
+  if (a.id === b.id) return { ok: false, error: 'A team cannot play itself.' };
+  if (mode === 'domestic_league' && (a.type !== 'club' || b.type !== 'club' || a.league_id !== b.league_id)) return { ok: false, error: 'League match mode needs two clubs from the same league.' };
+  if (mode === 'national_match' && (a.type !== 'national' || b.type !== 'national')) return { ok: false, error: 'International mode needs two national teams.' };
+  if (['champions_league', 'europa_league', 'conference_league'].includes(mode) && (a.type !== 'club' || b.type !== 'club')) return { ok: false, error: 'UEFA club competition modes need two clubs.' };
+  if (mode === 'custom_exhibition' && a.type !== b.type && !mixed) return { ok: false, error: 'To play a club against a national team, enable “Allow club vs national team”.' };
   return { ok: true };
 }
 
@@ -116,10 +116,10 @@ async function loadFlags() {
 }
 function canvasSafe(img) { try { const c = document.createElement('canvas'); c.width = c.height = 2; const g = c.getContext('2d'); g.drawImage(img, 0, 0, 2, 2); g.getImageData(0, 0, 1, 1); return true; } catch (e) { return false; } }
 function logoKind(team) {
-  if (userLogos.has(team.id)) return { kind: 'user', label: 'Kullanıcı tarafından yüklenen logo (yalnız bu tarayıcıda saklanır).', real: false };
-  if (FLAGS[team.id]) return { kind: 'flag', label: 'Ülke bayrağı — Wikimedia Commons (' + FLAGS[team.id].file + '). Federasyon arması değildir.', real: true };
-  if (S.SIMPLE_FLAGS[team.id]) return { kind: 'flag-simple', label: 'Basitleştirilmiş bayrak çizimi (yerel üretim). Federasyon arması değildir.', real: false };
-  return { kind: 'generated', label: 'TEMSİLİ arma: takım renkleri ve baş harflerinden üretildi — resmî logo değildir.', real: false };
+  if (userLogos.has(team.id)) return { kind: 'user', label: 'Logo uploaded by you (stored only in this browser).', real: false };
+  if (FLAGS[team.id]) return { kind: 'flag', label: 'National flag — Wikimedia Commons (' + FLAGS[team.id].file + '). Not the federation crest.', real: true };
+  if (S.SIMPLE_FLAGS[team.id]) return { kind: 'flag-simple', label: 'Simplified flag drawing (generated locally). Not the federation crest.', real: false };
+  return { kind: 'generated', label: 'PLACEHOLDER crest generated from team colours and initials — not the official logo.', real: false };
 }
 function logoSet(team) {
   let L = logoCache.get(team.id); if (L) return L;
@@ -127,7 +127,7 @@ function logoSet(team) {
   let small, big;
   if (k.kind === 'user') { const img = userLogos.get(team.id); small = S.imageBadge(img, 26); big = S.imageBadge(img, 96); }
   else if (k.kind === 'flag' || k.kind === 'flag-simple') { const img = flagImgs.get(team.id); if (img) { small = S.flagBadge(img, 26); big = S.flagBadge(img, 96); } }
-  if (!small) { small = S.generatedCrest(team, 26); big = S.generatedCrest(team, 96); if (k.kind !== 'generated') { k.kind = 'generated'; k.label = 'TEMSİLİ arma (bayrak yüklenemedi).'; } }
+  if (!small) { small = S.generatedCrest(team, 26); big = S.generatedCrest(team, 96); if (k.kind !== 'generated') { k.kind = 'generated'; k.label = 'PLACEHOLDER crest (flag could not be loaded).'; } }
   const thumb = big.toDataURL('image/png');
   L = { small, big, thumb, ...k };
   logoCache.set(team.id, L);
@@ -139,13 +139,13 @@ function radio(name) { const el = document.querySelector('input[name="' + name +
 function setRadio(name, v) { const el = document.querySelector('input[name="' + name + '"][value="' + v + '"]'); if (el && !el.disabled) el.checked = true; }
 function settings() {
   return {
-    res: radio('res') || '1080', fps: +(radio('fps') || 30), duration: radio('dur') || 'standard', fx: +(radio('fx') || 1), lang: radio('lang') || 'tr',
+    res: radio('res') || '1080', fps: +(radio('fps') || 30), duration: radio('dur') || 'standard', fx: +(radio('fx') || 1), lang: radio('lang') || 'en',
     sound: $('optSound').checked, labels: $('optLabels').checked, music: +$('volMusic').value / 100, sfx: +$('volSfx').value / 100
   };
 }
-function saveSettings() { try { localStorage.setItem('fw_settings', JSON.stringify({ ...settings(), mode: st.mode, league: st.league })); } catch (e) { } }
+function saveSettings() { try { localStorage.setItem('fw_settings_v2', JSON.stringify({ ...settings(), mode: st.mode, league: st.league })); } catch (e) { } }
 function loadSettings() {
-  let s = null; try { s = JSON.parse(localStorage.getItem('fw_settings') || 'null'); } catch (e) { }
+  let s = null; try { s = JSON.parse(localStorage.getItem('fw_settings_v2') || 'null'); } catch (e) { }
   if (!s) return null;
   setRadio('res', s.res); setRadio('fps', s.fps); setRadio('dur', s.duration); setRadio('fx', s.fx); setRadio('lang', s.lang);
   $('optSound').checked = s.sound !== false; $('optLabels').checked = s.labels !== false;
@@ -168,13 +168,13 @@ function fillLeague() {
   $('typeWrap').classList.toggle('hidden', m !== 'custom_exhibition');
   $('mixedWrap').classList.toggle('hidden', m !== 'custom_exhibition');
   if (m === 'domestic_league') {
-    $('leagueLbl').textContent = 'Lig (zorunlu — iki kulüp de bu ligden)';
-    sel.innerHTML = DB.leagues.map(l => `<option value="${l.id}">${esc(l.name)} — ${esc(l.country)} (${l.club_count} kulüp)</option>`).join('');
+    $('leagueLbl').textContent = 'League (required — both clubs from this league)';
+    sel.innerHTML = DB.leagues.map(l => `<option value="${l.id}">${esc(l.name)} — ${esc(countryEn(l.country_code))} (${l.club_count} clubs)</option>`).join('');
     if (!LEAGUES.has(st.league)) st.league = 'TUR_SUPER';
     sel.value = st.league;
   } else {
-    $('leagueLbl').textContent = 'Lig filtresi (aramayı daraltır)';
-    sel.innerHTML = '<option value="">Tüm ligler</option>' + DB.leagues.map(l => `<option value="${l.id}">${esc(l.name)} — ${esc(l.country)}</option>`).join('');
+    $('leagueLbl').textContent = 'League filter (narrows search)';
+    sel.innerHTML = '<option value="">All leagues</option>' + DB.leagues.map(l => `<option value="${l.id}">${esc(l.name)} — ${esc(countryEn(l.country_code))}</option>`).join('');
     sel.value = LEAGUES.has(st.league) && m !== 'domestic_league' ? st.league : '';
     if (m !== 'domestic_league') st.league = sel.value;
   }
@@ -188,7 +188,7 @@ function filterFor() {
   if (m === 'custom_exhibition') { f.type = st.typeFilter || null; if (f.league) f.type = 'club'; }
   return f;
 }
-function leagueName(t) { return t.type === 'national' ? 'Milli takım • ' + t.country : ((LEAGUES.get(t.league_id) || {}).name || '') + ' • ' + t.country; }
+function leagueName(t) { return t.type === 'national' ? 'National team • UEFA' : ((LEAGUES.get(t.league_id) || {}).name || '') + ' • ' + countryEn(t.country_code); }
 const pickers = {};
 function setupPicker(side) {
   const inp = $('search' + side), box = $('res' + side);
@@ -198,10 +198,10 @@ function setupPicker(side) {
     const f = filterFor();
     P.list = search(inp.value, f).slice(0, 60);
     const other = side === 'A' ? st.b : st.a;
-    if (!P.list.length) { box.innerHTML = '<div class="res dis"><span></span><span class="lg">Sonuç yok — farklı bir yazım deneyin ya da lig filtresini değiştirin.</span><span></span></div>'; box.classList.add('open'); return; }
+    if (!P.list.length) { box.innerHTML = '<div class="res dis"><span></span><span class="lg">No results — try another spelling or change the league filter.</span><span></span></div>'; box.classList.add('open'); return; }
     box.innerHTML = P.list.map((t, i) => {
       const dis = other && other.id === t.id;
-      return `<div class="res${dis ? ' dis' : ''}${i === P.act ? ' act' : ''}" data-i="${i}" title="${dis ? 'Kendi kendisiyle maç seçilemez' : ''}"><img src="${logoSet(t).thumb}" alt=""><div><div class="nm">${esc(t.display_name_tr || t.name)}</div><div class="lg">${esc(leagueName(t))}${dis ? ' — zaten diğer tarafta' : ''}</div></div><span class="pw">${t.battle_profile.power_index}</span></div>`;
+      return `<div class="res${dis ? ' dis' : ''}${i === P.act ? ' act' : ''}" data-i="${i}" title="${dis ? 'A team cannot play itself' : ''}"><img src="${logoSet(t).thumb}" alt=""><div><div class="nm">${esc(t.name)}</div><div class="lg">${esc(leagueName(t))}${dis ? ' — already on the other side' : ''}</div></div><span class="pw">${t.battle_profile.power_index}</span></div>`;
     }).join('');
     box.classList.add('open');
   };
@@ -222,37 +222,40 @@ function choose(side, t) {
   const other = side === 'A' ? st.b : st.a;
   if (other && other.id === t.id) return;
   if (side === 'A') st.a = t; else st.b = t;
-  pickers[side].inp.value = t.display_name_tr || t.name;
+  pickers[side].inp.value = t.name;
   pickers[side].box.classList.remove('open');
   if (st.phase === 'done' || st.phase === 'error') st.phase = 'idle', setState('idle'); else refresh();
   renderCard(side);
 }
-const STAT_LABEL = { attack: 'Hücum', defense: 'Savunma', speed: 'Hız', pressing: 'Pres', teamwork: 'Takım oyunu', finishing: 'Bitiricilik' };
+const STAT_LABEL = { attack: 'Attack', defense: 'Defense', speed: 'Speed', pressing: 'Pressing', teamwork: 'Teamwork', finishing: 'Finishing', stamina: 'Stamina', physical: 'Physical', technique: 'Technique', goalkeeping: 'Goalkeeping' };
+const ARCH_EN = { high_press: 'High press', possession: 'Possession', counter: 'Counter-attack', defensive_block: 'Low block', wing_attack: 'Wing play', physical: 'Physical' };
+const COUNTRY_EN = { TUR: 'Türkiye', ENG: 'England', ESP: 'Spain', ITA: 'Italy', GER: 'Germany', FRA: 'France', POR: 'Portugal', NED: 'Netherlands', BEL: 'Belgium', GRE: 'Greece', SCO: 'Scotland' };
+function countryEn(code) { return COUNTRY_EN[code] || code || ''; }
 function renderCard(side) {
   const t = side === 'A' ? st.a : st.b, el = $('card' + side);
   if (!t) { el.classList.remove('on'); el.innerHTML = ''; return; }
   const bp = t.battle_profile, L = logoSet(t), arch = CFG.archetype_definitions[bp.archetype] || {};
   const sr = t.source_rating;
-  const srTxt = sr.provider === 'FIFA' ? `FIFA puanı ${sr.value} (dünya ${sr.position}.) — ${sr.edition_date}` : `beyondELO kulüp Elo ${sr.value} (lig sırası ${sr.position}.)`;
+  const srTxt = sr.provider === 'FIFA' ? `FIFA points ${sr.value} (world #${sr.position}) — ${sr.edition_date}` : `beyondELO club Elo ${sr.value} (league rank #${sr.position})`;
   const bonus = Object.entries(arch.stat || {}).map(([k, v]) => `${STAT_LABEL[k] || k} ${v > 0 ? '+' : ''}${v}`).join(', ');
-  const roles = Object.entries(bp.roles_per_100).map(([r, n]) => `<span class="tag">${E.ROLE_NAMES[r].tr} ${n}</span>`).join('');
-  el.innerHTML = `<div class="hd"><img class="logo" src="${L.thumb}" alt=""><div><div class="tn">${esc(t.display_name_tr || t.name)}</div>
+  const roles = Object.entries(bp.roles_per_100).map(([r, n]) => `<span class="tag">${E.ROLE_NAMES[r].en} ${n}</span>`).join('');
+  el.innerHTML = `<div class="hd"><img class="logo" src="${L.thumb}" alt=""><div><div class="tn">${esc(t.name)}</div>
     <div class="meta">${esc(leagueName(t))}</div>
-    <div class="meta"><span class="sw" style="background:${esc(t.visual.primary_color)}"></span><span class="sw" style="background:${esc(t.visual.secondary_color)}"></span> Güç endeksi <b style="color:#fff">${bp.power_index}</b> • ${esc(bp.archetype_label_tr || arch.tr || bp.archetype)}</div>
+    <div class="meta"><span class="sw" style="background:${esc(t.visual.primary_color)}"></span><span class="sw" style="background:${esc(t.visual.secondary_color)}"></span> Power index <b style="color:#fff">${bp.power_index}</b> • ${esc(ARCH_EN[bp.archetype] || bp.archetype)}</div>
     <div class="pwbar"><i style="width:${bp.power_index}%"></i></div></div></div>
     <div class="stats">${['attack', 'defense', 'speed', 'pressing', 'teamwork', 'finishing'].map(k => `<div class="stat">${STAT_LABEL[k]} <b style="color:#fff">${bp.attributes[k]}</b><div class="bar"><i style="width:${bp.attributes[k]}%"></i></div></div>`).join('')}</div>
-    <div class="tags">${bp.specials.map(s => `<span class="tag sp">★ ${esc((E.SPECIAL_NAMES[s] || {}).tr || s)}</span>`).join('')}<span class="tag">Taktik bonusu: ${esc(bonus || '—')}</span></div>
+    <div class="tags">${bp.specials.map(s => `<span class="tag sp">★ ${esc((E.SPECIAL_NAMES[s] || {}).en || s)}</span>`).join('')}<span class="tag">Tactic bonus: ${esc(bonus || '—')}</span></div>
     <div class="tags">${roles}</div>
-    <div class="note">Kaynak referansı: ${esc(srTxt)}</div>
-    <div class="logo-src"><span class="badge${L.real ? ' real' : ''}">${L.kind === 'flag' ? 'BAYRAK' : L.kind === 'user' ? 'KULLANICI' : 'TEMSİLİ'}</span>${esc(L.label)}
-      <div class="row" style="margin-top:6px"><button class="btn small" data-up="${t.id}">Logo yükle (PNG/SVG)</button>${L.kind === 'user' ? `<button class="btn small ghost" data-rm="${t.id}">Yüklenen logoyu kaldır</button>` : '<span></span>'}</div></div>`;
+    <div class="note">Source rating: ${esc(srTxt)}</div>
+    <div class="logo-src"><span class="badge${L.real ? ' real' : ''}">${L.kind === 'flag' ? 'FLAG' : L.kind === 'user' ? 'YOUR LOGO' : 'PLACEHOLDER'}</span>${esc(L.label)}
+      <div class="row" style="margin-top:6px"><button class="btn small" data-up="${t.id}">Upload logo (PNG/SVG)</button>${L.kind === 'user' ? `<button class="btn small ghost" data-rm="${t.id}">Remove uploaded logo</button>` : '<span></span>'}</div></div>`;
   el.classList.add('on');
 }
 function refresh() {
   const v = validate(st.a, st.b, st.mode, st.mixed);
   const busy = st.phase === 'live' || st.phase === 'encoding';
   $('btnStart').disabled = !v.ok || busy || !st.ready;
-  $('startReason').textContent = !st.ready ? 'Hazırlanıyor…' : busy ? 'Savaş/video işlemi sürüyor…' : v.ok ? (st.mode === 'domestic_league' ? '' : (['champions_league', 'europa_league', 'conference_league'].includes(st.mode) ? 'Not: kurgusal eşleşme.' : '')) : v.error;
+  $('startReason').textContent = !st.ready ? 'Preparing…' : busy ? 'Battle / video in progress…' : v.ok ? (st.mode === 'domestic_league' ? '' : (['champions_league', 'europa_league', 'conference_league'].includes(st.mode) ? 'Note: fictional match-up.' : '')) : v.error;
   $('startReason').className = 'note' + (v.ok ? '' : ' warn');
   ['btnReplay', 'btnRematch', 'btnNew'].forEach(id => $(id).disabled = busy);
   $('btnSwap').disabled = busy;
@@ -262,7 +265,7 @@ function refresh() {
     // keep showing the finished battle (final winner frame) instead of the idle preview
     const w = st.match.world; try { st.match.renderer.render(sctx, w.endT + w.outroLen - 0.01, stage.width, stage.height); } catch (e) { }
   }
-  for (const s of ['A', 'B']) { const t = s === 'A' ? st.a : st.b; $('liveLogo' + s).src = t ? logoSet(t).thumb : ''; $('liveName' + s).textContent = t ? (t.display_name_tr || t.name) : '—'; if (idle) $('live' + s).textContent = t ? '100' : '—'; }
+  for (const s of ['A', 'B']) { const t = s === 'A' ? st.a : st.b; $('liveLogo' + s).src = t ? logoSet(t).thumb : ''; $('liveName' + s).textContent = t ? t.name : '—'; if (idle) $('live' + s).textContent = t ? '100' : '—'; }
   if (idle) { $('liveTotal').textContent = st.a && st.b ? '200' : '—'; $('liveTime').textContent = '00:00'; $('liveSeed').textContent = '—'; }
 }
 function onModeChange() {
@@ -296,7 +299,7 @@ function drawIdle() {
         E.advanceTo(m.world, 2.19);
         m.renderer.render(sctx, 2.19, stage.width, stage.height);
         m.renderer.dispose();
-        drawStageText('HAZIR • BAŞLAT', 1);
+        drawStageText(settings().lang === 'tr' ? 'HAZIR • BAŞLAT' : 'READY • PRESS START', 1);
       } catch (e) { console.error(e); }
     } else splash();
   }, 30);
@@ -320,8 +323,8 @@ function splash() {
 // ======================= match building =======================
 function modeLabel(lang) {
   const m = MODES.find(x => x[0] === st.mode);
-  if (st.mode === 'domestic_league') { const l = LEAGUES.get(st.a.league_id); return F.upper(l ? l.name : 'LİG'); }
-  return m[2][lang] || m[2].tr;
+  if (st.mode === 'domestic_league') { const l = LEAGUES.get(st.a.league_id); return F.upper(l ? l.name : 'LEAGUE'); }
+  return m[2][lang] || m[2].en;
 }
 function buildMatch(seed, set, preview) {
   const teams = [st.a, st.b];
@@ -349,7 +352,7 @@ function stopAudio() { if (st.player) { st.player.stopAll(); st.player = null; }
 function setState(phase, label) {
   st.phase = phase; const b = $('stateBadge');
   b.className = 'badge-state ' + ({ live: 'live', encoding: 'enc', done: 'done', error: 'err', replay: 'live' }[phase] || '');
-  b.textContent = label || { idle: 'HAZIR', live: 'CANLI', encoding: 'VİDEO KODLANIYOR', done: 'VİDEO HAZIR', error: 'HATA', replay: 'TEKRAR' }[phase] || phase;
+  b.textContent = label || { idle: 'READY', live: 'LIVE', encoding: 'ENCODING VIDEO', done: 'VIDEO READY', error: 'ERROR', replay: 'REPLAY' }[phase] || phase;
   refresh();
 }
 function status(text, kv, pct) {
@@ -390,7 +393,7 @@ function liveRun(m, withAudio, label) {
           $('liveTotal').textContent = w.teams[0].alive + w.teams[1].alive;
           const bt = w.phase === 'battle' ? w.battleT : w.phase === 'ended' ? w.endT - E.TL.battleStart : 0;
           $('liveTime').textContent = R.mmss(bt);
-          status(null, { 'Durum': label, 'Simülasyon süresi': bt.toFixed(1) + ' sn', 'Ayakta (A / B)': w.teams[0].alive + ' / ' + w.teams[1].alive, 'Toplam kalan': w.teams[0].alive + w.teams[1].alive, 'Seed': m.seed, 'Olay sayısı': w.evCount, 'Aktif mermi': w.proj.filter(p => p.on).length, 'Parçacık': w.parts.length }, w.phase === 'ended' ? 100 : Math.min(99, (w.t / 50) * 100));
+          status(null, { 'Status': label, 'Battle time': bt.toFixed(1) + ' s', 'Alive (A / B)': w.teams[0].alive + ' / ' + w.teams[1].alive, 'Total left': w.teams[0].alive + w.teams[1].alive, 'Seed': m.seed, 'Events': w.evCount, 'Active balls': w.proj.filter(p => p.on).length, 'Particles': w.parts.length }, w.phase === 'ended' ? 100 : Math.min(99, (w.t / 50) * 100));
         }
         if (w.phase === 'ended' && T >= w.endT + w.outroLen) { resolve(); return; }
       } catch (e) { reject(e); return; }
@@ -418,7 +421,7 @@ async function startBattle(seedOverride) {
   if (st.phase === 'live' || st.phase === 'encoding') return;
   const set = settings();
   let seed = seedOverride != null ? seedOverride : parseSeed($('seed').value);
-  if ($('seed').value.trim() && seed == null && seedOverride == null) { status('Seed yalnızca 0–4294967295 arası tam sayı olabilir.'); return; }
+  if ($('seed').value.trim() && seed == null && seedOverride == null) { status('Seed must be a whole number between 0 and 4294967295.'); return; }
   if (seed == null) seed = randomSeed();
   cleanupPrevious(false);
   clearMsgs(); $('resultCard').classList.add('hidden'); $('videoBox').classList.add('hidden');
@@ -426,16 +429,16 @@ async function startBattle(seedOverride) {
   st.lastSeed = seed; st.lastSettings = set; st.lastTeams = [st.a, st.b]; st.lastMode = st.mode;
   DIAG.matches++;
   let ctx = null;
-  if (set.sound) { ctx = await audioCtx(); if (ctx) { const { bank, loops } = A.ensure(); st.player = new A.LivePlayer(ctx, bank, loops, { music: set.music, sfx: set.sfx }); } else msg('Bu tarayıcıda WebAudio yok; ses devre dışı.', 'warn'); }
+  if (set.sound) { ctx = await audioCtx(); if (ctx) { const { bank, loops } = A.ensure(); st.player = new A.LivePlayer(ctx, bank, loops, { music: set.music, sfx: set.sfx }); } else msg('WebAudio is not available in this browser; sound disabled.', 'warn'); }
   const m = buildMatch(seed, set, false);
   st.match = m;
   setState('live');
-  status('Canlı savaş: ' + (st.a.display_name_tr || st.a.name) + ' vs ' + (st.b.display_name_tr || st.b.name), null, 0);
+  status('Live battle: ' + st.a.name + ' vs ' + st.b.name, null, 0);
   try {
-    await liveRun(m, !!st.player, 'Canlı savaş oynatılıyor');
+    await liveRun(m, !!st.player, 'Live battle playing');
   } catch (e) {
     if (e && e.message === 'cancelled') return;
-    console.error(e); setState('error'); msg('Canlı simülasyon hatası: ' + (e && e.message || e), 'bad'); return;
+    console.error(e); setState('error'); msg('Live simulation error: ' + (e && e.message || e), 'bad'); return;
   }
   stopAudio();
   const live = m.world;
@@ -453,12 +456,12 @@ async function replay() {
   if (set.sound) { const ctx = await audioCtx(); if (ctx) { const { bank, loops } = A.ensure(); st.player = new A.LivePlayer(ctx, bank, loops, { music: set.music, sfx: set.sfx }); } }
   const m = buildMatch(st.lastSeed, set, false);
   const prevPhase = st.videoURL ? 'done' : 'idle';
-  setState('replay', 'TEKRAR (seed ' + st.lastSeed + ')');
-  status('Aynı savaş tekrar oynatılıyor (aynı seed → birebir aynı olaylar).', null, 0);
-  try { await liveRun(m, !!st.player, 'Tekrar izleniyor'); } catch (e) { if (e.message !== 'cancelled') msg('Tekrar hatası: ' + e.message, 'bad'); }
+  setState('replay', 'REPLAY (seed ' + st.lastSeed + ')');
+  status('Replaying the same battle (same seed → identical events).', null, 0);
+  try { await liveRun(m, !!st.player, 'Replaying'); } catch (e) { if (e.message !== 'cancelled') msg('Replay error: ' + e.message, 'bad'); }
   stopAudio(); m.renderer.dispose();
   const same = st.match && (m.world.hash >>> 0) === (st.match.world.hash >>> 0);
-  msg(same ? `Tekrar doğrulandı: olay günlüğü özeti (hash ${(m.world.hash >>> 0).toString(16)}) ilk savaşla aynı.` : 'UYARI: tekrar özeti farklı!', same ? 'ok' : 'bad');
+  msg(same ? `Replay verified: event-log hash ${(m.world.hash >>> 0).toString(16)} matches the original battle.` : 'WARNING: replay hash differs!', same ? 'ok' : 'bad');
   setState(prevPhase === 'done' ? 'done' : 'idle');
 }
 
@@ -469,22 +472,22 @@ function fallbackPaths(caps, W, H, fps, wantAudio) {
   const k = W + 'x' + H + '@' + fps, out = [];
   const first = X.plan(caps, W, H, fps, wantAudio); if (first) out.push(first);
   const add = (p) => { if (p && !out.some(o => o.path === p.path)) out.push(p); };
-  if (caps.mrMp4) add({ path: 'mr-mp4', container: 'mp4', ext: 'mp4', mime: caps.mrMp4, label: 'MP4 (MediaRecorder, gerçek zamanlı)' });
-  if (caps.vp[k]) add({ path: 'wc-webm', container: 'webm', ext: 'webm', mime: 'video/webm', video: caps.vp[k], audio: wantAudio ? caps.opus : null, label: 'WebM (VP9/VP8 + Opus)', warn: 'MP4 üretilemedi; WebM kullanılıyor.' });
-  if (caps.mrWebm) add({ path: 'mr-webm', container: 'webm', ext: 'webm', mime: caps.mrWebm, label: 'WebM (MediaRecorder, gerçek zamanlı)', warn: 'MP4 üretilemedi; WebM kullanılıyor.' });
+  if (caps.mrMp4) add({ path: 'mr-mp4', container: 'mp4', ext: 'mp4', mime: caps.mrMp4, label: 'MP4 (MediaRecorder, real-time)' });
+  if (caps.vp[k]) add({ path: 'wc-webm', container: 'webm', ext: 'webm', mime: 'video/webm', video: caps.vp[k], audio: wantAudio ? caps.opus : null, label: 'WebM (VP9/VP8 + Opus)', warn: 'MP4 could not be produced; using WebM.' });
+  if (caps.mrWebm) add({ path: 'mr-webm', container: 'webm', ext: 'webm', mime: caps.mrWebm, label: 'WebM (MediaRecorder, real-time)', warn: 'MP4 could not be produced; using WebM.' });
   return out;
 }
 async function exportVideo(m) {
   const set = m.set, W = set.res === '720' ? 720 : 1080, H = set.res === '720' ? 1280 : 1920, fps = set.fps;
   if (!st.caps) st.caps = await X.detect();
   const paths = fallbackPaths(st.caps, W, H, fps, set.sound);
-  if (!paths.length) { setState('error'); msg('Bu tarayıcı video kodlamayı desteklemiyor (WebCodecs ve MediaRecorder bulunamadı). Güncel Chrome veya Edge kullanın.', 'bad'); return; }
+  if (!paths.length) { setState('error'); msg('This browser cannot encode video (no WebCodecs or MediaRecorder). Please use an up-to-date Chrome or Edge.', 'bad'); return; }
   const live = m.world;
   const total = live.endT + live.outroLen;
   // deterministic soundtrack mixed from the battle's own event timeline
   let audio = null;
   if (set.sound) {
-    status('Ses miksajı hazırlanıyor…', null, 0);
+    status('Mixing the soundtrack…', null, 0);
     await new Promise(r => setTimeout(r, 10));
     const { bank, loops } = A.ensure(); const pl = new A.Planner(); pl.intro(); pl.feed(live);
     audio = A.mixOffline(bank, loops, pl.items, live, total, { music: set.music, sfx: set.sfx });
@@ -496,7 +499,7 @@ async function exportVideo(m) {
     ew = E.createWorld(m.opts);
     const er = R.createRenderer({ ...m.rOpts, world: ew });
     const t0 = performance.now();
-    status('Video oluşturuluyor: ' + p.label, { 'Format': p.label, 'Çözünürlük': W + '×' + H, 'FPS': fps, 'Süre': total.toFixed(2) + ' sn', 'Kare': '0 / ' + Math.ceil(total * fps) }, 0);
+    status('Creating video: ' + p.label, { 'Format': p.label, 'Resolution': W + '×' + H, 'FPS': fps, 'Duration': total.toFixed(2) + ' s', 'Frame': '0 / ' + Math.ceil(total * fps) }, 0);
     let lastPrev = 0;
     try {
       DIAG.encoderOpen++;
@@ -506,8 +509,8 @@ async function exportVideo(m) {
         draw: (ctx, T, w2, h2) => { E.advanceTo(ew, T); er.render(ctx, T, w2, h2); },
         onProgress: (o) => {
           const pct = o.total ? (o.frame / o.total) * 100 : 0;
-          const kv = { 'Format': p.label, 'Çözünürlük': W + '×' + H + ' @ ' + fps + ' FPS', 'Kare': o.frame + ' / ' + o.total, 'Kalan kare': Math.max(0, o.total - o.frame), 'Tahmini kalan': o.eta != null ? o.eta.toFixed(1) + ' sn' : '—', 'Kodlama hızı': o.fpsEnc ? o.fpsEnc.toFixed(1) + ' kare/sn' : (o.phase === 'realtime' ? 'gerçek zamanlı' : '—'), 'Geçen': ((performance.now() - t0) / 1000).toFixed(1) + ' sn' };
-          status(o.phase === 'audio' ? 'Ses kodlanıyor…' : 'Video kodlanıyor… %' + pct.toFixed(0), kv, pct);
+          const kv = { 'Format': p.label, 'Resolution': W + '×' + H + ' @ ' + fps + ' FPS', 'Frame': o.frame + ' / ' + o.total, 'Frames left': Math.max(0, o.total - o.frame), 'Time left (est.)': o.eta != null ? o.eta.toFixed(1) + ' s' : '—', 'Encode speed': o.fpsEnc ? o.fpsEnc.toFixed(1) + ' fps' : (o.phase === 'realtime' ? 'real-time' : '—'), 'Elapsed': ((performance.now() - t0) / 1000).toFixed(1) + ' s' };
+          status(o.phase === 'audio' ? 'Encoding audio…' : 'Encoding video… ' + pct.toFixed(0) + '%', kv, pct);
           const now = performance.now();
           if (o.canvas && now - lastPrev > 250) { lastPrev = now; sctx.imageSmoothingEnabled = false; sctx.drawImage(o.canvas, 0, 0, stage.width, stage.height); }
         }
@@ -516,37 +519,37 @@ async function exportVideo(m) {
     } catch (e) {
       DIAG.encoderOpen--; er.dispose(); lastErr = e; console.error(e);
       if (st.cancel) return;
-      msg('Kodlama yolu başarısız (' + p.label + '): ' + (e && e.message || e) + ' — sıradaki yöntem deneniyor.', 'warn');
+      msg('Encoding path failed (' + p.label + '): ' + (e && e.message || e) + ' — trying the next method.', 'warn');
     }
   }
-  if (!out) { setState('error'); msg('Video oluşturulamadı: ' + (lastErr && lastErr.message || lastErr), 'bad'); return; }
+  if (!out) { setState('error'); msg('Could not create the video: ' + (lastErr && lastErr.message || lastErr), 'bad'); return; }
   // verification: the exported battle must be the one that was watched
   const same = (ew.hash >>> 0) === (live.hash >>> 0) && ew.winner === live.winner && Math.abs(ew.endT - live.endT) < 1e-9;
-  if (!out.blob || out.blob.size === 0) { setState('error'); msg('Kodlayıcı boş dosya üretti — indirme devre dışı.', 'bad'); return; }
+  if (!out.blob || out.blob.size === 0) { setState('error'); msg('The encoder produced an empty file — download disabled.', 'bad'); return; }
   const sn = await X.sniff(out.blob);
   let tracks = {};
   if (sn.container === 'mp4') tracks = await X.mp4Tracks(out.blob);
-  if (sn.container !== used.container) { setState('error'); msg('Kapsayıcı doğrulaması başarısız (' + sn.container + ' ≠ ' + used.container + ').', 'bad'); return; }
+  if (sn.container !== used.container) { setState('error'); msg('Container check failed (' + sn.container + ' ≠ ' + used.container + ').', 'bad'); return; }
   const url = URL.createObjectURL(out.blob); DIAG.urls.add(url); st.videoURL = url;
   const fn = fileName(m, W, H, used.ext);
-  const a = $('btnDownload'); a.href = url; a.download = fn; a.textContent = 'VİDEOYU İNDİR (' + used.ext.toUpperCase() + ', ' + (out.blob.size / 1048576).toFixed(1) + ' MB)';
+  const a = $('btnDownload'); a.href = url; a.download = fn; a.textContent = 'DOWNLOAD VIDEO (' + used.ext.toUpperCase() + ', ' + (out.blob.size / 1048576).toFixed(1) + ' MB)';
   const v = $('resVideo'); v.src = url; v.load();
   $('videoBox').classList.remove('hidden');
   DIAG.exports++;
   DIAG.lastExport = { path: used.path, size: out.blob.size, mime: out.blob.type, container: sn.container, tracks, verified: same, frames: out.frames, seconds: out.seconds, fileName: fn };
-  const codecTxt = used.container === 'mp4' ? `MP4 • video ${out.videoCodec}${tracks.avc1 ? ' (H.264/avcC ✓)' : ''} • ses ${out.audioCodec ? out.audioCodec + (tracks.mp4a ? ' (AAC ✓)' : tracks.opus ? ' (Opus ✓)' : '') : 'yok'}` : `WebM • ${out.videoCodec}${out.audioCodec ? ' + ' + out.audioCodec : ''}`;
-  $('videoInfo').innerHTML = `${esc(fn)}<br>${esc(codecTxt)} • ${W}×${H} • ${fps} FPS • ${(out.blob.size / 1048576).toFixed(2)} MB • ${out.frames} kare • kodlama ${out.seconds ? out.seconds.toFixed(1) + ' sn' : ''}`;
+  const codecTxt = used.container === 'mp4' ? `MP4 • video ${out.videoCodec}${tracks.avc1 ? ' (H.264/avcC ✓)' : ''} • audio ${out.audioCodec ? out.audioCodec + (tracks.mp4a ? ' (AAC ✓)' : tracks.opus ? ' (Opus ✓)' : '') : 'none'}` : `WebM • ${out.videoCodec}${out.audioCodec ? ' + ' + out.audioCodec : ''}`;
+  $('videoInfo').innerHTML = `${esc(fn)}<br>${esc(codecTxt)} • ${W}×${H} • ${fps} FPS • ${(out.blob.size / 1048576).toFixed(2)} MB • ${out.frames} frames • encoded in ${out.seconds ? out.seconds.toFixed(1) + ' s' : ''}`;
   v.onloadedmetadata = () => {
     const d = v.duration;
     const okD = isFinite(d) && Math.abs(d - total) < 0.6;
-    msg(isFinite(d) ? `Önizleme açıldı: süre ${d.toFixed(2)} sn (beklenen ${total.toFixed(2)} sn) ${okD ? '✓' : '— süre farkı var'}` : 'Önizleme açıldı (süre metadata’sı tarayıcı tarafından bildirilmedi; WebM kayıtlarında normaldir).', okD || !isFinite(d) ? 'ok' : 'warn');
+    msg(isFinite(d) ? `Preview loaded: duration ${d.toFixed(2)} s (expected ${total.toFixed(2)} s) ${okD ? '✓' : '— duration mismatch'}` : 'Preview loaded (the browser did not report a duration; normal for recorded WebM).', okD || !isFinite(d) ? 'ok' : 'warn');
     DIAG.lastExport.previewDuration = d;
   };
-  v.onerror = () => { msg('Tarayıcı önizlemesi bu dosyayı oynatamadı (codec desteği). Dosya yine de indirilebilir: ' + codecTxt, 'warn'); };
-  msg(same ? `Doğrulandı: video, izlediğiniz savaşla birebir aynı (seed ${m.seed}, olay hash ${(live.hash >>> 0).toString(16)}, kazanan ve bitiş anı eşleşiyor).` : 'UYARI: Video simülasyonu canlı savaştan farklı çıktı!', same ? 'ok' : 'bad');
-  if (set.sound && !out.audioCodec) msg('Ses kodlayıcı bulunamadı; video sessiz.', 'warn');
-  if (used.audio && used.audio.codec === 'opus' && used.container === 'mp4') msg('Bu tarayıcıda AAC kodlayıcı yok; ses MP4 içinde Opus olarak kodlandı (Chrome/Edge/VLC/YouTube/TikTok oynatır; bazı eski oynatıcılar Opus-MP4 sesini desteklemeyebilir).', 'warn');
-  status('Video hazır ✓', { 'Dosya': fn, 'Format': codecTxt, 'Boyut': (out.blob.size / 1048576).toFixed(2) + ' MB', 'Süre': total.toFixed(2) + ' sn', 'Kare': out.frames, 'Kodlama süresi': out.seconds ? out.seconds.toFixed(1) + ' sn' : '—', 'Doğrulama': same ? 'canlı = video ✓' : 'FARKLI ✗' }, 100);
+  v.onerror = () => { msg('The in-browser preview could not play this file (codec support). It can still be downloaded: ' + codecTxt, 'warn'); };
+  msg(same ? `Verified: the video is exactly the battle you watched (seed ${m.seed}, event hash ${(live.hash >>> 0).toString(16)}, same winner and end tick).` : 'WARNING: the video simulation differs from the live battle!', same ? 'ok' : 'bad');
+  if (set.sound && !out.audioCodec) msg('No audio encoder found; the video is silent.', 'warn');
+  if (used.audio && used.audio.codec === 'opus' && used.container === 'mp4') msg('No AAC encoder in this browser; audio was encoded as Opus inside the MP4 (plays in Chrome/Edge/VLC/YouTube/TikTok; some older players may not support Opus-in-MP4).', 'warn');
+  status('Video ready ✓', { 'File': fn, 'Format': codecTxt, 'Size': (out.blob.size / 1048576).toFixed(2) + ' MB', 'Duration': total.toFixed(2) + ' s', 'Frames': out.frames, 'Encode time': out.seconds ? out.seconds.toFixed(1) + ' s' : '—', 'Verification': same ? 'live = video ✓' : 'DIFFERENT ✗' }, 100);
   setState('done');
 }
 
@@ -555,19 +558,19 @@ function showResult(m) {
   const w = m.world, win = w.winner, T = m.teams[win], L = logoSet(T), lose = m.teams[1 - win];
   $('resultCard').classList.remove('hidden');
   $('resLogo').src = L.thumb;
-  $('resName').textContent = T.display_name_tr || T.name;
-  $('resSub').textContent = `${w.teams[win].alive} kişi ayakta • ${R.mmss(w.endT - E.TL.battleStart)} • rakip: ${lose.display_name_tr || lose.name}`;
-  const rows = E.ROLES.map(r => `<tr><td>${E.ROLE_NAMES[r].tr}</td><td>${w.teams[0].elimByRole[r]}</td><td>${w.teams[1].elimByRole[r]}</td></tr>`).join('');
-  $('resRoles').innerHTML = `<tr><th>Eliminasyon (rol)</th><th>${esc(S.shortName(m.teams[0], 60))}</th><th>${esc(S.shortName(m.teams[1], 60))}</th></tr>${rows}<tr><th>Toplam</th><th>${w.teams[0].kills}</th><th>${w.teams[1].kills}</th></tr>`;
+  $('resName').textContent = T.name;
+  $('resSub').textContent = `${w.teams[win].alive} survivors • ${R.mmss(w.endT - E.TL.battleStart)} • beat ${lose.name}`;
+  const rows = E.ROLES.map(r => `<tr><td>${E.ROLE_NAMES[r].en}</td><td>${w.teams[0].elimByRole[r]}</td><td>${w.teams[1].elimByRole[r]}</td></tr>`).join('');
+  $('resRoles').innerHTML = `<tr><th>Eliminations by role</th><th>${esc(S.shortName(m.teams[0], 60))}</th><th>${esc(S.shortName(m.teams[1], 60))}</th></tr>${rows}<tr><th>Total</th><th>${w.teams[0].kills}</th><th>${w.teams[1].kills}</th></tr>`;
   let mvp = null; for (const u of w.units) if (!mvp || u.kills > mvp.kills) mvp = u;
   const topRole = s => E.ROLES.slice().sort((a, b) => w.teams[s].elimByRole[b] - w.teams[s].elimByRole[a])[0];
-  const RULES = { HUNT: 'Av modu (az oyuncu/uzun süre: global hedefleme)', ZONE: 'Daralan taktik alan', STORM: 'Son dakika fırtınası (artan hasar, sağlıklı olan kazanır)', SUDDEN_DEATH: 'Ani ölüm (aynı tick’te çift eleme)', TIEBREAK_HP: 'Süre sınırı: kalan can oranı', TIEBREAK_COIN: 'Tam eşitlik: seed’li yazı-tura', ADAPT: 'Seri kayıp adaptasyonu (config: streak_adaptation)' };
-  const used = s => Object.entries(w.teams[s].specialsUsed).map(([k, v]) => ((E.SPECIAL_NAMES[k] || {}).tr || k) + ' ×' + v).join(', ') || '—';
+  const RULES = { HUNT: 'Hunt mode (few players / long battle: global targeting)', ZONE: 'Shrinking tactical zone', STORM: 'Overtime storm (rising damage, healthiest side survives)', SUDDEN_DEATH: 'Sudden death (double elimination on the same tick)', TIEBREAK_HP: 'Time cap: remaining health ratio', TIEBREAK_COIN: 'Exact tie: seeded coin flip', ADAPT: 'Losing-streak adaptation (config: streak_adaptation)' };
+  const used = s => Object.entries(w.teams[s].specialsUsed).map(([k, v]) => ((E.SPECIAL_NAMES[k] || {}).en || k) + ' ×' + v).join(', ') || '—';
   $('resKv').innerHTML = [
-    ['Seed', m.seed], ['Kazanan', (T.display_name_tr || T.name) + ' (' + w.teams[win].alive + ' ayakta)'], ['Savaş süresi', (w.endT - E.TL.battleStart).toFixed(2) + ' sn'], ['Video süresi', (w.endT + w.outroLen).toFixed(2) + ' sn (intro 2.2 + savaş + outro ' + w.outroLen.toFixed(1) + ')'],
-    ['En çok eleyen rol', `A: ${E.ROLE_NAMES[topRole(0)].tr} • B: ${E.ROLE_NAMES[topRole(1)].tr}`], ['MVP birim', mvp ? `#${mvp.id} ${E.ROLE_NAMES[mvp.role].tr} (${m.teams[mvp.side].display_name_tr || m.teams[mvp.side].name}) — ${mvp.kills} eleme, ${mvp.assists} asist` : '—'],
-    ['Özel yetenekler A', used(0)], ['Özel yetenekler B', used(1)], ['Form (A / B)', w.teams[0].form.toFixed(3) + ' / ' + w.teams[1].form.toFixed(3)],
-    ['Uygulanan kurallar', w.rules.map(r => RULES[r] || r).join(' • ') || 'Yok (doğal bitiş)'], ['Olay sayısı / hash', w.evCount + ' / ' + (w.hash >>> 0).toString(16)]
+    ['Seed', m.seed], ['Winner', T.name + ' (' + w.teams[win].alive + ' survivors)'], ['Battle time', (w.endT - E.TL.battleStart).toFixed(2) + ' s'], ['Video length', (w.endT + w.outroLen).toFixed(2) + ' s (intro 2.2 + battle + outro ' + w.outroLen.toFixed(1) + ')'],
+    ['Top eliminating role', `A: ${E.ROLE_NAMES[topRole(0)].en} • B: ${E.ROLE_NAMES[topRole(1)].en}`], ['MVP unit', mvp ? `#${mvp.id} ${E.ROLE_NAMES[mvp.role].en} (${m.teams[mvp.side].name}) — ${mvp.kills} eliminations, ${mvp.assists} assists` : '—'],
+    ['Specials used A', used(0)], ['Specials used B', used(1)], ['Form (A / B)', w.teams[0].form.toFixed(3) + ' / ' + w.teams[1].form.toFixed(3)],
+    ['Rules applied', w.rules.map(r => RULES[r] || r).join(' • ') || 'None (natural finish)'], ['Events / hash', w.evCount + ' / ' + (w.hash >>> 0).toString(16)]
   ].map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('');
 }
 function saveRecent(m) {
@@ -583,8 +586,8 @@ function renderRecent() {
   $('recent').innerHTML = list.length ? list.map((r, i) => {
     const a = BY_ID.get(r.a), b = BY_ID.get(r.b); if (!a || !b) return '';
     const wn = r.w === 0 ? a : b;
-    return `<li><div><b>${esc(a.display_name_tr || a.name)}</b> vs <b>${esc(b.display_name_tr || b.name)}</b><br><span>${esc(r.d)} • kazanan ${esc(wn.display_name_tr || wn.name)} (${r.s}) • ${r.t} sn • seed ${r.seed}</span></div><button class="btn small" data-load="${i}">Yükle</button></li>`;
-  }).join('') : '<li><span>Henüz savaş yok.</span></li>';
+    return `<li><div><b>${esc(a.name)}</b> vs <b>${esc(b.name)}</b><br><span>${esc(r.d)} • winner ${esc(wn.name)} (${r.s}) • ${r.t} s • seed ${r.seed}</span></div><button class="btn small" data-load="${i}">Load</button></li>`;
+  }).join('') : '<li><span>No battles yet.</span></li>';
 }
 function loadRecent(i) {
   let list = []; try { list = JSON.parse(localStorage.getItem('fw_recent') || '[]'); } catch (e) { }
@@ -595,7 +598,7 @@ function loadRecent(i) {
   fillLeague();
   choose('A', BY_ID.get(r.a)); choose('B', BY_ID.get(r.b));
   $('seed').value = r.seed; if (r.dur) setRadio('dur', r.dur);
-  status('Kayıtlı savaş yüklendi: aynı seed + takımlar + süre ayarı ile başlatırsanız aynı savaş üretilir.');
+  status('Saved battle loaded: starting with the same seed + teams + duration setting reproduces the same battle.');
 }
 
 // ======================= logo upload =======================
@@ -603,7 +606,7 @@ let uploadFor = null;
 function onUpload(file) {
   if (!file || !uploadFor) return;
   const id = uploadFor; uploadFor = null;
-  if (file.size > 5 * 1024 * 1024) { alert('Dosya çok büyük (en fazla 5 MB).'); return; }
+  if (file.size > 5 * 1024 * 1024) { alert('File too large (max 5 MB).'); return; }
   const url = URL.createObjectURL(file);
   const img = new Image();
   img.onload = () => {
@@ -613,36 +616,36 @@ function onUpload(file) {
       const g = c.getContext('2d'); g.imageSmoothingQuality = 'high'; g.drawImage(img, 0, 0, c.width, c.height);
       const data = c.toDataURL('image/png'); // throws if the image would taint the export canvas
       const im2 = new Image(); im2.onload = () => {
-        if (!canvasSafe(im2)) { alert('Bu görsel video kanvasında güvenli kullanılamıyor (CORS/taint).'); return; }
+        if (!canvasSafe(im2)) { alert('This image cannot be used safely on the video canvas (CORS/taint).'); return; }
         userLogos.set(id, im2); logoCache.delete(id);
-        try { localStorage.setItem('fw_logo:' + id, data); } catch (e) { msg('Logo bu oturumda kullanılacak; tarayıcı depolaması dolu olduğu için kalıcı kaydedilemedi.', 'warn'); }
+        try { localStorage.setItem('fw_logo:' + id, data); } catch (e) { msg('The logo will be used in this session; browser storage is full so it could not be saved permanently.', 'warn'); }
         if (st.a && st.a.id === id) renderCard('A'); if (st.b && st.b.id === id) renderCard('B'); refresh();
       }; im2.src = data;
-    } catch (e) { alert('Logo kullanılamadı: ' + e.message); }
+    } catch (e) { alert('Logo could not be used: ' + e.message); }
     URL.revokeObjectURL(url);
   };
-  img.onerror = () => { URL.revokeObjectURL(url); alert('Görsel okunamadı.'); };
+  img.onerror = () => { URL.revokeObjectURL(url); alert('Could not read the image.'); };
   img.src = url;
 }
 
 // ======================= modals =======================
 function openAbout() {
-  const flags = Object.entries(FLAGS).map(([id, f]) => `<div>${esc((BY_ID.get(id) || {}).display_name_tr || id)} — <a href="${esc(f.page)}" target="_blank" rel="noopener">${esc(f.file)}</a></div>`).join('');
-  const simple = Object.keys(S.SIMPLE_FLAGS).filter(id => !FLAGS[id]).map(id => esc((BY_ID.get(id) || {}).display_name_tr || id)).join(', ');
-  $('aboutBox').innerHTML = `<button class="btn small close" data-close>Kapat</button><h3>Hakkında / Lisanslar</h3>
-  <p>FOOTBALL WARS bağımsız, ticari olmayan bir eğlence/hayran aracıdır. Hiçbir kulüp, milli federasyon, lig, UEFA veya FIFA ile bağlantılı değildir, onların sponsorluğu ya da onayı yoktur. Kulüp ve turnuva adları yalnızca tanımlayıcı olarak kullanılır; markalar sahiplerine aittir. Gerçek oyuncu adı/yüzü kullanılmaz.</p>
-  <h4>Veri kaynakları (gömülü veri tabanı, ${esc(DB.metadata.compiled_date)})</h4>
-  <ul><li>Kulüp Elo: <b>beyondELO (https://beyondelo.com)</b>, lisans <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> — 12.11.2026 anlık görüntüsü.</li>
-  <li>Kulüp listeleri: FootballSquads (https://www.footballsquads.co.uk), 2026–27.</li>
-  <li>Milli takımlar: FIFA erkekler dünya sıralaması, 7 Ekim 2026 (https://inside.fifa.com/fifa-rankings/world-ranking/men).</li>
-  <li>Savaş özellikleri (hücum, savunma, hız…) gerçek istatistik değildir; Elo/FIFA puanından türetilmiş oyun tasarımı değerleridir. Kulüp Elo ve FIFA puanları aynı ölçeğe konmaz; savaşta yalnız oyunun <i>power_index</i> değeri ve yumuşak güç tavanı (%18) kullanılır.</li></ul>
-  <h4>Logolar ve armalar</h4>
-  <p><b>Kulüp armaları pakete dahil değildir.</b> Resmî kulüp armaları genelde telif/marka korumalıdır ve derleme sırasında Wikimedia Commons API'si erişim sınırı (HTTP 429) nedeniyle lisans doğrulaması yapılamadı. Bu nedenle 194 kulübün tamamı için takım renkleri ve baş harflerinden üretilmiş <b>TEMSİLİ</b> armalar kullanılır; bunlar resmî logo değildir. Kendi lisanslı logonuzu takım kartındaki “Logo yükle” ile ekleyebilirsiniz (yalnız bu tarayıcıda saklanır, dışarı gönderilmez).</p>
-  <p><b>Milli takımlar:</b> ${Object.keys(FLAGS).length} ülke için <b>ulusal bayrak</b> (federasyon arması değildir) Wikimedia Commons'tan derleme anında indirildi ve küçük PNG olarak gömüldü. Ulusal bayraklar devlet sembolüdür ve Commons'ta genellikle kamu malı (Public Domain) olarak yayımlanır; her dosyanın kesin lisans etiketi aşağıdaki dosya sayfasında görülebilir. Erişim sınırı nedeniyle indirilemeyen ${esc(simple)} için basit geometrik bayrak çizimi yerelde üretildi. Kuzey İrlanda için resmî bir ulusal bayrak bulunmadığından temsili arma kullanılır.</p>
+  const flags = Object.entries(FLAGS).map(([id, f]) => `<div>${esc((BY_ID.get(id) || {}).name || id)} — <a href="${esc(f.page)}" target="_blank" rel="noopener">${esc(f.file)}</a></div>`).join('');
+  const simple = Object.keys(S.SIMPLE_FLAGS).filter(id => !FLAGS[id]).map(id => esc((BY_ID.get(id) || {}).name || id)).join(', ');
+  $('aboutBox').innerHTML = `<button class="btn small close" data-close>Close</button><h3>About / Licenses</h3>
+  <p>FOOTBALL WARS is an independent, non-commercial fan/entertainment tool. It is not affiliated with, sponsored or endorsed by any club, national federation, league, UEFA or FIFA. Club and competition names are used descriptively only; all trademarks belong to their owners. No real player names or likenesses are used.</p>
+  <h4>Data sources (embedded database, ${esc(DB.metadata.compiled_date)})</h4>
+  <ul><li>Club Elo: <b>beyondELO (https://beyondelo.com)</b>, license <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> — snapshot of 12 Nov 2026.</li>
+  <li>Club lists: FootballSquads (https://www.footballsquads.co.uk), 2026–27.</li>
+  <li>National teams: FIFA men’s world ranking, 7 Oct 2026 (https://inside.fifa.com/fifa-rankings/world-ranking/men).</li>
+  <li>Battle attributes (attack, defense, speed…) are not real statistics; they are game-design values derived from Elo/FIFA points. Club Elo and FIFA points are never put on the same scale; battles use only the game <i>power_index</i> with a soft 18% advantage cap.</li></ul>
+  <h4>Logos and crests</h4>
+  <p><b>Official club crests are not included.</b> Club crests are usually protected by copyright/trademark, and their licenses could not be verified at build time because the Wikimedia Commons API was rate-limited (HTTP 429). All 194 clubs therefore use <b>PLACEHOLDER</b> crests generated from team colours and initials; these are not official logos. You can add your own licensed logo with “Upload logo” on a team card (stored only in this browser, never uploaded anywhere).</p>
+  <p><b>National teams:</b> for ${Object.keys(FLAGS).length} countries the <b>national flag</b> (not the federation crest) was downloaded from Wikimedia Commons at build time and embedded as a small PNG. National flags are state symbols and are generally published on Commons as public domain; the exact license tag of each file is on the file page linked below. For ${simple}, which could not be downloaded because of the rate limit, a simple geometric flag drawing is generated locally. Northern Ireland has no official national flag, so a placeholder crest is used.</p>
   <div class="flaglist">${flags}</div>
-  <h4>Ses ve müzik</h4><p>Tüm ses efektleri ve chiptune müzik bu dosyanın içinde kodla sentezlenir (özgün). Hiçbir marş, takım şarkısı veya lisanssız müzik dosyası kullanılmaz.</p>
-  <h4>Grafikler</h4><p>Pixel oyuncular, saha, yazı tipi ve efektler çalışma anında prosedürel olarak üretilir (özgün).</p>
-  <h4>Yazılım</h4><p>Gömülü açık kaynak kütüphaneler: <b>mp4-muxer 5.2.2</b> ve <b>webm-muxer 5.1.4</b> (Vanilagy), MIT lisansı.</p>
+  <h4>Sound and music</h4><p>All sound effects and the chiptune music are synthesized in code inside this file (original). No anthems, club songs or unlicensed music files are used.</p>
+  <h4>Graphics</h4><p>Pixel players, pitch, font and effects are generated procedurally at runtime (original).</p>
+  <h4>Software</h4><p>Embedded open-source libraries: <b>mp4-muxer 5.2.2</b> and <b>webm-muxer 5.1.4</b> (Vanilagy), MIT license.</p>
   <pre>${esc(LIC.mp4 || '')}</pre><pre>${esc(LIC.webm || '')}</pre>`;
   $('modalAbout').classList.add('open');
 }
@@ -650,30 +653,30 @@ async function openDiag() {
   const checks = dataChecks();
   const caps = st.caps || await X.detect(); st.caps = caps;
   const flagN = Object.keys(FLAGS).length, simpleN = Object.keys(S.SIMPLE_FLAGS).filter(id => !FLAGS[id]).length;
-  const capRows = Object.keys(caps.h264).map(k => `<tr><td>${k}</td><td>${caps.h264[k] ? '<span class="pass">' + caps.h264[k].codec + '</span>' : '<span class="fail">yok</span>'}</td><td>${caps.vp[k] ? caps.vp[k].codec : 'yok'}</td></tr>`).join('');
+  const capRows = Object.keys(caps.h264).map(k => `<tr><td>${k}</td><td>${caps.h264[k] ? '<span class="pass">' + caps.h264[k].codec + '</span>' : '<span class="fail">none</span>'}</td><td>${caps.vp[k] ? caps.vp[k].codec : 'none'}</td></tr>`).join('');
   const L = DIAG.lastLive, X2 = DIAG.lastExport;
-  $('diagBox').innerHTML = `<button class="btn small close" data-close>Kapat</button><h3>Geliştirici teşhis paneli</h3>
-  <h4>Veri tabanı (gömülü)</h4><table>${checks.map(c => `<tr><td>${esc(c.k)}</td><td>${esc(c.v)}</td><td class="${c.ok ? 'pass' : 'fail'}">${c.ok ? 'GEÇTİ' : 'KALDI'}</td></tr>`).join('')}</table>
-  <h4>Logolar</h4><p>Gömülü bayrak (Commons): ${flagN} • yerel bayrak çizimi: ${simpleN} • temsili arma: ${ALL.length - flagN - simpleN} • kullanıcı yüklemesi: ${userLogos.size}</p>
-  <h4>Video / ses yetenekleri (çalışma anında ölçüldü)</h4>
-  <p>Güvenli bağlam: ${caps.secure} • WebCodecs: ${caps.webcodecs} • AudioEncoder: ${caps.audioEncoder} • AAC kodlama: ${caps.aac ? 'var (' + caps.aac.sampleRate + ' Hz)' : 'yok'} • Opus kodlama: ${caps.opus ? 'var' : 'yok'} • MediaRecorder MP4: ${esc(caps.mrMp4 || 'yok')} • MediaRecorder WebM: ${esc(caps.mrWebm || 'yok')}</p>
-  <table><tr><th>Hedef</th><th>H.264 (MP4)</th><th>VP9/VP8 (WebM)</th></tr>${capRows}</table>
-  <h4>Son savaş</h4><p>${L ? `seed ${L.seed} • başlangıç birimi A/B: ${L.start[0]}/${L.start[1]} • olay: ${L.events} • hash ${L.hash.toString(16)} • bitiş ${L.endT.toFixed(3)} sn` : 'henüz yok'}</p>
-  <p>${X2 ? `export: ${esc(X2.path)} • ${esc(X2.container)} • ${esc(X2.mime)} • ${(X2.size / 1048576).toFixed(2)} MB • ${X2.frames} kare • canlı=video: ${X2.verified} • izler: ${esc(JSON.stringify(X2.tracks))} • önizleme süresi: ${X2.previewDuration != null ? X2.previewDuration.toFixed(2) : '—'}` : ''}</p>
-  <h4>Kaynak kullanımı</h4><p>Toplam savaş: ${DIAG.matches} • export: ${DIAG.exports} • açık video URL: ${DIAG.urls.size} • açık kodlayıcı: ${DIAG.encoderOpen} • canlı ses kaynağı: ${st.player ? st.player.sources.length : 0} • AudioContext: ${st.audioCtx ? st.audioCtx.state : 'oluşturulmadı'} • yakalanan JS hatası: ${ERRORS.length}${ERRORS.length ? '<br>' + ERRORS.slice(-5).map(esc).join('<br>') : ''}</p>
-  <h4>Determinizm öz-testi</h4><button class="btn small" id="btnSelfTest">Testi çalıştır</button><div id="selfTest" class="note"></div>`;
+  $('diagBox').innerHTML = `<button class="btn small close" data-close>Close</button><h3>Developer diagnostics</h3>
+  <h4>Database (embedded)</h4><table>${checks.map(c => `<tr><td>${esc(c.k)}</td><td>${esc(c.v)}</td><td class="${c.ok ? 'pass' : 'fail'}">${c.ok ? 'PASS' : 'FAIL'}</td></tr>`).join('')}</table>
+  <h4>Logos</h4><p>Embedded flags (Commons): ${flagN} • local flag drawings: ${simpleN} • placeholder crests: ${ALL.length - flagN - simpleN} • user uploads: ${userLogos.size}</p>
+  <h4>Video / audio capabilities (measured at runtime)</h4>
+  <p>Secure context: ${caps.secure} • WebCodecs: ${caps.webcodecs} • AudioEncoder: ${caps.audioEncoder} • AAC encode: ${caps.aac ? 'yes (' + caps.aac.sampleRate + ' Hz)' : 'no'} • Opus encode: ${caps.opus ? 'yes' : 'no'} • MediaRecorder MP4: ${esc(caps.mrMp4 || 'no')} • MediaRecorder WebM: ${esc(caps.mrWebm || 'no')}</p>
+  <table><tr><th>Target</th><th>H.264 (MP4)</th><th>VP9/VP8 (WebM)</th></tr>${capRows}</table>
+  <h4>Last battle</h4><p>${L ? `seed ${L.seed} • starting units A/B: ${L.start[0]}/${L.start[1]} • events: ${L.events} • hash ${L.hash.toString(16)} • end ${L.endT.toFixed(3)} s` : 'none yet'}</p>
+  <p>${X2 ? `export: ${esc(X2.path)} • ${esc(X2.container)} • ${esc(X2.mime)} • ${(X2.size / 1048576).toFixed(2)} MB • ${X2.frames} frames • live=video: ${X2.verified} • tracks: ${esc(JSON.stringify(X2.tracks))} • preview duration: ${X2.previewDuration != null ? X2.previewDuration.toFixed(2) : '—'}` : ''}</p>
+  <h4>Resource usage</h4><p>Battles: ${DIAG.matches} • exports: ${DIAG.exports} • open video URLs: ${DIAG.urls.size} • open encoders: ${DIAG.encoderOpen} • live audio sources: ${st.player ? st.player.sources.length : 0} • AudioContext: ${st.audioCtx ? st.audioCtx.state : 'not created'} • captured JS errors: ${ERRORS.length}${ERRORS.length ? '<br>' + ERRORS.slice(-5).map(esc).join('<br>') : ''}</p>
+  <h4>Determinism self-test</h4><button class="btn small" id="btnSelfTest">Run test</button><div id="selfTest" class="note"></div>`;
   $('modalDiag').classList.add('open');
   $('btnSelfTest').onclick = runSelfTest;
 }
 function runSelfTest() {
-  const out = $('selfTest'); out.textContent = 'Çalışıyor…';
+  const out = $('selfTest'); out.textContent = 'Running…';
   setTimeout(() => {
     const rows = [];
     for (const [a, b] of [['TUR_GALATASARAY', 'TUR_FENERBAHCE'], ['ESP_REAL_MADRID', 'ESP_FC_BARCELONA'], ['NAT_TURKIYE', 'NAT_GERMANY']]) {
       const o = s => ({ seed: s, teamA: BY_ID.get(a), teamB: BY_ID.get(b), cfg: CFG, duration: 'standard', fxLevel: 1 });
       const s1 = E.summary(E.simulate(o(424242))), s2 = E.summary(E.simulate(o(424242))), s3 = E.summary(E.simulate(o(777)));
       const w0 = E.createWorld(o(424242));
-      rows.push(`${a} vs ${b}: başlangıç ${w0.units.filter(u => u.side === 0).length}/${w0.units.filter(u => u.side === 1).length} • aynı seed aynı: <span class="${JSON.stringify(s1) === JSON.stringify(s2) ? 'pass' : 'fail'}">${JSON.stringify(s1) === JSON.stringify(s2)}</span> • farklı seed farklı: <span class="${s1.hash !== s3.hash ? 'pass' : 'fail'}">${s1.hash !== s3.hash}</span> • kazanan ${s1.winner === 0 ? 'A' : 'B'} (${s1.survivors}) • ${s1.battleSeconds} sn • olay ${s1.events}`);
+      rows.push(`${a} vs ${b}: start ${w0.units.filter(u => u.side === 0).length}/${w0.units.filter(u => u.side === 1).length} • same seed identical: <span class="${JSON.stringify(s1) === JSON.stringify(s2) ? 'pass' : 'fail'}">${JSON.stringify(s1) === JSON.stringify(s2)}</span> • different seed differs: <span class="${s1.hash !== s3.hash ? 'pass' : 'fail'}">${s1.hash !== s3.hash}</span> • winner ${s1.winner === 0 ? 'A' : 'B'} (${s1.survivors}) • ${s1.battleSeconds} s • events ${s1.events}`);
     }
     out.innerHTML = rows.join('<br>');
   }, 30);
@@ -691,12 +694,12 @@ async function boot() {
   fillLeague();
   setupPicker('A'); setupPicker('B');
   const checks = dataChecks(); const allOk = checks.every(c => c.ok);
-  $('dbChip').innerHTML = `Veri tabanı: <b>${ALL.length}</b> takım (<b>${DB.clubs.length}</b> kulüp + <b>${DB.national_teams.length}</b> milli) • <b>${DB.leagues.length}</b> lig • ${esc(DB.metadata.club_season)} ${allOk ? '<span class="pass">✓ doğrulandı</span>' : '<span class="fail">✗ veri kontrolü başarısız</span>'}`;
+  $('dbChip').innerHTML = `Database: <b>${ALL.length}</b> teams (<b>${DB.clubs.length}</b> clubs + <b>${DB.national_teams.length}</b> national) • <b>${DB.leagues.length}</b> leagues • ${esc(DB.metadata.club_season)} ${allOk ? '<span class="pass">✓ verified</span>' : '<span class="fail">✗ data check failed</span>'}`;
   const mobile = matchMedia('(pointer:coarse)').matches || Math.min(screen.width, screen.height) < 820;
-  if (mobile && !saved) { setRadio('res', '720'); msg('Mobil cihaz algılandı: daha hızlı ve güvenli kodlama için 720×1280 seçildi (Gelişmiş ayarlardan değiştirilebilir).', 'warn', $('globalMsg')); }
+  if (mobile && !saved) { setRadio('res', '720'); msg('Mobile device detected: 720×1280 selected for faster, safer encoding (change it in Advanced settings).', 'warn', $('globalMsg')); }
   sizeStage(); splash();
   await loadFlags();
-  // defaults: Süper Lig derby
+  // defaults: Istanbul derby
   if (st.mode === 'domestic_league' && st.league === 'TUR_SUPER') { choose('A', BY_ID.get('TUR_GALATASARAY')); choose('B', BY_ID.get('TUR_FENERBAHCE')); }
   st.ready = true; refresh(); renderRecent();
   // codec detection (real runtime checks)
@@ -704,9 +707,9 @@ async function boot() {
     st.caps = await X.detect();
     const set = settings(); const W = set.res === '720' ? 720 : 1080, H = set.res === '720' ? 1280 : 1920;
     updateFmt();
-    if (!st.caps.h264['1080x1920@60'] && !st.caps.h264['720x1280@60'] && !st.caps.vp['1080x1920@60']) { const l = $('fps60l'); l.classList.add('dis'); l.querySelector('input').disabled = true; l.title = 'Bu tarayıcı 60 FPS kodlamayı desteklemiyor'; setRadio('fps', '30'); }
+    if (!st.caps.h264['1080x1920@60'] && !st.caps.h264['720x1280@60'] && !st.caps.vp['1080x1920@60']) { const l = $('fps60l'); l.classList.add('dis'); l.querySelector('input').disabled = true; l.title = 'This browser cannot encode 60 FPS'; setRadio('fps', '30'); }
     void W; void H;
-  } catch (e) { $('fmtChip').textContent = 'Video yetenek kontrolü başarısız: ' + e.message; $('fmtChip').className = 'chip bad'; }
+  } catch (e) { $('fmtChip').textContent = 'Video capability check failed: ' + e.message; $('fmtChip').className = 'chip bad'; }
 }
 function updateFmt() {
   if (!st.caps) return;
@@ -725,13 +728,13 @@ $('mode').addEventListener('change', onModeChange);
 $('league').addEventListener('change', () => { st.league = $('league').value; onModeChange(); });
 $('typeFilter').addEventListener('change', () => { st.typeFilter = $('typeFilter').value; refresh(); });
 $('mixed').addEventListener('change', () => { st.mixed = $('mixed').checked; refresh(); });
-$('btnSwap').addEventListener('click', () => { const a = st.a; st.a = st.b; st.b = a; pickers.A.inp.value = st.a ? (st.a.display_name_tr || st.a.name) : ''; pickers.B.inp.value = st.b ? (st.b.display_name_tr || st.b.name) : ''; renderCard('A'); renderCard('B'); refresh(); });
+$('btnSwap').addEventListener('click', () => { const a = st.a; st.a = st.b; st.b = a; pickers.A.inp.value = st.a ? st.a.name : ''; pickers.B.inp.value = st.b ? st.b.name : ''; renderCard('A'); renderCard('B'); refresh(); });
 $('btnStart').addEventListener('click', () => startBattle());
 $('btnReplay').addEventListener('click', replay);
 $('btnRematch').addEventListener('click', () => { if (!st.lastTeams) return; [st.a, st.b] = st.lastTeams; $('seed').value = ''; startBattle(randomSeed()); });
-$('btnNew').addEventListener('click', () => { if (st.phase === 'live' || st.phase === 'encoding') return; cleanupPrevious(false); $('resultCard').classList.add('hidden'); clearMsgs(); status('Yeni savaş: turnuva ve takımları seç.', {}, 0); setState('idle'); $('seed').value = ''; pickers.A.inp.focus(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+$('btnNew').addEventListener('click', () => { if (st.phase === 'live' || st.phase === 'encoding') return; cleanupPrevious(false); $('resultCard').classList.add('hidden'); clearMsgs(); status('New battle: pick a competition and two teams.', {}, 0); setState('idle'); $('seed').value = ''; pickers.A.inp.focus(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
 $('btnSeedRnd').addEventListener('click', () => { $('seed').value = randomSeed(); });
-$('btnSeedCopy').addEventListener('click', async () => { const v = $('seed').value || st.lastSeed || ''; if (!v) return; try { await navigator.clipboard.writeText(String(v)); $('btnSeedCopy').textContent = 'Kopyalandı'; } catch (e) { $('seed').value = v; $('seed').select(); document.execCommand && document.execCommand('copy'); $('btnSeedCopy').textContent = 'Seçildi'; } setTimeout(() => $('btnSeedCopy').textContent = 'Kopyala', 1400); });
+$('btnSeedCopy').addEventListener('click', async () => { const v = $('seed').value || st.lastSeed || ''; if (!v) return; try { await navigator.clipboard.writeText(String(v)); $('btnSeedCopy').textContent = 'Copied'; } catch (e) { $('seed').value = v; $('seed').select(); document.execCommand && document.execCommand('copy'); $('btnSeedCopy').textContent = 'Selected'; } setTimeout(() => $('btnSeedCopy').textContent = 'Copy', 1400); });
 $('btnAbout').addEventListener('click', openAbout);
 $('btnDiag').addEventListener('click', openDiag);
 document.addEventListener('click', e => {
@@ -748,5 +751,5 @@ window.addEventListener('resize', () => sizeStage());
 window.addEventListener('beforeunload', () => { for (const u of DIAG.urls) URL.revokeObjectURL(u); });
 // test hooks (used by the automated browser tests; harmless for users)
 window.FW_APP = { st, DIAG, choose: (s, id) => choose(s, BY_ID.get(id)), startBattle, replay, search, validate, dataChecks, settings, setMode: m => { $('mode').value = m; onModeChange(); }, ERRORS };
-boot().catch(e => { console.error(e); msg('Başlatma hatası: ' + e.message, 'bad', $('globalMsg')); });
+boot().catch(e => { console.error(e); msg('Startup error: ' + e.message, 'bad', $('globalMsg')); });
 })();

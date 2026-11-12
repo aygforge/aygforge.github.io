@@ -58,11 +58,11 @@ function plan(caps, w, h, fps, wantAudio) {
   const k = w + 'x' + h + '@' + fps;
   if (caps.h264[k] && (!wantAudio || caps.aac || caps.opus || !caps.mrMp4)) {
     return { path: 'wc-mp4', container: 'mp4', ext: 'mp4', mime: 'video/mp4', video: caps.h264[k], audio: wantAudio ? (caps.aac || caps.opus) : null,
-      label: 'MP4 (H.264' + (wantAudio ? (caps.aac ? ' + AAC' : caps.opus ? ' + Opus' : ', sessiz') : ', ses kapalı') + ')' };
+      label: 'MP4 (H.264' + (wantAudio ? (caps.aac ? ' + AAC' : caps.opus ? ' + Opus' : ', silent') : ', sound off') + ')' };
   }
-  if (caps.mrMp4) return { path: 'mr-mp4', container: 'mp4', ext: 'mp4', mime: caps.mrMp4, label: 'MP4 (MediaRecorder: ' + caps.mrMp4 + ', gerçek zamanlı)' };
-  if (caps.vp[k]) return { path: 'wc-webm', container: 'webm', ext: 'webm', mime: 'video/webm', video: caps.vp[k], audio: wantAudio ? caps.opus : null, label: 'WebM (' + caps.vp[k].codec.split('.')[0].toUpperCase() + (wantAudio && caps.opus ? ' + Opus' : '') + ')', warn: 'MP4 burada desteklenmiyor; WebM kullanılacak.' };
-  if (caps.mrWebm) return { path: 'mr-webm', container: 'webm', ext: 'webm', mime: caps.mrWebm, label: 'WebM (MediaRecorder, gerçek zamanlı)', warn: 'MP4 burada desteklenmiyor; WebM kullanılacak.' };
+  if (caps.mrMp4) return { path: 'mr-mp4', container: 'mp4', ext: 'mp4', mime: caps.mrMp4, label: 'MP4 (MediaRecorder: ' + caps.mrMp4 + ', real-time)' };
+  if (caps.vp[k]) return { path: 'wc-webm', container: 'webm', ext: 'webm', mime: 'video/webm', video: caps.vp[k], audio: wantAudio ? caps.opus : null, label: 'WebM (' + caps.vp[k].codec.split('.')[0].toUpperCase() + (wantAudio && caps.opus ? ' + Opus' : '') + ')', warn: 'MP4 is not supported here; WebM will be used.' };
+  if (caps.mrWebm) return { path: 'mr-webm', container: 'webm', ext: 'webm', mime: caps.mrWebm, label: 'WebM (MediaRecorder, real-time)', warn: 'MP4 is not supported here; WebM will be used.' };
   return null;
 }
 
@@ -114,7 +114,7 @@ async function runWebCodecs(job) {
   const N = Math.max(1, Math.ceil(job.duration * fps - 1e-6));
   const isMp4 = p.container === 'mp4';
   const M = isMp4 ? root.Mp4Muxer : root.WebMMuxer;
-  if (!M) throw new Error((isMp4 ? 'mp4-muxer' : 'webm-muxer') + ' yüklenemedi');
+  if (!M) throw new Error((isMp4 ? 'mp4-muxer' : 'webm-muxer') + ' failed to load');
   const target = new M.ArrayBufferTarget();
   const aCfg = job.audio ? p.audio : null;
   const muxOpts = { target, firstTimestampBehavior: 'offset' };
@@ -138,7 +138,7 @@ async function runWebCodecs(job) {
   const key = fps * 2;
   try {
     for (let i = 0; i < N; i++) {
-      if (job.isCancelled && job.isCancelled()) throw new Error('İptal edildi');
+      if (job.isCancelled && job.isCancelled()) throw new Error('Cancelled');
       if (vErr) throw vErr;
       const T = i / fps;
       job.draw(ctx, T, W, H, cv);
@@ -190,7 +190,7 @@ async function runRecorder(job) {
   let last = -1, frames = 0;
   await new Promise((resolve, reject) => {
     const tick = () => {
-      if (job.isCancelled && job.isCancelled()) { reject(new Error('İptal edildi')); return; }
+      if (job.isCancelled && job.isCancelled()) { reject(new Error('Cancelled')); return; }
       const T = now();
       if (T >= job.duration) { resolve(); return; }
       const fi = Math.floor(Math.max(0, T) * fps);
@@ -204,7 +204,7 @@ async function runRecorder(job) {
   tracks.forEach(t => t.stop());
   const blob = new Blob(chunks, { type: (rec.mimeType || p.mime).split(';')[0] });
   cv.width = cv.height = 1;
-  return { blob, mime: blob.type, ext: p.ext, container: p.container, videoCodec: rec.mimeType || p.mime, audioCodec: job.audio ? 'tarayıcı' : null, frames, path: p.path };
+  return { blob, mime: blob.type, ext: p.ext, container: p.container, videoCodec: rec.mimeType || p.mime, audioCodec: job.audio ? 'browser' : null, frames, path: p.path };
 }
 
 // container sniffing (verifies what we produced really is MP4 / WebM)
