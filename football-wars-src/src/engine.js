@@ -957,7 +957,10 @@ function finish(w, win) {
 }
 
 // ---------------- main step ----------------
-function step(w) {
+// Optional cosmetic observer (V2 camera / story alerts). It only READS the world after each tick
+// and may write w.cam (render-only); it never touches the battle RNG, units or the event hash.
+function step(w) { stepCore(w); if (w.observer) w.observer(w); }
+function stepCore(w) {
   w.tick++; w.t = w.tick * DT;
   const t = w.t;
   if (w.phase === 'ended') { postStep(w); return; }

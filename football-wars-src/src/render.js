@@ -421,14 +421,42 @@ function createRenderer(o) {
       g.globalAlpha = fade(0.3); g.fillStyle = tcL[win]; const tw = F.measure(names[win], true) * sc; g.fillRect(Math.round(180 - tw / 2), 256 + 7 * sc + 3, tw, 2); g.globalAlpha = 1;
     }
     if (p0 > 0.5) { const n = w.teams[win].alive; F.draw(g, L.surv(n), 180, 292, { scale: 2, bold: true, color: tcL[win], align: 'center', alpha: fade(0.5) }); }
-    if (p0 > 0.65) F.draw(g, 'VS ' + names[lose] + ' • 0', 180, 318, { color: '#9aa4c4', align: 'center', alpha: fade(0.65) });
+    const obsS = w.observer && w.observer.state, clutch = o.story && obsS && obsS.clutch && root.FWDirector;
+    if (clutch && p0 > 0.6) F.draw(g, (root.FWDirector.ALERT_TXT[o.lang] || root.FWDirector.ALERT_TXT.en).CLUTCH, 180, 308, { bold: true, color: '#ffe14d', align: 'center', alpha: fade(0.6) });
+    if (p0 > 0.65) F.draw(g, 'VS ' + names[lose] + ' • 0', 180, clutch ? 322 : 318, { color: '#9aa4c4', align: 'center', alpha: fade(0.65) });
     if (p0 > 0.8) {
       F.draw(g, 'FOOTBALL WARS • ' + L.battle + ' #' + w.seed, 180, 338, { color: '#ffffff', align: 'center', alpha: fade(0.8) });
       F.draw(g, L.time + ' ' + mmss(w.endT - E.TL.battleStart) + ' • ' + (o.fictional ? L.fictional : o.modeLabel), 180, 352, { color: '#c9d1ff', align: 'center', alpha: fade(0.8) });
     }
   }
 
-  function render(out, T, OW, OH) {
+  // ---------- V2: Battle Story alerts (real events from the observer), shown in OUTPUT time ----------
+  const D = root.FWDirector;
+  function drawAlerts(g, T, outT) {
+    const obs = w.observer && w.observer.state; if (!o.story || !obs || !obs.alerts.length || !D) return;
+    if (T < E.TL.battleStart || (w.phase === 'ended' && T > w.endT + 0.3)) return;
+    const toOut = o.toOut || (x => x), dur = D.ALERT_CFG.showSec;
+    let cur = null, age = 0;
+    for (const a of obs.alerts) { const ag = outT - toOut(a.t); if (ag >= 0 && ag < dur) { cur = a; age = ag; } }
+    if (!cur) return;
+    const TX = D.ALERT_TXT[o.lang] || D.ALERT_TXT.en;
+    const txt = TX[cur.type] || cur.type;
+    const col = cur.side >= 0 ? tcL[cur.side] : '#ffe14d';
+    const sub = cur.side >= 0 ? F.upper(shorts[cur.side]) : '';
+    const sc = F.fitScale(txt, 300, 2, true);
+    const tw = F.measure(txt, true) * sc, sw2 = sub ? F.measure(sub) : 0;
+    const bw = Math.max(tw, sw2) + 18, bh = sub ? 7 * sc + 17 : 7 * sc + 9;
+    const slide = Math.round((1 - ease(age / 0.12)) * -40), a = cl(Math.min(age / 0.08, (dur - age) / 0.2), 0, 1);
+    const x0 = Math.round(180 - bw / 2) + slide, y0 = 100;
+    g.globalAlpha = a * 0.88; g.fillStyle = '#080a14'; g.fillRect(x0, y0, bw, bh);
+    g.globalAlpha = a; g.fillStyle = col; g.fillRect(x0, y0, 3, bh); g.fillRect(x0 + bw - 3, y0, 3, bh); g.fillRect(x0, y0, bw, 1); g.fillRect(x0, y0 + bh - 1, bw, 1);
+    g.globalAlpha = 1;
+    F.draw(g, txt, 180 + slide, y0 + 4, { scale: sc, bold: true, color: '#ffffff', color2: cur.side >= 0 ? C.bright(col, 0.2) : '#ffe14d', align: 'center', alpha: a });
+    if (sub) F.draw(g, sub, 180 + slide, y0 + 7 * sc + 7, { color: col, align: 'center', alpha: a });
+  }
+
+  function render(out, T, OW, OH, outT) {
+    if (outT == null) outT = T;
     // world layer
     drawWorld(T);
     // HUD/overlay layer
@@ -438,19 +466,26 @@ function createRenderer(o) {
     hudPanel(g, hudA);
     if (T < E.TL.battleStart + 0.1) drawIntro(g, T);
     drawBanners(g, T);
+    drawAlerts(g, T, outT);
     if (w.phase === 'ended') drawOutro(g, T);
-    // compose
+    // compose (only the world layer follows the camera; the HUD never moves)
     out.imageSmoothingEnabled = false;
     let z = w.cam.z, cx = w.cam.x, cy = w.cam.y;
     if (T < 0.35) { z = 1.7 - 0.7 * ease(T / 0.35); cx = 180; cy = E.MIDY; }
+    let ox = 0, oy = 0;
+    if (w.shake > 0) { ox = Math.round(Math.sin(w.tick * 1.7) * w.shake * 1.2); oy = Math.round(Math.cos(w.tick * 2.3) * w.shake); }
+    // never sample outside the 360x640 scene: a shake gets a matching tiny zoom margin
+    z = Math.max(1, z, LW / (LW - 2 * Math.abs(ox) - 0.001), LH / (LH - 2 * Math.abs(oy) - 0.001));
     const sw = LW / z, sh = LH / z;
-    let sx = cl(cx - sw / 2, 0, LW - sw), sy = cl(cy - sh / 2, 0, LH - sh);
-    if (w.shake > 0) { sx += Math.round(Math.sin(w.tick * 1.7) * w.shake * 1.2); sy += Math.round(Math.cos(w.tick * 2.3) * w.shake); }
+    const sx = cl(cl(cx - sw / 2, Math.abs(ox), LW - sw - Math.abs(ox)) + ox, 0, LW - sw);
+    const sy = cl(cl(cy - sh / 2, Math.abs(oy), LH - sh - Math.abs(oy)) + oy, 0, LH - sh);
     out.fillStyle = '#0d1322'; out.fillRect(0, 0, OW, OH);
     out.drawImage(worldCv, sx, sy, sw, sh, 0, 0, OW, OH);
     out.drawImage(hudCv, 0, 0, LW, LH, 0, 0, OW, OH);
+    lastView = { sx, sy, sw, sh, z };
   }
-  return { render, worldCv, hudCv, dispose() { worldCv.width = hudCv.width = 1; fields.forEach(f => f.width = 1); } };
+  let lastView = null;
+  return { render, worldCv, hudCv, view: () => lastView, dispose() { worldCv.width = hudCv.width = 1; fields.forEach(f => f.width = 1); } };
 }
 root.FWRender = { createRenderer, TXT, LW, LH, mmss };
 })(typeof window !== 'undefined' ? window : globalThis);

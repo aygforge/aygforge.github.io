@@ -142,7 +142,25 @@ Planner.prototype.feed = function (w) {
 };
 
 // ---------- offline mix (for the exported video) ----------
-function mixOffline(bank, loops, items, w, dur, vol) {
+// tm (optional, V2 Smart Video Director): { toOut(simT) } — every cue is re-timed onto the EDITED output
+// timeline (SFX keep their natural pitch/length, so hits stay on the frame they belong to) and the music is
+// rebuilt along output time. Without tm the original (V1) mix is produced unchanged.
+function retime(items, tm) {
+  const IMP = IMPORTANT;
+  const out = items.map(it => Object.assign({}, it, { t: tm.toOut(it.t) })).sort((a, b) => a.t - b.t);
+  const last = {}, win = [], kept = [];
+  for (const it of out) { // speed-up packs cues closer together: thin them again in output time
+    const imp = IMP.has(it.id);
+    if (!imp && last[it.id] != null && it.t - last[it.id] < 0.04) continue;
+    while (win.length && it.t - win[0] > 0.08) win.shift();
+    if (!imp && win.length >= 6) continue;
+    win.push(it.t); last[it.id] = it.t; kept.push(it);
+  }
+  return kept;
+}
+function mixOffline(bank, loops, items, w, dur, vol, tm) {
+  if (tm) items = retime(items, tm);
+  const toOut = tm ? tm.toOut : (x => x);
   const n = Math.ceil(dur * SR) + 1;
   const L = new Float32Array(n), R = new Float32Array(n);
   const sfxG = vol.sfx, musG = vol.music;
@@ -160,7 +178,7 @@ function mixOffline(bank, loops, items, w, dur, vol) {
   for (let i = 0; i < n; i++) { const v = crowd[i % crowd.length] * cg; L[i] += v; R[i] += v * 0.95; }
   for (const it of items) addBuf(bank[it.id], it.t, it.gain * sfxG, it.pan, it.rate);
   // music: calm loop from battle start, intense layer from FINAL CLASH, fade at the end
-  const tb = E.TL.battleStart, te = w.endT + 0.25;
+  const tb = E.TL.battleStart, te = toOut(w.endT) + 0.25;
   const fadeEnv = (t) => t < te - 0.25 ? 1 : Math.max(0, (te - t) / 0.25);
   const mus = (loop, from, g) => {
     for (let o = Math.round(from * SR); o < Math.min(n, Math.round(te * SR)); o++) {
@@ -168,7 +186,7 @@ function mixOffline(bank, loops, items, w, dur, vol) {
       L[o] += v; R[o] += v;
     }
   };
-  if (musG > 0) { mus(loops.calm, tb, 0.55 * musG); if (w.final15 >= 0) mus(loops.intense, w.final15, 0.5 * musG); }
+  if (musG > 0) { mus(loops.calm, tb, 0.55 * musG); if (w.final15 >= 0) mus(loops.intense, toOut(w.final15), 0.5 * musG); }
   // master soft clip
   for (let i = 0; i < n; i++) { L[i] = Math.tanh(L[i] * 1.1); R[i] = Math.tanh(R[i] * 1.1); }
   return { L, R, sampleRate: SR, length: n };
@@ -215,5 +233,5 @@ LivePlayer.prototype.stopAll = function () {
 
 let BANK = null, LOOPS = null;
 function ensure() { if (!BANK) { BANK = synthBank(); LOOPS = { calm: renderLoop(false), intense: renderLoop(true) }; } return { bank: BANK, loops: LOOPS }; }
-root.FWAudio = { SR, ensure, Planner, mixOffline, LivePlayer, LOOP };
+root.FWAudio = { SR, ensure, Planner, mixOffline, retime, LivePlayer, LOOP };
 })(typeof window !== 'undefined' ? window : globalThis);

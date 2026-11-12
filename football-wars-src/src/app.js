@@ -2,7 +2,7 @@
 (function () {
 'use strict';
 const DB = window.FW_MASTER_DB, CFG = window.FW_ENGINE_CONFIG, FLAGS = window.FW_FLAGS || {}, LIC = window.FW_LICENSES || {};
-const E = window.FWEngine, S = window.FWSprites, F = window.FWFont, R = window.FWRender, A = window.FWAudio, X = window.FWExport;
+const E = window.FWEngine, S = window.FWSprites, F = window.FWFont, R = window.FWRender, A = window.FWAudio, X = window.FWExport, D = window.FWDirector;
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const ALL = [...DB.clubs, ...DB.national_teams];
@@ -140,7 +140,8 @@ function setRadio(name, v) { const el = document.querySelector('input[name="' + 
 function settings() {
   return {
     res: radio('res') || '1080', fps: +(radio('fps') || 30), duration: radio('dur') || 'standard', fx: +(radio('fx') || 1), lang: radio('lang') || 'en',
-    sound: $('optSound').checked, labels: $('optLabels').checked, music: +$('volMusic').value / 100, sfx: +$('volSfx').value / 100
+    sound: $('optSound').checked, labels: $('optLabels').checked, music: +$('volMusic').value / 100, sfx: +$('volSfx').value / 100,
+    style: radio('vstyle') || 'cinematic', smartCam: $('optSmartCam').checked, camInt: radio('camint') || 'normal', story: $('optStory').checked
   };
 }
 function saveSettings() { try { localStorage.setItem('fw_settings_v2', JSON.stringify({ ...settings(), mode: st.mode, league: st.league })); } catch (e) { } }
@@ -149,6 +150,8 @@ function loadSettings() {
   if (!s) return null;
   setRadio('res', s.res); setRadio('fps', s.fps); setRadio('dur', s.duration); setRadio('fx', s.fx); setRadio('lang', s.lang);
   $('optSound').checked = s.sound !== false; $('optLabels').checked = s.labels !== false;
+  if (s.style) setRadio('vstyle', s.style); if (s.camInt) setRadio('camint', s.camInt);
+  $('optSmartCam').checked = s.smartCam !== false; $('optStory').checked = s.story !== false;
   if (s.music != null) $('volMusic').value = Math.round(s.music * 100); if (s.sfx != null) $('volSfx').value = Math.round(s.sfx * 100);
   return s;
 }
@@ -333,7 +336,8 @@ function buildMatch(seed, set, preview) {
   const logos = teams.map(t => logoSet(t));
   const opts = { seed, teamA: teams[0], teamB: teams[1], cfg: CFG, duration: set.duration, fxLevel: set.fx };
   const world = E.createWorld(opts);
-  const rOpts = { teams, kits, atlases, logos, lang: set.lang, labels: set.labels, modeLabel: modeLabel(set.lang), fictional: ['champions_league', 'europa_league', 'conference_league'].includes(st.mode) || (st.mode === 'custom_exhibition' && teams[0].type !== teams[1].type) };
+  world.observer = D.createObserver({ smartCam: set.smartCam, intensity: set.camInt });
+  const rOpts = { teams, kits, atlases, logos, lang: set.lang, labels: set.labels, story: set.story, modeLabel: modeLabel(set.lang), fictional: ['champions_league', 'europa_league', 'conference_league'].includes(st.mode) || (st.mode === 'custom_exhibition' && teams[0].type !== teams[1].type) };
   const renderer = R.createRenderer({ ...rOpts, world });
   return { teams, kits, atlases, logos, opts, rOpts, world, renderer, seed, set, mode: st.mode, preview: !!preview };
 }
@@ -467,7 +471,7 @@ async function replay() {
 
 // ======================= export =======================
 function slug(s) { return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ı/g, 'i').replace(/İ/g, 'I').replace(/ß/g, 'ss').replace(/[øØ]/g, 'o').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'Team'; }
-function fileName(m, W, H, ext) { const d = new Date(); const ds = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); return `FootballWars_${slug(m.teams[0].name)}_vs_${slug(m.teams[1].name)}_${ds}_seed${m.seed}_${W}x${H}.${ext}`; }
+function fileName(m, W, H, ext, style) { const d = new Date(); const ds = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); return `FootballWars_${slug(m.teams[0].name)}_vs_${slug(m.teams[1].name)}_${ds}_seed${m.seed}_${style === 'cinematic' ? 'Cinematic' : 'Original'}_${W}x${H}.${ext}`; }
 function fallbackPaths(caps, W, H, fps, wantAudio) {
   const k = W + 'x' + H + '@' + fps, out = [];
   const first = X.plan(caps, W, H, fps, wantAudio); if (first) out.push(first);
@@ -483,21 +487,28 @@ async function exportVideo(m) {
   const paths = fallbackPaths(st.caps, W, H, fps, set.sound);
   if (!paths.length) { setState('error'); msg('This browser cannot encode video (no WebCodecs or MediaRecorder). Please use an up-to-date Chrome or Edge.', 'bad'); return; }
   const live = m.world;
-  const total = live.endT + live.outroLen;
-  // deterministic soundtrack mixed from the battle's own event timeline
+  const natural = live.endT + live.outroLen;
+  // V2 Smart Video Director: edit plan = monotonic output-time -> battle-time map (never changes the battle)
+  let plan;
+  try { plan = D.buildPlan(live, live.observer && live.observer.state, { style: set.style }); }
+  catch (e) { console.error(e); plan = D.identityPlan(natural); msg('Smart Video Director failed (' + e.message + ') — exporting the Original full battle instead.', 'warn'); }
+  m.plan = plan;
+  const total = plan.outDur;
+  // deterministic soundtrack mixed from the battle's own event timeline (re-timed onto the edit)
   let audio = null;
   if (set.sound) {
     status('Mixing the soundtrack…', null, 0);
     await new Promise(r => setTimeout(r, 10));
     const { bank, loops } = A.ensure(); const pl = new A.Planner(); pl.intro(); pl.feed(live);
-    audio = A.mixOffline(bank, loops, pl.items, live, total, { music: set.music, sfx: set.sfx });
+    audio = A.mixOffline(bank, loops, pl.items, live, total, { music: set.music, sfx: set.sfx }, plan.identity ? null : { toOut: plan.toOut });
   }
   setState('encoding');
   let out = null, used = null, lastErr = null, ew = null;
   for (const p of paths) {
     if (p.warn && p !== paths[0]) msg(p.warn, 'warn');
     ew = E.createWorld(m.opts);
-    const er = R.createRenderer({ ...m.rOpts, world: ew });
+    ew.observer = D.createObserver({ smartCam: set.smartCam, intensity: set.camInt });
+    const er = R.createRenderer({ ...m.rOpts, world: ew, toOut: plan.toOut });
     const t0 = performance.now();
     status('Creating video: ' + p.label, { 'Format': p.label, 'Resolution': W + '×' + H, 'FPS': fps, 'Duration': total.toFixed(2) + ' s', 'Frame': '0 / ' + Math.ceil(total * fps) }, 0);
     let lastPrev = 0;
@@ -506,7 +517,7 @@ async function exportVideo(m) {
       out = await X.run({
         plan: p, width: W, height: H, fps, duration: total, audio, audioCtx: st.audioCtx,
         isCancelled: () => st.cancel,
-        draw: (ctx, T, w2, h2) => { E.advanceTo(ew, T); er.render(ctx, T, w2, h2); },
+        draw: (ctx, outT, w2, h2) => { const simT = plan.map(outT); E.advanceTo(ew, simT); er.render(ctx, simT, w2, h2, outT); },
         onProgress: (o) => {
           const pct = o.total ? (o.frame / o.total) * 100 : 0;
           const kv = { 'Format': p.label, 'Resolution': W + '×' + H + ' @ ' + fps + ' FPS', 'Frame': o.frame + ' / ' + o.total, 'Frames left': Math.max(0, o.total - o.frame), 'Time left (est.)': o.eta != null ? o.eta.toFixed(1) + ' s' : '—', 'Encode speed': o.fpsEnc ? o.fpsEnc.toFixed(1) + ' fps' : (o.phase === 'realtime' ? 'real-time' : '—'), 'Elapsed': ((performance.now() - t0) / 1000).toFixed(1) + ' s' };
@@ -524,19 +535,20 @@ async function exportVideo(m) {
   }
   if (!out) { setState('error'); msg('Could not create the video: ' + (lastErr && lastErr.message || lastErr), 'bad'); return; }
   // verification: the exported battle must be the one that was watched
-  const same = (ew.hash >>> 0) === (live.hash >>> 0) && ew.winner === live.winner && Math.abs(ew.endT - live.endT) < 1e-9;
+  const same = (ew.hash >>> 0) === (live.hash >>> 0) && ew.winner === live.winner && Math.abs(ew.endT - live.endT) < 1e-9 && ew.teams[ew.winner].alive === live.teams[live.winner].alive;
+  const alertsSame = JSON.stringify(ew.observer.state.alerts) === JSON.stringify(live.observer.state.alerts);
   if (!out.blob || out.blob.size === 0) { setState('error'); msg('The encoder produced an empty file — download disabled.', 'bad'); return; }
   const sn = await X.sniff(out.blob);
   let tracks = {};
   if (sn.container === 'mp4') tracks = await X.mp4Tracks(out.blob);
   if (sn.container !== used.container) { setState('error'); msg('Container check failed (' + sn.container + ' ≠ ' + used.container + ').', 'bad'); return; }
   const url = URL.createObjectURL(out.blob); DIAG.urls.add(url); st.videoURL = url;
-  const fn = fileName(m, W, H, used.ext);
+  const fn = fileName(m, W, H, used.ext, plan.style);
   const a = $('btnDownload'); a.href = url; a.download = fn; a.textContent = 'DOWNLOAD VIDEO (' + used.ext.toUpperCase() + ', ' + (out.blob.size / 1048576).toFixed(1) + ' MB)';
   const v = $('resVideo'); v.src = url; v.load();
   $('videoBox').classList.remove('hidden');
   DIAG.exports++;
-  DIAG.lastExport = { path: used.path, size: out.blob.size, mime: out.blob.type, container: sn.container, tracks, verified: same, frames: out.frames, seconds: out.seconds, fileName: fn };
+  DIAG.lastExport = { path: used.path, size: out.blob.size, mime: out.blob.type, container: sn.container, tracks, verified: same, alertsSame, frames: out.frames, seconds: out.seconds, fileName: fn, style: plan.style, natural, edited: total, endOut: plan.toOut(live.endT), battle: live.endT - E.TL.battleStart, highlights: plan.highlights, alerts: live.observer.state.alerts.map(a => a.type), segments: plan.segments };
   const codecTxt = used.container === 'mp4' ? `MP4 • video ${out.videoCodec}${tracks.avc1 ? ' (H.264/avcC ✓)' : ''} • audio ${out.audioCodec ? out.audioCodec + (tracks.mp4a ? ' (AAC ✓)' : tracks.opus ? ' (Opus ✓)' : '') : 'none'}` : `WebM • ${out.videoCodec}${out.audioCodec ? ' + ' + out.audioCodec : ''}`;
   $('videoInfo').innerHTML = `${esc(fn)}<br>${esc(codecTxt)} • ${W}×${H} • ${fps} FPS • ${(out.blob.size / 1048576).toFixed(2)} MB • ${out.frames} frames • encoded in ${out.seconds ? out.seconds.toFixed(1) + ' s' : ''}`;
   v.onloadedmetadata = () => {
@@ -544,15 +556,27 @@ async function exportVideo(m) {
     const okD = isFinite(d) && Math.abs(d - total) < 0.6;
     msg(isFinite(d) ? `Preview loaded: duration ${d.toFixed(2)} s (expected ${total.toFixed(2)} s) ${okD ? '✓' : '— duration mismatch'}` : 'Preview loaded (the browser did not report a duration; normal for recorded WebM).', okD || !isFinite(d) ? 'ok' : 'warn');
     DIAG.lastExport.previewDuration = d;
+    const rd = $('editInfo'); if (rd) rd.innerHTML = editSummary(live, plan, d);
   };
   v.onerror = () => { msg('The in-browser preview could not play this file (codec support). It can still be downloaded: ' + codecTxt, 'warn'); };
   msg(same ? `Verified: the video is exactly the battle you watched (seed ${m.seed}, event hash ${(live.hash >>> 0).toString(16)}, same winner and end tick).` : 'WARNING: the video simulation differs from the live battle!', same ? 'ok' : 'bad');
   if (set.sound && !out.audioCodec) msg('No audio encoder found; the video is silent.', 'warn');
+  $('editInfo').innerHTML = editSummary(live, plan, null);
+  if (set.style === 'cinematic' && plan.identity) msg('Cinematic Short: ' + (plan.note || 'no quiet stretch to speed up') + ' — exported at normal speed (honest full length).', 'warn');
   if (used.audio && used.audio.codec === 'opus' && used.container === 'mp4') msg('No AAC encoder in this browser; audio was encoded as Opus inside the MP4 (plays in Chrome/Edge/VLC/YouTube/TikTok; some older players may not support Opus-in-MP4).', 'warn');
-  status('Video ready ✓', { 'File': fn, 'Format': codecTxt, 'Size': (out.blob.size / 1048576).toFixed(2) + ' MB', 'Duration': total.toFixed(2) + ' s', 'Frames': out.frames, 'Encode time': out.seconds ? out.seconds.toFixed(1) + ' s' : '—', 'Verification': same ? 'live = video ✓' : 'DIFFERENT ✗' }, 100);
+  status('Video ready ✓', { 'File': fn, 'Style': plan.style === 'cinematic' && !plan.identity ? 'Cinematic Short (' + total.toFixed(1) + ' s from ' + natural.toFixed(1) + ' s)' : 'Original full battle', 'Format': codecTxt, 'Size': (out.blob.size / 1048576).toFixed(2) + ' MB', 'Duration': total.toFixed(2) + ' s', 'Frames': out.frames, 'Encode time': out.seconds ? out.seconds.toFixed(1) + ' s' : '—', 'Verification': same ? 'live = video ✓' : 'DIFFERENT ✗' }, 100);
   setState('done');
 }
 
+function editSummary(live, plan, recorded) {
+  const battle = live.endT - E.TL.battleStart, natural = live.endT + live.outroLen;
+  const al = live.observer ? live.observer.state.alerts.length : 0;
+  const parts = [`Real battle <b>${battle.toFixed(1)} s</b>`, `full-length video ${natural.toFixed(1)} s`,
+    plan.identity ? `export: <b>Original</b> ${plan.outDur.toFixed(1)} s` : `<b>Cinematic edit ${plan.outDur.toFixed(1)} s</b>`,
+    recorded != null && isFinite(recorded) ? `recorded file ${recorded.toFixed(2)} s` : null,
+    plan.identity ? null : `${plan.highlights} highlights at 1.0x`, `${al} story alert${al === 1 ? '' : 's'}`].filter(Boolean);
+  return parts.join(' • ');
+}
 // ======================= results =======================
 function showResult(m) {
   const w = m.world, win = w.winner, T = m.teams[win], L = logoSet(T), lose = m.teams[1 - win];
@@ -696,7 +720,7 @@ async function boot() {
   const checks = dataChecks(); const allOk = checks.every(c => c.ok);
   $('dbChip').innerHTML = `Database: <b>${ALL.length}</b> teams (<b>${DB.clubs.length}</b> clubs + <b>${DB.national_teams.length}</b> national) • <b>${DB.leagues.length}</b> leagues • ${esc(DB.metadata.club_season)} ${allOk ? '<span class="pass">✓ verified</span>' : '<span class="fail">✗ data check failed</span>'}`;
   const mobile = matchMedia('(pointer:coarse)').matches || Math.min(screen.width, screen.height) < 820;
-  if (mobile && !saved) { setRadio('res', '720'); msg('Mobile device detected: 720×1280 selected for faster, safer encoding (change it in Advanced settings).', 'warn', $('globalMsg')); }
+  if (mobile && !saved) { setRadio('res', '720'); setRadio('camint', 'low'); msg('Mobile device detected: 720×1280 selected for faster, safer encoding (change it in Advanced settings).', 'warn', $('globalMsg')); }
   sizeStage(); splash();
   await loadFlags();
   // defaults: Istanbul derby
@@ -746,10 +770,10 @@ document.addEventListener('click', e => {
 });
 $('logoFile').addEventListener('change', e => onUpload(e.target.files && e.target.files[0]));
 document.querySelectorAll('input[name=res],input[name=fps],#optSound').forEach(el => el.addEventListener('change', () => { updateFmt(); saveSettings(); }));
-document.querySelectorAll('input[name=dur],input[name=fx],input[name=lang],#optLabels,#volMusic,#volSfx').forEach(el => el.addEventListener('change', () => { saveSettings(); if (st.phase !== 'live' && st.phase !== 'encoding') drawIdle(); }));
+document.querySelectorAll('input[name=dur],input[name=fx],input[name=lang],#optLabels,#volMusic,#volSfx,input[name=vstyle],input[name=camint],#optSmartCam,#optStory').forEach(el => el.addEventListener('change', () => { saveSettings(); if (st.phase !== 'live' && st.phase !== 'encoding') drawIdle(); }));
 window.addEventListener('resize', () => sizeStage());
 window.addEventListener('beforeunload', () => { for (const u of DIAG.urls) URL.revokeObjectURL(u); });
 // test hooks (used by the automated browser tests; harmless for users)
-window.FW_APP = { st, DIAG, choose: (s, id) => choose(s, BY_ID.get(id)), startBattle, replay, search, validate, dataChecks, settings, setMode: m => { $('mode').value = m; onModeChange(); }, ERRORS };
+window.FW_APP = { st, DIAG, buildMatch: (seed, set) => buildMatch(seed, set || settings(), false), choose: (s, id) => choose(s, BY_ID.get(id)), startBattle, replay, search, validate, dataChecks, settings, setMode: m => { $('mode').value = m; onModeChange(); }, ERRORS };
 boot().catch(e => { console.error(e); msg('Startup error: ' + e.message, 'bad', $('globalMsg')); });
 })();

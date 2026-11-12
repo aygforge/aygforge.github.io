@@ -1,6 +1,6 @@
 const { chromium } = require('playwright'); const path = require('path'); const fs = require('fs');
 const OUT = '/tmp/claude-0/-home-user-aygforge-github-io/191a4712-9ac7-5807-a3c4-be4d74e74dc3/scratchpad/ui'; fs.mkdirSync(OUT, { recursive: true });
-const URL_ = 'file://' + path.resolve(__dirname, '../../football-wars.html');
+const URL_ = 'file://' + path.resolve(__dirname, '../../football-wars-v2.html');
 (async () => {
   const b = await chromium.launch({ args: ['--autoplay-policy=no-user-gesture-required'] });
   const logs = [];
