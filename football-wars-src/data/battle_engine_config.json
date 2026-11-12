@@ -1,0 +1,182 @@
+{
+  "modes": {
+    "domestic_league": {
+      "participants": "club",
+      "same_league_required": true,
+      "count_per_side": 100,
+      "free_match": true
+    },
+    "champions_league": {
+      "participants": "club",
+      "same_league_required": false,
+      "count_per_side": 100,
+      "free_match": true,
+      "qualification_validation": "not_included"
+    },
+    "europa_league": {
+      "participants": "club",
+      "same_league_required": false,
+      "count_per_side": 100,
+      "free_match": true,
+      "qualification_validation": "not_included"
+    },
+    "conference_league": {
+      "participants": "club",
+      "same_league_required": false,
+      "count_per_side": 100,
+      "free_match": true,
+      "qualification_validation": "not_included"
+    },
+    "national_match": {
+      "participants": "national",
+      "same_league_required": false,
+      "count_per_side": 100,
+      "free_match": true
+    },
+    "custom_exhibition": {
+      "participants": "club_or_national",
+      "allow_mixed_only_with_explicit_user_toggle": true,
+      "count_per_side": 100
+    }
+  },
+  "simulation_engine_recommendation": {
+    "seed_handling": "Use unpredictable crypto random seed per new match; fixed seed allowed for exact replay/export.",
+    "team_form_multiplier": "Lognormal or truncated normal per match around 1.0; clamp 0.80..1.20",
+    "individual_performance_multiplier": "Per-unit draw clamp 0.78..1.22, unique per unit and match",
+    "soft_cap_strength": "Use matchup elo difference with a soft nonlinear cap; never directly multiply raw Elo into damage.",
+    "upset_control": {
+      "power_advantage_cap_pct": 18,
+      "suggested_baseline_upset_floor_pct": 6,
+      "note": "Use for balancing; do not force upset or predetermine winners."
+    },
+    "outcome": "Last side with at least one living unit wins. On very rare simultaneous elimination, play sudden-death between each team’s last captain or respawn 1 each.",
+    "deterministic_replay": "Record seed and fixed-step battle event log; rendering and MP4 export replay same outcome.",
+    "target_duration_s": [
+      35,
+      65
+    ],
+    "internal_sim_fps": 60,
+    "export_fps": 30,
+    "video_resolution": [
+      1080,
+      1920
+    ],
+    "copyright": "No official logos, player names, club-owned sprite images, or trademarked assets bundled."
+  },
+  "archetype_definitions": {
+    "high_press": {
+      "tr": "Yoğun pres",
+      "tendency": "close_range",
+      "stat": {
+        "pressing": 8,
+        "speed": 4,
+        "stamina": 2,
+        "defense": -2
+      },
+      "special": "PRESSING_STORM"
+    },
+    "possession": {
+      "tr": "Pas ve kontrol",
+      "tendency": "formation",
+      "stat": {
+        "teamwork": 8,
+        "technique": 6,
+        "pressing": -2
+      },
+      "special": "ONE_TWO_COMBO"
+    },
+    "counter": {
+      "tr": "Kontraatak",
+      "tendency": "burst",
+      "stat": {
+        "speed": 7,
+        "finishing": 5,
+        "defense": -2
+      },
+      "special": "COUNTER_BURST"
+    },
+    "defensive_block": {
+      "tr": "Kapalı savunma",
+      "tendency": "hold_line",
+      "stat": {
+        "defense": 9,
+        "goalkeeping": 6,
+        "speed": -4,
+        "pressing": -3
+      },
+      "special": "IRON_WALL"
+    },
+    "wing_attack": {
+      "tr": "Kanat hücumu",
+      "tendency": "flank",
+      "stat": {
+        "speed": 7,
+        "attack": 5,
+        "teamwork": 2
+      },
+      "special": "CROSS_FIRE"
+    },
+    "physical": {
+      "tr": "Fiziksel mücadele",
+      "tendency": "brawl",
+      "stat": {
+        "physical": 8,
+        "stamina": 6,
+        "technique": -3
+      },
+      "special": "SHOULDER_CHARGE"
+    }
+  },
+  "role_definitions": {
+    "striker": {
+      "attack_style": "direct_shot",
+      "default_range": 130,
+      "visual": "ball_projectile"
+    },
+    "winger": {
+      "attack_style": "fast_flank_kick",
+      "default_range": 110,
+      "visual": "curved_ball"
+    },
+    "playmaker": {
+      "attack_style": "assist_and_shot",
+      "default_range": 160,
+      "visual": "glowing_pass"
+    },
+    "defender": {
+      "attack_style": "slide_tackle",
+      "default_range": 46,
+      "visual": "tackle_trail"
+    },
+    "goalkeeper": {
+      "attack_style": "block_shots_and_clear",
+      "default_range": 65,
+      "visual": "save_glow"
+    },
+    "support": {
+      "attack_style": "boost_and_intercept",
+      "default_range": 125,
+      "visual": "team_aura"
+    },
+    "captain": {
+      "attack_style": "leadership_and_special",
+      "default_range": 100,
+      "visual": "captain_aura"
+    }
+  },
+  "sprite_pipeline": {
+    "render_assets": "procedural_pixel_sprites",
+    "sprite_scale": 2,
+    "visible_roles": 7,
+    "animation_states": [
+      "idle",
+      "run",
+      "kick",
+      "tackle",
+      "hit",
+      "knockout",
+      "special"
+    ],
+    "fps_note": "Sprite animation tick can differ from video frame rate."
+  }
+}
