@@ -34,7 +34,9 @@ for (const [a, b] of pairs) for (const seed of seeds) for (const dur of ['standa
       CAPTAIN_DOWN: () => at.some(x => x[3].c === 1 && w.units[x[3].b].side === al.side && Math.abs(x[0] - al.t) < 0.02),
       STREAK: () => w.units.some(u => u.side === al.side && u.kills >= 5),
       FINAL10: () => a1 + b1 <= 10,
-      LAST_PLAYER: () => (al.side ? b1 : a1) === 1
+      LAST_PLAYER: () => (al.side ? b1 : a1) === 1,
+      LAST_HOPE: () => (al.side ? b1 : a1) === 1 && (al.side ? a1 : b1) > 1,
+      DUEL: () => a1 === 1 && b1 === 1
     }[al.type]();
     if (!ok) bad.push([a, b, seed, al]);
     if (al.t < E.TL.battleStart || al.t > w.endT) bad.push(['time', al]);
@@ -42,7 +44,9 @@ for (const [a, b] of pairs) for (const seed of seeds) for (const dur of ['standa
   for (let i = 1; i < st.alerts.length; i++) if (st.alerts[i].t - st.alerts[i - 1].t < 1.2) bad.push(['spacing', st.alerts[i - 1], st.alerts[i]]);
   if (st.alerts.length > 7) bad.push(['count', st.alerts.length]);
   // edit plan
-  const plan = D.buildPlan(w, st, { style: 'cinematic' });
+  const plan = D.buildPlan(w, st, { style: 'cinematic', epicFinale: false });
+  const p3 = D.buildPlan(w, st, { style: 'cinematic' }); const slowExtra = (p3.toOut(w.endT) - p3.toOut(w.endT - 2)) - 2;
+  if (!(slowExtra > 0.25 && slowExtra < 0.7) || p3.outDur > 65 || Math.abs(p3.map(p3.outDur) - (w.endT + w.outroLen)) > 0.02) bad.push(['v3plan', a, b, seed, slowExtra, p3.outDur]);
   const total = w.endT + w.outroLen;
   // monotonic + intro identity + outro 1x
   let prev = -1, mono = true; for (let o2 = 0; o2 <= plan.outDur; o2 += 1 / 30) { const s = plan.map(o2); if (s < prev - 1e-9) mono = false; prev = s; }

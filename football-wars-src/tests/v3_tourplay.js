@@ -1,0 +1,15 @@
+const { chromium } = require('playwright'); const path = require('path');
+(async () => { const b = await chromium.launch({ args: ['--autoplay-policy=no-user-gesture-required'] }); const ctx = await b.newContext({ viewport: { width: 1440, height: 1000 }, acceptDownloads: true }); const p = await ctx.newPage(); const errs = [];
+  p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
+  await p.goto('file://' + path.resolve(__dirname, '../../football-wars-v3.html')); await p.waitForFunction(() => window.FW_APP && window.FW_APP.st.ready && window.FW_APP.st.caps);
+  await p.evaluate(() => { const el = document.querySelector('input[name=res][value="720"]'); el.checked = true; el.dispatchEvent(new Event('change')); });
+  const expect = await p.evaluate(() => { const t = FWTournamentV3.createTournament({ size: 8, seed: 555, source: { kind: 'league', league: 'ESP_LALIGA' }, duration: 'short', name: 'Liga Cup' }, FW_MASTER_DB); window.FW_APP.setTour(t);
+    const mt = t.rounds[0][0], all = [...FW_MASTER_DB.clubs, ...FW_MASTER_DB.national_teams], by = id => all.find(x => x.id === id);
+    const w = FWEngine.simulate({ seed: mt.seed, teamA: by(mt.a), teamB: by(mt.b), cfg: FW_ENGINE_CONFIG, duration: 'short', fxLevel: 1 }); return { a: mt.a, b: mt.b, seed: mt.seed, hash: (w.hash >>> 0).toString(16), winner: w.teams[w.winner].team.id, surv: w.teams[w.winner].alive }; });
+  await p.click('#btnTour'); await p.click('[data-tplay="0:0"]');
+  await p.waitForFunction(() => ['done', 'error'].includes(window.FW_APP.st.phase), null, { timeout: 600000 });
+  const got = await p.evaluate(() => ({ res: window.FW_APP.tour().rounds[0][0].res, next: window.FW_APP.tour().rounds[1][0], phase: window.FW_APP.st.phase, ex: window.FW_APP.DIAG.lastExport && { file: window.FW_APP.DIAG.lastExport.fileName, size: window.FW_APP.DIAG.lastExport.size, verified: window.FW_APP.DIAG.lastExport.verified }, dur: document.querySelector('input[name=dur]:checked').value, msgs: [...document.querySelectorAll('#statusMsgs .msg')].map(e => e.textContent).filter(t => /Tournament/.test(t)) }));
+  console.log('expected (fast simulate):', JSON.stringify(expect));
+  console.log('played via UI:', JSON.stringify({ hash: got.res.hash, winner: got.res.winnerId, surv: got.res.survivors, how: got.res.how, advancedTo: got.next.a, dur: got.dur, phase: got.phase, video: got.ex, msgs: got.msgs }));
+  console.log('MATCH', got.res.hash === expect.hash && got.res.winnerId === expect.winner && got.res.survivors === expect.surv && got.next.a === expect.winner, 'ERRORS', JSON.stringify(errs));
+  await b.close(); })();

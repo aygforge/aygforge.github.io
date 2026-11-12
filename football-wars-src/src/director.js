@@ -19,10 +19,10 @@ const ALERT_CFG = {
   cooldown: 3.0, urgentGap: 1.2, maxAlerts: 7, showSec: 1.15,
   perType: { CAPTAIN_DOWN: 2, STREAK: 2, LEAD_CHANGE: 2 }
 };
-const PRIO = { LAST_PLAYER: 98, FINAL10: 95, COMEBACK: 100, LEAD_CHANGE: 70, CAPTAIN_DOWN: 60, STREAK: 50, DOMINATING: 30 };
+const PRIO = { DUEL: 99, LAST_PLAYER: 98, FINAL10: 95, COMEBACK: 100, LEAD_CHANGE: 70, CAPTAIN_DOWN: 60, STREAK: 50, DOMINATING: 30 };
 const ALERT_TXT = {
-  en: { COMEBACK: 'COMEBACK!', LEAD_CHANGE: 'LEAD CHANGE!', DOMINATING: 'DOMINATING!', CAPTAIN_DOWN: 'CAPTAIN DOWN!', STREAK: '5-KO STREAK!', FINAL10: 'FINAL 10!', LAST_PLAYER: 'LAST PLAYER!', CLUTCH: 'CLUTCH VICTORY!' },
-  tr: { COMEBACK: 'GERİ DÖNÜŞ!', LEAD_CHANGE: 'LİDERLİK DEĞİŞTİ!', DOMINATING: 'TAM HAKİMİYET!', CAPTAIN_DOWN: 'KAPTAN DÜŞTÜ!', STREAK: '5 KO SERİSİ!', FINAL10: 'SON 10!', LAST_PLAYER: 'SON OYUNCU!', CLUTCH: 'KRİTİK ZAFER!' }
+  en: { DUEL: 'FINAL DUEL!', LAST_HOPE: 'LAST HOPE!', COMEBACK: 'COMEBACK!', LEAD_CHANGE: 'LEAD CHANGE!', DOMINATING: 'DOMINATING!', CAPTAIN_DOWN: 'CAPTAIN DOWN!', STREAK: '5-KO STREAK!', FINAL10: 'FINAL 10!', LAST_PLAYER: 'LAST PLAYER!', CLUTCH: 'CLUTCH VICTORY!' },
+  tr: { DUEL: 'FİNAL DÜELLOSU!', LAST_HOPE: 'SON UMUT!', COMEBACK: 'GERİ DÖNÜŞ!', LEAD_CHANGE: 'LİDERLİK DEĞİŞTİ!', DOMINATING: 'TAM HAKİMİYET!', CAPTAIN_DOWN: 'KAPTAN DÜŞTÜ!', STREAK: '5 KO SERİSİ!', FINAL10: 'SON 10!', LAST_PLAYER: 'SON OYUNCU!', CLUTCH: 'KRİTİK ZAFER!' }
 };
 const CAM_CFG = {
   low:       { zmax: 1.12, zfinal: 1.20, hold: 2.5, rate: 0.9, pan: 60, zrate: 0.15 },
@@ -42,7 +42,10 @@ function createObserver(opt) {
   const st = {
     smartCam: opt.smartCam !== false, evIdx: 0, heat: [], timeline: [],
     cam: { x: LW / 2, y: E.MIDY, z: 1 }, tgt: { x: LW / 2, y: E.MIDY, z: 1 }, lastCommit: -99, nextEval: 0,
-    alerts: [], lastAlertT: -99, used: {}, done: {}, maxDef: [0, 0], bigLeader: -1, domStart: [-1, -1], clutch: false, camStats: { zMax: 1, commits: 0 }
+    alerts: [], lastAlertT: -99, used: {}, done: {}, maxDef: [0, 0], bigLeader: -1, domStart: [-1, -1], clutch: false, camStats: { zMax: 1, commits: 0 },
+    // V3 (all cosmetic, derived only from real events / alive counts)
+    epic: opt.epicFinale !== false, mvpStreaks: opt.mvpStreaks !== false,
+    mom: 0, momRaw: 0, momWin: [], momSum: [0, 0], tags: [], lastTag: -99, tagDone: {}, saves: {}, duel: null, hope: null
   };
   function inView(cam, u) { const hw = LW / cam.z / 2, hh = LH / cam.z / 2; return u.x > cam.x - hw + 6 && u.x < cam.x + hw - 6 && u.y > cam.y - hh + HUD_H / cam.z && u.y < cam.y + hh - 6; }
   function evalCamera(w) {
@@ -101,7 +104,7 @@ function createObserver(opt) {
   function offer(c, w) { // deterministic alert scheduler
     if (st.alerts.length >= A.maxAlerts) return false;
     const gap = w.t - st.lastAlertT;
-    if (!(gap >= A.cooldown || (c.prio >= 95 && gap >= A.urgentGap))) return false;
+    if (!(gap >= A.cooldown || (c.prio >= 95 && gap >= A.urgentGap) || (c.prio >= 99 && gap >= 0.4))) return false;
     const lim = A.perType[c.type]; if (lim && (st.used[c.type] || 0) >= lim) return false;
     st.alerts.push({ t: w.t, type: c.type, side: c.side });
     st.used[c.type] = (st.used[c.type] || 0) + 1; st.lastAlertT = w.t;
@@ -117,7 +120,9 @@ function createObserver(opt) {
     for (let s = 0; s < 2; s++) {
       const mine = s ? b : a, other = s ? a : b;
       if (!st.done['CB' + s] && mine > other && st.maxDef[s] >= A.comebackDeficit) cand.push({ type: 'COMEBACK', side: s, prio: PRIO.COMEBACK, key: 'CB' + s });
-      if (!st.done['LP' + s] && mine === 1 && other > 0) cand.push({ type: 'LAST_PLAYER', side: s, prio: PRIO.LAST_PLAYER, key: 'LP' + s });
+      if (!st.done['LP' + s] && mine === 1 && other > 1) cand.push({ type: st.epic ? 'LAST_HOPE' : 'LAST_PLAYER', side: s, prio: PRIO.LAST_PLAYER, key: 'LP' + s });
+      else if (!st.epic && !st.done['LP' + s] && mine === 1 && other > 0) cand.push({ type: 'LAST_PLAYER', side: s, prio: PRIO.LAST_PLAYER, key: 'LP' + s });
+      if (st.epic && mine === 1 && other > 1 && !st.hope) { const u = w.teams[s].aliveList[0]; if (u) st.hope = { t, id: u.id, side: s }; }
     }
     if (Math.abs(d) >= A.leadChange) {
       const leader = d > 0 ? 0 : 1;
@@ -130,15 +135,46 @@ function createObserver(opt) {
       st.domStart[1 - leader] = -1;
       if (!st.done['DOM' + leader] && t - st.domStart[leader] >= A.dominateSec) cand.push({ type: 'DOMINATING', side: leader, prio: PRIO.DOMINATING, key: 'DOM' + leader });
     } else { st.domStart[0] = st.domStart[1] = -1; }
+    if (st.epic && a === 1 && b === 1) {
+      if (!st.duel) st.duel = { t, ids: [w.teams[0].aliveList[0].id, w.teams[1].aliveList[0].id] };
+      if (!st.done.DUEL) cand.push({ type: 'DUEL', side: -1, prio: PRIO.DUEL, key: 'DUEL' }); // re-offered while the real 1v1 lasts
+    }
     if (!st.done.F10 && a + b <= A.final) cand.push({ type: 'FINAL10', side: -1, prio: PRIO.FINAL10, key: 'F10' });
     for (const e of newKOs) {
       const victim = w.units[e.b];
       if (e.c === 1 && victim && !st.done['CAP' + victim.side]) cand.push({ type: 'CAPTAIN_DOWN', side: victim.side, prio: PRIO.CAPTAIN_DOWN, key: 'CAP' + victim.side });
-      if (e.a >= 0) { const k = w.units[e.a]; if (k && k.kills === A.streak) cand.push({ type: 'STREAK', side: k.side, prio: PRIO.STREAK, unit: k.id }); }
+      if (e.a >= 0 && !st.mvpStreaks) { const k = w.units[e.a]; if (k && k.kills === A.streak) cand.push({ type: 'STREAK', side: k.side, prio: PRIO.STREAK, unit: k.id }); }
     }
     if (t < E.TL.battleStart + 0.8 || !cand.length) return;
     cand.sort((p, q) => q.prio - p.prio);
     offer(cand[0], w);
+  }
+  // ---- V3: momentum (last 5 s of real pressure), KO streak tags, saves per unit ----
+  const MOM_W = { [E.EV.HIT]: 1, [E.EV.CRIT]: 1.5, [E.EV.KO]: 0, [E.EV.SAVE]: 0 };
+  function v3Event(w, e) {
+    const V = E.EV;
+    if (e.type === V.SAVE && e.a >= 0) st.saves[e.a] = (st.saves[e.a] || 0) + 1;
+    if (w.phase !== 'battle') return;
+    let side = -1, wt = 0;
+    if ((e.type === V.HIT || e.type === V.CRIT) && e.a >= 0) { side = w.units[e.a].side; wt = (e.c / 10) * MOM_W[e.type]; }
+    else if (e.type === V.KO && e.a >= 0) { side = w.units[e.a].side; wt = 3; }
+    else if (e.type === V.SAVE && e.a >= 0) { side = w.units[e.a].side; wt = 2; }
+    if (side >= 0 && wt > 0) { st.momWin.push([e.t, side, wt]); st.momSum[side] += wt; }
+    if (e.type === V.KO && e.a >= 0 && st.mvpStreaks) {
+      const k = w.units[e.a], n = k.kills;
+      if ((n === 3 || n === 5 || n === 8 || n === 12) && !st.tagDone[k.id + ':' + n] && (e.t - st.lastTag >= 1.0 || n >= 8)) {
+        st.tagDone[k.id + ':' + n] = true; st.lastTag = e.t; st.tags.push({ t: e.t, unit: k.id, n, side: k.side, x: k.x, y: k.y });
+      }
+    }
+  }
+  function momentumTick(w) {
+    if (w.phase !== 'battle') return;
+    const t = w.t; let i = 0;
+    while (i < st.momWin.length && t - st.momWin[i][0] > 5) { st.momSum[st.momWin[i][1]] -= st.momWin[i][2]; i++; }
+    if (i) st.momWin.splice(0, i);
+    const a = Math.max(0, st.momSum[0]), b = Math.max(0, st.momSum[1]);
+    st.momRaw = (a - b) / (a + b + 6);
+    st.mom += (st.momRaw - st.mom) * (1 - Math.exp(-E.DT / 0.9));
   }
   function tick(w) {
     // new real events since last tick
@@ -147,10 +183,12 @@ function createObserver(opt) {
       const e = w.events[st.evIdx];
       const hw = HEAT[e.type]; if (hw && (e.x || e.y)) { st.heat.push({ t: e.t, x: e.x, y: e.y, w: hw }); }
       if (e.type === E.EV.KO) newKOs.push(e);
+      v3Event(w, e);
       if (e.type === E.EV.END) { const n = w.teams[e.a] ? w.teams[e.a].alive : 0; st.clutch = n >= 1 && n <= A.clutchMax; }
     }
     if (st.heat.length > 400 || (st.heat.length && w.t - st.heat[0].t > 2)) { let i = 0; while (i < st.heat.length && w.t - st.heat[i].t > 1.6) i++; if (i) st.heat.splice(0, i); }
     storyTick(w, newKOs);
+    momentumTick(w);
     cameraTick(w);
   }
   tick.state = st;
@@ -170,7 +208,8 @@ function buildPlan(w, obsState, opt) {
   const bs = E.TL.battleStart, protectEnd = w.endT - 3.0, BL = 1.0;
   const V = E.EV, W = { [V.KO]: 1, [V.CRIT]: 0.25, [V.SPECIAL]: 2.5, [V.SPECIAL_FIRE]: 1, [V.SAVE]: 0.6, [V.EXPLODE]: 1, [V.FINAL15]: 4, [V.FINAL5]: 4, [V.ZONE]: 1.5, [V.STORM]: 2, [V.SUDDEN]: 6, [V.ADAPT]: 0.5 };
   const nB = Math.max(0, Math.floor((protectEnd - bs) / BL));
-  if (nB < 3) return Object.assign(identityPlan(total), { style: 'cinematic', note: 'battle too short to edit' });
+  const slow0 = w.endT - 0.55, slow1 = w.endT + 0.02, epic = opt.epicFinale !== false; // last-hit slow motion (output only)
+  if (nB < 3 && !epic) return Object.assign(identityPlan(total), { style: 'cinematic', note: 'battle too short to edit' });
   const score = new Float32Array(nB), forced = new Uint8Array(nB);
   for (const e of w.events) {
     if (e.t < bs || e.t >= bs + nB * BL) continue; const i = Math.floor((e.t - bs) / BL);
@@ -206,7 +245,7 @@ function buildPlan(w, obsState, opt) {
   let tier = null;
   const simulateMap = (p, keep) => {
     tier = tiersFor(p); const sp = speedsFor(p);
-    const target = s => { if (s < bs + 0.0001 || s >= bs + nB * BL) return 1; return sp[tier[Math.floor((s - bs) / BL)]]; };
+    const target = s => { if (epic && s >= slow0 && s < slow1) return 0.5; if (s < bs + 0.0001 || s >= bs + nB * BL) return 1; return sp[tier[Math.floor((s - bs) / BL)]]; };
     const dtO = 1 / 600; let o = 0, s = 0, v = 1; const k = 1 - Math.exp(-dtO / 0.18);
     const O = keep ? [0] : null, Sx = keep ? [0] : null;
     while (s < total) { v += (target(s) - v) * k; s = Math.min(total, s + v * dtO); o += dtO; if (keep) { O.push(o); Sx.push(s); } }
@@ -219,8 +258,10 @@ function buildPlan(w, obsState, opt) {
     if (simulateMap(1).outDur > goal) aggr = 1;
     else { let lo = 0, hi = 1; for (let it = 0; it < 18; it++) { const mid = (lo + hi) / 2; if (simulateMap(mid).outDur > goal) lo = mid; else hi = mid; } aggr = hi; }
   }
-  if (aggr < 0.08) return Object.assign(identityPlan(total), { style: 'cinematic', note: 'no speed-up needed' });
-  const m = simulateMap(aggr, true);
+  if (aggr < 0.08 && !epic) return Object.assign(identityPlan(total), { style: 'cinematic', note: 'no speed-up needed' });
+  if (aggr < 0.08) aggr = 0;
+  let m = simulateMap(aggr, true);
+  if (m.outDur > 65) { opt = Object.assign({}, opt, { epicFinale: false }); return buildPlan(w, obsState, opt); } // never exceed the 65 s cap
   const sp = speedsFor(aggr);
   const O = Float64Array.from(m.O), S = Float64Array.from(m.S), n = O.length, dtO = 1 / 600;
   const map = (o) => { if (o <= 0) return 0; const f = o / dtO, i = Math.floor(f); if (i >= n - 1) return S[n - 1]; return S[i] + (S[i + 1] - S[i]) * (f - i); };

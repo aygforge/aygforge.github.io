@@ -104,11 +104,16 @@ function createRenderer(o) {
   const hudCv = mk(LW, LH), hg = hudCv.getContext('2d');
   wg.imageSmoothingEnabled = false; hg.imageSmoothingEnabled = false;
   const fields = [buildField(o.kits, 0, w.seed), buildField(o.kits, 1, w.seed)];
-  const rings = [S.baseRing(o.kits[0]), S.baseRing(o.kits[1])];
+  const rings = [S.baseRing(o.kits[0], o.hc), S.baseRing(o.kits[1], o.hc)];
   const balls = { white: ballSprite('#ffffff', '#20232e'), pass: ballSprite('#9ff6ff', '#2bd1ff'), power: ballSprite('#ffd166', '#ff6b1a'), cross: ballSprite('#fff27a', '#ff3d6e') };
   const tc = [C.vivid(o.teams[0].visual.primary_color), C.vivid(o.teams[1].visual.primary_color)];
   const tcL = tc.map(c => C.lum(c) < 0.12 ? C.bright(c, 0.45) : c);
   const L = TXT[o.lang] || TXT.en;
+  // V3 cosmetic layer (null => exact V2 drawing)
+  const v3 = o.v3 || {};
+  const V3 = root.FWVisualV3 && (v3.vfx || v3.finale || v3.mvp || v3.momentum) ? root.FWVisualV3.createVisual({ world: w, tc: tcL, lang: o.lang, fxLevel: o.fxLevel, atlases: o.atlases }) : null;
+  const obsS = () => w.observer && w.observer.state;
+  let curOut = 0;
   const names = o.teams.map(t => o.lang === 'tr' ? (t.display_name_tr || t.name) : t.name);
   const shorts = o.teams.map(t => S.shortName(t, 98, o.lang));
   let lastCrowd = -1;
@@ -239,10 +244,13 @@ function createRenderer(o) {
     if (w.storm && !w.sudden) { g.fillStyle = `rgba(255,40,70,${0.06 + 0.05 * Math.sin(w.t * 8)})`; g.fillRect(0, 0, LW, LH); }
     drawZone(g);
     drawTelegraphs(g);
+    if (V3 && v3.vfx) V3.drawSpecials(g, T);
     drawUnits(g, T);
     drawProj(g);
     drawParts(g);
+    if (V3 && v3.finale) V3.drawFinale(g, T, obsS());
     drawTexts(g);
+    if (V3 && v3.mvp) V3.drawTags(g, T, curOut, obsS(), o.toOut || (x => x));
     if (w.flash > 0) { g.fillStyle = `rgba(255,255,255,${cl(w.flash, 0, 1) * 0.45})`; g.fillRect(0, 0, LW, LH); }
   }
 
@@ -250,7 +258,7 @@ function createRenderer(o) {
   function hudPanel(g, a) {
     if (a <= 0) return;
     g.globalAlpha = a;
-    g.fillStyle = 'rgba(8,10,20,0.82)'; g.fillRect(6, 44, LW - 12, 48);
+    g.fillStyle = 'rgba(8,10,20,0.82)'; g.fillRect(6, 44, LW - 12, V3 && v3.momentum ? 58 : 48);
     g.fillStyle = tc[0]; g.fillRect(6, 44, 150, 2); g.fillStyle = tc[1]; g.fillRect(LW - 156, 44, 150, 2);
     g.fillStyle = '#ffe14d'; g.fillRect(156, 44, 48, 2);
     for (let s = 0; s < 2; s++) {
@@ -447,7 +455,7 @@ function createRenderer(o) {
     const tw = F.measure(txt, true) * sc, sw2 = sub ? F.measure(sub) : 0;
     const bw = Math.max(tw, sw2) + 18, bh = sub ? 7 * sc + 17 : 7 * sc + 9;
     const slide = Math.round((1 - ease(age / 0.12)) * -40), a = cl(Math.min(age / 0.08, (dur - age) / 0.2), 0, 1);
-    const x0 = Math.round(180 - bw / 2) + slide, y0 = 100;
+    const x0 = Math.round(180 - bw / 2) + slide, y0 = V3 && v3.momentum ? 106 : 100;
     g.globalAlpha = a * 0.88; g.fillStyle = '#080a14'; g.fillRect(x0, y0, bw, bh);
     g.globalAlpha = a; g.fillStyle = col; g.fillRect(x0, y0, 3, bh); g.fillRect(x0 + bw - 3, y0, 3, bh); g.fillRect(x0, y0, bw, 1); g.fillRect(x0, y0 + bh - 1, bw, 1);
     g.globalAlpha = 1;
@@ -457,6 +465,7 @@ function createRenderer(o) {
 
   function render(out, T, OW, OH, outT) {
     if (outT == null) outT = T;
+    curOut = outT;
     // world layer
     drawWorld(T);
     // HUD/overlay layer
@@ -464,10 +473,12 @@ function createRenderer(o) {
     const hudA = T < 1.05 ? 0 : T < 1.45 ? (T - 1.05) / 0.4 : (w.phase === 'ended' ? cl(1 - (T - w.endT - 0.45) / 0.4, 0.35, 1) : 1);
     brand(g, T < 0.35 ? ease(T / 0.35) : 1);
     hudPanel(g, hudA);
+    if (V3 && v3.momentum) V3.drawMomentum(g, hudA, obsS());
     if (T < E.TL.battleStart + 0.1) drawIntro(g, T);
     drawBanners(g, T);
     drawAlerts(g, T, outT);
     if (w.phase === 'ended') drawOutro(g, T);
+    if (V3 && v3.mvp && w.phase === 'ended') V3.drawMvp(g, T, names);
     // compose (only the world layer follows the camera; the HUD never moves)
     out.imageSmoothingEnabled = false;
     let z = w.cam.z, cx = w.cam.x, cy = w.cam.y;
@@ -487,5 +498,5 @@ function createRenderer(o) {
   let lastView = null;
   return { render, worldCv, hudCv, view: () => lastView, dispose() { worldCv.width = hudCv.width = 1; fields.forEach(f => f.width = 1); } };
 }
-root.FWRender = { createRenderer, TXT, LW, LH, mmss };
+root.FWRender = { createRenderer, TXT, LW, LH, mmss, buildField };
 })(typeof window !== 'undefined' ? window : globalThis);

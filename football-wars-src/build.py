@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Builds the single-file deliverable ../football-wars-v2.html (all JS/CSS/data inlined, no external requests)."""
+"""Builds the single-file deliverable ../football-wars-v3.html (all JS/CSS/data inlined, no external requests)."""
 import json, os, re, sys
 H = os.path.dirname(os.path.abspath(__file__))
 def rd(p): return open(os.path.join(H, p), encoding='utf-8').read()
@@ -23,12 +23,12 @@ parts = [
   ('webm-muxer 5.1.4 (MIT, Vanilagy)', rd('vendor/webm-muxer.js')),
   ('data', data_js),
   ('font', rd('src/font.js')), ('engine', rd('src/engine.js')), ('director (V2)', rd('src/director.js')), ('sprites', rd('src/sprites.js')),
-  ('render', rd('src/render.js')), ('audio', rd('src/audio.js')), ('export', rd('src/export.js')), ('app', rd('src/app.js')),
+  ('render', rd('src/render.js')), ('v3', rd('src/v3.js')), ('audio', rd('src/audio.js')), ('export', rd('src/export.js')), ('app', rd('src/app.js')),
 ]
 scripts = '\n'.join(f'<script>/* ---- {name} ---- */\n{safe(code)}\n</script>' for name, code in parts)
 html = rd('src/template.html').replace('<!--INLINE_SCRIPTS-->', scripts)
 assert not re.search(r'<script[^>]+src=', html), 'external script found'
 assert not re.search(r'<link[^>]+href=', html), 'external stylesheet found'
-out = os.path.join(H, '..', 'football-wars-v2.html')
+out = os.path.join(H, '..', 'football-wars-v3.html')
 open(out, 'w', encoding='utf-8').write(html)
 print('wrote', os.path.normpath(out), round(len(html.encode('utf-8')) / 1024), 'KB')

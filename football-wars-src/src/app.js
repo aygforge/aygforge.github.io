@@ -141,17 +141,20 @@ function settings() {
   return {
     res: radio('res') || '1080', fps: +(radio('fps') || 30), duration: radio('dur') || 'standard', fx: +(radio('fx') || 1), lang: radio('lang') || 'en',
     sound: $('optSound').checked, labels: $('optLabels').checked, music: +$('volMusic').value / 100, sfx: +$('volSfx').value / 100,
-    style: radio('vstyle') || 'cinematic', smartCam: $('optSmartCam').checked, camInt: radio('camint') || 'normal', story: $('optStory').checked
+    style: radio('vstyle') || 'cinematic', smartCam: $('optSmartCam').checked, camInt: radio('camint') || 'normal', story: $('optStory').checked,
+    epic: $('optEpic').checked, vfx: $('optVfx').checked, mvp: $('optMvp').checked, crowd: $('optCrowd').checked, momentum: $('optMomentum').checked, hc: radio('hcteams') || 'auto', cover: radio('covertype') || 'nospoiler'
   };
 }
-function saveSettings() { try { localStorage.setItem('fw_settings_v2', JSON.stringify({ ...settings(), mode: st.mode, league: st.league })); } catch (e) { } }
+function saveSettings() { try { localStorage.setItem('fw_settings_v3', JSON.stringify({ ...settings(), mode: st.mode, league: st.league })); } catch (e) { } }
 function loadSettings() {
-  let s = null; try { s = JSON.parse(localStorage.getItem('fw_settings_v2') || 'null'); } catch (e) { }
+  let s = null; try { s = JSON.parse(localStorage.getItem('fw_settings_v3') || localStorage.getItem('fw_settings_v2') || 'null'); } catch (e) { } // v2 values migrate, nothing is reset
   if (!s) return null;
   setRadio('res', s.res); setRadio('fps', s.fps); setRadio('dur', s.duration); setRadio('fx', s.fx); setRadio('lang', s.lang);
   $('optSound').checked = s.sound !== false; $('optLabels').checked = s.labels !== false;
   if (s.style) setRadio('vstyle', s.style); if (s.camInt) setRadio('camint', s.camInt);
   $('optSmartCam').checked = s.smartCam !== false; $('optStory').checked = s.story !== false;
+  for (const [k, id] of [['epic', 'optEpic'], ['vfx', 'optVfx'], ['mvp', 'optMvp'], ['crowd', 'optCrowd'], ['momentum', 'optMomentum']]) $(id).checked = s[k] !== false;
+  if (s.hc) setRadio('hcteams', s.hc); if (s.cover) setRadio('covertype', s.cover);
   if (s.music != null) $('volMusic').value = Math.round(s.music * 100); if (s.sfx != null) $('volSfx').value = Math.round(s.sfx * 100);
   return s;
 }
@@ -303,6 +306,7 @@ function drawIdle() {
         m.renderer.render(sctx, 2.19, stage.width, stage.height);
         m.renderer.dispose();
         drawStageText(settings().lang === 'tr' ? 'HAZIR • BAŞLAT' : 'READY • PRESS START', 1);
+        drawKitPreview(m);
       } catch (e) { console.error(e); }
     } else splash();
   }, 30);
@@ -329,15 +333,17 @@ function modeLabel(lang) {
   if (st.mode === 'domestic_league') { const l = LEAGUES.get(st.a.league_id); return F.upper(l ? l.name : 'LEAGUE'); }
   return m[2][lang] || m[2].en;
 }
+function obsOpts(set) { return { smartCam: set.smartCam, intensity: set.camInt, epicFinale: set.epic, mvpStreaks: set.mvp }; }
 function buildMatch(seed, set, preview) {
   const teams = [st.a, st.b];
-  const kits = S.makeKits(teams[0], teams[1]);
+  const hcActive = set.hc === 'on' || (set.hc === 'auto' && S.color.cdist(S.color.vivid(teams[0].visual.primary_color), S.color.vivid(teams[1].visual.primary_color)) < 210);
+  const kits = S.makeKits(teams[0], teams[1], set.hc === 'off' ? 150 : 210);
   const atlases = [S.buildAtlas(teams[0], kits[0]), S.buildAtlas(teams[1], kits[1])];
   const logos = teams.map(t => logoSet(t));
   const opts = { seed, teamA: teams[0], teamB: teams[1], cfg: CFG, duration: set.duration, fxLevel: set.fx };
   const world = E.createWorld(opts);
-  world.observer = D.createObserver({ smartCam: set.smartCam, intensity: set.camInt });
-  const rOpts = { teams, kits, atlases, logos, lang: set.lang, labels: set.labels, story: set.story, modeLabel: modeLabel(set.lang), fictional: ['champions_league', 'europa_league', 'conference_league'].includes(st.mode) || (st.mode === 'custom_exhibition' && teams[0].type !== teams[1].type) };
+  world.observer = D.createObserver(obsOpts(set));
+  const rOpts = { teams, kits, atlases, logos, lang: set.lang, labels: set.labels, story: set.story, hc: hcActive, fxLevel: set.fx, v3: { vfx: set.vfx, finale: set.epic, mvp: set.mvp, momentum: set.momentum }, modeLabel: modeLabel(set.lang), fictional: ['champions_league', 'europa_league', 'conference_league'].includes(st.mode) || (st.mode === 'custom_exhibition' && teams[0].type !== teams[1].type) };
   const renderer = R.createRenderer({ ...rOpts, world });
   return { teams, kits, atlases, logos, opts, rOpts, world, renderer, seed, set, mode: st.mode, preview: !!preview };
 }
@@ -375,7 +381,8 @@ function liveRun(m, withAudio, label) {
     const planner = new A.Planner(); planner.intro();
     const player = withAudio ? st.player : null;
     if (player) { player.start(0); player.schedule(planner.items); }
-    let music = false, intense = false, stopped = false;
+    let music = false, intense = false, stopped = false, hushed = false;
+    const cues = new A.V3Cues({ crowd: m.set.crowd, epic: m.set.epic, mvp: m.set.mvp });
     $('liveSeed').textContent = m.seed;
     const frame = (now) => {
       if (st.cancel) { cancelAnimationFrame(st.raf); reject(new Error('cancelled')); return; }
@@ -389,6 +396,9 @@ function liveRun(m, withAudio, label) {
           if (!music && w.phase === 'battle') { music = true; player.music('calm', E.TL.battleStart); }
           if (!intense && w.final15 >= 0 && w.phase === 'battle') { intense = true; player.music('intense', w.final15); }
           if (!stopped && w.phase === 'ended') { stopped = true; player.stopMusic(w.endT + 0.25); }
+          const ob = w.observer && w.observer.state;
+          player.schedule(cues.feed(w, ob));
+          if (!hushed && m.set.crowd && ob && ob.duel) { hushed = true; player.hush(ob.duel.t, true); }
         }
         m.renderer.render(sctx, T, stage.width, stage.height);
         if (now - lastUi > 100) {
@@ -407,7 +417,9 @@ function liveRun(m, withAudio, label) {
   });
 }
 
+function revokeCover() { for (const k of ['coverURL', 'coverSqURL']) if (st[k]) { URL.revokeObjectURL(st[k]); DIAG.urls.delete(st[k]); st[k] = null; } const cb = $('coverBox'); if (cb) cb.classList.add('hidden'); }
 function cleanupPrevious(keepVideo) {
+  if (!keepVideo) revokeCover();
   st.cancel = false;
   cancelAnimationFrame(st.raf);
   stopAudio();
@@ -448,6 +460,8 @@ async function startBattle(seedOverride) {
   const live = m.world;
   DIAG.lastLive = { seed, hash: live.hash >>> 0, winner: live.winner, endT: live.endT, events: live.evCount, start: [m.world.units.filter(u => u.side === 0).length, m.world.units.filter(u => u.side === 1).length] };
   showResult(m);
+  makeCover(m);
+  tourRecordFromLive(m);
   saveRecent(m);
   await exportVideo(m);
 }
@@ -490,7 +504,7 @@ async function exportVideo(m) {
   const natural = live.endT + live.outroLen;
   // V2 Smart Video Director: edit plan = monotonic output-time -> battle-time map (never changes the battle)
   let plan;
-  try { plan = D.buildPlan(live, live.observer && live.observer.state, { style: set.style }); }
+  try { plan = D.buildPlan(live, live.observer && live.observer.state, { style: set.style, epicFinale: set.epic }); }
   catch (e) { console.error(e); plan = D.identityPlan(natural); msg('Smart Video Director failed (' + e.message + ') — exporting the Original full battle instead.', 'warn'); }
   m.plan = plan;
   const total = plan.outDur;
@@ -500,14 +514,17 @@ async function exportVideo(m) {
     status('Mixing the soundtrack…', null, 0);
     await new Promise(r => setTimeout(r, 10));
     const { bank, loops } = A.ensure(); const pl = new A.Planner(); pl.intro(); pl.feed(live);
-    audio = A.mixOffline(bank, loops, pl.items, live, total, { music: set.music, sfx: set.sfx }, plan.identity ? null : { toOut: plan.toOut });
+    const ob = live.observer && live.observer.state;
+    for (const it of new A.V3Cues({ crowd: set.crowd, epic: set.epic, mvp: set.mvp }).feed(live, ob)) pl.items.push(it);
+    pl.items.sort((p, q) => p.t - q.t);
+    audio = A.mixOffline(bank, loops, pl.items, live, total, { music: set.music, sfx: set.sfx, hush: A.hushWindow(live, ob, set.crowd) }, plan.identity ? null : { toOut: plan.toOut });
   }
   setState('encoding');
   let out = null, used = null, lastErr = null, ew = null;
   for (const p of paths) {
     if (p.warn && p !== paths[0]) msg(p.warn, 'warn');
     ew = E.createWorld(m.opts);
-    ew.observer = D.createObserver({ smartCam: set.smartCam, intensity: set.camInt });
+    ew.observer = D.createObserver(obsOpts(set));
     const er = R.createRenderer({ ...m.rOpts, world: ew, toOut: plan.toOut });
     const t0 = performance.now();
     status('Creating video: ' + p.label, { 'Format': p.label, 'Resolution': W + '×' + H, 'FPS': fps, 'Duration': total.toFixed(2) + ' s', 'Frame': '0 / ' + Math.ceil(total * fps) }, 0);
@@ -577,6 +594,121 @@ function editSummary(live, plan, recorded) {
     plan.identity ? null : `${plan.highlights} highlights at 1.0x`, `${al} story alert${al === 1 ? '' : 's'}`].filter(Boolean);
   return parts.join(' • ');
 }
+
+// ======================= V3: kit preview, cover studio =======================
+function drawKitPreview(m) {
+  const c = $('kitPrev'); if (!c) return; const g = c.getContext('2d'); g.imageSmoothingEnabled = false; g.clearRect(0, 0, c.width, c.height);
+  const roles = [0, 3, 4, 6]; // striker, defender, goalkeeper, captain
+  for (let s = 0; s < 2; s++) roles.forEach((ri, k) => { const row = S.rowIndex(ri, k % S.VARIANTS, false, s === 1); g.drawImage(m.atlases[s].canvas, 0, row * S.CH, S.CW, S.CH, s * 150 + k * 36, 0, 40, 40); });
+  $('kitNote').textContent = `${m.teams[0].name} vs ${m.teams[1].name}${m.kits[1].away ? ' — alternate kit used for readability' : ''}${m.rOpts.hc ? ' • high-contrast rings' : ''}`;
+}
+function fileBase(m) { const d = new Date(); const ds = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); return `FootballWars_${slug(m.teams[0].name)}_vs_${slug(m.teams[1].name)}_${ds}_seed${m.seed}`; }
+function coverBlob(m, square) {
+  return new Promise((res, rej) => { try { const cv = window.FWCoverV3.cover(m, { type: m.set.cover, lang: m.set.lang, square }); cv.toBlob(b => { const dims = [cv.width, cv.height]; cv.width = cv.height = 1; b ? res({ b, dims }) : rej(new Error('PNG encoding failed')); }, 'image/png'); } catch (e) { rej(e); } });
+}
+async function makeCover(m) {
+  revokeCover();
+  try {
+    const { b, dims } = await coverBlob(m, false);
+    const u = URL.createObjectURL(b); st.coverURL = u; DIAG.urls.add(u);
+    $('coverImg').src = u; const a = $('btnCover'); a.href = u; a.download = fileBase(m) + '_Cover_' + dims[0] + 'x' + dims[1] + '.png';
+    $('coverInfo').textContent = `${dims[0]}×${dims[1]} PNG • ${(b.size / 1024).toFixed(0)} KB • ${m.set.cover === 'reveal' ? 'WINNER REVEAL' : 'NO SPOILERS'}`;
+    $('coverBox').classList.remove('hidden');
+    DIAG.lastCover = { w: dims[0], h: dims[1], size: b.size, type: m.set.cover, name: a.download };
+  } catch (e) { msg('Cover could not be created (' + e.message + '); the video is not affected.', 'warn'); }
+}
+async function squareCover() {
+  const m = st.match; if (!m) return;
+  try { const { b, dims } = await coverBlob(m, true); if (st.coverSqURL) { URL.revokeObjectURL(st.coverSqURL); DIAG.urls.delete(st.coverSqURL); } const u = URL.createObjectURL(b); st.coverSqURL = u; DIAG.urls.add(u);
+    const a = document.createElement('a'); a.href = u; a.download = fileBase(m) + '_SquareCover_' + dims[0] + 'x' + dims[1] + '.png'; document.body.appendChild(a); a.click(); a.remove(); DIAG.lastSquare = { w: dims[0], h: dims[1], size: b.size };
+  } catch (e) { msg('Square cover failed: ' + e.message, 'warn'); }
+}
+
+// ======================= V3: Tournament Studio =======================
+const TV = window.FWTournamentV3, TKEY = 'fw_tournament_v3';
+let tour = null, tourDraft = { manual: [] };
+function tourLoad() { try { const t = JSON.parse(localStorage.getItem(TKEY) || 'null'); if (t) { TV.validateTournament(t, DB); tour = t; } } catch (e) { tour = null; } }
+function tourSave() { try { localStorage.setItem(TKEY, JSON.stringify(tour)); return true; } catch (e) { msg('Tournament could not be saved in this browser: ' + e.message, 'warn'); return false; } }
+function tname(id) { const t = BY_ID.get(id); return t ? t.name : '—'; }
+function tourResultFrom(w, how) { return { winnerId: (w.winner === 0 ? w.teams[0] : w.teams[1]).team.id, winSide: w.winner, survivors: w.teams[w.winner].alive, alive: [w.teams[0].alive, w.teams[1].alive], hash: (w.hash >>> 0).toString(16), endT: +w.endT.toFixed(3), battle: +(w.endT - E.TL.battleStart).toFixed(2), events: w.evCount, how }; }
+function tourSimulate(ri, i) {
+  const mt = tour.rounds[ri][i]; if (mt.res || !mt.a || !mt.b) return;
+  const w = E.simulate({ seed: mt.seed, teamA: BY_ID.get(mt.a), teamB: BY_ID.get(mt.b), cfg: CFG, duration: tour.duration, fxLevel: 1 }); // same engine, from scratch
+  TV.record(tour, ri, i, tourResultFrom(w, 'simulated')); tourSave(); renderTour();
+}
+function tourPlay(ri, i) {
+  const mt = tour.rounds[ri][i]; if (!mt.a || !mt.b || st.phase === 'live' || st.phase === 'encoding') return;
+  st.tourCtx = { ri, i, a: mt.a, b: mt.b, seed: mt.seed, duration: tour.duration };
+  const A2 = BY_ID.get(mt.a), B2 = BY_ID.get(mt.b);
+  $('mode').value = 'custom_exhibition'; st.mode = 'custom_exhibition'; fillLeague();
+  if (A2.type !== B2.type) { st.mixed = true; $('mixed').checked = true; }
+  st.a = null; st.b = null; choose('A', A2); choose('B', B2);
+  setRadio('dur', tour.duration); $('seed').value = mt.seed;
+  $('modalTour').classList.remove('open'); window.scrollTo({ top: 0, behavior: 'smooth' });
+  startBattle(mt.seed);
+}
+function tourRecordFromLive(m) {
+  const c = st.tourCtx; if (!c || !tour) return; st.tourCtx = null;
+  const mt = tour.rounds[c.ri] && tour.rounds[c.ri][c.i];
+  if (!mt || mt.res) { msg('Tournament: this match already had a result — replay shown, bracket unchanged.', 'ok'); return; }
+  if (m.teams[0].id !== c.a || m.teams[1].id !== c.b || m.seed !== c.seed || m.set.duration !== c.duration) { msg('Tournament: teams/seed/length differ from the bracket match — result NOT recorded.', 'warn'); return; }
+  TV.record(tour, c.ri, c.i, tourResultFrom(m.world, 'played + video')); tourSave();
+  msg(`Tournament updated: ${tname(mt.res.winnerId)} advances (${TV.roundName(tour, c.ri)}).`, 'ok');
+}
+function tourView(ri, i) {
+  const mt = tour.rounds[ri][i], r = mt.res; if (!r) return;
+  $('tourDetail').innerHTML = `<div class="msg ok"><b>${esc(TV.roundName(tour, ri))}:</b> ${esc(tname(mt.a))} vs ${esc(tname(mt.b))} — winner <b>${esc(tname(r.winnerId))}</b> with ${r.survivors} survivors (alive ${r.alive[0]}–${r.alive[1]}) • battle ${r.battle} s • seed ${mt.seed} • event hash ${esc(r.hash)} • ${r.events} events • ${esc(r.how)}
+    <div class="row" style="margin-top:6px"><button class="btn small" data-treplay="${ri}:${i}">Replay this match + video (same seed)</button><span></span></div></div>`;
+}
+function renderTour() {
+  const box = $('tourBody'); if (!box) return;
+  if (!tour) { box.innerHTML = tourSetupHtml(); tourSetupWire(); return; }
+  const cols = tour.rounds.map((row, ri) => `<div class="tround"><div class="trh">${esc(TV.roundName(tour, ri))}</div>${row.map((mt, i) => {
+    const line = id => { if (!id) return '<div class="tteam tbd">TBD</div>'; const t = BY_ID.get(id), won = mt.res && mt.res.winnerId === id; return `<div class="tteam${won ? ' won' : mt.res ? ' lost' : ''}"><img src="${logoSet(t).thumb}" alt=""><span>${esc(t.name)}</span><b>${mt.res ? (won ? mt.res.survivors : 0) : ''}</b></div>`; };
+    const acts = mt.res ? `<button class="btn small" data-tview="${ri}:${i}">VIEW RESULT</button>` : (mt.a && mt.b ? `<button class="btn small" data-tplay="${ri}:${i}">PLAY &amp; CREATE VIDEO</button><button class="btn small ghost" data-tsim="${ri}:${i}">SIMULATE RESULT</button>` : '');
+    return `<div class="tmatch">${line(mt.a)}${line(mt.b)}<div class="tseed">seed ${mt.seed}</div><div class="tacts">${acts}</div></div>`; }).join('')}</div>`).join('');
+  const champ = tour.champion ? `<div class="msg ok">🏆 CHAMPION: <b>${esc(tname(tour.champion))}</b></div>` : '';
+  box.innerHTML = `<div class="note warn"><b>Fantasy simulation bracket</b> — not an official competition; no real fixtures are implied.</div>
+    <div class="row" style="margin:8px 0"><div><b>${esc(tour.name)}</b> • ${tour.size} teams • seed ${tour.seed} • battle length: ${esc(tour.duration)}</div></div>
+    ${champ}<div class="bracket">${cols}</div><div id="tourDetail"></div>
+    <div class="btns"><button class="btn" id="tPng">DOWNLOAD BRACKET PNG</button><button class="btn" id="tJson">EXPORT JSON</button><button class="btn" id="tImport">IMPORT JSON</button><button class="btn" id="tNew">NEW TOURNAMENT</button></div>`;
+  $('tPng').onclick = () => { const cv = TV.bracketPng(tour, id => BY_ID.get(id), logoSet, settings().lang); cv.toBlob(b => { const u = URL.createObjectURL(b); const a = document.createElement('a'); a.href = u; a.download = 'FootballWars_Bracket_' + slug(tour.name) + '_seed' + tour.seed + '.png'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000); DIAG.lastBracket = { w: cv.width, h: cv.height, size: b.size }; cv.width = cv.height = 1; }, 'image/png'); };
+  $('tJson').onclick = () => { const b = new Blob([JSON.stringify(tour, null, 1)], { type: 'application/json' }); const u = URL.createObjectURL(b); const a = document.createElement('a'); a.href = u; a.download = 'FootballWars_Tournament_seed' + tour.seed + '.json'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000); };
+  $('tImport').onclick = () => { $('tourFile').value = ''; $('tourFile').click(); };
+  $('tNew').onclick = () => { if (confirm('Start a new tournament? The current bracket will be replaced (export it first if you want to keep it).')) { tour = null; try { localStorage.removeItem(TKEY); } catch (e) { } renderTour(); } };
+}
+function tourSetupHtml() {
+  const lgs = DB.leagues.map(l => `<option value="${l.id}">${esc(l.name)} (${l.club_count})</option>`).join('');
+  return `<div class="note warn"><b>Fantasy simulation bracket</b> — teams are drawn by seed; this is not an official UEFA/FIFA competition.</div>
+  <div class="opts"><div><label class="f">Name</label><input type="text" id="tName" value="Fantasy Cup" maxlength="40"></div>
+  <div><label class="f">Teams</label><select id="tSize"><option value="8">8</option><option value="16" selected>16</option><option value="32">32</option></select></div>
+  <div><label class="f">Source</label><select id="tSrc"><option value="league">One league (random draw)</option><option value="clubs">European clubs mix</option><option value="national">National teams</option><option value="manual">Pick teams manually</option></select></div>
+  <div id="tLgWrap"><label class="f">League</label><select id="tLg">${lgs}</select></div>
+  <div><label class="f">Tournament seed</label><div class="row"><input type="text" id="tSeed" inputmode="numeric" value="${randomSeed()}"><button class="btn small" id="tSeedRnd">Random</button></div></div>
+  <div><label class="f">Battle length</label><select id="tDur"><option value="short">Short</option><option value="standard" selected>Standard</option><option value="long">Long</option></select></div></div>
+  <div id="tManual" class="hidden"><label class="f">Add teams (<span id="tCount">0</span> selected)</label><input type="text" id="tSearch" placeholder="Search a team to add…"><div id="tRes" class="tres"></div><div id="tChips" class="tags"></div>
+  <label class="toggle"><input type="checkbox" id="tMixed"> I confirm mixing clubs and national teams (different rating systems)</label></div>
+  <div id="tErr"></div><div style="margin-top:10px"><button class="btn primary" id="tCreate">CREATE BRACKET</button></div>`;
+}
+function tourSetupWire() {
+  const upd = () => { const src = $('tSrc').value; $('tLgWrap').classList.toggle('hidden', src !== 'league'); $('tManual').classList.toggle('hidden', src !== 'manual'); $('tCount').textContent = tourDraft.manual.length; $('tChips').innerHTML = tourDraft.manual.map(id => `<span class="tag">${esc(tname(id))} <a href="#" data-trm="${id}">✕</a></span>`).join(''); };
+  $('tSrc').onchange = upd; upd();
+  $('tSeedRnd').onclick = () => { $('tSeed').value = randomSeed(); };
+  $('tSearch').oninput = () => { const q = $('tSearch').value; $('tRes').innerHTML = q ? search(q, {}).slice(0, 8).map(t => `<div class="res${tourDraft.manual.includes(t.id) ? ' dis' : ''}" data-tadd="${t.id}"><img src="${logoSet(t).thumb}" alt=""><div><div class="nm">${esc(t.name)}</div><div class="lg">${esc(leagueName(t))}</div></div><span class="pw">${t.battle_profile.power_index}</span></div>`).join('') : ''; };
+  $('tourBody').onclick = (e) => {
+    const ad = e.target.closest('[data-tadd]'); if (ad) { const id = ad.dataset.tadd; if (tourDraft.manual.includes(id)) $('tErr').innerHTML = '<div class="msg warn">Already added — each team can appear only once.</div>'; else { tourDraft.manual.push(id); $('tErr').innerHTML = ''; } $('tSearch').value = ''; $('tRes').innerHTML = ''; upd(); }
+    const rm = e.target.closest('[data-trm]'); if (rm) { e.preventDefault(); tourDraft.manual = tourDraft.manual.filter(x => x !== rm.dataset.trm); upd(); }
+  };
+  $('tCreate').onclick = () => {
+    try {
+      const sd = parseSeed($('tSeed').value); if (sd == null) throw new Error('Tournament seed must be a whole number.');
+      const spec = { name: $('tName').value.trim() || 'Fantasy Cup', size: +$('tSize').value, seed: sd, source: { kind: $('tSrc').value, league: $('tLg').value }, manual: tourDraft.manual, mixed: $('tMixed').checked, duration: $('tDur').value, created: new Date().toISOString().slice(0, 16) };
+      tour = TV.createTournament(spec, DB); tourSave(); tourDraft = { manual: [] }; renderTour();
+    } catch (e) { $('tErr').innerHTML = `<div class="msg bad">${esc(e.message)}</div>`; }
+  };
+}
+function openTour() { if (!tour) tourLoad(); renderTour(); $('modalTour').classList.add('open'); }
+
 // ======================= results =======================
 function showResult(m) {
   const w = m.world, win = w.winner, T = m.teams[win], L = logoSet(T), lose = m.teams[1 - win];
@@ -586,13 +718,13 @@ function showResult(m) {
   $('resSub').textContent = `${w.teams[win].alive} survivors • ${R.mmss(w.endT - E.TL.battleStart)} • beat ${lose.name}`;
   const rows = E.ROLES.map(r => `<tr><td>${E.ROLE_NAMES[r].en}</td><td>${w.teams[0].elimByRole[r]}</td><td>${w.teams[1].elimByRole[r]}</td></tr>`).join('');
   $('resRoles').innerHTML = `<tr><th>Eliminations by role</th><th>${esc(S.shortName(m.teams[0], 60))}</th><th>${esc(S.shortName(m.teams[1], 60))}</th></tr>${rows}<tr><th>Total</th><th>${w.teams[0].kills}</th><th>${w.teams[1].kills}</th></tr>`;
-  let mvp = null; for (const u of w.units) if (!mvp || u.kills > mvp.kills) mvp = u;
+  const MV = window.FWStatsV3.mvp(w); const mvTxt = r => r ? `${m.teams[r.side].name} #${r.no} ${E.ROLE_NAMES[r.role].en} — ${r.kills} KOs, ${r.assists} assists, ${r.saves} saves (score ${r.score})` : '—';
   const topRole = s => E.ROLES.slice().sort((a, b) => w.teams[s].elimByRole[b] - w.teams[s].elimByRole[a])[0];
   const RULES = { HUNT: 'Hunt mode (few players / long battle: global targeting)', ZONE: 'Shrinking tactical zone', STORM: 'Overtime storm (rising damage, healthiest side survives)', SUDDEN_DEATH: 'Sudden death (double elimination on the same tick)', TIEBREAK_HP: 'Time cap: remaining health ratio', TIEBREAK_COIN: 'Exact tie: seeded coin flip', ADAPT: 'Losing-streak adaptation (config: streak_adaptation)' };
   const used = s => Object.entries(w.teams[s].specialsUsed).map(([k, v]) => ((E.SPECIAL_NAMES[k] || {}).en || k) + ' ×' + v).join(', ') || '—';
   $('resKv').innerHTML = [
     ['Seed', m.seed], ['Winner', T.name + ' (' + w.teams[win].alive + ' survivors)'], ['Battle time', (w.endT - E.TL.battleStart).toFixed(2) + ' s'], ['Video length', (w.endT + w.outroLen).toFixed(2) + ' s (intro 2.2 + battle + outro ' + w.outroLen.toFixed(1) + ')'],
-    ['Top eliminating role', `A: ${E.ROLE_NAMES[topRole(0)].en} • B: ${E.ROLE_NAMES[topRole(1)].en}`], ['MVP unit', mvp ? `#${mvp.id} ${E.ROLE_NAMES[mvp.role].en} (${m.teams[mvp.side].name}) — ${mvp.kills} eliminations, ${mvp.assists} assists` : '—'],
+    ['Top eliminating role', `A: ${E.ROLE_NAMES[topRole(0)].en} • B: ${E.ROLE_NAMES[topRole(1)].en}`], ['Battle MVP', mvTxt(MV.overall)], ['Winning-team MVP', mvTxt(MV.winnerMvp)], ['MVP formula', '3×KOs + 1×assists + 2×saves (real event counts; ties → KOs, assists, saves, survived, lower #)'],
     ['Specials used A', used(0)], ['Specials used B', used(1)], ['Form (A / B)', w.teams[0].form.toFixed(3) + ' / ' + w.teams[1].form.toFixed(3)],
     ['Rules applied', w.rules.map(r => RULES[r] || r).join(' • ') || 'None (natural finish)'], ['Events / hash', w.evCount + ' / ' + (w.hash >>> 0).toString(16)]
   ].map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('');
@@ -760,6 +892,15 @@ $('btnNew').addEventListener('click', () => { if (st.phase === 'live' || st.phas
 $('btnSeedRnd').addEventListener('click', () => { $('seed').value = randomSeed(); });
 $('btnSeedCopy').addEventListener('click', async () => { const v = $('seed').value || st.lastSeed || ''; if (!v) return; try { await navigator.clipboard.writeText(String(v)); $('btnSeedCopy').textContent = 'Copied'; } catch (e) { $('seed').value = v; $('seed').select(); document.execCommand && document.execCommand('copy'); $('btnSeedCopy').textContent = 'Selected'; } setTimeout(() => $('btnSeedCopy').textContent = 'Copy', 1400); });
 $('btnAbout').addEventListener('click', openAbout);
+$('btnTour').addEventListener('click', openTour);
+$('btnCoverSq').addEventListener('click', squareCover);
+$('tourFile').addEventListener('change', e => { const f = e.target.files && e.target.files[0]; if (!f) return; const rd = new FileReader(); rd.onload = () => { try { const t = JSON.parse(rd.result); TV.validateTournament(t, DB); if (tour && !confirm('Replace the current bracket with the imported one?')) return; tour = t; tourSave(); renderTour(); } catch (er) { alert('Import failed: ' + er.message); } }; rd.readAsText(f); });
+document.addEventListener('click', e => {
+  const g = (k) => { const el = e.target.closest('[data-' + k + ']'); return el ? el.dataset[k].split(':').map(Number) : null; };
+  let x; if ((x = g('tsim'))) tourSimulate(x[0], x[1]); else if ((x = g('tplay'))) tourPlay(x[0], x[1]); else if ((x = g('tview'))) tourView(x[0], x[1]);
+  else if ((x = g('treplay'))) { const mt = tour.rounds[x[0]][x[1]]; st.tourCtx = { ri: x[0], i: x[1], a: mt.a, b: mt.b, seed: mt.seed, duration: tour.duration }; tourPlay(x[0], x[1]); }
+});
+document.querySelectorAll('input[name=covertype]').forEach(el => el.addEventListener('change', () => { saveSettings(); if (st.match && st.match.world.phase === 'ended') { st.match.set = Object.assign({}, st.match.set, { cover: settings().cover }); makeCover(st.match); } }));
 $('btnDiag').addEventListener('click', openDiag);
 document.addEventListener('click', e => {
   if (e.target.closest('[data-close]')) e.target.closest('.modal').classList.remove('open');
@@ -770,10 +911,10 @@ document.addEventListener('click', e => {
 });
 $('logoFile').addEventListener('change', e => onUpload(e.target.files && e.target.files[0]));
 document.querySelectorAll('input[name=res],input[name=fps],#optSound').forEach(el => el.addEventListener('change', () => { updateFmt(); saveSettings(); }));
-document.querySelectorAll('input[name=dur],input[name=fx],input[name=lang],#optLabels,#volMusic,#volSfx,input[name=vstyle],input[name=camint],#optSmartCam,#optStory').forEach(el => el.addEventListener('change', () => { saveSettings(); if (st.phase !== 'live' && st.phase !== 'encoding') drawIdle(); }));
+document.querySelectorAll('input[name=dur],input[name=fx],input[name=lang],#optLabels,#volMusic,#volSfx,input[name=vstyle],input[name=camint],#optSmartCam,#optStory,#optEpic,#optVfx,#optMvp,#optCrowd,#optMomentum,input[name=hcteams]').forEach(el => el.addEventListener('change', () => { saveSettings(); if (st.phase !== 'live' && st.phase !== 'encoding') drawIdle(); }));
 window.addEventListener('resize', () => sizeStage());
 window.addEventListener('beforeunload', () => { for (const u of DIAG.urls) URL.revokeObjectURL(u); });
 // test hooks (used by the automated browser tests; harmless for users)
-window.FW_APP = { st, DIAG, buildMatch: (seed, set) => buildMatch(seed, set || settings(), false), choose: (s, id) => choose(s, BY_ID.get(id)), startBattle, replay, search, validate, dataChecks, settings, setMode: m => { $('mode').value = m; onModeChange(); }, ERRORS };
+window.FW_APP = { st, DIAG, tour: () => tour, setTour: t => { tour = t; tourSave(); renderTour(); }, tourSimulate, tourPlay, openTour, buildMatch: (seed, set) => buildMatch(seed, set || settings(), false), choose: (s, id) => choose(s, BY_ID.get(id)), startBattle, replay, search, validate, dataChecks, settings, setMode: m => { $('mode').value = m; onModeChange(); }, ERRORS };
 boot().catch(e => { console.error(e); msg('Startup error: ' + e.message, 'bad', $('globalMsg')); });
 })();

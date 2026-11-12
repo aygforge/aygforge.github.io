@@ -24,11 +24,11 @@ const HAIRS = ['#1b1210', '#3a2416', '#6b4423', '#a8722f', '#e0bf6a', '#2a2a2a',
 const GK_KITS = ['#a3f03a', '#ff8c1a', '#22d3ee', '#e040fb', '#f7e51e', '#25262b', '#ff4d8d'];
 
 // ---------- kits ----------
-function makeKits(teamA, teamB) {
-  const A = kitFor(teamA, null), B = kitFor(teamB, A);
+function makeKits(teamA, teamB, clash) {
+  const A = kitFor(teamA, null), B = kitFor(teamB, A, clash || 150);
   return [A, B];
 }
-function kitFor(team, other) {
+function kitFor(team, other, clash) {
   let p = vivid(team.visual.primary_color), s = vivid(team.visual.secondary_color);
   const h = hstr(team.id);
   const designs = ['solid', 'stripes', 'hoops', 'halves', 'sash', 'sleeves'];
@@ -36,7 +36,7 @@ function kitFor(team, other) {
   let away = false;
   if (other) {
     // ensure the two sides read apart on the pitch: swap to an alternate kit if colours clash
-    if (cdist(p, other.p) < 150 || (cdist(p, other.s) < 90 && cdist(s, other.p) < 90)) {
+    if (cdist(p, other.p) < clash || (cdist(p, other.s) < 90 && cdist(s, other.p) < 90)) {
       away = true;
       if (cdist(s, other.p) > 170) { const t = p; p = s; s = t; }
       else { s = p; p = lum(other.p) > 0.4 ? '#1d2233' : '#f2f2f2'; }
@@ -386,9 +386,15 @@ function simpleFlagImage(id) {
 }
 
 // base ring sprite under each unit (team colour) + shadow
-function baseRing(kit) {
+function baseRing(kit, hc) {
   const cv = document.createElement('canvas'); cv.width = 13; cv.height = 6;
   const g = cv.getContext('2d');
+  if (hc) { // V3 High Contrast Teams: slightly bolder ring in a brightened team colour (no glare)
+    const c = lum(kit.ring) < 0.25 ? bright(kit.ring, 0.45) : kit.ring;
+    g.fillStyle = 'rgba(0,0,0,0.42)'; g.fillRect(2, 1, 9, 4); g.fillRect(1, 2, 11, 2);
+    g.fillStyle = c; g.fillRect(2, 0, 9, 1); g.fillRect(2, 5, 9, 1); g.fillRect(0, 1, 2, 4); g.fillRect(11, 1, 2, 4); g.fillRect(1, 1, 1, 1); g.fillRect(11, 4, 1, 1);
+    return cv;
+  }
   g.fillStyle = 'rgba(0,0,0,0.38)'; g.fillRect(2, 1, 9, 4); g.fillRect(1, 2, 11, 2);
   g.fillStyle = kit.ring; g.fillRect(3, 0, 7, 1); g.fillRect(3, 5, 7, 1); g.fillRect(1, 1, 2, 1); g.fillRect(10, 1, 2, 1); g.fillRect(1, 4, 2, 1); g.fillRect(10, 4, 2, 1); g.fillRect(0, 2, 1, 2); g.fillRect(12, 2, 1, 2);
   return cv;

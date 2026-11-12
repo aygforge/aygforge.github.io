@@ -63,6 +63,10 @@ function synthBank() {
     const fade = Math.round(0.25 * SR); for (let i = 0; i < fade; i++) { const k = i / fade; b[i] = b[i] * k + b[b.length - fade + i] * (1 - k); }
     return norm(b.subarray(0, b.length - fade).slice(), 0.6);
   })();
+  // V3 Dynamic Crowd (original, synthesized): crowd 'ooh' gasp, short roar swell, streak ding
+  B.gasp = (() => { const b = buf(1.1); const f1 = biquadBP(700, 3), f2 = biquadBP(1100, 3); for (let i = 0; i < b.length; i++) { const t = i / SR, k = t / 1.1; const fc = 900 - 450 * k; if (i % 64 === 0) { const a = biquadBP(fc, 3); f1.b0 = a.b0; f1.b2 = a.b2; f1.a1 = a.a1; f1.a2 = a.a2; } const n = r.n(); b[i] = (bq(f1, n) + 0.6 * bq(f2, n)) * Math.min(1, t / 0.12) * Math.max(0, 1 - Math.max(0, t - 0.5) / 0.6); } return norm(b, 0.6); })();
+  B.roar = (() => { const b = buf(1.6); const bands = [biquadBP(500, 1.2), biquadBP(1000, 1.6), biquadBP(2200, 2)]; for (let i = 0; i < b.length; i++) { const t = i / SR; const env = Math.min(1, t / 0.25) * Math.max(0, 1 - Math.max(0, t - 0.6) / 1.0); const n = r.n(); let v = 0; for (const f of bands) v += bq(f, n); b[i] = v * env; } return norm(b, 0.6); })();
+  B.ding = (() => { const b = buf(0.35); for (let i = 0; i < b.length; i++) { const t = i / SR; b[i] = (sq(t * 1568, 0.25) * 0.4 + Math.sin(t * 2349 * 6.283) * 0.4) * Math.exp(-t * 9) * (t < 0.07 ? 0.6 : 1); } return norm(b, 0.55); })();
   return B;
 }
 
@@ -141,6 +145,30 @@ Planner.prototype.feed = function (w) {
   return this.items.slice(start);
 };
 
+// ---------- V3 atmosphere cues (from real events + observer state) ----------
+function V3Cues(opt) { this.o = opt || {}; this.ei = 0; this.ai = 0; this.ti = 0; this.lastRoar = -9; this.ended = false; }
+V3Cues.prototype.feed = function (w, obs) {
+  const out = [], o = this.o, V = E.EV;
+  if (o.crowd) for (; this.ei < w.events.length; this.ei++) {
+    const e = w.events[this.ei];
+    if (e.type === V.SPECIAL_FIRE && e.t - this.lastRoar >= 3) { this.lastRoar = e.t; out.push({ t: e.t + 0.05, id: 'roar', gain: 0.26, pan: 0, rate: 1 }); }
+    if (e.type === V.END && !this.ended) { this.ended = true; out.push({ t: e.t + 0.6, id: 'roar', gain: 0.5, pan: 0, rate: 1 }); }
+  } else this.ei = w.events.length;
+  if (obs) {
+    for (; this.ai < obs.alerts.length; this.ai++) {
+      const a = obs.alerts[this.ai];
+      if (o.crowd && (a.type === 'COMEBACK' || a.type === 'LEAD_CHANGE')) out.push({ t: a.t, id: 'gasp', gain: 0.5, pan: 0, rate: 1 });
+      if ((o.crowd || o.epic) && a.type === 'DUEL') for (let k = 0; k < 5; k++) out.push({ t: a.t + 0.15 + k * 0.62, id: 'heart', gain: 0.6, pan: 0, rate: 1 });
+      if ((o.crowd || o.epic) && a.type === 'LAST_HOPE') for (let k = 0; k < 2; k++) out.push({ t: a.t + 0.1 + k * 0.62, id: 'heart', gain: 0.45, pan: 0, rate: 1 });
+    }
+    if (o.mvp) for (; this.ti < obs.tags.length; this.ti++) { const tg = obs.tags[this.ti]; out.push({ t: tg.t, id: 'ding', gain: 0.3, pan: Math.max(-0.6, Math.min(0.6, (tg.x - 180) / 300)), rate: tg.n >= 8 ? 1.26 : tg.n >= 5 ? 1.12 : 1 }); }
+    else this.ti = obs.tags.length;
+  }
+  return out;
+};
+// crowd hush window (sim time) during a real final duel
+function hushWindow(w, obs, crowd) { return crowd && obs && obs.duel ? [obs.duel.t, w.endT + 0.4] : null; }
+
 // ---------- offline mix (for the exported video) ----------
 // tm (optional, V2 Smart Video Director): { toOut(simT) } — every cue is re-timed onto the EDITED output
 // timeline (SFX keep their natural pitch/length, so hits stay on the frame they belong to) and the music is
@@ -175,7 +203,11 @@ function mixOffline(bank, loops, items, w, dur, vol, tm) {
   };
   // crowd ambience
   const crowd = bank.crowd; const cg = 0.16 * sfxG;
-  for (let i = 0; i < n; i++) { const v = crowd[i % crowd.length] * cg; L[i] += v; R[i] += v * 0.95; }
+  const hw = vol.hush ? [Math.round(toOut(vol.hush[0]) * SR), Math.round(toOut(vol.hush[1]) * SR)] : null, ramp = 0.3 * SR;
+  for (let i = 0; i < n; i++) {
+    let env = 1; if (hw) { if (i > hw[0] && i < hw[1]) env = 1 - 0.65 * Math.min(1, (i - hw[0]) / ramp); else if (i >= hw[1]) env = 0.35 + 0.65 * Math.min(1, (i - hw[1]) / ramp); }
+    const v = crowd[i % crowd.length] * cg * env; L[i] += v; R[i] += v * 0.95;
+  }
   for (const it of items) addBuf(bank[it.id], it.t, it.gain * sfxG, it.pan, it.rate);
   // music: calm loop from battle start, intense layer from FINAL CLASH, fade at the end
   const tb = E.TL.battleStart, te = toOut(w.endT) + 0.25;
@@ -188,7 +220,7 @@ function mixOffline(bank, loops, items, w, dur, vol, tm) {
   };
   if (musG > 0) { mus(loops.calm, tb, 0.55 * musG); if (w.final15 >= 0) mus(loops.intense, toOut(w.final15), 0.5 * musG); }
   // master soft clip
-  for (let i = 0; i < n; i++) { L[i] = Math.tanh(L[i] * 1.1); R[i] = Math.tanh(R[i] * 1.1); }
+  for (let i = 0; i < n; i++) { L[i] = 0.97 * Math.tanh(L[i] * 1.1); R[i] = 0.97 * Math.tanh(R[i] * 1.1); } // soft clip + ceiling (< 0 dBFS)
   return { L, R, sampleRate: SR, length: n };
 }
 
@@ -201,7 +233,8 @@ function LivePlayer(ctx, bank, loops, vol) {
   for (const k in bank) { const b = ctx.createBuffer(1, bank[k].length, SR); b.copyToChannel(bank[k], 0); this.buffers[k] = b; }
   for (const k in loops) { const b = ctx.createBuffer(1, loops[k].length, SR); b.copyToChannel(loops[k], 0); this.buffers['loop_' + k] = b; }
 }
-LivePlayer.prototype.start = function (timelineNow) { this.t0 = this.ctx.currentTime + 0.05 - (timelineNow || 0); this.play('crowd', 0, 0.16, 0, 1, true); };
+LivePlayer.prototype.start = function (timelineNow) { this.t0 = this.ctx.currentTime + 0.05 - (timelineNow || 0); this.crowdRec = this.play('crowd', 0, 0.16, 0, 1, true); };
+LivePlayer.prototype.hush = function (t, on) { const r = this.crowdRec; if (!r) return; const when = Math.max(this.ctx.currentTime, this.t0 + t); try { r.g.gain.setTargetAtTime(0.16 * this.vol.sfx * (on ? 0.35 : 1), when, 0.15); } catch (e) { } };
 LivePlayer.prototype.play = function (id, t, gain, pan, rate, loop, offset) {
   const ctx = this.ctx, b = this.buffers[id]; if (!b) return;
   const src = ctx.createBufferSource(); src.buffer = b; src.playbackRate.value = rate || 1; src.loop = !!loop;
@@ -233,5 +266,5 @@ LivePlayer.prototype.stopAll = function () {
 
 let BANK = null, LOOPS = null;
 function ensure() { if (!BANK) { BANK = synthBank(); LOOPS = { calm: renderLoop(false), intense: renderLoop(true) }; } return { bank: BANK, loops: LOOPS }; }
-root.FWAudio = { SR, ensure, Planner, mixOffline, retime, LivePlayer, LOOP };
+root.FWAudio = { SR, ensure, Planner, mixOffline, retime, LivePlayer, LOOP, V3Cues, hushWindow };
 })(typeof window !== 'undefined' ? window : globalThis);

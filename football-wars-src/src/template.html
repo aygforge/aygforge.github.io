@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FOOTBALL WARS V2 — 100 VS 100</title>
+<title>FOOTBALL WARS V3 — 100 VS 100</title>
 <meta name="description" content="Football Wars: 100 vs 100 pixel football battle simulator and vertical video studio (single file, offline).">
 <style>
 :root{
@@ -150,6 +150,18 @@ video{width:100%;border-radius:12px;background:#000;margin-top:10px;max-height:6
 .pass{color:var(--ok);font-weight:800}.fail{color:var(--bad);font-weight:800}
 .foot{margin-top:24px;font-size:11px;color:var(--dim);text-align:center}
 .hidden{display:none!important}
+.bracket{display:flex;gap:12px;overflow-x:auto;padding:8px 0}
+.tround{min-width:230px;display:flex;flex-direction:column;justify-content:space-around;gap:10px}
+.trh{font-size:11px;letter-spacing:.14em;color:var(--neon);font-weight:800;text-transform:uppercase}
+.tmatch{background:#0b0f1e;border:1px solid var(--line);border-radius:10px;padding:6px}
+.tteam{display:grid;grid-template-columns:22px 1fr auto;gap:6px;align-items:center;font-size:12px;padding:2px 0}
+.tteam img{width:20px;height:20px;image-rendering:pixelated}.tteam.won{color:#a7f3c9;font-weight:800}.tteam.lost{opacity:.55}.tteam.tbd{color:#55607f;display:block}
+.tseed{font-family:var(--mono);font-size:10px;color:var(--dim)}.tacts{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.tres .res{border:1px solid var(--line);border-radius:8px;margin-top:4px}
+#kitPrev{image-rendering:pixelated;width:100%;max-width:300px;height:auto;display:block;margin-top:6px}
+.cover{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:start;margin-top:10px}
+.cover img{width:96px;border-radius:8px;border:1px solid var(--line);image-rendering:auto}
+@media (max-width:760px){.bracket{flex-direction:column}.tround{min-width:0}}
 .kbd{font-family:var(--mono);background:#0a0e1c;border:1px solid var(--line);border-radius:6px;padding:1px 6px}
 </style>
 </head>
@@ -159,6 +171,7 @@ video{width:100%;border-radius:12px;background:#000;margin-top:10px;max-height:6
     <div class="brand"><canvas id="brandCv" width="10" height="10" aria-label="FOOTBALL WARS"></canvas><div><div class="sub">100 VS 100 PIXEL BATTLE</div><div class="note" id="dbChip" style="margin-top:2px"></div></div></div>
     <div class="spacer"></div>
     <span class="chip" id="fmtChip">Video: checking…</span>
+    <button class="btn small" id="btnTour">🏆 Tournament Studio</button>
     <button class="btn small ghost" id="btnDiag">Diagnostics</button>
     <button class="btn small ghost" id="btnAbout">About / Licenses</button>
   </header>
@@ -203,6 +216,16 @@ video{width:100%;border-radius:12px;background:#000;margin-top:10px;max-height:6
           <label class="f">Camera intensity</label>
           <div class="seg" id="camSeg"><label><input type="radio" name="camint" value="low"><span>Low</span></label><label><input type="radio" name="camint" value="normal" checked><span>Normal</span></label><label><input type="radio" name="camint" value="cinematic"><span>Cinematic</span></label></div>
           <label class="toggle"><input type="checkbox" id="optStory" checked> Battle Story Alerts (COMEBACK!, CAPTAIN DOWN!…)</label>
+          <div class="note" style="margin-top:10px;color:#36f1cd;font-weight:800;letter-spacing:.08em">V3 EXPERIENCE (all cosmetic — never change the battle)</div>
+          <label class="toggle"><input type="checkbox" id="optEpic" checked> Epic Finale (real 1v1 FINAL DUEL / LAST HOPE spotlight, last-hit slow-mo in Cinematic)</label>
+          <label class="toggle"><input type="checkbox" id="optVfx" checked> Enhanced Special VFX (12 move identities)</label>
+          <label class="toggle"><input type="checkbox" id="optMvp" checked> MVP &amp; Streaks (3/5/8 KO tags, MVP card)</label>
+          <label class="toggle"><input type="checkbox" id="optCrowd" checked> Dynamic Crowd (reactions, duel hush)</label>
+          <label class="toggle"><input type="checkbox" id="optMomentum" checked> Momentum Bar (last 5 s of real pressure)</label>
+          <label class="f">High Contrast Teams</label>
+          <div class="seg"><label><input type="radio" name="hcteams" value="auto" checked><span>Auto</span></label><label><input type="radio" name="hcteams" value="on"><span>On</span></label><label><input type="radio" name="hcteams" value="off"><span>Off</span></label></div>
+          <label class="f">Cover type</label>
+          <div class="seg"><label><input type="radio" name="covertype" value="nospoiler" checked><span>No spoilers</span></label><label><input type="radio" name="covertype" value="reveal"><span>Winner reveal</span></label></div>
           <label class="f">Video resolution</label>
           <div class="seg" id="resSeg"><label><input type="radio" name="res" value="1080" checked><span>1080×1920</span></label><label><input type="radio" name="res" value="720"><span>720×1280</span></label></div>
           <label class="f">FPS</label>
@@ -223,6 +246,7 @@ video{width:100%;border-radius:12px;background:#000;margin-top:10px;max-height:6
         </details>
         <div style="margin-top:12px"><button class="btn primary" id="btnStart" disabled>START BATTLE &amp; CREATE VIDEO</button></div>
         <div class="note" id="startReason"></div>
+        <canvas id="kitPrev" width="300" height="40"></canvas><div class="note" id="kitNote"></div>
       </div>
     </div>
     <!-- CENTER: stage -->
@@ -254,6 +278,7 @@ video{width:100%;border-radius:12px;background:#000;margin-top:10px;max-height:6
           <div class="note" id="editInfo"></div>
           <a class="btn dl" id="btnDownload" href="#" download>DOWNLOAD VIDEO</a>
         </div>
+        <div id="coverBox" class="cover hidden"><img id="coverImg" alt="cover preview"><div><div class="note" id="coverInfo"></div><a class="btn small" id="btnCover" href="#" download style="display:block;text-align:center;text-decoration:none;margin-top:6px">DOWNLOAD COVER PNG</a><button class="btn small ghost" id="btnCoverSq" style="width:100%;margin-top:6px">SQUARE COVER 1080×1080</button></div></div>
         <div class="btns">
           <button class="btn" id="btnReplay">WATCH THE SAME BATTLE AGAIN</button>
           <button class="btn" id="btnRematch">REMATCH (NEW SEED)</button>
@@ -272,6 +297,8 @@ video{width:100%;border-radius:12px;background:#000;margin-top:10px;max-height:6
 
 <div class="modal" id="modalAbout"><div class="box" id="aboutBox"></div></div>
 <div class="modal" id="modalDiag"><div class="box" id="diagBox"></div></div>
+<div class="modal" id="modalTour"><div class="box" style="max-width:1300px"><button class="btn small close" data-close>Close</button><h3>🏆 Tournament Studio</h3><div id="tourBody"></div></div></div>
+<input type="file" id="tourFile" accept="application/json,.json" class="hidden">
 <input type="file" id="logoFile" accept="image/png,image/svg+xml,image/jpeg,image/webp" class="hidden">
 
 <!--INLINE_SCRIPTS-->

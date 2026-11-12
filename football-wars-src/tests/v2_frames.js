@@ -6,7 +6,7 @@ const cases = (process.env.CASES || 'domestic_league:TUR_GALATASARAY:TUR_FENERBA
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1200, height: 900 } });
   const logs = []; p.on('pageerror', e => logs.push(e.message)); p.on('console', m => { if (m.type() === 'error') logs.push(m.text()); });
-  await p.goto('file://' + path.resolve(__dirname, '../../football-wars-v2.html'));
+  await p.goto('file://' + path.resolve(__dirname, '../../football-wars-v3.html'));
   await p.waitForFunction(() => window.FW_APP && window.FW_APP.st.ready);
   for (const [mode, a, bb, seed, cam] of cases) {
     const r = await p.evaluate(async ({ mode, a, bb, seed, cam }) => {

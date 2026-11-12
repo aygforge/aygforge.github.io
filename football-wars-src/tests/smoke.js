@@ -9,7 +9,7 @@ require('fs').mkdirSync(OUT, { recursive: true });
   p.on('console', m => { if (m.type() === 'error' || m.type() === 'warning') logs.push(m.type() + ': ' + m.text()); });
   p.on('pageerror', e => logs.push('pageerror: ' + e.message));
   p.on('request', r => { if (!r.url().startsWith('file:') && !r.url().startsWith('data:') && !r.url().startsWith('blob:')) logs.push('EXTERNAL REQUEST: ' + r.url()); });
-  await p.goto('file://' + path.resolve(__dirname, '../../football-wars-v2.html'));
+  await p.goto('file://' + path.resolve(__dirname, '../../football-wars-v3.html'));
   await p.waitForFunction(() => window.FW_APP && window.FW_APP.st.ready, null, { timeout: 30000 });
   await p.waitForTimeout(1500);
   const r = await p.evaluate(() => {

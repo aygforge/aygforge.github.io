@@ -4,7 +4,7 @@ const OUT = '/tmp/claude-0/-home-user-aygforge-github-io/191a4712-9ac7-5807-a3c4
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1200, height: 900 } });
   const logs = []; p.on('pageerror', e => logs.push(e.message)); p.on('console', m => { if (m.type() === 'error') logs.push(m.text()); });
-  await p.goto('file://' + path.resolve(__dirname, '../../football-wars-v2.html'));
+  await p.goto('file://' + path.resolve(__dirname, '../../football-wars-v3.html'));
   await p.waitForFunction(() => window.FW_APP && window.FW_APP.st.ready);
   const a = process.argv[2] || 'TUR_GALATASARAY', bb = process.argv[3] || 'TUR_FENERBAHCE', times = (process.argv[4] || '0.2,0.75,1.3,1.8,2.3,8,20').split(',').map(Number);
   const res = await p.evaluate(async ({ a, bb, times }) => {
