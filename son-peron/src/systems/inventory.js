@@ -56,7 +56,7 @@ export function matsText(sim, mats) { return Object.entries(mats || {}).map(([id
 
 // UI işlemleri: slot taşıma (sürükle-bırak), hızlı aktarım, sıralama
 export function moveSlot(sim, fromKey, fi, toKey, ti, qty) {
-  const A = sim.s[fromKey === 'inv' ? 'player' : '_']?.inv || sim.s.depot; const from = fromKey === 'inv' ? sim.s.player.inv : sim.s.depot; const to = toKey === 'inv' ? sim.s.player.inv : sim.s.depot; void A;
+  const from = fromKey === 'inv' ? sim.s.player.inv : sim.s.depot; const to = toKey === 'inv' ? sim.s.player.inv : sim.s.depot;
   const a = from[fi]; if (!a || (from === to && fi === ti)) return false;
   const n = Math.min(qty || a.qty, a.qty); const b = to[ti]; const st = stackOf(sim, a.id);
   if (!b) { to[ti] = { id: a.id, qty: n }; a.qty -= n; if (!a.qty) from[fi] = null; return true; }

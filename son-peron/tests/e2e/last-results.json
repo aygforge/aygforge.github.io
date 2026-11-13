@@ -1,0 +1,132 @@
+[
+ {
+  "name": "Ana menü açılır (Türkçe başlık)",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "Eksik asset yok",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "Yeni oyun: isim (UTF-8) ve görünüm aktarılır",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "WASD/Shift ile hareket",
+  "ok": true,
+  "info": "(10.5,9.5)→(11.4,10.7)"
+ },
+ {
+  "name": "Tab envanteri açar ve oyun saati durur",
+  "ok": true,
+  "info": "dakika 361.19 sabit"
+ },
+ {
+  "name": "Panel kapanınca saat aynı yerden devam eder",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "E ile miras mektubu okunur, görev ilerler",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "B modu: masa fareyle yerleştirilir",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "Posta kutusu E ile katalog açar",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "İlk sipariş 44 G: 100 → 56 G",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "Yatak: gün biter, rapor açılır, 2. gün 06:00",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "Ocak E ile tarif paneli açar",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "Çorba pişiyor (malzeme bir kez düştü)",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "Bar stoğu menüyü oluşturur; tabela AÇIK",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "09:00 treni peronda; iki tutorial yolcusu fiziksel olarak indi",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "Kapıdaki müşteriye E: masa seçim paneli",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "Masa seçilince grup masaya yürür",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "2. gün tutorial: 2 müşteri servis+ödeme+temizlik tamam",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "Kaydet → kapat → Devam: aynı durumla devam (IndexedDB)",
+  "ok": true,
+  "info": "4210 bayt, saat 594.6→594.6"
+ },
+ {
+  "name": "JSON dışa aktarım dosyası üretilir",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "Bozuk kayıt içe aktarımı güvenli hata verir",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "JSON içe aktarım çalışır",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "3. gün sabahı: serbest sandbox, günlük görevler",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "26 panelin tamamı hatasız ve eksik ikonsuz çizilir",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "15. gün: lokanta büyüdü (aşama ≥2), stok bütünlüğü korunuyor",
+  "ok": true,
+  "info": "aşama 2, 129 müşteri, 1497 G, personel 1"
+ },
+ {
+  "name": "Tarayıcı konsolunda hata yok",
+  "ok": true,
+  "info": ""
+ }
+]

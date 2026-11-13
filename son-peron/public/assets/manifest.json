@@ -1,0 +1,9 @@
+{
+ "generated": "tools/generate-assets.mjs",
+ "frames": 621,
+ "atlas": [
+  2048,
+  1914
+ ],
+ "missing": []
+}
