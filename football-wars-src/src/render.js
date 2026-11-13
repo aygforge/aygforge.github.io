@@ -7,9 +7,9 @@ const LW = 360, LH = 640;
 const C = S.color;
 
 const TXT = {
-  tr: { fight: 'SAVAŞ!', lts: 'SON AYAKTA KALAN KAZANIR', winner: 'KAZANAN!', surv: n => n + ' KİŞİ AYAKTA', zone: 'ALAN DARALIYOR',
+  tr: { goals: 'GOL', goal: 'GOOOL!', scores: 'GOL ATTI', fight: 'SAVAŞ!', lts: 'SON AYAKTA KALAN KAZANIR', winner: 'KAZANAN!', surv: n => n + ' KİŞİ AYAKTA', zone: 'ALAN DARALIYOR',
     storm: 'SON DAKİKA FIRTINASI', sudden: 'ANİ ÖLÜM', left: 'KALAN', fictional: 'KURGUSAL EŞLEŞME', time: 'SÜRE', ready: 'TAKIMLARINI SEÇ', battle: 'BATTLE' },
-  en: { fight: 'FIGHT!', lts: 'LAST TEAM STANDING', winner: 'WINNER!', surv: n => n + (n === 1 ? ' SURVIVOR' : ' SURVIVORS'), zone: 'ZONE CLOSING',
+  en: { goals: 'GOALS', goal: 'GOOOAL!', scores: 'SCORES', fight: 'FIGHT!', lts: 'LAST TEAM STANDING', winner: 'WINNER!', surv: n => n + (n === 1 ? ' SURVIVOR' : ' SURVIVORS'), zone: 'ZONE CLOSING',
     storm: 'OVERTIME STORM', sudden: 'SUDDEN DEATH', left: 'LEFT', fictional: 'FICTIONAL MATCH-UP', time: 'TIME', ready: 'PICK YOUR TEAMS', battle: 'BATTLE' }
 };
 function ease(t) { t = Math.max(0, Math.min(1, t)); return 1 - Math.pow(1 - t, 3); }
@@ -69,12 +69,13 @@ function buildField(kits, frame, seed) {
   box(true); box(false);
   // goals
   const goal = (top) => {
-    const gy = top ? y0 - 9 : y1 + 1;
-    g.fillStyle = 'rgba(10,14,24,0.85)'; g.fillRect(156, gy, 48, 8);
+    const GL = E.GOAL, gw = GL.x1 - GL.x0;
+    const gy = top ? GL.yTop - GL.depth - 1 : GL.yBot + 1;
+    g.fillStyle = 'rgba(10,14,24,0.85)'; g.fillRect(GL.x0, gy, gw, GL.depth);
     g.fillStyle = 'rgba(230,240,255,0.55)';
-    for (let x = 157; x < 204; x += 3) g.fillRect(x, gy, 1, 8);
-    for (let y = gy + 1; y < gy + 8; y += 3) g.fillRect(156, y, 48, 1);
-    g.fillStyle = '#ffffff'; g.fillRect(155, gy, 1, 9); g.fillRect(204, gy, 1, 9); g.fillRect(155, top ? gy + 8 : gy, 50, 1);
+    for (let x = GL.x0 + 1; x < GL.x1; x += 3) g.fillRect(x, gy, 1, GL.depth);
+    for (let y = gy + 1; y < gy + GL.depth; y += 3) g.fillRect(GL.x0, y, gw, 1);
+    g.fillStyle = '#ffffff'; g.fillRect(GL.x0 - 1, gy, 1, GL.depth + 1); g.fillRect(GL.x1, gy, 1, GL.depth + 1); g.fillRect(GL.x0 - 1, top ? gy + GL.depth : gy, gw + 2, 1);
   };
   goal(true); goal(false);
   // corner flags
@@ -247,6 +248,7 @@ function createRenderer(o) {
     if (V3 && v3.vfx) V3.drawSpecials(g, T);
     drawUnits(g, T);
     drawProj(g);
+    if (w.fb) drawMatchBall(g);
     drawParts(g);
     if (V3 && v3.finale) V3.drawFinale(g, T, obsS());
     drawTexts(g);
@@ -277,7 +279,8 @@ function createRenderer(o) {
     const bt = w.phase === 'battle' ? w.battleT : w.phase === 'ended' ? w.endT - E.TL.battleStart : 0;
     F.draw(g, 'VS', 180, 49, { color: '#ffe14d', align: 'center', bold: true });
     F.draw(g, mmss(bt), 180, 59, { scale: 2, color: '#ffffff', align: 'center' });
-    F.draw(g, L.left + ' ' + (w.teams[0].alive + w.teams[1].alive), 180, 77, { color: '#9aa4c4', align: 'center' });
+    if (w.fb) F.draw(g, L.goals + ' ' + w.fb.goals[0] + '-' + w.fb.goals[1], 180, 77, { color: '#ffffff', align: 'center' });
+    else F.draw(g, L.left + ' ' + (w.teams[0].alive + w.teams[1].alive), 180, 77, { color: '#9aa4c4', align: 'center' });
     g.globalAlpha = 1;
   }
   function brand(g, a) {
@@ -431,13 +434,61 @@ function createRenderer(o) {
     if (p0 > 0.5) { const n = w.teams[win].alive; F.draw(g, L.surv(n), 180, 292, { scale: 2, bold: true, color: tcL[win], align: 'center', alpha: fade(0.5) }); }
     const obsS = w.observer && w.observer.state, clutch = o.story && obsS && obsS.clutch && root.FWDirector;
     if (clutch && p0 > 0.6) F.draw(g, (root.FWDirector.ALERT_TXT[o.lang] || root.FWDirector.ALERT_TXT.en).CLUTCH, 180, 308, { bold: true, color: '#ffe14d', align: 'center', alpha: fade(0.6) });
-    if (p0 > 0.65) F.draw(g, 'VS ' + names[lose] + ' • 0', 180, clutch ? 322 : 318, { color: '#9aa4c4', align: 'center', alpha: fade(0.65) });
+    if (p0 > 0.65) F.draw(g, 'VS ' + names[lose] + ' • 0' + (w.fb ? '  |  ' + L.goals + ' ' + w.fb.goals[win] + '-' + w.fb.goals[lose] : ''), 180, clutch ? 322 : 318, { color: '#9aa4c4', align: 'center', alpha: fade(0.65) });
     if (p0 > 0.8) {
       F.draw(g, 'FOOTBALL WARS • ' + L.battle + ' #' + w.seed, 180, 338, { color: '#ffffff', align: 'center', alpha: fade(0.8) });
       F.draw(g, L.time + ' ' + mmss(w.endT - E.TL.battleStart) + ' • ' + (o.fictional ? L.fictional : o.modeLabel), 180, 352, { color: '#c9d1ff', align: 'center', alpha: fade(0.8) });
     }
   }
 
+  // ---------- V4: the real match ball (separate from battle projectiles) ----------
+  const ballSpr = (() => { const c = mk(9, 9), q = c.getContext('2d');
+    q.fillStyle = '#ffd23f'; q.fillRect(2, 0, 5, 9); q.fillRect(0, 2, 9, 5); q.fillRect(1, 1, 7, 7);               // gold rim
+    q.fillStyle = '#0b0d16'; q.fillRect(2, 1, 5, 7); q.fillRect(1, 2, 7, 5);
+    q.fillStyle = '#ffffff'; q.fillRect(2, 2, 5, 5); q.fillRect(3, 1, 3, 1); q.fillRect(3, 7, 3, 1); q.fillRect(1, 3, 1, 3); q.fillRect(7, 3, 1, 3);
+    q.fillStyle = '#20232e'; q.fillRect(4, 3, 1, 2); q.fillRect(3, 4, 3, 1); q.fillRect(2, 2, 1, 1); q.fillRect(6, 6, 1, 1); q.fillRect(6, 2, 1, 1); q.fillRect(2, 6, 1, 1);
+    return c; })();
+  const goalEvs = []; let goalScan = 0;
+  function goalsSoFar() { for (; goalScan < w.events.length; goalScan++) if (w.events[goalScan].type === E.EV.GOAL) goalEvs.push(w.events[goalScan]); return goalEvs; }
+  function drawMatchBall(g) {
+    const b = w.fb.ball; if (b.state === 'DEAD') return;
+    const moving = Math.abs(b.vx) + Math.abs(b.vy) > 5;
+    let z = 0;
+    if (b.state === 'CONTROLLED') { const o = w.units[b.owner]; z = o && (Math.abs(o.mvx) + Math.abs(o.mvy) > 4) ? Math.abs(Math.sin(w.tick * 0.35)) * 1.5 : 0; }
+    else if (b.state === 'PASSING') z = 1 + Math.sin(Math.min(1, b.flight / 0.6) * Math.PI) * 3;
+    const x = Math.round(b.x), y = Math.round(b.y);
+    if (b.state === 'SHOOTING' || (b.state === 'PASSING' && moving)) { // short motion trail
+      const sp = Math.hypot(b.vx, b.vy) || 1; for (let k = 1; k <= 3; k++) { g.globalAlpha = 0.45 - k * 0.12; g.fillStyle = b.state === 'SHOOTING' ? '#ffd23f' : '#ffffff'; g.fillRect(Math.round(b.x - b.vx / sp * k * 4) - 1, Math.round(b.y - z - b.vy / sp * k * 4) - 1, 3, 3); }
+      g.globalAlpha = 1;
+    }
+    g.fillStyle = 'rgba(0,0,0,0.35)'; g.fillRect(x - 3, y + 2, 7, 2);
+    g.drawImage(ballSpr, x - 4, Math.round(y - 4 - z));
+    if (b.state === 'CONTROLLED') { const o = w.units[b.owner]; if (o) { const ox = Math.round(o.x), oy = Math.round(o.y) - 30; g.fillStyle = '#0b0d16'; g.fillRect(ox - 3, oy - 1, 7, 4); g.fillStyle = tcL[o.side]; g.fillRect(ox - 2, oy, 5, 1); g.fillRect(ox - 1, oy + 1, 3, 1); g.fillRect(ox, oy + 2, 1, 1); } }
+    // net ripple right after a real goal
+    const ge = goalsSoFar(); const last = ge[ge.length - 1];
+    if (last && w.t - last.t < 0.9) {
+      const top = last.b === 0, GL = E.GOAL, gy = top ? GL.yTop - GL.depth - 1 : GL.yBot + 1, k = (w.t - last.t) / 0.9;
+      g.fillStyle = '#ffffff'; g.globalAlpha = 1 - k;
+      for (let xx = GL.x0 + 1; xx < GL.x1; xx += 3) { const off = Math.round(Math.sin(xx * 0.5 + w.t * 30) * 2 * (1 - k)); g.fillRect(xx, gy + off + (top ? 1 : 2), 1, GL.depth - 2); }
+      g.globalAlpha = 1;
+    }
+  }
+  // GOOOAL! overlay (output time, ~1.1 s, never hides the whole battle) + logo lower-third
+  function drawGoal(g, T, outT) {
+    if (!w.fb || T < E.TL.battleStart) return false;
+    const toOut = o.toOut || (x => x); const ge = goalsSoFar(); let cur = null, age = 0;
+    for (const e of ge) { const ag = outT - toOut(e.t); if (ag >= 0 && ag < 1.1) { cur = e; age = ag; } }
+    if (!cur || (w.phase === 'ended' && T > w.endT + 0.3)) return false;
+    const s = cur.b, col = tcL[s], a = cl(Math.min(age / 0.08, (1.1 - age) / 0.25), 0, 1), pop = Math.round((1 - ease(age / 0.15)) * 2);
+    const sc = F.fitScale(L.goal, 330, 5, true) + pop;
+    F.draw(g, L.goal, 180, 190 - pop * 3, { scale: Math.min(6, sc), bold: true, color: '#ffffff', color2: col, align: 'center', alpha: a });
+    const line = F.upper(shorts[s]) + ' ' + L.scores + ' • ' + w.fb.goals[0] + '-' + w.fb.goals[1];
+    const tw = F.measure(line, true), bw = tw + 44, x0 = Math.round(180 - bw / 2), y0 = 448;
+    g.globalAlpha = a * 0.88; g.fillStyle = '#080a14'; g.fillRect(x0, y0, bw, 22); g.globalAlpha = a; g.fillStyle = col; g.fillRect(x0, y0, bw, 2); g.fillRect(x0, y0 + 20, bw, 2);
+    g.drawImage(o.logos[s].small, x0 + 4, y0 - 2); g.globalAlpha = 1;
+    F.draw(g, line, x0 + 36, y0 + 8, { bold: true, color: '#ffffff', alpha: a });
+    return true;
+  }
   // ---------- V2: Battle Story alerts (real events from the observer), shown in OUTPUT time ----------
   const D = root.FWDirector;
   function drawAlerts(g, T, outT) {
@@ -476,9 +527,9 @@ function createRenderer(o) {
     if (V3 && v3.momentum) V3.drawMomentum(g, hudA, obsS());
     if (T < E.TL.battleStart + 0.1) drawIntro(g, T);
     drawBanners(g, T);
-    drawAlerts(g, T, outT);
+    if (!drawGoal(g, T, outT)) drawAlerts(g, T, outT); // never two big messages at once
     if (w.phase === 'ended') drawOutro(g, T);
-    if (V3 && v3.mvp && w.phase === 'ended') V3.drawMvp(g, T, names);
+    if (V3 && v3.mvp && w.phase === 'ended') V3.drawMvp(g, T, o.teams.map(t => S.shortName(t, 110, o.lang)));
     // compose (only the world layer follows the camera; the HUD never moves)
     out.imageSmoothingEnabled = false;
     let z = w.cam.z, cx = w.cam.x, cy = w.cam.y;

@@ -180,7 +180,8 @@ function createVisual(o) {
     if (at) { const row = S.rowIndex(u.ri, u.variant, false, false), f = 19 + (Math.floor(T * 4) & 1); g.globalAlpha = a; g.drawImage(at.canvas, f * S.CW, row * S.CH, S.CW, S.CH, 46, y0 + 6, 40, 40); g.globalAlpha = 1; }
     const role = (E.ROLE_NAMES[M.role] || {})[o.lang === 'tr' ? 'tr' : 'en'] || M.role;
     F.draw(g, L.mvp, 94, y0 + 7, { color: '#ffe14d', bold: true, alpha: a });
-    F.draw(g, F.upper(names[M.side]) + ' #' + M.no + ' • ' + F.upper(role), 94, y0 + 19, { color: col, alpha: a });
+    const mline = F.upper(names[M.side]) + ' #' + M.no + ' • ' + F.upper(role); const msc = F.measure(mline) > 220 ? F.upper(names[M.side]) + ' #' + M.no : mline;
+    F.draw(g, msc, 94, y0 + 19, { color: col, alpha: a });
     F.draw(g, `${M.kills} ${L.kos} • ${M.assists} ${L.ast} • ${M.saves} ${L.sav}`, 94, y0 + 31, { color: '#ffffff', alpha: a });
   }
   return { drawSpecials, drawFinale, drawTags, drawMomentum, drawMvp };
@@ -223,7 +224,7 @@ function cover(m, opt) {
   F.draw(g, L.lts, 180, ty + (sq ? 44 : 54), { scale: hs, bold: true, color: '#7df9ff', align: 'center' });
   const w = m.world;
   if (opt.type === 'reveal' && w && w.phase === 'ended') {
-    const wn = names[w.winner], line = L.winner + ': ' + F.upper(wn) + ' • ' + w.teams[w.winner].alive + ' ' + L.surv;
+    const wn = names[w.winner], line = L.winner + ': ' + F.upper(wn) + ' • ' + w.teams[w.winner].alive + ' ' + L.surv + (w.fb ? ' | ' + (opt.lang === 'tr' ? 'GOL ' : 'GOALS ') + w.fb.goals[w.winner] + '-' + w.fb.goals[1 - w.winner] : '');
     const sc = F.fitScale(line, 300, 2, true), yy = ty + (sq ? 66 : 84);
     g.fillStyle = 'rgba(8,10,20,0.85)'; g.fillRect(24, yy - 6, 312, 7 * sc + 12); g.fillStyle = tc[w.winner]; g.fillRect(24, yy - 6, 312, 2);
     F.draw(g, line, 180, yy, { scale: sc, bold: true, color: '#ffe14d', align: 'center' });
@@ -260,7 +261,7 @@ function createTournament(spec, db) {
   const teams = pool.slice(0, size);
   const rounds = []; let n = size;
   for (let ri = 0; n >= 2; ri++, n /= 2) { const row = []; for (let i = 0; i < n / 2; i++) row.push({ a: ri === 0 ? teams[2 * i] : null, b: ri === 0 ? teams[2 * i + 1] : null, seed: matchSeed(seed, ri, i), res: null }); rounds.push(row); }
-  return { v: 3, kind: 'fw-tournament', name: spec.name || 'Fantasy Cup', size, seed, duration: spec.duration || 'standard', source: spec.source, mixed: !!spec.mixed, teams, rounds, champion: null, created: spec.created || null };
+  return { v: 4, kind: 'fw-tournament', ruleset: spec.ruleset === 'fusion' ? 'fusion' : 'classic', fbIntensity: spec.fbIntensity || 'normal', goalAdv: spec.goalAdv !== false, name: spec.name || 'Fantasy Cup', size, seed, duration: spec.duration || 'standard', source: spec.source, mixed: !!spec.mixed, teams, rounds, champion: null, created: spec.created || null };
 }
 function roundName(T, ri) { return ROUND_NAMES[T.size >> ri] || 'Round ' + (ri + 1); }
 function record(T, ri, i, res) {
@@ -287,7 +288,7 @@ function bracketPng(T, byId, logoSet, lang) {
   g.fillStyle = '#0b0f1e'; g.fillRect(0, 0, W, H);
   const L = TXT[lang] || TXT.en;
   F.draw(g, 'FOOTBALL WARS • ' + F.upper(T.name || 'FANTASY CUP'), 16, 14, { scale: 2, bold: true, color: '#ffffff', color2: '#ffe14d' });
-  F.draw(g, L.fantasy + ' • SEED ' + T.seed + ' • NOT AN OFFICIAL COMPETITION', 16, 40, { color: '#9aa4c4' });
+  F.draw(g, L.fantasy + ' • SEED ' + T.seed + ' • ' + (T.ruleset === 'fusion' ? 'FOOTBALL FUSION' : 'CLASSIC BATTLE') + ' • NOT AN OFFICIAL COMPETITION', 16, 40, { color: '#9aa4c4' });
   const slotH = boxH * 2 + gap;
   T.rounds.forEach((row, ri) => {
     const x = 16 + ri * colW;

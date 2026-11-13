@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FOOTBALL WARS V3 — 100 VS 100</title>
+<title>FOOTBALL WARS V4 — 100 VS 100</title>
 <meta name="description" content="Football Wars: 100 vs 100 pixel football battle simulator and vertical video studio (single file, offline).">
 <style>
 :root{
@@ -209,6 +209,16 @@ video{width:100%;border-radius:12px;background:#000;margin-top:10px;max-height:6
         <div class="row"><input type="text" id="seed" inputmode="numeric" placeholder="automatic" maxlength="10"><button class="btn small" id="btnSeedRnd">Random</button><button class="btn small" id="btnSeedCopy">Copy</button></div>
         <details class="adv" id="adv">
           <summary>Advanced settings</summary>
+          <label class="f">Battle Ruleset</label>
+          <div class="seg"><label><input type="radio" name="ruleset" value="fusion" checked><span>Football Fusion</span></label><label><input type="radio" name="ruleset" value="classic"><span>Classic Battle (V3)</span></label></div>
+          <div id="fbSettings">
+            <div class="note">One real match ball: dribbles, passes, tackles, shots, keeper saves and goals. The winner is still the last team standing.</div>
+            <label class="f">Football Action Intensity</label>
+            <div class="seg"><label><input type="radio" name="fbint" value="low"><span>Low</span></label><label><input type="radio" name="fbint" value="normal" checked><span>Normal</span></label><label><input type="radio" name="fbint" value="high"><span>High</span></label></div>
+            <label class="toggle"><input type="checkbox" id="optFbFollow" checked> Follow Football Action (camera)</label>
+            <label class="toggle"><input type="checkbox" id="optFbAlerts" checked> Football Commentary Alerts (WHAT A SAVE!, POST!…)</label>
+            <label class="toggle"><input type="checkbox" id="optGoalAdv" checked> Goal Advantage (+6 % for 2.8 s after scoring, never stacks)</label>
+          </div>
           <label class="f">Video style</label>
           <div class="seg" id="styleSeg"><label><input type="radio" name="vstyle" value="cinematic" checked><span>Cinematic Short</span></label><label><input type="radio" name="vstyle" value="original"><span>Original</span></label></div>
           <div class="note">Cinematic Short speeds up only quiet stretches of the SAME battle (intro, highlights, final and outro stay at real speed). Original exports the full battle unchanged.</div>

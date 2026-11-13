@@ -67,6 +67,13 @@ function synthBank() {
   B.gasp = (() => { const b = buf(1.1); const f1 = biquadBP(700, 3), f2 = biquadBP(1100, 3); for (let i = 0; i < b.length; i++) { const t = i / SR, k = t / 1.1; const fc = 900 - 450 * k; if (i % 64 === 0) { const a = biquadBP(fc, 3); f1.b0 = a.b0; f1.b2 = a.b2; f1.a1 = a.a1; f1.a2 = a.a2; } const n = r.n(); b[i] = (bq(f1, n) + 0.6 * bq(f2, n)) * Math.min(1, t / 0.12) * Math.max(0, 1 - Math.max(0, t - 0.5) / 0.6); } return norm(b, 0.6); })();
   B.roar = (() => { const b = buf(1.6); const bands = [biquadBP(500, 1.2), biquadBP(1000, 1.6), biquadBP(2200, 2)]; for (let i = 0; i < b.length; i++) { const t = i / SR; const env = Math.min(1, t / 0.25) * Math.max(0, 1 - Math.max(0, t - 0.6) / 1.0); const n = r.n(); let v = 0; for (const f of bands) v += bq(f, n); b[i] = v * env; } return norm(b, 0.6); })();
   B.ding = (() => { const b = buf(0.35); for (let i = 0; i < b.length; i++) { const t = i / SR; b[i] = (sq(t * 1568, 0.25) * 0.4 + Math.sin(t * 2349 * 6.283) * 0.4) * Math.exp(-t * 9) * (t < 0.07 ? 0.6 : 1); } return norm(b, 0.55); })();
+  // V4 football sounds (original, synthesized)
+  B.touch = (() => { const b = buf(0.06); let ph = 0; for (let i = 0; i < b.length; i++) { const t = i / SR; ph += (90 + 120 * Math.exp(-t * 60)) / SR; b[i] = Math.sin(ph * 6.283) * Math.exp(-t * 55) * 0.8 + (t < 0.002 ? r.n() * 0.4 : 0); } return norm(b, 0.5); })();
+  B.shot = (() => { const b = buf(0.32); let ph = 0; const bp = biquadBP(1800, 1); for (let i = 0; i < b.length; i++) { const t = i / SR; ph += (55 + 210 * Math.exp(-t * 28)) / SR; b[i] = Math.sin(ph * 6.283) * Math.exp(-t * 18) + bq(bp, r.n()) * 0.5 * Math.sin(Math.PI * Math.min(1, t / 0.3)) + (t < 0.005 ? r.n() : 0); } return norm(b, 0.95); })();
+  B.post = (() => { const b = buf(0.9); const f = [523, 1187, 1873, 2711]; for (let i = 0; i < b.length; i++) { const t = i / SR; let v = 0; f.forEach((q, k) => v += Math.sin(t * q * 6.283) * Math.exp(-t * (4 + k * 2)) / (k + 1)); b[i] = v + (t < 0.006 ? r.n() * 0.6 : 0); } return norm(b, 0.8); })();
+  B.goal = (() => { const b = buf(1.6); const notes = [[0, 523.3], [0.12, 659.3], [0.24, 784], [0.36, 1046.5]]; for (let i = 0; i < b.length; i++) { const t = i / SR; let v = 0;
+    for (const [t0, f] of notes) { const tt = t - t0; if (tt >= 0) v += sq(t * f, 0.5) * 0.18 * Math.exp(-tt * 2.2); }
+    const horn = t > 0.45 && t < 1.5 ? Math.min(1, (t - 0.45) / 0.05) * Math.min(1, (1.5 - t) / 0.2) : 0; v += (((t * 233) % 1) * 2 - 1) * 0.22 * horn + (((t * 294) % 1) * 2 - 1) * 0.18 * horn; b[i] = v; } return norm(b, 0.9); })();
   return B;
 }
 
@@ -111,10 +118,13 @@ function initMap() {
     [V.CRIT]: ['crit', 0.36], [V.KO]: ['ko', 0.42], [V.SAVE]: ['save', 0.5], [V.HEAL]: ['heal', 0.2], [V.SPECIAL]: ['special', 0.55],
     [V.SPECIAL_FIRE]: ['boom', 0.35], [V.EXPLODE]: ['boom', 0.45], [V.INTERCEPT]: ['save', 0.3], [V.CLEAR]: ['kick', 0.34],
     [V.FINAL15]: ['final', 0.55], [V.FINAL5]: ['heart', 0.7], [V.ZONE]: ['final', 0.45], [V.STORM]: ['special', 0.5],
-    [V.SUDDEN]: ['vs', 0.6], [V.END]: ['whistle3', 0.6], [V.START]: ['go', 0.55]
+    [V.SUDDEN]: ['vs', 0.6], [V.END]: ['whistle3', 0.6], [V.START]: ['go', 0.55],
+    // V4 Football Fusion (these events never exist in Classic worlds)
+    [V.BALL_GAIN]: ['touch', 0.22], [V.BALL_PASS]: ['pass', 0.32], [V.PASS_INTERCEPT]: ['tackle', 0.3], [V.SHOT_ON_GOAL]: ['shot', 0.55],
+    [V.SAVE_GOAL]: ['save', 0.6], [V.POST]: ['post', 0.6], [V.WIDE]: ['gasp', 0.3], [V.GOAL]: ['goal', 0.75]
   });
 }
-const IMPORTANT = new Set(['ko', 'save', 'special', 'final', 'heart', 'vs', 'whistle3', 'go', 'boom', 'crit', 'stinger', 'cheer']);
+const IMPORTANT = new Set(['shot', 'post', 'goal', 'ko', 'save', 'special', 'final', 'heart', 'vs', 'whistle3', 'go', 'boom', 'crit', 'stinger', 'cheer']);
 function Planner() { this.last = {}; this.win = []; this.items = []; this.idx = 0; }
 Planner.prototype.push = function (t, id, gain, pan, rate) { this.items.push({ t, id, gain, pan: pan || 0, rate: rate || 1 }); };
 Planner.prototype.intro = function () {
@@ -140,6 +150,8 @@ Planner.prototype.feed = function (w) {
     const rate = 1 + (((e.k * 31 + (e.a & 1023)) % 11) - 5) * 0.015;
     this.push(t, id, m[1], pan, imp ? 1 : rate);
     if (e.type === E.EV.FINAL15) this.push(t, 'cheer', 0.4, 0);
+    if (e.type === E.EV.GOAL) { this.push(t + 0.05, 'cheer', 0.6, 0); this.push(t + 0.1, 'roar', 0.45, 0); }
+    if (e.type === E.EV.SAVE_GOAL) this.push(t + 0.05, 'gasp', 0.35, 0);
     if (e.type === E.EV.END) { this.push(t, 'boom', 0.8, 0); this.push(t + 0.45, 'stinger', 0.75, 0); this.push(t + 0.5, 'cheer', 0.6, 0); }
   }
   return this.items.slice(start);

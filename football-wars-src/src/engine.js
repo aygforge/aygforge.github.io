@@ -153,6 +153,7 @@ function createWorld(opts) {
     T.specials = T.specialsIds.map((id, i) => ({ id, cd: 5.5 + i * 4 + rng.range(0, 2.5), uses: 0 }));
   }
   w.startTotal = w.units.length;
+  if (opts.ruleset === 'fusion') w.fb = fbCreate(w, opts); // Classic worlds have no w.fb at all
   // grid
   w.gcs = 16; w.gcols = Math.ceil(LW / w.gcs); w.grows = Math.ceil(LH / w.gcs);
   w.grid = new Int32Array(w.gcols * w.grows); w.gridNext = new Int32Array(w.units.length);
@@ -309,6 +310,7 @@ function unitDmgMul(w, u) {
   let m = T.dmgMul * T.powMul * T.dmgScale;
   if (u.dmgBuffT > 0) m *= u.dmgBuffMul;
   if (u.aura) m *= 1 + 0.10 * T.teamwork;
+  if (w.fb && w.fb.buff[u.side] > 0) m *= BUFF_MUL;
   if (T.tendency === 'formation') m *= 1.03;          // possession: combination play
   else if (T.tendency === 'flank' && (u.role === 'winger' || u.role === 'striker')) m *= 1.10;
   return m;
@@ -330,6 +332,7 @@ function curSpeed(w, u) {
   if (u.slowT > 0) s *= u.slowMul;
   if (u.sta < 28) s *= 0.84;
   if (w.hunt) s *= 1.12;
+  if (w.fb && w.fb.buff[u.side] > 0) s *= BUFF_MUL;
   return s;
 }
 function atkRate(w, u) {
@@ -567,6 +570,7 @@ function updateUnit(w, u) {
     return;
   }
   if (u.recover > 0) { u.recover -= DT; u.state = 'recover'; return; }
+  if (w.fb && w.fb.ball.state === 'CONTROLLED' && w.fb.ball.owner === u.id) { fbCarry(w, u); return; } // Fusion: ball carrier dribbles
 
   u.retarget -= DT;
   let tgt = u.tgt >= 0 ? w.units[u.tgt] : null;
@@ -673,6 +677,7 @@ function updateUnit(w, u) {
   }
   if (hold && role !== 'defender' && role !== 'goalkeeper') { mx = (u.hx - u.x) * 0.05; my = (u.hy - u.y) * 0.05; }
   // move
+  if (w.fb) { const md = w.fb.mode[u.id]; if (md) { const v = fbSteer(w, u, md); if (v) { mx = v[0]; my = v[1]; } } } // Fusion: ball-related runs
   const m = Math.sqrt(mx * mx + my * my);
   if (m > 0.01) {
     const s = curSpeed(w, u) * sf * Math.min(1, m);
@@ -947,6 +952,7 @@ function finish(w, win) {
   w.phase = 'ended'; w.winner = win; w.endT = w.t; w.endTick = w.tick;
   const outro = clamp(35 - w.endT, OUTRO_MIN, OUTRO_MAX);
   w.outroLen = Math.min(outro, MAX_TOTAL - w.endT);
+  if (w.fb) fbEnd(w);
   ev(w, EV.END, win, w.teams[win].alive, 0);
   for (let i = 0; i < w.proj.length; i++) w.proj[i].on = false;
   w.specials.length = 0;
@@ -954,6 +960,275 @@ function finish(w, win) {
   const k = w.lastKO || { x: 180, y: MIDY };
   burst(w, k.x, k.y - 4, 40, ['#ffffff', '#ffe066', teamColor(w, 1 - win), teamColor2(w, 1 - win)], 120, 1.1, 'spark', 60);
   part(w, 'ring', k.x, k.y - 4, 220, 0, 0.6, '#ffffff', 3);
+}
+
+// ======================= FWFootball — "Football Fusion" ruleset (V4) =======================
+// Active ONLY when createWorld(opts.ruleset === 'fusion') created w.fb. Classic worlds never run this code and
+// never touch the football RNG, so Classic (V3) results, end ticks and event hashes are unchanged.
+// One real match ball (separate from battle projectiles): LOOSE -> CONTROLLED -> PASSING / SHOOTING -> GOAL -> RESET.
+const EVF = { BALL_GAIN: 40, DRIBBLE: 41, BALL_PASS: 42, PASS_COMPLETE: 43, PASS_INTERCEPT: 44, SHOT_ON_GOAL: 45, SAVE_GOAL: 46,
+  GOAL: 47, POST: 48, WIDE: 49, BALL_RESET: 50, GOAL_BUFF_START: 51, GOAL_BUFF_END: 52, BALL_LOOSE: 53 };
+Object.assign(EV, EVF);
+// goal geometry: the SAME constants are used by the renderer to draw the goals (FWRender.buildField)
+const GOAL = { x0: 156, x1: 204, yTop: ARENA.y0 - 2, yBot: ARENA.y1 + 2, depth: 8, post: 1.6 };
+const FB_INT = { low: { chase: 1, hold: 1.3, shoot: 0.8, support: 1 }, normal: { chase: 2, hold: 1.0, shoot: 1.0, support: 2 }, high: { chase: 3, hold: 0.8, shoot: 1.2, support: 2 } };
+const SHOOT_RANGE = { striker: 160, winger: 130, captain: 125, playmaker: 120, support: 90, defender: 80, goalkeeper: 0 };
+const BUFF_SEC = 2.8, BUFF_MUL = 1.06;         // goal advantage: +6 % damage & speed for 2.8 s, never stacks
+const FB_STATE = { RESET: 0, LOOSE: 1, CONTROLLED: 2, PASSING: 3, SHOOTING: 4, GOAL: 5, DEAD: 6 };
+function fbCreate(w, opts) {
+  const n = w.units.length;
+  return {
+    rng: new Rng((w.seed ^ hashStr('FOOTBALL_FUSION_V4|' + opts.teamA.id + '|' + opts.teamB.id)) >>> 0),
+    cfg: FB_INT[opts.fbIntensity] || FB_INT.normal, intensity: FB_INT[opts.fbIntensity] ? opts.fbIntensity : 'normal', goalAdv: opts.goalAdv !== false,
+    ball: { x: LW / 2, y: MIDY, vx: 0, vy: 0, z: 0, state: 'RESET', owner: -1, side: -1, from: -1, target: -1, lastSide: -1,
+      combo: 0, comboSide: -1, timer: 0.35, held: 0, decide: 0.3, looseT: 0, checked: [], dribbled: false, shot: null, flight: 0 },
+    goals: [0, 0], buff: [0, 0],
+    stats: { shots: [0, 0], onTarget: [0, 0], saves: [0, 0], passes: [0, 0], passAtt: [0, 0], intercepts: [0, 0], steals: [0, 0], posts: [0, 0], wide: [0, 0], poss: [0, 0] },
+    shots: [], mode: new Int8Array(n), tackleT: new Float32Array(n).fill(-9), nextShot: 1
+  };
+}
+function fbGoalY(side) { return side === 0 ? GOAL.yTop : GOAL.yBot; } // side 0 attacks the TOP goal, side 1 the BOTTOM goal
+function fbGain(w, u, kind) {
+  const fb = w.fb, b = fb.ball;
+  if (b.lastSide !== u.side) { b.combo = 0; b.comboSide = u.side; }
+  b.state = 'CONTROLLED'; b.owner = u.id; b.side = u.side; b.lastSide = u.side; b.held = 0; b.dribbled = false; b.target = -1; b.shot = null;
+  b.decide = 0.22 + fb.rng.next() * 0.3; b.vx = b.vy = 0; b.looseT = 0;
+  if (kind === 1) fb.stats.steals[u.side]++;
+  ev(w, EV.BALL_GAIN, u.id, kind, 0, u.x, u.y); // kind: 0 loose, 1 tackle, 2 GK catch, 3 interception, 4 goal kick
+}
+function fbLoose(w, why, vx, vy) {
+  const b = w.fb.ball; const o = b.owner >= 0 ? w.units[b.owner] : null;
+  b.state = 'LOOSE'; b.vx = vx || 0; b.vy = vy || 0; b.looseT = 0; b.target = -1; b.shot = null;
+  ev(w, EV.BALL_LOOSE, o ? o.id : -1, why, 0, b.x, b.y); b.owner = -1;
+}
+function fbReset(w, kind) {
+  const b = w.fb.ball; b.state = 'RESET'; b.timer = 0.55; b.owner = -1; b.side = -1; b.lastSide = -1; b.combo = 0; b.vx = b.vy = 0; b.shot = null;
+  ev(w, EV.BALL_RESET, kind, -1, 0, b.x, b.y);
+}
+function fbLineBlocked(w, a, c, side) {
+  for (let k = 1; k <= 3; k++) { const x = a.x + (c.x - a.x) * k / 4, y = a.y + (c.y - a.y) * k / 4; if (query(w, x, y, 7, 1 - side).length) return true; }
+  return false;
+}
+function fbBestMate(w, u) {
+  const fb = w.fb, dir = u.side === 0 ? -1 : 1; let best = null, bs = -12;
+  const longBall = u.role === 'playmaker' || u.role === 'captain' || u.role === 'defender' || u.role === 'goalkeeper';
+  for (const m of query(w, u.x, u.y, longBall ? 175 : 110, u.side)) {
+    if (m === u || m.role === 'goalkeeper' || m.stun > 0) continue;
+    const dx = m.x - u.x, dy = m.y - u.y, d = Math.sqrt(dx * dx + dy * dy); if (d < 24) continue;
+    if (d > 110 && !(m.role === 'striker' || m.role === 'winger') ) continue; // long balls only to forwards
+    let s = dy * dir * 0.7 - d * 0.04 - query(w, m.x, m.y, 16, 1 - u.side).length * 18;
+    if (m.role === 'striker' || m.role === 'winger') s += 10; if (m.role === 'playmaker') s += 6;
+    if (fbLineBlocked(w, u, m, u.side)) s -= 30;
+    s += fb.rng.next() * 8;
+    if (s > bs) { bs = s; best = m; }
+  }
+  return best;
+}
+function fbPass(w, u, m) {
+  const fb = w.fb, b = fb.ball, T = w.teams[u.side];
+  b.state = 'PASSING'; b.from = u.id; b.target = m.id; b.owner = -1; b.flight = 0; b.checked.length = 0;
+  const pd = Math.hypot(m.x - u.x, m.y - u.y); b.sp = (pd > 110 ? 195 : 150) + (T.at.technique - 70) * 0.8; fb.stats.passAtt[u.side]++;
+  u.act = 'kick'; u.actT = 0.2;
+  ev(w, EV.BALL_PASS, u.id, m.id, 0, u.x, u.y);
+}
+function fbShoot(w, u) {
+  const fb = w.fb, b = fb.ball, r = fb.rng, T = w.teams[u.side];
+  const gy = fbGoalY(u.side), half = (GOAL.x1 - GOAL.x0) / 2, gx = (GOAL.x0 + GOAL.x1) / 2;
+  const dg = Math.hypot(GOAL.x0 + half - b.x, gy - b.y);
+  const err = r.normal() * 9 * (1.35 - T.at.finishing / 100) * (1 + dg / 160); // accuracy drops with distance
+  const aimX = gx + (r.next() * 2 - 1) * (half + 7) + err;
+  const sp = 215 + T.at.finishing * 0.5;
+  const dx = aimX - b.x, dy = gy - b.y, d = Math.sqrt(dx * dx + dy * dy) || 1;
+  const onTarget = aimX > GOAL.x0 + GOAL.post && aimX < GOAL.x1 - GOAL.post;
+  b.state = 'SHOOTING'; b.vx = dx / d * sp; b.vy = dy / d * sp; b.owner = -1; b.flight = 0; b.checked.length = 0;
+  const shot = { id: fb.nextShot++, side: u.side, shooter: u.id, tick: w.tick, x: +u.x.toFixed(1), y: +u.y.toFixed(1), onTarget, result: 'in-flight', gk: -1 };
+  b.shot = shot; fb.shots.push(shot); fb.stats.shots[u.side]++; if (onTarget) fb.stats.onTarget[u.side]++;
+  u.act = 'kick'; u.actT = 0.28;
+  ev(w, EV.SHOT_ON_GOAL, u.id, shot.id, onTarget ? 1 : 0, u.x, u.y);
+}
+function fbDecide(w, u) {
+  const fb = w.fb, b = fb.ball, r = fb.rng, cfg = fb.cfg, T = w.teams[u.side];
+  const gy = fbGoalY(u.side), gx = (GOAL.x0 + GOAL.x1) / 2, dGoal = Math.hypot(gx - u.x, gy - u.y);
+  const press = query(w, u.x, u.y, 18, 1 - u.side).length;
+  const range = (SHOOT_RANGE[u.role] || 60) * (0.85 + 0.3 * T.at.finishing / 100);
+  if (dGoal < range) {
+    let p = 0.3 + 0.45 * (1 - dGoal / range) + (u.role === 'striker' ? 0.2 : 0) + (press ? 0.1 : 0);
+    if (r.next() < p * cfg.shoot) { fbShoot(w, u); return; }
+  } else if (dGoal < range * 1.6 && u.role !== 'goalkeeper' && u.role !== 'defender') {
+    if (r.next() < 0.25 * cfg.shoot) { fbShoot(w, u); return; } // occasional long-range effort
+  }
+  const hold = (u.role === 'playmaker' ? 0.7 : u.role === 'winger' ? 1.4 : u.role === 'striker' ? 1.2 : 0.8) * cfg.hold * (T.tendency === 'formation' ? 0.8 : 1);
+  if (press >= 2 || b.held > hold || b.held > 3.0) {
+    const m = fbBestMate(w, u);
+    if (m) { fbPass(w, u, m); return; }
+    if (b.held > 3.0) { if (dGoal < 170) { fbShoot(w, u); return; } const dir = u.side === 0 ? -1 : 1; u.act = 'kick'; u.actT = 0.2; fbLoose(w, 4, (r.next() - 0.5) * 60, dir * 130); return; }
+  }
+  b.decide = 0.2 + r.next() * 0.25;
+}
+function fbAssign(w) {
+  const fb = w.fb, b = fb.ball, M = fb.mode, cfg = fb.cfg; M.fill(0);
+  const near = (x, y, side, k, rad, filt) => {
+    const out = []; for (const u of w.teams[side].aliveList) { if (filt && !filt(u)) continue; const d = (u.x - x) * (u.x - x) + (u.y - y) * (u.y - y); if (d <= rad * rad) out.push([d, u]); }
+    out.sort((p, q) => p[0] - q[0] || p[1].id - q[1].id); return out.slice(0, k).map(x => x[1]);
+  };
+  const notGK = u => u.role !== 'goalkeeper' || Math.abs(u.y - fbGoalY(1 - u.side)) < 60;
+  if (b.state === 'LOOSE' || b.state === 'RESET') {
+    const rad = b.looseT > 2.5 ? 1e5 : 115;
+    for (let s = 0; s < 2; s++) for (const u of near(b.x, b.y, s, cfg.chase, rad, notGK)) M[u.id] = 1;
+  } else if (b.state === 'CONTROLLED') {
+    const o = w.units[b.owner];
+    for (const u of near(o.x, o.y, 1 - o.side, cfg.chase, 75, notGK)) M[u.id] = 2;          // press the carrier
+    const dir = o.side === 0 ? -1 : 1;
+    for (const u of near(o.x, o.y, o.side, cfg.support + 1, 110, m => m !== o && m.role !== 'goalkeeper' && (m.y - o.y) * dir > -10)) if (u !== o) M[u.id] = 4; // offer a pass
+  } else if (b.state === 'PASSING') {
+    const t = w.units[b.target]; if (t) M[t.id] = 5;
+    for (const u of near(b.x, b.y, b.side >= 0 ? 1 - w.units[b.from].side : 0, 1, 60, notGK)) M[u.id] = 1;
+  }
+  // keepers: the guard keepers step between the ball and the goal centre when the ball is in their half
+  for (let s = 0; s < 2; s++) { const gy = fbGoalY(1 - s); if (Math.abs(b.y - gy) < 230) for (const u of w.teams[s].aliveList) if (u.role === 'goalkeeper' && u.guard && !M[u.id]) M[u.id] = 7; }
+  if (b.state === 'SHOOTING' && b.shot) {
+    for (const u of near(b.x, b.y, 1 - b.shot.side, 2, 70, x => x.role === 'goalkeeper')) M[u.id] = 6;
+  }
+}
+// unit steering for ball-related modes (movement only; battle attacks continue)
+function fbSteer(w, u, md) {
+  const b = w.fb.ball; let tx, ty;
+  if (md === 1 || md === 6) { tx = b.x + b.vx * 0.15; ty = b.y + b.vy * 0.15; }
+  else if (md === 2) { const o = w.units[b.owner]; if (!o) return null; tx = o.x; ty = o.y; }
+  else if (md === 4) { const o = w.units[b.owner]; if (!o) return null; const dir = o.side === 0 ? -1 : 1; tx = o.x + (u.id % 2 ? 34 : -34); ty = o.y + dir * 42; }
+  else if (md === 5) { tx = b.x; ty = b.y; }
+  else if (md === 7) { const gy = fbGoalY(1 - u.side), gx = (GOAL.x0 + GOAL.x1) / 2; tx = gx + clamp((b.x - gx) * 0.3, -20, 20) + (u.id % 2 ? 8 : -8); ty = gy + (u.side === 0 ? -10 : 10); }
+  else return null;
+  const dx = tx - u.x, dy = ty - u.y, d = Math.sqrt(dx * dx + dy * dy); if (d < 2) return [0, 0];
+  return [dx / d, dy / d];
+}
+// the ball carrier dribbles toward the opponent goal, weaving away from the nearest presser
+function fbCarry(w, u) {
+  const T = w.teams[u.side], gy = fbGoalY(u.side), gx = (GOAL.x0 + GOAL.x1) / 2;
+  let mx = gx - u.x, my = gy - u.y; const d = Math.sqrt(mx * mx + my * my) || 1; mx /= d; my /= d;
+  if (u.role === 'winger' && Math.abs(gy - u.y) > 120) mx += (u.hx < 180 ? -0.5 : 0.5) * (Math.abs(u.x - 180) < 120 ? 1 : 0); // run the flank
+  let best = null, bd = 400;
+  for (const e of query(w, u.x, u.y, 20, 1 - u.side)) { const dd = (e.x - u.x) * (e.x - u.x) + (e.y - u.y) * (e.y - u.y); if (dd < bd) { bd = dd; best = e; } }
+  if (best) { const ex = u.x - best.x, ey = u.y - best.y, ed = Math.sqrt(ex * ex + ey * ey) || 1; mx += ex / ed * 0.7; my += ey / ed * 0.35; }
+  const m = Math.sqrt(mx * mx + my * my) || 1, s = curSpeed(w, u) * 1.05;
+  const vx = mx / m * s, vy = my / m * s; u.x += vx * DT; u.y += vy * DT; u.mvx = vx; u.mvy = vy;
+  if (Math.abs(vx) > 2) u.face = vx < 0 ? -1 : 1; u.back = vy < 0;
+  u.sta = Math.max(0, u.sta - 3.2 * T.drain * DT); u.state = 'run';
+}
+function fbBounds(w) {
+  const b = w.fb.ball, z = w.zone;
+  const x0 = Math.max(ARENA.x0 + 2, z.active ? z.x0 + 3 : 0), x1 = Math.min(ARENA.x1 - 2, z.active ? z.x1 - 3 : 1e9);
+  const y0 = Math.max(ARENA.y0 + 2, z.active ? z.y0 + 4 : 0), y1 = Math.min(ARENA.y1 - 2, z.active ? z.y1 - 2 : 1e9);
+  if (b.x < x0) { b.x = x0; b.vx = Math.abs(b.vx) * 0.6; } else if (b.x > x1) { b.x = x1; b.vx = -Math.abs(b.vx) * 0.6; }
+  if (b.y < y0) { b.y = y0; b.vy = Math.abs(b.vy) * 0.6; } else if (b.y > y1) { b.y = y1; b.vy = -Math.abs(b.vy) * 0.6; }
+}
+function fbGoalKick(w, defSide) {
+  const L = w.teams[defSide].aliveList; if (!L.length) { fbReset(w, 2); return; }
+  const gy = fbGoalY(1 - defSide); let best = null, bd = 1e9;
+  for (const u of L) { const d = Math.abs(u.y - gy) * (u.role === 'goalkeeper' ? 0.5 : 1) + Math.abs(u.x - 180) * 0.3; if (d < bd || (d === bd && u.id < best.id)) { bd = d; best = u; } }
+  w.fb.ball.x = clamp(w.fb.ball.x, ARENA.x0 + 4, ARENA.x1 - 4); w.fb.ball.y = clamp(w.fb.ball.y, ARENA.y0 + 4, ARENA.y1 - 4);
+  fbGain(w, best, 4);
+}
+function fbTick(w) {
+  const fb = w.fb, b = fb.ball, r = fb.rng, dt = DT;
+  for (let s = 0; s < 2; s++) if (fb.buff[s] > 0) { fb.buff[s] -= dt; if (fb.buff[s] <= 0) { fb.buff[s] = 0; ev(w, EV.GOAL_BUFF_END, s, -1, 0); } }
+  if ((w.tick % 6) === 0) fbAssign(w);
+  if (b.state === 'RESET') {
+    b.x += (LW / 2 - b.x) * Math.min(1, dt * 6); b.y += (MIDY - b.y) * Math.min(1, dt * 6);
+    b.timer -= dt; if (b.timer <= 0) { b.x = LW / 2; b.y = MIDY; b.state = 'LOOSE'; b.looseT = 0; b.vx = b.vy = 0; }
+    return;
+  }
+  if (b.state === 'GOAL') {
+    b.x += b.vx * dt; b.y += b.vy * dt; b.vx *= Math.pow(0.02, dt); b.vy *= Math.pow(0.02, dt);
+    const net = b.side === 0 ? GOAL.yTop - GOAL.depth + 1 : GOAL.yBot + GOAL.depth - 1;
+    if ((b.side === 0 && b.y < net) || (b.side === 1 && b.y > net)) { b.y = net; b.vy = 0; }
+    b.timer -= dt; if (b.timer <= 0) fbReset(w, 1);
+    return;
+  }
+  if (b.state === 'LOOSE') {
+    b.x += b.vx * dt; b.y += b.vy * dt; const f = Math.exp(-2.2 * dt); b.vx *= f; b.vy *= f; fbBounds(w); b.looseT += dt;
+    if (Math.abs(b.vx) + Math.abs(b.vy) < 170) {
+      let best = null, bd = 1e9;
+      for (const u of query(w, b.x, b.y + 1, 6, -1)) { if (u.stun > 0 || u.dashT > 0) continue; const d = (u.x - b.x) * (u.x - b.x) + (u.y - b.y) * (u.y - b.y); if (d < bd || (d === bd && u.id < best.id)) { bd = d; best = u; } }
+      if (best) fbGain(w, best, 0);
+    }
+    if (b.looseT > 9) fbReset(w, 3); // safety: nobody can reach it
+    return;
+  }
+  if (b.state === 'CONTROLLED') {
+    const o = w.units[b.owner];
+    if (!o || !o.alive) { fbLoose(w, 1, 0, 0); return; }
+    if (o.stun > 0) { fbLoose(w, 3, o.kbx * 0.6 + (r.next() - 0.5) * 30, o.kby * 0.6 + (r.next() - 0.5) * 30); return; }
+    const tx = o.x + o.face * 3.5, ty = o.y + 1; b.x += (tx - b.x) * Math.min(1, dt * 16); b.y += (ty - b.y) * Math.min(1, dt * 16);
+    b.held += dt; fb.stats.poss[o.side]++;
+    if (!b.dribbled && b.held > 1.2) { b.dribbled = true; ev(w, EV.DRIBBLE, o.id, 0, b.held, o.x, o.y); }
+    // tackles: real contact + timing + attributes
+    for (const e of query(w, o.x, o.y, 9.5, 1 - o.side)) {
+      if (e.stun > 0 || w.t - fb.tackleT[e.id] < 0.65) continue; fb.tackleT[e.id] = w.t;
+      const TE = w.teams[e.side], TO = w.teams[o.side];
+      const ch = 0.07 + (e.role === 'defender' ? 0.08 : 0) + (e.role === 'goalkeeper' ? 0.08 : 0) + (TE.at.pressing - 70) / 500 - (TO.at.technique - 70) / 500;
+      if (r.next() < ch) { e.act = 'kick'; e.actT = 0.2; fbGain(w, e, 1); return; }
+    }
+    b.decide -= dt; if (b.decide <= 0) fbDecide(w, o);
+    return;
+  }
+  if (b.state === 'PASSING') {
+    const t = w.units[b.target], from = w.units[b.from]; b.flight += dt;
+    if (!t || !t.alive || b.flight > 1.6) { fbLoose(w, 2, b.vx * 0.3, b.vy * 0.3); return; }
+    const dx = t.x - b.x, dy = t.y + 1 - b.y, d = Math.sqrt(dx * dx + dy * dy) || 1;
+    b.vx = dx / d * b.sp; b.vy = dy / d * b.sp; b.x += b.vx * dt; b.y += b.vy * dt;
+    for (const e of query(w, b.x, b.y, 6, 1 - from.side)) {
+      if (b.checked.indexOf(e.id) >= 0 || e.stun > 0) continue; b.checked.push(e.id);
+      const ch = 0.2 + (e.role === 'defender' ? 0.15 : 0) + (w.teams[e.side].at.pressing - 70) / 400;
+      if (r.next() < ch) { fb.stats.intercepts[e.side]++; ev(w, EV.PASS_INTERCEPT, e.id, from.id, 0, b.x, b.y); fbGain(w, e, 3); return; }
+    }
+    if (d < 6) {
+      fb.stats.passes[from.side]++; if (b.comboSide === from.side) b.combo++; else { b.combo = 1; b.comboSide = from.side; }
+      const combo = b.combo; ev(w, EV.PASS_COMPLETE, t.id, from.id, combo, t.x, t.y);
+      b.lastSide = from.side; fbGain(w, t, 5); b.combo = combo; b.comboSide = from.side;
+    }
+    return;
+  }
+  if (b.state === 'SHOOTING') {
+    const sh = b.shot; b.flight += dt; b.x += b.vx * dt; b.y += b.vy * dt;
+    // goalkeeper save: real distance to the ball path + attributes
+    for (const g of query(w, b.x, b.y, 17, 1 - sh.side)) {
+      if (g.role !== 'goalkeeper' || g.stun > 0 || b.checked.indexOf(g.id) >= 0) continue; b.checked.push(g.id);
+      const TG = w.teams[g.side]; let p = 0.38 + (TG.gk - 70) / 250 + (g.guard ? 0.08 : 0); if (!sh.onTarget) p *= 0.5;
+      if (r.next() < p) {
+        sh.result = 'save'; sh.gk = g.id; fb.stats.saves[g.side]++; g.act = 'dive'; g.actT = 0.4; g.face = b.x < g.x ? -1 : 1;
+        ev(w, EV.SAVE_GOAL, g.id, sh.id, 0, b.x, b.y);
+        if (r.next() < 0.55) fbGain(w, g, 2); else { const s2 = r.next() < 0.5 ? -1 : 1; b.state = 'LOOSE'; b.owner = -1; b.shot = null; b.looseT = 0; b.vx = s2 * (70 + r.next() * 40); b.vy = -b.vy * 0.35; }
+        return;
+      }
+    }
+    const gy = fbGoalY(sh.side), crossed = sh.side === 0 ? b.y <= gy : b.y >= gy;
+    if (crossed) {
+      const inMouth = b.x > GOAL.x0 + GOAL.post && b.x < GOAL.x1 - GOAL.post;
+      const onPost = !inMouth && (Math.abs(b.x - GOAL.x0) <= GOAL.post || Math.abs(b.x - GOAL.x1) <= GOAL.post);
+      const shooter = w.units[sh.shooter];
+      if (inMouth) {
+        sh.result = 'goal'; fb.goals[sh.side]++; b.state = 'GOAL'; b.side = sh.side; b.timer = 0.9; b.shot = null; b.vx *= 0.35; b.vy *= 0.35;
+        ev(w, EV.GOAL, sh.shooter, sh.side, fb.goals[sh.side], b.x, gy);
+        if (fb.goalAdv) { if (fb.buff[sh.side] <= 0) ev(w, EV.GOAL_BUFF_START, sh.side, -1, BUFF_SEC); fb.buff[sh.side] = BUFF_SEC; } // reset, never stacks
+        const col = teamColor(w, sh.side); burst(w, b.x, gy, 18, ['#ffffff', col, '#ffe066'], 80, 0.7, 'spark', 40); w.shake = Math.max(w.shake, 1.6);
+        void shooter; return;
+      }
+      if (onPost) { sh.result = 'post'; fb.stats.posts[sh.side]++; ev(w, EV.POST, sh.shooter, sh.id, 0, b.x, gy); b.y = gy + (sh.side === 0 ? 2 : -2); b.state = 'LOOSE'; b.shot = null; b.looseT = 0; b.vy = -b.vy * 0.45; b.vx = b.vx * 0.5 + (r.next() - 0.5) * 50; return; }
+      sh.result = 'wide'; fb.stats.wide[sh.side]++; ev(w, EV.WIDE, sh.shooter, sh.id, 0, b.x, gy); b.shot = null; fbGoalKick(w, 1 - sh.side); return;
+    }
+    if (b.flight > 1.4 || b.x < ARENA.x0 - 8 || b.x > ARENA.x1 + 8) { sh.result = 'off'; b.state = 'LOOSE'; b.shot = null; b.looseT = 0; b.vx *= 0.2; b.vy *= 0.2; fbBounds(w); }
+  }
+}
+function fbEnd(w) {
+  const fb = w.fb; fb.ball.state = 'DEAD'; fb.ball.owner = -1;
+  for (let s = 0; s < 2; s++) if (fb.buff[s] > 0) { fb.buff[s] = 0; ev(w, EV.GOAL_BUFF_END, s, -1, 1); }
+}
+function fbSummary(w) {
+  const fb = w.fb, s = fb.stats, P = s.poss[0] + s.poss[1];
+  return { ruleset: 'fusion-v4', intensity: fb.intensity, goalAdv: fb.goalAdv, goals: fb.goals.slice(), shots: s.shots.slice(), onTarget: s.onTarget.slice(), saves: s.saves.slice(),
+    passes: s.passes.slice(), passAtt: s.passAtt.slice(), intercepts: s.intercepts.slice(), steals: s.steals.slice(), posts: s.posts.slice(), wide: s.wide.slice(),
+    possession: P ? [Math.round(s.poss[0] / P * 100), 100 - Math.round(s.poss[0] / P * 100)] : [50, 50] };
 }
 
 // ---------------- main step ----------------
@@ -995,6 +1270,7 @@ function stepCore(w) {
   separate(w);
   rebuildGrid(w);
   updateProjectiles(w);
+  if (w.fb) fbTick(w);
   // grass dust from runners (cosmetic)
   if ((w.tick % 6) === 0) for (let i = w.tick % 12; i < n; i += 12) { const u = U[i]; if (u.alive && (Math.abs(u.mvx) + Math.abs(u.mvy) > 20)) part(w, 'dust', u.x, u.y + 1, -u.mvx * 0.05, -3, 0.3, '#c9df9b', 1); }
   checkEnd(w);
@@ -1048,9 +1324,10 @@ function summary(w) {
     kills: [w.teams[0].kills, w.teams[1].kills], form: [w.teams[0].form, w.teams[1].form]
   };
 }
+function summaryV4(w) { const s = summary(w); s.ruleset = w.fb ? 'fusion-v4' : 'classic'; if (w.fb) s.football = fbSummary(w); return s; }
 
 const API = { DT, LW, LH, ARENA, MIDY, TL, MAX_TOTAL, MAX_BATTLE, ROLES, ATTRS, ROLE_BASE, DEFAULT_RANGE, RANGE_SCALE, DURATION,
-  SPECIAL_NAMES, ROLE_NAMES, EV, PK, setAdv: (d, h) => { ADV_DMG = d; ADV_HP = h; }, Rng, hashStr, createWorld, step, advanceTo, simulate, summary, totalDuration, clamp };
+  SPECIAL_NAMES, ROLE_NAMES, EV, PK, setAdv: (d, h) => { ADV_DMG = d; ADV_HP = h; }, Rng, hashStr, createWorld, step, advanceTo, simulate, summary, summaryV4, totalDuration, clamp, GOAL, FB_STATE, fbSummary };
 if (typeof module !== 'undefined' && module.exports) module.exports = API;
 root.FWEngine = API;
 })(typeof window !== 'undefined' ? window : globalThis);

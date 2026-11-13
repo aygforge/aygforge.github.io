@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Builds the single-file deliverable ../football-wars-v3.html (all JS/CSS/data inlined, no external requests)."""
+"""Builds the single-file deliverable ../football-wars-v4.html (all JS/CSS/data inlined, no external requests)."""
 import json, os, re, sys
 H = os.path.dirname(os.path.abspath(__file__))
 def rd(p): return open(os.path.join(H, p), encoding='utf-8').read()
@@ -29,6 +29,6 @@ scripts = '\n'.join(f'<script>/* ---- {name} ---- */\n{safe(code)}\n</script>' f
 html = rd('src/template.html').replace('<!--INLINE_SCRIPTS-->', scripts)
 assert not re.search(r'<script[^>]+src=', html), 'external script found'
 assert not re.search(r'<link[^>]+href=', html), 'external stylesheet found'
-out = os.path.join(H, '..', 'football-wars-v3.html')
+out = os.path.join(H, '..', 'football-wars-v4.html')
 open(out, 'w', encoding='utf-8').write(html)
 print('wrote', os.path.normpath(out), round(len(html.encode('utf-8')) / 1024), 'KB')

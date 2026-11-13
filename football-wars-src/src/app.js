@@ -142,12 +142,13 @@ function settings() {
     res: radio('res') || '1080', fps: +(radio('fps') || 30), duration: radio('dur') || 'standard', fx: +(radio('fx') || 1), lang: radio('lang') || 'en',
     sound: $('optSound').checked, labels: $('optLabels').checked, music: +$('volMusic').value / 100, sfx: +$('volSfx').value / 100,
     style: radio('vstyle') || 'cinematic', smartCam: $('optSmartCam').checked, camInt: radio('camint') || 'normal', story: $('optStory').checked,
-    epic: $('optEpic').checked, vfx: $('optVfx').checked, mvp: $('optMvp').checked, crowd: $('optCrowd').checked, momentum: $('optMomentum').checked, hc: radio('hcteams') || 'auto', cover: radio('covertype') || 'nospoiler'
+    epic: $('optEpic').checked, vfx: $('optVfx').checked, mvp: $('optMvp').checked, crowd: $('optCrowd').checked, momentum: $('optMomentum').checked, hc: radio('hcteams') || 'auto', cover: radio('covertype') || 'nospoiler',
+    ruleset: radio('ruleset') || 'fusion', fbInt: radio('fbint') || 'normal', fbFollow: $('optFbFollow').checked, fbAlerts: $('optFbAlerts').checked, goalAdv: $('optGoalAdv').checked
   };
 }
-function saveSettings() { try { localStorage.setItem('fw_settings_v3', JSON.stringify({ ...settings(), mode: st.mode, league: st.league })); } catch (e) { } }
+function saveSettings() { try { localStorage.setItem('fw_settings_v4', JSON.stringify({ ...settings(), mode: st.mode, league: st.league })); } catch (e) { } }
 function loadSettings() {
-  let s = null; try { s = JSON.parse(localStorage.getItem('fw_settings_v3') || localStorage.getItem('fw_settings_v2') || 'null'); } catch (e) { } // v2 values migrate, nothing is reset
+  let s = null; try { s = JSON.parse(localStorage.getItem('fw_settings_v4') || localStorage.getItem('fw_settings_v3') || localStorage.getItem('fw_settings_v2') || 'null'); } catch (e) { } // v2 values migrate, nothing is reset
   if (!s) return null;
   setRadio('res', s.res); setRadio('fps', s.fps); setRadio('dur', s.duration); setRadio('fx', s.fx); setRadio('lang', s.lang);
   $('optSound').checked = s.sound !== false; $('optLabels').checked = s.labels !== false;
@@ -155,6 +156,8 @@ function loadSettings() {
   $('optSmartCam').checked = s.smartCam !== false; $('optStory').checked = s.story !== false;
   for (const [k, id] of [['epic', 'optEpic'], ['vfx', 'optVfx'], ['mvp', 'optMvp'], ['crowd', 'optCrowd'], ['momentum', 'optMomentum']]) $(id).checked = s[k] !== false;
   if (s.hc) setRadio('hcteams', s.hc); if (s.cover) setRadio('covertype', s.cover);
+  if (s.ruleset) setRadio('ruleset', s.ruleset); if (s.fbInt) setRadio('fbint', s.fbInt);
+  for (const [k, id] of [['fbFollow', 'optFbFollow'], ['fbAlerts', 'optFbAlerts'], ['goalAdv', 'optGoalAdv']]) $(id).checked = s[k] !== false;
   if (s.music != null) $('volMusic').value = Math.round(s.music * 100); if (s.sfx != null) $('volSfx').value = Math.round(s.sfx * 100);
   return s;
 }
@@ -333,14 +336,16 @@ function modeLabel(lang) {
   if (st.mode === 'domestic_league') { const l = LEAGUES.get(st.a.league_id); return F.upper(l ? l.name : 'LEAGUE'); }
   return m[2][lang] || m[2].en;
 }
-function obsOpts(set) { return { smartCam: set.smartCam, intensity: set.camInt, epicFinale: set.epic, mvpStreaks: set.mvp }; }
+function obsOpts(set) { return { smartCam: set.smartCam, intensity: set.camInt, epicFinale: set.epic, mvpStreaks: set.mvp, fbAlerts: set.fbAlerts, fbFollow: set.fbFollow }; }
+function fbOpts(set) { return set.ruleset === 'fusion' ? { ruleset: 'fusion', fbIntensity: set.fbInt, goalAdv: set.goalAdv } : { ruleset: 'classic' }; }
+function rulesetLabel(o) { return o.ruleset === 'fusion' ? 'Football Fusion (' + (o.fbIntensity || 'normal') + (o.goalAdv === false ? ', no goal advantage' : '') + ')' : 'Classic Battle (V3)'; }
 function buildMatch(seed, set, preview) {
   const teams = [st.a, st.b];
   const hcActive = set.hc === 'on' || (set.hc === 'auto' && S.color.cdist(S.color.vivid(teams[0].visual.primary_color), S.color.vivid(teams[1].visual.primary_color)) < 210);
   const kits = S.makeKits(teams[0], teams[1], set.hc === 'off' ? 150 : 210);
   const atlases = [S.buildAtlas(teams[0], kits[0]), S.buildAtlas(teams[1], kits[1])];
   const logos = teams.map(t => logoSet(t));
-  const opts = { seed, teamA: teams[0], teamB: teams[1], cfg: CFG, duration: set.duration, fxLevel: set.fx };
+  const opts = Object.assign({ seed, teamA: teams[0], teamB: teams[1], cfg: CFG, duration: set.duration, fxLevel: set.fx }, fbOpts(set));
   const world = E.createWorld(opts);
   world.observer = D.createObserver(obsOpts(set));
   const rOpts = { teams, kits, atlases, logos, lang: set.lang, labels: set.labels, story: set.story, hc: hcActive, fxLevel: set.fx, v3: { vfx: set.vfx, finale: set.epic, mvp: set.mvp, momentum: set.momentum }, modeLabel: modeLabel(set.lang), fictional: ['champions_league', 'europa_league', 'conference_league'].includes(st.mode) || (st.mode === 'custom_exhibition' && teams[0].type !== teams[1].type) };
@@ -407,7 +412,7 @@ function liveRun(m, withAudio, label) {
           $('liveTotal').textContent = w.teams[0].alive + w.teams[1].alive;
           const bt = w.phase === 'battle' ? w.battleT : w.phase === 'ended' ? w.endT - E.TL.battleStart : 0;
           $('liveTime').textContent = R.mmss(bt);
-          status(null, { 'Status': label, 'Battle time': bt.toFixed(1) + ' s', 'Alive (A / B)': w.teams[0].alive + ' / ' + w.teams[1].alive, 'Total left': w.teams[0].alive + w.teams[1].alive, 'Seed': m.seed, 'Events': w.evCount, 'Active balls': w.proj.filter(p => p.on).length, 'Particles': w.parts.length }, w.phase === 'ended' ? 100 : Math.min(99, (w.t / 50) * 100));
+          status(null, { 'Status': label, 'Battle time': bt.toFixed(1) + ' s', 'Alive (A / B)': w.teams[0].alive + ' / ' + w.teams[1].alive, 'Total left': w.teams[0].alive + w.teams[1].alive, 'Seed': m.seed, 'Events': w.evCount, 'Active balls': w.proj.filter(p => p.on).length, ...(w.fb ? { 'Goals': w.fb.goals.join(' - '), 'Match ball': w.fb.ball.state.toLowerCase() } : {}), 'Particles': w.parts.length }, w.phase === 'ended' ? 100 : Math.min(99, (w.t / 50) * 100));
         }
         if (w.phase === 'ended' && T >= w.endT + w.outroLen) { resolve(); return; }
       } catch (e) { reject(e); return; }
@@ -458,7 +463,7 @@ async function startBattle(seedOverride) {
   }
   stopAudio();
   const live = m.world;
-  DIAG.lastLive = { seed, hash: live.hash >>> 0, winner: live.winner, endT: live.endT, events: live.evCount, start: [m.world.units.filter(u => u.side === 0).length, m.world.units.filter(u => u.side === 1).length] };
+  DIAG.lastLive = { ruleset: live.fb ? 'fusion-v4' : 'classic', football: live.fb ? E.fbSummary(live) : null, seed, hash: live.hash >>> 0, winner: live.winner, endT: live.endT, events: live.evCount, start: [m.world.units.filter(u => u.side === 0).length, m.world.units.filter(u => u.side === 1).length] };
   showResult(m);
   makeCover(m);
   tourRecordFromLive(m);
@@ -565,7 +570,7 @@ async function exportVideo(m) {
   const v = $('resVideo'); v.src = url; v.load();
   $('videoBox').classList.remove('hidden');
   DIAG.exports++;
-  DIAG.lastExport = { path: used.path, size: out.blob.size, mime: out.blob.type, container: sn.container, tracks, verified: same, alertsSame, frames: out.frames, seconds: out.seconds, fileName: fn, style: plan.style, natural, edited: total, endOut: plan.toOut(live.endT), battle: live.endT - E.TL.battleStart, highlights: plan.highlights, alerts: live.observer.state.alerts.map(a => a.type), segments: plan.segments };
+  DIAG.lastExport = { path: used.path, size: out.blob.size, mime: out.blob.type, container: sn.container, tracks, verified: same, alertsSame, frames: out.frames, seconds: out.seconds, fileName: fn, style: plan.style, natural, edited: total, endOut: plan.toOut(live.endT), goalsOut: live.fb ? live.events.filter(e => e.type === E.EV.GOAL).map(e => +plan.toOut(e.t).toFixed(3)) : [], football: live.fb ? E.fbSummary(live) : null, exportGoals: ew.fb ? ew.fb.goals.slice() : null, battle: live.endT - E.TL.battleStart, highlights: plan.highlights, alerts: live.observer.state.alerts.map(a => a.type), segments: plan.segments };
   const codecTxt = used.container === 'mp4' ? `MP4 • video ${out.videoCodec}${tracks.avc1 ? ' (H.264/avcC ✓)' : ''} • audio ${out.audioCodec ? out.audioCodec + (tracks.mp4a ? ' (AAC ✓)' : tracks.opus ? ' (Opus ✓)' : '') : 'none'}` : `WebM • ${out.videoCodec}${out.audioCodec ? ' + ' + out.audioCodec : ''}`;
   $('videoInfo').innerHTML = `${esc(fn)}<br>${esc(codecTxt)} • ${W}×${H} • ${fps} FPS • ${(out.blob.size / 1048576).toFixed(2)} MB • ${out.frames} frames • encoded in ${out.seconds ? out.seconds.toFixed(1) + ' s' : ''}`;
   v.onloadedmetadata = () => {
@@ -627,13 +632,15 @@ async function squareCover() {
 // ======================= V3: Tournament Studio =======================
 const TV = window.FWTournamentV3, TKEY = 'fw_tournament_v3';
 let tour = null, tourDraft = { manual: [] };
-function tourLoad() { try { const t = JSON.parse(localStorage.getItem(TKEY) || 'null'); if (t) { TV.validateTournament(t, DB); tour = t; } } catch (e) { tour = null; } }
+function tourLegacy(t) { if (t && !t.ruleset) t.ruleset = 'classic'; return t; } // V3 brackets: no ruleset field -> classic, results untouched
+function tourOpts(T) { return T.ruleset === 'fusion' ? { ruleset: 'fusion', fbIntensity: T.fbIntensity || 'normal', goalAdv: T.goalAdv !== false } : { ruleset: 'classic' }; }
+function tourLoad() { try { const t = JSON.parse(localStorage.getItem(TKEY) || 'null'); if (t) { TV.validateTournament(t, DB); tour = tourLegacy(t); } } catch (e) { tour = null; } }
 function tourSave() { try { localStorage.setItem(TKEY, JSON.stringify(tour)); return true; } catch (e) { msg('Tournament could not be saved in this browser: ' + e.message, 'warn'); return false; } }
 function tname(id) { const t = BY_ID.get(id); return t ? t.name : '—'; }
-function tourResultFrom(w, how) { return { winnerId: (w.winner === 0 ? w.teams[0] : w.teams[1]).team.id, winSide: w.winner, survivors: w.teams[w.winner].alive, alive: [w.teams[0].alive, w.teams[1].alive], hash: (w.hash >>> 0).toString(16), endT: +w.endT.toFixed(3), battle: +(w.endT - E.TL.battleStart).toFixed(2), events: w.evCount, how }; }
+function tourResultFrom(w, how) { return { ruleset: w.fb ? 'fusion-v4' : 'classic', goals: w.fb ? w.fb.goals.slice() : null, winnerId: (w.winner === 0 ? w.teams[0] : w.teams[1]).team.id, winSide: w.winner, survivors: w.teams[w.winner].alive, alive: [w.teams[0].alive, w.teams[1].alive], hash: (w.hash >>> 0).toString(16), endT: +w.endT.toFixed(3), battle: +(w.endT - E.TL.battleStart).toFixed(2), events: w.evCount, how }; }
 function tourSimulate(ri, i) {
   const mt = tour.rounds[ri][i]; if (mt.res || !mt.a || !mt.b) return;
-  const w = E.simulate({ seed: mt.seed, teamA: BY_ID.get(mt.a), teamB: BY_ID.get(mt.b), cfg: CFG, duration: tour.duration, fxLevel: 1 }); // same engine, from scratch
+  const w = E.simulate(Object.assign({ seed: mt.seed, teamA: BY_ID.get(mt.a), teamB: BY_ID.get(mt.b), cfg: CFG, duration: tour.duration, fxLevel: 1 }, tourOpts(tour))); // same engine + ruleset, from scratch
   TV.record(tour, ri, i, tourResultFrom(w, 'simulated')); tourSave(); renderTour();
 }
 function tourPlay(ri, i) {
@@ -644,6 +651,7 @@ function tourPlay(ri, i) {
   if (A2.type !== B2.type) { st.mixed = true; $('mixed').checked = true; }
   st.a = null; st.b = null; choose('A', A2); choose('B', B2);
   setRadio('dur', tour.duration); $('seed').value = mt.seed;
+  { const to = tourOpts(tour); setRadio('ruleset', to.ruleset); if (to.fbIntensity) setRadio('fbint', to.fbIntensity); if (to.ruleset === 'fusion') $('optGoalAdv').checked = to.goalAdv; syncRuleset(); }
   $('modalTour').classList.remove('open'); window.scrollTo({ top: 0, behavior: 'smooth' });
   startBattle(mt.seed);
 }
@@ -651,13 +659,14 @@ function tourRecordFromLive(m) {
   const c = st.tourCtx; if (!c || !tour) return; st.tourCtx = null;
   const mt = tour.rounds[c.ri] && tour.rounds[c.ri][c.i];
   if (!mt || mt.res) { msg('Tournament: this match already had a result — replay shown, bracket unchanged.', 'ok'); return; }
-  if (m.teams[0].id !== c.a || m.teams[1].id !== c.b || m.seed !== c.seed || m.set.duration !== c.duration) { msg('Tournament: teams/seed/length differ from the bracket match — result NOT recorded.', 'warn'); return; }
+  const to = tourOpts(tour), mo = m.opts;
+  if (m.teams[0].id !== c.a || m.teams[1].id !== c.b || m.seed !== c.seed || m.set.duration !== c.duration || mo.ruleset !== to.ruleset || (to.ruleset === 'fusion' && (mo.fbIntensity !== to.fbIntensity || mo.goalAdv !== to.goalAdv))) { msg('Tournament: teams/seed/length differ from the bracket match — result NOT recorded.', 'warn'); return; }
   TV.record(tour, c.ri, c.i, tourResultFrom(m.world, 'played + video')); tourSave();
   msg(`Tournament updated: ${tname(mt.res.winnerId)} advances (${TV.roundName(tour, c.ri)}).`, 'ok');
 }
 function tourView(ri, i) {
   const mt = tour.rounds[ri][i], r = mt.res; if (!r) return;
-  $('tourDetail').innerHTML = `<div class="msg ok"><b>${esc(TV.roundName(tour, ri))}:</b> ${esc(tname(mt.a))} vs ${esc(tname(mt.b))} — winner <b>${esc(tname(r.winnerId))}</b> with ${r.survivors} survivors (alive ${r.alive[0]}–${r.alive[1]}) • battle ${r.battle} s • seed ${mt.seed} • event hash ${esc(r.hash)} • ${r.events} events • ${esc(r.how)}
+  $('tourDetail').innerHTML = `<div class="msg ok"><b>${esc(TV.roundName(tour, ri))}:</b> ${esc(tname(mt.a))} vs ${esc(tname(mt.b))} — winner <b>${esc(tname(r.winnerId))}</b> with ${r.survivors} survivors${r.goals ? ' • goals ' + r.goals[0] + '-' + r.goals[1] : ''} (alive ${r.alive[0]}–${r.alive[1]}) • battle ${r.battle} s • seed ${mt.seed} • event hash ${esc(r.hash)} • ${r.events} events • ${esc(r.how)}
     <div class="row" style="margin-top:6px"><button class="btn small" data-treplay="${ri}:${i}">Replay this match + video (same seed)</button><span></span></div></div>`;
 }
 function renderTour() {
@@ -669,7 +678,7 @@ function renderTour() {
     return `<div class="tmatch">${line(mt.a)}${line(mt.b)}<div class="tseed">seed ${mt.seed}</div><div class="tacts">${acts}</div></div>`; }).join('')}</div>`).join('');
   const champ = tour.champion ? `<div class="msg ok">🏆 CHAMPION: <b>${esc(tname(tour.champion))}</b></div>` : '';
   box.innerHTML = `<div class="note warn"><b>Fantasy simulation bracket</b> — not an official competition; no real fixtures are implied.</div>
-    <div class="row" style="margin:8px 0"><div><b>${esc(tour.name)}</b> • ${tour.size} teams • seed ${tour.seed} • battle length: ${esc(tour.duration)}</div></div>
+    <div class="row" style="margin:8px 0"><div><b>${esc(tour.name)}</b> • ${tour.size} teams • seed ${tour.seed} • battle length: ${esc(tour.duration)} • ruleset: <b>${esc(rulesetLabel(tourOpts(tour)))}</b></div></div>
     ${champ}<div class="bracket">${cols}</div><div id="tourDetail"></div>
     <div class="btns"><button class="btn" id="tPng">DOWNLOAD BRACKET PNG</button><button class="btn" id="tJson">EXPORT JSON</button><button class="btn" id="tImport">IMPORT JSON</button><button class="btn" id="tNew">NEW TOURNAMENT</button></div>`;
   $('tPng').onclick = () => { const cv = TV.bracketPng(tour, id => BY_ID.get(id), logoSet, settings().lang); cv.toBlob(b => { const u = URL.createObjectURL(b); const a = document.createElement('a'); a.href = u; a.download = 'FootballWars_Bracket_' + slug(tour.name) + '_seed' + tour.seed + '.png'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000); DIAG.lastBracket = { w: cv.width, h: cv.height, size: b.size }; cv.width = cv.height = 1; }, 'image/png'); };
@@ -685,6 +694,7 @@ function tourSetupHtml() {
   <div><label class="f">Source</label><select id="tSrc"><option value="league">One league (random draw)</option><option value="clubs">European clubs mix</option><option value="national">National teams</option><option value="manual">Pick teams manually</option></select></div>
   <div id="tLgWrap"><label class="f">League</label><select id="tLg">${lgs}</select></div>
   <div><label class="f">Tournament seed</label><div class="row"><input type="text" id="tSeed" inputmode="numeric" value="${randomSeed()}"><button class="btn small" id="tSeedRnd">Random</button></div></div>
+  <div><label class="f">Ruleset (fixed for the whole bracket)</label><select id="tRs"><option value="fusion">Football Fusion</option><option value="classic">Classic Battle (V3)</option></select></div>
   <div><label class="f">Battle length</label><select id="tDur"><option value="short">Short</option><option value="standard" selected>Standard</option><option value="long">Long</option></select></div></div>
   <div id="tManual" class="hidden"><label class="f">Add teams (<span id="tCount">0</span> selected)</label><input type="text" id="tSearch" placeholder="Search a team to add…"><div id="tRes" class="tres"></div><div id="tChips" class="tags"></div>
   <label class="toggle"><input type="checkbox" id="tMixed"> I confirm mixing clubs and national teams (different rating systems)</label></div>
@@ -702,7 +712,7 @@ function tourSetupWire() {
   $('tCreate').onclick = () => {
     try {
       const sd = parseSeed($('tSeed').value); if (sd == null) throw new Error('Tournament seed must be a whole number.');
-      const spec = { name: $('tName').value.trim() || 'Fantasy Cup', size: +$('tSize').value, seed: sd, source: { kind: $('tSrc').value, league: $('tLg').value }, manual: tourDraft.manual, mixed: $('tMixed').checked, duration: $('tDur').value, created: new Date().toISOString().slice(0, 16) };
+      const spec = { name: $('tName').value.trim() || 'Fantasy Cup', size: +$('tSize').value, seed: sd, source: { kind: $('tSrc').value, league: $('tLg').value }, manual: tourDraft.manual, mixed: $('tMixed').checked, duration: $('tDur').value, ruleset: $('tRs').value, fbIntensity: settings().fbInt, goalAdv: settings().goalAdv, created: new Date().toISOString().slice(0, 16) };
       tour = TV.createTournament(spec, DB); tourSave(); tourDraft = { manual: [] }; renderTour();
     } catch (e) { $('tErr').innerHTML = `<div class="msg bad">${esc(e.message)}</div>`; }
   };
@@ -724,7 +734,9 @@ function showResult(m) {
   const used = s => Object.entries(w.teams[s].specialsUsed).map(([k, v]) => ((E.SPECIAL_NAMES[k] || {}).en || k) + ' ×' + v).join(', ') || '—';
   $('resKv').innerHTML = [
     ['Seed', m.seed], ['Winner', T.name + ' (' + w.teams[win].alive + ' survivors)'], ['Battle time', (w.endT - E.TL.battleStart).toFixed(2) + ' s'], ['Video length', (w.endT + w.outroLen).toFixed(2) + ' s (intro 2.2 + battle + outro ' + w.outroLen.toFixed(1) + ')'],
-    ['Top eliminating role', `A: ${E.ROLE_NAMES[topRole(0)].en} • B: ${E.ROLE_NAMES[topRole(1)].en}`], ['Battle MVP', mvTxt(MV.overall)], ['Winning-team MVP', mvTxt(MV.winnerMvp)], ['MVP formula', '3×KOs + 1×assists + 2×saves (real event counts; ties → KOs, assists, saves, survived, lower #)'],
+    ['Top eliminating role', `A: ${E.ROLE_NAMES[topRole(0)].en} • B: ${E.ROLE_NAMES[topRole(1)].en}`], ['Ruleset', rulesetLabel(m.opts)],
+    ...(w.fb ? (() => { const f = E.fbSummary(w); const n0 = m.teams[0].name, n1 = m.teams[1].name; return [['Goals', `${n0} ${f.goals[0]} – ${f.goals[1]} ${n1} (winner decided by survivors, not goals)`], ['Shots (on target)', `${f.shots[0]} (${f.onTarget[0]}) – ${f.shots[1]} (${f.onTarget[1]})`], ['Keeper saves', `${f.saves[0]} – ${f.saves[1]}`], ['Completed passes', `${f.passes[0]}/${f.passAtt[0]} – ${f.passes[1]}/${f.passAtt[1]}`], ['Interceptions / tackles won', `${f.intercepts[0]}/${f.steals[0]} – ${f.intercepts[1]}/${f.steals[1]}`], ['Possession %', `${f.possession[0]}% – ${f.possession[1]}% (real ball-control time)`], ['Posts / wide', `${f.posts[0] + f.posts[1]} / ${f.wide[0] + f.wide[1]}`]]; })() : []),
+    ['Battle MVP', mvTxt(MV.overall)], ['Winning-team MVP', mvTxt(MV.winnerMvp)], ['MVP formula', '3×KOs + 1×assists + 2×saves (real event counts; ties → KOs, assists, saves, survived, lower #)'],
     ['Specials used A', used(0)], ['Specials used B', used(1)], ['Form (A / B)', w.teams[0].form.toFixed(3) + ' / ' + w.teams[1].form.toFixed(3)],
     ['Rules applied', w.rules.map(r => RULES[r] || r).join(' • ') || 'None (natural finish)'], ['Events / hash', w.evCount + ' / ' + (w.hash >>> 0).toString(16)]
   ].map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('');
@@ -732,7 +744,7 @@ function showResult(m) {
 function saveRecent(m) {
   try {
     const w = m.world; const list = JSON.parse(localStorage.getItem('fw_recent') || '[]');
-    list.unshift({ d: new Date().toISOString().slice(0, 16).replace('T', ' '), a: m.teams[0].id, b: m.teams[1].id, w: w.winner, s: w.teams[w.winner].alive, seed: m.seed, t: +(w.endT - E.TL.battleStart).toFixed(1), mode: m.mode, dur: m.set.duration });
+    list.unshift({ d: new Date().toISOString().slice(0, 16).replace('T', ' '), a: m.teams[0].id, b: m.teams[1].id, w: w.winner, s: w.teams[w.winner].alive, seed: m.seed, t: +(w.endT - E.TL.battleStart).toFixed(1), mode: m.mode, dur: m.set.duration, rs: m.opts.ruleset, fbi: m.opts.fbIntensity, ga: m.opts.goalAdv, g: w.fb ? w.fb.goals.slice() : null });
     localStorage.setItem('fw_recent', JSON.stringify(list.slice(0, 5)));
   } catch (e) { }
   renderRecent();
@@ -742,7 +754,7 @@ function renderRecent() {
   $('recent').innerHTML = list.length ? list.map((r, i) => {
     const a = BY_ID.get(r.a), b = BY_ID.get(r.b); if (!a || !b) return '';
     const wn = r.w === 0 ? a : b;
-    return `<li><div><b>${esc(a.name)}</b> vs <b>${esc(b.name)}</b><br><span>${esc(r.d)} • winner ${esc(wn.name)} (${r.s}) • ${r.t} s • seed ${r.seed}</span></div><button class="btn small" data-load="${i}">Load</button></li>`;
+    return `<li><div><b>${esc(a.name)}</b> vs <b>${esc(b.name)}</b><br><span>${esc(r.d)} • winner ${esc(wn.name)} (${r.s})${r.g ? ' • goals ' + r.g[0] + '-' + r.g[1] : ''} • ${r.t} s • ${r.rs === 'fusion' ? 'Fusion' : 'Classic'} • seed ${r.seed}</span></div><button class="btn small" data-load="${i}">Load</button></li>`;
   }).join('') : '<li><span>No battles yet.</span></li>';
 }
 function loadRecent(i) {
@@ -754,6 +766,7 @@ function loadRecent(i) {
   fillLeague();
   choose('A', BY_ID.get(r.a)); choose('B', BY_ID.get(r.b));
   $('seed').value = r.seed; if (r.dur) setRadio('dur', r.dur);
+  setRadio('ruleset', r.rs || 'classic'); if (r.fbi) setRadio('fbint', r.fbi); $('optGoalAdv').checked = r.ga !== false; syncRuleset();
   status('Saved battle loaded: starting with the same seed + teams + duration setting reproduces the same battle.');
 }
 
@@ -845,7 +858,7 @@ function drawBrand() {
 }
 async function boot() {
   drawBrand(); fillModes();
-  const saved = loadSettings();
+  const saved = loadSettings(); syncRuleset();
   if (saved && saved.mode && MODES.some(m => m[0] === saved.mode)) { st.mode = saved.mode; st.league = saved.league || st.league; $('mode').value = st.mode; }
   fillLeague();
   setupPicker('A'); setupPicker('B');
@@ -879,6 +892,7 @@ function updateFmt() {
   if (p.warn) { const el = msg(p.warn + ' (' + p.label + ')', 'warn', $('globalMsg')); el.classList.add('fmtwarn'); }
 }
 
+function syncRuleset() { const f = radio('ruleset') === 'fusion'; $('fbSettings').classList.toggle('hidden', !f); }
 // ======================= events =======================
 $('mode').addEventListener('change', onModeChange);
 $('league').addEventListener('change', () => { st.league = $('league').value; onModeChange(); });
@@ -894,12 +908,13 @@ $('btnSeedCopy').addEventListener('click', async () => { const v = $('seed').val
 $('btnAbout').addEventListener('click', openAbout);
 $('btnTour').addEventListener('click', openTour);
 $('btnCoverSq').addEventListener('click', squareCover);
-$('tourFile').addEventListener('change', e => { const f = e.target.files && e.target.files[0]; if (!f) return; const rd = new FileReader(); rd.onload = () => { try { const t = JSON.parse(rd.result); TV.validateTournament(t, DB); if (tour && !confirm('Replace the current bracket with the imported one?')) return; tour = t; tourSave(); renderTour(); } catch (er) { alert('Import failed: ' + er.message); } }; rd.readAsText(f); });
+$('tourFile').addEventListener('change', e => { const f = e.target.files && e.target.files[0]; if (!f) return; const rd = new FileReader(); rd.onload = () => { try { const t = tourLegacy(JSON.parse(rd.result)); TV.validateTournament(t, DB); if (tour && !confirm('Replace the current bracket with the imported one?')) return; tour = t; tourSave(); renderTour(); } catch (er) { alert('Import failed: ' + er.message); } }; rd.readAsText(f); });
 document.addEventListener('click', e => {
   const g = (k) => { const el = e.target.closest('[data-' + k + ']'); return el ? el.dataset[k].split(':').map(Number) : null; };
   let x; if ((x = g('tsim'))) tourSimulate(x[0], x[1]); else if ((x = g('tplay'))) tourPlay(x[0], x[1]); else if ((x = g('tview'))) tourView(x[0], x[1]);
   else if ((x = g('treplay'))) { const mt = tour.rounds[x[0]][x[1]]; st.tourCtx = { ri: x[0], i: x[1], a: mt.a, b: mt.b, seed: mt.seed, duration: tour.duration }; tourPlay(x[0], x[1]); }
 });
+document.querySelectorAll('input[name=ruleset],input[name=fbint],#optFbFollow,#optFbAlerts,#optGoalAdv').forEach(el => el.addEventListener('change', () => { syncRuleset(); saveSettings(); if (st.phase !== 'live' && st.phase !== 'encoding') drawIdle(); }));
 document.querySelectorAll('input[name=covertype]').forEach(el => el.addEventListener('change', () => { saveSettings(); if (st.match && st.match.world.phase === 'ended') { st.match.set = Object.assign({}, st.match.set, { cover: settings().cover }); makeCover(st.match); } }));
 $('btnDiag').addEventListener('click', openDiag);
 document.addEventListener('click', e => {

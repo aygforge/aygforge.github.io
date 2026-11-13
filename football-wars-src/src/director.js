@@ -21,8 +21,8 @@ const ALERT_CFG = {
 };
 const PRIO = { DUEL: 99, LAST_PLAYER: 98, FINAL10: 95, COMEBACK: 100, LEAD_CHANGE: 70, CAPTAIN_DOWN: 60, STREAK: 50, DOMINATING: 30 };
 const ALERT_TXT = {
-  en: { DUEL: 'FINAL DUEL!', LAST_HOPE: 'LAST HOPE!', COMEBACK: 'COMEBACK!', LEAD_CHANGE: 'LEAD CHANGE!', DOMINATING: 'DOMINATING!', CAPTAIN_DOWN: 'CAPTAIN DOWN!', STREAK: '5-KO STREAK!', FINAL10: 'FINAL 10!', LAST_PLAYER: 'LAST PLAYER!', CLUTCH: 'CLUTCH VICTORY!' },
-  tr: { DUEL: 'FİNAL DÜELLOSU!', LAST_HOPE: 'SON UMUT!', COMEBACK: 'GERİ DÖNÜŞ!', LEAD_CHANGE: 'LİDERLİK DEĞİŞTİ!', DOMINATING: 'TAM HAKİMİYET!', CAPTAIN_DOWN: 'KAPTAN DÜŞTÜ!', STREAK: '5 KO SERİSİ!', FINAL10: 'SON 10!', LAST_PLAYER: 'SON OYUNCU!', CLUTCH: 'KRİTİK ZAFER!' }
+  en: { F_SAVE: 'WHAT A SAVE!', F_POST: 'POST!', F_WIDE: 'WIDE!', F_INT: 'INTERCEPTION!', F_PASS: 'GREAT PASSING!', F_SHOT: 'SHOT ON TARGET!', DUEL: 'FINAL DUEL!', LAST_HOPE: 'LAST HOPE!', COMEBACK: 'COMEBACK!', LEAD_CHANGE: 'LEAD CHANGE!', DOMINATING: 'DOMINATING!', CAPTAIN_DOWN: 'CAPTAIN DOWN!', STREAK: '5-KO STREAK!', FINAL10: 'FINAL 10!', LAST_PLAYER: 'LAST PLAYER!', CLUTCH: 'CLUTCH VICTORY!' },
+  tr: { F_SAVE: 'MÜTHİŞ KURTARIŞ!', F_POST: 'DİREK!', F_WIDE: 'AUT!', F_INT: 'PAS ARASI!', F_PASS: 'HARİKA PASLAŞMA!', F_SHOT: 'İSABETLİ ŞUT!', DUEL: 'FİNAL DÜELLOSU!', LAST_HOPE: 'SON UMUT!', COMEBACK: 'GERİ DÖNÜŞ!', LEAD_CHANGE: 'LİDERLİK DEĞİŞTİ!', DOMINATING: 'TAM HAKİMİYET!', CAPTAIN_DOWN: 'KAPTAN DÜŞTÜ!', STREAK: '5 KO SERİSİ!', FINAL10: 'SON 10!', LAST_PLAYER: 'SON OYUNCU!', CLUTCH: 'KRİTİK ZAFER!' }
 };
 const CAM_CFG = {
   low:       { zmax: 1.12, zfinal: 1.20, hold: 2.5, rate: 0.9, pan: 60, zrate: 0.15 },
@@ -44,7 +44,7 @@ function createObserver(opt) {
     cam: { x: LW / 2, y: E.MIDY, z: 1 }, tgt: { x: LW / 2, y: E.MIDY, z: 1 }, lastCommit: -99, nextEval: 0,
     alerts: [], lastAlertT: -99, used: {}, done: {}, maxDef: [0, 0], bigLeader: -1, domStart: [-1, -1], clutch: false, camStats: { zMax: 1, commits: 0 },
     // V3 (all cosmetic, derived only from real events / alive counts)
-    epic: opt.epicFinale !== false, mvpStreaks: opt.mvpStreaks !== false,
+    epic: opt.epicFinale !== false, mvpStreaks: opt.mvpStreaks !== false, fbAlerts: opt.fbAlerts !== false, fbFollow: opt.fbFollow !== false, fbUsed: 0, fbLast: -99, fbFocus: -99,
     mom: 0, momRaw: 0, momWin: [], momSum: [0, 0], tags: [], lastTag: -99, tagDone: {}, saves: {}, duel: null, hope: null
   };
   function inView(cam, u) { const hw = LW / cam.z / 2, hh = LH / cam.z / 2; return u.x > cam.x - hw + 6 && u.x < cam.x + hw - 6 && u.y > cam.y - hh + HUD_H / cam.z && u.y < cam.y + hh - 6; }
@@ -70,6 +70,7 @@ function createObserver(opt) {
     const bx = (x0 + x1) / 2, by = (y0 + y1) / 2;
     const k = z > 1.02 ? 0.4 : 0.15;
     let fx = bx * (1 - k) + hx * k, fy = by * (1 - k) + hy * k;
+    if (st.fbFollow && w.fb && w.t - st.fbFocus < 0.6) { const b = w.fb.ball; fx = fx * 0.4 + b.x * 0.6; fy = fy * 0.4 + b.y * 0.6; z = cl(Math.max(z, 1.12), 1, 1.3); }
     const cy = fy - (HUD_H / 2) / z;                  // keep focus centred below the fixed HUD
     return { x: fx, y: cy, z, x0, x1, y0, y1 };
   }
@@ -86,7 +87,8 @@ function createObserver(opt) {
         let outside = 0, tot = 0; for (const u of w.units) if (u.alive) { tot++; if (!inView(st.tgt, u)) outside++; }
         const urgent = tot > 0 && outside / tot > 0.15;
         const held = t - st.lastCommit;
-        if ((held >= C.hold && (d > 24 || dz > 0.05)) || (urgent && held >= 0.5)) {
+        const fbMoment = st.fbFollow && w.fb && w.t - st.fbFocus < 0.6;
+        if ((held >= C.hold && (d > 24 || dz > 0.05)) || ((urgent || fbMoment) && held >= 0.5)) {
           st.tgt.x = c.x; st.tgt.y = c.y; st.tgt.z = c.z; st.lastCommit = t; st.camStats.commits++;
         }
       }
@@ -176,6 +178,22 @@ function createObserver(opt) {
     st.momRaw = (a - b) / (a + b + 6);
     st.mom += (st.momRaw - st.mom) * (1 - Math.exp(-E.DT / 0.9));
   }
+  // ---- V4 football commentary (only real football events; sparse) + camera focus moments ----
+  function fbEvent(w, e) {
+    const V = E.EV;
+    if (e.type === V.SHOT_ON_GOAL || e.type === V.GOAL || e.type === V.SAVE_GOAL) st.fbFocus = e.t;
+    if (e.type === V.SHOT_ON_GOAL || e.type === V.SAVE_GOAL || e.type === V.GOAL) st.heat.push({ t: e.t, x: e.x, y: e.y, w: e.type === V.GOAL ? 6 : 4 });
+    if (!st.fbAlerts || w.phase !== 'battle') return;
+    let type = null, side = -1;
+    if (e.type === V.SAVE_GOAL) { type = 'F_SAVE'; side = w.units[e.a].side; }
+    else if (e.type === V.POST) { type = 'F_POST'; side = w.units[e.a].side; }
+    else if (e.type === V.PASS_COMPLETE && e.c === 3) { type = 'F_PASS'; side = w.units[e.a].side; }
+    else if (e.type === V.PASS_INTERCEPT && (st.fbUsed < 3)) { type = 'F_INT'; side = w.units[e.a].side; }
+    else if (e.type === V.WIDE && !st.done.FWIDE) { type = 'F_WIDE'; side = w.units[e.a].side; st.done.FWIDE = true; }
+    if (!type || st.fbUsed >= 6) return;
+    if (w.t - st.lastAlertT < 2.5 || w.t - st.fbLast < 3) return;
+    st.alerts.push({ t: w.t, type, side, fb: true }); st.fbUsed++; st.fbLast = w.t; st.lastAlertT = w.t;
+  }
   function tick(w) {
     // new real events since last tick
     const newKOs = [];
@@ -184,6 +202,7 @@ function createObserver(opt) {
       const hw = HEAT[e.type]; if (hw && (e.x || e.y)) { st.heat.push({ t: e.t, x: e.x, y: e.y, w: hw }); }
       if (e.type === E.EV.KO) newKOs.push(e);
       v3Event(w, e);
+      if (w.fb && e.type >= 40) fbEvent(w, e);
       if (e.type === E.EV.END) { const n = w.teams[e.a] ? w.teams[e.a].alive : 0; st.clutch = n >= 1 && n <= A.clutchMax; }
     }
     if (st.heat.length > 400 || (st.heat.length && w.t - st.heat[0].t > 2)) { let i = 0; while (i < st.heat.length && w.t - st.heat[i].t > 1.6) i++; if (i) st.heat.splice(0, i); }
@@ -215,6 +234,9 @@ function buildPlan(w, obsState, opt) {
     if (e.t < bs || e.t >= bs + nB * BL) continue; const i = Math.floor((e.t - bs) / BL);
     score[i] += W[e.type] || 0;
     if (e.type === V.FINAL15 || e.type === V.FINAL5 || e.type === V.SUDDEN) forced[i] = 1;
+    if (e.type === V.GOAL || e.type === V.SAVE_GOAL || e.type === V.POST) { forced[i] = 1; if (i > 0) forced[i - 1] = 1; score[i] += 6; } // goal + build-up at 1.0x
+    else if (e.type === V.SHOT_ON_GOAL) score[i] += 2.5; else if (e.type === V.PASS_COMPLETE && e.c >= 3) score[i] += 2;
+    else if (e.type === V.PASS_INTERCEPT) score[i] += 0.6; else if (e.type === V.BALL_GAIN && e.b === 1) score[i] += 0.5;
   }
   const alerts = (obsState && obsState.alerts) || [];
   for (const a of alerts) { if (a.t < bs) continue; const i = Math.floor((a.t - bs) / BL); if (i >= 0 && i < nB) { forced[i] = 1; score[i] += 3; } }

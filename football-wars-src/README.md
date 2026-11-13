@@ -1,6 +1,6 @@
 # FOOTBALL WARS — kaynak kodu
 
-Teslim edilen dosya: `../football-wars-v3.html` (V3). Önceki sürümler değiştirilmeden korunur: `../football-wars-v2.html`, `../football-wars.html`. V2 teslimi: `../football-wars-v2.html` (tek dosya, çevrimdışı, harici bağımlılık yok). `../football-wars.html` V1 olarak değiştirilmeden korunur.
+Teslim edilen dosya: `../football-wars-v4.html` (V4). V3 teslimi: `../football-wars-v3.html` (V3). Önceki sürümler değiştirilmeden korunur: `../football-wars-v2.html`, `../football-wars.html`. V2 teslimi: `../football-wars-v2.html` (tek dosya, çevrimdışı, harici bağımlılık yok). `../football-wars.html` V1 olarak değiştirilmeden korunur.
 
 V2: `src/director.js` — Smart Battle Camera, Battle Story Alerts, Smart Video Director (kurgu planı). Motor yalnız salt-okunur bir gözlemci kancası aldı; savaş matematiği/RNG/hash değişmedi (`tests/v2_equiv.js`, `tests/v1v2_browser.js`).
 
@@ -12,3 +12,5 @@ V2: `src/director.js` — Smart Battle Camera, Battle Story Alerts, Smart Video 
 - `tests/` — Node denge/determinizm testleri (`balance.js`, `power.js`, `arch.js`, `sudden.js`) ve Playwright tarayıcı testleri (`smoke.js`, `e2e.js`, `ui.js`, `stage.js`).
 
 V3: `src/v3.js` — FWStatsV3 (MVP), FWVisualV3 (12 yetenek VFX, final spotlight, KO seri etiketleri, momentum barı, MVP kartı), FWCoverV3 (kapak PNG), FWTournamentV3 (8/16/32 kurgusal bracket). Gözlemci (`director.js`) momentum/seri/düello verisini üretir; `audio.js` V3Cues (Dynamic Crowd). Testler: `tests/v3_obs.js`, `tests/v3_accept.js`, `tests/v3_seeds.js`, `tests/v3_tourplay.js`.
+
+V4 (Football Fusion): `src/engine.js` içindeki FWFootball bölümü — tek gerçek maç topu (LOOSE/CONTROLLED/PASSING/SHOOTING/GOAL/RESET), ayrı futbol RNG'si, kale algılama `E.GOAL` (çizimle aynı sabitler), kaleci kurtarışı, direk/aut, 2.8 sn birikmeyen +%6 gol avantajı. Yalnız `ruleset:'fusion'` dünyalarında çalışır; Classic, V3 ile bit düzeyinde aynıdır. Testler: `tests/v4_fusion.js` (Node), `tests/v4_browser.js` (tarayıcı).

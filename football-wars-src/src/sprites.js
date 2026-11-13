@@ -288,12 +288,13 @@ function initials(team) {
   return core.slice(0, 3).map(w => root.FWFont.upper(w)[0]).join('');
 }
 function shortName(team, max, lang) {
-  const n = lang === 'tr' ? (team.display_name_tr || team.name) : team.name;
+  let n = lang === 'tr' ? (team.display_name_tr || team.name) : team.name;
   const f = root.FWFont;
   if (f.measure(n) <= max) return n;
+  if (team.type === 'national') { n = n.replace(/ and /g, ' & '); if (f.measure(n) <= max) return n; let t2 = n; while (t2.length > 3 && f.measure(t2 + '.') > max) t2 = t2.slice(0, -1); return t2.trim() + '.'; }
   // drop common prefixes then truncate
   const parts = n.split(' ');
-  for (let k = 1; k < parts.length; k++) { const s = parts.slice(k).join(' '); if (s.length > 2 && f.measure(s) <= max) return s; }
+  for (let k = 1; k < parts.length; k++) { const s = parts.slice(k).join(' '); if (/^(and|of|de|del|la|le|&)$/i.test(parts[k])) continue; if (s.length > 2 && f.measure(s) <= max) return s; }
   let s = n; while (s.length > 3 && f.measure(s + '.') > max) s = s.slice(0, -1);
   return s.trim() + '.';
 }

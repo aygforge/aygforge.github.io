@@ -6,10 +6,10 @@ const cases = (process.env.CASES || 'domestic_league:TUR_GALATASARAY:TUR_FENERBA
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1200, height: 900 } });
   const logs = []; p.on('pageerror', e => logs.push(e.message)); p.on('console', m => { if (m.type() === 'error') logs.push(m.text()); });
-  await p.goto('file://' + path.resolve(__dirname, '../../football-wars-v3.html'));
+  await p.goto('file://' + path.resolve(__dirname, '../../football-wars-v4.html'));
   await p.waitForFunction(() => window.FW_APP && window.FW_APP.st.ready);
   for (const [mode, a, bb, seed, cam] of cases) {
-    const r = await p.evaluate(async ({ mode, a, bb, seed, cam }) => {
+    const r = await p.evaluate(async ({ mode, a, bb, seed, cam, process_env_fb }) => {
       const A = window.FW_APP; A.setMode(mode); A.choose('A', a); A.choose('B', bb);
       const set = Object.assign(A.settings(), { camInt: cam, smartCam: true, story: true, style: 'cinematic' });
       // 1) live-like pass at natural time to get the plan
@@ -21,7 +21,8 @@ const cases = (process.env.CASES || 'domestic_league:TUR_GALATASARAY:TUR_FENERBA
       const er = FWRender.createRenderer({ ...m2.rOpts, world: ew, toOut: plan.toOut });
       const cv = document.createElement('canvas'); cv.width = 360; cv.height = 640; const ctx = cv.getContext('2d');
       let bad = 0, frames = 0, zMax = 1, prevZ = 1, maxDz = 0, maxPan = 0, prevV = null; const shots = [];
-      const want = w.observer.state.alerts.map(x => plan.toOut(x.t) + 0.35).concat([0.8, 2.6, plan.toOut(w.endT) - 1, plan.outDur - 0.5]);
+      const fbT = (process_env_fb ? w.events.filter(e => e.type === FWEngine.EV.GOAL || e.type === FWEngine.EV.SAVE_GOAL || e.type === FWEngine.EV.SHOT_ON_GOAL).slice(0, 6).map(e => plan.toOut(e.t) + (e.type === FWEngine.EV.GOAL ? 0.3 : 0.05)) : []);
+      const want = (process_env_fb ? fbT.concat([12, plan.outDur - 0.5]) : w.observer.state.alerts.map(x => plan.toOut(x.t) + 0.35).concat([0.8, 2.6, plan.toOut(w.endT) - 1, plan.outDur - 0.5]));
       for (let o = 0; o < plan.outDur; o += 1 / 15) {
         const s = plan.map(o); FWEngine.advanceTo(ew, s); er.render(ctx, s, 360, 640, o); frames++;
         const v = er.view(); if (v.sx < -1e-6 || v.sy < -1e-6 || v.sx + v.sw > 360 + 1e-6 || v.sy + v.sh > 640 + 1e-6 || v.z < 1) bad++;
@@ -30,9 +31,9 @@ const cases = (process.env.CASES || 'domestic_league:TUR_GALATASARAY:TUR_FENERBA
         prevV = v;
         for (const t of want) if (Math.abs(o - t) < 1 / 30) { const c2 = document.createElement('canvas'); c2.width = 720; c2.height = 1280; er.render(c2.getContext('2d'), s, 720, 1280, o); shots.push([o.toFixed(1), c2.toDataURL()]); }
       }
-      return { natural: w.endT + w.outroLen, out: plan.outDur, hl: plan.highlights, alerts: w.observer.state.alerts.map(x => x.type + '@' + x.t.toFixed(1)), clutch: w.observer.state.clutch, survivors: w.teams[w.winner].alive,
+      return { football: w.fb ? FWEngine.fbSummary(w) : null, natural: w.endT + w.outroLen, out: plan.outDur, hl: plan.highlights, alerts: w.observer.state.alerts.map(x => x.type + '@' + x.t.toFixed(1)), clutch: w.observer.state.clutch, survivors: w.teams[w.winner].alive,
         sameHash: (ew.hash >>> 0) === (w.hash >>> 0), alertsSame: JSON.stringify(ew.observer.state.alerts) === JSON.stringify(w.observer.state.alerts), frames, bad, zMax, maxDz, maxPan, shots };
-    }, { mode, a, bb, seed, cam });
+    }, { mode, a, bb, seed, cam, process_env_fb: !!process.env.FB });
     r.shots.forEach(([t, d], i) => fs.writeFileSync(`${OUT}/${a}_${i}_${t}.png`, Buffer.from(d.split(',')[1], 'base64')));
     delete r.shots; console.log(a, bb, seed, cam, JSON.stringify(r));
   }
