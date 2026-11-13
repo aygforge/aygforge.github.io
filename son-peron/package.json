@@ -1,0 +1,22 @@
+{
+  "name": "son-peron-miras-lokantasi",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Son Peron: Miras Lokantası — Phaser 3 + Vite, tek oyunculu, çevrimdışı HTML5 cozy restoran oyunu",
+  "scripts": {
+    "assets": "node tools/generate-assets.mjs",
+    "dev": "vite",
+    "build": "node tools/generate-assets.mjs && vite build",
+    "preview": "vite preview --port 4173 --strictPort",
+    "test": "vitest run",
+    "test:e2e": "node tests/e2e/run-e2e.mjs"
+  },
+  "dependencies": {
+    "phaser": "^3.90.0"
+  },
+  "devDependencies": {
+    "vite": "^7.1.0",
+    "vitest": "^3.2.0"
+  }
+}

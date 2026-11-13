@@ -1,0 +1,3579 @@
+{
+  "meta": {
+    "title": "Son Peron: Miras Lokantası",
+    "version": "1.0",
+    "kind": "consolidated_design_database",
+    "date": "2026-11-11",
+    "language": "tr-TR",
+    "is_final_claude_prompt": false,
+    "source_files": [
+      "Son_Peron_v0_7_Ekonomi_ve_Icerik_DB.json",
+      "Son_Peron_v0_8_Dunya_Harita_Simulasyon_Plani.json",
+      "Son_Peron_v0_9_Sistem_Denetimi_ve_Kapsam_Eki.json"
+    ],
+    "source_sha256": {
+      "Son_Peron_v0_7_Ekonomi_ve_Icerik_DB.json": "9c980f9cb81e512247e67cf7d2932d520a572bf98b13197dc3e06e0fd93b42da",
+      "Son_Peron_v0_8_Dunya_Harita_Simulasyon_Plani.json": "0e65ffeb8524efd0827acc073668c41a2fdd5c1fd05118730b42d29d9d568379",
+      "Son_Peron_v0_9_Sistem_Denetimi_ve_Kapsam_Eki.json": "dc89dc7ed849af5415a632221b6dd2d6982c38ad82e82c32371336102869092b"
+    },
+    "status": "GDD spec: not implemented or runtime tested",
+    "data_validation": {
+      "status": "passed_static_data_checks_only",
+      "unique_content_ids": 117,
+      "recipes": 15,
+      "drinks": 6,
+      "furniture": 38,
+      "equipment": 14,
+      "main_quests": 15,
+      "acceptance_tests_v09": 30,
+      "notes": "No gameplay, collision, asset, or end-to-end tests have been executed."
+    }
+  },
+  "locked": {
+    "platform": "PC-first HTML5, offline-capable",
+    "art": "original classic 16-bit pixel art",
+    "placement": "fully_free_with_navigation_safety",
+    "staff": "A_helper_only_player_greets_takes_orders_serves_collects_payment",
+    "story": "C_optional_story_plus_sandbox",
+    "economy": "A_relaxed_cozy",
+    "train_arrivals": [
+      "09:00",
+      "15:00",
+      "21:00"
+    ],
+    "game_day": {
+      "start": "06:00",
+      "end": "23:00",
+      "real_seconds": 1200,
+      "game_minutes": 1020
+    },
+    "seasons": {
+      "count": 4,
+      "days_each": 28,
+      "year_days": 112
+    }
+  },
+  "canonical": {
+    "initial_seats": {
+      "pre_tutorial": 2,
+      "tutorial_adds": 2,
+      "after_tutorial": 4
+    },
+    "restoration_project_visual_wings": {
+      "salon_expansion_1": "north_lounge",
+      "salon_expansion_2": "west_dining",
+      "salon_expansion_3": "east_kitchen",
+      "salon_expansion_4": "southeast_hall"
+    },
+    "restoration_stage_labels": {
+      "1": "Harabe Lokanta",
+      "2": "Yenilenen Restoran",
+      "3": "Büyüyen Lokanta",
+      "4": "Ünlü Gar Restoranı",
+      "5": "Son Peron"
+    },
+    "refund_and_refusal": "Never silently delete items; payment once; delivery once; reservation once",
+    "staff_restriction": "No autonomous cooking, greeting decision, order intake, final delivery, or payment",
+    "tutorial_first_mail_order": {
+      "potato": 4,
+      "carrot": 2,
+      "onion": 2,
+      "bottled_juice": 3
+    },
+    "tutorial_first_order_cost_g": 44,
+    "tutorial_repairs": [
+      {
+        "id": "repair_entrance",
+        "materials": {
+          "wood": 2,
+          "stone": 1
+        }
+      },
+      {
+        "id": "repair_workbench",
+        "materials": {
+          "wood": 3,
+          "stone": 1
+        }
+      },
+      {
+        "id": "craft_simple_table",
+        "materials": {
+          "wood": 4
+        }
+      },
+      {
+        "id": "craft_2_chairs",
+        "materials": {
+          "wood": 4
+        }
+      },
+      {
+        "id": "repair_stove",
+        "materials": {
+          "wood": 2,
+          "stone": 3
+        }
+      }
+    ],
+    "closing": "Freeze displayed clock 23:00; continue only remaining service resolution via separate limited closing timer",
+    "recipe_station_aliases": {
+      "stove": "starter_stove_or_second_stove",
+      "basic_oven": "basic_oven",
+      "large_pan": "large_pan",
+      "advanced_stove": "advanced_stove"
+    },
+    "source_precedence": [
+      "locked user choices",
+      "v1.0 reconciliation rules",
+      "v0.9",
+      "v0.8",
+      "v0.7"
+    ]
+  },
+  "economy_and_content_v07": {
+    "core": {
+      "economy": "A — Rahat ve cozy",
+      "currency": "G",
+      "starting_gold": 100,
+      "starting_inventory_slots": 24,
+      "starting_depot_slots": 48,
+      "food_bar_slots": 1,
+      "max_food_bar_slots": 4,
+      "drink_bar_slots": 1,
+      "max_drink_bar_slots": 2,
+      "portions_per_bar_slot": 12,
+      "starting_seats_after_tutorial": 4,
+      "starting_cooking_stations": 1,
+      "game_day_real_minutes": 20,
+      "game_day_start": "06:00",
+      "game_day_end": "23:00",
+      "train_arrival_times": [
+        "09:00",
+        "15:00",
+        "21:00"
+      ],
+      "seasons": 4,
+      "days_per_season": 28,
+      "days_per_year": 112,
+      "no_rent": true,
+      "no_tax": true,
+      "no_loan_or_interest": true,
+      "no_player_tool_durability": true,
+      "stamina_system": false
+    },
+    "ingredients": [
+      {
+        "id": "potato",
+        "name": "Patates",
+        "mail_buy_g": 4,
+        "shop_sell_g": 2,
+        "stack_max": 99
+      },
+      {
+        "id": "carrot",
+        "name": "Havuç",
+        "mail_buy_g": 3,
+        "shop_sell_g": 1,
+        "stack_max": 99
+      },
+      {
+        "id": "onion",
+        "name": "Soğan",
+        "mail_buy_g": 2,
+        "shop_sell_g": 1,
+        "stack_max": 99
+      },
+      {
+        "id": "tomato",
+        "name": "Domates",
+        "mail_buy_g": 4,
+        "shop_sell_g": 2,
+        "stack_max": 99
+      },
+      {
+        "id": "pepper",
+        "name": "Biber",
+        "mail_buy_g": 5,
+        "shop_sell_g": 2,
+        "stack_max": 99
+      },
+      {
+        "id": "flour",
+        "name": "Un",
+        "mail_buy_g": 4,
+        "shop_sell_g": 2,
+        "stack_max": 99
+      },
+      {
+        "id": "lentil",
+        "name": "Mercimek",
+        "mail_buy_g": 5,
+        "shop_sell_g": 2,
+        "stack_max": 99
+      },
+      {
+        "id": "rice",
+        "name": "Pirinç",
+        "mail_buy_g": 5,
+        "shop_sell_g": 2,
+        "stack_max": 99
+      },
+      {
+        "id": "pasta",
+        "name": "Makarna",
+        "mail_buy_g": 6,
+        "shop_sell_g": 3,
+        "stack_max": 99
+      },
+      {
+        "id": "egg",
+        "name": "Yumurta",
+        "mail_buy_g": 5,
+        "shop_sell_g": 2,
+        "stack_max": 99
+      },
+      {
+        "id": "milk",
+        "name": "Süt",
+        "mail_buy_g": 5,
+        "shop_sell_g": 2,
+        "stack_max": 99
+      },
+      {
+        "id": "butter",
+        "name": "Tereyağı",
+        "mail_buy_g": 6,
+        "shop_sell_g": 3,
+        "stack_max": 99
+      },
+      {
+        "id": "sugar",
+        "name": "Şeker",
+        "mail_buy_g": 4,
+        "shop_sell_g": 2,
+        "stack_max": 99
+      },
+      {
+        "id": "salt",
+        "name": "Tuz",
+        "mail_buy_g": 1,
+        "shop_sell_g": 1,
+        "stack_max": 99
+      },
+      {
+        "id": "chicken",
+        "name": "Tavuk eti",
+        "mail_buy_g": 8,
+        "shop_sell_g": 4,
+        "stack_max": 99
+      },
+      {
+        "id": "minced_meat",
+        "name": "Kıyma",
+        "mail_buy_g": 10,
+        "shop_sell_g": 5,
+        "stack_max": 99
+      },
+      {
+        "id": "beef",
+        "name": "Dana eti",
+        "mail_buy_g": 13,
+        "shop_sell_g": 6,
+        "stack_max": 99
+      },
+      {
+        "id": "fish",
+        "name": "Balık",
+        "mail_buy_g": 10,
+        "shop_sell_g": 5,
+        "stack_max": 99
+      },
+      {
+        "id": "apple",
+        "name": "Elma",
+        "mail_buy_g": 5,
+        "shop_sell_g": 2,
+        "stack_max": 99
+      },
+      {
+        "id": "mushroom",
+        "name": "Mantar",
+        "mail_buy_g": 7,
+        "shop_sell_g": 3,
+        "stack_max": 99
+      },
+      {
+        "id": "wild_berries",
+        "name": "Orman meyvesi",
+        "mail_buy_g": 4,
+        "shop_sell_g": 2,
+        "stack_max": 99
+      },
+      {
+        "id": "tea_leaves",
+        "name": "Çay yaprağı",
+        "mail_buy_g": 5,
+        "shop_sell_g": 2,
+        "stack_max": 99
+      },
+      {
+        "id": "coffee_beans",
+        "name": "Kahve çekirdeği",
+        "mail_buy_g": 8,
+        "shop_sell_g": 4,
+        "stack_max": 99
+      }
+    ],
+    "craft_resources": [
+      {
+        "id": "wood",
+        "name": "Odun",
+        "mail_buy_g": null,
+        "shop_sell_g": 1,
+        "source": "forest",
+        "stack_max": 99
+      },
+      {
+        "id": "stone",
+        "name": "Taş",
+        "mail_buy_g": null,
+        "shop_sell_g": 2,
+        "source": "forest",
+        "stack_max": 99
+      },
+      {
+        "id": "metal_part",
+        "name": "Metal parça",
+        "mail_buy_g": 12,
+        "shop_sell_g": 6,
+        "source": "mail",
+        "stack_max": 99
+      },
+      {
+        "id": "fabric",
+        "name": "Kumaş",
+        "mail_buy_g": 10,
+        "shop_sell_g": 5,
+        "source": "mail",
+        "stack_max": 99
+      },
+      {
+        "id": "glass",
+        "name": "Cam",
+        "mail_buy_g": 8,
+        "shop_sell_g": 4,
+        "source": "mail",
+        "stack_max": 99
+      }
+    ],
+    "seeds": [
+      {
+        "id": "potato_seed",
+        "name": "Patates tohumu",
+        "harvest_item_id": "potato",
+        "mail_buy_g": 3,
+        "grow_watered_days": 3,
+        "harvest_quantity": 3,
+        "replacement_value_at_mail_prices_g": 12
+      },
+      {
+        "id": "carrot_seed",
+        "name": "Havuç tohumu",
+        "harvest_item_id": "carrot",
+        "mail_buy_g": 2,
+        "grow_watered_days": 3,
+        "harvest_quantity": 2,
+        "replacement_value_at_mail_prices_g": 6
+      },
+      {
+        "id": "onion_seed",
+        "name": "Soğan tohumu",
+        "harvest_item_id": "onion",
+        "mail_buy_g": 2,
+        "grow_watered_days": 4,
+        "harvest_quantity": 2,
+        "replacement_value_at_mail_prices_g": 4
+      },
+      {
+        "id": "tomato_seed",
+        "name": "Domates tohumu",
+        "harvest_item_id": "tomato",
+        "mail_buy_g": 4,
+        "grow_watered_days": 5,
+        "harvest_quantity": 3,
+        "replacement_value_at_mail_prices_g": 12
+      },
+      {
+        "id": "pepper_seed",
+        "name": "Biber tohumu",
+        "harvest_item_id": "pepper",
+        "mail_buy_g": 4,
+        "grow_watered_days": 5,
+        "harvest_quantity": 3,
+        "replacement_value_at_mail_prices_g": 15
+      }
+    ],
+    "food_recipes": [
+      {
+        "id": "vegetable_soup",
+        "name": "Sebze çorbası",
+        "tier": 1,
+        "station": "stove",
+        "ingredients": {
+          "potato": 2,
+          "carrot": 1,
+          "onion": 1
+        },
+        "cook_game_minutes": 30,
+        "prep_game_minutes": 4,
+        "yield_servings": 4,
+        "sell_g_per_serving": 12,
+        "batch_material_cost_g": 13,
+        "full_batch_sales_g": 48,
+        "full_batch_gross_profit_g": 35,
+        "material_gross_margin_percent": 72.9,
+        "freshness_days": 2,
+        "refrigerated_freshness_days": 4
+      },
+      {
+        "id": "boiled_potatoes",
+        "name": "Haşlanmış patates",
+        "tier": 1,
+        "station": "stove",
+        "ingredients": {
+          "potato": 3,
+          "salt": 1
+        },
+        "cook_game_minutes": 20,
+        "prep_game_minutes": 4,
+        "yield_servings": 3,
+        "sell_g_per_serving": 13,
+        "batch_material_cost_g": 13,
+        "full_batch_sales_g": 39,
+        "full_batch_gross_profit_g": 26,
+        "material_gross_margin_percent": 66.7,
+        "freshness_days": 2,
+        "refrigerated_freshness_days": 4
+      },
+      {
+        "id": "fried_bread",
+        "name": "Kızarmış ekmek",
+        "tier": 1,
+        "station": "stove",
+        "ingredients": {
+          "flour": 2,
+          "butter": 1
+        },
+        "cook_game_minutes": 18,
+        "prep_game_minutes": 4,
+        "yield_servings": 4,
+        "sell_g_per_serving": 10,
+        "batch_material_cost_g": 14,
+        "full_batch_sales_g": 40,
+        "full_batch_gross_profit_g": 26,
+        "material_gross_margin_percent": 65.0,
+        "freshness_days": 2,
+        "refrigerated_freshness_days": 4
+      },
+      {
+        "id": "lentil_soup",
+        "name": "Mercimek çorbası",
+        "tier": 2,
+        "station": "stove",
+        "ingredients": {
+          "lentil": 2,
+          "onion": 1,
+          "carrot": 1
+        },
+        "cook_game_minutes": 40,
+        "prep_game_minutes": 4,
+        "yield_servings": 5,
+        "sell_g_per_serving": 15,
+        "batch_material_cost_g": 15,
+        "full_batch_sales_g": 75,
+        "full_batch_gross_profit_g": 60,
+        "material_gross_margin_percent": 80.0,
+        "freshness_days": 2,
+        "refrigerated_freshness_days": 4
+      },
+      {
+        "id": "omelet",
+        "name": "Omlet",
+        "tier": 2,
+        "station": "stove",
+        "ingredients": {
+          "egg": 3,
+          "milk": 1
+        },
+        "cook_game_minutes": 20,
+        "prep_game_minutes": 4,
+        "yield_servings": 3,
+        "sell_g_per_serving": 19,
+        "batch_material_cost_g": 20,
+        "full_batch_sales_g": 57,
+        "full_batch_gross_profit_g": 37,
+        "material_gross_margin_percent": 64.9,
+        "freshness_days": 2,
+        "refrigerated_freshness_days": 4
+      },
+      {
+        "id": "vegetable_rice",
+        "name": "Sebzeli pilav",
+        "tier": 2,
+        "station": "stove",
+        "ingredients": {
+          "rice": 2,
+          "carrot": 1,
+          "onion": 1
+        },
+        "cook_game_minutes": 35,
+        "prep_game_minutes": 4,
+        "yield_servings": 4,
+        "sell_g_per_serving": 17,
+        "batch_material_cost_g": 15,
+        "full_batch_sales_g": 68,
+        "full_batch_gross_profit_g": 53,
+        "material_gross_margin_percent": 77.9,
+        "freshness_days": 2,
+        "refrigerated_freshness_days": 4
+      },
+      {
+        "id": "baked_potato",
+        "name": "Fırın patates",
+        "tier": 2,
+        "station": "basic_oven",
+        "ingredients": {
+          "potato": 3,
+          "butter": 1
+        },
+        "cook_game_minutes": 35,
+        "prep_game_minutes": 4,
+        "yield_servings": 3,
+        "sell_g_per_serving": 18,
+        "batch_material_cost_g": 18,
+        "full_batch_sales_g": 54,
+        "full_batch_gross_profit_g": 36,
+        "material_gross_margin_percent": 66.7,
+        "freshness_days": 2,
+        "refrigerated_freshness_days": 4
+      },
+      {
+        "id": "tomato_pasta",
+        "name": "Domatesli makarna",
+        "tier": 3,
+        "station": "stove",
+        "ingredients": {
+          "pasta": 2,
+          "tomato": 1
+        },
+        "cook_game_minutes": 35,
+        "prep_game_minutes": 4,
+        "yield_servings": 4,
+        "sell_g_per_serving": 20,
+        "batch_material_cost_g": 16,
+        "full_batch_sales_g": 80,
+        "full_batch_gross_profit_g": 64,
+        "material_gross_margin_percent": 80.0,
+        "freshness_days": 2,
+        "refrigerated_freshness_days": 4
+      },
+      {
+        "id": "chicken_stew",
+        "name": "Tavuk yahni",
+        "tier": 3,
+        "station": "stove",
+        "ingredients": {
+          "chicken": 2,
+          "potato": 1,
+          "onion": 1
+        },
+        "cook_game_minutes": 55,
+        "prep_game_minutes": 4,
+        "yield_servings": 4,
+        "sell_g_per_serving": 27,
+        "batch_material_cost_g": 22,
+        "full_batch_sales_g": 108,
+        "full_batch_gross_profit_g": 86,
+        "material_gross_margin_percent": 79.6,
+        "freshness_days": 2,
+        "refrigerated_freshness_days": 4
+      },
+      {
+        "id": "meatballs",
+        "name": "Köfte tabağı",
+        "tier": 3,
+        "station": "large_pan",
+        "ingredients": {
+          "minced_meat": 2,
+          "onion": 1,
+          "flour": 1
+        },
+        "cook_game_minutes": 45,
+        "prep_game_minutes": 4,
+        "yield_servings": 3,
+        "sell_g_per_serving": 34,
+        "batch_material_cost_g": 26,
+        "full_batch_sales_g": 102,
+        "full_batch_gross_profit_g": 76,
+        "material_gross_margin_percent": 74.5,
+        "freshness_days": 2,
+        "refrigerated_freshness_days": 4
+      },
+      {
+        "id": "apple_pie",
+        "name": "Elmalı turta",
+        "tier": 3,
+        "station": "basic_oven",
+        "ingredients": {
+          "apple": 2,
+          "flour": 1,
+          "sugar": 1
+        },
+        "cook_game_minutes": 60,
+        "prep_game_minutes": 4,
+        "yield_servings": 4,
+        "sell_g_per_serving": 23,
+        "batch_material_cost_g": 18,
+        "full_batch_sales_g": 92,
+        "full_batch_gross_profit_g": 74,
+        "material_gross_margin_percent": 80.4,
+        "freshness_days": 2,
+        "refrigerated_freshness_days": 4
+      },
+      {
+        "id": "mushroom_rice",
+        "name": "Mantarlı pilav",
+        "tier": 4,
+        "station": "stove",
+        "ingredients": {
+          "rice": 2,
+          "mushroom": 2,
+          "butter": 1
+        },
+        "cook_game_minutes": 55,
+        "prep_game_minutes": 4,
+        "yield_servings": 4,
+        "sell_g_per_serving": 33,
+        "batch_material_cost_g": 30,
+        "full_batch_sales_g": 132,
+        "full_batch_gross_profit_g": 102,
+        "material_gross_margin_percent": 77.3,
+        "freshness_days": 2,
+        "refrigerated_freshness_days": 4
+      },
+      {
+        "id": "fried_fish",
+        "name": "Balık tava",
+        "tier": 4,
+        "station": "large_pan",
+        "ingredients": {
+          "fish": 2,
+          "flour": 1
+        },
+        "cook_game_minutes": 45,
+        "prep_game_minutes": 4,
+        "yield_servings": 3,
+        "sell_g_per_serving": 36,
+        "batch_material_cost_g": 24,
+        "full_batch_sales_g": 108,
+        "full_batch_gross_profit_g": 84,
+        "material_gross_margin_percent": 77.8,
+        "freshness_days": 2,
+        "refrigerated_freshness_days": 4
+      },
+      {
+        "id": "station_kebab",
+        "name": "Gar kebabı",
+        "tier": 4,
+        "station": "advanced_stove",
+        "ingredients": {
+          "beef": 2,
+          "pepper": 1,
+          "onion": 1
+        },
+        "cook_game_minutes": 75,
+        "prep_game_minutes": 4,
+        "yield_servings": 4,
+        "sell_g_per_serving": 41,
+        "batch_material_cost_g": 33,
+        "full_batch_sales_g": 164,
+        "full_batch_gross_profit_g": 131,
+        "material_gross_margin_percent": 79.9,
+        "freshness_days": 2,
+        "refrigerated_freshness_days": 4
+      },
+      {
+        "id": "night_stew",
+        "name": "Gecenin güveci",
+        "tier": 4,
+        "station": "advanced_stove",
+        "ingredients": {
+          "beef": 2,
+          "potato": 1,
+          "mushroom": 1
+        },
+        "cook_game_minutes": 80,
+        "prep_game_minutes": 4,
+        "yield_servings": 4,
+        "sell_g_per_serving": 46,
+        "batch_material_cost_g": 37,
+        "full_batch_sales_g": 184,
+        "full_batch_gross_profit_g": 147,
+        "material_gross_margin_percent": 79.9,
+        "freshness_days": 2,
+        "refrigerated_freshness_days": 4
+      }
+    ],
+    "beverages": [
+      {
+        "id": "bottled_juice",
+        "name": "Şişe meyve suyu",
+        "tier": 1,
+        "station": "ready",
+        "ingredients": {},
+        "is_ready_bought": true,
+        "mail_buy_g_per_bottle": 6,
+        "cook_game_minutes": 0,
+        "yield_servings": 1,
+        "sell_g_per_serving": 10,
+        "batch_material_cost_g": 6,
+        "full_batch_sales_g": 10,
+        "full_batch_gross_profit_g": 4,
+        "material_gross_margin_percent": 40.0
+      },
+      {
+        "id": "bottled_lemonade",
+        "name": "Şişe limonata",
+        "tier": 1,
+        "station": "ready",
+        "ingredients": {},
+        "is_ready_bought": true,
+        "mail_buy_g_per_bottle": 5,
+        "cook_game_minutes": 0,
+        "yield_servings": 1,
+        "sell_g_per_serving": 9,
+        "batch_material_cost_g": 5,
+        "full_batch_sales_g": 9,
+        "full_batch_gross_profit_g": 4,
+        "material_gross_margin_percent": 44.4
+      },
+      {
+        "id": "tea",
+        "name": "Çay",
+        "tier": 2,
+        "station": "kettle",
+        "ingredients": {
+          "tea_leaves": 1,
+          "sugar": 1
+        },
+        "is_ready_bought": false,
+        "mail_buy_g_per_bottle": null,
+        "cook_game_minutes": 20,
+        "yield_servings": 4,
+        "sell_g_per_serving": 9,
+        "batch_material_cost_g": 9,
+        "full_batch_sales_g": 36,
+        "full_batch_gross_profit_g": 27,
+        "material_gross_margin_percent": 75.0
+      },
+      {
+        "id": "coffee",
+        "name": "Kahve",
+        "tier": 3,
+        "station": "coffee_machine",
+        "ingredients": {
+          "coffee_beans": 1,
+          "milk": 1
+        },
+        "is_ready_bought": false,
+        "mail_buy_g_per_bottle": null,
+        "cook_game_minutes": 25,
+        "yield_servings": 3,
+        "sell_g_per_serving": 14,
+        "batch_material_cost_g": 13,
+        "full_batch_sales_g": 42,
+        "full_batch_gross_profit_g": 29,
+        "material_gross_margin_percent": 69.0
+      },
+      {
+        "id": "apple_juice",
+        "name": "Taze elma suyu",
+        "tier": 3,
+        "station": "juicer",
+        "ingredients": {
+          "apple": 2
+        },
+        "is_ready_bought": false,
+        "mail_buy_g_per_bottle": null,
+        "cook_game_minutes": 30,
+        "yield_servings": 3,
+        "sell_g_per_serving": 12,
+        "batch_material_cost_g": 10,
+        "full_batch_sales_g": 36,
+        "full_batch_gross_profit_g": 26,
+        "material_gross_margin_percent": 72.2
+      },
+      {
+        "id": "berry_juice",
+        "name": "Orman meyvesi suyu",
+        "tier": 3,
+        "station": "juicer",
+        "ingredients": {
+          "wild_berries": 2,
+          "sugar": 1
+        },
+        "is_ready_bought": false,
+        "mail_buy_g_per_bottle": null,
+        "cook_game_minutes": 35,
+        "yield_servings": 3,
+        "sell_g_per_serving": 13,
+        "batch_material_cost_g": 12,
+        "full_batch_sales_g": 39,
+        "full_batch_gross_profit_g": 27,
+        "material_gross_margin_percent": 69.2
+      }
+    ],
+    "furniture": [
+      {
+        "id": "simple_table",
+        "name": "Basit ahşap masa",
+        "unlocks_at_restoration_stage": 1,
+        "width_cells": 2,
+        "height_cells": 2,
+        "materials": {
+          "wood": 4
+        },
+        "effect": "2-4 sandalyeye uygun masa",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 4,
+        "stack_max": 1
+      },
+      {
+        "id": "wooden_chair",
+        "name": "Ahşap sandalye",
+        "unlocks_at_restoration_stage": 1,
+        "width_cells": 1,
+        "height_cells": 1,
+        "materials": {
+          "wood": 2
+        },
+        "effect": "1 koltuk",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 2,
+        "stack_max": 1
+      },
+      {
+        "id": "stool",
+        "name": "Ahşap tabure",
+        "unlocks_at_restoration_stage": 1,
+        "width_cells": 1,
+        "height_cells": 1,
+        "materials": {
+          "wood": 2
+        },
+        "effect": "1 koltuk",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 2,
+        "stack_max": 1
+      },
+      {
+        "id": "small_chest",
+        "name": "Küçük sandık",
+        "unlocks_at_restoration_stage": 1,
+        "width_cells": 2,
+        "height_cells": 1,
+        "materials": {
+          "wood": 5
+        },
+        "effect": "+12 depo slotu",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 5,
+        "stack_max": 1
+      },
+      {
+        "id": "wooden_shelf",
+        "name": "Ahşap raf",
+        "unlocks_at_restoration_stage": 1,
+        "width_cells": 1,
+        "height_cells": 2,
+        "materials": {
+          "wood": 6,
+          "stone": 2
+        },
+        "effect": "+12 depo slotu",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 10,
+        "stack_max": 1
+      },
+      {
+        "id": "small_plant",
+        "name": "Küçük saksı",
+        "unlocks_at_restoration_stage": 1,
+        "width_cells": 1,
+        "height_cells": 1,
+        "materials": {
+          "wood": 1,
+          "stone": 2
+        },
+        "effect": "dekorasyon",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 5,
+        "stack_max": 1
+      },
+      {
+        "id": "wooden_fence",
+        "name": "Ahşap çit",
+        "unlocks_at_restoration_stage": 1,
+        "width_cells": 1,
+        "height_cells": 1,
+        "materials": {
+          "wood": 2
+        },
+        "effect": "dış mekân sınırı",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 2,
+        "stack_max": 1
+      },
+      {
+        "id": "stone_path",
+        "name": "Taş yürüyüş yolu",
+        "unlocks_at_restoration_stage": 1,
+        "width_cells": 1,
+        "height_cells": 1,
+        "materials": {
+          "stone": 2
+        },
+        "effect": "zemin",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 4,
+        "stack_max": 1
+      },
+      {
+        "id": "garden_bed",
+        "name": "Tarım yatağı",
+        "unlocks_at_restoration_stage": 1,
+        "width_cells": 2,
+        "height_cells": 2,
+        "materials": {
+          "wood": 4,
+          "stone": 2
+        },
+        "effect": "+1 ekim alanı; toplam 20",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 8,
+        "stack_max": 1
+      },
+      {
+        "id": "large_table",
+        "name": "Büyük yemek masası",
+        "unlocks_at_restoration_stage": 2,
+        "width_cells": 3,
+        "height_cells": 2,
+        "materials": {
+          "wood": 10,
+          "stone": 3
+        },
+        "effect": "kalabalık grup masası",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 16,
+        "stack_max": 1
+      },
+      {
+        "id": "round_table",
+        "name": "Yuvarlak masa",
+        "unlocks_at_restoration_stage": 2,
+        "width_cells": 2,
+        "height_cells": 2,
+        "materials": {
+          "wood": 6,
+          "metal_part": 2
+        },
+        "effect": "alternatif masa",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 30,
+        "stack_max": 1
+      },
+      {
+        "id": "comfort_chair",
+        "name": "Konforlu sandalye",
+        "unlocks_at_restoration_stage": 2,
+        "width_cells": 1,
+        "height_cells": 1,
+        "materials": {
+          "wood": 3,
+          "fabric": 1
+        },
+        "effect": "1 koltuk, +1 konfor",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 13,
+        "stack_max": 1
+      },
+      {
+        "id": "double_bench",
+        "name": "İkili bank",
+        "unlocks_at_restoration_stage": 2,
+        "width_cells": 2,
+        "height_cells": 1,
+        "materials": {
+          "wood": 5,
+          "metal_part": 2
+        },
+        "effect": "2 oturma noktası",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 29,
+        "stack_max": 1
+      },
+      {
+        "id": "large_chest",
+        "name": "Büyük sandık",
+        "unlocks_at_restoration_stage": 2,
+        "width_cells": 2,
+        "height_cells": 2,
+        "materials": {
+          "wood": 10,
+          "metal_part": 2
+        },
+        "effect": "+24 depo slotu",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 34,
+        "stack_max": 1
+      },
+      {
+        "id": "kitchen_shelf",
+        "name": "Mutfak rafı",
+        "unlocks_at_restoration_stage": 2,
+        "width_cells": 2,
+        "height_cells": 1,
+        "materials": {
+          "wood": 7,
+          "metal_part": 2
+        },
+        "effect": "+16 depo slotu",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 31,
+        "stack_max": 1
+      },
+      {
+        "id": "bar_bottle_shelf",
+        "name": "Bar şişe rafı",
+        "unlocks_at_restoration_stage": 2,
+        "width_cells": 2,
+        "height_cells": 1,
+        "materials": {
+          "wood": 6,
+          "glass": 2
+        },
+        "effect": "dekorasyon; bar slotu eklemez",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 22,
+        "stack_max": 1
+      },
+      {
+        "id": "small_rug",
+        "name": "Küçük halı",
+        "unlocks_at_restoration_stage": 2,
+        "width_cells": 2,
+        "height_cells": 2,
+        "materials": {
+          "fabric": 2
+        },
+        "effect": "+1 konfor",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 20,
+        "stack_max": 1
+      },
+      {
+        "id": "framed_picture",
+        "name": "Çerçeveli tablo",
+        "unlocks_at_restoration_stage": 2,
+        "width_cells": 1,
+        "height_cells": 1,
+        "materials": {
+          "wood": 3,
+          "glass": 1
+        },
+        "effect": "duvar dekorasyonu",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 11,
+        "stack_max": 1
+      },
+      {
+        "id": "garden_bench",
+        "name": "Bahçe bankı",
+        "unlocks_at_restoration_stage": 2,
+        "width_cells": 2,
+        "height_cells": 1,
+        "materials": {
+          "wood": 6,
+          "stone": 2
+        },
+        "effect": "dış mekân dekorasyonu",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 10,
+        "stack_max": 1
+      },
+      {
+        "id": "wood_floor",
+        "name": "Ahşap zemin döşemesi",
+        "unlocks_at_restoration_stage": 2,
+        "width_cells": 1,
+        "height_cells": 1,
+        "materials": {
+          "wood": 1
+        },
+        "effect": "zemin kaplama",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 1,
+        "stack_max": 1
+      },
+      {
+        "id": "cushioned_sofa",
+        "name": "Döşemeli ikili koltuk",
+        "unlocks_at_restoration_stage": 3,
+        "width_cells": 2,
+        "height_cells": 1,
+        "materials": {
+          "wood": 5,
+          "fabric": 2
+        },
+        "effect": "2 koltuk; konfor",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 25,
+        "stack_max": 1
+      },
+      {
+        "id": "banquet_table",
+        "name": "Uzun ziyafet masası",
+        "unlocks_at_restoration_stage": 3,
+        "width_cells": 4,
+        "height_cells": 2,
+        "materials": {
+          "wood": 12,
+          "metal_part": 4
+        },
+        "effect": "kalabalık grup masası",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 60,
+        "stack_max": 1
+      },
+      {
+        "id": "pantry_cabinet",
+        "name": "Büyük erzak dolabı",
+        "unlocks_at_restoration_stage": 3,
+        "width_cells": 2,
+        "height_cells": 2,
+        "materials": {
+          "wood": 12,
+          "metal_part": 3
+        },
+        "effect": "+24 depo slotu",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 48,
+        "stack_max": 1
+      },
+      {
+        "id": "floor_lamp",
+        "name": "Ayaklı lamba",
+        "unlocks_at_restoration_stage": 3,
+        "width_cells": 1,
+        "height_cells": 1,
+        "materials": {
+          "wood": 4,
+          "metal_part": 1,
+          "glass": 1
+        },
+        "effect": "ışık ve dekor",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 24,
+        "stack_max": 1
+      },
+      {
+        "id": "curtain",
+        "name": "Pencere perdesi",
+        "unlocks_at_restoration_stage": 3,
+        "width_cells": 1,
+        "height_cells": 2,
+        "materials": {
+          "wood": 1,
+          "fabric": 2
+        },
+        "effect": "duvar dekorasyonu",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 21,
+        "stack_max": 1
+      },
+      {
+        "id": "coat_rack",
+        "name": "Askılık",
+        "unlocks_at_restoration_stage": 3,
+        "width_cells": 1,
+        "height_cells": 1,
+        "materials": {
+          "wood": 5,
+          "metal_part": 1
+        },
+        "effect": "dekorasyon",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 17,
+        "stack_max": 1
+      },
+      {
+        "id": "wood_partition",
+        "name": "Ahşap bölme",
+        "unlocks_at_restoration_stage": 3,
+        "width_cells": 2,
+        "height_cells": 1,
+        "materials": {
+          "wood": 7,
+          "fabric": 1
+        },
+        "effect": "salon bölme",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 17,
+        "stack_max": 1
+      },
+      {
+        "id": "large_plant",
+        "name": "Büyük saksı",
+        "unlocks_at_restoration_stage": 3,
+        "width_cells": 2,
+        "height_cells": 1,
+        "materials": {
+          "wood": 3,
+          "stone": 5
+        },
+        "effect": "+1 konfor",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 13,
+        "stack_max": 1
+      },
+      {
+        "id": "bookshelf",
+        "name": "Kitaplık",
+        "unlocks_at_restoration_stage": 3,
+        "width_cells": 2,
+        "height_cells": 1,
+        "materials": {
+          "wood": 8,
+          "metal_part": 2
+        },
+        "effect": "dekorasyon",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 32,
+        "stack_max": 1
+      },
+      {
+        "id": "flower_bed",
+        "name": "Çiçek yatağı",
+        "unlocks_at_restoration_stage": 3,
+        "width_cells": 2,
+        "height_cells": 1,
+        "materials": {
+          "wood": 4,
+          "stone": 2
+        },
+        "effect": "dış mekân",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 8,
+        "stack_max": 1
+      },
+      {
+        "id": "woodshed",
+        "name": "Odunluk",
+        "unlocks_at_restoration_stage": 3,
+        "width_cells": 2,
+        "height_cells": 1,
+        "materials": {
+          "wood": 5
+        },
+        "effect": "depolama ve dekorasyon",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 5,
+        "stack_max": 1
+      },
+      {
+        "id": "stone_floor",
+        "name": "Taş zemin döşemesi",
+        "unlocks_at_restoration_stage": 3,
+        "width_cells": 1,
+        "height_cells": 1,
+        "materials": {
+          "stone": 2
+        },
+        "effect": "zemin kaplama",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 4,
+        "stack_max": 1
+      },
+      {
+        "id": "ornate_chair",
+        "name": "İşlemeli sandalye",
+        "unlocks_at_restoration_stage": 4,
+        "width_cells": 1,
+        "height_cells": 1,
+        "materials": {
+          "wood": 4,
+          "fabric": 1,
+          "metal_part": 1
+        },
+        "effect": "1 koltuk, +2 konfor",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 26,
+        "stack_max": 1
+      },
+      {
+        "id": "wall_clock",
+        "name": "Duvar saati",
+        "unlocks_at_restoration_stage": 4,
+        "width_cells": 1,
+        "height_cells": 1,
+        "materials": {
+          "wood": 4,
+          "metal_part": 2,
+          "glass": 1
+        },
+        "effect": "duvar dekorasyonu",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 36,
+        "stack_max": 1
+      },
+      {
+        "id": "chandelier",
+        "name": "Büyük avize",
+        "unlocks_at_restoration_stage": 4,
+        "width_cells": 2,
+        "height_cells": 2,
+        "materials": {
+          "wood": 8,
+          "metal_part": 3,
+          "glass": 2
+        },
+        "effect": "ışık ve dekor",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 60,
+        "stack_max": 1
+      },
+      {
+        "id": "garden_lamppost",
+        "name": "Bahçe lambası",
+        "unlocks_at_restoration_stage": 4,
+        "width_cells": 1,
+        "height_cells": 1,
+        "materials": {
+          "wood": 5,
+          "metal_part": 2,
+          "glass": 2
+        },
+        "effect": "dış aydınlatma",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 45,
+        "stack_max": 1
+      },
+      {
+        "id": "ornate_sign",
+        "name": "İşlemeli restoran tabelası",
+        "unlocks_at_restoration_stage": 4,
+        "width_cells": 2,
+        "height_cells": 1,
+        "materials": {
+          "wood": 8,
+          "metal_part": 2,
+          "glass": 1
+        },
+        "effect": "dış mekân tabela",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 40,
+        "stack_max": 1
+      },
+      {
+        "id": "wallpaper_pack",
+        "name": "Duvar kâğıdı paketi",
+        "unlocks_at_restoration_stage": 4,
+        "width_cells": 1,
+        "height_cells": 4,
+        "materials": {
+          "fabric": 1
+        },
+        "effect": "4 duvar hücresi kaplama",
+        "crafting_station": "workbench",
+        "display_only_resource_equivalent_g": 10,
+        "stack_max": 1
+      }
+    ],
+    "crafted_tools": [
+      {
+        "id": "serving_tray",
+        "name": "Servis tepsisi",
+        "stage": 2,
+        "materials": {
+          "wood": 4,
+          "metal_part": 1
+        },
+        "carry_capacity": 2
+      },
+      {
+        "id": "advanced_tray",
+        "name": "Gelişmiş servis tepsisi",
+        "stage": 3,
+        "materials": {
+          "wood": 6,
+          "metal_part": 2
+        },
+        "carry_capacity": 3
+      }
+    ],
+    "purchased_equipment": [
+      {
+        "id": "second_stove",
+        "name": "İkinci ocak",
+        "unlocks_at_restoration_stage": 2,
+        "mail_purchase_g": 120,
+        "install_materials": {
+          "wood": 6,
+          "stone": 8
+        },
+        "effect": "Yeni tekil pişirme istasyonu",
+        "arrives_next_day": true,
+        "fully_free_placement": true
+      },
+      {
+        "id": "kettle",
+        "name": "Çaydanlık",
+        "unlocks_at_restoration_stage": 2,
+        "mail_purchase_g": 90,
+        "install_materials": {
+          "wood": 4,
+          "stone": 3
+        },
+        "effect": "Çay üretimi",
+        "arrives_next_day": true,
+        "fully_free_placement": true
+      },
+      {
+        "id": "basic_oven",
+        "name": "Basit fırın",
+        "unlocks_at_restoration_stage": 2,
+        "mail_purchase_g": 260,
+        "install_materials": {
+          "wood": 8,
+          "stone": 10
+        },
+        "effect": "Fırın yemekleri",
+        "arrives_next_day": true,
+        "fully_free_placement": true
+      },
+      {
+        "id": "better_prep",
+        "name": "Gelişmiş hazırlık tezgâhı",
+        "unlocks_at_restoration_stage": 2,
+        "mail_purchase_g": 180,
+        "install_materials": {
+          "wood": 12,
+          "stone": 6
+        },
+        "effect": "Tarif hazırlama süresini 4 dk -> 3 dk",
+        "arrives_next_day": true,
+        "fully_free_placement": true
+      },
+      {
+        "id": "food_bar_2",
+        "name": "İkinci yemek bar modülü",
+        "unlocks_at_restoration_stage": 2,
+        "mail_purchase_g": 150,
+        "install_materials": {
+          "wood": 10,
+          "stone": 4
+        },
+        "effect": "+1 yemek slotu",
+        "arrives_next_day": true,
+        "fully_free_placement": true
+      },
+      {
+        "id": "drink_bar_2",
+        "name": "İkinci içecek bar modülü",
+        "unlocks_at_restoration_stage": 2,
+        "mail_purchase_g": 130,
+        "install_materials": {
+          "wood": 8,
+          "glass": 2
+        },
+        "effect": "+1 içecek slotu",
+        "arrives_next_day": true,
+        "fully_free_placement": true
+      },
+      {
+        "id": "fireplace",
+        "name": "Şömine",
+        "unlocks_at_restoration_stage": 2,
+        "mail_purchase_g": 220,
+        "install_materials": {},
+        "effect": "1 odun 4 oyun saati ısı sağlar",
+        "arrives_next_day": true,
+        "fully_free_placement": true
+      },
+      {
+        "id": "large_pan",
+        "name": "Büyük tava",
+        "unlocks_at_restoration_stage": 3,
+        "mail_purchase_g": 190,
+        "install_materials": {
+          "wood": 8,
+          "stone": 4,
+          "metal_part": 1
+        },
+        "effect": "Köfte ve balık tava",
+        "arrives_next_day": true,
+        "fully_free_placement": true
+      },
+      {
+        "id": "coffee_machine",
+        "name": "Kahve makinesi",
+        "unlocks_at_restoration_stage": 3,
+        "mail_purchase_g": 210,
+        "install_materials": {
+          "wood": 6,
+          "metal_part": 2
+        },
+        "effect": "Kahve üretimi",
+        "arrives_next_day": true,
+        "fully_free_placement": true
+      },
+      {
+        "id": "juicer",
+        "name": "Meyve presi",
+        "unlocks_at_restoration_stage": 3,
+        "mail_purchase_g": 180,
+        "install_materials": {
+          "wood": 5,
+          "metal_part": 2
+        },
+        "effect": "Taze içecek üretimi",
+        "arrives_next_day": true,
+        "fully_free_placement": true
+      },
+      {
+        "id": "refrigerator",
+        "name": "Soğutucu dolap",
+        "unlocks_at_restoration_stage": 3,
+        "mail_purchase_g": 380,
+        "install_materials": {
+          "wood": 10,
+          "metal_part": 2,
+          "glass": 2
+        },
+        "effect": "Saklama süresi 2 günden 4 güne",
+        "arrives_next_day": true,
+        "fully_free_placement": true
+      },
+      {
+        "id": "food_bar_3",
+        "name": "Üçüncü yemek bar modülü",
+        "unlocks_at_restoration_stage": 3,
+        "mail_purchase_g": 270,
+        "install_materials": {
+          "wood": 14,
+          "metal_part": 3
+        },
+        "effect": "+1 yemek slotu",
+        "arrives_next_day": true,
+        "fully_free_placement": true
+      },
+      {
+        "id": "advanced_stove",
+        "name": "Gelişmiş ocak",
+        "unlocks_at_restoration_stage": 4,
+        "mail_purchase_g": 480,
+        "install_materials": {
+          "stone": 10,
+          "metal_part": 3
+        },
+        "effect": "Gar kebabı ve gecenin güveci",
+        "arrives_next_day": true,
+        "fully_free_placement": true
+      },
+      {
+        "id": "food_bar_4",
+        "name": "Dördüncü yemek bar modülü",
+        "unlocks_at_restoration_stage": 4,
+        "mail_purchase_g": 450,
+        "install_materials": {
+          "wood": 18,
+          "metal_part": 4
+        },
+        "effect": "+1 yemek slotu",
+        "arrives_next_day": true,
+        "fully_free_placement": true
+      }
+    ],
+    "main_expansions": [
+      {
+        "id": "salon_expansion_1",
+        "name": "Salon genişletme I",
+        "restoration_stage_after_completion": 2,
+        "required_completed_paid_customers": 12,
+        "gold_cost_g": 300,
+        "materials": {
+          "wood": 20,
+          "stone": 10
+        },
+        "effect": "8-10 koltuğun rahatça sığabileceği alan",
+        "build_on_next_morning": true
+      },
+      {
+        "id": "salon_expansion_2",
+        "name": "Salon genişletme II",
+        "restoration_stage_after_completion": 3,
+        "required_completed_paid_customers": 70,
+        "gold_cost_g": 950,
+        "materials": {
+          "wood": 35,
+          "stone": 18
+        },
+        "effect": "12-16 koltuğun rahatça sığabileceği alan",
+        "build_on_next_morning": true
+      },
+      {
+        "id": "salon_expansion_3",
+        "name": "Salon genişletme III",
+        "restoration_stage_after_completion": 4,
+        "required_completed_paid_customers": 220,
+        "gold_cost_g": 2400,
+        "materials": {
+          "wood": 55,
+          "stone": 30,
+          "metal_part": 4
+        },
+        "effect": "20-24 koltuğun rahatça sığabileceği alan",
+        "build_on_next_morning": true
+      },
+      {
+        "id": "salon_expansion_4",
+        "name": "Salon genişletme IV",
+        "restoration_stage_after_completion": 5,
+        "required_completed_paid_customers": 500,
+        "gold_cost_g": 5200,
+        "materials": {
+          "wood": 80,
+          "stone": 40,
+          "metal_part": 8
+        },
+        "effect": "30+ koltuk için alan",
+        "build_on_next_morning": true
+      }
+    ],
+    "optional_renovations": [
+      {
+        "id": "façade_renewal",
+        "name": "Restoran dış cephe yenilemesi",
+        "stage": 2,
+        "gold_cost_g": 100,
+        "materials": {
+          "wood": 8,
+          "stone": 6
+        }
+      },
+      {
+        "id": "kitchen_expansion",
+        "name": "Mutfak genişletme",
+        "stage": 3,
+        "gold_cost_g": 480,
+        "materials": {
+          "wood": 18,
+          "stone": 12
+        }
+      },
+      {
+        "id": "storage_expansion",
+        "name": "Depo oda genişletme",
+        "stage": 3,
+        "gold_cost_g": 420,
+        "materials": {
+          "wood": 15,
+          "stone": 8
+        }
+      },
+      {
+        "id": "railway_sign_repair",
+        "name": "İstasyon tabelası restorasyonu",
+        "stage": 3,
+        "gold_cost_g": 650,
+        "materials": {
+          "wood": 22,
+          "stone": 10
+        }
+      },
+      {
+        "id": "terrace",
+        "name": "Bahçe terası",
+        "stage": 4,
+        "gold_cost_g": 720,
+        "materials": {
+          "wood": 22,
+          "stone": 12
+        }
+      }
+    ],
+    "employees": [
+      {
+        "role_id": "cleaner",
+        "name": "Temizlik görevlisi",
+        "base_daily_wage_g": 15,
+        "max_active_from_stages": "1/2/3/4 for restoration stages 2/3/4/5",
+        "allowed_tasks": [
+          "masa temizliği",
+          "zemin temizliği"
+        ],
+        "must_not_do": "Oyuncu yerine sipariş alma, son servis ve ödeme alma"
+      },
+      {
+        "role_id": "service_helper",
+        "name": "Servis yardımcısı",
+        "base_daily_wage_g": 18,
+        "max_active_from_stages": "1/2/3/4 for restoration stages 2/3/4/5",
+        "allowed_tasks": [
+          "pişmiş ürünü bara taşıma",
+          "boş tabakları toplama"
+        ],
+        "must_not_do": "Oyuncu yerine sipariş alma, son servis ve ödeme alma"
+      },
+      {
+        "role_id": "kitchen_helper",
+        "name": "Mutfak yardımcısı",
+        "base_daily_wage_g": 22,
+        "max_active_from_stages": "1/2/3/4 for restoration stages 2/3/4/5",
+        "allowed_tasks": [
+          "hazırlık süresini azaltma",
+          "depo düzenleme"
+        ],
+        "must_not_do": "Oyuncu yerine sipariş alma, son servis ve ödeme alma"
+      },
+      {
+        "role_id": "host_helper",
+        "name": "Karşılama yardımcısı",
+        "base_daily_wage_g": 18,
+        "max_active_from_stages": "1/2/3/4 for restoration stages 2/3/4/5",
+        "allowed_tasks": [
+          "kapı kuyruğunu düzenleme",
+          "oyuncunun seçtiği masaya yönlendirme"
+        ],
+        "must_not_do": "Oyuncu yerine sipariş alma, son servis ve ödeme alma"
+      }
+    ],
+    "rules": {
+      "ingredient_mail_delivery": "Next day 06:00; charge once at checkout",
+      "crafting": "Consume listed materials and produce exactly one furnishing/tool; do not charge G again",
+      "equipment": "G paid on mail order, items arrive following morning, installation consumes resources; freely place on any valid accessible floor cell",
+      "renovation": "Pay G and resources once; room expansion occurs the next morning",
+      "recipes": "Cost and sale tracked per batch; menu contains only nonexpired products physically placed in bar slots",
+      "bar_reservations": "Reserve one portion once per valid customer order; prevent double consumption",
+      "farming": "Daily watering or rain; absence of watering only pauses growth; 4 starter beds, 20 maximum",
+      "sim_pause": "Pause common game clock and all sim timers in large UI/placement menus",
+      "raw_food_storage": "No raw spoilage in first scope",
+      "cooked_freshness": "2 full game days, 4 with refrigerator; FIFO by cooking batch",
+      "ready_drinks": "Bottled products do not expire in first scope",
+      "end_of_day": "23:00 auto stop new arrivals; finish active table service in closing grace; no NPC or order disappears",
+      "salary": "Employee work only if daily wage prepaid once at beginning of shift; insufficient funds make that shift inactive",
+      "save": "IndexedDB with JSON export/import and versioning"
+    }
+  },
+  "world_and_simulation_v08": {
+    "locked_design_choices": {
+      "platform": "PC-öncelikli HTML5",
+      "visuals": "klasik 16-bit pixel art; 32x32 karo; yakın komşu ölçekleme",
+      "furniture": "kullanıma açık uygun zeminlerde tamamen serbest yerleştirme; tesisat yuvası yok",
+      "staff": "A yardımcı personel; oyuncu karşılama, sipariş, son servis ve ödeme yapar",
+      "story": "C hikâye + sandbox; ana görevler serbest ilerlemeyi engellemez",
+      "economy": "A rahat/cozy; kira, vergi, kredi, faiz yok",
+      "train_arrivals": [
+        "09:00",
+        "15:00",
+        "21:00"
+      ],
+      "day_start": "06:00",
+      "day_closing": "23:00",
+      "season_days": 28,
+      "year_days": 112
+    },
+    "time": {
+      "active_game_minutes_per_day": 1020,
+      "real_seconds_per_day": 1200,
+      "real_seconds_per_game_minute": 1.176471,
+      "modal_time_paused": true,
+      "paused_modal_groups": [
+        "envanter",
+        "posta kataloğu",
+        "crafting",
+        "tarif defteri",
+        "restorasyon defteri",
+        "mobilya yerleştirme",
+        "personel",
+        "görev defteri",
+        "ayarlar"
+      ],
+      "closing_mode": "23:00 itibarıyla giriş kapatılır, oyun saati 23:00 sabitlenir, sadece içerideki bekleyen hizmetler ve kapanış işlemleri sürer; yeni müşteri/spawn yok",
+      "sleep_resolution": "Aktif müşteriler varsa bitir ya da açık onayla günü kapat; ücret/sipariş ve rezervasyonlar tek seferde uzlaştırılır"
+    },
+    "world": {
+      "tile_size_px": 32,
+      "scenes": [
+        {
+          "id": "railway_outdoors",
+          "size_tiles": [
+            116,
+            82
+          ],
+          "size_pixels": [
+            3712,
+            2624
+          ],
+          "camera": "smooth_follow",
+          "always_loaded_logic": true
+        },
+        {
+          "id": "restaurant_interior",
+          "size_tiles": [
+            60,
+            42
+          ],
+          "size_pixels": [
+            1920,
+            1344
+          ],
+          "camera": "smooth_follow",
+          "always_loaded_logic": true
+        },
+        {
+          "id": "town_square",
+          "size_tiles": [
+            60,
+            44
+          ],
+          "size_pixels": [
+            1920,
+            1408
+          ],
+          "camera": "smooth_follow",
+          "always_loaded_logic": false
+        },
+        {
+          "id": "riverbank",
+          "size_tiles": [
+            48,
+            32
+          ],
+          "size_pixels": [
+            1536,
+            1024
+          ],
+          "camera": "smooth_follow",
+          "always_loaded_logic": false,
+          "note": "Balıkçılık minioyunu ve açılma şartları ayrıca tamamlanacak; balık malzemesi posta ile her zaman edinilebilir."
+        }
+      ],
+      "outdoors_regions": [
+        {
+          "name": "Restoran dış kabuğu",
+          "rect": [
+            43,
+            24,
+            67,
+            45
+          ]
+        },
+        {
+          "name": "Gar ve istasyon binası",
+          "rect": [
+            7,
+            39,
+            37,
+            56
+          ]
+        },
+        {
+          "name": "Kuzey peronu",
+          "rect": [
+            8,
+            52,
+            38,
+            55
+          ]
+        },
+        {
+          "name": "Doğu-batı tren rayı",
+          "rect": [
+            0,
+            57,
+            115,
+            60
+          ]
+        },
+        {
+          "name": "Küçük orman",
+          "rect": [
+            35,
+            1,
+            99,
+            22
+          ]
+        },
+        {
+          "name": "Başlangıç bahçesi",
+          "rect": [
+            69,
+            27,
+            88,
+            45
+          ]
+        }
+      ],
+      "outdoors_interaction_points": [
+        {
+          "id": "restaurant_entrance",
+          "xy": [
+            54,
+            45
+          ],
+          "link_scene": "restaurant_interior",
+          "link_xy": [
+            16,
+            34
+          ]
+        },
+        {
+          "id": "mailbox",
+          "xy": [
+            68,
+            46
+          ],
+          "interaction": "catalogue"
+        },
+        {
+          "id": "delivery_crate",
+          "xy": [
+            70,
+            46
+          ],
+          "interaction": "collect_parcels"
+        },
+        {
+          "id": "station_platform_spawn",
+          "xy": [
+            25,
+            53
+          ],
+          "interaction": "train_disembark"
+        },
+        {
+          "id": "train_stop",
+          "xy": [
+            24,
+            58
+          ],
+          "interaction": "train_stops_9_15_21"
+        },
+        {
+          "id": "town_exit",
+          "xy": [
+            0,
+            37
+          ],
+          "link_scene": "town_square"
+        },
+        {
+          "id": "river_exit",
+          "xy": [
+            115,
+            46
+          ],
+          "link_scene": "riverbank"
+        },
+        {
+          "id": "forest_entry",
+          "xy": [
+            54,
+            23
+          ],
+          "interaction": "path_from_restaurant"
+        },
+        {
+          "id": "garden_entry",
+          "xy": [
+            69,
+            38
+          ],
+          "interaction": "farming"
+        }
+      ],
+      "path_corridors_required": [
+        {
+          "from": [
+            25,
+            53
+          ],
+          "via": [
+            [
+              25,
+              49
+            ],
+            [
+              54,
+              49
+            ]
+          ],
+          "to": [
+            54,
+            45
+          ],
+          "note": "gar çıkışı → restoran girişine açık yol"
+        },
+        {
+          "from": [
+            54,
+            45
+          ],
+          "to": [
+            54,
+            23
+          ],
+          "note": "restoran → orman"
+        },
+        {
+          "from": [
+            54,
+            45
+          ],
+          "to": [
+            69,
+            38
+          ],
+          "note": "restoran → bahçe"
+        },
+        {
+          "from": [
+            54,
+            45
+          ],
+          "to": [
+            68,
+            46
+          ],
+          "note": "restoran → posta kutusu"
+        }
+      ],
+      "interior": {
+        "full_grid": [
+          60,
+          42
+        ],
+        "base_walkable_zones": [
+          {
+            "id": "bedroom",
+            "rect": [
+              6,
+              5,
+              17,
+              14
+            ],
+            "description": "oyuncu yatağı ve kişisel dolap"
+          },
+          {
+            "id": "dining",
+            "rect": [
+              6,
+              16,
+              29,
+              34
+            ],
+            "description": "başlangıç müşteri salonu"
+          },
+          {
+            "id": "kitchen",
+            "rect": [
+              31,
+              14,
+              46,
+              31
+            ],
+            "description": "ocak ve hazırlık"
+          },
+          {
+            "id": "storage",
+            "rect": [
+              34,
+              5,
+              45,
+              12
+            ],
+            "description": "başlangıç depo"
+          },
+          {
+            "id": "bar",
+            "rect": [
+              24,
+              20,
+              29,
+              27
+            ],
+            "description": "salonla ortak zemindeki işlevsel servis bölgesi, ayrı kapalı oda değildir"
+          }
+        ],
+        "fixed_portals": [
+          {
+            "id": "bedroom_dining",
+            "through": [
+              [
+                11,
+                14
+              ],
+              [
+                11,
+                15
+              ],
+              [
+                11,
+                16
+              ]
+            ]
+          },
+          {
+            "id": "dining_kitchen",
+            "through": [
+              [
+                29,
+                23
+              ],
+              [
+                30,
+                23
+              ],
+              [
+                31,
+                23
+              ]
+            ]
+          },
+          {
+            "id": "kitchen_storage",
+            "through": [
+              [
+                39,
+                12
+              ],
+              [
+                39,
+                13
+              ],
+              [
+                39,
+                14
+              ]
+            ]
+          },
+          {
+            "id": "main_entrance",
+            "through": [
+              [
+                16,
+                34
+              ],
+              [
+                16,
+                35
+              ]
+            ]
+          }
+        ],
+        "expansions": [
+          {
+            "stage": 2,
+            "id": "north_lounge",
+            "rect": [
+              18,
+              5,
+              29,
+              14
+            ],
+            "portal_through": [
+              [
+                23,
+                14
+              ],
+              [
+                23,
+                15
+              ],
+              [
+                23,
+                16
+              ]
+            ],
+            "use": "oturma ve dekorasyon"
+          },
+          {
+            "stage": 3,
+            "id": "west_dining",
+            "rect": [
+              0,
+              18,
+              5,
+              34
+            ],
+            "portal_through": [
+              [
+                5,
+                25
+              ],
+              [
+                6,
+                25
+              ]
+            ],
+            "use": "ek masa kapasitesi"
+          },
+          {
+            "stage": 4,
+            "id": "east_kitchen",
+            "rect": [
+              47,
+              14,
+              58,
+              31
+            ],
+            "portal_through": [
+              [
+                46,
+                22
+              ],
+              [
+                47,
+                22
+              ]
+            ],
+            "use": "gelişmiş mutfak ve depo tasarımları"
+          },
+          {
+            "stage": 5,
+            "id": "southeast_hall",
+            "rect": [
+              30,
+              33,
+              58,
+              40
+            ],
+            "portal_through": [
+              [
+                29,
+                33
+              ],
+              [
+                30,
+                33
+              ]
+            ],
+            "use": "prestijli salon ve etkinlik alanı"
+          }
+        ],
+        "placement_rules": [
+          "Bütün üretilen mobilyalar ve mutfak istasyonları uygun, açılmış zemine serbest yerleştirilebilir.",
+          "Oda adı bir mobilyanın yerleşimini kısıtlamaz; görsel ve işleve dayalı tavsiyedir.",
+          "Yalnızca sabit dış duvarlar, kapı eşikleri, taşıyıcı duvarlar ve açılmamış kanatlar düzenlenemez.",
+          "Yerleştirmeden önce oyuncudan çıkışa, yatak, depo, posta bağlantısı, ocak ve her aktif masanın etkileşim noktalarına erişim kontrol edilir.",
+          "Masa en az bir oturma bağlantı noktasına, ocak/bar en az bir erişim hücresine ihtiyaç duyar.",
+          "Mobilya taşımak ücretsizdir; aktif siparişe bağlı veya kullanımdaki masa ve istasyonlar taşınamaz.",
+          "Genişleme sırasında hiçbir mobilya silinmez, çakışan nesne varsa geri alma/depo uyarısı gerekir."
+        ]
+      }
+    },
+    "train_simulation": {
+      "arrival_times": [
+        "09:00",
+        "15:00",
+        "21:00"
+      ],
+      "approach_game_minutes_before": 10,
+      "station_dwell_game_minutes": 12,
+      "disembark_batch_size": 2,
+      "disembark_batch_interval_game_minutes": 1,
+      "rail_direction": "doğu-batı",
+      "passenger_decision_inputs": [
+        "open_sign",
+        "menu_in_stock",
+        "reputation",
+        "weather",
+        "festival",
+        "waiting_capacity",
+        "seating_capacity"
+      ],
+      "not_all_passengers_enter": true,
+      "passenger_exit": "vagon → peron → gar yolu → restoran veya kasaba çıkışı",
+      "outside_simulation": "sahne ekranda olmasa bile varış, müşteri durumu ve stok mantığı işler; çizim/görünmeyen animasyonlar çalıştırılmaz",
+      "special_event_rule": "olağan üç tren saatini değiştirme, yalnızca vagon türü/yolcu profili/yoğunluk değişsin"
+    },
+    "restaurant_gameplay": {
+      "capacity": "aktif boş ve erişilebilir sandalyeler",
+      "table_grouping": "masaya yönlenmiş fiziksel sandalyeler oturma noktası oluşturur",
+      "queue_max_parties": 2,
+      "orders": "yalnızca bara konan, kullanılabilir ve rezerve edilmemiş stok",
+      "served_order_payment": "satış parası ödeme etkileşiminde yalnızca 1 kez kasaya eklenir",
+      "staff_restrictions": "yardımcı görev yapar, asla sipariş alma/nihai servis/ödeme işlemlerini tamamlamaz",
+      "service_flow": [
+        "arrival",
+        "queue",
+        "player_greeting",
+        "reserved_table",
+        "walk",
+        "sit",
+        "ready_to_order",
+        "player_takes_order",
+        "reserved_stock",
+        "player_carries_and_serves",
+        "eat",
+        "payment_wait",
+        "player_collects_payment",
+        "leave",
+        "table_dirty",
+        "clean"
+      ],
+      "group_ordering": "tek panel; ayrı ürünler ve tek tek servis takibi",
+      "closing": "23:00 sonrası yeni giriş olmaz; mevcut müşteriler kapanış aşamasında çözülür",
+      "time_progress": "büyük paneller pause; dünyadaki fiziksel eylemler simülasyonu sürdürür"
+    },
+    "named_npc_routines": [
+      {
+        "name": "Kemal",
+        "role": "gar müdürü",
+        "routine": "06–08 ofis; 08:30/14:30/20:30 peron; kalan gündüz ofis",
+        "quest": "gar ve seferler"
+      },
+      {
+        "name": "Feriha",
+        "role": "bakkal",
+        "routine": "08–18 dükkân; akşam ev/ara sıra lokanta",
+        "quest": "acil tedarik"
+      },
+      {
+        "name": "Rıza",
+        "role": "marangoz",
+        "routine": "09–18 atölye; gün sonu meydan",
+        "quest": "mobilya planları"
+      },
+      {
+        "name": "Şirin",
+        "role": "bahçıvan",
+        "routine": "08–16 bahçe/sera; akşam meydan",
+        "quest": "tarım"
+      },
+      {
+        "name": "Sevim",
+        "role": "emekli aşçı",
+        "routine": "11–16 meydan/ev; bazı günler restoran",
+        "quest": "eski tarif defteri"
+      },
+      {
+        "name": "Rana",
+        "role": "gezgin gazeteci",
+        "routine": "belirli ziyaret günlerinde 15:00 treniyle gelir, meydan/restoran",
+        "quest": "itibar ve haber"
+      }
+    ],
+    "tutorial": {
+      "day_1": [
+        "miras girişi",
+        "sandığı aç; balta/kazma/çapa/sulama kabını al",
+        "en az 15 odun ve 5 taş topla",
+        "kapıyı ve marangoz tezgâhını onar",
+        "1 masa + 2 sandalye üret/yerleştir",
+        "ocağı onar",
+        "4 patates+2 havuç+2 soğan+3 meyve suyu sipariş et; 44 G",
+        "erken uyu"
+      ],
+      "day_1_restaurant": "kapalı, trenler atmosfere hizmet eder; lokantaya ziyaretçi yok",
+      "day_2": [
+        "06:00 teslimatı al",
+        "sebze çorbası pişir ve bara koy",
+        "meyve suyu slotuna ürün yerleştir",
+        "lokantayı AÇIK yap",
+        "09:00 treninde 2 tekil müşteri",
+        "karşıla/oturt/sipariş al/servis yap/ödeme al/temizle",
+        "tutorial sonrasında serbest"
+      ],
+      "day_2_safe_guards": [
+        "ilk sabah trenini tarif/servis adımı tamamlanana kadar geciktirme yerine tutorial saatini duraklat",
+        "ilk müşteri sabrı cömert",
+        "eksik kalan başlangıç kaynakları için ormanda erişilebilir yedek kaynak oluştur"
+      ],
+      "day_3": "serbest sandbox; tarım, yeni tarif ve ikinci masa için isteğe bağlı görevler"
+    },
+    "save_invariants": [
+      "Her satışın orderId, customerId, itemBatchId ve paymentTransactionId referansları bulunur.",
+      "Rezervasyon ile fiziksel stok toplamı sabit kalır; çift harcama olmaz.",
+      "Teslimatlar ertesi sabah yalnızca bir kez doğar.",
+      "Onarım/işe alma/ücret/görev ödülleri en fazla bir kez işlenir.",
+      "Sahneler arası geçişte her NPC tek bir mantıksal konuma sahiptir.",
+      "Mobilya yerleşimleri ve genişleme aşaması kayıtla yeniden kurulabilir.",
+      "Aktif tarifler, ürün tazelik partileri, mutfak zamanlayıcıları ve çalışan görevleri korunur.",
+      "Dışarıdaki gar ve restoran mantığı sadece görünür olduklarında değil, tüm oyun boyunca simüle edilir."
+    ],
+    "performance": {
+      "target_fps": 60,
+      "max_customer_entities_on_screen_initial_target": 20,
+      "npc_pathfinding": "ızgara tabanlı A*, mobilya/kapı değişince yol yenile; her kare yeniden hesaplama yapma",
+      "offscreen_ai": "mantıksal durum ve oyun saatine bağlı olay yürütümü; offscreen çizim yok",
+      "asset_strategy": "modüler 16-bit sprite atlası, yönlü animasyonlar, ortak karakter iskeleti; dış ücretli servis zorunlu değil"
+    },
+    "acceptance_scenarios": [
+      "İlk gün kaynak/onarım/posta/yatak tam akış",
+      "İkinci gün iki müşteri ve ilk satışlar",
+      "09/15/21 seferleri; 12 oyun dakikası duruş; olaylar gün başına tek sefer",
+      "Masaya ikinci müşteri oturamama; siparişte çift porsiyon rezervasyonu olmama",
+      "Mobilya ile kapıyı bloke etme girişiminin reddi",
+      "Restoran içinde salon-mutfak-depo-yatak odası arasında kesintisiz yürüyüş",
+      "Dışarıdayken ocak süresi ve müşteri/saat ilerlemesi; dönünce eşdeğer durum",
+      "Restoranı kapatıp ormana gidince yeni müşterinin içeri girmemesi",
+      "23:00 kapanışta mevcut servis ve ödemelerin kaybolmaması",
+      "4 restorasyon aşamasında tüm açılan yerlerin erişilebilir olması",
+      "Oyuncunun iflas sonrası kaynak satarak yeniden gıda sipariş edebilmesi",
+      "Yüklemede aktif siparişin, teslimatın, stoğun ve mobilya konumlarının çoğalmaması",
+      "30 günlük hızlandırılmış simülasyonda kaynak/ücret/itibar tutarlılığı",
+      "112 gün sonunda mevsim ve festival takviminin doğru döngüsü"
+    ],
+    "open_design_not_yet_finalized": [
+      "Dere kenarı balıkçılık özelliğinin kapsamı, oltanın tanımı ve mini oyun",
+      "Çalışan işe alım şartları ve NPC aday havuzu",
+      "Oyun dünyası için nihai çizim ve geçiş koordinatlarının implementasyon testi",
+      "Kapanışta aktif siparişleri iptal etme seçeneklerinin tam UI ayrıntıları",
+      "Uzun vadeli tüm görevler ve festival veri kayıtları"
+    ]
+  },
+  "systems_and_scope_v09": {
+    "locked_decisions": {
+      "platform": "PC öncelikli HTML5",
+      "art": "Klasik 16-bit pixel art",
+      "placement": "Tamamen serbest mobilya/ekipman, 32×32 grid, erişim kontrolü",
+      "staff": "A — Yardımcı, oyuncu karşılama/sipariş/son servis/ödeme yapar",
+      "story": "C — Hikâye + Sandbox",
+      "economy": "A — Rahat ve Cozy",
+      "train_times": [
+        "09:00",
+        "15:00",
+        "21:00"
+      ],
+      "seasons": 4,
+      "days_per_season": 28,
+      "not_final_prompt": true
+    },
+    "audit": {
+      "unique_ids_v07": 117,
+      "checked_recipe_cost_errors": 0,
+      "checked_recipe_station_mismatches": 0,
+      "checked_missing_recipe_ingredient_ids": 0,
+      "reconciliation": [
+        {
+          "issue": "restoration_stage_names_vs_opened_wings",
+          "resolution": "v0.7 salon_expansion_3 ID -> v0.8 aşama 4 doğu mutfak kanadı; teknik ID korunur, oyuncuya kanat adı gösterilir"
+        },
+        {
+          "issue": "initial_seats",
+          "resolution": "Başlangıçta sağlam 2 kişilik masa; tutorial 1 masa + 2 sandalye ile toplam 4 oturma yeri"
+        },
+        {
+          "issue": "late_stage_day_targets",
+          "resolution": "500 ödemeli müşteri şartı korunur; 80–112 gün söylemi zorunlu tarih değildir; hızlı ilerleyen daha erken tamamlar"
+        },
+        {
+          "issue": "employee_automated_chef",
+          "resolution": "Kaldırıldı. Mutfak yardımcısı sadece hazırlık süresi/depo işlerine destek olur"
+        },
+        {
+          "issue": "inventory_item_key",
+          "resolution": "Kullanılabilir stok + rezerve stok + taşınan stok = toplam fiziksel parti; tahsil edilen sipariş tek transaction ID ile tutulur"
+        },
+        {
+          "issue": "indoor_free_placement_and_wall_decor",
+          "resolution": "Tüm zemin nesneleri geçerli açılmış zemine, duvar dekorları mevcut herhangi bir uygun duvar hücresine; sabit slot zorunluluğu yok"
+        }
+      ],
+      "spatial_bounds_check": {
+        "checked_exterior_points": 9,
+        "checked_interior_zone_rectangles": 9,
+        "out_of_bounds_count": 0,
+        "note": "Bu geometrik sınır testi; gerçek yürünebilirlik için uygulama sırasında pathfinding testi zorunlu."
+      }
+    },
+    "recipe_unlocks": [
+      {
+        "recipe_id": "vegetable_soup",
+        "min_stage": 1,
+        "min_paid_customers": 0,
+        "required_installed_equipment": null,
+        "tutorial_unlock": "day2_tutorial",
+        "alternate_story_unlock_can_skip_only_customer_threshold": true
+      },
+      {
+        "recipe_id": "boiled_potatoes",
+        "min_stage": 1,
+        "min_paid_customers": 1,
+        "required_installed_equipment": null,
+        "tutorial_unlock": null,
+        "alternate_story_unlock_can_skip_only_customer_threshold": true
+      },
+      {
+        "recipe_id": "fried_bread",
+        "min_stage": 1,
+        "min_paid_customers": 5,
+        "required_installed_equipment": null,
+        "tutorial_unlock": null,
+        "alternate_story_unlock_can_skip_only_customer_threshold": true
+      },
+      {
+        "recipe_id": "lentil_soup",
+        "min_stage": 2,
+        "min_paid_customers": 12,
+        "required_installed_equipment": null,
+        "tutorial_unlock": null,
+        "alternate_story_unlock_can_skip_only_customer_threshold": true
+      },
+      {
+        "recipe_id": "omelet",
+        "min_stage": 2,
+        "min_paid_customers": 20,
+        "required_installed_equipment": null,
+        "tutorial_unlock": null,
+        "alternate_story_unlock_can_skip_only_customer_threshold": true
+      },
+      {
+        "recipe_id": "vegetable_rice",
+        "min_stage": 2,
+        "min_paid_customers": 30,
+        "required_installed_equipment": null,
+        "tutorial_unlock": null,
+        "alternate_story_unlock_can_skip_only_customer_threshold": true
+      },
+      {
+        "recipe_id": "baked_potato",
+        "min_stage": 2,
+        "min_paid_customers": 12,
+        "required_installed_equipment": "basic_oven",
+        "tutorial_unlock": null,
+        "alternate_story_unlock_can_skip_only_customer_threshold": true
+      },
+      {
+        "recipe_id": "tomato_pasta",
+        "min_stage": 3,
+        "min_paid_customers": 70,
+        "required_installed_equipment": null,
+        "tutorial_unlock": null,
+        "alternate_story_unlock_can_skip_only_customer_threshold": true
+      },
+      {
+        "recipe_id": "chicken_stew",
+        "min_stage": 3,
+        "min_paid_customers": 90,
+        "required_installed_equipment": null,
+        "tutorial_unlock": null,
+        "alternate_story_unlock_can_skip_only_customer_threshold": true
+      },
+      {
+        "recipe_id": "meatballs",
+        "min_stage": 3,
+        "min_paid_customers": 70,
+        "required_installed_equipment": "large_pan",
+        "tutorial_unlock": null,
+        "alternate_story_unlock_can_skip_only_customer_threshold": true
+      },
+      {
+        "recipe_id": "apple_pie",
+        "min_stage": 3,
+        "min_paid_customers": 130,
+        "required_installed_equipment": "basic_oven",
+        "tutorial_unlock": null,
+        "alternate_story_unlock_can_skip_only_customer_threshold": true
+      },
+      {
+        "recipe_id": "mushroom_rice",
+        "min_stage": 4,
+        "min_paid_customers": 220,
+        "required_installed_equipment": null,
+        "tutorial_unlock": null,
+        "alternate_story_unlock_can_skip_only_customer_threshold": true
+      },
+      {
+        "recipe_id": "fried_fish",
+        "min_stage": 4,
+        "min_paid_customers": 220,
+        "required_installed_equipment": "large_pan",
+        "tutorial_unlock": null,
+        "alternate_story_unlock_can_skip_only_customer_threshold": true
+      },
+      {
+        "recipe_id": "station_kebab",
+        "min_stage": 4,
+        "min_paid_customers": 220,
+        "required_installed_equipment": "advanced_stove",
+        "tutorial_unlock": null,
+        "alternate_story_unlock_can_skip_only_customer_threshold": true
+      },
+      {
+        "recipe_id": "night_stew",
+        "min_stage": 4,
+        "min_paid_customers": 300,
+        "required_installed_equipment": "advanced_stove",
+        "tutorial_unlock": null,
+        "alternate_story_unlock_can_skip_only_customer_threshold": true
+      }
+    ],
+    "beverage_unlocks": [
+      {
+        "id": "bottled_juice",
+        "unlocked_on_day": 1
+      },
+      {
+        "id": "bottled_lemonade",
+        "unlocked_on_day": 1
+      },
+      {
+        "id": "tea",
+        "requires_installed": "kettle"
+      },
+      {
+        "id": "coffee",
+        "requires_installed": "coffee_machine"
+      },
+      {
+        "id": "apple_juice",
+        "requires_installed": "juicer"
+      },
+      {
+        "id": "berry_juice",
+        "requires_installed": "juicer"
+      }
+    ],
+    "quest_system": {
+      "active_slot_limits": {
+        "story": 1,
+        "daily": 2,
+        "town_or_station": 2,
+        "seasonal": 1
+      },
+      "story_optional_for_building_progress": true,
+      "rewards_claimed_once": true,
+      "main_story_quests": [
+        {
+          "id": "story_01",
+          "name": "Miras Mektubu",
+          "chapter": 1,
+          "prerequisite_quest_id": null,
+          "objectives": [
+            "read_heirloom_letter"
+          ],
+          "reward": {
+            "gold_g": 0,
+            "cosmetic_id": null
+          },
+          "mandatory_for_building_stages": false,
+          "time_limit_days": null
+        },
+        {
+          "id": "story_02",
+          "name": "Tozlu Sandık",
+          "chapter": 1,
+          "prerequisite_quest_id": "story_01",
+          "objectives": [
+            "open_starter_chest",
+            "collect_wood_15",
+            "collect_stone_5"
+          ],
+          "reward": {
+            "gold_g": 0,
+            "cosmetic_id": null
+          },
+          "mandatory_for_building_stages": false,
+          "time_limit_days": null
+        },
+        {
+          "id": "story_03",
+          "name": "İlk Onarım",
+          "chapter": 1,
+          "prerequisite_quest_id": "story_02",
+          "objectives": [
+            "repair_entrance",
+            "repair_workbench",
+            "craft_table_1",
+            "craft_chairs_2",
+            "repair_stove",
+            "place_table_and_chairs",
+            "place_first_mail_order",
+            "sleep_day1"
+          ],
+          "reward": {
+            "gold_g": 0,
+            "cosmetic_id": "memory_photo"
+          },
+          "mandatory_for_building_stages": false,
+          "time_limit_days": null
+        },
+        {
+          "id": "story_04",
+          "name": "İlk Misafirler",
+          "chapter": 2,
+          "prerequisite_quest_id": "story_03",
+          "objectives": [
+            "collect_first_delivery",
+            "make_vegetable_soup",
+            "stock_bar",
+            "serve_first_2_customers",
+            "collect_payment_2",
+            "clean_first_table"
+          ],
+          "reward": {
+            "gold_g": 40,
+            "cosmetic_id": null
+          },
+          "mandatory_for_building_stages": false,
+          "time_limit_days": null
+        },
+        {
+          "id": "story_05",
+          "name": "Garın Dostları",
+          "chapter": 2,
+          "prerequisite_quest_id": "story_04",
+          "objectives": [
+            "speak_stationmaster",
+            "inspect_timetable",
+            "complete_1_daily_task"
+          ],
+          "reward": {
+            "gold_g": 60,
+            "cosmetic_id": null
+          },
+          "mandatory_for_building_stages": false,
+          "time_limit_days": null
+        },
+        {
+          "id": "story_06",
+          "name": "Kaybolan Tarifler",
+          "chapter": 2,
+          "prerequisite_quest_id": "story_05",
+          "objectives": [
+            "speak_sevim",
+            "cook_3_distinct_recipes"
+          ],
+          "reward": {
+            "gold_g": 80,
+            "cosmetic_id": "recipe_book_podium"
+          },
+          "mandatory_for_building_stages": false,
+          "time_limit_days": null
+        },
+        {
+          "id": "story_07",
+          "name": "Eski Fotoğraf",
+          "chapter": 3,
+          "prerequisite_quest_id": "story_06",
+          "objectives": [
+            "visit_town_square",
+            "talk_to_3_named_npcs"
+          ],
+          "reward": {
+            "gold_g": 85,
+            "cosmetic_id": "heirloom_clock"
+          },
+          "mandatory_for_building_stages": false,
+          "time_limit_days": null
+        },
+        {
+          "id": "story_08",
+          "name": "Yolculardan Hikâyeler",
+          "chapter": 3,
+          "prerequisite_quest_id": "story_07",
+          "objectives": [
+            "finish_25_paid_customers_after_quest_start"
+          ],
+          "reward": {
+            "gold_g": 110,
+            "cosmetic_id": null
+          },
+          "mandatory_for_building_stages": false,
+          "time_limit_days": null
+        },
+        {
+          "id": "story_09",
+          "name": "İstasyonun Anısı",
+          "chapter": 3,
+          "prerequisite_quest_id": "story_08",
+          "objectives": [
+            "complete_one_station_request",
+            "repair_old_gar_noticeboard"
+          ],
+          "reward": {
+            "gold_g": 140,
+            "cosmetic_id": "old_station_sign"
+          },
+          "mandatory_for_building_stages": false,
+          "time_limit_days": null
+        },
+        {
+          "id": "story_10",
+          "name": "Gazetecinin Ziyareti",
+          "chapter": 4,
+          "prerequisite_quest_id": "story_09",
+          "objectives": [
+            "meet_rana",
+            "reach_reputation_65"
+          ],
+          "reward": {
+            "gold_g": 180,
+            "cosmetic_id": null
+          },
+          "mandatory_for_building_stages": false,
+          "time_limit_days": null
+        },
+        {
+          "id": "story_11",
+          "name": "Uzun Masa Günü",
+          "chapter": 4,
+          "prerequisite_quest_id": "story_10",
+          "objectives": [
+            "serve_one_party_of_3_or_more",
+            "serve_2_different_foods_in_a_day"
+          ],
+          "reward": {
+            "gold_g": 220,
+            "cosmetic_id": null
+          },
+          "mandatory_for_building_stages": false,
+          "time_limit_days": null
+        },
+        {
+          "id": "story_12",
+          "name": "Özel Sefer",
+          "chapter": 4,
+          "prerequisite_quest_id": "story_11",
+          "objectives": [
+            "successfully_serve_5_customers_during_1_train_event"
+          ],
+          "reward": {
+            "gold_g": 240,
+            "cosmetic_id": null
+          },
+          "mandatory_for_building_stages": false,
+          "time_limit_days": null
+        },
+        {
+          "id": "story_13",
+          "name": "Son Peron Hazırlığı",
+          "chapter": 5,
+          "prerequisite_quest_id": "story_12",
+          "objectives": [
+            "reach_restoration_stage_4",
+            "serve_8_customers_in_one_day"
+          ],
+          "reward": {
+            "gold_g": 300,
+            "cosmetic_id": null
+          },
+          "mandatory_for_building_stages": false,
+          "time_limit_days": null
+        },
+        {
+          "id": "story_14",
+          "name": "Eski Lokanta, Yeni Hayat",
+          "chapter": 5,
+          "prerequisite_quest_id": "story_13",
+          "objectives": [
+            "reach_reputation_80",
+            "complete_2_renovation_projects"
+          ],
+          "reward": {
+            "gold_g": 350,
+            "cosmetic_id": null
+          },
+          "mandatory_for_building_stages": false,
+          "time_limit_days": null
+        },
+        {
+          "id": "story_15",
+          "name": "Yeniden Açılış",
+          "chapter": 5,
+          "prerequisite_quest_id": "story_14",
+          "objectives": [
+            "host_grand_station_celebration",
+            "finish_10_paid_customers_during_celebration_or_next_2_days"
+          ],
+          "reward": {
+            "gold_g": 500,
+            "cosmetic_id": "final_plaque"
+          },
+          "mandatory_for_building_stages": false,
+          "time_limit_days": null
+        }
+      ],
+      "side_quest_templates": [
+        {
+          "id": "side_grocer_supply",
+          "giver": "Feriha",
+          "title": "Acil Malzeme",
+          "type": "delivery",
+          "target": {
+            "potato": 3
+          },
+          "reward_g": 35
+        },
+        {
+          "id": "side_carpenter_wood",
+          "giver": "Rıza",
+          "title": "Marangozun Siparişi",
+          "type": "delivery",
+          "target": {
+            "wood": 10
+          },
+          "reward_g": 30
+        },
+        {
+          "id": "side_gardener_carrot",
+          "giver": "Şirin",
+          "title": "Taze Hasat",
+          "type": "harvest",
+          "target": {
+            "carrot": 4
+          },
+          "reward_g": 45
+        },
+        {
+          "id": "side_sevim_soup",
+          "giver": "Sevim",
+          "title": "Sıcak Bir Kâse",
+          "type": "serve_product",
+          "target": {
+            "vegetable_soup": 5
+          },
+          "reward_g": 55
+        },
+        {
+          "id": "side_stationmorning",
+          "giver": "Kemal",
+          "title": "Sabah Seferi",
+          "type": "successful_service_train",
+          "target": {
+            "hour": "09:00",
+            "count": 4
+          },
+          "reward_g": 65
+        },
+        {
+          "id": "side_stationevening",
+          "giver": "Kemal",
+          "title": "Gece Seferi",
+          "type": "successful_service_train",
+          "target": {
+            "hour": "21:00",
+            "count": 3
+          },
+          "reward_g": 60
+        },
+        {
+          "id": "side_rana_review",
+          "giver": "Rana",
+          "title": "Güzel Bir Yazı",
+          "type": "average_satisfaction",
+          "target": {
+            "min": 80,
+            "customers": 5,
+            "within_days": 3
+          },
+          "reward_g": 100
+        },
+        {
+          "id": "side_grocer_berries",
+          "giver": "Feriha",
+          "title": "Orman Meyveleri",
+          "type": "delivery",
+          "target": {
+            "wild_berries": 5
+          },
+          "reward_g": 45
+        },
+        {
+          "id": "side_carpenter_stone",
+          "giver": "Rıza",
+          "title": "Duvar Tamiri",
+          "type": "delivery",
+          "target": {
+            "stone": 8
+          },
+          "reward_g": 35
+        },
+        {
+          "id": "side_gardener_beds",
+          "giver": "Şirin",
+          "title": "İlk Bahçe",
+          "type": "build",
+          "target": {
+            "garden_bed": 2
+          },
+          "reward_g": 60
+        }
+      ],
+      "daily_quest_templates": [
+        {
+          "id": "daily_serve_3",
+          "name": "3 müşteriye hizmet ver",
+          "metric": "serve_customers",
+          "target": 3,
+          "reward_g": 18,
+          "expires_at": "next_sleep",
+          "selection": "2_per_day_if_feasible"
+        },
+        {
+          "id": "daily_serve_6",
+          "name": "6 müşteriye hizmet ver",
+          "metric": "serve_customers",
+          "target": 6,
+          "reward_g": 32,
+          "expires_at": "next_sleep",
+          "selection": "2_per_day_if_feasible"
+        },
+        {
+          "id": "daily_soup_4",
+          "name": "4 çorba porsiyonu sat",
+          "metric": "sell_vegetable_soup",
+          "target": 4,
+          "reward_g": 24,
+          "expires_at": "next_sleep",
+          "selection": "2_per_day_if_feasible"
+        },
+        {
+          "id": "daily_drinks_3",
+          "name": "3 içecek sat",
+          "metric": "sell_drinks",
+          "target": 3,
+          "reward_g": 20,
+          "expires_at": "next_sleep",
+          "selection": "2_per_day_if_feasible"
+        },
+        {
+          "id": "daily_clean_3",
+          "name": "3 masa temizle",
+          "metric": "clean_tables",
+          "target": 3,
+          "reward_g": 18,
+          "expires_at": "next_sleep",
+          "selection": "2_per_day_if_feasible"
+        },
+        {
+          "id": "daily_harvest_2",
+          "name": "2 ürün hasat et",
+          "metric": "harvest_crops",
+          "target": 2,
+          "reward_g": 24,
+          "expires_at": "next_sleep",
+          "selection": "2_per_day_if_feasible"
+        },
+        {
+          "id": "daily_chop_6",
+          "name": "6 odun topla",
+          "metric": "gather_wood",
+          "target": 6,
+          "reward_g": 15,
+          "expires_at": "next_sleep",
+          "selection": "2_per_day_if_feasible"
+        },
+        {
+          "id": "daily_tip_2",
+          "name": "2 bahşiş kazan",
+          "metric": "earn_tips",
+          "target": 2,
+          "reward_g": 25,
+          "expires_at": "next_sleep",
+          "selection": "2_per_day_if_feasible"
+        }
+      ],
+      "repeatable_side_quests": "Aynı görev yedi oyun günü aralıklarla gelebilir; aynı anda duplicate açılmaz",
+      "quest_counter_rules": "Yalnız görev kabulünden sonra gerçekleşen olaylar sayılır; tamamlanan müşteri gibi toplam kariyer koşulları ayrıca sorgulanabilir.",
+      "special_world_interactables": [
+        {
+          "id": "heirloom_letter",
+          "scene": "restaurant_interior",
+          "tile_xy": [
+            13,
+            9
+          ],
+          "initially_available": true,
+          "quest_target": "read_heirloom_letter"
+        },
+        {
+          "id": "old_gar_noticeboard",
+          "scene": "railway_outdoors",
+          "tile_xy": [
+            10,
+            44
+          ],
+          "initially_available": true,
+          "quest_target": "repair_old_gar_noticeboard",
+          "repair_materials": {
+            "wood": 5,
+            "stone": 2
+          }
+        },
+        {
+          "id": "grand_celebration_board",
+          "scene": "railway_outdoors",
+          "tile_xy": [
+            15,
+            46
+          ],
+          "activation": "story_14_completed_and_stationmaster_dialogue",
+          "quest_target": "host_grand_station_celebration"
+        }
+      ]
+    },
+    "staff_system": {
+      "candidate_refresh_every_days": 7,
+      "candidate_count_displayed": 5,
+      "initial_recruitment_stage": 2,
+      "max_active_by_restoration_stage": {
+        "1": 0,
+        "2": 1,
+        "3": 2,
+        "4": 3,
+        "5": 4
+      },
+      "daily_wage_paid_once_before_shift": true,
+      "all_helpers_must_not": [
+        "take_customer_order",
+        "choose_customer_table",
+        "final_food_service",
+        "collect_payment",
+        "start_complete_cooking_autonomously"
+      ],
+      "candidate_pool": [
+        {
+          "candidate_id": "cleaner_nermin",
+          "name": "Nermin",
+          "role_id": "cleaner",
+          "daily_wage_g": 15,
+          "skill": "hızlı masa temizliği",
+          "task_speed_factor": 0.92
+        },
+        {
+          "candidate_id": "cleaner_duru",
+          "name": "Duru",
+          "role_id": "cleaner",
+          "daily_wage_g": 16,
+          "skill": "hızlı zemin temizliği",
+          "task_speed_factor": 0.91
+        },
+        {
+          "candidate_id": "cleaner_tahir",
+          "name": "Tahir",
+          "role_id": "cleaner",
+          "daily_wage_g": 14,
+          "skill": "istikrarlı temizlik",
+          "task_speed_factor": 1.0
+        },
+        {
+          "candidate_id": "service_mert",
+          "name": "Mert",
+          "role_id": "service_helper",
+          "daily_wage_g": 18,
+          "skill": "bar taşımacılığı",
+          "task_speed_factor": 0.94
+        },
+        {
+          "candidate_id": "service_elif",
+          "name": "Elif",
+          "role_id": "service_helper",
+          "daily_wage_g": 19,
+          "skill": "tabak toplama",
+          "task_speed_factor": 0.91
+        },
+        {
+          "candidate_id": "service_arda",
+          "name": "Arda",
+          "role_id": "service_helper",
+          "daily_wage_g": 17,
+          "skill": "ekonomik yardımcı",
+          "task_speed_factor": 1.0
+        },
+        {
+          "candidate_id": "kitchen_sevimay",
+          "name": "Sevimay",
+          "role_id": "kitchen_helper",
+          "daily_wage_g": 22,
+          "skill": "malzeme hazırlama",
+          "task_speed_factor": 0.92
+        },
+        {
+          "candidate_id": "kitchen_cem",
+          "name": "Cem",
+          "role_id": "kitchen_helper",
+          "daily_wage_g": 21,
+          "skill": "depo düzeni",
+          "task_speed_factor": 0.96
+        },
+        {
+          "candidate_id": "kitchen_asli",
+          "name": "Aslı",
+          "role_id": "kitchen_helper",
+          "daily_wage_g": 23,
+          "skill": "hızlı ön hazırlık",
+          "task_speed_factor": 0.89
+        },
+        {
+          "candidate_id": "host_irem",
+          "name": "İrem",
+          "role_id": "host_helper",
+          "daily_wage_g": 18,
+          "skill": "kapı düzeni",
+          "task_speed_factor": 0.95
+        },
+        {
+          "candidate_id": "host_omer",
+          "name": "Ömer",
+          "role_id": "host_helper",
+          "daily_wage_g": 17,
+          "skill": "sıra takibi",
+          "task_speed_factor": 0.98
+        },
+        {
+          "candidate_id": "host_pelin",
+          "name": "Pelin",
+          "role_id": "host_helper",
+          "daily_wage_g": 19,
+          "skill": "grup yönlendirme",
+          "task_speed_factor": 0.92
+        }
+      ],
+      "prioritization": {
+        "cleaner": "Önce kirli ama müşteri bekleyen masalar",
+        "service_helper": "Önce bara konabilecek hazır yiyecekler ve boş tabaklar",
+        "kitchen_helper": "Sadece oyuncunun başlattığı işin hazırlık aşaması",
+        "host_helper": "Yalnızca oyuncunun belirlediği masa grubuna geçişi destekler"
+      },
+      "service_helper_bar_rule": "Servis yardımcısı yalnızca oyuncunun açıp menüye aldığı veya açıkça seçtiği mevcut bar slotuna eşleşen ürünleri taşır; oyuncu yerine yeni menü çeşidi kararı vermez."
+    },
+    "train_events": {
+      "weekly_days": [
+        7,
+        14,
+        21
+      ],
+      "never_day_1_to_3": true,
+      "festival_overrides_weekly_event": true,
+      "announcement_game_days_before": 1,
+      "same_three_arrival_times": true,
+      "events": [
+        {
+          "id": "tourist_express",
+          "name": "Turist Ekspresi",
+          "required_stage": 2,
+          "eligible_seasons": [
+            "spring",
+            "summer",
+            "autumn"
+          ],
+          "train_time": "15:00",
+          "passenger_multiplier": 1.35,
+          "tip_multiplier": 1.15,
+          "satisfaction_weight_modifier": {
+            "menu_variety": 1.1
+          }
+        },
+        {
+          "id": "railworkers_day",
+          "name": "Demiryolu Çalışanları Günü",
+          "required_stage": 1,
+          "eligible_seasons": [
+            "spring",
+            "summer",
+            "autumn",
+            "winter"
+          ],
+          "train_time": "09:00",
+          "passenger_multiplier": 1.25,
+          "tip_multiplier": 1.0,
+          "satisfaction_weight_modifier": {
+            "service_speed": 1.1
+          }
+        },
+        {
+          "id": "first_class",
+          "name": "Birinci Sınıf Yolcular",
+          "required_stage": 3,
+          "eligible_seasons": [
+            "spring",
+            "summer",
+            "autumn",
+            "winter"
+          ],
+          "train_time": "15:00",
+          "passenger_multiplier": 1.15,
+          "tip_multiplier": 1.25,
+          "satisfaction_weight_modifier": {
+            "comfort": 1.1
+          }
+        },
+        {
+          "id": "holiday_rush",
+          "name": "Tatil Seferi",
+          "required_stage": 2,
+          "eligible_seasons": [
+            "summer"
+          ],
+          "train_time": "15:00",
+          "passenger_multiplier": 1.4,
+          "tip_multiplier": 1.0,
+          "satisfaction_weight_modifier": {}
+        },
+        {
+          "id": "winter_journey",
+          "name": "Kış Yolculuğu",
+          "required_stage": 2,
+          "eligible_seasons": [
+            "winter"
+          ],
+          "train_time": "21:00",
+          "passenger_multiplier": 1.25,
+          "tip_multiplier": 1.1,
+          "satisfaction_weight_modifier": {
+            "temperature": 1.1
+          }
+        }
+      ],
+      "passenger_cap": "Restoran gelişim aşamasına göre belirlenen hedefle sınırlı; ek yolcular kasabaya gider",
+      "choose_event_from_eligible_pool": true,
+      "cap_rule": "Etkinlik çarpanları potansiyel yolcu sayısını artırır; gerçek restoran kabulü boş erişilebilir koltuk, iki grup kuyruk ve hizmet sınırına bağlıdır."
+    },
+    "festivals": {
+      "last_day_each_season": 28,
+      "repeat_every_game_year": true,
+      "missable_without_permanent_lockout": true,
+      "festivals": [
+        {
+          "id": "flower_festival",
+          "name": "Çiçek Festivali",
+          "season": "spring",
+          "day_of_season": 28,
+          "cosmetic_reward_id": "spring_flower_wreath",
+          "focus": "garden_and_decoration"
+        },
+        {
+          "id": "station_fair",
+          "name": "Gar Şenliği",
+          "season": "summer",
+          "day_of_season": 28,
+          "cosmetic_reward_id": "summer_station_pennant",
+          "focus": "tourist_service"
+        },
+        {
+          "id": "harvest_fair",
+          "name": "Hasat Panayırı",
+          "season": "autumn",
+          "day_of_season": 28,
+          "cosmetic_reward_id": "autumn_harvest_basket",
+          "focus": "farming_and_cooking"
+        },
+        {
+          "id": "lantern_night",
+          "name": "Fener Gecesi",
+          "season": "winter",
+          "day_of_season": 28,
+          "cosmetic_reward_id": "winter_lantern",
+          "focus": "warmth_and_evening_service"
+        }
+      ],
+      "festival_tasks_are_optional": true
+    },
+    "cosmetics": {
+      "require_distinct_assets": true,
+      "object_ids_are_additional_to_v07_furniture": true,
+      "items": [
+        {
+          "id": "memory_photo",
+          "name": "Restoranın İlk Fotoğrafı",
+          "kind": "wall_decor",
+          "source": "story_03"
+        },
+        {
+          "id": "recipe_book_podium",
+          "name": "Eski Tarif Defteri Standı",
+          "kind": "floor_decor",
+          "source": "story_06"
+        },
+        {
+          "id": "heirloom_clock",
+          "name": "Miras Saat",
+          "kind": "wall_decor",
+          "source": "story_07"
+        },
+        {
+          "id": "old_station_sign",
+          "name": "Eski Gar Hatırası",
+          "kind": "wall_decor",
+          "source": "story_09"
+        },
+        {
+          "id": "final_plaque",
+          "name": "Son Peron Onur Plaketi",
+          "kind": "wall_decor",
+          "source": "story_15"
+        },
+        {
+          "id": "spring_flower_wreath",
+          "name": "Bahar Çelengi",
+          "kind": "wall_decor",
+          "source": "flower_festival"
+        },
+        {
+          "id": "summer_station_pennant",
+          "name": "Gar Şenliği Flaması",
+          "kind": "wall_decor",
+          "source": "station_fair"
+        },
+        {
+          "id": "autumn_harvest_basket",
+          "name": "Hasat Sepeti",
+          "kind": "floor_decor",
+          "source": "harvest_fair"
+        },
+        {
+          "id": "winter_lantern",
+          "name": "Fener Gecesi Lambası",
+          "kind": "floor_light",
+          "source": "lantern_night"
+        }
+      ],
+      "not_tradeable_for_gold": true
+    },
+    "riverbank": {
+      "scope": "Küçük, isteğe bağlı yan faaliyet; tam kapsamlı balık tutma oyunu değil",
+      "unlock_stage": 2,
+      "rod_purchase_g": 75,
+      "casts_per_day": 4,
+      "interaction": "E ile atış -> 2–4 gerçek saniye ısırma bekleme -> 1 saniyelik reaksiyon aralığında E bas -> başarı durumunda 1 fish",
+      "base_success_percent": 80,
+      "failure_cost": "olta kaybolmaz; yalnız atış hakkı kullanılır",
+      "can_buy_fish_through_mail_always": true,
+      "minigame_not_required_for_main_story": true
+    },
+    "closing_rules": {
+      "at_23": "Kapı kapanır, simülasyon zamanı 23:00 olur; yeni müşteri, yeni üretim, crafting ve kaynak toplama durur; kalan teslimat/ödeme/temizlik yapılabilir",
+      "early_sleep_with_unfinished_orders": "Onay panelinde İptal veya Günü Bitir; Günü Bitir seçilirse servissiz rezervasyon serbest bırakılır, servis edilmiş fakat tahsil edilmemiş siparişler zarar yazılır, ödenmiş sipariş tekrar yazılmaz",
+      "reserved_batch_expiry": "Aktif sipariş için ayrılmış porsiyon o gün servis veya iptal edilene kadar geçerlidir; ertesi gün yalnız gerçekten taze porsiyon stoklara geri döner, bozulan atılır",
+      "employee_shift_wages": "Yalnız vardiyaya alındıysa ve yeterli para varsa tek sefer çekilir"
+    },
+    "weather_and_simulation": {
+      "weather_roll_on_wakeup": true,
+      "weights_by_season_percent": {
+        "spring": {
+          "clear": 45,
+          "cloudy": 25,
+          "rain": 25,
+          "storm": 5
+        },
+        "summer": {
+          "clear": 65,
+          "cloudy": 20,
+          "rain": 12,
+          "storm": 3
+        },
+        "autumn": {
+          "clear": 25,
+          "cloudy": 30,
+          "rain": 35,
+          "storm": 10
+        },
+        "winter": {
+          "clear": 15,
+          "cloudy": 30,
+          "snow": 45,
+          "blizzard": 10
+        }
+      },
+      "farming_growth_only_on_watered_days": true,
+      "rain_auto_waters": true,
+      "weather_effect_on_customer_demand": "Küçük pozitif/negatif değişim; normal tren programı asla değişmez",
+      "pause_all_timers_with_game_clock": true,
+      "offscreen_logic_simulated": true
+    },
+    "visual_asset_budget": {
+      "pixel_art_approach": "Klasik 16-bit; özgün, tutarlı piksel ölçeği; düşük detaylı mockup yerine gerçek okunabilir sprite",
+      "terrain_tile_px": 32,
+      "min_required_animations": [
+        "idle_4_dir",
+        "walk_4_dir",
+        "axe",
+        "pickaxe",
+        "hoe",
+        "watering",
+        "cooking",
+        "carry",
+        "serve",
+        "clean",
+        "sit",
+        "eat",
+        "train_move_and_stop",
+        "train_doors",
+        "stove_steam",
+        "fireplace_fire"
+      ],
+      "npc_appearance": "Ortak rig + saç/kıyafet renk varyasyonları, 6 ana isimli NPC için ayırt edici siluetler",
+      "asset_fallback": "Eksik asset hata listesinde; final build kritik placeholder kabul edilmez"
+    },
+    "acceptance_tests": [
+      "T1: 1. gün en az 15 wood ve 5 stone toplayarak tüm başlangıç onarımları eksiksiz ve bir kez tamamlanır",
+      "T2: Tutorial 44 G siparişi 100 G başlangıç parayı 56 G yapar; 06:00 teslimatı çift oluşmaz",
+      "T3: 2. gün 2 müşteri ilk çorbadan sipariş verir, stok rezervasyonu, servis, ödeme bir kez olur",
+      "T4: Aynı son porsiyona iki müşteri eşzamanlı erişemez",
+      "T5: Yalnız menüdeki ürünler sipariş edilebilir; boş barda müşteri doğru şekilde ayrılır veya beklemez",
+      "T6: Yemek dolu bara getirildiğinde ürün kaybolmaz; taşıma ve mutfak hazır stoku tutarlı kalır",
+      "T7: Oturma yeri kapalı veya erişilemezse oyuncuya hata verilir, envanter kaybı yaşanmaz",
+      "T8: Mobilya serbest döndürme ve yerleştirme, dört yön çarpışma ve etkileşim noktalarını günceller",
+      "T9: Grup siparişi tek panelde alınır; her porsiyon ayrı servis edilir ve doğru masaya bağlanır",
+      "T10: 23:00 sonrası yeni tren ve müşteri doğmaz, serviste kalanlar kapanış modunda tamamlanır",
+      "T11: Erken uyku iptalinde sipariş rezervasyonu serbest kalır; servis edilmiş ama tahsil edilmemiş yemek bedeli gelir yazılmaz",
+      "T12: Personel hiçbir zaman son servis, sipariş alma, ödeme işlemi yapmaz; vardiya ücreti günde bir kez düşer",
+      "T13: Satın alınan mutfak ekipmanı yalnız kurulduktan sonra yeni tariflere izin verir",
+      "T14: Tarif kilitleri aşama/müşteri/eşya koşulları tamamlanınca ve yeniden kayıt açılınca tutarlı kalır",
+      "T15: 4 mevsim ve 112 gün sonunda yıl sayacı doğru ilerler, etkinlikler tekrarlanır",
+      "T16: Etkinlik bir gün önce duyurulur ve yalnız mevcut üç tren saatinden birini etkiler",
+      "T17: Restorasyon alanı açılırken içerideki mobilyalar kaybolmaz, kayıtlı konumlar korunur",
+      "T18: Kayıt döngüsü sipariş, ödeme ve envanter mükerrerliği oluşturmaz",
+      "T19: Bakkal/posta satın alma ve kaynak satışları negatife düşmeyen para, tekrar satılamayan eşya üretir",
+      "T20: İflastan kurtulmak için ücretsiz odun/taş toplanıp satışla temel sebze siparişi verilebilir",
+      "T21: 30 gün hızlandırılmış testte bekleyen sipariş ve müşteri nesneleri sonsuza dek takılmaz",
+      "T22: Kış şöminesi kısa süreli ısı sağlar, odunsuz durumda oyun devam eder",
+      "T23: Aktif müşteri siparişleri ve oyuncu taşıma durumu ekran değişimlerinde korunur",
+      "T24: Tarım ekim/sulama/yağmur/hasat döngüsü offscreen ve kayıt geri yükleme ile tutarlı işler",
+      "T25: Görev ödülleri bir defa verilir; gündelik görevler her uyku sonrası uygun listeden seçilir",
+      "T26: Festival görevleri kaçırıldığında temel oyun kilitlenmez, sonraki yıl yeniden görünür",
+      "T27: Dere kenarı balıkçılığı hiç yapılmadan balık tava, katalogdan alınan fish ile yapılabilir",
+      "T28: Kayıt JSON dışa/içe aktarımında sürüm doğrulaması ve bozuk dosya güvenli hata mekanizması çalışır",
+      "T29: Türkçe UTF-8 karakterleri bütün paneller ve kayıt dönüşümlerinde bozulmaz",
+      "T30: Eksik asset fallback ile raporlanır; teslimde kritik etkileşim ve animasyonlarda placeholder kalmaz"
+    ],
+    "scope_exclusions": [
+      "Online/multiplayer",
+      "Gerçek zamanlı ticari veri veya API",
+      "Tam teşekküllü balıkçılık kariyer minigame",
+      "Kira/vergi/kredi/borç",
+      "Açlık/enerji/stamina barları",
+      "Tam otomatik personel işletmesi",
+      "Rastgele fiyat enflasyonu",
+      "Duvarları özgürce inşa ederek prosedürel bina sistemi",
+      "Mobil dokunmatik kontrolleri birinci öncelik yapma"
+    ],
+    "next_phase": "v1.0 Tam Sürüm GDD birleştirme, kullanıcı isteyince tek Claude Fable promptu"
+  },
+  "acceptance_addenda_v10": [
+    "Validate all food and drink material cost and gross profit formulas",
+    "Validate all 38 furniture, 14 equipment, 2 tools, 9 cosmetics have assets and interaction footprints",
+    "Play days 1-3 tutorial without dead ends",
+    "Cross-scene simulation retains pending orders and timed cooking",
+    "Early sleep/group cancellation preserves financial and inventory invariants",
+    "112-day season cycle and second-year repeat verified",
+    "No critical placeholder assets in deliverable",
+    "Offline browser runtime without paid API dependency"
+  ]
+}
