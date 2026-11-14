@@ -27,6 +27,15 @@ describe('Veri sözleşmesi (T31, T32)', () => {
     expect(C.recipes.vegetable_soup).toMatchObject({ cost: 13, price: 12, yield: 4, cook: 30, prep: 4, profit: 35 });
     expect(raw.canonical.tutorial_first_order_cost_g).toBe(Object.entries(C.tutorial.order).reduce((a, [id, q]) => a + C.items[id].buy * q, 0));
   });
+  it('restorasyon eşikleri (kullanıcı kararı) ve orantılı tarif kilitleri', () => {
+    expect(C.expansions.map((x) => x.paid)).toEqual([90, 380, 950, 1900]);
+    expect(C.demandTiers).toEqual([12, 70, 220, 500]); // GDD'nin özgün eşikleri ün kademesi olarak korunur
+    // Her tarifin müşteri kilidi kendi aşamasının eşiği ile bir sonraki aşamanınki arasında kalır (aşama içi kademeli açılım)
+    const stageAt = [0, ...C.expansions.map((x) => x.paid)];
+    for (const r of Object.values(C.recipes)) { const st = r.unlock.stage; expect(r.unlock.paid, r.id).toBeGreaterThanOrEqual(stageAt[st - 1]); if (st < 5) expect(r.unlock.paid, r.id).toBeLessThanOrEqual(stageAt[st] * 1.7); }
+    expect(C.recipes.vegetable_soup.unlock.paid).toBe(0); expect(C.recipes.lentil_soup.unlock.paid).toBe(90);
+    expect(C.recipes.omelet.unlock.paid).toBeGreaterThan(C.recipes.lentil_soup.unlock.paid);
+  });
   it('tüm görev hedefleri uygulanmıştır', async () => {
     const { OBJ } = await import('../src/systems/quests.js');
     for (const q of C.quests.story) for (const o of q.objectives) expect(OBJ[o], o).toBeTruthy();

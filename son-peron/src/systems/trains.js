@@ -14,6 +14,9 @@ export function trainX(sim, tr) {
   if (m <= t2) return nose;
   const k = (m - t2) / DEPART_MIN; return nose - 70 * k * k;
 }
+// Ün kademesi (1–5): ağırlanan toplam müşteri GDD'nin özgün eşiklerini geçtikçe artar; tren başına misafir
+// yoğunluğunu belirler. Restorasyon aşamasının en fazla bir üstüne çıkabilir.
+export function demandTier(sim) { const s = sim.s; return Math.min(5, s.stage + 1, 1 + sim.C.demandTiers.filter((p) => s.paidCustomers >= p).length); }
 export function nextTrain(sim) { const m = sim.s.minute; const t = sim.C.trainTimes.find((x) => x + sim.C.train.dwell > m); return t == null ? null : { time: t, eta: t - m }; }
 
 export function tick(sim) {
@@ -26,7 +29,7 @@ export function tick(sim) {
   }
 }
 export function potentialVisitors(sim, time) {
-  const s = sim.s; const ti = sim.C.trainTimes.indexOf(time); const [a, b] = VISITOR_TARGETS[s.stage][ti];
+  const s = sim.s; const ti = sim.C.trainTimes.indexOf(time); const [a, b] = VISITOR_TARGETS[demandTier(sim)][ti];
   let n = sim.ri(a, b); let mult = 1;
   const ev = s.event && s.event.time === time ? s.event : null; if (ev) mult *= ev.pax;
   if (s.festival) mult *= FESTIVAL_PAX_MULT;

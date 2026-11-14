@@ -95,7 +95,7 @@ export function collectCrate(sim) {
 }
 export function timetable(sim) {
   const s = sim.s, C = sim.C; sim.emit('timetable');
-  return { times: C.trainTimes.map(fmtTime), today: s.event, tomorrow: s.eventTomorrow, festival: s.festival, festivalTomorrow: s.festivalTomorrow, forecast: VISITOR_TARGETS[s.stage].map(([a, b]) => { const k = (s.eventTomorrow ? 1.15 : 1) * (s.festivalTomorrow ? 1.25 : 1); return [Math.round(a * k), Math.round(b * k)]; }), coop: s.coop };
+  return { times: C.trainTimes.map(fmtTime), today: s.event, tomorrow: s.eventTomorrow, festival: s.festival, festivalTomorrow: s.festivalTomorrow, forecast: VISITOR_TARGETS[sim.trainsys.demandTier(sim)].map(([a, b]) => { const k = (s.eventTomorrow ? 1.15 : 1) * (s.festivalTomorrow ? 1.25 : 1); return [Math.round(a * k), Math.round(b * k)]; }), coop: s.coop };
 }
 export function repairNoticeboard(sim) {
   const mats = sim.C.quests.interactables.find((x) => x.id === 'old_gar_noticeboard').repair_materials;

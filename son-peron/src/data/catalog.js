@@ -1,6 +1,6 @@
 // Birleşik JSON'u doğrulanmış, normalleştirilmiş kataloglara dönüştürür.
 // Girdi dosyası değiştirilmez; burada yalnızca türev üretilir.
-import { FURNITURE_META, EQUIPMENT_META, FIXTURES, HAND_TOOLS, COSMETIC_META, RENOVATION_EFFECTS, TRAIN_SCHEDULE, VISITOR_TARGETS, PROFILES } from './supplement.js';
+import { FURNITURE_META, EQUIPMENT_META, FIXTURES, HAND_TOOLS, COSMETIC_META, RENOVATION_EFFECTS, EXPANSION_PAID, TRAIN_SCHEDULE, VISITOR_TARGETS, PROFILES } from './supplement.js';
 
 const hhmm = (s) => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
 
@@ -107,6 +107,7 @@ export function buildCatalog(raw) {
     id: x.id, name: x.name, stageAfter: x.restoration_stage_after_completion, paid: x.required_completed_paid_customers,
     gold: x.gold_cost_g, materials: x.materials, wing: raw.canonical.restoration_project_visual_wings[x.id]
   }));
+  applyProgression(C, EXPANSION_PAID);
   C.renovations = eco.optional_renovations.map((x) => ({ id: x.id, name: x.name, stage: x.stage, gold: x.gold_cost_g, materials: x.materials }));
   C.renoFx = RENOVATION_EFFECTS;
   C.stageLabels = raw.canonical.restoration_stage_labels;
@@ -138,6 +139,17 @@ export function buildCatalog(raw) {
 
   C.errors.push(...validateCatalog(C));
   return C;
+}
+
+// Restorasyon eşiklerini uygular. GDD eşikleri ün kademesi olarak saklanır; tarif müşteri kilitleri
+// aşama aralıklarına orantılı (parçalı doğrusal) kaydırılır, böylece bir aşama açılınca tarifler yine kademeli açılır.
+export function applyProgression(C, paidMap) {
+  for (const x of C.expansions) { if (x.paidGdd == null) x.paidGdd = x.paid; x.paid = paidMap[x.id] ?? x.paidGdd; }
+  for (const r of Object.values(C.recipes)) if (r.unlock.paidGdd == null) r.unlock.paidGdd = r.unlock.paid;
+  C.demandTiers = C.expansions.map((x) => x.paidGdd);
+  const from = [0, ...C.demandTiers], to = [0, ...C.expansions.map((x) => x.paid)];
+  const interp = (p) => { for (let i = 1; i < from.length; i++) if (p <= from[i]) return Math.round(to[i - 1] + ((p - from[i - 1]) * (to[i] - to[i - 1])) / (from[i] - from[i - 1])); return Math.round(p * to[to.length - 1] / from[from.length - 1]); };
+  for (const r of Object.values(C.recipes)) r.unlock.paid = interp(r.unlock.paidGdd);
 }
 
 // Veri tutarlılığı: benzersiz ID, malzeme referansları, maliyet/hasılat formülleri, istasyon eşleşmesi.

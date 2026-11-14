@@ -14,6 +14,14 @@ describe('Tren takvimi', () => {
   });
 });
 
+describe('Ün kademesi', () => {
+  it('misafir yoğunluğu müşteri sayısıyla artar ama restorasyon aşamasının en fazla bir üstüne çıkar', () => {
+    const { sim, s } = fresh(); const t = () => sim.trainsys.demandTier(sim);
+    expect(t()).toBe(1); s.paidCustomers = 12; expect(t()).toBe(2); s.paidCustomers = 70; expect(t()).toBe(2); // aşama 1 → en fazla 2
+    s.stage = 2; expect(t()).toBe(3); s.paidCustomers = 600; expect(t()).toBe(3); s.stage = 4; expect(t()).toBe(5); s.stage = 5; expect(t()).toBe(5);
+  });
+});
+
 describe('Eski kayıt uyumu', () => {
   it('3 seferli eski kayıt yüklenince o günün tarifesi 5 sefere tamamlanır, geçmiş seferler yeniden doğmaz', async () => {
     const { Sim } = await import('../src/systems/sim.js');
@@ -40,7 +48,7 @@ describe('T21: 30 oyun günü hızlandırılmış simülasyon', () => {
     }
     expect(s.day).toBe(32); const sales = reports.reduce((a, r) => a + r.sales, 0); const cust = reports.reduce((a, r) => a + r.customers, 0);
     expect(cust).toBe(s.paidCustomers); expect(sales).toBe(s.stats.totalSales);
-    expect(s.stage).toBeGreaterThanOrEqual(2); expect(s.paidCustomers).toBeGreaterThan(150);
+    expect(s.stage).toBeGreaterThanOrEqual(2); expect(s.stage).toBeLessThanOrEqual(4); expect(s.paidCustomers).toBeGreaterThan(400);
     expect(reports.filter((r) => r.customers > 0).length).toBeGreaterThan(26);
     console.log(`30 gün: aşama ${s.stage}, ödemeli müşteri ${s.paidCustomers}, altın ${s.gold}, itibar ${s.reputation}, koltuk ${sim.build.totalSeats(sim)}, günlük satış ort. ${Math.round(sales / 30)} G, ayrılan ${reports.reduce((a, r) => a + r.left, 0)}, görevler ${s.quests.done.length}/15, bot uyarıları ${bot.log.length}`);
   });

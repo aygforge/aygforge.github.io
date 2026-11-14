@@ -204,7 +204,7 @@ export class Bot {
       if (sim.build.projects(sim).find((x) => x.id === p.id).reasons.length === 0) { this.use(this.furn('project_board'), 'restaurant_interior'); sim.build.startProject(sim, p.id); }
     }
     const seats = sim.build.totalSeats(sim);
-    if (s.flags.tutorialDone && seats < 2 + s.stage * 4 && (!next || s.gold < next.gold || sim.inv.count(sim, 'wood') >= (next.materials.wood || 0) + 8)) {
+    if (s.flags.tutorialDone && seats < 2 + sim.trainsys.demandTier(sim) * 4 && (!next || s.paidCustomers < next.paid || s.gold < next.gold || sim.inv.count(sim, 'wood') >= (next.materials.wood || 0) + 8)) {
       if (sim.inv.count(sim, 'wood') < 8) this.gather('tree', 2);
       this.addSeating();
     }

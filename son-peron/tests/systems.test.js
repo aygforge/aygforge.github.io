@@ -33,7 +33,7 @@ describe('Yerleştirme ve restorasyon', () => {
   it('T17: genişleme ertesi sabah açılır; teknik ID salon_expansion_3 doğu MUTFAK kanadını açar; mobilya silinmez', () => {
     const g = afterTutorial(); const { sim, s, bot } = g;
     const count0 = s.furniture.length; const pos0 = JSON.stringify(s.furniture.map((f) => [f.id, f.x, f.y, f.rot]));
-    s.gold = 1000; s.paidCustomers = 12; const w0 = sim.inv.count(sim, 'wood'); give(sim, { wood: 20, stone: 10 });
+    s.gold = 1000; s.paidCustomers = C.expansions[0].paid; const w0 = sim.inv.count(sim, 'wood'); give(sim, { wood: 20, stone: 10 });
     expect(sim.build.canPlace(sim, 'small_plant', 'restaurant_interior', 22, 8, 0).ok).toBe(false);
     expect(sim.build.startProject(sim, 'salon_expansion_1').ok).toBe(true); expect(s.gold).toBe(700); expect(sim.inv.count(sim, 'wood')).toBe(w0);
     expect(sim.build.startProject(sim, 'salon_expansion_1').ok).toBe(false); expect(s.gold).toBe(700);
@@ -60,7 +60,7 @@ describe('Yerleştirme ve restorasyon', () => {
 
 describe('Mutfak kilitleri ve ekipman', () => {
   it('T13/T14: satın alınan ekipman yalnız KURULUNCA tarif açar; para siparişte, malzeme kurulumda bir kez', () => {
-    const g = afterTutorial(); const { sim, s, bot } = g; toStage(g, 2); s.gold = 500; s.paidCustomers = 12; const r = C.recipes.baked_potato;
+    const g = afterTutorial(); const { sim, s, bot } = g; toStage(g, 2); s.gold = 500; const r = C.recipes.baked_potato; s.paidCustomers = r.unlock.paid;
     expect(sim.kitchen.recipeStatus(sim, r).unlocked).toBe(false);
     bot.toScene('railway_outdoors'); bot.go(68, 47); expect(sim.town.mailOrder(sim, { basic_oven: 1 }).ok).toBe(true); expect(s.gold).toBe(240);
     expect(sim.town.mailOrder(sim, { basic_oven: 1 }).ok).toBe(false);
@@ -79,12 +79,12 @@ describe('Mutfak kilitleri ve ekipman', () => {
     // Kayıt/yükle sonrası kilit durumu aynı
     const p = sim.save.parse(sim.save.serialize(sim)); expect(p.ok).toBe(true);
     // Müşteri eşiği: hikâye ödülü yalnız müşteri koşulunu esnetir, aşamayı değil
-    const omelet = C.recipes.omelet; s.paidCustomers = 12; expect(sim.kitchen.recipeStatus(sim, omelet).unlocked).toBe(false);
+    const omelet = C.recipes.omelet; s.paidCustomers = omelet.unlock.paid - 1; expect(sim.kitchen.recipeStatus(sim, omelet).unlocked).toBe(false);
     s.storyUnlocks.push('omelet', 'night_stew'); expect(sim.kitchen.recipeStatus(sim, omelet).unlocked).toBe(true);
     expect(sim.kitchen.recipeStatus(sim, C.recipes.night_stew).unlocked).toBe(false);
   });
   it('T27: balık tutmadan, katalogdan alınan balıkla balık tava yapılır', () => {
-    const g = afterTutorial(); const { sim, s, bot } = g; toStage(g, 4); s.paidCustomers = 220; s.gold = 1000; s.minute = 500;
+    const g = afterTutorial(); const { sim, s, bot } = g; toStage(g, 4); s.paidCustomers = C.recipes.fried_fish.unlock.paid; s.gold = 1000; s.minute = 500;
     sim.town.mailOrder(sim, { large_pan: 1, fish: 2, flour: 1 }); sim.daysys.sleep(sim, true);
     bot.use((t) => t.kind === 'obj' && t.id === 'crate', 'railway_outdoors'); give(sim, { wood: 8, stone: 4, metal_part: 1 });
     const spot = bot.findSpot('large_pan', 0, [31, 14, 46, 31]); expect(bot.placeItem('large_pan', spot[0], spot[1], 0).ok).toBe(true);

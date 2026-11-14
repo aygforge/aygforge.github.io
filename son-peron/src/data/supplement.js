@@ -94,6 +94,9 @@ export const HAND_TOOLS = {
 };
 
 // Kullanıcı kararı (v1.1): günde 5 sefer. GDD'deki 09/15/21 yerine bu tarife geçerlidir (girdi JSON değiştirilmez).
+// Kullanıcı kararı (v1.1): restorasyon eşikleri GDD'deki 12/70/220/500 yerine (günde 5 tren nedeniyle).
+// GDD'nin özgün eşikleri artık "ün kademesi"ni (tren başına misafir yoğunluğu) belirler; bkz. trains.demandTier.
+export const EXPANSION_PAID = { salon_expansion_1: 90, salon_expansion_2: 380, salon_expansion_3: 950, salon_expansion_4: 1900 };
 export const TRAIN_SCHEDULE = ['09:00', '12:00', '15:00', '18:00', '21:00'];
 // Hedef restoran ziyaretçisi aralıkları [min,max]; sıra TRAIN_SCHEDULE ile aynı.
 // 09/15/21 değerleri GDD §17'den; 12:00 ve 18:00 ara seferleri daha küçük dalgalar getirir.

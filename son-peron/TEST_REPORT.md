@@ -10,7 +10,7 @@ Aşağıdaki çıktılar bu depoda **gerçekten çalıştırılan** komutlardan 
 |---|---|
 | `npm install` | başarılı |
 | `npm run build` (asset üretimi + Vite) | başarılı — atlas 2048×1914, 621 kare, eksik asset yok; `dist/` üretildi |
-| `npm test` | **42 / 42 geçti** (7 dosya) — v1.1 tren tarifesi sonrası yeniden koşuldu |
+| `npm test` | **44 / 44 geçti** (7 dosya) — v1.1 tren tarifesi ve restorasyon eşikleri sonrası yeniden koşuldu |
 | `npm run test:e2e` | **26 / 26 geçti** (gerçek tarayıcı) |
 | `npm run dev` | Elle çalıştırılmadı; aynı kaynak `vite build` + `vite preview` ile e2e'de doğrulandı |
 
@@ -165,6 +165,7 @@ Ekran görüntüleri `tests/e2e/shots/` altına yazılır (seçilmiş altı tane
 - Tren etkinliklerinde yolcu ve bahşiş çarpanları uygulanır; JSON'daki `satisfaction_weight_modifier` uygulanmadı.
 - Gar iş birliği 3 kademe olarak izlenir; 2. kademe etkisi yalnız etkinlik bahşişine +%5'tir, "prestijli gar dekoru" yoktur.
 - Teras yalnız görsel + ortam puanıdır; dışarıda müşteri oturtulamaz.
-- v1.1 (günde 5 tren) sonrası 30 günlük bot koşusu: aşama 5, 691 ödemeli müşteri, günlük ortalama satış 625 G (3 seferde: aşama 4, 430 müşteri, 354 G). İlerleme belirgin şekilde hızlandı.
+- v1.1 son denge (5 tren + 90/380/950/1900 eşikleri + ün kademesi), 110 günlük bot koşusu: aşamalar 10 / 25 / 47 / 82. günlerde; günlük müşteri 1–10. gün 15, 11–30. gün 24, 31–60. gün 28, 61–110. gün 29; yer bulamayıp giden toplam 83 misafir (≈0,75/gün). Bot neredeyse kusursuz oynadığı için gerçek oyuncu aşamalara daha geç ulaşır.
+- Ara ölçüm (5 tren, eski 12/70/220/500 eşikleri) 30 günlük bot koşusu: aşama 5, 691 ödemeli müşteri, günlük ortalama satış 625 G (3 seferde: aşama 4, 430 müşteri, 354 G). İlerleme belirgin şekilde hızlandı.
 - Denge (v1.0, 3 sefer): bot 30 günde 4. aşamaya ulaştı (GDD'nin tavsiye takviminden hızlı; GDD bu takvimi bağlayıcı saymıyor). Günlük satışlar aşama 1–3 için GDD aralıklarında ölçüldü; aşama 4–5 ölçülmedi.
 - `dist/` bir HTTP sunucusu ister (`npm run preview`); `file://` ile açılmaz.
