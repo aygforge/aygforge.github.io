@@ -103,8 +103,8 @@ export function scheduleSecondEncounter(G, takenPet) {
   const [a, b] = BALANCE.special.secondAfterHarbors;
   const firstAt = run.special.firstAt;
   let due = firstAt + rng.int(a, b);
-  due = Math.min(due, run.route.length - 1);
-  due = Math.max(due, Math.min(run.idx + 1, run.route.length - 1));
+  due = Math.min(due, (run.totalHarbors || run.route.length) - 1);
+  due = Math.max(due, Math.min(run.idx + 1, (run.totalHarbors || run.route.length) - 1));
   run.special.secondDueAt = due;
   run.special.secondPet = takenPet === 'PET_TARCIN' ? 'PET_ZIPIR' : 'PET_TARCIN';
   run.special.stage = 'awaitingSecond';

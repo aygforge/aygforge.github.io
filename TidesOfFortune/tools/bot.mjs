@@ -102,7 +102,7 @@ export function createBot(core, { rngSeed = 1, careful = 1, smart = false } = {}
     const reserve = 60;
     const cands = visit.market.map((m) => {
       const bp = Trade.buyPrice(G, visit.harborId, m.good);
-      const nextId = run.route[run.idx + 1]?.harborId;
+      const nextId = null;
       const est = smart && nextId ? Trade.sellPrice(G, nextId, m.good, { statuses: [] }) : GOOD_BY_ID[m.good].sell * 1.05;
       return { m, bp, margin: est - bp };
     }).filter((c) => c.margin > 5).sort((a, b) => b.margin / b.bp - a.margin / a.bp);
@@ -111,7 +111,10 @@ export function createBot(core, { rngSeed = 1, careful = 1, smart = false } = {}
         if (!core.buyGood(c.m.good, 1).ok) break;
       }
     }
-    core.depart();
+    // söylentisi en iyi eşleşen yolu seç (rastgelelik bot tohumundan)
+    const lanes = visit.lanes || [];
+    const li = lanes.length ? Math.floor(rand() * lanes.length) : 0;
+    core.depart(li);
   }
 
   function step() {

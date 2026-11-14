@@ -21,6 +21,8 @@ export const DANGER_EVENTS = [
       { label: 'Kara Bayrak', icon: 'flag', req: { item: 'ITEM_BLACK_FLAG' }, chance: 90, tags: ['negotiate'],
         win: { text: `Direğe Kara Bayrak'ı çektin. Korsanlar selam verip yollarına gitti; giderken bir fıçı rom bile bıraktılar.`, fx: { goldR: 30 } },
         lose: { text: `Bayrağı tanımadılar; kısa bir çatışmadan sonra uzaklaştılar.`, fx: { hull: -15 } } },
+      { label: 'Teslim ol', icon: 'flagWhite', tags: ['surrender'], hint: 'Kargonun yarısı ve bir miktar altın gider; gemi zarar görmez',
+        win: { text: `Beyaz bayrağı çektin. Korsanlar kancalarla yanaştı, güverteye çıkıp sandıklarını kendi gemilerine taşıdı ve kasandan bir pay aldı.`, fx: { cargoLoss: 50, gold: -40 } } },
     ],
   },
   {

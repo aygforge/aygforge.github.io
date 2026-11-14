@@ -20,7 +20,7 @@ export function renderSummary(ui) {
     ui.renderer.sinkAnim = 0;
     ui.go(view);
   };
-  return h('div.screen.summary', {},
+  return h('div.screen.world.summary', {},
     h('div.sumPanel.panel', {},
       h('h1', {}, complete ? "Büyük Liman'a ulaştın!" : abandoned ? 'Sefer yarıda kaldı' : 'Gemi battı'),
       h('p.sub', {}, complete ? 'Rıhtımda kalabalık seni alkışladı. Bu sefer denizler seninleydi.' : abandoned ? 'Limanda demir alıp seferi bıraktın.' : `${last.name} açıklarında dalgalar gemiyi yuttu. Ama her batış bir derstir.`),
@@ -28,7 +28,7 @@ export function renderSummary(ui) {
       h('div.sumGrid', {},
         h('div.sumStats', {},
           h('h3', {}, 'Sefer'),
-          h('div.xprow', {}, h('span', {}, 'Ulaşılan liman'), h('b', {}, `${run.stats.harborsReached}/${run.route.length}`)),
+          h('div.xprow', {}, h('span', {}, 'Ulaşılan liman'), h('b', {}, `${run.stats.harborsReached}`)),
           h('div.xprow', {}, h('span', {}, 'Son gemi'), h('b', {}, SHIP_BY_LEVEL[run.ship.level].name)),
           h('div.xprow', {}, h('span', {}, 'Elde kalan altın'), h('b', {}, `${fmt(run.gold)} `, h('small', {}, '(sıfırlanır)'))),
           h('div.xprow', {}, h('span', {}, 'En yüksek altın'), h('b', {}, fmt(run.stats.maxGold))),

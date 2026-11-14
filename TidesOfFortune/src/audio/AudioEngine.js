@@ -293,6 +293,15 @@ export class AudioEngine {
       case 'splash': this.noise(t, 0.6, 0.3, 1500, this.sfx, 'bandpass'); break;
       case 'depart': this.tone(196, t, 0.8, 'sawtooth', 0.05, this.sfx, 0.1, 700); this.tone(247, t + 0.1, 0.8, 'sawtooth', 0.04, this.sfx, 0.1, 700); break;
       case 'oldfriends': [659, 784, 988, 1175, 988, 1319].forEach((f, i) => this.tone(f, t + i * 0.32, 1.4, 'sine', 0.07)); break;
+      case 'cannon': this.noise(t, 0.5, 0.6, 400); this.tone(60, t, 0.5, 'sine', 0.4); break;
+      case 'impact': this.noise(t, 0.35, 0.5, 900); this.tone(90, t, 0.3, 'square', 0.12); break;
+      case 'hook': this.tone(900, t, 0.06, 'square', 0.05); this.noise(t + 0.05, 0.1, 0.15, 3000, this.sfx, 'highpass'); break;
+      case 'pickup': this.tone(520, t, 0.06, 'triangle', 0.08); this.tone(660, t + 0.05, 0.06, 'triangle', 0.06); break;
+      case 'dock': this.tone(220, t, 1.2, 'sine', 0.06); this.tone(330, t + 0.3, 1.0, 'sine', 0.05); this.creak(t + 0.2); break;
+      case 'anchor': for (let i = 0; i < 6; i++) this.noise(t + i * 0.07, 0.05, 0.2, 2500, this.sfx, 'bandpass'); this.noise(t + 0.5, 0.5, 0.3, 800); break;
+      case 'ghost': this.tone(220, t, 2, 'sine', 0.06, this.sfx, 0.5); this.tone(233, t, 2, 'sine', 0.05, this.sfx, 0.5); break;
+      case 'chest': this.tone(300, t, 0.1, 'square', 0.06); [784, 988, 1175].forEach((f, i) => this.tone(f, t + 0.15 + i * 0.07, 0.3, 'triangle', 0.06)); break;
+      case 'flag': this.noise(t, 0.4, 0.15, 1500, this.sfx, 'bandpass'); break;
       case 'error': this.tone(180, t, 0.12, 'square', 0.05); this.tone(140, t + 0.1, 0.15, 'square', 0.05); break;
     }
   }

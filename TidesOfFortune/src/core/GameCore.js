@@ -101,12 +101,14 @@ export class GameCore {
   newRun(seedStr = null) {
     return this.act('newRun', () => {
       const seed = (seedStr || randomSeedString()).toUpperCase();
-      const route = Route.generateRoute(seed, this.meta);
+      const plan = Route.generateRoute(seed, this.meta);
+      const route = plan.route;
       this.run = createRun(this.meta, seed, route);
+      this.run.totalHarbors = plan.total;
       this.rng = SeededRNG.derive(seed, 'events');
       const sp = SeededRNG.derive(seed, 'special1');
-      this.run.special.firstAt = sp.int(0, Math.min(BALANCE.special.firstWithinHarbors, route.length - 1) - 1);
-      const lines = [{ kind: 'info', text: `Paslı Martı yeni bir sefere hazırlanıyor. Başlangıç limanı: ${HARBOR_BY_ID[route[0].harborId].name}. Rota ${route.length} limandan oluşuyor; son durak Büyük Liman.` }];
+      this.run.special.firstAt = sp.int(0, Math.min(BALANCE.special.firstWithinHarbors, plan.total - 1) - 1);
+      const lines = [{ kind: 'info', text: `Paslı Martı yeni bir sefere hazırlanıyor. Başlangıç limanı: ${HARBOR_BY_ID[route[0].harborId].name}. Rota belirsiz: her limanda yeni deniz yolları seçeceksin. Son durak Büyük Liman.` }];
       lines.push(...Prog.discoverHarbor(this.G, route[0].harborId));
       const queue = [];
       if (this.run.special.firstAt === 0) {
@@ -164,7 +166,13 @@ export class GameCore {
       starterPicks: idx === 0 && BALANCE.start.freeStarterItems ? BALANCE.start.starterItemCount : 0,
       prevPrices: run.prevPrices,
       tipGood: null,
+      lanes: harbor.final ? [] : Route.generateLanes(G, idx),
     };
+    if (!harbor.final && !run.visit.lanes.length) {
+      // Havuz tükendiyse (çok nadir) doğrudan Büyük Liman'a giden yol
+      run.totalHarbors = idx + 2;
+      run.visit.lanes = Route.generateLanes(G, idx);
+    }
     run.visit.tipGood = tipRng.pick(run.visit.market.map((m) => m.good));
     run.buffs.rareNext = false;
     for (const c of run.visit.crew) this.meta.codex.crewMet[c] = true;
@@ -259,21 +267,27 @@ export class GameCore {
     return this.act('buyBiscuit', () => this._harborGuard() || Pets.buyBiscuit(this.G));
   }
 
-  /** Yola çık: rota event kuyruğu üretilir. */
-  depart() {
+  /** Yola çık: seçilen deniz yolunun (gizli) hedefi rotaya eklenir, event kuyruğu üretilir. */
+  depart(laneIndex = 0) {
     return this.act('depart', () => {
       const g = this._harborGuard();
       if (g) return g;
       const run = this.run;
       const harbor = HARBOR_BY_ID[run.visit.harborId];
       if (harbor.final) return { ok: false, reason: "Büyük Liman son durak. Run'ı tamamlayabilirsin." };
-      if (run.visit.starterPicks > 0 && run.items.length < Ship.itemSlots(this.G)) {
-        // Uyarı UI tarafında gösterilir; ayrılmaya izin verilir.
-      }
+      const lane = run.visit.lanes[laneIndex];
+      if (!lane) return { ok: false, reason: 'Geçersiz deniz yolu.' };
+      run.route[run.idx].distance = lane.distance;
+      run.route.length = run.idx + 1;
+      run.route.push({ harborId: lane.harborId, distance: null });
+      run.laneDanger = lane.danger;
+      run.currentLane = { type: lane.type, danger: lane.danger, pirates: lane.pirates, region: lane.region, rumors: lane.rumors, hintType: lane.hintType };
       run.prevPrices = Trade.snapshotPrices(this.G, harbor.id);
       run.lastVisitItems = run.visit.items.slice();
       run.visit = null;
       Events.buildVoyage(this.G);
+      run.voyage.duration = Route.voyageDuration(run.seed, run.idx, lane.distance);
+      run.voyage.elapsed = 0;
       run.phase = 'voyage';
       if (run.crew.length >= 5) Prog.unlockAchievement(this.G, 'ACH_FULL_CREW');
       return { ok: true };
@@ -415,6 +429,14 @@ export class GameCore {
     }
   }
 
+  /** Gerçek zamanlı seyir süresini kaydeder (yalnızca sunum; kurallara etkisi yok). */
+  setVoyageElapsed(t, persist = false) {
+    const v = this.run?.voyage;
+    if (!v) return;
+    v.elapsed = Math.max(v.elapsed || 0, t);
+    if (persist) this.persist();
+  }
+
   /** Event sonucunu kapatır ve yolculuğa devam eder. */
   continueEvent() {
     return this.act('continueEvent', () => {
@@ -447,6 +469,7 @@ export class GameCore {
     const spoiled = Trade.rollSpoilage(G, this.rng, v.distance);
     for (const s of spoiled) lines.push({ kind: 'cargo', text: `Yolda bozuldu: ${s.n} ${GOOD_BY_ID[s.good].name}` });
     run.buffs.biscuit = false;
+    run.laneDanger = 0;
     run.idx = v.toIdx;
     run.voyage = null;
     const harbor = HARBOR_BY_ID[run.route[run.idx].harborId];

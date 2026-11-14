@@ -28,7 +28,7 @@ function boot() {
     core, renderer, audio, stage,
   });
   renderer.onFrame = () => tickVoyage(ui);
-  renderer.sea.onThunder = () => audio.thunder();
+  renderer.world.ocean.onThunder = () => audio.thunder();
   setTapSound(() => audio.play('click'));
   const unlock = () => audio.unlock();
   window.addEventListener('pointerdown', unlock, { passive: true });

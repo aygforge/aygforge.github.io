@@ -12,28 +12,30 @@ import { STATUS_NAMES } from '../systems/EventSystem.js';
 
 export const CAT_COLOR = { healthy: '#5cb85c', damaged: '#e8b94a', critical: '#e07b39', sinking: '#d9534f', sunk: '#555' };
 
-export function hullBar(G, big = false) {
+export function hullBar(G, big = false, shown = null) {
   const max = Ship.maxHull(G);
-  const hp = G.run.ship.hull;
-  const cat = Ship.hullCategory(G);
+  const hp = shown ?? G.run.ship.hull;
+  const cat = Ship.hullCategoryFor(hp, max);
   const pct = Math.max(0, Math.min(100, (hp / max) * 100));
   return h(`div.hullbar${big ? '.big' : ''}`, { title: 'Gövde' },
     icon('hull'),
-    h('div.bar', {}, h('div.fill', { style: { width: pct + '%', background: CAT_COLOR[cat] } }), h('span.barlabel', {}, `${hp}/${max}`)),
+    h('div.bar', {}, h('div.fill', { style: { width: pct + '%', background: CAT_COLOR[cat] } }), h('span.barlabel.n', {}, `${hp}/${max}`)),
     h('span.cat', { style: { color: CAT_COLOR[cat] } }, Ship.HULL_CATEGORY_NAMES[cat]),
   );
 }
 
+/** Durum çubuğu. Animasyon sırasında EncounterDirector'ın gösterim değerleri (eski→yeni) kullanılır. */
 export function statusBar(ui, opts = {}) {
   const G = ui.core.G;
   const run = G.run;
+  const disp = ui.director?.display;
   const cap = Ship.cargoCapacity(G);
-  const used = Ship.cargoUsed(run);
-  return h('div.statusbar', {},
-    hullBar(G),
-    h('div.stat', { title: T.gold }, icon('coin'), h('b', {}, fmt(run.gold))),
-    h('div.stat' + (used >= cap ? '.full' : ''), { title: T.cargo }, icon('crate'), h('b', {}, `${used}/${cap}`)),
-    h('div.stat', { title: 'Run XP' }, icon('star'), h('b', {}, fmt(run.xp.total))),
+  const shownCargo = ui.world?.cargoOverride ? ui.world.cargoOverride.filter(Boolean).length : Ship.cargoUsed(run);
+  return h(`div.statusbar${opts.compact ? '.compact' : ''}`, {},
+    hullBar(G, false, disp ? disp.hull : null),
+    h('div.stat', { title: T.gold }, icon('coin'), h('b.n', {}, fmt(disp ? disp.gold : run.gold))),
+    h('div.stat' + (shownCargo >= cap ? '.full' : ''), { title: T.cargo }, icon('crate'), h('b.n', {}, `${shownCargo}/${cap}`)),
+    h('div.stat', { title: 'Run XP' }, icon('star'), h('b.n', {}, fmt(run.xp.total))),
     opts.extra || null,
   );
 }

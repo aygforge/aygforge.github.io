@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { GameCore, Ship, Trade, Events, Crew } from '../src/core/GameCore.js';
 import { memoryStorage } from '../src/core/SaveManager.js';
-import { generateRoute } from '../src/systems/RouteSystem.js';
+import { generateRoute, generateLanes, laneText, intelAccuracy, regionDemand, harborRelativeSell } from '../src/systems/RouteSystem.js';
 import { createMeta } from '../src/core/GameState.js';
 import { HARBORS, GRAND_HARBOR_ID, HARBOR_BY_ID } from '../src/data/harbors.js';
 import { ITEMS } from '../src/data/items.js';
@@ -63,19 +63,58 @@ test('1. Yeni run oluşturulabiliyor', () => {
   assert.ok(core.newRun('T1').ok);
   assert.equal(core.run.gold, 100);
   assert.equal(core.run.ship.hull, 100);
-  assert.ok(core.run.route.length >= 6 && core.run.route.length <= 10);
+  assert.ok(core.run.totalHarbors >= 6 && core.run.totalHarbors <= 10);
+  assert.equal(core.run.route.length, 1, 'yalnızca başlangıç limanı bilinir');
 });
 
-test('2. Aynı seed aynı rotayı üretir; liman tekrarı yok; final Büyük Liman', () => {
-  for (let i = 0; i < 200; i++) {
-    const a = generateRoute('S' + i, createMeta());
-    const b = generateRoute('S' + i, createMeta());
+test('2. Aynı seed + aynı kararlar aynı rotayı üretir; liman tekrarı yok; final Büyük Liman; hedefler önceden bilinmez', () => {
+  for (let i = 0; i < 40; i++) {
+    assert.deepEqual(generateRoute('S' + i, createMeta()), generateRoute('S' + i, createMeta()));
+    const play = () => { const core = newCore(); core.newRun('RT' + i); const r = createBot(core, { rngSeed: 3 }).playRun(); return { route: core.run.route.map((x) => x.harborId), total: core.run.totalHarbors, res: r.result }; };
+    const a = play(), b = play();
     assert.deepEqual(a, b);
-    assert.equal(new Set(a.map((x) => x.harborId)).size, a.length);
-    assert.equal(a[a.length - 1].harborId, GRAND_HARBOR_ID);
-    assert.ok(a.length >= 6 && a.length <= 10);
-    // kilitli tipler rotada yok
-    assert.ok(!a.some((x) => ['mystery', 'ice'].includes(HARBOR_BY_ID[x.harborId].type)));
+    assert.equal(new Set(a.route).size, a.route.length, 'liman tekrarı yok');
+    assert.ok(!a.route.some((id) => ['mystery', 'ice'].includes(HARBOR_BY_ID[id].type)), 'kilitli tip yok');
+    if (a.res === 'complete') { assert.equal(a.route[a.route.length - 1], GRAND_HARBOR_ID); assert.equal(a.route.length, a.total); }
+  }
+});
+
+test('Belirsiz rota: deniz yolları 2–3 seçenek, hedef adı ipuçlarında yok, son yol Büyük Liman', () => {
+  const core = newCore();
+  core.newRun('LANES');
+  toHarbor(core);
+  const lanes = core.run.visit.lanes;
+  assert.ok(lanes.length >= 2 && lanes.length <= 3);
+  for (const l of lanes) {
+    const tx = laneText(l);
+    const name = HARBOR_BY_ID[l.harborId].name;
+    assert.ok(!JSON.stringify(tx).includes(name), 'liman adı sızmıyor');
+    assert.notEqual(l.harborId, core.run.route[0].harborId);
+  }
+  // ziyaret boyunca sabit (kayıt/yükleme dahil)
+  core.persist();
+  assert.deepEqual(new GameCore(core.saves.s).run.visit.lanes, lanes);
+  // istihbarat: Tarık ile ticaret söylentileri doğru
+  Crew.addCrew(core.G, 'CREW_TARIK');
+  assert.equal(intelAccuracy(core.G).trade, 100);
+  // son ayak: tüm yollar Büyük Liman'a
+  core.run.totalHarbors = 2;
+  const fin = generateLanes(core.G, 0);
+  assert.ok(fin.every((l) => l.harborId === GRAND_HARBOR_ID));
+});
+
+test('Ticaret rota belirsizliğinden etkilenir: bölgesel talep fiyatları değiştirir', () => {
+  const core = newCore();
+  core.newRun('DEMAND');
+  toHarbor(core);
+  const vals = new Set();
+  for (let r = 1; r <= 5; r++) vals.add(regionDemand('DEMAND', r, 'GOOD_SPICE').toFixed(3));
+  assert.ok(vals.size > 1, 'bölgeye göre farklı talep');
+  const lane = core.run.visit.lanes[0];
+  const truthful = lane.rumors.filter((x) => x.truthful);
+  for (const t of truthful) {
+    const m = harborRelativeSell('DEMAND', HARBOR_BY_ID[lane.harborId], t.good);
+    assert.ok(m >= 0.9, 'doğru söylenti gerçekten iyi fiyatlı bir mal');
   }
 });
 
@@ -258,7 +297,7 @@ test('14–15. Zıpır & Tarçın özel karşılaşmaları ve Eski Dostlar', () 
   assert.ok(core.run.pets.includes('PET_TARCIN'));
   assert.equal(core.run.special.stage, 'awaitingSecond');
   const due = core.run.special.secondDueAt;
-  assert.ok(due >= Math.min(fa + 2, core.run.route.length - 1) && due <= Math.min(fa + 4, core.run.route.length - 1));
+  assert.ok(due >= Math.min(fa + 2, core.run.totalHarbors - 1) && due <= Math.min(fa + 4, core.run.totalHarbors - 1));
   // ikinci karşılaşmaya kadar oyna
   core.run.ship.hull = 9999;
   guard = 0;

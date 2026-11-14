@@ -6,6 +6,7 @@ import { HARBOR_BY_ID } from '../data/harbors.js';
 import { SeededRNG, hashString } from '../core/SeededRNG.js';
 import { hasUpgrade } from '../core/GameState.js';
 import { cargoFree, cargoUsed } from './ShipSystem.js';
+import { regionDemand } from './RouteSystem.js';
 import { hasCrew, hasItem, crewSkillMult } from './CrewSystem.js';
 
 const RARE_GROUP = 'rare';
@@ -21,7 +22,7 @@ export function harborGoodMult(seed, harbor, goodId) {
   const base = HARBOR_PRICE_MULT[harbor.type]?.[goodId] ?? 1;
   const mj = 1 + jitter(seed, 'hm', harbor.id, goodId) * BALANCE.trade.harborMultJitter;
   const pj = 1 + jitter(seed, 'pj', harbor.id, goodId) * BALANCE.trade.priceJitter;
-  return base * mj * pj;
+  return base * mj * pj * regionDemand(seed, harbor.region, goodId);
 }
 
 export function isContrabandAt(goodId, harbor) {

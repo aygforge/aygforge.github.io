@@ -5,13 +5,16 @@ import { ACHIEVEMENT_BY_ID } from '../data/achievements.js';
 import { EVENT_BY_ID } from '../data/events.js';
 import { itemDetail, crewDetail, petDetail, goodDetail, harborDetail } from './components.js';
 import { petPortraitURL } from '../rendering/Characters.js';
+import { PH } from '../presentation/EncounterDirector.js';
+import { HARBOR_BY_ID } from '../data/harbors.js';
+import { hashString } from '../core/SeededRNG.js';
+import { PX } from '../rendering/Renderer.js';
 import * as Ship from '../systems/ShipSystem.js';
 import * as Events from '../systems/EventSystem.js';
 import { renderMenu } from './screens/menu.js';
-import { renderMap } from './screens/map.js';
+import { renderMap, renderArrival } from './screens/map.js';
 import { renderHarbor } from './screens/harbor.js';
 import { renderVoyage } from './screens/voyage.js';
-import { renderEvent } from './screens/event.js';
 import { renderSummary } from './screens/summary.js';
 import { renderUpgrades, renderCodex, renderSettings } from './screens/meta.js';
 
@@ -34,7 +37,82 @@ export class UI {
     this.sailing = null;
     this.fast = false;
     core.on((kind, data) => this.onChange(data));
-    renderer.onBubbles = (list) => this.drawBubbles(list);
+    renderer.onOverlays = (list) => this.drawBubbles(list);
+    this.director = renderer.director;
+    this.world = renderer.world;
+    this.director.hooks = {
+      sfx: (n) => this.audio.play(n),
+      onPhase: () => this.render(),
+      onFastOff: () => { this.fast = false; },
+      onDisplay: () => this.render(),
+      onCoast: (hb) => this.toast(`Kıyı göründü! ${hb.final ? 'Büyük Liman’ın kuleleri ufukta.' : ''}`, 'good', 2600),
+    };
+    this.sceneKey = null;
+    stage.el.querySelector('#scene').addEventListener('click', (e) => this.onCanvasTap(e));
+  }
+
+  /** Dünya sahnesini oyun fazına göre kur (yalnızca faz değişince) */
+  syncWorld() {
+    const run = this.core.run;
+    const w = this.world;
+    const d = this.director;
+    if (!run || this.view !== 'game') {
+      const key = 'menu';
+      if (this.sceneKey !== key) {
+        this.sceneKey = key;
+        w.mode = 'menu'; w.harbor = null; w.coast = null; w.clearEncounter();
+        w.ship.level = Math.min(5, 1 + Math.floor(this.core.meta.stats.completed / 2)); w.ship.crew = []; w.ship.pets = []; w.ship.cargo = []; w.ship.damage = 'healthy';
+        w.targetSpeed = 26; w.sails = 'full'; w.ocean.preset = 'calm'; w.ocean.night = false; w.ocean.fog = 0; w.weatherFx = []; w.cam.tx = 0; w.cam.ty = 0; w.cam.tzoom = 1; w.ship.alpha = 1; w.ship.sink = 0;
+        d.phase = PH.IDLE;
+      }
+      this.renderer.setScene('world');
+      return;
+    }
+    w.syncFromRun(run, Ship.hullCategory(this.G));
+    const harborId = run.route[run.idx]?.harborId;
+    const key = run.ended ? 'end' : `${run.phase}|${run.idx}|${run.voyage ? run.voyage.toIdx : ''}`;
+    if (this.sceneKey === key) { this.renderer.setScene(this.sub.mapOpen ? 'map' : 'world'); return; }
+    const prev = this.sceneKey;
+    this.sceneKey = key;
+    if (run.ended) {
+      w.mode = 'summary'; w.sunk = run.result !== 'complete'; w.clearEncounter(); w.targetSpeed = 0;
+      if (!w.sunk) d.enterHarbor('final', hashString(harborId));
+      w.mode = 'summary';
+    } else if (run.phase === 'voyage') {
+      d.enterVoyage();
+    } else {
+      const hb = HARBOR_BY_ID[harborId];
+      const fromDock = prev && prev.startsWith('voyage');
+      d.enterHarbor(hb.final ? 'final' : hb.type, hashString(hb.id));
+      if (fromDock) { w.cam.x = 0; w.cam.tx = 0; }
+    }
+    this.renderer.setScene(this.sub.mapOpen ? 'map' : 'world');
+  }
+
+  onCanvasTap(e) {
+    if (this.renderer.scene !== 'world') return;
+    const p = this.stage.toLogical(e.clientX, e.clientY);
+    const bx = p.x / PX, by = p.y / PX;
+    const w = this.world;
+    const wp = w.fromScreen(bx, by, this.renderer.W, this.renderer.H);
+    const lp = w.worldToShip(wp.x, wp.y);
+    const a = w.deck.actorAt(lp.x, lp.y);
+    if (!a) return;
+    const inf = w.deck.info(a);
+    this.audio.play(a.kind === 'dog' ? 'bark' : a.kind === 'cat' ? 'meow' : 'click');
+    this.showActorInfo(inf, p);
+  }
+
+  showActorInfo(inf, p) {
+    this.overlay.querySelector('.actorInfo')?.remove();
+    const el = h('div.actorInfo.panel', { style: { left: Math.min(p.x + 16, this.stage.W - 380) + 'px', top: Math.max(80, p.y - 120) + 'px' }, onTap: () => el.remove() },
+      h('b', {}, inf.name), h('small', {}, inf.title),
+      h('div.aiRow', {}, h('span', {}, 'Görev: '), inf.task),
+      h('div.aiRow.dim', {}, inf.ability),
+    );
+    this.overlay.appendChild(el);
+    clearTimeout(this._aiT);
+    this._aiT = setTimeout(() => el.remove(), 4500);
   }
 
   get G() {
@@ -80,18 +158,25 @@ export class UI {
 
   /** Aktif ekranı yeniden oluşturur; kaydırma konumlarını korur. */
   render() {
+    if (this._rendering) { this._again = true; return; }
+    this._rendering = true;
+    try { this._render(); } finally { this._rendering = false; }
+    if (this._again) { this._again = false; this.render(); }
+  }
+
+  _render() {
     const scrolls = {};
     this.root.querySelectorAll('[data-scroll]').forEach((el) => (scrolls[el.dataset.scroll] = el.scrollTop));
     clear(this.root);
     let el;
     const run = this.core.run;
+    this.syncWorld();
     if (this.view === 'upgrades') el = renderUpgrades(this);
     else if (this.view === 'codex') el = renderCodex(this);
     else if (this.view === 'settings') el = renderSettings(this);
     else if (this.view === 'menu' || !run) {
       this.view = 'menu';
       el = renderMenu(this);
-      this.renderer.setScene('menu', { level: Math.min(5, 1 + Math.floor(this.core.meta.stats.completed / 2)) });
       this.music('menu', 'sea');
     } else el = this.renderGame();
     this.root.appendChild(el);
@@ -102,43 +187,28 @@ export class UI {
 
   renderGame() {
     const run = this.core.run;
-    const G = this.G;
-    const dmg = Ship.hullCategory(G);
     if (run.ended) {
-      this.renderer.setScene('summary');
       this.music('summary', run.result === 'complete' ? 'harbor' : 'sea');
       return renderSummary(this);
     }
+    if (this.sub.mapOpen) return renderMap(this, {});
     if (run.phase === 'arrival') {
-      if (run.arrival.current) return this.eventView(run.arrival);
-      return renderMap(this, { arrival: true });
+      this.music(run.arrival.current ? 'oldfriends' : 'harbor', 'harbor');
+      return renderArrival(this);
     }
     if (run.phase === 'harbor') {
-      if (this.sub.mapOpen) return renderMap(this, { arrival: false });
-      this.renderer.setScene('harbor', { damage: dmg });
       this.music('harbor', 'harbor');
       return renderHarbor(this);
     }
     if (run.phase === 'voyage') {
-      if (run.voyage.current) return this.eventView(run.voyage);
+      const d = this.director;
+      const enc = [PH.APPROACH, PH.INTRO, PH.DECISION, PH.ACTION, PH.OUTCOME].includes(d.phase);
+      const ev = d.eventId ? EVENT_BY_ID[d.eventId] : null;
+      const danger = ev && (ev.cat === 'danger' || ev.cat === 'disaster');
+      this.music(enc ? (danger ? 'danger' : ev?.cat === 'mystery' || ev?.cat === 'chain' ? 'mystery' : ev?.cat === 'special' ? 'oldfriends' : 'voyage') : 'voyage', (this.world.weatherFx || []).includes('rain') ? 'storm' : 'sea');
       return renderVoyage(this);
     }
     return h('div', {}, 'Bilinmeyen durum');
-  }
-
-  eventView(host) {
-    const ev = EVENT_BY_ID[host.current.id];
-    this.renderer.setScene('event', { eventId: ev.id });
-    const danger = ev.cat === 'danger' || ev.cat === 'disaster';
-    const myst = ev.cat === 'mystery' || ev.cat === 'chain';
-    this.music(ev.id.startsWith('EVT_SPECIAL') ? 'oldfriends' : danger ? 'danger' : myst ? 'mystery' : 'voyage', (ev.art?.fx || []).includes('rain') ? 'storm' : 'sea');
-    if (this.lastEventShown !== host.current.id + '|' + (host.pos || 0)) {
-      this.lastEventShown = host.current.id + '|' + (host.pos || 0);
-      this.audio.play(danger ? 'danger' : 'event');
-      if (ev.id === 'EVT_SPECIAL_ZIPIR_TARCIN' || ev.id === 'EVT_SPECIAL_TARCIN_ALONE') setTimeout(() => this.audio.play('bark'), 600);
-      if (ev.id === 'EVT_SPECIAL_ZIPIR_ALONE') setTimeout(() => this.audio.play('meow'), 900);
-    }
-    return renderEvent(this, host);
   }
 
   music(mode, amb) {
@@ -238,18 +308,19 @@ export class UI {
 
   drawBubbles(list) {
     const layer = this.bubbleLayer;
-    const visible = this.renderer.scene === 'harbor' || this.renderer.scene === 'voyage';
+    const visible = this.renderer.scene === 'world';
     while (layer.children.length < list.length) layer.appendChild(h('div.bubble'));
     [...layer.children].forEach((el, i) => {
       const b = list[i];
       if (!b || !visible) { el.style.display = 'none'; return; }
       el.style.display = 'block';
+      const cls = b.kind === 'float' ? 'bubble float' : 'bubble';
+      if (el.className !== cls) el.className = cls;
       if (el.textContent !== b.text) el.textContent = b.text;
+      el.style.color = b.kind === 'float' ? b.color : '';
+      el.style.opacity = b.kind === 'float' ? Math.max(0, Math.min(1, b.a * 1.6)) : '';
       el.style.transform = `translate(${Math.round(b.x)}px, ${Math.round(b.y)}px) translate(-50%, -100%)`;
     });
-    if (visible) {
-      for (const b of list) if (b.text.startsWith('Hav') && this._lastBark !== b.text + Math.floor(performance.now() / 2500)) { this._lastBark = b.text + Math.floor(performance.now() / 2500); this.audio.play('bark'); }
-    }
   }
 
   // ───────── Eski Dostlar sinematiği ─────────

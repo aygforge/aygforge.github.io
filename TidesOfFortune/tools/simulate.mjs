@@ -3,11 +3,12 @@
 import { createBot, newCore } from './bot.mjs';
 import { HARBOR_BY_ID } from '../src/data/harbors.js';
 import { UPGRADES } from '../src/data/upgrades.js';
+import { voyageDuration } from '../src/systems/RouteSystem.js';
 
 const N = Number(process.argv[2] || 300);
 const withMeta = process.argv.includes('--meta');
 let core = newCore();
-const agg = { complete: 0, sunk: 0, harbors: 0, gold: 0, xp: 0, upgrades: 0, events: 0, cats: {}, deathRegion: {}, maxLevel: {}, routeLen: 0, upgradeHarborGap: [] };
+const agg = { minutes: 0, sail: 0, complete: 0, sunk: 0, harbors: 0, gold: 0, xp: 0, upgrades: 0, events: 0, cats: {}, deathRegion: {}, maxLevel: {}, routeLen: 0, upgradeHarborGap: [] };
 const errors = [];
 for (let i = 0; i < N; i++) {
   if (!withMeta) core = newCore();
@@ -19,7 +20,12 @@ for (let i = 0; i < N; i++) {
     const run = core.run;
     agg[result === 'complete' ? 'complete' : 'sunk']++;
     agg.harbors += run.stats.harborsReached;
-    agg.routeLen += run.route.length;
+    // süre tahmini: gerçek seyir süreleri + event başına ~20 sn karar/animasyon + liman başına ~75 sn
+    let sail = 0;
+    run.route.forEach((r, i) => { if (r.distance && i < run.route.length - 1) sail += voyageDuration(run.seed, i, r.distance); });
+    agg.sail += sail / 60;
+    agg.minutes += (sail + stats.events * 20 + run.stats.harborsReached * 75) / 60;
+    agg.routeLen += run.totalHarbors;
     agg.gold += run.stats.maxGold;
     agg.xp += run.xp.total;
     agg.upgrades += stats.upgrades;
@@ -42,6 +48,7 @@ const pct = (x) => ((x / ok) * 100).toFixed(1) + '%';
 console.log(`\n=== Tides of Fortune simülasyonu: ${N} run${withMeta ? ' (meta birikimli)' : ''} ===`);
 console.log(`Tamamlanan: ${agg.complete} (${pct(agg.complete)})  Batan: ${agg.sunk} (${pct(agg.sunk)})`);
 console.log(`Ortalama rota uzunluğu: ${(agg.routeLen / ok).toFixed(2)}  ulaşılan liman: ${(agg.harbors / ok).toFixed(2)}`);
+console.log(`Tahmini run süresi: ${(agg.minutes / ok).toFixed(1)} dk (saf seyir ${(agg.sail / ok).toFixed(1)} dk)`);
 console.log(`Ortalama en yüksek altın: ${(agg.gold / ok).toFixed(0)}  run XP: ${(agg.xp / ok).toFixed(0)}`);
 console.log(`Gemi yükseltme / run: ${(agg.upgrades / ok).toFixed(2)}  yükseltme başına liman: ${agg.upgradeHarborGap.length ? (agg.upgradeHarborGap.reduce((a, b) => a + b, 0) / agg.upgradeHarborGap.length).toFixed(2) : '-'}`);
 console.log(`Run sonu gemi seviyesi dağılımı:`, agg.maxLevel);

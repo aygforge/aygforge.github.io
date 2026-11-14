@@ -27,10 +27,10 @@ export function renderMenu(ui) {
   let runInfo = null;
   if (active) {
     const hb = HARBOR_BY_ID[run.route[run.idx].harborId];
-    runInfo = h('div.runinfo', {}, `Liman ${run.idx + 1}/${run.route.length}: ${hb.name} · ${fmt(run.gold)} altın · ${run.xp.total} XP`);
+    runInfo = h('div.runinfo', {}, `${run.idx + 1}. liman: ${hb.name} · ${fmt(run.gold)} altın · ${run.xp.total} XP`);
   }
 
-  return h('div.screen.menu', {},
+  return h('div.screen.world.menu', {},
     h('div.menuTop', {}, h('button.iconBtn', { onTap: toggleFullscreen, title: 'Tam ekran' }, icon('fullscreen', 'big'))),
     h('div.titleBlock', {},
       h('h1.logo', {}, 'Tides', h('span', {}, ' of '), 'Fortune'),

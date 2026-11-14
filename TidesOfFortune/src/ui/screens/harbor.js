@@ -14,6 +14,7 @@ import * as Items from '../../systems/ItemSystem.js';
 import * as Repair from '../../systems/RepairSystem.js';
 import * as Crew from '../../systems/CrewSystem.js';
 import * as Pets from '../../systems/PetSystem.js';
+import { LANE_TYPES, laneText, intelAccuracy, DISTANCE_NAMES } from '../../systems/RouteSystem.js';
 import { statusBar, itemBar, crewCard, petCard, statusChips, hullBar } from '../components.js';
 import { crewPortraitURL, petPortraitURL } from '../../rendering/Characters.js';
 
@@ -58,21 +59,21 @@ export function renderHarbor(ui) {
         const ok = await ui.confirm(T.departNoItems, { title: T.depart, ok: T.depart });
         if (!ok) return;
       }
-      ui.audio.play('depart');
-      ui.sailing = null;
-      core.depart();
+      laneSheet(ui);
     } }, icon('sail', 'big'), ' ', T.depart);
 
-  return h('div.screen.harbor', {},
+  return h('div.screen.world.harbor', {},
     h('div.topRow', {},
-      h('div.harborName', {}, icon(type.icon, 'big'), h('div', {}, h('b', {}, harbor.name), h('small', {}, `${harbor.final ? 'Final · ' : ''}${type.name} · ${REGIONS[harbor.region].name} · Liman ${run.idx + 1}/${run.route.length}`))),
-      statusBar(ui),
-      h('button.iconBtn', { onTap: () => { ui.sub.mapOpen = true; ui.render(); }, title: T.map }, icon('map', 'big')),
+      h('div.harborName', {}, icon(type.icon, 'big'), h('div', {}, h('b', {}, harbor.name), h('small', {}, `${harbor.final ? 'Final · ' : ''}${type.name} · ${REGIONS[harbor.region].name} · `, h('span.n', {}, `${run.idx + 1}.`), ' liman'))),
+      statusBar(ui, { compact: true }),
+      h('button.iconBtn.sm', { onTap: () => { ui.sub.mapOpen = true; ui.render(); }, title: T.map }, icon('map', 'big')),
       h('button.iconBtn', { onTap: () => ui.go('menu'), title: T.mainMenu }, icon('home', 'big')),
     ),
     visit.statuses.length || run.pirateRep ? h('div.statusRow', {}, ...statusChips(visit.statuses, run)) : null,
-    h('div.harborLeft', {}, itemBar(ui), deckInfo(ui)),
-    h('div.harborPanel.panel', {},
+    h('div.harborLeft', {}, itemBar(ui, { compact: true }), deckInfo(ui)),
+    ui.sub.panelHidden ? h('button.btn.panelShow', { onTap: () => { ui.sub.panelHidden = false; ui.render(); } }, icon('scale', 'big'), ' Liman') : null,
+    ui.sub.panelHidden ? h('div.panelFoot.floating', {}, departBtn) : h('div.harborPanel.panel', {},
+      h('button.panelHide', { onTap: () => { ui.sub.panelHidden = true; ui.render(); }, title: 'Paneli gizle' }, '▸'),
       tabs,
       h('div.panelBody', { 'data-scroll': 'hp-' + tab }, content),
       h('div.panelFoot', {}, departBtn),
@@ -99,14 +100,13 @@ function tradePanel(ui) {
   const visit = run.visit;
   const harbor = HARBOR_BY_ID[visit.harborId];
   const free = Ship.cargoFree(G);
-  const nextId = run.route[run.idx + 1]?.harborId;
-  const selene = Crew.hasCrew(G, 'CREW_SELENE') && nextId;
+  const nextId = null;
+  const selene = false;
   const parrot = Crew.hasPet(G, 'PET_KIRMIZI') && visit.prevPrices;
 
   const infos = [];
-  if (Crew.hasCrew(G, 'CREW_TARIK') && nextId && visit.tipGood) {
-    const p = Trade.sellPrice(G, nextId, visit.tipGood, { statuses: [] });
-    infos.push(h('div.info', {}, icon('abacus'), ` Tarık'ın fiyat sezgisi: ${GOOD_BY_ID[visit.tipGood].name} sonraki limanda (${HARBOR_BY_ID[nextId].name}) ≈ ${p} altına satılır.`));
+  if (visit.lanes?.length) {
+    infos.push(h('div.info', {}, icon('talk'), ' Rıhtım söylentileri: ', ...visit.lanes.map((l, i) => h('span.rumor', {}, `${LANE_TYPES[l.type].name}: `, l.rumors.map((r) => GOOD_BY_ID[r.good].name).join(', '), i < visit.lanes.length - 1 ? ' · ' : ''))));
   }
   if (parrot) infos.push(h('div.info', {}, icon('parrot'), ` Kaptan Kırmızı önceki limanın (${HARBOR_BY_ID[visit.prevPrices.harborId].name}) fiyatlarını hatırlıyor: "Önceki" sütunu.`));
   if (selene) infos.push(h('div.info', {}, icon('eye'), ' Selene\'nin istihbaratı: "Sonraki" sütunu bir sonraki limanın satış fiyatlarını gösterir.'));
@@ -358,3 +358,34 @@ function petsPanel(ui) {
 }
 
 export { petPortraitURL };
+
+// ───────── Deniz yolu seçimi (belirsiz rota) ─────────
+const UNC = ['Kesin', 'Düşük', 'Orta', 'Yüksek'];
+function laneSheet(ui) {
+  const core = ui.core;
+  const run = core.run;
+  const lanes = run.visit.lanes;
+  const acc = intelAccuracy(core.G);
+  let close = null;
+  const cards = lanes.map((l, i) => {
+    const tx = laneText(l);
+    const L = LANE_TYPES[l.type];
+    return h('button.laneCard', { onTap: () => { close(); ui.audio.play('depart'); ui.fast = false; core.depart(i); } },
+      h('div.laneHead', {}, icon(l.final ? 'crown' : l.type === 'smuggler' ? 'skull' : l.type === 'wild' ? 'fog' : l.type === 'coast' ? 'anchor' : 'compass', 'big'), h('b', {}, l.final ? 'Büyük Liman Yolu' : L.name)),
+      h('small.laneDesc', {}, L.desc),
+      h('div.laneRow', {}, icon('map'), ' ', tx.region),
+      h('div.laneRow', {}, icon('eye'), ' ', tx.type),
+      h('div.laneStats', {},
+        h('span', {}, 'Mesafe ', h('b', {}, DISTANCE_NAMES[l.distance])),
+        h('span', {}, 'Tehlike ', h('b', { style: { color: ['#6fd36a', '#6fd36a', '#cfe08a', '#f2c14e', '#ff9e6e', '#ff6b5e'][l.danger] } }, '☠'.repeat(l.danger))),
+        h('span', {}, 'Korsan ', h('b', {}, ['Yok', 'Az', 'Var', 'Yoğun'][l.pirates])),
+        h('span', {}, 'Belirsizlik ', h('b', {}, UNC[l.uncertainty])),
+      ),
+      h('div.laneRow.rumor', {}, icon('talk'), ' Söylenti: ', tx.rumors.join(', ')),
+    );
+  });
+  close = ui.sheet(h('div', {},
+    h('p.small', {}, 'Hedef limanın adı varınca açıklanır. İpuçlarının güvenilirliği: tip ', h('b.n', {}, `%${acc.type}`), ', ticaret ', h('b.n', {}, `%${acc.trade}`), ' (haritacı, kaptan yardımcısı, tüccarlar ve papağanlar artırır).'),
+    h('div.laneGrid', {}, ...cards),
+  ), { title: 'Deniz yolu seç', wide: true });
+}

@@ -3,7 +3,7 @@
 // (veya HTML5 sürümü için eklenen) değerler "KARAR" yorumuyla işaretlidir ve
 // docs/DESIGN_DECISIONS.md içinde açıklanır.
 
-export const SAVE_VERSION = 3;
+export const SAVE_VERSION = 4;
 
 export const BALANCE = {
   start: {
@@ -86,6 +86,24 @@ export const BALANCE = {
     heroBuyMult: 0.8, // GDD (kahraman: fiyatlar %20 ucuz)
     damagedHarborStockMult: 0.5, // GDD
     friendlyTraderBonus: 0.2, // GDD (Dostane Tüccar +%20)
+    regionDemandRange: [0.82, 1.25], // KARAR (rework): run başına bölge × mal arz-talep çarpanı
+  },
+
+  // KARAR (rework): belirsiz deniz yolları
+  lanes: {
+    baseTypeAccuracy: 60, // liman tipi ipucunun doğru olma şansı (%)
+    baseRumorAccuracy: 65, // ticaret söylentisinin doğru olma şansı (%)
+    dangerWeightPerLevel: 4, // yol tehlike seviyesi başına tehlike ağırlığı
+  },
+
+  // KARAR (rework): gerçek zamanlı seyir
+  voyage: {
+    duration: { short: [90, 150], medium: [130, 190], long: [170, 240] }, // saniye
+    minGap: 22, // eventler arası en az normal seyir (sn)
+    firstEventMin: 20,
+    approachTime: 5, // karşılaşma yaklaşma animasyonu (sn)
+    dockTime: 7, // limana yanaşma animasyonu (sn)
+    fastForward: 3, // sakin seyirde isteğe bağlı hızlandırma
   },
 
   items: {
@@ -141,7 +159,7 @@ export const BALANCE = {
   },
 
   render: {
-    pixelScale: 3, // dünya sahnesi 1/3 çözünürlükte çizilir ve büyütülür
+    pixelScale: 2, // dünya sahnesi 1/2 çözünürlükte (640×360) çizilir ve büyütülür
     maxDpr: 2,
   },
 };

@@ -403,3 +403,75 @@ b.neutral { opacity: .8; }
 
 /* Küçük ekran ayarları (mantıksal genişlik 1280 sabit; çok geniş ekranlarda ızgara genişler) */
 @media (prefers-reduced-motion: reduce) { .warnChip, .islot.hl { animation: none; } }
+
+/* ───────── TOP-DOWN REWORK ───────── */
+:root { --num: 'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, system-ui, sans-serif; }
+/* Okunaklı rakamlar: sade UI fontu + tabular rakamlar */
+.n, .statusbar b, .num b, .price, .chance, .barlabel, .xprow b, .xpBox b, .tbadge, .marker, .upCard .btn, .voyHud b { font-family: var(--num); font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: 0; }
+.statusbar.compact { padding: 2px 10px; gap: 8px; }
+.statusbar.compact .stat { font-size: 24px; }
+.statusbar .stat b { font-size: 25px; }
+.hullbar .barlabel { font-size: 19px; }
+.iconBtn.sm { min-height: 52px; min-width: 56px; }
+/* dünya ekranları: boş alanlara dokunma kanvasa geçer (karakter bilgisi) */
+.screen.world { pointer-events: none; }
+.screen.world > * { pointer-events: auto; }
+.screen.world > .mapLabels { pointer-events: none; }
+.actorInfo { position: absolute; width: 360px; padding: 8px 12px; display: flex; flex-direction: column; gap: 2px; z-index: 30; animation: fadeIn .15s; }
+.actorInfo b { font-size: 26px; color: var(--gold); }
+.actorInfo small { font-size: 17px; opacity: .8; }
+.aiRow { font-size: 19px; }
+.aiRow span { color: var(--gold); }
+.aiRow.dim { opacity: .8; font-size: 17px; }
+.bubble.float { background: none; border: none; box-shadow: none; font-size: 26px; font-weight: 700; text-shadow: 2px 2px 0 #000, -1px -1px 0 #000; font-family: var(--num); }
+.bubble.float::after { display: none; }
+/* yolculuk HUD */
+.voyage .voyHud { top: 86px; padding: 4px 12px; background: rgba(20,12,8,.82); border: 3px solid var(--wood3); }
+.voyChips { top: 86px; }
+.voyBottom .speedBtn { min-width: 110px; }
+.encWrap { position: absolute; left: calc(var(--safe-l) + 12px); right: calc(var(--safe-r) + 12px); bottom: calc(var(--safe-b) + 8px); display: flex; justify-content: center; }
+.encBar { background: rgba(16,10,8,.9); border: 3px solid var(--wood3); padding: 8px 18px; font-size: 24px; display: flex; align-items: center; gap: 6px; box-shadow: 0 0 0 3px var(--wood0); }
+.encBar.action { border-color: var(--gold); }
+.encPanel { width: 100%; max-height: 38%; height: 250px; display: grid; grid-template-columns: 38% 1fr; gap: 10px; background: rgba(16,10,8,.9); border: 4px solid var(--wood3); box-shadow: 0 0 0 4px var(--wood0); padding: 8px 10px; }
+.encPanel.slim { display: block; height: auto; max-width: 900px; }
+.encLeft { display: flex; flex-direction: column; min-height: 0; }
+.encHead { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.encTitle { font-size: 28px; color: var(--gold); text-shadow: 2px 2px 0 #000; }
+.encText { margin: 4px 0 0; font-size: 21px; line-height: 1.25; overflow-y: auto; }
+.encOpts { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; overflow-y: auto; align-content: start; overscroll-behavior: contain; }
+.encOpts .optCard { min-height: 64px; padding: 4px 10px; border-width: 3px; }
+.encOpts .optHead { font-size: 22px; }
+.encOpts .chance { font-size: 21px; }
+.encOpts .reqs .req { font-size: 16px; }
+.encOpts .bd { font-size: 15px; }
+.encOpts .hint, .encOpts .lockReason { font-size: 15px; }
+.encPanel.outcome.ok { border-color: #4a8a3a; }
+.encPanel.outcome.bad { border-color: #9a3a2a; }
+.encRes { overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+.encRes .resLines { font-size: 20px; }
+.encRes .contBtn { align-self: flex-end; min-width: 220px; min-height: 58px; }
+.resHead b { font-size: 26px; }
+/* liman */
+.harbor .harborPanel { width: min(640px, calc(100% - 560px - var(--safe-l) - var(--safe-r))); min-width: 560px; }
+.panelHide { position: absolute; left: -34px; top: 8px; width: 34px; height: 64px; font-size: 26px; background: var(--wood2); color: var(--light); border: 3px solid var(--wood0); cursor: pointer; }
+.panelShow { position: absolute; right: calc(var(--safe-r) + 16px); top: 92px; }
+.panelFoot.floating { position: absolute; right: calc(var(--safe-r) + 16px); bottom: calc(var(--safe-b) + 14px); width: 360px; border: none; }
+.harbor .harborName { max-width: 360px; }
+.rumor { color: #ffe0a0; }
+.laneGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.laneCard { text-align: left; font-family: inherit; background: var(--parch); color: var(--ink); border: 4px solid var(--wood2); padding: 8px 10px; display: flex; flex-direction: column; gap: 4px; cursor: pointer; box-shadow: inset 0 -5px 0 rgba(120,80,40,.3); }
+.laneCard:active { transform: translateY(2px); }
+.laneHead { display: flex; align-items: center; gap: 6px; font-size: 26px; }
+.laneDesc { font-size: 16px; opacity: .8; }
+.laneRow { font-size: 18px; display: flex; align-items: center; gap: 4px; }
+.laneRow.rumor { color: #7a3a1a; }
+.laneStats { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 8px; font-size: 18px; margin: 4px 0; }
+.laneStats b { font-family: var(--num); }
+/* varış */
+.reveal { position: absolute; left: 50%; top: 92px; transform: translateX(-50%); text-align: center; background: rgba(16,10,8,.85); border: 3px solid var(--gold); padding: 6px 24px; animation: revealIn .8s; }
+.reveal h1 { margin: 0; font-size: 44px; color: var(--gold); text-shadow: 3px 3px 0 #000; }
+.reveal small { font-size: 18px; opacity: .8; }
+@keyframes revealIn { from { opacity: 0; transform: translate(-50%, -20px) scale(.9); } }
+.arrival .arrivalPanel { left: auto; width: min(760px, 70%); right: calc(var(--safe-r) + 16px); }
+.encOpts { grid-auto-rows: min-content; }
+.encOpts .optCard { overflow: hidden; }

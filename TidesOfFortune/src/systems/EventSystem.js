@@ -90,6 +90,8 @@ export function categoryWeights(G, region, dest, { fortunePenalty = 0 } = {}) {
   if (hasPet(G, 'PET_ZIPIR')) w.fortune += isOldFriendsPair(G.run) ? BALANCE.zipirOldFriendsFortuneBonus : BALANCE.zipirFortuneBonus;
   if (dest && dest.type === 'mystery') w.danger += BALANCE.mysteryIslandDangerBonus;
   if (fortunePenalty) w.fortune = Math.max(0, w.fortune - fortunePenalty);
+  // Seçilen deniz yolunun tehlikesi (rework)
+  if (G.run.laneDanger) w.danger += Math.max(0, G.run.laneDanger - 2) * BALANCE.lanes.dangerWeightPerLevel;
   // Aziz Mehmed: askerî liman ve ticaret şehrine giden rotalarda olumsuz event çıkmaz.
   if (hasCrew(G, 'CREW_MEHMED') && dest && (dest.type === 'military' || dest.type === 'trade')) {
     w.danger = 0;
@@ -655,7 +657,7 @@ export function applyFx(G, fx, ctx) {
   if (fx.cargoLoss) {
     let pct = fx.cargoLoss * nm.m;
     const notes = [];
-    if ((etags.includes('pirate') || etags.includes('rocks')) && hasItem(G, 'ITEM_ROPES')) { pct = 0; notes.push('Halatlar ve Zincir kaybı engelledi'); }
+    if ((etags.includes('pirate') || etags.includes('rocks')) && hasItem(G, 'ITEM_ROPES') && !(ctx.opt.tags || []).includes('surrender')) { pct = 0; notes.push('Halatlar ve Zincir kaybı engelledi'); }
     if (pct > 0 && etags.includes('pirate') && hasCrew(G, 'CREW_BARAKA')) { pct *= 0.65; notes.push('Baraka −%35'); }
     const total = run.cargo.reduce((s, l) => s + l.qty, 0);
     const n = pct > 0 && total > 0 ? Math.max(1, Math.round((total * pct) / 100)) : 0;

@@ -1,86 +1,61 @@
-// Dünya haritası: rota ilerlemesi, mesafe renkleri, bölge değişimleri; varışta varış raporu.
+// Varış (rıhtımda gemi + varış raporu) ve parşömen harita (keşfedilen yol + bilinmeyen sular).
 import { h, icon } from '../dom.js';
 import { T } from '../../data/strings.js';
 import { HARBOR_BY_ID, HARBOR_TYPES, REGIONS } from '../../data/harbors.js';
-import { mapLayout, DIST_COLORS } from '../../rendering/MapArt.js';
+import { mapLayout } from '../../rendering/MapArt.js';
 import { PX } from '../../rendering/Renderer.js';
-import { DISTANCE_NAMES, distanceInfo } from '../../systems/RouteSystem.js';
 import { statusBar } from '../components.js';
+import { encounterPanel } from './event.js';
+import { PH } from '../../presentation/EncounterDirector.js';
 
 const KIND_ICON = { heal: 'heart', damage: 'hull', xp: 'star', cargo: 'crate', item: 'gift', info: 'info', gold: 'coin', route: 'compass', chain: 'chain', status: 'flag', crew: 'crew', pet: 'paw', codex: 'book', buff: 'sun' };
 
-export function renderMap(ui, { arrival }) {
+/** Limana varış: gemi rıhtıma yanaşmış, liman adı açıklanır, varış eventleri rıhtımda oynar */
+export function renderArrival(ui) {
   const core = ui.core;
   const run = core.run;
-  const meta = core.meta;
-  const known = (i) => {
-    const id = run.route[i].harborId;
-    return i <= run.idx || meta.upgrades.includes('UPG_HARBOR_SIGHT') || !!meta.codex.harbors[id] || !!meta.codex.revealed[id];
-  };
-  ui.renderer.setScene('map', { known });
-  ui.music(arrival ? 'voyage' : 'harbor', 'sea');
-  const bw = ui.renderer.W;
-  const bh = ui.renderer.H;
-  const nodes = mapLayout(run.route, bw, bh);
+  const a = run.arrival;
+  const hb = HARBOR_BY_ID[run.route[run.idx].harborId];
+  const type = HARBOR_TYPES[hb.type];
+  if (a.current) {
+    if (ui.director.phase === PH.DOCKED || ui.director.phase === PH.IDLE) ui.director.enterHarbor(hb.final ? 'final' : hb.type, 1);
+    const enc = encounterPanel(ui, a);
+    return h('div.screen.world.arrival', {},
+      h('div.topRow', {}, statusBar(ui, { compact: true })),
+      enc ? h('div.encWrap', {}, enc) : null,
+    );
+  }
+  const pending = a.queue.length - a.pos;
+  return h('div.screen.world.arrival', {},
+    h('div.topRow', {}, statusBar(ui, { compact: true }), h('button.iconBtn.sm', { onTap: () => ui.go('menu') }, icon('home', 'big'))),
+    h('div.reveal', {}, h('small', {}, a.first ? 'Yolculuk başlıyor' : 'Liman keşfedildi'), h('h1', {}, hb.name), h('div', {}, icon(type.icon), ` ${hb.final ? 'Büyük Liman · Final' : type.name} · ${REGIONS[hb.region].name}`)),
+    h('div.arrivalPanel.panel', {},
+      h('div.apLines', { 'data-scroll': 'arr' }, ...a.report.map((l) => h(`div.line.k-${l.kind}`, {}, icon(KIND_ICON[l.kind] || 'info'), ' ', l.text))),
+      h('div.apActions', {}, h('button.btn.big.primary', { onTap: () => { ui.audio.play('page'); core.arrivalNext(); } }, pending > 0 ? 'Rıhtımda bir şey var…' : T.enterHarbor, ' ', icon('anchor', 'big'))),
+    ),
+  );
+}
+
+export function renderMap(ui) {
+  const core = ui.core;
+  const run = core.run;
+  const known = (i) => i <= run.idx;
+  const prog = run.voyage ? Math.min(1, (run.voyage.elapsed || 0) / (run.voyage.duration || 1)) : null;
+  ui.renderer.setScene('map', { known, progress: prog });
+  const nodes = mapLayout(run.route, ui.renderer.W, ui.renderer.H);
   const labels = run.route.map((r, i) => {
     const hb = HARBOR_BY_ID[r.harborId];
     const k = known(i);
-    const cur = i === run.idx;
-    return h(`button.mapLabel${cur ? '.cur' : ''}${i < run.idx ? '.past' : ''}${hb.final ? '.final' : ''}`, {
-      style: { left: nodes[i].x * PX + 'px', top: nodes[i].y * PX + 30 + 'px' },
-      onTap: () => ui.showHarbor(hb.id, k),
-    }, h('b', {}, hb.name), h('small', {}, k ? HARBOR_TYPES[hb.type].name : '???'));
-  });
-  // sonraki rota bilgisi
-  let nextInfo = null;
-  if (run.idx < run.route.length - 1) {
-    const d = run.route[run.idx].distance;
-    const di = distanceInfo(d);
-    const cur = HARBOR_BY_ID[run.route[run.idx].harborId];
-    const nx = HARBOR_BY_ID[run.route[run.idx + 1].harborId];
-    const warns = [];
-    if (nx.region !== cur.region) warns.push(`Yeni bölge: ${REGIONS[nx.region].name}`);
-    if (known(run.idx + 1) && nx.type === 'fog') warns.push('Sis limanı: olaylar sık (+1)');
-    if (known(run.idx + 1) && nx.type === 'mystery') warns.push('Gizemli Ada: tehlikeli yol');
-    if (run.pendingRoute.length) warns.push('Bir zincir bir sonraki rotada devam edecek');
-    nextInfo = h('div.nextRoute', {},
-      h('span.dist', { style: { background: DIST_COLORS[d] } }, `${DISTANCE_NAMES[d]} rota`),
-      h('span', {}, ` · ${di.events[0] === di.events[1] ? di.events[0] : di.events.join('–')} olay · Hedef: ${nx.name}`),
-      ...warns.map((w) => h('span.warnTag', {}, icon('warn'), ' ', w)),
-    );
-  } else {
-    nextInfo = h('div.nextRoute', {}, icon('crown'), " Büyük Liman: run'ın son durağı.");
-  }
-
-  const legend = h('div.legend', {},
-    h('span', {}, h('i.sw', { style: { background: DIST_COLORS.short } }), 'Kısa (2 olay)'),
-    h('span', {}, h('i.sw', { style: { background: DIST_COLORS.medium } }), 'Orta (3–4)'),
-    h('span', {}, h('i.sw', { style: { background: DIST_COLORS.long } }), 'Uzun (5–6)'),
-  );
-
-  let panel;
-  if (arrival) {
-    const a = run.arrival;
-    const hb = HARBOR_BY_ID[run.route[run.idx].harborId];
-    const pendingEvents = a.queue.length - a.pos;
-    panel = h('div.arrivalPanel.panel', {},
-      h('div.apHead', {}, h('h2', {}, a.first ? 'Yolculuk Başlıyor' : `Varış: ${hb.name}`), h('span.tag', { style: { background: REGIONS[hb.region].color } }, REGIONS[hb.region].name)),
-      h('div.apLines', { 'data-scroll': 'arr' }, ...a.report.map((l) => h(`div.line.k-${l.kind}`, {}, icon(KIND_ICON[l.kind] || 'info'), ' ', l.text))),
-      h('div.apActions', {},
-        h('button.btn.big.primary', { onTap: () => { ui.audio.play('page'); core.arrivalNext(); } }, pendingEvents > 0 ? 'Rıhtımda bir şey var…' : T.enterHarbor, ' ', icon('anchor', 'big')),
-      ),
-    );
-  } else {
-    panel = h('div.arrivalPanel.panel.slim', {},
-      nextInfo,
-      h('div.apActions', {}, h('button.btn.big', { onTap: () => { ui.sub.mapOpen = false; ui.render(); } }, T.close)),
-    );
-  }
-
+    if (!k && !hb.final) return null;
+    return h(`button.mapLabel${i === run.idx ? '.cur' : ''}${i < run.idx ? '.past' : ''}`, { style: { left: nodes[i].x * PX + 'px', top: nodes[i].y * PX + 30 + 'px' }, onTap: () => ui.showHarbor(hb.id, k) },
+      h('b', {}, hb.name), h('small', {}, HARBOR_TYPES[hb.type].name));
+  }).filter(Boolean);
+  if (!run.route.some((r) => HARBOR_BY_ID[r.harborId].final)) labels.push(h('div.mapLabel.final', { style: { left: (ui.renderer.W - 34) * PX + 'px', top: (nodes[0].y + 0) * PX + 'px' } }, h('b', {}, 'Büyük Liman'), h('small', {}, 'Son durak')));
   return h('div.screen.map', {},
-    h('div.topRow', {}, statusBar(ui), h('button.iconBtn', { onTap: () => ui.go('menu'), title: T.mainMenu }, icon('home', 'big'))),
-    h('div.mapTitle', {}, h('h2', {}, `Rota · ${run.route.length} liman`), legend, arrival ? nextInfo : null),
+    h('div.topRow', {}, statusBar(ui, { compact: true })),
+    h('div.mapTitle', {}, h('h2', {}, 'Seyir Defteri'), h('div.legend', {}, `Ziyaret edilen ${run.idx + 1} liman · Ötesi bilinmeyen sular`)),
     h('div.mapLabels', {}, ...labels),
-    panel,
+    h('div.arrivalPanel.panel.slim', {}, h('div.nextRoute', {}, icon('compass'), ' Rota her limanda seçtiğin deniz yoluyla şekillenir. Liman adları ancak varınca açıklanır.'),
+      h('div.apActions', {}, h('button.btn.big', { onTap: () => { ui.sub.mapOpen = false; ui.render(); } }, T.close))),
   );
 }

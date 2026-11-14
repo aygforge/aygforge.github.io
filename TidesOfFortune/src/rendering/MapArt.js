@@ -8,13 +8,10 @@ const TYPE_ICON = { fishing: 'fish', trade: 'coin', military: 'shield', pirate: 
 
 /** Düğüm konumları (tampon koordinatları) — DOM etiketleri de bunu kullanır. */
 export function mapLayout(route, W, H) {
+  // Sabit 10 aralık: toplam durak sayısı haritadan okunamaz (belirsiz rota)
   const m = 34;
-  const n = route.length;
-  return route.map((r, i) => {
-    const x = m + (i / Math.max(1, n - 1)) * (W - m * 2);
-    const y = H * 0.45 + Math.sin(i * 1.35 + 0.6) * H * 0.115;
-    return { x: Math.round(x), y: Math.round(y) };
-  });
+  const slot = (i) => ({ x: Math.round(m + (i / 9) * (W - m * 2)), y: Math.round(H * 0.45 + Math.sin(i * 1.35 + 0.6) * H * 0.115) });
+  return route.map((r, i) => (HARBOR_BY_ID[r.harborId].final ? slot(9) : slot(Math.min(i, 8))));
 }
 
 let parchCache = null;
@@ -71,6 +68,13 @@ function parchment(W, H) {
 export function drawMap(ctx, W, H, run, opts = {}) {
   ctx.drawImage(parchment(W, H), 0, 0);
   const nodes = mapLayout(run.route, W, H);
+  const fin = { x: Math.round(34 + (W - 68)), y: Math.round(H * 0.45 + Math.sin(9 * 1.35 + 0.6) * H * 0.115) };
+  const lastKnown = nodes[Math.min(run.idx, nodes.length - 1)];
+  if (!HARBOR_BY_ID[run.route[run.route.length - 1].harborId].final) {
+    for (let s = 0; s < 60; s++) { const f = s / 60; if (s % 3) continue; rect(ctx, lastKnown.x + (fin.x - lastKnown.x) * f, lastKnown.y + (fin.y - lastKnown.y) * f + Math.sin(f * 9) * 8, 2, 2, '#b8a070'); }
+    disc(ctx, fin.x, fin.y, 9, '#e0b040'); disc(ctx, fin.x, fin.y, 7, '#f8e8a8'); ctx.drawImage(iconCanvas('crown'), fin.x - 5, fin.y - 5);
+    for (let i = 0; i < 30; i++) { const fx = lastKnown.x + 30 + ((fin.x - lastKnown.x - 50) * i) / 30; disc(ctx, fx, H * 0.45 + Math.sin(i) * 20, 10, 'rgba(200,190,160,0.25)'); }
+  }
   // bölge bantları
   let prevRegion = null;
   run.route.forEach((r, i) => {
@@ -83,7 +87,7 @@ export function drawMap(ctx, W, H, run, opts = {}) {
     }
   });
   // çizgiler
-  for (let i = 0; i < nodes.length - 1; i++) {
+  for (let i = 0; i < Math.min(nodes.length - 1, run.idx + (opts.progress != null ? 1 : 0)); i++) {
     const a = nodes[i];
     const b = nodes[i + 1];
     const col = DIST_COLORS[run.route[i].distance] || '#7a5a3a';
