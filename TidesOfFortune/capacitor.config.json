@@ -1,0 +1,6 @@
+{
+  "appId": "com.aygforge.tidesoffortune",
+  "appName": "Tides of Fortune",
+  "webDir": "dist/web",
+  "android": { "backgroundColor": "#120c18" }
+}

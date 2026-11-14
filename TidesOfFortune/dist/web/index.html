@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#120c18">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Tides of Fortune — roguelite deniz ticareti ve keşif oyunu.">
+  <title>Tides of Fortune</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="stage">
+      <canvas id="scene" width="427" height="240"></canvas>
+      <div id="bubbles"></div>
+      <div id="ui"></div>
+      <div id="overlay"></div>
+    </div>
+    <div id="rotate"><div class="rotIcon"></div><h2>Lütfen telefonunu yatay çevir</h2><p>Tides of Fortune yatay ekranda oynanır.</p></div>
+    <div id="loading">Tides of Fortune<small>Yükleniyor…</small></div>
+  </div>
+  <noscript>Bu oyun için JavaScript gereklidir.</noscript>
+  <script src="game.js"></script>
+</body>
+</html>
