@@ -53,7 +53,7 @@ describe('Tutorial: Gün 1 → 2 → 3 (T1, T2, T3, T33)', () => {
   it('T33: 3. gün serbest sandbox — kilitlenme yok, isteğe bağlı görevler gelir', () => {
     const r = bot.playDay(); expect(r.ok).toBe(true); expect(s.day).toBe(3);
     expect(s.quests.story.id).toBe('story_05'); expect(s.quests.daily.length).toBe(2);
-    expect(s.trains.map((t) => t.time)).toEqual([540, 900, 1260]);
+    expect(s.trains.map((t) => t.time)).toEqual([540, 720, 900, 1080, 1260]);
     expect(toasts(sim).join('|')).not.toMatch(/undefined|NaN/);
   });
 });

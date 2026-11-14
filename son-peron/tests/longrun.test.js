@@ -4,13 +4,22 @@ import * as Cal from '../src/systems/calendar.js';
 import { trainX } from '../src/systems/trains.js';
 
 describe('Tren takvimi', () => {
-  it('her gün tam 09:00/15:00/21:00: 10 dk önce yaklaşır, 12 dk peronda durur, sonra çıkar', () => {
+  it('her gün tam 09:00/12:00/15:00/18:00/21:00: 10 dk önce yaklaşır, 12 dk peronda durur, sonra çıkar', () => {
     const { sim, s } = fresh(); const seen = [];
     for (let m = 360; m < 1380; m += 0.5) { sim.tick(0.5); for (const e of sim.fx.splice(0)) if (e.type.startsWith('train_')) seen.push([e.type, Math.round(s.minute)]); }
-    expect(seen).toEqual([['train_approach', 530], ['train_stop', 540], ['train_depart', 552], ['train_approach', 890], ['train_stop', 900], ['train_depart', 912], ['train_approach', 1250], ['train_stop', 1260], ['train_depart', 1272]]);
+    expect(seen).toEqual([540, 720, 900, 1080, 1260].flatMap((t) => [['train_approach', t - 10], ['train_stop', t], ['train_depart', t + 12]]));
     const tr = { time: 540 }; s.minute = 529; expect(trainX(sim, tr)).toBeNull(); s.minute = 531; const far = trainX(sim, tr); s.minute = 539; const near = trainX(sim, tr); s.minute = 545; const stop = trainX(sim, tr);
     expect(far).toBeGreaterThan(near); expect(near).toBeGreaterThan(stop); expect(stop).toBe(11); s.minute = 556; expect(trainX(sim, tr)).toBeLessThan(stop);
     expect(s.groups.length).toBe(0); // 1. gün lokantaya müşteri girmez
+  });
+});
+
+describe('Eski kayıt uyumu', () => {
+  it('3 seferli eski kayıt yüklenince o günün tarifesi 5 sefere tamamlanır, geçmiş seferler yeniden doğmaz', async () => {
+    const { Sim } = await import('../src/systems/sim.js');
+    const { sim, s } = fresh(); s.minute = 800; s.trains = [{ time: 540, phase: 'gone', spawned: true }, { time: 900, phase: 'wait', spawned: false }, { time: 1260, phase: 'wait', spawned: false }];
+    const sim2 = new Sim(C, JSON.parse(JSON.stringify(s))); const t = sim2.s.trains;
+    expect(t.map((x) => x.time)).toEqual([540, 720, 900, 1080, 1260]); expect(t[1].phase).toBe('gone'); expect(t[3].phase).toBe('wait'); void sim;
   });
 });
 
@@ -44,7 +53,7 @@ describe('T15/T16/T26/T36: 112 gün + sonraki yıl', () => {
     while (s.day <= 113 + 28) {
       const se = sim.season(); seasons[se] = (seasons[se] || 0) + 1; (weather[se] ||= new Set()).add(s.weather);
       const dos = Cal.dayOfSeason(C, s.day);
-      expect(s.trains.map((t) => t.time)).toEqual([540, 900, 1260]); // etkinlik yeni saat eklemez
+      expect(s.trains.map((t) => t.time)).toEqual([540, 720, 900, 1080, 1260]); // etkinlik yeni saat eklemez
       if (announced !== null) expect(s.event?.id ?? null).toBe(announced); // bir gün önce duyurulan = gerçekleşen
       if (announcedFest !== null) expect(s.festival).toBe(announcedFest);
       if (s.event) { events.push([s.day, s.event.id]); expect([7, 14, 21]).toContain(dos); expect(C.trainTimes).toContain(s.event.time); expect(s.day).toBeGreaterThan(3); expect(s.event.seasons).toContain(se); }

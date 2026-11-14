@@ -24,7 +24,7 @@ export function tick(sim, dt) {
   }
 }
 const LINES = {
-  Kemal: ['Trenler her gün tam 09:00, 15:00 ve 21:00\'de gelir. Saat şaşmaz!', 'Yolcular peronda sıcak bir çorba kokusu alınca lokantaya yönelir.', 'Sefer panosunda yarının yoğunluk tahminini bulursun.'],
+  Kemal: ['Trenler her gün tam 09:00, 12:00, 15:00, 18:00 ve 21:00\'de gelir. Saat şaşmaz!', 'Yolcular peronda sıcak bir çorba kokusu alınca lokantaya yönelir.', 'Sefer panosunda yarının yoğunluk tahminini bulursun.'],
   Feriha: ['Acil malzeme lazımsa buradayım; posta kadar ucuz değil ama hemen veririm.', 'Odun ve taş getirirsen satın alırım, zor günde işe yarar.'],
   'Rıza': ['Deden o marangoz tezgâhında ne masalar yapardı… Metal parça, kumaş, cam bende bulunur.', 'Sandalyeyi masaya döndürmeyi unutma; R tuşu işini görür.'],
   'Şirin': ['Tohumu çapaladığın yatağa ek, her gün sula. Yağmur yağarsa toprak kendini sular.', 'Kışın ürünler bir gün geç olgunlaşır, sabırlı ol.'],

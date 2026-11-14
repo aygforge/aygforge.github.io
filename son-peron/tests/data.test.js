@@ -15,7 +15,7 @@ describe('Veri sözleşmesi (T31, T32)', () => {
     expect(C.quests.story.length).toBe(15); expect(C.quests.side.length).toBe(10); expect(C.quests.daily.length).toBe(8);
     expect(C.events.length).toBe(5); expect(C.festivals.length).toBe(4);
     expect(Object.keys(C.roles).length).toBe(4); expect(Object.keys(C.staff.candidates).length).toBe(12);
-    expect(C.trainTimes).toEqual([540, 900, 1260]); expect(C.yearDays).toBe(112);
+    expect(C.trainTimes).toEqual([540, 720, 900, 1080, 1260]); for (const t of [540, 900, 1260]) expect(C.trainTimes).toContain(t); expect(C.yearDays).toBe(112);
     expect(C.dayEnd - C.dayStart).toBe(1020); expect(C.realSecPerGameMin).toBeCloseTo(1.17647, 4);
   });
   it('T31: 15 yemek + 6 içecek için maliyet, hasılat, brüt kâr ve istasyon formülleri', () => {

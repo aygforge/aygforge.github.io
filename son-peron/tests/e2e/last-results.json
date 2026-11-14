@@ -17,12 +17,12 @@
  {
   "name": "WASD/Shift ile hareket",
   "ok": true,
-  "info": "(10.5,9.5)→(11.4,10.7)"
+  "info": "(10.5,9.5)→(11.5,11.1)"
  },
  {
   "name": "Tab envanteri açar ve oyun saati durur",
   "ok": true,
-  "info": "dakika 361.19 sabit"
+  "info": "dakika 361.36 sabit"
  },
  {
   "name": "Panel kapanınca saat aynı yerden devam eder",
@@ -92,7 +92,7 @@
  {
   "name": "Kaydet → kapat → Devam: aynı durumla devam (IndexedDB)",
   "ok": true,
-  "info": "4210 bayt, saat 594.6→594.6"
+  "info": "4210 bayt, saat 601.4→601.4"
  },
  {
   "name": "JSON dışa aktarım dosyası üretilir",
@@ -122,7 +122,7 @@
  {
   "name": "15. gün: lokanta büyüdü (aşama ≥2), stok bütünlüğü korunuyor",
   "ok": true,
-  "info": "aşama 2, 129 müşteri, 1497 G, personel 1"
+  "info": "aşama 3, 188 müşteri, 1373 G, personel 2"
  },
  {
   "name": "Tarayıcı konsolunda hata yok",

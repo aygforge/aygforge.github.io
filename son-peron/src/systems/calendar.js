@@ -11,7 +11,7 @@ export function rollWeather(sim) {
   return Object.keys(w)[0];
 }
 export function festivalOn(C, day) { const dos = dayOfSeason(C, day); const se = seasonOf(C, day); return C.festivals.find((f) => f.season === se && f.day === dos) || null; }
-// Etkinlik: 7/14/21. günler; ilk 3 gün yok; 28. gün festival önceliklidir; yalnız mevcut üç seferden birini etkiler
+// Etkinlik: 7/14/21. günler; ilk 3 gün yok; 28. gün festival önceliklidir; yalnız mevcut seferlerden birini etkiler
 export function rollEvent(sim, day) {
   const C = sim.C; const dos = dayOfSeason(C, day);
   if (day <= 3 || festivalOn(C, day) || !C.eventDays.includes(dos)) return null;

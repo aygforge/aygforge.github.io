@@ -14,7 +14,7 @@ Tasarım girdileri (değiştirilmeden korunur): `Son_Peron_Tam_Surum_GDD_v1_0.md
 npm install && npm run dev      # http://localhost:5173
 npm run build                   # asset üretimi + dist/ paketleme
 npm run preview                 # dist/ klasörünü http://localhost:4173 üzerinden sunar
-npm test                        # 41 birim/entegrasyon testi (başsız simülasyon)
+npm test                        # 42 birim/entegrasyon testi (başsız simülasyon)
 npm run test:e2e                # gerçek tarayıcı testi (önce npm run build; Playwright + Chromium gerekir)
 npm run assets                  # yalnız PNG atlaslarını yeniden üret (deterministik)
 ```
@@ -92,6 +92,7 @@ public/assets/   üretilmiş atlas.png + atlas.json + 4 mevsim karo seti
 
 | Konu | Uygulanan çözüm |
 |---|---|
+| Tren tarifesi (v1.1) | Kullanıcı kararıyla günde **5 sefer: 09:00 · 12:00 · 15:00 · 18:00 · 21:00** (GDD/JSON'da 3 sefer). Tarife `supplement.js` → `TRAIN_SCHEDULE`. 09/15/21 ziyaretçi aralıkları GDD'deki gibi; 12:00 ve 18:00 daha küçük dalga getirir. Özel etkinlikler hâlâ 09/15/21 seferlerini güçlendirir. Eski 3 seferli kayıtlar yüklenince o günün tarifesi tamamlanır. |
 | `salon_expansion_3` | Teknik ID korunur; **doğu mutfak kanadını** açar, oyuncuya kanat adı gösterilir. |
 | Komşu oda dikdörtgenleri | JSON dikdörtgenleri zemin kabul edildi; bitişik kanatlarda 1 karoluk taşıyıcı duvar kanadın içinden ayrıldı (ör. kuzey salonu x 19–29). |
 | Restoran girişi (54,45) | Kapı hücresi binanın içine (54,44) oyuldu; (54,45) kapı önüdür. |

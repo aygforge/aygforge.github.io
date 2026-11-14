@@ -93,20 +93,26 @@ export const HAND_TOOLS = {
   fishing_rod: { name: 'Olta', desc: 'Dere kenarında balık tutar', buy: 75 }
 };
 
-// GDD §17 hedef restoran ziyaretçisi aralıkları [min,max]; sıra: 09:00, 15:00, 21:00
+// Kullanıcı kararı (v1.1): günde 5 sefer. GDD'deki 09/15/21 yerine bu tarife geçerlidir (girdi JSON değiştirilmez).
+export const TRAIN_SCHEDULE = ['09:00', '12:00', '15:00', '18:00', '21:00'];
+// Hedef restoran ziyaretçisi aralıkları [min,max]; sıra TRAIN_SCHEDULE ile aynı.
+// 09/15/21 değerleri GDD §17'den; 12:00 ve 18:00 ara seferleri daha küçük dalgalar getirir.
 export const VISITOR_TARGETS = {
-  1: [[2, 3], [2, 4], [2, 3]], 2: [[3, 4], [4, 5], [3, 4]], 3: [[4, 6], [5, 7], [4, 5]],
-  4: [[5, 7], [6, 8], [4, 6]], 5: [[6, 8], [7, 9], [5, 6]]
+  1: [[2, 3], [1, 2], [2, 4], [1, 3], [2, 3]],
+  2: [[3, 4], [2, 3], [4, 5], [3, 4], [3, 4]],
+  3: [[4, 6], [3, 4], [5, 7], [4, 5], [4, 5]],
+  4: [[5, 7], [4, 5], [6, 8], [5, 6], [4, 6]],
+  5: [[6, 8], [4, 6], [7, 9], [5, 7], [5, 6]]
 };
 
-// GDD §16 altı müşteri profili. patience/tip çarpanları ılımlı tutulur. w: [09,15,21] saat tercihi.
+// GDD §16 altı müşteri profili. patience/tip çarpanları ılımlı tutulur. w: sefer başına ağırlık (09,12,15,18,21).
 export const PROFILES = {
-  regular: { name: 'Yolcu', patience: 1.0, tip: 1.0, group: [1, 2], w: [3, 3, 3] },
-  railworker: { name: 'Demiryolu çalışanı', patience: 0.9, tip: 0.9, group: [1, 2], w: [4, 2, 2] },
-  tourist: { name: 'Turist', patience: 1.1, tip: 1.2, group: [1, 3], w: [1, 4, 1] },
-  elder: { name: 'Yaşlı yolcu', patience: 1.3, tip: 1.0, group: [1, 2], w: [3, 2, 1] },
-  business: { name: 'İş insanı', patience: 0.85, tip: 1.4, group: [1, 1], w: [3, 2, 3] },
-  family: { name: 'Aile', patience: 1.15, tip: 1.0, group: [3, 4], w: [1, 3, 2] }
+  regular: { name: 'Yolcu', patience: 1.0, tip: 1.0, group: [1, 2], w: [3, 3, 3, 3, 3] },
+  railworker: { name: 'Demiryolu çalışanı', patience: 0.9, tip: 0.9, group: [1, 2], w: [4, 3, 2, 3, 2] },
+  tourist: { name: 'Turist', patience: 1.1, tip: 1.2, group: [1, 3], w: [1, 3, 4, 2, 1] },
+  elder: { name: 'Yaşlı yolcu', patience: 1.3, tip: 1.0, group: [1, 2], w: [3, 3, 2, 2, 1] },
+  business: { name: 'İş insanı', patience: 0.85, tip: 1.4, group: [1, 1], w: [3, 4, 2, 3, 3] },
+  family: { name: 'Aile', patience: 1.15, tip: 1.0, group: [3, 4], w: [1, 2, 3, 3, 2] }
 };
 // GDD §16 rahat müşteri sabrı (oyun dakikası)
 export const PATIENCE = { door: [50, 70], order: [60, 85], serve: [75, 110], pay: [60, 90] };
@@ -128,7 +134,7 @@ export const SHOP_MARKUP = 1.25;
 
 // İsimli NPC programları: [başlangıç dk, sahne, x, y]. Sahne dışı da mantıksal olarak güncellenir.
 export const NPC_SCHEDULES = {
-  Kemal: { role: 'Gar müdürü', look: { skin: 1, hair: 5, style: 4, outfit: 6, hat: 'cap' }, plan: [[360, 'railway_outdoors', 22, 45], [510, 'railway_outdoors', 20, 53], [570, 'railway_outdoors', 22, 45], [870, 'railway_outdoors', 20, 53], [930, 'railway_outdoors', 22, 45], [1230, 'railway_outdoors', 20, 53], [1290, 'railway_outdoors', 22, 45]] },
+  Kemal: { role: 'Gar müdürü', look: { skin: 1, hair: 5, style: 4, outfit: 6, hat: 'cap' }, plan: [[360, 'railway_outdoors', 22, 45], ...TRAIN_SCHEDULE.flatMap((t) => { const m = +t.slice(0, 2) * 60; return [[m - 30, 'railway_outdoors', 20, 53], [m + 30, 'railway_outdoors', 22, 45]]; })] },
   Feriha: { role: 'Bakkal', look: { skin: 0, hair: 2, style: 2, outfit: 3, apron: true }, plan: [[360, 'town_square', 10, 31], [480, 'town_square', 13, 14], [1080, 'town_square', 10, 31]] },
   'Rıza': { role: 'Marangoz', look: { skin: 2, hair: 4, style: 3, outfit: 2, beard: true }, plan: [[360, 'town_square', 50, 31], [540, 'town_square', 30, 14], [1080, 'town_square', 27, 24]] },
   'Şirin': { role: 'Bahçıvan', look: { skin: 1, hair: 3, style: 1, outfit: 1, hat: 'straw' }, plan: [[360, 'town_square', 52, 34], [480, 'town_square', 46, 14], [960, 'town_square', 33, 26]] },

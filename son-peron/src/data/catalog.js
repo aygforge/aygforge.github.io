@@ -1,6 +1,6 @@
 // Birleşik JSON'u doğrulanmış, normalleştirilmiş kataloglara dönüştürür.
 // Girdi dosyası değiştirilmez; burada yalnızca türev üretilir.
-import { FURNITURE_META, EQUIPMENT_META, FIXTURES, HAND_TOOLS, COSMETIC_META, RENOVATION_EFFECTS } from './supplement.js';
+import { FURNITURE_META, EQUIPMENT_META, FIXTURES, HAND_TOOLS, COSMETIC_META, RENOVATION_EFFECTS, TRAIN_SCHEDULE, VISITOR_TARGETS, PROFILES } from './supplement.js';
 
 const hhmm = (s) => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
 
@@ -25,7 +25,9 @@ export function buildCatalog(raw) {
   C.daysPerSeason = raw.locked.seasons.days_each;
   C.yearDays = raw.locked.seasons.year_days;
   C.seasons = ['spring', 'summer', 'autumn', 'winter'];
-  C.trainTimes = raw.locked.train_arrivals.map(hhmm);
+  // Kullanıcı kararı önceliklidir: JSON'daki 3 sefer yerine TRAIN_SCHEDULE (5 sefer). JSON'daki 09/15/21 alt kümedir.
+  C.trainTimes = TRAIN_SCHEDULE.map(hhmm);
+  C.trainTimesGdd = raw.locked.train_arrivals.map(hhmm);
   C.train = {
     approach: world.train_simulation.approach_game_minutes_before,
     dwell: world.train_simulation.station_dwell_game_minutes,
@@ -162,6 +164,10 @@ export function validateCatalog(C) {
     for (const m of Object.keys(p.materials || p.install || {})) if (!C.items[m]) errs.push(`${p.id}: bilinmeyen malzeme ${m}`);
   }
   for (const s of Object.values(C.seeds)) if (!C.items[s.crop]) errs.push(`${s.id}: hasat ürünü yok`);
+  for (const [st, arr] of Object.entries(VISITOR_TARGETS)) if (arr.length !== C.trainTimes.length) errs.push(`ziyaretçi hedefi aşama ${st}: ${arr.length} ≠ ${C.trainTimes.length} sefer`);
+  for (const [k, p] of Object.entries(PROFILES)) if (p.w.length !== C.trainTimes.length) errs.push(`profil ${k}: sefer ağırlığı sayısı yanlış`);
+  for (const t of C.trainTimesGdd) if (!C.trainTimes.includes(t)) errs.push(`GDD seferi ${t} tarifede yok`);
+  for (const e of C.events) if (!C.trainTimes.includes(e.time)) errs.push(`${e.id}: etkinlik treni tarifede yok`);
   for (const qd of C.quests.story) if (qd.cosmetic && !C.cosmetics[qd.cosmetic]) errs.push(`${qd.id}: kozmetik yok`);
   for (const f of C.festivals) if (!C.cosmetics[f.cosmetic]) errs.push(`${f.id}: kozmetik yok`);
   return errs;

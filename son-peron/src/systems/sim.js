@@ -52,6 +52,8 @@ export class Sim {
   constructor(C, state) {
     this.C = C; this.s = state; this.fx = []; this._maps = {}; this._grids = {}; this.paused = false;
     if (!state.trains.length) Day.morning(this, true);
+    // Eski (3 seferli) kayıt: o günün tarifesini yeni sefer listesine tamamla; geçmiş seferler yeniden doğmaz
+    else if (state.trains.length !== C.trainTimes.length) state.trains = C.trainTimes.map((time) => state.trains.find((t) => t.time === time) || { time, phase: state.minute > time + C.train.dwell + Trains.DEPART_MIN ? 'gone' : 'wait', spawned: state.minute >= time });
     Quests.init(this);
   }
   // ---- yardımcılar

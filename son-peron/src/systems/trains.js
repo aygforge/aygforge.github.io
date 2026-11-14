@@ -1,4 +1,4 @@
-// Tren seferleri: her gün tam 09:00 / 15:00 / 21:00. Konum yalnız oyun saatinden türetilir (kayıtla tutarlı).
+// Tren seferleri: her gün tam 09:00 / 12:00 / 15:00 / 18:00 / 21:00 (C.trainTimes). Konum yalnız oyun saatinden türetilir (kayıtla tutarlı).
 import { VISITOR_TARGETS, PROFILES, FESTIVAL_PAX_MULT, RENOVATION_EFFECTS } from '../data/supplement.js';
 import * as Kitchen from './kitchen.js';
 import * as Build from './building.js';
