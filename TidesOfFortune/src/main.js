@@ -9,6 +9,7 @@ import { injectIconStyles } from './ui/IconStyles.js';
 import { setTapSound } from './ui/dom.js';
 import { tickVoyage } from './ui/screens/voyage.js';
 import { T } from './data/strings.js';
+import { HARBOR_BY_ID } from './data/harbors.js';
 
 function boot() {
   injectIconStyles();
@@ -46,7 +47,7 @@ function boot() {
     loading.classList.add('hide');
     setTimeout(() => loading.remove(), 600);
   }
-  window.__tof = { core, ui, renderer, audio, stage };
+  window.__tof = { core, ui, renderer, audio, stage, world: renderer.world, harborName: (id) => HARBOR_BY_ID[id]?.name || id };
 
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && !window.__TOF_SINGLE_FILE__) {
     navigator.serviceWorker.register('sw.js').catch(() => {});

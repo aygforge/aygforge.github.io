@@ -2,7 +2,9 @@
 
 Ortam: Node 22, Chromium (Playwright), Linux. Tarih: 2026-11-14.
 
-## 1. Mantık testleri — `npm test` (node:test) — 15/15 geçti
+## 1. Mantık testleri — `npm test` (node:test) — 17/17 geçti
+
+Rework ile eklenenler: belirsiz deniz yolları (2–3 yol, gizli hedef, tekrar yok, son ayak Büyük Liman), bölgesel talep çarpanı.
 
 | # | Senaryo | Test | Sonuç |
 |---|---|---|---|
@@ -28,19 +30,28 @@ Ortam: Node 22, Chromium (Playwright), Linux. Tarih: 2026-11-14.
 | 19 | Büyük Liman finali tamamlanabiliyor (otomatik oyuncu, 60 seed) | 19 | ✅ |
 | — | Aynı seed + aynı kararlar = aynı run sonucu | Deterministik | ✅ |
 
-## 2. Gerçek tarayıcı testi — `node tests/browser.test.cjs` — 3/3 geçti
+## 2. Gerçek tarayıcı testi — `node tests/browser.test.cjs` — 16/16 geçti (top-down rework)
 
-`dist/TidesOfFortune.html` `file://` ile açıldı; dokunmatik etkin. Run tamamen arayüz tıklamalarıyla oynandı (seed girişi, başlangıç item seçimi, Yola Çık, event seçenek kartları, Devam, varış).
+`dist/TidesOfFortune.html?hiz=30` `file://` ile açıldı; dokunmatik etkin. Run tamamen arayüz tıklamalarıyla oynandı: seed, başlangıç item, Yola Çık → deniz yolu kartı, karşılaşma seçenek kartları, Devam, Limana Gir, Eski Dostlar sinematiği.
 
-| Çözünürlük | Sonuç | Görülen fazlar | Taşma | JS hatası | Yeniden yüklemede kalıcı kayıt |
-|---|---|---|---|---|---|
-| 800×360 (20:9 telefon) | run bitti (batış, 4 liman) | arrival, harbor, voyage, ended | yok | yok | ✅ |
-| 915×412 (20:9 telefon) | run bitti (batış, 8 liman) | arrival, harbor, voyage, ended | yok | yok | ✅ |
-| 1280×720 | run bitti (batış, 8 liman) | arrival, harbor, voyage, ended | yok | yok | ✅ |
+| Kontrol | 800×360 | 1280×720 |
+|---|---|---|
+| Run baştan sona UI ile oynandı, JS hatası yok (tüm director fazları görüldü) | ✅ | ✅ |
+| Gemi top-down (dikey) çiziliyor | ✅ | ✅ |
+| Karar sonrası, sonuç animasyonu sırasında yeniden yükleme: altın/gövde/kargo/XP değişmiyor, sonuç ekranından devam | ✅ | ✅ |
+| İşe alınan tayfa güvertede beliriyor | ✅ | ✅ |
+| Alınan 3 birim kargo güvertede 3 sandık | ✅ | ✅ |
+| Deniz yolu kartlarında hedef liman adı yok | ✅ | ✅ |
+| Sayılar okunaklı UI fontunda (tabular) | ✅ | ✅ |
+| Taşan buton yok | ✅ | ✅ |
 
-(Tıklama botu ticaret yapmadığı ve tamire az para ayırdığı için batması beklenen davranıştır.) Taşma kontrolü: kaydırılabilir paneller dışındaki tüm butonların sahne sınırları içinde olduğu doğrulandı. Ayrıca menü, harita, 5 liman paneli, yolculuk, event, sonuç, yükseltmeler, Codex ve Eski Dostlar sinematiği 1280×720, 915×412 ve 800×360'ta ekran görüntüsüyle gözden geçirildi.
+Ekran görüntüleri (915×412, 2×): `docs/screenshots/td_harbor.png`, `td_sailing.png`, `td_decision.png`. Geliştirme sırasında Korsan Baskını (Savaş, Teslim ol), Dev Dalga, Yüzen Sandık, Hayalet Gemi ve Zıpır sahneleri de ekran görüntüsüyle gözden geçirildi.
 
-## 3. Denge simülasyonu — `node tools/simulate.mjs 400`
+## 3. Denge simülasyonu
+
+Rework sonrası `node tools/simulate.mjs 300`: tamamlanma %82,7 · tahmini run süresi 38,0 dk (saf seyir 18,1 dk) · 1,14 yükseltme/run · ~31 event/run · hata yok.
+
+Rework öncesi `node tools/simulate.mjs 400`:
 
 Otomatik oyuncu (makul ama bilgisiz tüccar, kalıcı upgrade yok):
 

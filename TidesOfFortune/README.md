@@ -47,6 +47,15 @@ npx cap open android      # Android Studio'da Build > Build APK
 ```
 `AndroidManifest.xml` içinde aktiviteye `android:screenOrientation="sensorLandscape"` ekle. Oyun mutlak yol kullanmadığı ve çevrimdışı çalıştığı için WebView içinde ek ayar gerektirmez.
 
+## Top-down yolculuk (rework)
+
+- Gemi tam yukarıdan, pruva yukarı; 5 seviyenin her biri farklı gövde, güverte, direk, dümen ve kargo alanına sahip. Yelkenler karakterlerin üstünde yarı saydam.
+- Tüm tayfa ve hayvanlar güvertede kişiliğe göre iş yapar, A* ile yürür; karaktere dokununca ad / yetenek / mevcut iş paneli açılır. Alınan, kaybedilen ve satılan mallar güvertede sandık/çuval/kereste olarak görünür.
+- Yolculuk gerçek zamanlıdır: kısa 90–150 s, orta 130–190 s, uzun 170–240 s; olaylar arasında en az 22 s seyir. Sakin seyirde ×3 hızlandırma.
+- Her limanda 2–3 deniz yolu seçilir (tehlike, mesafe, korsan, söylenti ipuçları; tayfa ve upgrade'ler doğruluğu artırır). Hedef liman seed ile belirlenir ama varana kadar gizlidir.
+- Eventler dünyada oynar: `NORMAL_SAILING → ENCOUNTER_APPROACH → ENCOUNTER_INTRO → PLAYER_DECISION → ACTION_ANIMATION → OUTCOME_ANIMATION → ENCOUNTER_EXIT → RESUME_SAILING`. Sonuç kararda bir kez uygulanıp kaydedilir; animasyon yalnızca görüntü katmanını eski değerden yeniye taşır, bu yüzden yeniden yükleme ödülü tekrarlamaz.
+- Geliştirici / test: URL'ye `?hiz=N` eklenirse oyun zamanı N kat hızlanır.
+
 ## Proje yapısı
 
 ```
@@ -59,8 +68,12 @@ TidesOfFortune/
 │   ├── systems/                Ship, Trade, Item, Crew, Pet, Repair, Route, Event, Progression
 │   ├── data/                   45 liman, 15 mal, 18 item, 30 tayfa, 5 hayvan, ~110 event düğümü,
 │   │                           12 zincir, 20 upgrade, başarımlar, arayüz metinleri (strings.js)
-│   ├── rendering/              Canvas: deniz/gökyüzü, 5 gemi, karakter üretici, güverte hayatı,
-│   │                           event illüstrasyonları, liman sahneleri, parşömen harita, ikonlar
+│   ├── rendering/td/           Top-down dünya: TopShip (5 gövde + yürünebilir ızgara + A*), TopChars
+│   │                           (tayfa/hayvan/NPC sprite), Props (kargo, nesneler), Ocean (akan deniz,
+│   │                           ambiyans), Deck2D (yaşayan güverte), World (kamera, efektler, varlıklar)
+│   ├── rendering/              Renderer, parşömen harita, UI portreleri, ikonlar
+│   ├── presentation/           EncounterDirector (karşılaşma yaşam döngüsü + aksiyon zaman çizelgesi),
+│   │                           scenes.js (bespoke ve veri güdümlü event sahneleri)
 │   ├── audio/AudioEngine.js    Sentezlenmiş ortam sesleri, üretken müzik, efektler
 │   └── ui/                     Ekranlar (menü, harita, liman, yolculuk, event, özet, upgrade, Codex, ayarlar)
 ├── assets/fonts, assets/icons

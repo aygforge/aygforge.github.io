@@ -32,7 +32,7 @@ async function playViaUI(page, maxSteps = 4000, onDecision = null) {
     const s = await state(page);
     seen.add(s.phase + ':' + s.dir);
     if (s.phase === 'ended') return seen;
-    const click = async (sel) => { const el = await page.$(sel); if (el) { await el.click(); await page.waitForTimeout(80); return true; } return false; };
+    const click = async (sel) => { const el = await page.$(sel); if (!el) return false; try { await el.click({ timeout: 2500 }); } catch { return false; } await page.waitForTimeout(80); return true; };
     if (s.cine) { await page.waitForTimeout(2900); await click('.cinematic .cineBtn'); await page.waitForTimeout(900); continue; }
     if (s.modal) { if (!(await click('.modal .laneCard')) && !(await click('.modal .btn.primary'))) await click('.modal .btn.ghost'); continue; }
     if (s.dir === 'PLAYER_DECISION') { if (onDecision) await onDecision(page); if (await click('.optCard:not(.locked)')) continue; }
@@ -65,7 +65,7 @@ async function playViaUI(page, maxSteps = 4000, onDecision = null) {
     await page.click('.modal .btn.primary');
     let topDown = null, crewSeen = false, cargoVisual = null, reloadOk = null, laneHidden = null, numbersOk = null;
     const onDecision = async (pg) => {
-      if (topDown === null) topDown = await pg.evaluate(() => { const L = window.__tof.world.layout(); return L.h > L.w * 1.4 && window.__tof.world.mode === 'sail'; });
+      if (!topDown) { const r = await pg.evaluate(() => { const w = window.__tof.world; if (w.mode !== 'sail') return null; const L = w.layout(); return L.h > L.w * 1.4; }); if (r !== null) topDown = r; }
       if (reloadOk === null) {
         // karar ver → sonuç animasyonu sırasında sayfayı yeniden yükle → ödül tekrarlanmamalı
         const before = await pg.evaluate(() => { const r = window.__tof.core.run; return { gold: r.gold, hull: r.ship.hull, cargo: r.cargo.reduce((s, l) => s + l.qty, 0), xp: r.xp.total }; });
@@ -96,7 +96,7 @@ async function playViaUI(page, maxSteps = 4000, onDecision = null) {
     cargoVisual = deck.cargo === 3;
     await page.click('.departBtn');
     await page.waitForTimeout(300);
-    laneHidden = await page.evaluate(() => { const t = document.querySelector('.laneGrid').textContent; return !window.__tof.core.run.visit.lanes.some((l) => t.includes(window.__tof.core.HARBOR_NAME?.(l.harborId) || require_name(l.harborId))); function require_name(id) { return ({}).x || ''; } });
+    if (!(await page.$('.laneGrid')) && (await page.$('.modal .btn.primary'))) { await page.click('.modal .btn.primary'); await page.waitForTimeout(300); }
     laneHidden = await page.evaluate(() => { const t = document.querySelector('.laneGrid').textContent; const names = window.__tof.core.run.visit.lanes.map((l) => l.harborId); return names.every((id) => !t.includes(window.__tof.harborName(id))); });
     numbersOk = await page.evaluate(() => getComputedStyle(document.querySelector('.statusbar .stat b')).fontFamily.includes('Roboto'));
     const ov2 = await overflow(page);

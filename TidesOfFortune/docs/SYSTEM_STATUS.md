@@ -64,7 +64,23 @@ Durum: ✅ tamamlandı · 🟡 kısmen / sadeleştirilmiş · ❌ yok
 | Steam başarımları / Steam SDK | ❌ | HTML5 hedefi kapsamı dışında |
 | Hazır lisanslı pixel art paketi | ❌ | Bilinçli olarak kullanılmadı; tüm görseller koddan üretiliyor |
 
+## Top-down yolculuk reworkü
+| Özellik | Durum | Not |
+|---|---|---|
+| Top-down gemi, 5 ayrı seviye (gövde, güverte, direk, dümen, kargo alanı, yürünebilir alan, hasar görseli) | ✅ | Yarı saydam yelkenler, salınım/rota düzeltme |
+| Yaşayan güverte: tüm tayfa + hayvan, 4 yön yürüme, kişiliğe göre işler, hayvan davranışları, dokununca bilgi paneli | ✅ | Kişilik senaryoları (Groot tamir, Pita yemek, Zıpır güneşlenme, Tarçın iz sürme…) |
+| Güvertede görünen kargo (al/sat/kaybet anında değişir) | ✅ | |
+| Gerçek zamanlı yolculuk, ambiyans (balık, martı, uzak gemi, enkaz, gölge, sis, adacık, hava), ×3 hızlandırma | ✅ | |
+| Deniz yolu seçimi, gizli hedef, ipucu doğruluğu, bölgesel talep | ✅ | |
+| EncounterDirector yaşam döngüsü, aksiyon primitifleri, kayıt güvenliği | ✅ | |
+| Korsan Baskını: Savaş / Kaç / Rüşvet / Teslim ol (yanaşma, kanca, korsanlar sandık taşır) | ✅ | |
+| Bespoke sahneler: Dev Dalga, Yüzen Sandık, Yüzen Kereste, Hayalet Gemi, Zıpır–Tarçın, onarım | ✅ | |
+| Diğer ~100 event düğümü | 🟡 | Veri güdümlü genel sahneler (gemi/yaratık/nesne/hava + sonuç animasyonları). Hepsi oynanabilir ama bespoke koreografi yok. |
+| Kamera | 🟡 | Yalnızca hafif kaydırma/yakınlaştırma ve sarsıntı |
+| Varış/yanaşma animasyonu | ✅ | Kıyı ipuçları, iskele, kasaba; liman adı varışta açılır |
+
 ## Bilinen sınırlamalar
-- Denge: otomatik oyuncu run'ların ~%87'sini tamamlıyor ve ortalama ~6 limanda bir gemi yükseltiyor (GDD hedefi 2–3). Bilgili bir oyuncu daha hızlı yükseltebilir; zorluk ve fiyatlar `balance.js` ile kolayca ayarlanır. Gerçek oyuncu testleriyle ince ayar önerilir.
+- Rework sonrası simülasyon (300 run): tamamlanma %82,7, run ~38 dk (saf seyir ~18 dk), ~31 event/run, 1,14 yükseltme/run.
+- Denge (rework öncesi): otomatik oyuncu run'ların ~%87'sini tamamlıyor ve ortalama ~6 limanda bir gemi yükseltiyor (GDD hedefi 2–3). Bilgili bir oyuncu daha hızlı yükseltebilir; zorluk ve fiyatlar `balance.js` ile kolayca ayarlanır. Gerçek oyuncu testleriyle ince ayar önerilir.
 - Harita etiketleri ve bazı ikincil yazılar ~19–20 mantıksal piksel (küçük telefonlarda ~10 CSS px).
 - Pixelify Sans fontunda "Z" harfi "2"ye benzer.

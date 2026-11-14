@@ -52,3 +52,19 @@ GDD'de kesinleşmiş değerler değiştirilmedi. Belirsiz alanlarda alınan kara
 | Ek başarımlar | Eski Dostlar dışında 14 başarım eklendi (ilk yolculuk, galeon, zincir ustası, hazine, hayalet kaptan, prenses vb.). | |
 | Kayıt | localStorage (anahtar başına yedekli `.bak`), sürüm numaralı (v3), dışa/içe aktarma metni `TOF1:` + base64. | IndexedDB yerine: veri küçük ve senkron yazım tek eylemli atomikliği basitleştirir. |
 | Görsel ölçek | Dünya 1/3 çözünürlükte (≈427×240) çizilip nearest-neighbor ile büyütülür; yazılar DOM'da pixel font ile. | |
+
+## Top-down yolculuk reworkü kararları
+
+| Konu | Karar | Gerekçe |
+|---|---|---|
+| Görsel ölçek | `pixelScale` 3 → 2 (640×360 tampon). Karakter karesi 22 px, 1 px kontur. | Telefonda karakterlerin ayırt edilebilmesi için (önceki ~9 CSS px çok küçüktü). |
+| Gemi boyutu | Gövde boyu 156–216, genişliği 64–112 mantıksal px; gemi ekran yüksekliğinin ~%50'sini kaplar. | Brief: %45–60. |
+| Rota | Run başında yalnızca uzunluk (gizli) belirlenir; her limanda 2–3 deniz yolu seed'den üretilir. Seçilen yol hedefi belirler, tekrar yok, bölge ilerlemesi korunur, son ayakta tüm yollar Büyük Liman'a çıkar. | Roguelite belirsizlik; determinism korunur (aynı seed + aynı seçimler = aynı oyun). |
+| Yol tipleri | Kıyı, Ticaret, Açık Deniz, Vahşi Sular, Kaçakçı. Tehlike seviyesi event kategori ağırlığına `dangerWeightPerLevel = 4` ekler. | |
+| İpucu doğruluğu | Temel tip %60, söylenti %65. Compass Rose / Old Finn / Liman Gözü upgrade → tip %100; Tobias %80; Gece Yarısı %85; Tarık/Selene → ticaret %100; Hamid/Mei Lin %85; Kırmızı %80. Yanıltıcı ipuçları yalnızca yakın bölgede mümkün olan tiplerden seçilir. | Tayfa bilgisinin değerli olması; saçma ipuçlarının (1. bölgede buz) önlenmesi. |
+| Bölgesel talep | Her (seed, bölge, mal) için 0,82–1,25 çarpanı (`trade.regionDemandRange`), mevcut fiyat formülüne eklendi. | Ticaret söylentilerinin ve rota seçiminin anlamlı olması; mevcut değerler korunur. |
+| Yolculuk süresi | `voyage.duration` ayarları (yukarıda); ilk event ≥ 20 s, arası ≥ 22 s; son 30 s'de kıyı ipucu. Ortalama run ~38 dk (simülasyon). | Brief: 25–45 dk. |
+| Teslim olma | Korsan Baskını (EVT_D_01) seçeneklerine "Teslim ol" eklendi: kargonun %50'si + 40 altın; Halatlar teslimiyette kargoyu korumaz. | Brief'teki teslim olma + yağma animasyonu. |
+| Çift uygulama koruması | Mantık sonucu karar anında tek seferde uygulanıp kaydedilir. `EncounterDirector` görüntü katmanını (`display` altın/gövde, `cargoOverride`) animasyonla eskiden yeniye taşır. Yeniden yüklemede sonuçlu olay → OUTCOME ekranı anlık kurulur; sonuçsuz olay → karar ekranı. | Kabul kriteri 16. |
+| Sahneler | Önemli eventler `scenes.js` içinde bespoke (Korsan Baskını ve zinciri, Dev Dalga, Yüzen Sandık, Yüzen Kereste, Hayalet Gemi, Zıpır–Tarçın, onarım vb.); diğerleri event `art` verisinden ve sonuç farkından üretilen veri güdümlü sahneler. | Dikey dilim önce, kalan eventler veri güdümlü. |
+| Kayıt sürümü | `SAVE_VERSION = 4` (rota planı, deniz yolları, `voyage.elapsed`). Eski kayıtlar güvenle yeni run'a yönlendirilir. | |
