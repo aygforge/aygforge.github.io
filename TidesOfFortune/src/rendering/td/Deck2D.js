@@ -239,6 +239,7 @@ export class Deck2D {
     const after = a.after;
     a.after = null;
     if (a.onArrive) { const f = a.onArrive; a.onArrive = null; f(a); return; }
+    if (a.kind === 'npc') { a.state = a.endState || 'idle'; a.t = 99; if (a.faceDir) a.dir = a.faceDir; return; }
     switch (after) {
       case 'bark': a.state = 'bark'; a.dir = 'up'; a.t = 99; this.say(a.id, 'Hav! Hav!', 2.5); this.onBark?.(); return;
       case 'sitStill': a.state = 'sit'; a.t = 99; return;

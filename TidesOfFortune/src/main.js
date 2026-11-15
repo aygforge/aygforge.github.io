@@ -10,6 +10,7 @@ import { setTapSound } from './ui/dom.js';
 import { tickVoyage } from './ui/screens/voyage.js';
 import { T } from './data/strings.js';
 import { HARBOR_BY_ID } from './data/harbors.js';
+import { installDevHooks } from './dev.js';
 
 function boot() {
   injectIconStyles();
@@ -48,6 +49,7 @@ function boot() {
     setTimeout(() => loading.remove(), 600);
   }
   window.__tof = { core, ui, renderer, audio, stage, world: renderer.world, harborName: (id) => HARBOR_BY_ID[id]?.name || id };
+  installDevHooks(window.__tof);
 
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && !window.__TOF_SINGLE_FILE__) {
     navigator.serviceWorker.register('sw.js').catch(() => {});

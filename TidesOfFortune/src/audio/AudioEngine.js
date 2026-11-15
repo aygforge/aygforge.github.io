@@ -302,6 +302,18 @@ export class AudioEngine {
       case 'ghost': this.tone(220, t, 2, 'sine', 0.06, this.sfx, 0.5); this.tone(233, t, 2, 'sine', 0.05, this.sfx, 0.5); break;
       case 'chest': this.tone(300, t, 0.1, 'square', 0.06); [784, 988, 1175].forEach((f, i) => this.tone(f, t + 0.15 + i * 0.07, 0.3, 'triangle', 0.06)); break;
       case 'flag': this.noise(t, 0.4, 0.15, 1500, this.sfx, 'bandpass'); break;
+      case 'thunder': this.thunder(); break;
+      case 'bell': [0, 1.1].forEach((d) => { this.tone(392, t + d, 2.2, 'sine', 0.08); this.tone(784, t + d, 1.2, 'sine', 0.03); this.tone(1176, t + d, 0.6, 'sine', 0.015); }); break;
+      case 'magic': [880, 1175, 1397, 1760, 2093].forEach((f, i) => this.tone(f, t + i * 0.07, 0.6, 'sine', 0.035)); break;
+      case 'squawk': for (let i = 0; i < 2; i++) { this.tone(1400 - i * 300, t + i * 0.12, 0.09, 'sawtooth', 0.04); this.noise(t + i * 0.12, 0.08, 0.1, 2500, this.sfx, 'bandpass'); } break;
+      case 'horn': this.tone(110, t, 1.4, 'sawtooth', 0.06, this.sfx, 0.2, 400); this.tone(165, t, 1.4, 'sawtooth', 0.04, this.sfx, 0.2, 400); break;
+      case 'creak': this.creak(t); break;
+      case 'gull': this.gull(t, 1); break;
+      case 'roar': this.noise(t, 1.4, 0.45, 300); this.tone(55, t, 1.3, 'sawtooth', 0.12, this.sfx, 0.1, 200); break;
+      case 'whistle': this.tone(1568, t, 0.25, 'sine', 0.05); this.tone(1976, t + 0.25, 0.35, 'sine', 0.05); break;
+      case 'cheer': for (let i = 0; i < 5; i++) this.noise(t + i * 0.08, 0.3, 0.08, 1800 + i * 200, this.sfx, 'bandpass'); [523, 659, 784].forEach((f, i) => this.tone(f, t + 0.2 + i * 0.06, 0.25, 'triangle', 0.05)); break;
+      case 'dice': for (let i = 0; i < 4; i++) this.noise(t + i * 0.07, 0.03, 0.2, 3500, this.sfx, 'highpass'); break;
+      case 'drum': for (let i = 0; i < 4; i++) this.tone(70, t + i * 0.28, 0.2, 'sine', 0.25); break;
       case 'error': this.tone(180, t, 0.12, 'square', 0.05); this.tone(140, t + 0.1, 0.15, 'square', 0.05); break;
     }
   }

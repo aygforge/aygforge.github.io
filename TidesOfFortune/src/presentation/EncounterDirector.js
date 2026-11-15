@@ -223,6 +223,13 @@ export class EncounterDirector {
       case 'wait': return instant ? 0 : a.dur;
       case 'say': {
         if (instant) return 0;
+        if (a.prefer) {
+          // tercih sırasına göre gemide olan ilk kişi konuşur (yoksa kaptan)
+          const who = a.prefer.find((id) => w.deck.actors.has(id)) || (a.any ? [...w.deck.actors.values()].find((x) => x.kind === 'crew')?.id : null) || a.fallback || 'CAPTAIN';
+          if (!who || (a.only && !a.prefer.includes(who))) return 0;
+          w.deck.say(who, a.text, a.dur || 2.4);
+          return a.hold ?? 0.6;
+        }
         if (a.actor) { w.deck.say(a.actor, a.text, a.dur || 2.4); return a.hold ?? 0.6; }
         const e = w.get(a.id);
         if (e) { e.say = a.text; e.sayT = a.dur || 3; e.sayDx = a.dx || 0; }
@@ -302,15 +309,21 @@ export class EncounterDirector {
           const L = w.layout();
           const from = w.shipToWorld(L.cargoSlots[ix % L.cargoSlots.length].x, L.cargoSlots[ix % L.cargoSlots.length].y);
           const side = a.side || (Math.random() < 0.5 ? -1 : 1);
-          const to = { x: from.x + side * (L.beam / 2 + 20 + Math.random() * 20), y: from.y + 10 + Math.random() * 20 };
+          const tgt = a.to ? at(a.to) : null;
+          const to = tgt ? { x: tgt.x + (Math.random() - 0.5) * 10, y: tgt.y + (Math.random() - 0.5) * 10 } : { x: from.x + side * (L.beam / 2 + 20 + Math.random() * 20), y: from.y + 10 + Math.random() * 20 };
           const u = list[ix];
           if (instant) { list[ix] = null; continue; }
-          setTimeout(() => { list[ix] = null; w.projectile(from, to, { dur: 0.8, arc: 14, kind: 'crate', onHit: () => { w.burst(to.x, to.y, 'splash', 12); sfx('splash'); } }); w.fx[w.fx.length - 1].good = u.good; }, delay * 1000);
+          setTimeout(() => { list[ix] = null; w.projectile(from, to, { dur: a.dur || 0.8, arc: a.arc ?? 14, kind: 'crate', onHit: () => { if (a.use) { w.burst(to.x, to.y, a.use === true ? 'spark' : a.use, 6); sfx('pickup'); } else if (tgt) { sfx('pickup'); } else { w.burst(to.x, to.y, 'splash', 12); sfx('splash'); } } }); w.fx[w.fx.length - 1].good = u.good; }, delay * 1000);
           delay += 0.25;
         }
         return instant ? 0 : delay + 0.9;
       }
       case 'boardSteal': return this.boardSteal(a, instant);
+      case 'cargoUse': {
+        const L = w.layout();
+        const st = L.stations.find((q) => q.type === (a.at || 'galley')) || { x: L.cx, y: L.center.y };
+        return this.exec({ type: 'cargoOverboard', goods: a.goods, to: w.shipToWorld(st.x, st.y), use: true, arc: 8, dur: 0.7 }, instant);
+      }
       case 'pickup': {
         // tayfa halat atar, yüzen nesne gemiye çekilir
         const e = w.get(a.id);
@@ -345,8 +358,126 @@ export class EncounterDirector {
       }
       case 'syncDisplay': w.cargoOverride = null; this.display = null; this.hooks.onDisplay?.(); return 0;
       case 'call': if (!instant) a.fn?.(this); return a.dur || 0;
+      // ───── sahne kiti ilkelleri ─────
+      case 'board': return this.board(a, instant);
+      case 'unboard': return this.unboard(a, instant);
+      case 'npcState': { const t = w.deck.temp.find((x) => x.id === a.id); if (t) { if (a.state) t.state = a.state; if (a.dir) t.dir = a.dir; if (a.carry !== undefined) { t.carry = a.carry ? 'crate' : null; t.crateGood = a.carry; } } return 0; }
+      case 'gather': return this.gather(a, instant);
+      case 'pet': return this.petAct(a, instant);
+      case 'flash': if (!instant) { w.ocean.flash = 1; w.ocean.onThunder?.(); } return 0;
+      case 'shipTo': if (a.x != null) w.shipTargetX = a.x; if (a.y != null) w.shipTargetY = a.y; if (instant) { if (a.x != null) w.ship.x = a.x; if (a.y != null) w.ship.y = a.y; } return 0;
+      case 'heel': w.extraRot = a.rot || 0; return 0;
+      case 'deckProp': {
+        const L = w.layout();
+        let p = a.at;
+        if (typeof p === 'string') { const st = L.stations.find((q) => q.type === p); p = st ? { x: st.x, y: st.y } : { x: L.cx, y: L.center.y }; }
+        else if (!p) p = { x: L.cx, y: L.center.y };
+        w.remove(a.id);
+        w.spawn({ id: a.id, kind: a.kind, x: 0, y: 0, drift: false, layer: a.layer ?? 2, local: { x: p.x + (a.dx || 0), y: p.y + (a.dy || 0) }, encounter: true, opts: a.opts || {}, alpha: a.alpha ?? 1 });
+        const e = w.get(a.id); const q = w.shipToWorld(e.local.x, e.local.y); e.x = q.x; e.y = q.y;
+        return 0;
+      }
+      case 'throw': {
+        if (instant) return 0;
+        const f = at(a.from), t = at(a.to);
+        w.projectile({ x: f.x + (a.fdx || 0), y: f.y + (a.fdy || 0) }, { x: t.x + (a.dx || 0), y: t.y + (a.dy || 0) }, { dur: a.dur || 0.8, arc: a.arc ?? 16, kind: a.kind || 'ball', onHit: () => { if (a.burst) w.burst(t.x + (a.dx || 0), t.y + (a.dy || 0), a.burst, a.n || 12); if (a.sfx) sfx(a.sfx); } });
+        if (a.kind === 'crate' && a.good) w.fx[w.fx.length - 1].good = a.good;
+        return a.wait === false ? 0 : (a.dur || 0.8) + 0.1;
+      }
+      case 'opts': { const e = w.get(a.id); if (e) e.opts = { ...(e.opts || {}), ...a.opts }; return 0; }
+      case 'set': { const e = w.get(a.id); if (e) Object.assign(e, a.props); return 0; }
       default: return 0;
     }
+  }
+
+  /** Yabancı biri gemimize çıkar: küpeşteden (railL/railR/bow/stern) hedef noktaya yürür */
+  board(a, instant) {
+    const w = this.world;
+    const L = w.layout();
+    const st = (type) => L.stations.find((q) => q.type === type);
+    const fromSt = typeof a.from === 'string' ? st(a.from) : a.from;
+    const start = fromSt ? { x: fromSt.x, y: fromSt.y + (a.fdy || 0) } : { x: L.cx, y: L.center.y };
+    let tgt = typeof a.to === 'string' ? st(a.to) : a.to;
+    tgt = tgt ? { x: tgt.x + (a.dx || 0), y: tgt.y + (a.dy || 0) } : { x: L.cx, y: L.center.y };
+    tgt = w.deck.nearestWalk(tgt.x, tgt.y) || tgt;
+    w.deck.temp = w.deck.temp.filter((q) => q.id !== a.id);
+    const t = { id: a.id, kind: 'npc', npc: a.npc || 'sailor', x: start.x, y: start.y, dir: 'down', ft: 0, t: 99, busy: true, state: 'idle', endState: a.endState, faceDir: a.face };
+    if (a.carry) { t.carry = 'crate'; t.crateGood = a.carry; }
+    w.deck.temp.push(t);
+    if (instant) { t.x = tgt.x; t.y = tgt.y; t.state = a.endState || 'idle'; if (a.face) t.dir = a.face; return 0; }
+    this.hooks.sfx?.(a.sfx || 'creak');
+    w.deck.goto(t, tgt.x, tgt.y, 'walk');
+    if (a.say) setTimeout(() => w.deck.say(a.id, a.say, a.sayDur || 2.6), Math.max(0, (a.sayAt ?? 0.4) * 1000));
+    const d = Math.hypot(tgt.x - start.x, tgt.y - start.y) / 20;
+    return a.wait === false ? 0 : Math.min(5, d + 0.3);
+  }
+
+  /** Gemideki yabancı küpeşteye yürüyüp ayrılır */
+  unboard(a, instant) {
+    const w = this.world;
+    const t = w.deck.temp.find((q) => q.id === a.id);
+    if (!t) return 0;
+    if (instant) { w.deck.temp = w.deck.temp.filter((q) => q !== t); return 0; }
+    const L = w.layout();
+    const s0 = L.stations.find((q) => q.type === (a.to || 'railR')) || L.stations[0];
+    t.busy = true;
+    t.onArrive = () => { setTimeout(() => { w.deck.temp = w.deck.temp.filter((q) => q !== t); }, 150); };
+    w.deck.goto(t, s0.x, s0.y, 'walk');
+    if (t.carry === null || a.carry) { if (a.carry) { t.carry = 'crate'; t.crateGood = a.carry; } }
+    const d = Math.hypot(s0.x - t.x, s0.y - t.y) / 20;
+    return a.wait === false ? 0 : Math.min(5, d + 0.3);
+  }
+
+  /** Birkaç tayfayı bir noktanın çevresine toplar */
+  gather(a, instant) {
+    if (instant) return 0;
+    const w = this.world;
+    const L = w.layout();
+    let p = a.at;
+    if (typeof p === 'string') { const q = L.stations.find((x) => x.type === p); p = q || { x: L.cx, y: L.center.y }; }
+    p = p || { x: L.cx, y: L.center.y };
+    const pref = (a.prefer || []).map((id) => w.deck.actors.get(id)).filter(Boolean);
+    const rest = [...w.deck.actors.values()].filter((q) => (q.kind === 'crew' || (a.captain && q.kind === 'captain')) && !pref.includes(q));
+    const list = [...pref, ...rest].slice(0, a.n || 3);
+    list.forEach((act, i) => {
+      const ang = (i / Math.max(1, list.length)) * Math.PI * 2 + 0.6;
+      const r = a.r || 10;
+      const tgt = w.deck.nearestWalk(p.x + Math.cos(ang) * r, p.y + Math.sin(ang) * r * 0.8);
+      act.busy = true;
+      act.task = a.task || 'Toplandı';
+      act.workDur = a.dur || 4;
+      w.deck.goto(act, tgt.x, tgt.y, a.run ? 'run' : 'walk', a.state === 'react' ? 'reactFace' : 'workHere');
+      act.faceSide = Math.sign(p.x - tgt.x) || 1;
+    });
+    return a.hold ?? 0;
+  }
+
+  /** Hayvan aksiyonu: bir noktaya koşar ve poz verir (havla, sallan, otur...) */
+  petAct(a, instant) {
+    if (instant) return 0;
+    const w = this.world;
+    const act = w.deck.actors.get(a.id);
+    if (!act) return 0;
+    const L = w.layout();
+    let p = a.at;
+    if (typeof p === 'string') { const q = L.stations.find((x) => x.type === p); p = q || { x: L.cx, y: L.center.y }; }
+    if (act.kind === 'parrot') {
+      // papağan: hedefe en yakın tüneğe ya da doğrudan noktaya uçar
+      const tgt = p ? { x: p.x + (a.dx || 0), y: p.y + (a.dy || 0) } : null;
+      w.deck.flyTo(act, tgt || null);
+      act.busy = true;
+      setTimeout(() => { act.busy = false; act.t = a.dur || 5; if (a.say) w.deck.say(act.id, a.say, 2.2); if (a.sfx) this.hooks.sfx?.(a.sfx); if (a.fluff) act.fluff = a.fluff; }, (act.flyDur || 1) * 1000);
+      return a.hold ?? 0;
+    }
+    act.busy = true;
+    act.task = a.task || act.task;
+    const done = (x) => { x.state = a.pose || 'sit'; x.t = a.dur || 4; x.busy = false; if (a.pose === 'climb') x.z = 1; if (a.dir) x.dir = a.dir; if (a.say) w.deck.say(x.id, a.say, 2.2); if (a.sfx) this.hooks.sfx?.(a.sfx); };
+    if (p) {
+      const tgt = w.deck.nearestWalk(p.x + (a.dx || 0), p.y + (a.dy || 0));
+      act.onArrive = done;
+      w.deck.goto(act, tgt.x, tgt.y, a.run === false ? 'walk' : 'run');
+    } else done(act);
+    return a.hold ?? 0;
   }
 
   boardSteal(a, instant) {
@@ -363,8 +494,8 @@ export class EncounterDirector {
     const railOur = w.ship.x + side * (L.beam / 2 - 6);
     const railTheirs = e.x - side * 18;
     // kancalar
-    e.hooks = [0, 1, 2].map((i) => ({ x0: railTheirs, y0: e.y - 30 + i * 30, x1: railOur, y1: w.ship.y - 30 + i * 30 }));
-    this.hooks.sfx?.('hook');
+    e.hooks = [0, 1, 2].map((i) => ({ x0: railTheirs, y0: e.y - 30 + i * 30, x1: railOur, y1: w.ship.y - 30 + i * 30, plank: a.plank }));
+    this.hooks.sfx?.(a.plank ? 'creak' : 'hook');
     let n = 0;
     goods.forEach((g, k) => {
       const ix = list.findIndex((u, j) => u && u.good === g && !u.claimed);
@@ -373,7 +504,7 @@ export class EncounterDirector {
       const sl = L.cargoSlots[ix % L.cargoSlots.length];
       const tgt = w.shipToWorld(sl.x, sl.y);
       const startY = e.y - 20 + (k % 3) * 20;
-      const walker = { npc: 'pirate', x: railTheirs, y: startY, speed: 26, ft: 0 };
+      const walker = { npc: a.npc || 'pirate', x: railTheirs, y: startY, speed: 26, ft: 0 };
       walker.path = [{ x: railOur, y: startY }, { x: tgt.x + 6, y: tgt.y }];
       walker.onDone = () => {
         list[ix] = null;
@@ -494,7 +625,7 @@ export class EncounterDirector {
     this.display = { gold: before.gold, hull: before.hull };
     const diff = diffUnits(before.units, after.units);
     const info = {
-      success: result.success, auto: !!result.auto, key, label: result.label,
+      success: result.success, auto: !!result.auto, key, label: result.label, text: result.text || '',
       hullDelta: after.hull - before.hull, goldDelta: after.gold - before.gold,
       lost: diff.lost, gained: diff.gained,
       itemsGained: after.items.filter((x, i) => !before.items.includes(x) || after.items.filter((y) => y === x).length > before.items.filter((y) => y === x).length),

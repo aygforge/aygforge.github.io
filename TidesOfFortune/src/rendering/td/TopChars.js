@@ -300,11 +300,32 @@ export function npcSprite(kind, dir = 'down', state = 'idle', frame = 0) {
     sailor: { skin: '#e8b88a', hair: '#5a3a1a', hairStyle: 'short', hat: 'cap', hatColor: '#24324d', beard: 'none', top: '#f0f0e8', top2: '#3b6ea5', pants: '#2c2c3c' },
     villager: { skin: '#a8703f', hair: '#1a1410', hairStyle: 'short', hat: 'straw', hatColor: '#d8b45a', beard: 'none', top: '#c8423b', top2: '#e8c45a', pants: '#5a3a1f' },
     ghost: { skin: '#b8ffe0', hair: '#7affc8', hairStyle: 'long', hat: 'tricorn', hatColor: '#3a8a6a', beard: 'long', beardColor: '#8affd0', top: '#4aa080', top2: '#c8ffe8', pants: '#2a6a5a' },
+    // sahne figürleri
+    soldier: { skin: '#e0b088', hair: '#3a2416', hairStyle: 'short', hat: 'cap', hatColor: '#8a1f22', beard: 'none', top: '#b8282c', top2: '#f0f0e8', pants: '#1e2440', idle: 'spear' },
+    officer: { skin: '#e8b88a', hair: '#c8c0b0', hairStyle: 'short', hat: 'tricorn', hatColor: '#1e2a4a', beard: 'short', beardColor: '#c8c0b0', top: '#24426b', top2: '#f2c14e', pants: '#f0ece0', idle: 'scroll' },
+    customs: { skin: '#c89060', hair: '#2a1a10', hairStyle: 'short', hat: 'fez', hatColor: '#a8282c', beard: 'short', beardColor: '#2a1a10', top: '#3a4a3a', top2: '#c8a040', pants: '#2a2a2a', idle: 'scroll' },
+    merchant: { skin: '#d8a070', hair: '#5a3a1a', hairStyle: 'short', hat: 'turban', hatColor: '#3b6ea5', beard: 'full', beardColor: '#5a3a1a', top: '#c86a3a', top2: '#f2c14e', pants: '#4a3020', idle: 'count', build: 'round' },
+    stranger: { skin: '#9a8a80', hair: '#1a1a20', hairStyle: 'short', hat: 'hood', hatColor: '#1e1e2a', beard: 'none', top: '#24242e', top2: '#3a3a4a', pants: '#1a1a22' },
+    oldSailor: { skin: '#d8a880', hair: '#e8e8e0', hairStyle: 'short', hat: 'cap', hatColor: '#3a4a6a', beard: 'long', beardColor: '#f0f0e8', top: '#5a6a7a', top2: '#e8e0c8', pants: '#3a3a4a', idle: 'lantern' },
+    villagerF: { skin: '#a8703f', hair: '#1a1410', hairStyle: 'long', hat: 'headwrap', hatColor: '#e8c45a', beard: 'none', top: '#2f8a6a', top2: '#f0e0a0', pants: '#5a3a1f' },
+    chief: { skin: '#8a5a32', hair: '#1a1410', hairStyle: 'long', hat: 'feather', hatColor: '#c8423b', beard: 'none', top: '#e0a040', top2: '#2f8a6a', pants: '#5a3a1f', idle: 'staff', build: 'big' },
+    sick: { skin: '#b8c890', hair: '#4a3a2a', hairStyle: 'short', hat: 'bandana', hatColor: '#8a8a7a', beard: 'short', beardColor: '#4a3a2a', top: '#8a9a7a', top2: '#c8c8b0', pants: '#4a4a3a' },
+    keeper: { skin: '#e0b088', hair: '#8a8a8a', hairStyle: 'short', hat: 'cap', hatColor: '#2a3a5a', beard: 'full', beardColor: '#9a9a9a', top: '#2a3a5a', top2: '#f2c14e', pants: '#2a2a3a', idle: 'lantern' },
+    servant: { skin: '#e8c8a0', hair: '#6a4a2a', hairStyle: 'bun', hat: 'none', beard: 'none', top: '#5a3a6a', top2: '#f0e8f0', pants: '#3a2a4a' },
+    princess: { skin: '#f0d0b0', hair: '#c88a3a', hairStyle: 'long', hat: 'tiara', hatColor: '#f2c14e', beard: 'none', top: '#c8a0e8', top2: '#f0e8f0', pants: '#8b5bb5' },
+    hunter: { skin: '#c89060', hair: '#2a1a10', hairStyle: 'short', hat: 'tricorn', hatColor: '#3a3a3a', beard: 'short', beardColor: '#2a1a10', top: '#4a4a52', top2: '#8a8a92', pants: '#2a2a30', idle: 'guard' },
+    guild: { skin: '#e8c0a0', hair: '#3a2a1a', hairStyle: 'short', hat: 'beret', hatColor: '#1e3a2a', beard: 'none', top: '#2f5a3a', top2: '#f2c14e', pants: '#2a2a2a', idle: 'count' },
+    cartographer: { skin: '#e8c0a0', hair: '#8a5a2a', hairStyle: 'curly', hat: 'beret', hatColor: '#6a3a2a', beard: 'none', top: '#e8dcc0', top2: '#6a3a2a', pants: '#4a3a2a', idle: 'map' },
+    deserter: { skin: '#d8a880', hair: '#3a2416', hairStyle: 'short', hat: 'none', beard: 'short', beardColor: '#3a2416', top: '#8a3a3a', top2: '#c8c0b0', pants: '#2a2a3a' },
+    castaway: { skin: '#c88a5a', hair: '#6a4a2a', hairStyle: 'long', hat: 'none', beard: 'long', beardColor: '#6a4a2a', top: '#c8b890', top2: '#a89870', pants: '#6a5a3a' },
+    smuggler: { skin: '#c89060', hair: '#1a1410', hairStyle: 'short', hat: 'scarf', hatColor: '#2a2a32', beard: 'short', beardColor: '#1a1410', top: '#2a2a32', top2: '#5a4a3a', pants: '#1e1e24' },
+    plague: { skin: '#a8b880', hair: '#2a2a20', hairStyle: 'short', hat: 'hood', hatColor: '#3a3a2a', beard: 'none', top: '#4a4a3a', top2: '#6a6a4a', pants: '#2a2a20' },
   };
   const key = `npc|${kind}|${dir}|${state}|${frame}`;
   if (cache.has(key)) return cache.get(key);
   const base = makeCanvas(CS, CS);
-  drawCrewUp(base.getContext('2d'), looks[kind] || looks.sailor, 'normal', 'none', state, frame);
+  const lk = looks[kind] || looks.sailor;
+  drawCrewUp(base.getContext('2d'), lk, lk.build || 'normal', lk.idle || 'none', state, frame);
   const out = rotated(base, dir);
   cache.set(key, out);
   return out;

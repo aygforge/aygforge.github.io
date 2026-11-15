@@ -5,7 +5,8 @@ import { topShip } from './TopShip.js';
 import { Ocean } from './Ocean.js';
 import { Deck2D } from './Deck2D.js';
 import { DRAW, cargoSprite, drawTown, drawPier, drawCoastHint } from './Props.js';
-import { npcSprite, CS } from './TopChars.js';
+import './Props2.js';
+import { npcSprite, petSprite, CS } from './TopChars.js';
 import { iconCanvas } from '../icons.js';
 
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -243,10 +244,12 @@ export class World {
     for (const e of ents) if ((e.layer || 0) <= 0) this.drawEntity(target, e, o);
     // bizim gemi
     this.drawOurShip(target, o);
-    for (const e of ents) if ((e.layer || 0) > 0) this.drawEntity(target, e, o);
+    for (const e of ents) if ((e.layer || 0) > 0 && (e.layer || 0) < 3) this.drawEntity(target, e, o);
     // efektler
     for (const f of this.fx) this.drawFx(target, f, o);
     this.ocean.drawTop(target, W, H);
+    // gökyüzü katmanı (aurora, yıldızlar, gökkuşağı): gece karartmasının üstünde parlar
+    for (const e of ents) if ((e.layer || 0) >= 3) this.drawEntity(target, e, o);
     target.restore();
     if (target !== ctx) {
       ctx.drawImage(this.zoomCanvas, Math.round(W / 2 - (W * z) / 2), Math.round(H / 2 - (H * z) / 2), Math.round(W * z), Math.round(H * z));
@@ -285,18 +288,27 @@ export class World {
     ctx.restore();
     // pruva köpüğü
     if (this.speed > 6) for (let i = 0; i < 6; i++) px(ctx, o.x + s.x + Math.sin(this.t * 7 + i) * (4 + i), o.y + s.y - L.len / 2 - 2 + i, '#ffffff');
-    // geçici NPC'ler bizim gemide (korsanlar vb.)
-    for (const w of this.deck.temp) {
-      const wp = this.shipToWorld(w.x, w.y);
-      ctx.drawImage(npcSprite(w.npc, w.dir || 'down', w.path && w.path.length ? 'walk' : 'idle', Math.floor((w.ft || 0) * 6) % 4), Math.round(o.x + wp.x - CS / 2), Math.round(o.y + wp.y - CS / 2));
-      if (w.carry) ctx.drawImage(cargoSprite(w.carry), Math.round(o.x + wp.x - 5), Math.round(o.y + wp.y - 14));
-    }
   }
 
   drawEntity(ctx, e, o) {
-    const x = Math.round(o.x + e.x), y = Math.round(o.y + e.y);
+    const x = Math.round(e.screen ? e.x : o.x + e.x), y = Math.round(e.screen ? e.y : o.y + e.y);
     ctx.save();
     ctx.globalAlpha = e.alpha;
+    if (e.kind === 'npc') {
+      // sahnedeki yabancı figür (rıhtım, ada, sandal): hareket yönüne göre döner
+      const mv = e.lx != null && Math.abs(e.x - e.lx) + Math.abs(e.y - e.ly) > 0.02;
+      if (mv) { const dx = e.x - e.lx, dy = e.y - e.ly; e.dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : dy > 0 ? 'down' : 'up'; }
+      e.lx = e.x; e.ly = e.y;
+      ctx.drawImage(npcSprite(e.npc || 'sailor', e.dir || 'down', mv ? 'walk' : e.state || 'idle', Math.floor(e.t * 6) % 4), x - CS / 2, y - CS / 2);
+      if (e.carry) ctx.drawImage(cargoSprite(e.carry), x - 5, y - 14);
+      ctx.restore();
+      return;
+    }
+    if (e.kind === 'pet') {
+      ctx.drawImage(petSprite(e.pet, e.dir || 'down', e.pose || 'sit'), x - CS / 2, y - CS / 2);
+      ctx.restore();
+      return;
+    }
     if (e.kind === 'ship') {
       const L = topShip(e.level || 2, e.damage || 'healthy', e.style);
       ctx.translate(x, y);
@@ -317,15 +329,16 @@ export class World {
         ctx.drawImage(npcSprite(w.npc, w.dir || 'down', w.path && w.path.length ? 'walk' : 'idle', Math.floor((w.ft || 0) * 6) % 4), Math.round(o.x + w.x - CS / 2), Math.round(o.y + w.y - CS / 2));
         if (w.carry) ctx.drawImage(cargoSprite(w.carry), Math.round(o.x + w.x - 5), Math.round(o.y + w.y - 14));
       }
-      if (e.hooks) for (const hk of e.hooks) line(ctx, o.x + hk.x0, o.y + hk.y0, o.x + hk.x1, o.y + hk.y1, '#3a2a1a');
+      if (e.hooks) for (const hk of e.hooks) { if (hk.plank) { for (let k = -2; k <= 2; k++) line(ctx, o.x + hk.x0, o.y + hk.y0 + k, o.x + hk.x1, o.y + hk.y1 + k, Math.abs(k) === 2 ? '#3a2412' : '#a87a4a'); } else line(ctx, o.x + hk.x0, o.y + hk.y0, o.x + hk.x1, o.y + hk.y1, '#3a2a1a'); }
       return;
     }
     if (e.kind === 'wave') { ctx.restore(); DRAW.wave(ctx, 0, y, this.t, { W: this.W }); return; }
     if (e.kind === 'flag') { ctx.restore(); return; }
     const fn = DRAW[e.kind];
     if (fn) {
-      if (e.scale !== 1) { ctx.translate(x, y); ctx.scale(e.scale, e.scale); fn(ctx, 0, 0, this.t, e.opts || {}); }
-      else fn(ctx, x, y, this.t, e.opts || {});
+      const opts = { W: this.W || 640, H: this.H || 360, ...(e.opts || {}) };
+      if (e.scale !== 1) { ctx.translate(x, y); ctx.scale(e.scale, e.scale); fn(ctx, 0, 0, this.t, opts); }
+      else fn(ctx, x, y, this.t, opts);
     }
     ctx.restore();
   }
