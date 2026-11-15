@@ -63,6 +63,7 @@ export class UI {
         w.mode = 'menu'; w.harbor = null; w.coast = null; w.clearEncounter();
         w.ship.level = Math.min(5, 1 + Math.floor(this.core.meta.stats.completed / 2)); w.ship.crew = []; w.ship.pets = []; w.ship.cargo = []; w.ship.damage = 'healthy';
         w.targetSpeed = 26; w.sails = 'full'; w.ocean.preset = 'calm'; w.ocean.night = false; w.ocean.fog = 0; w.weatherFx = []; w.cam.tx = 0; w.cam.ty = 0; w.cam.tzoom = 1; w.ship.alpha = 1; w.ship.sink = 0;
+        d.reset();
         d.phase = PH.IDLE;
       }
       this.renderer.setScene('world');

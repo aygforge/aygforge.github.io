@@ -54,8 +54,21 @@ export class EncounterDirector {
     return this.core.run;
   }
 
+  /** Bekleyen adımları ve geri çağrıları iptal et (sahne değişince eski animasyon yeni duruma dokunmasın) */
+  reset() {
+    this.steps = [];
+    this.after = null;
+    this.stepDur = -1;
+    this.stepT = 0;
+    this.world.extraRot = 0;
+    this.world.shipTargetY = 0;
+    this.world.flagUp = false;
+    this.world.deck.temp = [];
+  }
+
   // ───────── Kurulum (ekran değişince) ─────────
   enterVoyage() {
+    this.reset();
     const run = this.run;
     const v = run.voyage;
     const w = this.world;
@@ -89,6 +102,7 @@ export class EncounterDirector {
   }
 
   enterHarbor(type, seed, docked = true) {
+    this.reset();
     const w = this.world;
     w.mode = 'harbor';
     w.clearEncounter();
@@ -109,9 +123,19 @@ export class EncounterDirector {
     if (a && a.current) {
       this.eventId = a.current.id;
       this.scene = sceneFor(EVENT_BY_ID[a.current.id], 1);
-      this.runSteps(this.scene.setup(this.ctx(), true), null);
-      this.flushInstant();
-      this.setPhase(a.current.result ? PH.OUTCOME : PH.DECISION);
+      if (a.current.result) {
+        this.runSteps(this.scene.setup(this.ctx(), true), null);
+        this.flushInstant();
+        this.setPhase(PH.OUTCOME);
+      } else {
+        // rıhtım eventi: kurulum + giriş animasyonu oynar (durum henüz değişmedi, tekrar oynatmak güvenli)
+        const c = this.ctx();
+        this.setPhase(PH.APPROACH);
+        this.runSteps([...this.scene.setup(c, false), ...(this.scene.dockApproach ? this.scene.dockApproach(c) : [])], () => {
+          this.setPhase(PH.INTRO);
+          this.runSteps(this.scene.intro(this.ctx()), () => this.setPhase(PH.DECISION));
+        });
+      }
     }
   }
 

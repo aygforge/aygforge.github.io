@@ -170,7 +170,8 @@ export class World {
     c.y = lerp(c.y, c.ty, Math.min(1, dt * 1.5));
     c.zoom = lerp(c.zoom, c.tzoom, Math.min(1, dt * 1.2));
     c.shake = Math.max(0, c.shake - dt * 8);
-    this.liftNow = lerp(this.liftNow || 0, this.lift || 0, Math.min(1, dt * 2.5));
+    // panel kaldırması: kamera zaten öndeki bir şeye odaklıysa (ty>0) gemiyi o kadar az kaldır, öndeki sahne ekranda kalsın
+    this.liftNow = lerp(this.liftNow || 0, Math.max(0, (this.lift || 0) - Math.max(0, c.ty)), Math.min(1, dt * 2.5));
     // varlıklar
     for (const e of this.entities) {
       e.t += dt;

@@ -302,6 +302,7 @@ export function def(specFn) {
     sc.plank = spec.plank;
     if (spec.setup) sc.setup = (c, instant) => { sc.mainId = spec.mainId === undefined ? 'enc' : spec.mainId; sc.thieves = !!spec.thieves; return [...(spec.weather === false ? [] : spec.weather ? spec.weather(c) : sc.weather()), ...spec.setup(c, instant)]; };
     if (spec.approach) sc.approach = spec.approach;
+    if (spec.dockApproach) sc.dockApproach = spec.dockApproach;
     if (spec.intro) sc.intro = spec.intro;
     sc.action = (c, info) => {
       if (info.auto) return spec.auto ? spec.auto(c, info, autoIndex(ev, info)) : [wait(0.6)];
@@ -325,6 +326,35 @@ export function def(specFn) {
     return sc;
   };
 }
+
+/** Sandalla kıyıya çıkış: sandal kıyıya gider, (sahne), geri döner */
+export function landing(c, side, npcs, onIsland, pre = [], dist = 70) {
+  const ix = side * (c.beam / 2 + dist);
+  return [
+    ...pre,
+    gather(rail(side), 'Sandalı indiriyor', { n: 2, run: true, dur: 3 }),
+    spawn({ id: 'boat', kind: 'rowboat', x: besides(c, 16, side), y: 0, opts: { npcs, dir: side < 0 ? 'left' : 'right' } }),
+    move('boat', { x: ix, y: -36 }, 2.4),
+    ...onIsland,
+    S('opts', { id: 'boat', opts: { dir: side < 0 ? 'right' : 'left' } }),
+    move('boat', { x: besides(c, 16, side), y: 0 }, 2.2),
+    remove('boat'),
+  ];
+}
+
+/** Dalış: tayfa küpeşteden dalar, kabarcıklar, sonra yüzeye çıkar */
+export function dive(c, side, who, task, found) {
+  return [
+    work(who, rail(side), task, 3, 1),
+    par(fx('splash', { rail: side }, 22), sfx('splash'), spawn({ id: 'bub', kind: 'bubbles', x: side * 20, y: -30, opts: { n: 24, w: 30, h: 40 } })),
+    wait(2.2),
+    ...found,
+    par(remove('bub'), fx('splash', { rail: side }, 14)),
+  ];
+}
+
+/** Rıhtım (liman varışı) koordinatları: iskele gemimizin sancak tarafında */
+export const pierX = (c, k = 0) => c.beam / 2 + 18 + k;
 
 /** Otomatik çözümde hangi 'auto' kuralının çalıştığını metinden bul */
 export function autoIndex(ev, info) {

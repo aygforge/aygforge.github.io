@@ -54,7 +54,8 @@ npx cap open android      # Android Studio'da Build > Build APK
 - Yolculuk gerçek zamanlıdır: kısa 90–150 s, orta 130–190 s, uzun 170–240 s; olaylar arasında en az 22 s seyir. Sakin seyirde ×3 hızlandırma.
 - Her limanda 2–3 deniz yolu seçilir (tehlike, mesafe, korsan, söylenti ipuçları; tayfa ve upgrade'ler doğruluğu artırır). Hedef liman seed ile belirlenir ama varana kadar gizlidir.
 - Eventler dünyada oynar: `NORMAL_SAILING → ENCOUNTER_APPROACH → ENCOUNTER_INTRO → PLAYER_DECISION → ACTION_ANIMATION → OUTCOME_ANIMATION → ENCOUNTER_EXIT → RESUME_SAILING`. Sonuç kararda bir kez uygulanıp kaydedilir; animasyon yalnızca görüntü katmanını eski değerden yeniye taşır, bu yüzden yeniden yükleme ödülü tekrarlamaz.
-- Geliştirici / test: URL'ye `?hiz=N` eklenirse oyun zamanı N kat hızlanır.
+- Her eventin kendine özgü sahnesi var (yanaşan gemiler, gemiye çıkan subaylar, sandalla adaya çıkış, dalışlar, aurora, batık şehir, tsunami…). Yeni sahne eklemek için `src/presentation/scenes/` altında bir `def({...})` bloğu yazmak yeterli.
+- Geliştirici / test: URL'ye `?hiz=N` eklenirse oyun zamanı N kat hızlanır. `node tools/scenecheck.cjs [EVENT_ID] [seçenek] [shots]` eventleri zorla tetikleyip her seçeneği tarayıcıda oynatır (hata/takılma taraması, isteğe bağlı kare kare ekran görüntüsü).
 
 ## Proje yapısı
 
@@ -73,7 +74,7 @@ TidesOfFortune/
 │   │                           ambiyans), Deck2D (yaşayan güverte), World (kamera, efektler, varlıklar)
 │   ├── rendering/              Renderer, parşömen harita, UI portreleri, ikonlar
 │   ├── presentation/           EncounterDirector (karşılaşma yaşam döngüsü + aksiyon zaman çizelgesi),
-│   │                           scenes.js (bespoke ve veri güdümlü event sahneleri)
+│   │                           kit.js (sahne dili) + scenes/ (109 eventin her biri için özel sahne)
 │   ├── audio/AudioEngine.js    Sentezlenmiş ortam sesleri, üretken müzik, efektler
 │   └── ui/                     Ekranlar (menü, harita, liman, yolculuk, event, özet, upgrade, Codex, ayarlar)
 ├── assets/fonts, assets/icons

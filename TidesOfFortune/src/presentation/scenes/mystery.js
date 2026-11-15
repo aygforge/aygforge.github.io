@@ -1,7 +1,7 @@
 // GİZEM eventleri — imza sahneleri.
 import {
   S, par, wait, def, rail, shipEntity, alongside, besides, cap, crewSay, only, lookout, say, slow, stop, go, cam,
-  react, sfx, spawn, move, remove, fx, float, work, gather, pet, board, unboard, deckProp, weather, call, driftAll, offAll, oi,
+  react, sfx, spawn, move, remove, fx, float, work, gather, pet, board, unboard, deckProp, weather, call, driftAll, offAll, oi, landing, dive,
 } from '../kit.js';
 
 const T = (n) => wait(n);
@@ -209,28 +209,3 @@ export const MYSTERY_SCENES = {
     exit: () => [par(move('stars', { alpha: 0 }, 1.5), move('cons', { alpha: 0 }, 1.5)), weather({ restore: true }), remove('moon'), remove('stars'), remove('cons'), go(30)],
   })),
 };
-
-/** Sandalla adaya çıkış: sandal kıyıya gider, (sahne), geri döner */
-function landing(c, side, npcs, onIsland, pre = []) {
-  const ix = side * (c.beam / 2 + 70);
-  return [
-    ...pre,
-    gather(rail(side), 'Sandalı indiriyor', { n: 2, run: true, dur: 3 }),
-    spawn({ id: 'boat', kind: 'rowboat', x: besides(c, 16), y: 0, opts: { npcs, dir: side < 0 ? 'left' : 'right' } }),
-    move('boat', { x: ix, y: -36 }, 2.4),
-    ...onIsland,
-    move('boat', { x: besides(c, 16), y: 0 }, 2.2),
-    remove('boat'),
-  ];
-}
-
-/** Dalış: tayfa küpeşteden dalar, kabarcıklar, sonra yüzeye çıkar */
-function dive(c, side, who, task, found) {
-  return [
-    work(who, rail(side), task, 3, 1),
-    par(fx('splash', { rail: side }, 22), sfx('splash'), spawn({ id: 'bub', kind: 'bubbles', x: side * 20, y: -30, opts: { n: 24, w: 30, h: 40 } })),
-    T(2.2),
-    ...found,
-    par(remove('bub'), fx('splash', { rail: side }, 14)),
-  ];
-}

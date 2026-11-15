@@ -55,7 +55,7 @@ export const DISASTER_SCENES = {
     setup: () => [spawn({ id: 'enc', kind: 'tsunami', x: 0, y: -380, layer: 1 })],
     approach: (c) => [
       par(S('speed', { v: 2 }), S('sails', { state: 'furled' }), cam({ x: 0, y: -120 }, 0.3), lookout('Deniz… geri çekiliyor?!', { dur: 2.2 })),
-      par(move('enc', { y: -c.len / 2 - 120 }, 5, { ease: 'in' }), S('flash', {}), react('disaster', side), sfx('roar')),
+      par(move('enc', { y: -c.len / 2 - 50 }, 5, { ease: 'in' }), S('flash', {}), react('disaster', side), sfx('roar')),
       cap('Göğe uzanan bir dalga! Herkes tutunsun!', 2.6, 0.6),
     ],
     intro: () => [S('flash', {}), T(0.4)],

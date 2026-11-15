@@ -20,11 +20,11 @@ for (let i = 0; i < N; i++) {
     const run = core.run;
     agg[result === 'complete' ? 'complete' : 'sunk']++;
     agg.harbors += run.stats.harborsReached;
-    // süre tahmini: gerçek seyir süreleri + event başına ~20 sn karar/animasyon + liman başına ~75 sn
+    // süre tahmini: gerçek seyir süreleri + event başına ~30 sn (ölçülen sahne ortalaması ~19 sn + karar/okuma ~10 sn) + liman başına ~75 sn
     let sail = 0;
     run.route.forEach((r, i) => { if (r.distance && i < run.route.length - 1) sail += voyageDuration(run.seed, i, r.distance); });
     agg.sail += sail / 60;
-    agg.minutes += (sail + stats.events * 20 + run.stats.harborsReached * 75) / 60;
+    agg.minutes += (sail + stats.events * 30 + run.stats.harborsReached * 75) / 60;
     agg.routeLen += run.totalHarbors;
     agg.gold += run.stats.maxGold;
     agg.xp += run.xp.total;

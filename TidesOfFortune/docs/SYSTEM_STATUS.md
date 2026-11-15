@@ -74,8 +74,8 @@ Durum: ✅ tamamlandı · 🟡 kısmen / sadeleştirilmiş · ❌ yok
 | Deniz yolu seçimi, gizli hedef, ipucu doğruluğu, bölgesel talep | ✅ | |
 | EncounterDirector yaşam döngüsü, aksiyon primitifleri, kayıt güvenliği | ✅ | |
 | Korsan Baskını: Savaş / Kaç / Rüşvet / Teslim ol (yanaşma, kanca, korsanlar sandık taşır) | ✅ | |
-| Bespoke sahneler: Dev Dalga, Yüzen Sandık, Yüzen Kereste, Hayalet Gemi, Zıpır–Tarçın, onarım | ✅ | |
-| Diğer ~100 event düğümü | 🟡 | Veri güdümlü genel sahneler (gemi/yaratık/nesne/hava + sonuç animasyonları). Hepsi oynanabilir ama bespoke koreografi yok. |
+| Her event için özel sahne (109/109: tehlike 18, şans 15, gizem 12, felaket 8, tamir 3, zincir 45, özel 3, tayfa 5, hayvan 4) | ✅ | Her seçenek, başarı/başarısızlık dalı ve otomatik çözüm ayrı kurgulandı. `tools/scenecheck.cjs` hepsini tarayıcıda oynatıp denetler |
+| Rıhtım (varış) eventleri giriş animasyonu | ✅ | Korsan, kaçakçı, savaş, lonca, madalyon, Zıpır & Tarçın |
 | Kamera | 🟡 | Yalnızca hafif kaydırma/yakınlaştırma ve sarsıntı |
 | Varış/yanaşma animasyonu | ✅ | Kıyı ipuçları, iskele, kasaba; liman adı varışta açılır |
 
