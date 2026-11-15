@@ -1,8 +1,10 @@
 /* Tides of Fortune — mobil, yatay, pixel art arayüz. Koordinatlar 1280×720 mantıksal pikseldir. */
-@font-face { font-family: 'Pixelify'; font-weight: 400; font-display: swap; src: url('assets/fonts/pixelify-sans-latin-400-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: 'Pixelify'; font-weight: 400; font-display: swap; src: url('assets/fonts/pixelify-sans-latin-ext-400-normal.woff2') format('woff2'); unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-@font-face { font-family: 'Pixelify'; font-weight: 600; font-display: swap; src: url('assets/fonts/pixelify-sans-latin-600-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: 'Pixelify'; font-weight: 600; font-display: swap; src: url('assets/fonts/pixelify-sans-latin-ext-600-normal.woff2') format('woff2'); unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Rubik'; font-weight: 400; font-display: swap; src: url('assets/fonts/rubik-latin-500-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Rubik'; font-weight: 400; font-display: swap; src: url('assets/fonts/rubik-latin-ext-500-normal.woff2') format('woff2'); unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Rubik'; font-weight: 600; font-display: swap; src: url('assets/fonts/rubik-latin-700-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Rubik'; font-weight: 600; font-display: swap; src: url('assets/fonts/rubik-latin-ext-700-normal.woff2') format('woff2'); unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Rubik'; font-weight: 700; font-display: swap; src: url('assets/fonts/rubik-latin-700-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Rubik'; font-weight: 700; font-display: swap; src: url('assets/fonts/rubik-latin-ext-700-normal.woff2') format('woff2'); unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
 
 :root {
   --ink: #1a1423;
@@ -23,7 +25,7 @@
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; height: 100%; background: #08060c; overflow: hidden; overscroll-behavior: none; touch-action: manipulation; }
-body { font-family: 'Pixelify', 'Trebuchet MS', system-ui, sans-serif; color: var(--light); -webkit-user-select: none; user-select: none; -webkit-font-smoothing: none; }
+body { font-family: 'Rubik', 'Trebuchet MS', system-ui, sans-serif; color: var(--light); -webkit-user-select: none; user-select: none; -webkit-font-smoothing: antialiased; }
 
 #app { position: fixed; inset: 0; }
 #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: 50% 50%; overflow: hidden; background: #120c18; font-size: 24px; line-height: 1.25; }
@@ -399,13 +401,15 @@ b.neutral { opacity: .8; }
 .cineTitle { font-size: 86px; color: var(--gold); margin: 10px 0; text-shadow: 0 0 24px rgba(242, 193, 78, .5), 4px 4px 0 #3a1a00; letter-spacing: 3px; }
 .cineSub { font-size: 30px; color: var(--light); margin: 0 0 6px; }
 .cineNote { font-size: 20px; opacity: .7; }
-.cineBtn { margin-top: 18px; opacity: 0; animation: fadeIn 1s 2.6s forwards; }
+.cineBtn { margin-top: 18px; opacity: 0; animation: cineBtnIn 1s 2.6s forwards; }
+@keyframes cineBtnIn { to { opacity: 1; } }
+.cinematic .cineHint { position: absolute; bottom: 26px; left: 0; right: 0; text-align: center; font-size: 20px; opacity: 0; animation: cineBtnIn 1s 3.4s forwards; color: #b8b0a0; }
 
 /* Küçük ekran ayarları (mantıksal genişlik 1280 sabit; çok geniş ekranlarda ızgara genişler) */
 @media (prefers-reduced-motion: reduce) { .warnChip, .islot.hl { animation: none; } }
 
 /* ───────── TOP-DOWN REWORK ───────── */
-:root { --num: 'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, system-ui, sans-serif; }
+:root { --num: 'Rubik', 'Roboto', 'Segoe UI', Arial, system-ui, sans-serif; }
 /* Okunaklı rakamlar: sade UI fontu + tabular rakamlar */
 .n, .statusbar b, .num b, .price, .chance, .barlabel, .xprow b, .xpBox b, .tbadge, .marker, .upCard .btn, .voyHud b { font-family: var(--num); font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: 0; }
 .statusbar.compact { padding: 2px 10px; gap: 8px; }

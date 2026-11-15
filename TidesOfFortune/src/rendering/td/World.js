@@ -143,10 +143,12 @@ export class World {
     // yalpa ve rota düzeltme (top-down: hafif yan kayma + küçük açı)
     if (this.mode !== 'harbor' && !reduce) {
       s.sway = Math.sin(this.t * 0.45) * 3 + Math.sin(this.t * 0.17) * 4;
-      s.rot = Math.sin(this.t * 0.45 + 0.6) * 0.022 + (this.extraRot || 0);
+      // Piksel sanatı en yakın komşu ile küçük açılarla döndürülünce gövdede kayan bir kırılma çizgisi oluşur;
+      // bu yüzden sürekli yalpa yalnızca yana kayma olarak verilir, döndürme sadece olaylardaki bilinçli yatma içindir.
+      s.rot = this.extraRot || 0;
       s.x = lerp(s.x, (this.shipTargetX || 0) + s.sway, Math.min(1, dt * 2));
     } else if (this.mode === 'harbor') {
-      s.rot = Math.sin(this.t * 0.6) * 0.004;
+      s.rot = 0;
       s.x = lerp(s.x, this.shipTargetX || 0, Math.min(1, dt * 2));
     }
     s.y = lerp(s.y, this.shipTargetY || 0, Math.min(1, dt * 2));

@@ -328,14 +328,19 @@ export class UI {
 
   oldFriendsCinematic() {
     this.audio.silence(2.4);
-    const wrap = h('div.cinematic', {},
+    let closed = false;
+    const close = () => { if (closed) return; closed = true; wrap.classList.add('out'); setTimeout(() => wrap.remove(), 800); };
+    const t0 = Date.now();
+    // animasyon bittikten sonra ekranın herhangi bir yerine dokunmak da kapatır (oyuncu hiçbir zaman burada takılı kalmaz)
+    const wrap = h('div.cinematic', { onTap: () => { if (Date.now() - t0 > 3200) close(); } },
       h('div.cineInner', {},
         h('div.cinePets', {}, h('img.cinePet', { src: petPortraitURL('PET_TARCIN', 8), alt: 'Tarçın' }), h('img.cinePet.flip', { src: petPortraitURL('PET_ZIPIR', 8), alt: 'Zıpır' })),
         h('h1.cineTitle', {}, T.oldFriendsTitle),
         h('p.cineSub', {}, T.oldFriendsSub),
         h('p.cineNote', {}, 'Hayvan kapasitesi ikiye çıktı. Codex\'te "Eski Dostlar" sayfası açıldı.'),
-        h('button.btn.primary.cineBtn', { onTap: () => { wrap.classList.add('out'); setTimeout(() => wrap.remove(), 800); } }, T.next),
+        h('button.btn.primary.cineBtn', { onTap: close }, T.next),
       ),
+      h('div.cineHint', {}, 'Devam etmek için dokun'),
     );
     this.overlay.appendChild(wrap);
     setTimeout(() => { wrap.classList.add('show'); this.audio.play('oldfriends'); }, 1600);

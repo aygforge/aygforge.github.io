@@ -83,4 +83,3 @@ Durum: ✅ tamamlandı · 🟡 kısmen / sadeleştirilmiş · ❌ yok
 - Rework sonrası simülasyon (300 run): tamamlanma %82,7, run ~43 dk (saf seyir ~18 dk, event başına ~30 sn), ~31 event/run, 1,14 yükseltme/run. Özel sahneler run'ı hedef aralığın (25–45 dk) üst ucuna taşıdı; gerekirse yaklaşma/çıkış beklemeleri kısaltılabilir.
 - Denge (rework öncesi): otomatik oyuncu run'ların ~%87'sini tamamlıyor ve ortalama ~6 limanda bir gemi yükseltiyor (GDD hedefi 2–3). Bilgili bir oyuncu daha hızlı yükseltebilir; zorluk ve fiyatlar `balance.js` ile kolayca ayarlanır. Gerçek oyuncu testleriyle ince ayar önerilir.
 - Harita etiketleri ve bazı ikincil yazılar ~19–20 mantıksal piksel (küçük telefonlarda ~10 CSS px).
-- Pixelify Sans fontunda "Z" harfi "2"ye benzer.

@@ -4,7 +4,7 @@ Roguelite deniz ticareti ve keşif oyunu. Küçük bir balıkçı teknesi **Pasl
 
 - Tür: Roguelite / ticaret / keşif / event kartı · Dil: Türkçe · Yatay ekran
 - Teknoloji: HTML5 Canvas 2D, CSS3, Vanilla JavaScript (ES2022 modülleri), Web Audio API, localStorage
-- Çalışma zamanında **hiçbir harici bağımlılık / CDN yok**; tüm pixel art ve sesler oyun içinde prosedürel üretilir. Tek harici kaynak gömülü Pixelify Sans fontudur (SIL OFL 1.1, `assets/fonts/OFL-PixelifySans.txt`).
+- Çalışma zamanında **hiçbir harici bağımlılık / CDN yok**; tüm pixel art ve sesler oyun içinde prosedürel üretilir. Tek harici kaynak gömülü Rubik fontudur (SIL OFL 1.1, `assets/fonts/OFL-Rubik.txt`); rakamlar ve Türkçe harfler net okunsun diye pixel font yerine seçildi.
 
 ## Hızlı başlangıç
 

@@ -181,7 +181,7 @@ export function renderSettings(ui) {
       h('div.setBtns', {}, h('button.btn', { onTap: exportSave }, 'Dışa aktar'), h('button.btn', { onTap: importSave }, 'İçe aktar')),
       core.hasActiveRun() ? h('div.setBtns', {}, h('button.btn.danger', { onTap: abandon }, 'Aktif run\'ı terk et')) : null,
       h('div.setBtns', {}, h('button.btn.danger', { onTap: reset }, 'Tüm ilerlemeyi sıfırla')),
-      h('p.small', {}, 'Tides of Fortune · Font: Pixelify Sans (SIL OFL 1.1). Tüm görseller ve sesler oyun içinde prosedürel olarak üretilir.'),
+      h('p.small', {}, 'Tides of Fortune · Font: Rubik (SIL OFL 1.1). Tüm görseller ve sesler oyun içinde prosedürel olarak üretilir.'),
     ),
   );
 }
