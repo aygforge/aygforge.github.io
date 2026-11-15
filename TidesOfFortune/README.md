@@ -67,6 +67,13 @@ npx cap open android      # Android Studio'da Build > Build APK
 - **Sonsuz Deniz**: Büyük Liman'da *Seferi Bitir* ya da *Sonsuz Denize Açıl*. Derinlik I–V, 4 limanlık bölümlerde deniz koşulları, kilometre taşları, skor ve rekorlar, kozmetik bayrak ve kıç süsü.
 - Kayıt sürümü 5; eski kayıtlar (`tof.meta`, `tof.run`, `tof.settings`) otomatik taşınır.
 
+## İlk oyun eğitimi
+
+İlk run'da oyuncu her adımı kendisi uygulayarak öğrenir (`src/ui/tutorial.js`). Hedef düğme parlayan bir halkayla gösterilir, yanında kısa bir açıklama balonu durur; eylem yapılınca sonraki adıma geçilir:
+1. 3 ücretsiz item seçmek → 2. boş kargo kadar mal almak → 3. deniz yolu seçip yola çıkmak → 4. yolculukta bir olaya karar vermek ve sonucu görmek → 5. sonraki limanda malları satmak (kâr/zarar göstergesi) → 6. tayfa almak (eğitim hediyesi: ücretsiz) → 7. hayvan almak (hediye).
+
+Eğitim tamamlanınca ya da atlanınca `meta.tutorialDone` kaydedilir ve bir daha gösterilmez; Ayarlar → Eğitim → "Yeniden göster" ile bir sonraki yeni run'da tekrar açılabilir. Tarayıcı testi: `node tests/tutorial.test.cjs [shots]`.
+
 ## Denge güncellemesi
 
 - **Item dayanıklılığı:** pasif ve aktif itemlerin kullanım hakkı var (2–4). Item etkisini her gösterdiğinde 1 hak gider, bitince kırılır; kalan hak item simgesinde görünür.

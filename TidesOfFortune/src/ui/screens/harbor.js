@@ -42,7 +42,7 @@ export function renderHarbor(ui) {
     if (id === 'items' && visit.starterPicks > 0) badge = h('span.tbadge', {}, visit.starterPicks);
     if (id === 'pets' && visit.pet && !visit.petBought) badge = h('span.tbadge', {}, '!');
     if (id === 'contracts' && (visit.contracts || []).some((c) => !c.taken)) badge = h('span.tbadge', {}, (visit.contracts || []).filter((c) => !c.taken).length);
-    return h(`button.tab${tab === id ? '.on' : ''}`, { onTap: () => { ui.sub.harborTab = id; ui.audio.play('page'); ui.render(); } }, icon(ic, 'big'), h('span', {}, T.tabs[id]), badge);
+    return h(`button.tab${tab === id ? '.on' : ''}`, { 'data-tab': id, onTap: () => { ui.sub.harborTab = id; ui.audio.play('page'); ui.render(); } }, icon(ic, 'big'), h('span', {}, T.tabs[id]), badge);
   }));
 
   let content;

@@ -17,6 +17,7 @@ import { renderHarbor } from './screens/harbor.js';
 import { renderVoyage } from './screens/voyage.js';
 import { renderSummary } from './screens/summary.js';
 import { renderUpgrades, renderCodex, renderSettings } from './screens/meta.js';
+import { Tutorial } from './tutorial.js';
 
 const CAT_ORDER = { healthy: 0, damaged: 1, critical: 2, sinking: 3, sunk: 4 };
 
@@ -49,6 +50,7 @@ export class UI {
     };
     this.sceneKey = null;
     stage.el.querySelector('#scene').addEventListener('click', (e) => this.onCanvasTap(e));
+    this.tutorial = new Tutorial(this, stage);
   }
 
   /** Dünya sahnesini oyun fazına göre kur (yalnızca faz değişince) */

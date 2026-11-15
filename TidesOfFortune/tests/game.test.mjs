@@ -16,7 +16,7 @@ import { createBot } from '../tools/bot.mjs';
 import { SeededRNG } from '../src/core/SeededRNG.js';
 import { BALANCE } from '../src/config/balance.js';
 
-const newCore = (storage = memoryStorage()) => new GameCore(storage);
+const newCore = (storage = memoryStorage()) => { const c = new GameCore(storage); c.meta.tutorialDone ??= true; return c; };
 function toHarbor(core) {
   let n = 0;
   while (core.run.phase === 'arrival' && n++ < 20) {

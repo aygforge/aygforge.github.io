@@ -18,6 +18,8 @@ export function generatePetOffer(G, harborIdx) {
 }
 
 export function petPrice(G, id) {
+  const tut = G.run?.tutorial;
+  if (tut && tut.giftAt != null && G.run.visit?.idx === tut.giftAt && !tut.petGift) return 0; // eğitim hediyesi
   let p = PET_BY_ID[id].price;
   const st = G.run.visit?.statuses || [];
   if (st.includes('contraband')) p *= BALANCE.trade.contrabandStatusMult;
@@ -84,6 +86,7 @@ export function buyPet(G, replaceId = null) {
   if (!res.ok) return res;
   G.run.gold -= price;
   visit.petBought = true;
+  if (G.run.tutorial && price === 0) G.run.tutorial.petGift = true;
   return { ok: true, price };
 }
 

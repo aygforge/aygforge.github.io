@@ -79,6 +79,8 @@ export function crewCandidates(G, spec, rng) {
 
 export function crewPrice(G, id) {
   const base = CREW_BY_ID[id].price;
+  const tut = G.run?.tutorial;
+  if (tut && tut.giftAt != null && G.run.visit?.idx === tut.giftAt && !tut.crewGift) return 0; // eğitim hediyesi
   // Usta İşe Alımcı: run'da altınla işe alınan ilk tayfaya %15 indirim
   if (base > 0 && G.meta.upgrades.includes('UPG_X1_RECRUITER') && !G.run.x1?.once?.recruiter) return Math.round(base * 0.85);
   return base;
@@ -121,6 +123,7 @@ export function hireCrew(G, id, replaceId = null) {
   const res = addCrew(G, id, replaceId);
   if (!res.ok) return res;
   G.run.gold -= price;
+  if (G.run.tutorial && G.run.tutorial.giftAt != null && price === 0) G.run.tutorial.crewGift = true;
   if (price > 0 && G.run.x1 && G.meta.upgrades.includes('UPG_X1_RECRUITER')) G.run.x1.once.recruiter = true;
   visit.crewHired.push(id);
   return { ok: true, price };

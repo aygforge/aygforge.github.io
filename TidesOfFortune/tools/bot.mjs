@@ -167,5 +167,6 @@ export function createBot(core, { rngSeed = 1, careful = 1, smart = false, endle
 
 export function newCore() {
   const core = new GameCore(memoryStorage());
+  core.meta.tutorialDone = true; // botlar eğitimi oynamaz
   return core;
 }

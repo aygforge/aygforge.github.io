@@ -100,3 +100,8 @@ Yorum: Tehlike ilerleyen bölgelerle artıyor (batışların çoğu Bölge 5'te)
 - Sonsuz Deniz (Büyük Liman'a sağ ulaşan 27 bot, 60 ek limana kadar): önce ortanca 43 ek liman ve 12/27 bot 60'ı batmadan bitiriyordu; şimdi ortanca 24, üst çeyrek 37, 60'ı bitiren 2/27.
 - Hayvan güverte olayları: 12 olay × tüm seçenekler tarayıcıda oynatıldı (43 senaryo, 0 hata); 6 sahne kare kare incelendi.
 - Eskort: korsan baskını, yanaşan tüccar ve limanda "Konvoy Limanda" sahneleri ekran görüntüsüyle doğrulandı (çakışma yok).
+
+## İlk oyun eğitimi
+- `node tests/tutorial.test.cjs`: menüden yeni run açıp eğitimi gerçek fare tıklamalarıyla baştan sona oynar → 15/15 (9 adımın hepsi görüldü, 3 ücretsiz item, hediye tayfa ve hayvan alındı, yeniden yüklemede ve yeni run'da eğitim bir daha çıkmıyor, JS hatası yok).
+- Ekran görüntüleriyle her adımda vurgunun doğru düğmede olduğu kontrol edildi (ölçeklenen sahne genişliği ve balon konumu düzeltmeleri bu denetimde yapıldı).
+- `npm test` 32/32, `tests/browser.test.cjs` 16/16.

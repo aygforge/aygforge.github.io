@@ -110,6 +110,11 @@ export class GameCore {
       const sp = SeededRNG.derive(seed, 'special1');
       this.run.special.firstAt = sp.int(0, Math.min(BALANCE.special.firstWithinHarbors, plan.total - 1) - 1);
       if (!sp.chance(BALANCE.special.firstChance)) this.run.special.stage = 'none'; // bu run'da Zıpır/Tarçın yok
+      // İlk oyun: etkileşimli eğitim. Zıpır/Tarçın karşılaşması eğitimin limanlarına denk gelmesin.
+      if (!this.meta.tutorialDone) {
+        this.run.tutorial = { step: 'welcome' };
+        this.run.special.firstAt = Math.max(this.run.special.firstAt, Math.min(2, plan.total - 1));
+      }
       const lines = [{ kind: 'info', text: `Paslı Martı yeni bir sefere hazırlanıyor. Başlangıç limanı: ${HARBOR_BY_ID[route[0].harborId].name}. Rota belirsiz: her limanda yeni deniz yolları seçeceksin. Son durak Büyük Liman.` }];
       lines.push(...Prog.discoverHarbor(this.G, route[0].harborId));
       const queue = [];
@@ -177,11 +182,47 @@ export class GameCore {
       run.visit.lanes = Route.generateLanes(G, idx);
     }
     run.visit.tipGood = tipRng.pick(run.visit.market.map((m) => m.good));
+    // Eğitim: ilk limanda başlangıç altınıyla alınabilecek ucuz bir temel mal garanti
+    if (run.tutorial && idx === 0 && !run.visit.market.some((m) => Trade.buyPrice(G, harbor.id, m.good) * 2 <= run.gold)) {
+      const cheap = ['GOOD_SALT', 'GOOD_FISH', 'GOOD_GRAIN', 'GOOD_SANDSTONE'].map((g) => ({ g, p: Trade.buyPrice(G, harbor.id, g) })).sort((x, y) => x.p - y.p)[0];
+      const ex = run.visit.market.find((m) => m.good === cheap.g);
+      if (ex) ex.stock = Math.max(ex.stock, 4); else run.visit.market.unshift({ good: cheap.g, stock: 5 });
+    }
+    // Eğitim: ikinci limanda tayfa ve hayvan teklifi garanti, ilk tayfa ve ilk hayvan hediye
+    if (run.tutorial && idx >= 1 && !run.tutorial.giftAt) {
+      run.tutorial.giftAt = idx;
+      if (!run.visit.crew.length) {
+        const pick = Object.values(CREW_BY_ID).find((c) => c.price > 0 && !c.hidden && !run.crew.includes(c.id) && Crew.crewAvailableForRun(G, c.id));
+        if (pick) run.visit.crew.push(pick.id);
+      }
+      if (!run.visit.pet) run.visit.pet = run.pets.includes('PET_KIRMIZI') ? 'PET_MARTI' : 'PET_KIRMIZI';
+    }
     run.buffs.rareNext = false;
     for (const c of run.visit.crew) this.meta.codex.crewMet[c] = true;
     if (run.visit.pet) this.meta.codex.pets[run.visit.pet] ||= false;
     run.arrival = null;
     run.phase = 'harbor';
+  }
+
+  // ───────────── Eğitim ─────────────
+  tutorialStep(step) {
+    if (!this.run?.tutorial) return;
+    this.run.tutorial.step = step;
+    this.persist();
+    this.emit();
+  }
+  /** Eğitimi bitir ya da atla: bir daha gösterilmez */
+  tutorialFinish(skipped = false) {
+    this.meta.tutorialDone = true;
+    this.meta.tutorialSkipped = !!skipped;
+    if (this.run) this.run.tutorial = null;
+    this.persist();
+    this.emit();
+  }
+  tutorialReset() {
+    this.meta.tutorialDone = false;
+    this.persist();
+    this.emit();
   }
 
   // ───────────── Liman eylemleri ─────────────
