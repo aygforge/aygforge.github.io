@@ -66,6 +66,7 @@ export function optKind(c, info) {
   if (info.key === '__parrot') return 'parrot';
   if (info.key === '__midnight') return 'midnight';
   if (info.key === '__hamid') return 'hamid';
+  if (/^__(crown|redTalk|redSafe|redAlly|guild|eye|zipir)$/.test(info.key || '')) return info.key.slice(2);
   if (tags.includes('combat') || /savaş|top|saldır/.test(label)) return 'combat';
   if (tags.includes('escape') || /kaç|hızlan|uzaklaş/.test(label)) return 'escape';
   if (tags.includes('surrender') || /teslim/.test(label)) return 'surrender';
@@ -85,6 +86,24 @@ export function injectedAction(c, info, encId) {
   if (k === 'parrot') return [S('pet', { id: 'PET_KIRMIZI', at: rail(c.side), dur: 5 }), wait(1), par(S('say', { prefer: ['PET_KIRMIZI'], text: info.success ? 'Gizli fiyat! Gizli fiyat!' : 'Rum iç! Rum iç!', dur: 2.6 }), S('sound', { name: 'squawk' })), enc ? S('say', { id: enc, text: info.success ? 'Bu kuş… nereden biliyor?!' : 'Hahaha!', dur: 2.2, hold: 0.8 }) : wait(0.8)];
   if (k === 'midnight') return [S('pet', { id: 'PET_GECEYARISI', at: 'bow', dur: 5, fluff: 3 }), wait(1), par(S('say', { prefer: ['PET_GECEYARISI'], text: 'Kraaa… bu yoldan…', dur: 2.6 }), S('particles', { kind: 'spark', at: 'ship', n: 20, dy: -40 }), S('sound', { name: 'magic' })), wait(1)];
   if (k === 'hamid') return [S('crewWork', { prefer: ['CREW_HAMID'], at: rail(c.side), task: 'Tespihini çevirip pazarlık ediyor', dur: 4, hold: 1.4 }), S('say', { prefer: ['CREW_HAMID'], text: 'Bir dakika, kardeşim… bir hesap yapalım.', dur: 2.6, hold: 1.2 }), enc ? S('say', { id: enc, text: info.success ? 'Peki, peki… anlaştık.' : 'Hayır!', dur: 2, hold: 0.8 }) : wait(0.6)];
+  // Yaşayan Denizler: fraksiyon / hafıza seçenekleri
+  const sd = c.side;
+  const ally = (style, npc, line) => [
+    S('spawn', { e: { id: 'x1ally', kind: 'ship', style, level: 3, x: -sd * 260, y: -320, rot: Math.PI * 0.9, scale: 0.85, sails: 'full', crewNpc: [npc, 'sailor'], drift: false, encounter: true } }),
+    par(S('move', { id: 'x1ally', to: { x: -sd * 150, y: -60, rot: 0 }, dur: 2.6 }), S('sound', { name: 'horn' })),
+    S('say', { id: 'x1ally', text: line, dur: 2.4, hold: 0.6 }),
+  ];
+  const flee = enc ? [par(S('move', { id: enc, to: { y: -440, x: sd * 260, alpha: 0.4 }, dur: 3 }), S('sound', { name: 'depart' }))] : [wait(0.6)];
+  const allyOut = [S('move', { id: 'x1ally', to: { y: -440 }, dur: 2.6 }), S('remove', { id: 'x1ally' })];
+  if (k === 'crown') return [...ally('warship', 'officer', 'Kraliyet Muhafızları! Geri çekilin!'), S('fire', { from: 'x1ally', to: enc || { x: sd * 120, y: -120 }, n: 2, hit: false }), ...flee, ...allyOut];
+  if (k === 'redAlly') return [...ally('red', 'redCaptain', 'Kızıl Kaptan dostlarını korur!'), enc ? S('say', { id: enc, text: 'Kızıl yelkenler mi?! Çekilin!', dur: 2, hold: 0.4 }) : wait(0.4), ...flee, par(S('move', { id: 'x1ally', to: { x: -sd * 120, y: 20 }, dur: 2 }), S('flag', { up: true, color: '#b3261e' })), wait(1), ...allyOut];
+  if (k === 'redSafe' || k === 'redTalk') {
+    const ok = k === 'redSafe' || info.success;
+    return [par(S('flag', { up: true, color: '#b3261e' }), S('sound', { name: 'flag' }), S('say', { actor: 'CAPTAIN', text: 'Kardeşliğin işaretini görüyor musunuz?', dur: 2.4 })), wait(0.8), enc ? S('say', { id: enc, text: ok ? 'Kardeşlikten misiniz? Geçin, dostum.' : 'O bayrak burada para etmez!', dur: 2.4, hold: 0.8 }) : wait(0.8), ...(ok ? flee : []), S('flag', { up: false })];
+  }
+  if (k === 'guild') return [par(S('flag', { up: true, color: '#e0b040' }), S('sound', { name: 'flag' })), S('crewWork', { prefer: ['CAPTAIN'], at: rail(sd), task: 'Lonca mührünü gösteriyor', dur: 3, hold: 1 }), enc ? S('say', { id: enc, text: 'Loncanın dostu! O zaman size özel fiyat.', dur: 2.4, hold: 0.8 }) : wait(0.6), S('coins', { from: enc || { x: sd * 100, y: -40 }, to: 'ship', n: 8 }), S('flag', { up: false })];
+  if (k === 'eye') return [S('spawn', { e: { id: 'x1trail', kind: 'sparkles', x: sd * 30, y: -80, layer: 2, opts: { r: 60, col: '#7affd8' }, drift: false, encounter: true } }), par(S('sound', { name: 'magic' }), S('say', { actor: 'CAPTAIN', text: 'Gözün bıraktığı iz… şuradan!', dur: 2.4 })), par(S('heel', { rot: sd * 0.08 }), S('shipTo', { x: sd * 24 })), wait(1.2), S('heel', { rot: 0 }), S('remove', { id: 'x1trail' })];
+  if (k === 'zipir') return [S('pet', { id: 'PET_ZIPIR', at: 'bow', pose: 'alert', dur: 5, say: 'Mrrraaav!', sfx: 'meow' }), wait(0.8), S('say', { actor: 'CAPTAIN', text: 'Zıpır yine gördü. Rotayı kır!', dur: 2.2 }), par(S('heel', { rot: -sd * 0.14 }), S('shipTo', { x: -sd * 36 })), wait(1.2), S('heel', { rot: 0 })];
   return null;
 }
 

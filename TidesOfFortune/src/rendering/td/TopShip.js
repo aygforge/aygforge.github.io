@@ -21,6 +21,8 @@ export const SHIP_STYLES = {
   merchant: { rim: '#4a2a14', rim2: '#7a4a24', deck: '#d4b07a', deck2: '#c09a64', trim: '#e8c45a', sail: '#f4ead5', sailShade: '#c8423b', flag: '#f2c14e', stripes: true },
   warship: { rim: '#141c2a', rim2: '#2a3448', deck: '#b8a07a', deck2: '#a48c66', trim: '#e0b84a', sail: '#f4f6f8', sailShade: '#c4ccd6', flag: '#3b6ea5' },
   ghost: { rim: '#1a3a30', rim2: '#2a5a4a', deck: '#4a8a72', deck2: '#3a7a62', trim: '#8affd0', sail: '#9affd0', sailShade: '#5ac8a0', flag: '#2a5a4a', ghost: true },
+  red: { rim: '#2a0a0c', rim2: '#4a1a1e', deck: '#6a4a3e', deck2: '#5a3a30', trim: '#e0b040', sail: '#b8282c', sailShade: '#7e1a1e', flag: '#b8282c', skull: true },
+  guild: { rim: '#3a2a10', rim2: '#6a4a18', deck: '#d8b878', deck2: '#c4a062', trim: '#f2c14e', sail: '#f4e4b8', sailShade: '#e0b040', flag: '#e0b040', stripes: true },
   plague: { rim: '#2a2618', rim2: '#4a4430', deck: '#8a7c58', deck2: '#7a6c4a', trim: '#6a6040', sail: '#8a8262', sailShade: '#5a5440', flag: '#e8d040' },
 };
 

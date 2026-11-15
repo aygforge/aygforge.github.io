@@ -26,6 +26,7 @@ if (SHOTS) fs.mkdirSync(OUT, { recursive: true });
     return only ? [only] : null;
   }, onlyId || null);
   let all = ids || (await page.evaluate(() => window.__tofAllEvents()));
+  if (process.env.PREFIX) all = all.filter((id) => process.env.PREFIX.split(',').some((p) => id.startsWith(p)));
   // paralel çalıştırma: SHARD=i/n
   if (process.env.SHARD) { const [i, n] = process.env.SHARD.split('/').map(Number); all = all.filter((_, j) => j % n === i); }
   const report = [];

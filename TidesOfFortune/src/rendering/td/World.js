@@ -6,6 +6,7 @@ import { Ocean } from './Ocean.js';
 import { Deck2D } from './Deck2D.js';
 import { DRAW, cargoSprite, drawTown, drawPier, drawCoastHint } from './Props.js';
 import './Props2.js';
+import './Props3.js';
 import { npcSprite, petSprite, CS } from './TopChars.js';
 import { iconCanvas } from '../icons.js';
 

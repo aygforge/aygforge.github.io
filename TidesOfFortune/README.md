@@ -57,6 +57,16 @@ npx cap open android      # Android Studio'da Build > Build APK
 - Her eventin kendine özgü sahnesi var (yanaşan gemiler, gemiye çıkan subaylar, sandalla adaya çıkış, dalışlar, aurora, batık şehir, tsunami…). Yeni sahne eklemek için `src/presentation/scenes/` altında bir `def({...})` bloğu yazmak yeterli.
 - Geliştirici / test: URL'ye `?hiz=N` eklenirse oyun zamanı N kat hızlanır. `node tools/scenecheck.cjs [EVENT_ID] [seçenek] [shots]` eventleri zorla tetikleyip her seçeneği tarayıcıda oynatır (hata/takılma taraması, isteğe bağlı kare kare ekran görüntüsü).
 
+## Yaşayan Denizler & Sonsuz Deniz genişlemesi
+
+- **25 yeni bağımsız olay** (`src/data/events_x1.js`, `EVT_X1_*`) ve her biri için ayrı koreografi (`src/presentation/scenes/x1.js`): dev yengecin küpeşteye tırmanması, gece dalgıç hırsızları, devrilen direk, açık deniz müzayedesi, tenteli pazar tekneleri, yüzer tersane, gökten düşen yıldız, Karanlıktaki Dev Göz, ters akıntı, gaz kabarcıkları, siyah yağmur…
+- **4 yeni hikâye zinciri** (`src/data/chains_x1.js`, 14 aşama, her zincirde 3 farklı final ve her finalin kendi görüntüsü), Codex'te **Denizci Günlüğü** (görülmemiş sonuçlar `???`), sonraki seferlerde sahne olarak oynayan **Hikâye Yankıları**.
+- **Dünya Hafızası** (`src/systems/X1System.js`): olay → yolculuk → sefer → kalıcı katmanlar; geri dönen gemiler aynı görsel kimlikle fiziksel olarak sahneye gelir.
+- **3 fraksiyon** (Altın Pusula Loncası, Kraliyet Deniz Muhafızları, Kızıl Yelken Kardeşliği; −3..+3) ve limanlarda **6 sözleşme türü** (Sözleşmeler sekmesi). Görev kargoları satılamaz, ambarda yer kaplar; süre dolarken fraksiyon gemisiyle %70 ödüllü buluşma.
+- **12 yeni yükseltme** (Mürettebat ve Deniz Efsaneleri dalları), **12 yeni başarım**.
+- **Sonsuz Deniz**: Büyük Liman'da *Seferi Bitir* ya da *Sonsuz Denize Açıl*. Derinlik I–V, 4 limanlık bölümlerde deniz koşulları, kilometre taşları, skor ve rekorlar, kozmetik bayrak ve kıç süsü.
+- Kayıt sürümü 5; eski kayıtlar (`tof.meta`, `tof.run`, `tof.settings`) otomatik taşınır.
+
 ## Proje yapısı
 
 ```

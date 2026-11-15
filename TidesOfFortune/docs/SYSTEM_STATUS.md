@@ -79,6 +79,20 @@ Durum: ✅ tamamlandı · 🟡 kısmen / sadeleştirilmiş · ❌ yok
 | Kamera | 🟡 | Yalnızca hafif kaydırma/yakınlaştırma ve sarsıntı |
 | Varış/yanaşma animasyonu | ✅ | Kıyı ipuçları, iskele, kasaba; liman adı varışta açılır |
 
+## Yaşayan Denizler & Sonsuz Deniz
+| Özellik | Durum | Not |
+|---|---|---|
+| 25 bağımsız X1 olayı, her biri için ayrı koreografi (yaklaşma, tepki, karar, aksiyon, başarı/başarısızlık, çıkış) | ✅ | `scenes/x1.js`; yeni çizimler `Props3.js` |
+| 4 zincir / 14 aşama / 12 final, finallere özel görüntü, Codex kaydı | ✅ | |
+| Dünya Hafızası bağlantıları (Yanlış Teslimat, Dalgıç Hırsızlar, Kopan Direk, Sahte Ateşkes, Müzayede, Haritasız Fener, Dev Göz, Siyah Yağmur, Kardeşlik, Zıpır) | ✅ | Geri dönen gemiler aynı stil/bayrakla gelir |
+| Denizci Günlüğü, görülmemiş olaylara ×1,5 ağırlık (deterministik) | ✅ | |
+| 4 Hikâye Yankısı (sahne olarak) | ✅ | |
+| 3 fraksiyon (−3..+3), pirateRep taşıması, çift bonus yok, fraksiyon enjekte seçenekleri (animasyonlu) | ✅ | |
+| 6 sözleşme, kapasite sınırı, satılamaz görev kargosu, %70 buluşma, eskort gemisi | ✅ | |
+| 12 yükseltme (2 yeni dal), 12 başarım | ✅ | |
+| Sonsuz Deniz: derinlik I–V, deniz koşulları, kilometre taşları, skor, rekorlar, kozmetikler, güvenli çıkış | ✅ | 50/100/200 ek liman simülasyonu |
+| Kayıt v4 → v5 taşıma, idempotent ödüller | ✅ | |
+
 ## Bilinen sınırlamalar
 - Rework sonrası simülasyon (300 run): tamamlanma %82,7, run ~43 dk (saf seyir ~18 dk, event başına ~30 sn), ~31 event/run, 1,14 yükseltme/run. Özel sahneler run'ı hedef aralığın (25–45 dk) üst ucuna taşıdı; gerekirse yaklaşma/çıkış beklemeleri kısaltılabilir.
 - Denge (rework öncesi): otomatik oyuncu run'ların ~%87'sini tamamlıyor ve ortalama ~6 limanda bir gemi yükseltiyor (GDD hedefi 2–3). Bilgili bir oyuncu daha hızlı yükseltebilir; zorluk ve fiyatlar `balance.js` ile kolayca ayarlanır. Gerçek oyuncu testleriyle ince ayar önerilir.

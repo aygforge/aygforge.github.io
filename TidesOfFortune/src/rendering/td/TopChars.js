@@ -410,6 +410,9 @@ export function npcSprite(kind, dir = 'down', state = 'idle', frame = 0) {
     deserter: { skin: '#d8a880', hair: '#3a2416', hairStyle: 'short', hat: 'none', beard: 'short', beardColor: '#3a2416', top: '#8a3a3a', top2: '#c8c0b0', pants: '#2a2a3a' },
     castaway: { skin: '#c88a5a', hair: '#6a4a2a', hairStyle: 'long', hat: 'none', beard: 'long', beardColor: '#6a4a2a', top: '#c8b890', top2: '#a89870', pants: '#6a5a3a' },
     smuggler: { skin: '#c89060', hair: '#1a1410', hairStyle: 'short', hat: 'scarf', hatColor: '#2a2a32', beard: 'short', beardColor: '#1a1410', top: '#2a2a32', top2: '#5a4a3a', pants: '#1e1e24' },
+    diver: { skin: '#c89060', hair: '#1a1410', hairStyle: 'short', hat: 'hood', hatColor: '#1e2a32', beard: 'none', top: '#1e2a32', top2: '#2a3a44', pants: '#1a242c' },
+    redCaptain: { skin: '#c89060', hair: '#8a1a1a', hairStyle: 'long', hat: 'tricorn', hatColor: '#b8282c', beard: 'full', beardColor: '#8a1a1a', top: '#2a1a1a', top2: '#e0b040', pants: '#1a1a1a', idle: 'guard' },
+    guard: { skin: '#e0b088', hair: '#3a2416', hairStyle: 'short', hat: 'cap', hatColor: '#c8a040', beard: 'none', top: '#5a4a20', top2: '#f2c14e', pants: '#2a2a2a', idle: 'spear' },
     plague: { skin: '#a8b880', hair: '#2a2a20', hairStyle: 'short', hat: 'hood', hatColor: '#3a3a2a', beard: 'none', top: '#4a4a3a', top2: '#6a6a4a', pants: '#2a2a20' },
   };
   const key = `npc|${kind}|${dir}|${state}|${frame}`;

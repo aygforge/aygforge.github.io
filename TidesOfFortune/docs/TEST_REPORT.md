@@ -84,3 +84,11 @@ Yorum: Tehlike ilerleyen bölgelerle artıyor (batışların çoğu Bölge 5'te)
 ## Çalıştırılmayan testler
 - Gerçek Android cihazda dokunmatik/performans testi yapılmadı (yalnızca Chromium mobil viewport emülasyonu).
 - Ses çıktısı otomatik test edilmedi (Web Audio grafiği hatasız kuruluyor; dinleme testi yapılmadı).
+
+## Yaşayan Denizler & Sonsuz Deniz genişlemesi
+- `npm test`: 32/32 (15 yeni X1 testi dahil: kayıt v4→v5 taşıma, idempotent ödüller, sözleşme kapasitesi/satılamaz kargo/%70 buluşma, fraksiyon sınırları, Dünya Hafızası bağlantıları, Günlük ağırlığı ve determinizm, Sonsuz Deniz derinlik/koşul/kilometre taşı/skor, 50/100/200 ek liman simülasyonu, batışta XP ve Büyük Liman başarısının korunması).
+- `PREFIX=EVT_X1,CH_X1,CT_X1 node tools/scenecheck.cjs`: 25 event + 14 zincir aşaması + 3 hafıza takibi + 4 yankı + 4 sözleşme sahnesi, tüm seçenekler ve otomatik çözümler → **190 senaryo, 0 hata, 0 takılma**.
+- Görsel denetim (temas sayfaları): Dev Yengeç, Dev Göz, Müzayede, Yüzer Tersane, Siyah Yağmur, Kızıl Kaptan ittifak finali. Dev Göz konumu ve müzayede gemileri bu denetimde düzeltildi.
+- `tests/browser.test.cjs`: 16/16. Yeni arayüz ekranları (Büyük Liman seçimi, Sözleşmeler, Sonsuz Deniz göstergeleri, Denizci Günlüğü, rekorlar, 6 dallı yükseltme ekranı) tarayıcıda açıldı, JS hatası yok.
+- `tools/simulate.mjs 150`: tamamlanma %91,3, run ~43 dk, ~31 event/run — tempo genişleme öncesiyle aynı.
+- Doğrulanmayanlar: gerçek cihazda performans; her sahnenin her başarı/başarısızlık dalının tek tek göz ile incelenmesi (otomatik tarama hepsini oynattı ama yalnızca 6 sahne kare kare incelendi); Sonsuz Deniz'in 20+ ek limana kadar elle oynanması (yalnızca simülasyonla doğrulandı).
