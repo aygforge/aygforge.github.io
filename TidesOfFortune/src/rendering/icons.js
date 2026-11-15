@@ -66,7 +66,7 @@ export const ICONS = {
   wave: ['..........', '....kkk...', '..kkcwck..', '.kcck.kck.', 'kcck...k..', 'kcccc.....', 'kcccccckkk', 'kCccccccck', 'kkkkkkkkkk', '..........'],
   boat: ['..........', '....k.....', '....kw....', '....kww...', '....kwww..', 'kkkkkkkkkk', 'knnnnnnnnk', '.knnnnnnk.', '..kkkkkk..', 'cccccccccc'],
   scale: ['....kk....', 'kkkkkkkkkk', '.k..kk..k.', 'k.k.kk.k.k', 'kkk.kk.kkk', 'kyk.kk.kyk', '....kk....', '....kk....', '..kkkkkk..', '..........'],
-  dog: ['..........', 'kk........', 'kKkk......', 'kKKKkkkkk.', 'kKwKKKKKKk', '.kkrrKKKKk', '...kKKKKKk', '...kKk.kKk', '...kk..kk.', '..........'],
+  dog: ['.k.k......', 'kKkKk.....', 'kKwKKk...k', 'kKwwKkkkKk', 'kwwwKKKKKk', '.kbbwKKKKk', '..kwwKKKKk', '..kwk.kKwk', '..kk...kk.', '..........'],
   cat: ['k...k.....', 'kzkkzk....', 'kzzzzk....', 'kzkzkzkkk.', '.kzzzzzzzk', '..kzzzzzzk', '..kzzzzzzk', '..kzk..kzk', '..kk...kk.', '..........'],
   parrot: ['..kkk.....', '.krrrk....', 'krkrrk....', 'kyyrrrk...', '.kkrrrrk..', '...kbrrrk.', '...kbbrrk.', '....kyyyk.', '....k..kk.', '..........'],
   book: ['kkkkkkkkk.', 'kNnnnnnnk.', 'kNnyyyynk.', 'kNnnnnnnk.', 'kNnnnnnnk.', 'kNnnnnnnk.', 'kNnnnnnnk.', 'kNwwwwwwk.', 'kkkkkkkkk.', '..........'],

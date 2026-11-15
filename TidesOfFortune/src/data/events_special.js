@@ -5,10 +5,10 @@ export const SPECIAL_EVENTS = [
   {
     id: 'EVT_SPECIAL_ZIPIR_TARCIN', cat: 'special', pool: false, title: 'Rıhtımın Ortasında', tier: 1, tags: ['special'],
     art: { sky: 'fog', sea: 'calm', obj: ['dock', 'dockPets'], fx: ['mist'] },
-    text: `Sabah sisi rıhtımın tahtalarını ıslatmıştı. İskelenin ortasında kırmızı bandanalı siyah bir köpekle gri bir kedi yan yana oturuyordu. Köpek kuyruğunu salladı; kedinin gözleri kapalıydı ama başını tam sana çevirdi.`,
+    text: `Sabah sisi rıhtımın tahtalarını ıslatmıştı. İskelenin ortasında mavi tasmalı, beyaz göğüslü siyah bir köpekle gri bir kedi yan yana oturuyordu. Köpek kuyruğunu salladı; kedinin gözleri kapalıydı ama başını tam sana çevirdi.`,
     options: [
       { label: "Tarçın'ı al", icon: 'dog',
-        win: { text: `Köpeğe elini uzattın. Hemen yanına koştu, bandanası rüzgârda dalgalandı. Adının Tarçın olduğunu boynundaki küçük madalyondan öğrendin. Gri kedi rıhtımda kaldı ve sessizce arkanızdan baktı.`, fx: { pet: 'PET_TARCIN', special: 'tookTarcin' } } },
+        win: { text: `Köpeğe elini uzattın. Hemen yanına koştu, kabarık kuyruğu havada kıvrıldı. Adının Tarçın olduğunu mavi tasmasındaki küçük künyeden öğrendin. Gri kedi rıhtımda kaldı ve sessizce arkanızdan baktı.`, fx: { pet: 'PET_TARCIN', special: 'tookTarcin' } } },
       { label: "Zıpır'ı al", icon: 'cat',
         win: { text: `Gri kediyi kucağına aldın. Hiç ürkmedi; sanki seni çoktan tanıyordu. Tasmasındaki isim Zıpır'dı. Siyah köpek rıhtımda kaldı ve kuyruğunu yavaşça sallayarak arkanızdan baktı.`, fx: { pet: 'PET_ZIPIR', special: 'tookZipir' } } },
       { label: 'Geç git', icon: 'no', hint: 'Bazen en zor şey devam etmektir.', tags: ['pass'],
@@ -29,7 +29,7 @@ export const SPECIAL_EVENTS = [
   {
     id: 'EVT_SPECIAL_TARCIN_ALONE', cat: 'special', pool: false, title: "Tarçın'ı Bulma", tier: 1, tags: ['special', 'fog'],
     art: { sky: 'fog', sea: 'calm', obj: ['dogRocks'], fx: ['fog'] },
-    text: `Sisli bir koyun girişindeydin. Zıpır güvertenin ortasına oturmuş, kıpırdamadan bekliyordu. Kıyıdaki kayalıkta siyah bir köpek oturuyordu; boynunda solmuş kırmızı bir bandana vardı.`,
+    text: `Sisli bir koyun girişindeydin. Zıpır güvertenin ortasına oturmuş, kıpırdamadan bekliyordu. Kıyıdaki kayalıkta siyah bir köpek oturuyordu; boynunda mavi bir tasma, alnında beyaz bir şerit vardı.`,
     options: [
       { label: 'Köpeği al', icon: 'dog',
         win: { text: `Bir sandal indirdin. Köpek suya atlayıp yüzerek sana geldi. Güverteye çıkar çıkmaz Zıpır'ın yanına koştu ve onu kokladı. Zıpır gözlerini açmadan başını ona yasladı.`, fx: { pet: 'PET_TARCIN', special: 'reunite' } } },

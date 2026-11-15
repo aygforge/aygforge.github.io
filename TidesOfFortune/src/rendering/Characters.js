@@ -190,7 +190,7 @@ export const PET_FH = 12;
 export function petFrame(id, pose) {
   const key = `${id}|${pose}`;
   if (cache.has(key)) return cache.get(key);
-  const c = makeCanvas(PET_FW, PET_FH);
+  const c = id === 'PET_TARCIN' ? makeCanvas(DOG_FW, DOG_FH) : makeCanvas(PET_FW, PET_FH);
   const ctx = c.getContext('2d');
   if (id === 'PET_ZIPIR') drawCat(ctx, pose);
   else if (id === 'PET_TARCIN') drawDog(ctx, pose);
@@ -240,49 +240,36 @@ function drawCat(ctx, pose) {
   hline(ctx, 4, 7, by - 2, l);
 }
 
+// TARÇIN portresi (yan görünüm, sağa bakar): fotoğraftaki siyah-beyaz çoban köpeği, beyaz yüz şeridi,
+// kabarık beyaz göğüs, beyaz patiler, yarı dik kulaklar, yukarı kıvrık kuyruk, MAVİ tasma ve gümüş künye.
+export const DOG_FW = 20, DOG_FH = 17;
+const DOG_PAL = { k: '#0e0d12', B: '#1e1c24', G: '#3a3844', W: '#f4f2ec', w: '#c9c6bf', n: '#050505', e: '#7a4524', p: '#ee8a9a', b: '#2f8ae8', d: '#1f5fae', s: '#c8ccd4', i: '#a87070' };
+const DOG_ROWS = {
+  sit: [
+    '..........k...k.....',
+    '.........kBk.kBk....',
+    '.........kiBkBiBk...',
+    '........kBBBWBBBk...',
+    '........kBBBWWBBk...',
+    '........kBeBWWBek...',
+    '..kk....kBBWWWWWWnk.',
+    '.kwBk....kBWWWWpWk..',
+    '.kBBk...kddbbbbWWk..',
+    '..kBk..kBBBbsWWWk...',
+    '..kBBkkBBBBWWWWWk...',
+    '...kBBBBBBBWWWWWk...',
+    '...kBBBBBGBBWWWWk...',
+    '..kBBBBBBBBBWkWWk...',
+    '..kBBBBBBBBkWWkWWk..',
+    '..kWWWBBBBkkWWkWWk..',
+    '..kkkkkkkkk.kkkkkk..',
+  ],
+};
+DOG_ROWS.bark = DOG_ROWS.sit.map((r, i) => (i === 7 ? '.kwBk....kBWWWWppk..' : r));
+
 function drawDog(ctx, pose) {
-  const b = '#1e1c22', h = '#3c3844', band = '#c8423b', tongue = '#e86a7a';
-  const by = PET_FH - 1;
-  if (pose === 'sleep') {
-    rect(ctx, 2, by - 3, 9, 3, b);
-    rect(ctx, 9, by - 4, 4, 3, b);
-    px(ctx, 9, by - 5, h);
-    hline(ctx, 9, 11, by - 2, band);
-    hline(ctx, 0, 2, by, b);
-    hline(ctx, 3, 9, by - 3, h);
-    return;
-  }
-  const sit = pose === 'sit' || pose === 'bark' || pose === 'wag0' || pose === 'wag1' || pose === 'beg';
-  if (sit) {
-    rect(ctx, 4, by - 5, 5, 5, b);
-    rect(ctx, 7, by - 9, 5, 4, b);
-    px(ctx, 12, by - 7, b); // burun
-    px(ctx, 7, by - 10, b); px(ctx, 7, by - 9, h); // kulak
-    px(ctx, 10, by - 8, '#f4ead5');
-    hline(ctx, 6, 10, by - 5, band);
-    px(ctx, 6, by - 4, band);
-    if (pose === 'bark') { px(ctx, 12, by - 6, tongue); px(ctx, 11, by - 6, '#000'); }
-    const tail = pose === 'wag1' ? by - 6 : by - 3;
-    line(ctx, 3, by - 2, 1, tail, b);
-    vline(ctx, 5, by - 1, by, h); vline(ctx, 8, by - 1, by, h);
-    if (pose === 'beg') { rect(ctx, 8, by - 4, 2, 1, b); }
-    return;
-  }
-  // yürüme / koşma (enerjik)
-  const run = pose.startsWith('run');
-  const f = pose.endsWith('1') ? 1 : 0;
-  rect(ctx, 2, by - 5 - (run && f ? 1 : 0), 8, 3, b);
-  rect(ctx, 9, by - 8 - (run && f ? 1 : 0), 4, 4, b);
-  px(ctx, 13, by - 6, b);
-  px(ctx, 9, by - 9, b);
-  px(ctx, 11, by - 7, '#f4ead5');
-  hline(ctx, 9, 11, by - 4 - (run && f ? 1 : 0), band);
-  px(ctx, 8, by - 3, band);
-  const sp = run ? 2 : 1;
-  vline(ctx, 3 - f * sp, by - 2, by, b); vline(ctx, 4 + f * sp, by - 2, by, h);
-  vline(ctx, 8 + f * sp, by - 2, by, b); vline(ctx, 9 - f * sp, by - 2, by, h);
-  line(ctx, 2, by - 5, 0, by - 7 - f, b);
-  if (run) px(ctx, 13, by - 5, tongue);
+  const rows = DOG_ROWS[pose] || DOG_ROWS.sit;
+  rows.forEach((row, y) => { for (let x = 0; x < row.length; x++) { const c = DOG_PAL[row[x]]; if (c) px(ctx, x, y, c); } });
 }
 
 function drawParrot(ctx, pose, body, chest, wing, fluff = false) {
@@ -367,10 +354,10 @@ export function petPortraitURL(id, scale = 4) {
   if (portraitCache.has(k)) return portraitCache.get(k);
   const pose = id === 'PET_KIRMIZI' || id === 'PET_GECEYARISI' ? 'perch0' : 'sit';
   const src = petFrame(id, pose);
-  const c = makeCanvas(PET_FW * scale, PET_FH * scale);
+  const c = makeCanvas(src.width * scale, src.height * scale);
   const ctx = c.getContext('2d');
   ctx.imageSmoothingEnabled = false;
-  ctx.drawImage(src, 0, 0, PET_FW * scale, PET_FH * scale);
+  ctx.drawImage(src, 0, 0, src.width * scale, src.height * scale);
   const url = c.toDataURL ? c.toDataURL() : '';
   portraitCache.set(k, url);
   return url;

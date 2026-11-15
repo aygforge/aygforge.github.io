@@ -250,7 +250,7 @@ export class Deck2D {
       case 'watch': a.state = 'sit'; a.dir = 'up'; a.t = 99; return;
       case 'beg': a.state = 'beg'; a.t = 99; return;
       case 'eat': a.state = 'wag'; a.t = 99; this.say(a.id, 'Hav!', 1.4); return;
-      case 'sniff': a.state = 'sit'; a.t = 99; return;
+      case 'sniff': a.state = a.kind === 'dog' ? 'sniff' : 'sit'; a.t = 99; return;
       case 'grab': {
         a.carry = 'beads'; a.state = 'hold';
         const v = this.script?.victim;
@@ -310,7 +310,9 @@ export class Deck2D {
     if (a.kind === 'dog') {
       const r = Math.random();
       if (r < 0.6) { const p = randomWalkable(ship); const run = Math.random() < 0.55; if (this.goto(a, p.x, p.y, run ? 'run' : 'walk')) { a.task = run ? PET_TASK.run : PET_TASK.walk; a.sniff = !run && Math.random() < 0.5; return; } }
-      if (r < 0.85) { a.state = Math.random() < 0.5 ? 'wag' : 'sit'; a.t = rnd(1, 3); a.task = PET_TASK.wag; } else { a.state = 'sleep'; a.t = rnd(2, 5); a.task = PET_TASK.sleep; }
+      if (r < 0.72) { a.state = Math.random() < 0.5 ? 'wag' : 'sit'; a.t = rnd(1, 3); a.task = a.state === 'wag' ? PET_TASK.wag : PET_TASK.sit; }
+      else if (r < 0.86) { a.state = 'sniff'; a.t = rnd(2, 4); a.task = 'Güverteyi kokluyor'; }
+      else { a.state = 'sleep'; a.t = rnd(2, 5); a.task = PET_TASK.sleep; }
       return;
     }
     if (a.kind === 'monkey') {
@@ -411,7 +413,7 @@ export class Deck2D {
         S.tick = (s) => {
           if (!dog.path) {
             s.lap = (s.lap || 0) + 1;
-            if (s.lap === 5) { this.say('PET_ZIPIR', 'Miyav.', 1.5); cat.state = 'sit'; dog.state = 'wag'; dog.t = 2; }
+            if (s.lap === 5) { this.say('PET_ZIPIR', 'Miyav.', 1.5); cat.state = 'sit'; dog.state = 'play'; dog.t = 2.5; dog.dir = Math.abs(cat.x - dog.x) > Math.abs(cat.y - dog.y) ? (cat.x > dog.x ? 'right' : 'left') : cat.y > dog.y ? 'down' : 'up'; }
             else if (s.lap < 5) { const ang = s.lap * 1.6; const n = this.nearestWalk(cat.x + Math.cos(ang) * 14, cat.y + Math.sin(ang) * 14); this.goto(dog, n.x, n.y, 'run'); dog.task = 'Zıpır’ın etrafında koşuyor'; }
           }
         };
@@ -538,6 +540,7 @@ export class Deck2D {
       return npcSprite(a.kind === 'captain' ? 'captain' : a.npc, a.dir, state, frame);
     }
     let pose = 'idle';
+    if (a.kind === 'dog') return petSprite(a.id, a.dir, this.dogPose(a, walk, f4));
     if (a.kind === 'parrot') pose = a.state === 'fly' ? (Math.floor(a.ft * 8) % 2 ? 'fly0' : 'fly1') : a.fluff ? 'fluff' : 'perch';
     else if (walk) pose = 'walk' + f4;
     else if (a.state === 'wag') pose = Math.floor(a.ft * 8) % 2 ? 'wag1' : 'wag0';
@@ -547,6 +550,22 @@ export class Deck2D {
     else if (a.state === 'hold') pose = 'hold';
     else if (a.state === 'sit' || a.state === 'climb') pose = a.kind === 'monkey' ? 'idle' : 'sit';
     return petSprite(a.id, a.dir, pose);
+  }
+
+  /** Tarçın'ın animasyon karesi: koşu, yürüyüş, koklama, nefes alma, kuyruk sallama, dikkat, havlama, oyun */
+  dogPose(a, walk, f4) {
+    if (walk) return a.state === 'run' ? 'run' + f4 : a.sniff ? 'sniff' + (Math.floor(a.ft * 3) % 2) : 'walk' + f4;
+    switch (a.state) {
+      case 'wag': return Math.floor(a.ft * 8) % 2 ? 'wag1' : 'wag0';
+      case 'bark': return Math.floor(a.ft * 4) % 2 ? 'bark' : 'alert';
+      case 'alert': case 'react': return 'alert';
+      case 'beg': return Math.floor(a.ft * 4) % 2 ? 'beg' : 'wag1';
+      case 'sleep': return 'sleep';
+      case 'sit': return a.sniffing ? 'sniff' + (Math.floor(a.ft * 3) % 2) : 'sit';
+      case 'play': return 'play' + (Math.floor(a.ft * 6) % 2);
+      case 'sniff': return 'sniff' + (Math.floor(a.ft * 3) % 2);
+      default: return 'idle' + (Math.floor(a.ft * 1.2) % 2);
+    }
   }
 
   /** layer: 'deck' (güvertedekiler) | 'air' (uçanlar, direkte olanlar) */

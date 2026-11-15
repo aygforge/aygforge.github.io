@@ -1,6 +1,6 @@
 // TOP-DOWN karakter ve hayvan sprite'ları. Her sprite "yukarı bakan" kanonik çizimden
 // tam 90° döndürmeyle 4 yöne üretilir (pixel kayıpsız). Görünüm verideki "look" parametrelerinden gelir.
-import { makeCanvas, rect, px, disc } from '../pixel.js';
+import { makeCanvas, rect, px, disc, hline, vline } from '../pixel.js';
 import { CREW_BY_ID } from '../../data/crew.js';
 
 export const CS = 22; // kare boyutu
@@ -173,7 +173,7 @@ function drawProp(ctx, idle, f, x, y, L) {
 
 // ───────── Hayvanlar ─────────
 
-/** pose: walk0..3, idle, sit, sleep, wag0/1, bark, fly0/1, perch, hold */
+/** pose: walk0..3, idle, sit, sleep, wag0/1, bark, fly0/1, perch, hold (köpek ek: idle0/1, run0-3, alert, sniff0/1, beg, play) */
 export function petSprite(id, dir = 'down', pose = 'idle') {
   const key = `${id}|${dir}|${pose}`;
   if (cache.has(key)) return cache.get(key);
@@ -220,41 +220,132 @@ function drawCatUp(ctx, pose) {
   px(ctx, cx, cy + 6, d); px(ctx, cx + t, cy + 7, d); px(ctx, cx + t * 2, cy + 8, d); px(ctx, cx + t * 2, cy + 9, d);
 }
 
+/* TARÇIN — gerçek fotoğrafa göre: ağırlıklı siyah, alından buruna geniş beyaz şerit, kabarık beyaz göğüs,
+   beyaz patiler, yarı dik kabarık kulaklar (uçları yana açık), uzun kabarık yukarı kıvrık siyah kuyruk, MAVİ tasma.
+   Kare yukarı bakar (baş üstte); rotated() 4 yöne çevirir ve kontur ekler.
+   pozlar: idle0/1, walk0-3, run0-3, sit, sleep, wag0/1, alert, bark, sniff0/1, beg, play */
+const DOG = { B: '#1c1b22', G: '#34323d', H: '#4a4856', W: '#f4f2ec', w: '#cfccc4', blue: '#2f8ae8', blueD: '#1f5fae', tag: '#c8ccd4', nose: '#08080a', eye: '#7a4524', ear: '#9a6a6a', tongue: '#ee8a9a' };
+
+function dogHead(ctx, cx, hy, o = {}) {
+  // hy: başın merkezi. o.ears: 'semi' | 'up' | 'back' | 'flop'; o.lower: koklarken burun aşağıda; o.mouth: ağız açık
+  const D = DOG;
+  const ears = o.ears || 'semi';
+  // kulaklar (başın arkasında, önce çizilir)
+  for (const s of [-1, 1]) {
+    if (ears === 'up') { rect(ctx, cx + s * 2 - (s < 0 ? 1 : 0), hy - 5, 2, 3, D.B); px(ctx, cx + s * 2, hy - 6, D.B); px(ctx, cx + s * 2, hy - 4, D.ear); }
+    else if (ears === 'back') { rect(ctx, cx + s * 3 - (s < 0 ? 1 : 0), hy - 1, 2, 3, D.B); px(ctx, cx + s * 4, hy + 2, D.G); }
+    else if (ears === 'flop') { rect(ctx, cx + s * 3 - (s < 0 ? 1 : 0), hy - 3, 2, 3, D.B); px(ctx, cx + s * 4, hy - 1, D.B); px(ctx, cx + s * 5, hy, D.G); }
+    else { rect(ctx, cx + s * 2 - (s < 0 ? 1 : 0), hy - 4, 2, 3, D.B); px(ctx, cx + s * 4, hy - 5, D.B); px(ctx, cx + s * 3, hy - 5, D.B); px(ctx, cx + s * 2, hy - 3, D.ear); }
+  }
+  // kafa: kabarık siyah
+  disc(ctx, cx, hy, 3, D.B);
+  px(ctx, cx - 3, hy + 1, D.G); px(ctx, cx + 3, hy + 1, D.G);
+  // beyaz şerit: alnın ortasından buruna, burunda genişler
+  const m = o.lower ? 1 : 0;
+  vline(ctx, cx, hy - 2, hy + 1, D.W);
+  rect(ctx, cx - 1, hy - 4 - m, 3, 2, D.W); // namlu (burun kısmı) beyaz
+  px(ctx, cx - 1, hy - 3 - m, D.w);
+  px(ctx, cx, hy - 5 - m, D.nose); px(ctx, cx - 1, hy - 5 - m, D.nose); px(ctx, cx + 1, hy - 5 - m, D.nose);
+  // gözler (kahverengi)
+  px(ctx, cx - 2, hy - 1, D.eye); px(ctx, cx + 2, hy - 1, D.eye);
+  if (o.mouth) { px(ctx, cx, hy - 2 - m, D.tongue); px(ctx, cx + 1, hy - 2 - m, D.tongue); }
+}
+
+function dogCollar(ctx, cx, y, w = 2) {
+  // mavi tasma + gümüş künye (her pozda görünür)
+  hline(ctx, cx - w, cx + w, y, DOG.blue);
+  hline(ctx, cx - w + 1, cx + w - 1, y + 1, DOG.blueD);
+  px(ctx, cx, y + 1, DOG.tag);
+}
+
+function dogTail(ctx, x, y, mode) {
+  // uzun, kabarık, yukarı kıvrık siyah kuyruk (yukarıdan: kalçadan sırta doğru kıvrım)
+  const B = DOG.B, G = DOG.G;
+  if (mode === 'straight') { for (let i = 0; i < 6; i++) { rect(ctx, x - 1, y + i, 2, 1, i % 2 ? G : B); } px(ctx, x, y + 6, DOG.w); return; }
+  const s = mode === 'left' ? -1 : 1;
+  const pts = [[0, 0], [0, 1], [s, 2], [s * 2, 2], [s * 3, 1], [s * 3, 0], [s * 3, -1], [s * 2, -2]];
+  pts.forEach(([dx, dy], i) => { px(ctx, x + dx, y + dy, i % 3 === 1 ? G : B); px(ctx, x + dx + (dy > 0 ? 0 : s), y + dy + (dy > 0 ? 1 : 0), B); });
+  px(ctx, x + s * 2, y - 3, DOG.w); // açık renkli uç
+}
+
+function dogBody(ctx, cx, cy, len = 5) {
+  // kabarık siyah gövde + sırt parlaklığı + yanlarda tüy kabarıkları
+  const B = DOG.B, G = DOG.G, H = DOG.H;
+  for (let yy = -len; yy <= len; yy++) {
+    const w = Math.round(3.6 * Math.sqrt(1 - (yy / (len + 1)) ** 2));
+    hline(ctx, cx - w, cx + w, cy + yy, B);
+  }
+  vline(ctx, cx, cy - len + 1, cy + len - 2, G);
+  px(ctx, cx, cy - 1, H); px(ctx, cx - 1, cy + 1, G);
+  for (const [dx, dy] of [[-4, -1], [4, 0], [-4, 2], [4, 3]]) px(ctx, cx + dx, cy + dy, B);
+}
+
+function dogLeg(ctx, x, y, dir, white = true) {
+  // bacak: üstü siyah, ucu beyaz pati (dir: -1 yukarı uzanır, 1 aşağı)
+  px(ctx, x, y, DOG.B);
+  px(ctx, x, y + dir, white ? DOG.W : DOG.B);
+  if (white) px(ctx, x, y + dir * 2, DOG.w);
+}
+
 function drawDogUp(ctx, pose) {
-  const b = '#1e1c22', h = '#4a4452', band = '#e0453b', nose = '#000000';
-  const cx = 11, cy = 12;
+  const D = DOG;
+  const cx = 11, cy = 13;
   if (pose === 'sleep') {
-    disc(ctx, cx, cy + 1, 4, b);
-    disc(ctx, cx - 1, cy + 1, 2, h);
-    disc(ctx, cx + 3, cy - 2, 2, b);
-    rect(ctx, cx + 1, cy - 1, 4, 1, band);
-    for (const [dx, dy] of [[-4, 3], [-5, 2], [-5, 1]]) px(ctx, cx + dx, cy + dy, b);
+    // kıvrılmış: gövde halka, kuyruk burnunun üstüne sarılı, beyaz şerit ve mavi tasma görünür
+    disc(ctx, cx, cy, 5, D.B);
+    disc(ctx, cx + 1, cy + 1, 2, D.G);
+    disc(ctx, cx - 2, cy - 3, 3, D.B); // baş
+    vline(ctx, cx - 2, cy - 5, cy - 2, D.W); rect(ctx, cx - 3, cy - 6, 3, 1, D.W); px(ctx, cx - 2, cy - 7, D.nose);
+    px(ctx, cx - 4, cy - 4, D.B); px(ctx, cx - 5, cy - 3, D.B);
+    hline(ctx, cx - 3, cx, cy, D.blue); px(ctx, cx - 1, cy + 1, D.tag);
+    for (const [dx, dy] of [[3, -4], [4, -5], [3, -6], [1, -7], [-1, -7]]) px(ctx, cx + dx, cy + dy, D.B); // kuyruk burnu sarar
+    px(ctx, -0 + cx - 2, cy - 8 + 1, D.w);
+    rect(ctx, cx + 3, cy + 3, 2, 1, D.W); // arka pati
     return;
   }
-  const sit = pose === 'sit' || pose === 'bark' || pose === 'wag0' || pose === 'wag1' || pose === 'beg';
-  if (sit) {
-    disc(ctx, cx, cy + 2, 3, b);
-    disc(ctx, cx, cy - 3, 3, b);
-    rect(ctx, cx - 1, cy - 8, 2, 3, b); px(ctx, cx, cy - 9, nose);
-    rect(ctx, cx - 4, cy - 4, 1, 3, h); rect(ctx, cx + 3, cy - 4, 1, 3, h);
-    rect(ctx, cx - 3, cy, 6, 2, band); px(ctx, cx + 3, cy + 2, band);
-    if (pose === 'bark') { px(ctx, cx - 2, cy - 11, '#ffffff'); px(ctx, cx, cy - 12, '#ffffff'); px(ctx, cx + 2, cy - 11, '#ffffff'); }
-    const tw = pose === 'wag1' ? 1 : -1;
-    for (let i = 1; i <= 3; i++) px(ctx, cx + tw * i, cy + 4 + i, b);
+  const sitLike = ['sit', 'wag0', 'wag1', 'bark', 'beg'].includes(pose);
+  if (sitLike) {
+    // oturuş: arka kısım yuvarlak, gövde dik → beyaz göğüs önlüğü ve ön patiler öne doğru görünür
+    disc(ctx, cx, cy + 3, 4, D.B);
+    px(ctx, cx, cy + 3, D.G); px(ctx, cx - 1, cy + 4, D.G);
+    const tail = pose === 'wag0' ? 'left' : pose === 'wag1' ? 'right' : 'right';
+    dogTail(ctx, cx + (tail === 'left' ? -3 : 3), cy + 6, tail);
+    // beyaz kabarık göğüs
+    rect(ctx, cx - 2, cy - 3, 5, 4, D.W);
+    px(ctx, cx - 3, cy - 2, D.W); px(ctx, cx + 3, cy - 2, D.W); px(ctx, cx - 1, cy, D.w); px(ctx, cx + 1, cy - 1, D.w);
+    // ön patiler (beyaz), dilenme pozunda biri havada
+    dogLeg(ctx, cx - 2, cy + 1, -1); 
+    if (pose === 'beg') { px(ctx, cx + 2, cy - 2, D.W); px(ctx, cx + 3, cy - 3, D.W); } else dogLeg(ctx, cx + 2, cy + 1, -1);
+    px(ctx, cx - 2, cy - 1, D.W); px(ctx, cx + 2, cy - 1, D.W);
+    dogHead(ctx, cx, cy - 7, { ears: pose === 'bark' ? 'up' : 'semi', mouth: pose === 'bark' || pose === 'wag1' });
+    dogCollar(ctx, cx, cy - 4, 3);
+    if (pose === 'bark') { px(ctx, cx - 2, cy - 14, '#ffffff'); px(ctx, cx, cy - 15, '#ffffff'); px(ctx, cx + 2, cy - 14, '#ffffff'); }
     return;
   }
-  const f = pose.startsWith('walk') || pose.startsWith('run') ? Number(pose.slice(-1)) || 0 : 0;
-  rect(ctx, cx - 3, cy - 4, 6, 11, b);
-  rect(ctx, cx - 1, cy - 3, 2, 9, h);
-  disc(ctx, cx, cy - 6, 3, b);
-  rect(ctx, cx - 1, cy - 11, 3, 3, b);
-  px(ctx, cx, cy - 12, nose);
-  rect(ctx, cx - 4, cy - 7, 1, 3, h); rect(ctx, cx + 3, cy - 7, 1, 3, h);
-  rect(ctx, cx - 3, cy - 4, 6, 2, band); px(ctx, cx + 3, cy - 2, band);
-  const st = [0, 2, 0, -2][f];
-  rect(ctx, cx - 4, cy - 3 + st, 1, 2, b); rect(ctx, cx + 3, cy - 3 - st, 1, 2, b); rect(ctx, cx - 4, cy + 4 - st, 1, 2, b); rect(ctx, cx + 3, cy + 4 + st, 1, 2, b);
-  const t = f % 2 ? 1 : -1;
-  for (let i = 1; i <= 3; i++) px(ctx, cx + t * i, cy + 6 + i, b);
+  // ayakta / yürüyüş / koşu / koklama / dikkat / oyun
+  const run = pose.startsWith('run');
+  const sniff = pose.startsWith('sniff');
+  const f = Number(pose.slice(-1)) || 0;
+  const len = run ? 6 : 5;
+  const st = run ? [0, 3, 0, -3][f % 4] : pose.startsWith('walk') ? [0, 1, 0, -1][f % 4] : 0;
+  const bob = run && f % 2 ? 1 : 0;
+  // kuyruk: koşarken arkaya uzanır, dikkatte dik kıvrık, oyunda sallanır, normalde kıvrık
+  dogTail(ctx, cx + (run ? 0 : 2), cy + len + 1, run ? 'straight' : pose === 'play' ? (Math.floor(f) % 2 ? 'left' : 'right') : 'right');
+  // bacaklar (gövdenin altından çıkar): ön bacaklar yukarı, arka bacaklar aşağı uzanır, uçlarda beyaz pati
+  const fy = cy - len + 1, hy0 = cy + len - 2;
+  dogLeg(ctx, cx - 3, fy - st, -1); dogLeg(ctx, cx + 3, fy + st, -1);
+  dogLeg(ctx, cx - 3, hy0 + st, 1); dogLeg(ctx, cx + 3, hy0 - st, 1);
+  if (pose === 'play') { dogLeg(ctx, cx - 3, fy - 2, -1); dogLeg(ctx, cx + 3, fy - 2, -1); }
+  dogBody(ctx, cx, cy + bob, len);
+  // omuzlarda beyaz yaka tüyleri (göğsün kenarı yukarıdan görünür)
+  px(ctx, cx - 3, cy - len + 1, D.W); px(ctx, cx + 3, cy - len + 1, D.W); px(ctx, cx - 2, cy - len, D.W); px(ctx, cx + 2, cy - len, D.W);
+  // nefes alma: idle1'de göğüs yanları hafif kabarır
+  if (pose === 'idle1') { px(ctx, cx - 4, cy - 2, D.B); px(ctx, cx + 4, cy - 2, D.B); }
+  const headY = cy - len - 4 - (sniff ? 1 : 0) + (pose === 'play' ? 1 : 0);
+  const tilt = pose === 'idle1' ? 1 : sniff ? (f % 2 ? 1 : -1) : 0;
+  dogHead(ctx, cx + tilt, headY, { ears: run ? 'back' : pose === 'alert' ? 'up' : sniff ? 'flop' : 'semi', lower: sniff, mouth: run || pose === 'play' });
+  dogCollar(ctx, cx, headY + 3, 3); // tasma başın hemen arkasında, boynu sarar
+  if (sniff && f % 2) { px(ctx, cx + tilt - 2, headY - 7, 'rgba(230,230,230,0.7)'); px(ctx, cx + tilt + 2, headY - 7, 'rgba(230,230,230,0.7)'); }
 }
 
 function drawBirdUp(ctx, pose, body, chest, wing) {
