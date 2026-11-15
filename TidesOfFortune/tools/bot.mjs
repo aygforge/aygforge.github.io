@@ -5,7 +5,7 @@ import { TRADE_GOODS } from '../src/data/goods.js';
 
 const ITEM_PREF = ['ITEM_LIGHT_SAIL', 'ITEM_CANNON', 'ITEM_REPAIR_KIT', 'ITEM_SEXTANT', 'ITEM_ROPES', 'ITEM_HIDDEN_SAFE', 'ITEM_MERCHANT_SEAL', 'ITEM_AMULET', 'ITEM_QUALITY_SEAL', 'ITEM_SEA_CHART', 'ITEM_FLARE', 'ITEM_BLACK_FLAG', 'ITEM_FISH_NET'];
 
-export function createBot(core, { rngSeed = 1, careful = 1, smart = false } = {}) {
+export function createBot(core, { rngSeed = 1, careful = 1, smart = false, endless = 0, contracts = false } = {}) {
   let s = rngSeed >>> 0 || 1;
   const rand = () => ((s = (Math.imul(s, 1664525) + 1013904223) >>> 0) / 4294967296);
   const stats = { cats: {}, events: 0, upgrades: 0, deathRegion: null };
@@ -58,10 +58,15 @@ export function createBot(core, { rngSeed = 1, careful = 1, smart = false } = {}
       const p = Trade.lotSellPrice(G, lot);
       if (p > lot.cost || lot.spoiled || harbor.final) core.sellLot(lot.id, lot.qty);
     }
-    if (harbor.final) {
-      core.completeRun();
-      return;
+    const e = run.x1?.endless;
+    if (harbor.final && !e?.on) {
+      // Sonsuz Deniz testi: Büyük Liman'da devam et
+      if (endless > 0) { const r = core.enterEndless(); if (!r.ok) throw new Error('enterEndless: ' + r.reason); }
+      else { core.completeRun(); return; }
     }
+    if (e?.on && e.extra >= endless) { core.endlessExit(); return; }
+    // Sözleşmeler (test botu): teklifleri sırayla kabul etmeyi dener
+    if (contracts && visit.contracts) visit.contracts.forEach((c, i) => { if (!c.taken) core.acceptContract(i); });
     // Başlangıç itemleri
     while (visit.starterPicks > 0) {
       const avail = visit.items.filter((i) => !visit.itemsBought.includes(i));
