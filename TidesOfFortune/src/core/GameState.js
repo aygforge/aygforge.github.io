@@ -2,9 +2,10 @@
 import { BALANCE, SAVE_VERSION } from '../config/balance.js';
 import { SHIP_BY_LEVEL } from '../data/ships.js';
 import { UPGRADE_BY_ID } from '../data/upgrades.js';
+import { initRunX1, initMetaX1 } from '../systems/X1System.js';
 
 export function createMeta() {
-  return {
+  const m = {
     v: SAVE_VERSION,
     xpAvailable: 0,
     xpTotalEarned: 0,
@@ -35,6 +36,8 @@ export function createMeta() {
     },
     seenRunIds: [],
   };
+  initMetaX1(m);
+  return m;
 }
 
 export function createSettings() {
@@ -69,7 +72,7 @@ export function startBonuses(meta) {
 export function createRun(meta, seedStr, route) {
   const b = startBonuses(meta);
   const ship = SHIP_BY_LEVEL[BALANCE.start.shipLevel];
-  return {
+  const run = {
     v: SAVE_VERSION,
     id: `${seedStr}-${Date.now().toString(36)}`,
     seed: seedStr,
@@ -107,4 +110,6 @@ export function createRun(meta, seedStr, route) {
     result: null,
     xpTransferred: false,
   };
+  initRunX1(run);
+  return run;
 }

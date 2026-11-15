@@ -1,5 +1,18 @@
 // Başarımlar. ACH_OLD_FRIENDS GDD'de tanımlıdır; diğerleri HTML5 sürümünde eklendi (KARAR).
 export const ACHIEVEMENTS = [
+  // ── Yaşayan Denizler & Sonsuz Deniz (X1) ──
+  { id: 'ACH_X1_RETURNED', name: 'İade Edildi', desc: 'Yanlış Teslimat sandığını sahibine geri ver.' },
+  { id: 'ACH_X1_NIGHTMARE', name: 'Korsanların Korkulu Rüyası', desc: "Kızıl Kaptan'ı savaşta yen." },
+  { id: 'ACH_X1_OLD_DEBTS', name: 'Eski Hesaplar', desc: "Kızıl Kaptan'la barış yap." },
+  { id: 'ACH_X1_TRUTH', name: 'Gerçeğin Peşinde', desc: 'Lonca yolsuzluğunu ortaya çıkar.' },
+  { id: 'ACH_X1_LIGHT', name: 'Karanlığa Işık', desc: 'Deniz fenerini yeniden yak.' },
+  { id: 'ACH_X1_LAST_NAIL', name: 'Son Çivi', desc: "Groot'un eski gemisini tamamla." },
+  { id: 'ACH_X1_SILENT_FRIEND', name: 'Sessiz Dostum', desc: "Zıpır'ın uyarısına güvenerek tehlikeden kurtul." },
+  { id: 'ACH_X1_STORY_HUNTER', name: 'Hikâye Avcısı', desc: 'Yaşayan Denizler paketindeki 25 bağımsız eventin en az 15\'ini keşfet.' },
+  { id: 'ACH_X1_BEYOND', name: 'Ufkun Ötesinde', desc: "Sonsuz Deniz'de 4 ek limana ulaş." },
+  { id: 'ACH_X1_KNOWN', name: 'Denizler Beni Tanır', desc: "Sonsuz Deniz'de 8 ek limana ulaş." },
+  { id: 'ACH_X1_NORETURN', name: 'Geri Dönmeyen Kaptan', desc: "Sonsuz Deniz'de 16 ek limana ulaş." },
+  { id: 'ACH_X1_LEGEND', name: 'Sonsuz Ufuk Efsanesi', desc: "Sonsuz Deniz'de 24 ek limana ulaş." },
   { id: 'ACH_OLD_FRIENDS', name: 'Eski Dostlar', desc: 'Zıpır ve Tarçın, ikisi de gemide. Bazı şeyler ayrılmaz.', secret: true },
   { id: 'ACH_FIRST_VOYAGE', name: 'İlk Yolculuk', desc: 'İlk limanından ayrılıp bir sonraki limana ulaş.' },
   { id: 'ACH_GRAND_HARBOR', name: 'Büyük Liman', desc: "Bir run'ı Büyük Liman'da tamamla." },

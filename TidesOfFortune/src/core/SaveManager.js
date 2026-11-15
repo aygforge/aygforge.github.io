@@ -1,6 +1,7 @@
 // Kayıt sistemi: kalıcı veri + aktif run + ayarlar. Sürüm numaralı, yedekli, dışa/içe aktarılabilir.
 import { SAVE_VERSION } from '../config/balance.js';
 import { createMeta, createSettings } from './GameState.js';
+import { initRunX1, initMetaX1 } from '../systems/X1System.js';
 
 const KEYS = {
   meta: 'tof.meta',
@@ -32,6 +33,7 @@ export function browserStorage() {
 function migrateMeta(m) {
   const base = createMeta();
   const out = { ...base, ...m, codex: { ...base.codex, ...(m.codex || {}) }, stats: { ...base.stats, ...(m.stats || {}) } };
+  initMetaX1(out); // v5: genişleme alanları varsayılanlarla
   out.v = SAVE_VERSION;
   return out;
 }
@@ -46,6 +48,8 @@ function migrateRun(r) {
   r.pendingRoute ||= [];
   r.pendingArrival ||= [];
   r.pendingStatus ||= [];
+  initRunX1(r); // v5: fraksiyon/sözleşme/Sonsuz Deniz alanları (eski pirateRep taşınır)
+  r.v = SAVE_VERSION;
   return r;
 }
 

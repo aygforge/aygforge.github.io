@@ -4,6 +4,8 @@ import { UPGRADES, UPGRADE_BY_ID } from '../data/upgrades.js';
 import { ACHIEVEMENT_BY_ID } from '../data/achievements.js';
 import { HARBOR_BY_ID, HARBOR_TYPES } from '../data/harbors.js';
 import { hasUpgrade } from '../core/GameState.js';
+import { endlessScore } from './X1System.js';
+import { EVENT_BY_ID } from '../data/events.js';
 
 /** Run XP'si ekler (çarpanlarla). Negatif değer XP'yi azaltır (en az 0). */
 export function addXp(G, amount, source = 'other', { atGrandHarbor = false } = {}) {
@@ -59,6 +61,13 @@ export function upgradeVisible(meta, u) {
   return true;
 }
 
+/** Deniz Efsaneleri dalı açma koşulları (Codex'te 5 gizem eventi; Avcı için ayrıca bir gizemli zincir) */
+export function legendStatus(meta) {
+  const mysteries = Object.keys(meta.codex.events || {}).filter((id) => EVENT_BY_ID[id]?.cat === 'mystery').length;
+  const chains = Object.keys(meta.x1?.mysteryChains || {}).length;
+  return { mysteries, chains };
+}
+
 export function canBuyUpgrade(meta, id) {
   const u = UPGRADE_BY_ID[id];
   if (!u) return { ok: false, reason: 'Bilinmeyen upgrade.' };
@@ -66,6 +75,9 @@ export function canBuyUpgrade(meta, id) {
   if (!upgradeVisible(meta, u)) return { ok: false, reason: 'Gizli dal kilitli.' };
   if (u.needsSolara && !meta.solaraHired) return { ok: false, reason: 'Solara en az bir kez işe alınmış olmalı.' };
   if (u.req && !meta.upgrades.includes(u.req)) return { ok: false, reason: `Önkoşul: ${UPGRADE_BY_ID[u.req].name}` };
+  if (u.needMysteries && legendStatus(meta).mysteries < u.needMysteries) return { ok: false, reason: `Codex'te ${u.needMysteries} farklı gizem eventi keşfetmelisin (${legendStatus(meta).mysteries}/${u.needMysteries}).` };
+  if (u.needMysteryChain && legendStatus(meta).chains < 1) return { ok: false, reason: 'En az bir gizemli hikâye zincirini tamamlamalısın.' };
+  if (meta.activeEndless) return { ok: false, reason: 'Sonsuz Deniz seferi sürerken yeni yükseltme alınamaz; sefer bitince al.' };
   if (meta.xpAvailable < u.cost) return { ok: false, reason: `Yetersiz XP (${u.cost} gerekli).` };
   return { ok: true };
 }
@@ -86,7 +98,22 @@ export function finalizeRun(G, result) {
   if (run.xpTransferred) return;
   run.ended = true;
   run.result = result;
-  if (result === 'complete') {
+  const e = run.x1?.endless;
+  const m0 = G.meta;
+  if (e && e.on) {
+    // Sonsuz Deniz bitişi: Büyük Liman başarısı zaten bir kez verildi; tekrar verilmez, run istatistiği bir kez eklenir.
+    const safe = result === 'endless_safe';
+    e.score = endlessScore(run, safe);
+    const rec = m0.x1.records;
+    rec.bestScore = Math.max(rec.bestScore, e.score);
+    rec.longestHarbors = Math.max(rec.longestHarbors, run.stats.harborsReached);
+    rec.mostContracts = Math.max(rec.mostContracts, run.x1.contractsDone);
+    rec.bestProfit = Math.max(rec.bestProfit, Math.round(run.stats.profit || 0));
+    rec.mostChains = Math.max(rec.mostChains, run.stats.chainsCompleted || 0);
+    if (safe) rec.endlessSafe += 1;
+    else rec.endlessSunk += 1;
+    if (result === 'sunk' || result === 'endless_sunk') unlockAchievement(G, 'ACH_SUNK');
+  } else if (result === 'complete') {
     addXp(G, BALANCE.xp.runComplete, 'complete');
     unlockAchievement(G, 'ACH_GRAND_HARBOR');
   } else if (result === 'sunk') {
@@ -97,7 +124,8 @@ export function finalizeRun(G, result) {
   m.xpTotalEarned += run.xp.total;
   m.stats.runs += 1;
   if (result === 'complete') m.stats.completed += 1;
-  else if (result === 'sunk') m.stats.sunk += 1;
+  else if (result === 'sunk' || result === 'endless_sunk') m.stats.sunk += 1;
+  m.activeEndless = false;
   m.stats.bestHarbors = Math.max(m.stats.bestHarbors, run.stats.harborsReached);
   m.stats.totalGoldEarned += run.stats.goldEarned;
   m.stats.totalEvents += run.stats.eventsResolved;

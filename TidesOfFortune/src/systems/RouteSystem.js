@@ -7,6 +7,7 @@ import { HARBORS, HARBOR_BY_ID, HARBOR_TYPES, GRAND_HARBOR_ID, REGIONS } from '.
 import { GOOD_BY_ID, TRADE_GOODS, HARBOR_PRICE_MULT } from '../data/goods.js';
 import { SeededRNG } from '../core/SeededRNG.js';
 import { hasUpgrade } from '../core/GameState.js';
+import * as X1 from './X1System.js';
 
 export function harborUnlocked(meta, harbor) {
   const lock = HARBOR_TYPES[harbor.type].locked;
@@ -63,6 +64,8 @@ export function intelAccuracy(G) {
   if (run.crew.includes('CREW_HAMID') || run.crew.includes('CREW_MEILIN')) trade = Math.max(trade, 85);
   if (run.pets.includes('PET_KIRMIZI')) trade = Math.max(trade, 80);
   if (run.pets.includes('PET_GECEYARISI')) type = Math.max(type, 85);
+  if (hasUpgrade(G.meta, 'UPG_X1_MARKET_INTEL')) trade = Math.min(100, trade + 15);
+  if (run.x1?.mem?.flags?.letterTip) trade = 100;
   return { type, trade };
 }
 
@@ -87,6 +90,11 @@ const TYPE_HINTS = {
 /** Limandan ayrılırken önerilen deniz yolları (ziyaret boyunca sabit). */
 export function generateLanes(G, idx) {
   const run = G.run;
+  if (X1.endlessOn(run)) {
+    const lanes = X1.endlessLanes(G, idx, { pickHarborFrom: (rng, pool) => (pool.length ? rng.pick(pool) : null), LANE_TYPES, intelAccuracy, harborRelativeSell, harborUnlocked });
+    if (run.x1.mem.flags.letterTip) run.x1.mem.flags.letterTip = false;
+    return X1.decorateLanes(G, lanes, idx);
+  }
   const meta = G.meta;
   const total = run.totalHarbors;
   const rng = SeededRNG.derive(run.seed, 'lanes', idx);
@@ -132,7 +140,8 @@ export function generateLanes(G, idx) {
       final: finalLeg,
     });
   }
-  return lanes;
+  if (run.x1?.mem?.flags?.letterTip) run.x1.mem.flags.letterTip = false;
+  return X1.decorateLanes(G, lanes, idx);
 }
 
 /** Bir limanın bir mal için göreli satış çarpanı (söylenti üretimi için) */

@@ -26,6 +26,11 @@ export const GOODS = [
   G('GOOD_BISCUIT_CRATE', 'Bisküvi Kasası', 'special', 15, 20, 5, { note: "Kargodaysa Tarçın'ın tüm becerileri +%15" }),
   // Zincir eventlerine özel, satılamaz kargo
   G('GOOD_PIRATE_CHEST', 'Kilitli Korsan Sandığı', 'special', 0, 0, 0, { questItem: true, contraband: true, note: 'Korsanın Teklifi zinciri. Satılamaz.' }),
+  // Liman sözleşmeleri (X1): görev kargoları kapasite kullanır, normal ticarette satılamaz
+  G('GOOD_X1_SEALED_SPICE', 'Mühürlü Baharat Kasası', 'special', 0, 0, 0, { questItem: true, contract: true, note: 'Lonca sözleşmesi. Satılamaz.' }),
+  G('GOOD_X1_RELIEF', 'Yardım Sandığı', 'special', 0, 0, 0, { questItem: true, contract: true, note: 'Muhafız yardım sözleşmesi. Satılamaz.' }),
+  G('GOOD_X1_BLACK_CARGO', 'Kara Yelken Sandığı', 'special', 0, 0, 0, { questItem: true, contract: true, contraband: true, note: 'Kaçak sözleşme yükü. Denetimde el konabilir.' }),
+  G('GOOD_X1_RECORDS', 'Kayıp Kayıt Sandığı', 'special', 0, 0, 0, { questItem: true, contract: true, note: 'Lonca kurtarma sözleşmesi. Satılamaz.' }),
 ];
 
 export const TRADE_GOODS = GOODS.filter((g) => !g.questItem);

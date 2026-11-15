@@ -20,6 +20,7 @@
  *      next/nextAt, startChain, endChain, flag, spawnNextRoute, reveal, fixSpoiled, codexHarbor, codexNote,
  *      routeEvents, warnOff, fortunePenalty, trade, shop, ach, explosionRisk
  */
+import * as X1 from './X1System.js';
 import { BALANCE } from '../config/balance.js';
 import { EVENT_BY_ID, POOL_EVENTS, CHAINS } from '../data/events.js';
 import { ITEM_BY_ID, ITEMS } from '../data/items.js';
@@ -33,7 +34,7 @@ import { hullCategory, escapePenalty, changeHull, maxHull, cargoFree, itemSlots,
 import { hasCrew, hasPet, hasItem, crewSkillMult, tarcinMult, crewCandidates, addCrew, dismissCrew, crewAvailableForRun } from './CrewSystem.js';
 import { addPet, isOldFriendsPair, scheduleSecondEncounter } from './PetSystem.js';
 import { addItem, consumeItem, randomItemFor } from './ItemSystem.js';
-import { removeRandomUnits, splitSpoil, addCargo, cargoUnitsOf } from './TradeSystem.js';
+import { removeRandomUnits, splitSpoil, addCargo, cargoUnitsOf, addContractLot } from './TradeSystem.js';
 import { routeEventCount, rerouteTarget } from './RouteSystem.js';
 import { addXp, unlockAchievement } from './ProgressionSystem.js';
 
@@ -49,7 +50,9 @@ export const STATUS_NAMES = {
 // ───────────────────────── Koşullar ─────────────────────────
 
 export function chainFlags(run, ev) {
-  return (ev && ev.chain && run.chains[ev.chain]?.flags) || {};
+  const cf = (ev && ev.chain && run.chains[ev.chain]?.flags) || {};
+  const mem = run.x1?.mem?.flags;
+  return mem ? { ...mem, ...cf } : cf;
 }
 
 export function checkWhen(G, when, flags = {}) {
@@ -58,6 +61,9 @@ export function checkWhen(G, when, flags = {}) {
   if (when.all) return when.all.every((w) => checkWhen(G, w, flags));
   if (when.any) return when.any.some((w) => checkWhen(G, w, flags));
   if (when.crew && !hasCrew(G, when.crew)) return false;
+  if (when.noCrew && hasCrew(G, when.noCrew)) return false;
+  if (when.upgrade && !hasUpgrade(G.meta, when.upgrade)) return false;
+  if (when.contract && !(run.x1?.contracts || []).some((c) => c.type === when.contract)) return false;
   if (when.pet && !hasPet(G, when.pet)) return false;
   if (when.item && !hasItem(G, when.item)) return false;
   if (when.flag && !flags[when.flag]) return false;
@@ -93,6 +99,7 @@ export function categoryWeights(G, region, dest, { fortunePenalty = 0 } = {}) {
   // Seçilen deniz yolunun tehlikesi (rework)
   if (G.run.laneDanger) w.danger += Math.max(0, G.run.laneDanger - 2) * BALANCE.lanes.dangerWeightPerLevel;
   // Aziz Mehmed: askerî liman ve ticaret şehrine giden rotalarda olumsuz event çıkmaz.
+  X1.adjustWeights(G, w); // Sonsuz Deniz: Deniz Koşulu
   if (hasCrew(G, 'CREW_MEHMED') && dest && (dest.type === 'military' || dest.type === 'trade')) {
     w.danger = 0;
     w.disaster = 0;
@@ -109,6 +116,8 @@ function routeCtx(G, toIdx) {
 
 function eventEligible(G, ev, ctx, exclude) {
   if (ev.pool === false) return false;
+  if (ev.minCrew && G.run.crew.length < ev.minCrew) return false;
+  if (ev.minCargo && G.run.cargo.reduce((s, l) => s + (l.contract ? 0 : l.qty), 0) < ev.minCargo) return false;
   if (ev.regions && !ev.regions.includes(ctx.region)) return false;
   if (ev.chain && G.run.chains[ev.chain]) return false;
   if (!condOk(G, ev.cond, ctx)) return false;
@@ -125,17 +134,18 @@ function pickEvent(G, rng, cat, ctx, exclude) {
   const ev = rng.weighted(cands, (e) => {
     let w = e.weight ?? 10;
     if (e.weightBoost && ctx.dest?.type === e.weightBoost.destType) w *= e.weightBoost.mult;
-    return w;
+    if (e.memBoost && G.run.x1?.mem?.flags?.[e.memBoost.flag]) w *= e.memBoost.mult;
+    return w * X1.eventWeightMult(G, e);
   });
   return ev ? { id: ev.id, src: 'normal' } : null;
 }
 
 function pickChainStart(G, rng, ctx, exclude) {
   const cands = Object.values(CHAINS).filter(
-    (c) => c.pool && !G.run.chains[c.id] && c.regions.includes(ctx.region) && condOk(G, c.cond, ctx) && !exclude.has(c.start),
+    (c) => c.pool && !G.run.chains[c.id] && c.regions.includes(ctx.region) && condOk(G, c.cond, ctx) && !exclude.has(c.start) && X1.chainStartAllowed(G, c, G.run.idx + 1),
   );
   if (!cands.length) return null;
-  const c = rng.pick(cands);
+  const c = rng.weighted(cands, (q) => (q.memBoost && G.run.x1?.mem?.flags?.[q.memBoost] ? 3 : 1));
   G.run.chains[c.id] = { status: 'queued', flags: {}, step: 0 };
   return { id: c.start, src: 'chain', chain: c.id };
 }
@@ -186,6 +196,19 @@ export function buildVoyage(G) {
       sp.stage = 'secondQueued';
     } else sp.stage = 'cancelled';
   }
+  // X1: sözleşme karşılaşması / hikâye yankısı normal bir slotun yerini alır (olay yoğunluğu artmaz)
+  const replaceSlot = (entry) => {
+    const ix = queue.findIndex((q, i) => q.src === 'normal' && i > 0);
+    if (ix >= 0) queue[ix] = entry;
+    else if (queue.length) queue.splice(queue.length, 0, entry);
+    else queue.push(entry);
+  };
+  const ce = X1.contractVoyageEntry(G);
+  if (ce) replaceSlot(ce);
+  else {
+    const echo = pickEcho(G, rng);
+    if (echo) replaceSlot(echo);
+  }
   if (hasPet(G, 'PET_CUCE') && rng.next() < BALANCE.pets.monkeyTheftChance) {
     queue.splice(rng.int(0, queue.length), 0, { id: 'EVT_PET_MONKEY', src: 'pet' });
   }
@@ -200,6 +223,17 @@ export function buildVoyage(G) {
 }
 
 /** Ekranda gösterilecek önceden bilinen eventler (Deniz Haritası, Compass Rose, ipuçları) */
+/** Hikâye Yankısı: önceki run'larda finali görülen zincirin izleri (run başına her yankı bir kez, %20) */
+function pickEcho(G, rng) {
+  const run = G.run;
+  const shown = run.x1.echoesShown;
+  const avail = Object.keys(G.meta.x1?.finals || {}).filter((ch) => (G.meta.x1.finals[ch] || []).length && !shown.includes(ch) && EVENT_BY_ID[`EVT_X1_ECHO_${ch.replace('CH_X1_', '')}`]);
+  if (!avail.length || !rng.chance(20)) return null;
+  const ch = rng.pick(avail);
+  shown.push(ch);
+  return { id: `EVT_X1_ECHO_${ch.replace('CH_X1_', '')}`, src: 'echo' };
+}
+
 export function revealCount(G) {
   const v = G.run.voyage;
   let n = 0;
@@ -244,6 +278,8 @@ function validAtTrigger(G, ev, entry) {
   if (ev.id === 'EVT_SPECIAL_ZIPIR_ALONE' && !hasPet(G, 'PET_TARCIN')) return false;
   if (ev.id === 'EVT_SPECIAL_TARCIN_ALONE' && !hasPet(G, 'PET_ZIPIR')) return false;
   if (ev.id === 'EVT_PET_MONKEY' && !hasPet(G, 'PET_CUCE')) return false;
+  if (ev.minCrew && run.crew.length < ev.minCrew) return false;
+  if (ev.minCargo && run.cargo.reduce((s, l) => s + (l.contract ? 0 : l.qty), 0) < ev.minCargo) return false;
   if (ev.cond) {
     // Kuyruk üretildikten sonra değişebilecek koşullar (tayfa/hayvan) tetiklenirken yeniden kontrol edilir.
     const c = ev.cond;
@@ -252,6 +288,8 @@ function validAtTrigger(G, ev, entry) {
     if (c.notCrew && hasCrew(G, c.notCrew)) return false;
   }
   if (ev.chain && run.chains[ev.chain]?.status === 'done') return false;
+  if (entry?.contract && !run.x1?.contracts?.some((c) => c.id === entry.contract)) return false;
+  if (ev.needCrew && !hasCrew(G, ev.needCrew) && !ev.altClose) return false;
   return true;
 }
 
@@ -282,6 +320,7 @@ export function triggerNext(G, host, rng, ctx) {
     host.current = { id: ev.id, src: entry.src, lucky: !!entry.lucky, result: null };
     if (!run.seenEvents.includes(ev.id)) run.seenEvents.push(ev.id);
     G.meta.codex.events[ev.chain && ev.step > 1 ? CHAINS[ev.chain].start : ev.id] = true;
+    X1.checkStoryHunter(G, unlockAchievement);
     if (ev.chain) {
       const cs = (run.chains[ev.chain] ||= { status: 'active', flags: {}, step: 0 });
       cs.status = 'active';
@@ -328,6 +367,26 @@ const INJECTED = {
   },
 };
 
+// X1: itibar ve Dünya Hafızası ile açılan seçenekler
+const INJECTED_X1 = {
+  __crown: { label: 'Muhafızları çağır', icon: 'crown', tags: ['pass'], hint: 'Muhafızlar +3: run başına bir kez askerî yardım',
+    win: { text: `İşaret fişeğin göğe yükseldi. Ufuktan bir kraliyet savaş gemisi çıktı; korsanlar yelkenlerini çevirip kaçtı.`, fx: { x1: { once: 'crownHelp' } } } },
+  __redTalk: { label: 'Kızıl Yelken işaretini göster', icon: 'flag', chance: 65, tags: ['negotiate'], hint: 'Kızıl Yelken itibarı ile müzakere',
+    win: { text: `Korsanlar Kardeşliğin işaretini tanıdı. Selamlaşıp yollarına devam ettiler.`, fx: {} },
+    lose: { text: `İşaret onları yumuşattı ama yine de küçük bir "hediye" istediler.`, fx: { gold: -40 } } },
+  __redSafe: { label: 'Kardeşlik parolası', icon: 'flag', tags: ['pass'], hint: 'Kızıl Yelken +3: run başına bir kez güvenli müzakere',
+    win: { text: `Parolayı fısıldadın. Korsan kaptan şapkasını çıkardı: "Kardeşliğin dostu, bizim dostumuzdur."`, fx: { x1: { once: 'redSafe' } } } },
+  __redAlly: { label: "Kızıl Kaptan'ın eskortu", icon: 'flag', tags: ['pass'], hint: 'İttifak: run içinde bir kez korsan eskortu',
+    win: { text: `Kırmızı yelkenler ufukta belirdi. Kızıl Kaptan'ın gemisi yanına geldi; saldırganlar onu görünce yollarını değiştirdi.`, fx: { x1: { once: 'redAlly' } } } },
+  __guild: { label: 'Lonca özel teklifi', icon: 'compass', hint: 'Lonca +3: run başına bir kez özel ticaret',
+    win: { text: `Altın Pusula Loncası'nın mührünü gören tüccar sana yalnızca loncanın en güvendiklerine yaptığı teklifi sundu.`, fx: { trade: 'friendly', x1: { once: 'guildOffer' } } } },
+  __eye: { label: 'Gözün işaretini izle', icon: 'eye', tags: ['explore'], hint: 'Karanlıktaki Dev Göz bir iz bırakmıştı',
+    win: { text: `Dev gözün suya çizdiği iz, gizemin kalbine giden yolu gösterdi.`, fx: { xpExplore: 15, goldR: 40, x1: { unmem: ['eyeSeen'] } } } },
+  __zipir: { label: "Zıpır'ın sezgisi", icon: 'cat', tags: ['pass'], hint: 'Zıpır tehlikeyi önceden fark etmişti',
+    win: { text: `Zıpır güvertenin tam ortasına oturmuştu; erkenden önlem aldınız ve tehlike zararsız geçti.`, fx: { xp: 5, x1: { unmem: ['zipirWarn'] } } } },
+};
+export { INJECTED_X1 };
+
 export function getOptions(G, host) {
   const run = G.run;
   const cur = host.current;
@@ -345,6 +404,18 @@ export function getOptions(G, host) {
   if (ev.tags?.includes('trade') && hasPet(G, 'PET_KIRMIZI')) list.push({ key: '__parrot', opt: INJECTED.__parrot, injected: true });
   if (ev.cat === 'mystery' && hasPet(G, 'PET_GECEYARISI') && !ev.chain) list.push({ key: '__midnight', opt: INJECTED.__midnight, injected: true });
   if (ev.tags?.includes('trade') && hasCrew(G, 'CREW_HAMID') && ev.cat !== 'chain') list.push({ key: '__hamid', opt: INJECTED.__hamid, injected: true });
+  // X1 enjekte seçenekler
+  const x1 = run.x1;
+  if (x1) {
+    const pirateEv = (ev.tags || []).includes('pirate') && (ev.cat === 'danger' || ev.cat === 'disaster' || ev.cat === 'chain');
+    if (pirateEv && X1.rep(run, 'crown') >= 3 && !x1.once.crownHelp) list.push({ key: '__crown', opt: INJECTED_X1.__crown, injected: true });
+    if (pirateEv && x1.mem.flags.redAlly && !x1.once.redAlly) list.push({ key: '__redAlly', opt: INJECTED_X1.__redAlly, injected: true });
+    if (pirateEv && (X1.rep(run, 'red') >= 3 || x1.mem.flags.redPeace) && !x1.once.redSafe) list.push({ key: '__redSafe', opt: INJECTED_X1.__redSafe, injected: true });
+    else if (pirateEv && X1.rep(run, 'red') >= 1) list.push({ key: '__redTalk', opt: INJECTED_X1.__redTalk, injected: true });
+    if ((ev.tags || []).includes('trade') && ev.cat === 'fortune' && X1.rep(run, 'guild') >= 3 && !x1.once.guildOffer) list.push({ key: '__guild', opt: INJECTED_X1.__guild, injected: true });
+    if (ev.cat === 'mystery' && !ev.chain && x1.mem.flags.eyeSeen) list.push({ key: '__eye', opt: INJECTED_X1.__eye, injected: true });
+    if ((ev.cat === 'danger' || ev.cat === 'disaster') && x1.mem.flags.zipirWarn && hasPet(G, 'PET_ZIPIR')) list.push({ key: '__zipir', opt: INJECTED_X1.__zipir, injected: true });
+  }
   return list.map((x) => ({ ...x, view: evalOption(G, ev, x.opt, flags, cur) }));
 }
 
@@ -429,6 +500,7 @@ export function evalOption(G, ev, o, flags = {}, cur = null) {
       breakdown.push({ label: 'Magda: Deniz Tanrısı', v: 100 - c, override: true });
       c = 100;
     }
+    X1.chanceMods(G, ev, o, add);
     chance = Math.max(0, Math.min(100, Math.round(c)));
   }
   return {
@@ -458,6 +530,7 @@ function resolveAuto(G, host, ev, auto, rng, ctx) {
   const xp = addXp(G, BALANCE.xp.eventSuccess, 'events');
   lines.push({ kind: 'xp', text: `Olay çözüldü: +${xp} XP` });
   host.current.result = { auto: true, success: true, text: auto.text, lines, pending, label: 'Otomatik çözüm' };
+  X1.recordOutcome(G, ev.id, null, true, true);
   G.run.stats.eventsResolved++;
   afterChain(G, ev, auto.fx || {});
 }
@@ -512,6 +585,7 @@ export function resolveOption(G, host, key, rng, ctx) {
     }
   }
   cur.result = { key, label: opt.label, success, saved, roll, chance: o.view.chance, text: out.text, lines, pending };
+  X1.recordOutcome(G, ev.id, key, success);
   run.stats.eventsResolved++;
   afterChain(G, ev, out.fx || {});
   return { ok: true, result: cur.result };
@@ -527,6 +601,7 @@ function afterChain(G, ev, fx) {
       cs.status = 'done';
       if ((ev.step || 1) >= CHAINS[ev.chain].steps) {
         run.stats.chainsCompleted++;
+        if (['CH_GHOST', 'CH_CURSE', 'CH_X1_LIGHTKEEPER'].includes(ev.chain)) G.meta.x1.mysteryChains[ev.chain] = true;
         unlockAchievement(G, 'ACH_CHAIN_MASTER');
       }
     }
@@ -558,6 +633,7 @@ function computeDamage(G, base, ctx, raw = false) {
   const otags = opt.tags || [];
   let d = raw ? base : base * (BALANCE.regionDamageMult[ctx.region] || 1);
   const notes = [];
+  d = X1.damageMods(G, d, ev, raw, notes); // Deniz Derinliği (hullRaw hariç) + Yedek Halatlar
   const nm = negMult(G, ctx);
   d *= nm.m;
   notes.push(...nm.notes);
@@ -606,8 +682,9 @@ export function applyFx(G, fx, ctx) {
       const { dmg, notes } = computeDamage(G, -v, ctx, !!fx.hullRaw);
       const r = changeHull(G, -dmg);
       lines.push({ kind: 'damage', text: `Gövde hasarı: ${r.delta} HP${notes.length ? ` (azaltan: ${notes.join(', ')})` : ''}` });
+      if (dmg > 0 && run.x1?.escort && (ev.cat === 'danger' || ev.cat === 'disaster')) { run.x1.escort.hp -= 1; lines.push({ kind: 'info', text: 'Eşlik ettiğin nakliye gemisi de hasar aldı.' }); }
     } else {
-      const r = changeHull(G, v);
+      const r = changeHull(G, v + (hasUpgrade(G.meta, 'UPG_X1_MASTER_TOOLS') ? 5 : 0));
       lines.push({ kind: 'heal', text: r.delta > 0 ? `Onarım: +${r.delta} HP` : 'Gemi zaten tam sağlamdı.' });
     }
   }
@@ -631,6 +708,7 @@ export function applyFx(G, fx, ctx) {
     goldGain *= 2;
     lines.push({ kind: 'info', text: 'Nakamura\'nın balık sezgisi: altın ×2' });
   }
+  goldGain = X1.eventGold(run, goldGain);
   if (goldGain > 0) {
     run.gold += goldGain;
     run.stats.goldEarned += goldGain;
@@ -660,7 +738,8 @@ export function applyFx(G, fx, ctx) {
     if ((etags.includes('pirate') || etags.includes('rocks')) && hasItem(G, 'ITEM_ROPES') && !(ctx.opt.tags || []).includes('surrender')) { pct = 0; notes.push('Halatlar ve Zincir kaybı engelledi'); }
     if (pct > 0 && etags.includes('pirate') && hasCrew(G, 'CREW_BARAKA')) { pct *= 0.65; notes.push('Baraka −%35'); }
     const total = run.cargo.reduce((s, l) => s + l.qty, 0);
-    const n = pct > 0 && total > 0 ? Math.max(1, Math.round((total * pct) / 100)) : 0;
+    let n = pct > 0 && total > 0 ? Math.max(1, Math.round((total * pct) / 100)) : 0;
+    if (n > 0 && X1.insuranceProtect(G, ev, ctx.opt)) { n -= 1; notes.push('Tüccar Sigortası 1 birimi korudu'); }
     const removed = removeRandomUnits(run, rng, n);
     const txt = Object.entries(removed).map(([g, q]) => `${q} ${GOOD_BY_ID[g].name}`).join(', ');
     if (txt) lines.push({ kind: 'cargo', text: `Kargo kaybı: ${txt}${notes.length ? ` (${notes.join(', ')})` : ''}` });
@@ -848,10 +927,11 @@ export function applyFx(G, fx, ctx) {
     lines.push({ kind: 'info', text: `Bu rotada şans eventi ağırlığı −%${fx.fortunePenalty}` });
   }
   if (fx.status) {
-    if (fx.status === 'pirateRep') run.pirateRep = (run.pirateRep || 0) + 1;
+    if (fx.status === 'pirateRep') X1.addRep(G, 'red', 1);
     else if (!run.pendingStatus.includes(fx.status)) run.pendingStatus.push(fx.status);
     lines.push({ kind: 'status', text: `Sonraki liman: ${STATUS_NAMES[fx.status]}` });
   }
+  if (fx.x1) X1.applyX1(G, fx.x1, ctx, lines, { addXp, unlockAchievement, addCargoLot: addContractLot, cargoFree });
   // Zincirler
   if (fx.flag && ev.chain) Object.assign((run.chains[ev.chain] ||= { status: 'active', flags: {}, step: 0 }).flags, fx.flag);
   if (fx.startChain) {

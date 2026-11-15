@@ -42,7 +42,8 @@ test('İçerik sayıları GDD ile uyumlu', () => {
   assert.ok(ITEMS.length >= 18);
   assert.equal(CREW.length, 30);
   assert.equal(PETS.length, 5);
-  assert.equal(UPGRADES.length, 20);
+  assert.equal(UPGRADES.filter((u) => !u.id.startsWith('UPG_X1_')).length, 20); // mevcut 20 korunur
+  assert.equal(UPGRADES.filter((u) => u.id.startsWith('UPG_X1_')).length, 12); // Yaşayan Denizler
   const cnt = (c, re) => ALL_EVENTS.filter((e) => re.test(e.id)).length;
   assert.equal(cnt('d', /^EVT_D_\d+$/), 18);
   assert.equal(cnt('f', /^EVT_F_\d+$/), 15);
@@ -50,7 +51,8 @@ test('İçerik sayıları GDD ile uyumlu', () => {
   assert.equal(cnt('x', /^EVT_DIS_\d+$/), 8);
   assert.equal(cnt('r', /^EVT_REPAIR_\d+$/), 3);
   assert.equal(cnt('c', /^EVT_CREW_\d+$/), 5);
-  assert.equal(Object.keys(CHAINS).length, 12);
+  assert.equal(Object.keys(CHAINS).filter((k) => !k.startsWith('CH_X1_')).length, 12); // mevcut 12 zincir korunur
+  assert.equal(Object.keys(CHAINS).filter((k) => k.startsWith('CH_X1_')).length, 4);
   // tüm zincir hedefleri ve event referansları geçerli
   for (const ev of ALL_EVENTS) for (const o of ev.options) for (const out of [o.win, o.lose, ...(o.cases || [])].flat().filter(Boolean)) {
     if (out.fx?.next) assert.ok(EVENT_BY_ID[out.fx.next], `${ev.id} → ${out.fx.next}`);

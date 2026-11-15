@@ -1,5 +1,6 @@
 // GameCore: run akışını (varış → liman → yolculuk → event → varış → ...) yöneten durum makinesi.
 // Her eylem atomiktir: doğrulanır, uygulanır, RNG durumu ile birlikte kaydedilir ve dinleyicilere bildirilir.
+import * as X1 from '../systems/X1System.js';
 import { BALANCE } from '../config/balance.js';
 import { HARBOR_BY_ID, HARBOR_TYPES } from '../data/harbors.js';
 import { EVENT_BY_ID } from '../data/events.js';
@@ -166,9 +167,10 @@ export class GameCore {
       starterPicks: idx === 0 && BALANCE.start.freeStarterItems ? BALANCE.start.starterItemCount : 0,
       prevPrices: run.prevPrices,
       tipGood: null,
-      lanes: harbor.final ? [] : Route.generateLanes(G, idx),
+      lanes: X1.isFinalStop(run, harbor) ? [] : Route.generateLanes(G, idx),
+      contracts: X1.generateContractOffers(G, idx, harbor),
     };
-    if (!harbor.final && !run.visit.lanes.length) {
+    if (!X1.isFinalStop(run, harbor) && !run.visit.lanes.length) {
       // Havuz tükendiyse (çok nadir) doğrudan Büyük Liman'a giden yol
       run.totalHarbors = idx + 2;
       run.visit.lanes = Route.generateLanes(G, idx);
@@ -274,7 +276,7 @@ export class GameCore {
       if (g) return g;
       const run = this.run;
       const harbor = HARBOR_BY_ID[run.visit.harborId];
-      if (harbor.final) return { ok: false, reason: "Büyük Liman son durak. Run'ı tamamlayabilirsin." };
+      if (X1.isFinalStop(run, harbor)) return { ok: false, reason: "Büyük Liman son durak. Run'ı tamamlayabilir ya da Sonsuz Deniz'e açılabilirsin." };
       const lane = run.visit.lanes[laneIndex];
       if (!lane) return { ok: false, reason: 'Geçersiz deniz yolu.' };
       run.route[run.idx].distance = lane.distance;
@@ -454,7 +456,7 @@ export class GameCore {
   _sink() {
     const run = this.run;
     run.voyage = null;
-    Prog.finalizeRun(this.G, 'sunk');
+    Prog.finalizeRun(this.G, X1.endlessOn(run) ? 'endless_sunk' : 'sunk');
     return { ok: true, sunk: true };
   }
 
@@ -477,9 +479,10 @@ export class GameCore {
     run.stats.harborsReached++;
     let ax = BALANCE.xp.arrival;
     if (harbor.type === 'fishing') ax *= BALANCE.xp.fishingVillageArrivalMult;
-    const gotXp = Prog.addXp(G, ax, 'arrival', { atGrandHarbor: !!harbor.final });
+    const gotXp = Prog.addXp(G, ax, 'arrival', { atGrandHarbor: !!harbor.final && !X1.endlessOn(run) });
     lines.push({ kind: 'xp', text: `Limana varış: +${gotXp} XP` });
     lines.push(...Prog.discoverHarbor(G, harbor.id));
+    lines.push(...X1.onEndlessArrival(G, harbor.id, Prog.addXp, Prog.unlockAchievement));
     if (Crew.hasItem(G, 'ITEM_ANCIENT_MAP')) {
       Items.consumeItem(G, 'ITEM_ANCIENT_MAP');
       run.buffs.rareNext = true;
@@ -489,6 +492,9 @@ export class GameCore {
     if (Ship.hullCategory(G) === 'sinking') Prog.unlockAchievement(G, 'ACH_BORDERLINE');
     const queue = run.pendingArrival.slice();
     run.pendingArrival = [];
+    const ct = X1.arrivalContracts(G, harbor);
+    lines.push(...ct.lines);
+    queue.push(...ct.queue);
     if (run.special.stage === 'pending' && run.idx === run.special.firstAt) {
       queue.push({ id: 'EVT_SPECIAL_ZIPIR_TARCIN', src: 'special' });
       run.special.stage = 'offered';
@@ -503,10 +509,53 @@ export class GameCore {
       const g = this._harborGuard();
       if (g) return g;
       const harbor = HARBOR_BY_ID[this.run.visit.harborId];
-      if (!harbor.final) return { ok: false, reason: "Run yalnızca Büyük Liman'da tamamlanabilir." };
+      if (!X1.isFinalStop(this.run, harbor)) return { ok: false, reason: "Run yalnızca Büyük Liman'da tamamlanabilir." };
       this.run.visit = null;
       Prog.finalizeRun(this.G, 'complete');
       return { ok: true };
+    });
+  }
+
+  // ───────────── Yaşayan Denizler & Sonsuz Deniz ─────────────
+
+  /** Büyük Liman'da: Sonsuz Denize Açıl (run kapanmaz, normal başarı ödülü bir kez verilir) */
+  enterEndless() {
+    return this.act('enterEndless', () => {
+      const g = this._harborGuard();
+      if (g) return g;
+      const r = X1.enterEndless(this.G, Prog.addXp, Prog.unlockAchievement, Route.generateLanes);
+      if (r.ok) this.meta.activeEndless = true;
+      void r.lines;
+      return r;
+    });
+  }
+
+  /** Sonsuz Deniz'de güvenli limanda seferi tamamla */
+  endlessExit() {
+    return this.act('endlessExit', () => {
+      const g = this._harborGuard();
+      if (g) return g;
+      if (!X1.endlessOn(this.run)) return { ok: false, reason: 'Sonsuz Deniz\'de değilsin.' };
+      this.run.visit = null;
+      Prog.finalizeRun(this.G, 'endless_safe');
+      return { ok: true };
+    });
+  }
+
+  acceptContract(i) {
+    return this.act('acceptContract', () => this._harborGuard() || X1.acceptContract(this.G, i, Ship.cargoFree, Trade.addContractLot));
+  }
+
+  /** Acil Durum Dolabı: run başına bir kez +15 hull (yükseltme) */
+  useEmergencyLocker() {
+    return this.act('useEmergencyLocker', () => {
+      const run = this.run;
+      if (!run || run.ended) return { ok: false, reason: 'Aktif run yok.' };
+      if (!this.meta.upgrades.includes('UPG_X1_EMERGENCY_LOCKER')) return { ok: false, reason: 'Acil Durum Dolabı yükseltmesi yok.' };
+      if (run.x1.once.locker) return { ok: false, reason: 'Acil Durum Dolabı bu run\'da kullanıldı.' };
+      run.x1.once.locker = true;
+      const r = Ship.changeHull(this.G, 15);
+      return { ok: true, healed: r.delta };
     });
   }
 

@@ -1,5 +1,6 @@
 // Ticaret: fiyat hesabı, pazar üretimi, alış/satış, bozulma, kaçak mallar.
 // GDD: Satış fiyatı = baz satış × liman tipi çarpanı × (1 + tayfa ve upgrade satış bonusları) × bozulma çarpanı.
+import * as X1 from './X1System.js';
 import { BALANCE } from '../config/balance.js';
 import { GOOD_BY_ID, TRADE_GOODS, HARBOR_PRICE_MULT, HARBOR_MARKET_BIAS } from '../data/goods.js';
 import { HARBOR_BY_ID } from '../data/harbors.js';
@@ -75,7 +76,8 @@ export function sellPrice(G, harborId, goodId, { spoiled = false, statuses = nul
   const st = statuses ?? statusList(G);
   if (st.includes('fine')) p *= BALANCE.trade.fineSellMult;
   if (st.includes('boom')) p *= 1.15;
-  if ((G.run.pirateRep || 0) > 0 && harbor.type === 'pirate') p *= 1.1; // Korsan Yuvası'nda itibar
+  if (harbor.type === 'pirate') p *= X1.pirateHarborMult(G); // Korsan Yuvası'nda Kızıl Yelken itibarı (tek kaynak)
+  p *= X1.sellMult(G, harbor, good);
   if (spoiled) p *= BALANCE.trade.spoiledSellFactor;
   return Math.max(1, Math.round(p));
 }
@@ -220,6 +222,13 @@ export function removeRandomUnits(run, rng, n, filter = () => true) {
     if (lot.qty <= 0) run.cargo.splice(run.cargo.indexOf(lot), 1);
   }
   return removed;
+}
+
+/** Sözleşme görev kargosu (1 birim, sözleşme kimliğiyle işaretli) */
+export function addContractLot(G, goodId, contractId) {
+  const run = G.run;
+  run.cargo.push({ id: run.lotSeq++, good: goodId, qty: 1, cost: 0, spoiled: false, boughtVisit: 'contract', contract: contractId });
+  G.meta.codex.goods[goodId] = true;
 }
 
 export function addCargo(G, goodId, qty, cost = null) {

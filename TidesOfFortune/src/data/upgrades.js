@@ -4,6 +4,8 @@ export const UPGRADE_BRANCHES = {
   trade: { name: 'Ticaret', icon: 'coin' },
   gear: { name: 'Teçhizat', icon: 'cannon' },
   explore: { name: 'Keşif', icon: 'compass' },
+  crew: { name: 'Mürettebat', icon: 'crew' },
+  legend: { name: 'Deniz Efsaneleri', icon: 'eye' },
   solara: { name: "Solara'nın Mirası", icon: 'sun', hidden: true },
 };
 
@@ -28,6 +30,19 @@ export const UPGRADES = [
   U('UPG_ICE_ROUTES', 'explore', 'Buzul Rotaları', 'Buzul Limanı tipinin kilidi açılır', 350, 'UPG_MYSTERY_MAPS'),
   U('UPG_HARBOR_SIGHT', 'explore', 'Liman Öngörüsü', 'Haritada liman tipleri baştan görünür', 250),
   U('UPG_EXPLORER', 'explore', 'Kaşif Ruhu', 'Keşif eventlerinde XP +%50', 300),
+  // ── Yaşayan Denizler (X1): 12 yükseltme, toplam 4.730 XP ──
+  U('UPG_X1_RUDDER', 'sailing', 'Güçlendirilmiş Dümen', 'Manevra seçimlerine (seyir, kaçış, riskli geçiş) +10 yüzde puan başarı', 280, 'UPG_STORM_SENSE'),
+  U('UPG_X1_ROPES', 'sailing', 'Yedek Halatlar', "Her run'da ilk direk/arma hasarı %50 azalır; tayfalar yedek halatlarla müdahale eder", 420, 'UPG_X1_RUDDER'),
+  U('UPG_X1_MARKET_INTEL', 'trade', 'Pazar İstihbaratı', 'Rota seçiminde bir mal grubunun talep ipucu; söylenti doğruluğu +15 yüzde puan', 300, 'UPG_GLOBAL_NET'),
+  U('UPG_X1_CARGO_INSURANCE', 'trade', 'Tüccar Sigortası', "Her run'da ilk düşmanca kargo hırsızlığında 1 birim mal korunur", 480, 'UPG_X1_MARKET_INTEL'),
+  U('UPG_X1_EMERGENCY_LOCKER', 'gear', 'Acil Durum Dolabı', "Her run'da bir kez +15 hull acil onarım hakkı (item slotu kullanmaz)", 330),
+  U('UPG_X1_MASTER_TOOLS', 'gear', 'Usta Tamirci Aletleri', 'Event onarımlarına +5 hull; şansa bağlı tayfa onarımlarına +10 yüzde puan (liman tamirinde geçmez)', 520, 'UPG_X1_EMERGENCY_LOCKER'),
+  U('UPG_X1_LIGHTHOUSE_NETWORK', 'explore', 'Deniz Feneri Ağı', 'Rota seçiminde her deniz yolu için bir tehlike ipucu (hedef liman açılmaz)', 260, 'UPG_HARBOR_SIGHT'),
+  U('UPG_X1_DEEP_RESEARCH', 'explore', 'Derin Deniz Araştırmaları', "Derin deniz eventlerinde özel araştırma seçenekleri; run'daki ilk derin keşfe +10 yüzde puan", 500, 'UPG_MYSTERY_MAPS'),
+  U('UPG_X1_RECRUITER', 'crew', 'Usta İşe Alımcı', "Her run'da altınla işe alınan ilk tayfaya %15 indirim", 220),
+  U('UPG_X1_CREW_JOURNALS', 'crew', 'Mürettebat Günlükleri', "Kişisel tayfa hikâyelerinde özel seçenekler; her run'da tamamlanan ilk kişisel hikâyeye +10 XP", 420, 'UPG_X1_RECRUITER'),
+  U('UPG_X1_LEGEND_WHISPER', 'legend', 'Efsanelerin Fısıltısı', "Run'daki ilk uygun gizemli karşılaşmadan önce atmosferik ipucu", 350, null, { needMysteries: 5 }),
+  U('UPG_X1_LEGEND_HUNTER', 'legend', 'Efsane Avcısı', 'Nadir gizem eventlerinin gizem kategorisi içindeki ağırlığı %25 artar (tüm havuz değil)', 650, 'UPG_X1_LEGEND_WHISPER', { needMysteryChain: true }),
   U('UPG_SUN_GRACE', 'solara', 'Güneşin Lütfu', 'Run boyunca XP kazanımı +%10', 400, null, { needsSolara: true }),
   U('UPG_ETERNAL_LIGHT', 'solara', 'Ebedi Işık', 'Felaket eventlerinde sonuç bir kategori yumuşar', 600, 'UPG_SUN_GRACE', { needsSolara: true }),
 ];

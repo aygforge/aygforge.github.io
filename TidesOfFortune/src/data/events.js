@@ -1,5 +1,9 @@
 import { DANGER_EVENTS, FORTUNE_EVENTS, MYSTERY_EVENTS, DISASTER_EVENTS, REPAIR_EVENTS } from './events_core.js';
-import { CHAIN_EVENTS, CHAINS } from './eventChains.js';
+import { CHAIN_EVENTS, CHAINS as BASE_CHAINS } from './eventChains.js';
+import { X1_EVENTS } from './events_x1.js';
+import { X1_CHAINS, X1_CHAIN_EVENTS } from './chains_x1.js';
+
+const CHAINS = { ...BASE_CHAINS, ...X1_CHAINS };
 import { SPECIAL_EVENTS, CREW_EVENTS, PET_EVENTS } from './events_special.js';
 
 export { CHAINS };
@@ -18,6 +22,7 @@ export const EVENT_CATEGORIES = {
 export const ALL_EVENTS = [
   ...DANGER_EVENTS, ...FORTUNE_EVENTS, ...MYSTERY_EVENTS, ...DISASTER_EVENTS, ...REPAIR_EVENTS,
   ...CHAIN_EVENTS, ...SPECIAL_EVENTS, ...CREW_EVENTS, ...PET_EVENTS,
+  ...X1_EVENTS, ...X1_CHAIN_EVENTS,
 ];
 
 export const EVENT_BY_ID = Object.fromEntries(ALL_EVENTS.map((e) => [e.id, e]));
