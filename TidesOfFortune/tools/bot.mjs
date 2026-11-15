@@ -2,6 +2,7 @@
 import { GameCore, Ship, Trade, Items, Repair, Events, HARBOR_BY_ID, GOOD_BY_ID, ITEM_BY_ID, CREW_BY_ID, EVENT_BY_ID } from '../src/core/GameCore.js';
 import { memoryStorage } from '../src/core/SaveManager.js';
 import { TRADE_GOODS } from '../src/data/goods.js';
+import { BALANCE } from '../src/config/balance.js';
 
 const ITEM_PREF = ['ITEM_LIGHT_SAIL', 'ITEM_CANNON', 'ITEM_REPAIR_KIT', 'ITEM_SEXTANT', 'ITEM_ROPES', 'ITEM_HIDDEN_SAFE', 'ITEM_MERCHANT_SEAL', 'ITEM_AMULET', 'ITEM_QUALITY_SEAL', 'ITEM_SEA_CHART', 'ITEM_FLARE', 'ITEM_BLACK_FLAG', 'ITEM_FISH_NET'];
 
@@ -56,7 +57,8 @@ export function createBot(core, { rngSeed = 1, careful = 1, smart = false, endle
       if (GOOD_BY_ID[lot.good].questItem) continue;
       if (!Trade.canSellHere(G, lot).ok) continue;
       const p = Trade.lotSellPrice(G, lot);
-      if (p > lot.cost || lot.spoiled || harbor.final) core.sellLot(lot.id, lot.qty);
+      lot._age = (lot._age || 0) + 1;
+      if (p > lot.cost || lot.spoiled || harbor.final || lot._age >= 3) core.sellLot(lot.id, lot.qty);
     }
     const e = run.x1?.endless;
     if (harbor.final && !e?.on) {
@@ -108,7 +110,8 @@ export function createBot(core, { rngSeed = 1, careful = 1, smart = false, endle
     const cands = visit.market.map((m) => {
       const bp = Trade.buyPrice(G, visit.harborId, m.good);
       const nextId = null;
-      const est = smart && nextId ? Trade.sellPrice(G, nextId, m.good, { statuses: [] }) : GOOD_BY_ID[m.good].sell * 1.05;
+      // makul oyuncu: malın ortalama satış değerini bilir, yalnızca belirgin ucuzsa alır
+      const est = smart && nextId ? Trade.sellPrice(G, nextId, m.good, { statuses: [] }) : GOOD_BY_ID[m.good].sell * BALANCE.trade.valueFactor * (1 - BALANCE.trade.spread / 2) * 1.12;
       return { m, bp, margin: est - bp };
     }).filter((c) => c.margin > 5).sort((a, b) => b.margin / b.bp - a.margin / a.bp);
     for (const c of cands) {

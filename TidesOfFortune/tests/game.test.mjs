@@ -13,6 +13,8 @@ import { TRADE_GOODS } from '../src/data/goods.js';
 import { UPGRADES } from '../src/data/upgrades.js';
 import { ALL_EVENTS, EVENT_BY_ID, CHAINS } from '../src/data/events.js';
 import { createBot } from '../tools/bot.mjs';
+import { SeededRNG } from '../src/core/SeededRNG.js';
+import { BALANCE } from '../src/config/balance.js';
 
 const newCore = (storage = memoryStorage()) => new GameCore(storage);
 function toHarbor(core) {
@@ -41,7 +43,7 @@ test('İçerik sayıları GDD ile uyumlu', () => {
   assert.equal(TRADE_GOODS.length, 15);
   assert.ok(ITEMS.length >= 18);
   assert.equal(CREW.length, 30);
-  assert.equal(PETS.length, 5);
+  assert.equal(PETS.length, 9);
   assert.equal(UPGRADES.filter((u) => !u.id.startsWith('UPG_X1_')).length, 20); // mevcut 20 korunur
   assert.equal(UPGRADES.filter((u) => u.id.startsWith('UPG_X1_')).length, 12); // Yaşayan Denizler
   const cnt = (c, re) => ALL_EVENTS.filter((e) => re.test(e.id)).length;
@@ -267,14 +269,25 @@ test('13. Zincir eventleri yarıda kaybolmaz (rota/varış ertelemesi)', () => {
 });
 
 test('14–15. Zıpır & Tarçın özel karşılaşmaları ve Eski Dostlar', () => {
-  // ilk karşılaşma ilk 3 limandan birinde garanti
-  for (let i = 0; i < 40; i++) {
+  // ilk karşılaşma (olursa) ilk 3 limandan birinde; artık garanti değil (~%40)
+  let met = 0;
+  for (let i = 0; i < 300; i++) {
     const core = newCore();
     core.newRun('ZT' + i);
     assert.ok(core.run.special.firstAt >= 0 && core.run.special.firstAt <= 2);
+    if (core.run.special.stage !== 'none') met++;
   }
+  assert.ok(met > 300 * 0.3 && met < 300 * 0.5, `karşılaşma oranı ${met}/300`);
+  // hem ilk karşılaşmanın hem ikincisinin olduğu bir seed seç
+  let seed = null;
+  for (let i = 0; i < 500 && !seed; i++) {
+    const c = newCore();
+    c.newRun('ZIPIR' + i);
+    if (c.run.special.stage !== 'none' && SeededRNG.derive('ZIPIR' + i, 'special2').chance(BALANCE.special.secondChance)) seed = 'ZIPIR' + i;
+  }
+  assert.ok(seed);
   const core = newCore();
-  core.newRun('ZIPIR0');
+  core.newRun(seed);
   const fa = core.run.special.firstAt;
   // ilk özel eventi bul ve Tarçın'ı al
   let guard = 0;

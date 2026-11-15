@@ -4,6 +4,7 @@ import { createBot, newCore } from './bot.mjs';
 import { HARBOR_BY_ID } from '../src/data/harbors.js';
 import { UPGRADES } from '../src/data/upgrades.js';
 import { voyageDuration } from '../src/systems/RouteSystem.js';
+import { BALANCE } from '../src/config/balance.js';
 
 const N = Number(process.argv[2] || 300);
 const withMeta = process.argv.includes('--meta');
@@ -22,7 +23,7 @@ for (let i = 0; i < N; i++) {
     agg.harbors += run.stats.harborsReached;
     // süre tahmini: gerçek seyir süreleri + event başına ~30 sn (ölçülen sahne ortalaması ~19 sn + karar/okuma ~10 sn) + liman başına ~75 sn
     let sail = 0;
-    run.route.forEach((r, i) => { if (r.distance && i < run.route.length - 1) sail += voyageDuration(run.seed, i, r.distance); });
+    run.route.forEach((r, i) => { if (r.distance && i < run.route.length - 1) sail += voyageDuration(run.seed, i, r.distance) / BALANCE.voyage.sailRate; });
     agg.sail += sail / 60;
     agg.minutes += (sail + stats.events * 30 + run.stats.harborsReached * 75) / 60;
     agg.routeLen += run.totalHarbors;

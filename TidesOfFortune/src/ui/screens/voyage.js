@@ -52,10 +52,6 @@ export function renderVoyage(ui) {
       itemBar(ui, { compact: true }),
       core.meta.upgrades.includes('UPG_X1_EMERGENCY_LOCKER') && !run.x1?.once?.locker && run.ship.hull < Ship.maxHull(G) ? h('button.btn.sm.lockerBtn', { onTap: () => { const r = core.useEmergencyLocker(); if (r.ok) { ui.audio.play('repair'); ui.toast(`Acil Durum Dolabı: +${r.healed} hull`, 'good'); } else ui.toast(r.reason, 'warn'); } }, icon('kit'), ' +15') : null,
       h('div.progressWrap', {}, h('div.progress', {}, fill, h('div.pEnd', {}, icon('anchor'))), h('div.plabels', {}, h('span', {}, HARBOR_BY_ID[run.route[v.fromIdx].harborId].name), h('span', {}, 'Bilinmeyen liman'))),
-      h(`button.btn.speedBtn${ui.fast ? '.primary' : ''}${sailing ? '' : '.locked'}`, { onTap: () => {
-        if (!sailing) return ui.toast('Hızlandırma yalnızca sakin seyirde kullanılabilir.', 'warn');
-        ui.fast = !ui.fast; d.setFastForward(ui.fast); ui.render();
-      } }, icon('sail'), ui.fast ? ' ×3' : ' ×1'),
     ) : null,
   );
 }

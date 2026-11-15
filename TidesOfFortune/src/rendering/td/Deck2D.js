@@ -69,7 +69,7 @@ export class Deck2D {
     for (const id of want) {
       let a = this.actors.get(id);
       if (!a) {
-        const kind = id === 'CAPTAIN' ? 'captain' : id.startsWith('CREW_') ? 'crew' : id === 'PET_ZIPIR' ? 'cat' : id === 'PET_TARCIN' ? 'dog' : id === 'PET_CUCE' ? 'monkey' : 'parrot';
+        const kind = id === 'CAPTAIN' ? 'captain' : id.startsWith('CREW_') ? 'crew' : id === 'PET_ZIPIR' ? 'cat' : id === 'PET_TARCIN' ? 'dog' : id === 'PET_CUCE' ? 'monkey' : id === 'PET_KAPLUMBAGA' ? 'turtle' : id === 'PET_GELINCIK' ? 'ferret' : id === 'PET_AHTAPOT' ? 'octopus' : 'parrot';
         const p = id === 'CAPTAIN' ? { ...(ship.stations.find((s) => s.type === 'helm') || ship.stations[0]) } : this.spawnAt ? { ...this.spawnAt } : randomWalkable(ship);
         if (id !== 'CAPTAIN' && this.spawnAt) { this.spawnAt = null; }
         a = { id, kind, x: p.x, y: p.y, dir: 'up', state: 'idle', t: rnd(0.5, 2.5), ft: Math.random() * 3, path: null, busy: false, task: 'idle', idle: kind === 'crew' ? CREW_BY_ID[id].idle : null, z: 0, perch: null, carry: null };
@@ -108,6 +108,9 @@ export class Deck2D {
       case 'cat': return 7;
       case 'dog': return a.state === 'run' ? 46 : 18;
       case 'monkey': return a.state === 'run' ? 40 : 20;
+      case 'turtle': return 5;
+      case 'ferret': return a.state === 'run' ? 50 : 24;
+      case 'octopus': return 6;
       case 'npc': return a.state === 'run' ? 30 : 20;
       default: return a.state === 'run' ? 32 : 15;
     }
@@ -134,6 +137,9 @@ export class Deck2D {
         if (a.kind === 'dog') { const s = this.ship.stations.find((x) => x.type === 'bow'); this.goto(a, s.x, s.y, 'run', 'bark'); continue; }
         if (a.kind === 'cat') { const s = kind === 'disaster' ? this.near('CREW_GROOT') || this.ship.stations.find((x) => x.type === 'center') : this.ship.stations.find((x) => x.type === 'center'); this.goto(a, s.x, s.y, 'walk', kind === 'disaster' ? 'sleep' : 'sitStill'); continue; }
         if (a.kind === 'monkey') { const s = this.ship.stations.find((x) => x.type === 'mast'); this.goto(a, s.x, s.y, 'run', 'climb'); continue; }
+        if (a.kind === 'turtle') { a.state = 'sleep'; a.t = 8; a.task = 'Kabuğuna çekildi'; continue; }
+        if (a.kind === 'ferret') { const s = this.ship.stations.find((x) => x.type === 'cargo') || this.ship.stations[0]; this.goto(a, s.x, s.y, 'run'); a.task = 'Sandıkların arasına saklandı'; continue; }
+        if (a.kind === 'octopus') { a.state = 'bark'; a.t = 3; a.task = 'Mürekkep püskürttü!'; continue; }
         const combat = a.kind === 'crew' && ['combat'].includes(CREW_BY_ID[a.id].cls);
         if (combat || a.kind === 'captain') {
           const s = this.stationFor(a, side < 0 ? ['railL', 'cannon'] : ['railR', 'cannon']) || this.stationFor(a, ['center']);
@@ -277,7 +283,7 @@ export class Deck2D {
       a.state = a.job ? 'work' : 'idle';
       if (a.job) { a.dir = a.job.face || a.dir; a.task = a.jobTask; }
       a.t = a.job ? rnd(5, 10) : rnd(1.5, 4);
-    } else if (a.kind === 'monkey' && a.inspect) { a.state = 'hold'; a.t = rnd(2, 4); a.inspect = false; a.task = PET_TASK.inspect; }
+    } else if ((a.kind === 'monkey' || a.kind === 'ferret') && a.inspect) { a.state = 'hold'; a.t = rnd(2, 4); a.inspect = false; a.task = PET_TASK.inspect; }
     else { a.state = 'sit'; a.t = rnd(2, 5); }
   }
 
@@ -323,6 +329,25 @@ export class Deck2D {
       const p = randomWalkable(ship);
       if (this.goto(a, p.x, p.y, Math.random() < 0.4 ? 'run' : 'walk')) { a.task = PET_TASK.walk; return; }
       a.state = 'sit'; a.t = 2;
+      return;
+    }
+    if (a.kind === 'turtle') {
+      const r = Math.random();
+      if (r < 0.25) { const s = this.stationFor(a, ['railL', 'railR', 'bow', 'center']) || randomWalkable(ship); if (this.goto(a, s.x, s.y, 'walk')) { a.task = 'Ağır ağır yürüyor'; return; } }
+      if (r < 0.55) { a.state = 'sit'; a.t = rnd(6, 12); a.task = 'Güneşleniyor'; } else { a.state = 'sleep'; a.t = rnd(10, 20); a.task = 'Kabuğuna çekildi'; }
+      return;
+    }
+    if (a.kind === 'ferret') {
+      const r = Math.random();
+      if (r < 0.4) { const s = this.stationFor(a, ['cargo']); if (s && this.goto(a, s.x, s.y, 'run')) { a.inspect = true; a.task = 'Sandıkların arasına daldı'; return; } }
+      if (r < 0.8) { const p = randomWalkable(ship); if (this.goto(a, p.x, p.y, Math.random() < 0.6 ? 'run' : 'walk')) { a.task = 'Zıplaya zıplaya koşturuyor'; return; } }
+      a.state = 'sleep'; a.t = rnd(3, 7); a.task = 'Kıvrılıp uyudu';
+      return;
+    }
+    if (a.kind === 'octopus') {
+      const r = Math.random();
+      if (r < 0.2) { const s = this.stationFor(a, ['galley', 'cargo']) || randomWalkable(ship); if (this.goto(a, s.x, s.y, 'walk')) { a.task = 'Fıçısından süzülüp geziyor'; return; } }
+      if (r < 0.6) { a.state = 'wag'; a.t = rnd(2, 5); a.task = 'Kollarını sallıyor'; } else { a.state = 'sit'; a.t = rnd(4, 9); a.task = 'Fıçısında dinleniyor'; }
       return;
     }
     if (a.kind === 'npc') { a.state = 'idle'; a.t = 1; }
@@ -571,7 +596,7 @@ export class Deck2D {
   /** layer: 'deck' (güvertedekiler) | 'air' (uçanlar, direkte olanlar) */
   draw(ctx, layer = 'deck') {
     if (!this.ship) return;
-    const list = [...this.actors.values(), ...this.temp].filter((a) => (layer === 'air') === (a.kind === 'parrot' || !!a.z));
+    const list = [...this.actors.values(), ...this.temp].filter((a) => !a.hidden && (layer === 'air') === (a.kind === 'parrot' || !!a.z));
     list.sort((p, q) => p.y - q.y);
     for (const a of list) {
       const img = this.frameOf(a);

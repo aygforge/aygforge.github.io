@@ -92,3 +92,11 @@ Yorum: Tehlike ilerleyen bölgelerle artıyor (batışların çoğu Bölge 5'te)
 - `tests/browser.test.cjs`: 16/16. Yeni arayüz ekranları (Büyük Liman seçimi, Sözleşmeler, Sonsuz Deniz göstergeleri, Denizci Günlüğü, rekorlar, 6 dallı yükseltme ekranı) tarayıcıda açıldı, JS hatası yok.
 - `tools/simulate.mjs 150`: tamamlanma %91,3, run ~43 dk, ~31 event/run — tempo genişleme öncesiyle aynı.
 - Doğrulanmayanlar: gerçek cihazda performans; her sahnenin her başarı/başarısızlık dalının tek tek göz ile incelenmesi (otomatik tarama hepsini oynattı ama yalnızca 6 sahne kare kare incelendi); Sonsuz Deniz'in 20+ ek limana kadar elle oynanması (yalnızca simülasyonla doğrulandı).
+
+## Denge güncellemesi (item dayanıklılığı, hayvanlar, ticaret, Sonsuz Deniz)
+- `npm test`: 32/32 (Zıpır/Tarçın karşılaşma oranı testi, Uçurum kademesi / gemi tehdidi / onarım çarpanı testleri eklendi).
+- Ticaret (aynı bölge ± 1 içindeki tüm liman çiftleri × tüm mallar): eski modelde rastgele alım-satımın %96'sı kârlı, ortanca getiri +%77; yeni modelde %40 kârlı, ortanca −%7, en iyi %10 +%40, en iyi %2 +%83.
+- `tools/simulate.mjs 150` (basit bot): tamamlanma %91 → %78, run başına en yüksek altın 595 → ~350, seyir süresi 18 → ~6 dk (×3 varsayılan hız).
+- Sonsuz Deniz (Büyük Liman'a sağ ulaşan 27 bot, 60 ek limana kadar): önce ortanca 43 ek liman ve 12/27 bot 60'ı batmadan bitiriyordu; şimdi ortanca 24, üst çeyrek 37, 60'ı bitiren 2/27.
+- Hayvan güverte olayları: 12 olay × tüm seçenekler tarayıcıda oynatıldı (43 senaryo, 0 hata); 6 sahne kare kare incelendi.
+- Eskort: korsan baskını, yanaşan tüccar ve limanda "Konvoy Limanda" sahneleri ekran görüntüsüyle doğrulandı (çakışma yok).

@@ -22,7 +22,7 @@
  */
 import * as X1 from './X1System.js';
 import { BALANCE } from '../config/balance.js';
-import { EVENT_BY_ID, POOL_EVENTS, CHAINS } from '../data/events.js';
+import { EVENT_BY_ID, POOL_EVENTS, CHAINS, PET_DECK_EVENTS } from '../data/events.js';
 import { ITEM_BY_ID, ITEMS } from '../data/items.js';
 import { CREW_BY_ID } from '../data/crew.js';
 import { PET_BY_ID } from '../data/pets.js';
@@ -33,7 +33,7 @@ import { hasUpgrade } from '../core/GameState.js';
 import { hullCategory, escapePenalty, changeHull, maxHull, cargoFree, itemSlots, crewSlots } from './ShipSystem.js';
 import { hasCrew, hasPet, hasItem, crewSkillMult, tarcinMult, crewCandidates, addCrew, dismissCrew, crewAvailableForRun } from './CrewSystem.js';
 import { addPet, isOldFriendsPair, scheduleSecondEncounter } from './PetSystem.js';
-import { addItem, consumeItem, randomItemFor } from './ItemSystem.js';
+import { addItem, consumeItem, randomItemFor, wearItem } from './ItemSystem.js';
 import { removeRandomUnits, splitSpoil, addCargo, cargoUnitsOf, addContractLot } from './TradeSystem.js';
 import { routeEventCount, rerouteTarget } from './RouteSystem.js';
 import { addXp, unlockAchievement } from './ProgressionSystem.js';
@@ -209,6 +209,9 @@ export function buildVoyage(G) {
     const echo = pickEcho(G, rng);
     if (echo) replaceSlot(echo);
   }
+  // Hayvanlara özel gemi içi olay: gemideki hayvan(lar)a uygun, bu run'da görülmemiş olanlardan biri
+  const pdeck = pickPetDeckEvent(G, rng);
+  if (pdeck) replaceSlot(pdeck);
   if (hasPet(G, 'PET_CUCE') && rng.next() < BALANCE.pets.monkeyTheftChance) {
     queue.splice(rng.int(0, queue.length), 0, { id: 'EVT_PET_MONKEY', src: 'pet' });
   }
@@ -220,6 +223,22 @@ export function buildVoyage(G) {
   };
   if (run.voyage.showShadow) run.special.shadowShown = true;
   return run.voyage;
+}
+
+function petDeckOk(G, ev) {
+  return (!ev.cond?.pet || hasPet(G, ev.cond.pet)) && (!ev.cond2?.pet || hasPet(G, ev.cond2.pet));
+}
+function pickPetDeckEvent(G, rng) {
+  const run = G.run;
+  if (!run.pets.length || !rng.chance(BALANCE.pets.deckEventChance)) return null;
+  run.petDeckSeen = run.petDeckSeen || [];
+  let pool = PET_DECK_EVENTS.filter((e) => petDeckOk(G, e) && !run.petDeckSeen.includes(e.id));
+  if (!pool.length) return null;
+  // Eski Dostlar ikilisi gemideyse onların ortak sahnesi öncelikli
+  const duo = pool.find((e) => e.cond2);
+  const ev = duo && rng.chance(60) ? duo : rng.pick(pool);
+  run.petDeckSeen.push(ev.id);
+  return { id: ev.id, src: 'pet' };
 }
 
 /** Ekranda gösterilecek önceden bilinen eventler (Deniz Haritası, Compass Rose, ipuçları) */
@@ -239,6 +258,7 @@ export function revealCount(G) {
   let n = 0;
   if (hasItem(G, 'ITEM_SEA_CHART')) n = Math.max(n, 2);
   if (hasCrew(G, 'CREW_COMPASS')) n = Math.max(n, 2);
+  if (hasPet(G, 'PET_MARTI')) n = Math.max(n, 1);
   if (v) n = Math.max(n, v.revealBonus || 0);
   return n;
 }
@@ -285,6 +305,7 @@ function validAtTrigger(G, ev, entry) {
     const c = ev.cond;
     if (c.crew && !hasCrew(G, c.crew)) return false;
     if (c.pet && !hasPet(G, c.pet)) return false;
+    if (ev.cond2?.pet && !hasPet(G, ev.cond2.pet)) return false;
     if (c.notCrew && hasCrew(G, c.notCrew)) return false;
   }
   if (ev.chain && run.chains[ev.chain]?.status === 'done') return false;
@@ -476,6 +497,11 @@ export function evalOption(G, ev, o, flags = {}, cur = null) {
       if ((etags.includes('storm') || etags.includes('wave')) && hasUpgrade(G.meta, 'UPG_STORM_SENSE')) add('Fırtına Sezgisi', 10);
     }
     if (tags.includes('navigate') && !explicitIds.has('ITEM_SEXTANT') && hasItem(G, 'ITEM_SEXTANT')) add('Sekstant', 30);
+    // Yeni hayvanlar
+    if (tags.includes('escape') && hasPet(G, 'PET_AHTAPOT')) add('Mürekkep', 10);
+    if ((etags.includes('wreck') || etags.includes('deep') || tags.includes('dive') || /\bdal/i.test(o.label || '')) && hasPet(G, 'PET_AHTAPOT')) add('Mürekkep (dalış)', 15);
+    if (etags.includes('fish') && hasPet(G, 'PET_MARTI')) add('Kaşif', 15);
+    if (ev.cat === 'mystery' && hasPet(G, 'PET_KAPLUMBAGA')) add('Bilge', 10);
     if (hasCrew(G, 'CREW_BJORN') && reqCrew !== 'CREW_BJORN' && !explicitIds.has('CREW_BJORN')) {
       if (pirate && (tags.includes('combat') || tags.includes('escape'))) add('Bjorn', 25 * cm);
       else if (tags.includes('combat')) add('Bjorn', 15 * cm);
@@ -553,6 +579,10 @@ export function resolveOption(G, host, key, rng, ctx) {
   const lines = [];
   if (o.view.cost) lines.push({ kind: 'gold', text: `Ödenen: −${o.view.cost} altın` });
   if (opt.consume && consumeItem(G, opt.consume)) lines.push({ kind: 'item', text: `${ITEM_BY_ID[opt.consume].name} kullanıldı ve tükendi.` });
+  // Dayanıklılık: bu seçimde etkisi kullanılan itemler (şans bonusu veren / seçeneği açan) yıpranır
+  const wear = new Set();
+  for (const b of o.view.breakdown || []) { const it = ITEMS.find((x) => x.name === b.label); if (it && b.v > 0) wear.add(it.id); }
+  for (const id of o.view.items || []) if (id !== opt.consume && hasItem(G, id)) wear.add(id);
 
   let success = true;
   let roll = null;
@@ -563,6 +593,7 @@ export function resolveOption(G, host, key, rng, ctx) {
     if (!success && opt.lose && hasItem(G, 'ITEM_AMULET') && rng.chance(25)) {
       success = true;
       saved = true;
+      wear.add('ITEM_AMULET');
     }
   }
   const flags = chainFlags(run, ev);
@@ -571,7 +602,9 @@ export function resolveOption(G, host, key, rng, ctx) {
   else out = pickVariant(G, rng, opt.lose);
   const pending = [];
   if (saved) lines.push({ kind: 'info', text: 'Deniz Tanrısı Muskası parladı: kötü sonuç iyiye döndü!' });
-  lines.push(...applyFx(G, out.fx || {}, { ev, opt, success, region: ctx.region, host, rng, pending }));
+  const fxCtx = { ev, opt, success, region: ctx.region, host, rng, pending, wear };
+  lines.push(...applyFx(G, out.fx || {}, fxCtx));
+  for (const id of wear) wearItem(G, id, lines);
   const isPass = (opt.tags || []).includes('pass');
   if (success && !isPass && ev.cat !== 'special') {
     const xp = addXp(G, BALANCE.xp.eventSuccess, 'events');
@@ -641,9 +674,10 @@ function computeDamage(G, base, ctx, raw = false) {
   if (otags.includes('combat') && hasCrew(G, 'CREW_OKSANA')) { d *= 0.8; notes.push('Oksana'); }
   if ((etags.includes('fire') || etags.includes('leak')) && hasCrew(G, 'CREW_GROOT')) { d *= 0.6; notes.push('Groot'); }
   if (etags.includes('leak') && hasCrew(G, 'CREW_DONNA')) { d *= 0.5; notes.push('Donna'); }
-  if ((etags.includes('fire') || etags.includes('volcano')) && hasItem(G, 'ITEM_HEAT_SHIELD')) { d *= 0.75; notes.push('Isı Kalkanı'); }
-  if (etags.includes('ice') && hasItem(G, 'ITEM_ICEBREAKER')) { d *= 0.5; notes.push('Buz Kıran Pruva'); }
+  if ((etags.includes('fire') || etags.includes('volcano')) && hasItem(G, 'ITEM_HEAT_SHIELD')) { d *= 0.75; notes.push('Isı Kalkanı'); ctx.wear?.add('ITEM_HEAT_SHIELD'); }
+  if (etags.includes('ice') && hasItem(G, 'ITEM_ICEBREAKER')) { d *= 0.5; notes.push('Buz Kıran Pruva'); ctx.wear?.add('ITEM_ICEBREAKER'); }
   if ((etags.includes('storm') || etags.includes('wave')) && hasCrew(G, 'CREW_SURGE')) { d *= 0.5; notes.push('Surge'); }
+  if ((etags.includes('storm') || etags.includes('wave')) && hasPet(G, 'PET_KAPLUMBAGA')) { d *= 0.85; notes.push('Bilge'); }
   for (const dm of ev.dmgMods || []) if (dm.crew && hasCrew(G, dm.crew)) { d *= dm.mult; notes.push(dm.note || CREW_BY_ID[dm.crew].name); }
   if (etags.includes('attack') && hasCrew(G, 'CREW_KENJI')) { d = Math.max(0, d - 15); notes.push('Kenji (−15)'); }
   return { dmg: Math.max(0, Math.round(d)), notes };
@@ -672,6 +706,8 @@ export function applyFx(G, fx, ctx) {
   const run = G.run;
   const { ev, rng, pending } = ctx;
   const lines = [];
+  const ownWear = !ctx.wear;
+  if (ownWear) ctx.wear = new Set();
   const region = ctx.region || 1;
   const etags = ev.tags || [];
   const nm = negMult(G, ctx);
@@ -716,7 +752,7 @@ export function applyFx(G, fx, ctx) {
     lines.push({ kind: 'gold', text: `+${goldGain} altın` });
   } else if (goldGain < 0) {
     let loss = -goldGain * nm.m;
-    if (hasItem(G, 'ITEM_HIDDEN_SAFE')) loss *= 0.5;
+    if (hasItem(G, 'ITEM_HIDDEN_SAFE')) { loss *= 0.5; ctx.wear.add('ITEM_HIDDEN_SAFE'); }
     loss = Math.min(run.gold, Math.round(loss));
     run.gold -= loss;
     lines.push({ kind: 'gold', text: `−${loss} altın${hasItem(G, 'ITEM_HIDDEN_SAFE') ? ' (Gizli Kasa kaybı yarıya indirdi)' : ''}` });
@@ -736,7 +772,7 @@ export function applyFx(G, fx, ctx) {
   if (fx.cargoLoss) {
     let pct = fx.cargoLoss * nm.m;
     const notes = [];
-    if ((etags.includes('pirate') || etags.includes('rocks')) && hasItem(G, 'ITEM_ROPES') && !(ctx.opt.tags || []).includes('surrender')) { pct = 0; notes.push('Halatlar ve Zincir kaybı engelledi'); }
+    if ((etags.includes('pirate') || etags.includes('rocks')) && hasItem(G, 'ITEM_ROPES') && !(ctx.opt.tags || []).includes('surrender') && pct > 0 && run.cargo.length) { pct = 0; notes.push('Halatlar ve Zincir kaybı engelledi'); ctx.wear.add('ITEM_ROPES'); }
     if (pct > 0 && etags.includes('pirate') && hasCrew(G, 'CREW_BARAKA')) { pct *= 0.65; notes.push('Baraka −%35'); }
     const total = run.cargo.reduce((s, l) => s + l.qty, 0);
     let n = pct > 0 && total > 0 ? Math.max(1, Math.round((total * pct) / 100)) : 0;
@@ -748,7 +784,7 @@ export function applyFx(G, fx, ctx) {
     else if (total === 0) lines.push({ kind: 'info', text: 'Ambar boştu; kaybedecek kargo yoktu.' });
   }
   if (fx.cargoSpoil) {
-    if (hasItem(G, 'ITEM_QUALITY_SEAL')) lines.push({ kind: 'info', text: 'Kalite Mühürü mallarını bozulmaktan korudu.' });
+    if (hasItem(G, 'ITEM_QUALITY_SEAL')) { lines.push({ kind: 'info', text: 'Kalite Mühürü mallarını bozulmaktan korudu.' }); ctx.wear.add('ITEM_QUALITY_SEAL'); }
     else {
       let n = fx.cargoSpoil * nm.m;
       if (hasCrew(G, 'CREW_DONNA')) n *= 0.6;
@@ -765,7 +801,7 @@ export function applyFx(G, fx, ctx) {
   }
   if (fx.confiscate) {
     let p = 1;
-    if (hasItem(G, 'ITEM_SMUGGLER_HOLD')) p *= 0.5;
+    if (hasItem(G, 'ITEM_SMUGGLER_HOLD') && run.cargo.some((l) => GOOD_BY_ID[l.good].contraband)) { p *= 0.5; ctx.wear.add('ITEM_SMUGGLER_HOLD'); }
     if (hasCrew(G, 'CREW_REZA')) p *= 0.5;
     const removed = {};
     for (const lot of run.cargo.slice()) {
@@ -975,6 +1011,7 @@ export function applyFx(G, fx, ctx) {
   // Mini ticaret ve seyyar tüccar
   if (fx.trade) pending.push(makeTradeOffer(G, rng, fx.trade, region));
   if (fx.shop) pending.push(makeShopOffer(G, rng, region));
+  if (ownWear) { for (const id of ctx.wear) wearItem(G, id, lines); ctx.wear = null; }
   return lines;
 }
 

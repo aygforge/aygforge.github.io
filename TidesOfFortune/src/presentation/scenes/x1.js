@@ -506,13 +506,13 @@ export const X1_SCENES = {
   CT_X1_ESCORT_DONE: def((ev, side) => ({
     side: 1,
     weather: () => [],
-    setup: (c) => [spawn({ id: 'enc', kind: 'npc', npc: 'officer', x: pierX(c), y: -40, layer: 1, dir: 'left' }), shipEntity(c, 'conv', 'merchant', 1, { x: c.beam / 2 + 70, y: 160, rot: 0, scale: 0.75, sails: 'furled', crewNpc: ['sailor', 'soldier'] })],
-    dockApproach: (c) => [cam({ x: pierX(c), y: 20 }, 0.3), move('conv', { y: 100 }, 2), par(S('set', { id: 'conv', props: { agitated: true } }), sfx('flag'))],
+    setup: (c) => [spawn({ id: 'enc', kind: 'npc', npc: 'officer', x: pierX(c), y: -40, layer: 1, dir: 'left' }), shipEntity(c, 'conv', 'merchant', 1, { x: -(c.beam / 2 + 60), y: 260, rot: 0, scale: 0.75, sails: 'full', crewNpc: ['sailor', 'soldier'] })],
+    dockApproach: (c) => [cam({ x: 0, y: 20 }, 0.3), move('conv', { y: 40 }, 2.4), par(S('set', { id: 'conv', props: { sails: 'furled' } }), sfx('flag'))],
     intro: () => [say('enc', 'Konvoy limana güvenle girdi. Muhafızlar adına teşekkürler.', 2.6, 0.6)],
     opts: [() => [S('coins', { from: 'enc', to: 'ship', n: 10 }), par(sfx('cheer'), S('flag', { up: true, color: '#24426b' })), T(1), S('flag', { up: false })]],
     skip: () => ['gold'],
     from: () => 'enc',
-    exit: () => [],
+    exit: () => [par(S('set', { id: 'conv', props: { sails: 'full' } }), move('conv', { y: 420 }, 3)), remove('conv')],
   })),
 };
 

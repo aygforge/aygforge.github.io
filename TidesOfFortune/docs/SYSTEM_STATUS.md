@@ -70,7 +70,7 @@ Durum: ✅ tamamlandı · 🟡 kısmen / sadeleştirilmiş · ❌ yok
 | Top-down gemi, 5 ayrı seviye (gövde, güverte, direk, dümen, kargo alanı, yürünebilir alan, hasar görseli) | ✅ | Yarı saydam yelkenler, salınım/rota düzeltme |
 | Yaşayan güverte: tüm tayfa + hayvan, 4 yön yürüme, kişiliğe göre işler, hayvan davranışları, dokununca bilgi paneli | ✅ | Kişilik senaryoları (Groot tamir, Pita yemek, Zıpır güneşlenme, Tarçın iz sürme…) |
 | Güvertede görünen kargo (al/sat/kaybet anında değişir) | ✅ | |
-| Gerçek zamanlı yolculuk, ambiyans (balık, martı, uzak gemi, enkaz, gölge, sis, adacık, hava), ×3 hızlandırma | ✅ | |
+| Gerçek zamanlı yolculuk, ambiyans (balık, martı, uzak gemi, enkaz, gölge, sis, adacık, hava); seyir varsayılan olarak eski ×3 hızında | ✅ | Hız düğmesi kaldırıldı |
 | Deniz yolu seçimi, gizli hedef, ipucu doğruluğu, bölgesel talep | ✅ | |
 | EncounterDirector yaşam döngüsü, aksiyon primitifleri, kayıt güvenliği | ✅ | |
 | Korsan Baskını: Savaş / Kaç / Rüşvet / Teslim ol (yanaşma, kanca, korsanlar sandık taşır) | ✅ | |
@@ -92,6 +92,17 @@ Durum: ✅ tamamlandı · 🟡 kısmen / sadeleştirilmiş · ❌ yok
 | 12 yükseltme (2 yeni dal), 12 başarım | ✅ | |
 | Sonsuz Deniz: derinlik I–V, deniz koşulları, kilometre taşları, skor, rekorlar, kozmetikler, güvenli çıkış | ✅ | 50/100/200 ek liman simülasyonu |
 | Kayıt v4 → v5 taşıma, idempotent ödüller | ✅ | |
+
+## Denge güncellemesi
+| Özellik | Durum | Not |
+|---|---|---|
+| Item dayanıklılığı (15 item, 2–4 kullanım, kırılma, arayüzde kalan hak) | ✅ | Tüketilebilirler değişmedi |
+| Zıpır/Tarçın nadirliği (%40 ilk karşılaşma, %30 ikinci) | ✅ | |
+| 4 yeni hayvan + 12 hayvan güverte olayı (her biri özel sahne) | ✅ | |
+| Varsayılan seyir hızı ×3, hız düğmesi yok | ✅ | |
+| Eskort çakışmaları (yolda ve limanda) | ✅ | |
+| Ticaret makası, satış doygunluğu, bölgesel fiyat farkı | ✅ | |
+| Sonsuz Deniz: daha dik derinlik, Uçurum kademeleri, gemi tehdidi, pahalı onarım/yükseltme | ✅ | |
 
 ## Bilinen sınırlamalar
 - Rework sonrası simülasyon (300 run): tamamlanma %82,7, run ~43 dk (saf seyir ~18 dk, event başına ~30 sn), ~31 event/run, 1,14 yükseltme/run. Özel sahneler run'ı hedef aralığın (25–45 dk) üst ucuna taşıdı; gerekirse yaklaşma/çıkış beklemeleri kısaltılabilir.

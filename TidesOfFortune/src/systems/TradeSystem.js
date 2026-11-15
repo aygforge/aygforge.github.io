@@ -8,7 +8,8 @@ import { SeededRNG, hashString } from '../core/SeededRNG.js';
 import { hasUpgrade } from '../core/GameState.js';
 import { cargoFree, cargoUsed } from './ShipSystem.js';
 import { regionDemand } from './RouteSystem.js';
-import { hasCrew, hasItem, crewSkillMult } from './CrewSystem.js';
+import { hasCrew, hasItem, hasPet, crewSkillMult } from './CrewSystem.js';
+import { wearItem } from './ItemSystem.js';
 
 const RARE_GROUP = 'rare';
 
@@ -34,12 +35,26 @@ export function statusList(G) {
   return G.run.visit?.statuses || [];
 }
 
+/** DENGE: malın piyasa değeri (tek değer). Alış bunun üstünde, satış altında; aradaki makas limanda al-sat kârını
+ *  ve rastgele ticareti zararlı yapar. Kâr ancak ucuz limandan alıp pahalı limana taşıyınca çıkar. */
+export function marketValue(G, harbor, goodId) {
+  const good = GOOD_BY_ID[goodId];
+  return good.sell * BALANCE.trade.valueFactor * harborGoodMult(G.run.seed, harbor, goodId);
+}
+/** Bu ziyarette aynı maldan satılan birim sayısına göre doygunluk çarpanı */
+export function saturation(G, harborId, goodId, extra = 0) {
+  const v = G.run.visit;
+  if (!v || v.harborId !== harborId) return 1;
+  const n = (v.soldUnits?.[goodId] || 0) + extra;
+  return Math.max(BALANCE.trade.saturationFloor, 1 - n * BALANCE.trade.saturationPerUnit);
+}
+
 /** Alış fiyatı (birim) */
 export function buyPrice(G, harborId, goodId, statuses = null) {
   const good = GOOD_BY_ID[goodId];
   const harbor = HARBOR_BY_ID[harborId];
   const econ = BALANCE.harborEconomy[harbor.type];
-  let p = good.buy * harborGoodMult(G.run.seed, harbor, goodId) * econ.buy;
+  let p = marketValue(G, harbor, goodId) * econ.buy * (1 + BALANCE.trade.spread / 2);
   const cm = crewSkillMult(G);
   let disc = 0;
   if (hasCrew(G, 'CREW_FATIMA') && (goodId === 'GOOD_SPICE' || goodId === 'GOOD_EXOTIC_ANIMAL')) disc += 0.2 * cm;
@@ -70,7 +85,7 @@ export function sellPrice(G, harborId, goodId, { spoiled = false, statuses = nul
   if (good.questItem) return 0;
   const harbor = HARBOR_BY_ID[harborId];
   const econ = BALANCE.harborEconomy[harbor.type];
-  let p = good.sell * harborGoodMult(G.run.seed, harbor, goodId) * econ.sell;
+  let p = marketValue(G, harbor, goodId) * econ.sell * (1 - BALANCE.trade.spread / 2) * saturation(G, harborId, goodId);
   const bonus = sellBonuses(G, goodId).reduce((s, b) => s + b.v, 0);
   p *= 1 + bonus;
   const st = statuses ?? statusList(G);
@@ -153,10 +168,16 @@ export function sellLot(G, lotId, qty = 1) {
   if (lot.qty < qty) return { ok: false, reason: 'Yeterli miktar yok.' };
   const chk = canSellHere(G, lot);
   if (!chk.ok) return chk;
-  const unit = lotSellPrice(G, lot);
   const refund = lot.boughtVisit === run.visit.key && !lot.spoiled;
-  const total = unit * qty;
-  const profit = refund ? 0 : (unit - lot.cost) * qty;
+  let total = 0;
+  const v0 = run.visit;
+  v0.soldUnits = v0.soldUnits || {};
+  for (let i = 0; i < qty; i++) {
+    total += lotSellPrice(G, lot);
+    if (!refund) v0.soldUnits[lot.good] = (v0.soldUnits[lot.good] || 0) + 1; // aynı malı yığınca fiyat düşer
+  }
+  const unit = Math.round(total / qty);
+  const profit = refund ? 0 : total - lot.cost * qty;
   run.gold += total;
   lot.qty -= qty;
   if (lot.qty <= 0) run.cargo.splice(run.cargo.indexOf(lot), 1);
@@ -170,20 +191,28 @@ export function sellLot(G, lotId, qty = 1) {
     run.stats.bestSale = Math.max(run.stats.bestSale, profit);
   }
   G.meta.codex.goods[lot.good] = true;
-  return { ok: true, unit, total, profit, refund };
+  // Dayanıklılık: satış bonusu veren itemler her liman ziyaretinde bir kez yıpranır
+  const worn = [];
+  if (!refund) {
+    const v = run.visit;
+    v.wornItems = v.wornItems || [];
+    const ids = ['ITEM_MERCHANT_SEAL', ...(GOOD_BY_ID[lot.good].contraband ? ['ITEM_SMUGGLER_HOLD'] : [])];
+    for (const id of ids) if (hasItem(G, id) && !v.wornItems.includes(id)) { v.wornItems.push(id); wearItem(G, id, worn); }
+  }
+  return { ok: true, unit, total, profit, refund, worn };
 }
 
 /** Rota sonu bozulma. GDD bozulma riski × mesafe çarpanı; Donna −%40; Kalite Mühürü engeller. */
 export function rollSpoilage(G, rng, distance) {
   const run = G.run;
-  if (hasItem(G, 'ITEM_QUALITY_SEAL')) return [];
+  if (hasItem(G, 'ITEM_QUALITY_SEAL')) { if (run.cargo.some((l) => !l.spoiled && !GOOD_BY_ID[l.good].questItem)) wearItem(G, 'ITEM_QUALITY_SEAL'); return []; }
   const dm = BALANCE.trade.distanceSpoilMult[distance] ?? 1;
   const donna = hasCrew(G, 'CREW_DONNA') ? 1 - 0.4 * crewSkillMult(G) : 1;
   const spoiledReport = [];
   for (const lot of run.cargo.slice()) {
     if (lot.spoiled) continue;
     const good = GOOD_BY_ID[lot.good];
-    const chance = good.spoil * dm * donna;
+    const chance = good.spoil * dm * donna * (hasPet(G, 'PET_GELINCIK') ? 0.7 : 1);
     if (chance <= 0) continue;
     let n = 0;
     for (let i = 0; i < lot.qty; i++) if (rng.chance(chance)) n++;

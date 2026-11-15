@@ -101,6 +101,7 @@ export function scheduleSecondEncounter(G, takenPet) {
   const run = G.run;
   const rng = SeededRNG.derive(run.seed, 'special2');
   const [a, b] = BALANCE.special.secondAfterHarbors;
+  if (!rng.chance(BALANCE.special.secondChance)) { run.special.stage = 'done'; return; } // diğeri bu run'da gelmez
   const firstAt = run.special.firstAt;
   let due = firstAt + rng.int(a, b);
   due = Math.min(due, (run.totalHarbors || run.route.length) - 1);

@@ -93,6 +93,8 @@ button { font-family: inherit; }
 .islot.r-rare { border-color: #b98ae8; }
 .islot.hl { box-shadow: 0 0 0 3px var(--gold), 0 0 14px var(--gold); animation: pulse 1s infinite; }
 .islot .badge { position: absolute; right: 2px; bottom: 0; font-size: 16px; color: var(--gold); text-shadow: 1px 1px 0 #000; }
+.islot .badge.uses { color: #d8e6f0; font-variant-numeric: tabular-nums; }
+.islot .badge.uses.low { color: #ff8a6a; }
 .itembar.compact .islot { width: 58px; height: 58px; }
 @keyframes pulse { 50% { box-shadow: 0 0 0 3px #fff3b0, 0 0 22px var(--gold); } }
 

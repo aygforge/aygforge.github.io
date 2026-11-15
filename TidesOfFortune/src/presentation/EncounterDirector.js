@@ -109,8 +109,20 @@ export class EncounterDirector {
     if (!esc || w.mode !== 'sail') { w.remove('escortShip'); return; }
     if (!w.get('escortShip')) {
       const L = w.layout();
-      w.spawn({ id: 'escortShip', kind: 'ship', style: 'merchant', level: 1, x: -(L.beam / 2 + 70), y: 60, rot: 0, scale: 0.8, sails: 'full', drift: false, persist: true, crewNpc: ['sailor', 'soldier'], damage: esc.hp <= 1 ? 'damaged' : 'healthy' });
+      w.spawn({ id: 'escortShip', kind: 'ship', style: 'merchant', level: 1, ...this.escortPos(false), rot: 0, scale: 0.8, sails: 'full', drift: false, persist: true, crewNpc: ['sailor', 'soldier'], damage: esc.hp <= 1 ? 'damaged' : 'healthy' });
     }
+  }
+
+  /** Eskort gemisinin yeri: normal seyirde sol yanımızda; karşılaşma sırasında geride ve açıkta bekler */
+  escortPos(away) {
+    const L = this.world.layout();
+    return away ? { x: -(L.beam / 2 + 200), y: 250 } : { x: -(L.beam / 2 + 70), y: 60 };
+  }
+  moveEscort(away) {
+    const e = this.world.get('escortShip');
+    if (!e) return;
+    const to = this.escortPos(away);
+    e.tween = { from: { x: e.x, y: e.y }, to, t: 0, dur: 2.4 };
   }
 
   enterHarbor(type, seed, docked = true) {
@@ -118,6 +130,7 @@ export class EncounterDirector {
     const w = this.world;
     w.mode = 'harbor';
     w.clearEncounter();
+    w.remove('escortShip');
     w.coast = null;
     w.harbor = { type, offY: 0, seed };
     w.targetSpeed = 0;
@@ -192,6 +205,7 @@ export class EncounterDirector {
   }
 
   sideFor(id) {
+    if (this.run?.x1?.escort) return 1; // eskort gemisi solda: karşılaşmalar sancaktan gelir
     return hashString(id + (this.run?.seed || '')) % 2 ? 1 : -1;
   }
 
@@ -579,8 +593,8 @@ export class EncounterDirector {
     const v = this.run.voyage;
     const C = BALANCE.voyage;
     const w = this.world;
-    const mul = this.ff;
-    w.targetSpeed = SAIL_SPEED * (mul > 1 ? 2.2 : 1);
+    const mul = BALANCE.voyage.sailRate; // sakin seyir hızı (eski ×3 artık varsayılan)
+    w.targetSpeed = SAIL_SPEED * 2.2;
     v.elapsed = (v.elapsed || 0) + dt * mul;
     this.persistT += dt;
     if (this.persistT > 5) { this.persistT = 0; this.core.setVoyageElapsed(v.elapsed, true); }
@@ -618,6 +632,7 @@ export class EncounterDirector {
     this.eventId = peekId;
     this.scene = sceneFor(ev, this.sideFor(peekId));
     const c = this.ctx();
+    this.moveEscort(true);
     this.setPhase(PH.APPROACH);
     this.hooks.sfx?.(ev.cat === 'danger' || ev.cat === 'disaster' ? 'danger' : 'event');
     this.runSteps([...this.scene.setup(c, false), ...this.scene.approach(c)], () => {
@@ -717,6 +732,7 @@ export class EncounterDirector {
     this.runSteps([{ type: 'sails', state: 'full' }, { type: 'speed', v: SAIL_SPEED }, { type: 'camera' }, { type: 'wait', dur: 1.2 }], () => {
       w.entities = w.entities.filter((e) => e.persist || (e.y > 400 || e.y < -400 ? false : !e.encounter));
       this.ensureEscort();
+      this.moveEscort(false);
       this.setPhase(PH.SAIL);
     });
   }
@@ -747,6 +763,7 @@ export class EncounterDirector {
     const hb = HARBOR_BY_ID[run.route[v.toIdx].harborId];
     this.ff = 1;
     this.hooks.onFastOff?.();
+    this.moveEscort(true);
     this.setPhase(PH.DOCKING);
     this.hooks.sfx?.('dock');
     const type = hb.final ? 'final' : hb.type;

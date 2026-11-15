@@ -51,7 +51,7 @@ npx cap open android      # Android Studio'da Build > Build APK
 
 - Gemi tam yukarıdan, pruva yukarı; 5 seviyenin her biri farklı gövde, güverte, direk, dümen ve kargo alanına sahip. Yelkenler karakterlerin üstünde yarı saydam.
 - Tüm tayfa ve hayvanlar güvertede kişiliğe göre iş yapar, A* ile yürür; karaktere dokununca ad / yetenek / mevcut iş paneli açılır. Alınan, kaybedilen ve satılan mallar güvertede sandık/çuval/kereste olarak görünür.
-- Yolculuk gerçek zamanlıdır: kısa 90–150 s, orta 130–190 s, uzun 170–240 s; olaylar arasında en az 22 s seyir. Sakin seyirde ×3 hızlandırma.
+- Yolculuk gerçek zamanlıdır; sakin seyir eski ×3 hızında akar (hız düğmesi kaldırıldı): kısa yol ~30–50 s, orta ~45–65 s, uzun ~55–80 s seyir. Karşılaşma sahneleri normal hızda oynar.
 - Her limanda 2–3 deniz yolu seçilir (tehlike, mesafe, korsan, söylenti ipuçları; tayfa ve upgrade'ler doğruluğu artırır). Hedef liman seed ile belirlenir ama varana kadar gizlidir.
 - Eventler dünyada oynar: `NORMAL_SAILING → ENCOUNTER_APPROACH → ENCOUNTER_INTRO → PLAYER_DECISION → ACTION_ANIMATION → OUTCOME_ANIMATION → ENCOUNTER_EXIT → RESUME_SAILING`. Sonuç kararda bir kez uygulanıp kaydedilir; animasyon yalnızca görüntü katmanını eski değerden yeniye taşır, bu yüzden yeniden yükleme ödülü tekrarlamaz.
 - Her eventin kendine özgü sahnesi var (yanaşan gemiler, gemiye çıkan subaylar, sandalla adaya çıkış, dalışlar, aurora, batık şehir, tsunami…). Yeni sahne eklemek için `src/presentation/scenes/` altında bir `def({...})` bloğu yazmak yeterli.
@@ -66,6 +66,16 @@ npx cap open android      # Android Studio'da Build > Build APK
 - **12 yeni yükseltme** (Mürettebat ve Deniz Efsaneleri dalları), **12 yeni başarım**.
 - **Sonsuz Deniz**: Büyük Liman'da *Seferi Bitir* ya da *Sonsuz Denize Açıl*. Derinlik I–V, 4 limanlık bölümlerde deniz koşulları, kilometre taşları, skor ve rekorlar, kozmetik bayrak ve kıç süsü.
 - Kayıt sürümü 5; eski kayıtlar (`tof.meta`, `tof.run`, `tof.settings`) otomatik taşınır.
+
+## Denge güncellemesi
+
+- **Item dayanıklılığı:** pasif ve aktif itemlerin kullanım hakkı var (2–4). Item etkisini her gösterdiğinde 1 hak gider, bitince kırılır; kalan hak item simgesinde görünür.
+- **Zıpır & Tarçın:** ilk karşılaşma artık garanti değil (run'ların ~%40'ı); biri gemideyken diğeriyle de karşılaşma %30 (Eski Dostlar ≈ %12).
+- **Yeni hayvanlar:** Kaşif (martı), Bilge (deniz kaplumbağası), Fındık (gelincik), Mürekkep (küçük ahtapot). Her birinin güverte davranışı, durumsal etkisi ve portresi var.
+- **Hayvan güverte olayları:** 12 yeni gemi içi olay (Tarçın denize düşer, ambardaki kaçak, Zıpır fare avlar / gözcü sepetine çıkar, Eski Dostlar kovalamacası, papağanlar, maymun, yeni hayvanlar). Normal bir olayın yerine geçer; tempo değişmez.
+- **Ticaret:** her limanda malın tek bir piyasa değeri var; alış biraz üstünde, satış biraz altında. Aynı maldan çok satınca fiyat düşer. Rastgele alım-satımların ~%40'ı kârlı; kâr ucuz limandan alıp pahalı limana taşımakla gelir.
+- **Sonsuz Deniz:** derinlik hasarı I–V'te 1,0→1,55; V'ten sonra her 4 ek limanda Uçurum kademesi (+%18 hasar, +3 risk). 4–5. seviye gemiler daha büyük tehdit çeker. Sonsuz Deniz'de onarım ve gemi yükseltmesi daha pahalı.
+- **Eskort:** kraliyet gemisi karşılaşma sırasında geride bekler, karşılaşmalar sancaktan gelir; görev bitişinde konvoy açık suya demirler.
 
 ## Proje yapısı
 

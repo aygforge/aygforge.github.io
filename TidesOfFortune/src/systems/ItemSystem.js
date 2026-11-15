@@ -82,7 +82,9 @@ export function addItem(G, id, replaceUid = null) {
     run.items.splice(ix, 1);
   }
   run.itemSeq = (run.itemSeq || 1) + 1;
-  run.items.push({ id, uid: `${id}#${run.itemSeq}` });
+  const it = { id, uid: `${id}#${run.itemSeq}` };
+  if (ITEM_BY_ID[id].uses) it.uses = ITEM_BY_ID[id].uses;
+  run.items.push(it);
   return { ok: true };
 }
 
@@ -138,4 +140,28 @@ export function randomItemFor(G, rng, kind, region, opts = {}) {
   const fresh = pool.filter((it) => !held.has(it.id) || it.type === 'consumable');
   const src = fresh.length ? fresh : pool;
   return rng.weighted(src, (it) => (it.rarity === 'rare' ? 3 : it.rarity === 'uncommon' ? 5 : 8)).id;
+}
+
+// ───────── Dayanıklılık ─────────
+/** Kalan kullanım hakkı (eski kayıtlarda alan yoksa tam kabul edilir); sınırsızsa null */
+export function usesLeft(inst) {
+  const max = ITEM_BY_ID[inst.id]?.uses;
+  if (!max) return null;
+  return inst.uses ?? max;
+}
+/** Item etkisini gösterdi: 1 hak düş; bitince kır. lines verilirse bilgi satırı eklenir. Aynı tx içinde bir item bir kez yıpranır. */
+export function wearItem(G, id, lines = null, worn = null) {
+  if (worn) { if (worn.has(id)) return false; worn.add(id); }
+  const run = G.run;
+  const inst = run.items.find((i) => i.id === id);
+  if (!inst) return false;
+  const max = ITEM_BY_ID[id].uses;
+  if (!max) return false;
+  inst.uses = (inst.uses ?? max) - 1;
+  if (inst.uses <= 0) {
+    run.items.splice(run.items.indexOf(inst), 1);
+    lines?.push({ kind: 'item', text: `${ITEM_BY_ID[id].name} yıprandı ve kırıldı.` });
+    run.stats.itemsBroken = (run.stats.itemsBroken || 0) + 1;
+  } else lines?.push({ kind: 'info', text: `${ITEM_BY_ID[id].name}: ${inst.uses} kullanım hakkı kaldı.` });
+  return true;
 }

@@ -12,11 +12,17 @@ import { hasUpgrade } from '../core/GameState.js';
 export const DEPTHS = [
   null,
   { id: 1, name: 'I — Açık Deniz', dmg: 1.0, pen: 0, gold: 0 },
-  { id: 2, name: 'II — Tehlikeli Akıntılar', dmg: 1.08, pen: 2, gold: 0.05 },
-  { id: 3, name: 'III — Karanlık Sular', dmg: 1.16, pen: 4, gold: 0.1 },
-  { id: 4, name: 'IV — Unutulmuş Denizler', dmg: 1.24, pen: 6, gold: 0.15 },
-  { id: 5, name: 'V — Sonsuz Ufuk', dmg: 1.3, pen: 8, gold: 0.2 },
+  { id: 2, name: 'II — Tehlikeli Akıntılar', dmg: 1.12, pen: 3, gold: 0.05 },
+  { id: 3, name: 'III — Karanlık Sular', dmg: 1.25, pen: 6, gold: 0.1 },
+  { id: 4, name: 'IV — Unutulmuş Denizler', dmg: 1.4, pen: 9, gold: 0.15 },
+  { id: 5, name: 'V — Sonsuz Ufuk', dmg: 1.55, pen: 12, gold: 0.2 },
 ];
+/** DENGE: V'ten sonra deniz durmadan sertleşir (her 4 ek limanda bir "Uçurum" kademesi) */
+export const ABYSS = { dmg: 0.18, pen: 3 };
+/** DENGE: Sonsuz Deniz'de büyük gemiler daha büyük tehditleri çeker (seviye 3 üstü her seviye +%10 hasar) */
+export const SHIP_THREAT = 0.1;
+/** DENGE: Sonsuz Deniz'de tersane ve onarım ekonomisi */
+export const ENDLESS_ECON = { upgradeMult: 1.5, repairPerStage: 0.1 };
 
 export const CONDITIONS = {
   fog: { id: 'fog', name: 'Sis Çağı', desc: 'Sis yoğun; gizemli karşılaşmalar artar, rota bilgisi bulanıklaşır.', w: { mystery: 5 }, tags: { fog: 1.6 }, intelPenalty: 15 },
@@ -131,8 +137,23 @@ export function depthOf(run) {
   return Math.min(5, 1 + Math.floor((e.extra - 1) / 4));
 }
 export function endlessCond(run) { return endlessOn(run) ? run.x1.endless.cond : null; }
-export function damageMult(run) { const d = depthOf(run); return d ? DEPTHS[d].dmg : 1; }
-export function riskPenalty(run) { const d = depthOf(run); return d ? DEPTHS[d].pen : 0; }
+/** V'i aşan kademe sayısı (V+1, V+2…) */
+export function abyssOf(run) {
+  const e = run?.x1?.endless;
+  if (!e || !e.on || e.extra < 1) return 0;
+  return Math.max(0, Math.floor((e.extra - 1) / 4) - 4);
+}
+export function depthLabel(run) { const d = depthOf(run); const a = abyssOf(run); return d ? DEPTHS[d].name + (a ? ` +${a}` : '') : ''; }
+export function damageMult(run) {
+  const d = depthOf(run);
+  if (!d) return 1;
+  const threat = 1 + Math.max(0, (run.ship?.level || 1) - 3) * SHIP_THREAT;
+  return (DEPTHS[d].dmg + abyssOf(run) * ABYSS.dmg) * threat;
+}
+export function riskPenalty(run) { const d = depthOf(run); return d ? DEPTHS[d].pen + abyssOf(run) * ABYSS.pen : 0; }
+/** Sonsuz Deniz'de onarım ve gemi yükseltme maliyet çarpanları */
+export function repairCostMult(run) { return endlessOn(run) ? 1 + (depthOf(run) + abyssOf(run)) * ENDLESS_ECON.repairPerStage : 1; }
+export function upgradeCostMult(run) { return endlessOn(run) ? ENDLESS_ECON.upgradeMult : 1; }
 export function goldBonus(run) { const d = depthOf(run); return d ? DEPTHS[d].gold : 0; }
 
 /** Büyük Liman'da "Sonsuz Denize Açıl": normal başarı ödülü bir kez verilir, run kapanmaz. */
@@ -209,6 +230,7 @@ export function onEndlessArrival(G, harborId, addXp, unlockAchievement) {
   const d = depthOf(run);
   G.meta.x1.records.maxExtra = Math.max(G.meta.x1.records.maxExtra, e.extra);
   G.meta.x1.records.maxDepth = Math.max(G.meta.x1.records.maxDepth, d);
+  G.meta.x1.records.maxAbyss = Math.max(G.meta.x1.records.maxAbyss || 0, abyssOf(run));
   e.score = endlessScore(run);
   return lines;
 }

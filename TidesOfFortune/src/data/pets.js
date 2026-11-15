@@ -1,4 +1,4 @@
-// GDD Bölüm 10: 5 evcil hayvan.
+// GDD Bölüm 10: 5 evcil hayvan + 4 yeni tür (martı, kaplumbağa, gelincik, ahtapot).
 export const PETS = [
   { id: 'PET_KIRMIZI', name: 'Kaptan Kırmızı', species: 'Papağan (kırmızı-sarı)', price: 120, kind: 'parrot',
     where: [{}], weight: 30,
@@ -27,5 +27,26 @@ export const PETS = [
     passive: 'Hızlı Parmaklar: item gerektiren eventlerde +%15 başarı.',
     bonus: 'Sandık ve enkazda gizli bölme bulur; Reza ile kaçakçılık eventleri otomatik başarılır; arada bir tayfadan küçük eşya çalar.',
     acquire: '150 altın, tropikal ve gizemli limanlar', desc: 'Turuncu-kahve tüylü, kocaman kaptan şapkalı yaramaz bir maymun.' },
+  // Yeni türler (DENGE: ılımlı, durumsal etkiler; hiçbiri sınırsız güvence vermez)
+  { id: 'PET_MARTI', name: 'Kaşif', species: 'Martı (beyaz-gri)', price: 90, kind: 'gull',
+    where: [{ types: ['fishing', 'trade'], regions: [1, 2, 3] }], weight: 26,
+    passive: 'Gözcü Martı: her yolculukta önündeki ilk olayı önceden gösterir.',
+    bonus: 'Balık eventlerinde +%15 başarı; arada bir denizden parlak şeyler getirir.',
+    acquire: '90 altın, balıkçı ve ticaret limanları (bölge 1–3)', desc: 'Tayfanın balık tabağına göz dikmiş, kendini gemiden sayan beyaz bir martı. Direğin tepesi onun tahtıdır.' },
+  { id: 'PET_KAPLUMBAGA', name: 'Bilge', species: 'Deniz kaplumbağası (yosunlu kabuk)', price: 160, kind: 'turtle',
+    where: [{ types: ['mystery', 'fishing'], regions: [2, 3, 4, 5] }], weight: 18,
+    passive: 'Yaşlı Kabuk: fırtına ve dalga hasarı −%15.',
+    bonus: 'Gizem eventlerinde +%10 başarı; kabuğundaki eski çizikler bazen kayıp rotaları anlatır.',
+    acquire: '160 altın, gizemli ve balıkçı limanları (bölge 2–5)', desc: 'Kabuğunda yosun ve eski çizikler taşıyan, kimsenin yaşını bilmediği yavaş ama hep yolunu bulan bir deniz kaplumbağası.' },
+  { id: 'PET_GELINCIK', name: 'Fındık', species: 'Gelincik (kahve-krem, maskeli)', price: 110, kind: 'ferret',
+    where: [{ types: ['trade', 'pirate'] }], weight: 22,
+    passive: 'Ambar Avcısı: rota sonu kargo bozulması −%30 (fareleri kovalar).',
+    bonus: 'Ambarın gizli köşelerine girer; bazen kayıp bozuklukları, bazen de başkasının eşyasını bulur.',
+    acquire: '110 altın, ticaret ve korsan limanları', desc: 'Hiç durmayan, sandıkların arasında kaybolup ağzında bir şeyle geri dönen meraklı bir gelincik.' },
+  { id: 'PET_AHTAPOT', name: 'Mürekkep', species: 'Küçük ahtapot (mor, fıçıda yaşar)', price: 180, kind: 'octopus',
+    where: [{ types: ['fog', 'mystery', 'fishing'], regions: [2, 3, 4, 5] }], weight: 16,
+    passive: 'Mürekkep Bulutu: kaçış seçeneklerinde +%10.',
+    bonus: 'Dalış ve batık eventlerinde +%15 başarı; fıçısından kaçıp aşçının kepçesini çalmayı sever.',
+    acquire: '180 altın, sisli, gizemli ve balıkçı limanları (bölge 2–5)', desc: 'Güvertedeki tuzlu su fıçısında yaşayan, sekiz kolunu da merakla her şeye uzatan küçük mor bir ahtapot.' },
 ];
 export const PET_BY_ID = Object.fromEntries(PETS.map((p) => [p.id, p]));

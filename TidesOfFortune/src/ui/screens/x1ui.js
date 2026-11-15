@@ -69,7 +69,7 @@ export function endlessChips(run) {
   const c = e.cond ? X1.CONDITIONS[e.cond] : null;
   return [
     h('span.chip.endless', {}, icon('wave'), ' Sonsuz Deniz · Ek liman ', h('b.n', {}, e.extra)),
-    d ? h('span.chip.depth', {}, 'Derinlik ', h('b', {}, X1.DEPTHS[d].name)) : null,
+    d ? h('span.chip.depth', {}, 'Derinlik ', h('b', {}, X1.depthLabel(run))) : null,
     c ? h('span.chip.cond', { title: c.desc }, icon('fog'), ' ', c.name) : null,
   ].filter(Boolean);
 }
@@ -116,7 +116,7 @@ export function recordsTab(meta) {
     row('En uzun sefer (liman)', r.longestHarbors || 0),
     row('En yüksek Sonsuz Deniz skoru', r.bestScore || 0),
     row('En fazla ek liman', r.maxExtra || 0),
-    row('Ulaşılan en derin seviye', r.maxDepth ? ['', 'I', 'II', 'III', 'IV', 'V'][r.maxDepth] : '—'),
+    row('Ulaşılan en derin seviye', r.maxDepth ? ['', 'I', 'II', 'III', 'IV', 'V'][r.maxDepth] + (r.maxAbyss ? ` +${r.maxAbyss}` : '') : '—'),
     row('Bir seferde en çok sözleşme', r.mostContracts || 0),
     row('En yüksek ticaret kârı', r.bestProfit || 0),
     row('Bir seferde en çok zincir', r.mostChains || 0),

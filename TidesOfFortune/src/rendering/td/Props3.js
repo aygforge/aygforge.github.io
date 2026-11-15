@@ -1,7 +1,7 @@
 // Yaşayan Denizler (X1) sahne nesneleri. DRAW sözlüğüne eklenir: (ctx, x, y, t, opts).
 import { rect, px, hline, vline, line, disc, ellipse, hash2 } from '../pixel.js';
 import { DRAW } from './Props.js';
-import { npcSprite } from './TopChars.js';
+import { npcSprite, petSprite } from './TopChars.js';
 
 const ring = (c, x, y, r, t, a = 0.6) => { for (let k = 0; k < 6.28; k += 0.45) px(c, x + Math.cos(k + t) * r, y + Math.sin(k + t) * r * 0.7, `rgba(230,245,250,${a})`); };
 
@@ -180,3 +180,25 @@ DRAW.workshopIsle = (c, x, y, t, o = {}) => {
 };
 
 export { DRAW };
+
+// ───────── Hayvan olayları ─────────
+/** Suda çırpınan hayvan: halkalar + baş */
+DRAW.swimPet = (c, x, y, t, o = {}) => {
+  for (let i = 0; i < 2; i++) { const r = 7 + ((t * 10 + i * 6) % 12); c.strokeStyle = `rgba(255,255,255,${0.5 - r / 30})`; c.lineWidth = 1; c.beginPath(); c.arc(x, y, r, 0, Math.PI * 2); c.stroke(); }
+  c.drawImage(petSprite(o.id || 'PET_TARCIN', 'up', Math.sin(t * 6) > 0 ? 'walk1' : 'walk3'), Math.round(x - 11), Math.round(y - 11 + Math.sin(t * 4)));
+};
+/** Mürekkep bulutu (güverte lekesi) */
+DRAW.inkCloud = (c, x, y, t, o = {}) => {
+  const r = o.r || 14;
+  for (const [dx, dy, k] of [[0, 0, 1], [-r * 0.5, 3, 0.7], [r * 0.5, -2, 0.75], [2, r * 0.5, 0.6]]) disc(c, x + dx, y + dy, Math.round(r * k), 'rgba(30,14,46,0.75)');
+};
+/** Küçük fare (ambar) */
+DRAW.mouse = (c, x, y, t) => {
+  const dx = Math.round(Math.sin(t * 3) * 6);
+  c.fillStyle = '#6a5a50'; c.fillRect(Math.round(x + dx - 2), Math.round(y - 1), 4, 3);
+  c.fillStyle = '#c8a8a0'; c.fillRect(Math.round(x + dx + 2), Math.round(y), 1, 1); c.fillRect(Math.round(x + dx - 4), Math.round(y + 1), 2, 1);
+};
+/** Uçan martı (sahne nesnesi) */
+DRAW.gull = (c, x, y, t) => c.drawImage(petSprite('PET_MARTI', 'up', Math.sin(t * 9) > 0 ? 'fly0' : 'fly1'), Math.round(x - 11), Math.round(y - 11));
+/** Tabakta balık */
+DRAW.fishPlate = (c, x, y) => { disc(c, x, y, 5, '#d8d0c0'); rect(c, x - 3, y - 1, 6, 2, '#7a9ab0'); px(c, x + 3, y - 1, '#5a7a90'); px(c, x + 3, y + 1, '#5a7a90'); };

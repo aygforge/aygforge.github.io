@@ -57,7 +57,7 @@ export function itemBar(ui, { highlight = [], onTap = null, compact = false } = 
       title: def.name,
       onTap: () => (onTap ? onTap(it) : ui.showItem(it.id, { owned: it })),
       onLong: () => ui.showItem(it.id, { owned: it }),
-    }, icon(def.icon || 'info', 'big'), def.type === 'consumable' ? h('span.badge', {}, '1') : null));
+    }, icon(def.icon || 'info', 'big'), def.type === 'consumable' ? h('span.badge', {}, '1') : def.uses ? h(`span.badge.uses${(it.uses ?? def.uses) <= 1 ? '.low' : ''}`, {}, it.uses ?? def.uses) : null));
   }
   return h(`div.itembar${compact ? '.compact' : ''}`, {}, h('span.lbl', {}, T.items), ...cells);
 }
@@ -97,13 +97,15 @@ export function petCard(ui, id, { price = null, action = null, actionLabel = '',
   );
 }
 
-export function itemDetail(id) {
+export function itemDetail(id, owned = null) {
   const it = ITEM_BY_ID[id];
+  const left = owned ? (owned.uses ?? it.uses) : it.uses;
   return h('div.detail', {},
     h('div.dhead', {}, icon(it.icon || 'info', 'huge'), h('div', {}, h('h2', {}, it.name), h('div.tags', {},
       h('span.tag', {}, ITEM_CATEGORIES[it.cat]), h('span.tag', {}, ITEM_TYPES[it.type]), h(`span.tag.r-${it.rarity}`, {}, { common: 'Yaygın', uncommon: 'Seyrek', rare: 'Nadir' }[it.rarity]),
       h('span.tag', {}, icon('coin'), ` ${it.price}`)))),
     h('p', {}, it.effect),
+    it.uses ? h('div.dsec.uses', {}, h('b', {}, 'Dayanıklılık: '), owned ? h('span.n', {}, `${left}/${it.uses}`) : h('span.n', {}, `${it.uses}`), ' kullanım. Etkisini her gösterdiğinde 1 hak gider; hak bitince item kırılır.') : null,
     h('div.dsec', {}, h('b', {}, 'İşe yaradığı olaylar: '), it.events.join(', ')),
     it.assumption ? h('p.note', {}, 'Not: Bu item GDD açık sorularından geldi; değerleri geçici tasarım kararıdır.') : null,
   );

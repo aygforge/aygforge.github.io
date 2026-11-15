@@ -109,10 +109,11 @@ export class GameCore {
       this.rng = SeededRNG.derive(seed, 'events');
       const sp = SeededRNG.derive(seed, 'special1');
       this.run.special.firstAt = sp.int(0, Math.min(BALANCE.special.firstWithinHarbors, plan.total - 1) - 1);
+      if (!sp.chance(BALANCE.special.firstChance)) this.run.special.stage = 'none'; // bu run'da Zıpır/Tarçın yok
       const lines = [{ kind: 'info', text: `Paslı Martı yeni bir sefere hazırlanıyor. Başlangıç limanı: ${HARBOR_BY_ID[route[0].harborId].name}. Rota belirsiz: her limanda yeni deniz yolları seçeceksin. Son durak Büyük Liman.` }];
       lines.push(...Prog.discoverHarbor(this.G, route[0].harborId));
       const queue = [];
-      if (this.run.special.firstAt === 0) {
+      if (this.run.special.firstAt === 0 && this.run.special.stage === 'pending') {
         queue.push({ id: 'EVT_SPECIAL_ZIPIR_TARCIN', src: 'special' });
         this.run.special.stage = 'offered';
       }
@@ -287,6 +288,7 @@ export class GameCore {
       run.prevPrices = Trade.snapshotPrices(this.G, harbor.id);
       run.lastVisitItems = run.visit.items.slice();
       run.visit = null;
+      if (Crew.hasItem(this.G, 'ITEM_SEA_CHART')) Items.wearItem(this.G, 'ITEM_SEA_CHART');
       Events.buildVoyage(this.G);
       run.voyage.duration = Route.voyageDuration(run.seed, run.idx, lane.distance);
       run.voyage.elapsed = 0;

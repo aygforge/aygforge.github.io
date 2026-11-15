@@ -65,6 +65,7 @@ export function installDevHooks(T) {
     run.items = [];
     run.cargo = [{ good: 'GOOD_SPICE', qty: 3, cost: 20 }, { good: 'GOOD_WINE', qty: 2, cost: 20 }, { good: 'GOOD_GRAIN', qty: 2, cost: 10 }];
     if (ev.cond) satisfy(run, { crew: ev.cond.crew, pet: ev.cond.pet });
+    if (ev.cond2) satisfy(run, { pet: ev.cond2.pet });
     const petFor = { EVT_PET_MONKEY: 'PET_CUCE', EVT_PET_PARROT: 'PET_KIRMIZI', EVT_PET_MIDNIGHT: 'PET_GECEYARISI', EVT_PET_TARCIN_NOSE: 'PET_TARCIN' }[id];
     if (petFor) satisfy(run, { pet: petFor });
     if (id === 'EVT_SPECIAL_TARCIN_ALONE') run.pets = ['PET_ZIPIR'];

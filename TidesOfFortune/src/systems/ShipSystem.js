@@ -80,7 +80,9 @@ export function changeHull(G, delta) {
 
 export function upgradeCost(G) {
   const next = G.run.ship.level + 1;
-  return BALANCE.shipUpgradeCost[next] ?? null;
+  const c = BALANCE.shipUpgradeCost[next];
+  if (c == null) return null;
+  return G.run.x1?.endless?.on ? Math.round(c * 1.5) : c; // DENGE: Sonsuz Deniz'de tersane fiyatları (X1 ENDLESS_ECON)
 }
 
 export function canUpgrade(G) {

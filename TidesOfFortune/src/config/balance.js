@@ -74,7 +74,11 @@ export const BALANCE = {
   shipUpgradeKeepsDamage: true, // KARAR: yükseltmede hasar oranı korunmaz; eksik HP aynı kalır
 
   trade: {
-    priceJitter: 0.15, // KARAR: seed kaynaklı ±%15 fiyat sapması
+    priceJitter: 0.2, // DENGE: seed kaynaklı ±%20 fiyat sapması (limanlar arası fark)
+    valueFactor: 0.92, // DENGE: malın piyasa değeri = baz satış × 0.92 × liman çarpanı
+    spread: 0.1, // DENGE: alış değerin %5 üstünde, satış %5 altında → aynı fiyat bölgesinde al-sat zararlı
+    saturationPerUnit: 0.05, // DENGE: aynı ziyarette aynı maldan her satılan birim sonraki fiyatı %5 düşürür
+    saturationFloor: 0.7,
     harborMultJitter: 0.05, // KARAR: liman çarpanlarına ±%5 sapma
     marketGoods: [5, 7], // KARAR: limanda alınabilir mal çeşidi
     marketStock: [2, 6], // KARAR: mal başına stok
@@ -86,7 +90,7 @@ export const BALANCE = {
     heroBuyMult: 0.8, // GDD (kahraman: fiyatlar %20 ucuz)
     damagedHarborStockMult: 0.5, // GDD
     friendlyTraderBonus: 0.2, // GDD (Dostane Tüccar +%20)
-    regionDemandRange: [0.82, 1.25], // KARAR (rework): run başına bölge × mal arz-talep çarpanı
+    regionDemandRange: [0.72, 1.38], // DENGE: run başına bölge × mal arz-talep çarpanı (bölgeler arası belirgin fark)
   },
 
   // KARAR (rework): belirsiz deniz yolları
@@ -103,7 +107,8 @@ export const BALANCE = {
     firstEventMin: 20,
     approachTime: 5, // karşılaşma yaklaşma animasyonu (sn)
     dockTime: 7, // limana yanaşma animasyonu (sn)
-    fastForward: 3, // sakin seyirde isteğe bağlı hızlandırma
+    sailRate: 3, // sakin seyirde yolculuk zamanının akış hızı (eskiden isteğe bağlı ×3; artık varsayılan, düğme kaldırıldı)
+    fastForward: 3, // (eski) uyumluluk
   },
 
   items: {
@@ -125,11 +130,14 @@ export const BALANCE = {
     biscuitBonus: 1.08, // GDD
     biscuitCrateTarcinBonus: 1.15, // GDD
     tarcinWarnBaseChance: 70, // KARAR: Tarçın'ın ekstra seçeneğinin temel başarı şansı
+    deckEventChance: 35, // yüzde: gemide hayvan varken bir yolculukta hayvana özel gemi içi olay (normal slotun yerine)
     monkeyTheftChance: 0.12, // KARAR: Cüce Kaptan'ın komik hırsızlık eventi (rota başına)
   },
 
   special: {
-    firstWithinHarbors: 3, // GDD: ilk 3 liman içinde garantili
+    firstWithinHarbors: 3, // ilk karşılaşma olursa ilk 3 limandan birinde
+    firstChance: 40, // yüzde; // DENGE: Zıpır/Tarçın'dan biriyle karşılaşma artık garanti değil (run'ların ~%40'ı)
+    secondChance: 30, // yüzde; // DENGE: biri gemideyken diğeriyle de karşılaşma (Eski Dostlar ≈ run'ların %12'si)
     secondAfterHarbors: [2, 4], // GDD
   },
 

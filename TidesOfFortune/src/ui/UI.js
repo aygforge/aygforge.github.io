@@ -280,7 +280,7 @@ export class UI {
     if (owned && id === 'ITEM_REPAIR_KIT') actions.push({ label: 'Kullan (+30 HP)', primary: true, onTap: () => { const r = this.core.useRepairKit(owned.uid); if (r.ok) this.audio.play('repair'); } });
     if (owned) actions.push({ label: 'Itemi bırak', danger: true, onTap: () => { this.confirm(`${id ? '' : ''}Bu itemi gemiden atmak istiyor musun? Geri alınamaz.`, { danger: true, ok: 'At' }).then((y) => y && this.core.discardItem(owned.uid)); } });
     if (buy) actions.push(buy);
-    this.sheet(itemDetail(id), { actions });
+    this.sheet(itemDetail(id, owned), { actions });
   }
 
   showCrew(id, actions = []) {

@@ -184,6 +184,10 @@ export function petSprite(id, dir = 'down', pose = 'idle') {
   else if (id === 'PET_KIRMIZI') drawBirdUp(ctx, pose, '#d43a2a', '#f2c14e', '#3b6ea5');
   else if (id === 'PET_GECEYARISI') drawBirdUp(ctx, pose, '#2a1e40', '#7a4ab0', '#4a2a7a');
   else if (id === 'PET_CUCE') drawMonkeyUp(ctx, pose);
+  else if (id === 'PET_MARTI') drawGullUp(ctx, pose);
+  else if (id === 'PET_KAPLUMBAGA') drawTurtleUp(ctx, pose);
+  else if (id === 'PET_GELINCIK') drawFerretUp(ctx, pose);
+  else if (id === 'PET_AHTAPOT') drawOctoUp(ctx, pose);
   const out = rotated(base, dir);
   cache.set(key, out);
   return out;
@@ -380,6 +384,73 @@ function drawMonkeyUp(ctx, pose) {
   rect(ctx, cx - 4, cy - 2 + st, 1, 2, b); rect(ctx, cx + 3, cy - 2 - st, 1, 2, b); rect(ctx, cx - 4, cy + 2 - st, 1, 2, b); rect(ctx, cx + 3, cy + 2 + st, 1, 2, b);
   for (const [dx, dy] of [[1, 4], [2, 5], [3, 6], [4, 6], [5, 5], [5, 4]]) px(ctx, cx + dx, cy + dy, o);
   if (pose === 'hold') { rect(ctx, cx - 3, cy - 6, 2, 2, '#f2c14e'); rect(ctx, cx + 2, cy - 6, 2, 2, '#f2c14e'); }
+}
+
+// ───────── Yeni hayvanlar (tepeden) ─────────
+/** Martı "Kaşif": beyaz gövde, gri kanatlar, sarı gaga */
+function drawGullUp(ctx, pose) {
+  const w = '#f2f2ee', g = '#9aa4ae', d = '#5a646e', y = '#f0b030';
+  const cx = 11, cy = 12;
+  if (pose === 'fly0' || pose === 'fly1') {
+    const up = pose === 'fly0' ? 0 : 1;
+    rect(ctx, cx - 9, cy - 1 + up, 7, 2, g); rect(ctx, cx + 3, cy - 1 + up, 7, 2, g);
+    px(ctx, cx - 9, cy - 1 + up, d); px(ctx, cx + 9, cy - 1 + up, d);
+  }
+  rect(ctx, cx - 2, cy - 3, 4, 7, w);
+  rect(ctx, cx - 2, cy - 1, 1, 4, g); rect(ctx, cx + 1, cy - 1, 1, 4, g);
+  disc(ctx, cx, cy - 4, 2, w);
+  rect(ctx, cx, cy - 7, 1, 2, y);
+  rect(ctx, cx - 1, cy + 4, 2, 2, d);
+  if (pose === 'fluff' || pose === 'alert') { px(ctx, cx - 3, cy - 2, w); px(ctx, cx + 2, cy - 2, w); }
+}
+/** Deniz kaplumbağası "Bilge": yosunlu kabuk, yüzgeç ayaklar */
+function drawTurtleUp(ctx, pose) {
+  const sh = '#5a7a3a', sd = '#3e5a28', sk = '#a8b878', m = '#7aa04a';
+  const cx = 11, cy = 12;
+  const f = pose.startsWith('walk') ? Number(pose[4]) || 0 : 0;
+  const st = [0, 1, 0, -1][f];
+  if (pose !== 'sleep') {
+    rect(ctx, cx - 1, cy - 9, 2, 3, sk);
+    px(ctx, cx - 1, cy - 9, '#202018'); px(ctx, cx + 1, cy - 9, '#202018');
+  }
+  rect(ctx, cx - 6, cy - 4 + st, 3, 2, sk); rect(ctx, cx + 4, cy - 4 - st, 3, 2, sk);
+  rect(ctx, cx - 5, cy + 4 - st, 2, 2, sk); rect(ctx, cx + 4, cy + 4 + st, 2, 2, sk);
+  disc(ctx, cx, cy, 5, sh);
+  for (const [dx, dy] of [[0, 0], [-3, -2], [3, -2], [-3, 2], [3, 2]]) disc(ctx, cx + dx, cy + dy, 1, sd);
+  px(ctx, cx - 2, cy - 4, m); px(ctx, cx + 3, cy + 1, m); px(ctx, cx - 4, cy + 2, m);
+  px(ctx, cx, cy + 6, sk);
+}
+/** Gelincik "Fındık": uzun ince gövde, maske yüz, kabarık kuyruk */
+function drawFerretUp(ctx, pose) {
+  const b = '#c89a62', d = '#7a5432', l = '#f0e0c0', mask = '#4a3424';
+  const cx = 11, cy = 12;
+  if (pose === 'sleep') {
+    disc(ctx, cx, cy, 4, b); disc(ctx, cx - 1, cy - 1, 2, l); rect(ctx, cx + 2, cy + 2, 3, 2, d);
+    return;
+  }
+  const f = pose.startsWith('walk') ? Number(pose[4]) || 0 : 0;
+  const wig = [0, 1, 0, -1][f];
+  rect(ctx, cx - 1 + wig, cy - 3, 3, 9, b);
+  rect(ctx, cx - 1 - wig, cy + 6, 3, 3, d);
+  rect(ctx, cx - 1, cy - 7, 3, 4, l);
+  rect(ctx, cx - 1, cy - 6, 3, 1, mask);
+  px(ctx, cx - 1, cy - 8, d); px(ctx, cx + 1, cy - 8, d);
+  px(ctx, cx - 2, cy - 2 + wig, d); px(ctx, cx + 2, cy - 2 - wig, d); px(ctx, cx - 2, cy + 4 - wig, d); px(ctx, cx + 2, cy + 4 + wig, d);
+  if (pose === 'hold') rect(ctx, cx - 1, cy - 10, 3, 2, '#f2c14e');
+}
+/** Küçük ahtapot "Mürekkep": mor kafa, kıvrılan kollar */
+function drawOctoUp(ctx, pose) {
+  const b = '#9a4ab0', d = '#6a2a80', l = '#c88ad8';
+  const cx = 11, cy = 11;
+  const f = pose.startsWith('walk') ? Number(pose[4]) || 0 : pose === 'wag0' ? 1 : pose === 'wag1' ? 3 : 0;
+  for (let i = 0; i < 8; i++) {
+    const a = (i / 8) * Math.PI * 2 + (f % 2) * 0.2;
+    for (let r = 4; r <= 7; r++) px(ctx, Math.round(cx + Math.cos(a + r * 0.12 * (f > 1 ? -1 : 1)) * r), Math.round(cy + Math.sin(a) * r), r === 7 ? l : d);
+  }
+  disc(ctx, cx, cy, 4, b);
+  disc(ctx, cx - 1, cy - 1, 2, l);
+  if (pose !== 'sleep') { px(ctx, cx - 2, cy + 1, '#fff'); px(ctx, cx + 2, cy + 1, '#fff'); px(ctx, cx - 2, cy + 2, '#101010'); px(ctx, cx + 2, cy + 2, '#101010'); }
+  if (pose === 'bark') for (const [dx, dy] of [[0, -7], [1, -8], [-1, -9], [0, -10]]) px(ctx, cx + dx, cy + dy, '#1a1028');
 }
 
 /** Yabancı insan figürleri (korsanlar, köylüler) */

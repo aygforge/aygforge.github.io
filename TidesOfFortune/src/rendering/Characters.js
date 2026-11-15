@@ -197,6 +197,10 @@ export function petFrame(id, pose) {
   else if (id === 'PET_KIRMIZI') drawParrot(ctx, pose, '#d43a2a', '#f2c14e', '#3b6ea5');
   else if (id === 'PET_GECEYARISI') drawParrot(ctx, pose, '#1f1630', '#6a3a9a', '#3a2a6a', pose === 'fluff');
   else if (id === 'PET_CUCE') drawMonkey(ctx, pose);
+  else if (id === 'PET_MARTI') drawGull(ctx, pose);
+  else if (id === 'PET_KAPLUMBAGA') drawTurtle(ctx, pose);
+  else if (id === 'PET_GELINCIK') drawFerret(ctx, pose);
+  else if (id === 'PET_AHTAPOT') drawOcto(ctx, pose);
   cache.set(key, c);
   return c;
 }
@@ -332,6 +336,35 @@ function drawMonkey(ctx, pose) {
   hline(ctx, 7, 12, by - 9, hat); rect(ctx, 8, by - 10, 4, 1, hat);
   vline(ctx, 4 - f, by - 2, by, b); vline(ctx, 8 + f, by - 2, by, b);
   line(ctx, 3, by - 5, 1, by - 8 + f, o); px(ctx, 2, by - 9 + f, o);
+}
+
+// ───────── Yeni hayvanlar (yandan, 14×12) ─────────
+function drawGull(ctx, pose) {
+  const w = '#f2f2ee', g = '#9aa4ae', y = '#f0b030', by = PET_FH - 1;
+  rect(ctx, 4, by - 6, 6, 4, w); rect(ctx, 4, by - 6, 4, 2, g);
+  rect(ctx, 9, by - 9, 3, 3, w); px(ctx, 11, by - 8, '#101010');
+  hline(ctx, 12, 13, by - 7, y);
+  hline(ctx, 1, 4, by - 5, g);
+  vline(ctx, 6, by - 1, by, y); vline(ctx, 8, by - 1, by, y);
+}
+function drawTurtle(ctx, pose) {
+  const sh = '#5a7a3a', sd = '#3e5a28', sk = '#a8b878', by = PET_FH - 1;
+  rect(ctx, 3, by - 5, 8, 3, sh); rect(ctx, 4, by - 6, 6, 1, sh); hline(ctx, 4, 9, by - 4, sd);
+  px(ctx, 5, by - 5, sd); px(ctx, 8, by - 5, sd);
+  rect(ctx, 11, by - 4, 3, 2, sk); px(ctx, 13, by - 4, '#202018');
+  rect(ctx, 3, by - 2, 2, 2, sk); rect(ctx, 9, by - 2, 2, 2, sk); px(ctx, 2, by - 3, sk);
+}
+function drawFerret(ctx, pose) {
+  const b = '#c89a62', d = '#7a5432', l = '#f0e0c0', by = PET_FH - 1;
+  rect(ctx, 3, by - 4, 8, 3, b); rect(ctx, 10, by - 6, 3, 3, l); hline(ctx, 10, 12, by - 5, '#4a3424'); px(ctx, 12, by - 5, '#101010');
+  px(ctx, 10, by - 7, d); line(ctx, 3, by - 3, 0, by - 5, d); px(ctx, 0, by - 6, d);
+  vline(ctx, 4, by - 1, by, d); vline(ctx, 9, by - 1, by, d);
+}
+function drawOcto(ctx, pose) {
+  const b = '#9a4ab0', d = '#6a2a80', l = '#c88ad8', by = PET_FH - 1;
+  rect(ctx, 4, by - 9, 6, 5, b); rect(ctx, 5, by - 10, 4, 1, b); rect(ctx, 5, by - 8, 2, 1, l);
+  px(ctx, 6, by - 6, '#fff'); px(ctx, 8, by - 6, '#fff'); px(ctx, 6, by - 5, '#101010'); px(ctx, 8, by - 5, '#101010');
+  for (const x of [3, 5, 7, 9, 11]) { vline(ctx, x, by - 3, by - 1, d); px(ctx, x + (x % 4 === 1 ? 1 : -1), by, l); }
 }
 
 /** Portre (UI kartları için): sprite'ı büyütülmüş dataURL olarak döndürür */

@@ -1,4 +1,5 @@
 // Tamir: tersane seçenekleri, rota sonu (Groot → sızıntı) ve varış (Doc Vargas → Esperanza) sırası.
+import * as X1 from './X1System.js';
 import { BALANCE } from '../config/balance.js';
 import { HARBOR_BY_ID, HARBOR_TYPES } from '../data/harbors.js';
 import { hullCategory, maxHull, categoryFloorHp, changeHull } from './ShipSystem.js';
@@ -24,7 +25,7 @@ export function repairOptions(G) {
   const yard = shipyardOf(G);
   const cat = hullCategory(G);
   const missing = maxHull(G) - G.run.ship.hull;
-  const sm = statusMult(G);
+  const sm = statusMult(G) * X1.repairCostMult(G.run);
   const opts = [];
   if (yard.full) {
     const next = NEXT_CAT[cat];

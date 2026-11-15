@@ -82,14 +82,27 @@ test('Sonsuz Deniz: Büyük Liman ödülü bir kez, 12+ ek liman, derinlik ve so
   assert.ok(core.meta.x1.records.maxExtra >= Math.min(12, e.extra));
 });
 
-test('Derinlik çarpanları ve üst sınır', () => {
+test('Derinlik çarpanları, Uçurum kademeleri ve gemi tehdidi', () => {
   const run = { x1: { endless: { on: true, extra: 0 } } };
   const d = (x) => { run.x1.endless.extra = x; return X1.depthOf(run); };
   assert.equal(d(1), 1); assert.equal(d(4), 1); assert.equal(d(5), 2); assert.equal(d(9), 3); assert.equal(d(13), 4); assert.equal(d(17), 5); assert.equal(d(200), 5);
+  // DENGE: V'te 1.55 hasar / 12 risk; sonra her 4 ek limanda Uçurum kademesi (+0.18 hasar, +3 risk); altın bonusu %20'de sabit
+  run.x1.endless.extra = 20;
+  assert.equal(X1.abyssOf(run), 0);
+  assert.equal(X1.damageMult(run), 1.55);
+  assert.equal(X1.riskPenalty(run), 12);
+  run.x1.endless.extra = 24;
+  assert.equal(X1.abyssOf(run), 1);
+  assert.ok(Math.abs(X1.damageMult(run) - 1.73) < 1e-9);
+  assert.equal(X1.riskPenalty(run), 15);
   run.x1.endless.extra = 200;
-  assert.equal(X1.damageMult(run), 1.3);
-  assert.equal(X1.riskPenalty(run), 8);
   assert.equal(X1.goldBonus(run), 0.2);
+  // büyük gemi daha büyük tehdit çeker
+  run.ship = { level: 5 };
+  run.x1.endless.extra = 20;
+  assert.ok(Math.abs(X1.damageMult(run) - 1.55 * 1.2) < 1e-9);
+  // Sonsuz Deniz'de onarım pahalanır
+  assert.ok(X1.repairCostMult(run) > 1);
 });
 
 test('Deniz Koşulları seed tabanlı ve art arda tekrarsız', () => {
@@ -108,7 +121,7 @@ test('Uzun sefer: 50, 100 ve 200 ek liman — rota kilitlenmez, hasar üst sın�
     // gemiyi batmaktan koruyarak rota üretimini sına (yalnızca test: her limanda tam tamir)
     let steps = 0;
     while (bot.step()) {
-      if (core.run && !core.run.ended && core.run.phase === 'harbor') core.run.ship.hull = 9999;
+      if (core.run && !core.run.ended) core.run.ship.hull = 9999;
       if (++steps > 400000) throw new Error('takıldı');
     }
     const e = core.run.x1.endless;

@@ -5,6 +5,8 @@ import { X1_CHAINS, X1_CHAIN_EVENTS } from './chains_x1.js';
 
 const CHAINS = { ...BASE_CHAINS, ...X1_CHAINS };
 import { SPECIAL_EVENTS, CREW_EVENTS, PET_EVENTS } from './events_special.js';
+import { PET_DECK_EVENTS } from './events_pets.js';
+export { PET_DECK_EVENTS };
 
 export { CHAINS };
 
@@ -21,7 +23,7 @@ export const EVENT_CATEGORIES = {
 
 export const ALL_EVENTS = [
   ...DANGER_EVENTS, ...FORTUNE_EVENTS, ...MYSTERY_EVENTS, ...DISASTER_EVENTS, ...REPAIR_EVENTS,
-  ...CHAIN_EVENTS, ...SPECIAL_EVENTS, ...CREW_EVENTS, ...PET_EVENTS,
+  ...CHAIN_EVENTS, ...SPECIAL_EVENTS, ...CREW_EVENTS, ...PET_EVENTS, ...PET_DECK_EVENTS,
   ...X1_EVENTS, ...X1_CHAIN_EVENTS,
 ];
 
