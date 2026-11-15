@@ -10,6 +10,8 @@ const [, , onlyId, onlyOpt, shotsArg] = process.argv;
 const SHOTS = shotsArg === 'shots';
 const SPEED = SHOTS ? 1 : 6;
 const OUT = path.resolve(__dirname, '../docs/scenes');
+// DONE=dosya: daha önce geçen senaryoları atla (uzun taramayı bölmek için)
+const DONE = new Set(process.env.DONE ? fs.readFileSync(process.env.DONE, 'utf8').split('\n').filter(Boolean) : []);
 if (SHOTS) fs.mkdirSync(OUT, { recursive: true });
 
 (async () => {
@@ -31,6 +33,7 @@ if (SHOTS) fs.mkdirSync(OUT, { recursive: true });
     const nOpts = await page.evaluate((id) => window.__tofEventInfo(id).options, id);
     const list = onlyOpt != null && onlyId ? [Number(onlyOpt)] : [...Array(nOpts).keys(), 'auto'];
     for (const k of list) {
+      if (DONE.has(`${id} ${k === 'auto' ? 'auto' : 'o' + k}`)) continue;
       errors.length = 0;
       await page.goto('file://' + path.resolve(__dirname, '../dist/TidesOfFortune.html') + `?hiz=${SPEED}`);
       await page.waitForTimeout(700);

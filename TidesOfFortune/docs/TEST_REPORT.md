@@ -47,9 +47,20 @@ Rework ile eklenenler: belirsiz deniz yolları (2–3 yol, gizli hedef, tekrar y
 
 Ekran görüntüleri (915×412, 2×): `docs/screenshots/td_harbor.png`, `td_sailing.png`, `td_decision.png`. Geliştirme sırasında Korsan Baskını (Savaş, Teslim ol), Dev Dalga, Yüzen Sandık, Hayalet Gemi ve Zıpır sahneleri de ekran görüntüsüyle gözden geçirildi.
 
+## 2b. Sahne taraması — `node tools/scenecheck.cjs` — 297/297 geçti
+
+Her event zorla tetiklenir (gerekli tayfa/item/hayvan/koşul otomatik sağlanır), her seçenek ve her otomatik çözüm gerçek tarayıcıda baştan sona oynatılır: yaklaşma → giriş → karar → aksiyon → sonuç → çıkış → seyre dönüş. Rıhtım eventleri liman sahnesinde oynatılır.
+
+| Kapsam | Sonuç |
+|---|---|
+| 109 event, 289 seçenek + 8 otomatik çözüm = 297 senaryo | 297 geçti, JS hatası 0, takılma 0 |
+| Ortalama sahne süresi (yaklaşmadan seyre dönüşe, karar beklemesi hariç) | 18,5 sn oyun zamanı |
+
+Tarama sırasında bulunup düzeltilenler: sahne değişiminde eski adım geri çağrılarının yeni duruma dokunabilmesi (yönetmen artık sahne değişince bekleyen adımları iptal ediyor); karar paneli açıkken öndeki nesnelerin (tsunami vb.) ekranın üstünden taşması (kamera öne odaklıysa kaldırma azaltılıyor). Ekran görüntüsüyle ayrıca gözden geçirilenler: Askerî Denetim, Köle Gemisi, Balık Sürüsü, Kuzey Işıkları, Terk Edilmiş Ada, Tsunami, Korsan Filosu, Madalyon (rıhtım), Rıhtımdaki Korsan.
+
 ## 3. Denge simülasyonu
 
-Rework sonrası `node tools/simulate.mjs 300`: tamamlanma %82,7 · tahmini run süresi 38,0 dk (saf seyir 18,1 dk) · 1,14 yükseltme/run · ~31 event/run · hata yok.
+Rework sonrası `node tools/simulate.mjs 300`: tamamlanma %82,7 · 1,14 yükseltme/run · ~31 event/run · hata yok. Tahmini run süresi, özel sahnelerle ölçülen event süresiyle (sahne ~19 sn + karar/okuma ~10 sn) **43,2 dk** (saf seyir 18,1 dk); hedef aralık 25–45 dk'nın üst tarafında.
 
 Rework öncesi `node tools/simulate.mjs 400`:
 
