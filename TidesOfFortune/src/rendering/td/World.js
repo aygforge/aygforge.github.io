@@ -280,6 +280,9 @@ export class World {
     c.globalAlpha = this.sails === 'full' ? 0.62 : 0.9;
     c.drawImage(this.sails === 'full' ? L.sailsFull : L.sailsFurled, 0, 0);
     c.globalAlpha = 1;
+    // Sonsuz Deniz kozmetikleri: kaptan flaması (12 ek liman) ve kıç süsü (20 ek liman); güverte karakterlerini kapatmaz
+    if (this.cosmetics?.flag && !this.flagUp) { const m = L.masts[L.masts.length - 1]; const wv = Math.sin(this.t * 4) > 0 ? 1 : 0; rect(c, m.x + 1, m.y - 14, 1, 10, '#3a2412'); rect(c, m.x + 2, m.y - 14, 8, 3, '#24508a'); rect(c, m.x + 2, m.y - 11, 6 + wv, 2, '#24508a'); px(c, m.x + 5, m.y - 13, '#f2c14e'); px(c, m.x + 9 + wv, m.y - 13, '#24508a'); }
+    if (this.cosmetics?.stern) { const sy = L.top + L.len - 3; rect(c, L.cx - 6, sy, 12, 3, '#8a6a20'); rect(c, L.cx - 5, sy, 10, 2, '#f2c14e'); px(c, L.cx, sy - 1, '#fff0a0'); px(c, L.cx - 4, sy + 1, '#c89030'); px(c, L.cx + 4, sy + 1, '#c89030'); }
     if (this.flagUp) { const m = L.masts[0]; rect(c, m.x + 2, m.y - 16, 9, 6, this.flagColor || '#0a0a0a'); if (!this.flagColor) px(c, m.x + 6, m.y - 14, '#ffffff'); }
     this.deck.draw(c, 'air');
     if (this.ocean.night || this.ocean.dark) disc(c, L.cx, L.helm.y - 6, 10, 'rgba(255,220,140,0.18)');

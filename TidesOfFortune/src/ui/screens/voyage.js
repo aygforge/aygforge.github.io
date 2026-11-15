@@ -1,6 +1,9 @@
 // Yolculuk ekranı: yaşayan top-down gemi ana odak. Üstte küçük durum, altta ilerleme; karşılaşmalar
 // aynı sahnede oynar, karar paneli gemiyi kapatmadan alttan açılır.
 import { h, icon } from '../dom.js';
+import * as X1 from '../../systems/X1System.js';
+import * as Ship from '../../systems/ShipSystem.js';
+import { endlessChips } from './x1ui.js';
 import { HARBOR_BY_ID, REGIONS } from '../../data/harbors.js';
 import { EVENT_BY_ID, EVENT_CATEGORIES, CHAINS } from '../../data/events.js';
 import * as Events from '../../systems/EventSystem.js';
@@ -25,6 +28,9 @@ export function renderVoyage(ui) {
   if (sailing && Events.disasterAhead(G) && run.pets.includes('PET_GECEYARISI')) chips.push(h('div.warnChip.purple', {}, icon('parrot'), " Gece Yarısı'nın tüyleri kabardı…"));
   if (sailing && v.hintIdx != null && v.hintIdx >= v.pos) { const ev = EVENT_BY_ID[v.queue[v.hintIdx].id]; chips.push(h('div.warnChip.purple', {}, icon('parrot'), ` Kehanet: bir ${EVENT_CATEGORIES[ev.cat].name.toLowerCase()} olayı var.`)); }
   const chains = Object.entries(run.chains).filter(([, c]) => c.status === 'active').map(([id, c]) => h('div.chainChip', {}, icon('chain'), ` ${CHAINS[id].name} `, h('b.n', {}, `${c.step}/${CHAINS[id].steps}`)));
+  if (X1.endlessOn(run)) chips.unshift(...endlessChips(run));
+  if (run.x1?.escort) chips.push(h('div.warnChip', {}, icon('shield'), ' Kraliyet konvoyuna eşlik ediyorsun'));
+  if (sailing && core.meta.upgrades.includes('UPG_X1_LEGEND_WHISPER') && !run.x1?.mysteryHinted && EVENT_BY_ID[v.queue[v.pos]?.id]?.cat === 'mystery') chips.push(h('div.warnChip.purple', {}, icon('eye'), ' Efsaneler fısıldıyor… sularda tuhaf bir şey var.'));
   const upcoming = sailing && rc ? Events.upcoming(G, rc).map((u) => h('div.upItem', { style: { borderColor: EVENT_CATEGORIES[u.ev.cat].color } }, h('b', {}, u.ev.title))) : [];
 
   const fill = h('div.pfill');
@@ -44,6 +50,7 @@ export function renderVoyage(ui) {
     enc && d.phase !== PH.APPROACH ? h('div.encWrap', {}, enc) : null,
     !enc || d.phase === PH.APPROACH ? h('div.voyBottom', {},
       itemBar(ui, { compact: true }),
+      core.meta.upgrades.includes('UPG_X1_EMERGENCY_LOCKER') && !run.x1?.once?.locker && run.ship.hull < Ship.maxHull(G) ? h('button.btn.sm.lockerBtn', { onTap: () => { const r = core.useEmergencyLocker(); if (r.ok) { ui.audio.play('repair'); ui.toast(`Acil Durum Dolabı: +${r.healed} hull`, 'good'); } else ui.toast(r.reason, 'warn'); } }, icon('kit'), ' +15') : null,
       h('div.progressWrap', {}, h('div.progress', {}, fill, h('div.pEnd', {}, icon('anchor'))), h('div.plabels', {}, h('span', {}, HARBOR_BY_ID[run.route[v.fromIdx].harborId].name), h('span', {}, 'Bilinmeyen liman'))),
       h(`button.btn.speedBtn${ui.fast ? '.primary' : ''}${sailing ? '' : '.locked'}`, { onTap: () => {
         if (!sailing) return ui.toast('Hızlandırma yalnızca sakin seyirde kullanılabilir.', 'warn');

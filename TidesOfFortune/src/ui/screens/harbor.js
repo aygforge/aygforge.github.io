@@ -17,6 +17,8 @@ import * as Pets from '../../systems/PetSystem.js';
 import { LANE_TYPES, laneText, intelAccuracy, DISTANCE_NAMES } from '../../systems/RouteSystem.js';
 import { statusBar, itemBar, crewCard, petCard, statusChips, hullBar } from '../components.js';
 import { crewPortraitURL, petPortraitURL } from '../../rendering/Characters.js';
+import * as X1 from '../../systems/X1System.js';
+import { contractsPanel, endlessChips } from './x1ui.js';
 
 const TABS = [
   ['trade', 'scale'],
@@ -24,6 +26,7 @@ const TABS = [
   ['yard', 'hammer'],
   ['crew', 'crew'],
   ['pets', 'paw'],
+  ['contracts', 'scroll'],
 ];
 
 export function renderHarbor(ui) {
@@ -38,6 +41,7 @@ export function renderHarbor(ui) {
     let badge = null;
     if (id === 'items' && visit.starterPicks > 0) badge = h('span.tbadge', {}, visit.starterPicks);
     if (id === 'pets' && visit.pet && !visit.petBought) badge = h('span.tbadge', {}, '!');
+    if (id === 'contracts' && (visit.contracts || []).some((c) => !c.taken)) badge = h('span.tbadge', {}, (visit.contracts || []).filter((c) => !c.taken).length);
     return h(`button.tab${tab === id ? '.on' : ''}`, { onTap: () => { ui.sub.harborTab = id; ui.audio.play('page'); ui.render(); } }, icon(ic, 'big'), h('span', {}, T.tabs[id]), badge);
   }));
 
@@ -46,30 +50,44 @@ export function renderHarbor(ui) {
   else if (tab === 'items') content = itemsPanel(ui);
   else if (tab === 'yard') content = yardPanel(ui);
   else if (tab === 'crew') content = crewPanel(ui);
+  else if (tab === 'contracts') content = contractsPanel(ui);
   else content = petsPanel(ui);
 
-  const departBtn = harbor.final
-    ? h('button.btn.big.primary.departBtn', { onTap: async () => {
+  const endless = X1.endlessOn(run);
+  const laneBtn = () => h('button.btn.big.primary.departBtn', { onTap: async () => {
+    if (visit.starterPicks > 0 && run.items.length < Ship.itemSlots(core.G)) {
+      const ok = await ui.confirm(T.departNoItems, { title: T.depart, ok: T.depart });
+      if (!ok) return;
+    }
+    laneSheet(ui);
+  } }, icon('sail', 'big'), ' ', endless ? 'Yeni rotaya çık' : T.depart);
+  const departBtn = endless
+    ? h('div.footRow', {},
+      h('button.btn.endExit', { onTap: async () => {
+        const ok = await ui.confirm(`Seferi bu güvenli limanda tamamlarsan kazandığın XP kalıcı hesabına aktarılır ve Sonsuz Deniz skorun %15 bonusla kaydedilir. Gemi, kargo ve altın yeni run'da sıfırlanır.`, { title: 'Seferi tamamla', ok: 'Seferi tamamla' });
+        if (ok) { ui.audio.play('achievement'); core.endlessExit(); }
+      } }, icon('anchor', 'big'), ' Seferi tamamla'),
+      laneBtn())
+    : harbor.final
+    ? h('div.footRow', {}, h('button.btn.big.departBtn.finishBtn', { onTap: async () => {
       const unsold = run.cargo.filter((l) => !GOOD_BY_ID[l.good].questItem).length;
       const ok = await ui.confirm(unsold ? 'Ambarında hâlâ satılmamış mal var. Büyük Liman\'da satarsan çift XP kazanırsın. Yine de run\'ı tamamlamak istiyor musun?' : "Run'ı tamamlayıp XP'ni kalıcı hesabına aktarmak istiyor musun?", { title: T.completeRun, ok: T.completeRun });
       if (ok) { ui.audio.play('achievement'); core.completeRun(); }
-    } }, icon('crown', 'big'), ' ', T.completeRun)
-    : h('button.btn.big.primary.departBtn', { onTap: async () => {
-      if (visit.starterPicks > 0 && run.items.length < Ship.itemSlots(core.G)) {
-        const ok = await ui.confirm(T.departNoItems, { title: T.depart, ok: T.depart });
-        if (!ok) return;
-      }
-      laneSheet(ui);
-    } }, icon('sail', 'big'), ' ', T.depart);
+    } }, icon('crown', 'big'), ' Seferi Bitir'),
+    h('button.btn.big.primary.departBtn.endlessBtn', { onTap: async () => {
+      const ok = await ui.confirm(`Büyük Liman başarın ve ödülün şimdi bir kez verilir ama run kapanmaz. Gemin, tayfan, hayvanların, kargon, itemlerin ve sözleşmelerin seninle gelir. Her dört ek limanda deniz derinleşir ve zorlaşır; dilediğin güvenli limanda seferi tamamlayabilirsin.`, { title: 'Sonsuz Denize Açıl', ok: 'Açıl' });
+      if (ok) { ui.audio.play('depart'); const r = core.enterEndless(); if (!r.ok) ui.toast(r.reason, 'warn'); }
+    } }, icon('wave', 'big'), ' Sonsuz Denize Açıl'))
+    : laneBtn();
 
   return h('div.screen.world.harbor', {},
     h('div.topRow', {},
-      h('div.harborName', {}, icon(type.icon, 'big'), h('div', {}, h('b', {}, harbor.name), h('small', {}, `${harbor.final ? 'Final · ' : ''}${type.name} · ${REGIONS[harbor.region].name} · `, h('span.n', {}, `${run.idx + 1}.`), ' liman'))),
+      h('div.harborName', {}, icon(type.icon, 'big'), h('div', {}, h('b', {}, harbor.name), h('small', {}, `${harbor.final && !endless ? 'Final · ' : ''}${type.name} · ${REGIONS[harbor.region].name} · `, h('span.n', {}, `${run.idx + 1}.`), ' liman'))),
       statusBar(ui, { compact: true }),
       h('button.iconBtn.sm', { onTap: () => { ui.sub.mapOpen = true; ui.render(); }, title: T.map }, icon('map', 'big')),
       h('button.iconBtn', { onTap: () => ui.go('menu'), title: T.mainMenu }, icon('home', 'big')),
     ),
-    visit.statuses.length || run.pirateRep ? h('div.statusRow', {}, ...statusChips(visit.statuses, run)) : null,
+    visit.statuses.length || run.pirateRep || endless ? h('div.statusRow', {}, ...endlessChips(run), ...statusChips(visit.statuses, run)) : null,
     h('div.harborLeft', {}, itemBar(ui, { compact: true }), deckInfo(ui)),
     ui.sub.panelHidden ? h('button.btn.panelShow', { onTap: () => { ui.sub.panelHidden = false; ui.render(); } }, icon('scale', 'big'), ' Liman') : null,
     ui.sub.panelHidden ? h('div.panelFoot.floating', {}, departBtn) : h('div.harborPanel.panel', {},
@@ -382,6 +400,9 @@ function laneSheet(ui) {
         h('span', {}, 'Belirsizlik ', h('b', {}, UNC[l.uncertainty])),
       ),
       h('div.laneRow.rumor', {}, icon('talk'), ' Söylenti: ', tx.rumors.join(', ')),
+      l.hazard ? h('div.laneRow', {}, icon('lantern'), ' Fener Ağı: ', l.hazard) : null,
+      l.demand ? h('div.laneRow', {}, icon('scale'), ' Pazar: ', l.demand) : null,
+      l.pirateIntel ? h('div.laneRow', {}, icon('skull'), ' İstihbarat: korsan etkinliği kesin') : null,
     );
   });
   close = ui.sheet(h('div', {},

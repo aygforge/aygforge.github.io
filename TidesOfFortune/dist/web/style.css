@@ -479,3 +479,40 @@ b.neutral { opacity: .8; }
 .arrival .arrivalPanel { left: auto; width: min(760px, 70%); right: calc(var(--safe-r) + 16px); }
 .encOpts { grid-auto-rows: min-content; }
 .encOpts .optCard { overflow: hidden; }
+
+/* ───── Yaşayan Denizler & Sonsuz Deniz ───── */
+.footRow { display: flex; gap: 10px; }
+.footRow .btn { flex: 1; }
+.footRow .endExit { flex: 0 0 auto; font-size: 20px; }
+.endlessBtn { background: linear-gradient(180deg, #3b7ec0, #24508a); border-color: #142a48; }
+.chip.endless { background: #24508a; color: #e8f4ff; }
+.chip.depth { background: #2a2a44; color: #c8d0ff; }
+.chip.cond { background: #3a4a3a; color: #d8f0c8; }
+.voyChips .chip { font-size: 18px; padding: 4px 10px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; }
+.secTitle { font-size: 20px; color: var(--gold); margin: 10px 0 6px; display: flex; align-items: center; gap: 6px; }
+.contractGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.contractCard { background: var(--parch); color: var(--ink); border: 3px solid var(--wood2); padding: 8px 10px; display: flex; flex-direction: column; gap: 4px; }
+.contractCard.taken { opacity: .55; }
+.contractCard .cHead { display: flex; align-items: center; gap: 6px; font-size: 19px; }
+.contractCard .cFac { font-weight: 700; }
+.contractCard .cStats { display: flex; flex-wrap: wrap; gap: 10px; font-size: 16px; }
+.contractCard .cDone { font-weight: 700; color: #2f6a32; }
+.activeContract { background: rgba(0,0,0,.25); padding: 6px 10px; margin: 4px 0; font-size: 17px; border-left: 4px solid var(--gold); }
+.factions { margin-top: 8px; }
+.facRow { display: flex; align-items: center; gap: 8px; font-size: 17px; margin: 4px 0; }
+.facRow b { min-width: 260px; }
+.facDot { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
+.repBar { display: inline-flex; gap: 2px; }
+.repBar i { width: 16px; height: 12px; background: #3a3030; display: inline-block; }
+.repBar i.zero { background: #6a6a6a; width: 6px; }
+.repBar i.pos { background: #5cb85c; }
+.repBar i.neg { background: #d9534f; }
+.journal .jRow { background: rgba(0,0,0,.25); padding: 6px 10px; margin: 4px 0; }
+.journal .jRow.unseen { opacity: .6; }
+.journal .jMarks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.journal .jo { font-size: 15px; padding: 2px 6px; background: #2a2430; color: #9a90a8; border-radius: 3px; }
+.journal .jo.ok { background: #2f5a35; color: #e8f8e0; }
+.journal .jo.lose.ok { background: #6a2a2a; color: #ffe0d8; }
+.journal .echo { display: block; color: #c8a0ff; margin-top: 4px; }
+.records .recRow { display: flex; justify-content: space-between; padding: 5px 10px; background: rgba(0,0,0,.25); margin: 3px 0; font-size: 18px; }
+.lockerBtn { min-height: 44px; font-size: 18px; padding: 4px 10px; }

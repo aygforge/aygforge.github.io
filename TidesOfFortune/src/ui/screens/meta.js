@@ -2,13 +2,14 @@
 import { h, icon, fmt } from '../dom.js';
 import { T } from '../../data/strings.js';
 import { UPGRADES, UPGRADE_BRANCHES, UPGRADE_BY_ID } from '../../data/upgrades.js';
+import { journalTab, recordsTab } from './x1ui.js';
 import { HARBORS, HARBOR_TYPES, REGIONS } from '../../data/harbors.js';
 import { CODEX_EVENTS, EVENT_CATEGORIES, CHAINS } from '../../data/events.js';
 import { CREW, CREW_CLASSES } from '../../data/crew.js';
 import { PETS } from '../../data/pets.js';
 import { TRADE_GOODS, GOOD_GROUPS } from '../../data/goods.js';
 import { ACHIEVEMENTS } from '../../data/achievements.js';
-import { canBuyUpgrade, upgradeVisible } from '../../systems/ProgressionSystem.js';
+import { canBuyUpgrade, upgradeVisible, legendStatus } from '../../systems/ProgressionSystem.js';
 import { crewPortraitURL, petPortraitURL } from '../../rendering/Characters.js';
 import { toggleFullscreen } from '../Stage.js';
 
@@ -30,6 +31,8 @@ export function renderUpgrades(ui) {
         h('small', {}, u.effect),
         u.req ? h('small.req', {}, `Önkoşul: ${UPGRADE_BY_ID[u.req].name}`) : null,
         u.needsSolara ? h('small.req', {}, 'Solara en az bir kez işe alındı ✓') : null,
+        u.needMysteries ? h('small.req', {}, `Dal koşulu: Codex'te ${u.needMysteries} gizem eventi (${legendStatus(meta).mysteries}/${u.needMysteries})`) : null,
+        u.needMysteryChain ? h('small.req', {}, `Koşul: bir gizemli zincir tamamla (${legendStatus(meta).chains ? '✓' : '✗'})`) : null,
         owned ? h('div.owned', {}, '✔ Alındı') : h('button.btn.sm' + (chk.ok ? '.primary' : '.locked'), { onTap: async () => {
           if (!chk.ok) return ui.toast(chk.reason, 'warn');
           const ok = await ui.confirm(`${u.name} — ${u.cost} XP harcansın mı?`, { title: 'Kalıcı yükseltme', ok: 'Satın al' });
@@ -47,6 +50,8 @@ export function renderUpgrades(ui) {
 
 const CODEX_TABS = [
   ['harbors', 'Limanlar'], ['events', 'Olaylar'], ['crew', 'Tayfa'], ['pets', 'Hayvanlar'], ['goods', 'Mallar'], ['ach', 'Başarımlar'], ['stats', 'İstatistik'],
+  ['journal', 'Denizci Günlüğü'],
+  ['records', 'Sonsuz Deniz'],
 ];
 
 export function renderCodex(ui) {
@@ -108,6 +113,10 @@ export function renderCodex(ui) {
     body = [h('div.statsList', {},
       ...[['Toplam run', s.runs], ['Tamamlanan', s.completed], ['Batan', s.sunk], ['En çok liman', s.bestHarbors], ['Toplam kazanılan altın', fmt(s.totalGoldEarned)], ['Bir run\'da en yüksek altın', fmt(s.bestGold)], ['Çözülen olay', s.totalEvents], ['Toplam XP', fmt(meta.xpTotalEarned)], ['Harcanan XP', fmt(meta.xpSpent)], ['Açılan yükseltme', `${meta.upgrades.length}/20`], ['Başarımlar', `${meta.achievements.length}/${ACHIEVEMENTS.length}`]]
         .map(([k, v]) => h('div.xprow', {}, h('span', {}, k), h('b', {}, v))))];
+  } else if (tab === 'journal') {
+    body = [journalTab(ui.core.meta)];
+  } else if (tab === 'records') {
+    body = [recordsTab(ui.core.meta)];
   } else if (tab === 'oldfriends') {
     body = [h('div.oldFriendsPage', {},
       h('div.cinePets', {}, h('img.cinePet', { src: petPortraitURL('PET_TARCIN', 7) }), h('img.cinePet.flip', { src: petPortraitURL('PET_ZIPIR', 7) })),

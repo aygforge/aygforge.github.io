@@ -99,6 +99,18 @@ export class EncounterDirector {
       w.sails = 'full';
       this.setPhase(PH.SAIL);
     }
+    this.ensureEscort();
+  }
+
+  /** Sözleşme: eşlik edilen kraliyet nakliye gemisi yolculuk boyunca yanımızda seyreder */
+  ensureEscort() {
+    const w = this.world;
+    const esc = this.run?.x1?.escort;
+    if (!esc || w.mode !== 'sail') { w.remove('escortShip'); return; }
+    if (!w.get('escortShip')) {
+      const L = w.layout();
+      w.spawn({ id: 'escortShip', kind: 'ship', style: 'merchant', level: 1, x: -(L.beam / 2 + 70), y: 60, rot: 0, scale: 0.8, sails: 'full', drift: false, persist: true, crewNpc: ['sailor', 'soldier'], damage: esc.hp <= 1 ? 'damaged' : 'healthy' });
+    }
   }
 
   enterHarbor(type, seed, docked = true) {
@@ -118,6 +130,8 @@ export class EncounterDirector {
     w.ocean.night = false;
     w.ocean.dark = 0;
     this.setPhase(docked ? PH.DOCKED : PH.IDLE);
+    // Sonsuz Deniz kilometre taşı: güvertede kısa kutlama (bir kez)
+    if (docked && this.run?.x1?.celebrate && this.run.phase === 'harbor') this.celebrate();
     // varış eventi (rıhtım) devam ediyorsa sahneyi kur
     const a = this.run?.arrival;
     if (a && a.current) {
@@ -157,6 +171,12 @@ export class EncounterDirector {
     w.ocean.fog = opts[1].includes('fog') ? 1 : 0;
     w.ocean.night = region >= 4 && h === 3;
     w.ocean.dark = 0;
+    // Sonsuz Deniz: Deniz Koşulu atmosferi
+    const cond = run.x1?.endless?.on ? run.x1.endless.cond : null;
+    w.ocean.condition = cond;
+    if (cond === 'fog') w.ocean.fog = 1;
+    else if (cond === 'storms') { w.ocean.preset = 'storm'; w.weatherFx = ['rain', 'lightning']; }
+    else if (cond === 'forgotten') { w.ocean.preset = 'eerie'; }
     this.baseWeather = { preset: w.ocean.preset, fx: w.weatherFx.slice(), fog: w.ocean.fog, night: w.ocean.night };
   }
 
@@ -696,8 +716,27 @@ export class EncounterDirector {
     this.restoreWeather();
     this.runSteps([{ type: 'sails', state: 'full' }, { type: 'speed', v: SAIL_SPEED }, { type: 'camera' }, { type: 'wait', dur: 1.2 }], () => {
       w.entities = w.entities.filter((e) => e.persist || (e.y > 400 || e.y < -400 ? false : !e.encounter));
+      this.ensureEscort();
       this.setPhase(PH.SAIL);
     });
+  }
+
+  /** Kilometre taşı kutlaması: tayfa toplanır, bayrak kalkar, hayvanlar tepki verir, kamera açılır */
+  celebrate() {
+    const c = this.run.x1.celebrate;
+    this.run.x1.celebrate = null;
+    const w = this.world;
+    const L = w.layout();
+    const steps = [
+      [{ type: 'gather', at: 'center', task: 'Kilometre taşını kutluyor', n: 5, run: true, dur: 6 }, { type: 'camera', focus: { x: 0, y: -20 }, k: 0.2, zoom: 0.92 }],
+      { type: 'wait', dur: 1.2 },
+      [{ type: 'flag', up: true, color: '#24508a' }, { type: 'sound', name: 'cheer' }, { type: 'particles', kind: 'gold', at: 'ship', n: 30 }, { type: 'float', at: 'ship', text: `${c.name} +${c.xp} XP`, color: '#f2e080' }],
+      [{ type: 'pet', id: 'PET_TARCIN', pose: 'wag', dur: 4 }, { type: 'pet', id: 'PET_ZIPIR', pose: 'sit', dur: 4 }, { type: 'say', actor: 'CAPTAIN', text: `${c.at}. ek liman! Ufuk bizi çağırıyor!`, dur: 2.6 }],
+      { type: 'wait', dur: 2.4 },
+      [{ type: 'flag', up: false }, { type: 'camera' }],
+    ];
+    void L;
+    this.runSteps(steps, () => { w.deck.release(); });
   }
 
   // ───────── Limana yanaşma ─────────

@@ -24,7 +24,7 @@ export const T = {
   items: 'İtemler',
   crew: 'Tayfa',
   pets: 'Hayvan',
-  tabs: { trade: 'Mal Al/Sat', items: 'İtem Seç', yard: 'Tersane', crew: 'Tayfa', pets: 'Hayvan' },
+  tabs: { trade: 'Mal Al/Sat', items: 'İtem Seç', yard: 'Tersane', crew: 'Tayfa', pets: 'Hayvan', contracts: 'Sözleşme' },
   rotate: 'Lütfen telefonunu yatay çevir',
   rotateSub: 'Tides of Fortune yatay ekranda oynanır.',
   confirmNewRun: 'Aktif bir run var. Yeni run başlatırsan mevcut run terk edilir; şu ana kadar kazanılan XP kalıcı hesabına aktarılır. Emin misin?',

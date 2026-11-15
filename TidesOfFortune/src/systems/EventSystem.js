@@ -321,6 +321,7 @@ export function triggerNext(G, host, rng, ctx) {
     if (!run.seenEvents.includes(ev.id)) run.seenEvents.push(ev.id);
     G.meta.codex.events[ev.chain && ev.step > 1 ? CHAINS[ev.chain].start : ev.id] = true;
     X1.checkStoryHunter(G, unlockAchievement);
+    if (ev.cat === 'mystery' && run.x1) run.x1.mysteryHinted = true;
     if (ev.chain) {
       const cs = (run.chains[ev.chain] ||= { status: 'active', flags: {}, step: 0 });
       cs.status = 'active';

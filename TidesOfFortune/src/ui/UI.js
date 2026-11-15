@@ -70,6 +70,7 @@ export class UI {
       return;
     }
     w.syncFromRun(run, Ship.hullCategory(this.G));
+    w.cosmetics = this.core.meta.x1?.cosmetics || null;
     const harborId = run.route[run.idx]?.harborId;
     const key = run.ended ? 'end' : `${run.phase}|${run.idx}|${run.voyage ? run.voyage.toIdx : ''}`;
     if (this.sceneKey === key) { this.renderer.setScene(this.sub.mapOpen ? 'map' : 'world'); return; }

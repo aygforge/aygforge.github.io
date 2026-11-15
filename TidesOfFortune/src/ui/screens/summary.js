@@ -10,8 +10,10 @@ const SRC = { arrival: 'Limana varış', trade: 'Ticaret kârı', events: 'Olayl
 export function renderSummary(ui) {
   const core = ui.core;
   const run = core.run;
-  const complete = run.result === 'complete';
+  const endless = run.result === 'endless_safe' || run.result === 'endless_sunk';
+  const complete = run.result === 'complete' || run.result === 'endless_safe';
   const abandoned = run.result === 'abandoned';
+  const e = run.x1?.endless;
   const last = HARBOR_BY_ID[run.route[run.idx].harborId];
   const xpRows = Object.entries(run.xp.sources).filter(([, v]) => v).map(([k, v]) => h('div.xprow', {}, h('span', {}, SRC[k] || k), h('b', {}, (v > 0 ? '+' : '') + v)));
   const ach = run.newAchievements.map((id) => h('div.achRow', {}, icon('star'), ' ', h('b', {}, ACHIEVEMENT_BY_ID[id].name), h('small', {}, ' — ', ACHIEVEMENT_BY_ID[id].desc)));
@@ -22,9 +24,10 @@ export function renderSummary(ui) {
   };
   return h('div.screen.world.summary', {},
     h('div.sumPanel.panel', {},
-      h('h1', {}, complete ? "Büyük Liman'a ulaştın!" : abandoned ? 'Sefer yarıda kaldı' : 'Gemi battı'),
+      h('h1', {}, run.result === 'endless_safe' ? 'Sonsuz Deniz seferi tamamlandı' : run.result === 'endless_sunk' ? "Sonsuz Deniz'de battın" : complete ? "Büyük Liman'a ulaştın!" : abandoned ? 'Sefer yarıda kaldı' : 'Gemi battı'),
       h('p.sub', {}, complete ? 'Rıhtımda kalabalık seni alkışladı. Bu sefer denizler seninleydi.' : abandoned ? 'Limanda demir alıp seferi bıraktın.' : `${last.name} açıklarında dalgalar gemiyi yuttu. Ama her batış bir derstir.`),
       run.special.oldFriends ? h('div.banner.gold', {}, icon('heart'), ' ', T.oldFriendsLine) : null,
+      endless ? h('div.banner.gold', {}, icon('wave'), ' Ek liman ', h('b.n', {}, e.extra), ' · Derinlik ', h('b', {}, ['—', 'I', 'II', 'III', 'IV', 'V'][Math.min(5, e.extra ? 1 + Math.floor((e.extra - 1) / 4) : 0)]), ' · Skor ', h('b.n', {}, fmt(e.score)), run.result === 'endless_safe' ? ' (güvenli bitiş +%15)' : '', ' · Büyük Liman başarın korundu.') : null,
       h('div.sumGrid', {},
         h('div.sumStats', {},
           h('h3', {}, 'Sefer'),

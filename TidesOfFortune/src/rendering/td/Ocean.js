@@ -129,7 +129,8 @@ export class Ocean {
     if (r < 0.2) this.ambient.push({ kind: 'fishSchool', x: off(70), y: -40, t: 0, n: 16 + Math.floor(Math.random() * 16) });
     else if (r < 0.38) this.ambient.push({ kind: 'gulls', x: Math.random() * W, y: -20, vx: (Math.random() - 0.5) * 40, vy: 25, t: 0, n: 2 + Math.floor(Math.random() * 4), air: true });
     else if (r < 0.5) this.ambient.push({ kind: 'debris', x: off(60), y: -20, t: 0, sub: Math.random() < 0.5 ? 'barrel' : 'timber' });
-    else if (r < 0.6) this.ambient.push({ kind: 'distantShip', x: side < 0 ? 30 : W - 30, y: -80, vy: -14 + Math.random() * 8, t: 0, style: ['merchant', 'warship', 'pirate', 'merchant'][Math.floor(Math.random() * 4)], flip: Math.random() < 0.5 });
+    else if (r < 0.6) this.ambient.push({ kind: 'distantShip', x: side < 0 ? 30 : W - 30, y: -80, vy: -14 + Math.random() * 8, t: 0, style: this.condition === 'pirates' ? (Math.random() < 0.7 ? 'pirate' : 'merchant') : this.condition === 'trade' ? 'merchant' : ['merchant', 'warship', 'pirate', 'merchant'][Math.floor(Math.random() * 4)], flip: Math.random() < 0.5 });
+    if (this.condition === 'forgotten' && Math.random() < 0.5) this.ambient.push({ kind: 'glow', x: off(70), y: -40, t: 0 });
     else if (r < 0.7) this.ambient.push({ kind: 'shadow', x: off(80), y: -60, depth: 0.85, t: 0, s: 0.6 + Math.random() * 0.5 });
     else if (r < 0.8) this.ambient.push({ kind: 'islet', x: off(110), y: -70, t: 0, r: 16 + Math.random() * 14, palms: Math.floor(Math.random() * 3) });
     else if (r < 0.88 && region >= 3) this.ambient.push({ kind: 'fogBank', x: Math.random() * W, y: -80, t: 0, r: 70 });
@@ -178,6 +179,7 @@ export class Ocean {
         break;
       }
       case 'fogBank': DRAW.fog(ctx, a.x, a.y, a.t, { r: a.r, a: 0.18 }); break;
+      case 'glow': DRAW.glowPatch(ctx, a.x, a.y, a.t, { n: 3, w: 60, h: 40 }); break;
     }
   }
 
