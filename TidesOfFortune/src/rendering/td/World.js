@@ -233,7 +233,8 @@ export class World {
     // liman (rıhtım + kasaba)
     if (this.harbor) {
       const L = this.layout();
-      const px0 = Math.round(o.x + this.ship.x + L.beam / 2 + 4);
+      // rıhtım dünyaya sabit (geminin yalpasıyla birlikte kaymaz)
+      const px0 = Math.round(o.x + L.beam / 2 + 4);
       target.save();
       target.translate(0, Math.round(this.harbor.offY || 0));
       drawTown(target, px0, H, this.harbor.type, this.t, this.harbor.seed);

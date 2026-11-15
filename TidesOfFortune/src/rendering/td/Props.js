@@ -194,9 +194,26 @@ const TOWN = {
 };
 
 /** Liman sahnesi: sağda rıhtım + kasaba (üstten), x: rıhtım kenarı, 0..H dikey */
+/** Kasaba: bir kez sabit bir görüntüye çizilir (tohum + tip + yükseklik başına), her karede yalnızca yerine konur.
+ *  Desen yerel koordinatlardan üretildiği için gemi/kamera hareket edince binalar değişmez. */
+const townCache = new Map();
 export function drawTown(c, x0, H, type, t, seed = 1) {
+  const key = `${type}|${seed}|${H}`;
+  let img = townCache.get(key);
+  if (!img) {
+    if (townCache.size > 12) townCache.clear();
+    img = makeCanvas(560, H);
+    paintTown(img.getContext('2d'), 0, H, type, seed);
+    townCache.set(key, img);
+  }
+  c.drawImage(img, Math.round(x0), 0);
+  // yalnızca fener yanıp söner
+  disc(c, Math.round(x0) + 40, 26, 2, Math.sin(t * 2) > 0 ? '#fff0a0' : '#f2c14e');
+}
+
+function paintTown(c, x0, H, type, seed) {
   const S = TOWN[type] || TOWN.trade;
-  const W = 900;
+  const W = 560;
   rect(c, x0 + 26, 0, W, H, S.ground);
   // yollar
   for (let y = 20; y < H; y += 70) rect(c, x0 + 26, y, W, 6, '#b8a07a');
@@ -218,8 +235,8 @@ export function drawTown(c, x0, H, type, t, seed = 1) {
   if (S.jungle) for (let i = 0; i < 30; i++) disc(c, x0 + 40 + hash2(i, 1, seed) * 300, hash2(i, 2, seed) * H, 6, i % 2 ? '#2f6a3a' : '#3f7a42');
   if (S.flags) for (let i = 0; i < 4; i++) { rect(c, x0 + 60 + i * 70, 30 + i * 60, 7, 5, '#0a0a0a'); px(c, x0 + 63 + i * 70, 32 + i * 60, '#ffffff'); }
   if (S.grand) { disc(c, x0 + 120, H * 0.4, 24, '#e0b040'); disc(c, x0 + 120, H * 0.4, 16, '#f0d070'); disc(c, x0 + 120, H * 0.4, 6, '#fff0b0'); }
-  // fener
-  disc(c, x0 + 40, 26, 7, '#e8e4dc'); disc(c, x0 + 40, 26, 4, '#c8423b'); disc(c, x0 + 40, 26, 2, Math.sin(t * 2) > 0 ? '#fff0a0' : '#f2c14e');
+  // fener (ışığı drawTown'da canlı çizilir)
+  disc(c, x0 + 40, 26, 7, '#e8e4dc'); disc(c, x0 + 40, 26, 4, '#c8423b');
 }
 
 /** Rıhtım (iskele): x0 kenar, yatay şerit */
