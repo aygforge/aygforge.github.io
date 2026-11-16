@@ -72,7 +72,7 @@ export function drawMap(ctx, W, H, run, opts = {}) {
   const lastKnown = nodes[Math.min(run.idx, nodes.length - 1)];
   if (!HARBOR_BY_ID[run.route[run.route.length - 1].harborId].final) {
     for (let s = 0; s < 60; s++) { const f = s / 60; if (s % 3) continue; rect(ctx, lastKnown.x + (fin.x - lastKnown.x) * f, lastKnown.y + (fin.y - lastKnown.y) * f + Math.sin(f * 9) * 8, 2, 2, '#b8a070'); }
-    disc(ctx, fin.x, fin.y, 9, '#e0b040'); disc(ctx, fin.x, fin.y, 7, '#f8e8a8'); ctx.drawImage(iconCanvas('crown'), fin.x - 5, fin.y - 5);
+    disc(ctx, fin.x, fin.y, 12, '#e0b040'); disc(ctx, fin.x, fin.y, 10, '#f8e8a8'); ctx.drawImage(iconCanvas('crown'), fin.x - 8, fin.y - 8);
     for (let i = 0; i < 30; i++) { const fx = lastKnown.x + 30 + ((fin.x - lastKnown.x - 50) * i) / 30; disc(ctx, fx, H * 0.45 + Math.sin(i) * 20, 10, 'rgba(200,190,160,0.25)'); }
   }
   // bölge bantları
@@ -107,14 +107,14 @@ export function drawMap(ctx, W, H, run, opts = {}) {
     const { x, y } = nodes[i];
     const visited = i <= run.idx;
     const known = visited || (opts.known && opts.known(i));
-    disc(ctx, x, y, h.final ? 9 : 7, h.final ? '#e0b040' : visited ? '#7a5a3a' : '#b8a070');
-    disc(ctx, x, y, h.final ? 7 : 5, h.final ? '#f8e8a8' : visited ? '#f4ead5' : '#e8d6a8');
+    disc(ctx, x, y, h.final ? 12 : 11, h.final ? '#e0b040' : visited ? '#7a5a3a' : '#b8a070');
+    disc(ctx, x, y, h.final ? 10 : 9, h.final ? '#f8e8a8' : visited ? '#f4ead5' : '#e8d6a8');
     if (h.final) {
       const ic = iconCanvas('crown');
-      ctx.drawImage(ic, x - 5, y - 5);
+      ctx.drawImage(ic, x - 8, y - 8);
     } else if (known) {
       const ic = iconCanvas(TYPE_ICON[h.type] || 'anchor');
-      ctx.drawImage(ic, x - 5, y - 5);
+      ctx.drawImage(ic, x - 8, y - 8);
     } else {
       rect(ctx, x - 1, y - 3, 3, 1, '#7a5a3a');
       px(ctx, x + 1, y - 2, '#7a5a3a');

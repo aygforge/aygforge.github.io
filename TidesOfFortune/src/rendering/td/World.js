@@ -1,13 +1,12 @@
 // TOP-DOWN dünya sahnesi. Dünya koordinatı: bizim geminin merkezi (0,0); +y kıç yönü (ekranın altı).
 // Gemi kuzeye ilerler: okyanus aşağı akar. Karşılaşmalar aynı sahnede, gemi görünür kalarak oynar.
-import { makeCanvas, rect, px, disc, line } from '../pixel.js';
-import { topShip } from './TopShip.js';
+import { makeCanvas, rect, px, disc, line, hline, vline } from '../pixel.js';
+import { topShip, shipCompose } from './TopShip.js';
 import { Ocean } from './Ocean.js';
 import { Deck2D } from './Deck2D.js';
 import { DRAW, cargoSprite, drawTown, drawPier, drawCoastHint } from './Props.js';
 import './Props2.js';
-import './Props3.js';
-import { npcSprite, petSprite, CS } from './TopChars.js';
+import { npcSprite, petSprite, CS, dS } from './TopChars.js';
 import { iconCanvas } from '../icons.js';
 
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -166,7 +165,7 @@ export class World {
     this.ocean.update(dt, this.speed, W, H, { region: this.region, ambient: this.mode === 'sail' || this.mode === 'menu', fx: this.weatherFx || [] });
     // iz
     const o = this.screenOrigin(W, H);
-    if (this.mode !== 'harbor') this.ocean.emitWake(o.x + s.x, 0, L.beam, this.speed, o.y + s.y + L.len / 2 - 4, o.y + s.y - L.len / 2 + 4);
+    if (this.mode !== 'harbor') this.ocean.emitWake(o.x + s.x, 0, L.beam, this.speed, o.y + s.y + L.len / 2 + (L.sternH || 0) - 2, o.y + s.y - L.len / 2 + 4);
     // kamera
     const c = this.cam;
     c.x = lerp(c.x, c.tx, Math.min(1, dt * 1.5));
@@ -261,126 +260,210 @@ export class World {
     }
   }
 
-  drawOurShip(ctx, o) {
-    const L = this.layout();
-    const s = this.ship;
-    if (!this.shipCanvas || this.shipCanvas.width !== L.w || this.shipCanvas.height !== L.h) this.shipCanvas = makeCanvas(L.w, L.h);
-    const c = this.shipCanvas.getContext('2d');
-    c.clearRect(0, 0, L.w, L.h);
-    c.drawImage(L.hull, 0, 0);
-    // görünür kargo
-    const cargo = this.cargoOverride || s.cargo;
-    cargo.forEach((u, i) => {
-      if (!u) return;
-      const slot = L.cargoSlots[i % L.cargoSlots.length];
-      const stack = Math.floor(i / L.cargoSlots.length);
-      c.drawImage(cargoSprite(u.good, u.spoiled), Math.round(slot.x - 5), Math.round(slot.y - 5 - stack * 3));
-    });
-    this.deck.draw(c, 'deck');
-    // yelkenler: altındaki karakterler görünsün diye yarı saydam
-    c.globalAlpha = this.sails === 'full' ? 0.62 : 0.9;
-    c.drawImage(this.sails === 'full' ? L.sailsFull : L.sailsFurled, 0, 0);
-    c.globalAlpha = 1;
-    // Sonsuz Deniz kozmetikleri: kaptan flaması (12 ek liman) ve kıç süsü (20 ek liman); güverte karakterlerini kapatmaz
-    if (this.cosmetics?.flag && !this.flagUp) { const m = L.masts[L.masts.length - 1]; const wv = Math.sin(this.t * 4) > 0 ? 1 : 0; rect(c, m.x + 1, m.y - 14, 1, 10, '#3a2412'); rect(c, m.x + 2, m.y - 14, 8, 3, '#24508a'); rect(c, m.x + 2, m.y - 11, 6 + wv, 2, '#24508a'); px(c, m.x + 5, m.y - 13, '#f2c14e'); px(c, m.x + 9 + wv, m.y - 13, '#24508a'); }
-    if (this.cosmetics?.stern) { const sy = L.top + L.len - 3; rect(c, L.cx - 6, sy, 12, 3, '#8a6a20'); rect(c, L.cx - 5, sy, 10, 2, '#f2c14e'); px(c, L.cx, sy - 1, '#fff0a0'); px(c, L.cx - 4, sy + 1, '#c89030'); px(c, L.cx + 4, sy + 1, '#c89030'); }
-    if (this.flagUp) { const m = L.masts[0]; rect(c, m.x + 2, m.y - 16, 9, 6, this.flagColor || '#0a0a0a'); if (!this.flagColor) px(c, m.x + 6, m.y - 14, '#ffffff'); }
-    this.deck.draw(c, 'air');
-    if (this.ocean.night || this.ocean.dark) disc(c, L.cx, L.helm.y - 6, 10, 'rgba(255,220,140,0.18)');
-    // dünyaya yerleştir
-    ctx.save();
-    ctx.globalAlpha = s.alpha;
-    ctx.translate(Math.round(o.x + s.x), Math.round(o.y + s.y + s.sink));
-    ctx.rotate(s.rot);
-    ctx.drawImage(this.shipCanvas, -Math.round(L.center.x), -Math.round(L.center.y));
-    ctx.restore();
-    // pruva köpüğü
-    if (this.speed > 6) for (let i = 0; i < 6; i++) px(ctx, o.x + s.x + Math.sin(this.t * 7 + i) * (4 + i), o.y + s.y - L.len / 2 - 2 + i, '#ffffff');
-  }
-
-  drawEntity(ctx, e, o) {
-    const x = Math.round(e.screen ? e.x : o.x + e.x), y = Math.round(e.screen ? e.y : o.y + e.y);
-    ctx.save();
-    ctx.globalAlpha = e.alpha;
-    if (e.kind === 'npc') {
-      // sahnedeki yabancı figür (rıhtım, ada, sandal): hareket yönüne göre döner
-      const mv = e.lx != null && Math.abs(e.x - e.lx) + Math.abs(e.y - e.ly) > 0.02;
-      if (mv) { const dx = e.x - e.lx, dy = e.y - e.ly; e.dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : dy > 0 ? 'down' : 'up'; }
-      e.lx = e.x; e.ly = e.y;
-      ctx.drawImage(npcSprite(e.npc || 'sailor', e.dir || 'down', mv ? 'walk' : e.state || 'idle', Math.floor(e.t * 6) % 4), x - CS / 2, y - CS / 2);
-      if (e.carry) ctx.drawImage(cargoSprite(e.carry), x - 5, y - 14);
-      ctx.restore();
-      return;
-    }
-    if (e.kind === 'pet') {
-      ctx.drawImage(petSprite(e.pet, e.dir || 'down', e.pose || 'sit'), x - CS / 2, y - CS / 2);
-      ctx.restore();
-      return;
-    }
-    if (e.kind === 'ship') {
-      const L = topShip(e.level || 2, e.damage || 'healthy', e.style);
-      ctx.translate(x, y);
-      ctx.rotate(e.rot || 0);
-      ctx.scale(e.scale, e.scale);
-      ctx.drawImage(L.hull, -Math.round(L.center.x), -Math.round(L.center.y));
-      // gemideki figürler
-      if (e.crewNpc) e.crewNpc.forEach((k, i) => {
-        const st = L.stations[(i * 3 + 1) % L.stations.length];
-        ctx.drawImage(npcSprite(k, i % 2 ? 'left' : 'right', e.agitated ? 'react' : 'idle'), Math.round(st.x - L.center.x - CS / 2), Math.round(st.y - L.center.y - CS / 2));
-      });
-      if (e.loot) e.loot.forEach((g, i) => { const sl = L.cargoSlots[i % L.cargoSlots.length]; ctx.drawImage(cargoSprite(g), Math.round(sl.x - L.center.x - 5), Math.round(sl.y - L.center.y - 5)); });
-      ctx.globalAlpha = e.alpha * (e.sails === 'furled' ? 0.95 : 0.8);
-      ctx.drawImage(e.sails === 'furled' ? L.sailsFurled : L.sailsFull, -Math.round(L.center.x), -Math.round(L.center.y));
-      ctx.restore();
-      if (e.fire) DRAW.fire(ctx, x + (e.fire.dx || 0), y + (e.fire.dy || 0), this.t, { n: 14, w: 20, h: 14 });
-      if (e.walkers) for (const w of e.walkers) {
-        ctx.drawImage(npcSprite(w.npc, w.dir || 'down', w.path && w.path.length ? 'walk' : 'idle', Math.floor((w.ft || 0) * 6) % 4), Math.round(o.x + w.x - CS / 2), Math.round(o.y + w.y - CS / 2));
-        if (w.carry) ctx.drawImage(cargoSprite(w.carry), Math.round(o.x + w.x - 5), Math.round(o.y + w.y - 14));
+      drawOurShip(e, a) {
+        var o, l;
+        let r = this.layout(),
+          n = this.ship;
+        (!this.shipCanvas || this.shipCanvas.width !== r.w || this.shipCanvas.height !== r.h) && (this.shipCanvas = makeCanvas(r.w, r.h));
+        let i = this.shipCanvas.getContext("2d");
+        i.clearRect(0, 0, r.w, r.h);
+        let items = [];
+        (this.cargoOverride || n.cargo).forEach((d, p) => {
+          if (!d) return;
+          let f = r.cargoSlots[p % r.cargoSlots.length],
+            y = Math.floor(p / r.cargoSlots.length);
+          items.push({ y: f.y + 4 + y * 0.01, fn: () => dS(i, cargoSprite(d.good, d.spoiled), f.x, f.y + 6 - y * 6) });
+        });
+        items.push(...this.deck.items(i, "deck"));
+        for (let d of this.entities)
+          d.local &&
+            DRAW[d.kind] &&
+            items.push({
+              y: d.local.y + 0.2,
+              fn: () => {
+                let g = i.globalAlpha;
+                (i.globalAlpha = g * d.alpha), DRAW[d.kind](i, Math.round(d.local.x), Math.round(d.local.y), this.t, { W: this.W || 640, H: this.H || 360, ...(d.opts || {}) }), (i.globalAlpha = g);
+              },
+            });
+        this.sailA = this.sailA || [];
+        let acts = [...this.deck.actors.values(), ...this.deck.temp],
+          custom = ((o = this.cosmetics) != null && o.flag) || this.flagUp;
+        shipCompose(i, r, this.sails, items, this.t, {
+          noFlag: custom,
+          sailAlpha: (k, M) => {
+            if (this.sails !== "full") return (this.sailA[k] = 1), 1;
+            let B = M.spr.box,
+              hid = acts.some(
+                (A) => !A.hidden && A.kind !== "parrot" && !A.z && A.y < M.y - 3 && A.x > M.x + B.x0 - 4 && A.x < M.x + B.x1 + 4 && A.y - 18 < M.y + B.y1 && A.y > M.y + B.y0,
+              ),
+              tg = hid ? 0.42 : 0.86,
+              c = this.sailA[k] == null || this.sailA[k] === 1 ? 0.86 : this.sailA[k];
+            return (c += (tg - c) * 0.1), (this.sailA[k] = c), c;
+          },
+        });
+        if ((o = this.cosmetics) != null && o.flag && !this.flagUp) {
+          let d = r.masts[r.masts.length - 1],
+            p = Math.sin(this.t * 4) > 0 ? 1 : 0,
+            fy = d.y - d.h - 1;
+          vline(i, d.x, fy - 10, fy + 1, "#3a2412"),
+            rect(i, d.x + 1, fy - 10, 9, 4, "#24508a"),
+            rect(i, d.x + 1, fy - 6, 7 + p, 2, "#24508a"),
+            rect(i, d.x + 4, fy - 9, 2, 2, "#f2c14e"),
+            px(i, d.x + 10 + p, fy - 9, "#24508a"),
+            hline(i, d.x + 1, d.x + 7, fy - 4, "#1a3a66");
+        }
+        if ((l = this.cosmetics) != null && l.stern) {
+          let d = r.top + r.len + 1;
+          rect(i, r.cx - 8, d, 16, 3, "#8a6a20"),
+            rect(i, r.cx - 7, d, 14, 2, "#f2c14e"),
+            px(i, r.cx, d - 1, "#fff0a0"),
+            px(i, r.cx - 1, d - 1, "#f2c14e"),
+            px(i, r.cx + 1, d - 1, "#f2c14e"),
+            px(i, r.cx - 5, d + 1, "#c89030"),
+            px(i, r.cx + 5, d + 1, "#c89030"),
+            px(i, r.cx, d + 3, "#f2c14e");
+        }
+        if (this.flagUp) {
+          let d = r.masts[0],
+            fy = d.y - d.h - 1,
+            p = Math.sin(this.t * 4) > 0 ? 1 : 0,
+            c = this.flagColor || "#0a0a0a";
+          vline(i, d.x, fy - 11, fy + 1, "#3a2412"), rect(i, d.x + 1, fy - 11, 6, 7, c), rect(i, d.x + 7, fy - 11 + p, 5, 7, c);
+          this.flagColor || (rect(i, d.x + 4, fy - 9, 3, 2, "#ffffff"), px(i, d.x + 5, fy - 7, "#ffffff"), px(i, d.x + 3, fy - 6, "#ffffff"), px(i, d.x + 7, fy - 6, "#ffffff"));
+        }
+        if (
+          (this.deck.draw(i, "air"),
+          (this.ocean.night || this.ocean.dark) && (disc(i, r.cx, r.helm.y - 10, 13, "rgba(255,220,140,0.14)"), disc(i, r.cx, r.helm.y - 10, 7, "rgba(255,220,140,0.12)")),
+          e.save(),
+          (e.globalAlpha = n.alpha),
+          e.translate(Math.round(a.x + n.x), Math.round(a.y + n.y + n.sink)),
+          e.rotate(n.rot),
+          e.drawImage(this.shipCanvas, -Math.round(r.center.x), -Math.round(r.center.y)),
+          e.restore(),
+          this.speed > 6)
+        ) {
+          for (let d = 0; d < 7; d++) px(e, a.x + n.x + Math.sin(this.t * 7 + d) * (3 + d), a.y + n.y - r.len / 2 - 1 + d, "#ffffff");
+          // kıç aynasının altında köpük
+          let sy = a.y + n.y + r.len / 2 + (r.sternH || 0) - 1;
+          for (let d = -6; d <= 6; d++) Math.sin(this.t * 9 + d * 1.7) > -0.2 && px(e, a.x + n.x + d * (r.beam / 16), sy + (Math.abs(d) % 2), "rgba(240,250,255,0.8)");
+        }
       }
-      if (e.hooks) for (const hk of e.hooks) { if (hk.plank) { for (let k = -2; k <= 2; k++) line(ctx, o.x + hk.x0, o.y + hk.y0 + k, o.x + hk.x1, o.y + hk.y1 + k, Math.abs(k) === 2 ? '#3a2412' : '#a87a4a'); } else line(ctx, o.x + hk.x0, o.y + hk.y0, o.x + hk.x1, o.y + hk.y1, '#3a2a1a'); }
-      return;
-    }
-    if (e.kind === 'wave') { ctx.restore(); DRAW.wave(ctx, 0, y, this.t, { W: this.W }); return; }
-    if (e.kind === 'flag') { ctx.restore(); return; }
-    const fn = DRAW[e.kind];
-    if (fn) {
-      const opts = { W: this.W || 640, H: this.H || 360, ...(e.opts || {}) };
-      if (e.scale !== 1) { ctx.translate(x, y); ctx.scale(e.scale, e.scale); fn(ctx, 0, 0, this.t, opts); }
-      else fn(ctx, x, y, this.t, opts);
-    }
-    ctx.restore();
-  }
+      drawEntity(e, a, r) {
+        if (a.local && DRAW[a.kind] && !a.screen) return;
+        let n = Math.round(a.screen ? a.x : r.x + a.x),
+          i = Math.round(a.screen ? a.y : r.y + a.y);
+        if ((e.save(), (e.globalAlpha = a.alpha), a.kind === "npc")) {
+          let o = a.lx != null && Math.abs(a.x - a.lx) + Math.abs(a.y - a.ly) > 0.02;
+          if (o) {
+            let l = a.x - a.lx,
+              d = a.y - a.ly;
+            a.dir = Math.abs(l) > Math.abs(d) ? (l > 0 ? "right" : "left") : d > 0 ? "down" : "up";
+          }
+          (a.lx = a.x),
+            (a.ly = a.y),
+            dS(e, npcSprite(a.npc || "sailor", a.dir || "down", o ? "walk" : a.state || "idle", Math.floor(a.t * 6) % 4), n, i + 2),
+            a.carry && dS(e, cargoSprite(a.carry), n, i - 22),
+            e.restore();
+          return;
+        }
+        if (a.kind === "pet") {
+          dS(e, petSprite(a.pet, a.dir || "down", a.pose || "sit"), n, i + 2), e.restore();
+          return;
+        }
+        if (a.kind === "ship") {
+          let PI = Math.PI,
+            rr = ((((a.rot || 0) + PI) % (2 * PI)) + 2 * PI) % (2 * PI) - PI,
+            ori = Math.abs(rr) <= PI / 4 ? "up" : Math.abs(rr) >= (3 * PI) / 4 ? "down" : rr > 0 ? "right" : "left",
+            base = { up: 0, right: PI / 2, down: PI, left: -PI / 2 }[ori],
+            res = ((((rr - base + PI) % (2 * PI)) + 2 * PI) % (2 * PI)) - PI,
+            tilt = Math.max(-0.3, Math.min(0.3, res * 0.6)),
+            o = topShip(a.level || 2, a.damage || "healthy", a.style, ori),
+            cv = a._cv && a._cv.width === o.w && a._cv.height === o.h ? a._cv : (a._cv = makeCanvas(o.w, o.h)),
+            c2 = cv.getContext("2d"),
+            items = [],
+            toUs = a.x > this.ship.x ? "left" : "right";
+          c2.clearRect(0, 0, o.w, o.h);
+          a.crewNpc &&
+            a.crewNpc.forEach((l, d) => {
+              let p = o.stations[(d * 3 + 1) % o.stations.length];
+              items.push({ y: p.y, fn: () => dS(c2, npcSprite(l, d % 3 === 2 ? "down" : toUs, a.agitated ? "react" : "idle"), p.x, p.y + 2) });
+            });
+          a.loot &&
+            a.loot.forEach((l, d) => {
+              let p = o.cargoSlots[d % o.cargoSlots.length];
+              items.push({ y: p.y + 4, fn: () => dS(c2, cargoSprite(l), p.x, p.y + 6) });
+            });
+          shipCompose(c2, o, a.sails === "furled" ? "furled" : "full", items, this.t + (a.x || 0), { sailAlpha: () => (a.sails === "furled" ? 1 : 0.9) });
+          if (
+            (e.translate(n, i),
+            e.rotate(tilt),
+            e.scale(a.scale, a.scale),
+            e.drawImage(cv, -Math.round(o.center.x), -Math.round(o.center.y)),
+            e.restore(),
+            a.fire && DRAW.fire(e, n + (a.fire.dx || 0), i + (a.fire.dy || 0), this.t, { n: 14, w: 20, h: 14 }),
+            a.hooks)
+          )
+            for (let l of a.hooks)
+              if (l.plank) {
+                for (let d = -2; d <= 2; d++) line(e, r.x + l.x0, r.y + l.y0 + d, r.x + l.x1, r.y + l.y1 + d, Math.abs(d) === 2 ? "#3a2412" : d === -1 ? "#c89a62" : "#a87a4a");
+                line(e, r.x + l.x0, r.y + l.y0 + 3, r.x + l.x1, r.y + l.y1 + 3, "rgba(20,10,4,0.3)");
+              } else line(e, r.x + l.x0, r.y + l.y0, r.x + l.x1, r.y + l.y1, "#3a2a1a"), line(e, r.x + l.x0, r.y + l.y0 - 1, r.x + l.x1, r.y + l.y1 - 1, "#c8a070");
+          if (a.walkers)
+            for (let l of [...a.walkers].sort((A, B) => A.y - B.y))
+              (e.fillStyle = "rgba(20,10,4,0.22)"),
+                e.fillRect(Math.round(r.x + l.x - 4), Math.round(r.y + l.y), 8, 2),
+                dS(e, npcSprite(l.npc, l.dir || "down", l.path && l.path.length ? "walk" : "idle", Math.floor((l.ft || 0) * 6) % 4), r.x + l.x, r.y + l.y + 2),
+                l.carry && dS(e, cargoSprite(l.carry), r.x + l.x, r.y + l.y - 22);
+          return;
+        }
+        if (a.kind === "wave") {
+          e.restore(), DRAW.wave(e, 0, i, this.t, { W: this.W });
+          return;
+        }
+        if (a.kind === "flag") {
+          e.restore();
+          return;
+        }
+        let s = DRAW[a.kind];
+        if (s) {
+          let o = { W: this.W || 640, H: this.H || 360, ...(a.opts || {}) };
+          a.scale !== 1 ? (e.translate(n, i), e.scale(a.scale, a.scale), s(e, 0, 0, this.t, o)) : s(e, n, i, this.t, o);
+        }
+        e.restore();
+      }
+      drawFx(e, a, r) {
+        var l;
+        if (a.type === "p") {
+          (e.globalAlpha = Math.max(0, a.life / a.max)),
+            (e.fillStyle = a.col),
+            e.fillRect(Math.round(r.x + a.x), Math.round(r.y + a.y), a.size, a.size),
+            (e.globalAlpha = 1);
+          return;
+        }
+        let n = Math.max(0, Math.min(1, a.t / a.dur));
+        if (a.t < 0) return;
+        let i = r.x + a.from.x + (a.to.x - a.from.x) * n,
+          s = r.y + a.from.y + (a.to.y - a.from.y) * n,
+          o = Math.sin(n * Math.PI) * ((l = a.arc) != null ? l : 14);
+        if (a.type === "proj") {
+          a.kind !== "rope" && ((e.fillStyle = "rgba(0,0,0,0.22)"), e.fillRect(Math.round(i - 2), Math.round(s + 2), 4, 2));
+          a.kind === "ball"
+            ? (disc(e, i, s - o - 2, 2, "#141418"), px(e, i - 1, s - o - 3, "#6a6a76"), px(e, i - 3 * Math.sign(a.to.x - a.from.x || 1), s - o - 2, "rgba(200,200,200,0.5)"))
+            : a.kind === "arrow"
+              ? (line(e, i - 3, s - o - 2, i + 3, s - o - 2, "#e8e0c8"), px(e, i + (a.to.x > a.from.x ? 4 : -4), s - o - 2, "#9aa1a8"), px(e, i + (a.to.x > a.from.x ? -4 : 4), s - o - 3, "#c8423b"))
+              : a.kind === "chest"
+                ? dS(e, cargoSprite("GOOD_GOLD_BAR"), i, s - o)
+                : a.kind === "crate"
+                  ? dS(e, cargoSprite(a.good || "GOOD_SPICE"), i, s - o)
+                  : a.kind === "rope"
+                    ? (line(e, r.x + a.from.x, r.y + a.from.y - 6, i, s - 2, "#c8a070"), line(e, r.x + a.from.x, r.y + a.from.y - 5, i, s - 1, "#8a6a40"))
+                    : a.kind === "flare" && (disc(e, i, s - o - 2, 2, "#ff6040"), px(e, i, s - o - 2, "#fff0a0"), px(e, i - 1, s - o + 1, "rgba(255,200,120,0.6)"), px(e, i + 1, s - o + 3, "rgba(255,200,120,0.4)"));
+        } else
+          a.type === "coin"
+            ? (rect(e, i - 1, s - o * 0.8 - 2, 2, 3, a.col), px(e, i, s - o * 0.8 - 1, "#b8862b"), px(e, i - 1, s - o * 0.8 - 2, "#fff6c0"))
+            : a.type === "icon" && e.drawImage(iconCanvas(a.icon), Math.round(i - 8), Math.round(s - o - 13));
+      }
 
-  drawFx(ctx, f, o) {
-    if (f.type === 'p') {
-      ctx.globalAlpha = Math.max(0, f.life / f.max);
-      ctx.fillStyle = f.col;
-      ctx.fillRect(Math.round(o.x + f.x), Math.round(o.y + f.y), f.size, f.size);
-      ctx.globalAlpha = 1;
-      return;
-    }
-    const k = Math.max(0, Math.min(1, f.t / f.dur));
-    if (f.t < 0) return;
-    const x = o.x + f.from.x + (f.to.x - f.from.x) * k;
-    const y = o.y + f.from.y + (f.to.y - f.from.y) * k;
-    const z = Math.sin(k * Math.PI) * (f.arc ?? 14);
-    if (f.type === 'proj') {
-      px(ctx, x + 2, y + 3, 'rgba(0,0,0,0.3)');
-      if (f.kind === 'ball') { rect(ctx, x - 1, y - z - 1, 3, 3, '#141418'); px(ctx, x, y - z - 1, '#5a5a62'); }
-      else if (f.kind === 'arrow') line(ctx, x - 3, y - z, x + 3, y - z, '#e8e0c8');
-      else if (f.kind === 'chest') { rect(ctx, x - 4, y - z - 3, 8, 6, '#7a4a24'); rect(ctx, x - 4, y - z - 1, 8, 1, '#f2c14e'); }
-      else if (f.kind === 'crate') ctx.drawImage(cargoSprite(f.good || 'GOOD_SPICE'), Math.round(x - 5), Math.round(y - z - 5));
-      else if (f.kind === 'rope') line(ctx, o.x + f.from.x, o.y + f.from.y, x, y, '#c8a070');
-      else if (f.kind === 'flare') { disc(ctx, x, y - z, 2, '#ff6040'); px(ctx, x, y - z, '#fff0a0'); }
-    } else if (f.type === 'coin') {
-      px(ctx, x, y - z * 0.8, f.col);
-      px(ctx, x + 1, y - z * 0.8, '#b8862b');
-    } else if (f.type === 'icon') {
-      ctx.drawImage(iconCanvas(f.icon), Math.round(x - 5), Math.round(y - z - 5));
-    }
-  }
-
-  /** DOM için: konuşma balonları ve süzülen yazılar (tampon koordinatı) */
   overlays(W, H) {
     const o = this.screenOrigin(W, H);
     const out = [];

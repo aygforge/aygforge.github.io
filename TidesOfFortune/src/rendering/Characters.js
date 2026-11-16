@@ -2,6 +2,7 @@
 // her biri kendi idle (görev) animasyonuna sahiptir. Kareler önbelleğe alınır.
 import { makeCanvas, rect, px, hline, vline, line } from './pixel.js';
 import { CREW_BY_ID } from '../data/crew.js';
+import { crewSprite, petSprite } from './td/TopChars.js';
 
 export const FW = 16; // kare genişliği
 export const FH = 20; // kare yüksekliği (ayaklar en alt satırda)
@@ -369,29 +370,27 @@ function drawOcto(ctx, pose) {
 
 /** Portre (UI kartları için): sprite'ı büyütülmüş dataURL olarak döndürür */
 const portraitCache = new Map();
-export function crewPortraitURL(id, scale = 4) {
-  const k = id + scale;
-  if (portraitCache.has(k)) return portraitCache.get(k);
-  const src = crewFrame(id, 'idle', 0);
-  const c = makeCanvas(FW * scale, FH * scale);
-  const ctx = c.getContext('2d');
-  ctx.imageSmoothingEnabled = false;
-  ctx.drawImage(src, 0, 0, FW * scale, FH * scale);
-  const url = c.toDataURL ? c.toDataURL() : '';
-  portraitCache.set(k, url);
-  return url;
-}
+// Portreler artık oyun içi 3/4 sprite'lardan üretilir
+  // Portreler: oyun içi 3/4 sprite'lardan üretilir (önden görünüm)
+  export function crewPortraitURL(t, e = 4) {
+    let a = t + e;
+    if (portraitCache.has(a)) return portraitCache.get(a);
+    let r = crewSprite(t, "down", "idle", 0),
+      n = makeCanvas(FW * e, FH * e),
+      i = n.getContext("2d");
+    (i.imageSmoothingEnabled = !1), i.drawImage(r, 5, 4, 16, 20, 0, 0, FW * e, FH * e);
+    let s = n.toDataURL ? n.toDataURL() : "";
+    return portraitCache.set(a, s), s;
+  }
+  export function petPortraitURL(t, e = 4) {
+    let a = "p" + t + e;
+    if (portraitCache.has(a)) return portraitCache.get(a);
+    let bird = t === "PET_KIRMIZI" || t === "PET_GECEYARISI",
+      n = petSprite(t, bird || t === "PET_MARTI" ? "right" : t === "PET_KAPLUMBAGA" || t === "PET_GELINCIK" ? "right" : "down", bird ? "perch" : t === "PET_GELINCIK" || t === "PET_KAPLUMBAGA" ? "walk0" : "sit"),
+      i = makeCanvas(21 * e, 18 * e),
+      s = i.getContext("2d");
+    (s.imageSmoothingEnabled = !1), s.drawImage(n, 3, 5, 21, 18, 0, 0, 21 * e, 18 * e);
+    let o = i.toDataURL ? i.toDataURL() : "";
+    return portraitCache.set(a, o), o;
+  }
 
-export function petPortraitURL(id, scale = 4) {
-  const k = 'p' + id + scale;
-  if (portraitCache.has(k)) return portraitCache.get(k);
-  const pose = id === 'PET_KIRMIZI' || id === 'PET_GECEYARISI' ? 'perch0' : 'sit';
-  const src = petFrame(id, pose);
-  const c = makeCanvas(src.width * scale, src.height * scale);
-  const ctx = c.getContext('2d');
-  ctx.imageSmoothingEnabled = false;
-  ctx.drawImage(src, 0, 0, src.width * scale, src.height * scale);
-  const url = c.toDataURL ? c.toDataURL() : '';
-  portraitCache.set(k, url);
-  return url;
-}

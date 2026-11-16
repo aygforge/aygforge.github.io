@@ -195,8 +195,8 @@ export function sceneFor(ev, side) {
 }
 
 // rıhtım hayvan varyantları
-import { DRAW } from '../rendering/td/Props.js';
-import { petSprite } from '../rendering/td/TopChars.js';
-DRAW.dockCat = (c, x, y, t) => c.drawImage(petSprite('PET_ZIPIR', 'down', 'sit'), Math.round(x - 2), Math.round(y - 11));
-DRAW.dockDog = (c, x, y, t) => c.drawImage(petSprite('PET_TARCIN', 'down', Math.sin(t * 5) > 0 ? 'wag1' : 'wag0'), Math.round(x - 20), Math.round(y - 11));
-DRAW.rocksOnly = (c, x, y) => { c.fillStyle = '#5a5a62'; c.beginPath(); c.arc(x, y, 12, 0, 7); c.fill(); };
+import { DRAW, rock } from '../rendering/td/Props.js';
+import { petSprite, dS } from '../rendering/td/TopChars.js';
+DRAW.dockCat = (t, e, a, r) => dS(t, petSprite('PET_ZIPIR', 'left', Math.sin(r * 1.3) > 0.8 ? 'wag1' : 'sit'), e + 8, a + 3);
+DRAW.dockDog = (t, e, a, r) => dS(t, petSprite('PET_TARCIN', 'left', Math.sin(r * 5) > 0 ? 'wag1' : 'wag0'), e - 9, a + 2);
+DRAW.rocksOnly = (t, e, a) => { rock(t, Math.round(e), Math.round(a + 2), 12, '#62626c'); };
