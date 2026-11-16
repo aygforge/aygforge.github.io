@@ -67,6 +67,16 @@ npx cap open android      # Android Studio'da Build > Build APK
 - **Sonsuz Deniz**: Büyük Liman'da *Seferi Bitir* ya da *Sonsuz Denize Açıl*. Derinlik I–V, 4 limanlık bölümlerde deniz koşulları, kilometre taşları, skor ve rekorlar, kozmetik bayrak ve kıç süsü.
 - Kayıt sürümü 5; eski kayıtlar (`tof.meta`, `tof.run`, `tof.settings`) otomatik taşınır.
 
+## Genişleme Paketi 2 — Kaptanların Hikâyeleri
+
+- **25 bağımsız olay** (`src/data/events_x2.js`, `EVT_X2_*`): 6 tehlike, 9 şans, 6 gizem, 3 felaket, 1 tamir. Mürettebat/hayvan olayları ilgili ana kategoride `cond` ile seçilir. Her olayın kendi sahnesi `src/presentation/scenes/x2.js` içinde (düello kalası, kıyı top mevzileri, su altı zinciri, suyun üstünde ayak izleri, taşlaşan balıklar, dönen su duvarı, iki fırtına cephesi, yüzen tiyatro, hileli terazi, şamandıra onarımı…).
+- **4 hikâye zinciri** (`src/data/chains_x2.js`): Yara (4), Pita (3), Mira (4), Üç Kaptanın Yarışı (3) — 14 aşama, 12 final; finaller ve başarılı/başarısız alt sonuçlar Denizci Günlüğü'ne yazılır. Sonraki run'larda küçük yankılar.
+- **Zincir kuralları:** en fazla 2 aktif zincir ve en fazla 1 kişisel tayfa zinciri; normal run'da kalan seyir sayısı yetmiyorsa uzun zincir başlamaz; bekleyen zincir aşamaları rota olay sayısının **içinde** sayılır (1 zincir + 3 normal = 4). Tayfa ayrılırsa kişisel zincir güvenle kapatılabilir.
+- **12 yükseltme** (toplam 5680 XP, registry 44) ve **8 başarım**. Şanslı seçenekler %5–95 aralığında (özel garantili çözümler korunur).
+- **Sonsuz Deniz:** V'ten sonraki büyüme en fazla 2 kademe (hasar ≤ ×1,91, risk ≤ −18, onarım ≤ ×1,7). Altı olayda derinliğe bağlı özel varyant.
+- **Kayıt v6:** yalnızca `run.x2` / `meta.x2` eklenir; `x1` ve eğitim durumu korunur.
+- **3/4 görünüm çizimleri** artık kaynak kodda (`src/rendering/td/*`, `src/rendering/icons.js`); diğer daldaki küçültülmüş-paket yamaları kaynak haritasıyla gerçek isimlere taşındı.
+
 ## İlk oyun eğitimi
 
 İlk run'da oyuncu her adımı kendisi uygulayarak öğrenir (`src/ui/tutorial.js`). Hedef düğme parlayan bir halkayla gösterilir, yanında kısa bir açıklama balonu durur; eylem yapılınca sonraki adıma geçilir:

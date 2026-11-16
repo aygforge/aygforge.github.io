@@ -104,6 +104,18 @@ Durum: ✅ tamamlandı · 🟡 kısmen / sadeleştirilmiş · ❌ yok
 | Ticaret makası, satış doygunluğu, bölgesel fiyat farkı | ✅ | |
 | Sonsuz Deniz: daha dik derinlik, Uçurum kademeleri, gemi tehdidi, pahalı onarım/yükseltme | ✅ | |
 
+## Genişleme Paketi 2 — Kaptanların Hikâyeleri
+| Özellik | Durum | Not |
+|---|---|---|
+| 25 EVT_X2 olayı (6/9/6/3/1), her biri özel koreografi | ✅ | 188 sahne senaryosu tarayıcıda hatasız |
+| 4 zincir / 14 aşama / 12 final, alt sonuçlar Codex'te | ✅ | Kişisel zincirde güvenli kapanış |
+| Zincir kotası (2 aktif / 1 kişisel), kalan seyir şartı, bekleyen aşamaların olay sayısına dahil edilmesi | ✅ | |
+| 12 yükseltme (5680 XP), 8 başarım | ✅ | İşaret Fenerleri: run başına bir güvenli iletişim seçeneği |
+| Sonsuz Deniz üst sınırı + 6 derinlik varyantı | ✅ | |
+| Kayıt v6 (x1 korunur) | ✅ | |
+| 3/4 görünüm çizimleri kaynak koda taşındı | ✅ | Yüklenen sürümle yan yana görsel karşılaştırma |
+| İstem dışı sözleşme başarısızlığında −1 itibar | 🟡 | Paket 1'de ceza yoktu; Sözleşme Teminatı'nın anlamlı olması için küçük kontrollü düzeltme |
+
 ## Bilinen sınırlamalar
 - Rework sonrası simülasyon (300 run): tamamlanma %82,7, run ~43 dk (saf seyir ~18 dk, event başına ~30 sn), ~31 event/run, 1,14 yükseltme/run. Özel sahneler run'ı hedef aralığın (25–45 dk) üst ucuna taşıdı; gerekirse yaklaşma/çıkış beklemeleri kısaltılabilir.
 - Denge (rework öncesi): otomatik oyuncu run'ların ~%87'sini tamamlıyor ve ortalama ~6 limanda bir gemi yükseltiyor (GDD hedefi 2–3). Bilgili bir oyuncu daha hızlı yükseltebilir; zorluk ve fiyatlar `balance.js` ile kolayca ayarlanır. Gerçek oyuncu testleriyle ince ayar önerilir.

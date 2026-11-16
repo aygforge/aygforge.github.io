@@ -1,0 +1,83 @@
+TIDES OF FORTUNE — GENİŞLEME PAKETİ 2: KAPTANLARIN HİKÂYELERİ — TEST RAPORU
+==========================================================================
+
+0. TEMEL
+- Esas alınan sürüm: yüklenen TidesOfFortune_6.html (3/4 üst-karşı bakış çizimli güncel sürüm).
+  Yedeği: backups/TidesOfFortune_pre_expansion2.html (bir önceki paketin yedeği: backups/TidesOfFortune_pre_expansion.html).
+- Bu sürümün çizimleri başka bir dalda, küçültülmüş oyun dosyasına satır numarasıyla yama olarak yapılmıştı.
+  Geliştirmenin kırılmadan sürebilmesi için çizimler kaynak koda taşındı: paketin kaynak haritası ve kapsam analiziyle
+  küçültülmüş isimler gerçek isimlere çevrildi. Yüklenen dosyayla aynı sahneler yan yana çalıştırılıp görüntüler
+  karşılaştırıldı (liman, harita, korsan baskını, Kızıl Kaptan, Codex hayvanları): aynı.
+
+1. ÇIKTI
+- dist/TidesOfFortune_Expansion2.html — 1.180.657 bayt (≈1153 KB), tek dosya, çevrimdışı, harici bağlantı yok.
+
+2. 25 BAĞIMSIZ OLAY (hepsinde özel koreografi kaydı: 25/25)
+  danger (6):   EVT_X2_D01 Borç Tahsildarları, D02 Küpeştede Düello, D03 Denizin Altındaki Zincir,
+                D04 Dar Boğazda Çapraz Ateş, D05 Gece Yelkenli Takibi, CREW01 Yara'nın İşaretli Bayrağı
+  fortune (9):  F01 Kaptanlar Yarışı, F02 Tartısı Bozuk Tüccar, F03 Kıyısız Tiyatro, F04 Akıntıyla Sürüklenen Balıkçı,
+                F05 Denizlerin Baharat Tadımı, CREW02 Pita'nın Sönmeyen Ocağı, CREW04 Diego'nun Eski Rakibi,
+                CREW05 Magda'nın Gizli İlacı, PET01 Tarçın'ın Kurtardığı Martı
+  mystery (6):  M01 Suyun Üzerindeki Ayak İzleri, M02 Pusulanın İkinci Kuzeyi, M03 Taşlaşmış Balık Sürüsü,
+                M04 Derinliklerin Şarkısı, CREW03 Mira'nın Kayıp Dalış Aleti, PET02 Zıpır'ın Yakaladığı Gizli Paket
+  disaster (3): DIS01 İki Fırtınanın Çarpışması, DIS02 Dönen Deniz Duvarı, DIS03 Çöken Ticaret Konvoyu
+  repair (1):   REPAIR01 Sönen Deniz Şamandırası
+- Her seçenek node testinde gerçek çözümle denendi (her biri sonuç verdi; ikinci seçim ödülü tekrarlamaz).
+- Tarayıcıda her seçenek sahnesiyle oynatıldı (scenecheck): Paket 2 için 188 senaryo, 0 hata, 0 takılma.
+- Kare kare incelenen sahneler: düello, çapraz ateş, ayak izleri, su duvarı, iki fırtına, tiyatro, yarış finali (kestirme),
+  Yara finali (ifşa), Mira finali (resifi koru), Pita finali (şölen). Bu incelemede düzeltilenler: kamera uzaklaşınca
+  ekran kenarında kalan artık (eski bir hataydı), top mevzilerinin boyutu, yarış kestirmesinde gemi çakışması,
+  fırtına bulutlarının görünümü.
+
+3. 14 HİKÂYE SAHNESİ / 12 FİNAL
+- CH_X2_YARA_1–4 (confrontation / forgive / expose), CH_X2_PITA_1–3 (feast / kitchen / recipes),
+  CH_X2_MIRA_1–4 (protect / salvage / passage), CH_X2_RACE_1–3 (honorable / aid / shortcut).
+- Her zincirin her finali uçtan uca oynatıldı ve Codex'e kaydedildi; şansa bağlı finallerde başarılı/başarısız alt sonuç ayrı.
+- Yara "gerçek suçluyu ortaya çıkar": en az 2 kanıt ya da Yara tanıklığı; eksikse kilitli ve açıklamalı (test edildi).
+- Tayfa ayrılırsa: eksik karaktere ait seçenek gösterilmez, "Hikâyeyi yarım bırak" ile zincir güvenle kapanır (test edildi).
+- Kota: en fazla 2 aktif zincir, en fazla 1 kişisel zincir; normal run'da kalan seyir yetmezse uzun zincir başlamaz (test edildi).
+- Bekleyen zincir aşaması rotanın olay sayısına DAHİL (25 seed'de zincirli kuyruk zincirsizden uzun değil).
+- Çapraz etkileşimler: Yara → yarış daveti seçeneği; Pita → Yara 3. aşamada destek varyantı; Mira'nın resif haritası →
+  yarış kestirmesine +10; Magda + Vargas ortak tedavi; Tarçın/Zıpır tiyatro ve şölende tepki.
+- Yankılar: EVT_X2_ECHO_YARA/PITA/MIRA/RACE (bağımsız olay sayılmaz).
+
+4. 12 YÜKSELTME (registry 44, Paket 2 toplamı 5680 XP)
+  UPG_X2_TOW_HOOK 360, LOOKOUT_BELL 500, HONEST_SCALES 320, CONTRACT_GUARANTEE 520, DECK_CRANE 420, SIGNAL_LAMPS 460,
+  CURRENT_JOURNAL 410, ECHO_RESEARCH 610, CREW_BONDS 380, SHARED_WATCH 570, RACE_MAPS 450, ANCIENT_SIGNS 680.
+- Hepsi satın alındı (önkoşullar dahil); Solara gizli dalı korunuyor.
+- Çekme Kancası yalnız "tow", Vinç yalnız "lift" (aynı manevraya tek bonus), Yarış Haritaları yalnız yarışta — test edildi.
+- Gözcü Çanı: hasar yoksa hak harcanmaz, ikinci felakette işlemez — test edildi.
+- Sözleşme Teminatı run başına bir kez, ±3 sınırı aşılmaz — test edildi.
+- Şanslı seçenekler %5–95; özel garantili çözümler (%100) korunur.
+
+5. 8 BAŞARIM
+  ACH_X2_OLD_FLAGS, LAST_SPOON, REEF_GUARDIAN, THREE_SAILS, NO_DEBT, BEACON_KEEPER, CAPTAINS_FRIEND, LIVING_MEMORIES.
+- Kaptanların Dostu aynı gemiyi iki kez saymaz; başarımlar bir kez verilir — test edildi.
+
+6. SONSUZ DENİZ
+- Derinlik I–IV ve V (×1,55 hasar, −12 risk) korunur. V sonrası büyüme en fazla 2 kademe:
+  hasar ≤ ×1,91 (4–5. seviye gemide ek tehdit çarpanı ≤ ×1,2), risk cezası ≤ −18, onarım maliyeti ≤ ×1,7. Altın bonusu %20'de sabit.
+- 50 / 100 / 200 ek limanlık sentetik testler: rota, kuyruk ve kayıt kilitlenmeden tamamlandı; kayıt boyutu sınırlı.
+- Bot ölçümü (Büyük Liman'a sağ ulaşan 33 bot): ortanca 24 ek liman, üst çeyrek 44, 4 bot 60 limanı batmadan bitirdi —
+  zorluk artıyor ama batış matematiksel olarak kaçınılmaz değil.
+- Altı derinlik varyantı: D05 (III+, ikinci takipçi, kaçış −5), DIS01 (IV+, ek navigasyon seçeneği), DIS02 (III+, ters akıntı çıkışı),
+  M04 (V+, derin varlığa ışıkla yanıt), F01 (III+, usta rakipler −10), F03 (V+, tiyatro oyuncunun GERÇEK sefer istatistiklerini anlatır).
+
+7. REGRESYON
+- Tüm olaylar (Paket 1, hayvan olayları, temel oyun dahil) tarayıcıda: 817 senaryo, 0 hata, 0 takılma.
+- npm test 49/49 (32 mevcut + 17 Paket 2 kabul testi), tarayıcı uçtan uca 16/16, eğitim 15/15.
+- v5 kaydı v6'ya taşınıyor: x1 (itibar, sözleşmeler, Sonsuz Deniz) ve eğitim durumu korunuyor — test edildi.
+- Aynı seed + aynı kararlar → aynı sonuç (deterministik) — test edildi. Yeni Math.random kullanılmadı.
+- Simülasyon (150 run): hata yok; tamamlanma %84, run başına 27,3 olay (önceki 28,5: zincir aşamaları artık
+  olay sayısına dahil edildiği için — paketin istediği düzeltme).
+
+8. KÜÇÜK KONTROLLÜ DÜZELTMELER (gerekçeli)
+- İstem dışı sözleşme başarısızlığı (görev kargosu kaybı / süre dolması) ilgili fraksiyonda −1 itibar. Paket 1'de bu ceza
+  yoktu; "Sözleşme Teminatı" yükseltmesinin anlamı olabilmesi için eklendi. Gönüllü vazgeçme etkilenmez.
+- Tartısı Bozuk Tüccar'da "Dürüst pazarlık" seçeneği boş kargo şartı istemez (ambar doluyken olay kilitleniyordu;
+  simülasyonda yakalandı). Yer yoksa alım yapılmaz ve sonuçta yazar.
+
+9. DOĞRULANAMAYANLAR
+- Gerçek bir telefonda dokunmatik ve performans testi yapılmadı (yalnızca masaüstü Chromium).
+- 43 yeni sahnenin hepsi otomatik oynatıldı ama yalnızca ~12'si kare kare gözle incelendi.
+- Sonsuz Deniz'in 20+ ek limana kadar elle oynanması yapılmadı (bot ve sentetik testlerle doğrulandı).
