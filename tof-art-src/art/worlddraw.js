@@ -199,5 +199,5 @@
         } else
           a.type === "coin"
             ? (b(e, i - 1, s - o * 0.8 - 2, 2, 3, a.col), m(e, i, s - o * 0.8 - 1, "#b8862b"), m(e, i - 1, s - o * 0.8 - 2, "#fff6c0"))
-            : a.type === "icon" && e.drawImage(vt(a.icon), Math.round(i - 5), Math.round(s - o - 9));
+            : a.type === "icon" && e.drawImage(vt(a.icon), Math.round(i - 8), Math.round(s - o - 13));
       }

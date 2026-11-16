@@ -12,6 +12,8 @@ tam-üstten çizim kodunun yerine geçen yeni **3/4 bakış** çizim modüllerin
 | `art/props1.js`, `art/props2.js` | Olay sahnelerindeki tüm objeler (adalar, sandallar, canavarlar, enkaz…) |
 | `art/harbor.js`, `art/dock.js` | Liman kasabası, iskele, kıyı |
 | `art/worlddraw.js`, `art/deckdraw.js`, `art/deckbub.js`, `art/ocean_*.js` | Y-sıralı çizim, yelken saydamlaşması, uzak gemiler, martılar |
+| `art/icons.js` | Arayüz ikonları ve ticaret malı ikonları (16×16) |
+| `art/ocean_tile.js`, `art/ocean_base.js` | Açık deniz su dokusu (3 katman, 2 kare animasyon) ve dümen suyu |
 | `art/portraits.js` | Menülerdeki portreler (oyun-içi sprite'lardan üretilir) |
 
 ## Yeniden derleme
