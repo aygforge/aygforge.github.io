@@ -9,7 +9,7 @@ TIDES OF FORTUNE — GENİŞLEME PAKETİ 3: EFSANEVİ DENİZLER VE RAKİP KAPTAN
   karşılaştırıldı. Çizimler aynı; piksel farkı %0,1–6,0 ve tamamı dalga/yelken animasyonunun zamanlamasından.
 
 1. ÇIKTI
-- dist/TidesOfFortune_Expansion3.html — tek dosya, çevrimdışı, harici bağlantı yok. (Boyut teslim notunda.)
+- dist/TidesOfFortune_Expansion3.html — 1.322.926 bayt (≈1291 KB). tek dosya. çevrimdışı. harici bağlantı yok.
 
 2. 25 BAĞIMSIZ OLAY (her birinin kendi sahnesi var: 25/25)
   danger (6):   D01 Korsanların Rehine Sandalı, D02 Gezici Top Salı, D03 Sürüklenen Ağır Çapa, D04 Kara Dumanlı Devriye,
@@ -79,7 +79,14 @@ TIDES OF FORTUNE — GENİŞLEME PAKETİ 3: EFSANEVİ DENİZLER VE RAKİP KAPTAN
 - Aynı seed + aynı kararlar → aynı sonuç (Paket 3 içeriği dahil). Yeni Math.random yok.
 - 30 FPS + düşük efekt modunda dört yeni sahne ~28–30 kare/sn çizildi (başsız Chromium, eşzamanlı yük altında);
   karar kartları klavyeyle (odak + Enter) ve fareyle seçilebiliyor.
-- SAHNE TARAMASI: (aşağıda)
+- SAHNE TARAMASI (tarayıcıda her olayın her seçeneği sahnesiyle oynatıldı): tüm oyun 995 senaryo, 0 hata, 0 takılma;
+  bunun 178'i Paket 3 (46 sahne). Motor düzeltmesinden sonra eski sahneler de bu taramaya dahil.
+- Kare kare gözle incelenen 21 senaryo: üç efsanenin 10 seçeneğinin hepsi (L01 o0–o2, L02 o0–o3, L03 o0–o2),
+  D05 ortak kurtarma, F04 dengeleme, D01 halatla kurtarma, D02 salı ele geçirme, F05 ağ, M03 koridor, DIS01 iskandil,
+  DIS03 fener yolu, Konsey finali (ittifak ve rekabet), Armada finali (serbest bırak), Armada 2 saat, rakip takibi.
+  Bu incelemede düzeltilenler: sahne nesnelerinin üst panelin altında kalması (karşılaşmalar geminin yanına alındı),
+  armadanın ayrılışta gemimizin içinden geçmesi (artık yerinde çözülüp kayboluyor), taş sütunların görünmemesi
+  (adım normalleştirme hatası), Uyuyan Ada'nın başının gövdeye çok yakın olması.
 
 10. KÜÇÜK KONTROLLÜ DÜZELTME (gerekçeli)
 - Sahne motoru: `[par(...), wait(n)]` biçimindeki iç içe adım grupları sessizce atlanıyordu (adım listesi tek seviye
@@ -88,4 +95,6 @@ TIDES OF FORTUNE — GENİŞLEME PAKETİ 3: EFSANEVİ DENİZLER VE RAKİP KAPTAN
 
 11. DOĞRULANAMAYANLAR
 - Gerçek mobil test kullanıcıya kaldı (yalnızca masaüstü Chromium).
-- 46 yeni sahnenin hepsi otomatik oynatıldı; kare kare gözle incelenenler aşağıda listelendi, gerisi yalnızca otomatik tarandı.
+- 46 yeni sahnenin hepsi otomatik oynatıldı; yalnızca yukarıda listelenen 21 senaryo kare kare gözle incelendi.
+- Oyunda klavye kısayolu yok; klavye testi yalnızca odak + Enter ile seçenek kartı seçmeyi kapsıyor.
+- Sonsuz Deniz'in 20+ ek limana kadar elle oynanması yapılmadı (bot ve sentetik testlerle doğrulandı).
