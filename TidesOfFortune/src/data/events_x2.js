@@ -110,7 +110,7 @@ export const X2_EVENTS = [
       { label: 'Tartıyı incele', icon: 'scale', chance: 75, tags: ['scales'], req: { cargoFree: 1 },
         win: { text: `Kefenin altındaki gizli ağırlığı çıkardın. Satıcı kızardı ve dürüst tartıyla iki çuvalı daha da ucuza verdi.`, fx: { xp: 10, x1: { buyAt: { good: 'GOOD_SPICE', pct: 70, qty: 2 } } } },
         lose: { text: `Hileyi bulamadın; şüphelendiğin için satıcı teklifini geri çekti.`, fx: { xp: 5 } } },
-      { label: 'Dürüst pazarlık', icon: 'talk', req: { cargoFree: 1 },
+      { label: 'Dürüst pazarlık', icon: 'talk',
         win: { text: `Sakin bir pazarlıkla küçük ama garantili bir indirim aldın.`, fx: { x1: { buyAt: { good: 'GOOD_SPICE', pct: 90, qty: 2 } } } } },
     ] }),
 

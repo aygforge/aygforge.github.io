@@ -6,6 +6,7 @@ import { Ocean } from './Ocean.js';
 import { Deck2D } from './Deck2D.js';
 import { DRAW, cargoSprite, drawTown, drawPier, drawCoastHint } from './Props.js';
 import './Props2.js';
+import './Props4.js';
 import { npcSprite, petSprite, CS, dS } from './TopChars.js';
 import { iconCanvas } from '../icons.js';
 
@@ -256,6 +257,8 @@ export class World {
     for (const e of ents) if ((e.layer || 0) >= 3) this.drawEntity(target, e, o);
     target.restore();
     if (target !== ctx) {
+      // uzaklaşırken (zoom < 1) kenarlarda önceki karenin artığı kalmasın: kenarları deniz zemini doldurur
+      if (z < 1) this.ocean.drawBase(ctx, W, H);
       ctx.drawImage(this.zoomCanvas, Math.round(W / 2 - (W * z) / 2), Math.round(H / 2 - (H * z) / 2), Math.round(W * z), Math.round(H * z));
     }
   }

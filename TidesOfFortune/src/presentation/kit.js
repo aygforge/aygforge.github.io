@@ -66,7 +66,7 @@ export function optKind(c, info) {
   if (info.key === '__parrot') return 'parrot';
   if (info.key === '__midnight') return 'midnight';
   if (info.key === '__hamid') return 'hamid';
-  if (/^__(crown|redTalk|redSafe|redAlly|guild|eye|zipir)$/.test(info.key || '')) return info.key.slice(2);
+  if (/^__(crown|redTalk|redSafe|redAlly|guild|eye|zipir|lamps)$/.test(info.key || '')) return info.key.slice(2);
   if (tags.includes('combat') || /savaş|top|saldır/.test(label)) return 'combat';
   if (tags.includes('escape') || /kaç|hızlan|uzaklaş/.test(label)) return 'escape';
   if (tags.includes('surrender') || /teslim/.test(label)) return 'surrender';
@@ -103,6 +103,8 @@ export function injectedAction(c, info, encId) {
   }
   if (k === 'guild') return [par(S('flag', { up: true, color: '#e0b040' }), S('sound', { name: 'flag' })), S('crewWork', { prefer: ['CAPTAIN'], at: rail(sd), task: 'Lonca mührünü gösteriyor', dur: 3, hold: 1 }), enc ? S('say', { id: enc, text: 'Loncanın dostu! O zaman size özel fiyat.', dur: 2.4, hold: 0.8 }) : wait(0.6), S('coins', { from: enc || { x: sd * 100, y: -40 }, to: 'ship', n: 8 }), S('flag', { up: false })];
   if (k === 'eye') return [S('spawn', { e: { id: 'x1trail', kind: 'sparkles', x: sd * 30, y: -80, layer: 2, opts: { r: 60, col: '#7affd8' }, drift: false, encounter: true } }), par(S('sound', { name: 'magic' }), S('say', { actor: 'CAPTAIN', text: 'Gözün bıraktığı iz… şuradan!', dur: 2.4 })), par(S('heel', { rot: sd * 0.08 }), S('shipTo', { x: sd * 24 })), wait(1.2), S('heel', { rot: 0 }), S('remove', { id: 'x1trail' })];
+  // Paket 2 — İşaret Fenerleri: fenerle uzun-kısa dizi, karşı taraf ışıkla yanıt verir
+  if (k === 'lamps') return [S('deckProp', { id: 'x2lamp', kind: 'lantern', at: 'bow' }), S('crewWork', { prefer: ['CAPTAIN'], at: 'bow', task: 'Fenerle işaret veriyor', dur: 4, hold: 0.6 }), ...[0, 1, 2].map(() => [par(S('flash', {}), S('sound', { name: 'bell' })), wait(0.45)]), enc ? S('say', { id: enc, text: 'İşaretini aldık, dostum!', dur: 2, hold: 0.6 }) : wait(0.6), S('remove', { id: 'x2lamp' })];
   if (k === 'zipir') return [S('pet', { id: 'PET_ZIPIR', at: 'bow', pose: 'alert', dur: 5, say: 'Mrrraaav!', sfx: 'meow' }), wait(0.8), S('say', { actor: 'CAPTAIN', text: 'Zıpır yine gördü. Rotayı kır!', dur: 2.2 }), par(S('heel', { rot: -sd * 0.14 }), S('shipTo', { x: -sd * 36 })), wait(1.2), S('heel', { rot: 0 })];
   return null;
 }

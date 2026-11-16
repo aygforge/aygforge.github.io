@@ -17,6 +17,9 @@ function satisfy(run, r) {
   if (r.cargoGood && !run.cargo.some((l) => l.good === r.cargoGood)) run.cargo.push({ good: r.cargoGood, qty: 1, cost: 10 });
   if (r.cargoGoods && !run.cargo.some((l) => r.cargoGoods.includes(l.good))) run.cargo.push({ good: r.cargoGoods[0], qty: 2, cost: 10 });
   if (r.noCrew) run.crew = run.crew.filter((c) => c !== r.noCrew);
+  if (r.depth && run.x1) { run.x1.endless.on = true; run.x1.endless.extra = Math.max(run.x1.endless.extra || 0, (r.depth - 1) * 4 + 1); }
+  if (r.evidence && run.__chain) { const f = run.chains[run.__chain]?.flags; if (f) for (const k of r.evidence.of) f[k] = true; }
+  if (r.cargoFree) run.cargo = run.cargo.slice(0, 1);
   if (r.flag && run.x1) run.x1.mem.flags[r.flag] = true;
   if (r.contract && run.x1 && !run.x1.contracts.some((c) => c.type === r.contract)) run.x1.contracts.push(fakeContract(run, r.contract));
   if (r.upgrade && T0?.core.meta && !T0.core.meta.upgrades.includes(r.upgrade)) T0.core.meta.upgrades.push(r.upgrade);
@@ -64,6 +67,8 @@ export function installDevHooks(T) {
     run.pets = ['PET_TARCIN'];
     run.items = [];
     run.cargo = [{ good: 'GOOD_SPICE', qty: 3, cost: 20 }, { good: 'GOOD_WINE', qty: 2, cost: 20 }, { good: 'GOOD_GRAIN', qty: 2, cost: 10 }];
+    if (ev.chain) { run.chains[ev.chain] = run.chains[ev.chain] || { status: 'active', flags: {}, step: ev.step || 1 }; run.__chain = ev.chain; }
+    if (ev.needCrew && !(k !== 'auto' && ev.options[k]?.show?.noCrew)) satisfy(run, { crew: ev.needCrew });
     if (ev.cond) satisfy(run, { crew: ev.cond.crew, pet: ev.cond.pet });
     if (ev.cond2) satisfy(run, { pet: ev.cond2.pet });
     const petFor = { EVT_PET_MONKEY: 'PET_CUCE', EVT_PET_PARROT: 'PET_KIRMIZI', EVT_PET_MIDNIGHT: 'PET_GECEYARISI', EVT_PET_TARCIN_NOSE: 'PET_TARCIN' }[id];

@@ -4,6 +4,7 @@ import { h, icon } from '../dom.js';
 import * as X1 from '../../systems/X1System.js';
 import { EVENT_BY_ID, CHAINS, EVENT_CATEGORIES } from '../../data/events.js';
 import { X1_STANDALONE } from '../../data/events_x1.js';
+import { X2_STANDALONE } from '../../data/events_x2.js';
 import { HARBOR_BY_ID } from '../../data/harbors.js';
 
 const FINAL_NAMES = {
@@ -11,6 +12,12 @@ const FINAL_NAMES = {
   CH_X1_GUILD_SEAL: { expose: 'Yolsuzluğu ortaya çıkar', sell: 'Belgeleri sat', guild: 'Loncanın tarafını tut' },
   CH_X1_LIGHTKEEPER: { rescue: 'Bekçiyi kurtar', relight: 'Feneri yeniden yak', abandon: 'Feneri terk et' },
   CH_X1_GROOT_LEGACY: { restore: 'Eski gemiyi onar', salvage: 'Parçaları kurtar', memorial: 'Anısına bırak' },
+};
+const FINAL_NAMES_X2 = {
+  CH_X2_YARA: { confrontation: 'Yüzleşme', forgive: 'Bağışlama', expose: 'Gerçek suçluyu ortaya çıkarma' },
+  CH_X2_PITA: { feast: 'Büyük Deniz Şöleni', kitchen: 'Gezgin Aşevi', recipes: 'Kayıp Tarifler' },
+  CH_X2_MIRA: { protect: 'Resifi koru', salvage: 'Derinliğin hazinesi', passage: 'Yeni deniz yolu' },
+  CH_X2_RACE: { honorable: 'Onurlu yarış', aid: 'Rakibe yardım', shortcut: 'Tehlikeli kestirme' },
 };
 const ECHO_NAMES = { CH_X1_RED_CAPTAIN: 'Kızıl Amblem', CH_X1_GUILD_SEAL: 'Eski Bir Mührün Hikâyesi', CH_X1_LIGHTKEEPER: 'Feneri Anlatan Denizci', CH_X1_GROOT_LEGACY: 'Atölyenin Hatırası' };
 
@@ -98,12 +105,39 @@ export function journalTab(meta) {
     return h('div.jRow', {}, h('b', {}, c.name), h('div.jMarks', {}, ...c.finals.map((fid) => h(`span.jo${f.includes(fid) ? '.ok' : ''}`, {}, f.includes(fid) ? `✓ ${FINAL_NAMES[c.id][fid]}` : '??? (alternatif son)'))),
       x.echoes[c.id] ? h('small.echo', {}, '↺ Hikâye Yankısı: ', ECHO_NAMES[c.id]) : f.length ? h('small.echo', {}, '↺ Bir sonraki seferde yankısına rastlayabilirsin…') : null);
   });
+  // ── Paket 2: Kaptanların Hikâyeleri ──
+  const x2 = meta.x2 || { outcomes: {}, finals: {}, subs: {} };
+  const rows2 = X2_STANDALONE.map((id) => {
+    const ev = EVENT_BY_ID[id];
+    if (!meta.codex.events[id]) return h('div.jRow.unseen', {}, h('b', {}, '???'), h('small', {}, ` ${EVENT_CATEGORIES[ev.cat].name}`));
+    const o = x2.outcomes[id] || {};
+    const marks = ev.options.flatMap((op, i) => {
+      const k = `o${i}`;
+      const out = [h(`span.jo${o[`${k}|w`] ? '.ok' : ''}`, { title: op.label }, o[`${k}|w`] ? `✓ ${op.label}` : '???')];
+      if (op.lose) out.push(h(`span.jo.lose${o[`${k}|l`] ? '.ok' : ''}`, {}, o[`${k}|l`] ? `✗ ${op.label}` : '???'));
+      return out;
+    });
+    return h('div.jRow', {}, h('b', { style: { color: EVENT_CATEGORIES[ev.cat].color } }, ev.title), h('div.jMarks', {}, ...marks));
+  });
+  const found2 = X2_STANDALONE.filter((id) => meta.codex.events[id]).length;
+  const chains2 = Object.values(CHAINS).filter((c) => c.x2).map((c) => {
+    const f = x2.finals[c.id] || [];
+    return h('div.jRow', {}, h('b', {}, c.name), h('div.jMarks', {}, ...c.finals.map((fid) => {
+      const subs = x2.subs[`${c.id}:${fid}`] || [];
+      const sub = subs.length ? ` (${subs.map((x) => (x === 'win' ? 'başarılı' : 'başarısız')).join(' / ')})` : '';
+      return h(`span.jo${f.includes(fid) ? '.ok' : ''}`, {}, f.includes(fid) ? `✓ ${FINAL_NAMES_X2[c.id][fid]}${sub}` : '??? (alternatif son)');
+    })));
+  });
   return h('div.journal', {},
     h('p.small', {}, 'Her karşılaşmanın gördüğün sonuçları burada saklanır. Görmediklerin ', h('b', {}, '???'), ' olarak kalır; aynı olayla tekrar karşılaşmak yeni bir sonuç keşfettirebilir.'),
     h('div.secTitle', {}, 'Yaşayan Denizler olayları ', h('small.n', {}, `${found}/25`)),
     ...rows,
     h('div.secTitle', {}, 'Hikâye zincirleri ve alternatif sonlar'),
     ...chains,
+    h('div.secTitle', {}, 'Kaptanların Hikâyeleri ', h('small.n', {}, `${found2}/25`)),
+    ...rows2,
+    h('div.secTitle', {}, 'Kaptanların zincirleri: Yara, Pita, Mira ve Üç Kaptanın Yarışı'),
+    ...chains2,
   );
 }
 
