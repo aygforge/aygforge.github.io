@@ -2,6 +2,7 @@
 import { SAVE_VERSION } from '../config/balance.js';
 import { createMeta, createSettings } from './GameState.js';
 import { initRunX1, initMetaX1 } from '../systems/X1System.js';
+import { initRunX2, initMetaX2 } from '../systems/X2System.js';
 
 const KEYS = {
   meta: 'tof.meta',
@@ -34,6 +35,7 @@ function migrateMeta(m) {
   const base = createMeta();
   const out = { ...base, ...m, codex: { ...base.codex, ...(m.codex || {}) }, stats: { ...base.stats, ...(m.stats || {}) } };
   initMetaX1(out); // v5: genişleme alanları varsayılanlarla
+  initMetaX2(out); // v6: Kaptanların Hikâyeleri (x1 alanlarına dokunmaz)
   out.v = SAVE_VERSION;
   return out;
 }
@@ -49,6 +51,7 @@ function migrateRun(r) {
   r.pendingArrival ||= [];
   r.pendingStatus ||= [];
   initRunX1(r); // v5: fraksiyon/sözleşme/Sonsuz Deniz alanları (eski pirateRep taşınır)
+  initRunX2(r); // v6: Paket 2 run alanları
   r.v = SAVE_VERSION;
   return r;
 }

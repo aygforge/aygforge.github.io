@@ -1,6 +1,7 @@
 // Ticaret: fiyat hesabı, pazar üretimi, alış/satış, bozulma, kaçak mallar.
 // GDD: Satış fiyatı = baz satış × liman tipi çarpanı × (1 + tayfa ve upgrade satış bonusları) × bozulma çarpanı.
 import * as X1 from './X1System.js';
+import * as X2 from './X2System.js';
 import { BALANCE } from '../config/balance.js';
 import { GOOD_BY_ID, TRADE_GOODS, HARBOR_PRICE_MULT, HARBOR_MARKET_BIAS } from '../data/goods.js';
 import { HARBOR_BY_ID } from '../data/harbors.js';
@@ -93,6 +94,7 @@ export function sellPrice(G, harborId, goodId, { spoiled = false, statuses = nul
   if (st.includes('boom')) p *= 1.15;
   if (harbor.type === 'pirate') p *= X1.pirateHarborMult(G); // Korsan Yuvası'nda Kızıl Yelken itibarı (tek kaynak)
   p *= X1.sellMult(G, harbor, good);
+  p *= X2.sellMult(G.run);
   if (spoiled) p *= BALANCE.trade.spoiledSellFactor;
   return Math.max(1, Math.round(p));
 }

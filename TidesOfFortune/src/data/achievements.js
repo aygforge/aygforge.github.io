@@ -1,5 +1,14 @@
 // Başarımlar. ACH_OLD_FRIENDS GDD'de tanımlıdır; diğerleri HTML5 sürümünde eklendi (KARAR).
 export const ACHIEVEMENTS = [
+  // ── Kaptanların Hikâyeleri (X2) ──
+  { id: 'ACH_X2_OLD_FLAGS', name: 'Eski Bayraklar', desc: "Yara'nın hikâyesini herhangi bir sonla tamamla." },
+  { id: 'ACH_X2_LAST_SPOON', name: 'Son Kaşık', desc: "Pita'nın Büyük Deniz Şöleni'ni kur." },
+  { id: 'ACH_X2_REEF_GUARDIAN', name: 'Mercan Koruyucusu', desc: "Mira ile Sessiz Resif'i koru." },
+  { id: 'ACH_X2_THREE_SAILS', name: 'Üç Yelkenin Şampiyonu', desc: 'Üç Kaptanın Yarışı\'nı gerçekten kazan.' },
+  { id: 'ACH_X2_NO_DEBT', name: 'Bana Borç Yazamazsın', desc: 'Borç tahsildarlarını ödeme yapmadan uzaklaştır.' },
+  { id: 'ACH_X2_BEACON_KEEPER', name: 'Denizin Fenercisi', desc: 'Sönen bir deniz şamandırasını onar.' },
+  { id: 'ACH_X2_CAPTAINS_FRIEND', name: 'Kaptanların Dostu', desc: 'Bir seferde üç farklı gemiye yardım et.' },
+  { id: 'ACH_X2_LIVING_MEMORIES', name: 'Yaşayan Hatıralar', desc: 'Bir seferde iki farklı tayfanın kişisel hikâyesini tamamla.' },
   // ── Yaşayan Denizler & Sonsuz Deniz (X1) ──
   { id: 'ACH_X1_RETURNED', name: 'İade Edildi', desc: 'Yanlış Teslimat sandığını sahibine geri ver.' },
   { id: 'ACH_X1_NIGHTMARE', name: 'Korsanların Korkulu Rüyası', desc: "Kızıl Kaptan'ı savaşta yen." },

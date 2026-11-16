@@ -1,6 +1,7 @@
 // GameCore: run akışını (varış → liman → yolculuk → event → varış → ...) yöneten durum makinesi.
 // Her eylem atomiktir: doğrulanır, uygulanır, RNG durumu ile birlikte kaydedilir ve dinleyicilere bildirilir.
 import * as X1 from '../systems/X1System.js';
+import * as X2 from '../systems/X2System.js';
 import { BALANCE } from '../config/balance.js';
 import { HARBOR_BY_ID, HARBOR_TYPES } from '../data/harbors.js';
 import { EVENT_BY_ID } from '../data/events.js';
@@ -182,6 +183,9 @@ export class GameCore {
       run.visit.lanes = Route.generateLanes(G, idx);
     }
     run.visit.tipGood = tipRng.pick(run.visit.market.map((m) => m.good));
+    // Paket 2: tek ziyaretlik satış avantajı ve rota güvenilirliği hakları
+    X2.onHarborVisit(run);
+    if (run.x2?.laneIntel && run.visit.lanes.length) run.x2.laneIntel -= 1;
     // Eğitim: ilk limanda başlangıç altınıyla alınabilecek ucuz bir temel mal garanti
     if (run.tutorial && idx === 0 && !run.visit.market.some((m) => Trade.buyPrice(G, harbor.id, m.good) * 2 <= run.gold)) {
       const cheap = ['GOOD_SALT', 'GOOD_FISH', 'GOOD_GRAIN', 'GOOD_SANDSTONE'].map((g) => ({ g, p: Trade.buyPrice(G, harbor.id, g) })).sort((x, y) => x.p - y.p)[0];

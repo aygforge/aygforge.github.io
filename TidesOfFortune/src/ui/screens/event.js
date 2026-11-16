@@ -1,5 +1,6 @@
 // Karşılaşma panelleri: gemi ve olay nesneleri görünür kalırken altta açılan dar karar paneli,
 // animasyon sırasında küçülen başlık, sonuçta kısa özet + bekleyen seçimler.
+import * as X2 from '../../systems/X2System.js';
 import { h, icon, fmt } from '../dom.js';
 import { T } from '../../data/strings.js';
 import { EVENT_BY_ID, EVENT_CATEGORIES, CHAINS } from '../../data/events.js';
@@ -35,7 +36,7 @@ export function encounterPanel(ui, host) {
   const ev = EVENT_BY_ID[cur?.id || d.eventId];
   if (!ev) return null;
   if (d.phase === PH.APPROACH) return h('div.encBar', {}, icon('eye'), ' ', approachText(ev));
-  if (d.phase === PH.INTRO) return h('div.encPanel.slim', {}, header(ev, cur), h('p.encText', {}, ev.text));
+  if (d.phase === PH.INTRO) return h('div.encPanel.slim', {}, header(ev, cur), h('p.encText', {}, evText(ui, ev)));
   if (d.phase === PH.DECISION && cur && !cur.result) return decisionPanel(ui, host, ev, cur);
   if (d.phase === PH.ACTION) return h('div.encBar.action', {}, icon('sail'), ' ', cur?.result?.label || '…');
   if ((d.phase === PH.OUTCOME || d.phase === PH.DECISION) && cur?.result) return outcomePanel(ui, host, ev, cur);
@@ -58,7 +59,7 @@ function decisionPanel(ui, host, ev, cur) {
   const opts = Events.getOptions(G, host);
   const hl = ui.sub.eventHighlight;
   return h('div.encPanel', {},
-    h('div.encLeft', {}, header(ev, cur), h('p.encText', { 'data-scroll': 'enctext' }, ev.text)),
+    h('div.encLeft', {}, header(ev, cur), h('p.encText', { 'data-scroll': 'enctext' }, evText(ui, ev))),
     h('div.encOpts', { 'data-scroll': 'encopts' }, ...opts.map((o) => optionCard(ui, o, hl))),
   );
 }
@@ -197,3 +198,11 @@ function pendingWidget(ui, p, i) {
 }
 
 export { fmt };
+
+/** Olay metni + Sonsuz Deniz varyantı (Paket 2): derinliğe bağlı ek anlatım; tiyatro gerçek sefer istatistiklerini anlatır */
+function evText(ui, ev) {
+  const run = ui.core.run;
+  const v = X2.variantOf(run, ev);
+  if (!v) return ev.text;
+  return `${ev.text} ${v.theatre ? X2.theatreText(run) : v.text || ''}`.trim();
+}

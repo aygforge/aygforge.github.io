@@ -3,7 +3,7 @@
 // (veya HTML5 sürümü için eklenen) değerler "KARAR" yorumuyla işaretlidir ve
 // docs/DESIGN_DECISIONS.md içinde açıklanır.
 
-export const SAVE_VERSION = 5;
+export const SAVE_VERSION = 6; // v6: Genişleme Paketi 2 (run.x2 / meta.x2)
 
 export const BALANCE = {
   start: {

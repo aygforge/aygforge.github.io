@@ -3,6 +3,7 @@ import { BALANCE, SAVE_VERSION } from '../config/balance.js';
 import { SHIP_BY_LEVEL } from '../data/ships.js';
 import { UPGRADE_BY_ID } from '../data/upgrades.js';
 import { initRunX1, initMetaX1 } from '../systems/X1System.js';
+import { initRunX2, initMetaX2 } from '../systems/X2System.js';
 
 export function createMeta() {
   const m = {
@@ -37,6 +38,7 @@ export function createMeta() {
     seenRunIds: [],
   };
   initMetaX1(m);
+  initMetaX2(m);
   return m;
 }
 
@@ -111,5 +113,6 @@ export function createRun(meta, seedStr, route) {
     xpTransferred: false,
   };
   initRunX1(run);
+  initRunX2(run);
   return run;
 }

@@ -45,5 +45,18 @@ export const UPGRADES = [
   U('UPG_X1_LEGEND_HUNTER', 'legend', 'Efsane Avcısı', 'Nadir gizem eventlerinin gizem kategorisi içindeki ağırlığı %25 artar (tüm havuz değil)', 650, 'UPG_X1_LEGEND_WHISPER', { needMysteryChain: true }),
   U('UPG_SUN_GRACE', 'solara', 'Güneşin Lütfu', 'Run boyunca XP kazanımı +%10', 400, null, { needsSolara: true }),
   U('UPG_ETERNAL_LIGHT', 'solara', 'Ebedi Işık', 'Felaket eventlerinde sonuç bir kategori yumuşar', 600, 'UPG_SUN_GRACE', { needsSolara: true }),
+  // ── Genişleme Paketi 2: Kaptanların Hikâyeleri (12 yükseltme, toplam 5680 XP) ──
+  U('UPG_X2_TOW_HOOK', 'sailing', 'Gemi Çekme Kancası', 'Yalnızca halatla çekme/kurtarma seçeneklerine +15 yüzde puan (genel kaçış bonusu değil)', 360, 'UPG_X1_RUDDER'),
+  U('UPG_X2_LOOKOUT_BELL', 'sailing', 'Gözcü Çanı', "Her run'daki ilk doğal felaket hull hasarı 10 azalır (hasar yoksa hak harcanmaz)", 500, 'UPG_X2_TOW_HOOK'),
+  U('UPG_X2_HONEST_SCALES', 'trade', 'Dürüst Terazi', 'Hileli tartı/ölçüm inceleme seçeneklerine +10 yüzde puan (liman fiyatlarına etkisi yok)', 320, 'UPG_X1_MARKET_INTEL'),
+  U('UPG_X2_CONTRACT_GUARANTEE', 'trade', 'Sözleşme Teminatı', "Run'daki ilk istem dışı sözleşme başarısızlığının itibar cezasını önler (bilinçli vazgeçme etkilenmez)", 520, 'UPG_X1_CARGO_INSURANCE'),
+  U('UPG_X2_DECK_CRANE', 'gear', 'Güverte Vinci', 'Enkaz/ağır nesne/kargo kaldırma seçeneklerine +10 yüzde puan (normal onarıma etkisi yok)', 420, 'UPG_X1_MASTER_TOOLS'),
+  U('UPG_X2_SIGNAL_LAMPS', 'gear', 'İşaret Fenerleri', "Run başına bir kez, destekleyen gece/sinyal karşılaşmasında güvenli iletişim seçeneği", 460, 'UPG_X2_DECK_CRANE'),
+  U('UPG_X2_CURRENT_JOURNAL', 'explore', 'Akıntı Günlüğü', "Rota seçiminde her deniz yolu için ek akıntı/risk ipucu; Sonsuz Deniz'de yaklaşan Deniz Koşulunun genel işareti", 410, 'UPG_X1_LIGHTHOUSE_NETWORK'),
+  U('UPG_X2_ECHO_RESEARCH', 'explore', 'Yankı Araştırma Takımı', 'Denizden gelen ses, su altı istasyonu ve titreşim olaylarında güvenli özel araştırma seçeneği', 610, 'UPG_X1_DEEP_RESEARCH'),
+  U('UPG_X2_CREW_BONDS', 'crew', 'Tayfa Bağları', 'Gemideki tayfanın kişisel hikâye zinciri başlangıç ağırlığı ×1,25 (zincir sınırları değişmez)', 380, 'UPG_X1_CREW_JOURNALS'),
+  U('UPG_X2_SHARED_WATCH', 'crew', 'Ortak Nöbet', "Run başına bir kez, iki tayfanın birlikte çalıştığı seçeneğe +10 yüzde puan", 570, 'UPG_X2_CREW_BONDS'),
+  U('UPG_X2_RACE_MAPS', 'legend', 'Yarış Haritaları', 'Gemi yarışlarında +10 yüzde puan (kaçış, fırtına ve normal seyirde etkisiz)', 450, 'UPG_X1_LEGEND_WHISPER'),
+  U('UPG_X2_ANCIENT_SIGNS', 'legend', 'Kadim İşaretler Atlası', 'Nadir gizemli sembolleri çözen özel seçenekler (gizem olayı ağırlığını artırmaz)', 680, 'UPG_X1_LEGEND_HUNTER'),
 ];
 export const UPGRADE_BY_ID = Object.fromEntries(UPGRADES.map((u) => [u.id, u]));

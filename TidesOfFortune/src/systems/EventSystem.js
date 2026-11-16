@@ -21,6 +21,7 @@
  *      routeEvents, warnOff, fortunePenalty, trade, shop, ach, explosionRisk
  */
 import * as X1 from './X1System.js';
+import * as X2 from './X2System.js';
 import { BALANCE } from '../config/balance.js';
 import { EVENT_BY_ID, POOL_EVENTS, CHAINS, PET_DECK_EVENTS } from '../data/events.js';
 import { ITEM_BY_ID, ITEMS } from '../data/items.js';
@@ -70,6 +71,11 @@ export function checkWhen(G, when, flags = {}) {
   if (when.cargoGood && cargoUnitsOf(run, when.cargoGood) <= 0) return false;
   if (when.noCargoGood && cargoUnitsOf(run, when.noCargoGood) > 0) return false;
   if (when.crewAvailable && !crewAvailableForRun(G, when.crewAvailable)) return false;
+  if (when.depth && !(X1.endlessOn(run) && X1.depthOf(run) >= when.depth)) return false;
+  if (when.x2flag && !run.x2?.flags?.[when.x2flag]) return false;
+  if (when.noX2flag && run.x2?.flags?.[when.noX2flag]) return false;
+  if (when.crewAny && !when.crewAny.some((c) => hasCrew(G, c))) return false;
+  if (when.flagsMin && when.flagsMin.of.filter((f) => flags[f]).length < when.flagsMin.n) return false;
   return true;
 }
 
@@ -142,10 +148,10 @@ function pickEvent(G, rng, cat, ctx, exclude) {
 
 function pickChainStart(G, rng, ctx, exclude) {
   const cands = Object.values(CHAINS).filter(
-    (c) => c.pool && !G.run.chains[c.id] && c.regions.includes(ctx.region) && condOk(G, c.cond, ctx) && !exclude.has(c.start) && X1.chainStartAllowed(G, c, G.run.idx + 1),
+    (c) => c.pool && !G.run.chains[c.id] && c.regions.includes(ctx.region) && condOk(G, c.cond, ctx) && !exclude.has(c.start) && X1.chainStartAllowed(G, c, G.run.idx + 1) && X2.chainStartAllowed(G, c, G.run.idx + 1, CHAINS),
   );
   if (!cands.length) return null;
-  const c = rng.weighted(cands, (q) => (q.memBoost && G.run.x1?.mem?.flags?.[q.memBoost] ? 3 : 1));
+  const c = rng.weighted(cands, (q) => (q.memBoost && G.run.x1?.mem?.flags?.[q.memBoost] ? 3 : 1) * X2.chainWeight(G, q));
   G.run.chains[c.id] = { status: 'queued', flags: {}, step: 0 };
   return { id: c.start, src: 'chain', chain: c.id };
 }
@@ -175,11 +181,16 @@ export function buildVoyage(G) {
   const { n, mods } = routeEventCount(G, rng, run.route[fromIdx].distance, ctx.dest);
   run.buffs.nextRouteEvents = 0;
   const queue = [];
-  for (const p of run.pendingRoute) queue.push({ ...p });
+  // Paket 2: bekleyen hikâye aşamaları planlanan olay sayısının İÇİNDE (1 zincir + 3 normal = 4). Sığmayan güvenle sonraki rotaya taşınır.
+  const pend = run.pendingRoute.slice();
   run.pendingRoute = [];
+  const fit = Math.max(1, n);
+  for (const p of pend.slice(0, fit)) queue.push({ ...p });
+  run.pendingRoute = pend.slice(fit);
   const exclude = new Set(queue.map((q) => q.id));
   let chainStarted = queue.some((q) => q.src === 'chain');
-  for (let i = 0; i < n; i++) {
+  const normalSlots = Math.max(0, n - queue.length);
+  for (let i = 0; i < normalSlots; i++) {
     const e = genSlot(G, rng, ctx, exclude, { noChain: chainStarted });
     if (e.src === 'chain') chainStarted = true;
     queue.push(e);
@@ -246,11 +257,13 @@ function pickPetDeckEvent(G, rng) {
 function pickEcho(G, rng) {
   const run = G.run;
   const shown = run.x1.echoesShown;
-  const avail = Object.keys(G.meta.x1?.finals || {}).filter((ch) => (G.meta.x1.finals[ch] || []).length && !shown.includes(ch) && EVENT_BY_ID[`EVT_X1_ECHO_${ch.replace('CH_X1_', '')}`]);
+  const echoId = (ch) => (ch.startsWith('CH_X2_') ? `EVT_X2_ECHO_${ch.replace('CH_X2_', '')}` : `EVT_X1_ECHO_${ch.replace('CH_X1_', '')}`);
+  const finals = { ...(G.meta.x1?.finals || {}), ...(G.meta.x2?.finals || {}) };
+  const avail = Object.keys(finals).filter((ch) => (finals[ch] || []).length && !shown.includes(ch) && EVENT_BY_ID[echoId(ch)]);
   if (!avail.length || !rng.chance(20)) return null;
   const ch = rng.pick(avail);
   shown.push(ch);
-  return { id: `EVT_X1_ECHO_${ch.replace('CH_X1_', '')}`, src: 'echo' };
+  return { id: echoId(ch), src: 'echo' };
 }
 
 export function revealCount(G) {
@@ -438,6 +451,10 @@ export function getOptions(G, host) {
     if (ev.cat === 'mystery' && !ev.chain && x1.mem.flags.eyeSeen) list.push({ key: '__eye', opt: INJECTED_X1.__eye, injected: true });
     if ((ev.cat === 'danger' || ev.cat === 'disaster') && x1.mem.flags.zipirWarn && hasPet(G, 'PET_ZIPIR')) list.push({ key: '__zipir', opt: INJECTED_X1.__zipir, injected: true });
   }
+  // Paket 2 — İşaret Fenerleri: destekleyen gece/sinyal olayında run başına bir kez güvenli iletişim
+  if (ev.lamps && hasUpgrade(G.meta, 'UPG_X2_SIGNAL_LAMPS') && !run.x2?.once?.signalLamps) {
+    list.push({ key: '__lamps', injected: true, opt: { label: 'İşaret fenerleriyle konuş', icon: 'lantern', tags: ['pass'], hint: 'İşaret Fenerleri: run başına bir kez', win: { text: ev.lamps.text, fx: { ...(ev.lamps.fx || {}), x2: { ...(ev.lamps.fx?.x2 || {}), useOnce: 'signalLamps' } } } } });
+  }
   return list.map((x) => ({ ...x, view: evalOption(G, ev, x.opt, flags, cur) }));
 }
 
@@ -461,6 +478,12 @@ export function evalOption(G, ev, o, flags = {}, cur = null) {
   if (r.cargoGood && cargoUnitsOf(run, r.cargoGood) <= 0) reasons.push(`Kargoda ${GOOD_BY_ID[r.cargoGood].name} yok`);
   if (r.cargoGoods && !r.cargoGoods.some((g) => cargoUnitsOf(run, g) > 0)) reasons.push('Kargoda uygun erzak yok');
   if (r.chainFree && run.chains[r.chainFree]) reasons.push('Bu zincir bu run\'da zaten yaşandı');
+  // Paket 2: kanıt eşiği (ör. Yara'nın gerçeği ortaya çıkarma finali)
+  if (r.evidence) {
+    const have = r.evidence.of.filter((f) => flags[f]).length;
+    const alt = r.evidence.alt && hasCrew(G, r.evidence.alt.crew) && flags[r.evidence.alt.flag];
+    if (have < r.evidence.n && !alt) reasons.push(`En az ${r.evidence.n} doğrulanmış kanıt gerekli (${have}/${r.evidence.n})`);
+  }
   const cost = o.cost?.gold || 0;
   if (cost && run.gold < cost) reasons.push(`Yetersiz altın (${cost} gerekli)`);
 
@@ -528,7 +551,8 @@ export function evalOption(G, ev, o, flags = {}, cur = null) {
       c = 100;
     }
     X1.chanceMods(G, ev, o, add);
-    chance = Math.max(0, Math.min(100, Math.round(c)));
+    X2.chanceMods(G, ev, o, add, flags);
+    chance = X2.clampChance(Math.round(c), breakdown.some((b) => b.override));
   }
   return {
     available: reasons.length === 0,
@@ -620,6 +644,8 @@ export function resolveOption(G, host, key, rng, ctx) {
   }
   cur.result = { key, label: opt.label, success, saved, roll, chance: o.view.chance, text: out.text, lines, pending };
   X1.recordOutcome(G, ev.id, key, success);
+  if (ev.x2) X2.recordOutcome(G, ev.id, key, success);
+  X2.consumeOnChoice(G, ev, opt, o.view);
   run.stats.eventsResolved++;
   afterChain(G, ev, out.fx || {});
   return { ok: true, result: cur.result };
@@ -668,6 +694,7 @@ function computeDamage(G, base, ctx, raw = false) {
   let d = raw ? base : base * (BALANCE.regionDamageMult[ctx.region] || 1);
   const notes = [];
   d = X1.damageMods(G, d, ev, raw, notes); // Deniz Derinliği (hullRaw hariç) + Yedek Halatlar
+  d = X2.damageMods(G, d, ev, notes); // Gözcü Çanı
   const nm = negMult(G, ctx);
   d *= nm.m;
   notes.push(...nm.notes);
@@ -969,6 +996,7 @@ export function applyFx(G, fx, ctx) {
     lines.push({ kind: 'status', text: `Sonraki liman: ${STATUS_NAMES[fx.status]}` });
   }
   if (fx.x1) X1.applyX1(G, fx.x1, ctx, lines, { addXp, unlockAchievement, addCargoLot: addContractLot, cargoFree });
+  if (fx.x2) X2.applyX2(G, fx.x2, ctx, lines, { addXp, unlockAchievement });
   // Zincirler
   if (fx.flag && ev.chain) Object.assign((run.chains[ev.chain] ||= { status: 'active', flags: {}, step: 0 }).flags, fx.flag);
   if (fx.startChain) {

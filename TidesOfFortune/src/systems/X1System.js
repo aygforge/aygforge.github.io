@@ -6,6 +6,7 @@ import { BALANCE } from '../config/balance.js';
 import { HARBORS, HARBOR_BY_ID, GRAND_HARBOR_ID } from '../data/harbors.js';
 import { GOOD_BY_ID, TRADE_GOODS } from '../data/goods.js';
 import { SeededRNG } from '../core/SeededRNG.js';
+import * as X2 from './X2System.js';
 import { hasUpgrade } from '../core/GameState.js';
 
 // ───────────────────────── Sabitler ─────────────────────────
@@ -18,7 +19,7 @@ export const DEPTHS = [
   { id: 5, name: 'V — Sonsuz Ufuk', dmg: 1.55, pen: 12, gold: 0.2 },
 ];
 /** DENGE: V'ten sonra deniz durmadan sertleşir (her 4 ek limanda bir "Uçurum" kademesi) */
-export const ABYSS = { dmg: 0.18, pen: 3 };
+export const ABYSS = { dmg: 0.18, pen: 3, cap: 2 }; // Paket 2: V sonrası büyüme en fazla 2 kademe (hasar ≤ ×1,91, risk ≤ −18, onarım ≤ ×1,7)
 /** DENGE: Sonsuz Deniz'de büyük gemiler daha büyük tehditleri çeker (seviye 3 üstü her seviye +%10 hasar) */
 export const SHIP_THREAT = 0.1;
 /** DENGE: Sonsuz Deniz'de tersane ve onarım ekonomisi */
@@ -141,7 +142,7 @@ export function endlessCond(run) { return endlessOn(run) ? run.x1.endless.cond :
 export function abyssOf(run) {
   const e = run?.x1?.endless;
   if (!e || !e.on || e.extra < 1) return 0;
-  return Math.max(0, Math.floor((e.extra - 1) / 4) - 4);
+  return Math.min(ABYSS.cap, Math.max(0, Math.floor((e.extra - 1) / 4) - 4));
 }
 export function depthLabel(run) { const d = depthOf(run); const a = abyssOf(run); return d ? DEPTHS[d].name + (a ? ` +${a}` : '') : ''; }
 export function damageMult(run) {
@@ -300,6 +301,8 @@ export function decorateLanes(G, lanes, idx) {
       if (g) l.demand = `${groups[g.group] || 'Mallar'} talep görüyor`;
     }
     if (run.x1?.mem?.flags?.pirateIntel) { l.pirateIntel = true; }
+    // Paket 2 — Akıntı Günlüğü: rota riskine ek ipucu (hedef liman açılmaz)
+    if (hasUpgrade(G.meta, 'UPG_X2_CURRENT_JOURNAL')) l.current = l.danger >= 4 ? 'Akıntı sert, girdap izleri var' : l.danger >= 3 ? 'Akıntı değişken' : l.distance === 'long' ? 'Uzun ama düzenli akıntı' : 'Akıntı yumuşak';
     void rng;
   }
   if (run.x1?.mem?.flags?.pirateIntel) run.x1.mem.flags.pirateIntel = false;
@@ -450,11 +453,11 @@ export function arrivalContracts(G, harbor) {
     if (c.state !== 'active') continue;
     const def = CONTRACTS[c.type];
     if (def.escort) { queue.push({ id: 'CT_X1_ESCORT_DONE', src: 'contract', contract: c.id }); continue; }
-    if (!contractCargoPresent(run, c)) { c.state = 'failed'; lines.push({ kind: 'info', text: `Sözleşme başarısız: ${def.name} (görev kargosu kayboldu).` }); continue; }
-    if (def.salvage && c.needFind) { if (run.stats.harborsReached >= c.deadline) { c.state = 'failed'; lines.push({ kind: 'info', text: `Sözleşme süresi doldu: ${def.name}.` }); } continue; }
+    if (!contractCargoPresent(run, c)) { c.state = 'failed'; lines.push({ kind: 'info', text: `Sözleşme başarısız: ${def.name} (görev kargosu kayboldu).` }); X2.involuntaryFailPenalty(G, def.faction, lines); continue; }
+    if (def.salvage && c.needFind) { if (run.stats.harborsReached >= c.deadline) { c.state = 'failed'; lines.push({ kind: 'info', text: `Sözleşme süresi doldu: ${def.name}.` }); X2.involuntaryFailPenalty(G, def.faction, lines); } continue; }
     const okDest = !def.dest || def.dest.includes(harbor.type) || (harbor.final && def.dest.includes('trade'));
     if (okDest) { queue.push({ id: 'CT_X1_DELIVER', src: 'contract', contract: c.id }); continue; }
-    if (run.stats.harborsReached >= c.deadline) { c.state = 'failed'; lines.push({ kind: 'info', text: `Sözleşme süresi doldu: ${def.name}.` }); }
+    if (run.stats.harborsReached >= c.deadline) { c.state = 'failed'; lines.push({ kind: 'info', text: `Sözleşme süresi doldu: ${def.name}.` }); X2.involuntaryFailPenalty(G, def.faction, lines); }
   }
   x.contracts = x.contracts.filter((c) => c.state === 'active' || c.state === 'delivering');
   // süresi dolan görev kargoları ambardan kalkar
@@ -513,6 +516,7 @@ export function failContract(G, cid, lines, repLoss = 0) {
   const def = CONTRACTS[c.type];
   c.state = 'failed';
   if (repLoss && def.faction) addRep(G, def.faction, -repLoss, lines);
+  // gönüllü vazgeçme: Sözleşme Teminatı uygulanmaz (yalnızca istem dışı başarısızlıklar)
   if (def.escort) x.escort = null;
   G.run.cargo = G.run.cargo.filter((l) => l.contract !== c.id);
   x.contracts = x.contracts.filter((q) => q.id !== cid);

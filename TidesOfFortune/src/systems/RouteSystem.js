@@ -66,6 +66,8 @@ export function intelAccuracy(G) {
   if (run.pets.includes('PET_GECEYARISI')) type = Math.max(type, 85);
   if (hasUpgrade(G.meta, 'UPG_X1_MARKET_INTEL')) trade = Math.min(100, trade + 15);
   if (run.x1?.mem?.flags?.letterTip) trade = 100;
+  // Paket 2: Yeni Deniz Yolu / Rakibe Yardım / şamandıra: sonraki rota seçimlerinde daha güvenilir yön bilgisi
+  if (run.x2?.laneIntel) { type = Math.min(100, type + 20); trade = Math.min(100, trade + 20); }
   return { type, trade };
 }
 

@@ -401,6 +401,7 @@ function laneSheet(ui) {
       ),
       h('div.laneRow.rumor', {}, icon('talk'), ' Söylenti: ', tx.rumors.join(', ')),
       l.hazard ? h('div.laneRow', {}, icon('lantern'), ' Fener Ağı: ', l.hazard) : null,
+      l.current ? h('div.laneRow', {}, icon('wave'), ' Akıntı Günlüğü: ', l.current) : null,
       l.demand ? h('div.laneRow', {}, icon('scale'), ' Pazar: ', l.demand) : null,
       l.pirateIntel ? h('div.laneRow', {}, icon('skull'), ' İstihbarat: korsan etkinliği kesin') : null,
     );
