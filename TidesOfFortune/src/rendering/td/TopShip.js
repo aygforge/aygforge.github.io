@@ -29,6 +29,10 @@ export const SHIP_STYLES = {
   boran: { rim: '#2a1414', rim2: '#4a2222', deck: '#8a6a52', deck2: '#7a5a44', trim: '#c8a060', sail: '#8a1f2a', sailShade: '#5a1218', flag: '#8a1f2a' },
   varo: { rim: '#141414', rim2: '#2a2a2a', deck: '#7a6a5a', deck2: '#6a5a4a', trim: '#e0c040', sail: '#3a3a3e', sailShade: '#1e1e22', flag: '#e0c040', stripes: true },
   kitchen: { rim: '#4a3018', rim2: '#7a5030', deck: '#c8a070', deck2: '#b48c5c', trim: '#e8e0c8', sail: '#f0e6cc', sailShade: '#d0b890', flag: '#e07a3a' },
+  // Paket 3: Neris'in "Kül Pusulası" — kömür gövde, bakır çizgili yelken, küçük kurtarma vinci
+  neris: { rim: '#18181b', rim2: '#2c2c31', deck: '#6c6258', deck2: '#5c5248', trim: '#c87a3c', sail: '#4e4a48', sailShade: '#c87a3c', flag: '#c87a3c', stripes: true, crane: true },
+  // Paket 3: Sönmeyen Armada — donmuş, buz mavisi gölgeli eski filo
+  armada: { rim: '#1e2a36', rim2: '#34485a', deck: '#a8b4bc', deck2: '#98a4ac', trim: '#d8f0ff', sail: '#dce8ee', sailShade: '#9ab4c4', flag: '#6a8aa0' },
   plague: { rim: '#2a2618', rim2: '#4a4430', deck: '#8a7c58', deck2: '#7a6c4a', trim: '#6a6040', sail: '#8a8262', sailShade: '#5a5440', flag: '#e8d040' },
 };
 
@@ -476,6 +480,19 @@ const cache = new Map();
         }
       }
     }
+    // kurtarma vinci (Neris): kıç iskele tarafında direk, bakır bumba, halat ve kanca
+    let craneBlk = null;
+    if (n.crane) {
+      let v0 = Math.round(len * 0.8),
+        u0 = -(hw[v0] - 9),
+        q = P(u0, v0);
+      disc(y, q.x, q.y, 4, "rgba(20,10,4,0.3)"), disc(y, q.x, q.y, 3, "#2a2a2e");
+      rect(y, q.x - 1, q.y - 15, 3, 15, "#3a3a40"), vline(y, q.x - 1, q.y - 15, q.y, "#55555c");
+      line(y, q.x, q.y - 15, q.x - 13, q.y - 21, "#c87a3c"), line(y, q.x, q.y - 14, q.x - 13, q.y - 20, "#8a4e22");
+      line(y, q.x, q.y - 15, q.x + 3, q.y - 9, "#6a6a70");
+      vline(y, q.x - 13, q.y - 20, q.y - 9, "#c8b090"), rect(y, q.x - 14, q.y - 9, 3, 2, "#8a8a92"), px(y, q.x - 14, q.y - 7, "#8a8a92");
+      craneBlk = { u: u0, v: v0, r: 4 };
+    }
     // direk tabanları + direk/yelken sprite'ları
     let masts = n.masts.map((M, k) => {
       let q = P(0, Math.round(len * M.t)),
@@ -488,7 +505,7 @@ const cache = new Map();
     disc(y, hq.x, hq.y, 3, "rgba(20,10,4,0.25)");
     props.push({ x: hq.x, y: hq.y, img: helmSprite() });
     // fıçılar & halat kangalları (kanonik konumlar)
-    let blk = [],
+    let blk = craneBlk ? [craneBlk] : [],
       barrel = (u, v, c) => {
         let q = P(u, v);
         (y.fillStyle = "rgba(20,10,4,0.25)"), y.fillRect(q.x - 3, q.y, 8, 2), props.push({ x: q.x, y: q.y + 1, img: deckBarrel(c) }), blk.push({ u, v, r: 4 });

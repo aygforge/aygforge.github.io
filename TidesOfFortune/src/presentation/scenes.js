@@ -10,6 +10,7 @@ import { CREW_PET_SCENES } from './scenes/crewpet.js';
 import { X1_SCENES } from './scenes/x1.js';
 import { PET2_SCENES } from './scenes/pets2.js';
 import { X2_SCENES } from './scenes/x2.js';
+import { X3_SCENES } from './scenes/x3.js';
 
 // ───────── Özel sahneler (önemli eventler) ─────────
 export const SCENES = {
@@ -186,7 +187,7 @@ export const SCENES = {
 // Korsan zincirleri ve filolar korsan sahnesini kullanır
 for (const id of ['CH_PIRATE_OFFER_1', 'CH_PIRATE_OFFER_2A', 'CH_PIRATE_OFFER_2B', 'EVT_CH_PURSUIT']) SCENES[id] = (ev, side) => { const sc = SCENES.EVT_D_01(ev, side); sc.intro = () => [S('say', { id: 'enc', text: id.endsWith('_1') ? 'Seninle bir iş konuşmak istiyorum, tüccar.' : id.endsWith('2A') ? 'Bu sandığı taşı, zengin ol.' : 'Kaçabileceğini mi sandın?', dur: 3, hold: 1.4 })]; return sc; };
 
-Object.assign(SCENES, DANGER_SCENES, FORTUNE_SCENES, MYSTERY_SCENES, DISASTER_SCENES, CHAIN_SCENES, CREW_PET_SCENES, X1_SCENES, PET2_SCENES, X2_SCENES);
+Object.assign(SCENES, DANGER_SCENES, FORTUNE_SCENES, MYSTERY_SCENES, DISASTER_SCENES, CHAIN_SCENES, CREW_PET_SCENES, X1_SCENES, PET2_SCENES, X2_SCENES, X3_SCENES);
 
 /** Liman varış eventleri (rıhtım sahnesi, gemi demirli) için yaklaşmasız kurulum */
 export function sceneFor(ev, side) {

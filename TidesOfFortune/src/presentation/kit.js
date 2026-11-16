@@ -79,7 +79,10 @@ export function optKind(c, info) {
 }
 
 /** Enjekte seçenekler (Tarçın, papağanlar, Hamid) her sahnede aynı imza animasyonu oynar */
+/** Paketlerin kendi enjekte seçenek animasyonları (döngüsel içe aktarmayı önlemek için kayıt) */
+export const INJ_HOOKS = [];
 export function injectedAction(c, info, encId) {
+  for (const f of INJ_HOOKS) { const r = f(c, info, encId); if (r) return r; }
   const k = optKind(c, info);
   const enc = encId && c.world.get(encId) ? encId : null;
   if (k === 'tarcin') return [par(S('pet', { id: 'PET_TARCIN', at: 'bow', pose: 'bark', dir: 'up', dur: 4, say: 'Hav! Hav! Hav!', sfx: 'bark' }), S('say', { actor: 'CAPTAIN', text: 'Tarçın bir şey sezdi, hazır olun!', dur: 2.2 })), wait(2)];

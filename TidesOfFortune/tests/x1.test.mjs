@@ -222,7 +222,7 @@ test('Kayıt migrasyonu: v4 run/meta güvenle yüklenir, yeni alanlar varsayıla
   const lm = core.saves.loadMeta();
   assert.ok(lr && lr.x1 && lr.x1.endless.on === false);
   assert.equal(lr.x1.rep.red, 1);
-  assert.equal(lr.v, 6); assert.ok(lr.x2 && lr.x1, 'x1 korunur, x2 eklenir');
+  assert.equal(lr.v, 7); assert.ok(lr.x2 && lr.x1, 'x1 korunur, x2 eklenir');
   assert.ok(lm.x1.records);
 });
 

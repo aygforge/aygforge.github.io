@@ -58,5 +58,14 @@ export const UPGRADES = [
   U('UPG_X2_SHARED_WATCH', 'crew', 'Ortak Nöbet', "Run başına bir kez, iki tayfanın birlikte çalıştığı seçeneğe +10 yüzde puan", 570, 'UPG_X2_CREW_BONDS'),
   U('UPG_X2_RACE_MAPS', 'legend', 'Yarış Haritaları', 'Gemi yarışlarında +10 yüzde puan (kaçış, fırtına ve normal seyirde etkisiz)', 450, 'UPG_X1_LEGEND_WHISPER'),
   U('UPG_X2_ANCIENT_SIGNS', 'legend', 'Kadim İşaretler Atlası', 'Nadir gizemli sembolleri çözen özel seçenekler (gizem olayı ağırlığını artırmaz)', 680, 'UPG_X1_LEGEND_HUNTER'),
+  // ── Genişleme Paketi 3: Efsanevi Denizler ve Rakip Kaptanlar (8 yükseltme, toplam 4370 XP) ──
+  U('UPG_X3_SOUNDINGS', 'explore', 'İskandil Takımı', 'Sığlık, taş sütun ve derinlik ölçümü gerektiren seçeneklere +10 yüzde puan', 480, 'UPG_X2_CURRENT_JOURNAL'),
+  U('UPG_X3_STERN_BRACE', 'explore', 'Kıç Destek Kirişi', "Run'daki ilk çarpışma/omurga/kıç hasarı 12 azalır (hasar yoksa hak harcanmaz)", 650, 'UPG_X3_SOUNDINGS'),
+  U('UPG_X3_CAPTAIN_PARLEY', 'legend', 'Kaptanlar Masası', 'Yalnızca rakip kaptanlarla müzakere seçeneklerine +10 yüzde puan', 440, 'UPG_X2_RACE_MAPS'),
+  U('UPG_X3_ENVOY_CHEST', 'legend', 'Elçi Sandığı', "Run'daki ilk başarılı dost kaptan ticaretinde altın +%20 (en fazla +40)", 560, 'UPG_X3_CAPTAIN_PARLEY'),
+  U('UPG_X3_RESCUE_WALKWAY', 'gear', 'Kurtarma İskelesi', 'Kurtarma ve gemiler arası geçiş seçeneklerine +10 yüzde puan (vinç/kanca bonusuyla birikmez)', 520, 'UPG_X2_DECK_CRANE'),
+  U('UPG_X3_SIGNAL_PRISM', 'gear', 'İşaret Prizması', 'Run başına bir kez, efsanevi veya çok gemili işaret olaylarında güvenli işaret seçeneği (fenerlerden ayrı hak)', 580, 'UPG_X2_SIGNAL_LAMPS'),
+  U('UPG_X3_CREW_LIAISON', 'crew', 'Tayfa Elçisi', "Run başına bir kez, yanlış anlaşılmadan doğan −1 kaptan ilişkisi düşüşünü önler (saldırı/hile kararlarında işlemez)", 480, 'UPG_X2_CREW_BONDS'),
+  U('UPG_X3_LEGEND_KEEPER', 'legend', 'Efsane Bekçisi', 'Daha önce keşfedilmemiş bir efsaneyi tamamlayınca +15 XP ve bir hikâye ipucu', 660, 'UPG_X2_ANCIENT_SIGNS'),
 ];
 export const UPGRADE_BY_ID = Object.fromEntries(UPGRADES.map((u) => [u.id, u]));

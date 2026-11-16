@@ -1,6 +1,7 @@
 // Karşılaşma panelleri: gemi ve olay nesneleri görünür kalırken altta açılan dar karar paneli,
 // animasyon sırasında küçülen başlık, sonuçta kısa özet + bekleyen seçimler.
 import * as X2 from '../../systems/X2System.js';
+import * as X3 from '../../systems/X3System.js';
 import { h, icon, fmt } from '../dom.js';
 import { T } from '../../data/strings.js';
 import { EVENT_BY_ID, EVENT_CATEGORIES, CHAINS } from '../../data/events.js';
@@ -18,6 +19,15 @@ import { PH } from '../../presentation/EncounterDirector.js';
 
 const KIND_ICON = { heal: 'heart', damage: 'hull', xp: 'star', cargo: 'crate', item: 'gift', info: 'info', gold: 'coin', route: 'compass', chain: 'chain', status: 'flag', crew: 'crew', pet: 'paw', codex: 'book', buff: 'sun' };
 
+let RUN = null;
+/** Paket 3: kaptan karşılaşmasında küçük üç renkli ilişki işareti (kırmızı gergin, gri tarafsız, yeşil dost) */
+function relChips(ev) {
+  if (!RUN?.x3) return [];
+  return X3.capsOf(RUN, ev).map((k) => {
+    const v = X3.rel(RUN, k);
+    return h(`span.relChip.${X3.relTone(v)}`, { title: `${X3.CAPTAINS[k].name}: ${X3.relName(v)}` }, h('i.relDot', {}), ` ${X3.CAPTAINS[k].name} `, h('small', {}, X3.relName(v)));
+  });
+}
 function header(ev, cur) {
   const cat = EVENT_CATEGORIES[ev.cat] || EVENT_CATEGORIES.mystery;
   const chain = ev.chain ? CHAINS[ev.chain] : null;
@@ -26,11 +36,13 @@ function header(ev, cur) {
     chain ? h('span.tag.chain', {}, icon('chain'), ` ${chain.name} `, h('b.n', {}, `${ev.step}/${chain.steps}`)) : null,
     cur?.lucky ? h('span.tag.gold', {}, '★ Şanslı') : null,
     h('b.encTitle', {}, ev.title),
+    ...relChips(ev),
   );
 }
 
 /** Ana karşılaşma paneli (director fazına göre) */
 export function encounterPanel(ui, host) {
+  RUN = ui.core.run;
   const d = ui.director;
   const cur = host?.current;
   const ev = EVENT_BY_ID[cur?.id || d.eventId];
@@ -203,6 +215,8 @@ export { fmt };
 function evText(ui, ev) {
   const run = ui.core.run;
   const v = X2.variantOf(run, ev);
-  if (!v) return ev.text;
-  return `${ev.text} ${v.theatre ? X2.theatreText(run) : v.text || ''}`.trim();
+  const cap = run?.x3?.pursuit ? X3.CAPTAINS[run.x3.pursuit] : null;
+  const base = ev.text.replace('{cap}', cap ? `${cap.gen} ${cap.ship}` : 'Rakip bir kaptanın');
+  if (!v) return base;
+  return `${base} ${v.theatre ? X2.theatreText(run) : v.text || ''}`.trim();
 }

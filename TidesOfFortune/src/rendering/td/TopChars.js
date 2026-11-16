@@ -32,6 +32,11 @@ var NPCL = {
     diver: { skin: '#c89060', hair: '#1a1410', hairStyle: 'short', hat: 'hood', hatColor: '#1e2a32', beard: 'none', top: '#1e2a32', top2: '#2a3a44', pants: '#1a242c' },
     redCaptain: { skin: '#c89060', hair: '#8a1a1a', hairStyle: 'long', hat: 'tricorn', hatColor: '#b8282c', beard: 'full', beardColor: '#8a1a1a', top: '#2a1a1a', top2: '#e0b040', pants: '#1a1a1a', idle: 'guard' },
     guard: { skin: '#e0b088', hair: '#3a2416', hairStyle: 'short', hat: 'cap', hatColor: '#c8a040', beard: 'none', top: '#5a4a20', top2: '#f2c14e', pants: '#2a2a2a', idle: 'spear' },
+    // Paket 3: rakip kaptanlar ve Sönmeyen Armada'nın donmuş denizcileri
+    liora: { skin: '#f0c8a0', hair: '#e8d090', hairStyle: 'long', hat: 'tricorn', hatColor: '#1f6a7a', beard: 'none', top: '#3fb8b0', top2: '#f4f0e0', pants: '#24424a', idle: 'map' },
+    boran: { skin: '#c8885a', hair: '#2a1410', hairStyle: 'short', hat: 'tricorn', hatColor: '#3a1416', beard: 'full', beardColor: '#2a1410', top: '#8a1f2a', top2: '#c8a060', pants: '#2a1a1a', idle: 'guard', build: 'big' },
+    neris: { skin: '#d8a880', hair: '#c87a3c', hairStyle: 'braid', hat: 'scarf', hatColor: '#c87a3c', beard: 'none', top: '#2c2c31', top2: '#c87a3c', pants: '#1e1e22', idle: 'lantern' },
+    frozen: { skin: '#c8dce8', hair: '#e8f4ff', hairStyle: 'short', hat: 'cap', hatColor: '#6a8aa0', beard: 'short', beardColor: '#e8f4ff', top: '#7a9ab0', top2: '#d8f0ff', pants: '#4a6074' },
     plague: { skin: '#a8b880', hair: '#2a2a20', hairStyle: 'short', hat: 'hood', hatColor: '#3a3a2a', beard: 'none', top: '#4a4a3a', top2: '#6a6a4a', pants: '#2a2a20' },
 };
   // ===== 3/4 (üst-karşı) bakış: karakterler =====

@@ -2,6 +2,7 @@
 // Her eylem atomiktir: doğrulanır, uygulanır, RNG durumu ile birlikte kaydedilir ve dinleyicilere bildirilir.
 import * as X1 from '../systems/X1System.js';
 import * as X2 from '../systems/X2System.js';
+import * as X3 from '../systems/X3System.js';
 import { BALANCE } from '../config/balance.js';
 import { HARBOR_BY_ID, HARBOR_TYPES } from '../data/harbors.js';
 import { EVENT_BY_ID } from '../data/events.js';
@@ -530,6 +531,7 @@ export class GameCore {
     lines.push({ kind: 'xp', text: `Limana varış: +${gotXp} XP` });
     lines.push(...Prog.discoverHarbor(G, harbor.id));
     lines.push(...X1.onEndlessArrival(G, harbor.id, Prog.addXp, Prog.unlockAchievement));
+    X3.onArrival(G, lines, { addXp: Prog.addXp, unlockAchievement: Prog.unlockAchievement });
     if (Crew.hasItem(G, 'ITEM_ANCIENT_MAP')) {
       Items.consumeItem(G, 'ITEM_ANCIENT_MAP');
       run.buffs.rareNext = true;

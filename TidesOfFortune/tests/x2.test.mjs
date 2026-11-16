@@ -280,7 +280,7 @@ test('Sonsuz Deniz: V sonrası büyüme sert üst sınırda; altı varyant derin
   assert.ok(X2.theatreText({ idx: 20, x1: { endless: { extra: 12 } }, stats: { eventsResolved: 60, goldEarned: 900 } }).includes('12 ek limanı'));
 });
 
-test('v5 kaydı v6\'ya taşınır: x1 korunur, x2 eklenir; yükseltmeler korunur', () => {
+test('v5 kaydı güncel sürüme taşınır: x1 korunur, x2 eklenir; yükseltmeler korunur', () => {
   const s = memoryStorage();
   const a = new GameCore(s);
   a.meta.tutorialDone = true;
@@ -291,7 +291,7 @@ test('v5 kaydı v6\'ya taşınır: x1 korunur, x2 eklenir; yükseltmeler korunur
   a.run.v = 5; a.meta.v = 5;
   a.persist();
   const b = new GameCore(s);
-  assert.equal(b.run.v, 6);
+  assert.equal(b.run.v, 7);
   assert.equal(b.run.x1.rep.crown, 2);
   assert.ok(b.run.x2 && b.meta.x2);
   assert.ok(b.meta.upgrades.includes('UPG_X1_RUDDER'));

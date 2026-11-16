@@ -4,8 +4,10 @@ import { X1_EVENTS } from './events_x1.js';
 import { X1_CHAINS, X1_CHAIN_EVENTS } from './chains_x1.js';
 import { X2_EVENTS } from './events_x2.js';
 import { X2_CHAINS, X2_CHAIN_EVENTS, X2_ECHO_EVENTS } from './chains_x2.js';
+import { X3_EVENTS, X3_SPECIAL_EVENTS } from './events_x3.js';
+import { X3_CHAINS, X3_CHAIN_EVENTS, X3_ECHO_EVENTS } from './chains_x3.js';
 
-const CHAINS = { ...BASE_CHAINS, ...X1_CHAINS, ...X2_CHAINS };
+const CHAINS = { ...BASE_CHAINS, ...X1_CHAINS, ...X2_CHAINS, ...X3_CHAINS };
 import { SPECIAL_EVENTS, CREW_EVENTS, PET_EVENTS } from './events_special.js';
 import { PET_DECK_EVENTS } from './events_pets.js';
 export { PET_DECK_EVENTS };
@@ -28,6 +30,7 @@ export const ALL_EVENTS = [
   ...CHAIN_EVENTS, ...SPECIAL_EVENTS, ...CREW_EVENTS, ...PET_EVENTS, ...PET_DECK_EVENTS,
   ...X1_EVENTS, ...X1_CHAIN_EVENTS,
   ...X2_EVENTS, ...X2_CHAIN_EVENTS, ...X2_ECHO_EVENTS,
+  ...X3_EVENTS, ...X3_CHAIN_EVENTS, ...X3_ECHO_EVENTS, ...X3_SPECIAL_EVENTS,
 ];
 
 export const EVENT_BY_ID = Object.fromEntries(ALL_EVENTS.map((e) => [e.id, e]));

@@ -27,6 +27,22 @@ function units(run) {
   return u;
 }
 
+/**
+ * Adım listesini normalleştirir. Düz dizi = eşzamanlı grup (par). İçinde dizi barındıran dizi ise
+ * sıralı alt adımlardır ([par(...), wait(n)] kalıbı): bunlar sırayla açılır. Önceden bu kalıptaki
+ * eşzamanlı grup sessizce atlanıyordu.
+ */
+export function normSteps(list) {
+  const out = [];
+  for (const s of list || []) {
+    if (!s) continue;
+    if (Array.isArray(s) && s.some(Array.isArray)) out.push(...normSteps(s));
+    else if (Array.isArray(s)) { const g = s.filter(Boolean); if (g.length) out.push(g); }
+    else out.push(s);
+  }
+  return out;
+}
+
 export class EncounterDirector {
   constructor(world, core, hooks = {}) {
     this.world = world;
@@ -217,7 +233,7 @@ export class EncounterDirector {
 
   // ───────── Adımlar ─────────
   runSteps(steps, after) {
-    this.steps = steps.filter(Boolean);
+    this.steps = normSteps(steps);
     this.after = after;
     this.stepT = 0;
     this.stepDur = -1;

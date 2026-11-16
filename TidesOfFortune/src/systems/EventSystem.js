@@ -22,6 +22,7 @@
  */
 import * as X1 from './X1System.js';
 import * as X2 from './X2System.js';
+import * as X3 from './X3System.js';
 import { BALANCE } from '../config/balance.js';
 import { EVENT_BY_ID, POOL_EVENTS, CHAINS, PET_DECK_EVENTS } from '../data/events.js';
 import { ITEM_BY_ID, ITEMS } from '../data/items.js';
@@ -64,6 +65,7 @@ export function checkWhen(G, when, flags = {}) {
   if (when.crew && !hasCrew(G, when.crew)) return false;
   if (when.noCrew && hasCrew(G, when.noCrew)) return false;
   if (when.upgrade && !hasUpgrade(G.meta, when.upgrade)) return false;
+  if (when.noUpgrade && hasUpgrade(G.meta, when.noUpgrade)) return false;
   if (when.contract && !(run.x1?.contracts || []).some((c) => c.type === when.contract)) return false;
   if (when.pet && !hasPet(G, when.pet)) return false;
   if (when.item && !hasItem(G, when.item)) return false;
@@ -76,6 +78,10 @@ export function checkWhen(G, when, flags = {}) {
   if (when.noX2flag && run.x2?.flags?.[when.noX2flag]) return false;
   if (when.crewAny && !when.crewAny.some((c) => hasCrew(G, c))) return false;
   if (when.flagsMin && when.flagsMin.of.filter((f) => flags[f]).length < when.flagsMin.n) return false;
+  if (when.noFlag && flags[when.noFlag]) return false;
+  if (when.anyFlag && !when.anyFlag.some((f) => flags[f])) return false;
+  if (when.pets && !when.pets.every((p) => hasPet(G, p))) return false;
+  if (when.x3 && !X3.checkWhen(G, when.x3)) return false;
   return true;
 }
 
@@ -84,6 +90,7 @@ function condOk(G, cond, ctx) {
   if (cond.crew && !hasCrew(G, cond.crew)) return false;
   if (cond.notCrew && hasCrew(G, cond.notCrew)) return false;
   if (cond.pet && !hasPet(G, cond.pet)) return false;
+  if (cond.pets && !cond.pets.every((p) => hasPet(G, p))) return false;
   if (cond.destTypeNot && ctx.dest && ctx.dest.type === cond.destTypeNot) return false;
   if (cond.volcanicNear && !(ctx.region >= 5 || ctx.dest?.type === 'volcanic' || ctx.origin?.type === 'volcanic')) return false;
   return true;
@@ -124,10 +131,11 @@ function eventEligible(G, ev, ctx, exclude) {
   if (ev.pool === false) return false;
   if (ev.minCrew && G.run.crew.length < ev.minCrew) return false;
   if (ev.minCargo && G.run.cargo.reduce((s, l) => s + (l.contract ? 0 : l.qty), 0) < ev.minCargo) return false;
-  if (ev.regions && !ev.regions.includes(ctx.region)) return false;
+  if (ev.regions && !ev.regions.includes(ctx.region) && !X3.regionBypass(G, ev)) return false;
   if (ev.chain && G.run.chains[ev.chain]) return false;
   if (!condOk(G, ev.cond, ctx)) return false;
   if (exclude.has(ev.id)) return false;
+  if ((ev.x3cap || ev.legend) && !X3.eligible(G, ev, exclude, EVENT_BY_ID)) return false;
   return true;
 }
 
@@ -141,14 +149,14 @@ function pickEvent(G, rng, cat, ctx, exclude) {
     let w = e.weight ?? 10;
     if (e.weightBoost && ctx.dest?.type === e.weightBoost.destType) w *= e.weightBoost.mult;
     if (e.memBoost && G.run.x1?.mem?.flags?.[e.memBoost.flag]) w *= e.memBoost.mult;
-    return w * X1.eventWeightMult(G, e);
+    return w * X1.eventWeightMult(G, e) * X3.weightMult(G, e);
   });
   return ev ? { id: ev.id, src: 'normal' } : null;
 }
 
 function pickChainStart(G, rng, ctx, exclude) {
   const cands = Object.values(CHAINS).filter(
-    (c) => c.pool && !G.run.chains[c.id] && c.regions.includes(ctx.region) && condOk(G, c.cond, ctx) && !exclude.has(c.start) && X1.chainStartAllowed(G, c, G.run.idx + 1) && X2.chainStartAllowed(G, c, G.run.idx + 1, CHAINS),
+    (c) => c.pool && !G.run.chains[c.id] && X3.chainRegionOk(G, c, ctx.region) && condOk(G, c.cond, ctx) && !exclude.has(c.start) && X1.chainStartAllowed(G, c, G.run.idx + 1) && X2.chainStartAllowed(G, c, G.run.idx + 1, CHAINS),
   );
   if (!cands.length) return null;
   const c = rng.weighted(cands, (q) => (q.memBoost && G.run.x1?.mem?.flags?.[q.memBoost] ? 3 : 1) * X2.chainWeight(G, q));
@@ -220,6 +228,9 @@ export function buildVoyage(G) {
     const echo = pickEcho(G, rng);
     if (echo) replaceSlot(echo);
   }
+  // Paket 3: ilişkisi −2 olan rakip kaptanın takibi (normal bir slotun yerine; olay yoğunluğu artmaz)
+  const pur = X3.pickPursuit(G, rng, queue.map((q) => q.id), EVENT_BY_ID);
+  if (pur) replaceSlot(pur);
   // Hayvanlara özel gemi içi olay: gemideki hayvan(lar)a uygun, bu run'da görülmemiş olanlardan biri
   const pdeck = pickPetDeckEvent(G, rng);
   if (pdeck) replaceSlot(pdeck);
@@ -257,8 +268,8 @@ function pickPetDeckEvent(G, rng) {
 function pickEcho(G, rng) {
   const run = G.run;
   const shown = run.x1.echoesShown;
-  const echoId = (ch) => (ch.startsWith('CH_X2_') ? `EVT_X2_ECHO_${ch.replace('CH_X2_', '')}` : `EVT_X1_ECHO_${ch.replace('CH_X1_', '')}`);
-  const finals = { ...(G.meta.x1?.finals || {}), ...(G.meta.x2?.finals || {}) };
+  const echoId = (ch) => (ch.startsWith('CH_X3_') ? `EVT_X3_ECHO_${ch.replace('CH_X3_', '')}` : ch.startsWith('CH_X2_') ? `EVT_X2_ECHO_${ch.replace('CH_X2_', '')}` : `EVT_X1_ECHO_${ch.replace('CH_X1_', '')}`);
+  const finals = { ...(G.meta.x1?.finals || {}), ...(G.meta.x2?.finals || {}), ...(G.meta.x3?.chainFinals || {}) };
   const avail = Object.keys(finals).filter((ch) => (finals[ch] || []).length && !shown.includes(ch) && EVENT_BY_ID[echoId(ch)]);
   if (!avail.length || !rng.chance(20)) return null;
   const ch = rng.pick(avail);
@@ -355,6 +366,7 @@ export function triggerNext(G, host, rng, ctx) {
     if (!run.seenEvents.includes(ev.id)) run.seenEvents.push(ev.id);
     G.meta.codex.events[ev.chain && ev.step > 1 ? CHAINS[ev.chain].start : ev.id] = true;
     X1.checkStoryHunter(G, unlockAchievement);
+    X3.onTrigger(G, ev);
     if (ev.cat === 'mystery' && run.x1) run.x1.mysteryHinted = true;
     if (ev.chain) {
       const cs = (run.chains[ev.chain] ||= { status: 'active', flags: {}, step: 0 });
@@ -455,6 +467,8 @@ export function getOptions(G, host) {
   if (ev.lamps && hasUpgrade(G.meta, 'UPG_X2_SIGNAL_LAMPS') && !run.x2?.once?.signalLamps) {
     list.push({ key: '__lamps', injected: true, opt: { label: 'İşaret fenerleriyle konuş', icon: 'lantern', tags: ['pass'], hint: 'İşaret Fenerleri: run başına bir kez', win: { text: ev.lamps.text, fx: { ...(ev.lamps.fx || {}), x2: { ...(ev.lamps.fx?.x2 || {}), useOnce: 'signalLamps' } } } } });
   }
+  // Paket 3: kaptan ilişkisi (+1 konuşma, +2 işbirliği), Konsey ittifakı, İşaret Prizması
+  list.push(...X3.injectedOptions(G, ev));
   return list.map((x) => ({ ...x, view: evalOption(G, ev, x.opt, flags, cur) }));
 }
 
@@ -484,6 +498,7 @@ export function evalOption(G, ev, o, flags = {}, cur = null) {
     const alt = r.evidence.alt && hasCrew(G, r.evidence.alt.crew) && flags[r.evidence.alt.flag];
     if (have < r.evidence.n && !alt) reasons.push(`En az ${r.evidence.n} doğrulanmış kanıt gerekli (${have}/${r.evidence.n})`);
   }
+  X3.reqReasons(G, r.x3, flags, reasons);
   const cost = o.cost?.gold || 0;
   if (cost && run.gold < cost) reasons.push(`Yetersiz altın (${cost} gerekli)`);
 
@@ -552,6 +567,7 @@ export function evalOption(G, ev, o, flags = {}, cur = null) {
     }
     X1.chanceMods(G, ev, o, add);
     X2.chanceMods(G, ev, o, add, flags);
+    X3.chanceMods(G, ev, o, add);
     chance = X2.clampChance(Math.round(c), breakdown.some((b) => b.override));
   }
   return {
@@ -642,9 +658,11 @@ export function resolveOption(G, host, key, rng, ctx) {
       lines.push({ kind: 'gold', text: `Cüce Kaptan gizli bir bölme buldu: +${g} altın` });
     }
   }
+  X3.afterResolve(G, ev, lines, { addXp, unlockAchievement });
   cur.result = { key, label: opt.label, success, saved, roll, chance: o.view.chance, text: out.text, lines, pending };
   X1.recordOutcome(G, ev.id, key, success);
   if (ev.x2) X2.recordOutcome(G, ev.id, key, success);
+  if (ev.x3) X3.recordOutcome(G, ev.id, key, success);
   X2.consumeOnChoice(G, ev, opt, o.view);
   run.stats.eventsResolved++;
   afterChain(G, ev, out.fx || {});
@@ -695,6 +713,7 @@ function computeDamage(G, base, ctx, raw = false) {
   const notes = [];
   d = X1.damageMods(G, d, ev, raw, notes); // Deniz Derinliği (hullRaw hariç) + Yedek Halatlar
   d = X2.damageMods(G, d, ev, notes); // Gözcü Çanı
+  d = X3.damageMods(G, d, ev, opt, notes); // Kıç Destek Kirişi, gövde altı kontrolü
   const nm = negMult(G, ctx);
   d *= nm.m;
   notes.push(...nm.notes);
@@ -997,6 +1016,7 @@ export function applyFx(G, fx, ctx) {
   }
   if (fx.x1) X1.applyX1(G, fx.x1, ctx, lines, { addXp, unlockAchievement, addCargoLot: addContractLot, cargoFree });
   if (fx.x2) X2.applyX2(G, fx.x2, ctx, lines, { addXp, unlockAchievement });
+  if (fx.x3) X3.applyX3(G, fx.x3, ctx, lines, { addXp, unlockAchievement }, fx);
   // Zincirler
   if (fx.flag && ev.chain) Object.assign((run.chains[ev.chain] ||= { status: 'active', flags: {}, step: 0 }).flags, fx.flag);
   if (fx.startChain) {

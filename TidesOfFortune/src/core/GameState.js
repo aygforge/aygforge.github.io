@@ -4,6 +4,7 @@ import { SHIP_BY_LEVEL } from '../data/ships.js';
 import { UPGRADE_BY_ID } from '../data/upgrades.js';
 import { initRunX1, initMetaX1 } from '../systems/X1System.js';
 import { initRunX2, initMetaX2 } from '../systems/X2System.js';
+import { initRunX3, initMetaX3 } from '../systems/X3System.js';
 
 export function createMeta() {
   const m = {
@@ -39,6 +40,7 @@ export function createMeta() {
   };
   initMetaX1(m);
   initMetaX2(m);
+  initMetaX3(m);
   return m;
 }
 
@@ -114,5 +116,6 @@ export function createRun(meta, seedStr, route) {
   };
   initRunX1(run);
   initRunX2(run);
+  initRunX3(run);
   return run;
 }

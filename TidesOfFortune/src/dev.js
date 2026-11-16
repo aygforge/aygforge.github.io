@@ -23,6 +23,20 @@ function satisfy(run, r) {
   if (r.flag && run.x1) run.x1.mem.flags[r.flag] = true;
   if (r.contract && run.x1 && !run.x1.contracts.some((c) => c.type === r.contract)) run.x1.contracts.push(fakeContract(run, r.contract));
   if (r.upgrade && T0?.core.meta && !T0.core.meta.upgrades.includes(r.upgrade)) T0.core.meta.upgrades.push(r.upgrade);
+  if (r.noUpgrade && T0?.core.meta) T0.core.meta.upgrades = T0.core.meta.upgrades.filter((u) => u !== r.noUpgrade);
+  if (r.pets) for (const p of r.pets) if (!run.pets.includes(p)) run.pets.push(p);
+  const cf = run.__chain ? run.chains[run.__chain]?.flags : null;
+  if (r.anyFlag && cf) cf[r.anyFlag[0]] = true;
+  if (r.noFlag && cf) delete cf[r.noFlag];
+  // Paket 3 gereksinimleri
+  const x = r.x3;
+  if (x && run.x3) {
+    if (x.repOr && run.x1) run.x1.rep[x.repOr.faction] = Math.max(run.x1.rep[x.repOr.faction] || 0, x.repOr.min);
+    if (x.anyOf) { if (x.anyOf.items?.length) { if (!run.items.some((i) => x.anyOf.items.includes(i.id))) run.items.push({ id: x.anyOf.items[0] }); } else if (x.anyOf.goods?.length) run.cargo.push({ good: x.anyOf.goods[0], qty: 1, cost: 10 }); }
+    if (x.relAtLeast) Object.values(run.x3.captains).slice(0, x.relAtLeast.n).forEach((c) => { c.rep = Math.max(c.rep, x.relAtLeast.min); });
+    if (x.minFlags && cf) x.minFlags.of.slice(0, x.minFlags.n).forEach((f) => { cf[f] = true; });
+    if (x.capSeen) run.x3.captains[x.capSeen].seen = Math.max(1, run.x3.captains[x.capSeen].seen);
+  }
 }
 let T0 = null;
 function fakeContract(run, type) {
@@ -69,7 +83,8 @@ export function installDevHooks(T) {
     run.cargo = [{ good: 'GOOD_SPICE', qty: 3, cost: 20 }, { good: 'GOOD_WINE', qty: 2, cost: 20 }, { good: 'GOOD_GRAIN', qty: 2, cost: 10 }];
     if (ev.chain) { run.chains[ev.chain] = run.chains[ev.chain] || { status: 'active', flags: {}, step: ev.step || 1 }; run.__chain = ev.chain; }
     if (ev.needCrew && !(k !== 'auto' && ev.options[k]?.show?.noCrew)) satisfy(run, { crew: ev.needCrew });
-    if (ev.cond) satisfy(run, { crew: ev.cond.crew, pet: ev.cond.pet });
+    if (ev.cond) satisfy(run, { crew: ev.cond.crew, pet: ev.cond.pet, pets: ev.cond.pets });
+    if (ev.x3pursuit && run.x3) { run.x3.pursuit = 'boran'; run.x3.captains.boran.rep = -2; }
     if (ev.cond2) satisfy(run, { pet: ev.cond2.pet });
     const petFor = { EVT_PET_MONKEY: 'PET_CUCE', EVT_PET_PARROT: 'PET_KIRMIZI', EVT_PET_MIDNIGHT: 'PET_GECEYARISI', EVT_PET_TARCIN_NOSE: 'PET_TARCIN' }[id];
     if (petFor) satisfy(run, { pet: petFor });

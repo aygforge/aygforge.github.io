@@ -116,6 +116,18 @@ Durum: ✅ tamamlandı · 🟡 kısmen / sadeleştirilmiş · ❌ yok
 | 3/4 görünüm çizimleri kaynak koda taşındı | ✅ | Yüklenen sürümle yan yana görsel karşılaştırma |
 | İstem dışı sözleşme başarısızlığında −1 itibar | 🟡 | Paket 1'de ceza yoktu; Sözleşme Teminatı'nın anlamlı olması için küçük kontrollü düzeltme |
 
+## Genişleme Paketi 3 — Efsanevi Denizler ve Rakip Kaptanlar
+| Özellik | Durum | Not |
+|---|---|---|
+| 25 EVT_X3 olayı (6/8/6/4/1), 3 efsane, her biri özel sahne | ✅ | Efsanelerde her seçeneğin fiziksel sonucu farklı |
+| Rakip kaptan ilişkisi (−2..+2), 2 liman bekleme, seferde tek karşılaşma, −2 takip | ✅ | Neris'in gemisi ve figürü yeni |
+| 4 zincir / 15 aşama / 12 final, 4 yankı | ✅ | Kişisel değil; 2 aktif zincir sınırı |
+| 8 yükseltme (4370 XP, registry 52), 10 başarım | ✅ | |
+| Denizci Kroniği (Codex), Denizcilerin Mirası epiloğu | ✅ | |
+| Kayıt v7 (x1/x2/eğitim korunur) | ✅ | |
+| Sahne adımı normalleştirme (`normSteps`) | ✅ | Eski bir hata: iç içe `[par, wait]` grupları atlanıyordu |
+| Gerçek mobil cihaz testi | ⬜ | Yalnızca masaüstü Chromium ile test edildi |
+
 ## Bilinen sınırlamalar
 - Rework sonrası simülasyon (300 run): tamamlanma %82,7, run ~43 dk (saf seyir ~18 dk, event başına ~30 sn), ~31 event/run, 1,14 yükseltme/run. Özel sahneler run'ı hedef aralığın (25–45 dk) üst ucuna taşıdı; gerekirse yaklaşma/çıkış beklemeleri kısaltılabilir.
 - Denge (rework öncesi): otomatik oyuncu run'ların ~%87'sini tamamlıyor ve ortalama ~6 limanda bir gemi yükseltiyor (GDD hedefi 2–3). Bilgili bir oyuncu daha hızlı yükseltebilir; zorluk ve fiyatlar `balance.js` ile kolayca ayarlanır. Gerçek oyuncu testleriyle ince ayar önerilir.

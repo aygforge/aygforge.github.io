@@ -44,9 +44,10 @@ test('İçerik sayıları GDD ile uyumlu', () => {
   assert.ok(ITEMS.length >= 18);
   assert.equal(CREW.length, 30);
   assert.equal(PETS.length, 9);
-  assert.equal(UPGRADES.filter((u) => !/^UPG_X[12]_/.test(u.id)).length, 20); // mevcut 20 korunur
+  assert.equal(UPGRADES.filter((u) => !/^UPG_X[123]_/.test(u.id)).length, 20); // mevcut 20 korunur
   assert.equal(UPGRADES.filter((u) => u.id.startsWith('UPG_X2_')).length, 12); // Kaptanların Hikâyeleri
-  assert.equal(UPGRADES.length, 44);
+  assert.equal(UPGRADES.filter((u) => u.id.startsWith('UPG_X3_')).length, 8); // Efsanevi Denizler
+  assert.equal(UPGRADES.length, 52);
   assert.equal(UPGRADES.filter((u) => u.id.startsWith('UPG_X2_')).reduce((s, u) => s + u.cost, 0), 5680);
   assert.equal(UPGRADES.filter((u) => u.id.startsWith('UPG_X1_')).length, 12); // Yaşayan Denizler
   const cnt = (c, re) => ALL_EVENTS.filter((e) => re.test(e.id)).length;
@@ -56,7 +57,7 @@ test('İçerik sayıları GDD ile uyumlu', () => {
   assert.equal(cnt('x', /^EVT_DIS_\d+$/), 8);
   assert.equal(cnt('r', /^EVT_REPAIR_\d+$/), 3);
   assert.equal(cnt('c', /^EVT_CREW_\d+$/), 5);
-  assert.equal(Object.keys(CHAINS).filter((k) => !/^CH_X[12]_/.test(k)).length, 12); // mevcut 12 zincir korunur
+  assert.equal(Object.keys(CHAINS).filter((k) => !/^CH_X[123]_/.test(k)).length, 12); // mevcut 12 zincir korunur
   assert.equal(Object.keys(CHAINS).filter((k) => k.startsWith('CH_X2_')).length, 4);
   assert.equal(ALL_EVENTS.filter((e) => /^CH_X2_/.test(e.id)).length, 14);
   const x2 = ALL_EVENTS.filter((e) => /^EVT_X2_/.test(e.id) && !e.id.includes('ECHO'));

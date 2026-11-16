@@ -5,6 +5,8 @@ import * as X1 from '../../systems/X1System.js';
 import { EVENT_BY_ID, CHAINS, EVENT_CATEGORIES } from '../../data/events.js';
 import { X1_STANDALONE } from '../../data/events_x1.js';
 import { X2_STANDALONE } from '../../data/events_x2.js';
+import { X3_STANDALONE } from '../../data/events_x3.js';
+import { CAPTAINS, CAPTAIN_IDS, LEGENDS, X3_CHAIN_IDS, relName } from '../../systems/X3System.js';
 import { HARBOR_BY_ID } from '../../data/harbors.js';
 
 const FINAL_NAMES = {
@@ -138,7 +140,66 @@ export function journalTab(meta) {
     ...rows2,
     h('div.secTitle', {}, 'Kaptanların zincirleri: Yara, Pita, Mira ve Üç Kaptanın Yarışı'),
     ...chains2,
+    ...chronicle(meta),
   );
+}
+
+// ── Paket 3: Denizci Kroniği ──
+const FINAL_NAMES_X3 = {
+  CH_X3_COUNCIL: { alliance: 'İttifak', rivalry: 'Onurlu rekabet', independent: 'Bağımsız kal' },
+  CH_X3_ARMADA: { release: 'Filoyu serbest bırak', guard: 'Filoyu koru', salvage: 'Filoyu kurtar' },
+  CH_X3_ATLAS: { publish: "Atlas'ı yayımla", secret: 'Gizli tut', destroy: "Atlas'ı yok et" },
+  CH_X3_FLAGS: { treaty: 'Antlaşma', expose: 'Suçluyu ifşa et', trade: 'Kanıtlarla ticaret' },
+};
+const LEGEND_NAMES = { EVT_X3_L01: 'Sönmeyen Armada', EVT_X3_L02: 'Denizin Üzerindeki Taş Yol', EVT_X3_L03: 'Uyuyan Ada' };
+function chronicle(meta) {
+  const x3 = meta.x3 || { outcomes: {}, chainFinals: {}, subs: {}, legendDiscovered: {}, captainHistory: {}, chronicle: {} };
+  const caps = CAPTAIN_IDS.map((k) => {
+    const c = CAPTAINS[k];
+    const hh = x3.captainHistory?.[k] || {};
+    if (!hh.met) return h('div.jRow.unseen', {}, h('b', {}, '???'), h('small', {}, ' Henüz tanışmadığın bir kaptan'));
+    const ends = (hh.endings || []).map((e) => FINAL_NAMES_X3.CH_X3_COUNCIL[e]).filter(Boolean);
+    return h('div.jRow', {}, h('b', { style: { color: c.color } }, `${c.name} — ${c.ship}`),
+      h('div.jMarks', {}, h('span.jo.ok', {}, `En iyi: ${relName(hh.best || 0)}`), h('span.jo.ok', {}, `En kötü: ${relName(hh.worst || 0)}`), ...(ends.length ? ends.map((e) => h('span.jo.ok', {}, `Konsey: ${e}`)) : [h('span.jo', {}, 'Konsey sonu: ???')])));
+  });
+  const legends = LEGENDS.map((id) => h('div.jRow', {}, h('b', {}, x3.legendDiscovered?.[id] ? `★ ${LEGEND_NAMES[id]}` : '??? (keşfedilmemiş efsane)')));
+  const rows3 = X3_STANDALONE.map((id) => {
+    const ev = EVENT_BY_ID[id];
+    if (!meta.codex.events[id]) return h('div.jRow.unseen', {}, h('b', {}, '???'), h('small', {}, ` ${EVENT_CATEGORIES[ev.cat].name}`));
+    const o = x3.outcomes?.[id] || {};
+    const marks = ev.options.flatMap((op, i) => {
+      const k = `o${i}`;
+      const out = [h(`span.jo${o[`${k}|w`] ? '.ok' : ''}`, { title: op.label }, o[`${k}|w`] ? `✓ ${op.label}` : '???')];
+      if (op.lose) out.push(h(`span.jo.lose${o[`${k}|l`] ? '.ok' : ''}`, {}, o[`${k}|l`] ? `✗ ${op.label}` : '???'));
+      return out;
+    });
+    return h('div.jRow', {}, h('b', { style: { color: EVENT_CATEGORIES[ev.cat].color } }, ev.title), h('div.jMarks', {}, ...marks));
+  });
+  const found3 = X3_STANDALONE.filter((id) => meta.codex.events[id]).length;
+  const chains3 = X3_CHAIN_IDS.map((cid) => {
+    const c = CHAINS[cid];
+    const f = x3.chainFinals?.[cid] || [];
+    return h('div.jRow', {}, h('b', {}, c.name), h('div.jMarks', {}, ...c.finals.map((fid) => {
+      const subs = x3.subs?.[`${cid}:${fid}`] || [];
+      const sub = subs.length ? ` (${subs.map((s) => (s === 'win' ? 'başarılı' : 'başarısız')).join(' / ')})` : '';
+      return h(`span.jo${f.includes(fid) ? '.ok' : ''}`, {}, f.includes(fid) ? `✓ ${FINAL_NAMES_X3[cid][fid]}${sub}` : '??? (alternatif son)');
+    })));
+  });
+  const nF = (m) => Object.values(m || {}).reduce((s, a) => s + a.length, 0);
+  const n3 = nF(x3.chainFinals);
+  const longest = Math.max(x3.chronicle?.longestEndless || 0, meta.x1?.records?.maxExtra || 0);
+  return [
+    h('div.secTitle', {}, 'Denizci Kroniği ', h('small.n', {}, `${n3}/12 son`)),
+    h('p.small', {}, `Önceki hikâyelerden görülen sonlar: Yaşayan Denizler ${nF(meta.x1?.finals)}/12, Kaptanların Hikâyeleri ${nF(meta.x2?.finals)}/12. En uzun Sonsuz Deniz yolculuğu: ${longest} ek liman.`),
+    h('div.secTitle', {}, 'Rakip kaptanlar'),
+    ...caps,
+    h('div.secTitle', {}, 'Efsaneler ', h('small.n', {}, `${LEGENDS.filter((id) => x3.legendDiscovered?.[id]).length}/3`)),
+    ...legends,
+    h('div.secTitle', {}, 'Efsanevi Denizler olayları ', h('small.n', {}, `${found3}/25`)),
+    ...rows3,
+    h('div.secTitle', {}, 'Konsey, Armada, Atlas ve Sahte Bayraklar'),
+    ...chains3,
+  ];
 }
 
 export function recordsTab(meta) {

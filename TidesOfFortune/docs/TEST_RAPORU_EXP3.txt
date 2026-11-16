@@ -1,0 +1,91 @@
+TIDES OF FORTUNE — GENİŞLEME PAKETİ 3: EFSANEVİ DENİZLER VE RAKİP KAPTANLAR — TEST RAPORU
+======================================================================================
+
+0. TEMEL
+- Esas alınan sürüm: Paket 2 sürümü (TidesOfFortune_Expansion2, git 7c4e1b0).
+  Yedeği: backups/TidesOfFortune_pre_expansion3.html (Paket 2 çıktısıyla bayt bayt aynı).
+- Görsel referans: tools/visual.cjs ile 14 sabit ekran (menü, eğitim penceresi, seyir, eski olay, X2 yarış finali,
+  gemi seviyeleri 1–5, hayvanlar, korsan, çok gemili halat sahnesi, dalgıç) önce ve sonra yakalandı ve yan yana
+  karşılaştırıldı. Çizimler aynı; piksel farkı %0,1–6,0 ve tamamı dalga/yelken animasyonunun zamanlamasından.
+
+1. ÇIKTI
+- dist/TidesOfFortune_Expansion3.html — tek dosya, çevrimdışı, harici bağlantı yok. (Boyut teslim notunda.)
+
+2. 25 BAĞIMSIZ OLAY (her birinin kendi sahnesi var: 25/25)
+  danger (6):   D01 Korsanların Rehine Sandalı, D02 Gezici Top Salı, D03 Sürüklenen Ağır Çapa, D04 Kara Dumanlı Devriye,
+                D05 Kül Yelkenli Avcı (Neris), CREW01 Bjorn'un Kurtarma Halatı
+  fortune (8):  F01 Gezgin Harita Matbaası, F02 Denizci Posta Flotillası, F03 Yelken Dokumacıları,
+                F04 İki Kaptanın Ortak Pazarlığı (Liora + Boran), F05 Balıkçıların Işık Ağı, CREW02 Kalani'nin Rüzgâr Dersi,
+                CREW03 Compass Rose'un Sessiz Kodu, PET01 Gece Nöbetindeki İki Dost (Tarçın + Zıpır)
+  mystery (6):  M01 Kayıp Günün Günlüğü, M02 Denizde Beliren Yazılar, M03 Dalgasız Koridor, M04 İsimsiz Taş Heykel,
+                L01 Sönmeyen Armada (efsane), L03 Uyuyan Ada (efsane)
+  disaster (4): DIS01 Birleşen Sığlıklar, DIS02 Cam Gibi Kırılan Dalgalar, DIS03 Göğü Kapatan Kuşlar,
+                L02 Denizin Üzerindeki Taş Yol (efsane)
+  repair (1):   REPAIR01 Gövde Altı Ustası
+- Ek (sayılmaz): EVT_X3_PURSUIT rakip takibi, EVT_X3_EPILOGUE Denizcilerin Mirası, 4 yankı.
+- Node testi: 25 olay + 15 aşama + takip + epilog — her seçenek gerçek çözümle denendi; ikinci seçim altın/gövde/XP'yi değiştirmiyor.
+
+3. RAKİP KAPTANLAR
+- Liora (turkuaz, hafif/hızlı), Boran (koyu kırmızı, ağır), Neris (yeni: "Kül Pusulası" — kömür gövde, bakır çizgili yelken,
+  kıçta küçük kurtarma vinci; bakır atkılı, örgülü saçlı kaptan figürü). Üçü de mevcut 3/4 gemi üreticisiyle çizildi.
+- İlişki run'a aittir (−2..+2), fraksiyon itibarından ayrıdır; Codex tanışıklığı ve en iyi/en kötü ilişkiyi saklar.
+- +2: run başına kaptan başına bir kez güvenli işbirliği seçeneği; +1: ek konuşma seçeneği; −1: o kaptanın olayındaki
+  riskli seçimlere −5; −2: rakip takibi (%30, Sonsuz Deniz'de %20; her zaman kaçış / 60 altınla uzlaşma / çatışma).
+- Aynı kaptan bir seferde en fazla bir karşılaşma; son görüldüğü limandan sonra en az 2 liman bekleme; Sonsuz Deniz'de
+  kaptan olaylarının ağırlığı ×0,6. Hepsi test edildi.
+- Karşılaşma panelinde kaptan adının yanında küçük üç renkli ilişki noktası (kırmızı gergin / gri tarafsız / yeşil dost).
+
+4. 4 ZİNCİR / 15 AŞAMA / 12 FİNAL
+- Rakip Kaptanlar Konseyi (ittifak / onurlu rekabet / bağımsız), Sönmeyen Armada'nın Sırrı (serbest bırak / koru / kurtar),
+  Kayıp Atlas (yayımla / gizli tut / yok et), Sahte Bayraklar (antlaşma / ifşa / ticaret).
+- 12 finalin hepsi node testinde uçtan uca oynatıldı ve Codex'e (Denizci Kroniği) yazıldı; şansa bağlı finallerde alt sonuç ayrı.
+- İttifak: en az iki dost kaptan ya da kanıt; eksikse kilitli ve açıklamalı. Sonraki seferde bir kez "dost kaptanları çağır".
+- Zincirler kişisel değil; 2 aktif zincir sınırı ve aşamaların rota olay sayısına dahil olması korunuyor.
+
+5. 8 YÜKSELTME (registry 52, toplam 4370 XP) — 10 BAŞARIM
+  UPG_X3_SOUNDINGS 480, STERN_BRACE 650, CAPTAIN_PARLEY 440, ENVOY_CHEST 560, RESCUE_WALKWAY 520, SIGNAL_PRISM 580,
+  CREW_LIAISON 480, LEGEND_KEEPER 660 — hepsi satın alındı (önkoşullar dahil).
+- Kurtarma İskelesi çekme kancası/vinçle aynı manevrada birikmez; Kıç Kirişi hasar yoksa harcanmaz ve run'da bir kez;
+  Elçi Sandığı bir kez, en fazla +40; Prizma run'da bir kez ve İşaret Fenerleri'nden ayrı hak; Tayfa Elçisi yalnızca
+  yanlış anlaşılma düşüşünde, bir kez — hepsi test edildi.
+- ACH_X3_FROZEN_ARMADA, STONE_CAUSEWAY, LIVING_ISLAND, TWO_ALLIES, HONOR_WIN, THREE_FLAGS, TRUE_ATLAS, FLEET_KEEPER,
+  THIRTY_TWO, CHRONICLER — bir kez verilir (test edildi).
+
+6. EFSANELER
+- Run içinde tekrar yok; kuyrukta tek efsane; Sonsuz Deniz'de 4 limanlık dilimde en fazla bir (200 ek liman testinde doğrulandı).
+- İlk keşif ödülü (+10 XP) bir kez; Efsane Bekçisi ilk keşifte +15 XP ve bir hikâye ipucu.
+- Nadirlik (1000 seed'lik bot taraması): efsaneli run %11; L01 50, L02 24, L03 39 kez görüldü (hiçbiri sıfıra yakın değil).
+- Üç efsanenin sahnesi çok aşamalı ve her seçeneğin fiziksel sonucu farklı:
+  Armada — fenerler sırayla eşzamanlanır, donmuş tayfa bir an çözülüp belge uzatır ve yeniden donar / iskeleyle donmuş
+  güverteye geçiş (başarısızlıkta iskele kırılır) / uzaktan kayıt (filo silikleşir). Ayrılışta filo yerinde çözülüp kaybolur.
+  Taş Yol — iki sıra sütun dipten yükselir, ışıyan çizimler / gemi aralarından süzülür (başarısızlıkta önde yeni sütun) /
+  kadim işaretlerle bir sıra alçalıp geçit açılır / sandalla sütuna yanaşma / geri dönüşte sütunlar batar.
+  Uyuyan Ada — nefes alan, gözünü açan dev yaratık; gözlem (göz açılır, kuşlar konar) / sandalla sırta çıkma (başarısızlıkta
+  ada döner, dalga gemiyi iter) / yol verme (ada yanımızdan süzülür, uzakta Liora selam verir). Tarçın ve Zıpır güvenli tepki verir.
+
+7. SONSUZ DENİZ
+- Üst sınırlar değişmedi (mevcut testler: 50/100/200 ek liman, hasar ≤ ×1,91, risk ≤ −18).
+- III+ çok kaptanlı görsel varyantlar (D05'te uzakta Liora, F04'te Neris), IV+ sert taş yol (−5), V+ gece Uyuyan Ada.
+- 200 ek limanlık test seferi: kilitlenme yok, x3 işlem kaydı ≤ 300, kayıt boyutu sınırlı.
+
+8. KAYIT
+- v6 → v7: x1 itibarı, x2 bayrak/finalleri, yükseltmeler ve eğitim durumu korunuyor; x3 ekleniyor (test edildi).
+- Dışa/içe aktarma x3 ilişkileri ve efsane keşiflerini taşıyor; ikinci aktarım aynı sonucu veriyor.
+
+9. REGRESYON VE ÖLÇÜMLER
+- npm test: 66/66 (49 mevcut + 17 Paket 3 kabul testi).
+- Tarayıcı uçtan uca: 16/16 (iki ekran boyutunda tüm run fare ile, karar sonrası yeniden yükleme dahil), eğitim: 15/15.
+- Simülasyon (150 run): hata yok, tamamlanma %86, run başına 27,6 olay (Paket 2: 27,3).
+- Aynı seed + aynı kararlar → aynı sonuç (Paket 3 içeriği dahil). Yeni Math.random yok.
+- 30 FPS + düşük efekt modunda dört yeni sahne ~28–30 kare/sn çizildi (başsız Chromium, eşzamanlı yük altında);
+  karar kartları klavyeyle (odak + Enter) ve fareyle seçilebiliyor.
+- SAHNE TARAMASI: (aşağıda)
+
+10. KÜÇÜK KONTROLLÜ DÜZELTME (gerekçeli)
+- Sahne motoru: `[par(...), wait(n)]` biçimindeki iç içe adım grupları sessizce atlanıyordu (adım listesi tek seviye
+  açılıyordu). `normSteps` ile sırayla oynatılıyor. Bu, Paket 2 sahnelerindeki bazı kıvılcım/ses/parlama vuruşlarını da
+  görünür kıldı; tüm eski sahneler yeniden tarandı.
+
+11. DOĞRULANAMAYANLAR
+- Gerçek mobil test kullanıcıya kaldı (yalnızca masaüstü Chromium).
+- 46 yeni sahnenin hepsi otomatik oynatıldı; kare kare gözle incelenenler aşağıda listelendi, gerisi yalnızca otomatik tarandı.

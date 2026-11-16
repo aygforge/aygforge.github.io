@@ -77,6 +77,17 @@ npx cap open android      # Android Studio'da Build > Build APK
 - **Kayıt v6:** yalnızca `run.x2` / `meta.x2` eklenir; `x1` ve eğitim durumu korunur.
 - **3/4 görünüm çizimleri** artık kaynak kodda (`src/rendering/td/*`, `src/rendering/icons.js`); diğer daldaki küçültülmüş-paket yamaları kaynak haritasıyla gerçek isimlere taşındı.
 
+## Genişleme Paketi 3 — Efsanevi Denizler ve Rakip Kaptanlar
+
+- **25 bağımsız olay** (`src/data/events_x3.js`, `EVT_X3_*`): 6 tehlike, 8 şans, 6 gizem, 4 felaket, 1 tamir. Üçü **efsane**: Sönmeyen Armada (donmuş üç gemi, fenerler), Denizin Üzerindeki Taş Yol (dipten yükselen taş sütunlar), Uyuyan Ada (nefes alan dev yaratık). Efsaneler kategori içinde düşük ağırlıklı, run içinde tekrar etmez, Sonsuz Deniz'de 4 limanlık dilimde en fazla bir kez çıkar ve ilk keşif ödülü bir kez verilir.
+- **Rakip kaptan ilişkisi** (`src/systems/X3System.js`): Liora (turkuaz), Boran (koyu kırmızı) ve yeni kaptan **Neris** ("Kül Pusulası": kömür gövde, bakır çizgili yelken, kurtarma vinci). Her run'da −2..+2; fraksiyon itibarından ayrı. +2 bir kez güvenli işbirliği, +1 ek konuşma, −1 gergin (riskli seçime −5), −2 rakip takibi (her zaman kaçış / 60 altınla uzlaşma / çatışma yolu). Aynı kaptan bir seferde en fazla bir karşılaşma ve son görüldüğü limandan 2 liman sonra yeniden çıkar. Karşılaşma panelinde küçük üç renkli ilişki işareti.
+- **4 hikâye zinciri** (`src/data/chains_x3.js`): Rakip Kaptanlar Konseyi (4), Sönmeyen Armada'nın Sırrı (4), Kayıp Atlas (4), Sahte Bayraklar (3) — 15 aşama, 12 final. Kişisel değil; toplam 2 aktif zincir sınırı ve aşamaların rota olay sayısına dahil olması korunur. 4 yankı olayı.
+- **8 yükseltme** (toplam 4370 XP, registry 52) ve **10 başarım**. Codex'te **Denizci Kroniği**: kaptan tanışıklıkları ve en iyi/en kötü ilişki, üç efsane, 12 final (görülmeyenler ???), önceki paketlerin sonları ve en uzun Sonsuz Deniz yolculuğu. Üç efsane keşfedilip bir run'da iki yeni hikâye bitince sonraki limanda kısa "Denizcilerin Mirası" kutlaması (ek XP yok).
+- **Sonsuz Deniz:** üst sınırlar değişmedi. III+ derinlikte çok kaptanlı görsel varyantlar, IV+ daha sert taş yol, V+ gece Uyuyan Ada.
+- **Kayıt v7:** yalnızca `run.x3` / `meta.x3` eklenir; `x1`, `x2` ve eğitim durumu korunur. Aynı karar iki kez uygulanmaz (işlem anahtarı).
+- **Sahne motoru düzeltmesi:** `[par(...), wait(n)]` biçimindeki iç içe adım grupları önceden sessizce atlanıyordu; artık sırayla oynatılıyor (`normSteps`). Bu, Paket 2 sahnelerindeki bazı kıvılcım/ses/parlama vuruşlarını da görünür kıldı.
+- Görsel regresyon aracı: `node tools/visual.cjs <html> <klasör>` sabit 14 ekranı yakalar (önce/sonra karşılaştırması için).
+
 ## İlk oyun eğitimi
 
 İlk run'da oyuncu her adımı kendisi uygulayarak öğrenir (`src/ui/tutorial.js`). Hedef düğme parlayan bir halkayla gösterilir, yanında kısa bir açıklama balonu durur; eylem yapılınca sonraki adıma geçilir:
