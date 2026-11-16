@@ -25,3 +25,18 @@ tam-üstten çizim kodunun yerine geçen yeni **3/4 bakış** çizim modüllerin
 
 `build.mjs`, `game.pretty.js` içindeki eski çizim bölümlerini satır aralıklarıyla bu modüllerle değiştirir
 ve esbuild ile küçültür.
+
+## Genişleme 3 sürümü (`expansion3/`)
+
+Güncel oyun (`TidesOfFortune.html`) Genişleme 3 sürümünün üzerine kuruludur. Bu sürümde yeniden çizilenler:
+
+- `expansion3/x3props.js` — Genişleme 2-3 ile gelen 35 sahne objesi (kale, zincir, taş sütunlar/geçit,
+  yaşayan ada, tiyatro sahnesi, top salı, saat kulesi, cam dalga vb.), fırlatılan şişe ve can simidi,
+  çan ikonu, yeni kaptan gemilerinin yelken armaları.
+- `expansion3/patches.mjs` — bu modülü ve küçük bağlantı yamalarını (arma, fırlatma, `dusk`/`fog` deniz
+  tonları) küçültülmüş oyuna uygular.
+- `expansion3/build3.mjs` — Genişleme 3 HTML'inin betiğini (573–574. satırlar) prettier ile biçimlendirip
+  `game.pretty.js` yaptıktan sonra `node build3.mjs` ile derler.
+
+Not: modül, oyundaki küçültülmüş yardımcı adlarına (`m, p, x, R, Z…`) dosyanın son satırındaki çağrıyla
+bağlanır; oyun yeniden küçültülürse yalnızca o satırın güncellenmesi gerekir.
