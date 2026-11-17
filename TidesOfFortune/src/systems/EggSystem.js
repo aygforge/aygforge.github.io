@@ -9,6 +9,8 @@ import { EGG_EVENTS } from '../data/events_egg.js';
 import * as X1 from './X1System.js';
 
 export const EGG_RATE = 3.8; // sefer başına egg denemesi (%)
+/** Denge karşılaştırması için (testler/simülasyon): oran buradan okunur */
+export const EGG_CONFIG = { rate: EGG_RATE };
 export const RARITY_WEIGHT = { rare: 2, very_rare: 1 };
 export const ENDLESS_WINDOW = 6;
 const harbors = (run) => run.stats?.harborsReached ?? 0;
@@ -40,7 +42,7 @@ export function scheduleEgg(G, queue, ctx, fromIdx, harborId) {
   const slots = queue.map((q, i) => (q.src === 'normal' ? i : -1)).filter((i) => i >= 0);
   if (!slots.length) return null;
   const rng = SeededRNG.derive(run.seed, 'egg', fromIdx, harborId);
-  if (!rng.chance(EGG_RATE)) return null;
+  if (!rng.chance(EGG_CONFIG.rate)) return null;
   const cands = eggCandidates(G, ctx.region);
   if (!cands.length) return null;
   const ev = rng.weighted(cands, (e) => RARITY_WEIGHT[e.egg] * (G.meta.codex.events[e.id] ? 1 : 1.25));

@@ -128,6 +128,17 @@ Durum: ✅ tamamlandı · 🟡 kısmen / sadeleştirilmiş · ❌ yok
 | Sahne adımı normalleştirme (`normSteps`) | ✅ | Eski bir hata: iç içe `[par, wait]` grupları atlanıyordu |
 | Gerçek mobil cihaz testi | ⬜ | Yalnızca masaüstü Chromium ile test edildi |
 
+## Gizli Deniz Hikâyeleri (23 easter egg)
+| Özellik | Durum | Not |
+|---|---|---|
+| 23 EVT_EGG olayı (11/9/2/1, 17 nadir + 6 çok nadir), 69 seçenek | ✅ | Yeni yükseltme/başarım yok |
+| Ayrı RNG akışlı zamanlayıcı: normal sefer ≤1, Sonsuz Deniz 6 limanda ≤1 | ✅ | Eski zar akışına dokunmaz |
+| 23 özgün sahne, şanslı seçeneklerde ayrı başarı/başarısızlık | ✅ | |
+| Codex "Gizli Deniz Hikâyeleri" (spoilersız ???) | ✅ | |
+| (8).html çizim yamalarının kaynağa taşınması (Props6) | ✅ | |
+| Azaltılmış hareket: sahne sallantısı/parlama sınırı | ✅ | Ayar açıkken tüm sahnelerde |
+| Gerçek mobil cihaz testi | ⬜ | Yalnızca masaüstü Chromium |
+
 ## Bilinen sınırlamalar
 - Rework sonrası simülasyon (300 run): tamamlanma %82,7, run ~43 dk (saf seyir ~18 dk, event başına ~30 sn), ~31 event/run, 1,14 yükseltme/run. Özel sahneler run'ı hedef aralığın (25–45 dk) üst ucuna taşıdı; gerekirse yaklaşma/çıkış beklemeleri kısaltılabilir.
 - Denge (rework öncesi): otomatik oyuncu run'ların ~%87'sini tamamlıyor ve ortalama ~6 limanda bir gemi yükseltiyor (GDD hedefi 2–3). Bilgili bir oyuncu daha hızlı yükseltebilir; zorluk ve fiyatlar `balance.js` ile kolayca ayarlanır. Gerçek oyuncu testleriyle ince ayar önerilir.

@@ -88,6 +88,15 @@ npx cap open android      # Android Studio'da Build > Build APK
 - **Sahne motoru düzeltmesi:** `[par(...), wait(n)]` biçimindeki iç içe adım grupları önceden sessizce atlanıyordu; artık sırayla oynatılıyor (`normSteps`). Bu, Paket 2 sahnelerindeki bazı kıvılcım/ses/parlama vuruşlarını da görünür kıldı.
 - Görsel regresyon aracı: `node tools/visual.cjs <html> <klasör>` sabit 14 ekranı yakalar (önce/sonra karşılaştırması için).
 
+## Gizli Deniz Hikâyeleri (23 easter egg)
+
+- **23 nadir, sahnelenmiş karşılaşma** (`src/data/events_egg.js`, `EVT_EGG_*`): 11 şans, 9 gizem, 2 felaket, 1 tehlike; 17 nadir + 6 çok nadir. Oyun içinde hiçbir eser/karakter/marka adı geçmez; referanslar yalnızca kaynak koddaki `ref` notlarındadır. Tüm figür ve nesneler özgün çizimdir (`src/rendering/td/Props7.js`, yeni NPC görünümleri `TopChars.js`, gemi stilleri `TopShip.js`).
+- **Zamanlayıcı** (`src/systems/EggSystem.js`): olaylar normal havuzda değildir. Sefer kuyruğu kurulduktan sonra ayrı bir türetilmiş RNG akışıyla ("egg") nadiren bir normal slotun yerine konur; eski olay/ekonomi zarları değişmez. Normal sefer başına en fazla 1; Sonsuz Deniz'de 6 ek limanlık pencerede en fazla 1; aynı egg run içinde tekrar etmez. Codex'te görülmemiş olanlara hafif öncelik.
+- **Sahneler** (`src/presentation/scenes/egg.js`): her olayın kendi koreografisi; 69 seçeneğin her biri farklı bir fiziksel sonuçla, şanslı seçeneklerde ayrı başarı/başarısızlık dalıyla oynar. Kopuz için özgün prosedürel ezgi (`kopuz` sesi).
+- **Codex:** "Gizli Deniz Hikâyeleri n/23" — keşfedilmeden önce `???`, sonra başlık ve kısa özgün açıklama. İlk keşifte sonuç panelinde küçük bir not.
+- Yeni yükseltme, başarım, para birimi ya da kayıt sürümü yok (v7 korunur; tek yeni alan `run.x3.eggLast`, varsayılanlı).
+- **Çizim kaynağı:** girdi `TidesOfFortune (8).html`, Paket 2–3 nesnelerinin yeniden çizildiği başka bir dalın (`tof-art-src/expansion3`) yamalı derlemesiydi. Bu çizimler kaynağa `Props6.js` olarak taşındı (yelken armaları, şişe/can simidi, çan ikonu, alacakaranlık/sis deniz tonları); (8) ile aynı görünüm kaynak üzerinden üretilir.
+
 ## İlk oyun eğitimi
 
 İlk run'da oyuncu her adımı kendisi uygulayarak öğrenir (`src/ui/tutorial.js`). Hedef düğme parlayan bir halkayla gösterilir, yanında kısa bir açıklama balonu durur; eylem yapılınca sonraki adıma geçilir:

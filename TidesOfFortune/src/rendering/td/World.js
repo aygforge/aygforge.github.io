@@ -142,6 +142,8 @@ export class World {
   update(dt, opts = {}) {
     this.t += dt;
     const reduce = opts.reduceMotion;
+    // Azaltılmış hareket: sahne sallantısı ve ani parlamalar kısılır (temel anlatım korunur)
+    if (reduce) { this.cam.shake = Math.min(this.cam.shake, 1.5); if (this.ocean.flash > 0.3) this.ocean.flash = 0.3; }
     this.speed = lerp(this.speed, this.targetSpeed, Math.min(1, dt * 0.8));
     const s = this.ship;
     // yalpa ve rota düzeltme (top-down: hafif yan kayma + küçük açı)

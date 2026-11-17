@@ -1,0 +1,237 @@
+TIDES OF FORTUNE — GİZLİ DENİZ HİKÂYELERİ (23 EASTER EGG) — TEST RAPORU
+=========================================================================
+
+A. GİRDİ, YEDEK VE FARKLAR
+- Girdi: TidesOfFortune (8).html — 1.285.388 bayt, SHA-256 4f1543099a98720cb4cf8d4eb789e75265c8c7208b0c5c518e2c29c24fc0019c
+  (istemdeki değerle birebir aynı). Yedek: backups/TidesOfFortune_pre_eastereggs.html (aynı bayt).
+- (8)'in nereden geldiği doğrulandı: CSS ve HTML iskeleti Paket 3 çıktımızla aynı; yalnız JS paketi farklı. Fark, başka bir
+  dalda (ccr-539f38e6, tof-art-src/expansion3) Paket 3 çıktımızın üzerine uygulanan bir çizim yamasıydı: 35 sahne nesnesinin
+  yeniden çizimi, fırlatılan şişe/can simidi, çan ikonu, kaptan gemilerine yelken armaları ve eksik "dusk"/"fog" deniz tonları.
+  Aynı dalın derlediği HTML'in SHA'sı (8) ile aynı. Paket kimlik kümesi (397 farklı id) kaynağımızla birebir aynı.
+- Küçültülmüş dosyaya metin yaması yapmak yerine bu çizimler kaynağa taşındı (src/rendering/td/Props6.js + 5 küçük bağlantı:
+  yelken arması kancası, fırlatma nesneleri, gemi stillerine armalar, OCEAN dusk/fog, çan ikonu). Teslim edilen oyun kaynaktan
+  derlenir. (8) ile kaynak derlemesi 12 sahnede yan yana karşılaştırıldı (kaleler, zincir, taş sütunlar, Uyuyan Ada, heykel,
+  armada, top salı, tiyatro, X2 yarış finali): görünüm aynı.
+
+B. ENVANTER (gerçek kayıt taraması)
+- Önce: 177 olay/özel karşılaşma + 83 hikâye aşaması = 260 tanımlı oynanabilir olay. İstemdeki "173 + 83 = 256" sayısı farklı
+  bir sınıflandırmadan geliyor; (8) ile kaynağımız aynı kimlikleri taşıdığından gerçek tarama sonucu 260'tır.
+  (177'nin dağılımı: havuzda 139 olay; pool dışı 38 özel/yankı/sözleşme/hayvan güverte olayı.)
+- Sonra: 260 + 23 = 283. Eski olayların hiçbiri silinmedi veya değiştirilmedi.
+- Değişmeyenler: 52 yükseltme, 45 başarım, 24 zincir, 45 liman, 5 bölge, 5 gemi seviyesi, normal sefer 6–10 liman,
+  başlangıç altını 100, kayıt sürümü v7. Bu pakette yeni yükseltme/başarım/para birimi yok.
+- Eklenen 23 kimlik: EVT_EGG_001, 003, 008, 009, 010, 013, 019, 025, 026, 031, 033, 035, 043, 046, 051, 055, 060, 075, 086,
+  093, 095, 116, 117. Hiçbiri önceden yoktu. #25/#35/#93 yalnız seçilen A konseptleri; eski alternatifler yok (testle doğrulandı).
+- Teslim: TidesOfFortune_8_EasterEggs.html — 1.456.069 bayt, tek dosya, çevrimdışı, harici bağlantı yok.
+
+C. 23 OLAY — KATEGORİ, BÖLGE, NADİRLİK, SEÇENEKLER VE SONUÇLAR
+(11 fortune + 9 mystery + 2 disaster + 1 danger; 17 rare + 6 very_rare. Sonuç tutarları veri kaydındaki temel değerlerdir:
+ "gold" ve "hull" oyunun mevcut bölge/derinlik çarpanlarından geçer, "kesin" yazanlar çarpansızdır. Başarılı ve pass olmayan
+ her çözüm, oyunun mevcut kuralıyla ayrıca "+5 XP olay çözüldü" verir.)
+EVT_EGG_001 — Siyah Yelkenli Kaptan | fortune | bölge 2,3,4,5 | rare
+  o0 "Kaptanı kurtar!": +20 altın, +10 XP (varyant: crew:CREW_DIEGO)
+  o1 "Gösteriyi izleyelim.": +10 XP
+  o2 "Korsanla ticaret yap." [30 altın]: +40 altın (kesin)
+
+EVT_EGG_003 — Dokunaçlı Tahsildar | danger | bölge 3,4,5 | very_rare
+  o0 "Defteri tekrar kontrol et.": +15 XP
+  o1 "Borcumuz yok ama çay içebilirsiniz.": +15 altın (varyant: crew:CREW_PITA)
+  o2 "Buradan hemen uzaklaş!": etki yok
+
+EVT_EGG_008 — Batmayan Gemi | disaster | bölge 4,5 | rare
+  o0 "Gemiyi uyar!": +15 XP
+  o1 "Buzu halatla çek." %70: başarı → +30 altın; başarısızlık → -6 gövde
+  o2 "Uzaktan izleyelim.": +5 XP
+
+EVT_EGG_009 — Yalnız Kazazede ve Hindistan Cevizi | fortune | bölge 1,2,3,4 | rare
+  o0 "İkisini de gemiye al.": +15 XP
+  o1 "Yiyecek ve su bırak." [10 altın]: +10 XP, rota ipucu ×1
+  o2 "Hindistan cevizine kaptanlık teklif et.": +5 XP (varyant: pet:PET_TARCIN)
+
+EVT_EGG_010 — Kaplanlı Filika | fortune | bölge 2,3,4,5 | very_rare
+  o0 "Balık vererek yardım et.": +15 XP (varyant: all:[cargoGood:GOOD_FISH,crew:CREW_PITA] | cargoGood:GOOD_FISH)
+  o1 "Filikayı güvenli sulara çek." %75: başarı → +20 altın, +15 XP; başarısızlık → -5 gövde
+  o2 "Uzaktan rota göster.": +10 XP
+
+EVT_EGG_013 — Kayıp Turuncu Balık | fortune | bölge 1,2,3,4 | rare
+  o0 "Balığı mercanlara kadar takip et.": +15 XP
+  o1 "Mira suya dalsın." [CREW_MIRA]: +15 XP, rota ipucu ×1
+  o2 "Balığı kendi yoluna bırak.": +5 XP
+
+EVT_EGG_019 — Deniz Dibindeki Ananas | mystery | bölge 2,3,4 | rare
+  o0 "Evi incele.": +15 XP (varyant: crew:CREW_MIRA)
+  o1 "Kapıyı çal.": +10 XP
+  o2 "Deniz sakinlerini rahatsız etme.": +5 XP
+
+EVT_EGG_025 — X İşaretli Hazine | fortune | bölge 2,3,4 | rare
+  o0 "Hazineyi paylaşalım.": +20 altın, +15 XP (varyant: crew:CREW_DIEGO)
+  o1 "Önce biz kazalım!" %70: başarı → +40 altın; başarısızlık → -6 gövde
+  o2 "Bırakın onlar kazsın.": +10 XP
+
+EVT_EGG_026 — Gece Gelen Garip Balık | mystery | bölge 2,3,4,5 | rare
+  o0 "Balığı incele.": +15 XP (varyant: crew:CREW_MIRA)
+  o1 "Hemen denize bırak!": +10 XP
+  o2 "Kasayı kapatıp sabahı bekle.": +15 XP
+
+EVT_EGG_031 — Balık Yakalama Küresi | fortune | bölge 1,2,3,4 | rare
+  o0 "Biz de deneyelim.": +10 XP
+  o1 "Balıkçının sırrını öğren." [20 altın]: +15 XP
+  o2 "Balıkları serbest bırak.": +15 XP
+
+EVT_EGG_033 — Dalgıçla Gece Restoranı | fortune | bölge 1,2,3,4 | rare
+  o0 "Restoranda yemek yiyelim." [15 altın]: +10 XP
+  o1 "Pita'yı mutfağa gönder." [CREW_PITA]: +20 XP
+  o2 "Balık yakalamaya yardım et." %75: başarı → +25 altın, +10 XP; başarısızlık → +5 XP
+
+EVT_EGG_035 — Yağmurlu Gün Balıkçısı | fortune | bölge 1,2,3 | rare
+  o0 "Ona yardım et.": +15 XP
+  o1 "Balık ağımızı kullanalım." [ITEM_FISH_NET]: +15 XP
+  o2 "Sessizce yanına otur.": +10 XP
+
+EVT_EGG_043 — Gece Gelen Yarasa | mystery | bölge 2,3,4,5 | rare
+  o0 "Tüccarlara yardım et.": +20 altın, +10 XP
+  o1 "Gizemli kişiyi takip et.": +15 XP
+  o2 "Müdahale etme.": +5 XP
+
+EVT_EGG_046 — Mesajcı Baykuş | mystery | bölge 1,2,3,4 | rare
+  o0 "Daveti kabul et.": +15 XP
+  o1 "Yanlış kişiye gelmiş olmalı.": +10 XP
+  o2 "Mektubu Compass Rose incelesin." [CREW_COMPASS]: +15 XP, rota ipucu ×1
+
+EVT_EGG_051 — Beyaz Saçlı Canavar Avcısı | mystery | bölge 2,3,4,5 | rare
+  o0 "Canavarı birlikte araştıralım.": +15 XP
+  o1 "Avcıya 20 altın teklif et." [20 altın]: +20 altın (kesin), +10 XP
+  o2 "Hayvana dokunmayalım.": +15 XP
+
+EVT_EGG_055 — Piri Reis'in Eksik Haritası | mystery | bölge 3,4,5 | very_rare
+  o0 "Compass Rose haritayı incelesin." [CREW_COMPASS]: +20 XP, rota ipucu ×1
+  o1 "Haritayı dikkatle koru.": +15 XP
+  o2 "Haritadaki işareti takip et." %65: başarı → +40 altın; başarısızlık → -6 gövde
+
+EVT_EGG_060 — Üç Köşeli Deniz | disaster | bölge 3,4,5 | very_rare
+  o0 "Pusulaya güven." %70: başarı → +15 XP; başarısızlık → -6 gövde
+  o1 "Compass Rose ile yıldızları takip et." [CREW_COMPASS]: +20 XP
+  o2 "Akıntıya karşı koymadan ilerle.": +10 XP
+
+EVT_EGG_075 — Dört Tahtalık Krallık | fortune | bölge 1,2,3,4 | rare
+  o0 "Salı inceleyelim.": +15 XP
+  o1 "İnşaat malzemesi ver." [15 altın]: +15 XP
+  o2 "Groot, bu mümkün mü?" [CREW_GROOT]: +15 XP
+
+EVT_EGG_086 — Kayıp Dev Yumurta | mystery | bölge 3,4,5 | very_rare
+  o0 "Yumurtayı incele." %70: başarı → +20 XP; başarısızlık → -6 gövde
+  o1 "Yumurtayı yerinde bırak.": +15 XP
+  o2 "Uzakta bekleyelim.": +15 XP
+
+EVT_EGG_093 — Adanın Altındaki Kapak | mystery | bölge 3,4,5 | very_rare
+  o0 "Düğmeye bas.": +15 XP
+  o1 "Hiçbir şeye dokunma.": +10 XP
+  o2 "Odayı araştır." [CREW_MIRA veya CREW_COMPASS]: +20 XP
+
+EVT_EGG_095 — Kış Geliyor | mystery | bölge 4,5 | rare
+  o0 "Onlara hava durumunu göster.": +10 XP
+  o1 "Sıcak yemek ikram et.": +15 XP (varyant: crew:CREW_PITA)
+  o2 "Gemiyi takip et." %70: başarı → +15 XP, rota ipucu ×1; başarısızlık → -5 gövde
+
+EVT_EGG_116 — Kopuzun Rüzgârı | fortune | bölge 1,2,3,4 | rare
+  o0 "Ozanı dinle.": +15 XP, sonraki uygun denemeye +5 (bir kez)
+  o1 "Ondan bir hikâye iste.": +15 XP
+  o2 "Bizim tayfaya da kopuz öğret.": +10 XP
+
+EVT_EGG_117 — Uçan Denizci | fortune | bölge 2,3,4 | rare
+  o0 "Uçuşu izleyelim.": +15 XP
+  o1 "Yelkenlerle ona rüzgâr sağlayalım." %75: başarı → +20 XP; başarısızlık → +5 XP
+  o2 "Kurtarma sandalı hazırla.": +15 XP
+
+D. SAHNELER (23 kayıt, 69 seçenek)
+- Her olayın kendi sahnesi var (src/presentation/scenes/egg.js); hiçbiri genel "gemi gelir–yazı–kaybolur" kalıbı değil.
+  Yeni çizimler src/rendering/td/Props7.js'de (ıslak dönen şapka, sudan çıkan figür, borç defteri ve dokunaç sakal, çay bardağı,
+  buz parçası ve güverte ışık dizisi, yüzlü hindistan cevizi ve minik koltuk, kaplanlı filika, turuncu-beyaz balıklar, ananas ev,
+  X işaretli kazı çukuru ve sandık/çizme, gözlü kasa ve su altı gözleri, bakır mekanik küre, fenerli yemek teknesi, yerel yağmur
+  katmanı ve iskele, sıçrayan balık, pelerinli siluet ve tüy, beyaz baykuş ve mektup, fok, eski harita, üç fener ve ışık üçgeni,
+  büyük pusula, ters gemi gölgesi, dört tahtalık katlı sal, dev yumurta yuvası/gölge/kuyruk/yavru, kapaklı ada ve sayaç odası,
+  kar yağışı ve termometre, buhar, ozan teknesi ve kopuz, ışıktan hatıra gemileri, rüzgâr çizgileri, kayalık ve kanatlı mucit).
+  Yeni figürler (TopChars.js): dandy kaptan, yosunlu memur, yağmur balıkçısı, küçük balıkçı, beyaz saçlı avcı, ozan, mucit,
+  kürklü kaptan. Yeni gemi stilleri (TopShip.js): siyah yelkenli, yosunlu, yolcu gemisi, buzlu.
+- Şanslı seçeneklerde (14 seçenek) başarı ve başarısızlık ayrı koreografi: ör. #08 buz yana çekilir ve dev gemi kese bırakır /
+  buz gövdeye sürtünür; #25 sandık sandala taşınır / korsanlar kapıp kaçar; #60 iğne durur ve üçgenden çıkılır / kayalığa temas;
+  #86 desenler kaydedilir / dev kuyruk sandalı iter; #117 mucit geminin üstünden süzülür / erken suya iner ve kurtarılır.
+- Sahne, çözücünün kesinleşmiş sonucunu (info.success) kullanır; zar ikinci kez atılmaz.
+- Gemide olmayan tayfa konuşturulmaz: Diego/Pita/Mira/Compass/Groot/Tarçın vuruşları yalnız gemideyse oynar.
+- #116 için özgün prosedürel telli ezgi ('kopuz' sesi) ve yanlış nota sesi ('kopuzBad'); lisanslı müzik yok.
+- #93 sayaç yalnız görseldir; karar penceresi süreye bağlı kapanmaz.
+- #35 yağmuru yalnız sahneye ait bir katmandır; oyunun hava durumu değişmez.
+
+E. SIKLIK (1000 seed × 4 profil, bot ile gerçek oynanış)
+baslangic: 1000 run, normal seferde 0/1/2 egg = 755/245/0 (en az bir: %24.5); farklı egg 23/23; ort. en yüksek altın 313, XP 542
+temel_tayfa: 1000 run, normal seferde 0/1/2 egg = 787/213/0 (en az bir: %21.3); farklı egg 23/23; ort. en yüksek altın 353, XP 561
+zengin: 1000 run, normal seferde 0/1/2 egg = 766/234/0 (en az bir: %23.4); farklı egg 23/23; ort. en yüksek altın 3018, XP 666
+sonsuz: 1000 run, normal seferde 0/1/2 egg = 755/245/0 (en az bir: %24.5), Sonsuz kısımda ek 883 egg; farklı egg 23/23; ort. en yüksek altın 907, XP 2634
+Her egg için ilk görüldüğü seed:
+  EVT_EGG_001 rare      EGG_baslangic_6 (bölge 5)
+  EVT_EGG_003 very_rare EGG_baslangic_23 (bölge 5)
+  EVT_EGG_008 rare      EGG_baslangic_50 (bölge 5)
+  EVT_EGG_009 rare      EGG_baslangic_132 (bölge 2)
+  EVT_EGG_010 very_rare EGG_baslangic_125 (bölge 2)
+  EVT_EGG_013 rare      EGG_baslangic_118 (bölge 1)
+  EVT_EGG_019 rare      EGG_baslangic_26 (bölge 2)
+  EVT_EGG_025 rare      EGG_baslangic_97 (bölge 4)
+  EVT_EGG_026 rare      EGG_baslangic_82 (bölge 3)
+  EVT_EGG_031 rare      EGG_baslangic_263 (bölge 1)
+  EVT_EGG_033 rare      EGG_baslangic_39 (bölge 1)
+  EVT_EGG_035 rare      EGG_baslangic_106 (bölge 1)
+  EVT_EGG_043 rare      EGG_baslangic_73 (bölge 5)
+  EVT_EGG_046 rare      EGG_baslangic_5 (bölge 1)
+  EVT_EGG_051 rare      EGG_baslangic_20 (bölge 4)
+  EVT_EGG_055 very_rare EGG_baslangic_37 (bölge 3)
+  EVT_EGG_060 very_rare EGG_baslangic_15 (bölge 3)
+  EVT_EGG_075 rare      EGG_baslangic_44 (bölge 3)
+  EVT_EGG_086 very_rare EGG_baslangic_264 (bölge 4)
+  EVT_EGG_093 very_rare EGG_baslangic_54 (bölge 5)
+  EVT_EGG_095 rare      EGG_baslangic_55 (bölge 5)
+  EVT_EGG_116 rare      EGG_baslangic_61 (bölge 2)
+  EVT_EGG_117 rare      EGG_baslangic_68 (bölge 4)
+
+- Hiçbir profilde normal seferde 2 egg görülmedi (0/1/2 dağılımı yukarıda). Hedef %20–25: başlangıç %24,5, temel tayfa %21,3,
+  zengin %23,4. Ayrıca npm test içinde 2000 seed: oran %18–28 aralığında doğrulanıyor, 23/23 erişilebilir.
+- Nadirlik ağırlığı rare 2 : very_rare 1; very_rare olaylar yalnız 3–5. bölgelerde. Codex'te görülmemiş olana ×1,25 öncelik
+  (keşfedilenler havuzdan çıkmaz).
+- Sonsuz Deniz: 6 ek limanlık pencerede en fazla 1 egg; 200 ek liman testinde tekrar yok, pencere ihlali yok.
+- Denge (1000 seed, egg kapalı vs açık):
+egg oranı %0: tamamlanma %82.9, ort. en yüksek altın 312.7, XP 541.8, son gövde 85.6, olay/run 28.26
+egg oranı %3.8: tamamlanma %82.6, ort. en yüksek altın 312.0, XP 544.0, son gövde 85.1, olay/run 28.24
+
+  Fark ölçüm gürültüsü düzeyinde; paket ekonomiyi değiştirmiyor.
+
+F. KAYIT VE REGRESYON
+- npm test: 77/77 (66 mevcut + 11 Gizli Deniz Hikâyeleri testi).
+- Tarayıcı uçtan uca 16/16 (iki ekran boyutu, tam run fare ile, karar sonrası yeniden yükleme), eğitim 15/15.
+- Tarayıcı sahne taraması: 23 olay × tüm seçenekler 92 senaryo + zar sabitlenerek başarı ve başarısızlık dalları 184 senaryo,
+  0 hata, 0 takılma. Yeni çizim modülü (Props6) sonrası Paket 2–3 sahneleri yeniden tarandı: 366 senaryo, 0 hata.
+  (Tüm oyunun 995 senaryoluk tam taraması Paket 3'te yapıldı; bu pakette yalnız Paket 2–3 ve yeni sahneler yeniden tarandı.)
+- v7 kayıt: egg keşfi meta.codex.events'e yazılır (tek doğruluk kaynağı); dışa/içe aktarma iki kez aynı sonuç; run.x3.eggLast
+  alanı olmayan eski kayıt sorunsuz yüklenir. Kayıt sürümü artırılmadı.
+- Aynı seed + aynı kararlar → aynı egg/ödül/hasar. Egg yerleşimi ayrı türetilmiş akıştan; oyunun ana zar durumu değişmez (test).
+- Çift etki yok: her seçenekten sonra ikinci seçim reddedilir; altın/gövde/XP değişmez (69 seçenek + 14 başarısızlık dalı).
+- Önce/sonra görsel karşılaştırma ((8) ↔ yeni): menü, eğitim, seyir, eski olay, X2 yarış, gemi seviyeleri 1–5, hayvanlar,
+  korsan, çok gemili sahne, dalgıç — çizimler aynı; piksel farkı yalnız animasyon zamanlaması (%0–4,8).
+- Görsel kontrol: 23 olayın karar anı mobil yatay (915×412) ve 1280×720'de ekran görüntüsüyle incelendi; 13 senaryo
+  kare kare izlendi (#01 kurtarma, #08 başarısızlık, #10 balık ve çekme-başarı, #13 takip, #19 inceleme, #35 yardım,
+  #60 başarısızlık, #86 yavru, #93 dokunma, #116 kopuz öğretme, #117 rüzgâr-başarı).
+
+G. DÜZELTMELER VE EKLEMELER (eski kodda, gerekçeli ve dar kapsamlı)
+- Yeni etki anahtarı fx.goldRaw: çarpansız kesin altın (#01: 30 öde → 40 al = net +10; #51: 20 emanet → 20 iade = net 0).
+  Bu olmadan Sonsuz Deniz altın bonusu iadeyi büyütüp "net 0" kuralını bozuyordu.
+- Egg olaylarına enjekte seçenek eklenmez (Tarçın uyarısı, fraksiyon yardımı vb.); her olay tasarımdaki 3 seçenekle kalır.
+- Azaltılmış hareket ayarı açıkken ekran sallantısı ve ani parlama tüm sahnelerde sınırlanır (önceden yalnız gemi yalpası
+  kapanıyordu). Ayar kapalıyken davranış aynı.
+- Sahne denetleyicisine (tools/scenecheck.cjs) yalnız test için ROLL=win|lose seçeneği eklendi; oyun dosyasında hile yok.
+- Performans: 30 FPS + düşük efekt + azaltılmış hareket modunda 6 yeni sahne 29–30 çizim/sn (başsız Chromium);
+  karar kartları klavyeyle (odak + Enter) seçilebiliyor.
+
+H. DOĞRULANAMAYANLAR
+- Gerçek mobil cihazda test yapılmadı (yalnız masaüstü Chromium, mobil ve masaüstü ekran oranında).
+- 69 seçeneğin hepsi otomatik oynatıldı ve kontrol edildi; ancak yalnız yukarıda listelenen senaryolar kare kare gözle izlendi.
+- Bazı küçük figürler (ıslak şapka, minik balık, baykuş) 3/4 ölçekte küçük kalıyor; okunaklı ama ayrıntı sınırlı.
+- Telif notu: hiçbir eser adı, karakter adı, logo ya da kostüm oyunda yok; figürler özgün. Yine de ticari yayın öncesi
+  göndermelerin hukuki değerlendirmesini bir uzmana yaptırmanızı öneririm — bu raporda hukuki görüş verilmemektedir.
