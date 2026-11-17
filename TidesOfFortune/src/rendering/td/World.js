@@ -8,6 +8,7 @@ import { DRAW, cargoSprite, drawTown, drawPier, drawCoastHint } from './Props.js
 import './Props2.js';
 import './Props4.js';
 import './Props5.js';
+import { X3FX } from './Props6.js';
 import { npcSprite, petSprite, CS, dS } from './TopChars.js';
 import { iconCanvas } from '../icons.js';
 
@@ -461,7 +462,7 @@ export class World {
                   ? dS(e, cargoSprite(a.good || "GOOD_SPICE"), i, s - o)
                   : a.kind === "rope"
                     ? (line(e, r.x + a.from.x, r.y + a.from.y - 6, i, s - 2, "#c8a070"), line(e, r.x + a.from.x, r.y + a.from.y - 5, i, s - 1, "#8a6a40"))
-                    : a.kind === "flare" && (disc(e, i, s - o - 2, 2, "#ff6040"), px(e, i, s - o - 2, "#fff0a0"), px(e, i - 1, s - o + 1, "rgba(255,200,120,0.6)"), px(e, i + 1, s - o + 3, "rgba(255,200,120,0.4)"));
+                    : X3FX.proj(e, a.kind, i, s - o, this.t) ? 0 : a.kind === "flare" && (disc(e, i, s - o - 2, 2, "#ff6040"), px(e, i, s - o - 2, "#fff0a0"), px(e, i - 1, s - o + 1, "rgba(255,200,120,0.6)"), px(e, i + 1, s - o + 3, "rgba(255,200,120,0.4)"));
         } else
           a.type === "coin"
             ? (rect(e, i - 1, s - o * 0.8 - 2, 2, 3, a.col), px(e, i, s - o * 0.8 - 1, "#b8862b"), px(e, i - 1, s - o * 0.8 - 2, "#fff6c0"))

@@ -17,6 +17,9 @@ export const TD_SHIPS = {
 };
 
 // Diğer gemiler için stil (aynı üretici, farklı renk/bayrak)
+/** Çizim kancaları (Props6: yelken armaları) */
+export const SHIP_HOOKS = {};
+
 export const SHIP_STYLES = {
   pirate: { rim: '#0e0a0c', rim2: '#2a2026', deck: '#6a5a4e', deck2: '#5a4a40', trim: '#8a2a2a', sail: '#2a2830', sailShade: '#161418', flag: '#0a0a0a', skull: true },
   merchant: { rim: '#4a2a14', rim2: '#7a4a24', deck: '#d4b07a', deck2: '#c09a64', trim: '#e8c45a', sail: '#f4ead5', sailShade: '#c8423b', flag: '#f2c14e', stripes: true },
@@ -25,14 +28,14 @@ export const SHIP_STYLES = {
   red: { rim: '#2a0a0c', rim2: '#4a1a1e', deck: '#6a4a3e', deck2: '#5a3a30', trim: '#e0b040', sail: '#b8282c', sailShade: '#7e1a1e', flag: '#b8282c', skull: true },
   guild: { rim: '#3a2a10', rim2: '#6a4a18', deck: '#d8b878', deck2: '#c4a062', trim: '#f2c14e', sail: '#f4e4b8', sailShade: '#e0b040', flag: '#e0b040', stripes: true },
   // Paket 2: yarış kaptanları, Varo'nun eski filo gemisi, gezgin mutfak gemisi
-  liora: { rim: '#0e3a48', rim2: '#1f6a7a', deck: '#d8c49a', deck2: '#c4ae84', trim: '#58d0c8', sail: '#4ac8c0', sailShade: '#2a8a8a', flag: '#58d0c8' },
-  boran: { rim: '#2a1414', rim2: '#4a2222', deck: '#8a6a52', deck2: '#7a5a44', trim: '#c8a060', sail: '#8a1f2a', sailShade: '#5a1218', flag: '#8a1f2a' },
-  varo: { rim: '#141414', rim2: '#2a2a2a', deck: '#7a6a5a', deck2: '#6a5a4a', trim: '#e0c040', sail: '#3a3a3e', sailShade: '#1e1e22', flag: '#e0c040', stripes: true },
-  kitchen: { rim: '#4a3018', rim2: '#7a5030', deck: '#c8a070', deck2: '#b48c5c', trim: '#e8e0c8', sail: '#f0e6cc', sailShade: '#d0b890', flag: '#e07a3a' },
+  liora: { rim: '#0e3a48', rim2: '#1f6a7a', deck: '#d8c49a', deck2: '#c4ae84', trim: '#58d0c8', sail: '#4ac8c0', sailShade: '#2a8a8a', flag: '#58d0c8', emblem: 'swallow' },
+  boran: { rim: '#2a1414', rim2: '#4a2222', deck: '#8a6a52', deck2: '#7a5a44', trim: '#c8a060', sail: '#8a1f2a', sailShade: '#5a1218', flag: '#8a1f2a', emblem: 'anvil' },
+  varo: { emblem: 'sword', rim: '#141414', rim2: '#2a2a2a', deck: '#7a6a5a', deck2: '#6a5a4a', trim: '#e0c040', sail: '#3a3a3e', sailShade: '#1e1e22', flag: '#e0c040', stripes: true },
+  kitchen: { rim: '#4a3018', rim2: '#7a5030', deck: '#c8a070', deck2: '#b48c5c', trim: '#e8e0c8', sail: '#f0e6cc', sailShade: '#d0b890', flag: '#e07a3a', emblem: 'pot' },
   // Paket 3: Neris'in "Kül Pusulası" — kömür gövde, bakır çizgili yelken, küçük kurtarma vinci
-  neris: { rim: '#18181b', rim2: '#2c2c31', deck: '#6c6258', deck2: '#5c5248', trim: '#c87a3c', sail: '#4e4a48', sailShade: '#c87a3c', flag: '#c87a3c', stripes: true, crane: true },
+  neris: { rim: '#18181b', rim2: '#2c2c31', deck: '#6c6258', deck2: '#5c5248', trim: '#c87a3c', sail: '#4e4a48', sailShade: '#c87a3c', flag: '#c87a3c', stripes: true, crane: true, emblem: 'compass' },
   // Paket 3: Sönmeyen Armada — donmuş, buz mavisi gölgeli eski filo
-  armada: { rim: '#1e2a36', rim2: '#34485a', deck: '#a8b4bc', deck2: '#98a4ac', trim: '#d8f0ff', sail: '#dce8ee', sailShade: '#9ab4c4', flag: '#6a8aa0' },
+  armada: { rim: '#1e2a36', rim2: '#34485a', deck: '#a8b4bc', deck2: '#98a4ac', trim: '#d8f0ff', sail: '#dce8ee', sailShade: '#9ab4c4', flag: '#6a8aa0', emblem: 'snow' },
   plague: { rim: '#2a2618', rim2: '#4a4430', deck: '#8a7c58', deck2: '#7a6c4a', trim: '#6a6040', sail: '#8a8262', sailShade: '#5a5440', flag: '#e8d040' },
 };
 
@@ -215,6 +218,7 @@ const cache = new Map();
           }
         }
         // amblem
+        if (s === 0 && hh > 20 && SHIP_HOOKS.emblem) SHIP_HOOKS.emblem(sf, n, ax, yt + Math.round(hh * 0.55));
         if (n.skull && s === 0 && hh > 20) {
           let ex = ax,
             ey = yt + Math.round(hh * 0.55);

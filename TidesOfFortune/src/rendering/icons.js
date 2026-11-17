@@ -2,6 +2,7 @@
 // 3/4 (üst-karşı) bakış çizimleri — tof-art-src/art kaynaklarından kaynak koda taşındı.
 import { disc, ellipse, hline, line, makeCanvas, px, rect, shade, vline } from './pixel.js';
 import { npcSprite, petSprite, wc } from './td/TopChars.js';
+import { X3FX } from './td/Props6.js';
 
   // ===== İkonlar: 16x16, kodla çizilir, otomatik koyu dış çizgi =====
   var IK = {
@@ -456,6 +457,7 @@ import { npcSprite, petSprite, wc } from './td/TopChars.js';
       let k = IK;
       disc(t, 7, 7, 6, k.wD), disc(t, 7, 7, 5, k.wh), vline(t, 7, 3, 7, k.ink), hline(t, 7, 10, 7, k.ink), px(t, 7, 2, k.r), px(t, 12, 7, k.sD), px(t, 7, 12, k.sD), px(t, 2, 7, k.sD), px(t, 4, 4, "#ffffff"), px(t, 10, 10, k.whD), px(t, 9, 11, k.whD);
     },
+    bell: (t) => X3FX.icBell(t),
     bone: (t) => {
       let k = IK;
       line(t, 4, 11, 11, 4, k.wh), line(t, 4, 10, 10, 4, k.wh), line(t, 5, 11, 11, 5, k.whD), rect(t, 1, 10, 3, 3, k.wh), rect(t, 3, 12, 3, 2, k.wh), rect(t, 2, 12, 2, 2, k.wh), rect(t, 10, 1, 3, 3, k.wh), rect(t, 12, 3, 2, 3, k.wh), rect(t, 11, 2, 3, 2, k.wh), px(t, 1, 10, "#ffffff"), px(t, 10, 1, "#ffffff"), px(t, 5, 13, k.whD), px(t, 13, 5, k.whD);

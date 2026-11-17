@@ -10,6 +10,8 @@ import { makeCanvas, rect, px, hline, disc, ellipse, hash2 } from '../pixel.js';
   // ===== Açık deniz: döşenebilir su dokusu (3 katman, 2 kare animasyon) =====
   export var OCEAN = {
       calm: { base: "#2f78a6", deep: "#26668f", crest: "#7cc4e0", foam: "#e8f6fb" },
+      dusk: { base: "#3d5d8a", deep: "#2e4a74", crest: "#e8a67c", foam: "#ffe2c4" },
+      fog: { base: "#4c6c7e", deep: "#405e70", crest: "#9cb6c2", foam: "#e0e9ed" },
       open: { base: "#2a6a96", deep: "#1f5a82", crest: "#6ab4d4", foam: "#e0f2f8" },
       dark: { base: "#1b3a58", deep: "#142e48", crest: "#4a7aa0", foam: "#b8d0e0" },
       storm: { base: "#22405a", deep: "#18304a", crest: "#8aa4b8", foam: "#e8f0f4" },
