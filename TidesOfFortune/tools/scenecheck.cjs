@@ -8,6 +8,7 @@ const fs = require('fs');
 
 const [, , onlyId, onlyOpt, shotsArg] = process.argv;
 const SHOTS = shotsArg === 'shots';
+const SUF = process.env.ROLL ? '_' + process.env.ROLL : '';
 const SPEED = SHOTS ? 1 : 6;
 const OUT = path.resolve(__dirname, '../docs/scenes');
 // DONE=dosya: daha önce geçen senaryoları atla (uzun taramayı bölmek için)
@@ -45,10 +46,12 @@ if (SHOTS) fs.mkdirSync(OUT, { recursive: true });
       while (Date.now() - t0 < 60000 / Math.min(SPEED, 3)) {
         const st = await page.evaluate(() => ({ d: window.__tof.ui.director.phase, res: !!window.__tof.core.host()?.current?.result, cur: !!window.__tof.core.host()?.current, id: window.__tof.core.host()?.current?.id, sid: window.__tof.ui.director.eventId, cine: !!document.querySelector('.cinematic') }));
         if (st.cine) { await page.evaluate(() => document.querySelector('.cinematic .cineBtn')?.click()); }
-        if (SHOTS && Date.now() - t0 > shot * 1500) { await page.screenshot({ path: path.join(OUT, `${id}_${k}_${String(shot).padStart(2, '0')}.png`) }); shot++; }
+        if (SHOTS && Date.now() - t0 > shot * 1500) { await page.screenshot({ path: path.join(OUT, `${id}_${k}${SUF}_${String(shot).padStart(2, '0')}.png`) }); shot++; }
         if (st.d === 'PLAYER_DECISION' && !chosen && st.id === id) {
           chosen = true;
           if (k === 'auto') { report.push(`${id} auto: karar ekranı (otomatik çözüm yok)`); done = true; break; }
+          // ROLL=win|lose: yalnızca test sürücüsünde, bir sonraki zarı sabitle (şanslı seçeneğin iki dalını da görmek için)
+          if (process.env.ROLL) await page.evaluate((roll) => { const g = window.__tof.core.rng; const o = g.next.bind(g); let n = 0; g.next = () => (n++ === 0 ? (roll === 'lose' ? 0.999 : 0.0) : o()); }, process.env.ROLL);
           const r = await page.evaluate((k) => window.__tof.ui.director.choose('o' + k), k);
           if (!r.ok) { report.push(`${id} o${k}: seçilemedi (${r.reason})`); done = true; break; }
           phase = 'chosen';

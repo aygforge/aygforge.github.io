@@ -277,6 +277,11 @@ export class AudioEngine {
     const t = this.ctx.currentTime;
     switch (name) {
       case 'click': this.tone(660, t, 0.05, 'square', 0.04); break;
+      // özgün telli ezgi (kopuz tınısı): beşli dizi üzerinde kısa koparma notaları
+      case 'kopuz': [293.7, 329.6, 349.2, 392, 440, 392, 349.2, 329.6, 293.7].forEach((f, i) => { this.tone(f, t + i * 0.19, 0.5, 'triangle', 0.06); this.tone(f * 2, t + i * 0.19, 0.2, 'sawtooth', 0.012, this.sfx, 0.005, 1800); }); break;
+      case 'kopuzBad': this.tone(293.7, t, 0.4, 'triangle', 0.06); this.tone(311, t + 0.02, 0.5, 'sawtooth', 0.03, this.sfx, 0.005, 1200); break;
+      case 'tick': for (let i = 0; i < 4; i++) this.tone(1500, t + i * 0.25, 0.03, 'square', 0.03); break;
+      case 'hoot': this.tone(420, t, 0.25, 'sine', 0.06); this.tone(380, t + 0.3, 0.4, 'sine', 0.05); break;
       case 'coin': this.tone(988, t, 0.08, 'square', 0.06); this.tone(1319, t + 0.07, 0.18, 'square', 0.06); break;
       case 'buy': this.tone(523, t, 0.08, 'triangle', 0.1); this.tone(392, t + 0.07, 0.12, 'triangle', 0.08); this.noise(t, 0.05, 0.05, 4000); break;
       case 'sell': for (let i = 0; i < 3; i++) this.tone(1200 + i * 220, t + i * 0.05, 0.1, 'square', 0.05); break;

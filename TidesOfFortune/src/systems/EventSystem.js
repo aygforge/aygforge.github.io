@@ -23,6 +23,7 @@
 import * as X1 from './X1System.js';
 import * as X2 from './X2System.js';
 import * as X3 from './X3System.js';
+import * as Egg from './EggSystem.js';
 import { BALANCE } from '../config/balance.js';
 import { EVENT_BY_ID, POOL_EVENTS, CHAINS, PET_DECK_EVENTS } from '../data/events.js';
 import { ITEM_BY_ID, ITEMS } from '../data/items.js';
@@ -231,6 +232,8 @@ export function buildVoyage(G) {
   // Paket 3: ilişkisi −2 olan rakip kaptanın takibi (normal bir slotun yerine; olay yoğunluğu artmaz)
   const pur = X3.pickPursuit(G, rng, queue.map((q) => q.id), EVENT_BY_ID);
   if (pur) replaceSlot(pur);
+  // Gizli Deniz Hikâyeleri: ayrı türetilmiş RNG akışıyla nadiren bir normal slotun yerine (sefer başına en fazla 1)
+  Egg.scheduleEgg(G, queue, ctx, fromIdx, run.route[toIdx].harborId);
   // Hayvanlara özel gemi içi olay: gemideki hayvan(lar)a uygun, bu run'da görülmemiş olanlardan biri
   const pdeck = pickPetDeckEvent(G, rng);
   if (pdeck) replaceSlot(pdeck);
@@ -363,6 +366,7 @@ export function triggerNext(G, host, rng, ctx) {
       continue;
     }
     host.current = { id: ev.id, src: entry.src, lucky: !!entry.lucky, result: null };
+    if (ev.egg) { if (!G.meta.codex.events[ev.id]) host.current.eggNew = true; Egg.onEggTrigger(G); }
     if (!run.seenEvents.includes(ev.id)) run.seenEvents.push(ev.id);
     G.meta.codex.events[ev.chain && ev.step > 1 ? CHAINS[ev.chain].start : ev.id] = true;
     X1.checkStoryHunter(G, unlockAchievement);
@@ -445,6 +449,8 @@ export function getOptions(G, host) {
     if (o.show && !checkWhen(G, o.show, flags)) return;
     list.push({ key: `o${i}`, opt: o });
   });
+  // Gizli Deniz Hikâyeleri yalnızca kendi 3 seçeneğini sunar (enjekte seçenekler eklenmez)
+  if (ev.egg) return list.map((x) => ({ ...x, view: evalOption(G, ev, x.opt, flags, cur) }));
   const v = run.voyage;
   const warnOff = v && host === v ? v.warnOff : false;
   if (ev.cat === 'danger' && hasPet(G, 'PET_TARCIN') && !warnOff && !ev.auto?.some((a) => checkWhen(G, a.when, flags))) list.push({ key: '__tarcin', opt: INJECTED.__tarcin, injected: true });
@@ -659,6 +665,7 @@ export function resolveOption(G, host, key, rng, ctx) {
     }
   }
   X3.afterResolve(G, ev, lines, { addXp, unlockAchievement });
+  if (cur.eggNew) { cur.eggNew = false; lines.push({ kind: 'codex', text: `Gizli bir deniz hikâyesi keşfedildi (${Egg.eggProgress(G.meta)}/23)` }); }
   cur.result = { key, label: opt.label, success, saved, roll, chance: o.view.chance, text: out.text, lines, pending };
   X1.recordOutcome(G, ev.id, key, success);
   if (ev.x2) X2.recordOutcome(G, ev.id, key, success);
@@ -792,6 +799,13 @@ export function applyFx(G, fx, ctx) {
     lines.push({ kind: 'info', text: 'Nakamura\'nın balık sezgisi: altın ×2' });
   }
   goldGain = X1.eventGold(run, goldGain);
+  // goldRaw: çarpansız kesin altın (iade / önceden söylenen tutar). Kazanç istatistiğine yalnızca net artış yazılır.
+  if (fx.goldRaw) {
+    run.gold = Math.max(0, run.gold + fx.goldRaw);
+    const net = fx.goldRaw - (ctx.opt?.cost?.gold || 0);
+    if (net > 0) run.stats.goldEarned += net;
+    lines.push({ kind: 'gold', text: `+${fx.goldRaw} altın` });
+  }
   if (goldGain > 0) {
     run.gold += goldGain;
     run.stats.goldEarned += goldGain;

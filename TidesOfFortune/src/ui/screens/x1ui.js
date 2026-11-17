@@ -6,6 +6,7 @@ import { EVENT_BY_ID, CHAINS, EVENT_CATEGORIES } from '../../data/events.js';
 import { X1_STANDALONE } from '../../data/events_x1.js';
 import { X2_STANDALONE } from '../../data/events_x2.js';
 import { X3_STANDALONE } from '../../data/events_x3.js';
+import { EGG_EVENTS } from '../../data/events_egg.js';
 import { CAPTAINS, CAPTAIN_IDS, LEGENDS, X3_CHAIN_IDS, relName } from '../../systems/X3System.js';
 import { HARBOR_BY_ID } from '../../data/harbors.js';
 
@@ -141,7 +142,20 @@ export function journalTab(meta) {
     h('div.secTitle', {}, 'Kaptanların zincirleri: Yara, Pita, Mira ve Üç Kaptanın Yarışı'),
     ...chains2,
     ...chronicle(meta),
+    ...secretTales(meta),
   );
+}
+
+// ── Gizli Deniz Hikâyeleri: keşfedilmeden önce başlık ve açıklama görünmez ──
+function secretTales(meta) {
+  const seen = EGG_EVENTS.filter((e) => meta.codex.events[e.id]).length;
+  return [
+    h('div.secTitle', {}, 'Gizli Deniz Hikâyeleri ', h('small.n', {}, `${seen}/23`)),
+    h('p.small', {}, 'Denizin nadir, tuhaf ve bazen komik karşılaşmaları. Her seferde en fazla birine rastlayabilirsin.'),
+    ...EGG_EVENTS.map((e) => meta.codex.events[e.id]
+      ? h('div.jRow', {}, h('b', { style: { color: EVENT_CATEGORIES[e.cat].color } }, e.title), h('small.echo', {}, e.eggDesc))
+      : h('div.jRow.unseen', {}, h('b', {}, '???'), h('small', {}, ' Henüz keşfedilmemiş gizli hikâye'))),
+  ];
 }
 
 // ── Paket 3: Denizci Kroniği ──

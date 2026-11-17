@@ -73,13 +73,16 @@ export function renderCodex(ui) {
     body.unshift(h('p.cxCount', {}, `Keşfedilen: ${Object.keys(cx.harbors).length}/45 · Liman tipleri: ${Object.keys(cx.harborTypes).length}/8`));
   } else if (tab === 'events') {
     const groups = Object.keys(EVENT_CATEGORIES).filter((c) => c !== 'chain').map((c) => {
-      const list = CODEX_EVENTS.filter((e) => e.cat === c);
+      const list = CODEX_EVENTS.filter((e) => e.cat === c && !e.egg);
       if (!list.length) return null;
       return h('div.cxRegion', {}, h('h3', { style: { color: EVENT_CATEGORIES[c].color } }, `${EVENT_CATEGORIES[c].name} (${list.filter((e) => cx.events[e.id]).length}/${list.length})`),
         h('div.cxList', {}, ...list.map((e) => h(`div.cxEv${cx.events[e.id] ? '.on' : ''}`, {}, cx.events[e.id] ? e.title : '???'))));
     });
     const chains = Object.values(CHAINS).map((c) => h(`div.cxEv${cx.events[c.start] ? '.on' : ''}`, {}, cx.events[c.start] ? `${c.name} (${c.steps} adım)` : '???'));
-    body = [...groups, h('div.cxRegion', {}, h('h3', {}, 'Zincirler'), h('div.cxList', {}, ...chains))];
+    const eggs = CODEX_EVENTS.filter((e) => e.egg);
+    const eggBox = h('div.cxRegion', {}, h('h3', {}, `Gizli Deniz Hikâyeleri (${eggs.filter((e) => cx.events[e.id]).length}/${eggs.length})`),
+      h('div.cxList', {}, ...eggs.map((e) => h(`div.cxEv${cx.events[e.id] ? '.on' : ''}`, {}, cx.events[e.id] ? e.title : '??? ❔'))));
+    body = [...groups, h('div.cxRegion', {}, h('h3', {}, 'Zincirler'), h('div.cxList', {}, ...chains)), eggBox];
     const notes = [];
     if (cx.notes.flyingFish) notes.push('Uçan Balıklar: gümüş kanatlı balıklar yelkenleri aştı.');
     if (cx.notes.ghostCaptain) notes.push('Hayalet Kaptan: madalyon sahibine ulaştı; yeşil ışık sonsuza dek söndü.');

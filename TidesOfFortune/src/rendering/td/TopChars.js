@@ -37,6 +37,15 @@ var NPCL = {
     boran: { skin: '#c8885a', hair: '#2a1410', hairStyle: 'short', hat: 'tricorn', hatColor: '#3a1416', beard: 'full', beardColor: '#2a1410', top: '#8a1f2a', top2: '#c8a060', pants: '#2a1a1a', idle: 'guard', build: 'big' },
     neris: { skin: '#d8a880', hair: '#c87a3c', hairStyle: 'braid', hat: 'scarf', hatColor: '#c87a3c', beard: 'none', top: '#2c2c31', top2: '#c87a3c', pants: '#1e1e22', idle: 'lantern' },
     frozen: { skin: '#c8dce8', hair: '#e8f4ff', hairStyle: 'short', hat: 'cap', hatColor: '#6a8aa0', beard: 'short', beardColor: '#e8f4ff', top: '#7a9ab0', top2: '#d8f0ff', pants: '#4a6074' },
+    // Gizli Deniz Hikâyeleri (özgün figürler)
+    dandy: { skin: '#e0b088', hair: '#2a1a10', hairStyle: 'long', hat: 'tricorn', hatColor: '#141418', beard: 'short', beardColor: '#2a1a10', top: '#7a1a22', top2: '#e8e0c8', pants: '#1e1e24', idle: 'guard' },
+    clerk: { skin: '#8ab89a', hair: '#2a4a3a', hairStyle: 'short', hat: 'tricorn', hatColor: '#1e3028', beard: 'long', beardColor: '#3a7a5a', top: '#2a3a32', top2: '#8a7a52', pants: '#1a2420', idle: 'scroll' },
+    rainFisher: { skin: '#e0b088', hair: '#8a5a2a', hairStyle: 'short', hat: 'straw', hatColor: '#c8a040', beard: 'short', beardColor: '#8a5a2a', top: '#3a6a9a', top2: '#e8c45a', pants: '#4a3a2a' },
+    fisherKid: { skin: '#e8b88a', hair: '#c8642a', hairStyle: 'short', hat: 'cap', hatColor: '#b8783a', beard: 'none', top: '#e8dcc0', top2: '#4a6e8c', pants: '#3a3a4a' },
+    whiteHunter: { skin: '#e0c0a0', hair: '#f0f0ec', hairStyle: 'long', hat: 'none', beard: 'short', beardColor: '#d8d8d4', top: '#2a2a30', top2: '#8a8a92', pants: '#1e1e22', idle: 'guard' },
+    bard: { skin: '#d8a880', hair: '#e8e8e0', hairStyle: 'long', hat: 'hood', hatColor: '#6a3a2a', beard: 'long', beardColor: '#f0f0e8', top: '#8a4a2a', top2: '#e0b040', pants: '#4a3020' },
+    inventor: { skin: '#d8a070', hair: '#2a1a10', hairStyle: 'short', hat: 'turban', hatColor: '#e8e0c8', beard: 'full', beardColor: '#2a1a10', top: '#3b6ea5', top2: '#e0b040', pants: '#4a3020' },
+    furCaptain: { skin: '#e0c0a8', hair: '#2a1a10', hairStyle: 'long', hat: 'hood', hatColor: '#5a4a3a', beard: 'full', beardColor: '#2a1a10', top: '#4a3a2e', top2: '#d8d0c0', pants: '#2a2420', idle: 'guard' },
     plague: { skin: '#a8b880', hair: '#2a2a20', hairStyle: 'short', hat: 'hood', hatColor: '#3a3a2a', beard: 'none', top: '#4a4a3a', top2: '#6a6a4a', pants: '#2a2a20' },
 };
   // ===== 3/4 (üst-karşı) bakış: karakterler =====

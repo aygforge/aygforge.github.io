@@ -32,6 +32,11 @@ export const SHIP_STYLES = {
   boran: { rim: '#2a1414', rim2: '#4a2222', deck: '#8a6a52', deck2: '#7a5a44', trim: '#c8a060', sail: '#8a1f2a', sailShade: '#5a1218', flag: '#8a1f2a', emblem: 'anvil' },
   varo: { emblem: 'sword', rim: '#141414', rim2: '#2a2a2a', deck: '#7a6a5a', deck2: '#6a5a4a', trim: '#e0c040', sail: '#3a3a3e', sailShade: '#1e1e22', flag: '#e0c040', stripes: true },
   kitchen: { rim: '#4a3018', rim2: '#7a5030', deck: '#c8a070', deck2: '#b48c5c', trim: '#e8e0c8', sail: '#f0e6cc', sailShade: '#d0b890', flag: '#e07a3a', emblem: 'pot' },
+  // Gizli Deniz Hikâyeleri
+  blackSail: { rim: '#0e0a0c', rim2: '#2a2026', deck: '#7a5a3e', deck2: '#6a4a30', trim: '#e0b040', sail: '#1e1a20', sailShade: '#0e0c10', flag: '#141418' },
+  mossy: { rim: '#1e2a20', rim2: '#2e4030', deck: '#4a5a3a', deck2: '#3e4e30', trim: '#5aa07a', sail: '#5a6a54', sailShade: '#3a4a36', flag: '#2e5a3a', ghost: false },
+  liner: { rim: '#1a1a22', rim2: '#2a2a36', deck: '#e8e4d8', deck2: '#d8d4c8', trim: '#f0c040', sail: '#f8f8f4', sailShade: '#d8dce0', flag: '#c8423b' },
+  winter: { rim: '#1a2028', rim2: '#2a3440', deck: '#c8d4dc', deck2: '#b8c4cc', trim: '#e8f4ff', sail: '#4a5260', sailShade: '#2a3240', flag: '#e8f0f8' },
   // Paket 3: Neris'in "Kül Pusulası" — kömür gövde, bakır çizgili yelken, küçük kurtarma vinci
   neris: { rim: '#18181b', rim2: '#2c2c31', deck: '#6c6258', deck2: '#5c5248', trim: '#c87a3c', sail: '#4e4a48', sailShade: '#c87a3c', flag: '#c87a3c', stripes: true, crane: true, emblem: 'compass' },
   // Paket 3: Sönmeyen Armada — donmuş, buz mavisi gölgeli eski filo

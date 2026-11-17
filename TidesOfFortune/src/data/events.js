@@ -6,6 +6,7 @@ import { X2_EVENTS } from './events_x2.js';
 import { X2_CHAINS, X2_CHAIN_EVENTS, X2_ECHO_EVENTS } from './chains_x2.js';
 import { X3_EVENTS, X3_SPECIAL_EVENTS } from './events_x3.js';
 import { X3_CHAINS, X3_CHAIN_EVENTS, X3_ECHO_EVENTS } from './chains_x3.js';
+import { EGG_EVENTS } from './events_egg.js';
 
 const CHAINS = { ...BASE_CHAINS, ...X1_CHAINS, ...X2_CHAINS, ...X3_CHAINS };
 import { SPECIAL_EVENTS, CREW_EVENTS, PET_EVENTS } from './events_special.js';
@@ -31,6 +32,7 @@ export const ALL_EVENTS = [
   ...X1_EVENTS, ...X1_CHAIN_EVENTS,
   ...X2_EVENTS, ...X2_CHAIN_EVENTS, ...X2_ECHO_EVENTS,
   ...X3_EVENTS, ...X3_CHAIN_EVENTS, ...X3_ECHO_EVENTS, ...X3_SPECIAL_EVENTS,
+  ...EGG_EVENTS,
 ];
 
 export const EVENT_BY_ID = Object.fromEntries(ALL_EVENTS.map((e) => [e.id, e]));

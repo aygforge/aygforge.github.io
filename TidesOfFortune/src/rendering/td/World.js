@@ -9,6 +9,7 @@ import './Props2.js';
 import './Props4.js';
 import './Props5.js';
 import { X3FX } from './Props6.js';
+import './Props7.js';
 import { npcSprite, petSprite, CS, dS } from './TopChars.js';
 import { iconCanvas } from '../icons.js';
 
