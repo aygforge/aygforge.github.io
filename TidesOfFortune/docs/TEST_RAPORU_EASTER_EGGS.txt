@@ -215,8 +215,8 @@ F. KAYIT VE REGRESYON
 - Çift etki yok: her seçenekten sonra ikinci seçim reddedilir; altın/gövde/XP değişmez (69 seçenek + 14 başarısızlık dalı).
 - Önce/sonra görsel karşılaştırma ((8) ↔ yeni): menü, eğitim, seyir, eski olay, X2 yarış, gemi seviyeleri 1–5, hayvanlar,
   korsan, çok gemili sahne, dalgıç — çizimler aynı; piksel farkı yalnız animasyon zamanlaması (%0–4,8).
-- Görsel kontrol: 23 olayın karar anı mobil yatay (915×412) ve 1280×720'de ekran görüntüsüyle incelendi; 13 senaryo
-  kare kare izlendi (#01 kurtarma, #08 başarısızlık, #10 balık ve çekme-başarı, #13 takip, #19 inceleme, #35 yardım,
+- Görsel kontrol: 23 olayın karar anı mobil yatay (915×412) ve 1280×720'de ekran görüntüsüyle incelendi;
+  kare kare izlendi — 12 senaryo: (#01 kurtarma, #08 başarısızlık, #10 balık ve çekme-başarı, #13 takip, #19 inceleme, #35 yardım,
   #60 başarısızlık, #86 yavru, #93 dokunma, #116 kopuz öğretme, #117 rüzgâr-başarı).
 
 G. DÜZELTMELER VE EKLEMELER (eski kodda, gerekçeli ve dar kapsamlı)
