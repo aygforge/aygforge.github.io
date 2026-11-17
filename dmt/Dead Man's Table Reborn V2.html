@@ -2,7 +2,11 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="screen-orientation" content="landscape">
 <title>Dead Man's Table — Reborn V2</title>
 <style>
   html, body { margin: 0; padding: 0; height: 100%; background: #07040a; overflow: hidden; }
@@ -15,11 +19,28 @@
     box-shadow: 0 0 60px rgba(120, 30, 40, 0.25);
     cursor: none;
     outline: none;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none; user-select: none;
   }
+  /* Mobil dikey ekranda "yatay çevir" uyarısı */
+  #rotate {
+    display: none; position: fixed; inset: 0; z-index: 10;
+    background: rgba(7, 4, 10, 0.94); color: #e0c070;
+    font: bold 18px Georgia, 'DejaVu Serif', serif; text-align: center;
+    flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px;
+  }
+  #rotate .ph { width: 46px; height: 80px; border: 4px solid #e0c070; border-radius: 9px; animation: dmtRot 2s ease-in-out infinite; }
+  #rotate small { color: #c3b494; font-size: 13px; font-weight: normal; }
+  #rotate button { margin-top: 6px; padding: 12px 22px; font: bold 16px Georgia, 'DejaVu Serif', serif; color: #1a0a10;
+    background: #e0c070; border: 3px solid #8a6a2e; border-radius: 4px; box-shadow: 0 4px 0 #5e4520; }
+  @keyframes dmtRot { 0%, 25% { transform: rotate(0deg); } 60%, 100% { transform: rotate(-90deg); } }
+  @media (orientation: portrait) and (pointer: coarse) { #rotate { display: flex; } }
 </style>
 </head>
 <body>
 <canvas id="game" width="1280" height="720" tabindex="0"></canvas>
+<div id="rotate"><div class="ph"></div><div>Telefonu yatay çevir</div><small>Dead Man's Table yatay ekranda oynanır.</small><button id="rotateFs" type="button">TAM EKRAN (YATAY)</button></div>
 <script>
 "use strict";
 // ============================================================
@@ -135,17 +156,51 @@ DMT.Input = {
       toWorld(e); this.down = true; DMT.Audio.unlock();
       DMT.Scenes.pointerDown(this.x, this.y);
     });
-    window.addEventListener('mouseup', () => { if (this.down) { this.down = false; DMT.Scenes.pointerUp(this.x, this.y); } });
+    window.addEventListener('mouseup', () => { DMT.Fullscreen.release(); if (this.down) { this.down = false; DMT.Scenes.pointerUp(this.x, this.y); } });
     canvas.addEventListener('contextmenu', (e) => e.preventDefault());
     // dokunmatik (bonus)
     canvas.addEventListener('touchstart', (e) => { const t = e.changedTouches[0]; toWorld(t); this.inside = true; this.down = true; DMT.Audio.unlock(); DMT.Scenes.pointerDown(this.x, this.y); e.preventDefault(); }, { passive: false });
     canvas.addEventListener('touchmove', (e) => { const t = e.changedTouches[0]; toWorld(t); e.preventDefault(); }, { passive: false });
-    canvas.addEventListener('touchend', (e) => { this.down = false; DMT.Scenes.pointerUp(this.x, this.y); this.inside = false; e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('touchend', (e) => { DMT.Fullscreen.release(); this.down = false; DMT.Scenes.pointerUp(this.x, this.y); this.inside = false; e.preventDefault(); }, { passive: false });
     window.addEventListener('keydown', (e) => {
       DMT.Audio.unlock();
       if (e.key === 'm' || e.key === 'M') DMT.Audio.toggleMute();
+      if (e.key === 'f' || e.key === 'F') DMT.Fullscreen.toggle();
       DMT.Scenes.keyDown(e);
     });
+  },
+};
+
+// ---------- TAM EKRAN (mobilde yatay) ----------
+// Tarayıcılar tam ekranı yalnızca "kullanıcı etkinleştirmesi" sayılan olaylarda izin verir (touchstart sayılmaz).
+// Bu yüzden buton basışta "kurulur" (arm), parmak/fare kalkınca (touchend/mouseup) tam ekrana geçilir.
+DMT.Fullscreen = {
+  armed: false, armedAt: 0, msg: '', msgT: 0,
+  el() { return document.documentElement; },
+  supported() { const e = this.el(); return !!(e.requestFullscreen || e.webkitRequestFullscreen); },
+  active() { return !!(document.fullscreenElement || document.webkitFullscreenElement); },
+  arm() { this.armed = true; this.armedAt = performance.now(); },
+  release() { if (this.armed && performance.now() - this.armedAt < 2000) this.toggle(); this.armed = false; },
+  toggle() {
+    try {
+      if (this.active()) {
+        try { if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch (e) { /* yoksay */ }
+        (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+        return;
+      }
+      if (!this.supported()) { this.toast('Bu tarayıcı tam ekranı desteklemiyor. iPhone: Paylaş → Ana Ekrana Ekle, sonra telefonu yan çevir.'); return; }
+      const e = this.el();
+      const p = (e.requestFullscreen || e.webkitRequestFullscreen).call(e, { navigationUI: 'hide' });
+      const lock = () => { try { if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(() => {}); } catch (err) { /* masaüstünde desteklenmez */ } };
+      if (p && p.then) p.then(lock).catch(() => this.toast('Tam ekran açılamadı.')); else lock();
+    } catch (err) { console.warn('[DMT] tam ekran', err); this.toast('Tam ekran açılamadı.'); }
+  },
+  toast(m) { this.msg = m; this.msgT = 4; },
+  init() {
+    const refit = () => setTimeout(() => DMT.Renderer.fit(), 60);
+    document.addEventListener('fullscreenchange', refit);
+    document.addEventListener('webkitfullscreenchange', refit);
+    window.addEventListener('orientationchange', refit);
   },
 };
 
@@ -616,13 +671,35 @@ DMT.UI = {
   },
   // ---- global: ses butonu + imleç ----
   muteRect: { x: 618, y: 4, w: 18, h: 14 },
+  fsRect: { x: 597, y: 4, w: 18, h: 14 },
   globalPointer(x, y) {
     if (U.inRect(x, y, this.muteRect)) { DMT.Audio.toggleMute(); DMT.Audio.play('click'); return true; }
+    if (U.inRect(x, y, this.fsRect)) { DMT.Fullscreen.arm(); DMT.Audio.play('click'); return true; }
     return false;
   },
   renderGlobal(R) {
     const I = DMT.Input, r = this.muteRect;
     const hv = U.inRect(I.x, I.y, r);
+    // tam ekran ikonu (her sahnede, sesin solunda)
+    const fr = this.fsRect, fhv = U.inRect(I.x, I.y, fr), fsOn = DMT.Fullscreen.active();
+    R.px((g) => {
+      G.rect(g, fr.x, fr.y, fr.w, fr.h, fhv ? P.soot2 : 'rgba(10,6,12,0.7)');
+      G.rect(g, fr.x, fr.y, fr.w, 1, P.gold1); G.rect(g, fr.x, fr.y + fr.h - 1, fr.w, 1, P.gold1); G.rect(g, fr.x, fr.y, 1, fr.h, P.gold1); G.rect(g, fr.x + fr.w - 1, fr.y, 1, fr.h, P.gold1);
+      const col = fhv ? P.gold4 : P.gold3, x0 = fr.x + 4, y0 = fr.y + 3, x1 = fr.x + fr.w - 5, y1 = fr.y + fr.h - 4;
+      // köşe okları: kapalıyken dışa, açıkken içe
+      const k = fsOn ? 1 : 0;
+      for (const [cx, cy, sx, sy] of [[x0, y0, 1, 1], [x1, y0, -1, 1], [x0, y1, 1, -1], [x1, y1, -1, -1]]) {
+        const bx = cx + (k ? sx * 2 : 0), by = cy + (k ? sy * 2 : 0);
+        G.rect(g, Math.min(bx, bx + sx * 2), by, 3, 1, col); G.rect(g, bx, Math.min(by, by + sy * 2), 1, 3, col);
+      }
+      if (fhv) this.cursorHover = true;
+    });
+    if (DMT.Fullscreen.msgT > 0) {
+      DMT.Fullscreen.msgT -= 1 / 60;
+      const m = DMT.Fullscreen.msg;
+      R.px((g) => { G.rect(g, 60, 318, 520, 22, 'rgba(8,4,10,0.9)'); G.rect(g, 60, 318, 520, 1, P.gold2); G.rect(g, 60, 339, 520, 1, P.gold2); });
+      R.tx((c) => T.text(c, m, 320, 324, { size: 6.5, align: 'center', color: P.gold4 }));
+    }
     R.px((g) => {
       G.rect(g, r.x, r.y, r.w, r.h, hv ? P.soot2 : 'rgba(10,6,12,0.7)');
       G.rect(g, r.x, r.y, r.w, 1, P.gold1); G.rect(g, r.x, r.y + r.h - 1, r.w, 1, P.gold1); G.rect(g, r.x, r.y, 1, r.h, P.gold1); G.rect(g, r.x + r.w - 1, r.y, 1, r.h, P.gold1);
@@ -2433,6 +2510,8 @@ DMT.Stats = {
       this.smokeT = 0; this.skullT = 6; this.skullX = -1; this.crowT = 0;
       this.fog = [0, 120, 260];
       this.sign = this.makeSign();
+      // ana menü: tam ekran butonu (mobilde yatay tam ekran)
+      this.fsBtn = DMT.UI.button({ x: 532, y: 334, w: 100, h: 20, label: 'TAM EKRAN', size: 7.5, style: 'gold', onClick: () => DMT.Fullscreen.arm() });
     },
     exit() { this.parts.clear(); },
     makeSign() {
@@ -2540,6 +2619,8 @@ DMT.Stats = {
         if (this.state === 'idle') T.text(c, this.hover > 0.3 ? 'İçeri gir' : 'Kapıya tıkla', 320, 340, { size: 8, align: 'center', color: this.hover > 0.3 ? P.gold4 : P.bone2, alpha: this.hover > 0.3 ? 1 : a, font: 'title' });
         T.text(c, 'Aygforge Studios · prototip ' + DMT.VERSION, 6, 350, { size: 5, color: '#6a6078', outline: false });
       });
+      if (this.fsBtn) this.fsBtn.label = DMT.Fullscreen.active() ? 'PENCERE MODU' : 'TAM EKRAN';
+      DMT.UI.draw(R, 'main');
     },
     drawDoor(g, t) {
       const cx = 320, top = 206, bot = 296, archCY = 226, rx = 28, ry = 20;
@@ -4974,6 +5055,10 @@ DMT.Sim = {
   DMT.Audio.init();
   DMT.Renderer.init(canvas);
   DMT.Input.init(canvas);
+  DMT.Fullscreen.init();
+  // dikey uyarıdaki buton: tam ekran + yatay kilit (Android Chrome'da ekranı kendisi döndürür)
+  const rf = document.getElementById('rotateFs');
+  if (rf) rf.addEventListener('click', () => { DMT.Audio.unlock(); if (!DMT.Fullscreen.active()) DMT.Fullscreen.toggle(); });
   // ağır arka planları önceden üret (ilk karede takılma olmasın)
   DMT.Art.exteriorBG(); DMT.Art.interiorBG(); DMT.Art.prerunBG();
   DMT.Scenes.start('exterior');
