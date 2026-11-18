@@ -30,7 +30,6 @@ export const SCENES = {
     sc.intro = () => [S('say', { id: 'enc', text: 'Ambarını boşalt, yoksa seni balıklara yem ederim!', dur: 3.5, hold: 1.6 }), S('call', { fn: (d) => { const e = d.world.get('enc'); if (e) e.agitated = true; } })];
     return sc;
   },
-  EVT_D_15: (ev, side) => SCENES.EVT_D_01(ev, side),
   // DEV DALGA
   EVT_D_02: (ev, side) => {
     const sc = generic(ev, side);

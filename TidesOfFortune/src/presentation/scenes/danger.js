@@ -406,52 +406,69 @@ export const DANGER_SCENES = {
   })),
 
   // ───────── KORSAN ABLUKASI ─────────
+  // Üç gemi: amiral gemisi (enc) bordamızda, ikinci gemi (enc2) öbür bordamızda, üçüncüsü (enc3) pruvamızın önünde boğazı kesiyor.
+  // Hepsi görünür alanda kalır (üst arayüzün altına girmez); kamera hafif yukarı bakar.
   EVT_D_15: def((ev, side) => ({
+    thieves: true,
     weather: () => [weather({ dark: 0.1 })],
     setup: (c) => [
-      shipEntity(c, 'enc', 'pirate', 3, { x: 0, y: -420, scale: 0.85 }),
-      shipEntity(c, 'enc2', 'pirate', 2, { x: -150, y: -400, scale: 0.85 }),
-      shipEntity(c, 'enc3', 'pirate', 2, { x: 150, y: -400, scale: 0.85 }),
+      shipEntity(c, 'enc3', 'pirate', 2, { x: 0, y: -440, scale: 0.85 }),
+      shipEntity(c, 'enc', 'pirate', 3, { x: side * 200, y: -360, scale: 0.9 }),
+      shipEntity(c, 'enc2', 'pirate', 2, { x: -side * 200, y: -380, scale: 0.85 }),
     ],
     approach: (c) => [
-      par(move('enc', { y: -c.len / 2 - 130 }, 4), move('enc2', { y: -c.len / 2 - 100, rot: Math.PI * 0.6 }, 4, { wait: false }), move('enc3', { y: -c.len / 2 - 100, rot: Math.PI * 1.4 }, 4, { wait: false }), slow(6), cam({ x: 0, y: -160 }, 0.32)),
-      par(react('danger', side), stop(), lookout('Üç gemi… boğazı kapatmışlar!', { dur: 2.4 })),
+      par(S('speed', { v: 24 }), cam({ x: 0, y: -95 }, 0.25), move('enc3', { x: -40, y: -c.len / 2 - 48, rot: Math.PI / 2 }, 3.2)),
+      par(react('danger', side), lookout('Üç gemi… boğazı kapatmışlar!', { dur: 2.4, hold: 0.4 })),
+      par(slow(5),
+        move('enc', { x: alongside(c, 0.9, 3), y: -10, rot: 0, sails: 'furled' }, 3),
+        move('enc2', { x: -alongside(c, 0.85, 2), y: 16, rot: 0, sails: 'furled' }, 3, { wait: false }),
+        move('enc3', { sails: 'furled' }, 1, { wait: false })),
+      par(stop(), say('CAPTAIN', 'Kuşatıldık! Herkes yerine!', 2.2, 0.4)),
       call((d) => { for (const id of ['enc', 'enc2', 'enc3']) { const e = d.world.get(id); if (e) e.agitated = true; } }),
     ],
     intro: () => [say('enc', 'Bu sular bizim. Geçiş ücreti ya da dipteki yerin!', 3.2, 1.4)],
     opts: [
       (c, info) => [ // Savaş
         par(work(['CREW_BJORN', 'CREW_OKSANA'], 'cannon', 'Topları ateşliyor', 5), cam('enc', 0.3, 1.05)),
-        S('fire', { from: { rail: 0, dy: -c.len / 2 }, to: 'enc', n: 4, hit: info.success ? true : 'some', burn: info.success }),
+        S('fire', { from: { rail: side }, to: 'enc', n: 4, hit: info.success ? true : 'some', burn: info.success }),
         info.success
-          ? par(move('enc2', { x: -320, y: -300 }, 2.6), move('enc3', { x: 320, y: -300 }, 2.6, { wait: false }), say('enc', 'Dağılın! Dağılın!', 2, 0.4))
-          : par(S('fire', { from: 'enc2', to: 'ship', n: 2, hit: true }), S('fire', { from: 'enc3', to: 'ship', n: 2, hit: true })),
+          ? par(say('enc', 'Dağılın! Dağılın!', 2, 0.4), move('enc2', { x: -side * 340, y: 120, rot: Math.PI * 0.85 }, 2.8, { wait: false }), move('enc3', { x: side * 320, y: -c.len / 2 - 120, rot: Math.PI * 0.75 }, 2.8, { wait: false }))
+          : par(S('fire', { from: 'enc2', to: 'ship', n: 2, hit: true }), S('fire', { from: 'enc3', to: 'ship', n: 2, hit: true }), S('shake', { amount: 8 })),
+        cam({ x: 0, y: -95 }, 0.3),
       ],
       (c) => [ // Rüşvet
         cap('Ne kadar istiyorsunuz?', 2, 0.6),
-        spawn({ id: 'boat', kind: 'rowboat', x: 0, y: -c.len / 2 - 100, opts: { npcs: ['pirate', 'pirate'], dir: 'down' } }),
-        move('boat', { y: -c.len / 2 - 26 }, 2),
+        spawn({ id: 'boat', kind: 'rowboat', x: side * 40, y: -c.len / 2 - 40, opts: { npcs: ['pirate', 'pirate'], dir: 'down' } }),
+        move('boat', { x: besides(c, 24), y: -c.len / 2 + 30 }, 1.6),
         S('chest', { from: 'ship', to: 'boat' }),
-        par(move('boat', { y: -c.len / 2 - 110 }, 2), move('enc2', { x: -260 }, 3, { wait: false }), move('enc3', { x: 260 }, 3, { wait: false })),
+        par(move('boat', { x: side * 60, y: -c.len / 2 - 40, alpha: 0 }, 1.8), say('enc3', 'Yol açık, tüccar.', 2, 0.3), move('enc3', { x: -side * 260, rot: Math.PI * 1.4 }, 3, { wait: false })),
       ],
       (c, info) => [ // Diego
-        par(work(['CREW_DIEGO'], 'bow', 'Eski dostlarına sesleniyor', 5, 1), only('CREW_DIEGO', 'Hey, Kanlı Jack! Benim, Diego!', { dur: 2.6 })),
+        par(work(['CREW_DIEGO'], rail(side), 'Eski dostlarına sesleniyor', 5, 1), only('CREW_DIEGO', 'Hey, Kanlı Jack! Benim, Diego!', { dur: 2.6 })),
         say('enc', info.success ? 'DIEGO! Seni yaşlı kurt! Geç bakalım!' : 'Diego… bana hâlâ borçlusun.', 2.8, 1),
         info.success ? par(S('throw', { from: 'enc', to: 'ship', kind: 'crate', good: 'GOOD_WINE', arc: 30 }), S('sound', { name: 'cheer' })) : T(0.4),
-        par(move('enc2', { x: -260 }, 3), move('enc3', { x: 260 }, 3, { wait: false })),
+        par(move('enc3', { x: -side * 260, rot: Math.PI * 1.4 }, 3), T(1)),
       ],
       (c, info) => [ // Kara Bayrak
         par(S('flag', { up: true }), sfx('flag'), cap('Bayrağı çekin!', 1.8, 0.6)),
         say('enc', info.success ? 'Kardeş gemi! Açılın!' : 'Hahaha! Bu paçavra mı? …Peki, ama bedeli var.', 2.8, 1),
-        par(move('enc2', { x: -260 }, 3), move('enc3', { x: 260 }, 3, { wait: false })),
+        par(move('enc3', { x: -side * 260, rot: Math.PI * 1.4 }, 3), T(1)),
       ],
       (c) => [ // Başka liman
-        par(cap('Dönüyoruz. Bu limana değmez.', 2.2, 0.6), S('heel', { rot: -side * 0.2 }), go(26)),
-        par(move('enc', { y: -420 }, 3), move('enc2', { y: -420 }, 3, { wait: false }), move('enc3', { y: -420 }, 3, { wait: false }), S('shipTo', { x: -side * 60 })),
+        par(cap('Dönüyoruz. Bu limana değmez.', 2.2, 0.6), say('enc', 'Kaç bakalım, tüccar!', 2, 0.3)),
+        // yandaki gemiler önce açılır, sonra küçük bir dümen kırımıyla geri çekiliriz (gövdeler üst üste binmez)
+        par(move('enc', { x: alongside(c, 0.9, 3) + side * 60, y: 150 }, 3), move('enc2', { x: -alongside(c, 0.85, 2) - side * 60, y: 170 }, 3, { wait: false }), move('enc3', { y: -c.len / 2 - 140 }, 3, { wait: false }), S('heel', { rot: -side * 0.08 }), go(18)),
       ],
     ],
-    from: (info) => (oiOf(info) === 1 || oiOf(info) === 2 ? 'boat' : 'enc'),
-    exit: (c) => [par(go(30), move('enc', { y: -460, rot: Math.PI }, 3), move('enc2', { y: -460 }, 3, { wait: false }), move('enc3', { y: -460 }, 3, { wait: false }), move('boat', { y: -460 }, 3, { wait: false })), remove('enc2'), remove('enc3'), remove('boat')],
+    from: (info) => (oiOf(info) === 1 ? 'boat' : 'enc'),
+    exit: (c) => [
+      par(go(30), S('heel', { rot: 0 }), camReset(),
+        move('enc', { y: c.len / 2 + 260, alpha: 0 }, 3.2),
+        move('enc2', { y: c.len / 2 + 280, alpha: 0 }, 3.2, { wait: false }),
+        move('enc3', { y: c.len / 2 + 240, alpha: 0 }, 3.6, { wait: false }),
+        move('boat', { alpha: 0 }, 1, { wait: false })),
+      remove('enc2'), remove('enc3'), remove('boat'),
+    ],
   })),
 
   // ───────── SAHTE YARDIM SİNYALİ ─────────

@@ -183,6 +183,10 @@ export class UI {
       el = renderMenu(this);
       this.music('menu', 'sea');
     } else el = this.renderGame();
+    // Limana varış: seyirden liman/varış ekranına geçen ilk karede arayüz yumuşakça belirir (ani boyama sıçraması hissedilmez)
+    const ph = this.view === 'game' && run ? run.phase : null;
+    if (this._lastRunPh === 'voyage' && (ph === 'arrival' || ph === 'harbor') && el?.classList) el.classList.add('dockIn');
+    this._lastRunPh = ph;
     this.root.appendChild(el);
     this.root.querySelectorAll('[data-scroll]').forEach((s) => {
       if (scrolls[s.dataset.scroll] != null) s.scrollTop = scrolls[s.dataset.scroll];

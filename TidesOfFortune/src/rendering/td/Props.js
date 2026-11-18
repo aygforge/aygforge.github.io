@@ -722,7 +722,25 @@ import { _t2, cannonDraw, deckBarrel } from './TopShip.js';
       vline(t, e + 24, r - 26, r - 12, "#2a2a30"), rect(t, e + 23, r - 29, 3, 3, "#ffe8a0"), __px(t, e + 24, r - 30, "#2a2a30");
     }
   }
+  // Kıyı ipucu: hareketsiz kısım (zemin, kum, evler, fener) tür+genişlik başına bir kez önbelleğe çizilir;
+  // her karede yalnızca köpük ışıltıları çizilir (son 30 sn boyunca kare maliyeti yarıya iner).
+  const coastCache = new Map();
   export function drawCoastHint(t, e, a, r, n) {
+    const key = n + "|" + e;
+    let c = coastCache.get(key);
+    if (!c) {
+      coastCache.size > 8 && coastCache.clear();
+      c = makeCanvas(e, 142);
+      drawCoastHintRaw(c.getContext("2d"), e, 130, 0, n, !0);
+      coastCache.set(key, c);
+    }
+    t.drawImage(c, 0, Math.round(a) - 130);
+    for (let s = 0; s < e; s++) {
+      let o = Math.round(Math.sin(s * 0.03) * 4 + Math.sin(s * 0.11) * 2);
+      Math.sin(s * 0.5 + r * 2) > 0.3 && __px(t, s, Math.round(a) + o + 1 + (Math.sin(s * 0.2 + r) > 0 ? 1 : 0), "#ffffff");
+    }
+  }
+  function drawCoastHintRaw(t, e, a, r, n, still = !1) {
     // Yaklaşılan kıyı (ekranın üstünde): kumsal + önden görünen evler
     let i = rn[n] || rn.trade,
       top = a - 90;
@@ -730,7 +748,7 @@ import { _t2, cannonDraw, deckBarrel } from './TopShip.js';
       let o = Math.round(Math.sin(s * 0.03) * 4 + Math.sin(s * 0.11) * 2),
         sy = a + o;
       rect(t, s, top, 1, sy - top - 5, i.ground), rect(t, s, sy - 5, 1, 4, n === "ice" ? "#f4fbff" : n === "volcanic" ? "#4a3e40" : "#e6d6a0"), __px(t, s, sy - 1, n === "ice" ? "#d8ecf6" : n === "volcanic" ? "#3a3032" : "#d0bc84");
-      __px(t, s, sy, "rgba(200,240,245,0.7)"), Math.sin(s * 0.5 + r * 2) > 0.3 && __px(t, s, sy + 1 + (Math.sin(s * 0.2 + r) > 0 ? 1 : 0), "#ffffff");
+      __px(t, s, sy, "rgba(200,240,245,0.7)"), !still && Math.sin(s * 0.5 + r * 2) > 0.3 && __px(t, s, sy + 1 + (Math.sin(s * 0.2 + r) > 0 ? 1 : 0), "#ffffff");
       (s * 7) % 5 === 0 && __px(t, s, sy - 9 - ((s * 13) % 17), i.g2);
     }
     let L = [];

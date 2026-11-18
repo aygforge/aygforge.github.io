@@ -69,6 +69,14 @@ export class World {
     this.entities = this.entities.filter((e) => e.id !== id);
   }
 
+  /** Kasaba görüntüsü önbelleğini doldur (ekrana çizmeden) */
+  prewarmTown(type, seed) {
+    const H = this.H || 360;
+    if (!this._warmCtx) this._warmCtx = makeCanvas(1, 1).getContext('2d');
+    drawTown(this._warmCtx, 0, H, type, this.t, seed);
+    drawCoastHint(this._warmCtx, this.W || 640, 0, this.t, type);
+  }
+
   clearEncounter() {
     this.entities = this.entities.filter((e) => e.persist);
     this.cargoOverride = null;

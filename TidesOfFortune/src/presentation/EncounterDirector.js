@@ -624,9 +624,11 @@ export class EncounterDirector {
     }
     // kıyı ipuçları: son düzlükte
     const toEnd = v.duration - v.elapsed;
+    // son olay da bittiyse varış limanının kasaba ve kıyı görüntüsünü boşta önceden hazırla (yanaşırken takılma olmasın)
+    if (remaining === 0 && !this.phase.startsWith('ENCOUNTER')) { const hb0 = HARBOR_BY_ID[this.run.route[v.toIdx].harborId]; this.prewarmHarbor(hb0.final ? 'final' : hb0.type, hb0.id); }
     if (remaining === 0 && toEnd < 30) {
       const hb = HARBOR_BY_ID[this.run.route[v.toIdx].harborId];
-      if (!w.coast) { w.coast = { type: hb.final ? 'final' : hb.type, y: -60 }; this.hooks.onCoast?.(hb); }
+      if (!w.coast) { w.coast = { type: hb.final ? 'final' : hb.type, y: -60 }; this.hooks.onCoast?.(hb); this.prewarmHarbor(hb.final ? 'final' : hb.type, hb.id); }
       w.coast.y = -60 + (1 - toEnd / 30) * 90;
     }
     if (v.elapsed >= this.nextAt) {
@@ -795,27 +797,49 @@ export class EncounterDirector {
     w.harbor = { type, offY: -420, seed: hashString(hb.id) };
     w.coast = null;
     const D = BALANCE.voyage.dockTime;
+    // Tek bir yumuşak eğri: kasaba yaklaşması, deniz akışı (hız) ve kamera aynı eğriyle ilerler; varışta sıçrama olmaz
+    w.dockTween = { t: 0, dur: D, s0: Math.max(w.speed, 8), cx0: w.cam.x, cy0: w.cam.y };
+    this.prewarmHarbor(type, hb.id);
     this.runSteps([
-      [{ type: 'speed', v: 12 }, { type: 'sails', state: 'furled' }, { type: 'call', fn: () => { w.dockTween = { t: 0, dur: D }; }, dur: 0 }],
+      [{ type: 'sails', state: 'furled' }],
       { type: 'call', fn: () => {}, dur: D },
-      [{ type: 'speed', v: 0 }],
     ], () => {
       w.harbor.offY = 0;
       w.dockTween = null;
       this.core.nextEvent(); // rota sonu → varış (durum değişimi + kayıt)
+      // liman kipine geçiş: kamera kaydırması liman tabanına eşit olduğundan ekran konumu değişmez
       w.mode = 'harbor';
+      w.cam.x = w.cam.tx = 0; w.cam.y = w.cam.ty = 0;
+      w.speed = w.targetSpeed = 0;
       this.setPhase(PH.DOCKED);
     });
   }
 
+  /** Kasaba görüntüsünü yanaşmadan önce boşta üret (ilk yanaşma karesinde takılma olmasın) */
+  prewarmHarbor(type, harborId) {
+    const w = this.world;
+    const key = `${type}|${harborId}`;
+    if (this._warmKey === key) return;
+    this._warmKey = key;
+    const run = () => { try { w.prewarmTown(type, hashString(harborId)); } catch { /* yalnızca önbellek */ } };
+    void 0;
+    if (typeof requestIdleCallback === 'function') requestIdleCallback(run, { timeout: 1500 }); else setTimeout(run, 0);
+  }
+
   tickDock(dt) {
     const w = this.world;
-    if (!w.dockTween || !w.harbor) return;
-    w.dockTween.t += dt;
-    const f = Math.min(1, w.dockTween.t / w.dockTween.dur);
-    const k = 1 - (1 - f) * (1 - f);
+    const tw = w.dockTween;
+    if (!tw || !w.harbor) return;
+    tw.t += dt;
+    const f = Math.min(1, tw.t / tw.dur);
+    const k = 1 - (1 - f) * (1 - f); // yavaşlayarak yaklaşma
     w.harbor.offY = -420 * (1 - k);
-    w.cam.tx = -(w.W || 640) * 0.2 * k;
+    // deniz akışı kasabanın hızıyla orantılı azalır ve tam varışta sıfırlanır (ani duruş yok)
+    w.speed = w.targetSpeed = tw.s0 * (1 - f);
+    // kamera: seyir tabanından (W/2, 0.56H) liman tabanına (0.3W, 0.5H) doğrudan, gecikmesiz
+    const W = w.W || 640, H = w.H || 360;
+    w.cam.x = w.cam.tx = tw.cx0 + (-W * 0.2 - tw.cx0) * k;
+    w.cam.y = w.cam.ty = tw.cy0 + (-H * 0.06 - tw.cy0) * k;
   }
 }
 
