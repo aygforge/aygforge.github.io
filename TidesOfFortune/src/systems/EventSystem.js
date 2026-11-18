@@ -345,17 +345,21 @@ function validAtTrigger(G, ev, entry) {
  * host: run.voyage veya run.arrival — { queue, pos, current }
  * Bir sonraki eventi aktif eder. Kuyruk bittiyse null döner.
  */
-export function triggerNext(G, host, rng, ctx) {
+/**
+ * Sıradaki kuyruk girdisini KESİNLEŞTİRİR (tetiklemeden): şanslı olay değişimi uygulanır, artık geçersiz olan girdiler
+ * atlanır. Sahne motoru sahneyi kurmadan önce bunu çağırır; böylece gösterilen sahne ile tetiklenen olay her zaman aynıdır.
+ * Zar tüketimi triggerNext ile aynı sıradadır (deterministik).
+ */
+export function settleNext(G, host, rng, ctx) {
   const run = G.run;
-  if (host.current) return host.current;
+  if (host.current) return host.queue[host.pos - 1] || null;
   while (host.pos < host.queue.length) {
     let entry = host.queue[host.pos];
-    host.pos++;
     if (run.buffs.lucky && entry.src === 'normal') {
-      const rep = pickEvent(G, rng, 'fortune', ctx, new Set(host.queue.slice(host.pos).map((q) => q.id)));
+      const rep = pickEvent(G, rng, 'fortune', ctx, new Set(host.queue.slice(host.pos + 1).map((q) => q.id)));
       if (rep) {
         entry = { ...rep, lucky: true };
-        host.queue[host.pos - 1] = entry;
+        host.queue[host.pos] = entry;
       }
       run.buffs.lucky = false;
     }
@@ -363,8 +367,22 @@ export function triggerNext(G, host, rng, ctx) {
     if (!validAtTrigger(G, ev, entry)) {
       if (ev?.chain && run.chains[ev.chain] && run.chains[ev.chain].status !== 'done') run.chains[ev.chain].status = 'done';
       if (ev?.cat === 'special' && run.special.stage === 'secondQueued') run.special.stage = 'cancelled';
+      host.pos++;
       continue;
     }
+    return entry;
+  }
+  return null;
+}
+
+export function triggerNext(G, host, rng, ctx) {
+  const run = G.run;
+  if (host.current) return host.current;
+  {
+    const entry = settleNext(G, host, rng, ctx);
+    if (!entry) return null;
+    host.pos++;
+    const ev = EVENT_BY_ID[entry.id];
     host.current = { id: ev.id, src: entry.src, lucky: !!entry.lucky, result: null };
     if (ev.egg) { if (!G.meta.codex.events[ev.id]) host.current.eggNew = true; Egg.onEggTrigger(G); }
     if (!run.seenEvents.includes(ev.id)) run.seenEvents.push(ev.id);
@@ -387,7 +405,6 @@ export function triggerNext(G, host, rng, ctx) {
     if (auto) resolveAuto(G, host, ev, auto, rng, ctx);
     return host.current;
   }
-  return null;
 }
 
 // ───────────────────────── Seçenekler ─────────────────────────

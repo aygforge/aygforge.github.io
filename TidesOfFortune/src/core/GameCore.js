@@ -371,6 +371,16 @@ export class GameCore {
     });
   }
 
+  /** Sıradaki olayı tetiklemeden kesinleştir (sahne bu olay için kurulur). Döner: { ok, id } ya da id yoksa ok:false */
+  peekNext() {
+    return this.act('peekNext', () => {
+      const run = this.run;
+      if (!run || run.phase !== 'voyage') return { ok: false };
+      const e = Events.settleNext(this.G, run.voyage, this.rng, this.routeCtx());
+      return e ? { ok: true, id: e.id } : { ok: false };
+    });
+  }
+
   choose(key) {
     return this.act('choose', () => {
       const h = this.host();

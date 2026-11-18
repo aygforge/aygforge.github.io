@@ -631,7 +631,11 @@ export class EncounterDirector {
     }
     if (v.elapsed >= this.nextAt) {
       this.nextAt = null;
-      if (remaining > 0) this.beginEncounter(v.queue[v.pos].id);
+      if (remaining > 0) {
+        // olayı sahneden ÖNCE kesinleştir (şanslı değişim / geçersiz girdi): sahne ile seçenekler hep aynı olaya ait olur
+        const pk = this.core.peekNext ? this.core.peekNext() : { ok: true, id: v.queue[v.pos].id };
+        if (pk.ok) this.beginEncounter(pk.id);
+      }
       else this.beginDocking();
     }
   }
@@ -655,20 +659,25 @@ export class EncounterDirector {
       const r = this.core.nextEvent();
       const cur = this.run.voyage?.current;
       if (!cur) { this.toSail(); return; }
+      const toIntro = () => {
+        this.setPhase(PH.INTRO);
+        this.runSteps(this.scene.intro(this.ctx()), () => {
+          if (cur.result) this.playOutcome(cur.result, null, null);
+          else this.setPhase(PH.DECISION);
+        });
+      };
+      void r;
       if (cur.id !== peekId) {
-        // şanslı olay / geçersiz event değişimi: sahneyi yeniden kur
+        // Güvenlik ağı (peekNext ile normalde oluşmaz): sahneyi doğru olay için baştan kur ve YAKLAŞMAYI da oynat
         this.world.clearEncounter();
+        this.restoreWeather();
         this.eventId = cur.id;
         this.scene = sceneFor(EVENT_BY_ID[cur.id], this.sideFor(cur.id));
-        this.runSteps(this.scene.setup(this.ctx(), false), null);
-        this.flushInstant();
+        const c2 = this.ctx();
+        this.runSteps([...this.scene.setup(c2, false), ...this.scene.approach(c2)], toIntro);
+        return;
       }
-      void r;
-      this.setPhase(PH.INTRO);
-      this.runSteps(this.scene.intro(this.ctx()), () => {
-        if (cur.result) this.playOutcome(cur.result, null, null);
-        else this.setPhase(PH.DECISION);
-      });
+      toIntro();
     });
   }
 

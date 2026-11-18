@@ -320,6 +320,8 @@ export function def(specFn) {
   return (ev, side) => {
     const sc = generic(ev, side);
     const spec = typeof specFn === 'function' ? specFn(ev, side) : specFn;
+    sc.__optsLen = Array.isArray(spec.opts) ? spec.opts.length : null; // denetim için: seçenek dalı sayısı
+    sc.__hasAuto = !!spec.auto;
     const base = { setup: sc.setup, approach: sc.approach, intro: sc.intro, action: sc.action, outcome: sc.outcome, exit: sc.exit };
     if (spec.side != null) sc.side = spec.side;
     sc.thiefNpc = spec.thiefNpc;
