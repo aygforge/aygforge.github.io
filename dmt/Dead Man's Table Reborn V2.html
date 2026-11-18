@@ -92,7 +92,7 @@ DMT.Save = {
   KEY: 'dmt_reborn_save_v1',
   defaults() {
     // v2: ekonomi sürümü (econ) eklendi. Anahtar aynı kalır → eski kayıtlar korunur.
-    return { v: 2, econ: 2, bankCoins: 0, skills: {}, tables: { t1: true }, visits: 0, lastHero: 'kael', lastTable: 't1', muted: false,
+    return { v: 2, econ: 2, secrets: [], journal: [], tut: {}, heroDeaths: {}, deathSpots: [], lastHeroes: [], bankCoins: 0, skills: {}, tables: { t1: true }, visits: 0, lastHero: 'kael', lastTable: 't1', muted: false,
       stats: { runs: 0, wins: 0, bestKills: 0, totalEarned: 0, bestReward: 0, v2Runs: 0 } };
   },
   data: null,
@@ -111,6 +111,13 @@ DMT.Save = {
           if (typeof p.lastHero === 'string') d.lastHero = p.lastHero;
           if (typeof p.lastTable === 'string') d.lastTable = p.lastTable;
           d.muted = !!p.muted;
+          // V3 alanları (Faro'nun sırları, günlüğü, öğretici izleri, ölüm kayıtları) — yoksa boş başlar
+          d.secrets = Array.isArray(p.secrets) ? p.secrets.filter((x) => typeof x === 'string').slice(0, 50) : [];
+          d.journal = Array.isArray(p.journal) ? p.journal.filter((x) => typeof x === 'string').slice(-20) : [];
+          d.tut = p.tut && typeof p.tut === 'object' ? Object.fromEntries(Object.entries(p.tut).filter(([, v]) => v === true)) : {};
+          d.heroDeaths = p.heroDeaths && typeof p.heroDeaths === 'object' ? Object.fromEntries(Object.entries(p.heroDeaths).filter(([, v]) => Number.isInteger(v))) : {};
+          d.deathSpots = Array.isArray(p.deathSpots) ? p.deathSpots.filter((x) => x && Number.isFinite(x.x) && Number.isFinite(x.y)).slice(-12) : [];
+          d.lastHeroes = Array.isArray(p.lastHeroes) ? p.lastHeroes.filter((x) => typeof x === 'string').slice(-5) : [];
           if (p.stats && typeof p.stats === 'object') for (const k in d.stats) if (Number.isFinite(p.stats[k])) d.stats[k] = p.stats[k];
           // Güvenli migration: v1 kayıtları (econ alanı yok) olduğu gibi taşınır. Kazanılmış coin, skill ve masalar SİLİNMEZ;
           // yeni ekonomi yalnızca bundan sonraki run'lara uygulanır.
@@ -360,6 +367,7 @@ DMT.Audio = {
   },
   toggleMute() {
     this.muted = !this.muted;
+    const sc = DMT.Scenes && DMT.Scenes.current; if (sc && sc.faro && sc.faro.say) sc.faro.say(this.muted ? 'soundOff' : 'soundOn', { priority: 2 });
     DMT.Save.data.muted = this.muted; DMT.Save.write();
     if (this.master) this.master.gain.setTargetAtTime(this.muted ? 0 : 0.42, this.ctx.currentTime, 0.03);
   },
@@ -965,7 +973,53 @@ DMT.Art = DMT.Art || {};
     r(sx - 2, sy + 7, 3, 3, TC.skin2);
   }
 
+  // ---------------- V3 düşmanları (eski enemies.js): Hayalet, Bölünen, Sürü, Fantom ----------------
+  const HC = { b: '#9aa0c8', b2: '#6a6e98', b3: '#c8ccec', eye: '#7ae0ff', mouth: '#1a1028' };
+  function drawGhostE(g, anim, f) { // Hayalet: yırtık kefen, mavi gözler
+    const { r, p, l } = pen(g, 2, 2);
+    const bob = anim === 'walk' ? [0, -1, -2, -1][f] : anim === 'idle' ? -f : 0, lean = anim === 'atk' ? [0, 3, 1][f] : 0;
+    r(5 + lean, 1 + bob, 8, 2, HC.b3); r(4 + lean, 3 + bob, 10, 3, HC.b);
+    r(3 + lean, 6 + bob, 12, 9, HC.b); r(3 + lean, 6 + bob, 2, 9, HC.b3); r(12 + lean, 7 + bob, 3, 8, HC.b2);
+    for (let i = 0; i < 6; i++) r(3 + lean + i * 2, 15 + bob, 2, (i + f) % 2 ? 3 : 1, i % 2 ? HC.b2 : HC.b);
+    r(6 + lean, 5 + bob, 2, 3, HC.mouth); r(10 + lean, 5 + bob, 2, 3, HC.mouth); p(6 + lean, 6 + bob, HC.eye); p(10 + lean, 6 + bob, HC.eye); r(8 + lean, 10 + bob, 2, 2, HC.mouth);
+    if (anim === 'atk' && f === 1) l(14 + lean, 8 + bob, 19, 7 + bob, HC.b, 2); else l(14 + lean, 9 + bob, 16, 12 + bob, HC.b2);
+    p(4 + lean, 12 + bob, '#77717d'); p(5 + lean, 13 + bob, '#55505c');
+  }
+  const SPC = { s: '#8a9a5a', s2: '#5e6e3a', s3: '#b8c47a', seam: '#3a1a1a', st: '#c0263a', eye: '#ffe066' };
+  function drawSplitter(g, anim, f) { // Bölünen: dikişli, iki başlı şişkin ceset
+    const { r, p, l } = pen(g, 2, 3);
+    const atk = anim === 'atk', sq = anim === 'walk' ? [0, 1, 0, 1][f] : anim === 'idle' ? f : atk ? [0, 0, 1][f] : 0;
+    r(6, 18, 3, 3, SPC.s2); r(15, 18, 3, 3, SPC.s2);
+    r(3, 6 + sq, 18, 12 - sq, SPC.s); r(2, 9 + sq, 20, 7 - sq, SPC.s); r(4, 6 + sq, 6, 3, SPC.s3); r(16, 10 + sq, 5, 6, SPC.s2);
+    for (let y = 6 + sq; y < 18; y++) p(12, y, SPC.seam);
+    for (let y = 7 + sq; y < 17; y += 2) { p(11, y, SPC.st); p(13, y, SPC.st); }
+    r(4, 2 + sq, 6, 5, SPC.s); r(14, 1 + sq, 6, 6, SPC.s); r(4, 2 + sq, 6, 1, SPC.s3);
+    p(6, 4 + sq, SPC.eye); p(8, 4 + sq, OUT); p(16, 3 + sq, SPC.eye); p(18, 4 + sq, SPC.eye); r(15, 6 + sq, 4, 1, OUT);
+    if (atk && f === 1) { l(20, 10, 25, 12, SPC.s2, 2); r(24, 11, 2, 2, SPC.s3); } else l(20, 11 + sq, 22, 15, SPC.s2);
+  }
+  function drawSwarm(g, anim, f) { // Sürü: küçük kemik böceği
+    const { r, p, l } = pen(g, 1, 1);
+    const lf = anim === 'walk' ? f % 2 : 0;
+    r(3, 3, 6, 4, GC.b); r(2, 4, 1, 2, GC.b2); r(9, 3, 3, 4, GC.b); p(11, 4, GC.eye); p(9, 4, OUT); p(10, 6, OUT);
+    for (let i = 0; i < 3; i++) { const x = 3 + i * 2; l(x, 7, x - 1 + ((i + lf) % 2) * 2, 9, GC.b2); }
+    p(4, 3, GC.b3); p(6, 3, GC.b3);
+  }
+  const PHC = { h: '#2a1a3a', h2: '#1a1028', h3: '#4a2a68', mask: '#e8dcc0', eye: '#b46cff' };
+  function drawPhantom(g, anim, f) { // Fantom: maskeli, kukuletalı gölge
+    const { r, p, l } = pen(g, 2, 1);
+    const bob = anim === 'idle' ? -f : anim === 'walk' ? [0, -1, 0, -1][f] : 0, atk = anim === 'atk';
+    r(5, 1 + bob, 8, 3, PHC.h3); r(4, 3 + bob, 10, 6, PHC.h);
+    r(6, 4 + bob, 6, 5, PHC.mask); p(7, 6 + bob, PHC.eye); p(10, 6 + bob, PHC.eye); r(8, 8 + bob, 2, 1, '#8a7c62');
+    r(3, 9 + bob, 12, 12, PHC.h); r(3, 9 + bob, 2, 12, PHC.h3); r(12, 10 + bob, 3, 11, PHC.h2);
+    for (let i = 0; i < 4; i++) r(3 + i * 3, 21 + bob, 2, (i + f) % 2 ? 3 : 2, PHC.h2);
+    if (atk && f === 1) { l(14, 11 + bob, 19, 10 + bob, PHC.h3, 2); p(19, 9 + bob, PHC.mask); p(20, 10 + bob, PHC.mask); } else { r(14, 12 + bob, 2, 4, PHC.h3); p(15, 16 + bob, PHC.mask); }
+  }
+
   const UNITS = {
+    ghost: { fn: drawGhostE, w: 24, h: 24, foot: 21, cx: 11, frames: { idle: 2, walk: 4, atk: 3 } },
+    splitter: { fn: drawSplitter, w: 30, h: 27, foot: 24, cx: 14, frames: { idle: 2, walk: 4, atk: 3 } },
+    swarm: { fn: drawSwarm, w: 16, h: 13, foot: 11, cx: 7, frames: { idle: 2, walk: 4, atk: 3 } },
+    phantom: { fn: drawPhantom, w: 24, h: 29, foot: 26, cx: 11, frames: { idle: 2, walk: 4, atk: 3 } },
     kael: { fn: drawKael, w: 34, h: 30, foot: 27, cx: 15, frames: { idle: 2, walk: 4, atk: 3 } },
     lyra: { fn: drawLyra, w: 34, h: 30, foot: 27, cx: 15, frames: { idle: 2, walk: 4, atk: 3 } },
     grunt: { fn: drawGrunt, w: 30, h: 28, foot: 27, cx: 15, frames: { idle: 2, walk: 4, atk: 3 } },
@@ -987,7 +1041,8 @@ DMT.Art = DMT.Art || {};
         g.drawImage(base, 0, 0);
         g.globalCompositeOperation = 'source-atop';
         g.globalAlpha = variant === 'gold' ? 0.5 : variant === 'rage' ? 0.4 : 0.45;
-        g.fillStyle = variant === 'gold' ? '#ffcc33' : variant === 'rage' ? '#ff2a2a' : variant === 'ghost' ? '#9adcff' : '#8a3aff';
+        if (variant === 'mirror') g.globalAlpha = 0.35; else if (variant === 'frozen') g.globalAlpha = 0.55;
+        g.fillStyle = variant === 'gold' ? '#ffcc33' : variant === 'rage' ? '#ff2a2a' : variant === 'ghost' ? '#9adcff' : variant === 'mirror' ? '#9ad8ff' : variant === 'frozen' ? '#d8f4ff' : '#8a3aff';
         g.fillRect(0, 0, c.width, c.height);
       }
     } else {
@@ -1492,6 +1547,73 @@ DMT.Art = DMT.Art || {};
       G.rect(g, 9, 0, 3, 2, '#ff5a5a'); G.px(g, 10, 2, '#ff5a5a');
       G.px(g, 2, 2, '#fff0a0'); G.px(g, 18, 18, '#fff0a0'); G.px(g, 1, 17, '#e8b84a');
     },
+    // ----- V3: ESKİ SÜRÜM KARTLARI -----
+    celikDeri(g) { G.rect(g, 4, 4, 12, 13, '#77717d'); G.rect(g, 4, 4, 12, 2, '#c8ccd2'); for (let y = 7; y < 16; y += 3) G.rect(g, 5, y, 10, 1, '#55505c'); G.rect(g, 9, 6, 2, 10, '#a8aeb8'); G.px(g, 6, 9, '#fff'); G.rect(g, 2, 8, 2, 6, '#55505c'); G.rect(g, 16, 8, 2, 6, '#55505c'); },
+    streakUstasi(g) { for (let i = 0; i < 4; i++) { const x = 2 + i * 4, h = 4 + i * 3; G.rect(g, x, 18 - h, 3, h, i === 3 ? '#ffcf6e' : '#c8962e'); G.rect(g, x, 18 - h, 3, 1, '#fff0b8'); } G.line(g, 2, 9, 16, 2, '#ff6a2a', 2); G.px(g, 17, 2, '#fff'); },
+    donmaTopu(g) { G.circ(g, 10, 10, 7, '#5a8ac8'); G.circ(g, 10, 10, 5, '#9ad8ff'); G.circ(g, 8, 8, 2, '#e8f8ff'); for (let i = 0; i < 6; i++) { const a = (i / 6) * Math.PI * 2; G.line(g, 10 + Math.cos(a) * 7, 10 + Math.sin(a) * 7, 10 + Math.cos(a) * 9, 10 + Math.sin(a) * 9, '#e8f8ff'); } },
+    altinYagmuru(g) { for (const [x, y] of [[4, 3], [11, 1], [15, 6], [7, 9], [13, 12], [4, 14], [10, 16]]) { G.circ(g, x, y, 2, '#e8b84a'); G.px(g, x - 1, y - 1, '#fff0a0'); G.px(g, x + 1, y + 1, '#8a6a2e'); } G.line(g, 2, 0, 1, 3, '#7ac8ff'); G.line(g, 18, 9, 17, 12, '#7ac8ff'); },
+    gucDalgasi(g) { for (let i = 0; i < 3; i++) G.ring(g, 10, 12, 3 + i * 3, i === 0 ? '#ffcf6e' : i === 1 ? '#ff9a3c' : '#c0263a'); G.rect(g, 8, 2, 4, 8, '#ffcf6e'); G.rect(g, 7, 2, 6, 2, '#fff0b8'); G.px(g, 10, 1, '#fff'); },
+    kanPakti(g) { G.rect(g, 3, 4, 14, 12, '#d8c8a0'); G.rect(g, 3, 4, 14, 1, '#fff0d0'); for (let y = 7; y < 14; y += 2) G.rect(g, 5, y, 10, 1, '#8a7c62'); G.circ(g, 14, 14, 3, '#c0263a'); G.px(g, 13, 13, '#ff8a9a'); G.line(g, 5, 15, 9, 13, '#7a0a1a'); },
+    yildirimCagrisi(g) { G.circ(g, 6, 5, 3, '#5e4a8a'); G.circ(g, 12, 4, 4, '#5e4a8a'); G.rect(g, 3, 5, 14, 3, '#5e4a8a'); for (const x of [5, 10, 15]) { G.line(g, x, 9, x - 2, 13, '#ffe066'); G.line(g, x - 2, 13, x, 13, '#ffe066'); G.line(g, x, 13, x - 1, 18, '#ffe066'); } },
+    savasIcgudusu(g) { G.circ(g, 10, 10, 8, '#3a1420'); G.ring(g, 10, 10, 8, '#ffb070'); G.line(g, 10, 4, 10, 10, '#ffcf6e', 2); G.line(g, 10, 10, 14, 13, '#ffcf6e', 2); G.rect(g, 8, 0, 4, 2, '#ffb070'); G.rect(g, 15, 14, 3, 3, '#c0263a'); G.px(g, 16, 15, '#fff'); },
+    zamanBuyusu(g) { G.rect(g, 5, 2, 10, 2, '#d6aa4c'); G.rect(g, 5, 16, 10, 2, '#d6aa4c'); for (let y = 0; y < 6; y++) { G.rect(g, 6 + y, 4 + y, Math.max(1, 8 - y * 2), 1, '#7ac8ff'); G.rect(g, 6 + (5 - y), 10 + y, Math.max(1, 8 - (5 - y) * 2), 1, '#b46cff'); } G.px(g, 2, 9, '#fff'); G.px(g, 17, 6, '#fff'); G.px(g, 18, 12, '#7ac8ff'); },
+    ofkeTasi(g) { G.rect(g, 5, 6, 10, 10, '#7a1424'); G.rect(g, 6, 5, 8, 12, '#a01e30'); G.rect(g, 7, 6, 3, 3, '#ff5a6a'); G.line(g, 6, 14, 14, 8, '#3a0a10'); G.line(g, 9, 3, 7, 0, '#ff6a2a'); G.line(g, 12, 3, 14, 0, '#ff6a2a'); G.px(g, 10, 1, '#ffcf6e'); },
+    canKalkani(g) { G.rect(g, 4, 3, 12, 9, '#7ac8ff'); for (let y = 0; y < 6; y++) G.rect(g, 4 + y, 12 + y, 12 - y * 2, 1, '#7ac8ff'); G.rect(g, 4, 3, 12, 2, '#e8f8ff'); G.circ(g, 10, 9, 3, '#c0263a'); G.px(g, 9, 8, '#ff8a9a'); },
+    savasIlahisi(g) { G.rect(g, 4, 3, 2, 12, '#d6aa4c'); G.circ(g, 4, 15, 2, '#d6aa4c'); G.rect(g, 12, 1, 2, 12, '#d6aa4c'); G.circ(g, 12, 13, 2, '#d6aa4c'); G.rect(g, 6, 3, 8, 2, '#d6aa4c'); G.px(g, 16, 5, '#ffe9a0'); G.px(g, 17, 9, '#ffe9a0'); G.px(g, 2, 18, '#ffe9a0'); G.rect(g, 15, 15, 4, 4, '#c0263a'); },
+    olumCani(g) { G.rect(g, 6, 3, 8, 3, '#8a6a2e'); for (let y = 0; y < 9; y++) G.rect(g, 6 - Math.floor(y / 3), 6 + y, 8 + Math.floor(y / 3) * 2, 1, '#b8913f'); G.rect(g, 3, 15, 14, 2, '#8a6a2e'); G.circ(g, 10, 18, 1, '#e8dcc0'); G.px(g, 9, 9, '#ffe9a0'); G.px(g, 1, 6, '#e8dcc0'); G.px(g, 18, 6, '#e8dcc0'); },
+    cellatMuhru(g) { G.circ(g, 10, 10, 8, '#5a1424'); G.ring(g, 10, 10, 8, '#d6aa4c'); G.rect(g, 6, 6, 3, 9, '#c8ccd2'); G.rect(g, 9, 6, 4, 4, '#c8ccd2'); G.line(g, 13, 10, 15, 15, '#7a5030', 2); G.px(g, 7, 7, '#fff'); },
+    sonKum(g) { G.rect(g, 5, 2, 10, 2, '#7a5030'); G.rect(g, 5, 16, 10, 2, '#7a5030'); for (let y = 0; y < 6; y++) { G.rect(g, 6 + y, 4 + y, Math.max(1, 8 - y * 2), 1, '#3a2a40'); G.rect(g, 6 + (5 - y), 10 + y, Math.max(1, 8 - (5 - y) * 2), 1, '#e0c070'); } G.px(g, 10, 9, '#e0c070'); G.rect(g, 15, 5, 4, 2, '#c0263a'); G.rect(g, 16, 4, 2, 4, '#c0263a'); },
+    sessizAdimlar(g) { for (const [x, y] of [[3, 12], [9, 7], [13, 13]]) { G.ellipse(g, x + 2, y + 2, 2, 3, '#8a7c62'); G.px(g, x, y - 2, '#8a7c62'); G.px(g, x + 2, y - 3, '#8a7c62'); G.px(g, x + 4, y - 2, '#8a7c62'); } G.line(g, 1, 3, 6, 3, '#c3b494'); G.line(g, 14, 2, 19, 2, '#c3b494'); },
+    kanliZemin(g) { woodLike(g); G.ellipse(g, 9, 13, 7, 3, '#7a0a1a'); G.ellipse(g, 9, 13, 5, 2, '#c0263a'); G.circ(g, 15, 5, 2, '#e8b84a'); G.px(g, 14, 4, '#fff0a0'); },
+    zayifKonuklar(g) { for (const x of [4, 10, 16]) { G.circ(g, x, 8, 3, '#d8ccb0'); G.px(g, x - 1, 7, '#120a10'); G.px(g, x + 1, 7, '#120a10'); G.rect(g, x - 2, 11, 5, 5, '#5a4a3a'); } G.line(g, 1, 17, 19, 17, '#8a7c62'); G.px(g, 10, 4, '#7ae0ff'); },
+    comertMasa(g) { G.rect(g, 1, 10, 18, 3, '#7a5030'); G.rect(g, 1, 10, 18, 1, '#9a6a3e'); G.rect(g, 3, 13, 2, 5, '#5c3a22'); G.rect(g, 15, 13, 2, 5, '#5c3a22'); for (const [x, y] of [[5, 7], [9, 6], [13, 7], [7, 3], [11, 3]]) { G.circ(g, x, y, 2, '#e8b84a'); G.px(g, x - 1, y - 1, '#fff0a0'); } },
+    faronunGozu(g) { G.ellipse(g, 10, 10, 9, 5, '#2a1820'); G.ellipse(g, 10, 10, 7, 4, '#e8dcc0'); G.circ(g, 10, 10, 3, '#ff8f30'); G.circ(g, 10, 10, 1, '#120a10'); G.rect(g, 6, 2, 8, 3, '#120a10'); G.rect(g, 8, 0, 4, 2, '#120a10'); G.px(g, 9, 9, '#fff'); },
+    kanHirsi(g) { G.line(g, 3, 17, 15, 5, '#c8d0dc', 2); G.line(g, 4, 17, 16, 6, '#5a6070'); G.rect(g, 2, 15, 4, 4, '#7a5030'); G.circ(g, 14, 13, 3, '#c0263a'); G.rect(g, 13, 8, 2, 3, '#c0263a'); G.px(g, 15, 15, '#ff8a9a'); G.px(g, 16, 3, '#fff'); },
+    buyukVurus(g) { G.rect(g, 8, 2, 4, 6, '#7a5030'); G.rect(g, 4, 8, 12, 7, '#8d97a8'); G.rect(g, 4, 8, 12, 2, '#d6dee8'); G.rect(g, 9, 15, 2, 4, '#7a5030'); for (let i = 0; i < 4; i++) G.px(g, 2 + i * 5, 18 - (i % 2), '#ffcf6e'); G.px(g, 1, 9, '#fff'); G.px(g, 18, 9, '#fff'); },
+    kilicFirtinasi(g) { for (let i = 0; i < 3; i++) { const a = i * 2.1; G.line(g, 10, 10, 10 + Math.cos(a) * 9, 10 + Math.sin(a) * 9, '#c8d0dc', 2); G.px(g, Math.round(10 + Math.cos(a) * 9), Math.round(10 + Math.sin(a) * 9), '#fff'); } G.ring(g, 10, 10, 6, '#ff6a2a'); G.circ(g, 10, 10, 2, '#d6aa4c'); },
+    genisKesim(g) { for (let i = 0; i <= 12; i++) { const a = -2.6 + i * 0.2; G.px(g, Math.round(10 + Math.cos(a) * 8), Math.round(13 + Math.sin(a) * 8), '#e8dcc0'); G.px(g, Math.round(10 + Math.cos(a) * 7), Math.round(13 + Math.sin(a) * 7), '#a8b4c8'); } G.line(g, 10, 18, 10, 9, '#c8d0dc', 2); G.rect(g, 8, 16, 5, 2, '#d6aa4c'); },
+    kanliYorunge(g) { G.ring(g, 10, 10, 8, '#c0263a'); G.ring(g, 10, 10, 6, '#7a0a1a'); G.line(g, 10, 15, 10, 4, '#c8d0dc', 2); G.rect(g, 8, 13, 5, 2, '#d6aa4c'); for (const [x, y] of [[2, 10], [18, 10], [10, 2]]) G.px(g, x, y, '#ff5a6a'); },
+    kanBicer(g) { G.line(g, 4, 18, 13, 3, '#7a5030', 2); G.line(g, 13, 3, 5, 3, '#c8d0dc', 2); G.line(g, 5, 3, 3, 6, '#c8d0dc'); G.circ(g, 14, 14, 3, '#c0263a'); G.rect(g, 13, 9, 2, 3, '#c0263a'); G.px(g, 13, 13, '#ff8a9a'); },
+    ofkeKalbi(g) { G.circ(g, 7, 9, 4, '#7a0a1a'); G.circ(g, 13, 9, 4, '#7a0a1a'); for (let y = 0; y < 6; y++) G.rect(g, 4 + y, 11 + y, 13 - y * 2, 1, '#7a0a1a'); G.line(g, 6, 7, 9, 12, '#ff6a2a'); G.line(g, 9, 12, 12, 8, '#ff6a2a'); G.line(g, 12, 8, 14, 13, '#ff6a2a'); G.px(g, 10, 2, '#ffcf6e'); },
+    kizilKasirga(g) { for (let i = 0; i < 24; i++) { const a = i * 0.5, r = 2 + i * 0.32; G.px(g, Math.round(10 + Math.cos(a) * r), Math.round(10 + Math.sin(a) * r * 0.8), i % 3 ? '#c0263a' : '#ff8a9a'); } G.circ(g, 10, 10, 1, '#fff'); },
+    okFirtinasi(g) { for (let i = 0; i < 3; i++) { const y = 4 + i * 6; G.line(g, 2, y + 3, 14, y - 1, '#c8d0dc'); G.px(g, 15, y - 1, '#fff'); G.rect(g, 1, y + 3, 2, 2, '#3f7a55'); } G.line(g, 15, 3, 18, 8, '#7ae0ff'); G.line(g, 18, 8, 15, 14, '#7ae0ff'); },
+    ciftSekme(g) { G.line(g, 1, 16, 7, 4, '#c8d0dc'); G.line(g, 7, 4, 12, 15, '#c8d0dc'); G.line(g, 12, 15, 18, 3, '#c8d0dc'); for (const [x, y] of [[7, 4], [12, 15]]) { G.circ(g, x, y, 1, '#d08aff'); } G.px(g, 18, 3, '#fff'); G.rect(g, 0, 16, 2, 2, '#3f7a55'); },
+    patlayanOk(g) { G.line(g, 1, 18, 11, 8, '#c8d0dc'); G.rect(g, 0, 17, 2, 2, '#3f7a55'); for (let i = 0; i < 8; i++) { const a = (i / 8) * Math.PI * 2; G.line(g, 13, 7, 13 + Math.round(Math.cos(a) * 6), 7 + Math.round(Math.sin(a) * 6), i % 2 ? '#ff9a3c' : '#ffcf6e'); } G.circ(g, 13, 7, 2, '#fff6d0'); },
+    barutCekirdegi(g) { G.circ(g, 10, 10, 7, '#3a3036'); G.circ(g, 10, 10, 5, '#5a4a40'); G.circ(g, 10, 10, 3, '#ff6a2a'); G.circ(g, 10, 10, 1, '#ffcf6e'); for (let i = 0; i < 4; i++) { const a = i * 1.57 + 0.78; G.px(g, Math.round(10 + Math.cos(a) * 9), Math.round(10 + Math.sin(a) * 9), '#ffcf6e'); } },
+    zehirliOk(g) { G.line(g, 2, 17, 14, 5, '#c8d0dc'); G.rect(g, 1, 16, 2, 2, '#3f7a55'); G.rect(g, 13, 3, 4, 4, '#8ad35a'); G.px(g, 14, 4, '#e0ffb0'); for (const [x, y] of [[16, 10], [17, 13], [12, 11]]) { G.px(g, x, y, '#8ad35a'); G.px(g, x, y + 1, '#5a8a2a'); } },
+    zehirCicegi(g) { for (let i = 0; i < 5; i++) { const a = (i / 5) * Math.PI * 2 - 1.57; G.circ(g, Math.round(10 + Math.cos(a) * 5), Math.round(9 + Math.sin(a) * 5), 3, '#8a3aaa'); } G.circ(g, 10, 9, 3, '#8ad35a'); G.px(g, 9, 8, '#e0ffb0'); G.line(g, 10, 13, 10, 19, '#3f7a55'); G.px(g, 4, 18, '#8ad35a'); G.px(g, 16, 17, '#8ad35a'); },
+    delinme(g) { G.line(g, 0, 10, 19, 10, '#c8d0dc'); G.rect(g, 0, 9, 2, 3, '#3f7a55'); for (const x of [6, 11, 16]) { G.rect(g, x - 1, 6, 2, 9, '#5a1424'); G.px(g, x - 1, 10, '#ffcf6e'); } G.px(g, 19, 10, '#fff'); },
+    okYagmuru(g) { for (let i = 0; i < 5; i++) { const x = 3 + i * 3.5; G.line(g, x, 1 + (i % 2) * 2, x + 2, 15 + (i % 2) * 2, '#c8d0dc'); G.px(g, Math.round(x + 2), 16 + (i % 2) * 2, '#fff'); } G.rect(g, 0, 18, 20, 2, '#5c3a22'); },
+    // ----- V3: FARO'NUN HİLELİ KARTLARI (yem görünümü) -----
+    sahteCevher(g) { G.rect(g, 6, 4, 8, 2, '#b46cff'); G.rect(g, 4, 6, 12, 4, '#9a4ad8'); for (let y = 0; y < 7; y++) G.rect(g, 5 + y, 10 + y, Math.max(1, 10 - y * 2), 1, '#7a3aaa'); G.rect(g, 6, 6, 3, 2, '#e0b0ff'); G.line(g, 11, 6, 8, 15, '#3a1a4a'); G.px(g, 15, 3, '#fff'); },
+    ozelFiyat(g) { G.rect(g, 4, 6, 12, 9, '#e8dcc0'); G.rect(g, 2, 8, 2, 5, '#e8dcc0'); G.px(g, 3, 10, '#120a10'); G.line(g, 6, 12, 14, 8, '#c0263a', 2); G.rect(g, 8, 9, 2, 2, '#5a4a3a'); G.px(g, 16, 3, '#ffcf6e'); G.line(g, 3, 10, 0, 6, '#8a7c62'); },
+    evHediyesi(g) { G.rect(g, 3, 8, 14, 10, '#7e1f33'); G.rect(g, 2, 6, 16, 3, '#a3304a'); G.rect(g, 9, 6, 2, 12, '#d6aa4c'); G.rect(g, 2, 11, 16, 2, '#d6aa4c'); G.ring(g, 7, 4, 2, '#d6aa4c'); G.ring(g, 13, 4, 2, '#d6aa4c'); },
+    trapAtk(g) { G.line(g, 4, 16, 15, 5, '#e8dcc0', 2); G.rect(g, 3, 15, 3, 3, '#d6aa4c'); for (let i = 0; i < 6; i++) { const a = (i / 6) * Math.PI * 2; G.px(g, Math.round(15 + Math.cos(a) * 3), Math.round(5 + Math.sin(a) * 3), '#ff6a2a'); } G.rect(g, 13, 13, 6, 2, '#ffcf6e'); G.rect(g, 15, 11, 2, 6, '#ffcf6e'); },
+    trapDef(g) { G.rect(g, 4, 3, 12, 9, '#d6aa4c'); for (let y = 0; y < 6; y++) G.rect(g, 4 + y, 12 + y, 12 - y * 2, 1, '#d6aa4c'); G.rect(g, 6, 5, 8, 6, '#8a6a2e'); G.rect(g, 9, 5, 2, 9, '#ffe9a0'); G.rect(g, 6, 8, 8, 2, '#ffe9a0'); },
+    trapSlow(g) { G.ellipse(g, 9, 13, 7, 3, '#8a7c62'); G.circ(g, 12, 9, 4, '#c8962e'); G.ring(g, 12, 9, 4, '#7a5030'); G.ring(g, 12, 9, 2, '#7a5030'); G.line(g, 3, 13, 2, 8, '#8a7c62'); G.px(g, 2, 7, '#120a10'); G.line(g, 5, 12, 5, 8, '#8a7c62'); },
+    trapGold(g) { G.circ(g, 10, 12, 6, '#7a5030'); G.rect(g, 7, 4, 6, 3, '#7a5030'); G.rect(g, 6, 6, 8, 2, '#d6aa4c'); G.circ(g, 10, 12, 3, '#e8b84a'); G.px(g, 9, 11, '#fff0a0'); G.rect(g, 15, 2, 3, 1, '#e8b84a'); G.rect(g, 16, 1, 1, 3, '#e8b84a'); },
+    trapHeal(g) { G.circ(g, 7, 8, 4, '#ff5a6a'); G.circ(g, 13, 8, 4, '#ff5a6a'); for (let y = 0; y < 6; y++) G.rect(g, 4 + y, 10 + y, 13 - y * 2, 1, '#ff5a6a'); G.rect(g, 9, 6, 2, 7, '#fff'); G.rect(g, 7, 8, 6, 2, '#fff'); },
+    trapKillAtk(g) { G.circ(g, 7, 7, 4, '#e8dcc0'); G.rect(g, 5, 6, 2, 2, '#120a10'); G.rect(g, 8, 6, 2, 2, '#120a10'); G.rect(g, 5, 10, 5, 2, '#c3b494'); G.line(g, 10, 17, 18, 9, '#c8d0dc', 2); G.rect(g, 9, 16, 3, 3, '#d6aa4c'); G.px(g, 18, 8, '#fff'); },
+    trapImmortal(g) { G.ellRing(g, 10, 4, 6, 2, '#ffe9a0'); G.circ(g, 10, 11, 4, '#e8dcc0'); G.rect(g, 6, 14, 8, 5, '#f4ecdc'); G.px(g, 8, 10, '#120a10'); G.px(g, 12, 10, '#120a10'); G.line(g, 2, 9, 5, 12, '#f4ecdc'); G.line(g, 18, 9, 15, 12, '#f4ecdc'); },
+    trapSpeed(g) { G.rect(g, 6, 7, 7, 9, '#7a5030'); G.rect(g, 6, 15, 11, 3, '#5c3a22'); G.rect(g, 6, 7, 7, 1, '#9a6a3e'); G.line(g, 3, 6, 8, 2, '#f4ecdc', 2); G.line(g, 2, 9, 7, 5, '#f4ecdc'); G.rect(g, 15, 10, 4, 1, '#ffcf6e'); G.rect(g, 16, 13, 3, 1, '#ffcf6e'); },
+    trapVision(g) { G.ellipse(g, 10, 10, 8, 4, '#e8dcc0'); G.line(g, 2, 10, 18, 10, '#120a10', 2); for (let i = 0; i < 5; i++) G.line(g, 4 + i * 3, 11, 3 + i * 3, 14, '#120a10'); G.line(g, 3, 3, 17, 17, '#c0263a'); },
+    trapTime(g) { G.circ(g, 10, 11, 7, '#e8dcc0'); G.ring(g, 10, 11, 7, '#7a5030'); G.line(g, 10, 11, 10, 6, '#120a10'); G.line(g, 10, 11, 14, 11, '#120a10'); G.rect(g, 8, 1, 4, 2, '#7a5030'); G.rect(g, 15, 2, 4, 1, '#8ad35a'); G.rect(g, 16, 1, 1, 3, '#8ad35a'); },
+    trapStats(g) { const pts = []; for (let i = 0; i < 10; i++) { const a = (i / 10) * Math.PI * 2 - Math.PI / 2, r = i % 2 ? 4 : 9; pts.push([10 + Math.cos(a) * r, 10 + Math.sin(a) * r]); } for (let i = 0; i < 10; i++) G.line(g, pts[i][0], pts[i][1], pts[(i + 1) % 10][0], pts[(i + 1) % 10][1], '#ffe066'); G.circ(g, 10, 10, 3, '#ffcf6e'); G.px(g, 10, 10, '#fff'); },
+    trapCardChoice(g) { G.rect(g, 3, 4, 9, 13, '#7e1f33'); G.rect(g, 4, 5, 7, 11, '#a3304a'); G.rect(g, 8, 2, 9, 13, '#e8dcc0'); G.rect(g, 9, 3, 7, 11, '#f4ecdc'); G.rect(g, 11, 6, 3, 3, '#c0263a'); G.rect(g, 12, 10, 1, 3, '#120a10'); },
+    faroBahsi(g) { G.circ(g, 10, 9, 6, '#e8dcc0'); G.rect(g, 7, 7, 2, 2, '#120a10'); G.rect(g, 11, 7, 2, 2, '#120a10'); G.rect(g, 7, 12, 6, 2, '#c3b494'); G.rect(g, 5, 2, 10, 2, '#120a10'); G.rect(g, 7, 0, 6, 2, '#120a10'); G.circ(g, 16, 16, 3, '#e8b84a'); G.circ(g, 4, 16, 3, '#e8b84a'); G.px(g, 15, 15, '#fff0a0'); },
+    yaziTura(g) { G.circ(g, 10, 10, 8, '#7a5418'); G.circ(g, 10, 10, 7, '#e8b84a'); G.ring(g, 10, 10, 5, '#b88a2a'); G.rect(g, 9, 6, 2, 8, '#b88a2a'); G.rect(g, 7, 7, 6, 1, '#b88a2a'); G.px(g, 7, 6, '#fff'); G.rect(g, 15, 1, 1, 3, '#fff0a0'); },
+    kalabalik(g) { for (const [x, y, c] of [[4, 8, '#d8ccb0'], [10, 6, '#c8bca0'], [16, 8, '#d8ccb0'], [7, 12, '#e8dcc0'], [13, 12, '#e8dcc0']]) { G.circ(g, x, y, 3, c); G.px(g, x - 1, y - 1, '#120a10'); G.px(g, x + 1, y - 1, '#120a10'); } G.rect(g, 2, 16, 16, 3, '#5a4a3a'); },
+    yankiMasasi(g) { for (let i = 0; i < 3; i++) G.ring(g, 10, 10, 3 + i * 3, i === 0 ? '#b8d8ff' : i === 1 ? '#8ab0e0' : '#5a7aa8'); G.circ(g, 10, 10, 2, '#e8dcc0'); G.px(g, 9, 9, '#120a10'); G.px(g, 11, 9, '#120a10'); },
+    darSecim(g) { G.rect(g, 3, 4, 7, 12, '#3a6a9a'); G.rect(g, 4, 5, 5, 10, '#7ac8ff'); G.rect(g, 11, 4, 7, 12, '#7a3aaa'); G.rect(g, 12, 5, 5, 10, '#d08aff'); G.px(g, 6, 9, '#fff'); G.px(g, 14, 9, '#fff'); G.line(g, 1, 18, 19, 18, '#d6aa4c'); },
+    sigEnGuclu(g) { faroHat(g); G.rect(g, 4, 12, 12, 7, '#d6aa4c'); G.rect(g, 4, 12, 12, 1, '#ffe9a0'); G.rect(g, 9, 13, 2, 5, '#c0263a'); },
+    sigBakis(g) { faroHat(g); G.ellipse(g, 10, 14, 7, 4, '#e8dcc0'); G.circ(g, 10, 14, 2, '#ff8f30'); G.px(g, 10, 14, '#120a10'); },
+    sigSurpriz(g) { faroHat(g); G.rect(g, 4, 11, 12, 8, '#7e1f33'); G.rect(g, 9, 11, 2, 8, '#d6aa4c'); G.rect(g, 13, 13, 2, 4, '#fff0b8'); G.px(g, 13, 18, '#fff0b8'); },
+    sigHata(g) { faroHat(g); G.rect(g, 3, 12, 14, 7, '#e8dcc0'); G.line(g, 4, 13, 16, 18, '#c0263a', 2); G.line(g, 16, 13, 4, 18, '#c0263a', 2); },
+    sigAtk25(g) { faroHat(g); G.line(g, 4, 19, 14, 10, '#c8d0dc', 2); G.rect(g, 3, 18, 3, 2, '#d6aa4c'); G.px(g, 16, 10, '#ffe066'); G.px(g, 17, 13, '#ffe066'); G.px(g, 15, 16, '#ffe066'); },
+    sigSaygi(g) { faroHat(g); G.circ(g, 6, 15, 3, '#d8ccb0'); G.circ(g, 14, 15, 3, '#d8ccb0'); G.line(g, 6, 12, 8, 10, '#d8ccb0'); G.line(g, 14, 12, 12, 10, '#d8ccb0'); },
+    sigSirr(g) { faroHat(g); G.rect(g, 5, 11, 10, 8, '#5c3a22'); G.rect(g, 5, 11, 10, 1, '#9a6a3e'); G.rect(g, 9, 13, 2, 3, '#d6aa4c'); G.px(g, 10, 16, '#120a10'); },
+    markedEdge(g) { G.line(g, 4, 16, 15, 5, '#c8d0dc', 2); G.rect(g, 3, 15, 3, 3, '#d6aa4c'); G.rect(g, 12, 12, 7, 7, '#e8dcc0'); G.rect(g, 13, 13, 5, 5, '#f4ecdc'); G.line(g, 13, 13, 17, 17, '#c0263a'); G.line(g, 17, 13, 13, 17, '#c0263a'); },
+    markedPact(g) { G.rect(g, 3, 3, 12, 14, '#d8c8a0'); for (let y = 6; y < 14; y += 2) G.rect(g, 5, y, 8, 1, '#8a7c62'); G.rect(g, 12, 12, 7, 7, '#e8dcc0'); G.line(g, 13, 13, 17, 17, '#c0263a'); G.line(g, 17, 13, 13, 17, '#c0263a'); },
     // ----- YETENEKLER -----
     sk_hp(g) { I.vampire(g); G.rect(g, 9, 9, 2, 4, '#fff'); G.rect(g, 8, 10, 4, 2, '#fff'); },
     sk_dmg(g) { G.line(g, 4, 16, 15, 5, '#d6dee8', 2); G.line(g, 5, 17, 16, 6, '#525b6c'); G.line(g, 3, 12, 8, 17, '#d6aa4c', 2); G.rect(g, 2, 16, 3, 3, '#7a5030'); G.px(g, 16, 4, '#fff'); },
@@ -1506,6 +1628,9 @@ DMT.Art = DMT.Art || {};
     mg_buff(g) { I.frenzy(g); },
     mg_curse(g) { G.circ(g, 10, 10, 7, '#3a1a4a'); G.ring(g, 10, 10, 7, '#b46cff'); G.rect(g, 7, 7, 2, 2, '#b46cff'); G.rect(g, 11, 7, 2, 2, '#b46cff'); G.line(g, 6, 14, 14, 12, '#b46cff'); },
   };
+  // ortak küçük çizim parçaları (V3 ikonları)
+  function faroHat(g) { G.rect(g, 6, 0, 8, 6, '#120a10'); G.rect(g, 4, 6, 12, 2, '#120a10'); G.rect(g, 6, 4, 8, 1, '#7e1f33'); G.circ(g, 10, 9, 2, '#e8dcc0'); G.px(g, 9, 9, '#ff8f30'); G.px(g, 11, 9, '#ff8f30'); }
+  function woodLike(g) { G.rect(g, 1, 8, 18, 10, '#4a2e1a'); for (let y = 10; y < 18; y += 3) G.rect(g, 1, y, 18, 1, '#2e1d13'); }
   A.ICONS = I;
   A.icon = function (id) {
     const key = 'ic_' + id;
@@ -1831,8 +1956,10 @@ DMT.Art = DMT.Art || {};
       } else {
         G.rect(g, 18, 126, 604, 230, '#2a1230');
         for (let y = 126; y < 356; y++) for (let x = 18; x < 622; x += 1) { const n = H(x, y, 77); if (n > 0.93) G.px(g, x, y, '#341838'); else if (n < 0.05) G.px(g, x, y, '#220e28'); }
-        // şarap lekeleri
-        for (let i = 0; i < 7; i++) { const sx = 60 + Math.floor(H(i, 8) * 520), sy = 150 + Math.floor(H(8, i) * 180), r = 6 + Math.floor(H(i, 9) * 12); G.ditherCirc(g, sx, sy, r, '#4a0a1e', 0.6); G.ditherCirc(g, sx + 3, sy + 2, Math.round(r * 0.6), '#5a0e24', 0.5); for (let k = 0; k < 4; k++) G.px(g, sx + Math.floor((H(k, i) - 0.5) * r * 3), sy + Math.floor((H(i, k) - 0.5) * r * 2), '#5a0e24'); }
+        // Kırık Ayna: masaya gömülü ayna parçaları ve çatlak ağı
+        for (let i = 0; i < 6; i++) { const sx = 70 + Math.floor(H(i, 8) * 500), sy = 150 + Math.floor(H(8, i) * 180), r = 8 + Math.floor(H(i, 9) * 10);
+          G.ditherCirc(g, sx, sy, r, '#3a2a58', 0.5); G.ditherCirc(g, sx - 2, sy - 2, Math.round(r * 0.5), '#6a5a9a', 0.35);
+          for (let k = 0; k < 5; k++) { const a = (k / 5) * Math.PI * 2 + H(i, k) * 0.8; G.line(g, sx, sy, sx + Math.cos(a) * r * 1.6, sy + Math.sin(a) * r * 0.9, k % 2 ? '#4a3a6a' : '#8a7ab8'); } G.px(g, sx - 1, sy - 1, '#e8f8ff'); }
         // cam kırıkları
         for (let i = 0; i < 26; i++) { const x = 40 + Math.floor(H(i, 21) * 560), y = 140 + Math.floor(H(21, i) * 200); G.px(g, x, y, '#a8c8d8'); G.px(g, x + 1, y + 1, '#5a7888'); if (i % 3 === 0) G.px(g, x + 1, y, '#e8f8ff'); }
         G.ellRing(g, 320, 240, 120, 70, 'rgba(180,108,255,0.12)');
@@ -1953,18 +2080,29 @@ DMT.Data.ENEMIES = {
   grunt:  { name: 'Mezar Askeri', hp: 30, dmg: 4, speed: 27, atkInt: 1.2, range: 13, radius: 6, coins: [1, 2], mass: 1.0 },
   rusher: { name: 'Kan Cini',     hp: 14, dmg: 3, speed: 62, atkInt: 0.8,  range: 11, radius: 5, coins: [1, 1], mass: 0.6 },
   tank:   { name: 'Tabut Devi',   hp: 115, dmg: 11, speed: 16, atkInt: 1.8, range: 16, radius: 9, coins: [3, 5], mass: 3.0 },
+  // ---- eski sürümden (enemies.js) uyarlanan düşmanlar; can oranları korunarak ölçeklendi ----
+  ghost:    { name: 'Hayalet',  hp: 22, dmg: 3, speed: 34, atkInt: 1.0, range: 12, radius: 6, coins: [1, 2], mass: 0.7, phase: true },        // ara ara saydamlaşır: hedef alınamaz, yarı hasar alır
+  splitter: { name: 'Bölünen',  hp: 60, dmg: 5, speed: 22, atkInt: 1.3, range: 13, radius: 7, coins: [2, 3], mass: 1.6, split: 2 },         // ölünce 2 Sürü'ye bölünür
+  swarm:    { name: 'Sürü',     hp: 8,  dmg: 2, speed: 58, atkInt: 0.7, range: 10, radius: 4, coins: [0, 1], mass: 0.4 },
+  phantom:  { name: 'Fantom',   hp: 30, dmg: 4, speed: 30, atkInt: 1.1, range: 12, radius: 6, coins: [2, 3], mass: 0.8, teleport: 4 },     // her 4 sn kahramanın yakınına ışınlanır
+};
+// Masa düşman havuzları (eski TABLE_ENEMY_POOLS / getSpawnWeights mantığı): from = run ilerleme oranı, w = ağırlık
+DMT.Data.EXTRA_SPAWNS = {
+  t1: [{ type: 'ghost', from: 0.25, w: 0.08 }, { type: 'splitter', from: 0.3, w: 0.07 }],
+  t2: [{ type: 'ghost', from: 0.1, w: 0.13 }, { type: 'splitter', from: 0.15, w: 0.1 }, { type: 'phantom', from: 0.2, w: 0.08 }],
 };
 
 // ---------- MASALAR (8; 2 oynanabilir) ----------
 // mult ve unlockCost değerleri DMT.Balance'tan okunur.
 DMT.Data.TABLES = [
-  { id: 't1', roman: 'I', name: 'İlk El', diff: 1, dur: 90, playable: true,
-    rule: 'Sade kurallar. Temel düşmanlar.', flavor: 'Koyu ahşap, eski mum isi.',
+  { id: 't1', roman: 'I', name: 'Tozlu Masa', diff: 1, dur: 90, playable: true,
+    rule: 'Özel kural yok. Temiz bir başlangıç.', flavor: 'Toz hâlâ yerinde. Bu masa en azından dürüst.',
     spawn: { start: 1.0, end: 0.45, maxStart: 7, maxEnd: 24, hpMul: 1.0, dmgMul: 1.0, tankFrom: 0.3, rusherW: 0.28 } },
-  { id: 't2', roman: 'II', name: 'Kırık Kadeh', diff: 2, dur: 105, playable: true,
-    rule: 'Her 20 sn düşmanlar 4 sn çıldırır (+%60 hız).', flavor: 'Şarap lekeli çuha, kırık cam.',
-    special: { frenzyEvery: 20, frenzyDur: 4, frenzySpeed: 1.6 },
-    spawn: { start: 0.85, end: 0.36, maxStart: 9, maxEnd: 34, hpMul: 1.22, dmgMul: 1.15, tankFrom: 0.2, rusherW: 0.36 } },
+  { id: 't2', roman: 'II', name: 'Kırık Ayna', diff: 2, dur: 105, playable: true,
+    rule: 'Ayna: her doğan düşmanın bir yansıması belirir. 30 düşmanla kuşatılırsan masa seni yutar. Çatlak zemin yavaşlatır.', flavor: 'Ayna kırık. Yine de seni görüyor.',
+    // eski tables.js: rules ['mirror_spawn','cracked_tile','swarm_cap'], mirrorSpawnIntervalMultiplier 1.70, swarmCapLimit 30, enemyHpMultiplier 1.10
+    special: { mirror: true, mirrorIntervalMult: 1.7, swarmCap: 30, swarmGrace: 4, cracks: 3, crackEvery: 18, crackSlow: 0.6 },
+    spawn: { start: 0.85, end: 0.36, maxStart: 8, maxEnd: 21, hpMul: 1.22, dmgMul: 1.15, tankFrom: 0.2, rusherW: 0.36 } }, // yansımalarla tavan ≈ 26 < kuşatma sınırı 30
   { id: 't3', roman: 'III', name: 'Kemik Zar', diff: 3, playable: false, rule: 'Her dalga bir zar atar.' },
   { id: 't4', roman: 'IV', name: 'Sessiz Rulet', diff: 3, playable: false, rule: 'Masa döner, kenarlar yanar.' },
   { id: 't5', roman: 'V', name: 'Mezar Pokeri', diff: 4, playable: false, rule: 'Ölüler ikinci kez kalkar.' },
@@ -2015,13 +2153,13 @@ DMT.Data.TAGS = {
   const xn = (n) => (n > 1 ? ' (x' + n + ')' : '');
   DMT.Data.CARDS = [
     // ===================== MEVCUT 17 KART (korundu, yığın sınırı + açıklama eklendi) =====================
-    { id: 'bloodlust', name: 'Kan Hırsı', rarity: 'common', price: [5, 6], icon: 'bloodlust', max: 5, tags: ['speed'], v: { aspd: 0.18 },
+    { id: 'bloodlust', name: 'Hız Büyüsü', rarity: 'common', price: [5, 6], icon: 'bloodlust', max: 5, tags: ['speed'], v: { aspd: 0.18 },
       desc: (h, n, v) => 'Saldırı hızı +' + pc(v.aspd * n) + '.' },
     { id: 'keenEye', name: 'Keskin Göz', rarity: 'common', price: [4, 6], icon: 'keenEye', max: 4, tags: ['crit'], v: { crit: 0.08, cm: 0.25 },
       desc: (h, n, v) => 'Kritik şansı +' + pc(v.crit * n) + ', kritik hasarı +' + pc(v.cm * n) + '.' },
-    { id: 'heavyHand', name: 'Ağır El', rarity: 'common', price: [5, 7], icon: 'heavyHand', max: 5, tags: [], v: { dmg: 0.2 },
+    { id: 'heavyHand', name: 'Güç Taşı', rarity: 'common', price: [5, 7], icon: 'heavyHand', max: 5, tags: [], v: { dmg: 0.2 },
       desc: (h, n, v) => 'Tüm hasar +' + pc(v.dmg * n) + '.' },
-    { id: 'ironSkin', name: 'Demir Deri', rarity: 'common', price: [4, 5], icon: 'ironSkin', max: 5, tags: ['sustain'], v: { hp: 30 },
+    { id: 'ironSkin', name: 'Can Suyu', rarity: 'common', price: [4, 5], icon: 'ironSkin', max: 5, tags: ['sustain'], v: { hp: 30 },
       desc: (h, n, v) => 'Maksimum can +' + v.hp * n + ' ve ' + v.hp + ' iyileş.' },
     { id: 'vampire', name: 'Kan Emici', rarity: 'common', price: [5, 7], icon: 'vampire', max: 4, tags: ['blood', 'sustain'], v: { kael: 3, lyra: 2 },
       desc: (h, n, v) => 'Her öldürmede ' + (v[h] || 2) * n + ' can kazan.' },
@@ -2103,11 +2241,133 @@ DMT.Data.TAGS = {
       desc: (h, n) => 'Her ' + (10 - 3 * n) + '. düşman ödüllü: ölünce büyük patlar ve +2 coin. Zincirleme ölümler ' + pc(0.2 * n) + ' şansla +1 coin.' },
     { id: 'jackpot', name: 'Büyük İkramiye', rarity: 'epic', price: [14, 17], icon: 'jackpot', max: 1, tags: ['luck'], v: { every: 10 },
       desc: (h, n, v) => 'Her ' + v.every + ' öldürmede Faro’nun çarkı döner: altın yağmuru, yıldırım fırtınası, kalkan, dev patlama ya da can.' },
+    // ===================== ESKİ SÜRÜM KARTLARI (cards.js) — gerçek zamanlı savaşa uyarlandı =====================
+    // hero: yalnızca o kahramanın tekliflerine gelir. req: evrim kartı (önce gereken kart alınmalı).
+    // --- ortak ---
+    { id: 'celikDeri', name: 'Çelik Deri', rarity: 'common', price: [4, 5], icon: 'celikDeri', max: 3, tags: ['sustain'], v: { red: 2 },
+      desc: (h, n, v) => 'Gelen hasar -' + v.red * n + ' (en az 1).' },
+    { id: 'streakUstasi', name: 'Streak Ustası', rarity: 'common', price: [5, 6], icon: 'streakUstasi', max: 2, tags: ['speed'], v: { mult: 0.5 },
+      desc: (h, n, v) => 'Seri (streak) hasar bonusu x' + (1 + v.mult * n).toFixed(1) + '.' },
+    { id: 'donmaTopu', name: 'Donma Topu', rarity: 'common', price: [4, 6], icon: 'donmaTopu', max: 3, tags: ['storm'], v: { dur: 4 },
+      desc: (h, n, v) => 'Seçince tüm düşmanlar ' + v.dur + ' sn donar.' },
+    { id: 'altinYagmuru', name: 'Altın Yağmuru', rarity: 'common', price: [3, 4], icon: 'altinYagmuru', max: 2, tags: ['luck'], v: { coins: 10 },
+      desc: (h, n, v) => 'Seçince etrafına ' + v.coins + ' coin yağar. Topla!' },
+    { id: 'gucDalgasi', name: 'Güç Dalgası', rarity: 'rare', price: [8, 10], icon: 'gucDalgasi', max: 2, tags: [], v: { dur: 12 },
+      desc: (h, n, v) => 'Seçince ' + v.dur + ' sn boyunca hasar x2.' },
+    { id: 'kanPakti', name: 'Kan Paktı', rarity: 'rare', price: [8, 10], icon: 'kanPakti', max: 1, tags: ['blood'], v: { hp: 0.2, dmg: 0.35 },
+      desc: (h, n, v) => 'Maks. can -' + pc(v.hp) + ', hasar +' + pc(v.dmg) + ' kalıcı.' },
+    { id: 'yildirimCagrisi', name: 'Yıldırım Çağrısı', rarity: 'common', price: [4, 5], icon: 'yildirimCagrisi', max: 3, tags: ['storm'], v: { count: 5 },
+      desc: (h, n, v) => 'Seçince ' + v.count + ' rastgele düşmana yıldırım düşer.' },
+    { id: 'savasIcgudusu', name: 'Savaş İçgüdüsü', rarity: 'common', price: [4, 5], icon: 'savasIcgudusu', max: 3, tags: ['speed'], v: { dur: 15 },
+      desc: (h, n, v) => v.dur + ' sn boyunca seri (streak) bonusu sıfırlanmaz.' },
+    { id: 'zamanBuyusu', name: 'Zaman Büyüsü', rarity: 'common', price: [3, 4], icon: 'zamanBuyusu', max: 2, tags: ['luck'], v: { t: 10 },
+      desc: (h, n, v) => 'Run süresi +' + v.t + ' sn: daha çok düşman, daha çok coin.' },
+    { id: 'ofkeTasi', name: 'Öfke Taşı', rarity: 'rare', price: [8, 10], icon: 'ofkeTasi', max: 1, tags: ['speed'], v: { per: 0.01, cap: 0.25 },
+      desc: (h, n, v) => 'Her öldürme bu run hasar +' + pc(v.per) + ' (en fazla +' + pc(v.cap) + ').' },
+    { id: 'canKalkani', name: 'Can Kalkanı', rarity: 'common', price: [4, 6], icon: 'canKalkani', max: 3, tags: ['sustain'], v: { hits: 3 },
+      desc: (h, n, v) => 'Sonraki ' + v.hits + ' darbe hasar vermez.' },
+    { id: 'savasIlahisi', name: 'Savaş İlahisi', rarity: 'epic', price: [14, 17], icon: 'savasIlahisi', max: 1, tags: [], v: { every: 15, dmg: 0.08 },
+      desc: (h, n, v) => 'Her ' + v.every + ' öldürmede hasar +' + pc(v.dmg) + ' (üst üste birikir).' },
+    { id: 'olumCani', name: 'Ölüm Çanı', rarity: 'rare', price: [8, 10], icon: 'olumCani', max: 2, tags: ['blast'], v: { mult: 1.2 },
+      desc: (h, n, v) => 'Her ' + (6 - n) + '. öldürmede ceset patlar (' + pc(v.mult) + ' alan hasarı).' },
+    { id: 'cellatMuhru', name: 'Celladın Mührü', rarity: 'rare', price: [8, 10], icon: 'cellatMuhru', max: 1, tags: ['crit'], v: { th: 0.25, mult: 2 },
+      desc: (h, n, v) => 'Canı ' + pc(v.th) + ' altındaki düşmanlara x' + v.mult + ' hasar.' },
+    { id: 'sonKum', name: 'Son Kum', rarity: 'epic', price: [14, 16], icon: 'sonKum', max: 1, tags: ['speed'], v: { last: 15, dmg: 0.75, per: 0.5 },
+      desc: (h, n, v) => 'Son ' + v.last + ' sn: hasar +' + pc(v.dmg) + '. Bu sürede her öldürme +' + v.per + ' sn.' },
+    // --- run kartları (kural değiştirenler) ---
+    { id: 'sessizAdimlar', name: 'Sessiz Adımlar', rarity: 'common', price: [4, 5], icon: 'sessizAdimlar', max: 3, tags: ['sustain'], v: { dur: 14, slow: 0.35 },
+      desc: (h, n, v) => v.dur + ' sn boyunca düşman doğma hızı ' + pc(v.slow) + ' yavaşlar.' },
+    { id: 'kanliZemin', name: 'Kanlı Zemin', rarity: 'rare', price: [7, 9], icon: 'kanliZemin', max: 1, tags: ['luck'], v: { coin: 0.25, hp: 0.15 },
+      desc: (h, n, v) => 'Bu run coin düşüşü +' + pc(v.coin) + ', ama düşman canı +' + pc(v.hp) + '.' },
+    { id: 'zayifKonuklar', name: 'Zayıf Konuklar', rarity: 'common', price: [4, 6], icon: 'zayifKonuklar', max: 2, tags: ['sustain'], v: { dur: 16 },
+      desc: (h, n, v) => v.dur + ' sn boyunca yalnızca zayıf düşmanlar gelir.' },
+    { id: 'comertMasa', name: 'Cömert Masa', rarity: 'rare', price: [8, 10], icon: 'comertMasa', max: 1, tags: ['luck'], v: { ch: 0.3 },
+      desc: (h, n, v) => 'Bu run her öldürme ' + pc(v.ch) + ' şansla +1 coin düşürür.' },
+    { id: 'faronunGozu', name: 'Faro’nun Gözü', rarity: 'common', price: [3, 5], icon: 'faronunGozu', max: 1, tags: ['luck'],
+      desc: () => 'Faro’nun küçük oyunu (Üç Kapalı Kart) bu run bir kez daha, 8 sn sonra gelir.' },
+    // --- Kael ---
+    { id: 'kanHirsi', name: 'Kan Hırsı', rarity: 'rare', price: [8, 10], icon: 'kanHirsi', max: 1, hero: 'kael', tags: ['blood', 'speed'], v: { per: 0.015, cap: 0.45 },
+      desc: (h, n, v) => 'Her öldürme bu run hasar +' + pc(v.per) + ' (en fazla +' + pc(v.cap) + ').' },
+    { id: 'buyukVurus', name: 'Büyük Vuruş', rarity: 'rare', price: [9, 11], icon: 'buyukVurus', max: 1, hero: 'kael', tags: ['crit'], v: { n: 3, mult: 2.5 },
+      desc: (h, n, v) => 'Her ' + v.n + '. savuruş ' + v.mult + 'x hasar verir.' },
+    { id: 'kilicFirtinasi', name: 'Kılıç Fırtınası', rarity: 'epic', price: [13, 16], icon: 'kilicFirtinasi', max: 1, hero: 'kael', tags: ['speed'], v: { dur: 15, mult: 3, pen: 0.1 },
+      desc: (h, n, v) => v.dur + ' sn hasar x' + v.mult + ' — sonra hasar -' + pc(v.pen) + ' kalıcı.' },
+    { id: 'genisKesim', name: 'Geniş Kesim', rarity: 'rare', price: [9, 11], icon: 'genisKesim', max: 1, hero: 'kael', tags: ['blast'], v: { r: 28, pct: 0.7 },
+      desc: (h, n, v) => 'Vurduğun düşmanın çevresindekilere ' + pc(v.pct) + ' hasar. (Evrim: Kanlı Yörünge)' },
+    { id: 'kanliYorunge', name: 'Kanlı Yörünge', rarity: 'epic', price: [13, 16], icon: 'kanliYorunge', max: 1, hero: 'kael', req: ['genisKesim'], tags: ['blast', 'blood'], v: { r: 44, pct: 1 },
+      desc: (h, n, v) => 'EVRİM — Geniş Kesim alanı büyür, yan hasar ' + pc(v.pct) + ' ve kanatır.' },
+    { id: 'kanBicer', name: 'Kan Biçer', rarity: 'rare', price: [8, 10], icon: 'kanBicer', max: 1, hero: 'kael', tags: ['blood', 'sustain'], v: { per: 0.01, cap: 0.2, heal: 2 },
+      desc: (h, n, v) => 'Öldürme: hasar +' + pc(v.per) + ' (en fazla +' + pc(v.cap) + ') ve ' + v.heal + ' can.' },
+    { id: 'ofkeKalbi', name: 'Öfke Kalbi', rarity: 'common', price: [5, 6], icon: 'ofkeKalbi', max: 1, hero: 'kael', tags: ['blood'], v: { max: 0.6 },
+      desc: (h, n, v) => 'Canın azaldıkça hasarın artar (en fazla +' + pc(v.max) + ').' },
+    { id: 'kizilKasirga', name: 'Kızıl Kasırga', rarity: 'epic', price: [14, 17], icon: 'kizilKasirga', max: 1, hero: 'kael', tags: ['blast', 'speed'], v: { every: 4, r: 44, pct: 0.8 },
+      desc: (h, n, v) => 'Her ' + v.every + '. savuruşta çevrendeki herkese ' + pc(v.pct) + ' hasarlı kasırga.' },
+    // --- Lyra ---
+    { id: 'okFirtinasi', name: 'Ok Fırtınası', rarity: 'rare', price: [9, 11], icon: 'okFirtinasi', max: 1, hero: 'lyra', tags: ['storm'], v: { pct: 0.6 },
+      desc: (h, n, v) => 'Her ok ilk hedeften ikinciye seker (' + pc(v.pct) + '). (Evrim: Çifte Sekme)' },
+    { id: 'ciftSekme', name: 'Çifte Sekme', rarity: 'epic', price: [13, 16], icon: 'ciftSekme', max: 1, hero: 'lyra', req: ['okFirtinasi'], tags: ['storm'], v: { m: [0.8, 0.6] },
+      desc: () => 'EVRİM — Sekme oku iki hedefe daha gider (%80 / %60).' },
+    { id: 'patlayanOk', name: 'Patlayan Ok', rarity: 'rare', price: [9, 11], icon: 'patlayanOk', max: 1, hero: 'lyra', tags: ['blast'], v: { r: 18, pct: 0.5 },
+      desc: (h, n, v) => 'Oklar çarpınca küçük alanda ' + pc(v.pct) + ' hasar. (Evrim: Barut Çekirdeği)' },
+    { id: 'barutCekirdegi', name: 'Barut Çekirdeği', rarity: 'epic', price: [13, 16], icon: 'barutCekirdegi', max: 1, hero: 'lyra', req: ['patlayanOk'], tags: ['blast'], v: { r: 30, pct: 1 },
+      desc: (h, n, v) => 'EVRİM — Patlama alanı büyür, yan hasar ' + pc(v.pct) + '.' },
+    { id: 'zehirliOk', name: 'Zehirli Ok', rarity: 'common', price: [5, 6], icon: 'zehirliOk', max: 2, hero: 'lyra', tags: ['blood'], v: { dps: 0.3, dur: 3 },
+      desc: (h, n, v) => 'Oklar ' + v.dur + ' sn zehirler (sn başına hasarın ' + pc(v.dps * n) + '’i). (Evrim: Zehir Çiçeği)' },
+    { id: 'zehirCicegi', name: 'Zehir Çiçeği', rarity: 'epic', price: [13, 16], icon: 'zehirCicegi', max: 1, hero: 'lyra', req: ['zehirliOk'], tags: ['blood', 'blast'], v: { r: 26, mult: 0.7 },
+      desc: (h, n, v) => 'EVRİM — Zehirli düşman ölünce patlar (' + pc(v.mult) + ') ve zehri yayar.' },
+    { id: 'delinme', name: 'Delinme', rarity: 'epic', price: [14, 17], icon: 'delinme', max: 1, hero: 'lyra', tags: ['crit'], v: { n: 4 },
+      desc: (h, n, v) => 'Oklar ' + v.n + ' düşmanı delip geçer.' },
+    { id: 'okYagmuru', name: 'Ok Yağmuru', rarity: 'rare', price: [8, 10], icon: 'okYagmuru', max: 2, hero: 'lyra', tags: ['speed'], v: { every: 5, n: 3 },
+      desc: (h, n, v) => 'Her ' + v.every + ' öldürmede ' + (v.n + n - 1) + ' hedefe otomatik ok yaylımı.' },
   ];
+  // Kademe (milestone): eski sürümdeki "5. seviyede bir şey değişir" — yığın sınırına ulaşınca ek etki
+  const ms = (id, name, desc) => { const c = DMT.Data.CARDS.find((x) => x.id === id); c.ms = { name, desc }; };
+  ms('heavyHand', 'YARIK VURUŞ', 'Vuruşlar yakındaki bir düşmana da %50 hasar verir.');
+  ms('bloodlust', 'KESİNTİSİZ AKIŞ', 'Seri (streak) bonusu 6 sn boyunca sönmez.');
+  ms('keenEye', 'ÇİFT NAM', '%30 ihtimalle çift saldırı.');
   for (const c of DMT.Data.CARDS) { c.v = c.v || {}; c.tags = c.tags || []; c.max = c.max || 3; }
 })();
-DMT.Data.cardById = (id) => DMT.Data.CARDS.find((c) => c.id === id);
-DMT.Data.cardDesc = (def, heroId, n) => def.desc(heroId, Math.max(1, n || 1), def.v);
+// ---------- FARO'NUN HİLELİ KARTLARI (eski cards.js: tuzaklar, imza kartları, işaretli kartlar) ----------
+// Kart yüzünde yalnızca 'desc' (yem) görünür. Alınınca 'hidden' ortaya çıkar ve Faro 'faro' satırını söyler.
+// Bunlar build kartı değildir: run.cards'a yazılmaz, run.tricks'e yazılır. Etkileri FightScene.applyTrick'te.
+DMT.Data.TRICKS = [
+  // --- klasik tuzaklar ---
+  { id: 'sahteCevher', kind: 'trap', name: 'Sahte Cevher', rarity: 'rare', price: [5, 7], icon: 'sahteCevher', desc: 'Hasar +%30. Güçlü bir taş.', hidden: '...gerçekmiş gibi duruyordu. Gelecekteki kartlar +%20 pahalı.', faro: 'Parlıyor, değil mi? Her şey parlayan altın değildir.' },
+  { id: 'ozelFiyat', kind: 'trap', name: 'Özel Fiyat', rarity: 'common', price: [2, 2], icon: 'ozelFiyat', desc: 'Kritik şansı +%15. Sana özel fiyat.', hidden: '...bu fiyata bir sebep vardı. 10 sn boyunca hasar -%15.', faro: 'Neden bu kadar ucuz? Sorma. Al.' },
+  { id: 'evHediyesi', kind: 'trap', name: 'Ev Hediyesi', rarity: 'rare', price: [0, 0], icon: 'evHediyesi', desc: 'Saldırı hızı +%20. Ücretsiz.', hidden: '...Faro asla karşılıksız vermez. 10 sn boyunca coin düşmez.', faro: 'Bedava. Neden şüpheleniyorsun?' },
+  { id: 'trapAtk', kind: 'trap', name: 'Hasar +50% (10 sn)', rarity: 'rare', price: [4, 5], icon: 'trapAtk', desc: 'Saldırı gücü 10 saniye boyunca +%50.', hidden: '...ama düşmanlar için.', faro: 'On saniye. Uzun sürer.' },
+  { id: 'trapDef', kind: 'trap', name: 'Savunma Kalkanı', rarity: 'common', price: [3, 4], icon: 'trapDef', desc: 'Güçlü bir savunma kalkanı aktif olur.', hidden: '...bütün düşmanlara. 5 sn yarı hasar alırlar.', faro: 'Savunma önemlidir. Onlar için.' },
+  { id: 'trapSlow', kind: 'trap', name: 'Düşmanlar 8 sn Yavaşlar', rarity: 'common', price: [3, 4], icon: 'trapSlow', desc: 'Tüm düşmanlar sekiz saniye yavaşlar.', hidden: '...kahraman da.', faro: 'Hep birlikte.' },
+  { id: 'trapGold', kind: 'trap', name: '+15 Coin', rarity: 'rare', price: [2, 3], icon: 'trapGold', desc: 'Anında on beş coin kazanırsın.', hidden: '...ve sonraki her kart +3 coin pahalı.', faro: 'Yatırım.' },
+  { id: 'trapHeal', kind: 'trap', name: 'Anında Can', rarity: 'common', price: [3, 4], icon: 'trapHeal', desc: 'Canının %15’ini kazanırsın.', hidden: '...kaybedersin.', faro: 'Kazanmak için önce kaybetmek.' },
+  { id: 'trapKillAtk', kind: 'trap', name: 'Öldürme başına Hasar', rarity: 'rare', price: [4, 6], icon: 'trapKillAtk', desc: 'Her öldürmede saldırı gücün artar.', hidden: '...düşmanlara verilir. Her ölüm onları %2 güçlendirir.', faro: 'Her ölüm onları güçlendirir.' },
+  { id: 'trapImmortal', kind: 'trap', name: 'Ölümsüzlük (5 sn)', rarity: 'rare', price: [4, 6], icon: 'trapImmortal', desc: 'Beş saniye boyunca hasar almazsın.', hidden: '...düşmanlar. Beş saniye.', faro: 'Beş saniye. Yeterli.' },
+  { id: 'trapSpeed', kind: 'trap', name: 'Hız Tanrısı', rarity: 'rare', price: [4, 6], icon: 'trapSpeed', desc: 'Saldırı hızın 8 sn ikiye katlanır.', hidden: '...can emilimiyle. Saniyede %3 can.', faro: 'Her şeyin bedeli var.' },
+  { id: 'trapVision', kind: 'trap', name: 'Tüm Düşmanlar Kaybolur', rarity: 'rare', price: [4, 6], icon: 'trapVision', desc: 'Savaş alanı temizlenir.', hidden: '...görüş alanından. 8 sn.', faro: 'Görmemek ölmemiş demek değil.' },
+  { id: 'trapTime', kind: 'trap', name: 'Run Süresi +15 sn', rarity: 'common', price: [3, 4], icon: 'trapTime', desc: 'On beş saniye daha kazanırsın.', hidden: '...düşman sayısı da artar.', faro: 'Zaman. Hem nimet hem lanet.' },
+  { id: 'trapStats', kind: 'trap', name: 'Tüm Statlar +%20', rarity: 'epic', price: [5, 7], icon: 'trapStats', desc: 'Kalıcı güçlü stat artışı.', hidden: '...düşmanlara. Run boyunca.', faro: 'Adil dağıtım.' },
+  { id: 'trapCardChoice', kind: 'trap', name: 'Ekstra Kart Seçimi', rarity: 'rare', price: [4, 6], icon: 'trapCardChoice', desc: 'Bir kart daha seçme hakkı kazanırsın.', hidden: '...Faro seçer ve uygular.', faro: 'Güven.' },
+  // --- Faro oyunları ---
+  { id: 'faroBahsi', kind: 'trap', game: true, name: 'Faro’nun Bahsi', rarity: 'rare', price: [3, 5], icon: 'faroBahsi', desc: '10 saniyede 7 düşman öldür: hasar +%15.', hidden: '...başaramazsan Faro cüzdanından 8 coin alır.', faro: 'Bahis basit. Kaybeden öder.' },
+  { id: 'yaziTura', kind: 'trap', game: true, name: 'Yazı mı Tura mı?', rarity: 'common', price: [2, 3], icon: 'yaziTura', desc: 'Coinlerin değişir.', hidden: 'Yazı: 10 coin yağar. Tura: 6 coin gider.', faro: 'Ben sonucu gördüm. Sen birazdan göreceksin.' },
+  { id: 'kalabalik', kind: 'trap', game: true, name: 'Kalabalık İyidir', rarity: 'rare', price: [3, 5], icon: 'kalabalik', desc: 'Mevcut düşmanların canı %25 azalır.', hidden: '...ve masaya 5 yeni düşman gelir.', faro: 'Daha kolay oldular. Daha fazla oldular.' },
+  { id: 'yankiMasasi', kind: 'trap', game: true, name: 'Yankı Masası', rarity: 'rare', price: [3, 5], icon: 'yankiMasasi', desc: 'Sonraki 5 öldürmenin yankısı kalır.', hidden: '...her öldürmede yeni bir düşman doğar.', faro: 'Bazı ölümler masadan ayrılmayı reddeder.' },
+  { id: 'darSecim', kind: 'trap', game: true, name: 'Kaliteli Seçim', rarity: 'rare', price: [3, 4], icon: 'darSecim', desc: 'Sonraki seçimde yalnız güçlü kartlar gelir.', hidden: '...ama yalnızca iki kart gelir.', faro: 'Kalite arttı. Seçenekler azaldı.' },
+  // --- Faro'nun imza kartları (şaka) ---
+  { id: 'sigEnGuclu', kind: 'sig', name: 'Oyundaki En Güçlü Kart', rarity: 'epic', price: [3, 5], icon: 'sigEnGuclu', desc: 'Bu kartı alan oyuncu tartışmasız kazanır.', hidden: '...değil. Sadece kontrol edeyim dedim.', faro: 'Merak öldürür. Bazen.' },
+  { id: 'sigBakis', kind: 'sig', name: 'Faro Bu Karta Bakıyor', rarity: 'rare', price: [2, 4], icon: 'sigBakis', desc: 'Dikkat. Faro bu kartı izliyor.', hidden: '...artık sen de baktın. Eşitiz.', faro: 'Göz teması. Nadiren kurarım.' },
+  { id: 'sigSurpriz', kind: 'sig', name: 'Büyük Sürpriz Kartı', rarity: 'epic', price: [4, 6], icon: 'sigSurpriz', desc: 'İçinde sürpriz var. Gerçekten.', hidden: '...sürpriz buydu: rastgele güçlü bir kart.', faro: 'Beklentileri yönetmek önemlidir.' },
+  { id: 'sigHata', kind: 'sig', name: 'Faro Hata Yapar', rarity: 'epic', price: [4, 6], icon: 'sigHata', desc: 'Faro bu kartı yanlışlıkla dağıttı. Fırsat!', hidden: '...bu kartı seçmeyeceğini düşünerek. 8 sn hasar x1.5.', faro: 'Yanıldığımı görmek ilk kez keyif verdi.' },
+  { id: 'sigAtk25', kind: 'sig', name: 'Hasar +250', rarity: 'epic', price: [3, 5], icon: 'sigAtk25', desc: 'Saldırı gücünde devasa artış.', hidden: '...Faro’nun aklında. Gerçek değil.', faro: 'Ben gördüm. Etkileyiciydi.' },
+  { id: 'sigSaygi', kind: 'sig', name: 'Düşmanlar Sana Saygı Duyar', rarity: 'rare', price: [2, 4], icon: 'sigSaygi', desc: 'Düşmanlar artık sana saygı gösterir.', hidden: '...yine de saldırırlar. Saygıyla. 20 sn daha hızlı yaklaşırlar.', faro: 'Saygının bir yolu da yaklaşmaktır.' },
+  { id: 'sigSirr', kind: 'sig', name: 'Faro’nun Sırrını Öğren', rarity: 'epic', price: [3, 5], icon: 'sigSirr', desc: 'Faro’nun gizli bilgisi sana açıklanacak.', hidden: '...tek sırrı: bu kartın bir etkisi yok.', faro: 'Artık biliyorsun. Saklayamam.' },
+  // --- işaretli kartlar (Faro'nun kesesi: İşaretli Deste) ---
+  { id: 'markedEdge', kind: 'marked', name: 'İşaretli Kenar', rarity: 'epic', price: [5, 5], icon: 'markedEdge', desc: 'Hasar +%40 (normal fiyatı 16).', hidden: '...ama düşman canı da +%20 arttı.', faro: 'Bu neden bu kadar ucuz? Sorma.' },
+  { id: 'markedPact', kind: 'marked', name: 'İşaretli Anlaşma', rarity: 'epic', price: [4, 4], icon: 'markedPact', desc: 'Saldırı hızı +%35 (normal fiyatı 14).', hidden: '...ama sonraki kart fiyatların +%25 arttı.', faro: 'İyi bir anlaşma. Kime göre?' },
+];
+DMT.Data.trickById = (id) => DMT.Data.TRICKS.find((c) => c.id === id);
+DMT.Data.cardById = (id) => DMT.Data.CARDS.find((c) => c.id === id) || DMT.Data.trickById(id);
+DMT.Data.cardDesc = (def, heroId, n) => (typeof def.desc === 'string' ? def.desc : def.desc(heroId, Math.max(1, n || 1), def.v));
 
 // ---------- FARO REPLİKLERİ ----------
 DMT.Data.LINES = {
@@ -2152,10 +2412,104 @@ DMT.Data.LINES = {
   endClose: ['Kıl payı. Kalbim olsa duracaktı.', 'Az kalsın benimdin.'],
 };
 
+for (const t of DMT.Data.TRICKS) { t.tags = []; t.v = {}; t.max = 99; t.trick = true; }
+
+// ---------- ESKİ SÜRÜM DİYALOGLARI (dialogs.js, tr) ----------
+// Zar/grid/level gibi bu sürümde olmayan sistemlere değinen satırlar ayıklandı; "gold" → "coin".
+// { l, m } biçimindeki satırlar yalnızca Faro'nun o geceki huyu (m) ile eşleşirse söylenir.
+DMT.Data.OLD_LINES = {
+  runStart: ["Yine sen. Şaşırdım sayılır.", "Hazır mısın. Cevap verme, başla zaten.", "Kartlar hazır. Senin de hazır olduğunu varsayıyorum.", "Aha. Döndün. Güzel.", "Bu sefer farklı bir şey mi deneyeceksin. Merak ettim biraz.", "Başla artık. Ben de bekledim yeter.", "Bugün iyi gidecek gibi görünmüyor. Ama devam et.", "Ölüler sabırsızlanıyor. Ben de.", "Gel otur. Oyun başlıyor. Bakalım.", "Kaçıncı run bu. Saymayı bıraktım zaten.", "Bu sefer de aynı kahraman mu. Evet. Devam et."],
+  goodRun: ["Tamam. Görüyorum.", "Hmm.", "Biraz fazla iyi gidiyor bu.", "Devam et bakalım ne kadar sürer.", "Fena değil. Yani. Görece.", "Bu kombinasyonu denemeni bekliyordum zaten.", "Streak sayıyorum. Devam et.", "Gayet iyi. İşin ilginç yanı da bu ya.", "Bunları izlemek aslında fena değil. Nadiren söylediğim bir şey.", "Güzel. Şimdi dağıtayım biraz.", "Tamam tamam, hakkını vereyim. İyi gidiyor."],
+  badRun: ["Devam et. Eğlenceli kısım burasıydı zaten.", "Dur bir saniye. ... Hayır devam et.", "Kaç tane kötü kart üst üste seçebilirsin diye merak ediyordum.", "Cevabı öğrendim.", "Şansın bu mu bugün. Görelim.", "O kartı seçmeseydin daha iyi olurdu. Ama kimse sormadı.", "Zamanında tam böyle oynayan biri vardı. Uzun sürmedi. Her neyse.", "Miss. Yine miss. Devam et işte.", "Bu run'dan bir şey çıkacak mı. Gerçekten merak ediyorum.", "Yavaşla. Aslında yavaşlama. Ama düşün biraz.", "En azından tutarlısın. Yanlış kart seçmekte."],
+  cardOffer: ["Seç.", "Üçü de değersiz. Yine de seç.", "Bu sefer dürüst davrandım. Belki.", "Üçünden birini seçeceksin. Hangisi olduğu pek önemli değil.", "Bak. Düşün. Yanlış seç.", "Kartlar hazır. Seçim senin. Sonuç da senin.", "Hangisini seçeceğini zaten biliyorum. Ama yine de göster.", "İkisini geri attım zaten. Birini seç."],
+  cardBuy: ["O kartı seçtin. Tabii ki o kartı seçtin.", "İlginç seçim. Yanlış ama ilginç.", "Baktım baktım. Senin tercihine karışmıyorum.", "İyi seçim. Şaşırdım açıkçası.", "Bu kartı kimse seçmez. Sen seçtin. Not aldım.", "Tamam tamam. Kasten verdim hepsini. Bak, sen de sıkıldın ben de sıkıldım.", "Herkese bu kartı veriyorum. Herkes bunu seçiyor. Sen de seçtin.", "Diğer ikisini seçseydin ne olurdu diye merak ediyorum. Sen merak etme.", "Güzel. Bu kartla ne yapacağını görmek istiyorum.", "En kötüsünü seçtin. Bu biraz beceri istiyor aslında.", "Bunu seçeceğini biliyordum. Sürpriz olmadı.", "Hmm. Bu seçim... tamam devam et.", "Diğerleri daha iyiydi. Ama senin bildiğin bir şey var belki. Yoksa da devam et."],
+  timeIntervene: ["Az daha. Bir şeyler olacak gibi.", "Bugün işim var. Biraz hızlanalım.", "Zaman bugün benim elimde. Eğlenceli değil mi.", "Aslında süreye müdahale etsem... Hayır hayır devam et.", "Sıkıldım biraz. Hızlandırıyorum."],
+  boredReturn: ["Devam mı ediyorsun hâlâ.", "Bir şey kaçırdım mı.", "Neyse.", "Geri döndüm. Fark etmedin bile.", "Az önce bambaşka bir yerdeyim. Önemli değil. Devam et.", "Hâlâ burada mısın. Evet. Tamam.", "Ne kadar sürdü. Umursamıyorum aslında. Devam et."],
+  runEnd: ["Tamam. Bu kadar.", "Yeterince izledim.", "Bir dahaki run daha ilginç olur umarım.", "Git. Geri gel.", "...", "Fena değildi. Göreceli olarak.", "Kaç kişiyi gömdün. Ben saydım ama söylemeyeceğim.", "Bu run'da bir şey öğrendin mi. Muhtemelen hayır.", "Devam edebilirdin. Ama ben durdurmak istedim.", "İyi sayılır. Benim standartlarıma göre değil ama genel olarak.", "Bir daha gel. Belki bu sefer farklı bir şey olur."],
+  win: ["Bu sefer iyi oynadın. Kabul ediyorum.", "Güzel bir run. Benden bu kadar.", "Not aldım. Bir dahaki sefer daha zor olacak."],
+  lose: ["Yani. Bu oldu.", "Beklentim düşük sayılırdı. Yine de şaşırdım.", "Bir dahaki sefer denemek ister misin. Cevap bekliyorum aslında."],
+  tableT2: ["Bu masaya daha önce gelen biri vardı. Uzun süre oturdu.", "Kurallar değişti. Benden sormaya gerek yok.", "Yeni masa. Aynı sen.", "Bu masayı sevmiyorum. Ama buradayız işte.", "Hoş geldin. Bu cümleyi nadiren söylüyorum."],
+  barReturn: ["Masa sıcak. Oturmak istiyorsan otur.", "Barı buldun. Oyun seni buldu.", "İçki sonra. Önce seç.", "Yine geldin. İyi.", "Buraya herkes er ya da geç gelir. Sen erken geldin.", "Gördüm seni. Otur.", "Masaya hoş geldin. Yani benim masama. Dikkatli ol.", "Ne içersin. Aslında önemli değil. Önce oyna."],
+  barIdle: ["Kapı. Çıkmak mı istiyorsun, yoksa sadece bakıyor musun.", "O kapıdan geçen geri dönmez. Şaka yapıyorum. Belki.", "Merak etme. Kapı seni kilitli tutmuyor. Ben tutuyorum.", "Dışarısı senin sorunun, burası benim."],
+  reluctantHelp: ["Masaya düştü. Senin değil.", "Al. Neden verdiğimi sormayacaksın.", "Bu hiç olmadı.", "Sıkıcı hale geldi. Şunu al.", "...Tamam al işte. Ama bir daha yok."],
+  killStreak: ["Dur dur dur. Bu fazla.", "Tamam. Müdahale zamanı.", "Şimdi bunlar gelsin bakalım.", "20 streak. Güzel. Şimdi izle."],
+  prerunEnter: ["Seçimini yap. Pişman olacak vaktimiz var.", "Hep aynı kahraman. Not aldım.", "Kahraman seçti. Tatlı gidecek gibi görünmüyor ama devam et.", "Hazır mısın. Cevap verme, anladım.", "Masa hazır. Sen de hazır ol.", "Yine geldin. İyi.", "Bugün ne oynayacağız. Görüsürüz.", "Kahraman seç. Masa seç. Başla.", "Bir run daha. Tamam.", "Geçen run’dan öğrendin mi. Muhtemelen hayır.", "Yetenek ağacına bak. Belki bir şey vardır.", "coin var. Akıllıca harca.", "Hazır mısın. Kartların aynı.", "Geçen sefer iyi değildi. Bu sefer farklı dene."],
+  soundOff: ["Sesi kapattın. Yine de buradayım."],
+  soundOn: ["Sesi açtın. Tekrar konuşabiliriz."],
+  faroPoints: ["Bence bunu al.", "Şunu al derim, ben olsam.", "O kart. Evet. Al.", "Bu kartı tavsiye ediyorum. Güven bana.", "Dikkat et şu karta. İyi bir seçim.", "O kartı... o kartı al. Yanlış gitmez.", "Ben çoktan senin için seçtim zaten. Al sadece.", { l: "BU KARTI AL GÜVEN BANA.", m: "happy" }, { l: "O kart... o kart iyi... sanırım... al işte.", m: "drunk" }, { l: "Al şunu. Güveniyorum sana. Yani karta.", m: "sad" }, { l: "O kartı alacaksın. Çünkü ben öyle diyorum.", m: "angry" }],
+  faroPointsTwo: ["İkisi de iyi. İstediğini al.", "Bu ikisinden biri. Hangisi olursa.", "Sağdaki veya soldaki. Ortadaki değil.", "Bu ikisini öneriyorum. Güven sadece.", { l: "İkisi de... iyi... Ama birini seç.", m: "drunk" }, { l: "İKİSİ DE HARİKA! Al birini!", m: "happy" }, { l: "Bu ikisi. Fark etmez hangisi.", m: "bored" }, { l: "Bu ikisinden birini al. Öbürüne bakma.", m: "angry" }],
+  blindIntro: ["Seçtiğin kartı veririm. Ya da vermem. Keyfime bağlı.", "Bugün kartları kapalı oynuyoruz. Seç. Ne gelirse gelir.", "Kapalı kartlar. Seçtiğini alırsın. Ya da almayabilirsin. Kim bilir.", "Şans mı, beceri mi, benim inisiyatifim mi. Sen sadece seçiyorsun.", "Kapalı gördüğün gibi. Seç. Belki istediğini veririm.", { l: "Kartlar kapalı bugün. Cesaretini görelim.", m: "happy" }, { l: "Kapalı kartlaaaar... hangisi hangisi... sen seç.", m: "drunk" }, { l: "Seç. Ne seçersen seç. Uzatma sonucu ben belirlerim.", m: "angry" }, { l: "Bugün böyle oynuyoruz. Sıkıcısın renk gelsin oyuna.", m: "bored" }],
+  blindReveal: ["İşte bu.", "Sen seçtin ben açtım devam.", "Bu sefer istediğini verdim. Ama bu sefer.", "Şanslısın. Ya da değilsin. Devam et.", "Kart bu. Beğendin mi. Benim için çok da önemli değil.", { l: "AH BU ÇIKTI! İyi şans wuhuu!", m: "happy" }, { l: "İşte bu... iyi mi kötü mü... göreceğiz.", m: "drunk" }],
+  trapTaken: ["Hahahahah. Acemilerle bu oyun çok iyi oluyor.", "Demek tuzaklara hemen atlıyorsun.", "Bugün çok eğlenceli bir gün.", "Bunu beklemiyordum. Aslında, bekliyordum.", "Al bakalım. Hayırlı olsun.", "Güzel... Güzel güzel. Çok güzel.", "Tuzağı gördün mü. Hayır mı? Anladım.", "Bu... bu harika. Gerçekten.", "Ne olduğunu söylesem mi. Tabii ki Hayır.", { l: "HA HA HA HA. Üzgünüm. Ya da değilim hehe.", m: "happy" }, { l: "Aldın yani... o kartı aldın... AHAHAHA.", m: "drunk" }, { l: "Bilmeden yaptın. Bu daha iyi aslında.", m: "sad" }],
+  trapAvoided: ["Nasıl gördün onu.", "Beklemiyordum bunu.", "Şanslısın. Sadece Şanslısın.", "Tuzağı mı fark ettin. İmkansız.", "Diğerini seçtin. Çok sinir bozucu.", "Hm. Şaşırdım.", { l: "Bozacaksın her şeyi.", m: "angry" }, { l: "NEDEN O KARTI SEÇMEDİN.", m: "angry" }, { l: "Almadın... almadın... nasıl...", m: "drunk" }, { l: "Tebrikler. Gerçekten şaşırdım.", m: "sad" }, { l: "Bir dahaki sefer daha iyi bir tuzak kurarım böyle çok sıkıcı.", m: "bored" }],
+  goodTaken: ["İşte bu. Akıllı karar.", "Dediğimi yaptın. Güzel.", "Bak işte. Öğreniyorsun.", "Bu kartla iyi işler yapabilirsin. Belki.", "Güven işe yarıyor demek.", "Söylemek istemiyorum ama... iyi seçim.", { l: "MÜKEMMEL! Bu benim önerimdi. Ama yine de mükemmel.", m: "happy" }, { l: "Aldın... doğruyu aldın... beklemiyordum yani...", m: "drunk" }, { l: "Bu sefer doğruyu yaptın. Böyle devam et.", m: "sad" }, { l: "Tamam. Kabul ediyorum. İyi seçim.", m: "angry" }],
+  goodAvoided: ["Neden almadın onu.", "O kartı önerdim. Sen almadın.", "Güvenmiyorsun bana demek.", "Alman gereken o karttı. O karttı işte.", "Tamam. Bildin bildin.", { l: "Pişman olacaksın bu karardan.", m: "angry" }, { l: "NEDEN?! O kartı neden almadın?!", m: "angry" }, { l: "O kartı... o kartı önermiştim... almadın... neden...", m: "sad" }, { l: "Beni dinlemiyorsun. Anlıyorum.", m: "sad" }, { l: "Almadın mı. Tamam. Senin bileceğin iş.", m: "drunk" }, { l: "Güzel... Kötü seçim. Devam et.", m: "bored" }],
+  doubleTrapTaken: ["Hahahahah. İkisi de tuzaktı. Hangisini seçtiğin fark etmez.", "İki seçenek. İkisi de kötü. Sen birini seçtin. Güzel.", "Bu oyunu seviyorum.", "İki tuzak önerdim. Birini aldın. Tatmin edici.", { l: "Bazen iki yanlış arasında seçim yapmak gerekir. Bu o an.", m: "happy" }, { l: "İkisi de... ikisi de tuzaktı... ahahaha...", m: "drunk" }, { l: "Özür dilerim. Dilemiyorum aslında.", m: "happy" }],
+  doubleTrapAvoided: ["İkisinden de kaçtın. Bu... nasıl olur.", "İki tuzak. İkisinden de uzak durdun. Şaşırdım.", "Nasıl yaptın bunu. Gerçekten.", "Ortadaki mi seçtin. Neden.", { l: "Üçüncüyü seçtin. Ben bunu hesaplamamıştım.", m: "angry" }, { l: "İkisinden de kaçtın... bu... beklemiyordum...", m: "sad" }, { l: "Tebrikler. İstemeden söyledim. Ama tebrikler.", m: "happy" }],
+  doubleGoodTaken: ["İyi seçim. Her ikisi de iyiydi ama yine de iyi seçim.", "Bu sefer gerçekten güzel önerdim. İkisini de.", "Memnunum. Nadir bir his.", "İstediğini aldın. Ben de istiyordum bunu.", { l: "Her ikisi de iyiydi. Ama bunu seçtin. Güzel.", m: "happy" }, { l: "İki iyi kart... hangisini seçti... bunu seçti... tamam.", m: "drunk" }, { l: "Tebriği hak ettin bu sefer.", m: "sad" }],
+  doubleGoodAvoided: ["İkisini de önerdim. Üçüncüyü seçtin.", "Neden.", "İki iyi kart. Sen üçüncüyü seçtin. Anlamıyorum.", "Bu bilinçli bir karar mıydı.", { l: "İkisini de önerdim! İKİSİNİ DE!", m: "angry" }, { l: "Beni dinlememeyi tercih ediyorsun. Kendin bilirsin. Devam et.", m: "sad" }, { l: "Üçüncüyü seçtin... tamam... her neyse...", m: "drunk" }, { l: "Bağımsız düşünüyörsun demek. Sinir bozucu ama tamam.", m: "bored" }],
+  tutCoins: ["Düşenler senin. Fareyle üzerine gel, topla. Bekleme."],
+  tutSweep: ["Masada hiçbir şey uzun kalmaz. Almazsan, ben alırım."],
+  tutPass: ["Beğenmedin mi? Geç o zaman. Fişin bir sonrakine taşınır."],
+  tutStack: ["Bu kartı tanıyorsun. Tekrar al, güçlensin. Beşinde bir şey değişir."],
+  purseRoundOnHouse: ["Gergin görünüyorsun. İçkiler benden."],
+  purseBarTab: ["Bara olan borcumuzu da ödememiz lazım."],
+  purseOneForMe: ["Yeterince yardım aldın. Bu bana."],
+  purseBuyingTime: ["Seninle henüz işim bitmedi."],
+  purseHouseGenerous: ["Yanımda götüremem ki."],
+  purseSpecialDelivery: ["Sana bir şey ısmarladım."],
+  purseSpecialDeliveryShame: ["Yazık."],
+  purseMarkedDeck: ["Bir sonraki eli ilginçleştirelim."],
+  purseHouseCut: ["İşler iyi gidiyor."],
+  purseHouseInsurance: ["Masayı bu kadar kolay temizleyemezsin."],
+  purseBackRoomHeavyHands: ["Çok mu hızlısın? Bakalım."],
+  purseBackRoomBloodWard: ["Bazı konuklarım bu gece daha dikkatli."],
+  purseBackRoomThickSkin: ["Herkes senin kritiklerine hayran değil."],
+  purseBackRoomCrowdedTable: ["Masa biraz daha kalabalık olsun."],
+  purseBackRoomBadAim: ["Elin biraz titresin bakalım."],
+};
+
+// Faro müdahaleleri ve donma senaryoları (eski FaroSystem.js)
+Object.assign(DMT.Data.OLD_LINES, {
+  ivBurst: ['Biraz fazla rahat görünüyorsun.'],
+  ivPause: ['Bugün ölüleri tatile gönderdim. Dur bakalım.'],
+  ivAddTime: ['Az daha. Bir şeyler olacak gibi.'],
+  ivRemoveTime: ['Tamam tamam. Yeter bu kadar.'],
+  ivReplace: ['Bu masada fiyatları ben belirlerim.'],
+  ivCritLock: ['Şansın bugün fazla yaver gidiyor. Adil değil.'],
+  freeze1: ['Dur bir saniye. Sen devam et, onlar dinlensin. Coin? Hayır.', 'Dur. Onlar dinleniyor. Sen çalışmaya devam et. Ücret yok.', 'Kısa bir mola. Sadece onlara. Coin kazanmak mı? Bu molaya dahil değil.', 'Freeze. Ama sen vurabilirsin. Coin? Benden değil.'],
+  freeze2: ['Hepiniz durun. Evet sen de.', 'Dur dedim. Herkese. Sen de dahilsin buna.', 'Eşit muamele. Kimse hareket etmiyor. Sen de.', 'Bu sefer taraf tutmuyorum. Hepiniz bekliyorsunuz.'],
+  freeze3: ['Düşmanlar? Hangi düşmanlar. Sahne temiz artık.', 'Hepsini gönderdim. Nereye? Bilmiyorum. Geri gelecekler mi? Şimdilik hayır.', 'Boş sahne. Güzel değil mi?', 'Temizledim. Ücretsiz. Ama sadece bir kere.'],
+  freeze3End: ['HAHAHAHA Tamam tamam. Komik olmayan bir şakaydı. Ama eğlendim.', 'Yeter. Gülmekten yoruldum. Devam edebilirsin.', 'Tamam tamam. Şaka bitti. Geri geliyorlar.', 'Eğlenceli bir mola. Devam et.'],
+  freeze4: ['Bugün iyi hissediyorum. Devam et. Ölüler de gelmeye devam etsin. Hediyem.', 'Sana bir iyilik yapıyorum. Coin gelmeye devam edecek. Takdir et.', 'Bugünlük tarafını tuttum. Yarın tutmam.', 'Hayır istemiyorum. Sadece izliyorum. Kazan bakalım.'],
+  capriceFast: ['Bu masada zaman hızlı akıyor. Benim iznimle. Kartlar daha sık gelecek.', 'Bugün cömertliğim üstümde. Kartlar daha sık gelecek.'],
+  capriceSlow: ['Yavaşlıyoruz. Sabret biraz.', 'Bu masada kartlar nadir gelir. Alış buna.'],
+  capriceForced: ['Bu masada bugün sadece belirli konuklar var.'],
+  temperHappy: ['Bu gece keyfim yerinde.'], temperSad: ['Bu gece... neyse. Oyna.'], temperAngry: ['Bu gece sinirliyim. Seçimlerine dikkat et.'], temperDrunk: ['Bu gece biraz... içtim. Kartlar dönüyor.'], temperBored: ['Bu gece sıkılıyorum. Beni şaşırt.'],
+  tableT1: ['Yine sen. Toz hâlâ yerinde.', 'Temiz masa yok. Ama bu en azından dürüst.', 'Başlangıç için fena değil. Sonrası için söz vermem.', 'Sessiz bir başlangıç.', 'Hile yok. Henüz değil.'],
+  tableT2: ['Ayna kırık. Yine de seni görüyor.', 'Burada her şey iki kez gelir. Hatalar da.', 'Kalabalığı sevmezsin umarım. Masa seviyor.'],
+  unlock: ['Kırık Ayna açıldı. Kendine dikkatli bak.', 'Para konuşur. Ben dinlerim. Masa açık.'],
+  overrun: ['Masa seni yuttu. Kalabalık sevmez demiştim.'],
+  overrunWarn: ['Kalabalık artıyor. Masa acıkıyor.'],
+  secretNoCardsWin: ['Hiç kart almadan kazandın. Bu masada ilk kez oldu. Defterime yazdım.'],
+  secretFiftyRuns: ['Elli run. Bu masada elli kez oturdun. Ben de elli kez izledim. Yorulmak nedir biliyorum artık.'],
+  secretSameHeroTenDeaths: ['Aynı kahraman. Onuncu ölüm. Alışkanlık mı, bağlılık mı. İkisi de garip.'],
+  secretPerfectRun: ['Az kartla, çok öldürmeyle. Bu kombinasyonu az gördüm. Ciddiye alıyorum seni artık.'],
+  secretOneHundredRuns: ['Yüz run. Yüz kez bu masaya oturdun. Ben de yüz kez bekliyordum. Teşekkür ederim. Neden mi. Söylemeyeceğim.'],
+  secretDiedSameSpotThree: ['Aynı noktada üç kez öldün. Orası ne çekiyor seni. Ölüm bile alışkanlık olur.'],
+  secretMidnightPlay: ['Bu saatte hâlâ burada. Ben de buradayım. Fark nedir ki.'],
+  sameHero: ['3. run üst üste aynı kahraman. Not aldım.'],
+});
+(function mergeOldLines() {
+  const L = DMT.Data.LINES, O = DMT.Data.OLD_LINES;
+  const REPLACE = ['tableT1', 'tableT2', 'unlock']; // masa adları değişti → eski satırlar yerine
+  for (const k in O) L[k] = REPLACE.includes(k) ? O[k].slice() : (L[k] || []).concat(O[k]);
+})();
+
 // ============================================================
 //  11 FARO — ruh hâli, animasyon durumları, öncelikli diyalog sistemi
 // ============================================================
-DMT.FaroMemory = { hist: {}, lastLine: '' }; // sahneler arası tekrar önleme
+DMT.FaroMemory = { hist: {}, lastLine: '', temper: null }; // sahneler arası tekrar önleme
 
 DMT.Faro = class {
   constructor(opts = {}) {
@@ -2184,8 +2538,12 @@ DMT.Faro = class {
   isBusy() { return !!this.action && this.actionT < this.actionDur; }
   // --- diyalog ---
   pickLine(cat) {
-    const pool = DMT.Data.LINES[cat];
-    if (!pool || !pool.length) return null;
+    const raw = DMT.Data.LINES[cat];
+    if (!raw || !raw.length) return null;
+    // V2: { l, m } satırları yalnızca Faro'nun o geceki huyuyla (FaroMemory.temper) eşleşirse
+    const temper = DMT.FaroMemory.temper;
+    let pool = raw.filter((x) => typeof x === 'string' || !x.m || !temper || x.m === temper).map((x) => (typeof x === 'string' ? x : x.l));
+    if (!pool.length) pool = raw.map((x) => (typeof x === 'string' ? x : x.l));
     const mem = DMT.FaroMemory, h = (mem.hist[cat] = mem.hist[cat] || []);
     let cands = pool.filter((l) => !h.includes(l) && l !== mem.lastLine);
     if (!cands.length) { h.length = 0; cands = pool.filter((l) => l !== mem.lastLine); if (!cands.length) cands = pool; }
@@ -2357,6 +2715,8 @@ DMT.Run = {
       rewardClaimed: false, reward: 0, breakdown: null, offers: 0, buys: 0, passes: 0, coinsMissed: 0,
       buffs: [], lastBreathUsed: 0, maxCombo: 0,
       cardDmg: {}, cardHeal: {}, healed: 0, tmp: { adr: 0, dance: 0 }, buyLog: [],
+      // V3
+      mods: { dmg: 1, aspd: 1, crit: 0, priceMul: 1, priceAdd: 0, coinMul: 1, maxHpMul: 1 }, tricks: [], trapsTaken: 0, trapsAvoided: 0, streak: 0, maxStreak: 0, killStack: 0, ilahi: 0,
     };
     this.current = run;
     return run;
@@ -2407,9 +2767,38 @@ DMT.Run = {
     S.data.stats.v2Runs = (S.data.stats.v2Runs || 0) + 1;
     S.data.stats.bestKills = Math.max(S.data.stats.bestKills, run.kills);
     S.data.stats.bestReward = Math.max(S.data.stats.bestReward || 0, run.reward);
+    this.faroNotes(run); // V3: Faro'nun sırları + günlüğü (write() aşağıda)
     S.addBank(run.reward); // write() içerir
     DMT.BalanceLog.push(DMT.BalanceLog.report(run));
     return run.reward;
+  },
+  // ---- V3: Faro'nun sırları ve günlüğü (eski tr.js: secret*/journal* metinleri) ----
+  faroNotes(run) {
+    const d = DMT.Save.data, st = d.stats, hero = run.hero.name;
+    d.lastHeroes = (d.lastHeroes || []).concat(run.heroId).slice(-5);
+    if (!run.won) { d.heroDeaths = d.heroDeaths || {}; d.heroDeaths[run.heroId] = (d.heroDeaths[run.heroId] || 0) + 1; }
+    let sameSpot = false;
+    if (run.deathPos) { const L = (d.deathSpots || []).concat(run.deathPos).slice(-12); d.deathSpots = L; sameSpot = L.filter((p) => U.dist(p.x, p.y, run.deathPos.x, run.deathPos.y) < 22).length >= 3; }
+    const runNo = st.runs; // claimReward sayacı zaten artırdı
+    const hr = new Date().getHours();
+    const conds = [
+      ['secretNoCardsWin', run.won && run.buys === 0],
+      ['secretOneHundredRuns', runNo >= 100],
+      ['secretFiftyRuns', runNo >= 50],
+      ['secretSameHeroTenDeaths', !run.won && (d.heroDeaths[run.heroId] || 0) >= 10],
+      ['secretPerfectRun', run.won && run.buys <= 3 && run.kills >= 110],
+      ['secretDiedSameSpotThree', sameSpot],
+      ['secretMidnightPlay', hr >= 0 && hr < 4],
+    ];
+    d.secrets = d.secrets || [];
+    for (const [id, ok] of conds) if (ok && !d.secrets.includes(id)) { d.secrets.push(id); run.secret = id; break; }
+    const j = run.kills === 0 ? 'Run ' + runNo + '. Sıfır öldürme. Bir rekor bu. Yanlış türde.'
+      : run.buys === 0 ? 'Run ' + runNo + '. ' + run.kills + ' öldürme. Hiç kart almadı. İnat mı, strateji mi.'
+      : run.won && U.chance(0.5) ? 'Run ' + runNo + '. ' + run.kills + ' öldürme. Kazandı. Bu sefer izlemekten zevk aldım.'
+      : run.trapsTaken >= 2 ? 'Run ' + runNo + '. ' + run.trapsTaken + ' tuzağa bastı. Her birinde güldüm.'
+      : U.chance(0.5) ? 'Run ' + runNo + '. ' + run.kills + ' öldürme. ' + run.buys + ' kart. Seçimiydi.'
+      : 'Run ' + runNo + '. ' + run.kills + ' öldürme. Hep ' + hero + ' ile.';
+    d.journal = (d.journal || []).concat(j).slice(-20);
   },
   // ---- run analizi (RunEnd + balance raporu) ----
   synergy(run) {
@@ -2476,6 +2865,14 @@ DMT.Stats = {
       if (b.id === 'frenzy') aspd += 1.0;
       if (b.id === 'mgBuff') { dmgMul += 0.6; aspd += 0.4; }
       if (b.id === 'curse') { speedMul *= 0.6; aspd *= 0.7; }
+      // V3 geçici etkileri (eski kartlar + Faro tuzakları + arka oda)
+      if (b.id === 'powerWave') dmgMul *= 2;
+      if (b.id === 'swordStorm') dmgMul *= 3;
+      if (b.id === 'sigHata') dmgMul *= 1.5;
+      if (b.id === 'ozelFiyat') dmgMul *= 0.85;
+      if (b.id === 'trapSpeed') aspd *= 2;
+      if (b.id === 'trapSlow') { speedMul *= 0.6; aspd *= 0.85; }
+      if (b.id === 'heavyHands') aspd *= 0.75;
       if (b.id === 'mgCurse') { speedMul *= 0.75; dmgMul *= 0.8; }
     }
     s.dmg = h.dmg * dmgMul;
@@ -2483,6 +2880,12 @@ DMT.Stats = {
     s.speed = h.speed * speedMul;
     s.range = h.range;
     // coin çarpanı: Altın Ceset + Altın Diş → yumuşak sınırlı (Balance)
+    // V3 kalıcı run değiştiricileri (Kan Paktı, Sahte Cevher, işaretli kartlar…)
+    const m = run.mods || {};
+    s.dmg *= m.dmg || 1;
+    s.atkInt /= m.aspd || 1;
+    s.crit = U.clamp(s.crit + (m.crit || 0) - (run.buffs.some((b) => b.id === 'badAim') ? 0.1 : 0), 0, 0.85);
+    s.maxHp = Math.max(20, Math.round(s.maxHp * (m.maxHpMul || 1)));
     s.coinMult = B.coinMult(sk('coin') * B.coinSkillPer + c('goldTooth') * v('goldTooth').coin);
     s.magnet = 11 + sk('magnet') * 4;
     s.lifesteal = c('vampire') * (v('vampire')[h.id] || 2);
@@ -2930,7 +3333,11 @@ DMT.Stats = {
       this.selT += dt;
       if (!this.introDone && this.t > 0.5) {
         this.introDone = true;
-        if (this.fromRun) f.say('runStart', { priority: 3, text: U.pick(['Bir el daha? Biliyordum.', 'Masa hâlâ sıcak. Otur.', 'Kemiklerini topla, tekrar dağıtıyorum.']) });
+        DMT.FaroMemory.temper = null;
+        const sv = DMT.Save.data, lh = sv.lastHeroes || [];
+        if (this.fromRun && lh.length >= 3 && lh.slice(-3).every((x) => x === lh[lh.length - 1]) && U.chance(0.5)) f.say('sameHero', { priority: 3 });
+        else if (this.fromRun && sv.journal && sv.journal.length && U.chance(0.4)) f.say('x', { priority: 3, dur: 7, text: 'Defterime yazdım: “' + sv.journal[sv.journal.length - 1] + '”' });
+        else if (this.fromRun) f.say(U.chance(0.5) ? 'prerunEnter' : 'runStart', { priority: 3, text: U.chance(0.5) ? null : U.pick(['Bir el daha? Biliyordum.', 'Masa hâlâ sıcak. Otur.', 'Kemiklerini topla, tekrar dağıtıyorum.']) });
         else f.say('x', { priority: 3, text: DMT.Save.data.stats.runs === 0 ? 'Bir kahraman seç, bir masa seç. Sonra BAŞLA. Gerisini ben hallederim.' : 'Hazırlan. Kasa kapanmaz, ben de.' });
       }
       if (this.msgT > 0) this.msgT -= dt;
@@ -3093,7 +3500,7 @@ DMT.Stats = {
       this.event = null; this.curse = null; this.curseNext = 13;
       this.feast = null; this.feastAt = dur * U.rand(0.45, 0.56); this.feastDone = false;
       this.mgAt = dur * U.rand(0.3, 0.42); this.mgDone = false;
-      this.rageT = 0; this.rageNext = this.special ? this.special.frenzyEvery : 1e9;
+      this.rageT = 0; this.rageNext = (this.special && this.special.frenzyEvery) || 1e9;
       this.thunderT = 3; this.ringT = 4; this.frenzyT = 12;
       this.killTimes = []; this.firstKillSaid = false; this.chainKills = 0; this.chainT = 0;
       this.endT = 0; this.leaving = false; this.banner = null; this.missRecent = 0;
@@ -3103,6 +3510,7 @@ DMT.Stats = {
       // V2 kart etki sistemi durumu
       this.summons = []; this.zones = []; this.timers = []; this.cardT = {}; this.fxIds = []; this._emitDepth = 0; this.healAcc = 0;
       this.refreshFxIds();
+      this.v3Init();
     },
     exit() { this.parts.clear(); this.enemies.length = 0; this.proj.length = 0; this.coins.length = 0; this.fx.length = 0; this.texts.length = 0; this.modal = null; this.summons.length = 0; this.zones.length = 0; this.timers.length = 0; },
 
@@ -3134,7 +3542,9 @@ DMT.Stats = {
 
     updateFight(dt) {
       const run = this.run;
-      this.elapsed += dt; this.timeLeft -= dt; run.time = this.elapsed;
+      // V3: Faro zamanı durdurduğunda süre işlemez
+      if (this.timerFrozenT > 0) this.timerFrozenT -= dt; else { this.elapsed += dt; this.timeLeft -= dt; }
+      run.time = this.elapsed;
       const sec = Math.ceil(this.timeLeft);
       if (sec !== this.lastSec) { this.lastSec = sec; if (sec <= 10 && sec > 0) DMT.Audio.play('tick'); }
       if (this.timeLeft <= 0) { this.timeLeft = 0; this.endRun(true); return; }
@@ -3182,6 +3592,9 @@ DMT.Stats = {
       let max = Math.round(U.lerp(sp.maxStart, sp.maxEnd, k) + (last ? 3 : 0));
       if (this.spawnT <= 0) {
         let iv = U.lerp(sp.start, sp.end, k) * (last ? 0.72 : 1);
+        // V3: Sessiz Adımlar yavaşlatır; Kırık Ayna'da her doğuşun yansıması geldiği için aralık uzar
+        iv *= (this.spawnSlowT > 0 ? 1 + this.cv('sessizAdimlar').slow : 1) * (this.special && this.special.mirror ? this.special.mirrorIntervalMult : 1);
+        if (this.spawnPauseT > 0) { this.spawnT = 0.3; return; }
         this.spawnT = iv * U.rand(0.8, 1.2);
         if (alive < max) {
           let n = 1; if (k > 0.5 && U.chance(0.35)) n = 2; if (last && U.chance(0.4)) n++;
@@ -3189,7 +3602,14 @@ DMT.Stats = {
         }
       }
     },
+    // V3: Faro kaprisi (zorunlu konuklar), Zayıf Konuklar ve masa başına ek düşman havuzu (eski getSpawnWeights)
     pickType(k) {
+      if (this.forcedT > 0 && this.forced) return U.pick(this.forced);
+      if (this.weakT > 0) return U.pick(['grunt', 'rusher', 'rusher', 'swarm']);
+      for (const x of (D.EXTRA_SPAWNS[this.run.tableId] || [])) if (k >= x.from && U.chance(x.w)) return x.type;
+      return this.pickBaseType(k);
+    },
+    pickBaseType(k) {
       const sp = this.sp;
       const wt = k >= sp.tankFrom ? 0.08 + 0.14 * k : 0, wr = sp.rusherW * (k < 0.1 ? 0.5 : 1);
       const r = Math.random();
@@ -3211,12 +3631,15 @@ DMT.Stats = {
     spawnEnemy(type, o = {}) {
       const def = D.ENEMIES[type], k = U.clamp(this.elapsed / this.tdef.dur, 0, 1), sp = this.sp;
       const pt = o.x != null ? o : this.edgePoint();
-      const hp = Math.round(def.hp * sp.hpMul * (1 + 0.8 * k) * (o.golden ? 1.2 : 1));
+      const hp = Math.max(1, Math.round(def.hp * sp.hpMul * (1 + 0.8 * k) * (o.golden ? 1.2 : 1) * this.enemyHpMul()));
       const e = { id: ++this.uid, type, def, x: pt.x, y: pt.y, hp, maxHp: hp, dmg: def.dmg * sp.dmgMul * (1 + 0.4 * k), speed: def.speed * U.rand(0.9, 1.1), atkT: U.rand(0.2, 0.6), atk: 0, atkHit: false,
-        r: def.radius, face: pt.x < this.hero.x ? 1 : -1, animT: U.rand(0, 1), flash: 0, kx: 0, ky: 0, dying: false, dieT: 0, spawnT: 0.45, bleed: null, bleedAcc: 0, bleedTick: 0, golden: !!o.golden, moving: false };
+        r: def.radius, face: pt.x < this.hero.x ? 1 : -1, animT: U.rand(0, 1), flash: 0, kx: 0, ky: 0, dying: false, dieT: 0, spawnT: o.quick ? 0.12 : 0.45, bleed: null, bleedAcc: 0, bleedTick: 0, golden: !!o.golden, moving: false,
+        frozenT: 0, phased: false, phaseT: U.rand(1, 2.5), tpT: def.teleport || 0, mirror: !!o.mirror, poison: null };
       this.enemies.push(e);
-      this.parts.burst(e.x, e.y, 6, { c: [P.purp2, P.purp3, '#1a1028'], min: 8, max: 26, life: 0.5, flat: 0.5, g: -20 });
+      this.parts.burst(e.x, e.y, 6, { c: e.mirror ? ['#9ad8ff', '#e8f8ff', '#3b5089'] : [P.purp2, P.purp3, '#1a1028'], min: 8, max: 26, life: 0.5, flat: 0.5, g: -20 });
       this.emit('onEnemySpawn', e);
+      // Kırık Ayna: her doğan düşmanın karşı tarafta yansıması belirir
+      if (this.special && this.special.mirror && !o.mirror && !o.noMirror && !o.golden && o.x == null) this.spawnEnemy(type, { x: U.clamp(640 - pt.x, AR.x0 + 4, AR.x1 - 4), y: pt.y, mirror: true });
       return e;
     },
 
@@ -3306,6 +3729,7 @@ DMT.Stats = {
       this.emit('onInterval', dt);
       this.updateSummons(dt);
       this.updateZones(dt);
+      this.updateV3(dt);
     },
     addBuff(id, dur) {
       const b = this.run.buffs.find((x) => x.id === id);
@@ -3330,13 +3754,14 @@ DMT.Stats = {
     // ================== KAHRAMAN ==================
     nearestEnemy(x, y, maxD = 1e9) {
       let best = null, bd = maxD * maxD;
-      for (const e of this.enemies) { if (e.dying || e.spawnT > 0) continue; const d = U.dist2(x, y, e.x, e.y); if (d < bd) { bd = d; best = e; } }
+      for (const e of this.enemies) { if (e.dying || e.spawnT > 0 || e.phased) continue; const d = U.dist2(x, y, e.x, e.y); if (d < bd) { bd = d; best = e; } }
       return best;
     },
-    randomEnemy() { const L = this.enemies.filter((e) => !e.dying && e.spawnT <= 0); return L.length ? U.pick(L) : null; },
+    randomEnemy() { const L = this.enemies.filter((e) => !e.dying && e.spawnT <= 0 && !e.phased); return L.length ? U.pick(L) : null; },
     updateHero(dt) {
       const h = this.hero, s = this.stats, melee = this.run.hero.melee;
       if (h.dead) { h.deathT += dt; return; }
+      if (this.heroFrozenT > 0) { h.anim = 'idle'; h.moving = false; h.atk = 0; h.animT += dt; return; } // Faro herkesi durdurdu
       h.inv = Math.max(0, h.inv - dt); h.flash = Math.max(0, h.flash - dt * 6); h.atkT -= dt; h.animT += dt;
       const tgt = this.nearestEnemy(h.x, h.y);
       h.target = tgt;
@@ -3365,7 +3790,7 @@ DMT.Stats = {
       const ml = Math.hypot(mx, my);
       h.moving = ml > 0.15;
       if (h.moving) {
-        const sp = s.speed * Math.min(1, ml);
+        const sp = s.speed * Math.min(1, ml) * this.heroSpeedMul();
         h.x += (mx / ml) * sp * dt; h.y += (my / ml) * sp * dt;
         if (Math.abs(mx) > 0.2 && !tgt) h.face = mx > 0 ? 1 : -1;
         h.stepT += dt; if (h.stepT > 0.3) { h.stepT = 0; this.parts.spawn({ x: h.x + U.rand(-2, 2), y: h.y, vx: U.rand(-6, 6), vy: -4, life: 0.35, c: 'rgba(120,90,60,0.6)', s: 1 }); }
@@ -3391,7 +3816,16 @@ DMT.Stats = {
       if (!twin) h.attacks++;
       const nSeal = st(run, 'seventhSeal'), sealEvery = nSeal > 1 ? 6 : 7, sealMult = nSeal > 1 ? 4 : 3;
       const seal = !twin && nSeal > 0 && h.attacks % sealEvery === 0;
-      const mult = twin ? this.cv('twinStrike').mult : 1;
+      let mult = twin ? this.cv('twinStrike').mult : 1;
+      if (!twin) {
+        if (this.critLock > 0) this.critLock--;
+        // Büyük Vuruş (Kael): her N. savuruş katlı hasar
+        if (st(run, 'buyukVurus') && h.attacks % this.cv('buyukVurus').n === 0) { mult *= this.cv('buyukVurus').mult; this.floatText(h.x, h.y - 34, 'BÜYÜK VURUŞ', '#ffcf6e', 6.5); }
+        // Kızıl Kasırga (Kael): her 4. savuruşta kasırga
+        if (st(run, 'kizilKasirga') && h.attacks % this.cv('kizilKasirga').every === 0) this.later(0.05, () => this.whirlwind());
+        // Keskin Göz kademesi (ÇİFT NAM): %30 ihtimalle çift saldırı
+        if (st(run, 'keenEye') >= D.cardById('keenEye').max && U.chance(0.3)) this.later(0.12, () => { if (!this.hero.dead && this.phase === 'fight') this.heroAttackHit(true); });
+      }
       if (melee) {
         const ang = tgt ? Math.atan2(tgt.y - h.y, tgt.x - h.x) : (h.face > 0 ? 0 : Math.PI);
         const reach = s.range + 10;
@@ -3411,7 +3845,7 @@ DMT.Stats = {
         const tt = U.dist(h.x, h.y, tgt.x, tgt.y) / this.run.hero.projSpeed;
         const px = tgt.x + (tgt.moving ? Math.sign(h.x - tgt.x) * -1 * 0 : 0), py = tgt.y - 8;
         const a = Math.atan2(py - (h.y - 10), px - h.x + 0 * tt);
-        this.proj.push({ kind: 'arrow', x: h.x + h.face * 6, y: h.y - 10, vx: Math.cos(a) * run.hero.projSpeed, vy: Math.sin(a) * run.hero.projSpeed, life: 0.9, depth: 0, seal, sealMult, magic: seal, mult, twin });
+        this.proj.push({ kind: 'arrow', x: h.x + h.face * 6, y: h.y - 10, vx: Math.cos(a) * run.hero.projSpeed, vy: Math.sin(a) * run.hero.projSpeed, life: 0.9, depth: 0, seal, sealMult, magic: seal, mult, twin, pierce: st(run, 'delinme') ? this.cv('delinme').n - 1 : 0 });
       }
       // İkiz Darbe: her (5-n). saldırı ikinci kez vurur
       const nTw = st(run, 'twinStrike');
@@ -3435,12 +3869,16 @@ DMT.Stats = {
       const s = this.stats, run = this.run;
       if (!e || e.dying) return;
       let dmg = s.dmg * (o.mult || 1) * U.rand(0.9, 1.1);
+      // V3: Lyra ODAK — aynı hedefe art arda vuruşlar güçlenir
+      if (!o.twin && run.heroId === 'lyra') { if (this.focus.e === e) this.focus.n = Math.min(6, this.focus.n + 1); else this.focus = { e, n: 1 }; }
+      dmg *= this.v3DmgMul(e); // seri (Momentum), odak, öldürme birikimleri, Öfke Kalbi, Celladın Mührü, Son Kum
       const bonus = [];
       // Cellat: düşük canlı düşmana ek kritik şansı
       let critCh = s.crit;
       const nEx = st(run, 'executioner'); if (nEx && e.hp / e.maxHp < 0.35) critCh += nEx * this.cv('executioner').low;
-      const crit = run.tmp.dance > 0 || U.chance(critCh);
-      if (crit) dmg *= s.critMult;
+      const crit = this.critLock <= 0 && (run.tmp.dance > 0 || U.chance(critCh));
+      if (crit) dmg *= s.critMult * (this.em.thickT > 0 ? 0.6 : 1);
+      if (crit) { this.critRun++; if (this.critRun >= 3 && U.chance(0.25)) this.intervene('critLock', 'ivCritLock', () => { this.critLock = 3; this.floatText(this.hero.x, this.hero.y - 36, 'ŞANS KİLİTLİ', '#ffcc66', 7); }); } else this.critRun = 0;
       if (o.seal) dmg *= o.sealMult || 3;
       // Tırtıklı Bıçak: kanayan düşmana ek hasar
       const nSe = st(run, 'serratedEdge');
@@ -3452,8 +3890,9 @@ DMT.Stats = {
         if (r < lv.hi * nLd) { bonus.push(['luckyDice', dmg * 2]); dmg *= 3; this.luckFx(e, true); }
         else if (r < lv.hi * nLd + lv.lo) { dmg *= 0.5; this.luckFx(e, false); }
       }
-      if (o.twin) bonus.push(['twinStrike', dmg]); // İkiz Darbe ek vuruşu tamamen karta yazılır
+      if (o.twin && st(run, 'twinStrike')) bonus.push(['twinStrike', dmg]); // İkiz Darbe ek vuruşu tamamen karta yazılır
       this.damage(e, dmg, { crit, depth: 0, kb: o.kb || 30, fromX: this.hero.x, fromY: this.hero.y, bonus });
+      this.cleave(e, dmg); // Geniş Kesim / Kanlı Yörünge / Güç Taşı kademesi
       // kanama (Kanatan Kenar; Tırtıklı Bıçak ile kritikler her zaman kanatır)
       const nB = st(run, 'bleed');
       let bf = nB * this.cv('bleed').b;
@@ -3475,6 +3914,10 @@ DMT.Stats = {
     // src: hasarı oluşturan kart id'si (RunEnd katkı istatistiği). bonus: [[kartId, ekHasar], ...]
     damage(e, amt, o = {}) {
       if (!e || e.dying || e.spawnT > 0) return;
+      // V3: Faro tuzakları (düşman ölümsüzlüğü / kalkanı) ve Hayalet saydamlığı
+      if (this.em.invulnT > 0) { if (Math.random() < 0.12) this.floatText(e.x, e.y - 24, 'BAĞIŞIK', '#e8dcc0', 5.5); return; }
+      if (this.em.shieldT > 0) amt *= 0.5;
+      if (e.phased) amt *= 0.5;
       amt = Math.max(1, Math.round(amt));
       const applied = Math.min(amt, e.hp);
       e.hp -= amt; this.run.dmgDealt += applied;
@@ -3509,7 +3952,7 @@ DMT.Stats = {
       this.parts.spawn({ x: e.x, y: e.y - 10, vx: 0, vy: -28, life: 0.7, c: 'rgba(200,220,255,0.7)', s: 2, kind: 'blink' });
       // coin düşür (V2: Balance.coinDropMult × yumuşak sınırlı coin çarpanı; olasılıksal yuvarlama beklentiyi korur)
       const [a, b] = e.def.coins;
-      let n = U.randi(a, b) * B.coinDropMult * s.coinMult * (e.golden ? B.goldenCoinMult : 1);
+      let n = U.randi(a, b) * B.coinDropMult * s.coinMult * (e.golden ? B.goldenCoinMult : 1) * this.coinDropMul();
       let count = Math.floor(n) + (U.chance(n - Math.floor(n)) ? 1 : 0);
       for (let i = 0; i < count; i++) this.dropCoin(e.x, e.y);
       if (count) DMT.Audio.play('coinDrop');
@@ -3520,6 +3963,7 @@ DMT.Stats = {
       if (nE && depth < 4) this.pending.push({ t: 0.12, x: e.x, y: e.y - 6, depth: depth + 1, n: nE });
       if (depth >= 1) { this.chainKills++; this.chainT = 0.8; }
       if (!this.firstKillSaid) { this.firstKillSaid = true; this.faro.say('firstKill', { priority: 1 }); }
+      if (!run.ended) this.v3Kill(e, depth, src);
       this.emit('onKill', { e, depth, src });
     },
     dropCoin(x, y) {
@@ -3573,7 +4017,11 @@ DMT.Stats = {
       const h = this.hero;
       if (h.dead || this.phase !== 'fight') return;
       if (h.inv > 0 && !bypass) return;
+      // V3: Can Kalkanı darbe engeller; tuzaklar düşman hasarını artırabilir; Çelik Deri hasarı düşürür
+      if (!bypass && this.shieldHits > 0) { this.shieldHits--; h.inv = 0.15; this.fx.push({ kind: 'ring', x: h.x, y: h.y - 8, r: 16, t: 0, life: 0.25, color: '#bfe8ff' }); DMT.Audio.play('hit'); this.floatText(h.x, h.y - 30, 'ENGELLENDİ', '#bfe8ff', 6); return; }
+      if (!bypass) amt *= this.enemyDmgMul();
       if (!bypass && this.run.hero.armor) amt *= 1 - this.run.hero.armor;
+      if (!bypass && st(this.run, 'celikDeri')) amt = Math.max(1, amt - st(this.run, 'celikDeri') * this.cv('celikDeri').red);
       amt = Math.max(1, Math.round(amt));
       h.hp -= amt; this.run.dmgTaken += amt; h.flash = 0.12; h.inv = 0.12;
       DMT.Audio.play('heroHurt');
@@ -3593,7 +4041,7 @@ DMT.Stats = {
           for (const e of this.enemies) if (!e.dying && U.dist(e.x, e.y, h.x, h.y) < 60) { const dx = e.x - h.x, dy = e.y - h.y, d = Math.hypot(dx, dy) || 1; e.kx += (dx / d) * 120; e.ky += (dy / d) * 120; }
           return;
         }
-        h.hp = 0; h.dead = true; h.deathT = 0;
+        h.hp = 0; h.dead = true; h.deathT = 0; this.run.deathPos = { x: Math.round(h.x), y: Math.round(h.y) };
         this.parts.burst(h.x, h.y - 10, 24, { c: ['#c0263a', '#7e1f33', '#f4ecdc'], min: 20, max: 90, life: 0.8, g: 120, s: 2, kind: 'shrink' });
         this.shake = 4;
         this.endRun(false);
@@ -3618,6 +4066,7 @@ DMT.Stats = {
         }
         // V2: yavaşlatma (Kan Gölü, Kefen Hortlağı)
         let slow = 1; if (e.slowT > 0) { e.slowT -= dt; slow = 0.65; }
+        if (this.v3EnemyPre(e, dt)) { e.x = U.clamp(e.x, AR.x0, AR.x1); e.y = U.clamp(e.y, AR.y0, AR.y1); continue; } // zehir, saydamlık, ışınlanma, donma
         // geri itme
         e.x += e.kx * dt; e.y += e.ky * dt; const kd = Math.pow(0.0008, dt); e.kx *= kd; e.ky *= kd;
         const dx = h.x - e.x, dy = h.y - e.y, d = Math.hypot(dx, dy) || 1;
@@ -3631,7 +4080,7 @@ DMT.Stats = {
             if (e.atk >= 0.36) e.atk = 0;
           } else if (d > reach) {
             e.moving = true;
-            const sp = e.speed * rage * slow;
+            const sp = e.speed * rage * slow * this.enemySpeedMul();
             e.x += (dx / d) * sp * dt; e.y += (dy / d) * sp * dt;
           } else {
             e.atkT -= dt * rage;
@@ -3671,7 +4120,7 @@ DMT.Stats = {
         for (const e of this.enemies) { if (e.dying || e.spawnT > 0) continue; if (Math.abs(e.x - p.x) < e.r + 3 && Math.abs(e.y - 8 - p.y) < e.r + 6) { hitE = e; break; } }
         if (hitE && p.hitSet && p.hitSet.has(hitE)) hitE = null;
         if (hitE) {
-          if (p.kind === 'arrow') this.heroHit(hitE, { seal: p.seal, sealMult: p.sealMult, kb: 20, mult: p.mult || 1, twin: p.twin });
+          if (p.kind === 'arrow') { this.heroHit(hitE, { seal: p.seal, sealMult: p.sealMult, kb: 20, mult: p.mult || 1, twin: p.twin }); this.arrowExtras(p, hitE); }
           else this.damage(hitE, p.dmg, { depth: p.depth, color: PROJ_COL[p.kind] || '#c8a0ff', kb: 15, fromX: p.x - p.vx, fromY: p.y - p.vy, src: p.src });
           this.emit('onProjectileHit', { p, e: hitE });
           this.parts.burst(p.x, p.y, 3, { c: p.kind === 'arrow' ? ['#fff', '#c8d0e0'] : p.kind === 'shard' ? [P.gold4, P.gold3] : p.kind === 'missile' ? ['#e0b0ff', '#b46cff'] : ['#9adcff', '#c8a0ff'], min: 10, max: 40, life: 0.2 });
@@ -3686,6 +4135,7 @@ DMT.Stats = {
     updateCoins(dt) {
       const I = DMT.Input, mag = this.stats.magnet;
       const C = this.coins;
+      if (C.length && this.phase === 'fight' && this.elapsed > 3) this.tutorial('coins', 'tutCoins');
       for (let i = C.length - 1; i >= 0; i--) {
         const c = C[i];
         c.ft += dt;
@@ -3695,7 +4145,8 @@ DMT.Stats = {
         c.x = U.clamp(c.x, AR.x0, AR.x1); c.y = U.clamp(c.y, AR.y0 + 4, AR.y1);
         c.life -= dt;
         if (c.life <= 0) {
-          this.run.coinsMissed++; this.missRecent++;
+          this.run.coinsMissed++; this.missRecent++; if (this.purse) this.purse.vault++; // kaçan coin Faro'nun kesesine
+          this.tutorial('sweep', 'tutSweep');
           this.parts.burst(c.x, c.y - 2, 3, { c: ['#7a5418', '#3a2a10'], min: 5, max: 15, life: 0.3 });
           C.splice(i, 1); continue;
         }
@@ -3753,14 +4204,14 @@ DMT.Stats = {
       const frac = h.hp / this.stats.maxHp;
       if (!h.dead && frac < 0.35) { f.setMood('amused', 2); if (this.elapsed - this.lowSaid > 14) { if (f.say('lowHp', { priority: 2, catGap: 14 })) { this.lowSaid = this.elapsed; f.act('laugh', 1.1); } } }
       if (frac > 0.8 && this.run.kills > this.elapsed * 0.9 && this.elapsed > 25) { this.doingWell += dt; if (this.doingWell > 10) { this.doingWell = 0; if (f.say('annoyed', { priority: 1, catGap: 25 })) { f.setMood('annoyed', 4); f.act('annoyed', 1.4); } } }
-      if (f.quietFor > 11 && !f.bubble) { if (f.say('bored', { priority: 0, catGap: 22 })) { f.setMood('bored', 5); f.act('bored', 2.5); } }
+      if (f.quietFor > 11 && !f.bubble) { if (f.say(U.chance(0.5) ? 'bored' : 'boredReturn', { priority: 0, catGap: 22 })) { f.setMood('bored', 5); f.act('bored', 2.5); if (U.chance(0.4)) this.intervene('spawnPause', 'ivPause', () => { this.spawnPauseT = 8; this.floatText(320, 132, 'ÖLÜLER TATİLDE', '#88ddff', 8); }); } }
     },
 
     // ================== RUN SONU ==================
     endRun(won) {
       const run = this.run;
       if (run.ended) return;
-      run.ended = true; run.won = won; run.time = Math.min(this.tdef.dur, this.elapsed); run.hpEnd = Math.max(0, this.hero.hp) / this.stats.maxHp;
+      run.ended = true; run.won = won; run.time = Math.min(this.tdef.dur + Math.max(0, run.timeAdded || 0), this.elapsed); run.hpEnd = Math.max(0, this.hero.hp) / this.stats.maxHp;
       if (this.modal) { DMT.UI.remove('modal'); this.modal = null; }
       this.phase = 'ending'; this.endT = 0;
       this.pending.length = 0;
@@ -4096,6 +4547,460 @@ DMT.CardFx = (function () {
 })();
 
 // ============================================================
+//  23c ESKİ SÜRÜM SİSTEMLERİ (V3) — önceki sürümün data dosyalarından uyarlandı
+//  Grid/zar/çoklu kahraman gibi çekirdek döngüyü değiştiren sistemler taşınmadı; Faro'nun kişiliği,
+//  tuzak/imza kartları, kesesi, müdahaleleri, kahraman özellikleri, masa kuralları ve kart içerikleri taşındı.
+// ============================================================
+// Yeni normal kartların "seçince" etkileri (onAcquire) — mevcut olay sistemine eklenir
+Object.assign(DMT.CardFx, {
+  donmaTopu: { onAcquire(S) { S.freezeEnemies(S.cv('donmaTopu').dur); } },
+  altinYagmuru: { onAcquire(S) { S.coinRain(S.cv('altinYagmuru').coins); } },
+  gucDalgasi: { onAcquire(S) { S.addBuff('powerWave', S.cv('gucDalgasi').dur); } },
+  kanPakti: { onAcquire(S) { const v = S.cv('kanPakti'); S.run.mods.dmg *= 1 + v.dmg; S.run.mods.maxHpMul *= 1 - v.hp; S.recalc(); } },
+  yildirimCagrisi: { onAcquire(S) { const n = S.cv('yildirimCagrisi').count; for (let i = 0; i < n; i++) S.later(0.15 + i * 0.14, () => { const e = S.randomEnemy(); if (e) S.lightningStrike(e, 'yildirimCagrisi'); }); } },
+  savasIcgudusu: { onAcquire(S) { S.streakLockT = Math.max(S.streakLockT, S.cv('savasIcgudusu').dur); S.floatText(S.hero.x, S.hero.y - 40, 'SERİ KİLİTLİ', '#ffb070', 7); } },
+  zamanBuyusu: { onAcquire(S) { S.addTime(S.cv('zamanBuyusu').t); } },
+  canKalkani: { onAcquire(S) { S.shieldHits += S.cv('canKalkani').hits; } },
+  sessizAdimlar: { onAcquire(S) { S.spawnSlowT = Math.max(S.spawnSlowT, S.cv('sessizAdimlar').dur); } },
+  zayifKonuklar: { onAcquire(S) { S.weakT = Math.max(S.weakT, S.cv('zayifKonuklar').dur); } },
+  faronunGozu: { onAcquire(S) { S.mgExtraAt = S.elapsed + 8; } },
+  kilicFirtinasi: { onAcquire(S) { S.addBuff('swordStorm', S.cv('kilicFirtinasi').dur); S.swordStorm = true; } },
+});
+
+(function () {
+  const D = DMT.Data, S = DMT.FightScene, RunM = DMT.Run;
+  const AR = S.AR;
+  const st = (run, id) => run.cards[id] || 0;
+  const IV_POOL = ['spawnBurst', 'spawnPause', 'addTime', 'removeTime', 'replaceCard', 'critLock', 'reluctantHelp', 'faroTimeFreeze'];
+  const TEMPERS = { happy: 'NEŞELİ', sad: 'HÜZÜNLÜ', angry: 'SİNİRLİ', drunk: 'SARHOŞ', bored: 'SIKILMIŞ' };
+  const DMG_CARDS = ['heavyHand', 'gucDalgasi', 'kanPakti', 'ofkeTasi', 'savasIlahisi', 'kanHirsi', 'kanBicer', 'kilicFirtinasi', 'buyukVurus'];
+  // Faro'nun kesesi (eski faroPurseEvents.js): weight, cost(vault), minVault, maxPerRun
+  const PURSE = [
+    { id: 'roundOnHouse', w: 30, cost: () => 25, min: 25, max: 2 },
+    { id: 'barTab', w: 25, cost: (v) => Math.round(v * U.rand(0.25, 0.35)), min: 40, max: 2 },
+    { id: 'oneForMe', w: 25, cost: () => 15, min: 15, max: 2 },
+    { id: 'buyingTime', w: 15, cost: () => 30, min: 30, max: 2 },
+    { id: 'backRoom', w: 10, cost: () => 30 + U.randi(0, 29), min: 30, max: 2 },
+    { id: 'specialDelivery', w: 12, cost: () => 35, min: 35, max: 2 },
+    { id: 'markedDeck', w: 8, cost: () => 45, min: 45, max: 1 },
+    { id: 'houseCut', w: 10, cost: () => 30, min: 100, max: 2 },
+    { id: 'houseGenerous', w: 5, cost: () => 50, min: 150, max: 1 },
+  ];
+
+  Object.assign(S, {
+    v3Init() {
+      const run = this.run;
+      run.streak = 0; run.maxStreak = 0; run.tricks = []; run.trapsTaken = 0; run.trapsAvoided = 0; run.killStack = 0; run.ilahi = 0;
+      run.mods = { dmg: 1, aspd: 1, crit: 0, priceMul: 1, priceAdd: 0, coinMul: 1, maxHpMul: 1 };
+      this.streakT = 0; this.streakLockT = 0; this.focus = { e: null, n: 0 }; this.critRun = 0; this.critLock = 0; this.killN = 0;
+      this.em = { hpMulRun: 1, dmgMulRun: 1, killBuff: 0, killBuffOn: false, atkT: 0, shieldT: 0, slowT: 0, sayT: 0, invulnT: 0, invisT: 0, freezeT: 0, thickT: 0, wardT: 0 };
+      this.heroFrozenT = 0; this.noCoinT = 0; this.spawnPauseT = 0; this.spawnSlowT = 0; this.weakT = 0; this.forced = null; this.forcedT = 0;
+      this.offerEvery = 6; this.offerEveryT = 0; this.timerFrozenT = 0; this.shieldHits = 0; this.echo = 0; this.bet = null;
+      this.narrowNext = false; this.markedNext = null; this.swordStorm = false; this.mgExtraAt = null; this.ivSec = 1;
+      this.cracks = []; this.crackT = 1.5; this.overrunT = 0; this.overrunWarned = false; this.lowAliveT = 0;
+      this.iv = new Set(U.shuffle(IV_POOL.slice()).slice(0, U.chance(0.5) ? 2 : 3)); this.ivUsed = new Set();
+      this.freeze = null; this.freezeCheck = U.rand(20, 35); this.capriceCheck = U.rand(15, 25); this.capriceUsed = false;
+      this.purse = { vault: 0, t: 16, used: {} };
+      this.commentT = U.rand(16, 22); this.streakSaid = false;
+      // Faro'nun bu geceki huyu (eski dialogs.js randomizeMood) — yarı yarıya huysuz bir gece
+      const tp = U.pick([null, null, 'happy', 'sad', 'angry', 'drunk', 'bored']);
+      DMT.FaroMemory.temper = tp; this.temperSayT = tp ? 3.2 : 0;
+    },
+    // ---------------- yardımcılar ----------------
+    has(id) { return this.iv.has(id) && !this.ivUsed.has(id); },
+    // eski TutorialSystem: her ipucu kayıt başına bir kez, Faro'nun ağzından
+    tutorial(key, cat) { const d = DMT.Save.data; d.tut = d.tut || {}; if (d.tut[key]) return; if (this.faro.say(cat, { priority: 2, dur: 5 })) { d.tut[key] = true; DMT.Save.write(); } },
+    intervene(id, cat, fn, delay = 1.5) {
+      if (!this.has(id)) return false;
+      this.ivUsed.add(id); this.faro.say(cat, { priority: 3 }); this.faro.act('point', 1.2); DMT.Audio.play('hmm');
+      this.later(delay, fn); return true;
+    },
+    addTime(sec) { this.timeLeft += sec; this.run.timeAdded = (this.run.timeAdded || 0) + sec; this.floatText(320, 132, (sec > 0 ? '+' : '') + sec + ' sn', sec > 0 ? '#88ddff' : '#ff8866', 8); },
+    freezeEnemies(dur) {
+      for (const e of this.enemies) if (!e.dying) { e.frozenT = Math.max(e.frozenT || 0, dur); this.parts.burst(e.x, e.y - 8, 3, { c: ['#bfe8ff', '#ffffff'], min: 6, max: 20, life: 0.4 }); }
+      DMT.Audio.play('zap'); this.floatText(this.hero.x, this.hero.y - 40, 'DONDU!', '#bfe8ff', 8);
+    },
+    coinRain(n) { const h = this.hero; for (let i = 0; i < n; i++) this.dropCoin(U.clamp(h.x + U.rand(-40, 40), AR.x0 + 8, AR.x1 - 8), U.clamp(h.y + U.rand(-18, 18), AR.y0 + 8, AR.y1)); DMT.Audio.play('coinDrop'); },
+    takeCoins(n) { const k = Math.min(n, this.run.currentRunCoins); this.run.currentRunCoins -= k; this.purse.vault += k; if (k) this.floatText(392, 74, '-' + k + ' coin', '#ff8866', 7); return k; },
+    spawnN(n, type) { for (let i = 0; i < n; i++) this.spawnEnemy(type || this.pickType(U.clamp(this.elapsed / this.tdef.dur, 0, 1)), { noMirror: true }); },
+    enemyHpMul() { return this.em.hpMulRun * (st(this.run, 'kanliZemin') ? 1 + this.cv('kanliZemin').hp : 1) * (this.em.wardT > 0 ? 1.3 : 1); },
+    enemyDmgMul() { return this.em.dmgMulRun * (this.em.atkT > 0 ? 1.5 : 1) * (1 + this.em.killBuff); },
+    enemySpeedMul() { return (this.em.slowT > 0 ? 0.6 : 1) * (this.em.sayT > 0 ? 1.3 : 1); },
+    heroSpeedMul() { const h = this.hero; let m = 1; if (this.special && this.special.cracks) for (const c of this.cracks) { const dx = h.x - c.x, dy = (h.y - c.y) / 0.5; if (dx * dx + dy * dy < c.r * c.r) { m *= this.special.crackSlow; break; } } return m; },
+    coinDropMul() { if (this.noCoinT > 0) return 0; return this.run.mods.coinMul * (st(this.run, 'kanliZemin') ? 1 + this.cv('kanliZemin').coin : 1); },
+    streakPer() { const kael = this.run.heroId === 'kael'; return (kael ? 0.025 : 0.012) * (1 + st(this.run, 'streakUstasi') * this.cv('streakUstasi').mult); },
+    streakCap() { return this.run.heroId === 'kael' ? 0.5 : 0.3; },
+    streakBonus() { return Math.min(this.streakCap() * (1 + st(this.run, 'streakUstasi') * 0.5), this.run.streak * this.streakPer()); },
+    focusBonus() { return this.run.heroId === 'lyra' ? 0.08 * Math.max(0, this.focus.n - 1) : 0; },
+    // V3 hasar çarpanı (heroHit'te kritikten önce)
+    v3DmgMul(e) {
+      const run = this.run, h = this.hero;
+      let m = 1 + this.streakBonus() + this.focusBonus() + run.killStack + run.ilahi;
+      if (st(run, 'ofkeKalbi')) m += this.cv('ofkeKalbi').max * (1 - U.clamp(h.hp / this.stats.maxHp, 0, 1));
+      if (st(run, 'cellatMuhru') && e.hp / e.maxHp < this.cv('cellatMuhru').th) m *= this.cv('cellatMuhru').mult;
+      if (st(run, 'sonKum') && this.timeLeft <= this.cv('sonKum').last) m *= 1 + this.cv('sonKum').dmg;
+      return m;
+    },
+    // ---------------- seri (Momentum) ----------------
+    v3Kill(e, depth, src) {
+      const run = this.run, h = this.hero;
+      // seri: her öldürme seriyi büyütür, 3 sn öldürmesiz kalırsa (kilit/kademe yoksa) söner
+      run.streak++; run.maxStreak = Math.max(run.maxStreak, run.streak);
+      this.streakT = st(run, 'bloodlust') >= D.cardById('bloodlust').max ? 6 : 3;
+      if (run.streak === 20 && !this.streakSaid) { this.streakSaid = true; this.faro.say('killStreak', { priority: 2 }); }
+      if (this.em.killBuffOn) this.em.killBuff = Math.min(0.4, this.em.killBuff + 0.02);
+      // biriken öldürme bonusları
+      const add = (id, key) => { if (st(run, id)) { const v = this.cv(id); run.killStack = Math.min(run.killStack + v.per, Math.max(run.killStack, v.cap)); } };
+      add('kanHirsi'); add('ofkeTasi'); add('kanBicer');
+      if (st(run, 'kanBicer')) this.heal(this.cv('kanBicer').heal, 'kanBicer');
+      this.killN++;
+      if (st(run, 'savasIlahisi') && this.killN % this.cv('savasIlahisi').every === 0) { run.ilahi += this.cv('savasIlahisi').dmg; this.floatText(h.x, h.y - 40, 'İLAHİ +%' + Math.round(run.ilahi * 100), P.gold4, 7.5); }
+      const nCan = st(run, 'olumCani');
+      if (nCan && this.killN % (6 - nCan) === 0 && depth < 4) { this.later(0.05, () => this.explode(e.x, e.y - 6, 36, this.stats.dmg * this.cv('olumCani').mult, depth + 1, 'corpse', 'olumCani')); }
+      if (st(run, 'sonKum') && this.timeLeft <= this.cv('sonKum').last && (this.sonKumGiven || 0) < 10) { this.timeLeft += this.cv('sonKum').per; run.timeAdded = (run.timeAdded || 0) + this.cv('sonKum').per; this.sonKumGiven = (this.sonKumGiven || 0) + this.cv('sonKum').per; }
+      const nOy = st(run, 'okYagmuru');
+      if (nOy && this.killN % this.cv('okYagmuru').every === 0) this.later(0.05, () => this.volley(this.cv('okYagmuru').n + nOy - 1));
+      if (st(run, 'comertMasa') && this.coinDropMul() > 0 && U.chance(this.cv('comertMasa').ch)) this.dropCoin(e.x, e.y);
+      // Bölünen: ölünce Sürü'ye ayrılır
+      if (e.def.split) for (let i = 0; i < e.def.split; i++) { const a = Math.random() * 6.28; this.spawnEnemy('swarm', { x: U.clamp(e.x + Math.cos(a) * 8, AR.x0, AR.x1), y: U.clamp(e.y + Math.sin(a) * 5, AR.y0, AR.y1), noMirror: true, quick: true }); }
+      // Zehir Çiçeği
+      if (e.poison && st(run, 'zehirCicegi') && depth < 4) { const v = this.cv('zehirCicegi'); this.later(0.06, () => this.poisonBloom(e.x, e.y, v, depth + 1)); }
+      // Yankı Masası (tuzak)
+      if (this.echo > 0) { this.echo--; this.later(0.3, () => this.spawnEnemy('grunt', { x: e.x, y: e.y, noMirror: true })); }
+      // Faro'nun bahsi
+      if (this.bet) this.bet.kills++;
+      // Faro müdahaleleri
+      if (run.streak >= 8 && U.chance(0.3)) this.intervene('spawnBurst', 'ivBurst', () => this.spawnN(5));
+      if ((run.streak >= 12 || run.kills / Math.max(1, this.elapsed) >= 1.8) && U.chance(0.15)) this.intervene('removeTime', 'ivRemoveTime', () => { this.timeLeft = Math.max(1, this.timeLeft - 5); this.floatText(320, 132, '-5 sn', '#ff8866', 8); });
+    },
+    // ---------------- Kael / Lyra özel saldırı etkileri ----------------
+    cleave(e, dmg) {
+      const run = this.run;
+      let r = 0, pct = 0, bleed = false, one = false;
+      if (st(run, 'kanliYorunge')) { const v = this.cv('kanliYorunge'); r = v.r; pct = v.pct; bleed = true; }
+      else if (st(run, 'genisKesim')) { const v = this.cv('genisKesim'); r = v.r; pct = v.pct; }
+      else if (st(run, 'heavyHand') >= D.cardById('heavyHand').max) { r = 30; pct = 0.5; one = true; }
+      if (!r) return;
+      let hit = 0;
+      for (const o of this.enemies) {
+        if (o === e || o.dying || o.spawnT > 0 || U.dist(o.x, o.y, e.x, e.y) > r + o.r) continue;
+        this.damage(o, dmg * pct, { depth: 1, quiet: true, kb: 25, fromX: e.x, fromY: e.y, src: bleed ? 'kanliYorunge' : one ? 'heavyHand' : 'genisKesim' });
+        if (bleed) this.applyBleed(o, dmg * 0.25, 3, 'kanliYorunge');
+        hit++; if (one) break;
+      }
+      if (hit && !one) this.fx.push({ kind: 'ring', x: e.x, y: e.y - 4, r: r * 0.8, t: 0, life: 0.2, color: bleed ? '#e0404e' : '#e8dcc0' });
+    },
+    whirlwind() {
+      const h = this.hero, v = this.cv('kizilKasirga');
+      this.fx.push({ kind: 'ring', x: h.x, y: h.y - 6, r: v.r, t: 0, life: 0.3, color: '#ff5a5a' });
+      this.parts.burst(h.x, h.y - 8, 14, { c: ['#c0263a', '#ff5a5a', '#e8dcc0'], min: 40, max: 110, life: 0.35, drag: 0.05 });
+      DMT.Audio.play('swing'); this.shake = Math.max(this.shake, 1.5);
+      for (const e of this.enemies) { if (e.dying || e.spawnT > 0) continue; if (U.dist(h.x, h.y, e.x, e.y) <= v.r + e.r) this.damage(e, this.stats.dmg * v.pct * this.v3DmgMul(e), { depth: 1, kb: 80, fromX: h.x, fromY: h.y, quiet: true, src: 'kizilKasirga' }); }
+    },
+    volley(n) {
+      const h = this.hero, L = this.enemies.filter((e) => !e.dying && e.spawnT <= 0 && !e.phased).sort((a, b) => U.dist2(a.x, a.y, h.x, h.y) - U.dist2(b.x, b.y, h.x, h.y)).slice(0, n);
+      for (const e of L) { const a = Math.atan2(e.y - 8 - (h.y - 10), e.x - h.x); this.proj.push({ kind: 'arrow', x: h.x, y: h.y - 12, vx: Math.cos(a) * 300, vy: Math.sin(a) * 300, life: 0.9, depth: 0, mult: 0.8, volley: true }); }
+      if (L.length) { DMT.Audio.play('bow'); this.floatText(h.x, h.y - 36, 'OK YAĞMURU', '#c8d0dc', 7); }
+    },
+    // Lyra ok eklentileri: sekme, patlama, zehir (ok bir düşmana çarptığında)
+    arrowExtras(p, e) {
+      const run = this.run, s = this.stats;
+      if (p.ric) return; // sekme okları tekrar sekmez
+      const base = s.dmg * (p.mult || 1);
+      const chain = st(run, 'ciftSekme') ? this.cv('ciftSekme').m : st(run, 'okFirtinasi') ? [this.cv('okFirtinasi').pct] : null;
+      if (chain) {
+        let from = e; const used = new Set([e]);
+        chain.forEach((pct, i) => this.later(0.06 + i * 0.08, () => {
+          let best = null, bd = 120 * 120;
+          for (const o of this.enemies) { if (o.dying || o.spawnT > 0 || used.has(o)) continue; const d = U.dist2(from.x, from.y, o.x, o.y); if (d < bd) { bd = d; best = o; } }
+          if (!best) return; used.add(best);
+          this.fx.push({ kind: 'bolt', pts: [[from.x, from.y - 10], [best.x, best.y - 10]], t: 0, life: 0.12, color: '#c8d0dc' });
+          this.damage(best, base * pct * this.v3DmgMul(best), { depth: 1, color: '#c8d0dc', kb: 10, fromX: from.x, fromY: from.y, src: st(run, 'ciftSekme') ? 'ciftSekme' : 'okFirtinasi' });
+          if (st(run, 'zehirliOk')) this.applyPoison(best, base);
+          from = best;
+        }));
+      }
+      const blast = st(run, 'barutCekirdegi') ? this.cv('barutCekirdegi') : st(run, 'patlayanOk') ? this.cv('patlayanOk') : null;
+      if (blast) {
+        const r = blast.r * s.blastR;
+        this.fx.push({ kind: 'boom', x: e.x, y: e.y - 6, r, t: 0, life: 0.25, style: 'powder' });
+        for (const o of this.enemies) { if (o === e || o.dying || o.spawnT > 0) continue; if (U.dist(o.x, o.y, e.x, e.y) <= r + o.r) this.damage(o, base * blast.pct * s.blastD, { depth: 1, quiet: true, kb: 30, fromX: e.x, fromY: e.y, src: st(run, 'barutCekirdegi') ? 'barutCekirdegi' : 'patlayanOk' }); }
+      }
+      if (st(run, 'zehirliOk')) this.applyPoison(e, base);
+    },
+    applyPoison(e, base) {
+      if (!e || e.dying) return;
+      const v = this.cv('zehirliOk'), n = st(this.run, 'zehirliOk');
+      e.poison = { t: v.dur, dps: Math.max(e.poison ? e.poison.dps : 0, base * v.dps * n), acc: e.poison ? e.poison.acc : 0, tick: 0 };
+    },
+    poisonBloom(x, y, v, depth) {
+      const s = this.stats, r = v.r * s.blastR;
+      this.fx.push({ kind: 'boom', x, y: y - 6, r, t: 0, life: 0.3, style: 'corpse' });
+      DMT.Audio.play('boom');
+      for (const o of this.enemies) { if (o.dying || o.spawnT > 0) continue; if (U.dist(o.x, o.y, x, y) <= r + o.r) { this.damage(o, s.dmg * v.mult, { depth, quiet: true, color: '#8ad35a', src: 'zehirCicegi' }); this.applyPoison(o, s.dmg); } }
+    },
+    // ---------------- düşman güncellemesi eklentileri ----------------
+    v3EnemyPre(e, dt) { // true → bu karede hareket/saldırı yok
+      // zehir
+      if (e.poison) {
+        const z = e.poison; z.t -= dt; z.acc += z.dps * dt; z.tick += dt;
+        if (z.tick >= 0.5) { z.tick = 0; if (z.acc >= 1) { const a = Math.floor(z.acc); z.acc -= a; this.damage(e, a, { depth: 1, quiet: true, color: '#8ad35a', src: st(this.run, 'zehirliOk') ? 'zehirliOk' : 'zehirCicegi' }); this.parts.spawn({ x: e.x + U.rand(-3, 3), y: e.y - 8, vx: 0, vy: -12, life: 0.4, c: '#8ad35a', s: 1 }); if (e.dying) return true; } }
+        if (e.poison && e.poison.t <= 0) e.poison = null;
+      }
+      // Hayalet: saydamlaşma
+      if (e.def.phase) { e.phaseT -= dt; if (e.phaseT <= 0) { e.phased = !e.phased; e.phaseT = e.phased ? 1.1 : U.rand(1.6, 2.6); } }
+      // Fantom: kahramanın yakınına ışınlanma
+      if (e.def.teleport && !this.hero.dead) {
+        e.tpT -= dt;
+        if (e.tpT <= 0) {
+          e.tpT = e.def.teleport + U.rand(-0.5, 0.5);
+          const a = Math.random() * Math.PI * 2, d = U.rand(46, 70);
+          this.parts.burst(e.x, e.y - 8, 8, { c: ['#5e4a8a', '#b46cff', '#1a1028'], min: 10, max: 40, life: 0.4 });
+          e.x = U.clamp(this.hero.x + Math.cos(a) * d, AR.x0 + 8, AR.x1 - 8); e.y = U.clamp(this.hero.y + Math.sin(a) * d * 0.6, AR.y0 + 8, AR.y1);
+          this.parts.burst(e.x, e.y - 8, 8, { c: ['#5e4a8a', '#b46cff', '#e0b0ff'], min: 10, max: 40, life: 0.4 }); DMT.Audio.play('ghost');
+        }
+      }
+      // donma (Donma Topu / Faro donması)
+      if ((e.frozenT || 0) > 0) { e.frozenT -= dt; e.moving = false; e.atk = 0; return true; }
+      if (this.em.freezeT > 0) { e.moving = false; e.atk = 0; return true; }
+      return false;
+    },
+    // ---------------- ana V3 güncellemesi (savaş fazında, kahraman yaşarken) ----------------
+    updateV3(dt) {
+      const run = this.run, h = this.hero, em = this.em;
+      // sayaçlar
+      for (const k of ['atkT', 'shieldT', 'slowT', 'sayT', 'invulnT', 'invisT', 'freezeT', 'thickT', 'wardT']) if (em[k] > 0) em[k] -= dt;
+      for (const k of ['heroFrozenT', 'noCoinT', 'spawnPauseT', 'spawnSlowT', 'weakT', 'forcedT', 'streakLockT']) if (this[k] > 0) this[k] -= dt;
+      if (this.offerEveryT > 0) { this.offerEveryT -= dt; if (this.offerEveryT <= 0) this.offerEvery = 6; }
+      // seri sönümü
+      if (run.streak > 0 && this.streakLockT <= 0) { this.streakT -= dt; if (this.streakT <= 0) run.streak = 0; }
+      // Kılıç Fırtınası bitti → kalıcı ceza
+      if (this.swordStorm && !run.buffs.some((b) => b.id === 'swordStorm')) { this.swordStorm = false; run.mods.dmg *= 1 - this.cv('kilicFirtinasi').pen; this.recalc(); this.floatText(h.x, h.y - 36, 'FIRTINA DİNDİ -%10', '#ff8866', 7); }
+      // Hız Tanrısı (tuzak): can emilimi
+      if (run.buffs.some((b) => b.id === 'trapSpeed') && h.hp > 1) { this.drainAcc = (this.drainAcc || 0) + this.stats.maxHp * 0.03 * dt; if (this.drainAcc >= 1) { const k = Math.floor(this.drainAcc); this.drainAcc -= k; h.hp = Math.max(1, h.hp - k); } }
+      // Faro'nun huyu
+      if (this.temperSayT > 0) { this.temperSayT -= dt; if (this.temperSayT <= 0) { const tp = DMT.FaroMemory.temper; this.faro.say('temper' + tp.charAt(0).toUpperCase() + tp.slice(1), { priority: 2 }); this.floatText(320, 104, 'FARO BU GECE ' + TEMPERS[tp], '#e0c070', 7); } }
+      // Faro'nun bahsi
+      if (this.bet) {
+        this.bet.t -= dt;
+        if (this.bet.kills >= this.bet.need) { this.bet = null; run.mods.dmg *= 1.15; this.recalc(); this.showBanner('BAHSİ KAZANDIN', 'Hasar +%15', P.toxic, 1.8); this.faro.act('annoyed', 1.2); this.faro.say('trapAvoided', { priority: 2 }); }
+        else if (this.bet.t <= 0) { this.bet = null; this.takeCoins(8); this.showBanner('BAHSİ KAYBETTİN', 'Faro 8 coin aldı', '#ff6a5a', 1.8); this.faro.act('laugh', 1.2); }
+      }
+      // ek mini oyun (Faro'nun Gözü)
+      if (this.mgExtraAt != null && this.elapsed >= this.mgExtraAt && !this.event && !this.modal && this.offerT > 1.5) { this.mgExtraAt = null; this.mgDone = false; this.openMinigame(); return; }
+      this.updateTableRule(dt);
+      this.updateFreeze(dt);
+      // saniyelik müdahale kontrolleri
+      this.ivSec -= dt;
+      if (this.ivSec <= 0) {
+        this.ivSec = 1;
+        if (this.elapsed >= 14 && run.kills <= Math.max(3, this.elapsed * 0.45) && U.chance(0.2)) this.intervene('addTime', 'ivAddTime', () => this.addTime(8));
+        if (h.hp / this.stats.maxHp < 0.3 && U.chance(0.12)) this.intervene('reluctantHelp', 'reluctantHelp', () => { this.heal(this.stats.maxHp * 0.2, 'faro'); this.floatText(h.x, h.y - 36, 'FARO YARDIM ETTİ?', '#e8dcc0', 7); }, 0.8);
+      }
+      // kural kaprisi (bir kez)
+      if (!this.capriceUsed && this.elapsed >= this.capriceCheck) {
+        if (U.chance(0.35)) this.ruleCaprice(); else this.capriceCheck = this.elapsed + U.rand(15, 25);
+      }
+      // Faro'nun kesesi
+      this.purse.t -= dt;
+      if (this.purse.t <= 0) { this.purse.t = U.rand(12, 18); if (this.elapsed > 20 && U.chance(0.55)) this.purseEvent(); }
+      // Ev Sigortası: masa fazla boşalırsa
+      const alive = this.enemies.reduce((n, e) => n + (e.dying ? 0 : 1), 0);
+      if (this.elapsed > 20 && alive <= 1 && !this.freeze) { this.lowAliveT += dt; if (this.lowAliveT > 2 && this.purse.vault >= 40 && (this.purse.used.houseInsurance || 0) < 2) { this.lowAliveT = 0; this.purse.used.houseInsurance = (this.purse.used.houseInsurance || 0) + 1; this.purse.vault -= 40; this.faro.say('purseHouseInsurance', { priority: 3 }); this.later(1.2, () => this.spawnN(5)); } }
+      else this.lowAliveT = 0;
+      // iyi / kötü gidiş yorumu
+      this.commentT -= dt;
+      if (this.commentT <= 0) {
+        this.commentT = U.rand(16, 24);
+        const hp = h.hp / this.stats.maxHp, rate = run.kills / Math.max(1, this.elapsed);
+        if (hp > 0.7 && rate > 1.1) this.faro.say('goodRun', { priority: 1, catGap: 20 });
+        else if (hp < 0.4 || rate < 0.6) this.faro.say('badRun', { priority: 1, catGap: 20 });
+      }
+    },
+    // ---------------- Masa II: Kırık Ayna (yansıma, çatlak zemin, kuşatma) ----------------
+    updateTableRule(dt) {
+      const sp = this.special; if (!sp) return;
+      if (sp.cracks) {
+        this.crackT -= dt;
+        if (this.crackT <= 0) {
+          this.crackT = sp.crackEvery; this.cracks = [];
+          for (let i = 0; i < sp.cracks; i++) this.cracks.push({ x: U.rand(AR.x0 + 60, AR.x1 - 60), y: U.rand(AR.y0 + 30, AR.y1 - 20), r: U.rand(24, 34), seed: Math.random() * 100, t: 0 });
+          DMT.Audio.play('shatter');
+        }
+        for (const c of this.cracks) c.t += dt;
+      }
+      if (sp.swarmCap) {
+        const alive = this.enemies.reduce((n, e) => n + (e.dying ? 0 : 1), 0);
+        if (alive >= sp.swarmCap) {
+          if (!this.overrunWarned) { this.overrunWarned = true; this.showBanner('KUŞATILIYORSUN!', 'Kalabalığı ' + sp.swarmGrace + ' sn içinde azalt', '#ff5050', 2); this.faro.say('overrunWarn', { priority: 2 }); }
+          this.overrunT += dt;
+          if (this.overrunT >= sp.swarmGrace) { this.faro.say('overrun', { priority: 3 }); const h = this.hero; h.hp = 0; h.dead = true; h.deathT = 0; this.run.overrun = true; this.parts.burst(h.x, h.y - 10, 24, { c: ['#5e4a8a', '#b46cff', '#f4ecdc'], min: 20, max: 90, life: 0.8, g: 120, s: 2, kind: 'shrink' }); this.endRun(false); this.banner = null; this.showBanner('MASA SENİ YUTTU', 'Kırık Ayna kalabalığı sevmez', '#c08aff', 3); }
+        } else { this.overrunT = Math.max(0, this.overrunT - dt * 0.5); if (alive < sp.swarmCap - 6) this.overrunWarned = false; }
+      }
+    },
+    // ---------------- Faro donma senaryoları (eski FaroSystem._triggerFreezeScenario) ----------------
+    updateFreeze(dt) {
+      if (!this.iv.has('faroTimeFreeze')) return;
+      if (!this.freeze && !this.ivUsed.has('faroTimeFreeze') && this.elapsed >= this.freezeCheck) {
+        if (U.chance(0.15)) this.startFreeze(); else this.freezeCheck = this.elapsed + U.rand(20, 35);
+      }
+      const f = this.freeze; if (!f) return;
+      f.t += dt;
+      if (f.sc === 3 && !f.cleared && f.t > 0.8) { f.cleared = true; for (const e of this.enemies) if (!e.dying) { e.dying = true; e.dieT = 0; this.parts.burst(e.x, e.y - 8, 5, { c: [P.purp3, '#e0b0ff'], min: 10, max: 40, life: 0.4 }); } DMT.Audio.play('curse'); }
+      if (f.sc === 3 && !f.endSaid && f.t > 10) { f.endSaid = true; this.faro.say('freeze3End', { priority: 3 }); this.faro.act('laugh', 1.2); }
+      if (f.t >= f.dur) this.freeze = null;
+    },
+    startFreeze(sc) {
+      this.ivUsed.add('faroTimeFreeze');
+      const r = Math.random(); sc = sc || (r < 0.3 ? 1 : r < 0.55 ? 2 : r < 0.75 ? 3 : 4);
+      const dur = { 1: 12, 2: 10, 3: 13, 4: 12 }[sc];
+      this.freeze = { sc, t: 0, dur };
+      DMT.Audio.play('curseWarn');
+      this.timerFrozenT = dur;                               // süre durur (eski _faroFreezeTimer)
+      if (sc !== 3) this.em.freezeT = dur;                   // düşmanlar donar
+      if (sc === 2 || sc === 3) this.heroFrozenT = dur;      // kahraman da durur
+      if (sc !== 4) { this.noCoinT = dur; this.spawnPauseT = dur; }
+      this.faro.say('freeze' + sc, { priority: 3 }); this.faro.act(sc === 1 || sc === 3 ? 'laugh' : 'point', 1.4);
+      this.showBanner('FARO ZAMANI DURDURDU', { 1: 'Onlar dinleniyor. Sen vur. Coin yok.', 2: 'Herkes duruyor. Sen de.', 3: 'Sahne temizleniyor…', 4: 'Faro bugün cömert.' }[sc], '#bfe8ff', 2.2);
+    },
+    ruleCaprice() {
+      this.capriceUsed = true; DMT.Audio.play('hmm');
+      if (U.chance(0.5)) { const fast = U.chance(0.5); this.offerEvery = fast ? 4 : 9; this.offerEveryT = 30; this.faro.say(fast ? 'capriceFast' : 'capriceSlow', { priority: 3 }); }
+      else { const pool = this.run.tableId === 't2' ? ['grunt', 'rusher', 'ghost', 'splitter'] : ['grunt', 'rusher', 'tank']; this.forced = U.shuffle(pool.slice()).slice(0, 2); this.forcedT = 25; this.faro.say('capriceForced', { priority: 3 }); }
+      this.faro.act('point', 1.2); this.showBanner('MASA DEĞİŞTİ', this.forcedT > 0 ? 'Yalnızca bazı konuklar gelecek' : this.offerEvery < 6 ? 'Kartlar daha sık gelecek' : 'Kartlar daha seyrek gelecek', '#c8a96e', 2);
+    },
+    // ---------------- Faro'nun kesesi ----------------
+    purseEvent() {
+      const p = this.purse, run = this.run, h = this.hero;
+      const el = PURSE.filter((e) => p.vault >= e.min && (p.used[e.id] || 0) < e.max);
+      if (!el.length) return;
+      let tot = 0; for (const e of el) tot += e.w; let r = Math.random() * tot, ev = el[0]; for (const e of el) { r -= e.w; if (r <= 0) { ev = e; break; } }
+      const cost = Math.min(p.vault, ev.cost(p.vault)); p.vault -= cost; p.used[ev.id] = (p.used[ev.id] || 0) + 1;
+      const say = (k) => this.faro.say(k, { priority: 3 });
+      DMT.Audio.play('coin');
+      if (ev.id === 'roundOnHouse') { say('purseRoundOnHouse'); this.heal(this.stats.maxHp * 0.25, 'faro'); this.floatText(h.x, h.y - 36, 'İÇKİLER FARO’DAN', '#ffcf6e', 7); }
+      else if (ev.id === 'barTab') say('purseBarTab');
+      else if (ev.id === 'oneForMe') say('purseOneForMe');
+      else if (ev.id === 'buyingTime') { say('purseBuyingTime'); this.addTime(8); }
+      else if (ev.id === 'backRoom') this.backRoom();
+      else if (ev.id === 'specialDelivery') {
+        const c = this.randomCardFor((d) => d.rarity !== 'epic');
+        if (c) { say('purseSpecialDelivery'); RunM.addCard(run, c.id); this.applyCard(c); this.floatText(h.x, h.y - 46, 'FARO ISMARLADI: ' + c.name, '#7ac8ff', 7); }
+        else say('purseSpecialDeliveryShame');
+      }
+      else if (ev.id === 'markedDeck') { say('purseMarkedDeck'); this.markedNext = U.pick(['markedEdge', 'markedPact']); }
+      else if (ev.id === 'houseCut') { say('purseHouseCut'); this.takeCoins(Math.max(1, Math.floor(run.currentRunCoins * 0.1))); }
+      else if (ev.id === 'houseGenerous') { say('purseHouseGenerous'); this.coinRain(8); }
+    },
+    backRoom() {
+      const run = this.run, ids = Object.keys(run.cards), tag = (t) => ids.reduce((n, id) => n + (D.cardById(id).tags.includes(t) ? run.cards[id] : 0), 0);
+      const dmgN = ids.reduce((n, id) => n + (DMG_CARDS.includes(id) ? run.cards[id] : 0), 0);
+      let k;
+      if (run.heroId === 'kael' && tag('speed') >= 2) { k = 'HeavyHands'; this.addBuff('heavyHands', 10); }
+      else if (run.heroId === 'lyra' && tag('crit') >= 1) { k = 'BadAim'; this.addBuff('badAim', 10); }
+      else if (tag('crit') >= 2) { k = 'ThickSkin'; this.em.thickT = 10; }
+      else if (dmgN >= 3) { k = 'BloodWard'; this.em.wardT = 10; }
+      else { k = 'CrowdedTable'; this.later(1, () => this.spawnN(4)); }
+      this.faro.say('purseBackRoom' + k, { priority: 3 }); this.faro.act('laugh', 1);
+      this.showBanner('ARKA ODA', { HeavyHands: 'Saldırı hızın 10 sn düştü', BadAim: 'Kritik şansın 10 sn düştü', ThickSkin: 'Kritikler 10 sn zayıf', BloodWard: 'Yeni gelenler 10 sn daha dayanıklı', CrowdedTable: 'Masa kalabalıklaşıyor' }[k], '#c08aff', 1.8);
+    },
+    randomCardFor(filter) {
+      const run = this.run;
+      const L = D.CARDS.filter((c) => (run.cards[c.id] || 0) < c.max && (!c.hero || c.hero === run.heroId) && (!c.req || c.req.every((r) => run.cards[r])) && (!filter || filter(c)));
+      return L.length ? U.pick(L) : null;
+    },
+    // ---------------- Faro'nun hileli kartları ----------------
+    applyTrick(def) {
+      const run = this.run, h = this.hero, em = this.em;
+      run.tricks.push(def.id); if (def.kind === 'trap') run.trapsTaken++;
+      const title = def.kind === 'sig' ? 'FARO’NUN İMZASI' : def.kind === 'marked' ? 'İŞARETLİ KART' : def.game ? 'FARO’NUN OYUNU' : 'TUZAK!';
+      this.showBanner(title, def.hidden, def.kind === 'sig' ? P.gold4 : def.kind === 'marked' ? '#d08aff' : '#ff6a5a', 3.4);
+      this.faro.say('x', { priority: 3, text: def.faro }); this.faro.act(def.kind === 'marked' ? 'point' : 'laugh', 1.4);
+      DMT.Audio.play(def.kind === 'sig' ? 'hmm' : 'curse');
+      switch (def.id) {
+        case 'sahteCevher': run.mods.dmg *= 1.3; run.mods.priceMul *= 1.2; break;
+        case 'ozelFiyat': run.mods.crit += 0.15; this.addBuff('ozelFiyat', 10); break;
+        case 'evHediyesi': run.mods.aspd *= 1.2; this.noCoinT = Math.max(this.noCoinT, 10); break;
+        case 'trapAtk': em.atkT = 10; break;
+        case 'trapDef': em.shieldT = 5; break;
+        case 'trapSlow': em.slowT = 8; this.addBuff('trapSlow', 8); break;
+        case 'trapGold': RunM.addCoins(run, 15, 'refund'); run.mods.priceAdd += 3; this.coinPulse = 1; break;
+        case 'trapHeal': h.hp = Math.max(1, Math.round(h.hp - this.stats.maxHp * 0.15)); h.flash = 0.2; break;
+        case 'trapKillAtk': em.killBuffOn = true; break;
+        case 'trapImmortal': em.invulnT = 5; break;
+        case 'trapSpeed': this.addBuff('trapSpeed', 8); break;
+        case 'trapVision': em.invisT = 8; break;
+        case 'trapTime': this.addTime(15); this.later(0.8, () => this.spawnN(5)); break;
+        case 'trapStats': em.hpMulRun *= 1.2; em.dmgMulRun *= 1.2; for (const e of this.enemies) if (!e.dying) { e.hp = Math.round(e.hp * 1.2); e.maxHp = Math.round(e.maxHp * 1.2); } break;
+        case 'trapCardChoice': { const c = this.randomCardFor(); if (c) { RunM.addCard(run, c.id); this.later(1.2, () => { this.applyCard(c); this.floatText(h.x, h.y - 46, 'FARO SEÇTİ: ' + c.name, '#d08aff', 7); }); } break; }
+        case 'faroBahsi': this.bet = { t: 10, need: 7, kills: 0 }; break;
+        case 'yaziTura': if (U.chance(0.5)) { this.later(1.4, () => { this.coinRain(10); this.floatText(h.x, h.y - 46, 'YAZI!', P.gold4, 9); }); } else { this.later(1.4, () => { this.takeCoins(6); this.floatText(h.x, h.y - 46, 'TURA!', '#ff6a5a', 9); }); } break;
+        case 'kalabalik': for (const e of this.enemies) if (!e.dying) e.hp = Math.max(1, Math.round(e.hp * 0.75)); this.later(1, () => this.spawnN(5)); break;
+        case 'yankiMasasi': this.echo += 5; break;
+        case 'darSecim': this.narrowNext = true; break;
+        case 'sigSurpriz': { const c = this.randomCardFor((d) => d.rarity !== 'common'); if (c) { RunM.addCard(run, c.id); this.later(1.2, () => { this.applyCard(c); this.floatText(h.x, h.y - 46, 'SÜRPRİZ: ' + c.name, P.gold4, 7); }); } break; }
+        case 'sigHata': this.addBuff('sigHata', 8); break;
+        case 'sigSaygi': em.sayT = 20; break;
+        case 'markedEdge': run.mods.dmg *= 1.4; em.hpMulRun *= 1.2; break;
+        case 'markedPact': run.mods.aspd *= 1.35; run.mods.priceMul *= 1.25; break;
+        default: break; // imza şakaları: etkisi yok
+      }
+      this.recalc();
+    },
+    // teklif kartlarına tuzak / imza / işaretli kart karıştır (eski drawCards: riskChance 0.25, sigChance 0.08)
+    injectTricks(out) {
+      const run = this.run, B = DMT.Balance;
+      const priced = (d) => ({ def: d, price: d.price[1] === 0 ? 0 : Math.max(1, Math.round(U.randi(d.price[0], d.price[1]) * run.mods.priceMul) + run.mods.priceAdd) });
+      if (this.markedNext) { const d = D.trickById(this.markedNext); this.markedNext = null; out[U.randi(0, out.length - 1)] = priced(d); return; }
+      if (run.offers < 2) return;
+      let pool = null;
+      if (U.chance(0.07)) pool = D.TRICKS.filter((d) => d.kind === 'sig' && !run.tricks.includes(d.id));
+      else if (U.chance(0.22)) pool = D.TRICKS.filter((d) => d.kind === 'trap' && !run.tricks.includes(d.id));
+      if (pool && pool.length) out[U.randi(0, out.length - 1)] = priced(U.pick(pool));
+      void B;
+    },
+    // Faro'nun teklif üstü numaraları: takas, kart önerme, kapalı el
+    offerTricks(m) {
+      if (m.free) return;
+      const run = this.run, R = { common: 0, rare: 1, epic: 2 };
+      // FARO TAKASI (müdahale): en değerli kartı daha zayıf biriyle değiştirir
+      if (this.has('replaceCard') && U.chance(0.4)) {
+        this.ivUsed.add('replaceCard');
+        const best = m.cards.filter((c) => !c.def.trick).sort((a, b) => R[b.def.rarity] - R[a.def.rarity])[0];
+        const rep = best && this.randomCardFor((d) => R[d.rarity] < R[best.def.rarity] && !m.cards.some((c) => c.def === d));
+        if (rep) { best.def = rep; best.price = DMT.Balance.cardPrice(rep, run.buys); this.faro.say('ivReplace', { priority: 3 }); m.swapLabel = best.i; }
+      }
+      const traps = m.cards.filter((c) => c.def.kind === 'trap' || c.def.kind === 'sig');
+      // KAPALI EL
+      if (run.offers >= 3 && U.chance(0.09)) { m.blind = true; this.faro.say('blindIntro', { priority: 3 }); return; }
+      // FARO ÖNERİYOR
+      if (run.offers >= 2 && (traps.length ? U.chance(0.7) : U.chance(0.28))) {
+        let first = traps.length && U.chance(0.6) ? traps[0].i : U.randi(0, m.cards.length - 1);
+        m.point = [first];
+        if (m.cards.length > 2 && U.chance(0.25)) { const o = m.cards.find((c) => c.i !== first); m.point.push(o.i); }
+        this.faro.say(m.point.length > 1 ? 'faroPointsTwo' : 'faroPoints', { priority: 3 });
+      } else if (U.chance(0.25)) this.faro.say('cardOffer', { priority: 1, catGap: 12 });
+    },
+    offerReaction(m, chosen) {
+      const isT = (c) => c && (c.def.kind === 'trap' || c.def.kind === 'sig');
+      const traps = m.cards.filter(isT).map((c) => c.i), ch = chosen >= 0 ? m.cards[chosen] : null, chT = isT(ch);
+      let cat = null;
+      if (m.point) {
+        const two = m.point.length > 1, took = ch && m.point.includes(chosen), pT = m.point.some((i) => traps.includes(i));
+        if (took) cat = chT ? (two && m.point.every((i) => traps.includes(i)) ? 'doubleTrapTaken' : 'trapTaken') : (two ? 'doubleGoodTaken' : 'goodTaken');
+        else cat = pT ? (two ? 'doubleTrapAvoided' : 'trapAvoided') : (two ? 'doubleGoodAvoided' : 'goodAvoided');
+      } else if (chT) cat = 'trapTaken';
+      else if (traps.length && U.chance(0.55)) cat = 'trapAvoided';
+      if (traps.length && !chT) this.run.trapsAvoided++;
+      if (!cat) return false;
+      const laugh = /Taken$/.test(cat) && /trap|Trap/.test(cat);
+      this.later(chT ? 2.6 : 0.4, () => { this.faro.say(cat, { priority: 3 }); this.faro.act(laugh ? 'laugh' : /Avoided/.test(cat) ? 'annoyed' : 'surprised', 1.2); });
+      return true;
+    },
+  });
+})();
+
+// ============================================================
 //  24 SAHNE — FIGHT: Faro'nun kart sunumu + Üç Kapalı Kart mini oyunu
 // ============================================================
 (function () {
@@ -4119,34 +5024,41 @@ DMT.CardFx = (function () {
     tagCounts() { const o = {}; for (const id in this.run.cards) { const d = D.cardById(id); if (d) for (const t of d.tags) o[t] = (o[t] || 0) + this.run.cards[id]; } return o; },
     genOffer(free) {
       const run = this.run, B = DMT.Balance;
-      const avail = D.CARDS.filter((c) => (run.cards[c.id] || 0) < c.max);
+      // V3: kahramana özel kartlar yalnızca o kahramana; evrim kartları yalnızca gereken kart alındıysa
+      const avail = D.CARDS.filter((c) => (run.cards[c.id] || 0) < c.max && (!c.hero || c.hero === run.heroId) && (!c.req || c.req.every((r) => run.cards[r])));
       const owned = this.tagCounts(), wR = this.rarityWeights(free);
+      const narrow = !free && this.narrowNext; if (narrow) { this.narrowNext = false; wR.common = 0; } // Kaliteli Seçim tuzağı
+      const pr = (d) => Math.max(1, Math.round(B.cardPrice(d, run.buys) * run.mods.priceMul) + run.mods.priceAdd);
       const cardW = (c) => { let b = 0; for (const t of c.tags) b += (owned[t] || 0) * B.synergyPerTag; return 1 + Math.min(B.synergyCap, b); };
       const picked = [], usedTags = new Set();
       const weighted = (pool, wf) => { let tot = 0; for (const c of pool) tot += wf(c); let r = Math.random() * tot; for (const c of pool) { r -= wf(c); if (r <= 0) return c; } return pool[pool.length - 1]; };
-      for (let slot = 0; slot < 3; slot++) {
+      for (let slot = 0; slot < (narrow ? 2 : 3); slot++) {
         const pools = {}; let tot = 0;
-        for (const r of RARS) { pools[r] = avail.filter((c) => c.rarity === r && !picked.includes(c)); if (pools[r].length) tot += wR[r]; }
+        for (const r of RARS) { pools[r] = avail.filter((c) => c.rarity === r && !picked.includes(c)); if (pools[r].length && wR[r] > 0) tot += wR[r]; }
         if (!tot) break;
         let x = Math.random() * tot, rar = null;
-        for (const r of RARS) { if (!pools[r].length) continue; rar = r; x -= wR[r]; if (x <= 0) break; }
+        for (const r of RARS) { if (!pools[r].length || !(wR[r] > 0)) continue; rar = r; x -= wR[r]; if (x <= 0) break; }
         let pool = pools[rar];
         if (free) { const div = pool.filter((c) => c.tags.length && !c.tags.some((t) => usedTags.has(t))); if (div.length) pool = div; }
         const ch = weighted(pool, cardW);
         picked.push(ch); for (const t of ch.tags) usedTags.add(t);
       }
-      const out = picked.map((def) => ({ def, price: free ? 0 : B.cardPrice(def, run.buys) }));
+      // evrim kartı açıldıysa teklife girme şansı yüksek (eski: %65)
+      const evo = avail.filter((c) => c.req && !picked.includes(c));
+      if (!free && evo.length && picked.length && U.chance(0.55)) picked[picked.length - 1] = U.pick(evo);
+      const out = picked.map((def) => ({ def, price: free ? 0 : pr(def) }));
       if (!free && out.length) {
         const coins = run.currentRunCoins;
         // ilk ellerde en az bir sıradan kart
         if (run.offers <= B.earlyCommonOffers && !out.some((o) => o.def.rarity === 'common')) {
           const c = avail.filter((x) => x.rarity === 'common' && !out.some((o) => o.def === x));
-          if (c.length) { const d = weighted(c, cardW); out[out.length - 1] = { def: d, price: B.cardPrice(d, run.buys) }; }
+          if (c.length && !narrow) { const d = weighted(c, cardW); out[out.length - 1] = { def: d, price: pr(d) }; }
         }
+        this.injectTricks(out); // Faro'nun tuzak / imza / işaretli kartları
         // hiçbiri alınamıyorsa (ve oyuncunun biraz parası varsa) birini alınabilir yap — Faro'nun "indirimi"
         if (coins >= 4 && !out.some((o) => o.price <= coins)) {
           const cands = avail.filter((x) => x.rarity === 'common' && x.price[0] <= coins && !out.some((o) => o.def === x));
-          if (cands.length) { const d = weighted(cands, cardW); const i = out.reduce((bi, o, j) => (o.price < out[bi].price ? j : bi), 0); out[i] = { def: d, price: Math.min(B.cardPrice(d, run.buys), coins) }; }
+          if (cands.length && !narrow) { const d = weighted(cands, cardW); const i = out.reduce((bi, o, j) => (o.price < out[bi].price ? j : bi), 0); out[i] = { def: d, price: Math.min(pr(d), coins) }; }
         }
       }
       return out;
@@ -4169,6 +5081,8 @@ DMT.CardFx = (function () {
           onClick: () => self.chooseOffer(i), onDenied: () => { self.faro.say('noMoney', { priority: 1, catGap: 4 }); } });
       });
       if (!free) UI.button({ group: 'modal', x: 280, y: 314, w: 80, h: 16, label: 'PAS GEÇ', size: 7.5, style: 'dark', visible: () => self.modal && self.modal.ready && self.modal.chosen === -1, onClick: () => self.passOffer() });
+      this.offerTricks(this.modal); // Faro: takas, öneri, kapalı el
+      if (!free) this.tutorial('pass', 'tutPass');
     },
     updateOffer(dt) {
       const m = this.modal; if (!m) { this.phase = 'fight'; return; }
@@ -4178,7 +5092,7 @@ DMT.CardFx = (function () {
         if (prev < c.deal - 0.12 && m.t >= c.deal - 0.12) this.faro.setHand('r', { x: 30, y: -8, pose: 'flat' });
       }
       const lastDeal = m.cards[m.cards.length - 1].deal + 0.35;
-      if (!m.ready && m.t >= lastDeal) { m.ready = true; this.faro.setHand('r', null); }
+      if (!m.ready && m.t >= lastDeal) { m.ready = true; this.faro.setHand('r', m.point ? { x: 4 + (m.point[0] - 1) * 12, y: 12, pose: 'point' } : null); if (m.point) this.faro.act('point', 2); }
       const I = DMT.Input;
       for (const c of m.cards) {
         const over = m.ready && m.chosen === -1 && U.inRect(I.x, I.y, { x: c.x, y: CY, w: CW, h: CH });
@@ -4191,24 +5105,36 @@ DMT.CardFx = (function () {
       const m = this.modal; if (!m || !m.ready || m.chosen !== -1) return;
       const c = m.cards[i];
       if (!m.free && !RunM.spend(this.run, c.price)) { DMT.Audio.play('deny'); return; }
-      m.chosen = i;
-      RunM.addCard(this.run, c.def.id);
+      if (!m.free) this.purse.vault += c.price; // harcanan coin Faro'nun kesesine
+      m.chosen = i; this.faro.setHand('r', null);
+      // KAPALI EL: Faro seçtiğini verir… ya da vermez
+      if (m.blind) {
+        if (!c.def.trick && U.chance(0.3)) { const alt = this.randomCardFor((d) => d.rarity === c.def.rarity && d !== c.def && !m.cards.some((x) => x.def === d)); if (alt) { c.def = alt; m.swapped = true; } }
+        this.faro.say('blindReveal', { priority: 3 }); DMT.Audio.play('flip');
+      }
+      const reacted = this.offerReaction(m, i);
       this.run.buyLog.push({ id: c.def.id, price: m.free ? 0 : c.price, t: Math.round(this.elapsed) });
       if (!m.free) this.run.buys++;
+      if (c.def.trick) { DMT.Audio.play('buy'); this.applyTrick(c.def); return; }
+      RunM.addCard(this.run, c.def.id);
       DMT.Audio.play(m.free ? 'cardPick' : 'buy');
       this.applyCard(c.def);
-      if (!m.free && U.chance(0.55)) this.faro.say('cardBuy', { priority: 1, catGap: 10 });
+      const n = this.run.cards[c.def.id];
+      if (n === 2) this.tutorial('stack', 'tutStack');
+      if (c.def.ms && n >= c.def.max) this.later(0.7, () => this.showBanner('KADEME: ' + c.def.ms.name, c.def.ms.desc, P.gold4, 2.4));
+      if (!m.free && !reacted && !m.blind && U.chance(0.55)) this.faro.say('cardBuy', { priority: 1, catGap: 10 });
     },
     passOffer() {
       const m = this.modal; if (!m || !m.ready || m.chosen !== -1) return;
-      m.chosen = -2; this.run.passes++;
+      m.chosen = -2; this.run.passes++; this.faro.setHand('r', null);
+      if (this.offerReaction(m, -2)) return;
       if (U.chance(0.6)) { this.faro.say('cardPass', { priority: 1, catGap: 10 }); this.faro.act('annoyed', 0.9); }
     },
     closeOffer() {
       DMT.UI.remove('modal');
       const m = this.modal;
       this.modal = null; this.faro.setHand('r', null);
-      this.offerT = 6;
+      this.offerT = this.offerEvery || 6;
       this.phase = this.run.ended ? 'ending' : 'fight';
       if (m && m.free && !this.openingWave) { this.openingWave = true; this.emit('onRunStart', {}); for (let i = 0; i < 3; i++) this.spawnEnemy(i === 2 ? 'rusher' : 'grunt'); this.spawnT = 1.2; }
     },
@@ -4370,6 +5296,21 @@ DMT.CardFx = (function () {
         g.globalAlpha = 1;
       }
     },
+    // Kırık Ayna: çatlak zemin parçaları (üstünde kahraman yavaşlar)
+    drawCracks(g, t) {
+      if (!this.cracks || !this.cracks.length) return;
+      for (const c of this.cracks) {
+        const a = Math.min(1, c.t * 3);
+        g.globalAlpha = a * 0.9;
+        G.ellipse(g, c.x, c.y, c.r, Math.round(c.r * 0.5), 'rgba(10,6,20,0.55)');
+        for (let i = 0; i < 7; i++) {
+          const ang = i * 0.9 + c.seed; let x = c.x, y = c.y;
+          for (let k = 0; k < 4; k++) { const nx = x + Math.cos(ang + Math.sin(c.seed + k * 1.7) * 0.6) * c.r * 0.26, ny = y + Math.sin(ang + Math.cos(c.seed + k) * 0.6) * c.r * 0.13; G.line(g, x, y, nx, ny, k < 2 ? '#c8d8ff' : '#6a5a9a'); x = nx; y = ny; }
+        }
+        if (Math.floor(t * 4 + c.seed) % 6 === 0) G.px(g, Math.round(c.x + Math.sin(c.seed) * c.r * 0.5), Math.round(c.y), '#ffffff');
+        g.globalAlpha = 1;
+      }
+    },
     drawSummons(g, t) {
       const h = this.hero; if (h.dead) return;
       for (const m of this.summons) {
@@ -4408,6 +5349,7 @@ DMT.CardFx = (function () {
         g.save(); g.translate(this.shx, this.shy);
         this.drawCurse(g, t);
         this.drawZones(g, t);
+        this.drawCracks(g, t);
         // yerdeki coinler
         for (const c of this.coins) {
           if (c.collected) continue;
@@ -4516,7 +5458,7 @@ DMT.CardFx = (function () {
       let anim = 'idle', f = Math.floor(e.animT * 2) % 2;
       if (e.atk > 0) { anim = 'atk'; f = U.clamp(Math.floor((e.atk / 0.36) * 3), 0, 2); }
       else if (e.moving) { anim = 'walk'; f = Math.floor(e.animT * (e.type === 'rusher' ? 12 : e.type === 'tank' ? 5 : 7)) % 4; }
-      let variant = e.flash > 0 ? 'flash' : e.golden ? 'gold' : this.rageT > 0 ? 'rage' : '';
+      let variant = e.flash > 0 ? 'flash' : e.golden ? 'gold' : this.rageT > 0 ? 'rage' : (e.frozenT > 0 || this.em.freezeT > 0) ? 'frozen' : e.mirror ? 'mirror' : '';
       const x = Math.round(e.face > 0 ? e.x - U0.cx : e.x - (U0.w - U0.cx)), y = Math.round(e.y - U0.foot);
       const spr = A.unit(e.type, anim, f, variant);
       if (e.spawnT > 0) {
@@ -4536,7 +5478,12 @@ DMT.CardFx = (function () {
         g.globalAlpha = 1;
         return;
       }
+      // V3: Hayalet saydamlığı ve "düşmanlar kayboldu" tuzağı
+      const al = this.em.invisT > 0 ? 0.07 : e.phased ? 0.28 : 1;
+      if (al < 1) { g.globalAlpha = al; G.draw(g, spr, x, y, e.face < 0); g.globalAlpha = 1; return; }
       G.draw(g, spr, x, y, e.face < 0);
+      if (e.poison) G.px(g, Math.round(e.x + Math.cos(t * 7 + e.id) * 3), Math.round(e.y - 6), '#8ad35a');
+      if ((e.frozenT > 0 || this.em.freezeT > 0) && Math.floor(t * 3 + e.id) % 4 === 0) G.px(g, x + U.randi(3, U0.w - 3), y + U.randi(3, U0.h - 6), '#ffffff');
       if (e.golden && Math.floor(t * 6 + e.id) % 6 === 0) G.px(g, x + U.randi(4, U0.w - 4), y + U.randi(4, U0.h - 6), '#fff');
       if (e.bleed) G.px(g, Math.round(e.x + Math.sin(t * 9 + e.id) * 3), Math.round(e.y - 4), '#e0303a');
       // V2 düşman işaretleri
@@ -4636,7 +5583,7 @@ DMT.CardFx = (function () {
       const pulse = this.coinPulse;
       g.drawImage(A.coinIcon(), 388, 32 - Math.round(pulse * 2));
       if (pulse > 0.5) G.glow(g, 393, 37, 10, '#ffd060', 0.12, 2);
-      const nextFrac = this.phase === 'fight' ? 1 - U.clamp(this.offerT / 6, 0, 1) : 1;
+      const nextFrac = this.phase === 'fight' ? 1 - U.clamp(this.offerT / (this.offerEvery || 6), 0, 1) : 1;
       G.bar(g, 482, 52, 130, 6, nextFrac, nextFrac > 0.85 && Math.floor(t * 8) % 2 ? P.gold4 : P.gold2, '#1a0f0a', P.gold4);
       // mini deste ikonu
       for (let i = 0; i < 3; i++) { G.rect(g, 470 + i, 48 - i, 8, 11, '#0d080e'); G.rect(g, 471 + i, 49 - i, 6, 9, '#7e1f33'); }
@@ -4663,9 +5610,17 @@ DMT.CardFx = (function () {
       T.text(c, run.hero.name, 58, 27.5, { size: 6, color: P.gold3, font: 'title' });
       T.text(c, Math.max(0, Math.ceil(h.hp)) + ' / ' + s.maxHp, 154, 38.5, { size: 6.5, align: 'center', base: 'middle', color: '#fff' });
       T.text(c, 'Masa ' + run.table.roman + ' · ' + run.table.name, 250, 27.5, { size: 5.5, align: 'right', color: P.bone3, outline: false });
+      // V3: Kael MOMENTUM (seri) / Lyra ODAK göstergesi
+      if (run.heroId === 'kael') { if (run.streak > 1) T.text(c, 'MOMENTUM x' + run.streak + ' +%' + Math.round(this.streakBonus() * 100), 84, 27.5, { size: 5.3, color: this.streakLockT > 0 ? '#ffe066' : '#ffb070', outline: false }); }
+      else if (this.focus && this.focus.n > 1) T.text(c, 'ODAK ' + this.focus.n + '/6 +%' + Math.round((this.focusBonus() + this.streakBonus()) * 100), 84, 27.5, { size: 5.3, color: '#9adcff', outline: false });
+      // Faro'nun kesesi, bahis, kuşatma
+      if (this.purse) T.text(c, 'Faro’nun kesesi: ' + this.purse.vault, 272, 114, { size: 5, align: 'right', color: P.gold3, alpha: 0.9, outline: true, ow: 1.4 });
+      if (this.bet) T.text(c, 'BAHİS: ' + this.bet.kills + '/' + this.bet.need + ' · ' + Math.ceil(this.bet.t) + ' sn', 320, 134, { size: 7, align: 'center', color: '#ffcf6e', font: 'title' });
+      if (this.special && this.special.swarmCap) { const alive = this.enemies.reduce((n, e) => n + (e.dying ? 0 : 1), 0); if (alive >= this.special.swarmCap - 8) T.text(c, 'KALABALIK ' + alive + '/' + this.special.swarmCap, 612, 51, { size: 6, align: 'right', color: alive >= this.special.swarmCap ? '#ff5050' : '#c08aff', font: 'title' }); }
+      if (this.freeze) T.text(c, 'FARO ZAMANI DURDURDU · ' + Math.ceil(this.freeze.dur - this.freeze.t), 320, 134, { size: 6.5, align: 'center', color: '#bfe8ff', font: 'title' });
       let bx = 58;
       for (const b of run.buffs) {
-        const nm = { frenzy: 'KUDURMA', mgBuff: 'KIZGIN KAN', curse: 'LANET', mgCurse: 'LANETLİ EL' }[b.id] || b.id;
+        const nm = { frenzy: 'KUDURMA', mgBuff: 'KIZGIN KAN', curse: 'LANET', mgCurse: 'LANETLİ EL', powerWave: 'GÜÇ DALGASI', swordStorm: 'KILIÇ FIRT.', sigHata: 'FARO HATASI', ozelFiyat: 'ÖZEL FİYAT', trapSpeed: 'HIZ TANRISI', trapSlow: 'YAVAŞ', heavyHands: 'AĞIR ELLER', badAim: 'TİTREK EL' }[b.id] || b.id;
         T.text(c, nm, bx + 27, 55.5, { size: 5, align: 'center', base: 'middle', color: '#fff', ow: 1.5 });
         bx += 58; if (bx > 220) break;
       }
@@ -4719,9 +5674,11 @@ DMT.CardFx = (function () {
             g.drawImage(cardBack(), x, y, w, h);
           } else {
             const fk = U.clamp((m.t - c.deal) / 0.16, 0, 1);
-            const img = fk < 0.5 ? cardBack() : cardFace(c.def);
+            const hide = m.blind && m.chosen !== c.i; // KAPALI EL: seçilene kadar yüzü görünmez
+            const img = fk < 0.5 || hide ? cardBack() : cardFace(c.def);
             const w = Math.max(1, Math.round(CW * Math.abs(1 - fk * 2)));
             const R0 = D.RARITY[c.def.rarity];
+            if (hide && fk >= 1) G.rect(g, tx - 2, ty - 2, CW + 4, CH + 4, R0.frame);
             if (fk >= 1) {
               // nadirlik parıltısı
               if (R0.glow) { const n = c.def.rarity === 'epic' ? 10 : 6; for (let i = 0; i < n; i++) { const p = ((t * 0.35 + i / n) % 1), per = 2 * (CW + CH); let d = p * per, px, py; if (d < CW) { px = tx + d; py = ty - 2; } else if ((d -= CW) < CH) { px = tx + CW + 1; py = ty + d; } else if ((d -= CH) < CW) { px = tx + CW - d; py = ty + CH + 1; } else { d -= CW; px = tx - 2; py = ty + CH - d; } G.rect(g, Math.round(px), Math.round(py), 2, 2, R0.glow); } }
@@ -4732,6 +5689,14 @@ DMT.CardFx = (function () {
             if (fk >= 1) {
               g.drawImage(A.coinIcon(), tx + 14, ty + 112);
               if (!m.free && c.price > coins) { G.dither(g, tx + 3, ty + 3, CW - 6, CH - 6, '#000', 0.45); }
+              // Faro bu kartı gösteriyor: kemik parmak
+              if (m.point && m.point.includes(c.i) && m.chosen === -1 && m.ready) {
+                const pc = Math.floor(t * 8) % 2 ? P.gold4 : P.gold2;
+                G.rect(g, tx - 3, ty - 3, CW + 6, 1, pc); G.rect(g, tx - 3, ty + CH + 2, CW + 6, 1, pc); G.rect(g, tx - 3, ty - 3, 1, CH + 6, pc); G.rect(g, tx + CW + 2, ty - 3, 1, CH + 6, pc);
+                // kemik parmak kartın sağ üst köşesini işaret eder
+                const fx2 = tx + CW - 4 + Math.round(Math.sin(t * 6) * 1.5), fy = ty + 2;
+                G.rect(g, fx2, fy, 8, 3, '#e8dcc0'); G.rect(g, fx2 - 4, fy + 1, 5, 1, '#e8dcc0'); G.px(g, fx2 - 5, fy + 1, '#ffffff'); G.px(g, fx2 + 2, fy + 1, '#a8997a'); G.px(g, fx2 + 5, fy + 1, '#a8997a');
+              }
               vis.push({ c, tx, ty });
             }
           }
@@ -4739,11 +5704,19 @@ DMT.CardFx = (function () {
         }
       });
       R.tx((c) => {
-        T.text(c, m.free ? "FARO'NUN İLK ELİ" : 'FARO KART AÇTI', 320, 128.5, { size: 10, align: 'center', color: P.gold4, font: 'title' });
-        T.text(c, m.free ? 'Bir kart seç — bu el ücretsiz.' : 'Coinlerin: ' + coins + '   ·   istemezsen pas geç', 320, 147, { size: 6.5, align: 'center', color: m.free ? P.toxic : P.bone });
+        T.text(c, m.free ? "FARO'NUN İLK ELİ" : m.blind ? 'KAPALI EL' : 'FARO KART AÇTI', 320, 128.5, { size: 10, align: 'center', color: m.blind ? '#d08aff' : P.gold4, font: 'title' });
+        T.text(c, m.free ? 'Bir kart seç — bu el ücretsiz.' : m.blind ? 'Kartlar kapalı. Yalnızca nadirlik ve fiyat görünüyor.' : 'Coinlerin: ' + coins + '   ·   istemezsen pas geç', 320, 147, { size: 6.5, align: 'center', color: m.free ? P.toxic : P.bone });
         for (const v of vis) {
           const cd = v.c.def, R0 = D.RARITY[cd.rarity], a = 1 - v.c.fade;
           c.globalAlpha = a;
+          if (m.point && m.point.includes(v.c.i) && m.chosen === -1 && m.ready) T.text(c, 'FARO ÖNERİYOR', v.tx + CW / 2, v.ty + CH + 4, { size: 5.5, align: 'center', color: P.gold4, ow: 1.6 });
+          if (m.swapLabel === v.c.i && m.chosen === -1) T.text(c, 'FARO TAKASI', v.tx + CW / 2, v.ty + CH + (m.point && m.point.includes(v.c.i) ? 11 : 4), { size: 5.5, align: 'center', color: '#d8d0aa', ow: 1.6 });
+          if (m.blind && m.chosen !== v.c.i) {
+            T.text(c, '? ? ?', v.tx + CW / 2, v.ty + 8, { size: 7.5, align: 'center', color: '#fff6e0', font: 'title' });
+            T.text(c, R0.name.toUpperCase(), v.tx + CW / 2, v.ty + 100, { size: 6, align: 'center', color: R0.color });
+            T.text(c, String(v.c.price), v.tx + 26, v.ty + 113.5, { size: 7.5, color: v.c.price > coins ? '#ff6a5a' : P.gold4, font: 'title' });
+            c.globalAlpha = 1; continue;
+          }
           const nameSize = T.width(c, cd.name, 7.5, 'title') > CW - 14 ? 6.5 : 7.5;
           T.text(c, cd.name, v.tx + CW / 2, v.ty + 8, { size: nameSize, align: 'center', color: '#fff6e0', font: 'title' });
           const st = this.run.cards[cd.id] || 0;
@@ -4754,7 +5727,8 @@ DMT.CardFx = (function () {
           const desc = D.cardDesc(cd, this.run.heroId, st + 1);
           let ds = 6.2, lh = 7.6; if (T.wrap(c, desc, CW - 18, ds).length > 4) { ds = 5.3; lh = 6.3; } if (T.wrap(c, desc, CW - 18, ds).length > 5) { ds = 4.8; lh = 5.6; }
           T.para(c, desc, v.tx + 9, v.ty + 76, CW - 18, { size: ds, color: P.bone, lh, outline: false });
-          T.text(c, (st ? 'Sende x' + st + ' → x' + (st + 1) : 'Yeni') + ' / ' + cd.max, v.tx + CW - 13, v.ty + 26, { size: 4.8, align: 'right', color: st ? P.gold4 : P.bone2, ow: 1.4 });
+          if (!cd.trick) T.text(c, (st ? 'Sende x' + st + ' → x' + (st + 1) : 'Yeni') + ' / ' + cd.max + (cd.ms && st + 1 >= cd.max ? ' ★' : ''), v.tx + CW - 13, v.ty + 26, { size: 4.8, align: 'right', color: st ? P.gold4 : P.bone2, ow: 1.4 });
+          if (cd.hero || cd.req) T.text(c, cd.req ? 'EVRİM' : cd.hero === 'kael' ? 'KAEL' : 'LYRA', v.tx + 13, v.ty + 26, { size: 4.8, color: cd.req ? '#d08aff' : '#ffb070', ow: 1.4 });
           const poor = !m.free && v.c.price > coins;
           T.text(c, m.free ? 'ÜCRETSİZ' : String(v.c.price), v.tx + 26, v.ty + 113.5, { size: 7.5, color: m.free ? P.toxic : poor ? '#ff6a5a' : P.gold4, font: 'title' });
           if (poor) T.text(c, 'YETERSİZ', v.tx + CW - 12, v.ty + 115, { size: 5.5, align: 'right', color: '#ff6a5a' });
@@ -4829,6 +5803,9 @@ DMT.CardFx = (function () {
       if (run.won && frac < 0.25) cat = 'endClose';
       else if (run.totalCollectedCoins >= 150) cat = 'endRich';
       else if (run.kills < 25) cat = 'endWeak';
+      else if (U.chance(0.35)) cat = 'runEnd';
+      if (run.overrun) cat = 'overrun';
+      if (run.secret) cat = run.secret; // Faro'nun sırrı her şeyden önce gelir
       this.cat = cat;
       this.said = false;
       DMT.UI.button({ x: 480, y: 320, w: 144, h: 28, label: "PRE RUN'A DÖN", size: 9, style: 'bord', onClick: () => DMT.Scenes.go('prerun', { fromRun: true }) });
@@ -4869,12 +5846,12 @@ DMT.CardFx = (function () {
         ['Kahraman', run.hero.name + ' — ' + run.hero.role],
         ['Masa', run.table.roman + ' · ' + run.table.name],
         ['Sonuç', won ? 'Hayatta kaldı' : 'Düştü'],
-        ['Hayatta kalınan süre', U.fmtTime(run.time) + ' / ' + U.fmtTime(run.table.dur)],
+        ['Hayatta kalınan süre', U.fmtTime(run.time) + ' / ' + U.fmtTime(run.table.dur + Math.max(0, run.timeAdded || 0))],
         ['Öldürülen düşman', String(run.kills)],
         ['Verilen toplam hasar', String(Math.round(run.dmgDealt))],
         ['Kart etkilerinden hasar', imp.cardTotal + (imp.cardTotal ? '  (%' + cardPct + ')' : '')],
         ['Alınan hasar · iyileşme', Math.round(run.dmgTaken) + ' · ' + Math.round(run.healed)],
-        ['Kritik vuruş · en uzun zincir', run.crits + ' · ' + (run.maxCombo ? 'x' + run.maxCombo : '—')],
+        ['Kritik · zincir · en uzun seri', run.crits + ' · ' + (run.maxCombo ? 'x' + run.maxCombo : '—') + ' · ' + (run.maxStreak || 0)],
         ['Baskın sinerji', synTxt],
         ['En etkili kart', top ? top.d.name + (top.dmg ? ' (' + top.dmg + ')' : ' (+' + top.heal + ' can)') : '—'],
       ];
