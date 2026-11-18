@@ -21,7 +21,7 @@ const END17A = 86.56, END17B = 87.94, NARR_END = 89.49;
 const ARCH_IN = 90.75, VIDEO_END = 94.4;
 
 function applyCam(cx, cy, z, ax = 540, ay = 1150) { ctx.translate(ax, ay); ctx.scale(z, z); ctx.translate(-cx, -cy); }
-function bg(col) { ctx.drawImage(PAPER, 0, 0); if (col) { ctx.save(); ctx.globalAlpha = col[1]; ctx.fillStyle = col[0]; ctx.fillRect(0, 0, W, H); ctx.restore(); } }
+function bg(col) { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(PAPER, 0, 0); if (col) { ctx.globalAlpha = col[1]; ctx.fillStyle = col[0]; ctx.fillRect(0, 0, W, H); } ctx.restore(); }
 function wash(x, y, w, h, col, a) { ctx.save(); ctx.globalAlpha = a; ctx.fillStyle = col; ctx.fillRect(x, y, w, h); ctx.globalAlpha = a * .6; ctx.fillStyle = GRAINPAT; ctx.fillRect(x, y, w, h); ctx.restore(); }
 
 // ---------- STREET (perspective lane): scenes 1, 15, 16, 17 ----------
@@ -203,7 +203,7 @@ const CITY = (() => {
 function cityTop(t, reveal, burn) {
   bg(['#d8c9ad', .5]);
   // blocks w/ terraced roofs
-  for (let i = -1; i < 4; i++) for (let j = -1; j < 9; j++) {
+  for (let i = -2; i < 6; i++) for (let j = -2; j < 10; j++) {
     const bx = i * 520 + 65, by = j * 520 + 65, bs = 390;
     for (let k = 0; k < 5; k++) {
       const r = staticRng(i * 100 + j * 10 + k); const col = [C.roof, '#8b5a4a', C.brickD, '#6f6466'][Math.floor(r() * 4)];
@@ -553,7 +553,7 @@ function drawHandle() {
 // ---------- frame renderer ----------
 let BUFS = [];
 let MAINCTX;
-function renderScene(fn, t, target) { const prev = ctx; ctx = target; SEEDC = 0; ctx.save(); fn(t); ctx.restore(); ctx = prev; }
+function renderScene(fn, t, target) { const prev = ctx; ctx = target; SEEDC = 0; ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(PAPER, 0, 0); fn(t); ctx.restore(); ctx = prev; }
 function renderFrame(t) {
   T = t; BOIL = Math.floor(t * 8);
   ctx = MAINCTX; ctx.setTransform(1, 0, 0, 1, 0, 0);
