@@ -1,0 +1,7 @@
+node_modules/
+dist/
+release/
+.env
+.env.local
+supabase/functions/game/_shared/
+*.log

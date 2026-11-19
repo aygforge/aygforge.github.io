@@ -1,0 +1,30 @@
+{
+  "name": "varneth-the-endless-hunt",
+  "version": "0.1.0",
+  "private": true,
+  "description": "VARNETH: The Endless Hunt — Alpha 0.1 The First Hunt",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "node server/dev-server.js",
+    "assets": "python3 tools/generate-assets/generate.py",
+    "test": "vitest run",
+    "test:unit": "vitest run tests/unit",
+    "test:db": "vitest run tests/db",
+    "balance": "node tools/simulate-balance/simulate.js",
+    "build:edge": "node tools/build-edge.js",
+    "package:itch": "npm run build && node tools/package-itch.js"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.5.16",
+    "@supabase/supabase-js": "2.119.2",
+    "phaser": "3.90.0"
+  },
+  "devDependencies": {
+    "pg": "8.23.1",
+    "vite": "8.3.8",
+    "vitest": "5.1.1"
+  }
+}
