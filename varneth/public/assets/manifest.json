@@ -1,0 +1,1222 @@
+{
+ "hero": {
+  "frameW": 48,
+  "frameH": 64,
+  "cols": 10,
+  "anims": [
+   {
+    "key": "idle",
+    "start": 0,
+    "count": 6
+   },
+   {
+    "key": "run",
+    "start": 6,
+    "count": 8
+   },
+   {
+    "key": "attack",
+    "start": 14,
+    "count": 8
+   },
+   {
+    "key": "cast",
+    "start": 22,
+    "count": 10
+   },
+   {
+    "key": "hit",
+    "start": 32,
+    "count": 4
+   },
+   {
+    "key": "death",
+    "start": 36,
+    "count": 8
+   },
+   {
+    "key": "victory",
+    "start": 44,
+    "count": 6
+   }
+  ],
+  "classes": {
+   "warrior": {
+    "body": "characters/warrior/body.png",
+    "cape": "characters/warrior/cape.png",
+    "face_scar": "characters/warrior/face_scar.png",
+    "face_paint": "characters/warrior/face_paint.png",
+    "hair_short": "characters/warrior/hair_short.png",
+    "hair_long": "characters/warrior/hair_long.png",
+    "hair_ponytail": "characters/warrior/hair_ponytail.png",
+    "hair_shaved": "characters/warrior/hair_shaved.png",
+    "hair_braided": "characters/warrior/hair_braided.png",
+    "armor_plate_iron": "characters/warrior/armor_plate_iron.png",
+    "armor_plate_steel": "characters/warrior/armor_plate_steel.png",
+    "armor_plate_blood": "characters/warrior/armor_plate_blood.png",
+    "helmet_helm_iron": "characters/warrior/helmet_helm_iron.png",
+    "helmet_helm_steel": "characters/warrior/helmet_helm_steel.png",
+    "helmet_helm_blood": "characters/warrior/helmet_helm_blood.png",
+    "helmet_crown_roots": "characters/warrior/helmet_crown_roots.png",
+    "weapon_sword_a": "characters/warrior/weapon_sword_a.png",
+    "weapon_sword_b": "characters/warrior/weapon_sword_b.png",
+    "weapon_axe_a": "characters/warrior/weapon_axe_a.png",
+    "weapon_axe_b": "characters/warrior/weapon_axe_b.png",
+    "weapon_greatsword_a": "characters/warrior/weapon_greatsword_a.png",
+    "weapon_greatsword_b": "characters/warrior/weapon_greatsword_b.png",
+    "weapon_greatsword_blood": "characters/warrior/weapon_greatsword_blood.png",
+    "weapon_off_sword_a": "characters/warrior/weapon_off_sword_a.png",
+    "weapon_off_sword_b": "characters/warrior/weapon_off_sword_b.png",
+    "weapon_off_axe_a": "characters/warrior/weapon_off_axe_a.png",
+    "weapon_off_axe_b": "characters/warrior/weapon_off_axe_b.png",
+    "weapon_shield_a": "characters/warrior/weapon_shield_a.png",
+    "weapon_shield_b": "characters/warrior/weapon_shield_b.png",
+    "weapon_shield_stone": "characters/warrior/weapon_shield_stone.png"
+   },
+   "ranger": {
+    "body": "characters/ranger/body.png",
+    "cape": "characters/ranger/cape.png",
+    "face_scar": "characters/ranger/face_scar.png",
+    "face_paint": "characters/ranger/face_paint.png",
+    "hair_short": "characters/ranger/hair_short.png",
+    "hair_long": "characters/ranger/hair_long.png",
+    "hair_ponytail": "characters/ranger/hair_ponytail.png",
+    "hair_shaved": "characters/ranger/hair_shaved.png",
+    "hair_braided": "characters/ranger/hair_braided.png",
+    "armor_leather_brown": "characters/ranger/armor_leather_brown.png",
+    "armor_leather_dark": "characters/ranger/armor_leather_dark.png",
+    "armor_leather_green": "characters/ranger/armor_leather_green.png",
+    "helmet_hood_brown": "characters/ranger/helmet_hood_brown.png",
+    "helmet_hood_dark": "characters/ranger/helmet_hood_dark.png",
+    "helmet_hood_green": "characters/ranger/helmet_hood_green.png",
+    "helmet_crown_roots": "characters/ranger/helmet_crown_roots.png",
+    "weapon_bow_a": "characters/ranger/weapon_bow_a.png",
+    "weapon_bow_b": "characters/ranger/weapon_bow_b.png",
+    "weapon_bow_green": "characters/ranger/weapon_bow_green.png",
+    "weapon_crossbow_a": "characters/ranger/weapon_crossbow_a.png",
+    "weapon_crossbow_b": "characters/ranger/weapon_crossbow_b.png",
+    "weapon_dagger_a": "characters/ranger/weapon_dagger_a.png",
+    "weapon_dagger_b": "characters/ranger/weapon_dagger_b.png",
+    "weapon_off_dagger_a": "characters/ranger/weapon_off_dagger_a.png",
+    "weapon_off_dagger_b": "characters/ranger/weapon_off_dagger_b.png"
+   },
+   "mage": {
+    "body": "characters/mage/body.png",
+    "cape": "characters/mage/cape.png",
+    "face_scar": "characters/mage/face_scar.png",
+    "face_paint": "characters/mage/face_paint.png",
+    "hair_short": "characters/mage/hair_short.png",
+    "hair_long": "characters/mage/hair_long.png",
+    "hair_ponytail": "characters/mage/hair_ponytail.png",
+    "hair_shaved": "characters/mage/hair_shaved.png",
+    "hair_braided": "characters/mage/hair_braided.png",
+    "armor_cloth_blue": "characters/mage/armor_cloth_blue.png",
+    "armor_cloth_violet": "characters/mage/armor_cloth_violet.png",
+    "armor_cloth_arcane": "characters/mage/armor_cloth_arcane.png",
+    "helmet_hat_blue": "characters/mage/helmet_hat_blue.png",
+    "helmet_hat_violet": "characters/mage/helmet_hat_violet.png",
+    "helmet_hat_arcane": "characters/mage/helmet_hat_arcane.png",
+    "helmet_crown_roots": "characters/mage/helmet_crown_roots.png",
+    "weapon_staff_a": "characters/mage/weapon_staff_a.png",
+    "weapon_staff_b": "characters/mage/weapon_staff_b.png",
+    "weapon_staff_storm": "characters/mage/weapon_staff_storm.png",
+    "weapon_wand_a": "characters/mage/weapon_wand_a.png",
+    "weapon_wand_b": "characters/mage/weapon_wand_b.png",
+    "weapon_tome_a": "characters/mage/weapon_tome_a.png",
+    "weapon_tome_b": "characters/mage/weapon_tome_b.png",
+    "weapon_orb_a": "characters/mage/weapon_orb_a.png"
+   }
+  }
+ },
+ "enemies": {
+  "meadow_wolf": {
+   "file": "enemies/meadow_wolf.png",
+   "frameW": 68,
+   "frameH": 44,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "raider_goblin": {
+   "file": "enemies/raider_goblin.png",
+   "frameW": 44,
+   "frameH": 48,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "broken_shell": {
+   "file": "enemies/broken_shell.png",
+   "frameW": 64,
+   "frameH": 42,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "meadow_butcher": {
+   "file": "enemies/meadow_butcher.png",
+   "frameW": 84,
+   "frameH": 98,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "golden_horn": {
+   "file": "enemies/golden_horn.png",
+   "frameW": 84,
+   "frameH": 62,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "forest_goblin": {
+   "file": "enemies/forest_goblin.png",
+   "frameW": 52,
+   "frameH": 50,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "venom_spider": {
+   "file": "enemies/venom_spider.png",
+   "frameW": 64,
+   "frameH": 40,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "corrupted_tree": {
+   "file": "enemies/corrupted_tree.png",
+   "frameW": 76,
+   "frameH": 90,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "root_guardian": {
+   "file": "enemies/root_guardian.png",
+   "frameW": 96,
+   "frameH": 112,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "ancient_fang": {
+   "file": "enemies/ancient_fang.png",
+   "frameW": 88,
+   "frameH": 56,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "rusty_guard": {
+   "file": "enemies/rusty_guard.png",
+   "frameW": 64,
+   "frameH": 76,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "ember_worker": {
+   "file": "enemies/ember_worker.png",
+   "frameW": 52,
+   "frameH": 62,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "mine_crawler": {
+   "file": "enemies/mine_crawler.png",
+   "frameW": 56,
+   "frameH": 32,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "iron_executioner": {
+   "file": "enemies/iron_executioner.png",
+   "frameW": 100,
+   "frameH": 116,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "molten_core": {
+   "file": "enemies/molten_core.png",
+   "frameW": 68,
+   "frameH": 68,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "broken_horn": {
+   "file": "bosses/broken_horn.png",
+   "frameW": 140,
+   "frameH": 148,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "lord_of_roots": {
+   "file": "bosses/lord_of_roots.png",
+   "frameW": 160,
+   "frameH": 190,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "forge_warden": {
+   "file": "bosses/forge_warden.png",
+   "frameW": 176,
+   "frameH": 196,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "rot_sporeling": {
+   "file": "enemies/rot_sporeling.png",
+   "frameW": 40,
+   "frameH": 36,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  },
+  "rot_heart": {
+   "file": "bosses/rot_heart.png",
+   "frameW": 150,
+   "frameH": 140,
+   "anims": [
+    {
+     "key": "idle",
+     "start": 0,
+     "count": 4
+    },
+    {
+     "key": "move",
+     "start": 4,
+     "count": 6
+    },
+    {
+     "key": "attack",
+     "start": 10,
+     "count": 6
+    },
+    {
+     "key": "hit",
+     "start": 16,
+     "count": 3
+    },
+    {
+     "key": "death",
+     "start": 19,
+     "count": 6
+    },
+    {
+     "key": "special",
+     "start": 25,
+     "count": 6
+    }
+   ]
+  }
+ },
+ "backgrounds": {
+  "meadow_road": {
+   "sky": "backgrounds/meadow_road_sky.png",
+   "far": "backgrounds/meadow_road_far.png",
+   "mid": "backgrounds/meadow_road_mid.png",
+   "near": "backgrounds/meadow_road_near.png",
+   "fog": "backgrounds/meadow_road_fog.png"
+  },
+  "meadow_mill": {
+   "sky": "backgrounds/meadow_mill_sky.png",
+   "far": "backgrounds/meadow_mill_far.png",
+   "mid": "backgrounds/meadow_mill_mid.png",
+   "near": "backgrounds/meadow_mill_near.png",
+   "fog": "backgrounds/meadow_mill_fog.png"
+  },
+  "forest_path": {
+   "sky": "backgrounds/forest_path_sky.png",
+   "far": "backgrounds/forest_path_far.png",
+   "mid": "backgrounds/forest_path_mid.png",
+   "near": "backgrounds/forest_path_near.png",
+   "fog": "backgrounds/forest_path_fog.png"
+  },
+  "forest_grove": {
+   "sky": "backgrounds/forest_grove_sky.png",
+   "far": "backgrounds/forest_grove_far.png",
+   "mid": "backgrounds/forest_grove_mid.png",
+   "near": "backgrounds/forest_grove_near.png",
+   "fog": "backgrounds/forest_grove_fog.png"
+  },
+  "forge_mine": {
+   "sky": "backgrounds/forge_mine_sky.png",
+   "far": "backgrounds/forge_mine_far.png",
+   "mid": "backgrounds/forge_mine_mid.png",
+   "near": "backgrounds/forge_mine_near.png",
+   "fog": "backgrounds/forge_mine_fog.png"
+  },
+  "forge_core": {
+   "sky": "backgrounds/forge_core_sky.png",
+   "far": "backgrounds/forge_core_far.png",
+   "mid": "backgrounds/forge_core_mid.png",
+   "near": "backgrounds/forge_core_near.png",
+   "fog": "backgrounds/forge_core_fog.png"
+  },
+  "dungeon_roots": {
+   "sky": "backgrounds/dungeon_roots_sky.png",
+   "far": "backgrounds/dungeon_roots_far.png",
+   "mid": "backgrounds/dungeon_roots_mid.png",
+   "near": "backgrounds/dungeon_roots_near.png",
+   "fog": "backgrounds/dungeon_roots_fog.png"
+  },
+  "hub": {
+   "sky": "backgrounds/hub_sky.png",
+   "far": "backgrounds/hub_far.png",
+   "mid": "backgrounds/hub_mid.png",
+   "near": "backgrounds/hub_near.png",
+   "fog": "backgrounds/hub_fog.png"
+  }
+ },
+ "fx": {
+  "fx_slash": {
+   "file": "effects/fx_slash.png",
+   "frameW": 64,
+   "frameH": 64,
+   "count": 6
+  },
+  "fx_impact": {
+   "file": "effects/fx_impact.png",
+   "frameW": 48,
+   "frameH": 48,
+   "count": 6
+  },
+  "fx_explosion": {
+   "file": "effects/fx_explosion.png",
+   "frameW": 64,
+   "frameH": 64,
+   "count": 7
+  },
+  "fx_poison": {
+   "file": "effects/fx_poison.png",
+   "frameW": 64,
+   "frameH": 40,
+   "count": 6
+  },
+  "fx_ice": {
+   "file": "effects/fx_ice.png",
+   "frameW": 96,
+   "frameH": 48,
+   "count": 6
+  },
+  "fx_shield": {
+   "file": "effects/fx_shield.png",
+   "frameW": 48,
+   "frameH": 64,
+   "count": 6
+  },
+  "fx_heal": {
+   "file": "effects/fx_heal.png",
+   "frameW": 32,
+   "frameH": 48,
+   "count": 6
+  },
+  "fx_beam": {
+   "file": "effects/fx_beam.png",
+   "frameW": 24,
+   "frameH": 120,
+   "count": 6
+  },
+  "fx_levelup": {
+   "file": "effects/fx_levelup.png",
+   "frameW": 64,
+   "frameH": 64,
+   "count": 8
+  },
+  "fx_meteor": {
+   "file": "effects/fx_meteor.png",
+   "frameW": 32,
+   "frameH": 32,
+   "count": 1
+  },
+  "pr_arrow": {
+   "file": "effects/pr_arrow.png",
+   "frameW": 18,
+   "frameH": 5,
+   "count": 1
+  },
+  "pr_arrow_poison": {
+   "file": "effects/pr_arrow_poison.png",
+   "frameW": 18,
+   "frameH": 5,
+   "count": 1
+  },
+  "pr_bolt": {
+   "file": "effects/pr_bolt.png",
+   "frameW": 12,
+   "frameH": 12,
+   "count": 1
+  },
+  "pr_fireball": {
+   "file": "effects/pr_fireball.png",
+   "frameW": 20,
+   "frameH": 14,
+   "count": 1
+  },
+  "pr_ember": {
+   "file": "effects/pr_ember.png",
+   "frameW": 10,
+   "frameH": 10,
+   "count": 1
+  },
+  "pr_spit": {
+   "file": "effects/pr_spit.png",
+   "frameW": 10,
+   "frameH": 8,
+   "count": 1
+  },
+  "pr_sap": {
+   "file": "effects/pr_sap.png",
+   "frameW": 10,
+   "frameH": 8,
+   "count": 1
+  },
+  "pr_spore": {
+   "file": "effects/pr_spore.png",
+   "frameW": 12,
+   "frameH": 12,
+   "count": 1
+  },
+  "dot": {
+   "file": "effects/dot.png",
+   "frameW": 4,
+   "frameH": 4,
+   "count": 1
+  },
+  "spark": {
+   "file": "effects/spark.png",
+   "frameW": 3,
+   "frameH": 3,
+   "count": 1
+  },
+  "leaf": {
+   "file": "effects/leaf.png",
+   "frameW": 5,
+   "frameH": 4,
+   "count": 1
+  },
+  "shadow": {
+   "file": "effects/shadow.png",
+   "frameW": 40,
+   "frameH": 8,
+   "count": 1
+  }
+ },
+ "icons": {
+  "items": {
+   "file": "items/items.png",
+   "size": 32,
+   "cols": 16,
+   "index": {
+    "w_sword_1": 0,
+    "w_sword_2": 1,
+    "w_sword_3": 2,
+    "w_axe_1": 3,
+    "w_axe_2": 4,
+    "w_axe_3": 5,
+    "w_great_1": 6,
+    "w_great_2": 7,
+    "w_great_3": 8,
+    "w_shield_1": 9,
+    "w_shield_2": 10,
+    "w_shield_3": 11,
+    "r_bow_1": 12,
+    "r_bow_2": 13,
+    "r_bow_3": 14,
+    "r_xbow_2": 15,
+    "r_xbow_3": 16,
+    "r_dagger_1": 17,
+    "r_dagger_2": 18,
+    "r_dagger_3": 19,
+    "m_staff_1": 20,
+    "m_staff_2": 21,
+    "m_staff_3": 22,
+    "m_wand_1": 23,
+    "m_wand_2": 24,
+    "m_wand_3": 25,
+    "m_tome_1": 26,
+    "m_tome_3": 27,
+    "m_orb_2": 28,
+    "w_head_1": 29,
+    "w_head_2": 30,
+    "w_chest_1": 31,
+    "w_chest_2": 32,
+    "w_gloves_1": 33,
+    "w_gloves_2": 34,
+    "w_legs_1": 35,
+    "w_legs_2": 36,
+    "w_boots_1": 37,
+    "w_boots_2": 38,
+    "r_head_1": 39,
+    "r_head_2": 40,
+    "r_chest_1": 41,
+    "r_chest_2": 42,
+    "r_gloves_1": 43,
+    "r_gloves_2": 44,
+    "r_legs_1": 45,
+    "r_legs_2": 46,
+    "r_boots_1": 47,
+    "r_boots_2": 48,
+    "m_head_1": 49,
+    "m_head_2": 50,
+    "m_chest_1": 51,
+    "m_chest_2": 52,
+    "m_gloves_1": 53,
+    "m_gloves_2": 54,
+    "m_legs_1": 55,
+    "m_legs_2": 56,
+    "m_boots_1": 57,
+    "m_boots_2": 58,
+    "belt_1": 59,
+    "belt_2": 60,
+    "belt_3": 61,
+    "amulet_1": 62,
+    "amulet_2": 63,
+    "amulet_3": 64,
+    "ring_1": 65,
+    "ring_2": 66,
+    "ring_3": 67,
+    "set_bl_head": 68,
+    "set_bl_chest": 69,
+    "set_bl_gloves": 70,
+    "set_bl_boots": 71,
+    "set_gs_head": 72,
+    "set_gs_chest": 73,
+    "set_gs_legs": 74,
+    "set_gs_boots": 75,
+    "set_ar_head": 76,
+    "set_ar_chest": 77,
+    "set_ar_gloves": 78,
+    "set_ar_legs": 79,
+    "u_crimson_executioner": 80,
+    "u_vipers_whisper": 81,
+    "u_storm_staff": 82,
+    "u_crown_of_roots": 83,
+    "u_ember_heart": 84,
+    "u_broken_seal": 85,
+    "u_millstone": 86,
+    "u_wardens_grip": 87
+   }
+  },
+  "materials": {
+   "file": "items/materials.png",
+   "size": 32,
+   "cols": 8,
+   "index": {
+    "arcane_dust": 0,
+    "mystic_essence": 1,
+    "void_crystal": 2,
+    "starfire_shard": 3,
+    "meadow_fang": 4,
+    "chitin_shard": 5,
+    "venom_sac": 6,
+    "heartwood": 7,
+    "rust_gear": 8,
+    "ember_core": 9,
+    "bloodroot": 10,
+    "moonpetal": 11,
+    "elixir_hunter": 12,
+    "elixir_fury": 13,
+    "elixir_stone": 14
+   }
+  },
+  "skills": {
+   "file": "ui/skills.png",
+   "size": 32,
+   "cols": 8,
+   "index": {
+    "cleave": 0,
+    "whirlwind": 1,
+    "blood_rush": 2,
+    "iron_will": 3,
+    "ground_slam": 4,
+    "execute": 5,
+    "warrior_endurance": 6,
+    "bloody_rage": 7,
+    "steel_reflex": 8,
+    "rapid_shot": 9,
+    "poison_arrow": 10,
+    "arrow_rain": 11,
+    "leap_back": 12,
+    "hunter_trap": 13,
+    "first_aid": 14,
+    "sharpshooter": 15,
+    "hunter_instinct": 16,
+    "poison_mastery": 17,
+    "fireball": 18,
+    "chain_lightning": 19,
+    "frost_wave": 20,
+    "mana_drain": 21,
+    "spell_shield": 22,
+    "meteor": 23,
+    "element_mastery": 24,
+    "mana_flow": 25,
+    "arcane_ward": 26
+   }
+  }
+ },
+ "ui": {
+  "logo": "ui/logo.png",
+  "panel": "ui/panel.png"
+ }
+}
