@@ -1,0 +1,7 @@
+{
+  "menu.world": "World", "menu.character": "Character", "menu.inventory": "Inventory", "menu.dungeons": "Dungeons",
+  "menu.quests": "Quests", "menu.workshop": "Workshop", "menu.stash": "Stash", "menu.market": "Market",
+  "menu.collection": "Collection", "menu.settings": "Settings", "farm.start": "Start Hunt", "farm.stop": "Stop Hunt",
+  "hub.name": "Last Refuge", "offline.title": "While You Were Away", "login.login": "Log In", "login.register": "Create Account",
+  "class.warrior": "Warrior", "class.ranger": "Ranger", "class.mage": "Mage"
+}

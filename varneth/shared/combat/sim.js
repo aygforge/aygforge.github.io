@@ -139,13 +139,15 @@ function spawnFarmPack(sim) {
   const baseX = Math.min(ARENA_MAX - 20, sim.p.x + 330);
   const r = R.next(sim.rng);
   const champChance = BALANCE.CHAMPION_SPAWN_CHANCE;
-  if (sim.forceChampion > 0 || r < champChance) {
+  if (sim.forceChampion > 0 || (r < champChance && pl >= zone.levels[0] + 2)) {
     if (sim.forceChampion > 0) sim.forceChampion--;
     spawnEnemy(sim, R.pick(sim.rng, region.champions), Math.min(zone.levels[1] + 1, top + 2), baseX);
     ev(sim, { k: 'announce', text: 'Nadir şampiyon belirdi!', tone: 'champion' });
     return;
   }
-  if (r < champChance + BALANCE.ELITE_SPAWN_CHANCE && zone.levels[0] >= region.levels[0] + 4 || r < champChance + BALANCE.ELITE_SPAWN_CHANCE * 0.5) {
+  // elites only once the hunter has outgrown the bottom of the zone band
+  const eliteOk = pl >= zone.levels[0] + 2;
+  if (eliteOk && (r < champChance + BALANCE.ELITE_SPAWN_CHANCE && zone.levels[0] >= region.levels[0] + 4 || r < champChance + BALANCE.ELITE_SPAWN_CHANCE * 0.5)) {
     spawnEnemy(sim, R.pick(sim.rng, region.elites), Math.min(zone.levels[1], top + 1), baseX);
     if (R.chance(sim.rng, 0.5)) spawnEnemy(sim, R.weighted(sim.rng, zone.pool), lvl(), baseX + 40);
     return;

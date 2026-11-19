@@ -192,6 +192,24 @@ async function computeStats(ctx, char) {
   return deriveStats({ cls: char.class, level: num(char.level), equipped: eq, loadout: lo, buffs });
 }
 
+// Newly unlocked skills are placed into EMPTY loadout slots (never replacing a player's choice).
+async function autoFillLoadouts(ctx, charId, cls, fromLevel, toLevel) {
+  const fresh = Object.values(SKILLS).filter((sk) => sk.cls === cls && sk.unlock > fromLevel && sk.unlock <= toLevel);
+  if (!fresh.length) return;
+  const rows = await ctx.q('select idx, actives, passives from character_loadouts where character_id=$1 for update', [charId]);
+  for (const r of rows) {
+    const A = [...(r.actives || [])].concat(['', '', '', '']).slice(0, 4);
+    const P = [...(r.passives || [])].concat(['', '']).slice(0, 2);
+    for (const sk of fresh) {
+      const arr = sk.passive ? P : A;
+      if (arr.includes(sk.id)) continue;
+      const i = arr.findIndex((x) => !x);
+      if (i >= 0) arr[i] = sk.id;
+    }
+    await ctx.q('update character_loadouts set actives=array(select jsonb_array_elements_text($3::jsonb)), passives=array(select jsonb_array_elements_text($4::jsonb)) where character_id=$1 and idx=$2', [charId, r.idx, J(A), J(P)]);
+  }
+}
+
 function reqLevelOf(item) {
   const b = BASE_BY_ID[item.base_id];
   return Math.max(1, b.reqLevel, item.item_level - 3);
@@ -329,6 +347,7 @@ async function applyAcc(ctx, char, acc, sim, sess, seconds) {
   const xpRes = applyXp(lvl0, num(char.xp), acc.xp);
   out.xp = acc.xp; out.levelsGained = xpRes.levelsGained; out.level = xpRes.level;
   await ctx.q('update characters set level=$2, xp=$3 where id=$1', [char.id, xpRes.level, xpRes.xp]);
+  if (xpRes.levelsGained) await autoFillLoadouts(ctx, char.id, char.class, lvl0, xpRes.level);
   // gold
   if (acc.gold) { await addGold(ctx, acc.gold, 'farm', sess.id); out.gold = acc.gold; }
   // loot
@@ -488,6 +507,7 @@ async function claimOffline(ctx, prof) {
   const xpGain = Math.floor(xpps * seconds * BALANCE.OFFLINE_XP_RATE);
   const res = applyXp(num(char.level), num(char.xp), xpGain);
   await ctx.q('update characters set level=$2, xp=$3 where id=$1', [char.id, res.level, res.xp]);
+  if (res.levelsGained) await autoFillLoadouts(ctx, char.id, char.class, num(char.level), res.level);
   // character-bound helper materials (alchemy only); no gold, no equipment
   const zone = ZONE_BY_ID[prof.offline_zone];
   const region = zone ? REGION_BY_ID[zone.region] : REGION_BY_ID.broken_meadows;
@@ -1139,6 +1159,7 @@ const HANDLERS = {
     await addGold(ctx, q.reward.gold, 'quest', questId);
     const xr = applyXp(num(char.level), num(char.xp), q.reward.xp);
     await ctx.q('update characters set level=$2, xp=$3 where id=$1', [char.id, xr.level, xr.xp]);
+    if (xr.levelsGained) await autoFillLoadouts(ctx, char.id, char.class, num(char.level), xr.level);
     if (q.reward.seal) await ctx.q('update character_progress set seals = array_append(seals, $2) where character_id=$1 and not ($2 = any(seals))', [char.id, q.reward.seal]);
     // next quest in chain
     const idx = MAIN_QUESTS.findIndex((x) => x.id === questId);
@@ -1181,6 +1202,7 @@ const HANDLERS = {
     await addGold(ctx, o.reward.gold, 'contract', questId);
     const xr = applyXp(num(char.level), num(char.xp), o.reward.xp);
     await ctx.q('update characters set level=$2, xp=$3 where id=$1', [char.id, xr.level, xr.xp]);
+    if (xr.levelsGained) await autoFillLoadouts(ctx, char.id, char.class, num(char.level), xr.level);
     await changeMats(ctx, ACCOUNT_SCOPE, o.reward.mats || {});
     return { ok: true, reward: o.reward, levelsGained: xr.levelsGained };
   },

@@ -1,0 +1,7 @@
+{
+  "menu.world": "Dünya", "menu.character": "Karakter", "menu.inventory": "Envanter", "menu.dungeons": "Zindanlar",
+  "menu.quests": "Görevler", "menu.workshop": "Atölye", "menu.stash": "Depo", "menu.market": "Pazar",
+  "menu.collection": "Koleksiyon", "menu.settings": "Ayarlar", "farm.start": "Ava Çık", "farm.stop": "Avı Durdur",
+  "hub.name": "Son Sığınak", "offline.title": "Sen Yokken Neler Oldu?", "login.login": "Giriş Yap", "login.register": "Hesap Oluştur",
+  "class.warrior": "Savaşçı", "class.ranger": "Avcı", "class.mage": "Büyücü"
+}

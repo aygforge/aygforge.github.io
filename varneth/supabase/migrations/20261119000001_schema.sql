@@ -4,7 +4,7 @@
 -- connection inside explicit transactions. Browser clients only get SELECT access
 -- through RLS (see 20261119000002_security.sql).
 
-create extension if not exists pgcrypto;
+-- gen_random_uuid() is built into PostgreSQL 13+ (Supabase uses 15+)
 
 -- ---------------------------------------------------------------- accounts
 create table if not exists public.profiles (
