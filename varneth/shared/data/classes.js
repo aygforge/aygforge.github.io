@@ -2,7 +2,7 @@ export const CLASSES = {
   warrior: {
     id: 'warrior', name: 'Savaşçı', nameEn: 'Warrior', resource: 'rage', resourceName: 'Öfke',
     resourceMax: 100, resourceStart: 0, resourceRegen: -1.5, resourceOnHit: 12, resourceOnHurt: 3,
-    hpMult: 1.3, armorMult: 1.2, range: 26, moveSpeed: 70, preferredRange: 22,
+    hpMult: 1.4, armorMult: 1.25, range: 26, moveSpeed: 70, preferredRange: 22,
     starterWeapon: 'w_sword_1', starterOff: 'w_shield_1', starterArmor: 'w_chest_1',
     desc: 'Dayanıklı yakın dövüşçü. Normal saldırılar öfke üretir; güçlü yetenekler öfke tüketir.',
   },

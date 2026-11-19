@@ -1,0 +1,91 @@
+# VARNETH balance simulation — 20 simulated minutes per farm run
+
+## Farm efficiency (gear: Uncommon, item level = character level)
+cls	level	zoneId	dps	avgKillS	killsPerHour	xpPerHour	goldPerHour	deathsPerHour	itemsPerHour	valuablePerHour	hoursToLevel
+warrior	3	abandoned_road	17	6.63	543	16641	1689	6	39	0	0.09
+ranger	3	abandoned_road	18	5.29	681	16386	1707	3	36	0	0.09
+mage	3	abandoned_road	20	4.36	825	17070	1848	0	33	0	0.08
+warrior	8	broken_mill	37	5.88	612	40458	3225	0	21	0	0.39
+ranger	8	broken_mill	38	5.71	630	47934	3867	0	27	6	0.33
+mage	8	broken_mill	48	4.63	777	56058	4500	0	36	0	0.28
+warrior	13	forest_path	85	4.46	807	98826	6849	0	36	3	0.54
+ranger	13	forest_path	75	4.17	864	104466	7716	0	36	6	0.51
+mage	13	forest_path	103	3.21	1122	132723	9723	0	42	3	0.4
+warrior	18	dark_grove	149	4.94	729	153012	9807	0	60	9	0.81
+ranger	18	dark_grove	136	4.86	741	159360	10434	0	51	6	0.78
+mage	18	dark_grove	168	4.04	891	196638	12870	0	57	3	0.63
+warrior	23	old_mine	227	3.67	981	192417	12564	0	63	0	1.22
+ranger	23	old_mine	186	3.37	1068	201027	13674	0	60	0	1.17
+mage	23	old_mine	255	2.6	1383	251244	17004	0	78	0	0.94
+warrior	28	forgotten_forge	337	3.63	993	270324	17295	0	72	3	1.46
+ranger	28	forgotten_forge	292	3.96	909	306924	20712	0	84	3	1.28
+mage	28	forgotten_forge	385	2.86	1257	357537	23727	0	90	0	1.1
+
+## Gear quality impact (Lv18 Karanlık Koruluk)
+cls	gear	dps	avgKillS	deathsPerHour	xpPerHour
+warrior	Sıradan	131	5.36	0	127572
+warrior	Gelişmiş	150	4.41	0	151974
+warrior	Nadir	159	5.22	0	164430
+warrior	Epik	186	4.58	0	174144
+ranger	Sıradan	113	5.77	0	135858
+ranger	Gelişmiş	133	4.76	0	163884
+ranger	Nadir	148	4.32	0	186528
+ranger	Epik	173	4.03	0	194724
+mage	Sıradan	148	4.65	0	182574
+mage	Gelişmiş	169	3.97	0	199206
+mage	Nadir	192	3.41	0	222042
+mage	Epik	232	3.47	0	238524
+
+## Overlevel farming (Lv30 in Terk Edilmiş Yol)
+cls	avgKillS	xpPerHour	goldPerHour
+warrior	2.11	4590	4446
+ranger	2.02	5202	4776
+mage	1.9	5778	5358
+
+## Bosses (10 seeds each; win rate / avg seconds)
+boss	cls	gear	winRate	avgS
+broken_horn	warrior	Gelişmiş	1	95
+broken_horn	warrior	Nadir	1	79
+broken_horn	ranger	Gelişmiş	1	76
+broken_horn	ranger	Nadir	1	63
+broken_horn	mage	Gelişmiş	1	54
+broken_horn	mage	Nadir	1	46
+lord_of_roots	warrior	Gelişmiş	1	101
+lord_of_roots	warrior	Nadir	1	86
+lord_of_roots	ranger	Gelişmiş	1	82
+lord_of_roots	ranger	Nadir	1	75
+lord_of_roots	mage	Gelişmiş	0.1	56
+lord_of_roots	mage	Nadir	0.9	51
+forge_warden	warrior	Gelişmiş	0.3	105
+forge_warden	warrior	Nadir	1	91
+forge_warden	ranger	Gelişmiş	1	61
+forge_warden	ranger	Nadir	1	49
+forge_warden	mage	Gelişmiş	0.9	55
+forge_warden	mage	Nadir	0.9	45
+
+## Dungeon Çürüyen Kökler
+cls	diff	level	gear	winRate	avgS
+warrior	normal	22	Gelişmiş	1	278
+warrior	normal	22	Nadir	1	237
+warrior	heroic	28	Nadir	1	266
+warrior	heroic	30	Epik	1	209
+ranger	normal	22	Gelişmiş	1	174
+ranger	normal	22	Nadir	1	148
+ranger	heroic	28	Nadir	1	167
+ranger	heroic	30	Epik	1	126
+mage	normal	22	Gelişmiş	1	136
+mage	normal	22	Nadir	1	123
+mage	heroic	28	Nadir	1	145
+mage	heroic	30	Epik	1	109
+
+## Leveling time estimate 1→30 (active farm in level-appropriate zone, Uncommon gear)
+{ warrior: 23.5, ranger: 21.5, mage: 17.5 } (hours, excludes quest XP)
+
+## Economy: gold sinks vs income (per character to Lv30)
+{
+  avgGoldPerHour: 9956,
+  estHoursTo30: 20.8,
+  estGoldTo30: 207344,
+  cost_epic_lv30_plus10: 82803,
+  npcValue_epic_lv30: 348
+}

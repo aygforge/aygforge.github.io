@@ -55,6 +55,7 @@ function ctxFor(app) {
 
 function slotOf(item) {
   const b = BASE_BY_ID[item.base_id];
+  if (!b) return 'mainhand';
   if (b.slot === 'ring') return app_ring(item);
   const f = FAMILIES[b.family];
   return f.kind === 'weapon' ? 'mainhand' : b.slot;
@@ -222,7 +223,7 @@ const PANELS = {
     const v = app.view;
     const c = v.character;
     const state = (PANELS.inventory.state ||= { sort: 'rarity', filter: '', sel: null });
-    let items = [...v.bag];
+    let items = v.bag.filter((it) => BASE_BY_ID[it.base_id]); // ignore unknown/retired bases defensively
     if (state.filter) items = items.filter((it) => BASE_BY_ID[it.base_id].slot === state.filter || (state.filter === 'mainhand' && FAMILIES[BASE_BY_ID[it.base_id].family].kind === 'weapon'));
     const sorters = { rarity: (a, b) => b.rarity - a.rarity || b.item_level - a.item_level, level: (a, b) => b.item_level - a.item_level, slot: (a, b) => SLOTS.indexOf(slotOf(a)) - SLOTS.indexOf(slotOf(b)) };
     items.sort(sorters[state.sort]);

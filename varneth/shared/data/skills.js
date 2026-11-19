@@ -54,9 +54,9 @@ export const SKILLS = {
   poison_mastery:    { cls: 'ranger', passive: true, name: 'Zehir Ustalığı', unlock: 20, stats: { poisonDmg: 0.3 }, flag: 'poison_stacks', desc: 'Zehir hasarı +%30, zehir 3 kez birikir.' },
 
   // ---------------- MAGE
-  fireball:      { cls: 'mage', name: 'Ateş Topu', unlock: 1, cost: 18, cd: 2.5, cast: 0.5, target: 'single', mult: 1.8, element: 'fire', splash: { radius: 32, pct: 0.35 }, burn: { pct: 0.4, dur: 3 }, projectile: 'fireball', rules: ['always'], fx: 'fire',
-                   desc: '%180 ateş hasarı, çevreye %35 sıçrama ve yanma.' },
-  chain_lightning:{ cls: 'mage', name: 'Zincir Yıldırım', unlock: 3, cost: 25, cd: 5, cast: 0.45, target: 'chain', mult: 1.3, jumps: 3, falloff: 0.15, element: 'lightning', rules: ['enemies_ge_2', 'always'], fx: 'lightning',
+  fireball:      { cls: 'mage', name: 'Ateş Topu', unlock: 1, cost: 18, cd: 2.5, cast: 0.5, target: 'single', mult: 1.65, element: 'fire', splash: { radius: 32, pct: 0.35 }, burn: { pct: 0.4, dur: 3 }, projectile: 'fireball', rules: ['always'], fx: 'fire',
+                   desc: '%165 ateş hasarı, çevreye %35 sıçrama ve yanma.' },
+  chain_lightning:{ cls: 'mage', name: 'Zincir Yıldırım', unlock: 3, cost: 25, cd: 5, cast: 0.45, target: 'chain', mult: 1.3, jumps: 3, falloff: 0.25, element: 'lightning', rules: ['enemies_ge_2', 'always'], fx: 'lightning',
                    desc: '%130 yıldırım hasarı, 3 hedefe sıçrar.' },
   frost_wave:    { cls: 'mage', name: 'Buz Dalgası', unlock: 6, cost: 30, cd: 8, cast: 0.45, target: 'cone', radius: 130, mult: 1.3, slow: { pct: 0.4, dur: 3 }, element: 'ice', rules: ['enemies_ge_2', 'enemy_close'], fx: 'ice',
                    desc: 'Önündeki düşmanlara %130 buz hasarı, 3 sn %40 yavaşlatma.' },

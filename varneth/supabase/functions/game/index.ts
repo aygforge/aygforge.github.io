@@ -4,11 +4,21 @@
 //   function's private DB connection (SUPABASE_DB_URL is provided by Supabase; never
 //   exposed to the browser).
 // Deploy: npm run build:edge && supabase functions deploy game
-import postgres from 'npm:postgres@3.4.5';
-import { createClient } from 'npm:@supabase/supabase-js@2.49.1';
+import postgres from 'postgres';
+import { createClient } from '@supabase/supabase-js';
 import { createGameServer } from './_shared/server/commands.js';
 
-const sql = postgres(Deno.env.get('SUPABASE_DB_URL')!, { max: 4, prepare: false });
+// The command layer passes JSON as already-serialized strings ($n::jsonb). postgres.js would
+// JSON.stringify them a second time, so json/jsonb serializers pass strings through unchanged.
+const passJson = (v: unknown) => (typeof v === 'string' ? v : JSON.stringify(v));
+const sql = postgres(Deno.env.get('SUPABASE_DB_URL')!, {
+  max: 4,
+  prepare: false,
+  types: {
+    jsonbText: { to: 3802, from: [3802], serialize: passJson, parse: (x: string) => JSON.parse(x) },
+    jsonText: { to: 114, from: [114], serialize: passJson, parse: (x: string) => JSON.parse(x) },
+  },
+});
 const db = {
   tx<T>(fn: (q: (text: string, params?: unknown[]) => Promise<any[]>) => Promise<T>): Promise<T> {
     return sql.begin(async (tx: any) => {
