@@ -42,7 +42,7 @@ export const RUN_COUNTER_DEFAULTS = {
 // Safe migration of an older (Alpha 0.1) wave snapshot: only adds missing fields with neutral defaults.
 export function migrateRunState(run) {
   run.counters = { ...RUN_COUNTER_DEFAULTS, ...(run.counters || {}) };
-  run.stats = { crits: 0, cappedEvents: 0, heals: 0, shuffles: 0, bossStartTurn: null, ...(run.stats || {}) };
+  run.stats = { crits: 0, cappedEvents: 0, heals: 0, shuffles: 0, bossStartTurn: null, procs: {}, ...(run.stats || {}) };
   if (!run.critRng) run.critRng = ((run.seed || 1) ^ 0x9e3779b9) >>> 0 || 1;
   if (run.offerSeq == null) run.offerSeq = 0;
   if (run.lastOffer === undefined) run.lastOffer = null;
@@ -72,7 +72,7 @@ export function newRunState({ chapter, perm, seed, runId }) {
     stats: {
       hpLost: 0, kills: 0, escaped: 0, shots: 0, normalShots: 0, damageDealt: 0,
       completedWaves: 0, taps: 0, catches: [], loads: [],
-      crits: 0, cappedEvents: 0, heals: 0, shuffles: 0, bossStartTurn: null,
+      crits: 0, cappedEvents: 0, heals: 0, shuffles: 0, bossStartTurn: null, procs: {},
     },
     critRng: (seed ^ 0x9e3779b9) >>> 0 || 1, // dedicated deterministic crit stream (snapshot-safe)
     offerSeq: 0,
@@ -234,6 +234,10 @@ export class RunController {
     this.lastCatch = res;
     this.run.stats.catches.push(res.caught.length);
     this.run.stats.loads.push(res.load);
+    // catch cards change the physical ladle itself: they are in effect on every catch
+    for (const id of ['wide_ladle', 'deep_ladle', 'slow_swing', 'stable_rim']) {
+      if (this.run.abilities[id]) this.run.stats.procs[id] = (this.run.stats.procs[id] || 0) + 1;
+    }
     this.setPhase(PHASE.CLAW_RETURN);
     this.emit({ kind: 'catch', ...res });
   }
@@ -340,6 +344,7 @@ export class RunController {
     if (!this.canShuffle()) return false;
     this.run.counters.shuffleUsedThisWave = true;
     this.run.stats.shuffles++;
+    this.run.stats.procs.pot_shuffle = (this.run.stats.procs.pot_shuffle || 0) + 1;
     this.pot.shuffle();
     this.emit({ kind: 'shuffle' });
     return true;

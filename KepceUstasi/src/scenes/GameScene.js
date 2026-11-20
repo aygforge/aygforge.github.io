@@ -6,8 +6,8 @@ import { computeLayout, fieldToScreen } from '../config/layout.js';
 import { RunController, PHASE } from '../systems/RunController.js';
 import { permStats, applyRunResult } from '../systems/Progression.js';
 import { living, nextSteps } from '../systems/EnemyDirector.js';
-import { CHAPTERS, ENEMIES, RECIPE_LABELS, ABILITY_BY_ID, ABILITY_CATS, NORMAL_WAVES, FIELD } from '../data/content.js';
-import { recipeComplete } from '../systems/RecipeTracker.js';
+import { CHAPTERS, ENEMIES, RECIPE_LABELS, ABILITY_BY_ID, ABILITY_CATS, NORMAL_WAVES, FIELD, LADLE } from '../data/content.js';
+import { recipeComplete, STAR2_MAX_HP_LOSS } from '../systems/RecipeTracker.js';
 import { cardInfo } from '../systems/Abilities.js';
 import { audio } from '../platform/AudioService.js';
 import { adService } from '../platform/AdService.js';
@@ -251,9 +251,10 @@ export class GameScene extends Phaser.Scene {
     g.fillRect(-w / 2 - 2, y - 2, w + 4, 10);
     g.fillStyle(0x4a3a44, 1);
     g.fillRect(-w / 2, y, w, 6);
-    g.fillStyle(0xe8402e, 1);
+    const frozen = this.controller?.run?.enemies.find((x) => x.id === view.id)?.frozen;
+    g.fillStyle(frozen ? 0x5ab8e8 : 0xe8402e, 1); // frozen enemies show an icy HP bar
     g.fillRect(-w / 2, y, Math.round((w * hp) / view.maxHp), 6);
-    g.fillStyle(0xff8a7a, 1);
+    g.fillStyle(frozen ? 0xbfeaff : 0xff8a7a, 1);
     g.fillRect(-w / 2, y, Math.round((w * hp) / view.maxHp), 2);
     if (view.maxShield > 0) {
       for (let i = 0; i < view.maxShield; i++) {
@@ -542,6 +543,7 @@ export class GameScene extends Phaser.Scene {
 
   // ======================================================== presentation: volley
   playVolley(e) {
+    this.dsShown = false;
     const sp = this.speed;
     const shotGap = 150 / sp;
     const travel = 230 / sp;
@@ -587,6 +589,11 @@ export class GameScene extends Phaser.Scene {
     audio.play('shoot', { detune: ev.oil === 'big' ? -400 : 0 });
     const proj = this.add.image(start.x, start.y, `oil_${ev.oil}`).setScale(ev.oil === 'big' ? 2.6 : 2.2).setDepth(50);
     if (ev.isBonus) proj.setTint(0xb8ffb0);
+    if (ev.source === 'double_shot' && !this.dsShown) {
+      // once per volley: name the extra oil so the player connects it to the card
+      this.dsShown = true;
+      this.floatText(this.muzzle.x + 30, this.muzzle.y - 40, 'ÇİFTE YAĞ!', '#b8ffb0', 16);
+    }
     const end = v ? { x: v.c.x, y: v.c.y } : { x: this.L.W - 40, y: start.y };
     const ctrl = { x: (start.x + end.x) / 2, y: Math.min(start.y, end.y) - 60 };
     const o = { t: 0 };
@@ -668,7 +675,7 @@ export class GameScene extends Phaser.Scene {
           v.spr.setTintFill(0xffd84a);
           this.time.delayedCall(70, () => v.spr.active && v.spr.clearTint());
         }
-        this.floatText(to.x, to.y - 24, `-${ev.damage} ${SOURCE_LABEL[ev.source] || ''}`, '#ffd84a', 15);
+        this.floatText(to.x, to.y - 24, `-${ev.damage} ${ev.drill ? 'Delip geçti' : SOURCE_LABEL[ev.source] || ''}`, '#ffd84a', 15);
       },
     });
   }
@@ -861,28 +868,28 @@ export class GameScene extends Phaser.Scene {
     c.add(text(this, L.W / 2, top + 66, 'Kartlar sonraki turdan itibaren koşu boyunca geçerli.', 14, '#e9dcc4'));
     e.offer.forEach((id, i) => {
       const info = cardInfo(run, id);
-      const y = top + 88 + i * 182;
+      const y = top + 88 + i * 190;
       const card = this.add.container(0, 0);
       const g = this.add.graphics();
       g.fillStyle(0x15111a, 1);
-      g.fillRect(32, y, L.W - 64, 168);
+      g.fillRect(32, y, L.W - 64, 178);
       g.fillStyle(0x3d3447, 1);
-      g.fillRect(35, y + 3, L.W - 70, 162);
+      g.fillRect(35, y + 3, L.W - 70, 172);
       g.fillStyle(CAT_COLORS[info.cat], 1);
-      g.fillRect(35, y + 3, 10, 162);
+      g.fillRect(35, y + 3, 10, 172);
       card.add(g);
       card.add(this.add.image(72, y + 30, `cat_${info.cat}`).setScale(3));
       card.add(text(this, 98, y + 30, info.name, 23, COLORS.cream, { ox: 0 }));
       const lvl = info.level ? `Sv ${ROMAN[info.level]} → ${ROMAN[info.nextLevel]}` : `Yeni · Sv ${ROMAN[info.nextLevel]}`;
       card.add(text(this, L.W - 48, y + 62, `${ABILITY_CATS[info.cat]} · ${lvl} (maks ${ROMAN[info.max]})`, 14, '#d8c9b0', { ox: 1 }));
-      card.add(text(this, 56, y + 80, info.next, 19, '#fff4dc', { ox: 0, oy: 0, wrap: L.W - 110, align: 'left' }));
-      if (info.now) card.add(text(this, 56, y + 138, `Şu an: ${info.now}`, 15, '#b7a9c4', { ox: 0, oy: 0, wrap: L.W - 120, align: 'left' }));
-      const hit = this.add.zone(32, y, L.W - 64, 168).setOrigin(0).setInteractive({ useHandCursor: true });
+      card.add(text(this, 56, y + 78, info.next, 21, '#fff4dc', { ox: 0, oy: 0, wrap: L.W - 104, align: 'left' }));
+      if (info.now) card.add(text(this, 56, y + 150, `Şu an: ${info.now}`, 15, '#b7a9c4', { ox: 0, oy: 0, wrap: L.W - 120, align: 'left' }));
+      const hit = this.add.zone(32, y, L.W - 64, 178).setOrigin(0).setInteractive({ useHandCursor: true });
       hit.on('pointerup', () => this.controller.chooseSkill(id, e.offerSeq));
       card.add(hit);
       c.add(card);
     });
-    const by = top + 88 + 3 * 182 + 34;
+    const by = top + 88 + 3 * 190 + 30;
     c.add(button(this, L.W / 2, by, 330, 52, e.rerollAvailable ? 'YENİDEN SEÇ (ücretsiz)' : 'Ücretsiz yenileme kullanıldı', () => this.controller.rerollSkills(), { size: 18, enabled: e.rerollAvailable, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 }));
     c.add(button(this, L.W / 2, by + 62, 330, 44, 'Reklamla yenile — Android sürümünde', () => {}, { size: 15, enabled: adService.isAvailable() }));
     this.overlay = c;
@@ -938,7 +945,7 @@ export class GameScene extends Phaser.Scene {
     const abil = Object.entries(run.abilities).map(([id, n]) => `${ABILITY_BY_ID[id].name}${n > 1 ? ` x${n}` : ''}`);
     c.add(text(this, L.W / 2, top + 100, abil.length ? `Yetenekler: ${abil.join(', ')}` : 'Henüz yetenek yok', 15, '#e9dcc4', { wrap: L.W - 140 }));
     const lp = this.controller.ladle.params;
-    c.add(text(this, L.W / 2, top + 156, `Kepçe: kapasite ${lp.capacity} · ağız %${Math.round((lp.radius / 44) * 100)} · salınım ${lp.period.toFixed(2)} sn`, 14, '#d8c9b0', { wrap: L.W - 140 }));
+    c.add(text(this, L.W / 2, top + 156, `Kepçe: kapasite ${lp.capacity} · ağız %${Math.round((lp.radius / LADLE.radius) * 100)} · salınım ${lp.period.toFixed(2)} sn`, 14, '#d8c9b0', { wrap: L.W - 140 }));
     c.add(button(this, L.W / 2, top + 230, 300, 64, 'DEVAM', () => this.resumeGame(), { size: 26, fill: COLORS.btnGreen, dark: COLORS.btnGreenDark, light: 0x8be07a }));
     const sb = button(this, L.W / 2, top + 314, 300, 54, `SES: ${app.save.settings.sound ? 'AÇIK' : 'KAPALI'}`, () => {
       app.setSetting('sound', !app.save.settings.sound);
@@ -1032,7 +1039,7 @@ export class GameScene extends Phaser.Scene {
       .map(([k, n]) => `${RECIPE_LABELS[k]} ${Math.min(run.recipe[k] || 0, n)}/${n}`)
       .join('   ');
     c.add(text(this, L.W / 2, top + 268, recipeLines, 17, recipeComplete(run, this.chapter) ? '#8be07a' : COLORS.cream));
-    const starRules = ['1★ Boss yenildi', '2★ Tam tarif', `3★ Toplam can kaybı ≤ 1 (bu koşu: ${run.stats.hpLost})`];
+    const starRules = ['1★ Boss yenildi', `2★ Tam tarif + can kaybı ≤ ${STAR2_MAX_HP_LOSS}`, `3★ Toplam can kaybı ≤ 1 (bu koşu: ${run.stats.hpLost})`];
     c.add(text(this, L.W / 2, top + 312, starRules.join('\n'), 14, '#d8c9b0', { lineSpacing: 4 }));
     let lines;
     if (out && !out.duplicate) {

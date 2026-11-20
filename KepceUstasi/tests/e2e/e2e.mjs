@@ -102,7 +102,7 @@ async function playRun(p, { policy = 'good', maxMs = 420000, stopWhen = null } =
       if (good) await click(p, 270, H - 140);
     } else if (s.phase === 'SKILL_CHOICE' && s.overlay) {
       const top = Math.max(24, H / 2 - 440);
-      await click(p, 270, top + 88 + 84); // first card (Alpha 0.2 card layout)
+      await click(p, 270, top + 88 + 89); // first card (Alpha 0.3 card layout)
       await sleep(120);
     }
     await sleep(12);

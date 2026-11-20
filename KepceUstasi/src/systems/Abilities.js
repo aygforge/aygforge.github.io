@@ -48,6 +48,11 @@ export function applyAbility(run, chapter, id) {
   if (!ab || !isEligible(run, chapter, ab)) return false;
   run.abilities[id] = (run.abilities[id] || 0) + 1;
   const l = run.abilities[id];
+  if (id === 'thick_apron' || id === 'first_aid') {
+    // immediate effects count as "worked" when applied
+    if (!run.stats.procs) run.stats.procs = {};
+    run.stats.procs[id] = (run.stats.procs[id] || 0) + 1;
+  }
   switch (id) {
     case 'thick_apron':
       run.chef.maxHp += 1;

@@ -48,7 +48,7 @@ test('every upgrade level changes real stats used by the run', () => {
     hp.push([run.chef.maxHp, run.chef.shield]);
   }
   assert.deepEqual(caps, [7, 8, 9, 10, 11, 12]);
-  assert.deepEqual(widths, [44, 46.2, 48.4, 50.6, 52.8, 55]);
+  assert.deepEqual(widths, [42, 44.1, 46.2, 48.3, 50.4, 52.5]); // base mouth 42 px (Alpha 0.3) x 100..125 %
   assert.deepEqual(hp, [[5, 0], [6, 0], [6, 1], [7, 1], [7, 2], [8, 2]]);
   s.upgrades.spice = 6;
   assert.equal(permStats(s).spice, 0.05);

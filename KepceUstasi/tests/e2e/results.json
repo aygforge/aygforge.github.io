@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-20T16:16:58.925Z",
+  "date": "2026-11-20T21:30:03.026Z",
   "results": [
     {
       "id": "A01",
@@ -17,7 +17,7 @@
       "id": "A21",
       "name": "3 cards + reroll fit on 360x640",
       "pass": true,
-      "detail": "y 58–820 of 960, x 32–508"
+      "detail": "y 58–840 of 960, x 32–508"
     },
     {
       "id": "A01",
@@ -35,7 +35,7 @@
       "id": "A21",
       "name": "3 cards + reroll fit on 390x844",
       "pass": true,
-      "detail": "y 162–925 of 1169, x 32–508"
+      "detail": "y 162–945 of 1169, x 32–508"
     },
     {
       "id": "A01",
@@ -53,7 +53,7 @@
       "id": "A21",
       "name": "3 cards + reroll fit on 412x915_20-9",
       "pass": true,
-      "detail": "y 177–940 of 1199, x 32–508"
+      "detail": "y 177–960 of 1199, x 32–508"
     },
     {
       "id": "A01",
@@ -83,13 +83,13 @@
       "id": "PERF",
       "name": "frame rate while swinging (headless Chromium, software GL)",
       "pass": true,
-      "detail": "45.4 fps"
+      "detail": "53.9 fps"
     },
     {
       "id": "A12",
       "name": "six skill picks in a full run, none after the boss",
       "pass": true,
-      "detail": "picks {\"spiked_apron\":1,\"cold_oil\":1,\"thick_apron\":1,\"tasty_heal\":1,\"power_shot\":1,\"pot_shuffle\":1}"
+      "detail": "picks {\"spiked_apron\":1,\"chain_cooking\":1,\"explosive_oil\":1,\"cold_oil\":1,\"thick_apron\":1,\"stable_rim\":1}"
     },
     {
       "id": "A14",

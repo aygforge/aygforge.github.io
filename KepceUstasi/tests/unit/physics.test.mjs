@@ -5,6 +5,7 @@ import Matter from 'matter-js';
 import { Rng } from '../../src/core/rng.js';
 import { PotPhysics, POT_GEOM, floorY } from '../../src/systems/PotPhysics.js';
 import { LadleController } from '../../src/systems/LadleController.js';
+import { POT } from '../../src/data/content.js';
 import { buildShots, resolveVolley } from '../../src/systems/CombatResolver.js';
 import { makeRun, addEnemy, CH1 } from './helpers.mjs';
 
@@ -80,7 +81,9 @@ test('0 balls caught -> guarantee drop (bonus, not from the pot)', () => {
 
 test('physical catch of 2 big + 3 normal: load 7, 5 shots, 9 base damage', () => {
   const { pot, ladle } = emptyPot();
-  ladle.configure({ ...PARAMS, radius: 55 }); // Kepçe Genişliği Sv6 (%125): the 5-ball heap spreads ~110 px
+  // Alpha 0.3 pot: the small heap settles between the centre ridges; use the widest legal ladle
+  // (Kepçe Genişliği Sv6 x Geniş Kepçe III = 42 * 1.25 * 1.36 ≈ 71 px) so all five balls are physically scooped
+  ladle.configure({ ...PARAMS, radius: 70 });
   const cx = POT_GEOM.W / 2;
   // a tight heap exactly under the ladle
   pot._makeBall('big', cx - 14, floorY(cx) - 20);
@@ -124,13 +127,15 @@ test('ladle width upgrade changes the physical bowl radius', () => {
   assert.ok(Math.max(...xs) - Math.min(...xs) > Math.max(...xs2) - Math.min(...xs2));
 });
 
-test('hybrid refill formula: remain kept, min target 24, max 36, at least 6 added', () => {
-  assert.deepEqual(PotPhysics.refillAmount(30), { remain: 30, add: 6, next: 36 });
-  assert.deepEqual(PotPhysics.refillAmount(23), { remain: 23, add: 6, next: 29 });
-  assert.deepEqual(PotPhysics.refillAmount(10), { remain: 10, add: 14, next: 24 });
-  assert.deepEqual(PotPhysics.refillAmount(36), { remain: 36, add: 0, next: 36 });
-  assert.deepEqual(PotPhysics.refillAmount(33), { remain: 33, add: 3, next: 36 });
-  assert.deepEqual(PotPhysics.refillAmount(0), { remain: 0, add: 24, next: 24 });
+test('hybrid refill formula (Alpha 0.3 counts 24/20/30/5): remain kept, min target 20, max 30, at least 5 added', () => {
+  // same formula as GDD v1.0: add = min(max-remain, max(minAdd, minTarget-remain))
+  assert.deepEqual([POT.startCount, POT.minTarget, POT.maxCount, POT.minAdd], [24, 20, 30, 5]);
+  assert.deepEqual(PotPhysics.refillAmount(25), { remain: 25, add: 5, next: 30 });
+  assert.deepEqual(PotPhysics.refillAmount(19), { remain: 19, add: 5, next: 24 });
+  assert.deepEqual(PotPhysics.refillAmount(10), { remain: 10, add: 10, next: 20 });
+  assert.deepEqual(PotPhysics.refillAmount(30), { remain: 30, add: 0, next: 30 });
+  assert.deepEqual(PotPhysics.refillAmount(28), { remain: 28, add: 2, next: 30 });
+  assert.deepEqual(PotPhysics.refillAmount(0), { remain: 0, add: 20, next: 20 });
 });
 
 test('hybrid pot: uncaught balls keep their identity, nothing is regenerated, never above 36', () => {
@@ -150,8 +155,8 @@ test('hybrid pot: uncaught balls keep their identity, nothing is regenerated, ne
     const r = pot.refill(0.05);
     assert.equal(r.remain, before.size - res.caught.length);
     for (let i = 0; i < 60; i++) pot.step();
-    assert.ok(pot.count <= 36, 'max 36');
-    assert.ok(pot.count >= Math.min(36, Math.max(24, r.remain + 6)) - 0, 'refill reaches its target (incl. queued)');
+    assert.ok(pot.count <= POT.maxCount, 'max');
+    assert.ok(pot.count >= Math.min(POT.maxCount, Math.max(POT.minTarget, r.remain + POT.minAdd)), 'refill reaches its target (incl. queued)');
     for (const [id, b] of pot.balls) if (before.has(id)) assert.equal(b.oilType, before.get(id).t);
   }
 });

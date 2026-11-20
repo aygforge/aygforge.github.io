@@ -12,21 +12,32 @@ if (process.env.BALANCE) {
   for (const c of CHAPTERS) if (o[c.id] && c.balance) Object.assign(c.balance, o[c.id]);
 }
 
-const [chapterId = 'menemen', policy = 'random', nArg = '100', profile = 'none', seedArg = '10000'] = process.argv.slice(2);
+const [chapterId = 'menemen', policy = 'random', nArg = '100', profile = 'none', seedArg = '10000', pick = 'random'] = process.argv.slice(2);
 const N = Number(nArg);
 const save = defaultSave();
 if (profile === 'upg') Object.assign(save.upgrades, { capacity: 2, width: 2, toughness: 2, mastery: 2 });
 const t0 = Date.now();
-const acc = { wins: 0, stars: [0, 0, 0, 0], hpLost: 0, turns: 0, loads: [], estSec: 0, picks: {}, failures: 0, waveReached: [0, 0, 0, 0, 0, 0, 0, 0], escaped: 0, shots: 0, bossTurns: [], crits: 0, capped: 0 };
+const acc = { wins: 0, stars: [0, 0, 0, 0], hpLost: 0, turns: 0, loads: [], estSec: 0, picks: {}, failures: 0, waveReached: [0, 0, 0, 0, 0, 0, 0, 0], escaped: 0, shots: 0, bossTurns: [], crits: 0, capped: 0, nan: 0, doubleResult: 0, loadHist: new Array(13).fill(0), ineffective: {}, picked: {}, shuffles: 0 };
 for (let i = 0; i < N; i++) {
   let r;
   try {
-    r = simulateRun({ chapterId, seed: Number(seedArg) + i, policy, pickPolicy: 'random', save, maxSteps: 200000 });
+    r = simulateRun({ chapterId, seed: Number(seedArg) + i, policy, pickPolicy: pick, save, maxSteps: 200000 });
   } catch (e) {
     acc.failures++;
     continue;
   }
   if (!r.ctl.finished || r.log.results !== 1 || /NaN|Infinity/.test(JSON.stringify(r.run))) acc.failures++;
+  if (/NaN|Infinity/.test(JSON.stringify(r.run))) acc.nan++;
+  if (r.log.results > 1) acc.doubleResult++;
+  for (const l of r.run.stats.loads) acc.loadHist[Math.min(12, l)]++;
+  acc.shuffles += r.run.stats.shuffles || 0;
+  // a picked card that never produced its effect in the whole run (Alpha 0.3 tracks run.stats.procs)
+  if (r.run.stats.procs) {
+    for (const id of Object.keys(r.run.abilities)) {
+      acc.picked[id] = (acc.picked[id] || 0) + 1;
+      if (!r.run.stats.procs[id]) acc.ineffective[id] = (acc.ineffective[id] || 0) + 1;
+    }
+  }
   const run = r.run;
   if (r.result?.victory) acc.wins++;
   acc.stars[r.result?.stars || 0]++;
@@ -53,7 +64,8 @@ console.log(
     avgEscaped: avg(acc.escaped), avgShots: avg(acc.shots),
     avgMinutes: +(acc.estSec / N / 60).toFixed(2), lostAtWave: acc.waveReached, picks: acc.picks,
     avgBossTurns: acc.bossTurns.length ? +(acc.bossTurns.reduce((a, b) => a + b, 0) / acc.bossTurns.length).toFixed(2) : null,
-    avgCrits: avg(acc.crits), cappedEvents: acc.capped,
+    avgCrits: avg(acc.crits), cappedEvents: acc.capped, nan: acc.nan, doubleResult: acc.doubleResult,
+    loadHist: acc.loadHist, pick, shuffles: acc.shuffles, picked: acc.picked, ineffective: acc.ineffective,
     balance: CHAPTERS.find((c) => c.id === chapterId).balance || null,
     seconds: +((Date.now() - t0) / 1000).toFixed(1),
   }),

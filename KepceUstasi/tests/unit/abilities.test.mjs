@@ -1,7 +1,7 @@
 // QA 11 — 16 yeteneğin HER BİRİ için ölçülebilir etki + teklif/uygunluk kuralları.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { ABILITIES } from '../../src/data/content.js';
+import { ABILITIES, LADLE } from '../../src/data/content.js';
 import { resolveVolley, buildShots } from '../../src/systems/CombatResolver.js';
 import { applyAbility, ladleParams, makeOffer, eligiblePool } from '../../src/systems/Abilities.js';
 import { resolveContacts } from '../../src/systems/EnemyDirector.js';
@@ -41,10 +41,10 @@ test('deep_ladle: capacity +1 (used by the physical catch limit)', () => {
   assert.equal(ladleParams(run).capacity, 8);
 });
 
-test('slow_swing: swing speed -12 % (period / 0.88)', () => {
+test('slow_swing: swing speed -12 % (base period / 0.88)', () => {
   const run = makeRun();
   applyAbility(run, CH1, 'slow_swing');
-  assert.equal(ladleParams(run).period, +(2 / 0.88).toFixed(4));
+  assert.equal(ladleParams(run).period, +(LADLE.swingPeriod / 0.88).toFixed(4));
 });
 
 test('stable_rim: rim lip +10 % (geometry)', () => {

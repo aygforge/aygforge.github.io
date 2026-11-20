@@ -13,6 +13,11 @@ import { addRecipe } from './RecipeTracker.js';
 import { Rng } from '../core/rng.js';
 
 const AV = ABILITY_VALUES;
+// Alpha 0.3: count every time an ability actually did something (used to report "ineffective" cards).
+export function proc(run, id) {
+  if (!run.stats.procs) run.stats.procs = {};
+  run.stats.procs[id] = (run.stats.procs[id] || 0) + 1;
+}
 const lvl = (run, id) => run.abilities[id] || 0;
 const val = (run, id) => (lvl(run, id) ? AV[id][lvl(run, id) - 1] : null);
 
@@ -23,6 +28,7 @@ export function threatScore(e) {
 function speedOf(e) {
   if (e.type === 'potato_king' && e.hasted) return 1;
   if (e.frozen) return 0; // a frozen enemy will not move next phase
+  if (e.move === 'pepper') return 2;
   return ENEMIES[e.type].speed;
 }
 
@@ -108,7 +114,7 @@ export function killEnemy(run, chapter, e, cause, ctx) {
   }
   if (!ctx.chains) return; // reflect kills do not start pan chains
   const from = { id: e.id, x: e.x, y: e.y };
-  if (lvl(run, 'pan_burst') && run.turnKills % 3 === 0) ctx.pending.push({ kind: 'pan_burst', from, dmg: val(run, 'pan_burst') });
+  if (lvl(run, 'pan_burst') && run.turnKills % AV.pan_burst_every === 0) ctx.pending.push({ kind: 'pan_burst', from, dmg: val(run, 'pan_burst') });
   if (lvl(run, 'tomato_splash') && def.recipe === 'tomato') ctx.pending.push({ kind: 'tomato_splash', from, n: val(run, 'tomato_splash') });
   if (lvl(run, 'pan_echo') && !run.counters.echoUsedThisWave) {
     run.counters.echoUsedThisWave = true;
@@ -134,6 +140,8 @@ function secondaryHit(run, chapter, ctx, source, from, target, dmg, extra = {}) 
   run.stats.damageDealt += r.hpDmg + r.shieldDmg;
   ctx.events.push({ type: 'area', source, fromId: from.id, fromX: from.x, fromY: from.y, targetId: target.id, damage: dmg, ...r, hp: target.hp, shield: target.shield, ...extra });
   if (target.hp <= 0) killEnemy(run, chapter, target, source, ctx);
+  const owner = { knockback_boss: 'oil_knockback' }[source] || source;
+  proc(run, owner);
   return true;
 }
 
@@ -183,6 +191,7 @@ export function resolveVolley(run, chapter, shots) {
     if (shot.oil === 'big' && ab.heavy_oil) {
       dmg += val(run, 'heavy_oil');
       bonusParts.push('heavy_oil');
+      proc(run, 'heavy_oil');
     }
     if (shot.oil === 'normal' && real) {
       run.stats.normalShots++;
@@ -202,11 +211,13 @@ export function resolveVolley(run, chapter, shots) {
           run.counters.powerShot = 0;
           dmg += p.bonus;
           bonusParts.push('power_shot');
+          proc(run, 'power_shot');
         }
       }
       if (ab.last_drop && shot.id === lastNormalId) {
         dmg += AV.last_drop[0];
         bonusParts.push('last_drop');
+        proc(run, 'last_drop');
       }
     }
     if (real && !firstRealDone) {
@@ -214,6 +225,7 @@ export function resolveVolley(run, chapter, shots) {
       if (ab.first_bite) {
         dmg += val(run, 'first_bite');
         bonusParts.push('first_bite');
+        proc(run, 'first_bite');
       }
     }
     let crit = false;
@@ -221,6 +233,7 @@ export function resolveVolley(run, chapter, shots) {
       crit = true;
       dmg *= 2;
       run.stats.crits = (run.stats.crits || 0) + 1;
+      proc(run, 'critical_fry');
     }
     const r = applyDamage(target, dmg);
     ctx.hpDamage += r.hpDmg;
@@ -242,6 +255,7 @@ export function resolveVolley(run, chapter, shots) {
           target.frozen = true;
           if (target.boss) target.lastFrozenAction = target.actionCount;
           events.push({ type: 'freeze', id: target.id, boss: !!target.boss });
+          proc(run, 'cold_oil');
         } else if (!okBoss) {
           events.push({ type: 'freezeResisted', id: target.id });
         }
@@ -253,7 +267,11 @@ export function resolveVolley(run, chapter, shots) {
           run.counters.pierce = 0;
           const behind = behindTarget(run, target);
           if (behind) secondaryHit(run, chapter, ctx, 'piercing_oil', { id: target.id, x: target.x, y: target.y }, behind, 1, { shotId: shot.id });
-          else events.push({ type: 'pierceMiss', shotId: shot.id });
+          else if (!target.dead) {
+            // Alpha 0.3: nobody behind (e.g. the boss alone) -> the oil drills through the target itself: +1 damage.
+            // Shown on the card; never silently wasted.
+            secondaryHit(run, chapter, ctx, 'piercing_oil', { id: target.id, x: target.x, y: target.y }, target, 1, { shotId: shot.id, drill: true });
+          } else events.push({ type: 'pierceMiss', shotId: shot.id });
         }
       }
       // Patlayan Yağ: every Nth real hit explodes on up to 2 nearby enemies (never chains)
@@ -262,7 +280,7 @@ export function resolveVolley(run, chapter, shots) {
         if (run.counters.explode >= val(run, 'explosive_oil')) {
           run.counters.explode = 0;
           const from = { id: target.id, x: target.x, y: target.y };
-          events.push({ type: 'explosion', x: target.x, y: target.y, shotId: shot.id });
+          events.push({ type: 'explosion', x: target.x, y: target.y, shotId: shot.id }); // proc counted per real hit below
           for (const t of nearestLiving(run, from, 2, AREA_RADIUS * 1.4)) if (!ctx.victory) secondaryHit(run, chapter, ctx, 'explosive_oil', from, t, 1, { shotId: shot.id });
         }
       }
@@ -275,6 +293,7 @@ export function resolveVolley(run, chapter, shots) {
             const fromX = target.x;
             target.x = +Math.min(FIELD.knockbackMaxX, target.x + FIELD.step).toFixed(4);
             events.push({ type: 'knockback', id: target.id, fromX, toX: target.x, shotId: shot.id });
+            proc(run, 'oil_knockback');
           } else if (!target.dead && target.boss) {
             secondaryHit(run, chapter, ctx, 'knockback_boss', { id: target.id, x: target.x, y: target.y }, target, 1, { shotId: shot.id });
           }
@@ -289,6 +308,7 @@ export function resolveVolley(run, chapter, shots) {
       if (run.counters.doubleShot >= val(run, 'double_shot')) {
         run.counters.doubleShot = 0;
         queue.splice(i + 1, 0, { oil: 'normal', isBonus: true, canProc: false, source: 'double_shot', parentShotId: shot.id, id: nextId++ });
+        proc(run, 'double_shot');
       }
     }
   }
@@ -302,13 +322,15 @@ export function resolveVolley(run, chapter, shots) {
       const before = run.chef.hp;
       run.chef.hp = Math.min(run.chef.maxHp, run.chef.hp + 1);
       events.push({ type: 'heal', amount: run.chef.hp - before, hp: run.chef.hp });
+      if (run.chef.hp > before) proc(run, 'tasty_heal');
     }
   }
 
   if (!ctx.victory) {
-    if (ab.chain_cooking && run.turnKills >= 3) {
+    if (ab.chain_cooking && run.turnKills >= AV.chain_min_kills) {
       run.pending.chain = 1;
       events.push({ type: 'bonusReady', source: 'chain_cooking' });
+      proc(run, 'chain_cooking');
     }
     const every = run.perm.pan;
     if (every && run.counters.panKills >= every) {
@@ -328,6 +350,7 @@ export function resolveReflect(run, chapter, e, dmg) {
   const r = applyDamage(e, dmg);
   run.stats.damageDealt += r.hpDmg + r.shieldDmg;
   ctx.events.push({ type: 'reflect', id: e.id, damage: dmg, ...r, hp: e.hp, shield: e.shield });
+  proc(run, 'spiked_apron');
   if (e.hp <= 0) killEnemy(run, chapter, e, 'reflect', ctx);
   return { events: ctx.events, victory: ctx.victory };
 }

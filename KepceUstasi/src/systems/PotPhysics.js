@@ -10,6 +10,15 @@ export const POT_GEOM = {
   D: 230, // depth from rim (y=0) to floor (y=D)
   wall: 18,
   bowl: 120, // how much higher the floor is at the walls than in the middle
+  flat: 0.18, // fraction of the half-width that is flat in the middle before the sides rise
+  // Alpha 0.3 floor features (0 = Alpha 0.2 shape). A low central ridge splits the oil into side pools.
+  ridge: 0, // ridge height in the centre (px)
+  ridgeWidth: 60, // gaussian sigma of the ridge (px)
+  // Alpha 0.3: two low ridges split side pools from the centre pool (multiple clusters)
+  ridges: [{ x: -72, h: 26, w: 12 }, { x: 72, h: 26, w: 12 }], // extra low ridges [{ x: offset from centre (px), h: height (px), w: gaussian sigma (px) }]
+  floorSegments: 48, // collider segments along the floor (more = sharper ridges)
+  pourClump: true, // refill pours new oil around one seeded point per refill
+  pourSpread: 34, // px half-width of a pour clump
 };
 
 export const STEP_MS = 1000 / 60;
@@ -18,8 +27,11 @@ export const STEP_MS = 1000 / 60;
 export function floorY(x) {
   const { W, D } = POT_GEOM;
   const u = Math.abs((x - W / 2) / (W / 2)); // 0 centre .. 1 wall
-  const rise = POT_GEOM.bowl;
-  return D - rise * Math.pow(Math.max(0, (u - 0.18) / 0.82), 1.6);
+  const { bowl: rise, flat, ridge, ridgeWidth } = POT_GEOM;
+  const ridgeY = ridge ? ridge * Math.exp(-((x - W / 2) ** 2) / (2 * ridgeWidth * ridgeWidth)) : 0;
+  let extra = 0;
+  for (const r of POT_GEOM.ridges) extra += r.h * Math.exp(-((x - W / 2 - r.x) ** 2) / (2 * r.w * r.w));
+  return D - rise * Math.pow(Math.max(0, (u - flat) / (1 - flat)), 1.6) - ridgeY - extra;
 }
 export const SUBSTEPS = 3;
 
@@ -58,7 +70,7 @@ export class PotPhysics {
     ];
     // Rounded pot bottom: a polyline following floorY(x). Balls roll toward the middle, so WHERE the ladle
     // drops (timing) physically changes how many balls are under it.
-    const N = 12;
+    const N = POT_GEOM.floorSegments;
     for (let i = 0; i < N; i++) {
       const x0 = (W * i) / N;
       const x1 = (W * (i + 1)) / N;
@@ -156,7 +168,12 @@ export class PotPhysics {
       let ok = false;
       // candidate rows from upper pot interior, seeded x order
       for (let attempt = 0; attempt < 24 && !ok; attempt++) {
-        const x = this.rng.range(r + 6, W - r - 6);
+        // Alpha 0.3: new oil pours in as a clump around this refill's seeded pour point (first attempts),
+        // so the pot holds shifting clusters instead of an even rain. Falls back to anywhere free.
+        const clump = this.pourX != null && attempt < 16;
+        const x = clump
+          ? Math.max(r + 6, Math.min(W - r - 6, this.pourX + this.rng.range(-POT_GEOM.pourSpread, POT_GEOM.pourSpread)))
+          : this.rng.range(r + 6, W - r - 6);
         const y = 30 + (attempt % 4) * 26 + this.rng.range(-4, 4);
         if (this._free(x, y, r)) {
           const b = this._makeBall(type, x, y);
@@ -181,6 +198,7 @@ export class PotPhysics {
   refill(bigRate, coldRate = 0) {
     const { remain, add } = PotPhysics.refillAmount(this.count);
     for (let i = 0; i < add; i++) this.pendingAdds.push(this.rollType(bigRate, coldRate));
+    this.pourX = POT_GEOM.pourClump ? this.rng.range(70, POT_GEOM.W - 70) : null;
     // gentle stir: small impulses to existing balls (no teleport)
     for (const b of this.balls.values()) {
       Body.setVelocity(b, { x: b.velocity.x + this.rng.range(-1.2, 1.2), y: b.velocity.y - this.rng.range(0, 1.6) });
@@ -191,9 +209,13 @@ export class PotPhysics {
 
   // Tencereyi Karıştır: strong physical impulse to every ball. Ids/types are untouched, nothing is spawned
   // or removed, no teleport. Deterministic (seeded).
+  // Alpha 0.3: the stir throws every ball up and toward the middle pool (still pure physics; balls land wherever
+  // the collisions take them). Alpha 0.2 threw them randomly sideways, which mostly scattered the oil.
   shuffle() {
+    const cx = POT_GEOM.W / 2;
     for (const b of this.balls.values()) {
-      Body.setVelocity(b, { x: this.rng.range(-5, 5), y: -this.rng.range(7, 12) });
+      const vx = Math.max(-5, Math.min(5, (cx - b.position.x) * 0.035)) + this.rng.range(-1.2, 1.2);
+      Body.setVelocity(b, { x: vx, y: -this.rng.range(7, 11) });
     }
   }
 

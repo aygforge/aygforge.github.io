@@ -52,7 +52,7 @@ export class MenuScene extends Phaser.Scene {
     button(this, W / 2 - 172, y1, 160, 62, 'TARİFLER', () => this.openChapters(), { size: 20 });
     button(this, W / 2, y1, 160, 62, 'GELİŞTİR', () => this.openUpgrades(), { size: 20 });
     button(this, W / 2 + 172, y1, 160, 62, 'MAĞAZA', () => this.openShop(), { size: 20 });
-    text(this, W / 2, H - 22, 'Alpha 0.2 · Ayg Forge · çevrimdışı · reklamsız', 16, '#d8c9b0');
+    text(this, W / 2, H - 22, 'Alpha 0.3 · Ayg Forge · çevrimdışı · reklamsız', 16, '#d8c9b0');
 
     if (app.notice) {
       this.toast(app.notice);

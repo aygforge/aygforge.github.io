@@ -15,6 +15,7 @@ export function scaledHp(chapter, type) {
   const b = chapter?.balance;
   if (!b) return def.hp;
   if (def.boss) return b.bossHp ?? def.hp;
+  if (b.hp && b.hp[type] != null) return b.hp[type]; // Alpha 0.3: per-type HP (instead of one blanket multiplier)
   return Math.max(1, Math.round(def.hp * (b.hpScale ?? 1)));
 }
 
@@ -30,7 +31,7 @@ export function living(run) {
 export function stepsFor(e, opp) {
   const def = ENEMIES[e.type];
   if (e.type === 'potato_king' && e.hasted) return 1;
-  switch (def.move) {
+  switch (e.move || def.move) { // e.move: chapter balance override (Alpha 0.3), set at spawn
     case 'pepper':
       return opp % 3 === 0 ? 2 : 1;
     case 'odd':
@@ -66,6 +67,7 @@ function makeEnemy(run, type, x, y) {
     actionCount: 0,
     summoned: false,
     hasted: false,
+    move: chapterOf(run).balance?.move?.[type] || def.move, // movement pattern (chapter override allowed)
     frozen: false, // Soğuk Sos: skips its next move once
     lastFrozenAction: null, // bosses: freeze limited to once per BOSS_FREEZE_EVERY actions
   };
@@ -183,6 +185,7 @@ export function damageChef(run, amount) {
     run.chef.saltCharges--;
     salt = 1;
     dmg -= 1;
+    if (run.stats.procs) run.stats.procs.salt_shield = (run.stats.procs.salt_shield || 0) + 1;
   }
   if (dmg > 0 && run.chef.shield > 0) {
     shield = Math.min(run.chef.shield, dmg);

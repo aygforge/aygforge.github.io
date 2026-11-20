@@ -193,7 +193,8 @@ test('spawn: enemies appear on the right side at free y positions, never stacked
   assert.equal(sp.length, 5);
   for (const e of sp) {
     assert.ok(e.x >= CH2.balance.spawnXMin && e.x <= CH2.balance.spawnXMax);
-    assert.equal(e.hp, Math.round({ potato: 3, armored_potato: 7, salt: 2 }[e.type] * CH2.balance.hpScale), 'chapter HP scale applied');
+    assert.equal(e.hp, CH2.balance.hp[e.type], 'chapter per-type HP applied');
+    if (e.type === 'salt') assert.equal(e.move, 'pepper', 'chapter movement override');
     assert.ok(e.y >= 0.2 && e.y <= 0.8);
   }
   for (let i = 0; i < sp.length; i++)

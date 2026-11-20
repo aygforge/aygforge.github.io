@@ -185,12 +185,16 @@ for (const [level, every] of [[1, 4], [2, 3]]) {
     assert.ok(p.every((x) => x.targetId === back.id));
     assert.equal(back.maxHp - back.hp, 2);
     assert.equal(front.maxHp - front.hp, every * 2);
-    // nobody behind: wasted, no damage anywhere
+    // Alpha 0.3: nobody behind (e.g. the boss alone) -> the oil drills through the target: +1, never silently lost
     const run2 = makeRun();
     run2.abilities.piercing_oil = level;
-    addEnemy(run2, 'tomato', 0.9, 0.5, BIG);
+    const boss = addEnemy(run2, 'giant_tomato', 0.9, 0.5, { hp: 100, maxHp: 100 });
     const ev2 = resolveVolley(run2, CH1, normal(every)).events;
-    assert.equal(ev2.filter((e) => e.type === 'pierceMiss').length, 1);
+    assert.equal(ev2.filter((e) => e.type === 'pierceMiss').length, 0);
+    const drill = ev2.filter((e) => e.source === 'piercing_oil' && e.drill);
+    assert.equal(drill.length, 1);
+    assert.equal(drill[0].targetId, boss.id);
+    assert.equal(boss.hp, 100 - every - 1);
   });
 }
 
@@ -332,9 +336,11 @@ test('Alpha 0.1 save with an old wave snapshot loads, migrates and can be played
   delete snap.run.critRng;
   delete snap.run.offerSeq;
   delete snap.run.lastOffer;
+  delete snap.run.stats.procs; // Alpha 0.3 field
   for (const e of snap.run.enemies) {
     delete e.frozen;
     delete e.lastFrozenAction;
+    delete e.move; // Alpha 0.3 field
   }
   const st = memStorage();
   const save = defaultSave();

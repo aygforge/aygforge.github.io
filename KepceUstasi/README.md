@@ -1,8 +1,9 @@
-# Kepçe Ustası — Alpha 0.2 (HTML5)
+# Kepçe Ustası — Alpha 0.3 (HTML5)
 
-**Stüdyo:** Ayg Forge · **Çalışma adı:** Kepçe Ustası · **Sürüm:** Alpha 0.2 (Menemen + Patates Kızartması; yetenek ve denge revizyonu)
+**Stüdyo:** Ayg Forge · **Çalışma adı:** Kepçe Ustası · **Sürüm:** Alpha 0.3 (Menemen + Patates Kızartması; yakalama hissi ve build dengesi)
 
-> Alpha 0.2 değişiklikleri: `CHANGELOG_ALPHA02.md` · testler: `TEST_PLAN_ALPHA02.md` · denge: `BALANCE_REPORT_ALPHA02.md`.
+> **Alpha 0.3:** `CHANGELOG_ALPHA03.md` · `ALPHA03_FEEL_REPORT.md` (yakalama hissi) · `ALPHA03_BALANCE_REPORT.md` · `TEST_PLAN_ALPHA03.md`.
+> Alpha 0.2 belgeleri: `CHANGELOG_ALPHA02.md`, `TEST_PLAN_ALPHA02.md`, `BALANCE_REPORT_ALPHA02.md`.
 > Alpha 0.1 belgeleri (`CHANGELOG.md`, `TEST_PLAN.md`) tarihsel kayıt olarak duruyor.
 
 Dikey (portrait) mobil oyun. Ekranın **alt yarısında** sağa-sola salınan kepçeyi doğru anda bırakıp
@@ -82,9 +83,11 @@ zaman ileri sarılmaz, devam için **DEVAM** gerekir.
 ## Testler
 
 ```bash
-npm test                         # 78 birim/entegrasyon testi (Node test runner, gerçek Matter.js fiziği)
+npm test                         # 87 birim/entegrasyon testi (Node test runner, gerçek Matter.js fiziği)
 npm run test:sim -- 100 random   # 100 tohumlu tam koşu simülasyonu (kilit/NaN/çift ödül taraması)
-node tests/sim/balance.mjs 100 final random,good,bad,perfect none   # denge raporu (4 paralel süreç, uzun sürer)
+node tests/sim/balance.mjs 100 final random,average,good,perfect,bad none   # denge raporu (4 paralel süreç, uzun sürer)
+node tests/sim/feel.mjs 12        # yakalama hissi: 9 konum × 3 zamanlama toleransı yük histogramı
+node tests/sim/ability-bench.mjs  # 24 kartın senaryo karşılaştırması
 npm run build && npm run test:e2e   # Playwright + Chromium ile dist/ üzerinde gerçek tıklamalı uçtan uca test
 ```
 
@@ -138,8 +141,10 @@ oynatır. Bu yüzden animasyon hızı (Ayarlar → 1x/2x) veya FPS tur sonucunu 
 
 * Alpha kapsamı: 2 chapter, 2 boss, 3 yağ türü (normal, büyük, soğuk sos), 24 yetenek, 6 upgrade. Chapter 3–8, özel yağlar,
   ek şefler bilinçli olarak yok.
-* Denge (Alpha 0.2): rastgele dokunan bot Menemen %79 / Patates %44 kazanıyor (hedef bantlarında); kepçeyi
-  tencere merkezine nişanlayan oyuncu modelleri hâlâ %100 kazanıyor. Ayrıntı: BALANCE_REPORT_ALPHA02.md.
+* Denge (Alpha 0.3, bot simülasyonu): rastgele dokunan bot Menemen %76 / Patates %66; tencereyi okuyan orta ve
+  iyi oyuncu modelleri %100 kazanıyor (Patates'te yıldız kaybıyla). Ayrıntı: ALPHA03_BALANCE_REPORT.md.
+* Yakalama hissi (Alpha 0.3): daha az topçuk, 1,7 sn salınım, orta + iki yan havuz, kümeli döküm. Yalnız botlarla
+  ölçüldü: ALPHA03_FEEL_REPORT.md.
 * Gerçek telefon donanımında test **yapılmadı**; dokunmatik giriş Chromium'un mobil emülasyonu ile test edildi.
 * Kayıttan devam, ilerlemeyi **dalga başına** geri alır (dalga içi ilerleme kasıtlı olarak saklanmaz).
 * Müzik basit, özgün, döngüsel bir 8 ölçülük parçadır; ses efektleri kısa sentez seslerdir.

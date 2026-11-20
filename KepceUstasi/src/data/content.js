@@ -67,7 +67,9 @@ export const CHAPTERS = [
     recipe: { potato: 6, salt: 2 },
     boss: 'potato_king', baseTip: 80, firstClearBonus: 35,
     bigOilRate: 0.12,
-    balance: { hpScale: 2.8, bossHp: 62, spawnXMin: 0.56, spawnXMax: 0.62, bossX: 0.7 },
+    // Alpha 0.3: per-type HP instead of the blanket x2.8 (less "HP sponge"), quick salt (moves like a pepper),
+    // waves a little closer. Alpha 0.2: hpScale 2.8, boss 62, spawn 0.56-0.62, boss x 0.70.
+    balance: { hp: { potato: 6, armored_potato: 14, salt: 4 }, move: { salt: 'pepper' }, bossHp: 54, spawnXMin: 0.52, spawnXMax: 0.58, bossX: 0.64 },
     waves: [
       { potato: 2 },
       { potato: 2, salt: 1 },
@@ -85,16 +87,18 @@ export const SKILL_WAVES = [1, 2, 3, 4, 5, 6]; // Alpha 0.2: every normal wave, 
 export const NORMAL_WAVES = 6;
 
 export const POT = {
-  startCount: 30,
-  minTarget: 24,
-  maxCount: 36,
-  minAdd: 6,
+  // Alpha 0.3 (ALPHA03_FEEL_REPORT.md): 30/24/36/6 -> 24/20/30/5. Fewer balls than the ladle can hold, so only a
+  // well-timed drop into a cluster fills the ladle (Alpha 0.2: almost any central drop gave 6+/7).
+  startCount: 24,
+  minTarget: 20,
+  maxCount: 30,
+  minAdd: 5,
 };
 
 export const LADLE = {
   capacity: 7,
-  radius: 44, // physical mouth radius at 100 % width (px)
-  swingPeriod: 2.0, // seconds for a full left-right-left swing
+  radius: 42, // physical mouth radius at 100 % width (px). Alpha 0.2: 44
+  swingPeriod: 1.7, // seconds for a full left-right-left swing. Alpha 0.2: 2.0
   swingWidthRatio: 0.8, // of the reachable pot width
   openAngleDeg: 72,
   rimBase: 0.3, // rim lip height as fraction of radius (sin of the lip angle)
@@ -126,8 +130,10 @@ export const ABILITY_VALUES = {
   first_aid: [2],
   salt_shield: [1, 2],
   pan_burst: [1, 2],
+  pan_burst_every: 2, // Alpha 0.3: every 2nd kill in a turn (0.2: every 3rd -> 92 % of picks never triggered)
   tomato_splash: [1, 2],
   chain_cooking: [1],
+  chain_min_kills: 2, // Alpha 0.3: 2+ kills in a turn (0.2: 3+ -> 86 % never triggered)
   pan_echo: [1],
   critical_fry: [0.15, 0.25], // crit chance, crit = 2x damage
   explosive_oil: [4, 3], // every Nth real hit: 1 damage to up to 2 nearby enemies
@@ -145,22 +151,22 @@ export const ABILITIES = [
   { id: 'deep_ladle', name: 'Derin Kepçe', cat: 'catch', max: 3, desc: (l) => `Taşıma kapasitesi +${V.deep_ladle[l - 1]} yük.` },
   { id: 'slow_swing', name: 'Ağırbaşlı Kepçe', cat: 'catch', max: 2, desc: (l) => `Salınım ${pct(V.slow_swing[l - 1])} yavaş.` },
   { id: 'stable_rim', name: 'Sağlam Kenar', cat: 'catch', max: 2, desc: (l) => `Kepçe kenarı ${pct(V.stable_rim[l - 1])} yüksek: çıkışta daha az dökülür.` },
-  { id: 'pot_shuffle', name: 'Tencereyi Karıştır', cat: 'catch', max: 1, desc: () => 'Salınım sırasında KARIŞTIR düğmesi: dalga başına 1 kez topçukları fiziksel olarak savurur.' },
+  { id: 'pot_shuffle', name: 'Tencereyi Karıştır', cat: 'catch', max: 1, desc: () => 'Salınım sırasında KARIŞTIR: dalga başına 1 kez topçukları savurup orta havuza toplar.' },
   { id: 'double_shot', name: 'Çifte Yağ Atışı', cat: 'attack', max: 2, desc: (l) => (V.double_shot[l - 1] === 1 ? 'Her gerçek normal atıştan sonra +1 bonus yağ.' : `Her ${V.double_shot[l - 1]}. gerçek normal atıştan sonra +1 bonus yağ.`) },
   { id: 'heavy_oil', name: 'Büyük Lokma', cat: 'attack', max: 2, desc: (l) => `Büyük yağ hasarı +${V.heavy_oil[l - 1]} (toplam ${3 + V.heavy_oil[l - 1]}).` },
   { id: 'power_shot', name: 'Kızgın Yağ Ustalığı', cat: 'attack', max: 3, desc: (l) => `Her ${V.power_shot[l - 1].every}. normal atış +${V.power_shot[l - 1].bonus} hasar.` },
   { id: 'last_drop', name: 'Son Damla', cat: 'attack', max: 1, desc: () => 'Salvodaki son gerçek normal yağ +2 hasar.' },
   { id: 'first_bite', name: 'İlk Lokma', cat: 'attack', max: 2, desc: (l) => `Salvodaki ilk gerçek isabet +${V.first_bite[l - 1]} hasar.` },
   { id: 'critical_fry', name: 'Kritik Kızartma', cat: 'attack', max: 2, desc: (l) => `Gerçek atışlar ${pct(V.critical_fry[l - 1])} şansla KRİTİK: 2x hasar.` },
-  { id: 'piercing_oil', name: 'Delici Yağ', cat: 'attack', max: 2, desc: (l) => `Her ${V.piercing_oil[l - 1]}. gerçek atış, hedefin arkasındaki düşmana da 1 hasar verir.` },
+  { id: 'piercing_oil', name: 'Delici Yağ', cat: 'attack', max: 2, desc: (l) => `Her ${V.piercing_oil[l - 1]}. gerçek atış arkadaki düşmana 1 hasar; arkada kimse yoksa (boss) hedefe +1.` },
   { id: 'thick_apron', name: 'Kalın Önlük', cat: 'defense', max: 2, desc: () => 'Maksimum can +1 ve mevcut can +1.' },
   { id: 'first_aid', name: 'İlk Yardım', cat: 'defense', max: 1, requires: 'injured', desc: () => '2 can iyileştirir (maksimumu aşmaz).' },
   { id: 'salt_shield', name: 'Tuz Kalkanı', cat: 'defense', max: 2, desc: () => 'Sıradaki temas hasarını 1 azaltan +1 kalkan yükü.' },
   { id: 'spiked_apron', name: 'Dikenli Önlük', cat: 'defense', max: 2, desc: (l) => `Sana çarpan düşmana (boss dahil) ${V.spiked_apron[l - 1]} karşılık hasarı.` },
   { id: 'tasty_heal', name: 'Lezzetli Lokma', cat: 'defense', max: 2, desc: (l) => `Her ${V.tasty_heal[l - 1]} gerçek can hasarında +1 can (salvo başına en fazla 1).` },
-  { id: 'pan_burst', name: 'Tava Patlaması', cat: 'pan', max: 2, desc: (l) => `Bir turda her 3. öldürmede yakına ${V.pan_burst[l - 1]} alan hasarı.` },
+  { id: 'pan_burst', name: 'Tava Patlaması', cat: 'pan', max: 2, desc: (l) => `Bir turda her ${V.pan_burst_every}. öldürmede yakına ${V.pan_burst[l - 1]} alan hasarı.` },
   { id: 'tomato_splash', name: 'Sos Sıçraması', cat: 'pan', max: 2, eligibleTags: ['tomato'], desc: (l) => `Pişen domates yakındaki ${V.tomato_splash[l - 1]} canlıya 1 hasar verir.` },
-  { id: 'chain_cooking', name: 'Zincir Pişirme', cat: 'pan', max: 1, desc: () => 'Bir turda 3+ öldürme: sonraki salvoya 1 bonus normal yağ.' },
+  { id: 'chain_cooking', name: 'Zincir Pişirme', cat: 'pan', max: 1, desc: () => `Bir turda ${V.chain_min_kills}+ öldürme: sonraki salvoya 1 bonus normal yağ.` },
   { id: 'pan_echo', name: 'Tava Yankısı', cat: 'pan', max: 1, desc: () => 'Dalganın ilk öldürmesi yakındaki bir canlıya 1 hasar verir.' },
   { id: 'explosive_oil', name: 'Patlayan Yağ', cat: 'pan', max: 2, desc: (l) => `Her ${V.explosive_oil[l - 1]}. gerçek isabet patlar: yakındaki en fazla 2 düşmana 1 hasar.` },
   { id: 'oil_knockback', name: 'Güçlü Püskürtme', cat: 'control', max: 2, desc: (l) => `Her ${V.oil_knockback[l - 1]}. gerçek isabet düşmanı 1 adım geri iter. Boss itilmez: +1 hasar alır.` },
