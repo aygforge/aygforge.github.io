@@ -11,7 +11,8 @@
     "preview": "vite preview --port 4173",
     "test": "node --test \"tests/unit/*.test.mjs\"",
     "test:sim": "node tests/sim/run-sim.mjs",
-    "test:e2e": "node tests/e2e/e2e.mjs"
+    "test:e2e": "node tests/e2e/e2e.mjs",
+    "build:artifact": "vite build -c vite.artifact.config.js && node -e \"require('fs').copyFileSync('tools/artifact-index.html','artifact-dist/index.html')\""
   },
   "dependencies": {
     "@fontsource/pixelify-sans": "5.3.0",

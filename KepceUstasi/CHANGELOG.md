@@ -59,3 +59,10 @@ değiştirilmedi.** Yalnızca GDD'nin açıkça "ayarlanır" dediği kepçe/tenc
 ### Bilinen denge durumu
 Simülasyonlar GDD sayılarıyla oyunun kolay olduğunu gösteriyor (ayrıntı: TEST_PLAN.md → Denge gözlemleri).
 Sayılar bilinçli olarak korunmuştur; önerilen ayar seçenekleri TEST_PLAN.md'de listelenmiştir.
+
+### Teknik notlar
+- Çevrimdışı önbellek `ignoreVary` ile eşleşir (önizleme sunucusunun `Vary: Origin` başlığı modül betiklerinin
+  önbellekten açılmasını engelliyordu; E2E testinde yakalandı ve düzeltildi).
+- Ortak açılış `src/boot.js`; `src/main.js` yerel/itch.io derlemesi, `src/main.artifact.js` claude.ai önizleme
+  derlemesi (Phaser/matter-js CDN'den, aynı oyun kodu).
+- Uzun bilgi başlıkları ekran genişliğine sığacak şekilde ölçeklenir (dar ekranda taşma düzeltildi).

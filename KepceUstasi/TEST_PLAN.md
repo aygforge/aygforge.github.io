@@ -68,7 +68,7 @@ emülasyonu (`hasTouch`, `isMobile`) ile test edildi.
 | A01 | portrait layout desktop_1280x720 | GEÇTİ | canvas 405×720 @(437,0) in 1280×720, game H=960, scale 0.750, battle h=410 |
 | A02 | tap spam → one drop / one turn | GEÇTİ | taps +1, catches 1 |
 | A15 | pause spam + background auto-pause + resume | GEÇTİ | even toggles→running:true, hidden→PAUSED:true, stays paused on return:true, resume:true |
-| PERF | frame rate while swinging (headless Chromium, software GL) | GEÇTİ | 45.0 fps |
+| PERF | frame rate while swinging (headless Chromium, software GL) | GEÇTİ | 51.6 fps |
 | A14 | Menemen played to the boss and served | GEÇTİ | stars 3, tips 108, unlocked 2 |
 | A13 | upgrade purchase by click (atomic, persisted) | GEÇTİ | toughness Sv2, spent 45, tips 63 |
 | A14b | Patates Kızartması played to Patates Kral and served (upgrade active) | GEÇTİ | chapter fries, chef max HP 6, stars 3, tips 202 |
@@ -78,7 +78,7 @@ emülasyonu (`hasTouch`, `isMobile`) ile test edildi.
 | NET | no request to any external host (no CDN/ads/analytics) | GEÇTİ | only localhost |
 | ERR | no page errors / console errors | GEÇTİ |  |
 
-**16/16 kontrol geçti** — çalıştırma: 2026-11-20T14:07:03.786Z. Tam oynanış E2E'de animasyon hızı 2x idi (oyun mantığını etkilemez).
+**16/16 kontrol geçti** — son çalıştırma: 2026-11-20T14:14:25.663Z (teslim edilen `dist/` ile). Tam oynanış E2E'de animasyon hızı 2x idi (oyun mantığını etkilemez).
 
 ## Tohumlu simülasyon (100 koşu, rastgele dokunuş)
 
@@ -113,7 +113,7 @@ Aynı tohumlarla karşılaştırma (`node tests/sim/balance.mjs 16 random`, oyun
 ## Performans
 
 * Başsız Chromium + yazılım GL (GPU yok) ile salınım sırasında ölçülen kare hızı: E2E `PERF` satırına bakın
-  (son koşu 45 fps, önceki boşta koşu ~51 fps; aynı makinede 3 simülasyon paralel koşarken ~20 fps ölçüldü). Gerçek cihazda GPU ile ölçülmedi.
+  (son koşu 51,6 fps; aynı makinede 3 simülasyon paralel koşarken ~20 fps ölçüldü). Gerçek cihazda GPU ile ölçülmedi.
 * Fizik: 60 Hz sabit adım × 3 alt adım; Node'da 30 topçukla adım başına ~0,35 ms.
 * Fizik yalnızca salınım/kepçe/yenileme fazlarında ilerler; animasyon fazlarında donar. Bu yüzden animasyon
   hızı (1x/2x) veya FPS düşüşü tur sonucunu değiştirmez; arka plandan dönüşte zaman ileri sarılmaz

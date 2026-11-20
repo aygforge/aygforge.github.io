@@ -758,9 +758,11 @@ export class GameScene extends Phaser.Scene {
   // ======================================================== helpers
   flash(msg, dur) {
     if (!msg) return;
-    this.bannerText.setText(msg).setAlpha(1).setScale(this.lowMotion ? 1 : 0.7);
+    this.bannerText.setScale(1).setText(msg);
+    const fit = Math.min(1, (this.L.W - 24) / Math.max(1, this.bannerText.width)); // never wider than the screen
+    this.bannerText.setAlpha(1).setScale(this.lowMotion ? fit : fit * 0.7);
     this.tweens.killTweensOf(this.bannerText);
-    this.tweens.add({ targets: this.bannerText, scale: 1, duration: 160 });
+    this.tweens.add({ targets: this.bannerText, scale: fit, duration: 160 });
     this.tweens.add({ targets: this.bannerText, alpha: 0, delay: dur, duration: 260 });
   }
 

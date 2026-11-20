@@ -25,6 +25,12 @@ yüklenebilir; tüm yollar görelidir (`base: './'`). Dış CDN, reklam veya ana
 > çalışmaz (ES modülleri ve ses/görüntü yükleme). Bir kez `npm run preview` veya basit bir statik sunucu kullanın.
 > Sayfa bir kez açıldıktan sonra service worker sayesinde **internet olmadan** tekrar açılır.
 
+### claude.ai Artifact önizleme derlemesi (isteğe bağlı)
+
+`npm run build:artifact` → `artifact-dist/` (tek `game.js` + varlıklar; Phaser 3.90.0 ve matter-js 0.20.0 sabit
+sürümle jsDelivr'den, font Google Fonts'tan yüklenir). Oyun kodu normal derlemeyle aynıdır; yalnızca
+service worker yoktur. Asıl teslim/itch.io çıktısı `npm run build` → `dist/` klasörüdür.
+
 ### Varlıkları yeniden üretmek (isteğe bağlı)
 
 Tüm sprite (PNG) ve ses (WAV) dosyaları `tools/gen-assets.mjs` ile prosedürel olarak çizilir/sentezlenir ve

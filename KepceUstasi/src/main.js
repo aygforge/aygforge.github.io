@@ -1,48 +1,6 @@
-// Kepçe Ustası — Alpha 0.1 giriş noktası.
-import Phaser from 'phaser';
+// Kepçe Ustası — Alpha 0.1 giriş noktası (yerel/itch.io derlemesi: font ve kütüphaneler pakette).
 import '@fontsource/pixelify-sans/400.css';
 import '@fontsource/pixelify-sans/700.css';
-import { GAME_W, gameHeightFor } from './config/layout.js';
-import { BootScene } from './scenes/BootScene.js';
-import { MenuScene } from './scenes/MenuScene.js';
-import { GameScene } from './scenes/GameScene.js';
-import { app } from './game/AppState.js';
+import { bootGame } from './boot.js';
 
-async function boot() {
-  try {
-    await Promise.race([
-      Promise.all([
-        document.fonts.load('20px "Pixelify Sans"', 'Kepçe Ustası ğüşıöçİĞÜŞÖÇ'),
-        document.fonts.load('bold 20px "Pixelify Sans"', 'Kepçe Ustası ğüşıöçİĞÜŞÖÇ'),
-      ]),
-      new Promise((r) => setTimeout(r, 2500)),
-    ]);
-  } catch {
-    /* fall back to monospace */
-  }
-  const frame = document.getElementById('frame');
-  const H = gameHeightFor(frame.clientWidth, frame.clientHeight);
-  const game = new Phaser.Game({
-    type: Phaser.AUTO,
-    parent: 'game',
-    width: GAME_W,
-    height: H,
-    backgroundColor: '#1e1a26',
-    pixelArt: true,
-    roundPixels: true,
-    disableContextMenu: true,
-    input: { activePointers: 2, touch: { capture: true } },
-    scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
-    fps: { target: 60, forceSetTimeOut: false },
-    audio: { disableWebAudio: false },
-    scene: [BootScene, MenuScene, GameScene],
-  });
-  document.getElementById('boot')?.remove();
-  if (app.dev) window.__KEPCE__ = { game, app };
-}
-
-boot();
-
-if ('serviceWorker' in navigator && location.protocol.startsWith('http') && import.meta.env.PROD) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
-}
+bootGame({ registerServiceWorker: import.meta.env.PROD });

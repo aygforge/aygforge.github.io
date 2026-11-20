@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-20T14:07:03.786Z",
+  "date": "2026-11-20T14:14:25.663Z",
   "results": [
     {
       "id": "A01",
@@ -47,7 +47,7 @@
       "id": "PERF",
       "name": "frame rate while swinging (headless Chromium, software GL)",
       "pass": true,
-      "detail": "45.0 fps"
+      "detail": "51.6 fps"
     },
     {
       "id": "A14",
