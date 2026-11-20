@@ -2,7 +2,7 @@
 // Sıra: kepçe → mermi kuyruğu → isabet → ölüm/tava/yetenek → boss zafer kapısı → düşman eylemi →
 //       sağdan sola hareket → temas → dalga/boss geçişi → hibrit tencere yenileme → sonraki kepçe.
 // Sahne (Phaser) yalnızca olayları oynatır ve token ile "bitti" bildirir; hiçbir oyun sonucu sahnede hesaplanmaz.
-import { CHAPTERS, CHEF, POT, SKILL_WAVES, NORMAL_WAVES } from '../data/content.js';
+import { CHAPTERS, CHEF, POT, SKILL_WAVES, NORMAL_WAVES, COLD_OIL_RATE } from '../data/content.js';
 import { Rng } from '../core/rng.js';
 import { PotPhysics, STEP_MS } from './PotPhysics.js';
 import { LadleController } from './LadleController.js';
@@ -33,6 +33,26 @@ export const PHASE = {
 const REFILL_SETTLE_STEPS = 45;
 const MAX_STEPS_PER_UPDATE = 6;
 
+// Alpha 0.2 run counters. Missing keys in an Alpha 0.1 snapshot are filled by migrateRunState().
+export const RUN_COUNTER_DEFAULTS = {
+  permShot: 0, powerShot: 0, doubleShot: 0, panKills: 0, echoUsedThisWave: false,
+  pierce: 0, explode: 0, knock: 0, healDmg: 0, shuffleUsedThisWave: false,
+};
+
+// Safe migration of an older (Alpha 0.1) wave snapshot: only adds missing fields with neutral defaults.
+export function migrateRunState(run) {
+  run.counters = { ...RUN_COUNTER_DEFAULTS, ...(run.counters || {}) };
+  run.stats = { crits: 0, cappedEvents: 0, heals: 0, shuffles: 0, bossStartTurn: null, ...(run.stats || {}) };
+  if (!run.critRng) run.critRng = ((run.seed || 1) ^ 0x9e3779b9) >>> 0 || 1;
+  if (run.offerSeq == null) run.offerSeq = 0;
+  if (run.lastOffer === undefined) run.lastOffer = null;
+  for (const e of run.enemies || []) {
+    if (e.frozen == null) e.frozen = false;
+    if (e.lastFrozenAction === undefined) e.lastFrozenAction = null;
+  }
+  return run;
+}
+
 export function newRunState({ chapter, perm, seed, runId }) {
   return {
     runId,
@@ -46,13 +66,17 @@ export function newRunState({ chapter, perm, seed, runId }) {
     nextEnemyId: 1,
     abilities: {},
     perm: { ...perm },
-    counters: { permShot: 0, powerShot: 0, doubleShot: 0, panKills: 0, echoUsedThisWave: false },
+    counters: { ...RUN_COUNTER_DEFAULTS },
     pending: { chain: 0, mastery: 0 },
     recipe: emptyRecipe(chapter),
     stats: {
       hpLost: 0, kills: 0, escaped: 0, shots: 0, normalShots: 0, damageDealt: 0,
       completedWaves: 0, taps: 0, catches: [], loads: [],
+      crits: 0, cappedEvents: 0, heals: 0, shuffles: 0, bossStartTurn: null,
     },
+    critRng: (seed ^ 0x9e3779b9) >>> 0 || 1, // dedicated deterministic crit stream (snapshot-safe)
+    offerSeq: 0,
+    lastOffer: null,
     rerollUsed: false,
     choiceCount: 0,
     offer: null,
@@ -97,6 +121,10 @@ export class RunController {
     return this.phase === PHASE.PAUSED;
   }
 
+  get coldRate() {
+    return this.run.abilities.cold_oil ? COLD_OIL_RATE : 0;
+  }
+
   get bigRate() {
     return Math.min(0.18, this.chapter.bigOilRate + (this.run.perm.spice || 0));
   }
@@ -105,7 +133,7 @@ export class RunController {
     const o = this.opts;
     if (o.snapshot) {
       const snap = JSON.parse(JSON.stringify(o.snapshot));
-      this.run = snap.run;
+      this.run = migrateRunState(snap.run);
       this.rng = new Rng(1);
       this.rng.state = snap.rngState >>> 0;
       this.pot = new PotPhysics(this.rng);
@@ -156,7 +184,9 @@ export class RunController {
   enterWavePrep() {
     this.setPhase(PHASE.WAVE_PREP);
     this.run.counters.echoUsedThisWave = false;
+    this.run.counters.shuffleUsedThisWave = false;
     this.run.waveTurn = 0;
+    if (this.run.wave > NORMAL_WAVES && this.run.stats.bossStartTurn == null) this.run.stats.bossStartTurn = this.run.turn;
     const spawned = spawnWave(this.run, this.chapter, this.rng);
     const firstOfRun = this.run.turn === 0;
     this.onAck = () => (firstOfRun ? this.enterSwing(true) : this.enterPotRefill(true));
@@ -170,7 +200,7 @@ export class RunController {
 
   enterPotRefill(waveStart) {
     this.setPhase(PHASE.POT_REFILL);
-    const r = this.pot.refill(this.bigRate);
+    const r = this.pot.refill(this.bigRate, this.coldRate);
     this.refillSteps = REFILL_SETTLE_STEPS;
     this.refillWaveStart = waveStart;
     this.emit({ kind: 'potRefill', ...r });
@@ -232,8 +262,10 @@ export class RunController {
 
   enterContact() {
     this.setPhase(PHASE.CONTACT_RESOLVE);
-    const events = resolveContacts(this.run);
+    const events = resolveContacts(this.run, this.chapter);
+    const bossDown = events.some((e) => e.type === 'victory');
     this.onAck = () => {
+      if (bossDown) return this.finish(true); // boss died on Dikenli Önlük: victory gate first
       if (this.run.chef.hp <= 0) return this.finish(false);
       if (living(this.run).length === 0) return this.waveCleared();
       this.setPhase(PHASE.WAVE_OR_TURN_END);
@@ -259,9 +291,10 @@ export class RunController {
     const offer = makeOffer(this.run, this.chapter, this.rng);
     if (!offer.length) return this.nextWave();
     this.run.offer = offer;
+    this.run.offerSeq++;
     this.run.choiceCount++;
     this.setPhase(PHASE.SKILL_CHOICE);
-    this.emit({ kind: 'skillChoice', offer, rerollAvailable: !this.run.rerollUsed, choice: this.run.choiceCount });
+    this.emit({ kind: 'skillChoice', offer, offerSeq: this.run.offerSeq, rerollAvailable: !this.run.rerollUsed, choice: this.run.choiceCount, total: SKILL_WAVES.length });
   }
 
   rerollSkills() {
@@ -269,13 +302,17 @@ export class RunController {
     this.run.rerollUsed = true;
     const offer = makeOffer(this.run, this.chapter, this.rng, this.run.offer);
     this.run.offer = offer;
-    this.emit({ kind: 'skillChoice', offer, rerollAvailable: false, choice: this.run.choiceCount, rerolled: true });
+    this.run.offerSeq++;
+    this.emit({ kind: 'skillChoice', offer, offerSeq: this.run.offerSeq, rerollAvailable: false, choice: this.run.choiceCount, total: SKILL_WAVES.length, rerolled: true });
     return true;
   }
 
-  chooseSkill(id) {
+  // offerSeq (optional) rejects a stale card from an offer that was already rerolled/replaced.
+  chooseSkill(id, offerSeq = null) {
     if (this.phase !== PHASE.SKILL_CHOICE || !this.run.offer || !this.run.offer.includes(id)) return false;
+    if (offerSeq != null && offerSeq !== this.run.offerSeq) return false;
     if (!applyAbility(this.run, this.chapter, id)) return false;
+    this.run.lastOffer = this.run.offer;
     this.run.offer = null;
     this.emit({ kind: 'skillPicked', id, stacks: this.run.abilities[id], chef: { ...this.run.chef } });
     this.nextWave();
@@ -292,6 +329,20 @@ export class RunController {
     this.run.result = { victory, stars };
     this.setPhase(victory ? PHASE.BOSS_RESULT : PHASE.GAME_OVER);
     this.emit({ kind: 'result', victory, stars, run: this.run });
+  }
+
+  // Tencereyi Karıştır: once per wave, only while the ladle swings; does not use the turn.
+  canShuffle() {
+    return this.phase === PHASE.SWING_WAIT && !!this.run.abilities.pot_shuffle && !this.run.counters.shuffleUsedThisWave && this.inputGuard <= 0;
+  }
+
+  shufflePot() {
+    if (!this.canShuffle()) return false;
+    this.run.counters.shuffleUsedThisWave = true;
+    this.run.stats.shuffles++;
+    this.pot.shuffle();
+    this.emit({ kind: 'shuffle' });
+    return true;
   }
 
   // ---------------- pause ----------------

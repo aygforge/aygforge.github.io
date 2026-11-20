@@ -1,6 +1,22 @@
 // EnemyDirector — dalga spawn'ı, SAĞDAN SOLA tur bazlı hareket, boss davranışları ve temas.
 // Hareket yalnızca ENEMY_ACTION fazında, tur başına bir kez çağrılır. Asla sürekli hareket yok.
-import { ENEMIES, FIELD } from '../data/content.js';
+import { ENEMIES, FIELD, CHAPTERS, ABILITY_VALUES } from '../data/content.js';
+import { resolveReflect } from './CombatResolver.js';
+
+export const BOSS_FREEZE_EVERY = 3; // a boss can be frozen at most once per 3 of its own actions
+
+export function chapterOf(run) {
+  return CHAPTERS.find((c) => c.id === run.chapterId) || CHAPTERS[0];
+}
+
+// Spawned HP for this chapter's balance (base HP table unchanged; boss HP explicit).
+export function scaledHp(chapter, type) {
+  const def = ENEMIES[type];
+  const b = chapter?.balance;
+  if (!b) return def.hp;
+  if (def.boss) return b.bossHp ?? def.hp;
+  return Math.max(1, Math.round(def.hp * (b.hpScale ?? 1)));
+}
 
 export function enemyDef(e) {
   return ENEMIES[e.type];
@@ -30,13 +46,14 @@ export function nextSteps(e) {
 
 function makeEnemy(run, type, x, y) {
   const def = ENEMIES[type];
+  const hp = scaledHp(chapterOf(run), type);
   const e = {
     id: run.nextEnemyId++,
     type,
     x,
     y,
-    hp: def.hp,
-    maxHp: def.hp,
+    hp,
+    maxHp: hp,
     shield: def.shield,
     maxShield: def.shield,
     moveOpp: 0,
@@ -49,6 +66,8 @@ function makeEnemy(run, type, x, y) {
     actionCount: 0,
     summoned: false,
     hasted: false,
+    frozen: false, // Soğuk Sos: skips its next move once
+    lastFrozenAction: null, // bosses: freeze limited to once per BOSS_FREEZE_EVERY actions
   };
   run.enemies.push(e);
   return e;
@@ -81,7 +100,7 @@ export function spawnWave(run, chapter, rng) {
   run.enemies = run.enemies.filter((e) => !e.dead && !e.escaped); // keep the list small
   const spawned = [];
   if (run.wave > chapter.waves.length) {
-    const e = makeEnemy(run, chapter.boss, 0.86, 0.5);
+    const e = makeEnemy(run, chapter.boss, chapter.balance?.bossX ?? 0.86, 0.5);
     spawned.push(e);
     return spawned;
   }
@@ -89,7 +108,8 @@ export function spawnWave(run, chapter, rng) {
   const list = [];
   for (const [type, n] of Object.entries(comp)) for (let i = 0; i < n; i++) list.push(type);
   for (const type of rng.shuffle(list)) {
-    const spot = pickSpot(run, rng, FIELD.spawnXMin, FIELD.spawnXMax, 0.16);
+    const b = chapter.balance || FIELD;
+    const spot = pickSpot(run, rng, b.spawnXMin ?? FIELD.spawnXMin, b.spawnXMax ?? FIELD.spawnXMax, 0.16);
     spawned.push(makeEnemy(run, type, spot.x, spot.y));
   }
   return spawned;
@@ -134,6 +154,12 @@ export function enemyAction(run, rng) {
       e.hasted = true;
       events.push({ type: 'haste', id: e.id });
     }
+    if (e.frozen) {
+      // Soğuk Sos: this move opportunity is skipped once (specials above still happen)
+      e.frozen = false;
+      events.push({ type: 'frozenSkip', id: e.id });
+      continue;
+    }
     e.moveOpp++;
     if (skipMove) continue;
     const steps = stepsFor(e, e.moveOpp);
@@ -169,22 +195,36 @@ export function damageChef(run, amount) {
   return { salt, shield, hpLoss };
 }
 
-export function resolveContacts(run) {
+export function resolveContacts(run, chapter = chapterOf(run)) {
   const events = [];
   const touching = living(run)
     .filter((e) => e.x <= FIELD.contactX + 1e-6)
     .sort((a, b) => a.id - b.id);
+  const spikes = run.abilities.spiked_apron ? ABILITY_VALUES.spiked_apron[run.abilities.spiked_apron - 1] : 0;
   for (const e of touching) {
     if (run.chef.hp <= 0) break;
     const def = ENEMIES[e.type];
     const r = damageChef(run, def.contactDamage);
+    const ev = { type: 'contact', id: e.id, damage: def.contactDamage, ...r, boss: !!e.boss };
+    events.push(ev);
+    if (run.chef.hp <= 0) break;
+    if (spikes > 0) {
+      // Dikenli Önlük: the reflect goes through the combat authority (single kill / recipe path)
+      const rr = resolveReflect(run, chapter, e, spikes);
+      events.push(...rr.events);
+      if (rr.victory) {
+        events.push({ type: 'victory' });
+        return events; // boss died on the spikes: nothing else happens this turn
+      }
+      if (e.dead) continue; // cooked in the pan (counted once), not escaped
+    }
     if (e.boss) {
       e.x = def.retreatX; // safe retreat, one contact per turn
-      events.push({ type: 'contact', id: e.id, damage: def.contactDamage, ...r, retreatX: e.x, boss: true });
+      ev.retreatX = e.x;
     } else {
       e.escaped = true; // leaves the field, NOT counted for the recipe
       run.stats.escaped++;
-      events.push({ type: 'contact', id: e.id, damage: def.contactDamage, ...r, escaped: true });
+      ev.escaped = true;
     }
   }
   if (run.chef.hp <= 0) events.push({ type: 'chefDown' });

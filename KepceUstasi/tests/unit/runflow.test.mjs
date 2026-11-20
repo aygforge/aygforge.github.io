@@ -80,7 +80,10 @@ test('enemies move only in ENEMY_ACTION and only leftwards', () => {
   c.on((e) => {
     // compare logical positions at every emitted event: who changed x, and during which event
     for (const en of c.run?.enemies || []) {
-      if (prev.has(en.id) && prev.get(en.id) !== en.x) changes.push({ kind: e.kind, dx: en.x - prev.get(en.id), boss: en.boss });
+      if (prev.has(en.id) && prev.get(en.id) !== en.x) {
+        const knocked = e.kind === 'volley' && e.events.some((x) => x.type === 'knockback' && x.id === en.id);
+        changes.push({ kind: e.kind, dx: en.x - prev.get(en.id), boss: en.boss, knocked });
+      }
     }
     prev = new Map((c.run?.enemies || []).map((en) => [en.id, en.x]));
   });
@@ -94,7 +97,7 @@ test('enemies move only in ENEMY_ACTION and only leftwards', () => {
   assert.ok(changes.length > 0);
   for (const ch of changes) {
     if (ch.dx < 0) assert.equal(ch.kind, 'enemyAction', 'leftward moves happen only in the enemy action phase');
-    else assert.ok(ch.boss && ch.kind === 'contact', 'only a boss steps back, as its post-contact retreat');
+    else assert.ok((ch.boss && ch.kind === 'contact') || ch.knocked, 'rightward only as a boss retreat or an explicit knockback hit effect');
   }
 });
 
@@ -112,7 +115,7 @@ test('boss dies -> instant victory: no enemy action / contact after, result emit
 
 test('Menemen and Patates Kızartması are completed end-to-end (first time + replay); unlocks and tips are right', () => {
   const save = defaultSave();
-  const r1 = simulateRun({ chapterId: 'menemen', seed: 21, save });
+  const r1 = simulateRun({ chapterId: 'menemen', seed: 21, save, policy: 'perfect' });
   assert.ok(r1.result.victory);
   const o1 = applyRunResult(save, CHAPTERS[0], r1.run, r1.result);
   assert.equal(o1.firstClear, true);
@@ -121,13 +124,13 @@ test('Menemen and Patates Kızartması are completed end-to-end (first time + re
   assert.equal(tips1, o1.reward.total);
   // spend on a permanent upgrade, then fries
   assert.ok(purchaseUpgrade(save, 'capacity').ok);
-  const r2 = simulateRun({ chapterId: 'fries', seed: 22, save });
+  const r2 = simulateRun({ chapterId: 'fries', seed: 22, save, policy: 'perfect' });
   assert.ok(r2.result.victory, 'second boss defeated');
   assert.equal(r2.run.perm.capacity, 8, 'upgrade applied in the run');
   const o2 = applyRunResult(save, CHAPTERS[1], r2.run, r2.result);
   assert.equal(o2.reward.firstBonus, 35);
   // replay chapter 1: no first-clear bonus
-  const r3 = simulateRun({ chapterId: 'menemen', seed: 23, save });
+  const r3 = simulateRun({ chapterId: 'menemen', seed: 23, save, policy: 'perfect' });
   const o3 = applyRunResult(save, CHAPTERS[0], r3.run, r3.result);
   assert.equal(o3.reward.firstBonus, 0);
   assert.equal(save.chapters.menemen.plays, 2);
@@ -174,7 +177,7 @@ test('checkpoint snapshot: restore resumes at wave start without double kill, do
   assert.equal(s2.activeRun, null);
 });
 
-test('skill choice: only after waves 1, 3, 5, 6; 4 picks per run; one free reroll', () => {
+test('skill choice (Alpha 0.2): after every normal wave 1–6, 6 picks per run, none after the boss; one free reroll; stale card rejected', () => {
   const { c, events } = ctl({ seed: 8 });
   const waves = [];
   let rerolled = false;
@@ -190,11 +193,16 @@ test('skill choice: only after waves 1, 3, 5, 6; 4 picks per run; one free rerol
         rerolled = true;
       }
       assert.equal(c.chooseSkill('not_offered'), false);
-      c.chooseSkill(c.run.offer[0]);
+      assert.equal(c.chooseSkill(c.run.offer[0], c.run.offerSeq - 1), false, 'card from an older offer is rejected');
+      assert.ok(c.chooseSkill(c.run.offer[0], c.run.offerSeq));
     }
     c.update(STEP_MS + 0.0001);
   }
-  assert.deepEqual(waves, [1, 3, 5, 6]);
-  assert.equal(Object.values(c.run.abilities).reduce((a, b) => a + b, 0), 4);
-  assert.equal(events.filter((e) => e.kind === 'skillChoice').length, 5);
+  assert.deepEqual(waves, [1, 2, 3, 4, 5, 6]);
+  assert.equal(Object.values(c.run.abilities).reduce((a, b) => a + b, 0), 6);
+  assert.equal(events.filter((e) => e.kind === 'skillChoice').length, 7);
+  assert.ok(events.filter((e) => e.kind === 'skillChoice').every((e) => e.total === 6));
+  const lastPick = events.findLastIndex((e) => e.kind === 'skillPicked');
+  const bossWave = events.findIndex((e) => e.kind === 'wavePrep' && e.isBoss);
+  assert.ok(lastPick < bossWave, 'the 6th pick happens before the boss; none after');
 });

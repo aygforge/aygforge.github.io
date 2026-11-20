@@ -2,6 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { resolveVolley, selectTarget, applyDamage } from '../../src/systems/CombatResolver.js';
+import { SECONDARY_EVENT_CAP } from '../../src/data/content.js';
 import { enemyAction, resolveContacts, stepsFor, spawnWave } from '../../src/systems/EnemyDirector.js';
 import { Rng } from '../../src/core/rng.js';
 import { makeRun, addEnemy, normal, big, CH1, CH2 } from './helpers.mjs';
@@ -86,19 +87,31 @@ test('secondary chain cap: at most 12 secondary damage events per turn, no infin
   const run = makeRun();
   run.abilities = { pan_burst: 2, tomato_splash: 2, pan_echo: 1, double_shot: 2 };
   for (let i = 0; i < 8; i++) addEnemy(run, 'tomato_minion', 0.5 + (i % 4) * 0.03, 0.2 + i * 0.08, { hp: 1 });
+  run.abilities.explosive_oil = 2;
+  run.abilities.piercing_oil = 2;
   const { events } = resolveVolley(run, CH1, normal(12));
-  const secondary = events.filter((e) => e.type === 'area').length + events.filter((e) => e.type === 'shot' && e.source === 'double_shot').length;
-  assert.ok(secondary <= 12, `secondary=${secondary}`);
-  assert.ok(run.turnSecondary <= 12);
+  const secondary = events.filter((e) => e.type === 'area').length;
+  assert.ok(secondary <= SECONDARY_EVENT_CAP, `secondary=${secondary}`);
+  assert.ok(run.turnSecondary <= SECONDARY_EVENT_CAP);
+  // anything over the cap is counted and reported, never silently lost
+  const capped = events.find((e) => e.type === 'capReached');
+  assert.equal(capped ? capped.dropped : 0, run.stats.cappedEvents);
 });
 
-test('bonus shots never trigger more bonus shots (double_shot)', () => {
+test('bonus shots never trigger more bonus shots (double_shot Lv2: exactly one per real normal)', () => {
   const run = makeRun();
-  run.abilities.double_shot = 2; // every 4th real normal hit
-  addEnemy(run, 'giant_tomato', 0.85);
+  run.abilities.double_shot = 2;
+  run.abilities.critical_fry = 2;
+  addEnemy(run, 'giant_tomato', 0.85, 0.5, { hp: 999, maxHp: 999 });
   const { events } = resolveVolley(run, CH1, normal(12));
   const bonus = events.filter((e) => e.type === 'shot' && e.isBonus);
-  assert.equal(bonus.length, 3);
+  assert.equal(bonus.length, 12);
+  for (const b of bonus) {
+    assert.equal(b.source, 'double_shot');
+    assert.equal(b.canProc, false);
+    assert.equal(b.crit, false, 'bonus shots never crit');
+    assert.ok(events.some((e) => e.type === 'shot' && e.shotId === b.parentShotId && !e.isBonus), 'parent is a real shot');
+  }
 });
 
 test('enemy movement: only to the LEFT, only in the action phase; pepper 2 steps on its own 3rd opportunity', () => {
@@ -179,7 +192,8 @@ test('spawn: enemies appear on the right side at free y positions, never stacked
   const sp = spawnWave(run, CH2, new Rng(5));
   assert.equal(sp.length, 5);
   for (const e of sp) {
-    assert.ok(e.x >= 0.86 && e.x <= 0.93);
+    assert.ok(e.x >= CH2.balance.spawnXMin && e.x <= CH2.balance.spawnXMax);
+    assert.equal(e.hp, Math.round({ potato: 3, armored_potato: 7, salt: 2 }[e.type] * CH2.balance.hpScale), 'chapter HP scale applied');
     assert.ok(e.y >= 0.2 && e.y <= 0.8);
   }
   for (let i = 0; i < sp.length; i++)

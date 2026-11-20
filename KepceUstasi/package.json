@@ -1,8 +1,8 @@
 {
   "name": "kepce-ustasi",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "Kepçe Ustası Alpha 0.1 — Ayg Forge portrait HTML5 oyunu",
+  "description": "Kepçe Ustası Alpha 0.2 — Ayg Forge portrait HTML5 oyunu",
   "type": "module",
   "scripts": {
     "assets": "node tools/gen-assets.mjs",

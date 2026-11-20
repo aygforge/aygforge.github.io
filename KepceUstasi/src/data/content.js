@@ -1,10 +1,14 @@
-// Kepçe Ustası — Alpha 0.1 içerik verisi.
-// Tüm sayılar GDD v1.0 tablolarından alınmıştır (ALPHA VARSAYIMI). Değişiklikler CHANGELOG.md'de raporlanır.
+// Kepçe Ustası — Alpha 0.2 içerik verisi.
+// Temel tablolar GDD v1.0'dan; Alpha 0.2 yetenek/denge revizyonu "Alpha 0.2 Yetenek ve Denge GDD"den.
+// Denge değişiklikleri BALANCE_REPORT_ALPHA02.md ve CHANGELOG_ALPHA02.md'de raporlanır.
 
 export const OILS = {
   normal: { id: 'normal', name: 'Normal yağ topçuğu', load: 1, damage: 1, radius: 12 },
   big: { id: 'big', name: 'Büyük yağ küresi', load: 2, damage: 3, radius: 16.5 },
+  // Alpha 0.2: Soğuk Sos yeteneğiyle tencereye giren gerçek fiziksel topçuk (1 yük, 1 hasar, dondurur)
+  cold: { id: 'cold', name: 'Soğuk sos küresi', load: 1, damage: 1, radius: 12, special: true },
 };
+export const COLD_OIL_RATE = 0.07; // share of NEW pot balls once Soğuk Sos is owned
 
 // Battle field is normalised: x,y ∈ [0,1].
 export const FIELD = {
@@ -15,6 +19,7 @@ export const FIELD = {
   spawnYMin: 0.2,
   spawnYMax: 0.8,
   step: 0.1,
+  knockbackMaxX: 0.93, // Güçlü Püskürtme cannot push an enemy further right than this
   activeEnemyCap: 8,
 };
 
@@ -45,6 +50,9 @@ export const CHAPTERS = [
     recipe: { tomato: 3, pepper: 2, egg: 1 },
     boss: 'giant_tomato', baseTip: 60, firstClearBonus: 30,
     bigOilRate: 0.05,
+    // Alpha 0.2 balance (simulation-tuned, see BALANCE_REPORT_ALPHA02.md). Base HP stays in ENEMIES;
+    // spawned HP = round(base * hpScale). Boss HP is set explicitly. spawnX = where a wave appears.
+    balance: { hpScale: 1.7, bossHp: 42, spawnXMin: 0.58, spawnXMax: 0.64, bossX: 0.7 },
     waves: [
       { tomato: 2 },
       { tomato: 1, pepper: 1 },
@@ -59,6 +67,7 @@ export const CHAPTERS = [
     recipe: { potato: 6, salt: 2 },
     boss: 'potato_king', baseTip: 80, firstClearBonus: 35,
     bigOilRate: 0.12,
+    balance: { hpScale: 2.8, bossHp: 62, spawnXMin: 0.56, spawnXMax: 0.62, bossX: 0.7 },
     waves: [
       { potato: 2 },
       { potato: 2, salt: 1 },
@@ -72,7 +81,7 @@ export const CHAPTERS = [
 
 export const RECIPE_LABELS = { tomato: 'Domates', pepper: 'Biber', egg: 'Yumurta', potato: 'Patates', salt: 'Tuz' };
 
-export const SKILL_WAVES = [1, 3, 5, 6];
+export const SKILL_WAVES = [1, 2, 3, 4, 5, 6]; // Alpha 0.2: every normal wave, none after the boss
 export const NORMAL_WAVES = 6;
 
 export const POT = {
@@ -100,29 +109,69 @@ export const LADLE = {
 
 export const CHEF = { baseHp: 5 };
 
-// 16 Alpha abilities. eligibleTags: chapter must contain ALL of these enemy tags. requires: extra predicate id.
+// 24 run abilities (Alpha 0.1's 16 ids kept + 8 new). desc(level) = what that level gives (shown on the card).
+// eligibleTags: chapter must contain ALL of these enemy tags. requires: extra predicate id.
+// tier values used by the combat code live in ABILITY_VALUES so the card text and the mechanics share one source.
+export const ABILITY_VALUES = {
+  wide_ladle: [0.12, 0.24, 0.36],
+  deep_ladle: [1, 2, 3],
+  slow_swing: [0.12, 0.2256],
+  stable_rim: [0.1, 0.2],
+  double_shot: [2, 1], // a bonus oil after every Nth real normal shot
+  heavy_oil: [1, 2],
+  power_shot: [{ every: 4, bonus: 1 }, { every: 3, bonus: 1 }, { every: 3, bonus: 2 }],
+  last_drop: [2],
+  first_bite: [1, 2],
+  thick_apron: [1, 2],
+  first_aid: [2],
+  salt_shield: [1, 2],
+  pan_burst: [1, 2],
+  tomato_splash: [1, 2],
+  chain_cooking: [1],
+  pan_echo: [1],
+  critical_fry: [0.15, 0.25], // crit chance, crit = 2x damage
+  explosive_oil: [4, 3], // every Nth real hit: 1 damage to up to 2 nearby enemies
+  oil_knockback: [5, 4], // every Nth real hit: push a normal enemy 1 step right / +1 damage on a boss
+  tasty_heal: [10, 8], // +1 HP per N real HP damage, max 1 heal per volley
+  spiked_apron: [2, 3], // reflect damage on contact
+  cold_oil: [0.07],
+  pot_shuffle: [1],
+  piercing_oil: [4, 3], // every Nth real shot also hits 1 enemy behind the target for 1
+};
+const V = ABILITY_VALUES;
+const pct = (x) => `%${Math.round(x * 100)}`;
 export const ABILITIES = [
-  { id: 'wide_ladle', name: 'Geniş Kepçe', cat: 'catch', max: 3, desc: (s) => `Kepçe ağzı +%12 genişler (toplam +%${12 * s}).` },
-  { id: 'deep_ladle', name: 'Derin Kepçe', cat: 'catch', max: 3, desc: () => 'Kepçe yük kapasitesi +1.' },
-  { id: 'slow_swing', name: 'Yavaş Salınım', cat: 'catch', max: 2, desc: () => 'Salınım hızı -%12.' },
-  { id: 'stable_rim', name: 'Sağlam Kenar', cat: 'catch', max: 2, desc: () => 'Kepçe kenarı %10 yükselir, çıkışta daha az top dökülür.' },
-  { id: 'double_shot', name: 'Çifte Atış', cat: 'attack', max: 2, desc: (s) => `Her ${s >= 2 ? 4 : 5}. normal yağ isabetinde 1 hasarlı bonus mermi.` },
-  { id: 'heavy_oil', name: 'Büyük Lokma', cat: 'attack', max: 2, desc: () => 'Büyük yağ küresi hasarı +1.' },
-  { id: 'power_shot', name: 'Güçlü Yağ', cat: 'attack', max: 3, desc: (s) => (s === 1 ? 'Her 4. normal atış +1 hasar.' : s === 2 ? 'Her 3. normal atış +1 hasar.' : 'Her 3. normal atış +2 hasar.') },
-  { id: 'last_drop', name: 'Son Damla', cat: 'attack', max: 1, desc: () => 'Salvodaki son normal yağ +2 hasar.' },
-  { id: 'first_bite', name: 'İlk Lokma', cat: 'attack', max: 2, desc: () => 'Her turun ilk isabeti +1 hasar.' },
+  { id: 'wide_ladle', name: 'Geniş Kepçe', cat: 'catch', max: 3, desc: (l) => `Kepçe ağzı fiziksel olarak ${pct(V.wide_ladle[l - 1])} geniş.` },
+  { id: 'deep_ladle', name: 'Derin Kepçe', cat: 'catch', max: 3, desc: (l) => `Taşıma kapasitesi +${V.deep_ladle[l - 1]} yük.` },
+  { id: 'slow_swing', name: 'Ağırbaşlı Kepçe', cat: 'catch', max: 2, desc: (l) => `Salınım ${pct(V.slow_swing[l - 1])} yavaş.` },
+  { id: 'stable_rim', name: 'Sağlam Kenar', cat: 'catch', max: 2, desc: (l) => `Kepçe kenarı ${pct(V.stable_rim[l - 1])} yüksek: çıkışta daha az dökülür.` },
+  { id: 'pot_shuffle', name: 'Tencereyi Karıştır', cat: 'catch', max: 1, desc: () => 'Salınım sırasında KARIŞTIR düğmesi: dalga başına 1 kez topçukları fiziksel olarak savurur.' },
+  { id: 'double_shot', name: 'Çifte Yağ Atışı', cat: 'attack', max: 2, desc: (l) => (V.double_shot[l - 1] === 1 ? 'Her gerçek normal atıştan sonra +1 bonus yağ.' : `Her ${V.double_shot[l - 1]}. gerçek normal atıştan sonra +1 bonus yağ.`) },
+  { id: 'heavy_oil', name: 'Büyük Lokma', cat: 'attack', max: 2, desc: (l) => `Büyük yağ hasarı +${V.heavy_oil[l - 1]} (toplam ${3 + V.heavy_oil[l - 1]}).` },
+  { id: 'power_shot', name: 'Kızgın Yağ Ustalığı', cat: 'attack', max: 3, desc: (l) => `Her ${V.power_shot[l - 1].every}. normal atış +${V.power_shot[l - 1].bonus} hasar.` },
+  { id: 'last_drop', name: 'Son Damla', cat: 'attack', max: 1, desc: () => 'Salvodaki son gerçek normal yağ +2 hasar.' },
+  { id: 'first_bite', name: 'İlk Lokma', cat: 'attack', max: 2, desc: (l) => `Salvodaki ilk gerçek isabet +${V.first_bite[l - 1]} hasar.` },
+  { id: 'critical_fry', name: 'Kritik Kızartma', cat: 'attack', max: 2, desc: (l) => `Gerçek atışlar ${pct(V.critical_fry[l - 1])} şansla KRİTİK: 2x hasar.` },
+  { id: 'piercing_oil', name: 'Delici Yağ', cat: 'attack', max: 2, desc: (l) => `Her ${V.piercing_oil[l - 1]}. gerçek atış, hedefin arkasındaki düşmana da 1 hasar verir.` },
   { id: 'thick_apron', name: 'Kalın Önlük', cat: 'defense', max: 2, desc: () => 'Maksimum can +1 ve mevcut can +1.' },
   { id: 'first_aid', name: 'İlk Yardım', cat: 'defense', max: 1, requires: 'injured', desc: () => '2 can iyileştirir (maksimumu aşmaz).' },
-  { id: 'salt_shield', name: 'Tuz Kalkanı', cat: 'defense', max: 2, desc: () => 'Sıradaki Şef temas hasarını 1 azaltır.' },
-  { id: 'pan_burst', name: 'Tava Patlaması', cat: 'pan', max: 2, desc: (s) => `Bir turda her 3. öldürmede yakına ${s} alan hasarı.` },
-  { id: 'tomato_splash', name: 'Sos Sıçraması', cat: 'pan', max: 2, eligibleTags: ['tomato'], desc: (s) => `Pişen domates yakındaki ${s} canlıya 1 hasar verir.` },
+  { id: 'salt_shield', name: 'Tuz Kalkanı', cat: 'defense', max: 2, desc: () => 'Sıradaki temas hasarını 1 azaltan +1 kalkan yükü.' },
+  { id: 'spiked_apron', name: 'Dikenli Önlük', cat: 'defense', max: 2, desc: (l) => `Sana çarpan düşmana (boss dahil) ${V.spiked_apron[l - 1]} karşılık hasarı.` },
+  { id: 'tasty_heal', name: 'Lezzetli Lokma', cat: 'defense', max: 2, desc: (l) => `Her ${V.tasty_heal[l - 1]} gerçek can hasarında +1 can (salvo başına en fazla 1).` },
+  { id: 'pan_burst', name: 'Tava Patlaması', cat: 'pan', max: 2, desc: (l) => `Bir turda her 3. öldürmede yakına ${V.pan_burst[l - 1]} alan hasarı.` },
+  { id: 'tomato_splash', name: 'Sos Sıçraması', cat: 'pan', max: 2, eligibleTags: ['tomato'], desc: (l) => `Pişen domates yakındaki ${V.tomato_splash[l - 1]} canlıya 1 hasar verir.` },
   { id: 'chain_cooking', name: 'Zincir Pişirme', cat: 'pan', max: 1, desc: () => 'Bir turda 3+ öldürme: sonraki salvoya 1 bonus normal yağ.' },
   { id: 'pan_echo', name: 'Tava Yankısı', cat: 'pan', max: 1, desc: () => 'Dalganın ilk öldürmesi yakındaki bir canlıya 1 hasar verir.' },
+  { id: 'explosive_oil', name: 'Patlayan Yağ', cat: 'pan', max: 2, desc: (l) => `Her ${V.explosive_oil[l - 1]}. gerçek isabet patlar: yakındaki en fazla 2 düşmana 1 hasar.` },
+  { id: 'oil_knockback', name: 'Güçlü Püskürtme', cat: 'control', max: 2, desc: (l) => `Her ${V.oil_knockback[l - 1]}. gerçek isabet düşmanı 1 adım geri iter. Boss itilmez: +1 hasar alır.` },
+  { id: 'cold_oil', name: 'Soğuk Sos', cat: 'control', max: 1, desc: () => `Tencereye ${pct(V.cold_oil[0])} oranla soğuk sos küresi gelir: vurduğu düşman sonraki hareketini atlar (boss en fazla 3 eylemde 1).` },
 ];
 export const ABILITY_BY_ID = Object.fromEntries(ABILITIES.map((a) => [a.id, a]));
-export const ABILITY_CATS = { catch: 'Yakalama', attack: 'Saldırı', defense: 'Savunma', pan: 'Tava' };
+export const ABILITY_CATS = { catch: 'Yakalama', attack: 'Saldırı', defense: 'Savunma', pan: 'Tava/Alan', control: 'Kontrol' };
+// cards that directly add combat damage (used to guarantee a combat card in the first two offers)
+export const COMBAT_CARD_CATS = ['attack', 'pan'];
 
-export const SECONDARY_EVENT_CAP = 12;
+export const SECONDARY_EVENT_CAP = 40; // Alpha 0.2: raised from 12; overflow is counted and reported (capReached)
 export const AREA_RADIUS = 0.22; // normalised distance for "yakın"
 
 // Permanent upgrades (GDD §12). values[level-1]

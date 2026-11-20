@@ -1,5 +1,5 @@
 // Kepçe Ustası offline cache (auto-generated)
-const CACHE = 'kepce-ustasi-mwp23tgf';
+const CACHE = 'kepce-ustasi-mwp6fmp7';
 const FILES = [
  "./",
  "./assets/audio/catch.wav",
@@ -27,7 +27,7 @@ const FILES = [
  "./assets/enemies/salt.png",
  "./assets/enemies/tomato.png",
  "./assets/index-DSB8h3iu.css",
- "./assets/index-FBZGm5kp.js",
+ "./assets/index-d7ppC4tJ.js",
  "./assets/kitchen/battle_bg.png",
  "./assets/kitchen/bubble.png",
  "./assets/kitchen/counter.png",
@@ -42,6 +42,7 @@ const FILES = [
  "./assets/manifest.json",
  "./assets/matter-elkLEKeR.js",
  "./assets/oils/oil_big.png",
+ "./assets/oils/oil_cold.png",
  "./assets/oils/oil_normal.png",
  "./assets/phaser-DzTDBLkw.js",
  "./assets/pixelify-sans-cyrillic-400-normal-Ckz2YJkH.woff2",
@@ -56,6 +57,11 @@ const FILES = [
  "./assets/pixelify-sans-latin-ext-400-normal-DdH6zlBQ.woff2",
  "./assets/pixelify-sans-latin-ext-700-normal-BadXkHzZ.woff",
  "./assets/pixelify-sans-latin-ext-700-normal-ClyJstAh.woff2",
+ "./assets/ui/cat_attack.png",
+ "./assets/ui/cat_catch.png",
+ "./assets/ui/cat_control.png",
+ "./assets/ui/cat_defense.png",
+ "./assets/ui/cat_pan.png",
  "./assets/ui/coin.png",
  "./assets/ui/fast.png",
  "./assets/ui/heart.png",

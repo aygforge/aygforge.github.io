@@ -81,8 +81,12 @@ export class PotPhysics {
     return Math.min(0.18, chapter.bigOilRate + (spiceBonus || 0));
   }
 
-  rollType(bigRate) {
-    return this.rng.next() < bigRate ? 'big' : 'normal';
+  // One seeded roll per new ball: big by chapter rate, else cold (only with Soğuk Sos), else normal.
+  rollType(bigRate, coldRate = 0) {
+    const u = this.rng.next();
+    if (u < bigRate) return 'big';
+    if (u < bigRate + coldRate) return 'cold';
+    return 'normal';
   }
 
   _makeBall(type, x, y, id) {
@@ -174,15 +178,23 @@ export class PotPhysics {
     return { remain: r, add, next: r + add };
   }
 
-  refill(bigRate) {
+  refill(bigRate, coldRate = 0) {
     const { remain, add } = PotPhysics.refillAmount(this.count);
-    for (let i = 0; i < add; i++) this.pendingAdds.push(this.rollType(bigRate));
+    for (let i = 0; i < add; i++) this.pendingAdds.push(this.rollType(bigRate, coldRate));
     // gentle stir: small impulses to existing balls (no teleport)
     for (const b of this.balls.values()) {
       Body.setVelocity(b, { x: b.velocity.x + this.rng.range(-1.2, 1.2), y: b.velocity.y - this.rng.range(0, 1.6) });
     }
     this.placePending(6);
     return { remain, add };
+  }
+
+  // Tencereyi Karıştır: strong physical impulse to every ball. Ids/types are untouched, nothing is spawned
+  // or removed, no teleport. Deterministic (seeded).
+  shuffle() {
+    for (const b of this.balls.values()) {
+      Body.setVelocity(b, { x: this.rng.range(-5, 5), y: -this.rng.range(7, 12) });
+    }
   }
 
   settle(steps) {
@@ -337,7 +349,7 @@ export class PotPhysics {
   }
 
   countByType() {
-    const c = { normal: 0, big: 0 };
+    const c = { normal: 0, big: 0, cold: 0 };
     for (const b of this.balls.values()) c[b.oilType]++;
     return c;
   }

@@ -8,13 +8,15 @@ import { permStats, applyRunResult } from '../systems/Progression.js';
 import { living, nextSteps } from '../systems/EnemyDirector.js';
 import { CHAPTERS, ENEMIES, RECIPE_LABELS, ABILITY_BY_ID, ABILITY_CATS, NORMAL_WAVES, FIELD } from '../data/content.js';
 import { recipeComplete } from '../systems/RecipeTracker.js';
+import { cardInfo } from '../systems/Abilities.js';
 import { audio } from '../platform/AudioService.js';
 import { adService } from '../platform/AdService.js';
 import { lifecycle } from '../platform/Lifecycle.js';
 import { text, panel, button, blocker, COLORS } from '../ui/widgets.js';
 
-const CAT_COLORS = { catch: 0x3a7de0, attack: 0xe8582f, defense: 0x4caf3a, pan: 0xf2b11c };
-const SOURCE_LABEL = { pan_burst: 'Tava Patlaması', tomato_splash: 'Sos Sıçraması', pan_echo: 'Tava Yankısı' };
+const CAT_COLORS = { catch: 0x3a7de0, attack: 0xe8582f, defense: 0x4caf3a, pan: 0xf2b11c, control: 0x7fd8f0 };
+const ROMAN = ['', 'I', 'II', 'III'];
+const SOURCE_LABEL = { pan_burst: 'Tava Patlaması', tomato_splash: 'Sos Sıçraması', pan_echo: 'Tava Yankısı', explosive_oil: 'Patlama', piercing_oil: 'Delme', knockback_boss: 'Püskürtme' };
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -270,6 +272,7 @@ export class GameScene extends Phaser.Scene {
       const icons = [];
       if (nextSteps(e) >= 2 || (e.type === 'potato_king' && e.hasted)) icons.push(this.add.image(0, 0, 'fast').setScale(2.2));
       if (e.guard) icons.push(this.add.image(0, 0, 'shield').setScale(2));
+      if (e.frozen) icons.push(this.add.image(0, 0, 'oil_cold').setScale(2));
       if (e.guardWarn) icons.push(text(this, 0, 0, '!', 22, COLORS.gold));
       icons.forEach((ic, i) => {
         ic.x = (i - (icons.length - 1) / 2) * 24;
@@ -358,6 +361,9 @@ export class GameScene extends Phaser.Scene {
       case 'skillChoice':
         this.showSkillChoice(e);
         break;
+      case 'shuffle':
+        this.floatText(this.L.W / 2, this.L.pot.y + 20, 'Tencere karıştırıldı!', '#7fb0ff', 18);
+        break;
       case 'skillPicked':
         this.closeOverlay();
         audio.play('skill');
@@ -373,6 +379,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   onPhase(phase) {
+    this.refreshShuffleButton();
     const swing = phase === PHASE.SWING_WAIT;
     if (swing && this.tutorial && this.controller.run.turn <= 2) {
       this.hint.setText('Kepçe topçukların üstündeyken DOKUN!');
@@ -392,6 +399,7 @@ export class GameScene extends Phaser.Scene {
   update(time, delta) {
     if (!this.controller) return;
     this.controller.update(delta);
+    if (this.controller.run.abilities.pot_shuffle) this.refreshShuffleButton();
     this.syncBalls();
     this.drawLadle(time);
   }
@@ -402,7 +410,7 @@ export class GameScene extends Phaser.Scene {
     for (const [id, b] of pot.balls) {
       let s = this.ballSprites.get(id);
       if (!s) {
-        s = this.add.image(0, 0, b.oilType === 'big' ? 'oil_big' : 'oil_normal').setScale(3).setDepth(10);
+        s = this.add.image(0, 0, `oil_${b.oilType}`).setScale(3).setDepth(10);
         this.ballSprites.set(id, s);
       }
       s.x = L.pot.x + b.position.x;
@@ -556,6 +564,8 @@ export class GameScene extends Phaser.Scene {
         this.time.delayedCall(at, () => this.areaFx(ev, 160 / sp));
         lastLand = at + 160 / sp;
         t = at + 60 / sp;
+      } else if (ev.type === 'knockback' || ev.type === 'freeze' || ev.type === 'freezeResisted' || ev.type === 'explosion' || ev.type === 'heal' || ev.type === 'capReached') {
+        this.time.delayedCall(lastLand + 10, () => this.effectFx(ev));
       } else if (ev.type === 'bonusReady') {
         this.time.delayedCall(lastLand + 60, () => this.floatText(this.chefPos.x + 40, this.chefPos.y - 90, ev.source === 'chain_cooking' ? 'Zincir Pişirme: +1 yağ' : 'Tava Ustalığı: +1 yağ', '#8be07a'));
       } else if (ev.type === 'fizzle') {
@@ -575,7 +585,7 @@ export class GameScene extends Phaser.Scene {
     // recoil (transform only)
     if (!this.lowMotion) this.tweens.add({ targets: this.chef, x: this.chefPos.x - 5, duration: 50, yoyo: true });
     audio.play('shoot', { detune: ev.oil === 'big' ? -400 : 0 });
-    const proj = this.add.image(start.x, start.y, ev.oil === 'big' ? 'oil_big' : 'oil_normal').setScale(ev.oil === 'big' ? 2.6 : 2.2).setDepth(50);
+    const proj = this.add.image(start.x, start.y, `oil_${ev.oil}`).setScale(ev.oil === 'big' ? 2.6 : 2.2).setDepth(50);
     if (ev.isBonus) proj.setTint(0xb8ffb0);
     const end = v ? { x: v.c.x, y: v.c.y } : { x: this.L.W - 40, y: start.y };
     const ctrl = { x: (start.x + end.x) / 2, y: Math.min(start.y, end.y) - 60 };
@@ -600,10 +610,43 @@ export class GameScene extends Phaser.Scene {
           if (ev.shieldBroken) this.floatText(tv.c.x, tv.c.y - tv.half - 30, 'Kalkan kırıldı!', '#8fc6f0');
           if (ev.guarded) this.floatText(tv.c.x, tv.c.y - tv.half - 44, 'Savundu -1', '#8fc6f0');
         }
-        const label = ev.shieldDmg && !ev.hpDmg ? `-${ev.shieldDmg}🛡` : `-${ev.damage}`;
-        this.floatText(end.x + 10, end.y - 20, label.replace('🛡', ' kalkan'), ev.bonusParts.length ? '#ffd84a' : '#ffffff', 20);
+        const label = ev.shieldDmg && !ev.hpDmg ? `-${ev.shieldDmg} kalkan` : `-${ev.damage}`;
+        if (ev.crit) {
+          // critical: bigger number + short flash on the target
+          this.floatText(end.x + 10, end.y - 30, `KRİTİK ${label}`, '#ffef5a', 26);
+          if (tv && !tv.dead) tv.spr.setTintFill(0xffef5a);
+        } else {
+          this.floatText(end.x + 10, end.y - 20, label, ev.bonusParts.length ? '#ffd84a' : '#ffffff', 20);
+        }
       },
     });
+  }
+
+  // Short, readable hit effects (no new character animation).
+  effectFx(ev) {
+    const sp = this.speed;
+    const v = ev.id != null ? this.views.get(ev.id) : null;
+    if (ev.type === 'knockback' && v && !v.dead) {
+      // pushed back by the hit (not the enemy's own move)
+      this.tweens.add({ targets: v.c, x: fieldToScreen(this.L, ev.toX, 0).x, duration: 160 / sp, ease: 'Quad.out' });
+      this.floatText(v.c.x, v.c.y - v.half - 30, 'Püskürtme!', '#ffffff', 15);
+    } else if (ev.type === 'freeze' && v && !v.dead) {
+      v.spr.setTint(0x9fdcff);
+      this.floatText(v.c.x, v.c.y - v.half - 30, 'Dondu: sonraki adım yok', '#9fdcff', 14);
+      this.refreshStatuses();
+    } else if (ev.type === 'freezeResisted' && v) {
+      this.floatText(v.c.x, v.c.y - v.half - 30, 'Boss donmaya direndi', '#9fdcff', 13);
+    } else if (ev.type === 'explosion') {
+      const p = fieldToScreen(this.L, ev.x, ev.y);
+      const ring = this.add.circle(p.x, p.y, 10).setStrokeStyle(4, 0xffa81f).setDepth(53);
+      this.tweens.add({ targets: ring, radius: 70, alpha: 0, duration: 260 / sp, onUpdate: () => ring.setRadius(ring.radius), onComplete: () => ring.destroy() });
+      audio.play('sizzle', { volume: 0.5 });
+    } else if (ev.type === 'heal' && ev.amount > 0) {
+      this.floatText(this.chefPos.x, this.chefPos.y - 100, `+${ev.amount} can (Lezzetli Lokma)`, '#8be07a', 16);
+      this.refreshHud();
+    } else if (ev.type === 'capReached' && this.debugText) {
+      this.floatText(this.L.W / 2, this.L.battle.top + 80, `ikincil olay sınırı: ${ev.dropped}`, '#9ef0ff', 12);
+    }
   }
 
   areaFx(ev, dur) {
@@ -692,6 +735,9 @@ export class GameScene extends Phaser.Scene {
         }
         this.floatText(v ? v.c.x : 400, v ? v.c.y - 90 : 200, 'İki küçük domates çağırdı!', '#ff8a7a', 16);
         dur = Math.max(dur, 520 / sp);
+      } else if (ev.type === 'frozenSkip' && v) {
+        v.spr.clearTint();
+        this.floatText(v.c.x, v.c.y - v.half - 40, 'Donmuş: bekliyor', '#9fdcff', 14);
       } else if (ev.type === 'guardWarn' && v) {
         this.floatText(v.c.x, v.c.y - v.half - 50, 'Savunmaya hazırlanıyor!', '#ffd84a', 15);
       } else if (ev.type === 'guardUp' && v) {
@@ -713,6 +759,22 @@ export class GameScene extends Phaser.Scene {
     const sp = this.speed;
     let t = 0;
     for (const ev of e.events) {
+      if (ev.type === 'reflect') {
+        this.time.delayedCall(Math.max(0, t - 200 / sp), () => {
+          const v = this.views.get(ev.id);
+          if (v && !v.dead) {
+            this.drawBar(v, ev.hp, ev.shield);
+            v.spr.setTintFill(0xffffff);
+            this.time.delayedCall(70, () => v.spr.active && v.spr.clearTint());
+            this.floatText(v.c.x, v.c.y - 30, `-${ev.damage} Dikenli Önlük`, '#ffd84a', 15);
+          }
+        });
+        continue;
+      }
+      if (ev.type === 'kill') {
+        this.time.delayedCall(Math.max(0, t - 120 / sp), () => this.killView(ev));
+        continue;
+      }
       if (ev.type !== 'contact') continue;
       const v = this.views.get(ev.id);
       this.time.delayedCall(t, () => {
@@ -793,36 +855,66 @@ export class GameScene extends Phaser.Scene {
     const run = this.controller.run;
     const c = this.add.container(0, 0).setDepth(100);
     c.add(blocker(this, 0.72));
-    const top = Math.max(40, L.H / 2 - 420);
-    c.add(panel(this, 20, top, L.W - 40, 800));
-    c.add(text(this, L.W / 2, top + 36, `YETENEK SEÇ (${e.choice}/4)`, 28, COLORS.gold));
-    c.add(text(this, L.W / 2, top + 70, 'Koşu boyunca geçerli. Oyun seçim sırasında durur.', 14, '#e9dcc4'));
+    const top = Math.max(24, L.H / 2 - 440);
+    c.add(panel(this, 16, top, L.W - 32, 860));
+    c.add(text(this, L.W / 2, top + 34, `YETENEK SEÇ (${e.choice}/${e.total ?? 6})`, 28, COLORS.gold));
+    c.add(text(this, L.W / 2, top + 66, 'Kartlar sonraki turdan itibaren koşu boyunca geçerli.', 14, '#e9dcc4'));
     e.offer.forEach((id, i) => {
-      const ab = ABILITY_BY_ID[id];
-      const stacks = run.abilities[id] || 0;
-      const y = top + 100 + i * 172;
+      const info = cardInfo(run, id);
+      const y = top + 88 + i * 182;
       const card = this.add.container(0, 0);
       const g = this.add.graphics();
       g.fillStyle(0x15111a, 1);
-      g.fillRect(40, y, L.W - 80, 156);
+      g.fillRect(32, y, L.W - 64, 168);
       g.fillStyle(0x3d3447, 1);
-      g.fillRect(43, y + 3, L.W - 86, 150);
-      g.fillStyle(CAT_COLORS[ab.cat], 1);
-      g.fillRect(43, y + 3, 12, 150);
+      g.fillRect(35, y + 3, L.W - 70, 162);
+      g.fillStyle(CAT_COLORS[info.cat], 1);
+      g.fillRect(35, y + 3, 10, 162);
       card.add(g);
-      card.add(text(this, 72, y + 30, ab.name, 24, COLORS.cream, { ox: 0 }));
-      card.add(text(this, L.W - 60, y + 30, `${ABILITY_CATS[ab.cat]} · Sv ${stacks + 1}/${ab.max}`, 14, '#d8c9b0', { ox: 1 }));
-      card.add(text(this, 72, y + 84, ab.desc(stacks + 1), 17, '#e9dcc4', { ox: 0, wrap: L.W - 150 }));
-      const hit = this.add.zone(40, y, L.W - 80, 156).setOrigin(0).setInteractive({ useHandCursor: true });
-      hit.on('pointerup', () => this.controller.chooseSkill(id));
+      card.add(this.add.image(72, y + 30, `cat_${info.cat}`).setScale(3));
+      card.add(text(this, 98, y + 30, info.name, 23, COLORS.cream, { ox: 0 }));
+      const lvl = info.level ? `Sv ${ROMAN[info.level]} → ${ROMAN[info.nextLevel]}` : `Yeni · Sv ${ROMAN[info.nextLevel]}`;
+      card.add(text(this, L.W - 48, y + 62, `${ABILITY_CATS[info.cat]} · ${lvl} (maks ${ROMAN[info.max]})`, 14, '#d8c9b0', { ox: 1 }));
+      card.add(text(this, 56, y + 80, info.next, 19, '#fff4dc', { ox: 0, oy: 0, wrap: L.W - 110, align: 'left' }));
+      if (info.now) card.add(text(this, 56, y + 138, `Şu an: ${info.now}`, 15, '#b7a9c4', { ox: 0, oy: 0, wrap: L.W - 120, align: 'left' }));
+      const hit = this.add.zone(32, y, L.W - 64, 168).setOrigin(0).setInteractive({ useHandCursor: true });
+      hit.on('pointerup', () => this.controller.chooseSkill(id, e.offerSeq));
       card.add(hit);
       c.add(card);
     });
-    const by = top + 100 + 3 * 172 + 40;
-    c.add(button(this, L.W / 2, by, 330, 54, e.rerollAvailable ? 'YENİDEN SEÇ (ücretsiz)' : 'Ücretsiz yenileme kullanıldı', () => this.controller.rerollSkills(), { size: 18, enabled: e.rerollAvailable, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 }));
-    c.add(button(this, L.W / 2, by + 66, 330, 46, 'Reklamla yenile — Android sürümünde', () => {}, { size: 15, enabled: adService.isAvailable() }));
+    const by = top + 88 + 3 * 182 + 34;
+    c.add(button(this, L.W / 2, by, 330, 52, e.rerollAvailable ? 'YENİDEN SEÇ (ücretsiz)' : 'Ücretsiz yenileme kullanıldı', () => this.controller.rerollSkills(), { size: 18, enabled: e.rerollAvailable, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 }));
+    c.add(button(this, L.W / 2, by + 62, 330, 44, 'Reklamla yenile — Android sürümünde', () => {}, { size: 15, enabled: adService.isAvailable() }));
     this.overlay = c;
-    if (this.tutorial && e.choice === 1) c.add(text(this, L.W / 2, top + 780, 'İpucu: Yakalama kartları kepçeyi fiziksel olarak değiştirir.', 14, COLORS.gold, { wrap: 460 }));
+    if (this.tutorial && e.choice === 1) c.add(text(this, L.W / 2, by + 104, 'İpucu: Yakalama kartları kepçeyi fiziksel olarak değiştirir.', 13, COLORS.gold, { wrap: 460 }));
+  }
+
+  // Tencereyi Karıştır button: only exists with the card, only usable while the ladle swings, once per wave.
+  refreshShuffleButton() {
+    const c = this.controller;
+    const show = !!c.run.abilities.pot_shuffle && !this.overlay && !this.pauseOverlay;
+    if (!show) {
+      this.shuffleBtn?.setVisible(false);
+      return;
+    }
+    if (!this.shuffleBtn) {
+      const L = this.L;
+      const y = Math.round((L.potArea.top + L.railY) / 2) - 2;
+      this.shuffleBtn = button(this, L.W - 78, y, 136, 40, 'KARIŞTIR', () => {
+        if (this.controller.shufflePot()) {
+          audio.play('swing', { volume: 0.6 });
+          lifecycle.vibrate(20);
+        }
+        this.refreshShuffleButton();
+      }, { size: 17, fill: 0x3a7de0, dark: 0x234f94, light: 0x7fb0ff });
+      this.shuffleBtn.setDepth(46);
+    }
+    this.shuffleBtn.setVisible(true);
+    const en = c.canShuffle();
+    if (en !== this._shuffleEnabled) {
+      this._shuffleEnabled = en;
+      this.shuffleBtn.setEnabled(en);
+    }
   }
 
   // ======================================================== pause

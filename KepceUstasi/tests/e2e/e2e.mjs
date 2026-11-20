@@ -101,13 +101,26 @@ async function playRun(p, { policy = 'good', maxMs = 420000, stopWhen = null } =
       const good = policy === 'good' ? Math.abs(s.x - 222) < 18 : Math.abs(s.x - 222) > s.amp - 14;
       if (good) await click(p, 270, H - 140);
     } else if (s.phase === 'SKILL_CHOICE' && s.overlay) {
-      const top = Math.max(40, H / 2 - 420);
-      await click(p, 270, top + 100 + 78);
+      const top = Math.max(24, H / 2 - 440);
+      await click(p, 270, top + 88 + 84); // first card (Alpha 0.2 card layout)
       await sleep(120);
     }
     await sleep(12);
   }
   throw new Error('run did not finish in time');
+}
+
+// Alpha 0.2 is no longer a guaranteed win: if the bot loses, press TEKRAR OYNA and play again (attempts are reported).
+async function playUntilWin(p, maxTries = 4) {
+  const H = await gameH(p);
+  for (let k = 1; k <= maxTries; k++) {
+    const r = await playRun(p);
+    if (r.victory) return { ...r, tries: k };
+    if (k === maxTries) return { ...r, tries: k };
+    const top = Math.max(30, H / 2 - 400);
+    await click(p, 270, top + 624); // TEKRAR OYNA
+    await waitFor(p, () => window.__KEPCE__.controller?.phase === 'SWING_WAIT' && !window.__KEPCE__.controller.finished, null, 15000);
+  }
 }
 
 async function layoutCheck(name, viewport, mobile) {
@@ -130,6 +143,43 @@ async function layoutCheck(name, viewport, mobile) {
   const regions = m.battle.h >= 380 && m.pot.y > m.battle.bottom && m.stove.top + 30 <= m.H && m.field.bottom < m.battle.bottom;
   const scale = (m.r.w / 540).toFixed(3);
   record('A01', `portrait layout ${name}`, inside && regions, `canvas ${Math.round(m.r.w)}×${Math.round(m.r.h)} @(${Math.round(m.r.l)},${Math.round(m.r.t)}) in ${m.vw}×${m.vh}, game H=${m.H}, scale ${scale}, battle h=${m.battle.h}`);
+  if (mobile) {
+    // Alpha 0.2: shuffle button must not drop the ladle; 3 cards + reroll must fit
+    await p.evaluate(() => (window.__KEPCE__.controller.run.abilities.pot_shuffle = 1));
+    await sleep(300);
+    const taps0 = await p.evaluate(() => window.__KEPCE__.controller.run.stats.taps);
+    const by = Math.round((m.battle.bottom + 34 + (m.pot.y - 112)) / 2) - 2;
+    await click(p, 540 - 78, by);
+    await click(p, 540 - 78, by); // second tap on the (now disabled) button
+    await sleep(200);
+    const sh = await p.evaluate(() => ({ taps: window.__KEPCE__.controller.run.stats.taps, sh: window.__KEPCE__.controller.run.stats.shuffles, phase: window.__KEPCE__.controller.phase }));
+    await p.screenshot({ path: join(SHOTS, `shuffle_${name}.png`) });
+    record('A22', `shuffle button ${name}: shuffles once, never drops the ladle`, sh.taps === taps0 && sh.sh === 1 && sh.phase === 'SWING_WAIT', JSON.stringify(sh));
+    await p.evaluate(() => {
+      const c = window.__KEPCE__.controller;
+      c.run.abilities.critical_fry = 1; // so a "level I -> II" card can show
+      c.enterSkillChoice();
+    });
+    await sleep(400);
+    await p.screenshot({ path: join(SHOTS, `cards_${name}.png`) });
+    const fit = await p.evaluate(() => {
+      const o = window.__KEPCE__.scene.overlay;
+      const H = window.__KEPCE__.scene.L.H;
+      let maxY = 0;
+      let minY = 1e9;
+      let maxX = 0;
+      let minX = 1e9;
+      o.list.slice(2).forEach((ch) => {
+        const b = ch.getBounds();
+        maxY = Math.max(maxY, b.bottom);
+        minY = Math.min(minY, b.top);
+        maxX = Math.max(maxX, b.right);
+        minX = Math.min(minX, b.left);
+      });
+      return { minY, maxY, minX, maxX, H };
+    });
+    record('A21', `3 cards + reroll fit on ${name}`, fit.minY >= 0 && fit.maxY <= fit.H && fit.minX >= 0 && fit.maxX <= 540, `y ${Math.round(fit.minY)}–${Math.round(fit.maxY)} of ${fit.H}, x ${Math.round(fit.minX)}–${Math.round(fit.maxX)}`);
+  }
   await ctx.close();
 }
 
@@ -204,10 +254,11 @@ async function main() {
     );
     record('PERF', 'frame rate while swinging (headless Chromium, software GL)', fps >= 30, `${fps.toFixed(1)} fps`);
 
-    const r1 = await playRun(p);
+    const r1 = await playUntilWin(p);
     await p.screenshot({ path: join(SHOTS, 'result_menemen.png') });
     const save1 = await p.evaluate(() => JSON.parse(JSON.stringify(window.__KEPCE__.app.save)));
-    record('A14', 'Menemen played to the boss and served', r1.victory === true && save1.highestUnlocked === 2 && save1.tips > 0 && save1.activeRun === null, `stars ${r1.stars}, tips ${save1.tips}, unlocked ${save1.highestUnlocked}`);
+    record('A12', 'six skill picks in a full run, none after the boss', Object.values(r1.run.abilities).reduce((a, b) => a + b, 0) === 6 && r1.run.choiceCount === 6, `picks ${JSON.stringify(r1.run.abilities)}`);
+    record('A14', 'Menemen played to the boss and served', r1.victory === true && save1.highestUnlocked === 2 && save1.tips > 0 && save1.activeRun === null, `stars ${r1.stars}, attempts ${r1.tries}, tips ${save1.tips}, unlocked ${save1.highestUnlocked}`);
 
     // back to the restaurant, buy an upgrade with real clicks
     const rt = Math.max(30, H / 2 - 400);
@@ -234,10 +285,10 @@ async function main() {
     const hpStart = await p.evaluate(() => window.__KEPCE__.controller.run.chef.maxHp);
     await sleep(500);
     await p.screenshot({ path: join(SHOTS, 'fries_start.png') });
-    const r2 = await playRun(p);
+    const r2 = await playUntilWin(p);
     await p.screenshot({ path: join(SHOTS, 'result_fries.png') });
     const save2 = await p.evaluate(() => JSON.parse(JSON.stringify(window.__KEPCE__.app.save)));
-    record('A14b', 'Patates Kızartması played to Patates Kral and served (upgrade active)', ch2 === 'fries' && r2.victory === true && hpStart === 6 && !!save2.chapters.fries?.cleared, `chapter ${ch2}, chef max HP ${hpStart}, stars ${r2.stars}, tips ${save2.tips}`);
+    record('A14b', 'Patates Kızartması played to Patates Kral and served (upgrade active)', ch2 === 'fries' && r2.victory === true && hpStart === 6 && !!save2.chapters.fries?.cleared, `chapter ${ch2}, chef max HP ${hpStart}, stars ${r2.stars}, attempts ${r2.tries}, tips ${save2.tips}`);
 
     // reload: progress kept
     await p.reload();

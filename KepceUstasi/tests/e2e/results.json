@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-20T14:14:25.663Z",
+  "date": "2026-11-20T16:16:58.925Z",
   "results": [
     {
       "id": "A01",
@@ -8,16 +8,52 @@
       "detail": "canvas 360×640 @(0,0) in 360×640, game H=960, scale 0.667, battle h=410"
     },
     {
+      "id": "A22",
+      "name": "shuffle button 360x640: shuffles once, never drops the ladle",
+      "pass": true,
+      "detail": "{\"taps\":0,\"sh\":1,\"phase\":\"SWING_WAIT\"}"
+    },
+    {
+      "id": "A21",
+      "name": "3 cards + reroll fit on 360x640",
+      "pass": true,
+      "detail": "y 58–820 of 960, x 32–508"
+    },
+    {
       "id": "A01",
       "name": "portrait layout 390x844",
       "pass": true,
       "detail": "canvas 390×844 @(0,0) in 390×844, game H=1169, scale 0.722, battle h=511"
     },
     {
+      "id": "A22",
+      "name": "shuffle button 390x844: shuffles once, never drops the ladle",
+      "pass": true,
+      "detail": "{\"taps\":0,\"sh\":1,\"phase\":\"SWING_WAIT\"}"
+    },
+    {
+      "id": "A21",
+      "name": "3 cards + reroll fit on 390x844",
+      "pass": true,
+      "detail": "y 162–925 of 1169, x 32–508"
+    },
+    {
       "id": "A01",
       "name": "portrait layout 412x915_20-9",
       "pass": true,
       "detail": "canvas 412×915 @(0,0) in 412×915, game H=1199, scale 0.763, battle h=526"
+    },
+    {
+      "id": "A22",
+      "name": "shuffle button 412x915_20-9: shuffles once, never drops the ladle",
+      "pass": true,
+      "detail": "{\"taps\":0,\"sh\":1,\"phase\":\"SWING_WAIT\"}"
+    },
+    {
+      "id": "A21",
+      "name": "3 cards + reroll fit on 412x915_20-9",
+      "pass": true,
+      "detail": "y 177–940 of 1199, x 32–508"
     },
     {
       "id": "A01",
@@ -47,13 +83,19 @@
       "id": "PERF",
       "name": "frame rate while swinging (headless Chromium, software GL)",
       "pass": true,
-      "detail": "51.6 fps"
+      "detail": "45.4 fps"
+    },
+    {
+      "id": "A12",
+      "name": "six skill picks in a full run, none after the boss",
+      "pass": true,
+      "detail": "picks {\"spiked_apron\":1,\"cold_oil\":1,\"thick_apron\":1,\"tasty_heal\":1,\"power_shot\":1,\"pot_shuffle\":1}"
     },
     {
       "id": "A14",
       "name": "Menemen played to the boss and served",
       "pass": true,
-      "detail": "stars 3, tips 108, unlocked 2"
+      "detail": "stars 3, attempts 1, tips 108, unlocked 2"
     },
     {
       "id": "A13",
@@ -65,7 +107,7 @@
       "id": "A14b",
       "name": "Patates Kızartması played to Patates Kral and served (upgrade active)",
       "pass": true,
-      "detail": "chapter fries, chef max HP 6, stars 3, tips 202"
+      "detail": "chapter fries, chef max HP 6, stars 3, attempts 1, tips 202"
     },
     {
       "id": "SAVE",

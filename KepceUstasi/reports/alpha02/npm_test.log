@@ -1,0 +1,482 @@
+
+> kepce-ustasi@0.2.0 test
+> node --test "tests/unit/*.test.mjs"
+
+TAP version 13
+# Subtest: all 24 abilities exist with the GDD max stacks (16 Alpha 0.1 ids kept + 8 new)
+ok 1 - all 24 abilities exist with the GDD max stacks (16 Alpha 0.1 ids kept + 8 new)
+  ---
+  duration_ms: 0.84404
+  type: 'test'
+  ...
+# Subtest: wide_ladle: +12 % physical mouth per stack (real collider geometry)
+ok 2 - wide_ladle: +12 % physical mouth per stack (real collider geometry)
+  ---
+  duration_ms: 9.014422
+  type: 'test'
+  ...
+# Subtest: deep_ladle: capacity +1 (used by the physical catch limit)
+ok 3 - deep_ladle: capacity +1 (used by the physical catch limit)
+  ---
+  duration_ms: 0.159745
+  type: 'test'
+  ...
+# Subtest: slow_swing: swing speed -12 % (period / 0.88)
+ok 4 - slow_swing: swing speed -12 % (period / 0.88)
+  ---
+  duration_ms: 0.129437
+  type: 'test'
+  ...
+# Subtest: stable_rim: rim lip +10 % (geometry)
+ok 5 - stable_rim: rim lip +10 % (geometry)
+  ---
+  duration_ms: 1.501115
+  type: 'test'
+  ...
+# Subtest: double_shot (Alpha 0.2 buff): Lv1 a bonus after every 2nd real normal shot, Lv2 after every one
+ok 6 - double_shot (Alpha 0.2 buff): Lv1 a bonus after every 2nd real normal shot, Lv2 after every one
+  ---
+  duration_ms: 1.181979
+  type: 'test'
+  ...
+# Subtest: heavy_oil: big oil +1 damage
+ok 7 - heavy_oil: big oil +1 damage
+  ---
+  duration_ms: 0.135053
+  type: 'test'
+  ...
+# Subtest: power_shot: every 4th normal shot +1 (stack 3: every 3rd +2)
+ok 8 - power_shot: every 4th normal shot +1 (stack 3: every 3rd +2)
+  ---
+  duration_ms: 0.183676
+  type: 'test'
+  ...
+# Subtest: last_drop: the last normal oil of the volley +2
+ok 9 - last_drop: the last normal oil of the volley +2
+  ---
+  duration_ms: 0.287673
+  type: 'test'
+  ...
+# Subtest: first_bite: first REAL hit of each volley +1
+ok 10 - first_bite: first REAL hit of each volley +1
+  ---
+  duration_ms: 0.300151
+  type: 'test'
+  ...
+# Subtest: thick_apron: max HP +1 and current HP +1
+ok 11 - thick_apron: max HP +1 and current HP +1
+  ---
+  duration_ms: 0.66454
+  type: 'test'
+  ...
+# Subtest: first_aid: heals 2, never above max; only offered when injured
+ok 12 - first_aid: heals 2, never above max; only offered when injured
+  ---
+  duration_ms: 4.218901
+  type: 'test'
+  ...
+# Subtest: salt_shield: next contact damage -1
+ok 13 - salt_shield: next contact damage -1
+  ---
+  duration_ms: 1.103224
+  type: 'test'
+  ...
+# Subtest: pan_burst: every 3rd kill in a turn deals area damage nearby
+ok 14 - pan_burst: every 3rd kill in a turn deals area damage nearby
+  ---
+  duration_ms: 0.556357
+  type: 'test'
+  ...
+# Subtest: tomato_splash: a cooked tomato hits the nearest living enemy; not offered without tomatoes
+ok 15 - tomato_splash: a cooked tomato hits the nearest living enemy; not offered without tomatoes
+  ---
+  duration_ms: 0.136717
+  type: 'test'
+  ...
+# Subtest: chain_cooking: >=3 kills in a turn -> +1 bonus normal oil in the next volley
+ok 16 - chain_cooking: >=3 kills in a turn -> +1 bonus normal oil in the next volley
+  ---
+  duration_ms: 0.209897
+  type: 'test'
+  ...
+# Subtest: pan_echo: first kill of a wave hits a nearby enemy once per wave
+ok 17 - pan_echo: first kill of a wave hits a nearby enemy once per wave
+  ---
+  duration_ms: 0.14251
+  type: 'test'
+  ...
+# Subtest: offers: 3 eligible cards, >=2 families, reroll never repeats the same set, maxed abilities excluded
+ok 18 - offers: 3 eligible cards, >=2 families, reroll never repeats the same set, maxed abilities excluded
+  ---
+  duration_ms: 9.591274
+  type: 'test'
+  ...
+# Subtest: card data: every ability has values for every level and the card text is generated from them
+ok 19 - card data: every ability has values for every level and the card text is generated from them
+  ---
+  duration_ms: 2.034586
+  type: 'test'
+  ...
+# Subtest: critical_fry Lv1: ~15% real shots crit for 2x, deterministic per seed, bonus shots never crit
+ok 20 - critical_fry Lv1: ~15% real shots crit for 2x, deterministic per seed, bonus shots never crit
+  ---
+  duration_ms: 22.031286
+  type: 'test'
+  ...
+# Subtest: critical_fry Lv2: ~25% real shots crit for 2x, deterministic per seed, bonus shots never crit
+ok 21 - critical_fry Lv2: ~25% real shots crit for 2x, deterministic per seed, bonus shots never crit
+  ---
+  duration_ms: 23.723226
+  type: 'test'
+  ...
+# Subtest: explosive_oil Lv1: every 4th real hit damages up to 2 nearby enemies, explosions never chain
+ok 22 - explosive_oil Lv1: every 4th real hit damages up to 2 nearby enemies, explosions never chain
+  ---
+  duration_ms: 0.88162
+  type: 'test'
+  ...
+# Subtest: explosive_oil Lv2: every 3th real hit damages up to 2 nearby enemies, explosions never chain
+ok 23 - explosive_oil Lv2: every 3th real hit damages up to 2 nearby enemies, explosions never chain
+  ---
+  duration_ms: 0.308239
+  type: 'test'
+  ...
+# Subtest: oil_knockback Lv1: every 5th real hit pushes a normal enemy 1 step right (hit effect), boss takes +1 instead
+ok 24 - oil_knockback Lv1: every 5th real hit pushes a normal enemy 1 step right (hit effect), boss takes +1 instead
+  ---
+  duration_ms: 0.692749
+  type: 'test'
+  ...
+# Subtest: oil_knockback Lv2: every 4th real hit pushes a normal enemy 1 step right (hit effect), boss takes +1 instead
+ok 25 - oil_knockback Lv2: every 4th real hit pushes a normal enemy 1 step right (hit effect), boss takes +1 instead
+  ---
+  duration_ms: 0.232505
+  type: 'test'
+  ...
+# Subtest: tasty_heal Lv1: +1 HP per 10 real HP damage, max 1 per volley, no banking
+ok 26 - tasty_heal Lv1: +1 HP per 10 real HP damage, max 1 per volley, no banking
+  ---
+  duration_ms: 0.242247
+  type: 'test'
+  ...
+# Subtest: tasty_heal Lv2: +1 HP per 8 real HP damage, max 1 per volley, no banking
+ok 27 - tasty_heal Lv2: +1 HP per 8 real HP damage, max 1 per volley, no banking
+  ---
+  duration_ms: 0.233185
+  type: 'test'
+  ...
+# Subtest: spiked_apron Lv1: 2 reflect damage; a normal enemy killed by it is counted once (not escaped)
+ok 28 - spiked_apron Lv1: 2 reflect damage; a normal enemy killed by it is counted once (not escaped)
+  ---
+  duration_ms: 0.641315
+  type: 'test'
+  ...
+# Subtest: spiked_apron Lv2: 3 reflect damage; a normal enemy killed by it is counted once (not escaped)
+ok 29 - spiked_apron Lv2: 3 reflect damage; a normal enemy killed by it is counted once (not escaped)
+  ---
+  duration_ms: 0.15953
+  type: 'test'
+  ...
+# Subtest: spiked_apron vs boss: reflect can win the fight; victory gate first, no later contact
+ok 30 - spiked_apron vs boss: reflect can win the fight; victory gate first, no later contact
+  ---
+  duration_ms: 0.185707
+  type: 'test'
+  ...
+# Subtest: piercing_oil Lv1: every 4th real shot also hits the enemy behind for 1
+ok 31 - piercing_oil Lv1: every 4th real shot also hits the enemy behind for 1
+  ---
+  duration_ms: 0.227898
+  type: 'test'
+  ...
+# Subtest: piercing_oil Lv2: every 3th real shot also hits the enemy behind for 1
+ok 32 - piercing_oil Lv2: every 3th real shot also hits the enemy behind for 1
+  ---
+  duration_ms: 0.068334
+  type: 'test'
+  ...
+# Subtest: cold_oil: a real physical pot ball type; rolled only when owned; freezes the hit enemy for exactly one move
+ok 33 - cold_oil: a real physical pot ball type; rolled only when owned; freezes the hit enemy for exactly one move
+  ---
+  duration_ms: 542.970446
+  type: 'test'
+  ...
+# Subtest: cold_oil vs boss: at most one freeze per 3 boss actions (no permanent lock)
+ok 34 - cold_oil vs boss: at most one freeze per 3 boss actions (no permanent lock)
+  ---
+  duration_ms: 0.41192
+  type: 'test'
+  ...
+# Subtest: multi-shot never duplicates physical balls; bonus labels are correct
+ok 35 - multi-shot never duplicates physical balls; bonus labels are correct
+  ---
+  duration_ms: 0.18952
+  type: 'test'
+  ...
+# Subtest: pot_shuffle: physical impulse only, ids/types kept, no turn used, once per wave, only with the card and while swinging
+ok 36 - pot_shuffle: physical impulse only, ids/types kept, no turn used, once per wave, only with the card and while swinging
+  ---
+  duration_ms: 171.609796
+  type: 'test'
+  ...
+# Subtest: offers: a combat card in each of the first two choices; consecutive offers never identical
+ok 37 - offers: a combat card in each of the first two choices; consecutive offers never identical
+  ---
+  duration_ms: 8.505039
+  type: 'test'
+  ...
+# Subtest: maxStack respected for every ability; applying beyond max is refused
+ok 38 - maxStack respected for every ability; applying beyond max is refused
+  ---
+  duration_ms: 1.923667
+  type: 'test'
+  ...
+# Subtest: snapshot/restore is deterministic: two restores with the same taps give identical runs
+ok 39 - snapshot/restore is deterministic: two restores with the same taps give identical runs
+  ---
+  duration_ms: 4279.530535
+  type: 'test'
+  ...
+# Subtest: Alpha 0.1 save with an old wave snapshot loads, migrates and can be played to the end
+ok 40 - Alpha 0.1 save with an old wave snapshot loads, migrates and can be played to the end
+  ---
+  duration_ms: 3282.600006
+  type: 'test'
+  ...
+# Subtest: 7 normal oils: exactly 7 shots, 7 damage, no bonus without abilities
+ok 41 - 7 normal oils: exactly 7 shots, 7 damage, no bonus without abilities
+  ---
+  duration_ms: 1.600218
+  type: 'test'
+  ...
+# Subtest: 2 big + 3 normal: 5 shots, 9 base damage (big = one shot of 3)
+ok 42 - 2 big + 3 normal: 5 shots, 9 base damage (big = one shot of 3)
+  ---
+  duration_ms: 0.559513
+  type: 'test'
+  ...
+# Subtest: no shot is wasted on a dead enemy; queue closes when nobody is left
+ok 43 - no shot is wasted on a dead enemy; queue closes when nobody is left
+  ---
+  duration_ms: 0.377479
+  type: 'test'
+  ...
+# Subtest: target priority: contact threat first, then speed, then left-most
+ok 44 - target priority: contact threat first, then speed, then left-most
+  ---
+  duration_ms: 0.236515
+  type: 'test'
+  ...
+# Subtest: armor: shield absorbs before HP for normal and big oil; HP never negative
+ok 45 - armor: shield absorbs before HP for normal and big oil; HP never negative
+  ---
+  duration_ms: 0.889319
+  type: 'test'
+  ...
+# Subtest: three enemies dying in the same volley are counted once each (recipe +1 each)
+ok 46 - three enemies dying in the same volley are counted once each (recipe +1 each)
+  ---
+  duration_ms: 0.592716
+  type: 'test'
+  ...
+# Subtest: secondary chain cap: at most 12 secondary damage events per turn, no infinite loop
+ok 47 - secondary chain cap: at most 12 secondary damage events per turn, no infinite loop
+  ---
+  duration_ms: 0.507973
+  type: 'test'
+  ...
+# Subtest: bonus shots never trigger more bonus shots (double_shot Lv2: exactly one per real normal)
+ok 48 - bonus shots never trigger more bonus shots (double_shot Lv2: exactly one per real normal)
+  ---
+  duration_ms: 0.437443
+  type: 'test'
+  ...
+# Subtest: enemy movement: only to the LEFT, only in the action phase; pepper 2 steps on its own 3rd opportunity
+ok 49 - enemy movement: only to the LEFT, only in the action phase; pepper 2 steps on its own 3rd opportunity
+  ---
+  duration_ms: 0.67896
+  type: 'test'
+  ...
+# Subtest: contact: normal enemy hits for 1, leaves, is NOT counted; salt shield and start shield absorb first
+ok 50 - contact: normal enemy hits for 1, leaves, is NOT counted; salt shield and start shield absorb first
+  ---
+  duration_ms: 0.469272
+  type: 'test'
+  ...
+# Subtest: potato king: 2 damage on contact and safe retreat; hastes once at 50 %
+ok 51 - potato king: 2 damage on contact and safe retreat; hastes once at 50 %
+  ---
+  duration_ms: 1.22989
+  type: 'test'
+  ...
+# Subtest: giant tomato summons 2 minions once at <=60 % and telegraphs its guard
+ok 52 - giant tomato summons 2 minions once at <=60 % and telegraphs its guard
+  ---
+  duration_ms: 0.397332
+  type: 'test'
+  ...
+# Subtest: boss victory gate: boss dies -> victory, remaining shots stop, no further events
+ok 53 - boss victory gate: boss dies -> victory, remaining shots stop, no further events
+  ---
+  duration_ms: 0.121472
+  type: 'test'
+  ...
+# Subtest: spawn: enemies appear on the right side at free y positions, never stacked
+ok 54 - spawn: enemies appear on the right side at free y positions, never stacked
+  ---
+  duration_ms: 0.484705
+  type: 'test'
+  ...
+# Subtest: timing matters through real physics: drop over the heap vs over an empty side
+ok 55 - timing matters through real physics: drop over the heap vs over an empty side
+  ---
+  duration_ms: 263.708118
+  type: 'test'
+  ...
+# Subtest: same seed + same tap step => same catch (determinism)
+ok 56 - same seed + same tap step => same catch (determinism)
+  ---
+  duration_ms: 379.175759
+  type: 'test'
+  ...
+# Subtest: 0 balls caught -> guarantee drop (bonus, not from the pot)
+ok 57 - 0 balls caught -> guarantee drop (bonus, not from the pot)
+  ---
+  duration_ms: 11.613375
+  type: 'test'
+  ...
+# Subtest: physical catch of 2 big + 3 normal: load 7, 5 shots, 9 base damage
+ok 58 - physical catch of 2 big + 3 normal: load 7, 5 shots, 9 base damage
+  ---
+  duration_ms: 23.057473
+  type: 'test'
+  ...
+# Subtest: capacity overflow: excess balls physically spill back into the pot
+ok 59 - capacity overflow: excess balls physically spill back into the pot
+  ---
+  duration_ms: 43.510063
+  type: 'test'
+  ...
+# Subtest: ladle width upgrade changes the physical bowl radius
+ok 60 - ladle width upgrade changes the physical bowl radius
+  ---
+  duration_ms: 1.180724
+  type: 'test'
+  ...
+# Subtest: hybrid refill formula: remain kept, min target 24, max 36, at least 6 added
+ok 61 - hybrid refill formula: remain kept, min target 24, max 36, at least 6 added
+  ---
+  duration_ms: 0.332243
+  type: 'test'
+  ...
+# Subtest: hybrid pot: uncaught balls keep their identity, nothing is regenerated, never above 36
+ok 62 - hybrid pot: uncaught balls keep their identity, nothing is regenerated, never above 36
+  ---
+  duration_ms: 1774.130354
+  type: 'test'
+  ...
+# Subtest: refill never overlaps colliders: queued balls wait when there is no room
+ok 63 - refill never overlaps colliders: queued balls wait when there is no room
+  ---
+  duration_ms: 84.341133
+  type: 'test'
+  ...
+# Subtest: upgrade cost table matches GDD §12 exactly
+ok 64 - upgrade cost table matches GDD §12 exactly
+  ---
+  duration_ms: 1.094611
+  type: 'test'
+  ...
+# Subtest: purchase is atomic: insufficient funds changes nothing; success subtracts once and levels once; max disables
+ok 65 - purchase is atomic: insufficient funds changes nothing; success subtracts once and levels once; max disables
+  ---
+  duration_ms: 0.37645
+  type: 'test'
+  ...
+# Subtest: every upgrade level changes real stats used by the run
+ok 66 - every upgrade level changes real stats used by the run
+  ---
+  duration_ms: 1.149007
+  type: 'test'
+  ...
+# Subtest: stars: 1 boss, 2 full recipe, 3 full recipe + hp loss <= 1 (shield-prevented damage does not count)
+ok 67 - stars: 1 boss, 2 full recipe, 3 full recipe + hp loss <= 1 (shield-prevented damage does not count)
+  ---
+  duration_ms: 0.390251
+  type: 'test'
+  ...
+# Subtest: rewards: base, quality bonus (+15 % / +30 %), first clear once, failure formula
+ok 68 - rewards: base, quality bonus (+15 % / +30 %), first clear once, failure formula
+  ---
+  duration_ms: 0.246751
+  type: 'test'
+  ...
+# Subtest: run result applied exactly once; next chapter unlocks; replay gets no first bonus; best stars kept
+ok 69 - run result applied exactly once; next chapter unlocks; replay gets no first bonus; best stars kept
+  ---
+  duration_ms: 0.488941
+  type: 'test'
+  ...
+# Subtest: save round trip with schema version + checksum; corrupt main falls back to backup
+ok 70 - save round trip with schema version + checksum; corrupt main falls back to backup
+  ---
+  duration_ms: 0.559642
+  type: 'test'
+  ...
+# Subtest: single tap per swing: double tap / spam creates only one ladle drop and one turn
+ok 71 - single tap per swing: double tap / spam creates only one ladle drop and one turn
+  ---
+  duration_ms: 436.368101
+  type: 'test'
+  ...
+# Subtest: pause/resume spam: no taps while paused, no time fast-forward, no double turn
+ok 72 - pause/resume spam: no taps while paused, no time fast-forward, no double turn
+  ---
+  duration_ms: 163.164855
+  type: 'test'
+  ...
+# Subtest: stale / duplicate acks are ignored (token check)
+ok 73 - stale / duplicate acks are ignored (token check)
+  ---
+  duration_ms: 70.473589
+  type: 'test'
+  ...
+# Subtest: enemies move only in ENEMY_ACTION and only leftwards
+ok 74 - enemies move only in ENEMY_ACTION and only leftwards
+  ---
+  duration_ms: 5746.268613
+  type: 'test'
+  ...
+# Subtest: boss dies -> instant victory: no enemy action / contact after, result emitted once
+ok 75 - boss dies -> instant victory: no enemy action / contact after, result emitted once
+  ---
+  duration_ms: 3377.702615
+  type: 'test'
+  ...
+# Subtest: Menemen and Patates Kızartması are completed end-to-end (first time + replay); unlocks and tips are right
+ok 76 - Menemen and Patates Kızartması are completed end-to-end (first time + replay); unlocks and tips are right
+  ---
+  duration_ms: 3680.44059
+  type: 'test'
+  ...
+# Subtest: checkpoint snapshot: restore resumes at wave start without double kill, double reward or double wave
+ok 77 - checkpoint snapshot: restore resumes at wave start without double kill, double reward or double wave
+  ---
+  duration_ms: 2153.248026
+  type: 'test'
+  ...
+# Subtest: skill choice (Alpha 0.2): after every normal wave 1–6, 6 picks per run, none after the boss; one free reroll; stale card rejected
+ok 78 - skill choice (Alpha 0.2): after every normal wave 1–6, 6 picks per run, none after the boss; one free reroll; stale card rejected
+  ---
+  duration_ms: 2903.554938
+  type: 'test'
+  ...
+1..78
+# tests 78
+# suites 0
+# pass 78
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 19278.614399

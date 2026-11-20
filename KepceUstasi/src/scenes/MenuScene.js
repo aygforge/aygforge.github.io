@@ -52,7 +52,7 @@ export class MenuScene extends Phaser.Scene {
     button(this, W / 2 - 172, y1, 160, 62, 'TARİFLER', () => this.openChapters(), { size: 20 });
     button(this, W / 2, y1, 160, 62, 'GELİŞTİR', () => this.openUpgrades(), { size: 20 });
     button(this, W / 2 + 172, y1, 160, 62, 'MAĞAZA', () => this.openShop(), { size: 20 });
-    text(this, W / 2, H - 22, 'Alpha 0.1 · Ayg Forge · çevrimdışı · reklamsız', 16, '#d8c9b0');
+    text(this, W / 2, H - 22, 'Alpha 0.2 · Ayg Forge · çevrimdışı · reklamsız', 16, '#d8c9b0');
 
     if (app.notice) {
       this.toast(app.notice);
@@ -172,7 +172,7 @@ export class MenuScene extends Phaser.Scene {
   // ---------------- shop (future integration only) ----------------
   openShop() {
     const { c, top } = this.openOverlay('MAĞAZA', 560);
-    c.add(text(this, this.W / 2, top + 80, 'Mağaza Android sürümünde açılacak.\nAlpha 0.1\'de satın alma ve reklam yok.', 17, COLORS.cream, { wrap: 440 }));
+    c.add(text(this, this.W / 2, top + 80, 'Mağaza Android sürümünde açılacak.\nAlpha sürümünde satın alma ve reklam yok.', 17, COLORS.cream, { wrap: 440 }));
     purchaseService.listProducts().then((list) => {
       if (!this.overlay || this.overlay !== c) return;
       list.forEach((p, i) => {

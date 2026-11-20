@@ -17,9 +17,10 @@ const dmgTo = (run, shots, ch = CH1) => {
   return before - boss.hp - boss.shield;
 };
 
-test('all 16 abilities exist with the GDD max stacks', () => {
-  const want = { wide_ladle: 3, deep_ladle: 3, slow_swing: 2, stable_rim: 2, double_shot: 2, heavy_oil: 2, power_shot: 3, last_drop: 1, first_bite: 2, thick_apron: 2, first_aid: 1, salt_shield: 2, pan_burst: 2, tomato_splash: 2, chain_cooking: 1, pan_echo: 1 };
-  assert.equal(ABILITIES.length, 16);
+test('all 24 abilities exist with the GDD max stacks (16 Alpha 0.1 ids kept + 8 new)', () => {
+  const want = { wide_ladle: 3, deep_ladle: 3, slow_swing: 2, stable_rim: 2, double_shot: 2, heavy_oil: 2, power_shot: 3, last_drop: 1, first_bite: 2, thick_apron: 2, first_aid: 1, salt_shield: 2, pan_burst: 2, tomato_splash: 2, chain_cooking: 1, pan_echo: 1,
+    critical_fry: 2, explosive_oil: 2, oil_knockback: 2, tasty_heal: 2, spiked_apron: 2, cold_oil: 1, pot_shuffle: 1, piercing_oil: 2 };
+  assert.equal(ABILITIES.length, 24);
   for (const a of ABILITIES) assert.equal(a.max, want[a.id], a.id);
 });
 
@@ -55,10 +56,16 @@ test('stable_rim: rim lip +10 % (geometry)', () => {
   assert.ok(pot.ladleShape.rimH > 0.39 * pot.ladleShape.radius);
 });
 
-test('double_shot: 1 bonus per 5 real normal hits (stack 2: per 4)', () => {
+test('double_shot (Alpha 0.2 buff): Lv1 a bonus after every 2nd real normal shot, Lv2 after every one', () => {
   const run = makeRun();
   applyAbility(run, CH1, 'double_shot');
-  assert.equal(dmgTo(run, normal(10)), 12);
+  assert.equal(dmgTo(run, normal(10)), 15);
+  const run2 = makeRun();
+  run2.abilities.double_shot = 2;
+  assert.equal(dmgTo(run2, normal(10)), 20);
+  const run3 = makeRun();
+  run3.abilities.double_shot = 2;
+  assert.equal(dmgTo(run3, big(3)), 9, 'big oil does not trigger it');
 });
 
 test('heavy_oil: big oil +1 damage', () => {
@@ -82,7 +89,7 @@ test('last_drop: the last normal oil of the volley +2', () => {
   assert.equal(dmgTo(run, [...normal(3), ...big(1)]), 3 + 2 + 3);
 });
 
-test('first_bite: first hit of each turn +1', () => {
+test('first_bite: first REAL hit of each volley +1', () => {
   const run = makeRun();
   applyAbility(run, CH1, 'first_bite');
   assert.equal(dmgTo(run, normal(3)), 4);
@@ -142,7 +149,7 @@ test('chain_cooking: >=3 kills in a turn -> +1 bonus normal oil in the next voll
   resolveVolley(run, CH1, normal(3));
   assert.equal(run.pending.chain, 1);
   const shots = buildShots(run, [{ id: 1, type: 'normal' }]);
-  assert.deepEqual(shots[0], { oil: 'normal', isBonus: true, source: 'chain_cooking' });
+  assert.deepEqual(shots[0], { oil: 'normal', isBonus: true, canProc: false, source: 'chain_cooking' });
   assert.equal(run.pending.chain, 0);
 });
 

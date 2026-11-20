@@ -1,6 +1,9 @@
-# Kepçe Ustası — Alpha 0.1 (HTML5)
+# Kepçe Ustası — Alpha 0.2 (HTML5)
 
-**Stüdyo:** Ayg Forge · **Çalışma adı:** Kepçe Ustası · **Sürüm:** Alpha 0.1 (Menemen + Patates Kızartması)
+**Stüdyo:** Ayg Forge · **Çalışma adı:** Kepçe Ustası · **Sürüm:** Alpha 0.2 (Menemen + Patates Kızartması; yetenek ve denge revizyonu)
+
+> Alpha 0.2 değişiklikleri: `CHANGELOG_ALPHA02.md` · testler: `TEST_PLAN_ALPHA02.md` · denge: `BALANCE_REPORT_ALPHA02.md`.
+> Alpha 0.1 belgeleri (`CHANGELOG.md`, `TEST_PLAN.md`) tarihsel kayıt olarak duruyor.
 
 Dikey (portrait) mobil oyun. Ekranın **alt yarısında** sağa-sola salınan kepçeyi doğru anda bırakıp
 kaynayan tencereden **gerçek çarpışmalı** yağ topçukları yakalarsın; **üst yarıda** isimsiz Şef yakaladığın
@@ -48,6 +51,7 @@ npm run assets
 | Duraklat / devam | Sağ üstteki **II** | **P** veya **Esc** |
 | Geri (Android geri tuşu) | Tarayıcı geri hareketi → duraklatma / panel kapatma | Tarayıcı geri |
 | Yetenek seçimi | Kartlardan birine dokun; koşuda 1 ücretsiz yeniden seçim | aynı |
+| Tencereyi karıştır (kart varsa) | Salınım sırasında KARIŞTIR düğmesi, dalga başına 1 | aynı |
 
 Oyun arka plana alınınca (sekme değişimi, uygulama küçültme) **otomatik duraklar**; geri dönüldüğünde
 zaman ileri sarılmaz, devam için **DEVAM** gerekir.
@@ -58,7 +62,8 @@ zaman ileri sarılmaz, devam için **DEVAM** gerekir.
 2. Her chapter = 6 normal dalga + 1 boss. Her kepçe hamlesi bir turdur:
    kepçe → mermi kuyruğu → isabetler → ölüm/tava/yetenek zinciri → boss zafer kapısı → düşman eylemi →
    sağdan sola tek hareket fazı → temas hasarı → dalga/boss geçişi → hibrit tencere yenileme → yeni kepçe.
-3. Dalga 1, 3, 5 ve 6 sonunda 3 kartlık yetenek seçimi (16 yetenek havuzu, chapter'a uygun olanlar).
+3. Her normal dalga (1–6) sonunda 3 kartlık yetenek seçimi: koşu başına 6 seçim, 24 yetenek havuzu (çoklu atış,
+   kritik, patlama, delme, geri itme, dondurma, can çalma, dikenli önlük, tencere karıştırma…), 1 ücretsiz yenileme.
 4. Boss yenilince servis: 1–3 yıldız, bahşiş, ilk servis bonusu. Kaybedince tamamlanan dalgaya göre kısmi bahşiş.
 5. **GELİŞTİR** ekranında 6 kalıcı geliştirme hattı (kapasite, genişlik, dayanıklılık, atış, tava, baharat).
 
@@ -77,8 +82,9 @@ zaman ileri sarılmaz, devam için **DEVAM** gerekir.
 ## Testler
 
 ```bash
-npm test                         # 56 birim/entegrasyon testi (Node test runner, gerçek Matter.js fiziği)
+npm test                         # 78 birim/entegrasyon testi (Node test runner, gerçek Matter.js fiziği)
 npm run test:sim -- 100 random   # 100 tohumlu tam koşu simülasyonu (kilit/NaN/çift ödül taraması)
+node tests/sim/balance.mjs 100 final random,good,bad,perfect none   # denge raporu (4 paralel süreç, uzun sürer)
 npm run build && npm run test:e2e   # Playwright + Chromium ile dist/ üzerinde gerçek tıklamalı uçtan uca test
 ```
 
@@ -130,10 +136,10 @@ oynatır. Bu yüzden animasyon hızı (Ayarlar → 1x/2x) veya FPS tur sonucunu 
 
 ## Bilinen sınırlamalar
 
-* Yalnızca Alpha 0.1 kapsamı: 2 chapter, 2 boss, 2 yağ türü, 16 yetenek, 6 upgrade. Chapter 3–8, özel yağlar,
+* Alpha kapsamı: 2 chapter, 2 boss, 3 yağ türü (normal, büyük, soğuk sos), 24 yetenek, 6 upgrade. Chapter 3–8, özel yağlar,
   ek şefler bilinçli olarak yok.
-* Denge sayıları GDD'nin ALPHA VARSAYIMI değerleridir; simülasyonda oyun kolay çıkıyor (bkz. TEST_PLAN.md
-  "Denge gözlemleri"). Gerçek oyuncu testinden sonra ayarlanmalı.
+* Denge (Alpha 0.2): rastgele dokunan bot Menemen %79 / Patates %44 kazanıyor (hedef bantlarında); kepçeyi
+  tencere merkezine nişanlayan oyuncu modelleri hâlâ %100 kazanıyor. Ayrıntı: BALANCE_REPORT_ALPHA02.md.
 * Gerçek telefon donanımında test **yapılmadı**; dokunmatik giriş Chromium'un mobil emülasyonu ile test edildi.
 * Kayıttan devam, ilerlemeyi **dalga başına** geri alır (dalga içi ilerleme kasıtlı olarak saklanmaz).
 * Müzik basit, özgün, döngüsel bir 8 ölçülük parçadır; ses efektleri kısa sentez seslerdir.

@@ -348,6 +348,35 @@ function oils() {
   b.set(7, 7, '#b0600f');
   b.outline('#6a3608');
   b.save('oils/oil_big.png');
+  // Alpha 0.2: Soğuk Sos küresi (icy blue with a frost cross)
+  const c = new Px(8, 8);
+  c.ball(4, 4, 3.6, 3.6, '#7fd8f0', '#e6fbff', '#3f9ccc', '#ffffff');
+  c.set(4, 2, '#ffffff');
+  c.set(4, 6, '#ffffff');
+  c.set(2, 4, '#ffffff');
+  c.set(6, 4, '#ffffff');
+  c.outline('#1d4a66');
+  c.save('oils/oil_cold.png');
+}
+
+// Alpha 0.2 card family icons (9x9)
+function catIcons() {
+  const draw = (file, rows, colors) => {
+    const p = new Px(9, 9);
+    rows.forEach((row, y) => [...row].forEach((ch, x) => ch !== '.' && p.set(x, y, colors[ch])));
+    p.outline('#15111a');
+    p.save(file);
+  };
+  // catch: ladle bowl
+  draw('ui/cat_catch.png', ['....a....', '....a....', '....a....', '....a....', 'b..ba...b', 'bb.bbb.bb', '.bbbbbbb.', '..bbbbb..', '.........'], { a: '#c08a52', b: '#b9c2cc' });
+  // attack: oil drop with spark
+  draw('ui/cat_attack.png', ['....a....', '...aaa...', '..aaaaa..', '.aaabaaa.', '.aabbbaa.', '.aaabaaa.', '..aaaaa..', '...aaa...', '.........'], { a: '#e8582f', b: '#ffd84a' });
+  // pan / area: burst
+  draw('ui/cat_pan.png', ['a...a...a', '.a..a..a.', '..aabaa..', '..abbba..', 'aabbbbbaa', '..abbba..', '..aabaa..', '.a..a..a.', 'a...a...a'], { a: '#f2b11c', b: '#fff2a0' });
+  // defense: apron/shield
+  draw('ui/cat_defense.png', ['aaaaaaaaa', 'abbbbbbba', 'abbbabbba', 'abbaaabba', 'abbbabbba', '.abbbbba.', '..abbba..', '...aba...', '....a....'], { a: '#2e7d32', b: '#7cd16b' });
+  // control: snowflake
+  draw('ui/cat_control.png', ['....a....', '.a..a..a.', '..a.a.a..', '...aaa...', 'aaaabaaaa', '...aaa...', '..a.a.a..', '.a..a..a.', '....a....'], { a: '#9fdcff', b: '#ffffff' });
 }
 
 // ---------------------------------------------------------------- kitchen & ui
@@ -713,6 +742,7 @@ armoredPotato();
 salt();
 potatoKing();
 oils();
+catIcons();
 pan();
 dishes();
 icons();

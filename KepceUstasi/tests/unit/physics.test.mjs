@@ -74,7 +74,7 @@ test('0 balls caught -> guarantee drop (bonus, not from the pot)', () => {
   assert.equal(res.caught.length, 0);
   const run = makeRun();
   const shots = buildShots(run, res.caught);
-  assert.deepEqual(shots, [{ oil: 'normal', isBonus: true, source: 'guarantee' }]);
+  assert.deepEqual(shots, [{ oil: 'normal', isBonus: true, canProc: false, source: 'guarantee' }]);
   assert.equal(pot.count, 0, 'pot count unaffected');
 });
 
