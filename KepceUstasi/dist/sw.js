@@ -1,0 +1,79 @@
+// Kepçe Ustası offline cache (auto-generated)
+const CACHE = 'kepce-ustasi-mwp1u1ca';
+const FILES = [
+ "./",
+ "./assets/audio/catch.wav",
+ "./assets/audio/click.wav",
+ "./assets/audio/coin.wav",
+ "./assets/audio/defeat.wav",
+ "./assets/audio/drop.wav",
+ "./assets/audio/hit.wav",
+ "./assets/audio/hurt.wav",
+ "./assets/audio/music.wav",
+ "./assets/audio/shield.wav",
+ "./assets/audio/shoot.wav",
+ "./assets/audio/sizzle.wav",
+ "./assets/audio/skill.wav",
+ "./assets/audio/swing.wav",
+ "./assets/audio/victory.wav",
+ "./assets/audio/warn.wav",
+ "./assets/bosses/giant_tomato.png",
+ "./assets/bosses/potato_king.png",
+ "./assets/chefs/chef.png",
+ "./assets/enemies/armored_potato.png",
+ "./assets/enemies/egg.png",
+ "./assets/enemies/pepper.png",
+ "./assets/enemies/potato.png",
+ "./assets/enemies/salt.png",
+ "./assets/enemies/tomato.png",
+ "./assets/index-CSWB7VzJ.js",
+ "./assets/index-DSB8h3iu.css",
+ "./assets/kitchen/battle_bg.png",
+ "./assets/kitchen/bubble.png",
+ "./assets/kitchen/counter.png",
+ "./assets/kitchen/dish_fries.png",
+ "./assets/kitchen/dish_menemen.png",
+ "./assets/kitchen/flame1.png",
+ "./assets/kitchen/flame2.png",
+ "./assets/kitchen/pan.png",
+ "./assets/kitchen/pot.png",
+ "./assets/kitchen/restaurant_bg.png",
+ "./assets/kitchen/stove.png",
+ "./assets/manifest.json",
+ "./assets/matter-elkLEKeR.js",
+ "./assets/oils/oil_big.png",
+ "./assets/oils/oil_normal.png",
+ "./assets/phaser-DzTDBLkw.js",
+ "./assets/pixelify-sans-cyrillic-400-normal-Ckz2YJkH.woff2",
+ "./assets/pixelify-sans-cyrillic-400-normal-DfOZNMlW.woff",
+ "./assets/pixelify-sans-cyrillic-700-normal-BrZTw8tu.woff",
+ "./assets/pixelify-sans-cyrillic-700-normal-CYtG5Rfp.woff2",
+ "./assets/pixelify-sans-latin-400-normal-DLrIX9QE.woff2",
+ "./assets/pixelify-sans-latin-400-normal-JapMNN6Z.woff",
+ "./assets/pixelify-sans-latin-700-normal-BctWAS0u.woff",
+ "./assets/pixelify-sans-latin-700-normal-D3Xxx3QE.woff2",
+ "./assets/pixelify-sans-latin-ext-400-normal-BkfTUL4s.woff",
+ "./assets/pixelify-sans-latin-ext-400-normal-DdH6zlBQ.woff2",
+ "./assets/pixelify-sans-latin-ext-700-normal-BadXkHzZ.woff",
+ "./assets/pixelify-sans-latin-ext-700-normal-ClyJstAh.woff2",
+ "./assets/ui/coin.png",
+ "./assets/ui/fast.png",
+ "./assets/ui/heart.png",
+ "./assets/ui/heart_empty.png",
+ "./assets/ui/shield.png",
+ "./assets/ui/spark.png",
+ "./assets/ui/star.png",
+ "./assets/ui/star_empty.png",
+ "./index.html",
+ "./manifest.webmanifest"
+];
+self.addEventListener('install', (e) => {
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)).then(() => self.skipWaiting()));
+});
+self.addEventListener('activate', (e) => {
+  e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
+});
+self.addEventListener('fetch', (e) => {
+  if (e.request.method !== 'GET') return;
+  e.respondWith(caches.match(e.request, { ignoreSearch: true, ignoreVary: true }).then((r) => r || fetch(e.request)));
+});

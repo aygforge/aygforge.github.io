@@ -1,0 +1,24 @@
+{
+  "name": "kepce-ustasi",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Kepçe Ustası Alpha 0.1 — Ayg Forge portrait HTML5 oyunu",
+  "type": "module",
+  "scripts": {
+    "assets": "node tools/gen-assets.mjs",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173",
+    "test": "node --test \"tests/unit/*.test.mjs\"",
+    "test:sim": "node tests/sim/run-sim.mjs",
+    "test:e2e": "node tests/e2e/e2e.mjs"
+  },
+  "dependencies": {
+    "@fontsource/pixelify-sans": "5.3.0",
+    "matter-js": "0.20.0",
+    "phaser": "3.90.0"
+  },
+  "devDependencies": {
+    "vite": "6.4.6"
+  }
+}

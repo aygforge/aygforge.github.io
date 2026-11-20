@@ -1,0 +1,9 @@
+{
+  "generatedBy": "tools/gen-assets.mjs",
+  "potTextureOrigin": {
+    "ox": 30,
+    "oy": 6
+  },
+  "png": 30,
+  "wav": 15
+}

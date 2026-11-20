@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#1e1a26" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Kepçe Ustası — Alpha 0.1</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" type="image/png" href="./assets/oils/oil_big.png" />
+    <style>
+      html, body { margin: 0; height: 100%; background: #1e1a26; overflow: hidden; overscroll-behavior: none; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+      #frame { position: fixed; inset: 0; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); box-sizing: border-box; display: flex; align-items: center; justify-content: center; }
+      #game { width: 100%; height: 100%; }
+      #game canvas { image-rendering: pixelated; image-rendering: crisp-edges; display: block; }
+      #rotate { display: none; position: fixed; inset: 0; z-index: 10; background: #1e1a26; color: #ffe9b8; font: 20px 'Pixelify Sans', monospace; align-items: center; justify-content: center; text-align: center; padding: 24px; box-sizing: border-box; }
+      @media (orientation: landscape) and (pointer: coarse) and (max-height: 600px) { #rotate { display: flex; } }
+      #boot { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; color: #ffe9b8; font: 18px monospace; pointer-events: none; }
+    </style>
+    <script type="module" crossorigin src="./assets/index-CSWB7VzJ.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/phaser-DzTDBLkw.js">
+    <link rel="modulepreload" crossorigin href="./assets/matter-elkLEKeR.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-DSB8h3iu.css">
+  </head>
+  <body>
+    <div id="frame"><div id="game"></div></div>
+    <div id="boot">Kepçe Ustası yükleniyor…</div>
+    <div id="rotate"><div>↻<br />Lütfen telefonu <b>dikey</b> tutun.<br />Oyun dikey ekran için tasarlandı.</div></div>
+    <noscript>Kepçe Ustası JavaScript gerektirir.</noscript>
+  </body>
+</html>
