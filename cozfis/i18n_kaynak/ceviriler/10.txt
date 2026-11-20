@@ -1,0 +1,474 @@
+@ui.favoriden_cikar
+en: ★ Remove favorite
+es: ★ Quitar de favoritos
+de: ★ Kein Favorit mehr
+fr: ★ Retirer des favoris
+pt: ★ Remover favorito
+@ui.favori_yap
+en: ☆ Make favorite
+es: ☆ Marcar como favorito
+de: ☆ Als Favorit
+fr: ☆ Mettre en favori
+pt: ☆ Favoritar
+@ui.1_aktar_yigini_aktar
+en: ⟦0⟧Move 1⟦1⟧⟦2⟧Move stack⟦3⟧
+es: ⟦0⟧Mover 1⟦1⟧⟦2⟧Mover pila⟦3⟧
+de: ⟦0⟧1 verschieben⟦1⟧⟦2⟧Stapel verschieben⟦3⟧
+fr: ⟦0⟧Déplacer 1⟦1⟧⟦2⟧Déplacer la pile⟦3⟧
+pt: ⟦0⟧Mover 1⟦1⟧⟦2⟧Mover pilha⟦3⟧
+@ui.her_yuvada_ayni_turden_en
+en: ⟦0⟧Each slot holds up to {0} fish of the same species. Fish don't spoil. Favorite (★) species are protected from bulk selling.⟦1⟧
+es: ⟦0⟧Cada hueco admite hasta {0} peces de la misma especie. El pescado no se estropea. Las especies favoritas (★) no se venden en lote.⟦1⟧
+de: ⟦0⟧Jeder Platz fasst bis zu {0} Fische derselben Art. Fische verderben nicht. Favoriten (★) sind vor dem Sammelverkauf geschützt.⟦1⟧
+fr: ⟦0⟧Chaque emplacement contient jusqu'à {0} poissons de la même espèce. Les poissons ne s'abîment pas. Les espèces favorites (★) sont protégées de la vente groupée.⟦1⟧
+pt: ⟦0⟧Cada espaço guarda até {0} peixes da mesma espécie. Os peixes não estragam. Espécies favoritas (★) ficam protegidas na venda em lote.⟦1⟧
+@ui.n_n_n_n_yemler
+en: ⟦0⟧{0}{1}{2}{3}⟦1⟧⟦2⟧Bait⟦3⟧⟦4⟧{4}⟦5⟧⟦6⟧Gear and bait don't take up fish slots. Basic bait is unlimited but can't be used in auto rods.⟦7⟧
+es: ⟦0⟧{0}{1}{2}{3}⟦1⟧⟦2⟧Cebos⟦3⟧⟦4⟧{4}⟦5⟧⟦6⟧El equipo y el cebo no ocupan huecos de peces. El cebo básico es ilimitado, pero no sirve en las cañas automáticas.⟦7⟧
+de: ⟦0⟧{0}{1}{2}{3}⟦1⟧⟦2⟧Köder⟦3⟧⟦4⟧{4}⟦5⟧⟦6⟧Ausrüstung und Köder belegen keine Fischplätze. Grundköder ist unbegrenzt, aber nicht für Auto-Angeln nutzbar.⟦7⟧
+fr: ⟦0⟧{0}{1}{2}{3}⟦1⟧⟦2⟧Appâts⟦3⟧⟦4⟧{4}⟦5⟧⟦6⟧L'équipement et les appâts n'occupent pas d'emplacements. L'appât de base est illimité mais inutilisable en automatique.⟦7⟧
+pt: ⟦0⟧{0}{1}{2}{3}⟦1⟧⟦2⟧Iscas⟦3⟧⟦4⟧{4}⟦5⟧⟦6⟧Equipamento e iscas não ocupam espaços de peixe. A isca básica é ilimitada, mas não serve nas varas automáticas.⟦7⟧
+@ui.baliklar
+en: Fish
+es: Peces
+de: Fische
+fr: Poissons
+pt: Peixes
+@ui.ekipman_yem
+en: Gear & Bait
+es: Equipo y cebo
+de: Ausrüstung & Köder
+fr: Équipement & appâts
+pt: Equipamento e Isca
+@ui.n_n_n_n_n_3
+en: ⟦0⟧⟦1|Favorite⟧{1}⟦2⟧{2}⟦3⟧⟦4⟧{3}⟦5⟧ ⟦6⟧×{4} · {5}/each⟦7⟧{6}⟦8⟧ ⟦9⟧⟦10⟧−⟦11⟧⟦12⟧{9}⟦13⟧⟦14⟧+⟦15⟧⟦16⟧Max⟦17⟧⟦18⟧ ⟦19⟧Sell {16}⟦20⟧⟦21⟧
+es: ⟦0⟧⟦1|Favorito⟧{1}⟦2⟧{2}⟦3⟧⟦4⟧{3}⟦5⟧ ⟦6⟧×{4} · {5}/ud.⟦7⟧{6}⟦8⟧ ⟦9⟧⟦10⟧−⟦11⟧⟦12⟧{9}⟦13⟧⟦14⟧+⟦15⟧⟦16⟧Máx⟦17⟧⟦18⟧ ⟦19⟧Vender {16}⟦20⟧⟦21⟧
+de: ⟦0⟧⟦1|Favorit⟧{1}⟦2⟧{2}⟦3⟧⟦4⟧{3}⟦5⟧ ⟦6⟧×{4} · {5}/Stück⟦7⟧{6}⟦8⟧ ⟦9⟧⟦10⟧−⟦11⟧⟦12⟧{9}⟦13⟧⟦14⟧+⟦15⟧⟦16⟧Max⟦17⟧⟦18⟧ ⟦19⟧Verkaufen {16}⟦20⟧⟦21⟧
+fr: ⟦0⟧⟦1|Favori⟧{1}⟦2⟧{2}⟦3⟧⟦4⟧{3}⟦5⟧ ⟦6⟧×{4} · {5}/pièce⟦7⟧{6}⟦8⟧ ⟦9⟧⟦10⟧−⟦11⟧⟦12⟧{9}⟦13⟧⟦14⟧+⟦15⟧⟦16⟧Max⟦17⟧⟦18⟧ ⟦19⟧Vendre {16}⟦20⟧⟦21⟧
+pt: ⟦0⟧⟦1|Favorito⟧{1}⟦2⟧{2}⟦3⟧⟦4⟧{3}⟦5⟧ ⟦6⟧×{4} · {5}/un.⟦7⟧{6}⟦8⟧ ⟦9⟧⟦10⟧−⟦11⟧⟦12⟧{9}⟦13⟧⟦14⟧+⟦15⟧⟦16⟧Máx⟦17⟧⟦18⟧ ⟦19⟧Vender {16}⟦20⟧⟦21⟧
+@ui.n_n_ilaninda_n_adet
+en: ⟦0⟧{0} {1}'s order pays {2}/each!⟦1⟧
+es: ⟦0⟧{0} ¡El pedido de {1} paga {2}/ud.!⟦1⟧
+de: ⟦0⟧{0} Auftrag von {1}: {2}/Stück!⟦1⟧
+fr: ⟦0⟧{0} La commande de {1} paie {2}/pièce !⟦1⟧
+pt: ⟦0⟧{0} O pedido de {1} paga {2}/un.!⟦1⟧
+@ui.satilacak_baligin_yok_iskelede_ya
+en: ⟦0⟧You have no fish to sell. Go catch some at the pier or out at sea!⟦1⟧
+es: ⟦0⟧No tienes peces para vender. ¡Pesca algunos en el muelle o en el mar!⟦1⟧
+de: ⟦0⟧Du hast keine Fische zum Verkaufen. Fang welche am Steg oder auf See!⟦1⟧
+fr: ⟦0⟧Tu n'as aucun poisson à vendre. Va en pêcher au ponton ou en mer !⟦1⟧
+pt: ⟦0⟧Você não tem peixes para vender. Pesque no píer ou no mar e traga!⟦1⟧
+@ui.canta_n_ev_sandigi_n
+en: ⟦0⟧⟦1⟧⟦2⟧ Bag⟦3⟧{0}⟦4⟧⟦5⟧ Home chest⟦6⟧⟦7⟧{2}
+es: ⟦0⟧⟦1⟧⟦2⟧ Mochila⟦3⟧{0}⟦4⟧⟦5⟧ Baúl de casa⟦6⟧⟦7⟧{2}
+de: ⟦0⟧⟦1⟧⟦2⟧ Tasche⟦3⟧{0}⟦4⟧⟦5⟧ Truhe zu Hause⟦6⟧⟦7⟧{2}
+fr: ⟦0⟧⟦1⟧⟦2⟧ Sac⟦3⟧{0}⟦4⟧⟦5⟧ Coffre de la maison⟦6⟧⟦7⟧{2}
+pt: ⟦0⟧⟦1⟧⟦2⟧ Mochila⟦3⟧{0}⟦4⟧⟦5⟧ Baú de casa⟦6⟧⟦7⟧{2}
+@ui.n_deposu
+en: ⟦0⟧⟦1⟧ {0} storage⟦2⟧
+es: ⟦0⟧⟦1⟧ Bodega de {0}⟦2⟧
+de: ⟦0⟧⟦1⟧ Laderaum: {0}⟦2⟧
+fr: ⟦0⟧⟦1⟧ Cale de {0}⟦2⟧
+pt: ⟦0⟧⟦1⟧ Porão do {0}⟦2⟧
+@ui.hal_her_turu_taban_fiyattan
+en: ⟦0⟧The market buys every species at base price, no limit.⟦1⟧⟦2⟧Sell All Eligible Fish {1}⟦3⟧
+es: ⟦0⟧La lonja compra todas las especies a precio base, sin límite.⟦1⟧⟦2⟧Vender todos los peces válidos {1}⟦3⟧
+de: ⟦0⟧Der Markt kauft jede Art zum Grundpreis, unbegrenzt.⟦1⟧⟦2⟧Alle passenden Fische verkaufen {1}⟦3⟧
+fr: ⟦0⟧La halle achète toutes les espèces au prix de base, sans limite.⟦1⟧⟦2⟧Vendre tous les poissons éligibles {1}⟦3⟧
+pt: ⟦0⟧O mercado compra qualquer espécie pelo preço base, sem limite.⟦1⟧⟦2⟧Vender Todos os Peixes Válidos {1}⟦3⟧
+@ui.aktif_ilan_n_n_n
+en: ⟦0⟧⟦1⟧Active orders: {0}/{1}{2}⟦2⟧⟦3⟧⟦4⟧ Also deliver from the chest⟦5⟧⟦6⟧
+es: ⟦0⟧⟦1⟧Pedidos activos: {0}/{1}{2}⟦2⟧⟦3⟧⟦4⟧ Entregar también desde el baúl⟦5⟧⟦6⟧
+de: ⟦0⟧⟦1⟧Aktive Aufträge: {0}/{1}{2}⟦2⟧⟦3⟧⟦4⟧ Auch aus der Truhe liefern⟦5⟧⟦6⟧
+fr: ⟦0⟧⟦1⟧Commandes actives : {0}/{1}{2}⟦2⟧⟦3⟧⟦4⟧ Livrer aussi depuis le coffre⟦5⟧⟦6⟧
+pt: ⟦0⟧⟦1⟧Pedidos ativos: {0}/{1}{2}⟦2⟧⟦3⟧⟦4⟧ Entregar também do baú⟦5⟧⟦6⟧
+@ui.olay_ilani
+en:  + event order
+es:  + pedido del evento
+de:  + Ereignisauftrag
+fr:  + commande d'événement
+pt:  + pedido do evento
+@ui.n_gun
+en: {0} {0|day|days}
+es: {0} {0|día|días}
+de: {0} {0|Tag|Tage}
+fr: {0} j
+pt: {0} {0|dia|dias}
+@ui.n_n_n_n_n_4
+en: ⟦0⟧⟦1⟧{1}⟦2⟧{2}⟦3⟧⟦4⟧{3}{4}⟦5⟧{5}{6}⟦6⟧⟦7⟧⟦8⟧{8}⟦9⟧⟦10⟧ ⟦11⟧{9}⟦12⟧⟦13⟧{10}⟦14⟧ ⟦15⟧· {11}⟦16⟧⟦17⟧⟦18⟧⟦19⟧⟦20⟧{13}/{14} delivered · {15} left⟦21⟧⟦22⟧⟦23⟧ ⟦24⟧⟦25⟧{16}⟦26⟧⟦27⟧/each (+{17}%) · market {18}⟦28⟧⟦29⟧⟦30⟧ ⟦31⟧⟦32⟧In hand: ⟦33⟧{19}⟦34⟧⟦35⟧⟦36⟧⟦37⟧{20}⟦38⟧⟦39⟧
+es: ⟦0⟧⟦1⟧{1}⟦2⟧{2}⟦3⟧⟦4⟧{3}{4}⟦5⟧{5}{6}⟦6⟧⟦7⟧⟦8⟧{8}⟦9⟧⟦10⟧ ⟦11⟧{9}⟦12⟧⟦13⟧{10}⟦14⟧ ⟦15⟧· {11}⟦16⟧⟦17⟧⟦18⟧⟦19⟧⟦20⟧{13}/{14} entregados · faltan {15}⟦21⟧⟦22⟧⟦23⟧ ⟦24⟧⟦25⟧{16}⟦26⟧⟦27⟧/ud. (+{17} %) · lonja {18}⟦28⟧⟦29⟧⟦30⟧ ⟦31⟧⟦32⟧Tienes: ⟦33⟧{19}⟦34⟧⟦35⟧⟦36⟧⟦37⟧{20}⟦38⟧⟦39⟧
+de: ⟦0⟧⟦1⟧{1}⟦2⟧{2}⟦3⟧⟦4⟧{3}{4}⟦5⟧{5}{6}⟦6⟧⟦7⟧⟦8⟧{8}⟦9⟧⟦10⟧ ⟦11⟧{9}⟦12⟧⟦13⟧{10}⟦14⟧ ⟦15⟧· {11}⟦16⟧⟦17⟧⟦18⟧⟦19⟧⟦20⟧{13}/{14} geliefert · noch {15}⟦21⟧⟦22⟧⟦23⟧ ⟦24⟧⟦25⟧{16}⟦26⟧⟦27⟧/Stück (+{17} %) · Markt {18}⟦28⟧⟦29⟧⟦30⟧ ⟦31⟧⟦32⟧Vorrat: ⟦33⟧{19}⟦34⟧⟦35⟧⟦36⟧⟦37⟧{20}⟦38⟧⟦39⟧
+fr: ⟦0⟧⟦1⟧{1}⟦2⟧{2}⟦3⟧⟦4⟧{3}{4}⟦5⟧{5}{6}⟦6⟧⟦7⟧⟦8⟧{8}⟦9⟧⟦10⟧ ⟦11⟧{9}⟦12⟧⟦13⟧{10}⟦14⟧ ⟦15⟧· {11}⟦16⟧⟦17⟧⟦18⟧⟦19⟧⟦20⟧{13}/{14} livrés · reste {15}⟦21⟧⟦22⟧⟦23⟧ ⟦24⟧⟦25⟧{16}⟦26⟧⟦27⟧/pièce (+{17} %) · halle {18}⟦28⟧⟦29⟧⟦30⟧ ⟦31⟧⟦32⟧En stock : ⟦33⟧{19}⟦34⟧⟦35⟧⟦36⟧⟦37⟧{20}⟦38⟧⟦39⟧
+pt: ⟦0⟧⟦1⟧{1}⟦2⟧{2}⟦3⟧⟦4⟧{3}{4}⟦5⟧{5}{6}⟦6⟧⟦7⟧⟦8⟧{8}⟦9⟧⟦10⟧ ⟦11⟧{9}⟦12⟧⟦13⟧{10}⟦14⟧ ⟦15⟧· {11}⟦16⟧⟦17⟧⟦18⟧⟦19⟧⟦20⟧{13}/{14} entregues · faltam {15}⟦21⟧⟦22⟧⟦23⟧ ⟦24⟧⟦25⟧{16}⟦26⟧⟦27⟧/un. (+{17}%) · mercado {18}⟦28⟧⟦29⟧⟦30⟧ ⟦31⟧⟦32⟧Você tem: ⟦33⟧{19}⟦34⟧⟦35⟧⟦36⟧⟦37⟧{20}⟦38⟧⟦39⟧
+@ui.olay
+en: ⟦0⟧Event⟦1⟧
+es: ⟦0⟧Evento⟦1⟧
+de: ⟦0⟧Ereignis⟦1⟧
+fr: ⟦0⟧Événement⟦1⟧
+pt: ⟦0⟧Evento⟦1⟧
+@ui.gelecek_bolge_n
+en: ⟦0⟧Future region: {0}⟦1⟧
+es: ⟦0⟧Zona futura: {0}⟦1⟧
+de: ⟦0⟧Künftiges Gebiet: {0}⟦1⟧
+fr: ⟦0⟧Zone à venir : {0}⟦1⟧
+pt: ⟦0⟧Região futura: {0}⟦1⟧
+@ui.bugun_son_gun
+en: Last day today
+es: Hoy es el último día
+de: Heute letzter Tag
+fr: Dernier jour aujourd'hui
+pt: Hoje é o último dia
+@ui.n_max_teslim_et_n
+en: ⟦0⟧⟦1⟧−⟦2⟧⟦3⟧{2}⟦4⟧⟦5⟧+⟦6⟧⟦7⟧Max⟦8⟧⟦9⟧⟦10⟧Deliver {9}⟦11⟧
+es: ⟦0⟧⟦1⟧−⟦2⟧⟦3⟧{2}⟦4⟧⟦5⟧+⟦6⟧⟦7⟧Máx⟦8⟧⟦9⟧⟦10⟧Entregar {9}⟦11⟧
+de: ⟦0⟧⟦1⟧−⟦2⟧⟦3⟧{2}⟦4⟧⟦5⟧+⟦6⟧⟦7⟧Max⟦8⟧⟦9⟧⟦10⟧Liefern {9}⟦11⟧
+fr: ⟦0⟧⟦1⟧−⟦2⟧⟦3⟧{2}⟦4⟧⟦5⟧+⟦6⟧⟦7⟧Max⟦8⟧⟦9⟧⟦10⟧Livrer {9}⟦11⟧
+pt: ⟦0⟧⟦1⟧−⟦2⟧⟦3⟧{2}⟦4⟧⟦5⟧+⟦6⟧⟦7⟧Máx⟦8⟧⟦9⟧⟦10⟧Entregar {9}⟦11⟧
+@ui.bu_turden_baligin_yok
+en: You don't have this species
+es: No tienes esta especie
+de: Diese Art hast du nicht
+fr: Tu n'as pas cette espèce
+pt: Você não tem essa espécie
+@ui.ilan_doldu
+en: Order filled
+es: Pedido completo
+de: Auftrag erfüllt
+fr: Commande remplie
+pt: Pedido completo
+@ui.panoda_ilan_yok_yarin_yenileri
+en: ⟦0⟧No orders on the board. New ones will be posted tomorrow.⟦1⟧
+es: ⟦0⟧No hay pedidos en el tablón. Mañana habrá nuevos.⟦1⟧
+de: ⟦0⟧Keine Aufträge an der Tafel. Morgen hängen neue aus.⟦1⟧
+fr: ⟦0⟧Aucune commande au tableau. De nouvelles seront affichées demain.⟦1⟧
+pt: ⟦0⟧Não há pedidos no quadro. Amanhã chegam novos.⟦1⟧
+@ui.ilanlar_alim_teklifidir_istedigin_kadar
+en: ⟦0⟧Orders are buy offers: deliver as much as you like in parts — no obligation to complete and no penalty when they expire. Prices stay fixed for the order's lifetime.⟦1⟧
+es: ⟦0⟧Los pedidos son ofertas de compra: entrega por partes lo que quieras; no es obligatorio completarlos y no hay penalización al caducar. Los precios no cambian mientras dure el pedido.⟦1⟧
+de: ⟦0⟧Aufträge sind Kaufangebote: Liefere in Teilen so viel du willst – kein Zwang zur Erfüllung, keine Strafe bei Ablauf. Die Preise bleiben während der Laufzeit gleich.⟦1⟧
+fr: ⟦0⟧Les commandes sont des offres d'achat : livre autant que tu veux, en plusieurs fois, sans obligation de terminer ni pénalité à l'expiration. Les prix restent fixes pendant toute la durée.⟦1⟧
+pt: ⟦0⟧Pedidos são ofertas de compra: entregue quanto quiser em partes, sem obrigação de completar e sem multa ao expirar. Os preços ficam fixos durante todo o pedido.⟦1⟧
+@ui.sonraki_seviye_n
+en:  · next level {0}
+es:  · siguiente nivel {0}
+de:  · nächste Stufe {0}
+fr:  · niveau suivant {0}
+pt:  · próximo nível {0}
+@ui.n_n_n_n_odak
+en: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{2}{3}⟦5⟧⟦6⟧Focus: {4} · Bonus {5}–{6}%{7}⟦7⟧⟦8⟧⟦9⟧⟦10⟧{8}⟦11⟧⟦12⟧fish delivered{9}⟦13⟧⟦14⟧⟦15⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{2}{3}⟦5⟧⟦6⟧Enfoque: {4} · Prima {5}–{6} %{7}⟦7⟧⟦8⟧⟦9⟧⟦10⟧{8}⟦11⟧⟦12⟧peces entregados{9}⟦13⟧⟦14⟧⟦15⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{2}{3}⟦5⟧⟦6⟧Schwerpunkt: {4} · Bonus {5}–{6} %{7}⟦7⟧⟦8⟧⟦9⟧⟦10⟧{8}⟦11⟧⟦12⟧Fische geliefert{9}⟦13⟧⟦14⟧⟦15⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{2}{3}⟦5⟧⟦6⟧Spécialité : {4} · Prime {5}–{6} %{7}⟦7⟧⟦8⟧⟦9⟧⟦10⟧{8}⟦11⟧⟦12⟧poissons livrés{9}⟦13⟧⟦14⟧⟦15⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{2}{3}⟦5⟧⟦6⟧Foco: {4} · Bônus {5}–{6}%{7}⟦7⟧⟦8⟧⟦9⟧⟦10⟧{8}⟦11⟧⟦12⟧peixes entregues{9}⟦13⟧⟦14⟧⟦15⟧
+@ui.henuz_uzak
+en:  · still far off
+es:  · aún lejos
+de:  · noch weit
+fr:  · encore loin
+pt:  · ainda longe
+@ui.en_ust_seviye
+en:  · top level
+es:  · nivel máximo
+de:  · höchste Stufe
+fr:  · niveau max
+pt:  · nível máximo
+@ui.iliski_teslim_edilen_toplam_balik
+en: ⟦0⟧Relationship grows with the total number of fish delivered (50/150/350). Higher relationship brings better bonus offers (up to 40%).⟦1⟧
+es: ⟦0⟧La relación sube según el total de peces entregados (50/150/350). Una relación alta trae ofertas con mejor prima (hasta un 40 %).⟦1⟧
+de: ⟦0⟧Die Beziehung wächst mit der Gesamtzahl gelieferter Fische (50/150/350). Eine bessere Beziehung bringt Angebote mit höherem Bonus (bis 40 %).⟦1⟧
+fr: ⟦0⟧La relation progresse avec le nombre total de poissons livrés (50/150/350). Une meilleure relation apporte de meilleures primes (jusqu'à 40 %).⟦1⟧
+pt: ⟦0⟧O relacionamento cresce com o total de peixes entregues (50/150/350). Relacionamento alto traz ofertas com bônus melhor (até 40%).⟦1⟧
+@ui.siparis_panosu
+en: Order Board
+es: Tablón de pedidos
+de: Auftragstafel
+fr: Tableau des commandes
+pt: Quadro de Pedidos
+@ui.musteriler
+en: Customers
+es: Clientes
+de: Kunden
+fr: Clients
+pt: Clientes
+@ui.guc_n_n_enerji_atis
+en: Power {0} · {1} energy/cast · {2} casts per day
+es: Fuerza {0} · {1} de energía/lanzamiento · {2} lanzamientos al día
+de: Stärke {0} · {1} Energie/Wurf · {2} Würfe pro Tag
+fr: Force {0} · {1} énergie/lancer · {2} lancers par jour
+pt: Força {0} · {1} de energia/arremesso · {2} arremessos por dia
+@ui.dayaniklilik_n_kopma_toleransi
+en: Durability +{0}% (break tolerance)
+es: Resistencia +{0} % (tolerancia a la rotura)
+de: Haltbarkeit +{0} % (Reißtoleranz)
+fr: Résistance +{0} % (tolérance à la casse)
+pt: Resistência +{0}% (tolerância a rompimento)
+@ui.cekme_hizi_n
+en: Reel speed +{0}%
+es: Velocidad de recogida +{0} %
+de: Einholgeschwindigkeit +{0} %
+fr: Vitesse de moulinage +{0} %
+pt: Velocidade de recolha +{0}%
+@ui.gevsek_misina_toleransi_n
+en: Slack-line tolerance +{0}%
+es: Tolerancia a sedal flojo +{0} %
+de: Toleranz bei lockerer Schnur +{0} %
+fr: Tolérance ligne lâche +{0} %
+pt: Tolerância a linha frouxa +{0}%
+@ui.kullaniliyor
+en: ⟦0⟧In use⟦1⟧
+es: ⟦0⟧En uso⟦1⟧
+de: ⟦0⟧In Benutzung⟦1⟧
+fr: ⟦0⟧Utilisé⟦1⟧
+pt: ⟦0⟧Em uso⟦1⟧
+@ui.kullan
+en: ⟦0⟧Use⟦1⟧
+es: ⟦0⟧Usar⟦1⟧
+de: ⟦0⟧Benutzen⟦1⟧
+fr: ⟦0⟧Utiliser⟦1⟧
+pt: ⟦0⟧Usar⟦1⟧
+@ui.onceki_seviye_gerekli
+en: ⟦0⟧Previous level required⟦1⟧
+es: ⟦0⟧Requiere el nivel anterior⟦1⟧
+de: ⟦0⟧Vorherige Stufe nötig⟦1⟧
+fr: ⟦0⟧Niveau précédent requis⟦1⟧
+pt: ⟦0⟧Requer o nível anterior⟦1⟧
+@ui.satin_al_n
+en: ⟦0⟧Buy {3}⟦1⟧
+es: ⟦0⟧Comprar {3}⟦1⟧
+de: ⟦0⟧Kaufen {3}⟦1⟧
+fr: ⟦0⟧Acheter {3}⟦1⟧
+pt: ⟦0⟧Comprar {3}⟦1⟧
+@ui.olta_gucu_yakalanabilecek_baliklari_belirler
+en: ⟦0⟧Rod power decides which fish you can catch: fish power ≤ rod power + 1. Fish one level above your rod are harder to fight.⟦1⟧
+es: ⟦0⟧La fuerza de la caña decide qué peces puedes pescar: fuerza del pez ≤ fuerza de la caña + 1. Los peces de un nivel superior cuestan más.⟦1⟧
+de: ⟦0⟧Die Angelstärke bestimmt, welche Fische du fangen kannst: Fischstärke ≤ Angelstärke + 1. Fische eine Stufe darüber sind schwerer zu drillen.⟦1⟧
+fr: ⟦0⟧La force de la canne détermine les poissons attrapables : force ≤ force de la canne + 1. Les poissons d'un niveau au-dessus sont plus durs à combattre.⟦1⟧
+pt: ⟦0⟧A força da vara define quais peixes você pega: força do peixe ≤ força da vara + 1. Peixes um nível acima dão mais trabalho.⟦1⟧
+@ui.n_uygun_yem_turun_gorulme
+en: {0}⟦0⟧A suitable bait makes a species appear ×1.6 as often; an unsuitable paid bait ×0.8. Paid bait uses up 1 per cast.⟦1⟧
+es: {0}⟦0⟧Un cebo adecuado hace que una especie aparezca ×1,6; un cebo de pago inadecuado, ×0,8. El cebo de pago gasta 1 por lanzamiento.⟦1⟧
+de: {0}⟦0⟧Passender Köder lässt eine Art ×1,6 so oft erscheinen, unpassender gekaufter Köder ×0,8. Gekaufter Köder verbraucht 1 pro Wurf.⟦1⟧
+fr: {0}⟦0⟧Un appât adapté fait apparaître une espèce ×1,6 ; un appât payant inadapté ×0,8. L'appât payant se consomme à raison d'1 par lancer.⟦1⟧
+pt: {0}⟦0⟧A isca certa faz a espécie aparecer ×1,6; isca paga inadequada, ×0,8. A isca paga gasta 1 por arremesso.⟦1⟧
+@ui.n_bugun_yem_indirimi_n
+en: ⟦0⟧{0} Bait discount today: ×{1}⟦1⟧
+es: ⟦0⟧{0} Descuento en cebo hoy: ×{1}⟦1⟧
+de: ⟦0⟧{0} Heute Köderrabatt: ×{1}⟦1⟧
+fr: ⟦0⟧{0} Remise sur les appâts aujourd'hui : ×{1}⟦1⟧
+pt: ⟦0⟧{0} Desconto em isca hoje: ×{1}⟦1⟧
+@ui.secili
+en: ⟦0⟧Selected⟦1⟧
+es: ⟦0⟧Elegido⟦1⟧
+de: ⟦0⟧Gewählt⟦1⟧
+fr: ⟦0⟧Choisi⟦1⟧
+pt: ⟦0⟧Selecionado⟦1⟧
+@ui.sec
+en: ⟦0⟧Select⟦1⟧
+es: ⟦0⟧Elegir⟦1⟧
+de: ⟦0⟧Wählen⟦1⟧
+fr: ⟦0⟧Choisir⟦1⟧
+pt: ⟦0⟧Escolher⟦1⟧
+@ui.n_n_stok_n_n
+en: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧· stock {2} · {3}/each⟦5⟧⟦6⟧{4}⟦7⟧⟦8⟧⟦9⟧{5}{6}⟦10⟧⟦11⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧· stock {2} · {3}/ud.⟦5⟧⟦6⟧{4}⟦7⟧⟦8⟧⟦9⟧{5}{6}⟦10⟧⟦11⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧· Vorrat {2} · {3}/Stück⟦5⟧⟦6⟧{4}⟦7⟧⟦8⟧⟦9⟧{5}{6}⟦10⟧⟦11⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧· stock {2} · {3}/pièce⟦5⟧⟦6⟧{4}⟦7⟧⟦8⟧⟦9⟧{5}{6}⟦10⟧⟦11⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧· estoque {2} · {3}/un.⟦5⟧⟦6⟧{4}⟦7⟧⟦8⟧⟦9⟧{5}{6}⟦10⟧⟦11⟧
+@ui.sec_2
+en: ⟦0⟧Select⟦1⟧
+es: ⟦0⟧Elegir⟦1⟧
+de: ⟦0⟧Wählen⟦1⟧
+fr: ⟦0⟧Choisir⟦1⟧
+pt: ⟦0⟧Escolher⟦1⟧
+@ui.n_canta_seviye_n_n
+en: ⟦0⟧{0}⟦1⟧⟦2⟧Bag level {1}⟦3⟧⟦4⟧{2} fish slots⟦5⟧⟦6⟧{3}⟦7⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧Mochila nivel {1}⟦3⟧⟦4⟧{2} huecos para peces⟦5⟧⟦6⟧{3}⟦7⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧Tasche Stufe {1}⟦3⟧⟦4⟧{2} Fischplätze⟦5⟧⟦6⟧{3}⟦7⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧Sac niveau {1}⟦3⟧⟦4⟧{2} emplacements à poissons⟦5⟧⟦6⟧{3}⟦7⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧Mochila nível {1}⟦3⟧⟦4⟧{2} espaços de peixe⟦5⟧⟦6⟧{3}⟦7⟧
+@ui.sahip
+en: ⟦0⟧Owned⟦1⟧
+es: ⟦0⟧Tuyo⟦1⟧
+de: ⟦0⟧Im Besitz⟦1⟧
+fr: ⟦0⟧Possédé⟦1⟧
+pt: ⟦0⟧Seu⟦1⟧
+@ui.yukselt_n
+en: ⟦0⟧Upgrade {1}⟦1⟧
+es: ⟦0⟧Mejorar {1}⟦1⟧
+de: ⟦0⟧Ausbauen {1}⟦1⟧
+fr: ⟦0⟧Améliorer {1}⟦1⟧
+pt: ⟦0⟧Melhorar {1}⟦1⟧
+@ui.onceki_gerekli
+en: ⟦0⟧Previous required⟦1⟧
+es: ⟦0⟧Requiere el anterior⟦1⟧
+de: ⟦0⟧Vorherige nötig⟦1⟧
+fr: ⟦0⟧Précédent requis⟦1⟧
+pt: ⟦0⟧Requer o anterior⟦1⟧
+@ui.canta
+en: Bag
+es: Mochila
+de: Tasche
+fr: Sac
+pt: Mochila
+@ui.n_ilk_hedef_kiyi_kayigi
+en: ⟦0⟧{0} First goal: ⟦1⟧Coastal Skiff⟦2⟧ — {1}. You can save up by fishing at the pier. Now: {2}⟦3⟧
+es: ⟦0⟧{0} Primera meta: ⟦1⟧Bote costero⟦2⟧ — {1}. Puedes ahorrar pescando en el muelle. Ahora: {2}⟦3⟧
+de: ⟦0⟧{0} Erstes Ziel: ⟦1⟧Küstenboot⟦2⟧ — {1}. Am Steg kannst du dafür sparen. Aktuell: {2}⟦3⟧
+fr: ⟦0⟧{0} Premier objectif : ⟦1⟧Barque côtière⟦2⟧ — {1}. Tu peux économiser en pêchant au ponton. Actuellement : {2}⟦3⟧
+pt: ⟦0⟧{0} Primeira meta: ⟦1⟧Bote Costeiro⟦2⟧ — {1}. Dá para juntar pescando no píer. Agora: {2}⟦3⟧
+@ui.n_ayni_anda_tek_tekne
+en: {0}⟦0⟧Only one boat is active at a time; the others wait in the harbor, keeping their own upgrades and storage. Boats need no maintenance and never break down.⟦1⟧
+es: {0}⟦0⟧Solo puede haber un barco activo; los demás esperan en el puerto con sus mejoras y bodegas. Los barcos no necesitan mantenimiento ni se averían.⟦1⟧
+de: {0}⟦0⟧Es ist immer nur ein Boot aktiv; die anderen warten im Hafen und behalten ihre Ausbauten und Laderäume. Boote brauchen keine Wartung und gehen nicht kaputt.⟦1⟧
+fr: {0}⟦0⟧Un seul bateau est actif à la fois ; les autres attendent au port avec leurs améliorations et leurs cales. Pas d'entretien ni de panne.⟦1⟧
+pt: {0}⟦0⟧Só um barco fica ativo por vez; os outros esperam no porto com suas melhorias e porões. Barcos não precisam de manutenção nem quebram.⟦1⟧
+@ui.ulasim_n
+en: Reach: {0}
+es: Alcance: {0}
+de: Reichweite: {0}
+fr: Portée : {0}
+pt: Alcance: {0}
+@ui.n_n_n_depo_n
+en: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ {2}⟦4⟧Storage {3}→{4} slots · {5} auto rod slots · Engine {6}{7}⟦5⟧⟦6⟧{8}⟦7⟧{9}⟦8⟧ {10}⟦9⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ {2}⟦4⟧Bodega {3}→{4} huecos · {5} huecos para cañas automáticas · Motor {6}{7}⟦5⟧⟦6⟧{8}⟦7⟧{9}⟦8⟧ {10}⟦9⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ {2}⟦4⟧Laderaum {3}→{4} Plätze · {5} Auto-Angelplätze · Motor {6}{7}⟦5⟧⟦6⟧{8}⟦7⟧{9}⟦8⟧ {10}⟦9⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ {2}⟦4⟧Cale {3}→{4} emplacements · {5} emplacements de canne auto · Moteur {6}{7}⟦5⟧⟦6⟧{8}⟦7⟧{9}⟦8⟧ {10}⟦9⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ {2}⟦4⟧Porão {3}→{4} espaços · {5} espaços de vara automática · Motor {6}{7}⟦5⟧⟦6⟧{8}⟦7⟧{9}⟦8⟧ {10}⟦9⟧
+@ui.aktif
+en: ⟦0⟧Active⟦1⟧
+es: ⟦0⟧Activo⟦1⟧
+de: ⟦0⟧Aktiv⟦1⟧
+fr: ⟦0⟧Actif⟦1⟧
+pt: ⟦0⟧Ativo⟦1⟧
+@ui.su_an_depo_n_motor
+en:  · Now: storage {0}, engine {1}, nav {2}
+es:  · Ahora: bodega {0}, motor {1}, nav. {2}
+de:  · Jetzt: Laderaum {0}, Motor {1}, Nav. {2}
+fr:  · Actuellement : cale {0}, moteur {1}, nav. {2}
+pt:  · Agora: porão {0}, motor {1}, nav. {2}
+@ui.yukseltmelerle_yeni_rotalar_acilir
+en: Upgrades open up new routes
+es: Las mejoras abren nuevas rutas
+de: Ausbauten öffnen neue Routen
+fr: Les améliorations ouvrent de nouvelles routes
+pt: Melhorias liberam novas rotas
+@ui.depoda_n_balik
+en: ⟦0⟧{0} fish in storage⟦1⟧
+es: ⟦0⟧{0} {0|pez|peces} en la bodega⟦1⟧
+de: ⟦0⟧{0} {0|Fisch|Fische} im Laderaum⟦1⟧
+fr: ⟦0⟧{0} {0|poisson|poissons} en cale⟦1⟧
+pt: ⟦0⟧{0} {0|peixe|peixes} no porão⟦1⟧
+@ui.kullanimda
+en: ⟦0⟧In use⟦1⟧
+es: ⟦0⟧En uso⟦1⟧
+de: ⟦0⟧In Benutzung⟦1⟧
+fr: ⟦0⟧Utilisé⟦1⟧
+pt: ⟦0⟧Em uso⟦1⟧
+@ui.aktif_yap
+en: ⟦0⟧Make Active⟦1⟧
+es: ⟦0⟧Activar⟦1⟧
+de: ⟦0⟧Aktivieren⟦1⟧
+fr: ⟦0⟧Activer⟦1⟧
+pt: ⟦0⟧Ativar⟦1⟧
+@ui.satin_al_n_2
+en: ⟦0⟧Buy {2}⟦1⟧
+es: ⟦0⟧Comprar {2}⟦1⟧
+de: ⟦0⟧Kaufen {2}⟦1⟧
+fr: ⟦0⟧Acheter {2}⟦1⟧
+pt: ⟦0⟧Comprar {2}⟦1⟧
+@ui.once_bir_tekne_satin_al
+en: ⟦0⟧Buy a boat first.⟦1⟧
+es: ⟦0⟧Primero compra un barco.⟦1⟧
+de: ⟦0⟧Kauf zuerst ein Boot.⟦1⟧
+fr: ⟦0⟧Achète d'abord un bateau.⟦1⟧
+pt: ⟦0⟧Compre um barco primeiro.⟦1⟧
+@ui.n_motor_n_n_navigasyon
+en: ⟦0⟧⟦1⟧{0}⟦2⟧Engine⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧⟦7⟧{2}⟦8⟧Navigation⟦9⟧⟦10⟧{3}⟦11⟧⟦12⟧⟦13⟧{4}⟦14⟧Hull⟦15⟧⟦16⟧{5}⟦17⟧⟦18⟧⟦19⟧{6}⟦20⟧Storage⟦21⟧⟦22⟧{7}⟦23⟧⟦24⟧⟦25⟧
+es: ⟦0⟧⟦1⟧{0}⟦2⟧Motor⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧⟦7⟧{2}⟦8⟧Navegación⟦9⟧⟦10⟧{3}⟦11⟧⟦12⟧⟦13⟧{4}⟦14⟧Casco⟦15⟧⟦16⟧{5}⟦17⟧⟦18⟧⟦19⟧{6}⟦20⟧Bodega⟦21⟧⟦22⟧{7}⟦23⟧⟦24⟧⟦25⟧
+de: ⟦0⟧⟦1⟧{0}⟦2⟧Motor⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧⟦7⟧{2}⟦8⟧Navigation⟦9⟧⟦10⟧{3}⟦11⟧⟦12⟧⟦13⟧{4}⟦14⟧Rumpf⟦15⟧⟦16⟧{5}⟦17⟧⟦18⟧⟦19⟧{6}⟦20⟧Laderaum⟦21⟧⟦22⟧{7}⟦23⟧⟦24⟧⟦25⟧
+fr: ⟦0⟧⟦1⟧{0}⟦2⟧Moteur⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧⟦7⟧{2}⟦8⟧Navigation⟦9⟧⟦10⟧{3}⟦11⟧⟦12⟧⟦13⟧{4}⟦14⟧Coque⟦15⟧⟦16⟧{5}⟦17⟧⟦18⟧⟦19⟧{6}⟦20⟧Cale⟦21⟧⟦22⟧{7}⟦23⟧⟦24⟧⟦25⟧
+pt: ⟦0⟧⟦1⟧{0}⟦2⟧Motor⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧⟦7⟧{2}⟦8⟧Navegação⟦9⟧⟦10⟧{3}⟦11⟧⟦12⟧⟦13⟧{4}⟦14⟧Casco⟦15⟧⟦16⟧{5}⟦17⟧⟦18⟧⟦19⟧{6}⟦20⟧Porão⟦21⟧⟦22⟧{7}⟦23⟧⟦24⟧⟦25⟧
+@ui.once_n
+en: ⟦0⟧Requires {0}⟦1⟧
+es: ⟦0⟧Requiere {0}⟦1⟧
+de: ⟦0⟧Erst {0}⟦1⟧
+fr: ⟦0⟧Requiert {0}⟦1⟧
+pt: ⟦0⟧Requer {0}⟦1⟧
+@ui.bolge_menzili_ve_surus_hizi
+en: Region range and cruising speed
+es: Alcance de zonas y velocidad
+de: Reichweite und Fahrgeschwindigkeit
+fr: Portée et vitesse de navigation
+pt: Alcance de regiões e velocidade
+@ui.uzak_rota_erisimi_ve_av
+en: Far-route access and fishing-spot sonar
+es: Acceso a rutas lejanas y sonar de zonas de pesca
+de: Zugang zu fernen Routen und Angelplatz-Sonar
+fr: Accès aux routes lointaines et sonar des coins de pêche
+pt: Acesso a rotas distantes e sonar de pontos de pesca
+@ui.ruzgar_sallanti_etkisini_azaltir_gorunumu
+en: Reduces wind/rocking effects, improves looks
+es: Reduce el efecto del viento y el balanceo, mejora el aspecto
+de: Mindert Wind- und Schaukeleffekte, sieht besser aus
+fr: Réduit l'effet du vent et du roulis, améliore l'apparence
+pt: Reduz o efeito do vento/balanço e melhora a aparência
+@ui.daha_fazla_depo_yuvasi
+en: More storage slots
+es: Más huecos de bodega
+de: Mehr Laderaumplätze
+fr: Plus d'emplacements en cale
+pt: Mais espaços no porão
+@ui.yuklu
+en: ⟦0⟧Installed⟦1⟧
+es: ⟦0⟧Instalado⟦1⟧
+de: ⟦0⟧Eingebaut⟦1⟧
+fr: ⟦0⟧Installé⟦1⟧
+pt: ⟦0⟧Instalado⟦1⟧
+@ui.satin_al_n_3
+en: ⟦0⟧Buy {3}⟦1⟧
+es: ⟦0⟧Comprar {3}⟦1⟧
+de: ⟦0⟧Kaufen {3}⟦1⟧
+fr: ⟦0⟧Acheter {3}⟦1⟧
+pt: ⟦0⟧Comprar {3}⟦1⟧
+@ui.erisim_n
+en: ⟦0⟧Access: {0}⟦1⟧
+es: ⟦0⟧Acceso: {0}⟦1⟧
+de: ⟦0⟧Zugang: {0}⟦1⟧
+fr: ⟦0⟧Accès : {0}⟦1⟧
+pt: ⟦0⟧Acesso: {0}⟦1⟧
+@ui.4_manuel_atista_1_deneme
+en: 1 try per 4 manual casts · 55% success · power ≤2
+es: 1 intento cada 4 lanzamientos manuales · 55 % de éxito · fuerza ≤2
+de: 1 Versuch pro 4 Handwürfe · 55 % Erfolg · Stärke ≤2
+fr: 1 essai tous les 4 lancers manuels · 55 % de réussite · force ≤2
+pt: 1 tentativa a cada 4 arremessos manuais · 55% de sucesso · força ≤2
+@ui.tum_cihazlar_3_atista_1
+en: All devices: 1 try per 3 casts · 65% · power ≤3
+es: Todos los dispositivos: 1 intento cada 3 lanzamientos · 65 % · fuerza ≤3
+de: Alle Geräte: 1 Versuch pro 3 Würfe · 65 % · Stärke ≤3
+fr: Tous les appareils : 1 essai tous les 3 lancers · 65 % · force ≤3
+pt: Todos os dispositivos: 1 tentativa a cada 3 arremessos · 65% · força ≤3
+@ui.tum_cihazlar_basari_75
+en: All devices: 75% success
+es: Todos los dispositivos: 75 % de éxito
+de: Alle Geräte: 75 % Erfolg
+fr: Tous les appareils : 75 % de réussite
+pt: Todos os dispositivos: 75% de sucesso
+@ui.yeni_bagimsiz_cihaz_global_yukseltmeleri
+en: New independent device (uses the global upgrades)
+es: Nuevo dispositivo independiente (usa las mejoras globales)
+de: Neues eigenständiges Gerät (nutzt die globalen Ausbauten)
+fr: Nouvel appareil indépendant (utilise les améliorations globales)
+pt: Novo dispositivo independente (usa as melhorias globais)
+@ui.yalnizca_acik_deniz_teknesi_nde
+en: Power 4 auto fishing on the Offshore Boat only
+es: Pesca automática de fuerza 4 solo en el Barco de altura
+de: Auto-Angeln der Stärke 4 nur auf dem Hochseeboot
+fr: Pêche auto de force 4 uniquement sur le Bateau de haute mer
+pt: Pesca automática de força 4 só no Barco de Alto-mar
+@ui.su_anki_ayar_her_n
+en: ⟦0⟧Current setup: 1 try every ⟦1⟧{0}⟦2⟧ manual casts · success ⟦3⟧{1}%⟦4⟧ · power limit ⟦5⟧{2}⟦6⟧ (active boat) · today ⟦7⟧{3}/{4}⟦8⟧ auto catches (max {5} per device per day)⟦9⟧
+es: ⟦0⟧Ajuste actual: 1 intento cada ⟦1⟧{0}⟦2⟧ lanzamientos manuales · éxito ⟦3⟧{1} %⟦4⟧ · límite de fuerza ⟦5⟧{2}⟦6⟧ (barco activo) · hoy ⟦7⟧{3}/{4}⟦8⟧ capturas automáticas (máx. {5} por dispositivo al día)⟦9⟧
+de: ⟦0⟧Aktuelle Einstellung: 1 Versuch alle ⟦1⟧{0}⟦2⟧ Handwürfe · Erfolg ⟦3⟧{1} %⟦4⟧ · Stärkegrenze ⟦5⟧{2}⟦6⟧ (aktives Boot) · heute ⟦7⟧{3}/{4}⟦8⟧ Auto-Fänge (max. {5} pro Gerät und Tag)⟦9⟧
+fr: ⟦0⟧Réglage actuel : 1 essai tous les ⟦1⟧{0}⟦2⟧ lancers manuels · réussite ⟦3⟧{1} %⟦4⟧ · limite de force ⟦5⟧{2}⟦6⟧ (bateau actif) · aujourd'hui ⟦7⟧{3}/{4}⟦8⟧ prises auto (max {5} par appareil et par jour)⟦9⟧
+pt: ⟦0⟧Configuração atual: 1 tentativa a cada ⟦1⟧{0}⟦2⟧ arremessos manuais · sucesso ⟦3⟧{1}%⟦4⟧ · limite de força ⟦5⟧{2}⟦6⟧ (barco ativo) · hoje ⟦7⟧{3}/{4}⟦8⟧ capturas automáticas (máx. {5} por dispositivo por dia)⟦9⟧

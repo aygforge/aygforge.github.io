@@ -1,0 +1,330 @@
+@ui2.bu_kaynakta_akvaryuma_uygun_balik
+en: ⟦0⟧No aquarium-friendly fish in this source.⟦1⟧
+es: ⟦0⟧No hay peces aptos para acuario en este origen.⟦1⟧
+de: ⟦0⟧In dieser Quelle gibt es keine aquariumtauglichen Fische.⟦1⟧
+fr: ⟦0⟧Aucun poisson adapté à l'aquarium dans cette source.⟦1⟧
+pt: ⟦0⟧Não há peixes próprios para aquário nesta origem.⟦1⟧
+@ui2.koleksiyon_n_n_n_n
+en: ⟦0⟧Collection {0}/{1}⟦1⟧⟦2⟧{2}⟦3⟧⟦4⟧{3} 5 species: Collection Badge · {4} 10 species: Ocean background · {5} 20 species: “Sea Collector” title⟦5⟧⟦6⟧Fish in aquariums don't count as sellable stock. No upkeep, feeding or costs.⟦7⟧
+es: ⟦0⟧Colección {0}/{1}⟦1⟧⟦2⟧{2}⟦3⟧⟦4⟧{3} 5 especies: insignia de colección · {4} 10 especies: fondo océano · {5} 20 especies: título «Coleccionista marino»⟦5⟧⟦6⟧Los peces del acuario no cuentan como existencias para vender. Sin mantenimiento, comida ni gastos.⟦7⟧
+de: ⟦0⟧Sammlung {0}/{1}⟦1⟧⟦2⟧{2}⟦3⟧⟦4⟧{3} 5 Arten: Sammelabzeichen · {4} 10 Arten: Ozean-Hintergrund · {5} 20 Arten: Titel „Meeressammler“⟦5⟧⟦6⟧Aquarienfische zählen nicht zum Verkaufsbestand. Keine Pflege, kein Füttern, keine Kosten.⟦7⟧
+fr: ⟦0⟧Collection {0}/{1}⟦1⟧⟦2⟧{2}⟦3⟧⟦4⟧{3} 5 espèces : badge de collection · {4} 10 espèces : fond océan · {5} 20 espèces : titre « Collectionneur marin »⟦5⟧⟦6⟧Les poissons en aquarium ne comptent pas dans le stock vendable. Ni entretien, ni nourriture, ni frais.⟦7⟧
+pt: ⟦0⟧Coleção {0}/{1}⟦1⟧⟦2⟧{2}⟦3⟧⟦4⟧{3} 5 espécies: Insígnia de Coleção · {4} 10 espécies: fundo oceano · {5} 20 espécies: título “Colecionador do Mar”⟦5⟧⟦6⟧Peixes do aquário não contam como estoque à venda. Sem manutenção, comida ou custos.⟦7⟧
+@ui2.dekor_sandik
+en: Decor & Chest
+es: Decoración y baúl
+de: Deko & Truhe
+fr: Déco & coffre
+pt: Decoração e Baú
+@ui2.akvaryumlar
+en: Aquariums
+es: Acuarios
+de: Aquarien
+fr: Aquariums
+pt: Aquários
+@ui2.n_n_n_n_balik
+en: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2} · {3} fish · up to {4} species⟦5⟧⟦6⟧{5}⟦7⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2} · {3} peces · hasta {4} especies⟦5⟧⟦6⟧{5}⟦7⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2} · {3} Fische · bis {4} Arten⟦5⟧⟦6⟧{5}⟦7⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2} · {3} poissons · jusqu'à {4} espèces⟦5⟧⟦6⟧{5}⟦7⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2} · {3} peixes · até {4} espécies⟦5⟧⟦6⟧{5}⟦7⟧
+@ui2.sahipsin_evde
+en: ⟦0⟧Owned · at home⟦1⟧
+es: ⟦0⟧Ya lo tienes · en casa⟦1⟧
+de: ⟦0⟧Im Besitz · zu Hause⟦1⟧
+fr: ⟦0⟧Possédé · à la maison⟦1⟧
+pt: ⟦0⟧Você já tem · em casa⟦1⟧
+@ui2.akvaryum_dekorlari_n
+en: ⟦0⟧Aquarium decor⟦1⟧{0}
+es: ⟦0⟧Decoración de acuario⟦1⟧{0}
+de: ⟦0⟧Aquariendeko⟦1⟧{0}
+fr: ⟦0⟧Déco d'aquarium⟦1⟧{0}
+pt: ⟦0⟧Decoração de aquário⟦1⟧{0}
+@ui2.n_yalnizca_gorsel_n
+en: ⟦0⟧⟦1⟧⟦2⟧{0}⟦3⟧ ⟦4⟧cosmetic only⟦5⟧⟦6⟧{1}⟦7⟧
+es: ⟦0⟧⟦1⟧⟦2⟧{0}⟦3⟧ ⟦4⟧solo estético⟦5⟧⟦6⟧{1}⟦7⟧
+de: ⟦0⟧⟦1⟧⟦2⟧{0}⟦3⟧ ⟦4⟧nur optisch⟦5⟧⟦6⟧{1}⟦7⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧{0}⟦3⟧ ⟦4⟧purement esthétique⟦5⟧⟦6⟧{1}⟦7⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧{0}⟦3⟧ ⟦4⟧só visual⟦5⟧⟦6⟧{1}⟦7⟧
+@ui2.uygun_turler_n_n_her
+en: ⟦0⟧Suitable species ({0})⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧You can buy one of each model; with all three you can display 22 fish in total. Aquariums don't use decor slots.⟦5⟧
+es: ⟦0⟧Especies aptas ({0})⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧Puedes comprar uno de cada modelo; con los tres exhibes 22 peces en total. Los acuarios no ocupan huecos de decoración.⟦5⟧
+de: ⟦0⟧Geeignete Arten ({0})⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧Jedes Modell gibt es einmal; mit allen dreien zeigst du insgesamt 22 Fische. Aquarien belegen keine Dekoplätze.⟦5⟧
+fr: ⟦0⟧Espèces adaptées ({0})⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧Un exemplaire par modèle ; avec les trois, tu exposes 22 poissons au total. Les aquariums n'occupent pas d'emplacement de déco.⟦5⟧
+pt: ⟦0⟧Espécies adequadas ({0})⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧Dá para comprar um de cada modelo; com os três você exibe 22 peixes ao todo. Aquários não usam espaços de decoração.⟦5⟧
+@ui2.onceki_yarismalar_n_n_n
+en: ⟦0⟧Past contests⟦1⟧{0}{1}{2}⟦2⟧⟦3⟧{3} Rival profiles⟦4⟧⟦5⟧
+es: ⟦0⟧Concursos anteriores⟦1⟧{0}{1}{2}⟦2⟧⟦3⟧{3} Perfiles de rivales⟦4⟧⟦5⟧
+de: ⟦0⟧Frühere Wettbewerbe⟦1⟧{0}{1}{2}⟦2⟧⟦3⟧{3} Rivalenprofile⟦4⟧⟦5⟧
+fr: ⟦0⟧Concours passés⟦1⟧{0}{1}{2}⟦2⟧⟦3⟧{3} Profils des rivaux⟦4⟧⟦5⟧
+pt: ⟦0⟧Competições anteriores⟦1⟧{0}{1}{2}⟦2⟧⟦3⟧{3} Perfis dos rivais⟦4⟧⟦5⟧
+@ui2.n_n_yil_n_n
+en: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧Year {2}⟦5⟧⟦6⟧{3}⟦7⟧⟦8⟧⟦9⟧#{4}⟦10⟧⟦11⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧Año {2}⟦5⟧⟦6⟧{3}⟦7⟧⟦8⟧⟦9⟧{4}.º⟦10⟧⟦11⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧Jahr {2}⟦5⟧⟦6⟧{3}⟦7⟧⟦8⟧⟦9⟧{4}.⟦10⟧⟦11⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧An {2}⟦5⟧⟦6⟧{3}⟦7⟧⟦8⟧⟦9⟧{4}e⟦10⟧⟦11⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧Ano {2}⟦5⟧⟦6⟧{3}⟦7⟧⟦8⟧⟦9⟧{4}º⟦10⟧⟦11⟧
+@ui2.n_n_yil_n_eski
+en: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧Year {2}⟦5⟧⟦6⟧Old contest record: only your placing is known⟦7⟧⟦8⟧⟦9⟧#{3}⟦10⟧⟦11⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧Año {2}⟦5⟧⟦6⟧Registro antiguo: solo se conoce tu puesto⟦7⟧⟦8⟧⟦9⟧{3}.º⟦10⟧⟦11⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧Jahr {2}⟦5⟧⟦6⟧Alter Eintrag: nur deine Platzierung ist bekannt⟦7⟧⟦8⟧⟦9⟧{3}.⟦10⟧⟦11⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧An {2}⟦5⟧⟦6⟧Ancien relevé : seul ton classement est connu⟦7⟧⟦8⟧⟦9⟧{3}e⟦10⟧⟦11⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧Ano {2}⟦5⟧⟦6⟧Registro antigo: só a sua colocação é conhecida⟦7⟧⟦8⟧⟦9⟧{3}º⟦10⟧⟦11⟧
+@ui2.henuz_yarisma_gecmisi_yok
+en: ⟦0⟧No contest history yet.⟦1⟧
+es: ⟦0⟧Aún no hay historial de concursos.⟦1⟧
+de: ⟦0⟧Noch keine Wettbewerbe.⟦1⟧
+fr: ⟦0⟧Aucun historique de concours.⟦1⟧
+pt: ⟦0⟧Ainda não há histórico de competições.⟦1⟧
+@ui2.n_n_hedefi
+en: ⟦0⟧{1} {2} target⟦1⟧
+es: ⟦0⟧Objetivo: {1} {2}⟦1⟧
+de: ⟦0⟧Ziel: {1} {2}⟦1⟧
+fr: ⟦0⟧Objectif : {1} {2}⟦1⟧
+pt: ⟦0⟧Meta: {1} {2}⟦1⟧
+@ui2.ilanlardan_sefer_hedefi_n_miktari
+en: ⟦0⟧Trip targets from orders⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧You choose the amount; the order's total doesn't become a mandatory target.⟦5⟧
+es: ⟦0⟧Objetivos de salida desde pedidos⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧Tú eliges la cantidad; el total del pedido no se convierte en objetivo obligatorio.⟦5⟧
+de: ⟦0⟧Ausfahrtsziele aus Aufträgen⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧Die Menge wählst du selbst; die Auftragsmenge wird kein Pflichtziel.⟦5⟧
+fr: ⟦0⟧Objectifs de sortie depuis les commandes⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧Tu choisis la quantité ; le total de la commande ne devient pas un objectif obligatoire.⟦5⟧
+pt: ⟦0⟧Metas de viagem a partir dos pedidos⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧Você escolhe a quantidade; o total do pedido não vira meta obrigatória.⟦5⟧
+@ui2.burada_yalnizca_goruntuleme_yapilir_satin
+en: ⟦0⟧View only here; for purchases, active boat and outfitting changes, go to Bora's yard (in town).⟦1⟧{0}
+es: ⟦0⟧Aquí solo puedes mirar; para comprar, cambiar el barco activo o el equipamiento, ve al astillero de Bora (en el pueblo).⟦1⟧{0}
+de: ⟦0⟧Hier nur Ansicht; für Käufe, aktives Boot und Ausstattung geh zu Boras Werft (im Ort).⟦1⟧{0}
+fr: ⟦0⟧Consultation uniquement ; pour les achats, le bateau actif et l'équipement, va au chantier de Bora (au village).⟦1⟧{0}
+pt: ⟦0⟧Aqui é só para ver; para compras, barco ativo e equipamento, vá ao estaleiro do Bora (na vila).⟦1⟧{0}
+@ui2.n_altin_ustalik
+en: {0} gold mastery
+es: maestría de oro de {0}
+de: Gold-Meisterschaft {0}
+fr: maîtrise or de {0}
+pt: maestria de ouro de {0}
+@ui2.tekne_susu_altin_bolge_ustaligi
+en: ⟦0⟧Boat ornament (Gold region mastery)⟦1⟧⟦2⟧⟦3⟧No ornament⟦4⟧{1}⟦5⟧
+es: ⟦0⟧Adorno de barco (maestría de oro de zona)⟦1⟧⟦2⟧⟦3⟧Sin adorno⟦4⟧{1}⟦5⟧
+de: ⟦0⟧Bootsschmuck (Gold-Gebietsmeisterschaft)⟦1⟧⟦2⟧⟦3⟧Kein Schmuck⟦4⟧{1}⟦5⟧
+fr: ⟦0⟧Ornement de bateau (maîtrise or de zone)⟦1⟧⟦2⟧⟦3⟧Aucun ornement⟦4⟧{1}⟦5⟧
+pt: ⟦0⟧Enfeite de barco (maestria de ouro da região)⟦1⟧⟦2⟧⟦3⟧Sem enfeite⟦4⟧{1}⟦5⟧
+@ui2.takili
+en: Mounted
+es: Puesto
+de: Montiert
+fr: Installé
+pt: Instalado
+@ui2.tak
+en: Mount
+es: Poner
+de: Anbringen
+fr: Installer
+pt: Instalar
+@ui2.v2_cay_bahcesi_satisi_n
+en: ⟦0⟧v2⟦1⟧⟦2⟧⟦3⟧⟦4⟧Tea garden sales⟦5⟧⟦6⟧{0}⟦7⟧⟦8⟧⟦9⟧⟦10⟧Festival prizes⟦11⟧⟦12⟧{1}⟦13⟧⟦14⟧⟦15⟧⟦16⟧Region mastery⟦17⟧⟦18⟧{2}/21⟦19⟧⟦20⟧⟦21⟧⟦22⟧Aquarium collection⟦23⟧⟦24⟧{3}/{4}⟦25⟧⟦26⟧⟦27⟧⟦28⟧Perfect hook sets⟦29⟧⟦30⟧{5}⟦31⟧⟦32⟧⟦33⟧⟦34⟧Title⟦35⟧⟦36⟧{6}⟦37⟧⟦38⟧⟦39⟧⟦40⟧⟦41⟧{7} Ledger⟦42⟧⟦43⟧{8} Records⟦44⟧
+es: ⟦0⟧v2⟦1⟧⟦2⟧⟦3⟧⟦4⟧Ventas al jardín de té⟦5⟧⟦6⟧{0}⟦7⟧⟦8⟧⟦9⟧⟦10⟧Premios de fiestas⟦11⟧⟦12⟧{1}⟦13⟧⟦14⟧⟦15⟧⟦16⟧Maestría de zonas⟦17⟧⟦18⟧{2}/21⟦19⟧⟦20⟧⟦21⟧⟦22⟧Colección del acuario⟦23⟧⟦24⟧{3}/{4}⟦25⟧⟦26⟧⟦27⟧⟦28⟧Clavadas perfectas⟦29⟧⟦30⟧{5}⟦31⟧⟦32⟧⟦33⟧⟦34⟧Título⟦35⟧⟦36⟧{6}⟦37⟧⟦38⟧⟦39⟧⟦40⟧⟦41⟧{7} Libro de cuentas⟦42⟧⟦43⟧{8} Récords⟦44⟧
+de: ⟦0⟧v2⟦1⟧⟦2⟧⟦3⟧⟦4⟧Teegarten-Verkäufe⟦5⟧⟦6⟧{0}⟦7⟧⟦8⟧⟦9⟧⟦10⟧Festpreise⟦11⟧⟦12⟧{1}⟦13⟧⟦14⟧⟦15⟧⟦16⟧Gebietsmeisterschaft⟦17⟧⟦18⟧{2}/21⟦19⟧⟦20⟧⟦21⟧⟦22⟧Aquariensammlung⟦23⟧⟦24⟧{3}/{4}⟦25⟧⟦26⟧⟦27⟧⟦28⟧Perfekte Anhiebe⟦29⟧⟦30⟧{5}⟦31⟧⟦32⟧⟦33⟧⟦34⟧Titel⟦35⟧⟦36⟧{6}⟦37⟧⟦38⟧⟦39⟧⟦40⟧⟦41⟧{7} Kassenbuch⟦42⟧⟦43⟧{8} Rekorde⟦44⟧
+fr: ⟦0⟧v2⟦1⟧⟦2⟧⟦3⟧⟦4⟧Ventes au jardin de thé⟦5⟧⟦6⟧{0}⟦7⟧⟦8⟧⟦9⟧⟦10⟧Prix des fêtes⟦11⟧⟦12⟧{1}⟦13⟧⟦14⟧⟦15⟧⟦16⟧Maîtrise des zones⟦17⟧⟦18⟧{2}/21⟦19⟧⟦20⟧⟦21⟧⟦22⟧Collection d'aquarium⟦23⟧⟦24⟧{3}/{4}⟦25⟧⟦26⟧⟦27⟧⟦28⟧Ferrages parfaits⟦29⟧⟦30⟧{5}⟦31⟧⟦32⟧⟦33⟧⟦34⟧Titre⟦35⟧⟦36⟧{6}⟦37⟧⟦38⟧⟦39⟧⟦40⟧⟦41⟧{7} Livre de comptes⟦42⟧⟦43⟧{8} Records⟦44⟧
+pt: ⟦0⟧v2⟦1⟧⟦2⟧⟦3⟧⟦4⟧Vendas à casa de chá⟦5⟧⟦6⟧{0}⟦7⟧⟦8⟧⟦9⟧⟦10⟧Prêmios de festivais⟦11⟧⟦12⟧{1}⟦13⟧⟦14⟧⟦15⟧⟦16⟧Maestria das regiões⟦17⟧⟦18⟧{2}/21⟦19⟧⟦20⟧⟦21⟧⟦22⟧Coleção do aquário⟦23⟧⟦24⟧{3}/{4}⟦25⟧⟦26⟧⟦27⟧⟦28⟧Fisgadas perfeitas⟦29⟧⟦30⟧{5}⟦31⟧⟦32⟧⟦33⟧⟦34⟧Título⟦35⟧⟦36⟧{6}⟦37⟧⟦38⟧⟦39⟧⟦40⟧⟦41⟧{7} Livro-caixa⟦42⟧⟦43⟧{8} Recordes⟦44⟧
+@ui2.sefer_hedefi_n_n
+en: Trip target: {0} ×{1}
+es: Objetivo de salida: {0} ×{1}
+de: Ausfahrtsziel: {0} ×{1}
+fr: Objectif de sortie : {0} ×{1}
+pt: Meta da viagem: {0} ×{1}
+@ui2.onerilen_dagilimla_sat
+en: Sell with the suggested split
+es: Vender con el reparto sugerido
+de: Mit Vorschlag verkaufen
+fr: Vendre selon la répartition suggérée
+pt: Vender com a divisão sugerida
+@ui2.onayla_ve_sat
+en: Confirm and sell
+es: Confirmar y vender
+de: Bestätigen & verkaufen
+fr: Confirmer et vendre
+pt: Confirmar e vender
+@ui2.n_evindeki_akvaryum_kosesine_yerlesir
+en: {0}. It goes in the aquarium corner of your home.
+es: {0}. Se coloca en el rincón del acuario de tu casa.
+de: {0}. Es kommt in die Aquarienecke deines Hauses.
+fr: {0}. Il s'installe dans le coin aquarium de ta maison.
+pt: {0}. Fica no cantinho do aquário da sua casa.
+@ui2.akvaryum_dekoru_yalnizca_gorsel
+en: Aquarium decor (cosmetic only).
+es: Decoración de acuario (solo estética).
+de: Aquariendeko (nur optisch).
+fr: Déco d'aquarium (purement esthétique).
+pt: Decoração de aquário (só visual).
+@ui2.set_kaydedildi_n
+en: Set saved: {0}
+es: Conjunto guardado: {0}
+de: Set gespeichert: {0}
+fr: Ensemble enregistré : {0}
+pt: Conjunto salvo: {0}
+@ui2.n_kusanildi_n
+en: {0} equipped{1}
+es: {0} equipado{1}
+de: {0} ausgerüstet{1}
+fr: {0} équipé{1}
+pt: {0} equipado{1}
+@ui2.set_adi_guncellendi
+en: Set name updated.
+es: Nombre del conjunto actualizado.
+de: Set-Name aktualisiert.
+fr: Nom de l'ensemble mis à jour.
+pt: Nome do conjunto atualizado.
+@ui2.bu_islem_icin_kasabadaki_tekne
+en: Go to the Boatyard in town for this.
+es: Para esto, ve al Astillero del pueblo.
+de: Dafür musst du zur Bootswerft im Ort.
+fr: Pour cela, va au chantier naval du village.
+pt: Para isso, vá ao Estaleiro da vila.
+@ui2.n_sefer_hedefi_n_n
+en: ⟦0⟧{0} Trip target⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2}⟦5⟧{3}⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧−10⟦10⟧⟦11⟧−⟦12⟧⟦13⟧{5}⟦14⟧⟦15⟧+⟦16⟧⟦17⟧+10⟦18⟧⟦19⟧⟦20⟧⟦21⟧Cancel⟦22⟧⟦23⟧Add to targets⟦24⟧⟦25⟧
+es: ⟦0⟧{0} Objetivo de salida⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2}⟦5⟧{3}⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧−10⟦10⟧⟦11⟧−⟦12⟧⟦13⟧{5}⟦14⟧⟦15⟧+⟦16⟧⟦17⟧+10⟦18⟧⟦19⟧⟦20⟧⟦21⟧Cancelar⟦22⟧⟦23⟧Añadir a objetivos⟦24⟧⟦25⟧
+de: ⟦0⟧{0} Ausfahrtsziel⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2}⟦5⟧{3}⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧−10⟦10⟧⟦11⟧−⟦12⟧⟦13⟧{5}⟦14⟧⟦15⟧+⟦16⟧⟦17⟧+10⟦18⟧⟦19⟧⟦20⟧⟦21⟧Abbrechen⟦22⟧⟦23⟧Als Ziel hinzufügen⟦24⟧⟦25⟧
+fr: ⟦0⟧{0} Objectif de sortie⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2}⟦5⟧{3}⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧−10⟦10⟧⟦11⟧−⟦12⟧⟦13⟧{5}⟦14⟧⟦15⟧+⟦16⟧⟦17⟧+10⟦18⟧⟦19⟧⟦20⟧⟦21⟧Annuler⟦22⟧⟦23⟧Ajouter aux objectifs⟦24⟧⟦25⟧
+pt: ⟦0⟧{0} Meta da viagem⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2}⟦5⟧{3}⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧−10⟦10⟧⟦11⟧−⟦12⟧⟦13⟧{5}⟦14⟧⟦15⟧+⟦16⟧⟦17⟧+10⟦18⟧⟦19⟧⟦20⟧⟦21⟧Cancelar⟦22⟧⟦23⟧Adicionar às metas⟦24⟧⟦25⟧
+@ui2.ilan_n_kalan_n
+en: ⟦0⟧Order: {0} · {1} left⟦1⟧
+es: ⟦0⟧Pedido: {0} · faltan {1}⟦1⟧
+de: ⟦0⟧Auftrag: {0} · noch {1}⟦1⟧
+fr: ⟦0⟧Commande : {0} · reste {1}⟦1⟧
+pt: ⟦0⟧Pedido: {0} · faltam {1}⟦1⟧
+@ui2.zaten_3_hedefin_var_once
+en: ⟦0⟧You already have 3 targets; delete one first.⟦1⟧
+es: ⟦0⟧Ya tienes 3 objetivos; borra uno primero.⟦1⟧
+de: ⟦0⟧Du hast schon 3 Ziele; lösch zuerst eins.⟦1⟧
+fr: ⟦0⟧Tu as déjà 3 objectifs ; supprimes-en un d'abord.⟦1⟧
+pt: ⟦0⟧Você já tem 3 metas; apague uma primeiro.⟦1⟧
+@ui2.kayitli_olta_setleri_n_setler
+en: ⟦0⟧Saved rod sets⟦1⟧{0}⟦2⟧Sets only cover manual rod gear. Gear you don't own can't be equipped; if a paid bait is out of stock, basic bait is chosen instead.⟦3⟧
+es: ⟦0⟧Conjuntos de caña guardados⟦1⟧{0}⟦2⟧Los conjuntos solo incluyen el equipo de la caña manual. No puedes equipar lo que no tienes; si un cebo de pago está agotado, se elige el cebo básico.⟦3⟧
+de: ⟦0⟧Gespeicherte Angelsets⟦1⟧{0}⟦2⟧Sets gelten nur für die Handangel. Nicht vorhandene Ausrüstung kann nicht angelegt werden; fehlt ein gekaufter Köder, wird Grundköder gewählt.⟦3⟧
+fr: ⟦0⟧Ensembles de canne enregistrés⟦1⟧{0}⟦2⟧Les ensembles ne concernent que l'équipement de la canne manuelle. Impossible d'équiper ce que tu ne possèdes pas ; un appât payant en rupture est remplacé par l'appât de base.⟦3⟧
+pt: ⟦0⟧Conjuntos de vara salvos⟦1⟧{0}⟦2⟧Os conjuntos valem só para o equipamento da vara manual. Não dá para equipar o que você não tem; se uma isca paga acabar, usa-se a isca básica.⟦3⟧
+@ui2.n_n_ad_mevcudu_kaydet
+en: ⟦0⟧{0}⟦1⟧⟦2⟧⟦3⟧{3}⟦4⟧⟦5⟧⟦6⟧Name⟦7⟧⟦8⟧Save current⟦9⟧⟦10⟧Equip⟦11⟧⟦12⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧⟦3⟧{3}⟦4⟧⟦5⟧⟦6⟧Nombre⟦7⟧⟦8⟧Guardar actual⟦9⟧⟦10⟧Equipar⟦11⟧⟦12⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧⟦3⟧{3}⟦4⟧⟦5⟧⟦6⟧Name⟦7⟧⟦8⟧Aktuelles speichern⟦9⟧⟦10⟧Anlegen⟦11⟧⟦12⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧⟦3⟧{3}⟦4⟧⟦5⟧⟦6⟧Nom⟦7⟧⟦8⟧Enregistrer l'actuel⟦9⟧⟦10⟧Équiper⟦11⟧⟦12⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧⟦3⟧{3}⟦4⟧⟦5⟧⟦6⟧Nome⟦7⟧⟦8⟧Salvar atual⟦9⟧⟦10⟧Equipar⟦11⟧⟦12⟧
+@ui2.bos_set
+en: Empty set
+es: Conjunto vacío
+de: Leeres Set
+fr: Ensemble vide
+pt: Conjunto vazio
+@ui2.sefer_hedefleri_n
+en: ⟦0⟧TRIP TARGETS⟦1⟧{0}
+es: ⟦0⟧OBJETIVOS DE SALIDA⟦1⟧{0}
+de: ⟦0⟧AUSFAHRTSZIELE⟦1⟧{0}
+fr: ⟦0⟧OBJECTIFS DE SORTIE⟦1⟧{0}
+pt: ⟦0⟧METAS DA VIAGEM⟦1⟧{0}
+@ui2.cihaz_basina_yem_politikasi
+en: ⟦0⟧Bait policy per device⟦1⟧
+es: ⟦0⟧Política de cebo por dispositivo⟦1⟧
+de: ⟦0⟧Köderregel pro Gerät⟦1⟧
+fr: ⟦0⟧Politique d'appât par appareil⟦1⟧
+pt: ⟦0⟧Política de isca por dispositivo⟦1⟧
+@ui2.n_n_bugune_kadar_n
+en: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{2} bait used so far⟦5⟧⟦6⟧{3}⟦7⟧ ⟦8⟧{4}⟦9⟧⟦10⟧⟦11⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{2} cebos usados hasta ahora⟦5⟧⟦6⟧{3}⟦7⟧ ⟦8⟧{4}⟦9⟧⟦10⟧⟦11⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧bisher {2} Köder⟦5⟧⟦6⟧{3}⟦7⟧ ⟦8⟧{4}⟦9⟧⟦10⟧⟦11⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{2} appâts utilisés jusqu'ici⟦5⟧⟦6⟧{3}⟦7⟧ ⟦8⟧{4}⟦9⟧⟦10⟧⟦11⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{2} iscas usadas até agora⟦5⟧⟦6⟧{3}⟦7⟧ ⟦8⟧{4}⟦9⟧⟦10⟧⟦11⟧
+@ui2.yem_n_yoksa_cihaz_durur
+en: Bait: {0} (device stops if none)
+es: Cebo: {0} (si no hay, el dispositivo se detiene)
+de: Köder: {0} (sonst stoppt das Gerät)
+fr: Appât : {0} (sinon l'appareil s'arrête)
+pt: Isca: {0} (sem ela, o dispositivo para)
+@ui2.ana_n_yedek_n
+en: Main: {0} Backup: {1}
+es: Principal: {0} Reserva: {1}
+de: Haupt: {0} Ersatz: {1}
+fr: Principal : {0} Secours : {1}
+pt: Principal: {0} Reserva: {1}
+@ui2.hedef_tur_n_uygun_yem
+en: Target species: {0} (suitable bait gets priority)
+es: Especie objetivo: {0} (se prioriza el cebo adecuado)
+de: Zielart: {0} (passender Köder hat Vorrang)
+fr: Espèce ciblée : {0} (l'appât adapté est prioritaire)
+pt: Espécie-alvo: {0} (a isca certa tem prioridade)
+@ui2.stoktaki_en_ucuz_ucretli_yem
+en: Uses the cheapest paid bait in stock.
+es: Usa el cebo de pago más barato que tengas.
+de: Nutzt den günstigsten vorrätigen gekauften Köder.
+fr: Utilise l'appât payant le moins cher en stock.
+pt: Usa a isca paga mais barata do estoque.
+@ui2.n_temel_yem_otomatikte_kullanilamaz
+en: {0}⟦0⟧Basic bait can't be used on auto rods; each try uses 1 paid bait, and if there's none the device waits.⟦1⟧
+es: {0}⟦0⟧El cebo básico no sirve en las cañas automáticas; cada intento gasta 1 cebo de pago y, si no hay, el dispositivo espera.⟦1⟧
+de: {0}⟦0⟧Grundköder geht nicht für Auto-Angeln; jeder Versuch kostet 1 gekauften Köder, ohne Köder wartet das Gerät.⟦1⟧
+fr: {0}⟦0⟧L'appât de base est exclu en automatique ; chaque essai coûte 1 appât payant, et sans appât l'appareil attend.⟦1⟧
+pt: {0}⟦0⟧A isca básica não serve no automático; cada tentativa gasta 1 isca paga e, sem isca, o dispositivo espera.⟦1⟧
+@ui2.n_fotograf_modu
+en: ⟦0|Photo mode⟧{0}⟦1⟧
+es: ⟦0|Modo foto⟧{0}⟦1⟧
+de: ⟦0|Fotomodus⟧{0}⟦1⟧
+fr: ⟦0|Mode photo⟧{0}⟦1⟧
+pt: ⟦0|Modo foto⟧{0}⟦1⟧
+@ui2.fotograf_modu_kasaba_iskele_ev
+en: Photo mode can be used in the town, pier, home and sea scenes.
+es: El modo foto se puede usar en el pueblo, el muelle, la casa y el mar.
+de: Den Fotomodus gibt es im Ort, am Steg, zu Hause und auf See.
+fr: Le mode photo est disponible au village, au ponton, à la maison et en mer.
+pt: O modo foto funciona na vila, no píer, em casa e no mar.
+@ui2.balik_mucadelesi_surerken_fotograf_modu
+en: Photo mode can't be opened during a fight.
+es: No se puede abrir el modo foto durante una pelea.
+de: Während eines Drills kann der Fotomodus nicht geöffnet werden.
+fr: Impossible d'ouvrir le mode photo pendant un combat.
+pt: Não dá para abrir o modo foto durante uma briga.
+@ui2.gun_n_n_n
+en: DAY {0} - {1} - {2}
+es: DÍA {0} - {1} - {2}
+de: TAG {0} - {1} - {2}
+fr: JOUR {0} - {1} - {2}
+pt: DIA {0} - {1} - {2}
+@ui2.sakin_liman
+en: Calm Harbor
+es: Puerto Sereno
+de: Stiller Hafen
+fr: Port Paisible
+pt: Porto Sereno
+@ui2.n_n_n_1_2
+en: ⟦0⟧⟦1⟧{0}⟦2⟧⟦3⟧{1}⟦4⟧{2}⟦5⟧1×⟦6⟧⟦7⟧2×⟦8⟧⟦9⟧Label⟦10⟧⟦11⟧{6} Save PNG⟦12⟧⟦13⟧Close⟦14⟧⟦15⟧
+es: ⟦0⟧⟦1⟧{0}⟦2⟧⟦3⟧{1}⟦4⟧{2}⟦5⟧1×⟦6⟧⟦7⟧2×⟦8⟧⟦9⟧Etiqueta⟦10⟧⟦11⟧{6} Guardar PNG⟦12⟧⟦13⟧Cerrar⟦14⟧⟦15⟧
+de: ⟦0⟧⟦1⟧{0}⟦2⟧⟦3⟧{1}⟦4⟧{2}⟦5⟧1×⟦6⟧⟦7⟧2×⟦8⟧⟦9⟧Beschriftung⟦10⟧⟦11⟧{6} PNG speichern⟦12⟧⟦13⟧Schließen⟦14⟧⟦15⟧
+fr: ⟦0⟧⟦1⟧{0}⟦2⟧⟦3⟧{1}⟦4⟧{2}⟦5⟧1×⟦6⟧⟦7⟧2×⟦8⟧⟦9⟧Étiquette⟦10⟧⟦11⟧{6} Enregistrer PNG⟦12⟧⟦13⟧Fermer⟦14⟧⟦15⟧
+pt: ⟦0⟧⟦1⟧{0}⟦2⟧⟦3⟧{1}⟦4⟧{2}⟦5⟧1×⟦6⟧⟦7⟧2×⟦8⟧⟦9⟧Legenda⟦10⟧⟦11⟧{6} Salvar PNG⟦12⟧⟦13⟧Fechar⟦14⟧⟦15⟧
+@ui2.goruntu_olusturulamadi
+en: Couldn't create the image.
+es: No se pudo crear la imagen.
+de: Bild konnte nicht erstellt werden.
+fr: Impossible de créer l'image.
+pt: Não foi possível criar a imagem.
+@ui2.fotograf_kaydedildi_indirilenler_tarayici_izin
+en: Photo saved (downloads). If your browser didn't allow it, long-press the image to save it.
+es: Foto guardada (descargas). Si el navegador no lo permitió, mantén pulsada la imagen para guardarla.
+de: Foto gespeichert (Downloads). Hat der Browser es blockiert, halte das Bild gedrückt, um es zu speichern.
+fr: Photo enregistrée (téléchargements). Si le navigateur l'a bloquée, appui long sur l'image pour l'enregistrer.
+pt: Foto salva (downloads). Se o navegador não permitiu, segure o dedo na imagem para salvar.
+@ui2.n_fotograf_tarayicin_dogrudan_indirmeye
+en: ⟦0⟧{0} Photo⟦1⟧⟦2⟧Your browser didn't allow a direct download. Long-press the image and choose “Save image”.⟦3⟧⟦4⟧⟦5⟧⟦6⟧Close⟦7⟧⟦8⟧
+es: ⟦0⟧{0} Foto⟦1⟧⟦2⟧Tu navegador no permitió la descarga directa. Mantén pulsada la imagen y elige «Guardar imagen».⟦3⟧⟦4⟧⟦5⟧⟦6⟧Cerrar⟦7⟧⟦8⟧
+de: ⟦0⟧{0} Foto⟦1⟧⟦2⟧Dein Browser hat den direkten Download nicht erlaubt. Halte das Bild gedrückt und wähle „Bild speichern“.⟦3⟧⟦4⟧⟦5⟧⟦6⟧Schließen⟦7⟧⟦8⟧
+fr: ⟦0⟧{0} Photo⟦1⟧⟦2⟧Ton navigateur n'a pas autorisé le téléchargement direct. Fais un appui long sur l'image et choisis « Enregistrer l'image ».⟦3⟧⟦4⟧⟦5⟧⟦6⟧Fermer⟦7⟧⟦8⟧
+pt: ⟦0⟧{0} Foto⟦1⟧⟦2⟧Seu navegador não permitiu o download direto. Segure o dedo na imagem e escolha “Salvar imagem”.⟦3⟧⟦4⟧⟦5⟧⟦6⟧Fechar⟦7⟧⟦8⟧
+@ui2.bu_tarayici_fotograf_kaydetmeye_izin
+en: This browser doesn't allow saving photos.
+es: Este navegador no permite guardar fotos.
+de: Dieser Browser erlaubt kein Speichern von Fotos.
+fr: Ce navigateur ne permet pas d'enregistrer des photos.
+pt: Este navegador não permite salvar fotos.
+@ui2.v2_0_yenilikleri_balikci_defteri
+en: ⟦0⟧What's new in v2.0⟦1⟧ ⟦2⟧⟦3⟧Angler's Journal⟦4⟧ (Menu): species guide, suggestions based on today's real catch odds (not guaranteed), your personal catch records (new details at 1/5/12 catches), missing species and target favorites.⟦5⟧ ⟦6⟧⟦7⟧Trip Plan⟦8⟧: up to 3 species targets (1–99). Only real catches after you set a target count; a small tracker appears top right on the pier and boat. You can add targets from orders with “target”, picking the amount yourself.⟦9⟧ ⟦10⟧⟦11⟧Region Mastery⟦12⟧: in each region, Bronze (visit 3 spots → badge), Silver (6 species → poster decor), Gold (all species → boat ornament). Purely cosmetic.⟦13⟧ ⟦14⟧⟦15⟧Trade · Smart Sell⟦16⟧: compares market, order and tea garden prices and suggests a split within the limits. Nothing is sold without your confirmation; ★ favorites and aquarium fish are excluded.⟦17⟧ ⟦18⟧⟦19⟧Rod sets⟦20⟧: 3 saved sets in Inventory → Gear & Bait or in bait selection. ⟦21⟧Auto bait policy⟦22⟧: Boatyard → Automation, per device: Economical / Fixed / Target fish / With backup bait.⟦23⟧ ⟦24⟧⟦25⟧Aquarium⟦26⟧: the “Aquariums” tab in Kerem's shop (Small 550, Medium 2,200, Large 8,500). Tap the aquarium at home to add/remove/move fish. 20 suitable species; collection rewards at 5/10/20.⟦27⟧ ⟦28⟧⟦29⟧Ledger⟦30⟧: income/expense breakdown for the last 30 days; festival prizes and tea garden income are tracked separately. ⟦31⟧Records⟦32⟧: your 10 biggest catches; hang 5 on the Record Wall at home.⟦33⟧ ⟦34⟧⟦35⟧Photo mode⟦36⟧: the camera in the top bar (town, pier, home, sea). The UI hides and the game pauses; 1×/2×, panning, label and Save PNG. Not available during a fight.⟦37⟧{0}
+es: ⟦0⟧Novedades de la v2.0⟦1⟧ ⟦2⟧⟦3⟧Diario de pesca⟦4⟧ (Menú): guía de especies, sugerencias según las probabilidades reales de hoy (sin garantía), tus registros personales (más detalles a las 1/5/12 capturas), especies que faltan y favoritos objetivo.⟦5⟧ ⟦6⟧⟦7⟧Plan de salida⟦8⟧: hasta 3 especies objetivo (1–99). Solo cuentan las capturas reales tras fijar el objetivo; aparece un pequeño marcador arriba a la derecha en el muelle y el barco. Puedes añadir objetivos desde los pedidos con «objetivo», eligiendo la cantidad.⟦9⟧ ⟦10⟧⟦11⟧Maestría de zona⟦12⟧: en cada zona, Bronce (visitar 3 puntos → insignia), Plata (6 especies → póster), Oro (todas las especies → adorno de barco). Solo estética.⟦13⟧ ⟦14⟧⟦15⟧Comercio · Venta inteligente⟦16⟧: compara los precios de la lonja, los pedidos y el jardín de té y sugiere un reparto según los límites. No se vende nada sin tu confirmación; se excluyen los favoritos ★ y los peces del acuario.⟦17⟧ ⟦18⟧⟦19⟧Conjuntos de caña⟦20⟧: 3 conjuntos guardados en Inventario → Equipo y cebo o al elegir cebo. ⟦21⟧Política de cebo automático⟦22⟧: Astillero → Automatización, por dispositivo: Económico / Fijo / Pez objetivo / Con cebo de reserva.⟦23⟧ ⟦24⟧⟦25⟧Acuario⟦26⟧: pestaña «Acuarios» de la tienda de Kerem (Pequeño 550, Mediano 2.200, Grande 8.500). Toca el acuario en casa para añadir/sacar/mover peces. 20 especies aptas; premios de colección a las 5/10/20.⟦27⟧ ⟦28⟧⟦29⟧Libro de cuentas⟦30⟧: ingresos y gastos de los últimos 30 días; los premios de fiesta y los ingresos del jardín de té van aparte. ⟦31⟧Récords⟦32⟧: tus 10 mayores capturas; cuelga 5 en el Muro de récords de casa.⟦33⟧ ⟦34⟧⟦35⟧Modo foto⟦36⟧: la cámara de la barra superior (pueblo, muelle, casa, mar). Se oculta la interfaz y el juego se pausa; 1×/2×, desplazamiento, etiqueta y Guardar PNG. No disponible durante una pelea.⟦37⟧{0}
+de: ⟦0⟧Neu in v2.0⟦1⟧ ⟦2⟧⟦3⟧Anglertagebuch⟦4⟧ (Menü): Artenführer, Vorschläge nach den echten Fangchancen von heute (ohne Garantie), deine persönlichen Fangeinträge (neue Details bei 1/5/12 Fängen), fehlende Arten und Zielfavoriten.⟦5⟧ ⟦6⟧⟦7⟧Ausfahrtsplan⟦8⟧: bis zu 3 Artziele (1–99). Es zählen nur echte Fänge nach dem Festlegen; am Steg und auf dem Boot erscheint oben rechts eine kleine Anzeige. Aus Aufträgen kannst du über „Ziel“ Ziele mit selbst gewählter Menge anlegen.⟦9⟧ ⟦10⟧⟦11⟧Gebietsmeisterschaft⟦12⟧: in jedem Gebiet Bronze (3 Plätze besuchen → Abzeichen), Silber (6 Arten → Poster), Gold (alle Arten → Bootsschmuck). Rein optisch.⟦13⟧ ⟦14⟧⟦15⟧Handel · Clever verkaufen⟦16⟧: vergleicht Markt-, Auftrags- und Teegartenpreise und schlägt eine Aufteilung im Rahmen der Limits vor. Ohne Bestätigung wird nichts verkauft; ★-Favoriten und Aquarienfische sind ausgenommen.⟦17⟧ ⟦18⟧⟦19⟧Angelsets⟦20⟧: 3 gespeicherte Sets unter Inventar → Ausrüstung & Köder oder bei der Köderwahl. ⟦21⟧Auto-Köderregel⟦22⟧: Bootswerft → Automatik, pro Gerät: Sparsam / Fest / Zielfisch / Mit Ersatzköder.⟦23⟧ ⟦24⟧⟦25⟧Aquarium⟦26⟧: Reiter „Aquarien“ in Kerems Laden (Klein 550, Mittel 2.200, Groß 8.500). Tippe zu Hause auf das Aquarium, um Fische einzusetzen/zu entnehmen/zu verschieben. 20 geeignete Arten; Sammelbelohnungen bei 5/10/20.⟦27⟧ ⟦28⟧⟦29⟧Kassenbuch⟦30⟧: Einnahmen und Ausgaben der letzten 30 Tage; Festpreise und Teegarten-Einnahmen werden getrennt geführt. ⟦31⟧Rekorde⟦32⟧: deine 10 größten Fänge; 5 davon an die Rekordwand zu Hause hängen.⟦33⟧ ⟦34⟧⟦35⟧Fotomodus⟦36⟧: die Kamera in der oberen Leiste (Ort, Steg, Zuhause, See). Die Oberfläche verschwindet, das Spiel pausiert; 1×/2×, Verschieben, Beschriftung und PNG speichern. Nicht während eines Drills.⟦37⟧{0}
+fr: ⟦0⟧Nouveautés de la v2.0⟦1⟧ ⟦2⟧⟦3⟧Carnet de pêche⟦4⟧ (Menu) : guide des espèces, suggestions selon les vraies probabilités du jour (non garanties), tes relevés de prises (nouveaux détails à 1/5/12 prises), espèces manquantes et favoris ciblés.⟦5⟧ ⟦6⟧⟦7⟧Plan de sortie⟦8⟧ : jusqu'à 3 espèces cibles (1–99). Seules comptent les vraies prises après avoir fixé l'objectif ; un petit suivi apparaît en haut à droite au ponton et en bateau. Tu peux ajouter des objectifs depuis les commandes avec « objectif », en choisissant la quantité.⟦9⟧ ⟦10⟧⟦11⟧Maîtrise de zone⟦12⟧ : dans chaque zone, Bronze (visiter 3 coins → badge), Argent (6 espèces → affiche), Or (toutes les espèces → ornement de bateau). Purement esthétique.⟦13⟧ ⟦14⟧⟦15⟧Commerce · Vente intelligente⟦16⟧ : compare les prix de la halle, des commandes et du jardin de thé et propose une répartition selon les limites. Rien n'est vendu sans ton accord ; les favoris ★ et les poissons d'aquarium sont exclus.⟦17⟧ ⟦18⟧⟦19⟧Ensembles de canne⟦20⟧ : 3 ensembles enregistrés dans Inventaire → Équipement & appâts ou lors du choix d'appât. ⟦21⟧Politique d'appât auto⟦22⟧ : Chantier naval → Automatisation, par appareil : Économique / Fixe / Poisson ciblé / Avec appât de secours.⟦23⟧ ⟦24⟧⟦25⟧Aquarium⟦26⟧ : onglet « Aquariums » chez Kerem (Petit 550, Moyen 2 200, Grand 8 500). Touche l'aquarium chez toi pour ajouter/retirer/déplacer des poissons. 20 espèces adaptées ; récompenses de collection à 5/10/20.⟦27⟧ ⟦28⟧⟦29⟧Livre de comptes⟦30⟧ : revenus et dépenses des 30 derniers jours ; prix des fêtes et revenus du jardin de thé à part. ⟦31⟧Records⟦32⟧ : tes 10 plus grosses prises ; accroches-en 5 au Mur des records chez toi.⟦33⟧ ⟦34⟧⟦35⟧Mode photo⟦36⟧ : l'appareil photo de la barre du haut (village, ponton, maison, mer). L'interface se masque et le jeu se met en pause ; 1×/2×, défilement, étiquette et Enregistrer PNG. Indisponible pendant un combat.⟦37⟧{0}
+pt: ⟦0⟧Novidades da v2.0⟦1⟧ ⟦2⟧⟦3⟧Diário de Pesca⟦4⟧ (Menu): guia de espécies, sugestões pelas chances reais de hoje (sem garantia), seus registros pessoais (novos detalhes com 1/5/12 capturas), espécies que faltam e favoritos-alvo.⟦5⟧ ⟦6⟧⟦7⟧Plano de Viagem⟦8⟧: até 3 metas de espécie (1–99). Só contam capturas reais depois de definir a meta; um pequeno contador aparece no canto superior direito no píer e no barco. Dá para adicionar metas a partir dos pedidos com “meta”, escolhendo a quantidade.⟦9⟧ ⟦10⟧⟦11⟧Maestria da Região⟦12⟧: em cada região, Bronze (visitar 3 pontos → insígnia), Prata (6 espécies → pôster), Ouro (todas as espécies → enfeite de barco). Só visual.⟦13⟧ ⟦14⟧⟦15⟧Comércio · Venda Inteligente⟦16⟧: compara os preços do mercado, dos pedidos e da casa de chá e sugere uma divisão dentro dos limites. Nada é vendido sem sua confirmação; favoritos ★ e peixes do aquário ficam de fora.⟦17⟧ ⟦18⟧⟦19⟧Conjuntos de vara⟦20⟧: 3 conjuntos salvos em Inventário → Equipamento e Isca ou na escolha de isca. ⟦21⟧Política de isca automática⟦22⟧: Estaleiro → Automação, por dispositivo: Econômico / Fixa / Peixe-alvo / Com isca reserva.⟦23⟧ ⟦24⟧⟦25⟧Aquário⟦26⟧: aba “Aquários” da loja do Kerem (Pequeno 550, Médio 2.200, Grande 8.500). Toque no aquário em casa para adicionar/tirar/mover peixes. 20 espécies adequadas; prêmios de coleção com 5/10/20.⟦27⟧ ⟦28⟧⟦29⟧Livro-caixa⟦30⟧: receitas e despesas dos últimos 30 dias; prêmios de festival e renda da casa de chá ficam à parte. ⟦31⟧Recordes⟦32⟧: suas 10 maiores capturas; pendure 5 no Mural de Recordes de casa.⟦33⟧ ⟦34⟧⟦35⟧Modo foto⟦36⟧: a câmera da barra de cima (vila, píer, casa, mar). A interface some e o jogo pausa; 1×/2×, rolagem, legenda e Salvar PNG. Indisponível durante uma briga.⟦37⟧{0}

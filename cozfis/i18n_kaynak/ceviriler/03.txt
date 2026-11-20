@@ -1,0 +1,480 @@
+@sys3.dip_oltasi
+en: Bottom Rig
+es: Pesca de fondo
+de: Grundangel
+fr: Pêche au fond
+pt: Pesca de fundo
+@sys3.dip
+en: Bottom
+es: Fondo
+de: Grund
+fr: Fond
+pt: Fundo
+@sys3.yem_dibe_iner_samandira_yerine
+en: The bait sinks to the bottom; instead of a float you watch the rod tip. The tip wobbles, then bends clearly when a fish bites. Good for bottom species.
+es: El cebo baja al fondo; en lugar del flotador vigilas la puntera. La puntera se mueve y se dobla claramente cuando pica. Ideal para especies de fondo.
+de: Der Köder sinkt zum Grund; statt der Pose beobachtest du die Rutenspitze. Sie zittert und biegt sich deutlich, wenn ein Fisch beißt. Gut für Grundfische.
+fr: L'appât descend au fond ; au lieu du flotteur, tu surveilles le scion. Il tremble, puis plie nettement quand ça mord. Idéal pour les espèces de fond.
+pt: A isca desce até o fundo; em vez da boia, você observa a ponta da vara. A ponta balança e verga bem quando o peixe morde. Vantajoso para espécies de fundo.
+@sys3.spin_avciligi
+en: Spin Fishing
+es: Pesca a spinning
+de: Spinnfischen
+fr: Pêche au lancer
+pt: Pesca de arremesso
+@sys3.spin
+en: Spin
+es: Spinning
+de: Spinn
+fr: Lancer
+pt: Arremesso
+@sys3.atistan_sonra_yem_durdugunda_kisa
+en: After casting, work the lure with short taps whenever it stops (2–3 good moves are enough). Good for active predators; Metal Lure works best.
+es: Tras lanzar, anima el señuelo con toques cortos cuando se detenga (bastan 2–3 buenos movimientos). Ideal para depredadores activos; lo mejor es el señuelo metálico.
+de: Nach dem Wurf führst du den Köder mit kurzen Tipps, sobald er stoppt (2–3 gute Bewegungen reichen). Gut für aktive Räuber; am besten mit Metallköder.
+fr: Après le lancer, anime le leurre par petites touches quand il s'arrête (2 ou 3 bons mouvements suffisent). Idéal pour les prédateurs actifs ; le leurre métallique est le meilleur.
+pt: Depois do arremesso, trabalhe a isca com toques curtos quando ela parar (2–3 bons movimentos bastam). Vantajoso para predadores ativos; o melhor é a isca artificial de metal.
+@sys3.sabah
+en: Morning
+es: Mañana
+de: Morgen
+fr: Matin
+pt: Manhã
+@sys3.pembe_altin_gun_dogumu_suru
+en: Pink-gold sunrise. Schooling fish and early feeders show up a little more often.
+es: Amanecer rosa y dorado. Los peces de banco y los que comen temprano aparecen algo más a menudo.
+de: Rosa-goldener Sonnenaufgang. Schwarmfische und Frühfresser zeigen sich etwas häufiger.
+fr: Lever de soleil rose et or. Les poissons en banc et ceux qui se nourrissent le matin se montrent un peu plus souvent.
+pt: Nascer do sol rosa e dourado. Peixes de cardume e os que comem cedo aparecem um pouco mais.
+@sys3.gunduz
+en: Daytime
+es: Día
+de: Tag
+fr: Journée
+pt: Dia
+@sys3.standart_aydinlatma_ve_mevcut_av
+en: Standard lighting and the usual fishing balance (no multiplier).
+es: Luz normal y el equilibrio de pesca habitual (sin multiplicador).
+de: Normales Licht und die übliche Fangbalance (kein Multiplikator).
+fr: Éclairage standard et équilibre de pêche habituel (aucun multiplicateur).
+pt: Luz padrão e o equilíbrio de pesca de sempre (sem multiplicador).
+@sys3.aksamustu
+en: Evening
+es: Atardecer
+de: Abend
+fr: Fin de journée
+pt: Entardecer
+@sys3.turuncu_mor_gun_batimi_aksam
+en: Orange-purple sunset. Predators and bottom species that feed in the evening show up a little more often.
+es: Puesta de sol naranja y violeta. Los depredadores y las especies de fondo que comen al atardecer aparecen algo más a menudo.
+de: Orange-violetter Sonnenuntergang. Räuber und Grundfische, die abends fressen, zeigen sich etwas häufiger.
+fr: Coucher de soleil orange et violet. Les prédateurs et espèces de fond qui chassent le soir se montrent un peu plus souvent.
+pt: Pôr do sol laranja e roxo. Predadores e espécies de fundo que comem ao entardecer aparecem um pouco mais.
+@sys3.iskele_yenilemesi
+en: Pier Renovation
+es: Renovación del muelle
+de: Steg-Erneuerung
+fr: Rénovation du ponton
+pt: Reforma do Píer
+@sys3.yeni_ahsaplar_banklar_kucuk_fenerler
+en: New planks, benches, little lanterns and fishing decorations.
+es: Tablones nuevos, bancos, farolillos y adornos marineros.
+de: Neue Planken, Bänke, kleine Laternen und Anglerschmuck.
+fr: Nouvelles planches, bancs, petites lanternes et décorations de pêcheurs.
+pt: Tábuas novas, bancos, lanterninhas e enfeites de pescador.
+@sys3.yalnizca_sakin_liman_iskele_avlarinda
+en: Pier fishing in Calm Harbor only: +5% relative bite chance (e.g. 88% → 92.4%; capped at 95%).
+es: Solo en la pesca desde el muelle de Puerto Sereno: +5 % relativo a la probabilidad de picada (p. ej., 88 % → 92,4 %; máximo 95 %).
+de: Nur beim Stegangeln im Stillen Hafen: +5 % relative Bisschance (z. B. 88 % → 92,4 %; höchstens 95 %).
+fr: Uniquement à la pêche depuis le ponton de Port Paisible : +5 % relatifs de chance de touche (ex. 88 % → 92,4 % ; plafond 95 %).
+pt: Só na pesca do píer do Porto Sereno: +5% relativo na chance de fisgada (ex.: 88% → 92,4%; teto de 95%).
+@sys3.balik_pazari_duzenlemesi
+en: Fish Market Makeover
+es: Reforma de la lonja
+de: Fischmarkt-Umgestaltung
+fr: Réaménagement de la halle
+pt: Reforma do Mercado de Peixe
+@sys3.yeni_golgelikler_tezgah_susleri_cicekler
+en: New awnings, stall decorations, flowers and crates.
+es: Toldos nuevos, adornos para los puestos, flores y cajas.
+de: Neue Markisen, Standschmuck, Blumen und Kisten.
+fr: Nouveaux auvents, décorations d'étals, fleurs et cagettes.
+pt: Toldos novos, enfeites de banca, flores e caixotes.
+@sys3.siparis_panosunda_1_aktif_alis
+en: +1 active buy-order slot on the order board (partial delivery and grace period unchanged).
+es: +1 hueco de pedido activo en el tablón (entrega parcial y plazo sin penalización iguales).
+de: +1 aktiver Ankaufsplatz an der Auftragstafel (Teillieferung und straffreie Frist unverändert).
+fr: +1 emplacement de commande active au tableau (livraison partielle et délai sans pénalité inchangés).
+pt: +1 vaga de pedido ativo no quadro (entrega parcial e prazo sem multa iguais).
+@sys3.liman_feneri_yenilemesi
+en: Harbor Lighthouse Restoration
+es: Restauración del faro del puerto
+de: Restaurierung des Hafenleuchtturms
+fr: Restauration du phare du port
+pt: Restauração do Farol do Porto
+@sys3.mevcut_fener_tas_yuzey_ve
+en: The lighthouse gets a stone finish and a stronger light; a beam sweeps the sky in the evening.
+es: El faro se renueva con piedra y una luz más potente; al atardecer proyecta un haz.
+de: Der Leuchtturm bekommt eine Steinfassade und ein stärkeres Licht; abends ein Lichtkegel.
+fr: Le phare est rénové en pierre avec une lumière plus forte ; un faisceau balaie le ciel le soir.
+pt: O farol ganha acabamento de pedra e luz mais forte; ao entardecer, um facho de luz.
+@sys3.sectigin_iki_bolgenin_ertesi_gun
+en: Next-day weather forecast for two regions of your choice (same result as the existing deterministic weather).
+es: Pronóstico del tiempo de mañana para dos zonas a tu elección (mismo resultado que el sistema de clima determinista).
+de: Wettervorhersage für morgen in zwei Gebieten deiner Wahl (gleiches Ergebnis wie das feste Wettersystem).
+fr: Prévisions du lendemain pour deux zones au choix (même résultat que le système météo déterministe).
+pt: Previsão do tempo de amanhã para duas regiões à sua escolha (mesmo resultado do sistema de clima determinístico).
+@sys3.deniz_seyir_terasi
+en: Sea View Terrace
+es: Mirador marino
+de: Meeresaussichtsterrasse
+fr: Terrasse panoramique
+pt: Mirante do Mar
+@sys3.iskele_ucunda_ahsap_seyir_platformu
+en: A wooden lookout at the end of the pier, with seats and binoculars.
+es: Un mirador de madera en la punta del muelle, con asientos y prismáticos.
+de: Eine hölzerne Aussichtsplattform am Stegende mit Sitzplätzen und Fernglas.
+fr: Une plateforme d'observation en bois au bout du ponton, avec bancs et jumelles.
+pt: Um mirante de madeira na ponta do píer, com assentos e binóculo.
+@sys3.deniz_canlisi_gozlem_karsilasmalarinin_goreli
+en: Sea-life sightings become 10% more likely (doesn't affect fish odds).
+es: Los avistamientos de vida marina son un 10 % más probables (no afecta a la pesca).
+de: Sichtungen von Meerestieren werden 10 % wahrscheinlicher (ohne Einfluss auf Fänge).
+fr: Les observations de vie marine deviennent 10 % plus probables (sans effet sur la pêche).
+pt: Avistamentos de vida marinha ficam 10% mais prováveis (não afeta a pesca).
+@sys3.gumus_marti
+en: Yellow-legged Gull
+es: Gaviota patiamarilla
+de: Mittelmeermöwe
+fr: Goéland leucophée
+pt: Gaivota-de-patas-amarelas
+@sys3.sari_bacakli_kiyi_martisi_balikci
+en: A yellow-legged coastal gull that keeps a close eye on fishing boats and piers.
+es: Gaviota costera de patas amarillas que vigila de cerca barcos y muelles.
+de: Gelbfüßige Küstenmöwe, die Fischerboote und Stege genau beobachtet.
+fr: Goéland côtier aux pattes jaunes qui surveille de près bateaux et pontons.
+pt: Gaivota costeira de patas amarelas que observa de perto barcos e píeres.
+@sys3.karabatak
+en: Cormorant
+es: Cormorán
+de: Kormoran
+fr: Grand cormoran
+pt: Cormorão
+@sys3.suya_dalip_balik_avlayan_koyu
+en: A dark-feathered bird that dives for fish, then spreads its wings to dry.
+es: Ave de plumaje oscuro que bucea para pescar y luego abre las alas para secarlas.
+de: Dunkel gefiederter Vogel, der nach Fischen taucht und danach die Flügel zum Trocknen ausbreitet.
+fr: Oiseau au plumage sombre qui plonge pour pêcher, puis ouvre ses ailes pour les sécher.
+pt: Ave de penas escuras que mergulha atrás de peixes e depois abre as asas para secar.
+@sys3.kiyi_yengeci
+en: Shore Crab
+es: Cangrejo verde
+de: Strandkrabbe
+fr: Crabe vert
+pt: Caranguejo-verde
+@sys3.taslarin_arasinda_yan_yan_yuruyen
+en: A small green crab scuttling sideways between the rocks.
+es: Pequeño cangrejo verde que camina de lado entre las piedras.
+de: Kleine grüne Krabbe, die seitwärts zwischen den Steinen läuft.
+fr: Petit crabe vert qui marche en crabe entre les pierres.
+pt: Pequeno caranguejo verde que anda de lado entre as pedras.
+@sys3.gri_balikcil
+en: Grey Heron
+es: Garza real
+de: Graureiher
+fr: Héron cendré
+pt: Garça-real
+@sys3.siglikta_sabirla_bekleyip_ani_bir
+en: A long-legged bird that waits patiently in the shallows and snatches fish in a flash.
+es: Ave zancuda que espera paciente en el bajío y atrapa peces de un golpe.
+de: Langbeiniger Vogel, der geduldig im Flachwasser wartet und blitzschnell zustößt.
+fr: Échassier qui attend patiemment dans les hauts-fonds et attrape les poissons d'un coup sec.
+pt: Ave pernalta que espera paciente no raso e pega peixes num bote rápido.
+@sys3.caretta_kaplumbagasi
+en: Loggerhead Turtle
+es: Tortuga boba
+de: Unechte Karettschildkröte
+fr: Tortue caouanne
+pt: Tartaruga-cabeçuda
+@sys3.iri_basli_deniz_kaplumbagasi_nefes
+en: A big-headed sea turtle; surfaces to breathe and lays its eggs on sandy beaches.
+es: Tortuga marina de cabeza grande; sale a respirar y pone huevos en las playas.
+de: Großköpfige Meeresschildkröte; taucht zum Atmen auf und legt ihre Eier am Sandstrand ab.
+fr: Tortue marine à grosse tête ; elle remonte respirer et pond sur les plages de sable.
+pt: Tartaruga marinha de cabeça grande; sobe para respirar e põe ovos nas praias.
+@sys3.ay_denizanasi
+en: Moon Jellyfish
+es: Medusa luna
+de: Ohrenqualle
+fr: Méduse aurélie
+pt: Água-viva-da-lua
+@sys3.yari_saydam_dort_halkali_zararsiz
+en: A harmless, see-through jellyfish with four rings, drifting with the current.
+es: Medusa inofensiva y translúcida con cuatro anillos; se deja llevar por la corriente.
+de: Harmlose, durchscheinende Qualle mit vier Ringen, die mit der Strömung treibt.
+fr: Méduse inoffensive et translucide à quatre anneaux, portée par le courant.
+pt: Água-viva inofensiva e translúcida, com quatro anéis, levada pela correnteza.
+@sys3.deniz_ati
+en: Seahorse
+es: Caballito de mar
+de: Seepferdchen
+fr: Hippocampe
+pt: Cavalo-marinho
+@sys3.deniz_cayirlarinda_kuyruguyla_tutunan_kucuk
+en: A small, upright relative of fish that clings to seagrass with its tail.
+es: Pariente pequeño y erguido de los peces que se agarra a las praderas marinas con la cola.
+de: Kleiner, aufrecht schwimmender Fischverwandter, der sich mit dem Schwanz an Seegras festhält.
+fr: Petit cousin des poissons, tout droit, qui s'accroche aux herbiers avec sa queue.
+pt: Pequeno parente dos peixes, de postura ereta, que se prende às algas pela cauda.
+@sys3.akdeniz_foku
+en: Mediterranean Monk Seal
+es: Foca monje del Mediterráneo
+de: Mittelmeer-Mönchsrobbe
+fr: Phoque moine de Méditerranée
+pt: Foca-monge-do-mediterrâneo
+@sys3.nadir_gorulen_fok_kayalik_magaralarda
+en: A rare seal that lives in rocky sea caves and pokes its head out to look around.
+es: Foca rara que vive en cuevas rocosas y asoma la cabeza para mirar alrededor.
+de: Seltene Robbe, die in Felshöhlen lebt und den Kopf aus dem Wasser streckt.
+fr: Phoque rare qui vit dans les grottes rocheuses et sort la tête pour regarder autour.
+pt: Foca rara que vive em grutas rochosas e põe a cabeça para fora para espiar.
+@sys3.deniz_yildizi
+en: Starfish
+es: Estrella de mar
+de: Seestern
+fr: Étoile de mer
+pt: Estrela-do-mar
+@sys3.kayalik_dipte_yavasca_ilerleyen_bes
+en: A spiny-skinned, five-armed creature creeping slowly across the rocky bottom.
+es: Animal de piel espinosa y cinco brazos que avanza despacio por el fondo rocoso.
+de: Stachelhäutiges Tier mit fünf Armen, das langsam über felsigen Grund kriecht.
+fr: Animal à peau épineuse et cinq bras qui avance lentement sur le fond rocheux.
+pt: Animal de pele espinhosa e cinco braços que avança devagar pelo fundo rochoso.
+@sys3.ahtapot
+en: Octopus
+es: Pulpo
+de: Krake
+fr: Poulpe
+pt: Polvo
+@sys3.renk_degistirerek_kayalara_karisan_zeki
+en: A clever eight-armed mollusk that changes color to blend into the rocks.
+es: Molusco listo de ocho brazos que cambia de color para camuflarse entre las rocas.
+de: Kluges achtarmiges Weichtier, das die Farbe wechselt und mit den Felsen verschmilzt.
+fr: Mollusque malin à huit bras qui change de couleur pour se fondre dans les rochers.
+pt: Molusco esperto de oito braços que muda de cor para se camuflar nas pedras.
+@sys3.afalina_yunus_surusu
+en: Bottlenose Dolphin Pod
+es: Grupo de delfines mulares
+de: Gruppe Großer Tümmler
+fr: Groupe de grands dauphins
+pt: Grupo de golfinhos-nariz-de-garrafa
+@sys3.akinti_boylarinda_suruyle_yuzen_teknelerin
+en: Dolphins swimming in pods along the currents, fond of leaping beside boats.
+es: Delfines que nadan en grupo siguiendo las corrientes y adoran saltar junto a los barcos.
+de: Delfine, die in Gruppen entlang der Strömungen schwimmen und gern neben Booten springen.
+fr: Dauphins nageant en groupe le long des courants, qui adorent sauter près des bateaux.
+pt: Golfinhos que nadam em grupo ao longo das correntes e adoram saltar ao lado dos barcos.
+@sys3.sumsuk_kusu
+en: Northern Gannet
+es: Alcatraz atlántico
+de: Basstölpel
+fr: Fou de Bassan
+pt: Atobá-do-norte
+@sys3.yuksekten_ok_gibi_suya_dalan
+en: A large white seabird that plunges into the water from high up like an arrow.
+es: Ave marina grande y blanca que se lanza al agua desde lo alto como una flecha.
+de: Großer weißer Seevogel, der sich aus großer Höhe pfeilschnell ins Wasser stürzt.
+fr: Grand oiseau marin blanc qui plonge de haut dans l'eau comme une flèche.
+pt: Ave marinha grande e branca que mergulha do alto como uma flecha.
+@sys3.pusula_denizanasi
+en: Compass Jellyfish
+es: Medusa brújula
+de: Kompassqualle
+fr: Méduse rayonnée
+pt: Água-viva-bússola
+@sys3.semsiyesinde_pusula_gulunu_andiran_kahverengi
+en: Its bell carries brown stripes that look like a compass rose.
+es: Su campana tiene rayas marrones que recuerdan a una rosa de los vientos.
+de: Ihr Schirm trägt braune Streifen, die an eine Kompassrose erinnern.
+fr: Son ombrelle porte des rayures brunes qui rappellent une rose des vents.
+pt: O sino tem listras marrons que lembram uma rosa dos ventos.
+@sys3.liman_foku
+en: Harbor Seal
+es: Foca común
+de: Seehund
+fr: Phoque veau-marin
+pt: Foca-comum
+@sys3.benekli_kurklu_kuzey_foku_merakli
+en: A spotted northern seal that eyes boats with curiosity.
+es: Foca norteña de pelaje moteado que mira los barcos con curiosidad.
+de: Gefleckte Nordrobbe, die Boote neugierig mustert.
+fr: Phoque du Nord au pelage tacheté qui observe les bateaux avec curiosité.
+pt: Foca do norte de pelo malhado que olha os barcos com curiosidade.
+@sys3.deniz_papagani
+en: Atlantic Puffin
+es: Frailecillo atlántico
+de: Papageitaucher
+fr: Macareux moine
+pt: Papagaio-do-mar
+@sys3.renkli_gagali_kucuk_kuzey_kusu
+en: A small northern bird with a colorful beak, often carrying a few little fish in it.
+es: Pequeña ave norteña de pico colorido que suele llevar varios pececillos en él.
+de: Kleiner Nordvogel mit buntem Schnabel, in dem er oft ein paar Fischchen trägt.
+fr: Petit oiseau du Nord au bec coloré, souvent garni de quelques petits poissons.
+pt: Pequena ave do norte de bico colorido, que carrega alguns peixinhos nele.
+@sys3.orka_surusu
+en: Orca Pod
+es: Grupo de orcas
+de: Orcagruppe
+fr: Groupe d'orques
+pt: Grupo de orcas
+@sys3.siyah_beyaz_deniz_memelileri_uzun
+en: Black-and-white marine mammals; their tall dorsal fins loom out of the fog.
+es: Mamíferos marinos blanquinegros; sus altas aletas dorsales surgen entre la niebla.
+de: Schwarz-weiße Meeressäuger; ihre hohen Rückenflossen tauchen im Nebel auf.
+fr: Mammifères marins noir et blanc ; leurs hautes nageoires dorsales surgissent dans la brume.
+pt: Mamíferos marinhos preto e brancos; as altas nadadeiras dorsais surgem na neblina.
+@sys3.fulmar
+en: Northern Fulmar
+es: Fulmar boreal
+de: Eissturmvogel
+fr: Fulmar boréal
+pt: Fulmar
+@sys3.dalgalarin_hemen_ustunde_suzulen_martiya
+en: A gull-like, tube-nosed seabird that glides just above the waves.
+es: Ave marina de nariz tubular, parecida a una gaviota, que planea justo sobre las olas.
+de: Möwenähnlicher Röhrennasen-Seevogel, der dicht über den Wellen gleitet.
+fr: Oiseau marin à narines tubulaires, proche du goéland, qui plane au ras des vagues.
+pt: Ave marinha de narinas tubulares, parecida com gaivota, que plana rente às ondas.
+@sys3.ucan_balik_surusu
+en: Flying Fish School
+es: Banco de peces voladores
+de: Schwarm Fliegender Fische
+fr: Banc de poissons volants
+pt: Cardume de peixes-voadores
+@sys3.gogus_yuzgeclerini_acip_yuzeyin_ustunde
+en: A school of fish that spread their pectoral fins and glide for meters above the surface.
+es: Banco de peces que abren sus aletas pectorales y planean metros sobre la superficie.
+de: Ein Schwarm, der die Brustflossen ausbreitet und meterweit über die Oberfläche gleitet.
+fr: Banc de poissons qui déploient leurs nageoires pectorales et planent sur des mètres.
+pt: Cardume que abre as nadadeiras peitorais e plana por metros acima da superfície.
+@sys3.manta_vatozu
+en: Manta Ray
+es: Mantarraya
+de: Mantarochen
+fr: Raie manta
+pt: Raia-manta
+@sys3.kanat_gibi_yuzgecleriyle_suzulen_dev
+en: A giant ray gliding on wing-like fins; sometimes it leaps out of the water.
+es: Raya gigante que planea con aletas como alas; a veces salta fuera del agua.
+de: Riesiger Rochen, der mit flügelartigen Flossen gleitet und manchmal aus dem Wasser springt.
+fr: Raie géante qui plane avec ses nageoires en ailes ; elle saute parfois hors de l'eau.
+pt: Raia gigante que plana com nadadeiras em forma de asa; às vezes salta da água.
+@sys3.yesil_deniz_kaplumbagasi
+en: Green Sea Turtle
+es: Tortuga verde
+de: Suppenschildkröte
+fr: Tortue verte
+pt: Tartaruga-verde
+@sys3.deniz_cayirlariyla_beslenen_mercanlarin_arasinda
+en: A turtle that grazes on seagrass and rests among the corals.
+es: Tortuga que se alimenta de praderas marinas y descansa entre los corales.
+de: Schildkröte, die Seegras frisst und zwischen Korallen ruht.
+fr: Tortue qui broute les herbiers et se repose parmi les coraux.
+pt: Tartaruga que se alimenta de algas marinhas e descansa entre os corais.
+@sys3.firkateyn_kusu
+en: Frigatebird
+es: Rabihorcado
+de: Fregattvogel
+fr: Frégate
+pt: Tesourão
+@sys3.kirmizi_girtlak_kesesi_olan_ruzgarda
+en: A bird with a red throat pouch that soars on the wind without a single flap.
+es: Ave con bolsa roja en la garganta que planea con el viento sin batir las alas.
+de: Vogel mit rotem Kehlsack, der ohne einen Flügelschlag im Wind segelt.
+fr: Oiseau à poche gulaire rouge qui plane dans le vent sans un battement d'ailes.
+pt: Ave de papo vermelho que plana no vento sem bater as asas.
+@sys3.kambur_balina
+en: Humpback Whale
+es: Ballena jorobada
+de: Buckelwal
+fr: Baleine à bosse
+pt: Baleia-jubarte
+@sys3.uzakta_su_puskurten_dev_balina
+en: A giant whale spouting in the distance; famous for its songs.
+es: Ballena gigante que lanza chorros a lo lejos; famosa por sus cantos.
+de: Riesiger Wal, der in der Ferne Fontänen bläst; berühmt für seine Gesänge.
+fr: Baleine géante qui souffle au loin ; célèbre pour ses chants.
+pt: Baleia gigante que solta jatos ao longe; famosa pelos seus cantos.
+@sys3.donen_yunus
+en: Spinner Dolphin
+es: Delfín girador
+de: Spinnerdelfin
+fr: Dauphin à long bec
+pt: Golfinho-rotador
+@sys3.sudan_sicrayip_kendi_ekseninde_donen
+en: A slender-beaked ocean dolphin that leaps out and spins around its own axis.
+es: Delfín oceánico de pico fino que salta y gira sobre su propio eje.
+de: Hochseedelfin mit schlankem Schnabel, der aus dem Wasser springt und sich um die eigene Achse dreht.
+fr: Dauphin du large au bec fin qui saute et tourne sur lui-même.
+pt: Golfinho de mar aberto, de bico fino, que salta e gira no próprio eixo.
+@sys3.ay_baligi
+en: Ocean Sunfish
+es: Pez luna
+de: Mondfisch
+fr: Poisson-lune
+pt: Peixe-lua
+@sys3.yuzeyde_yan_yatip_guneslenen_yuvarlak
+en: A huge, round, harmless fish that sunbathes lying on its side at the surface.
+es: Pez enorme, redondo e inofensivo que toma el sol tumbado de lado en la superficie.
+de: Riesiger, runder, harmloser Fisch, der sich seitlich an der Oberfläche sonnt.
+fr: Énorme poisson rond et inoffensif qui se dore au soleil couché sur le flanc.
+pt: Peixe enorme, redondo e inofensivo que toma sol deitado de lado na superfície.
+@sys3.ruzgari_kokla_evlat_deniz_bugun
+en: Smell the wind, kiddo; the sea tells you what it wants today.
+es: Huele el viento, chaval; el mar te dice hoy lo que quiere.
+de: Riech den Wind, Kleines; das Meer sagt dir, was es heute will.
+fr: Sens le vent, petit ; la mer te dit ce qu'elle veut aujourd'hui.
+pt: Sinta o cheiro do vento, garoto; o mar diz o que quer hoje.
+@sys3.teknen_ferahmis_yasli_kemiklerim_iyi
+en: Roomy boat you've got! My old bones were craving a good trip.
+es: ¡Qué barco tan amplio! Mis viejos huesos pedían un buen paseo.
+de: Geräumiges Boot! Meine alten Knochen wollten mal wieder raus.
+fr: Ton bateau est spacieux ! Mes vieux os réclamaient une belle sortie.
+pt: Que barco espaçoso! Meus ossos velhos pediam um bom passeio.
+@sys3.sonunda_tekneyle_acilmayi_hep_hayal
+en: Finally! I've always dreamed of heading out on a boat.
+es: ¡Por fin! Siempre soñé con salir en barco.
+de: Endlich! Davon, mit dem Boot rauszufahren, hab ich immer geträumt.
+fr: Enfin ! J'ai toujours rêvé de prendre la mer en bateau.
+pt: Finalmente! Sempre sonhei em sair de barco.
+@sys3.defterimi_getirdim_gordugumuz_her_seyi
+en: I brought my notebook; I'll sketch everything we see.
+es: He traído mi cuaderno; voy a dibujar todo lo que veamos.
+de: Ich hab mein Heft dabei; ich zeichne alles, was wir sehen.
+fr: J'ai apporté mon carnet ; je vais dessiner tout ce qu'on verra.
+pt: Trouxe meu caderno; vou desenhar tudo o que a gente vir.
+@sys3.motoru_dinliyorum_tikir_tikir_iyi
+en: I'm listening to the engine… purring along, you've looked after it well.
+es: Estoy escuchando el motor… va como un reloj, lo has cuidado bien.
+de: Ich lausche dem Motor … schnurrt wie ein Kätzchen, du hast ihn gut gepflegt.
+fr: J'écoute le moteur… il ronronne, tu l'as bien entretenu.
+pt: Estou ouvindo o motor… redondinho, você cuidou bem dele.
+@sys3.bu_koyda_dedemle_ilk_istavritimi
+en: I caught my first scad in this cove with my grandpa.
+es: En esta cala pesqué mi primer jurel con mi abuelo.
+de: In dieser Bucht hab ich mit meinem Opa meinen ersten Stöcker gefangen.
+fr: C'est dans cette crique que j'ai pris mon premier chinchard avec mon grand-père.
+pt: Nesta enseada pesquei meu primeiro xixarro com meu avô.
+@sys3.yesil_koy_un_sabahlari_zeytin
+en: Mornings in Green Cove smell of olives, and the gilthead bream know it too.
+es: Las mañanas de Cala Verde huelen a aceituna, y las doradas lo saben.
+de: Morgens riecht die Grüne Bucht nach Oliven, und die Doraden wissen das.
+fr: Les matins de la Crique Verte sentent l'olive, et les dorades le savent.
+pt: As manhãs da Enseada Verde cheiram a azeitona, e as douradas sabem disso.
+@sys3.kayaliklarda_bir_kez_dev_bir
+en: Once I saw a giant grouper among the rocks — it wouldn't have fit on the pier!
+es: Una vez vi un mero gigante entre las rocas. ¡No habría cabido en el muelle!
+de: Einmal hab ich zwischen den Felsen einen riesigen Zackenbarsch gesehen – der hätte nicht auf den Steg gepasst!
+fr: Une fois, j'ai vu un mérou géant dans les rochers, il n'aurait pas tenu sur le ponton !
+pt: Uma vez vi uma garoupa gigante nas pedras, não caberia no píer!

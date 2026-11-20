@@ -1,0 +1,300 @@
+@d.npc.halil.rain
+en: Tea under the arbor in the rain is something special.
+es: Un té bajo la pérgola cuando llueve es otra cosa.
+de: Tee unter der Laube bei Regen ist etwas Besonderes.
+fr: Un thé sous la tonnelle quand il pleut, c'est autre chose.
+pt: Um chá debaixo do caramanchão na chuva é outra coisa.
+@d.npc.halil.wind
+en: The glasses are rattling in the wind — hold yours tight.
+es: Con el viento tintinean los vasos; agárralo bien.
+de: Im Wind klirren die Gläser, halt deins gut fest.
+fr: Les verres tintent avec le vent, tiens bien le tien.
+pt: Com o vento os copos tilintam; segure firme o seu.
+@d.npc.halil.festival_soon
+en: The festival's close; everyone at the tables is arguing about who'll win.
+es: La fiesta está cerca; en las mesas todos discuten quién ganará.
+de: Das Fest naht; an den Tischen streiten alle, wer gewinnt.
+fr: La fête approche ; à toutes les tables, on se dispute pour savoir qui va gagner.
+pt: O festival está chegando; nas mesas todo mundo discute quem vai ganhar.
+@d.npc.halil.festival_today
+en: There's a contest today! Selçuk showed up confident again, watch out.
+es: ¡Hoy hay concurso! Selçuk ha venido otra vez con ganas, ojo.
+de: Heute ist Wettbewerb! Selçuk ist wieder siegessicher angereist, pass auf.
+fr: C'est jour de concours ! Selçuk est revenu plein d'assurance, fais attention.
+pt: Hoje tem competição! O Selçuk veio confiante de novo, fique atento.
+@d.npc.halil.north
+en: Heading north? Let me fill your thermos with tea.
+es: ¿Te vas al norte? Déjame llenarte el termo de té.
+de: Es geht nach Norden? Ich füll dir Tee in die Thermoskanne.
+fr: Tu pars vers le Nord ? Je te remplis ton thermos de thé.
+pt: Vai para o norte? Deixa eu encher sua garrafa térmica de chá.
+@d.npc.halil.tropics
+en: The colors of island fish brighten up even my tea garden.
+es: Los colores de los peces de las islas alegran hasta mi jardín de té.
+de: Die Farben der Inselfische schmücken sogar meinen Teegarten.
+fr: Les couleurs des poissons des îles égaient même mon jardin de thé.
+pt: As cores dos peixes das ilhas enfeitam até a minha casa de chá.
+@d.npc.halil.record
+en: Your record fish is the talk of the tables. Well done!
+es: Tu pez de récord es la comidilla de las mesas. ¡Bravo!
+de: Dein Rekordfisch ist das Gesprächsthema an den Tischen. Bravo!
+fr: Ton poisson record fait parler toutes les tables. Bravo !
+pt: Seu peixe recordista é o assunto das mesas. Muito bem!
+@d.npc.hasan.first_meet
+en: I'm Hasan, the mayor. I organize our festivals and contests.
+es: Soy Hasan, el alcalde. Organizo nuestras fiestas y concursos.
+de: Ich bin Hasan, der Bürgermeister. Ich organisiere unsere Feste und Wettbewerbe.
+fr: Je suis Hasan, le maire. C'est moi qui organise nos fêtes et nos concours.
+pt: Sou o Hasan, o prefeito. Eu organizo nossos festivais e competições.
+@d.npc.hasan.day_generic1
+en: In the middle of every season our town holds a festival — don't miss it.
+es: A mitad de cada estación el pueblo celebra una fiesta; no te la pierdas.
+de: Mitten in jeder Jahreszeit feiert unser Ort ein Fest, verpass es nicht.
+fr: Au milieu de chaque saison, notre village fait la fête, ne la manque pas.
+pt: No meio de cada estação nossa vila faz festival; não perca.
+@d.npc.hasan.day_generic2
+en: The winner takes the cup home, and their name goes up on the board.
+es: El ganador se lleva la copa a casa y su nombre va al tablón.
+de: Der Sieger nimmt den Pokal mit nach Hause, und sein Name kommt an die Tafel.
+fr: Le gagnant rapporte la coupe chez lui et son nom est inscrit au tableau.
+pt: O vencedor leva a taça para casa e o nome vai para o quadro.
+@d.npc.hasan.day_generic3
+en: In the contest you get eight casts, and they cost no energy.
+es: En el concurso tienes ocho lanzamientos y no gastas energía.
+de: Im Wettbewerb hast du acht Würfe, und Energie kostet es nicht.
+fr: Au concours, tu as huit lancers et ça ne coûte pas d'énergie.
+pt: Na competição você tem oito arremessos e não gasta energia.
+@d.npc.hasan.sunny
+en: In weather this fine, the square is buzzing.
+es: Con este tiempo tan bueno la plaza está animadísima.
+de: Bei so schönem Wetter ist auf dem Platz richtig was los.
+fr: Par un temps pareil, la place grouille de monde.
+pt: Com um tempo bom assim, a praça fica agitada.
+@d.npc.hasan.rain
+en: Rain or shine, the festival goes on; the tents are ready.
+es: Llueva o no, la fiesta se celebra; las carpas están listas.
+de: Auch bei Regen findet das Fest statt, die Zelte stehen bereit.
+fr: Même sous la pluie, la fête aura lieu, les tentes sont prêtes.
+pt: Mesmo com chuva o festival acontece; as tendas estão prontas.
+@d.npc.hasan.wind
+en: The flags are dancing in the wind today.
+es: Las banderas bailan con el viento hoy.
+de: Die Fahnen tanzen heute im Wind.
+fr: Les drapeaux dansent dans le vent aujourd'hui.
+pt: As bandeiras estão dançando com o vento hoje.
+@d.npc.hasan.festival_soon
+en: The festival's almost here; preparations are as good as done.
+es: Falta poco para la fiesta; los preparativos están casi listos.
+de: Bis zum Fest ist es nicht mehr lang, die Vorbereitungen sind so gut wie fertig.
+fr: La fête approche, les préparatifs sont presque terminés.
+pt: Falta pouco para o festival; os preparativos estão quase prontos.
+@d.npc.hasan.festival_today
+en: Our festival has begun! Let's get you signed up for the contest right away.
+es: ¡Ha empezado nuestra fiesta! Vamos a apuntarte al concurso ahora mismo.
+de: Unser Fest hat begonnen! Lass uns dich gleich für den Wettbewerb anmelden.
+fr: Notre fête a commencé ! Inscrivons-toi tout de suite au concours.
+pt: Nosso festival começou! Vamos fazer sua inscrição na competição agora mesmo.
+@d.npc.hasan.trophy_first
+en: Congratulations on your first cup — you're the pride of the town.
+es: Enhorabuena por tu primera copa; eres el orgullo del pueblo.
+de: Glückwunsch zum ersten Pokal, du bist der Stolz des Ortes.
+fr: Félicitations pour ta première coupe, tu es la fierté du village.
+pt: Parabéns pela primeira taça; você é o orgulho da vila.
+@d.npc.hasan.trophy_gold
+en: First place! I've had your name written on the board in gold letters.
+es: ¡Primer puesto! He mandado escribir tu nombre en letras de oro en el tablón.
+de: Erster Platz! Ich hab deinen Namen in goldenen Buchstaben an die Tafel schreiben lassen.
+fr: Première place ! J'ai fait inscrire ton nom en lettres d'or au tableau.
+pt: Primeiro lugar! Mandei escrever seu nome em letras de ouro no quadro.
+@d.npc.hasan.festival4
+en: You've competed at the festivals of all four seasons — you're a true local now.
+es: Has competido en las fiestas de las cuatro estaciones; ya eres un vecino de verdad.
+de: Du warst bei den Festen aller vier Jahreszeiten dabei – jetzt bist du ein echter Einheimischer.
+fr: Tu as participé aux fêtes des quatre saisons, tu es un vrai villageois maintenant.
+pt: Você competiu nos festivais das quatro estações; agora é morador de verdade.
+@d.npc.ali.first_meet
+en: Come sit by me. I've been fishing off this pier for forty years.
+es: Ven, siéntate a mi lado. Llevo cuarenta años pescando en este muelle.
+de: Komm, setz dich zu mir. Ich angle seit vierzig Jahren an diesem Steg.
+fr: Viens t'asseoir à côté de moi. Ça fait quarante ans que je pêche sur ce ponton.
+pt: Venha, sente aqui comigo. Pesco neste píer há quarenta anos.
+@d.npc.ali.day_generic1
+en: If the float bobs twice, strike on the third.
+es: Si el flotador se mueve dos veces, tira a la tercera.
+de: Wackelt die Pose zweimal, schlag beim dritten Mal an.
+fr: Si le flotteur bouge deux fois, ferre à la troisième.
+pt: Se a boia mexer duas vezes, puxe na terceira.
+@d.npc.ali.day_generic2
+en: If the fish runs left, tilt your rod right; it'll tire out.
+es: Si el pez huye a la izquierda, inclina la caña a la derecha; se cansará.
+de: Flieht der Fisch nach links, neig die Angel nach rechts, dann wird er müde.
+fr: Si le poisson file à gauche, penche ta canne à droite, il va se fatiguer.
+pt: Se o peixe fugir para a esquerda, incline a vara para a direita; ele cansa.
+@d.npc.ali.day_generic3
+en: An angler in a hurry loses his line.
+es: El pescador con prisa pierde el sedal.
+de: Wer hetzt, verliert die Schnur.
+fr: Le pêcheur pressé perd sa ligne.
+pt: Pescador apressado perde a linha.
+@d.npc.ali.sunny
+en: In the sun, the sardines come up to the surface.
+es: Con sol, las sardinas suben a la superficie.
+de: In der Sonne kommen die Sardinen an die Oberfläche.
+fr: Au soleil, les sardines remontent en surface.
+pt: No sol as sardinhas sobem à superfície.
+@d.npc.ali.rain
+en: The picarel get hungry in the rain — now's the time.
+es: Con lluvia al caramel le entra el hambre; ahora es el momento.
+de: Bei Regen bekommen die Pikarele Appetit, jetzt ist die beste Zeit.
+fr: Sous la pluie, les picarels ont faim, c'est le moment.
+pt: Na chuva o picarel fica com fome; agora é a hora.
+@d.npc.ali.wind
+en: When the wind whips up waves, the mullet come close to shore.
+es: Cuando el viento levanta olas, el mújol se acerca a la orilla.
+de: Wenn der Wind Wellen macht, kommen die Meeräschen ans Ufer.
+fr: Quand le vent fait des vagues, les mulets s'approchent du rivage.
+pt: Quando o vento faz ondas, a tainha chega perto da margem.
+@d.npc.ali.festival_today
+en: I'm taking the cup this year, kiddo, just so you know!
+es: Este año la copa es mía, chaval, ¡que lo sepas!
+de: Dieses Jahr hol ich den Pokal, Kleines, nur dass du's weißt!
+fr: Cette année, la coupe est pour moi, petit, je te préviens !
+pt: Este ano a taça é minha, garoto, fique sabendo!
+@d.npc.ali.first_catch
+en: I saw your first fish — you've got a good wrist.
+es: He visto tu primer pez; tienes buena muñeca.
+de: Ich hab deinen ersten Fisch gesehen, du hast ein gutes Handgelenk.
+fr: J'ai vu ton premier poisson, tu as un bon poignet.
+pt: Vi seu primeiro peixe; você tem bom pulso.
+@d.npc.ali.record
+en: Even I've rarely seen a fish that size!
+es: ¡Ni yo he visto muchos peces de ese tamaño!
+de: Einen Fisch dieser Größe hab selbst ich selten gesehen!
+fr: Même moi, j'ai rarement vu un poisson de cette taille !
+pt: Nem eu vi muitos peixes desse tamanho!
+@d.npc.ali.trophy_gold
+en: I lost the cup, but I'm glad it was to you.
+es: Perdí la copa, pero me alegra que fuera contra ti.
+de: Den Pokal hab ich verloren, aber ich freu mich, dass du ihn hast.
+fr: J'ai perdu la coupe, mais je suis content que ce soit toi qui l'aies.
+pt: Perdi a taça, mas fico feliz que tenha sido para você.
+@d.npc.mert.first_meet
+en: Hey! I'm pretty new too, we can learn together.
+es: ¡Hola! Yo también soy bastante nuevo; aprenderemos juntos.
+de: Hi! Ich bin auch noch ziemlich neu, lass uns zusammen lernen.
+fr: Salut ! Moi aussi je débute, on apprendra ensemble.
+pt: E aí! Eu também sou meio novato, a gente aprende junto.
+@d.npc.mert.day_generic1
+en: Yesterday a garfish jumped and I nearly fell in the water!
+es: ¡Ayer saltó una aguja y casi me caigo al agua!
+de: Gestern ist ein Hornhecht gesprungen, und ich wär fast ins Wasser gefallen!
+fr: Hier, une orphie a sauté et j'ai failli tomber à l'eau !
+pt: Ontem um peixe-agulha pulou e eu quase caí na água!
+@d.npc.mert.day_generic2
+en: Apparently you have to ease the line when a fish jumps — Uncle Ali told me.
+es: Por lo visto hay que aflojar el sedal cuando el pez salta; me lo dijo el tío Ali.
+de: Wenn ein Fisch springt, soll man die Schnur locker lassen, hat Onkel Ali gesagt.
+fr: Il paraît qu'il faut relâcher la ligne quand le poisson saute, c'est Tonton Ali qui me l'a dit.
+pt: Parece que tem que afrouxar a linha quando o peixe pula, o Tio Ali me disse.
+@d.npc.mert.day_generic3
+en: One day I'll head out to open water in my own boat.
+es: Algún día saldré mar adentro con mi propio barco.
+de: Eines Tages fahre ich mit meinem eigenen Boot aufs offene Meer.
+fr: Un jour, je partirai au large avec mon propre bateau.
+pt: Um dia vou sair para o mar aberto com meu próprio barco.
+@d.npc.mert.sunny
+en: The weather's so nice today, something's bound to bite.
+es: Hoy hace un tiempo buenísimo; seguro que pica algo.
+de: Heute ist so tolles Wetter, da beißt bestimmt was.
+fr: Il fait trop beau aujourd'hui, ça va forcément mordre.
+pt: O tempo está lindo hoje, com certeza algo vai morder.
+@d.npc.mert.rain
+en: I'm soaked, but I'm not giving up!
+es: Estoy empapado, ¡pero no me rindo!
+de: Ich bin klitschnass, aber ich geb nicht auf!
+fr: Je suis trempé, mais je n'abandonne pas !
+pt: Estou encharcado, mas não desisto!
+@d.npc.mert.wind
+en: The wind keeps pushing my float around.
+es: El viento no para de mover mi flotador.
+de: Der Wind treibt meine Pose ständig weg.
+fr: Le vent n'arrête pas de déplacer mon flotteur.
+pt: O vento fica empurrando minha boia o tempo todo.
+@d.npc.mert.festival_today
+en: My first contest! I was so excited I forgot my bait.
+es: ¡Mi primer concurso! De los nervios se me olvidó el cebo.
+de: Mein erster Wettbewerb! Vor Aufregung hab ich meinen Köder vergessen.
+fr: Mon premier concours ! J'étais tellement excité que j'ai oublié mon appât.
+pt: Minha primeira competição! De tanta empolgação esqueci a isca.
+@d.npc.mert.rod3
+en: You got a fiberglass rod? Can I hold it for a sec?
+es: ¿Te has comprado una caña de fibra de vidrio? ¿Me dejas cogerla un momento?
+de: Du hast eine Glasfaserangel? Darf ich sie mal halten?
+fr: Tu as une canne en fibre de verre ? Je peux la tenir une seconde ?
+pt: Comprou uma vara de fibra de vidro? Posso segurar um pouquinho?
+@d.npc.mert.first_boat
+en: You've got a boat! Will you take me out someday?
+es: ¡Tienes barco! ¿Me llevarás algún día?
+de: Du hast ein Boot! Nimmst du mich mal mit?
+fr: Tu as un bateau ! Tu m'emmèneras un jour ?
+pt: Você tem barco! Me leva um dia?
+@d.npc.elif.first_meet
+en: Hi! I sketch every fish I see in my notebook.
+es: ¡Hola! Dibujo en mi cuaderno cada pez que veo.
+de: Hallo! Ich zeichne jeden Fisch, den ich sehe, in mein Heft.
+fr: Bonjour ! Je dessine chaque poisson que je vois dans mon carnet.
+pt: Oi! Desenho no meu caderno cada peixe que vejo.
+@d.npc.elif.day_generic1
+en: I've got twenty different fish in my notebook — how many do you have?
+es: Tengo veinte peces distintos en mi cuaderno; ¿y tú cuántos?
+de: In meinem Heft sind zwanzig verschiedene Fische – wie viele hast du?
+fr: J'ai vingt poissons différents dans mon carnet, et toi, combien ?
+pt: Tenho vinte peixes diferentes no caderno; e você, quantos?
+@d.npc.elif.day_generic2
+en: Heavy fish dive to the bottom; reel patiently so they don't get away.
+es: Los peces pesados se van al fondo; recoge con paciencia para que no escapen.
+de: Schwere Fische tauchen ab; kurbel geduldig, damit sie nicht entkommen.
+fr: Les poissons lourds plongent au fond ; mouline patiemment pour ne pas les perdre.
+pt: Peixes pesados mergulham para o fundo; recolha com paciência para não fugirem.
+@d.npc.elif.day_generic3
+en: When you land a perfect hook set, the fish comes in faster!
+es: ¡Con una clavada perfecta el pez llega antes!
+de: Mit einem perfekten Anhieb kommt der Fisch schneller!
+fr: Avec un ferrage parfait, le poisson arrive plus vite !
+pt: Com uma fisgada perfeita o peixe vem mais rápido!
+@d.npc.elif.sunny
+en: In the sun, the water looks like crystal underneath.
+es: Con sol, el fondo del agua parece de cristal.
+de: In der Sonne sieht es unter Wasser aus wie Kristall.
+fr: Au soleil, le dessous de l'eau ressemble à du cristal.
+pt: No sol, debaixo d'água parece cristal.
+@d.npc.elif.rain
+en: It's as if the raindrops are drawing on the water.
+es: Parece que las gotas de lluvia dibujan en el agua.
+de: Es ist, als würden die Regentropfen aufs Wasser zeichnen.
+fr: On dirait que les gouttes de pluie dessinent sur l'eau.
+pt: Parece que as gotas de chuva desenham na água.
+@d.npc.elif.wind
+en: The pages of my notebook keep flapping in the wind.
+es: Con el viento se me vuelan las páginas del cuaderno.
+de: Im Wind flattern die Seiten meines Hefts.
+fr: Avec le vent, les pages de mon carnet s'envolent.
+pt: Com o vento as páginas do meu caderno voam.
+@d.npc.elif.festival_today
+en: I love the Species Hunter contest — good luck!
+es: Me encanta el concurso de cazador de especies, ¡mucha suerte!
+de: Ich liebe den Artenjäger-Wettbewerb – viel Glück!
+fr: J'adore le concours du chasseur d'espèces, bonne chance !
+pt: Adoro a competição Caçador de Espécies, boa sorte!
+@d.npc.elif.species20
+en: You've passed twenty species! Your encyclopedia is thicker than mine.
+es: ¡Has superado las veinte especies! Tu enciclopedia ya es más gorda que la mía.
+de: Du hast über zwanzig Arten! Dein Lexikon ist dicker als meins.
+fr: Tu as dépassé vingt espèces ! Ton encyclopédie est plus épaisse que la mienne.
+pt: Você passou de vinte espécies! Sua enciclopédia já é mais grossa que a minha.
+@d.npc.elif.record
+en: Can I sketch your record fish in my notebook?
+es: ¿Puedo dibujar tu pez de récord en mi cuaderno?
+de: Darf ich deinen Rekordfisch in mein Heft zeichnen?
+fr: Je peux dessiner ton poisson record dans mon carnet ?
+pt: Posso desenhar seu peixe recordista no meu caderno?

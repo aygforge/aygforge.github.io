@@ -1,0 +1,474 @@
+@ui4.kerem_in_deniz_sergisi
+en: Kerem's Sea Exhibit
+es: La exposición marina de Kerem
+de: Kerems Meeresausstellung
+fr: L'exposition marine de Kerem
+pt: A Exposição Marinha do Kerem
+@ui4.n_n_cm_n_kg
+en: ⟦0⟧⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{2} cm · {3} kg · {4}⟦5⟧⟦6⟧→ {5}⟦7⟧⟦8⟧⟦9⟧{7} Cast Again⟦10⟧⟦11⟧Inspect⟦12⟧
+es: ⟦0⟧⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{2} cm · {3} kg · {4}⟦5⟧⟦6⟧→ {5}⟦7⟧⟦8⟧⟦9⟧{7} Lanzar otra vez⟦10⟧⟦11⟧Examinar⟦12⟧
+de: ⟦0⟧⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{2} cm · {3} kg · {4}⟦5⟧⟦6⟧→ {5}⟦7⟧⟦8⟧⟦9⟧{7} Nochmal werfen⟦10⟧⟦11⟧Ansehen⟦12⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{2} cm · {3} kg · {4}⟦5⟧⟦6⟧→ {5}⟦7⟧⟦8⟧⟦9⟧{7} Relancer⟦10⟧⟦11⟧Examiner⟦12⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{2} cm · {3} kg · {4}⟦5⟧⟦6⟧→ {5}⟦7⟧⟦8⟧⟦9⟧{7} Arremessar de Novo⟦10⟧⟦11⟧Examinar⟦12⟧
+@ui4.hikayeler_n
+en: ⟦0⟧STORIES⟦1⟧{0}
+es: ⟦0⟧HISTORIAS⟦1⟧{0}
+de: ⟦0⟧GESCHICHTEN⟦1⟧{0}
+fr: ⟦0⟧HISTOIRES⟦1⟧{0}
+pt: ⟦0⟧HISTÓRIAS⟦1⟧{0}
+@ui4.n_n_acilma_n
+en: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ · Unlocks: {2}⟦3⟧
+es: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ · Se desbloquea: {2}⟦3⟧
+de: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ · Freischaltung: {2}⟦3⟧
+fr: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ · Déblocage : {2}⟦3⟧
+pt: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ · Desbloqueia: {2}⟦3⟧
+@ui4.n_n_tamamlandi_gun_n
+en: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ · completed (Day {2}). You can reread it in the Keepsake Album.⟦3⟧
+es: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ · completada (Día {2}). Puedes releerla en el Álbum de recuerdos.⟦3⟧
+de: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ · abgeschlossen (Tag {2}). Im Erinnerungsalbum kannst du sie nochmal lesen.⟦3⟧
+fr: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ · terminée (Jour {2}). Tu peux la relire dans l'Album souvenir.⟦3⟧
+pt: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ · concluída (Dia {2}). Você pode reler no Álbum de Lembranças.⟦3⟧
+@ui4.n_n_asama_n_3
+en: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ · Stage {2}/3⟦3⟧{3}⟦4⟧{4}⟦5⟧
+es: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ · Fase {2}/3⟦3⟧{3}⟦4⟧{4}⟦5⟧
+de: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ · Abschnitt {2}/3⟦3⟧{3}⟦4⟧{4}⟦5⟧
+fr: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ · Étape {2}/3⟦3⟧{3}⟦4⟧{4}⟦5⟧
+pt: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ · Etapa {2}/3⟦3⟧{3}⟦4⟧{4}⟦5⟧
+@ui4.konus_ve_geziye_davet_et
+en: Talk and invite on a trip
+es: Hablar e invitar a una salida
+de: Ansprechen und einladen
+fr: Parler et inviter en sortie
+pt: Conversar e convidar para viagem
+@ui4.konus
+en: Talk
+es: Hablar
+de: Sprechen
+fr: Parler
+pt: Conversar
+@ui4.n_kasaba_n_n_n
+en: ⟦0⟧⟦1⟧{0}⟦2⟧Town⟦3⟧⟦4⟧⟦5⟧⟦6⟧⟦7⟧{1} · {2}⟦8⟧⟦9⟧⟦10⟧⟦11⟧{4}⟦12⟧Show Hint⟦13⟧⟦14⟧⟦15⟧{5}⟦16⟧⟦17⟧
+es: ⟦0⟧⟦1⟧{0}⟦2⟧Pueblo⟦3⟧⟦4⟧⟦5⟧⟦6⟧⟦7⟧{1} · {2}⟦8⟧⟦9⟧⟦10⟧⟦11⟧{4}⟦12⟧Ver pista⟦13⟧⟦14⟧⟦15⟧{5}⟦16⟧⟦17⟧
+de: ⟦0⟧⟦1⟧{0}⟦2⟧Ort⟦3⟧⟦4⟧⟦5⟧⟦6⟧⟦7⟧{1} · {2}⟦8⟧⟦9⟧⟦10⟧⟦11⟧{4}⟦12⟧Hinweis zeigen⟦13⟧⟦14⟧⟦15⟧{5}⟦16⟧⟦17⟧
+fr: ⟦0⟧⟦1⟧{0}⟦2⟧Village⟦3⟧⟦4⟧⟦5⟧⟦6⟧⟦7⟧{1} · {2}⟦8⟧⟦9⟧⟦10⟧⟦11⟧{4}⟦12⟧Afficher l'indice⟦13⟧⟦14⟧⟦15⟧{5}⟦16⟧⟦17⟧
+pt: ⟦0⟧⟦1⟧{0}⟦2⟧Vila⟦3⟧⟦4⟧⟦5⟧⟦6⟧⟦7⟧{1} · {2}⟦8⟧⟦9⟧⟦10⟧⟦11⟧{4}⟦12⟧Mostrar Pista⟦13⟧⟦14⟧⟦15⟧{5}⟦16⟧⟦17⟧
+@ui4.ipucu_olan_noktayi_kaz
+en: Dig where the clue is
+es: Cava donde está la pista
+de: Grab dort, wo der Hinweis ist
+fr: Creuse là où se trouve l'indice
+pt: Cave onde está a pista
+@ui4.kabarcikli_kayayi_kaldir
+en: Lift the bubbling rock
+es: Levanta la roca con burbujas
+de: Heb den sprudelnden Stein an
+fr: Soulève le rocher qui fait des bulles
+pt: Levante a pedra com bolhas
+@ui4.su_cekilince_parlayani_sec
+en: Pick the shiny one when the water recedes
+es: Elige lo que brilla cuando baje el agua
+de: Wähle das Glitzernde, wenn das Wasser zurückgeht
+fr: Choisis ce qui brille quand l'eau se retire
+pt: Escolha o que brilha quando a água baixar
+@ui4.tekrar_n_kez
+en:  · duplicate (#{0})
+es:  · repetido ({0}.ª vez)
+de:  · doppelt ({0}. Mal)
+fr:  · en double ({0}e fois)
+pt:  · repetido ({0}ª vez)
+@ui4.n_kiyi_kesfi_tamamlandi_n
+en: ⟦0⟧{0} Beachcombing complete⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧Collection: ⟦5⟧{2}/{3}⟦6⟧ · {4} {4|search|searches}{5}. You can go beachcombing again tomorrow.⟦7⟧⟦8⟧⟦9⟧Collection⟦10⟧⟦11⟧Back to town⟦12⟧⟦13⟧
+es: ⟦0⟧{0} Exploración de playa completada⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧Colección: ⟦5⟧{2}/{3}⟦6⟧ · {4} {4|búsqueda|búsquedas}{5}. Mañana podrás explorar otra vez.⟦7⟧⟦8⟧⟦9⟧Colección⟦10⟧⟦11⟧Volver al pueblo⟦12⟧⟦13⟧
+de: ⟦0⟧{0} Strandsuche beendet⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧Sammlung: ⟦5⟧{2}/{3}⟦6⟧ · {4} {4|Fundstelle|Fundstellen}{5}. Morgen kannst du wieder suchen.⟦7⟧⟦8⟧⟦9⟧Sammlung⟦10⟧⟦11⟧Zurück in den Ort⟦12⟧⟦13⟧
+fr: ⟦0⟧{0} Exploration du rivage terminée⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧Collection : ⟦5⟧{2}/{3}⟦6⟧ · {4} {4|fouille|fouilles}{5}. Tu pourras explorer de nouveau demain.⟦7⟧⟦8⟧⟦9⟧Collection⟦10⟧⟦11⟧Retour au village⟦12⟧⟦13⟧
+pt: ⟦0⟧{0} Exploração de praia concluída⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧Coleção: ⟦5⟧{2}/{3}⟦6⟧ · {4} {4|busca|buscas}{5}. Amanhã você pode explorar de novo.⟦7⟧⟦8⟧⟦9⟧Coleção⟦10⟧⟦11⟧Voltar à vila⟦12⟧⟦13⟧
+@ui4.yeni
+en:  · ⟦0⟧NEW!⟦1⟧
+es:  · ⟦0⟧¡NUEVO!⟦1⟧
+de:  · ⟦0⟧NEU!⟦1⟧
+fr:  · ⟦0⟧NOUVEAU !⟦1⟧
+pt:  · ⟦0⟧NOVO!⟦1⟧
+@ui4.balikci_birligi
+en: Fishers' Guild
+es: Gremio de Pescadores
+de: Fischergilde
+fr: Guilde des pêcheurs
+pt: Guilda dos Pescadores
+@ui4.birlik_panosu_3_oyun_gununde
+en: ⟦0⟧The Guild board opens on game day 3.⟦1⟧
+es: ⟦0⟧El tablón del gremio abre el día 3 de juego.⟦1⟧
+de: ⟦0⟧Das Gildenbrett öffnet am 3. Spieltag.⟦1⟧
+fr: ⟦0⟧Le tableau de la guilde ouvre au 3e jour de jeu.⟦1⟧
+pt: ⟦0⟧O quadro da guilda abre no 3º dia de jogo.⟦1⟧
+@ui4.baslangic
+en: Early game
+es: Inicio
+de: Anfang
+fr: Début de partie
+pt: Início
+@ui4.orta_oyun
+en: Mid game
+es: Mitad de partida
+de: Mittleres Spiel
+fr: Milieu de partie
+pt: Meio do jogo
+@ui4.ileri_oyun
+en: Late game
+es: Final de partida
+de: Spätes Spiel
+fr: Fin de partie
+pt: Fim de jogo
+@ui4.n_n_hafta_gun_n
+en: ⟦0⟧{0} Week {1} (Day {2}–{3}) · Tasks are optional, with no penalty. This week {4}. Rewards match the progress level when the task was picked (now: {5}).⟦1⟧
+es: ⟦0⟧{0} Semana {1} (Día {2}–{3}) · Las tareas son opcionales y sin penalización. Esta semana {4}. Las recompensas dependen del nivel de progreso al elegir la tarea (ahora: {5}).⟦1⟧
+de: ⟦0⟧{0} Woche {1} (Tag {2}–{3}) · Aufgaben sind freiwillig, ohne Strafe. Diese Woche {4}. Belohnungen richten sich nach dem Fortschritt bei Auswahl der Aufgabe (aktuell: {5}).⟦1⟧
+fr: ⟦0⟧{0} Semaine {1} (Jour {2}–{3}) · Les tâches sont facultatives, sans pénalité. Cette semaine, {4}. Les récompenses suivent le niveau de progression au moment du choix (actuellement : {5}).⟦1⟧
+pt: ⟦0⟧{0} Semana {1} (Dia {2}–{3}) · As tarefas são opcionais, sem multa. Nesta semana {4}. As recompensas seguem o nível de progresso quando a tarefa foi escolhida (agora: {5}).⟦1⟧
+@ui4.gorev_degistirme_hakkini_kullandin
+en: you've used your task swap
+es: ya usaste tu cambio de tarea
+de: hast du deinen Aufgabentausch schon genutzt
+fr: tu as utilisé ton échange de tâche
+pt: você já usou a troca de tarefa
+@ui4.1_ucretsiz_gorev_degistirme_hakkin
+en: you have ⟦0⟧1 free task swap⟦1⟧
+es: tienes ⟦0⟧1 cambio de tarea gratis⟦1⟧
+de: hast du ⟦0⟧1 kostenlosen Aufgabentausch⟦1⟧
+fr: tu as ⟦0⟧1 échange de tâche gratuit⟦1⟧
+pt: você tem ⟦0⟧1 troca de tarefa grátis⟦1⟧
+@ui4.balik_tutmadan
+en: ⟦0⟧· no fishing needed⟦1⟧
+es: ⟦0⟧· sin pescar⟦1⟧
+de: ⟦0⟧· ohne Angeln⟦1⟧
+fr: ⟦0⟧· sans pêcher⟦1⟧
+pt: ⟦0⟧· sem pescar⟦1⟧
+@ui4.odul_alindi
+en: ⟦0⟧Reward claimed⟦1⟧
+es: ⟦0⟧Recompensa recogida⟦1⟧
+de: ⟦0⟧Belohnung abgeholt⟦1⟧
+fr: ⟦0⟧Récompense récupérée⟦1⟧
+pt: ⟦0⟧Recompensa resgatada⟦1⟧
+@ui4.odulu_al
+en: ⟦0⟧Claim Reward⟦1⟧
+es: ⟦0⟧Recoger recompensa⟦1⟧
+de: ⟦0⟧Belohnung abholen⟦1⟧
+fr: ⟦0⟧Récupérer la récompense⟦1⟧
+pt: ⟦0⟧Resgatar Recompensa⟦1⟧
+@ui4.gorevi_degistir
+en: ⟦0⟧Swap task⟦1⟧
+es: ⟦0⟧Cambiar tarea⟦1⟧
+de: ⟦0⟧Aufgabe tauschen⟦1⟧
+fr: ⟦0⟧Échanger la tâche⟦1⟧
+pt: ⟦0⟧Trocar tarefa⟦1⟧
+@ui4.haftalik_toplam_odul_degeri_n
+en: ⟦0⟧Total weekly reward value ≈ {0} (coins + bait). Tasks only progress with real activities done this week; fleet and auto rod fish don't count toward manual catch tasks.⟦1⟧
+es: ⟦0⟧Valor total semanal de recompensas ≈ {0} (dinero + cebo). Las tareas solo avanzan con actividades reales de esta semana; los peces de la flota y de las cañas automáticas no cuentan para tareas de pesca manual.⟦1⟧
+de: ⟦0⟧Gesamtwert der Wochenbelohnungen ≈ {0} (Münzen + Köder). Aufgaben zählen nur echte Aktivitäten dieser Woche; Fische von Flotte und Auto-Angeln zählen nicht für Handfang-Aufgaben.⟦1⟧
+fr: ⟦0⟧Valeur totale des récompenses de la semaine ≈ {0} (pièces + appâts). Les tâches n'avancent qu'avec les vraies activités de la semaine ; les poissons de la flotte et des cannes auto ne comptent pas pour les tâches de pêche manuelle.⟦1⟧
+pt: ⟦0⟧Valor total das recompensas da semana ≈ {0} (moedas + isca). As tarefas só avançam com atividades reais desta semana; peixes da frota e das varas automáticas não contam para tarefas de pesca manual.⟦1⟧
+@ui4.kasaba_hikayeleri
+en: Town Stories
+es: Historias del pueblo
+de: Ortsgeschichten
+fr: Histoires du village
+pt: Histórias da Vila
+@ui4.hatira_albumu
+en: Keepsake Album
+es: Álbum de recuerdos
+de: Erinnerungsalbum
+fr: Album souvenir
+pt: Álbum de Lembranças
+@ui4.n_hikayelerin_sure_siniri_veya
+en: {0}⟦0⟧Stories have no time limit or failure penalty. You can track up to two stories on screen.⟦1⟧
+es: {0}⟦0⟧Las historias no tienen límite de tiempo ni penalización. Puedes seguir hasta dos en pantalla.⟦1⟧
+de: {0}⟦0⟧Geschichten haben kein Zeitlimit und keine Strafe. Bis zu zwei kannst du auf dem Bildschirm verfolgen.⟦1⟧
+fr: {0}⟦0⟧Les histoires n'ont ni limite de temps ni pénalité d'échec. Tu peux en suivre deux à l'écran.⟦1⟧
+pt: {0}⟦0⟧As histórias não têm prazo nem punição por falha. Dá para acompanhar até duas na tela.⟦1⟧
+@ui4.asama_n_3
+en: Stage {0}/3
+es: Fase {0}/3
+de: Abschnitt {0}/3
+fr: Étape {0}/3
+pt: Etapa {0}/3
+@ui4.n_n_acilma_sarti_n
+en: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧{2}⟦4⟧⟦5⟧⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧⟦10⟧Unlock condition: {5}⟦11⟧⟦12⟧⟦13⟧{6}:⟦14⟧ {7}⟦15⟧⟦16⟧Reward: {8}⟦17⟧⟦18⟧⟦19⟧⟦20⟧{9}⟦21⟧⟦22⟧
+es: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧{2}⟦4⟧⟦5⟧⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧⟦10⟧Se desbloquea con: {5}⟦11⟧⟦12⟧⟦13⟧{6}:⟦14⟧ {7}⟦15⟧⟦16⟧Recompensa: {8}⟦17⟧⟦18⟧⟦19⟧⟦20⟧{9}⟦21⟧⟦22⟧
+de: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧{2}⟦4⟧⟦5⟧⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧⟦10⟧Freischaltung: {5}⟦11⟧⟦12⟧⟦13⟧{6}:⟦14⟧ {7}⟦15⟧⟦16⟧Belohnung: {8}⟦17⟧⟦18⟧⟦19⟧⟦20⟧{9}⟦21⟧⟦22⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧{2}⟦4⟧⟦5⟧⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧⟦10⟧Condition de déblocage : {5}⟦11⟧⟦12⟧⟦13⟧{6} :⟦14⟧ {7}⟦15⟧⟦16⟧Récompense : {8}⟦17⟧⟦18⟧⟦19⟧⟦20⟧{9}⟦21⟧⟦22⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧{2}⟦4⟧⟦5⟧⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧⟦10⟧Condição para liberar: {5}⟦11⟧⟦12⟧⟦13⟧{6}:⟦14⟧ {7}⟦15⟧⟦16⟧Recompensa: {8}⟦17⟧⟦18⟧⟦19⟧⟦20⟧{9}⟦21⟧⟦22⟧
+@ui4.kilitli
+en: Locked
+es: Bloqueada
+de: Gesperrt
+fr: Verrouillée
+pt: Bloqueada
+@ui4.odul_alindi_2
+en: Reward claimed
+es: Recompensa recogida
+de: Belohnung erhalten
+fr: Récompense obtenue
+pt: Recompensa recebida
+@ui4.sonraki_hedef
+en: Next goal
+es: Siguiente objetivo
+de: Nächstes Ziel
+fr: Objectif suivant
+pt: Próxima meta
+@ui4.takibi_birak
+en: Stop tracking
+es: Dejar de seguir
+de: Nicht mehr verfolgen
+fr: Arrêter le suivi
+pt: Parar de acompanhar
+@ui4.hud_da_takip_et
+en: Track on HUD
+es: Seguir en el HUD
+de: Im HUD verfolgen
+fr: Suivre à l'écran
+pt: Acompanhar no HUD
+@ui4.n_n_trofe_gun_n
+en: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧trophy · Day {2}⟦5⟧⟦6⟧{3} · {4} cm / {5} kg · reward: {6}⟦7⟧⟦8⟧⟦9⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧trofeo · Día {2}⟦5⟧⟦6⟧{3} · {4} cm / {5} kg · recompensa: {6}⟦7⟧⟦8⟧⟦9⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧Trophäe · Tag {2}⟦5⟧⟦6⟧{3} · {4} cm / {5} kg · Belohnung: {6}⟦7⟧⟦8⟧⟦9⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧trophée · Jour {2}⟦5⟧⟦6⟧{3} · {4} cm / {5} kg · récompense : {6}⟦7⟧⟦8⟧⟦9⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧troféu · Dia {2}⟦5⟧⟦6⟧{3} · {4} cm / {5} kg · recompensa: {6}⟦7⟧⟦8⟧⟦9⟧
+@ui4.n_n_n_gun_n
+en: ⟦0⟧⟦1⟧{0} ⟦2⟧{1}⟦3⟧ ⟦4⟧· {2} · Day {3}⟦5⟧⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧
+es: ⟦0⟧⟦1⟧{0} ⟦2⟧{1}⟦3⟧ ⟦4⟧· {2} · Día {3}⟦5⟧⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧
+de: ⟦0⟧⟦1⟧{0} ⟦2⟧{1}⟦3⟧ ⟦4⟧· {2} · Tag {3}⟦5⟧⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧
+fr: ⟦0⟧⟦1⟧{0} ⟦2⟧{1}⟦3⟧ ⟦4⟧· {2} · Jour {3}⟦5⟧⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧
+pt: ⟦0⟧⟦1⟧{0} ⟦2⟧{1}⟦3⟧ ⟦4⟧· {2} · Dia {3}⟦5⟧⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧
+@ui4.album_bos_tamamlanan_hikayeler_ve
+en: ⟦0⟧The album is empty. Completed stories and trophies are kept here.⟦1⟧
+es: ⟦0⟧El álbum está vacío. Aquí se guardan las historias y trofeos completados.⟦1⟧
+de: ⟦0⟧Das Album ist leer. Abgeschlossene Geschichten und Trophäen landen hier.⟦1⟧
+fr: ⟦0⟧L'album est vide. Les histoires terminées et les trophées sont conservés ici.⟦1⟧
+pt: ⟦0⟧O álbum está vazio. Histórias concluídas e troféus ficam guardados aqui.⟦1⟧
+@ui4.trofe_avlari
+en: Trophy Hunts
+es: Caza de trofeos
+de: Trophäenjagd
+fr: Chasse aux trophées
+pt: Caça aos Troféus
+@ui4.n_kasaba_hikayeleri_n_5
+en: ⟦0⟧⟦1⟧{0} Town Stories ({1}/5)⟦2⟧⟦3⟧{2} Keepsake Album⟦4⟧⟦5⟧{3}
+es: ⟦0⟧⟦1⟧{0} Historias del pueblo ({1}/5)⟦2⟧⟦3⟧{2} Álbum de recuerdos⟦4⟧⟦5⟧{3}
+de: ⟦0⟧⟦1⟧{0} Ortsgeschichten ({1}/5)⟦2⟧⟦3⟧{2} Erinnerungsalbum⟦4⟧⟦5⟧{3}
+fr: ⟦0⟧⟦1⟧{0} Histoires du village ({1}/5)⟦2⟧⟦3⟧{2} Album souvenir⟦4⟧⟦5⟧{3}
+pt: ⟦0⟧⟦1⟧{0} Histórias da Vila ({1}/5)⟦2⟧⟦3⟧{2} Álbum de Lembranças⟦4⟧⟦5⟧{3}
+@ui4.n_sergi_kosesi_n
+en: ⟦0⟧{0}⟦1⟧⟦2⟧Display corner⟦3⟧: {1}⟦4⟧⟦5⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧Rincón de exposición⟦3⟧: {1}⟦4⟧⟦5⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧Ausstellungsecke⟦3⟧: {1}⟦4⟧⟦5⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧Coin d'exposition⟦3⟧ : {1}⟦4⟧⟦5⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧Cantinho da exposição⟦3⟧: {1}⟦4⟧⟦5⟧
+@ui4.trofe_n
+en: Trophy: {0}
+es: Trofeo: {0}
+de: Trophäe: {0}
+fr: Trophée : {0}
+pt: Troféu: {0}
+@ui4.trofe_susleri_n
+en: ⟦0⟧Trophy ornaments⟦1⟧⟦2⟧{0}⟦3⟧
+es: ⟦0⟧Adornos de trofeo⟦1⟧⟦2⟧{0}⟦3⟧
+de: ⟦0⟧Trophäenschmuck⟦1⟧⟦2⟧{0}⟦3⟧
+fr: ⟦0⟧Ornements de trophée⟦1⟧⟦2⟧{0}⟦3⟧
+pt: ⟦0⟧Enfeites de troféu⟦1⟧⟦2⟧{0}⟦3⟧
+@ui4.yeni_2
+en:  ⟦0⟧new⟦1⟧
+es:  ⟦0⟧nuevo⟦1⟧
+de:  ⟦0⟧neu⟦1⟧
+fr:  ⟦0⟧nouveau⟦1⟧
+pt:  ⟦0⟧novo⟦1⟧
+@ui4.n_birlik_n_n_hikayeler
+en: ⟦0⟧{0} Guild{1}⟦1⟧⟦2⟧{2} Stories{3}⟦3⟧⟦4⟧{4} Trophies{5}⟦5⟧⟦6⟧{6} Shore Collection{7}⟦7⟧⟦8⟧
+es: ⟦0⟧{0} Gremio{1}⟦1⟧⟦2⟧{2} Historias{3}⟦3⟧⟦4⟧{4} Trofeos{5}⟦5⟧⟦6⟧{6} Colección de playa{7}⟦7⟧⟦8⟧
+de: ⟦0⟧{0} Gilde{1}⟦1⟧⟦2⟧{2} Geschichten{3}⟦3⟧⟦4⟧{4} Trophäen{5}⟦5⟧⟦6⟧{6} Strandsammlung{7}⟦7⟧⟦8⟧
+fr: ⟦0⟧{0} Guilde{1}⟦1⟧⟦2⟧{2} Histoires{3}⟦3⟧⟦4⟧{4} Trophées{5}⟦5⟧⟦6⟧{6} Collection du rivage{7}⟦7⟧⟦8⟧
+pt: ⟦0⟧{0} Guilda{1}⟦1⟧⟦2⟧{2} Histórias{3}⟦3⟧⟦4⟧{4} Troféus{5}⟦5⟧⟦6⟧{6} Coleção de Praia{7}⟦7⟧⟦8⟧
+@ui4.av_temposu_n_iki_modda
+en: ⟦0⟧Fishing pace⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧In both modes energy, bait, species odds, size distribution, the hook-set window and prices are the same. A cast in progress doesn't change; the new choice applies from the next cast.⟦5⟧
+es: ⟦0⟧Ritmo de pesca⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧En ambos modos son iguales la energía, el cebo, la probabilidad de especies, el reparto de tamaños, la ventana para clavar y los precios. El lanzamiento en curso no cambia; la nueva opción se aplica desde el siguiente.⟦5⟧
+de: ⟦0⟧Angeltempo⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧In beiden Modi sind Energie, Köder, Artchancen, Größenverteilung, Anhiebfenster und Preise gleich. Ein laufender Wurf ändert sich nicht; die neue Wahl gilt ab dem nächsten Wurf.⟦5⟧
+fr: ⟦0⟧Rythme de pêche⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧Dans les deux modes, l'énergie, les appâts, les probabilités d'espèces, la répartition des tailles, la fenêtre de ferrage et les prix sont identiques. Le lancer en cours ne change pas ; le nouveau choix s'applique au lancer suivant.⟦5⟧
+pt: ⟦0⟧Ritmo de pesca⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧Nos dois modos energia, isca, chance das espécies, distribuição de tamanhos, janela de fisgada e preços são iguais. O arremesso em andamento não muda; a nova escolha vale a partir do próximo.⟦5⟧
+@ui4.akici_av_varsayilan
+en: Flow Fishing (default)
+es: Pesca fluida (predeterminada)
+de: Flüssiges Angeln (Standard)
+fr: Pêche fluide (par défaut)
+pt: Pesca Fluida (padrão)
+@ui4.bekleme_1_5_3_5
+en: Wait 1.5–3.5 s · compact result for normal catches · quick pull on power 1 fish
+es: Espera de 1,5–3,5 s · resultado compacto en capturas normales · tirón rápido con peces de fuerza 1
+de: Wartezeit 1,5–3,5 s · kompaktes Ergebnis bei normalen Fängen · schnelles Einholen bei Stärke 1
+fr: Attente 1,5–3,5 s · résultat compact pour les prises normales · remontée rapide des poissons de force 1
+pt: Espera de 1,5–3,5 s · resultado compacto nas capturas normais · puxada rápida em peixes de força 1
+@ui4.klasik_av
+en: Classic Fishing
+es: Pesca clásica
+de: Klassisches Angeln
+fr: Pêche classique
+pt: Pesca Clássica
+@ui4.bekleme_2_6_sn_her
+en: Wait 2–6 s · detailed result card for every catch
+es: Espera de 2–6 s · tarjeta de resultado detallada en cada captura
+de: Wartezeit 2–6 s · ausführliche Ergebniskarte bei jedem Fang
+fr: Attente 2–6 s · carte de résultat détaillée à chaque prise
+pt: Espera de 2–6 s · cartão de resultado detalhado em cada captura
+@ui4.titresim
+en: Vibration
+es: Vibración
+de: Vibration
+fr: Vibration
+pt: Vibração
+@ui4.vurus_ve_ozel_hamle_uyarilarinda
+en: On bites and special-move warnings (on supported devices)
+es: En picadas y avisos de jugada especial (en dispositivos compatibles)
+de: Bei Bissen und Spezialzug-Warnungen (auf unterstützten Geräten)
+fr: Lors des touches et alertes de coup spécial (sur appareils compatibles)
+pt: Em fisgadas e avisos de jogada especial (em aparelhos compatíveis)
+@ui4.n_yedi_bolgesel_trofe_mevcut
+en: ⟦0⟧{0} Seven regional trophies: large specimens of existing species with special fighting behavior. You can pick one target at a time; in the right region at a suitable spot, a trophy sign shows up about every 4–6 casts (catching it isn't guaranteed). A trophy fish sells at its normal base price.⟦1⟧
+es: ⟦0⟧{0} Siete trofeos regionales: grandes ejemplares de especies existentes con un comportamiento de pelea especial. Puedes elegir un objetivo a la vez; en la zona correcta y en un punto adecuado, aparece un rastro de trofeo cada 4–6 lanzamientos de media (pescarlo no está garantizado). El pez trofeo se vende a su precio base normal.⟦1⟧
+de: ⟦0⟧{0} Sieben Gebietstrophäen: große Exemplare bekannter Arten mit besonderem Kampfverhalten. Du kannst jeweils ein Ziel wählen; im richtigen Gebiet an einem passenden Platz zeigt sich im Schnitt alle 4–6 Würfe eine Trophäenspur (Fang nicht garantiert). Ein Trophäenfisch wird zum normalen Grundpreis verkauft.⟦1⟧
+fr: ⟦0⟧{0} Sept trophées régionaux : de grands spécimens d'espèces existantes au comportement de combat spécial. Tu choisis une cible à la fois ; dans la bonne zone et au bon coin, une trace de trophée apparaît en moyenne tous les 4 à 6 lancers (la prise n'est pas garantie). Un poisson trophée se vend à son prix de base normal.⟦1⟧
+pt: ⟦0⟧{0} Sete troféus regionais: exemplares grandes de espécies existentes com comportamento de briga especial. Você escolhe uma meta por vez; na região certa e num ponto adequado, surge um sinal de troféu a cada 4–6 arremessos em média (pescar não é garantido). O peixe-troféu é vendido pelo preço base normal.⟦1⟧
+@ui4.once_turu_kesfet
+en: Discover the species first
+es: Descubre primero la especie
+de: Erst die Art entdecken
+fr: Découvre d'abord l'espèce
+pt: Descubra a espécie primeiro
+@ui4.odul_bir_kez_n
+en: Reward (once): {0}
+es: Recompensa (una vez): {0}
+de: Belohnung (einmalig): {0}
+fr: Récompense (une fois) : {0}
+pt: Recompensa (uma vez): {0}
+@ui4.n_guc_n_gerekli_olta
+en: ⟦0⟧{0}⟦1⟧⟦2⟧Power {1} · required rod power ≥ {2} (now {3}) · suggested method: {4} · suggested bait: {5}⟦3⟧⟦4⟧{6}⟦5⟧⟦6⟧⟦7⟧⟦8⟧⟦9⟧{9}⟦10⟧⟦11⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧Fuerza {1} · caña necesaria ≥ {2} (ahora {3}) · método sugerido: {4} · cebo sugerido: {5}⟦3⟧⟦4⟧{6}⟦5⟧⟦6⟧⟦7⟧⟦8⟧⟦9⟧{9}⟦10⟧⟦11⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧Stärke {1} · nötige Angelstärke ≥ {2} (jetzt {3}) · empfohlene Methode: {4} · empfohlener Köder: {5}⟦3⟧⟦4⟧{6}⟦5⟧⟦6⟧⟦7⟧⟦8⟧⟦9⟧{9}⟦10⟧⟦11⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧Force {1} · force de canne requise ≥ {2} (actuellement {3}) · méthode conseillée : {4} · appât conseillé : {5}⟦3⟧⟦4⟧{6}⟦5⟧⟦6⟧⟦7⟧⟦8⟧⟦9⟧{9}⟦10⟧⟦11⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧Força {1} · força de vara necessária ≥ {2} (agora {3}) · método sugerido: {4} · isca sugerida: {5}⟦3⟧⟦4⟧{6}⟦5⟧⟦6⟧⟦7⟧⟦8⟧⟦9⟧{9}⟦10⟧⟦11⟧
+@ui4.ilk_yakalama_gun_n_en
+en: First catch: Day {0} · biggest {1} cm / {2} kg · ⟦0⟧Reward claimed: {3}⟦1⟧
+es: Primera captura: Día {0} · mayor {1} cm / {2} kg · ⟦0⟧Recompensa recogida: {3}⟦1⟧
+de: Erster Fang: Tag {0} · größter {1} cm / {2} kg · ⟦0⟧Belohnung erhalten: {3}⟦1⟧
+fr: Première prise : Jour {0} · le plus gros {1} cm / {2} kg · ⟦0⟧Récompense obtenue : {3}⟦1⟧
+pt: Primeira captura: Dia {0} · maior {1} cm / {2} kg · ⟦0⟧Recompensa recebida: {3}⟦1⟧
+@ui4.aktif_hedef_birak
+en: Active target (drop)
+es: Objetivo activo (quitar)
+de: Aktives Ziel (aufgeben)
+fr: Cible active (abandonner)
+pt: Meta ativa (largar)
+@ui4.hedef_sec
+en: Set as target
+es: Elegir objetivo
+de: Als Ziel wählen
+fr: Choisir comme cible
+pt: Escolher meta
+@ui4.n_7_trofe_n
+en: ⟦0⟧{0}/7 trophies{1}⟦1⟧
+es: ⟦0⟧{0}/7 trofeos{1}⟦1⟧
+de: ⟦0⟧{0}/7 Trophäen{1}⟦1⟧
+fr: ⟦0⟧{0}/7 trophées{1}⟦1⟧
+pt: ⟦0⟧{0}/7 troféus{1}⟦1⟧
+@ui4.yedi_denizin_ustasi
+en:  · ⟦0⟧Master of the Seven Seas⟦1⟧
+es:  · ⟦0⟧Maestro de los Siete Mares⟦1⟧
+de:  · ⟦0⟧Meister der Sieben Meere⟦1⟧
+fr:  · ⟦0⟧Maître des Sept Mers⟦1⟧
+pt:  · ⟦0⟧Mestre dos Sete Mares⟦1⟧
+@ui4.n_kiyi_koleksiyonu_n_24
+en: ⟦0⟧{0} Shore collection: ⟦1⟧{1}/24⟦2⟧ · {2} 6: badge · {3} 12: shell display · {4} 18: poster · {5} 24: title⟦3⟧
+es: ⟦0⟧{0} Colección de playa: ⟦1⟧{1}/24⟦2⟧ · {2} 6: insignia · {3} 12: exposición de conchas · {4} 18: póster · {5} 24: título⟦3⟧
+de: ⟦0⟧{0} Strandsammlung: ⟦1⟧{1}/24⟦2⟧ · {2} 6: Abzeichen · {3} 12: Muschelausstellung · {4} 18: Poster · {5} 24: Titel⟦3⟧
+fr: ⟦0⟧{0} Collection du rivage : ⟦1⟧{1}/24⟦2⟧ · {2} 6 : badge · {3} 12 : vitrine de coquillages · {4} 18 : affiche · {5} 24 : titre⟦3⟧
+pt: ⟦0⟧{0} Coleção de praia: ⟦1⟧{1}/24⟦2⟧ · {2} 6: insígnia · {3} 12: exposição de conchas · {4} 18: pôster · {5} 24: título⟦3⟧
+@ui4.henuz_bulunmadi
+en: Not found yet
+es: Aún sin encontrar
+de: Noch nicht gefunden
+fr: Pas encore trouvé
+pt: Ainda não encontrado
+@ui4.n_ilk_gun_n_n
+en: ⟦0⟧{0}⟦1⟧⟦2⟧First: Day {1} · {2} {2|time|times}⟦3⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧Primera vez: Día {1} · {2} {2|vez|veces}⟦3⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧Erstmals: Tag {1} · {2}-mal⟦3⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧Première fois : Jour {1} · {2} fois⟦3⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧Primeira vez: Dia {1} · {2} {2|vez|vezes}⟦3⟧
+@ui4.n_nesneler_satilamaz_ve_balik
+en: {0}⟦0⟧Items can't be sold and don't fill your fish storage. {1}⟦1⟧
+es: {0}⟦0⟧Los objetos no se pueden vender ni ocupan el almacén de peces. {1}⟦1⟧
+de: {0}⟦0⟧Gegenstände sind unverkäuflich und belegen keinen Fischspeicher. {1}⟦1⟧
+fr: {0}⟦0⟧Les objets ne se vendent pas et n'occupent pas le rangement à poissons. {1}⟦1⟧
+pt: {0}⟦0⟧Os itens não podem ser vendidos e não ocupam o depósito de peixes. {1}⟦1⟧
+@ui4.bugunku_kesif_tamamlandi
+en: Today's beachcombing is done.
+es: La exploración de hoy está hecha.
+de: Die heutige Strandsuche ist erledigt.
+fr: L'exploration du jour est terminée.
+pt: A exploração de hoje está feita.
+@ui4.bugun_kiyi_kesfi_yapabilirsin_iskele
+en: You can go beachcombing today (the Beach Path by the pier).
+es: Hoy puedes explorar la playa (Sendero de la playa, junto al muelle).
+de: Heute kannst du auf Strandsuche gehen (Strandweg neben dem Steg).
+fr: Tu peux explorer le rivage aujourd'hui (Sentier de la plage près du ponton).
+pt: Hoje você pode explorar a praia (Trilha da Praia, ao lado do píer).
+@ui4.ilk_basarili_avdan_sonra_acilir
+en: Unlocks after your first successful catch.
+es: Se desbloquea tras tu primera captura.
+de: Wird nach dem ersten erfolgreichen Fang freigeschaltet.
+fr: Se débloque après ta première prise réussie.
+pt: Libera depois da primeira captura.
+@ui4.trofe_n_n
+en: ⟦0⟧⟦1⟧TROPHY · {0}⟦2⟧{1}⟦3⟧
+es: ⟦0⟧⟦1⟧TROFEO · {0}⟦2⟧{1}⟦3⟧
+de: ⟦0⟧⟦1⟧TROPHÄE · {0}⟦2⟧{1}⟦3⟧
+fr: ⟦0⟧⟦1⟧TROPHÉE · {0}⟦2⟧{1}⟦3⟧
+pt: ⟦0⟧⟦1⟧TROFÉU · {0}⟦2⟧{1}⟦3⟧
+@ui4.ilk_trofe_odulu_n_hatira
+en: ⟦0⟧First trophy reward: {0} (added to the Keepsake Album)⟦1⟧
+es: ⟦0⟧Recompensa del primer trofeo: {0} (añadida al Álbum de recuerdos)⟦1⟧
+de: ⟦0⟧Belohnung für die erste Trophäe: {0} (ins Erinnerungsalbum gelegt)⟦1⟧
+fr: ⟦0⟧Récompense du premier trophée : {0} (ajoutée à l'Album souvenir)⟦1⟧
+pt: ⟦0⟧Recompensa do primeiro troféu: {0} (adicionada ao Álbum de Lembranças)⟦1⟧
+@ui4.bu_trofe_daha_once_kazanildi
+en: ⟦0⟧You've won this trophy before; the reward isn't given again.⟦1⟧
+es: ⟦0⟧Ya ganaste este trofeo; la recompensa no se repite.⟦1⟧
+de: ⟦0⟧Diese Trophäe hast du schon; die Belohnung gibt es nicht noch einmal.⟦1⟧
+fr: ⟦0⟧Tu as déjà gagné ce trophée ; la récompense n'est pas redonnée.⟦1⟧
+pt: ⟦0⟧Você já ganhou este troféu; a recompensa não se repete.⟦1⟧
+@ui4.n_incele
+en: ⟦0⟧{0}⟦1⟧Inspect⟦2⟧⟦3⟧
+es: ⟦0⟧{0}⟦1⟧Examinar⟦2⟧⟦3⟧
+de: ⟦0⟧{0}⟦1⟧Ansehen⟦2⟧⟦3⟧
+fr: ⟦0⟧{0}⟦1⟧Examiner⟦2⟧⟦3⟧
+pt: ⟦0⟧{0}⟦1⟧Examinar⟦2⟧⟦3⟧
+@ui4.n_indir
+en: ⟦0⟧{0}⟦1⟧Lower⟦2⟧⟦3⟧
+es: ⟦0⟧{0}⟦1⟧Bajar⟦2⟧⟦3⟧
+de: ⟦0⟧{0}⟦1⟧Absetzen⟦2⟧⟦3⟧
+fr: ⟦0⟧{0}⟦1⟧Baisser⟦2⟧⟦3⟧
+pt: ⟦0⟧{0}⟦1⟧Abaixar⟦2⟧⟦3⟧
+@ui4.n_durbun
+en: ⟦0⟧{0}⟦1⟧Binoculars⟦2⟧⟦3⟧
+es: ⟦0⟧{0}⟦1⟧Prismáticos⟦2⟧⟦3⟧
+de: ⟦0⟧{0}⟦1⟧Fernglas⟦2⟧⟦3⟧
+fr: ⟦0⟧{0}⟦1⟧Jumelles⟦2⟧⟦3⟧
+pt: ⟦0⟧{0}⟦1⟧Binóculo⟦2⟧⟦3⟧
+@ui4.durbunle_gozlem_5_enerji
+en: Binocular watch (5 energy)
+es: Observar con prismáticos (5 de energía)
+de: Fernglas-Beobachtung (5 Energie)
+fr: Observation aux jumelles (5 d'énergie)
+pt: Observação de binóculo (5 de energia)
+@ui4.av_temposu_n_n
+en: Fishing pace: {0}{1}
+es: Ritmo de pesca: {0}{1}
+de: Angeltempo: {0}{1}
+fr: Rythme de pêche : {0}{1}
+pt: Ritmo de pesca: {0}{1}

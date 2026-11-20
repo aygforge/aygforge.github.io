@@ -1,0 +1,858 @@
+@core.olta
+en: Rod
+es: Caña
+de: Angel
+fr: Canne
+pt: Vara
+@core.misina
+en: Line
+es: Sedal
+de: Schnur
+fr: Ligne
+pt: Linha
+@core.makara
+en: Reel
+es: Carrete
+de: Rolle
+fr: Moulinet
+pt: Molinete
+@core.igne
+en: Hook
+es: Anzuelo
+de: Haken
+fr: Hameçon
+pt: Anzol
+@core.ilkbahar
+en: Spring
+es: Primavera
+de: Frühling
+fr: Printemps
+pt: Primavera
+@core.yaz
+en: Summer
+es: Verano
+de: Sommer
+fr: Été
+pt: Verão
+@core.sonbahar
+en: Autumn
+es: Otoño
+de: Herbst
+fr: Automne
+pt: Outono
+@core.kis
+en: Winter
+es: Invierno
+de: Winter
+fr: Hiver
+pt: Inverno
+@core.gunesli
+en: Sunny
+es: Soleado
+de: Sonnig
+fr: Ensoleillé
+pt: Ensolarado
+@core.bulutlu
+en: Cloudy
+es: Nublado
+de: Bewölkt
+fr: Nuageux
+pt: Nublado
+@core.yagmurlu
+en: Rainy
+es: Lluvioso
+de: Regnerisch
+fr: Pluvieux
+pt: Chuvoso
+@core.sisli
+en: Foggy
+es: Con niebla
+de: Neblig
+fr: Brumeux
+pt: Com neblina
+@core.ruzgarli
+en: Windy
+es: Ventoso
+de: Windig
+fr: Venteux
+pt: Ventando
+@core.yakin
+en: Near
+es: Cerca
+de: Nah
+fr: Proche
+pt: Perto
+@core.orta
+en: Mid
+es: Media
+de: Mittel
+fr: Moyenne
+pt: Média
+@core.uzak
+en: Far
+es: Lejos
+de: Weit
+fr: Loin
+pt: Longe
+@core.notr_sinirsiz_otomatikte_kullanilamaz
+en: Neutral, unlimited; can't be used by auto rods
+es: Neutro, ilimitado; no sirve en cañas automáticas
+de: Neutral, unbegrenzt; nicht für Auto-Angeln
+fr: Neutre, illimité ; inutilisable en automatique
+pt: Neutra, ilimitada; não serve nas varas automáticas
+@core.kucuk_kiyi_turleri
+en: Small shore species
+es: Especies pequeñas de costa
+de: Kleine Küstenarten
+fr: Petites espèces côtières
+pt: Espécies pequenas de costa
+@core.cipura_levrek_ve_dip_turleri
+en: Gilthead bream, sea bass and bottom species
+es: Dorada, lubina y especies de fondo
+de: Dorade, Wolfsbarsch und Grundfische
+fr: Dorade, bar et espèces de fond
+pt: Dourada, robalo e espécies de fundo
+@core.yirtici_turler
+en: Predatory species
+es: Especies depredadoras
+de: Raubfische
+fr: Espèces prédatrices
+pt: Espécies predadoras
+@core.akinti_acik_su_turleri
+en: Current / open-water species
+es: Especies de corriente / aguas abiertas
+de: Strömungs- / Freiwasserarten
+fr: Espèces de courant / eaux libres
+pt: Espécies de correnteza / águas abertas
+@core.guclu_derin_turler
+en: Strong / deep-water species
+es: Especies fuertes / de profundidad
+de: Starke / Tiefseearten
+fr: Espèces puissantes / des profondeurs
+pt: Espécies fortes / de profundidade
+@core.motor
+en: Engine
+es: Motor
+de: Motor
+fr: Moteur
+pt: Motor
+@core.depo
+en: Storage
+es: Bodega
+de: Laderaum
+fr: Cale
+pt: Porão
+@core.navigasyon
+en: Navigation
+es: Navegación
+de: Navigation
+fr: Navigation
+pt: Navegação
+@core.govde
+en: Hull
+es: Casco
+de: Rumpf
+fr: Coque
+pt: Casco
+@core.siyah
+en: Black
+es: Negro
+de: Schwarz
+fr: Noir
+pt: Preto
+@core.koyu_kahve
+en: Dark Brown
+es: Castaño oscuro
+de: Dunkelbraun
+fr: Brun foncé
+pt: Castanho-escuro
+@core.kestane
+en: Chestnut
+es: Castaño
+de: Kastanie
+fr: Châtain
+pt: Castanho
+@core.bakir
+en: Copper
+es: Cobrizo
+de: Kupfer
+fr: Cuivré
+pt: Acobreado
+@core.sari
+en: Blond
+es: Rubio
+de: Blond
+fr: Blond
+pt: Loiro
+@core.kumral
+en: Light Brown
+es: Castaño claro
+de: Hellbraun
+fr: Châtain clair
+pt: Castanho-claro
+@core.gri
+en: Grey
+es: Gris
+de: Grau
+fr: Gris
+pt: Grisalho
+@core.lacivert
+en: Navy
+es: Azul marino
+de: Marineblau
+fr: Bleu marine
+pt: Azul-marinho
+@core.kisa
+en: Short
+es: Corto
+de: Kurz
+fr: Courts
+pt: Curto
+@core.dikenli
+en: Spiky
+es: De punta
+de: Stachelig
+fr: Hérissés
+pt: Espetado
+@core.yana_tarali
+en: Side Part
+es: Raya al lado
+de: Seitenscheitel
+fr: Raie sur le côté
+pt: Repartido de lado
+@core.uzun
+en: Long
+es: Largo
+de: Lang
+fr: Longs
+pt: Longo
+@core.at_kuyrugu
+en: Ponytail
+es: Coleta
+de: Pferdeschwanz
+fr: Queue-de-cheval
+pt: Rabo de cavalo
+@core.topuz
+en: Bun
+es: Moño
+de: Dutt
+fr: Chignon
+pt: Coque
+@core.kivircik
+en: Curly
+es: Rizado
+de: Lockig
+fr: Bouclés
+pt: Cacheado
+@core.kut
+en: Bob
+es: Melena corta
+de: Bob
+fr: Carré
+pt: Chanel
+@core.ince
+en: Slim
+es: Delgado
+de: Schlank
+fr: Mince
+pt: Magro
+@core.genis
+en: Broad
+es: Ancho
+de: Breit
+fr: Large
+pt: Largo
+@core.mavi_tisort
+en: Blue T-Shirt
+es: Camiseta azul
+de: Blaues T-Shirt
+fr: T-shirt bleu
+pt: Camiseta azul
+@core.kirmizi_ekose_gomlek
+en: Red Plaid Shirt
+es: Camisa de cuadros roja
+de: Rotes Karohemd
+fr: Chemise à carreaux rouge
+pt: Camisa xadrez vermelha
+@core.balikci_yelegi
+en: Fishing Vest
+es: Chaleco de pesca
+de: Anglerweste
+fr: Gilet de pêche
+pt: Colete de pesca
+@core.bej_kazak
+en: Beige Sweater
+es: Jersey beige
+de: Beiger Pullover
+fr: Pull beige
+pt: Suéter bege
+@core.yagmurluk
+en: Raincoat
+es: Impermeable
+de: Regenjacke
+fr: Ciré
+pt: Capa de chuva
+@core.denizci_montu
+en: Sailor's Coat
+es: Chaquetón marinero
+de: Seemannsjacke
+fr: Caban de marin
+pt: Jaqueta de marinheiro
+@core.kuzey_kazagi
+en: Nordic Sweater
+es: Jersey nórdico
+de: Norwegerpullover
+fr: Pull nordique
+pt: Suéter nórdico
+@core.sisli_kuzey_kesfi
+en: Discover Misty North
+es: Descubrir el Norte Brumoso
+de: Nebelnorden entdecken
+fr: Découvrir le Nord brumeux
+pt: Descobrir o Norte Nebuloso
+@core.tropik_gomlek
+en: Tropical Shirt
+es: Camisa tropical
+de: Hawaiihemd
+fr: Chemise tropicale
+pt: Camisa tropical
+@core.gunes_adalari_kesfi
+en: Discover the Sun Isles
+es: Descubrir las Islas del Sol
+de: Sonneninseln entdecken
+fr: Découvrir les Îles du Soleil
+pt: Descobrir as Ilhas do Sol
+@core.cizgili_denizci_tisortu
+en: Striped Sailor Tee
+es: Camiseta marinera de rayas
+de: Gestreiftes Matrosenshirt
+fr: Marinière rayée
+pt: Camiseta listrada de marinheiro
+@core.kot_tulum
+en: Denim Overalls
+es: Peto vaquero
+de: Jeans-Latzhose
+fr: Salopette en jean
+pt: Macacão jeans
+@core.keten_gomlek
+en: Linen Shirt
+es: Camisa de lino
+de: Leinenhemd
+fr: Chemise en lin
+pt: Camisa de linho
+@core.festival_tisortu
+en: Festival T-Shirt
+es: Camiseta del festival
+de: Festival-T-Shirt
+fr: T-shirt du festival
+pt: Camiseta do festival
+@core.orgu_hirka
+en: Knitted Cardigan
+es: Rebeca de punto
+de: Strickjacke
+fr: Gilet tricoté
+pt: Cardigã de tricô
+@core.sapkasiz
+en: No Hat
+es: Sin sombrero
+de: Ohne Hut
+fr: Sans chapeau
+pt: Sem chapéu
+@core.klasik_sapka
+en: Classic Hat
+es: Sombrero clásico
+de: Klassischer Hut
+fr: Chapeau classique
+pt: Chapéu clássico
+@core.yun_bere
+en: Wool Beanie
+es: Gorro de lana
+de: Wollmütze
+fr: Bonnet en laine
+pt: Gorro de lã
+@core.hasir_sapka
+en: Straw Hat
+es: Sombrero de paja
+de: Strohhut
+fr: Chapeau de paille
+pt: Chapéu de palha
+@core.usta_balikci_sapkasi
+en: Master Angler's Hat
+es: Sombrero de maestro pescador
+de: Hut des Meisteranglers
+fr: Chapeau de maître pêcheur
+pt: Chapéu de Mestre Pescador
+@core.tum_turleri_kesfet
+en: discover every species
+es: descubre todas las especies
+de: entdecke alle Arten
+fr: découvre toutes les espèces
+pt: descubra todas as espécies
+@core.kaptan_sapkasi
+en: Captain's Hat
+es: Gorra de capitán
+de: Kapitänsmütze
+fr: Casquette de capitaine
+pt: Quepe de capitão
+@core.4_tekneye_sahip_ol
+en: own 4 boats
+es: ten 4 barcos
+de: besitze 4 Boote
+fr: possède 4 bateaux
+pt: tenha 4 barcos
+@core.kasket
+en: Flat Cap
+es: Gorra plana
+de: Schiebermütze
+fr: Casquette plate
+pt: Boina inglesa
+@core.denizci_beresi
+en: Sailor's Beanie
+es: Gorro marinero
+de: Matrosenmütze
+fr: Bonnet de marin
+pt: Gorro de marinheiro
+@core.cicek_taci
+en: Flower Crown
+es: Corona de flores
+de: Blumenkranz
+fr: Couronne de fleurs
+pt: Coroa de flores
+@core.fenerli_bere
+en: Lantern Beanie
+es: Gorro con farolillo
+de: Laternenmütze
+fr: Bonnet lanterne
+pt: Gorro com lanterna
+@core.deniz_yesili
+en: Sea Green
+es: Verde mar
+de: Meergrün
+fr: Vert d'eau
+pt: Verde-mar
+@core.mercan_kirmizisi
+en: Coral Red
+es: Rojo coral
+de: Korallenrot
+fr: Rouge corail
+pt: Vermelho-coral
+@core.kum_sarisi
+en: Sand Yellow
+es: Amarillo arena
+de: Sandgelb
+fr: Jaune sable
+pt: Amarelo-areia
+@core.30_tur_kesfi
+en: Discover 30 species
+es: Descubrir 30 especies
+de: 30 Arten entdecken
+fr: Découvrir 30 espèces
+pt: Descobrir 30 espécies
+@core.duvar
+en: Wall
+es: Pared
+de: Wand
+fr: Mur
+pt: Parede
+@core.raf
+en: Shelf
+es: Estante
+de: Regal
+fr: Étagère
+pt: Prateleira
+@core.masa
+en: Table
+es: Mesa
+de: Tisch
+fr: Table
+pt: Mesa
+@core.pencere_kenari
+en: Windowsill
+es: Alféizar
+de: Fensterbank
+fr: Rebord de fenêtre
+pt: Parapeito da janela
+@core.koleksiyon_panosu
+en: Collection Board
+es: Tablón de colección
+de: Sammeltafel
+fr: Tableau de collection
+pt: Quadro de coleção
+@core.deniz_manzarasi_tablosu
+en: Seascape Painting
+es: Cuadro de paisaje marino
+de: Meeresgemälde
+fr: Tableau de marine
+pt: Quadro de paisagem marinha
+@core.cerceveli_ilk_balik
+en: Framed First Fish
+es: Primer pez enmarcado
+de: Gerahmter erster Fisch
+fr: Premier poisson encadré
+pt: Primeiro peixe emoldurado
+@core.altin_olta_plaketi
+en: Golden Rod Plaque
+es: Placa de la caña dorada
+de: Goldene-Angel-Plakette
+fr: Plaque de la canne d'or
+pt: Placa da Vara de Ouro
+@core.eski_dumen
+en: Old Ship's Wheel
+es: Timón antiguo
+de: Altes Steuerrad
+fr: Vieux gouvernail
+pt: Timão antigo
+@core.dort_mevsim_takvimi
+en: Four Seasons Calendar
+es: Calendario de las cuatro estaciones
+de: Vier-Jahreszeiten-Kalender
+fr: Calendrier des quatre saisons
+pt: Calendário das quatro estações
+@core.deniz_feneri_maketi
+en: Lighthouse Model
+es: Maqueta de faro
+de: Leuchtturmmodell
+fr: Maquette de phare
+pt: Maquete de farol
+@core.sisede_gemi
+en: Ship in a Bottle
+es: Barco en una botella
+de: Buddelschiff
+fr: Bateau en bouteille
+pt: Navio na garrafa
+@core.balik_kitaplari
+en: Fish Books
+es: Libros de peces
+de: Fischbücher
+fr: Livres sur les poissons
+pt: Livros de peixes
+@core.kir_cicekleri
+en: Wildflowers
+es: Flores silvestres
+de: Wildblumen
+fr: Fleurs des champs
+pt: Flores do campo
+@core.cay_seti
+en: Tea Set
+es: Juego de té
+de: Teeservice
+fr: Service à thé
+pt: Jogo de chá
+@core.pirinc_pusula
+en: Brass Compass
+es: Brújula de latón
+de: Messingkompass
+fr: Boussole en laiton
+pt: Bússola de latão
+@core.saksida_feslegen
+en: Potted Basil
+es: Albahaca en maceta
+de: Basilikum im Topf
+fr: Basilic en pot
+pt: Manjericão no vaso
+@core.deniz_kabuklari
+en: Seashells
+es: Conchas marinas
+de: Muscheln
+fr: Coquillages
+pt: Conchas do mar
+@core.cam_samandira
+en: Glass Fishing Float
+es: Boya de cristal
+de: Glasschwimmer
+fr: Flotteur en verre
+pt: Boia de vidro
+@core.rekor_panosu
+en: Record Board
+es: Tablón de récords
+de: Rekordtafel
+fr: Tableau des records
+pt: Quadro de recordes
+@core.av_noktalari_haritasi
+en: Fishing Spots Map
+es: Mapa de zonas de pesca
+de: Karte der Angelplätze
+fr: Carte des coins de pêche
+pt: Mapa dos pontos de pesca
+@core.musteri_kartpostallari
+en: Customer Postcards
+es: Postales de clientes
+de: Kundenpostkarten
+fr: Cartes postales des clients
+pt: Cartões-postais de clientes
+@core.ahsap_duvar_saati
+en: Wooden Wall Clock
+es: Reloj de pared de madera
+de: Hölzerne Wanduhr
+fr: Horloge murale en bois
+pt: Relógio de parede de madeira
+@core.yelkenli_maketi
+en: Sailboat Model
+es: Maqueta de velero
+de: Segelbootmodell
+fr: Maquette de voilier
+pt: Maquete de veleiro
+@core.gaz_lambasi
+en: Oil Lamp
+es: Lámpara de aceite
+de: Petroleumlampe
+fr: Lampe à pétrole
+pt: Lampião
+@core.ruzgar_cani
+en: Wind Chime
+es: Campanilla de viento
+de: Windspiel
+fr: Carillon à vent
+pt: Sino de vento
+@core.balik_turleri_posteri
+en: Fish Species Poster
+es: Póster de especies de peces
+de: Fischarten-Poster
+fr: Affiche des espèces de poissons
+pt: Pôster de espécies de peixes
+@core.sampiyonluk_flamasi
+en: Champion's Pennant
+es: Banderín de campeón
+de: Meisterwimpel
+fr: Fanion de champion
+pt: Flâmula de campeão
+@core.olta_dukkani
+en: Tackle Shop
+es: Tienda de pesca
+de: Angelladen
+fr: Magasin de pêche
+pt: Loja de Pesca
+@core.balik_hali
+en: Fish Market
+es: Lonja
+de: Fischmarkt
+fr: Halle aux poissons
+pt: Mercado de Peixe
+@core.tekne_atolyesi
+en: Boatyard
+es: Astillero
+de: Bootswerft
+fr: Chantier naval
+pt: Estaleiro
+@core.bahar_lokantasi
+en: Bahar's Restaurant
+es: Restaurante de Bahar
+de: Bahars Restaurant
+fr: Restaurant de Bahar
+pt: Restaurante da Bahar
+@core.deneyimli_balikci
+en: Veteran Angler
+es: Pescador veterano
+de: Erfahrener Angler
+fr: Pêcheur chevronné
+pt: Pescador experiente
+@core.fatma_teyze
+en: Auntie Fatma
+es: Tía Fatma
+de: Tante Fatma
+fr: Tata Fatma
+pt: Tia Fatma
+@core.firin
+en: Bakery
+es: Panadería
+de: Bäckerei
+fr: Boulangerie
+pt: Padaria
+@core.butik
+en: Boutique
+es: Boutique
+de: Boutique
+fr: Boutique
+pt: Boutique
+@core.ev_esyalari
+en: Home Goods
+es: Artículos del hogar
+de: Wohnbedarf
+fr: Articles de maison
+pt: Artigos para o Lar
+@core.muhtar_hasan
+en: Mayor Hasan
+es: Alcalde Hasan
+de: Bürgermeister Hasan
+fr: Maire Hasan
+pt: Prefeito Hasan
+@core.senlik_meydani
+en: Festival Square
+es: Plaza de las Fiestas
+de: Festplatz
+fr: Place des Fêtes
+pt: Praça das Festas
+@core.halil_usta
+en: Master Halil
+es: Maestro Halil
+de: Meister Halil
+fr: Maître Halil
+pt: Mestre Halil
+@core.cay_bahcesi
+en: Tea Garden
+es: Jardín de té
+de: Teegarten
+fr: Jardin de thé
+pt: Casa de Chá
+@core.ali_dayi
+en: Uncle Ali
+es: Tío Ali
+de: Onkel Ali
+fr: Tonton Ali
+pt: Tio Ali
+@core.iskele_balikcisi
+en: Pier angler
+es: Pescador del muelle
+de: Steg-Angler
+fr: Pêcheur du ponton
+pt: Pescador do píer
+@core.balikci
+en: Angler
+es: Pescador
+de: Angler
+fr: Pêcheur
+pt: Pescador
+@core.kiyi_avi
+en: Shore Fishing
+es: Pesca de costa
+de: Küstenangeln
+fr: Pêche du bord
+pt: Pesca na costa
+@core.kayalik_avi
+en: Rock Fishing
+es: Pesca entre rocas
+de: Felsangeln
+fr: Pêche aux rochers
+pt: Pesca nas pedras
+@core.acik_deniz
+en: Open Sea
+es: Mar abierto
+de: Offene See
+fr: Haute mer
+pt: Mar aberto
+@art.cevik_kucuk_balik
+en: Nimble little fish
+es: Pez pequeño y ágil
+de: Flinker kleiner Fisch
+fr: Petit poisson agile
+pt: Peixe pequeno e ágil
+@art.ani_yon_degistirir
+en: Changes direction suddenly
+es: Cambia de dirección de golpe
+de: Wechselt plötzlich die Richtung
+fr: Change brusquement de direction
+pt: Muda de direção de repente
+@art.zikzak_cizer
+en: Zigzags
+es: Hace zigzag
+de: Schlägt Haken
+fr: Zigzague
+pt: Faz zigue-zague
+@art.sudan_ziplar
+en: Leaps out of the water
+es: Salta fuera del agua
+de: Springt aus dem Wasser
+fr: Saute hors de l'eau
+pt: Salta para fora d'água
+@art.agir_ve_inatci
+en: Heavy and stubborn
+es: Pesado y terco
+de: Schwer und stur
+fr: Lourd et têtu
+pt: Pesado e teimoso
+@art.dibe_dalar
+en: Dives deep
+es: Se va al fondo
+de: Taucht ab
+fr: Plonge au fond
+pt: Mergulha para o fundo
+@world.ev
+en: Home
+es: Casa
+de: Zuhause
+fr: Maison
+pt: Casa
+@world.zeynep_in_olta_dukkani
+en: Zeynep's Tackle Shop
+es: Tienda de pesca de Zeynep
+de: Zeyneps Angelladen
+fr: Magasin de pêche de Zeynep
+pt: Loja de Pesca da Zeynep
+@world.fatma_teyze_nin_firini
+en: Auntie Fatma's Bakery
+es: Panadería de la tía Fatma
+de: Tante Fatmas Bäckerei
+fr: Boulangerie de Tata Fatma
+pt: Padaria da Tia Fatma
+@world.nihat_in_balik_hali
+en: Nihat's Fish Market
+es: Lonja de Nihat
+de: Nihats Fischmarkt
+fr: Halle aux poissons de Nihat
+pt: Mercado de Peixe do Nihat
+@world.selin_in_butigi
+en: Selin's Boutique
+es: Boutique de Selin
+de: Selins Boutique
+fr: Boutique de Selin
+pt: Boutique da Selin
+@world.bora_nin_tekne_atolyesi
+en: Bora's Boatyard
+es: Astillero de Bora
+de: Boras Bootswerft
+fr: Chantier naval de Bora
+pt: Estaleiro do Bora
+@world.kerem_in_ev_esyalari
+en: Kerem's Home Goods
+es: Hogar de Kerem
+de: Kerems Wohnbedarf
+fr: Maison & Déco de Kerem
+pt: Artigos para o Lar do Kerem
+@world.senlik_meydani_muhtarlik
+en: Festival Square · Town Hall
+es: Plaza de las Fiestas · Ayuntamiento
+de: Festplatz · Rathaus
+fr: Place des Fêtes · Mairie
+pt: Praça das Festas · Prefeitura
+@world.halil_usta_nin_cay_bahcesi
+en: Master Halil's Tea Garden
+es: Jardín de té del maestro Halil
+de: Meister Halils Teegarten
+fr: Jardin de thé de Maître Halil
+pt: Casa de Chá do Mestre Halil
+@world.siparis_panosu_bahar_lokantasi
+en: Order Board · Bahar's Restaurant
+es: Tablón de pedidos · Restaurante de Bahar
+de: Auftragstafel · Bahars Restaurant
+fr: Tableau des commandes · Restaurant de Bahar
+pt: Quadro de Pedidos · Restaurante da Bahar
+@world.sefer_plani_panosu
+en: Trip Plan Board
+es: Tablón del plan de salida
+de: Ausfahrtsplan-Tafel
+fr: Tableau du plan de sortie
+pt: Quadro do Plano de Viagem
+@world.liman_teknen
+en: Harbor (Your Boat)
+es: Puerto (tu barco)
+de: Hafen (dein Boot)
+fr: Port (ton bateau)
+pt: Porto (seu barco)
+@world.iskele_ucu_balik_tut
+en: Pier End – Go Fishing
+es: Punta del muelle – Pescar
+de: Stegende – Angeln
+fr: Bout du ponton – Pêcher
+pt: Ponta do píer – Pescar
+@world.balik_hali
+en: FISH MARKET
+es: LONJA
+de: FISCHMARKT
+fr: HALLE AUX POISSONS
+pt: MERCADO DE PEIXE
+@world.tekne_atolyesi
+en: BOATYARD
+es: ASTILLERO
+de: BOOTSWERFT
+fr: CHANTIER NAVAL
+pt: ESTALEIRO

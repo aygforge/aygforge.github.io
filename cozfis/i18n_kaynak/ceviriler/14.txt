@@ -1,0 +1,366 @@
+@ui2.kisisel_istatistikler_5_av_toplam
+en: ⟦0⟧Personal stats (5+ catches)⟦1⟧⟦2⟧⟦3⟧⟦4⟧Total⟦5⟧⟦6⟧{0}⟦7⟧⟦8⟧⟦9⟧⟦10⟧First found⟦11⟧⟦12⟧{1}⟦13⟧⟦14⟧⟦15⟧⟦16⟧Last catch⟦17⟧⟦18⟧{2}⟦19⟧⟦20⟧⟦21⟧⟦22⟧Manual / auto⟦23⟧⟦24⟧{3}⟦25⟧⟦26⟧⟦27⟧⟦28⟧Length record⟦29⟧⟦30⟧{4} cm⟦31⟧⟦32⟧⟦33⟧⟦34⟧Weight record⟦35⟧⟦36⟧{5} kg⟦37⟧⟦38⟧⟦39⟧{6}
+es: ⟦0⟧Estadísticas personales (5+ capturas)⟦1⟧⟦2⟧⟦3⟧⟦4⟧Total⟦5⟧⟦6⟧{0}⟦7⟧⟦8⟧⟦9⟧⟦10⟧Descubierta⟦11⟧⟦12⟧{1}⟦13⟧⟦14⟧⟦15⟧⟦16⟧Última captura⟦17⟧⟦18⟧{2}⟦19⟧⟦20⟧⟦21⟧⟦22⟧Manual / auto⟦23⟧⟦24⟧{3}⟦25⟧⟦26⟧⟦27⟧⟦28⟧Récord de longitud⟦29⟧⟦30⟧{4} cm⟦31⟧⟦32⟧⟦33⟧⟦34⟧Récord de peso⟦35⟧⟦36⟧{5} kg⟦37⟧⟦38⟧⟦39⟧{6}
+de: ⟦0⟧Persönliche Werte (ab 5 Fängen)⟦1⟧⟦2⟧⟦3⟧⟦4⟧Gesamt⟦5⟧⟦6⟧{0}⟦7⟧⟦8⟧⟦9⟧⟦10⟧Entdeckt⟦11⟧⟦12⟧{1}⟦13⟧⟦14⟧⟦15⟧⟦16⟧Letzter Fang⟦17⟧⟦18⟧{2}⟦19⟧⟦20⟧⟦21⟧⟦22⟧Hand / Auto⟦23⟧⟦24⟧{3}⟦25⟧⟦26⟧⟦27⟧⟦28⟧Längenrekord⟦29⟧⟦30⟧{4} cm⟦31⟧⟦32⟧⟦33⟧⟦34⟧Gewichtsrekord⟦35⟧⟦36⟧{5} kg⟦37⟧⟦38⟧⟦39⟧{6}
+fr: ⟦0⟧Stats personnelles (5+ prises)⟦1⟧⟦2⟧⟦3⟧⟦4⟧Total⟦5⟧⟦6⟧{0}⟦7⟧⟦8⟧⟦9⟧⟦10⟧Découverte⟦11⟧⟦12⟧{1}⟦13⟧⟦14⟧⟦15⟧⟦16⟧Dernière prise⟦17⟧⟦18⟧{2}⟦19⟧⟦20⟧⟦21⟧⟦22⟧Manuel / auto⟦23⟧⟦24⟧{3}⟦25⟧⟦26⟧⟦27⟧⟦28⟧Record de taille⟦29⟧⟦30⟧{4} cm⟦31⟧⟦32⟧⟦33⟧⟦34⟧Record de poids⟦35⟧⟦36⟧{5} kg⟦37⟧⟦38⟧⟦39⟧{6}
+pt: ⟦0⟧Estatísticas pessoais (5+ capturas)⟦1⟧⟦2⟧⟦3⟧⟦4⟧Total⟦5⟧⟦6⟧{0}⟦7⟧⟦8⟧⟦9⟧⟦10⟧Descoberta⟦11⟧⟦12⟧{1}⟦13⟧⟦14⟧⟦15⟧⟦16⟧Última captura⟦17⟧⟦18⟧{2}⟦19⟧⟦20⟧⟦21⟧⟦22⟧Manual / auto⟦23⟧⟦24⟧{3}⟦25⟧⟦26⟧⟦27⟧⟦28⟧Recorde de tamanho⟦29⟧⟦30⟧{4} cm⟦31⟧⟦32⟧⟦33⟧⟦34⟧Recorde de peso⟦35⟧⟦36⟧{5} kg⟦37⟧⟦38⟧⟦39⟧{6}
+@ui2.n_av_eski_surumden_ayrintilari
+en: ⟦0⟧{0} catches are from an older version; their details weren't recorded.⟦1⟧
+es: ⟦0⟧{0} capturas son de una versión anterior; sus detalles no se guardaron.⟦1⟧
+de: ⟦0⟧{0} Fänge stammen aus einer älteren Version; Details wurden nicht gespeichert.⟦1⟧
+fr: ⟦0⟧{0} prises viennent d'une ancienne version ; leurs détails n'ont pas été enregistrés.⟦1⟧
+pt: ⟦0⟧{0} capturas são de uma versão antiga; os detalhes não foram registrados.⟦1⟧
+@ui2.5_avda_kisisel_istatistikler_acilir
+en: ⟦0⟧Personal stats unlock at 5 catches.⟦1⟧
+es: ⟦0⟧Las estadísticas personales se desbloquean con 5 capturas.⟦1⟧
+de: ⟦0⟧Persönliche Werte gibt es ab 5 Fängen.⟦1⟧
+fr: ⟦0⟧Les stats personnelles se débloquent à 5 prises.⟦1⟧
+pt: ⟦0⟧As estatísticas pessoais liberam com 5 capturas.⟦1⟧
+@ui2.senin_verinle_karsilastirma_12_av
+en: ⟦0⟧Comparison with your data (12+ catches)⟦1⟧⟦2⟧⟦3⟧{0}⟦4⟧⟦5⟧{1}⟦6⟧⟦7⟧⟦8⟧This table is for information only; it doesn't change catch odds.⟦9⟧
+es: ⟦0⟧Comparación con tus datos (12+ capturas)⟦1⟧⟦2⟧⟦3⟧{0}⟦4⟧⟦5⟧{1}⟦6⟧⟦7⟧⟦8⟧Esta tabla es solo informativa; no cambia las probabilidades.⟦9⟧
+de: ⟦0⟧Vergleich mit deinen Daten (ab 12 Fängen)⟦1⟧⟦2⟧⟦3⟧{0}⟦4⟧⟦5⟧{1}⟦6⟧⟦7⟧⟦8⟧Diese Tabelle dient nur zur Info; sie ändert keine Fangchancen.⟦9⟧
+fr: ⟦0⟧Comparaison avec tes données (12+ prises)⟦1⟧⟦2⟧⟦3⟧{0}⟦4⟧⟦5⟧{1}⟦6⟧⟦7⟧⟦8⟧Ce tableau est purement informatif ; il ne change pas les probabilités.⟦9⟧
+pt: ⟦0⟧Comparação com seus dados (12+ capturas)⟦1⟧⟦2⟧⟦3⟧{0}⟦4⟧⟦5⟧{1}⟦6⟧⟦7⟧⟦8⟧Esta tabela é só informativa; não muda as chances.⟦9⟧
+@ui2.n_n_av_n
+en: ⟦0⟧⟦1⟧{0}⟦2⟧⟦3⟧{1} {1|catch|catches} · {2}%⟦4⟧⟦5⟧
+es: ⟦0⟧⟦1⟧{0}⟦2⟧⟦3⟧{1} {1|captura|capturas} · {2} %⟦4⟧⟦5⟧
+de: ⟦0⟧⟦1⟧{0}⟦2⟧⟦3⟧{1} {1|Fang|Fänge} · {2} %⟦4⟧⟦5⟧
+fr: ⟦0⟧⟦1⟧{0}⟦2⟧⟦3⟧{1} {1|prise|prises} · {2} %⟦4⟧⟦5⟧
+pt: ⟦0⟧⟦1⟧{0}⟦2⟧⟦3⟧{1} {1|captura|capturas} · {2}%⟦4⟧⟦5⟧
+@ui2.yem_kaydi_yok
+en: ⟦0⟧No bait records⟦1⟧
+es: ⟦0⟧Sin registros de cebo⟦1⟧
+de: ⟦0⟧Keine Köderdaten⟦1⟧
+fr: ⟦0⟧Aucune donnée d'appât⟦1⟧
+pt: ⟦0⟧Sem registros de isca⟦1⟧
+@ui2.nokta_kaydi_yok
+en: ⟦0⟧No spot records⟦1⟧
+es: ⟦0⟧Sin registros de puntos⟦1⟧
+de: ⟦0⟧Keine Platzdaten⟦1⟧
+fr: ⟦0⟧Aucune donnée de coin⟦1⟧
+pt: ⟦0⟧Sem registros de pontos⟦1⟧
+@ui2.12_avda_yem_nokta_karsilastirmasi
+en: ⟦0⟧The bait/spot comparison unlocks at 12 catches.⟦1⟧
+es: ⟦0⟧La comparación de cebo/punto se desbloquea con 12 capturas.⟦1⟧
+de: ⟦0⟧Der Köder-/Platzvergleich kommt ab 12 Fängen.⟦1⟧
+fr: ⟦0⟧La comparaison appât/coin se débloque à 12 prises.⟦1⟧
+pt: ⟦0⟧A comparação de isca/ponto libera com 12 capturas.⟦1⟧
+@ui2.n_en_fazla_3_hedef
+en: ⟦0⟧{0} Up to 3 targets. Targets are just a personal plan; no rewards or penalties. Only real catches (manual and auto) made after you set a target count.⟦1⟧
+es: ⟦0⟧{0} Hasta 3 objetivos. Son solo un plan personal; sin premios ni penalizaciones. Solo cuentan las capturas reales (manuales y automáticas) hechas después de fijar el objetivo.⟦1⟧
+de: ⟦0⟧{0} Höchstens 3 Ziele. Ziele sind nur ein persönlicher Plan, ohne Belohnung oder Strafe. Es zählen nur echte Fänge (Hand und Auto) nach dem Festlegen.⟦1⟧
+fr: ⟦0⟧{0} 3 objectifs maximum. Ce n'est qu'un plan personnel, sans récompense ni pénalité. Seules comptent les vraies prises (manuelles et auto) faites après avoir fixé l'objectif.⟦1⟧
+pt: ⟦0⟧{0} No máximo 3 metas. As metas são só um plano pessoal; sem prêmio nem multa. Só contam capturas reais (manuais e automáticas) feitas depois de definir a meta.⟦1⟧
+@ui2.n_n_n_n_gun
+en: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{3}/{4}⟦5⟧⟦6⟧⟦7⟧⟦8⟧⟦9⟧Since day {6}⟦10⟧⟦11⟧⟦12⟧⟦13⟧⟦14⟧−⟦15⟧⟦16⟧{8}⟦17⟧⟦18⟧+⟦19⟧⟦20⟧+10⟦21⟧⟦22⟧⟦23⟧Delete⟦24⟧⟦25⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{3}/{4}⟦5⟧⟦6⟧⟦7⟧⟦8⟧⟦9⟧Desde el día {6}⟦10⟧⟦11⟧⟦12⟧⟦13⟧⟦14⟧−⟦15⟧⟦16⟧{8}⟦17⟧⟦18⟧+⟦19⟧⟦20⟧+10⟦21⟧⟦22⟧⟦23⟧Borrar⟦24⟧⟦25⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{3}/{4}⟦5⟧⟦6⟧⟦7⟧⟦8⟧⟦9⟧Seit Tag {6}⟦10⟧⟦11⟧⟦12⟧⟦13⟧⟦14⟧−⟦15⟧⟦16⟧{8}⟦17⟧⟦18⟧+⟦19⟧⟦20⟧+10⟦21⟧⟦22⟧⟦23⟧Löschen⟦24⟧⟦25⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{3}/{4}⟦5⟧⟦6⟧⟦7⟧⟦8⟧⟦9⟧Depuis le jour {6}⟦10⟧⟦11⟧⟦12⟧⟦13⟧⟦14⟧−⟦15⟧⟦16⟧{8}⟦17⟧⟦18⟧+⟦19⟧⟦20⟧+10⟦21⟧⟦22⟧⟦23⟧Supprimer⟦24⟧⟦25⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧{3}/{4}⟦5⟧⟦6⟧⟦7⟧⟦8⟧⟦9⟧Desde o dia {6}⟦10⟧⟦11⟧⟦12⟧⟦13⟧⟦14⟧−⟦15⟧⟦16⟧{8}⟦17⟧⟦18⟧+⟦19⟧⟦20⟧+10⟦21⟧⟦22⟧⟦23⟧Apagar⟦24⟧⟦25⟧
+@ui2.henuz_hedef_yok
+en: ⟦0⟧No targets yet.⟦1⟧
+es: ⟦0⟧Aún no hay objetivos.⟦1⟧
+de: ⟦0⟧Noch keine Ziele.⟦1⟧
+fr: ⟦0⟧Aucun objectif pour l'instant.⟦1⟧
+pt: ⟦0⟧Ainda não há metas.⟦1⟧
+@ui2.yeni_gunde_ilerlemeyi_koru_kapaliysa
+en: ⟦0⟧⟦1⟧⟦2⟧Keep progress on a new day⟦3⟧⟦4⟧If off, counters reset every morning⟦5⟧⟦6⟧
+es: ⟦0⟧⟦1⟧⟦2⟧Mantener el progreso al día siguiente⟦3⟧⟦4⟧Si está desactivado, los contadores se reinician cada mañana⟦5⟧⟦6⟧
+de: ⟦0⟧⟦1⟧⟦2⟧Fortschritt am neuen Tag behalten⟦3⟧⟦4⟧Wenn aus, werden die Zähler jeden Morgen zurückgesetzt⟦5⟧⟦6⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧Garder la progression le lendemain⟦3⟧⟦4⟧Si désactivé, les compteurs repartent à zéro chaque matin⟦5⟧⟦6⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧Manter o progresso no novo dia⟦3⟧⟦4⟧Se desligado, os contadores zeram toda manhã⟦5⟧⟦6⟧
+@ui2.hedef_ekle_n_ilan_panosundaki
+en: ⟦0⟧Add target⟦1⟧{0}⟦2⟧You can also create targets from orders on the board with “target”, choosing the amount yourself.⟦3⟧
+es: ⟦0⟧Añadir objetivo⟦1⟧{0}⟦2⟧También puedes crear objetivos desde los pedidos del tablón con «objetivo», eligiendo tú la cantidad.⟦3⟧
+de: ⟦0⟧Ziel hinzufügen⟦1⟧{0}⟦2⟧Du kannst Ziele auch aus Aufträgen an der Tafel über „Ziel“ anlegen und die Menge selbst wählen.⟦3⟧
+fr: ⟦0⟧Ajouter un objectif⟦1⟧{0}⟦2⟧Tu peux aussi créer des objectifs depuis les commandes du tableau avec « objectif », en choisissant la quantité.⟦3⟧
+pt: ⟦0⟧Adicionar meta⟦1⟧{0}⟦2⟧Você também pode criar metas a partir dos pedidos do quadro com “meta”, escolhendo a quantidade.⟦3⟧
+@ui2.kesfettigin_turler_burada_listelenir
+en: ⟦0⟧Species you discover are listed here.⟦1⟧
+es: ⟦0⟧Aquí aparecen las especies que descubras.⟦1⟧
+de: ⟦0⟧Hier erscheinen die Arten, die du entdeckst.⟦1⟧
+fr: ⟦0⟧Les espèces découvertes s'affichent ici.⟦1⟧
+pt: ⟦0⟧As espécies que você descobrir aparecem aqui.⟦1⟧
+@ui2.sandigi_dahil_et_favori_turleri
+en: ⟦0⟧⟦1⟧⟦2⟧ Include the chest⟦3⟧⟦4⟧⟦5⟧ Also show favorite (★) species⟦6⟧{2}⟦7⟧
+es: ⟦0⟧⟦1⟧⟦2⟧ Incluir el baúl⟦3⟧⟦4⟧⟦5⟧ Mostrar también las especies favoritas (★)⟦6⟧{2}⟦7⟧
+de: ⟦0⟧⟦1⟧⟦2⟧ Truhe einbeziehen⟦3⟧⟦4⟧⟦5⟧ Auch Favoriten (★) anzeigen⟦6⟧{2}⟦7⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧ Inclure le coffre⟦3⟧⟦4⟧⟦5⟧ Afficher aussi les espèces favorites (★)⟦6⟧{2}⟦7⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧ Incluir o baú⟦3⟧⟦4⟧⟦5⟧ Mostrar também espécies favoritas (★)⟦6⟧{2}⟦7⟧
+@ui2.balik_hali_ilanlar_cay_bahcesi
+en: ⟦0⟧⟦1⟧⟦2⟧Fish Market⟦3⟧⟦4⟧Orders⟦5⟧⟦6⟧Tea Garden⟦7⟧
+es: ⟦0⟧⟦1⟧⟦2⟧Lonja⟦3⟧⟦4⟧Pedidos⟦5⟧⟦6⟧Jardín de té⟦7⟧
+de: ⟦0⟧⟦1⟧⟦2⟧Fischmarkt⟦3⟧⟦4⟧Aufträge⟦5⟧⟦6⟧Teegarten⟦7⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧Halle⟦3⟧⟦4⟧Commandes⟦5⟧⟦6⟧Jardin de thé⟦7⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧Mercado⟦3⟧⟦4⟧Pedidos⟦5⟧⟦6⟧Casa de Chá⟦7⟧
+@ui2.n_n_elinde_n_n
+en: ⟦0⟧⟦1⟧{0}⟦2⟧{1}⟦3⟧ ⟦4⟧in hand {2}⟦5⟧⟦6⟧⟦7⟧⟦8⟧{3}⟦9⟧{4}⟦10⟧ ⟦11⟧{5}⟦12⟧ ⟦13⟧⟦14⟧Suggestion only; nothing is sold without your confirmation.⟦15⟧⟦16⟧⟦17⟧{6}⟦18⟧⟦19⟧
+es: ⟦0⟧⟦1⟧{0}⟦2⟧{1}⟦3⟧ ⟦4⟧tienes {2}⟦5⟧⟦6⟧⟦7⟧⟦8⟧{3}⟦9⟧{4}⟦10⟧ ⟦11⟧{5}⟦12⟧ ⟦13⟧⟦14⟧Solo es una sugerencia; no se vende nada sin tu confirmación.⟦15⟧⟦16⟧⟦17⟧{6}⟦18⟧⟦19⟧
+de: ⟦0⟧⟦1⟧{0}⟦2⟧{1}⟦3⟧ ⟦4⟧Vorrat {2}⟦5⟧⟦6⟧⟦7⟧⟦8⟧{3}⟦9⟧{4}⟦10⟧ ⟦11⟧{5}⟦12⟧ ⟦13⟧⟦14⟧Nur ein Vorschlag; ohne deine Bestätigung wird nichts verkauft.⟦15⟧⟦16⟧⟦17⟧{6}⟦18⟧⟦19⟧
+fr: ⟦0⟧⟦1⟧{0}⟦2⟧{1}⟦3⟧ ⟦4⟧en stock {2}⟦5⟧⟦6⟧⟦7⟧⟦8⟧{3}⟦9⟧{4}⟦10⟧ ⟦11⟧{5}⟦12⟧ ⟦13⟧⟦14⟧Simple suggestion ; rien n'est vendu sans ton accord.⟦15⟧⟦16⟧⟦17⟧{6}⟦18⟧⟦19⟧
+pt: ⟦0⟧⟦1⟧{0}⟦2⟧{1}⟦3⟧ ⟦4⟧você tem {2}⟦5⟧⟦6⟧⟦7⟧⟦8⟧{3}⟦9⟧{4}⟦10⟧ ⟦11⟧{5}⟦12⟧ ⟦13⟧⟦14⟧É só uma sugestão; nada é vendido sem sua confirmação.⟦15⟧⟦16⟧⟦17⟧{6}⟦18⟧⟦19⟧
+@ui2.n_hale_gore
+en:  ⟦0⟧+{0} vs. market⟦1⟧
+es:  ⟦0⟧+{0} frente a la lonja⟦1⟧
+de:  ⟦0⟧+{0} ggü. Markt⟦1⟧
+fr:  ⟦0⟧+{0} par rapport à la halle⟦1⟧
+pt:  ⟦0⟧+{0} em relação ao mercado⟦1⟧
+@ui2.kalan_alim_n
+en:  ⟦0⟧({0} purchases left)⟦1⟧
+es:  ⟦0⟧(quedan {0} compras)⟦1⟧
+de:  ⟦0⟧(noch {0} Ankäufe)⟦1⟧
+fr:  ⟦0⟧({0} achats restants)⟦1⟧
+pt:  ⟦0⟧(restam {0} compras)⟦1⟧
+@ui2.bu_dagilimla_sat
+en: ⟦0⟧Sell with this split⟦1⟧
+es: ⟦0⟧Vender con este reparto⟦1⟧
+de: ⟦0⟧So verkaufen⟦1⟧
+fr: ⟦0⟧Vendre avec cette répartition⟦1⟧
+pt: ⟦0⟧Vender com esta divisão⟦1⟧
+@ui2.satis_icin_kasabada_ol
+en: ⟦0⟧Be in town to sell⟦1⟧
+es: ⟦0⟧Tienes que estar en el pueblo para vender⟦1⟧
+de: ⟦0⟧Zum Verkaufen musst du im Ort sein⟦1⟧
+fr: ⟦0⟧Sois au village pour vendre⟦1⟧
+pt: ⟦0⟧Esteja na vila para vender⟦1⟧
+@ui2.satilabilir_baligin_yok_akvaryumdaki_baliklar
+en: ⟦0⟧You have no sellable fish. (Fish in aquariums don't count as stock for sale.)⟦1⟧
+es: ⟦0⟧No tienes peces que vender. (Los peces del acuario no cuentan como existencias.)⟦1⟧
+de: ⟦0⟧Du hast keine verkaufbaren Fische. (Aquarienfische zählen nicht zum Verkaufsbestand.)⟦1⟧
+fr: ⟦0⟧Aucun poisson à vendre. (Les poissons en aquarium ne comptent pas dans le stock.)⟦1⟧
+pt: ⟦0⟧Você não tem peixes para vender. (Peixes do aquário não contam como estoque.)⟦1⟧
+@ui2.ticaret_akilli_satis
+en: Trade · Smart Sell
+es: Comercio · Venta inteligente
+de: Handel · Clever verkaufen
+fr: Commerce · Vente intelligente
+pt: Comércio · Venda Inteligente
+@ui2.son_7_gun_son_30
+en: ⟦0⟧⟦1⟧Last 7 days⟦2⟧⟦3⟧Last 30 days⟦4⟧⟦5⟧
+es: ⟦0⟧⟦1⟧Últimos 7 días⟦2⟧⟦3⟧Últimos 30 días⟦4⟧⟦5⟧
+de: ⟦0⟧⟦1⟧Letzte 7 Tage⟦2⟧⟦3⟧Letzte 30 Tage⟦4⟧⟦5⟧
+fr: ⟦0⟧⟦1⟧7 derniers jours⟦2⟧⟦3⟧30 derniers jours⟦4⟧⟦5⟧
+pt: ⟦0⟧⟦1⟧Últimos 7 dias⟦2⟧⟦3⟧Últimos 30 dias⟦4⟧⟦5⟧
+@ui2.mali_gunluk_bu_surumde_tamamlanan
+en: ⟦0⟧The ledger is kept from the first day completed in this version. The first entry appears after you sleep once.⟦1⟧
+es: ⟦0⟧El libro de cuentas empieza el primer día completado en esta versión. La primera entrada aparece cuando duermes una vez.⟦1⟧
+de: ⟦0⟧Das Kassenbuch beginnt mit dem ersten in dieser Version abgeschlossenen Tag. Der erste Eintrag entsteht, wenn du einmal schläfst.⟦1⟧
+fr: ⟦0⟧Le livre de comptes démarre au premier jour terminé dans cette version. La première entrée apparaît après une nuit de sommeil.⟦1⟧
+pt: ⟦0⟧O livro-caixa começa no primeiro dia concluído nesta versão. O primeiro registro aparece depois que você dorme uma vez.⟦1⟧
+@ui2.n_gelir_gider
+en: ⟦0⟧{0}⟦1⟧⟦2⟧⟦3⟧▮ income⟦4⟧ · ⟦5⟧▮ expenses⟦6⟧⟦7⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧⟦3⟧▮ ingresos⟦4⟧ · ⟦5⟧▮ gastos⟦6⟧⟦7⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧⟦3⟧▮ Einnahmen⟦4⟧ · ⟦5⟧▮ Ausgaben⟦6⟧⟦7⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧⟦3⟧▮ revenus⟦4⟧ · ⟦5⟧▮ dépenses⟦6⟧⟦7⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧⟦3⟧▮ receitas⟦4⟧ · ⟦5⟧▮ despesas⟦6⟧⟦7⟧
+@ui2.n_gun_n
+en: ⟦0|Day {0}⟧⟦1⟧⟦2⟧⟦3⟧⟦4⟧⟦5⟧{3}⟦6⟧⟦7⟧
+es: ⟦0|Día {0}⟧⟦1⟧⟦2⟧⟦3⟧⟦4⟧⟦5⟧{3}⟦6⟧⟦7⟧
+de: ⟦0|Tag {0}⟧⟦1⟧⟦2⟧⟦3⟧⟦4⟧⟦5⟧{3}⟦6⟧⟦7⟧
+fr: ⟦0|Jour {0}⟧⟦1⟧⟦2⟧⟦3⟧⟦4⟧⟦5⟧{3}⟦6⟧⟦7⟧
+pt: ⟦0|Dia {0}⟧⟦1⟧⟦2⟧⟦3⟧⟦4⟧⟦5⟧{3}⟦6⟧⟦7⟧
+@ui2.gelir_n_gider_n_net
+en: ⟦0⟧⟦1⟧⟦2⟧Income⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧⟦7⟧⟦8⟧Expenses⟦9⟧⟦10⟧{1}⟦11⟧⟦12⟧⟦13⟧⟦14⟧Net⟦15⟧⟦16⟧{3}⟦17⟧⟦18⟧⟦19⟧⟦20⟧Catches (M/A/Fleet)⟦21⟧⟦22⟧{4}/{5}/{6}⟦23⟧⟦24⟧⟦25⟧⟦26⟧Fleet wages / fuel⟦27⟧⟦28⟧{7} / {8}⟦29⟧⟦30⟧⟦31⟧⟦32⟧Town projects⟦33⟧⟦34⟧{9}⟦35⟧⟦36⟧⟦37⟧
+es: ⟦0⟧⟦1⟧⟦2⟧Ingresos⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧⟦7⟧⟦8⟧Gastos⟦9⟧⟦10⟧{1}⟦11⟧⟦12⟧⟦13⟧⟦14⟧Neto⟦15⟧⟦16⟧{3}⟦17⟧⟦18⟧⟦19⟧⟦20⟧Capturas (M/A/Flota)⟦21⟧⟦22⟧{4}/{5}/{6}⟦23⟧⟦24⟧⟦25⟧⟦26⟧Jornales / combustible de flota⟦27⟧⟦28⟧{7} / {8}⟦29⟧⟦30⟧⟦31⟧⟦32⟧Proyectos del pueblo⟦33⟧⟦34⟧{9}⟦35⟧⟦36⟧⟦37⟧
+de: ⟦0⟧⟦1⟧⟦2⟧Einnahmen⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧⟦7⟧⟦8⟧Ausgaben⟦9⟧⟦10⟧{1}⟦11⟧⟦12⟧⟦13⟧⟦14⟧Netto⟦15⟧⟦16⟧{3}⟦17⟧⟦18⟧⟦19⟧⟦20⟧Fänge (H/A/Flotte)⟦21⟧⟦22⟧{4}/{5}/{6}⟦23⟧⟦24⟧⟦25⟧⟦26⟧Flottenlohn / Treibstoff⟦27⟧⟦28⟧{7} / {8}⟦29⟧⟦30⟧⟦31⟧⟦32⟧Ortsprojekte⟦33⟧⟦34⟧{9}⟦35⟧⟦36⟧⟦37⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧Revenus⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧⟦7⟧⟦8⟧Dépenses⟦9⟧⟦10⟧{1}⟦11⟧⟦12⟧⟦13⟧⟦14⟧Net⟦15⟧⟦16⟧{3}⟦17⟧⟦18⟧⟦19⟧⟦20⟧Prises (M/A/Flotte)⟦21⟧⟦22⟧{4}/{5}/{6}⟦23⟧⟦24⟧⟦25⟧⟦26⟧Salaires / carburant de flotte⟦27⟧⟦28⟧{7} / {8}⟦29⟧⟦30⟧⟦31⟧⟦32⟧Projets du village⟦33⟧⟦34⟧{9}⟦35⟧⟦36⟧⟦37⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧Receitas⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧⟦7⟧⟦8⟧Despesas⟦9⟧⟦10⟧{1}⟦11⟧⟦12⟧⟦13⟧⟦14⟧Líquido⟦15⟧⟦16⟧{3}⟦17⟧⟦18⟧⟦19⟧⟦20⟧Capturas (M/A/Frota)⟦21⟧⟦22⟧{4}/{5}/{6}⟦23⟧⟦24⟧⟦25⟧⟦26⟧Diárias / combustível da frota⟦27⟧⟦28⟧{7} / {8}⟦29⟧⟦30⟧⟦31⟧⟦32⟧Projetos da vila⟦33⟧⟦34⟧{9}⟦35⟧⟦36⟧⟦37⟧
+@ui2.gun_manuel_oto_hal_ilan
+en: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Day⟦4⟧⟦5⟧Manual⟦6⟧⟦7⟧Auto⟦8⟧⟦9⟧Market⟦10⟧⟦11⟧Orders⟦12⟧⟦13⟧Tea g.⟦14⟧⟦15⟧Prize⟦16⟧⟦17⟧Bait⟦18⟧⟦19⟧Fuel⟦20⟧⟦21⟧Gear⟦22⟧⟦23⟧Fleet⟦24⟧⟦25⟧Project⟦26⟧⟦27⟧Other⟦28⟧⟦29⟧Income⟦30⟧⟦31⟧Expenses⟦32⟧⟦33⟧Net⟦34⟧⟦35⟧{0}⟦36⟧⟦37⟧⟦38⟧* Day containing an uncategorized coin change (e.g. test panel). Lifetime stats are kept in the Statistics panel; tea garden income is tracked separately from this version on.⟦39⟧
+es: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Día⟦4⟧⟦5⟧Manual⟦6⟧⟦7⟧Auto⟦8⟧⟦9⟧Lonja⟦10⟧⟦11⟧Pedidos⟦12⟧⟦13⟧Té⟦14⟧⟦15⟧Premio⟦16⟧⟦17⟧Cebo⟦18⟧⟦19⟧Combust.⟦20⟧⟦21⟧Equipo⟦22⟧⟦23⟧Flota⟦24⟧⟦25⟧Proyecto⟦26⟧⟦27⟧Otros⟦28⟧⟦29⟧Ingresos⟦30⟧⟦31⟧Gastos⟦32⟧⟦33⟧Neto⟦34⟧⟦35⟧{0}⟦36⟧⟦37⟧⟦38⟧* Día con un cambio de dinero sin categoría (p. ej., panel de pruebas). Las estadísticas totales se guardan en el panel Estadísticas; los ingresos del jardín de té se registran aparte desde esta versión.⟦39⟧
+de: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Tag⟦4⟧⟦5⟧Hand⟦6⟧⟦7⟧Auto⟦8⟧⟦9⟧Markt⟦10⟧⟦11⟧Aufträge⟦12⟧⟦13⟧Teeg.⟦14⟧⟦15⟧Preis⟦16⟧⟦17⟧Köder⟦18⟧⟦19⟧Treibst.⟦20⟧⟦21⟧Ausrüst.⟦22⟧⟦23⟧Flotte⟦24⟧⟦25⟧Projekt⟦26⟧⟦27⟧Sonst.⟦28⟧⟦29⟧Einnahmen⟦30⟧⟦31⟧Ausgaben⟦32⟧⟦33⟧Netto⟦34⟧⟦35⟧{0}⟦36⟧⟦37⟧⟦38⟧* Tag mit einer Münzänderung ohne Kategorie (z. B. Testpanel). Gesamtwerte bleiben im Panel Statistiken erhalten; Teegarten-Einnahmen werden ab dieser Version gesondert erfasst.⟦39⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Jour⟦4⟧⟦5⟧Manuel⟦6⟧⟦7⟧Auto⟦8⟧⟦9⟧Halle⟦10⟧⟦11⟧Commandes⟦12⟧⟦13⟧Thé⟦14⟧⟦15⟧Prix⟦16⟧⟦17⟧Appât⟦18⟧⟦19⟧Carbur.⟦20⟧⟦21⟧Équip.⟦22⟧⟦23⟧Flotte⟦24⟧⟦25⟧Projet⟦26⟧⟦27⟧Autre⟦28⟧⟦29⟧Revenus⟦30⟧⟦31⟧Dépenses⟦32⟧⟦33⟧Net⟦34⟧⟦35⟧{0}⟦36⟧⟦37⟧⟦38⟧* Jour comportant une variation de pièces sans catégorie (ex. panneau de test). Les stats globales restent dans le panneau Statistiques ; les revenus du jardin de thé sont suivis à part depuis cette version.⟦39⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Dia⟦4⟧⟦5⟧Manual⟦6⟧⟦7⟧Auto⟦8⟧⟦9⟧Mercado⟦10⟧⟦11⟧Pedidos⟦12⟧⟦13⟧Chá⟦14⟧⟦15⟧Prêmio⟦16⟧⟦17⟧Isca⟦18⟧⟦19⟧Comb.⟦20⟧⟦21⟧Equip.⟦22⟧⟦23⟧Frota⟦24⟧⟦25⟧Projeto⟦26⟧⟦27⟧Outros⟦28⟧⟦29⟧Receitas⟦30⟧⟦31⟧Despesas⟦32⟧⟦33⟧Líquido⟦34⟧⟦35⟧{0}⟦36⟧⟦37⟧⟦38⟧* Dia com alteração de moedas sem categoria (ex.: painel de teste). As estatísticas totais ficam no painel Estatísticas; a renda da casa de chá é registrada à parte a partir desta versão.⟦39⟧
+@ui2.lokanta_ilan_panosu
+en: Restaurant · Order Board
+es: Restaurante · Tablón de pedidos
+de: Restaurant · Auftragstafel
+fr: Restaurant · Tableau des commandes
+pt: Restaurante · Quadro de Pedidos
+@ui2.kasabalilar_n_dukkanlar_sahibi_nerede
+en: ⟦0⟧Townsfolk⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧Shops are always open, wherever their owners are.⟦5⟧
+es: ⟦0⟧Vecinos⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧Las tiendas siempre están abiertas, estén donde estén sus dueños.⟦5⟧
+de: ⟦0⟧Ortsbewohner⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧Die Läden sind immer offen, egal wo die Besitzer gerade sind.⟦5⟧
+fr: ⟦0⟧Villageois⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧Les boutiques sont toujours ouvertes, où que soient leurs propriétaires.⟦5⟧
+pt: ⟦0⟧Moradores⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧As lojas estão sempre abertas, onde quer que os donos estejam.⟦5⟧
+@ui2.n_n_bugun_n
+en: ⟦0⟧⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2}⟦5⟧⟦6⟧Today: {3}⟦7⟧⟦8⟧
+es: ⟦0⟧⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2}⟦5⟧⟦6⟧Hoy: {3}⟦7⟧⟦8⟧
+de: ⟦0⟧⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2}⟦5⟧⟦6⟧Heute: {3}⟦7⟧⟦8⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2}⟦5⟧⟦6⟧Aujourd'hui : {3}⟦7⟧⟦8⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2}⟦5⟧⟦6⟧Hoje: {3}⟦7⟧⟦8⟧
+@ui2.kasabada
+en: In town
+es: En el pueblo
+de: Im Ort
+fr: Au village
+pt: Na vila
+@ui2.rakip_balikcilar_n
+en: ⟦0⟧Rival anglers⟦1⟧{0}
+es: ⟦0⟧Pescadores rivales⟦1⟧{0}
+de: ⟦0⟧Rivalisierende Angler⟦1⟧{0}
+fr: ⟦0⟧Pêcheurs rivaux⟦1⟧{0}
+pt: ⟦0⟧Pescadores rivais⟦1⟧{0}
+@ui2.n_n_uzmanlik_n_n
+en: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧{1}⟦4⟧ ⟦5⟧· {2} · Specialty: {3}⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧{5}⟦10⟧⟦11⟧⟦12⟧{6}⟦13⟧⟦14⟧
+es: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧{1}⟦4⟧ ⟦5⟧· {2} · Especialidad: {3}⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧{5}⟦10⟧⟦11⟧⟦12⟧{6}⟦13⟧⟦14⟧
+de: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧{1}⟦4⟧ ⟦5⟧· {2} · Spezialität: {3}⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧{5}⟦10⟧⟦11⟧⟦12⟧{6}⟦13⟧⟦14⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧{1}⟦4⟧ ⟦5⟧· {2} · Spécialité : {3}⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧{5}⟦10⟧⟦11⟧⟦12⟧{6}⟦13⟧⟦14⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧{1}⟦4⟧ ⟦5⟧· {2} · Especialidade: {3}⟦6⟧⟦7⟧{4}⟦8⟧⟦9⟧{5}⟦10⟧⟦11⟧⟦12⟧{6}⟦13⟧⟦14⟧
+@ui2.yarisma_n_sampiyonluk_n_ilk
+en: Contests: ⟦0⟧{0}⟦1⟧ · Wins: ⟦2⟧{1}⟦3⟧ · Top three: ⟦4⟧{2}⟦5⟧ · Best: ⟦6⟧#{3}⟦7⟧⟦8⟧Last: {4}
+es: Concursos: ⟦0⟧{0}⟦1⟧ · Victorias: ⟦2⟧{1}⟦3⟧ · Podios: ⟦4⟧{2}⟦5⟧ · Mejor: ⟦6⟧{3}.º⟦7⟧⟦8⟧Último: {4}
+de: Wettbewerbe: ⟦0⟧{0}⟦1⟧ · Siege: ⟦2⟧{1}⟦3⟧ · Top drei: ⟦4⟧{2}⟦5⟧ · Beste: ⟦6⟧{3}.⟦7⟧⟦8⟧Zuletzt: {4}
+fr: Concours : ⟦0⟧{0}⟦1⟧ · Victoires : ⟦2⟧{1}⟦3⟧ · Podiums : ⟦4⟧{2}⟦5⟧ · Meilleur : ⟦6⟧{3}e⟦7⟧⟦8⟧Dernier : {4}
+pt: Competições: ⟦0⟧{0}⟦1⟧ · Vitórias: ⟦2⟧{1}⟦3⟧ · Pódios: ⟦4⟧{2}⟦5⟧ · Melhor: ⟦6⟧{3}º⟦7⟧⟦8⟧Última: {4}
+@ui2.eski_yarisma_kaydi_bulunmuyor
+en: ⟦0⟧No past contest records⟦1⟧
+es: ⟦0⟧No hay registros de concursos anteriores⟦1⟧
+de: ⟦0⟧Keine früheren Wettbewerbe⟦1⟧
+fr: ⟦0⟧Aucun concours passé⟦1⟧
+pt: ⟦0⟧Nenhum registro de competições anteriores⟦1⟧
+@ui2.en_buyuk_10
+en: Top 10
+es: Los 10 mayores
+de: Top 10
+fr: Top 10
+pt: Top 10
+@ui2.tur_bazinda
+en: By species
+es: Por especie
+de: Nach Art
+fr: Par espèce
+pt: Por espécie
+@ui2.n_her_turun_kisisel_rekorlari
+en: ⟦0⟧{0} Personal records for each species. Length and weight records are tracked separately and may belong to different fish.⟦1⟧{1}
+es: ⟦0⟧{0} Récords personales de cada especie. Los de longitud y peso se guardan por separado y pueden ser de peces distintos.⟦1⟧{1}
+de: ⟦0⟧{0} Persönliche Rekorde jeder Art. Längen- und Gewichtsrekorde werden getrennt geführt und können von verschiedenen Fischen stammen.⟦1⟧{1}
+fr: ⟦0⟧{0} Records personnels par espèce. Les records de taille et de poids sont séparés et peuvent venir de poissons différents.⟦1⟧{1}
+pt: ⟦0⟧{0} Recordes pessoais de cada espécie. Os de tamanho e peso são separados e podem ser de peixes diferentes.⟦1⟧{1}
+@ui2.tur_bolge_av_boy_rekoru
+en: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Species⟦4⟧⟦5⟧Region⟦6⟧⟦7⟧Caught⟦8⟧⟦9⟧Length record⟦10⟧⟦11⟧Weight record⟦12⟧⟦13⟧{0}⟦14⟧⟦15⟧
+es: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Especie⟦4⟧⟦5⟧Zona⟦6⟧⟦7⟧Capturas⟦8⟧⟦9⟧Récord de longitud⟦10⟧⟦11⟧Récord de peso⟦12⟧⟦13⟧{0}⟦14⟧⟦15⟧
+de: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Art⟦4⟧⟦5⟧Gebiet⟦6⟧⟦7⟧Fänge⟦8⟧⟦9⟧Längenrekord⟦10⟧⟦11⟧Gewichtsrekord⟦12⟧⟦13⟧{0}⟦14⟧⟦15⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Espèce⟦4⟧⟦5⟧Zone⟦6⟧⟦7⟧Prises⟦8⟧⟦9⟧Record de taille⟦10⟧⟦11⟧Record de poids⟦12⟧⟦13⟧{0}⟦14⟧⟦15⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Espécie⟦4⟧⟦5⟧Região⟦6⟧⟦7⟧Capturas⟦8⟧⟦9⟧Recorde de tamanho⟦10⟧⟦11⟧Recorde de peso⟦12⟧⟦13⟧{0}⟦14⟧⟦15⟧
+@ui2.n_n_n_n_cm
+=
+@ui2.henuz_kayit_yok
+en: ⟦0⟧No records yet.⟦1⟧
+es: ⟦0⟧Aún no hay registros.⟦1⟧
+de: ⟦0⟧Noch keine Einträge.⟦1⟧
+fr: ⟦0⟧Aucun enregistrement pour l'instant.⟦1⟧
+pt: ⟦0⟧Ainda não há registros.⟦1⟧
+@ui2.n_en_buyuk_10_avin
+en: ⟦0⟧{0} Your 10 biggest catches (by weight). You can display 5 of them on the Record Wall at home ({1}/5).⟦1⟧{2}⟦2⟧Records aren't deleted even if you sell the fish.⟦3⟧
+es: ⟦0⟧{0} Tus 10 mayores capturas (por peso). Puedes exhibir 5 en el Muro de récords de tu casa ({1}/5).⟦1⟧{2}⟦2⟧Los récords no se borran aunque vendas el pez.⟦3⟧
+de: ⟦0⟧{0} Deine 10 größten Fänge (nach Gewicht). 5 davon kannst du an der Rekordwand zu Hause zeigen ({1}/5).⟦1⟧{2}⟦2⟧Rekorde bleiben auch erhalten, wenn du den Fisch verkaufst.⟦3⟧
+fr: ⟦0⟧{0} Tes 10 plus grosses prises (au poids). Tu peux en exposer 5 sur le Mur des records chez toi ({1}/5).⟦1⟧{2}⟦2⟧Les records restent même si tu vends le poisson.⟦3⟧
+pt: ⟦0⟧{0} Suas 10 maiores capturas (por peso). Você pode exibir 5 no Mural de Recordes em casa ({1}/5).⟦1⟧{2}⟦2⟧Os recordes não somem mesmo se você vender o peixe.⟦3⟧
+@ui2.n_cm
+=
+@ui2.otomatik_n
+en: Auto ({0})
+es: Automático ({0})
+de: Auto ({0})
+fr: Auto ({0})
+pt: Automático ({0})
+@ui2.manuel_n
+en: Manual · {0}
+es: Manual · {0}
+de: Hand · {0}
+fr: Manuel · {0}
+pt: Manual · {0}
+@ui2.n_n_n_n_n_2
+=
+@ui2.eski_kayit_ansiklopedideki_agirlik_rekoru
+en: Old record: weight record from the encyclopedia (not merged, since the length record is kept separately) · day, spot, rod: Unknown
+es: Registro antiguo: récord de peso de la enciclopedia (no se fusionó porque el de longitud va aparte) · día, punto, caña: desconocidos
+de: Alter Eintrag: Gewichtsrekord aus dem Lexikon (nicht zusammengeführt, da der Längenrekord getrennt geführt wird) · Tag, Platz, Angel: unbekannt
+fr: Ancien relevé : record de poids de l'encyclopédie (non fusionné, le record de taille étant séparé) · jour, coin, canne : inconnus
+pt: Registro antigo: recorde de peso da enciclopédia (não combinado, pois o de tamanho é separado) · dia, ponto, vara: desconhecidos
+@ui2.n_n_gun_n_n
+en: {0} · {1} · Day {2} · {3}
+es: {0} · {1} · Día {2} · {3}
+de: {0} · {1} · Tag {2} · {3}
+fr: {0} · {1} · Jour {2} · {3}
+pt: {0} · {1} · Dia {2} · {3}
+@ui2.duvardan_indir
+en: Take down from wall
+es: Quitar de la pared
+de: Von der Wand nehmen
+fr: Retirer du mur
+pt: Tirar do mural
+@ui2.duvara_as
+en: Hang on wall
+es: Colgar en la pared
+de: An die Wand hängen
+fr: Accrocher au mur
+pt: Pendurar no mural
+@ui2.henuz_rekor_kaydi_yok
+en: ⟦0⟧No records yet.⟦1⟧
+es: ⟦0⟧Aún no hay récords.⟦1⟧
+de: ⟦0⟧Noch keine Rekorde.⟦1⟧
+fr: ⟦0⟧Aucun record pour l'instant.⟦1⟧
+pt: ⟦0⟧Ainda não há recordes.⟦1⟧
+@ui2.bu_akvaryuma_sahip_degilsin
+en: ⟦0⟧You don't own this aquarium.⟦1⟧
+es: ⟦0⟧Este acuario no es tuyo.⟦1⟧
+de: ⟦0⟧Dieses Aquarium gehört dir nicht.⟦1⟧
+fr: ⟦0⟧Tu ne possèdes pas cet aquarium.⟦1⟧
+pt: ⟦0⟧Você não tem este aquário.⟦1⟧
+@ui2.tekne_deposu
+en: Boat storage
+es: Bodega del barco
+de: Laderaum
+fr: Cale du bateau
+pt: Porão do barco
+@ui2.n_n_n_balik_n
+en: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧{1}/{2} fish · {3}/{4} species⟦7⟧ ⟦8⟧Decor: {5}⟦9⟧ ⟦10⟧Background: ⟦11⟧Light blue⟦12⟧ {7}⟦13⟧⟦14⟧⟦15⟧
+es: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧{1}/{2} peces · {3}/{4} especies⟦7⟧ ⟦8⟧Decoración: {5}⟦9⟧ ⟦10⟧Fondo: ⟦11⟧Azul claro⟦12⟧ {7}⟦13⟧⟦14⟧⟦15⟧
+de: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧{1}/{2} Fische · {3}/{4} Arten⟦7⟧ ⟦8⟧Deko: {5}⟦9⟧ ⟦10⟧Hintergrund: ⟦11⟧Hellblau⟦12⟧ {7}⟦13⟧⟦14⟧⟦15⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧{1}/{2} poissons · {3}/{4} espèces⟦7⟧ ⟦8⟧Déco : {5}⟦9⟧ ⟦10⟧Fond : ⟦11⟧Bleu clair⟦12⟧ {7}⟦13⟧⟦14⟧⟦15⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧{1}/{2} peixes · {3}/{4} espécies⟦7⟧ ⟦8⟧Decoração: {5}⟦9⟧ ⟦10⟧Fundo: ⟦11⟧Azul-claro⟦12⟧ {7}⟦13⟧⟦14⟧⟦15⟧
+@ui2.okyanus_odul
+en: ⟦0⟧Ocean (reward)⟦1⟧
+es: ⟦0⟧Océano (recompensa)⟦1⟧
+de: ⟦0⟧Ozean (Belohnung)⟦1⟧
+fr: ⟦0⟧Océan (récompense)⟦1⟧
+pt: ⟦0⟧Oceano (recompensa)⟦1⟧
+@ui2.okyanus_arka_plani_10_tur
+en: ⟦0⟧Ocean background: display 10 species⟦1⟧
+es: ⟦0⟧Fondo océano: exhibe 10 especies⟦1⟧
+de: ⟦0⟧Ozean-Hintergrund: 10 Arten zeigen⟦1⟧
+fr: ⟦0⟧Fond océan : expose 10 espèces⟦1⟧
+pt: ⟦0⟧Fundo oceano: exiba 10 espécies⟦1⟧
+@ui2.akvaryumdakiler_cikarilan_balik_n
+en: ⟦0⟧In the aquarium⟦1⟧⟦2⟧⟦3⟧Removed fish go to:⟦4⟧{0}⟦5⟧
+es: ⟦0⟧En el acuario⟦1⟧⟦2⟧⟦3⟧Los peces retirados van a:⟦4⟧{0}⟦5⟧
+de: ⟦0⟧Im Aquarium⟦1⟧⟦2⟧⟦3⟧Entnommene Fische nach:⟦4⟧{0}⟦5⟧
+fr: ⟦0⟧Dans l'aquarium⟦1⟧⟦2⟧⟦3⟧Poissons retirés vers :⟦4⟧{0}⟦5⟧
+pt: ⟦0⟧No aquário⟦1⟧⟦2⟧⟦3⟧Peixes retirados vão para:⟦4⟧{0}⟦5⟧
+@ui2.n_n_n_1_cikar
+en: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ×{2}⟦4⟧⟦5⟧Remove 1⟦6⟧⟦7⟧Remove all⟦8⟧{6}⟦9⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ×{2}⟦4⟧⟦5⟧Sacar 1⟦6⟧⟦7⟧Sacar todos⟦8⟧{6}⟦9⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ×{2}⟦4⟧⟦5⟧1 entnehmen⟦6⟧⟦7⟧Alle entnehmen⟦8⟧{6}⟦9⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ×{2}⟦4⟧⟦5⟧Retirer 1⟦6⟧⟦7⟧Tout retirer⟦8⟧{6}⟦9⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ×{2}⟦4⟧⟦5⟧Tirar 1⟦6⟧⟦7⟧Tirar todos⟦8⟧{6}⟦9⟧
+@ui2.akvaryum_bos
+en: ⟦0⟧The aquarium is empty.⟦1⟧
+es: ⟦0⟧El acuario está vacío.⟦1⟧
+de: ⟦0⟧Das Aquarium ist leer.⟦1⟧
+fr: ⟦0⟧L'aquarium est vide.⟦1⟧
+pt: ⟦0⟧O aquário está vazio.⟦1⟧
+@ui2.balik_ekle_kaynak_n
+en: ⟦0⟧Add fish⟦1⟧⟦2⟧⟦3⟧Source:⟦4⟧{0}⟦5⟧
+es: ⟦0⟧Añadir peces⟦1⟧⟦2⟧⟦3⟧Origen:⟦4⟧{0}⟦5⟧
+de: ⟦0⟧Fische einsetzen⟦1⟧⟦2⟧⟦3⟧Quelle:⟦4⟧{0}⟦5⟧
+fr: ⟦0⟧Ajouter des poissons⟦1⟧⟦2⟧⟦3⟧Source :⟦4⟧{0}⟦5⟧
+pt: ⟦0⟧Adicionar peixes⟦1⟧⟦2⟧⟦3⟧Origem:⟦4⟧{0}⟦5⟧
+@ui2.n_n_elinde_n_bos
+en: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧have {2} · free space {3}⟦5⟧⟦6⟧⟦7⟧Add 1⟦8⟧⟦9⟧As many as fit⟦10⟧⟦11⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧tienes {2} · espacio libre {3}⟦5⟧⟦6⟧⟦7⟧Añadir 1⟦8⟧⟦9⟧Todos los que quepan⟦10⟧⟦11⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧Vorrat {2} · frei {3}⟦5⟧⟦6⟧⟦7⟧1 einsetzen⟦8⟧⟦9⟧So viele wie passen⟦10⟧⟦11⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧en stock {2} · place libre {3}⟦5⟧⟦6⟧⟦7⟧Ajouter 1⟦8⟧⟦9⟧Autant que possible⟦10⟧⟦11⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧você tem {2} · espaço livre {3}⟦5⟧⟦6⟧⟦7⟧Adicionar 1⟦8⟧⟦9⟧Quantos couberem⟦10⟧⟦11⟧

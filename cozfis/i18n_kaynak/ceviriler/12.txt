@@ -1,0 +1,510 @@
+@ui.nasil_oynanir
+en: How to Play
+es: Cómo jugar
+de: So wird gespielt
+fr: Comment jouer
+pt: Como Jogar
+@ui.n_n_n_n_tesekkurler
+en: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧{1}⟦4⟧ ⟦5⟧· {2}⟦6⟧⟦7⟧“{3}”⟦8⟧{4}⟦9⟧⟦10⟧⟦11⟧⟦12⟧Thanks⟦13⟧⟦14⟧
+es: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧{1}⟦4⟧ ⟦5⟧· {2}⟦6⟧⟦7⟧«{3}»⟦8⟧{4}⟦9⟧⟦10⟧⟦11⟧⟦12⟧Gracias⟦13⟧⟦14⟧
+de: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧{1}⟦4⟧ ⟦5⟧· {2}⟦6⟧⟦7⟧„{3}“⟦8⟧{4}⟦9⟧⟦10⟧⟦11⟧⟦12⟧Danke⟦13⟧⟦14⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧{1}⟦4⟧ ⟦5⟧· {2}⟦6⟧⟦7⟧« {3} »⟦8⟧{4}⟦9⟧⟦10⟧⟦11⟧⟦12⟧Merci⟦13⟧⟦14⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧{1}⟦4⟧ ⟦5⟧· {2}⟦6⟧⟦7⟧“{3}”⟦8⟧{4}⟦9⟧⟦10⟧⟦11⟧⟦12⟧Obrigado⟦13⟧⟦14⟧
+@ui.selin_in_butiginde_n
+en: At Selin's boutique · {0}
+es: En la boutique de Selin · {0}
+de: In Selins Boutique · {0}
+fr: À la boutique de Selin · {0}
+pt: Na boutique da Selin · {0}
+@ui.senlik_standinda_n
+en: At the festival stall: {0}
+es: En el puesto de la fiesta: {0}
+de: Am Feststand: {0}
+fr: Au stand de la fête : {0}
+pt: Na barraca do festival: {0}
+@ui.kilit_n
+en: Locked: {0}
+es: Bloqueado: {0}
+de: Gesperrt: {0}
+fr: Verrouillé : {0}
+pt: Bloqueado: {0}
+@ui.giyili
+en: Wearing
+es: Puesto
+de: Getragen
+fr: Porté
+pt: Usando
+@ui.giy
+en: Wear
+es: Ponerse
+de: Anziehen
+fr: Porter
+pt: Vestir
+@ui.kiyafetler_n_sapkalar_n_n
+en: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Outfits⟦4⟧⟦5⟧{1}⟦6⟧⟦7⟧Hats⟦8⟧⟦9⟧{2}⟦10⟧{3}{4}{5}{6}⟦11⟧⟦12⟧⟦13⟧Outfits are purely cosmetic; they don't affect fishing.⟦14⟧
+es: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Ropa⟦4⟧⟦5⟧{1}⟦6⟧⟦7⟧Sombreros⟦8⟧⟦9⟧{2}⟦10⟧{3}{4}{5}{6}⟦11⟧⟦12⟧⟦13⟧La ropa es solo estética; no afecta a la pesca.⟦14⟧
+de: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Kleidung⟦4⟧⟦5⟧{1}⟦6⟧⟦7⟧Hüte⟦8⟧⟦9⟧{2}⟦10⟧{3}{4}{5}{6}⟦11⟧⟦12⟧⟦13⟧Kleidung ist rein optisch und beeinflusst das Angeln nicht.⟦14⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Tenues⟦4⟧⟦5⟧{1}⟦6⟧⟦7⟧Chapeaux⟦8⟧⟦9⟧{2}⟦10⟧{3}{4}{5}{6}⟦11⟧⟦12⟧⟦13⟧Les tenues sont purement esthétiques ; elles n'aident pas à pêcher.⟦14⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Roupas⟦4⟧⟦5⟧{1}⟦6⟧⟦7⟧Chapéus⟦8⟧⟦9⟧{2}⟦10⟧{3}{4}{5}{6}⟦11⟧⟦12⟧⟦13⟧As roupas são só visuais; não ajudam na pesca.⟦14⟧
+@ui.sac_modeli
+en: Hairstyle
+es: Peinado
+de: Frisur
+fr: Coiffure
+pt: Penteado
+@ui.kerem_in_dukkaninda_n
+en: At Kerem's shop · {0}
+es: En la tienda de Kerem · {0}
+de: In Kerems Laden · {0}
+fr: Chez Kerem · {0}
+pt: Na loja do Kerem · {0}
+@ui.basarim_n
+en: Achievement: {0}
+es: Logro: {0}
+de: Erfolg: {0}
+fr: Succès : {0}
+pt: Conquista: {0}
+@ui.bos
+en: ⟦0⟧· empty⟦1⟧
+es: ⟦0⟧· vacío⟦1⟧
+de: ⟦0⟧· leer⟦1⟧
+fr: ⟦0⟧· vide⟦1⟧
+pt: ⟦0⟧· vazio⟦1⟧
+@ui.yerlesik_kaldir
+en: Placed (remove)
+es: Colocado (quitar)
+de: Platziert (entfernen)
+fr: Placé (retirer)
+pt: Colocado (remover)
+@ui.yerlestir
+en: Place
+es: Colocar
+de: Platzieren
+fr: Placer
+pt: Colocar
+@ui.ev_dekorasyonu
+en: Home Decor
+es: Decoración del hogar
+de: Einrichtung
+fr: Décoration de la maison
+pt: Decoração da Casa
+@ui.yerlesik_esya_n_5_sandik
+en: ⟦0⟧Placed items: {0}/5 · Chest: {1} slots {2}⟦1⟧{3}
+es: ⟦0⟧Objetos colocados: {0}/5 · Baúl: {1} huecos {2}⟦1⟧{3}
+de: ⟦0⟧Platzierte Objekte: {0}/5 · Truhe: {1} Plätze {2}⟦1⟧{3}
+fr: ⟦0⟧Objets placés : {0}/5 · Coffre : {1} emplacements {2}⟦1⟧{3}
+pt: ⟦0⟧Itens colocados: {0}/5 · Baú: {1} espaços {2}⟦1⟧{3}
+@ui.buyutmek_icin_kerem_in_ev
+en: ⟦0⟧· upgrade it at Kerem's Home Goods⟦1⟧
+es: ⟦0⟧· amplíalo en la tienda de Kerem⟦1⟧
+de: ⟦0⟧· vergrößern bei Kerems Wohnbedarf⟦1⟧
+fr: ⟦0⟧· à agrandir chez Kerem⟦1⟧
+pt: ⟦0⟧· amplie na loja do Kerem⟦1⟧
+@ui.n_n_atistirmaliklar_enerji_vermez
+en: {0}{1}⟦0⟧Snacks don't give energy; they just make that day's fights a little easier.⟦1⟧
+es: {0}{1}⟦0⟧Los aperitivos no dan energía; solo facilitan un poco las peleas de ese día.⟦1⟧
+de: {0}{1}⟦0⟧Snacks geben keine Energie; sie erleichtern nur die Drills an diesem Tag ein wenig.⟦1⟧
+fr: {0}{1}⟦0⟧Les en-cas ne donnent pas d'énergie ; ils facilitent juste un peu les combats du jour.⟦1⟧
+pt: {0}{1}⟦0⟧Lanches não dão energia; só facilitam um pouco as brigas daquele dia.⟦1⟧
+@ui.n_bugun_n_n
+en: ⟦0⟧{0} Today: ⟦1⟧{1}⟦2⟧ — {2}⟦3⟧
+es: ⟦0⟧{0} Hoy: ⟦1⟧{1}⟦2⟧ — {2}⟦3⟧
+de: ⟦0⟧{0} Heute: ⟦1⟧{1}⟦2⟧ — {2}⟦3⟧
+fr: ⟦0⟧{0} Aujourd'hui : ⟦1⟧{1}⟦2⟧ — {2}⟦3⟧
+pt: ⟦0⟧{0} Hoje: ⟦1⟧{1}⟦2⟧ — {2}⟦3⟧
+@ui.gunde_bir_atistirmalik_alabilirsin_etkisi
+en: ⟦0⟧You can have one snack a day; its effect lasts all day.⟦1⟧
+es: ⟦0⟧Puedes tomar un aperitivo al día; su efecto dura todo el día.⟦1⟧
+de: ⟦0⟧Du kannst einen Snack pro Tag essen; die Wirkung hält den ganzen Tag.⟦1⟧
+fr: ⟦0⟧Tu peux prendre un en-cas par jour ; son effet dure toute la journée.⟦1⟧
+pt: ⟦0⟧Você pode comer um lanche por dia; o efeito dura o dia todo.⟦1⟧
+@ui.afiyet_olsun
+en: ⟦0⟧Enjoy!⟦1⟧
+es: ⟦0⟧¡Que aproveche!⟦1⟧
+de: ⟦0⟧Guten Appetit!⟦1⟧
+fr: ⟦0⟧Bon appétit !⟦1⟧
+pt: ⟦0⟧Bom apetite!⟦1⟧
+@ui.al_n
+en: ⟦0⟧Buy {2}⟦1⟧
+es: ⟦0⟧Comprar {2}⟦1⟧
+de: ⟦0⟧Kaufen {2}⟦1⟧
+fr: ⟦0⟧Acheter {2}⟦1⟧
+pt: ⟦0⟧Comprar {2}⟦1⟧
+@ui.giyili_2
+en: ⟦0⟧Wearing⟦1⟧
+es: ⟦0⟧Puesto⟦1⟧
+de: ⟦0⟧Getragen⟦1⟧
+fr: ⟦0⟧Porté⟦1⟧
+pt: ⟦0⟧Usando⟦1⟧
+@ui.giy_2
+en: ⟦0⟧Wear⟦1⟧
+es: ⟦0⟧Ponerse⟦1⟧
+de: ⟦0⟧Anziehen⟦1⟧
+fr: ⟦0⟧Porter⟦1⟧
+pt: ⟦0⟧Vestir⟦1⟧
+@ui.n_n_standi_n_yalnizca
+en: ⟦0⟧{0} ⟦1⟧{1} stall:⟦2⟧ {2} — festival days only! {3}⟦3⟧
+es: ⟦0⟧{0} ⟦1⟧Puesto de {1}:⟦2⟧ {2} — ¡solo en días de fiesta! {3}⟦3⟧
+de: ⟦0⟧{0} ⟦1⟧Stand zum {1}:⟦2⟧ {2} — nur an Festtagen! {3}⟦3⟧
+fr: ⟦0⟧{0} ⟦1⟧Stand de la {1} :⟦2⟧ {2} — uniquement les jours de fête ! {3}⟦3⟧
+pt: ⟦0⟧{0} ⟦1⟧Barraca do {1}:⟦2⟧ {2} — só em dias de festival! {3}⟦3⟧
+@ui.sahipsin
+en: ⟦0⟧Owned⟦1⟧
+es: ⟦0⟧Ya lo tienes⟦1⟧
+de: ⟦0⟧Im Besitz⟦1⟧
+fr: ⟦0⟧Possédé⟦1⟧
+pt: ⟦0⟧Você já tem⟦1⟧
+@ui.al_n_2
+en: ⟦0⟧Buy {1}⟦1⟧
+es: ⟦0⟧Comprar {1}⟦1⟧
+de: ⟦0⟧Kaufen {1}⟦1⟧
+fr: ⟦0⟧Acheter {1}⟦1⟧
+pt: ⟦0⟧Comprar {1}⟦1⟧
+@ui.kiyafetler_n_sapkalar_n_onizlemeler
+en: ⟦0⟧Outfits⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧Hats⟦5⟧⟦6⟧{1}⟦7⟧⟦8⟧Previews are shown on your character. Outfits are purely cosmetic. Festival items come to the stall on festival days.⟦9⟧
+es: ⟦0⟧Ropa⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧Sombreros⟦5⟧⟦6⟧{1}⟦7⟧⟦8⟧Las vistas previas se muestran con tu personaje. La ropa es solo estética. Los artículos de fiesta llegan al puesto en días de fiesta.⟦9⟧
+de: ⟦0⟧Kleidung⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧Hüte⟦5⟧⟦6⟧{1}⟦7⟧⟦8⟧Die Vorschau zeigt deine Spielfigur. Kleidung ist rein optisch. Festartikel gibt es an Festtagen am Stand.⟦9⟧
+fr: ⟦0⟧Tenues⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧Chapeaux⟦5⟧⟦6⟧{1}⟦7⟧⟦8⟧Les aperçus utilisent ton personnage. Les tenues sont purement esthétiques. Les articles de fête arrivent au stand les jours de fête.⟦9⟧
+pt: ⟦0⟧Roupas⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧Chapéus⟦5⟧⟦6⟧{1}⟦7⟧⟦8⟧As prévias usam o seu personagem. As roupas são só visuais. Os itens de festival chegam à barraca em dias de festival.⟦9⟧
+@ui.n_ev_sandigi_su_an
+en: ⟦0⟧{0}⟦1⟧⟦2⟧Home chest⟦3⟧⟦4⟧Currently {1} slots⟦5⟧⟦6⟧{2}⟦7⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧Baúl de casa⟦3⟧⟦4⟧Ahora {1} huecos⟦5⟧⟦6⟧{2}⟦7⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧Truhe zu Hause⟦3⟧⟦4⟧Aktuell {1} Plätze⟦5⟧⟦6⟧{2}⟦7⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧Coffre de la maison⟦3⟧⟦4⟧Actuellement {1} emplacements⟦5⟧⟦6⟧{2}⟦7⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧Baú de casa⟦3⟧⟦4⟧Agora {1} espaços⟦5⟧⟦6⟧{2}⟦7⟧
+@ui.n_yuvaya_buyut_n
+en: ⟦0⟧Expand to {1} slots {2}⟦1⟧
+es: ⟦0⟧Ampliar a {1} huecos {2}⟦1⟧
+de: ⟦0⟧Auf {1} Plätze erweitern {2}⟦1⟧
+fr: ⟦0⟧Agrandir à {1} emplacements {2}⟦1⟧
+pt: ⟦0⟧Ampliar para {1} espaços {2}⟦1⟧
+@ui.en_buyuk
+en: ⟦0⟧Largest⟦1⟧
+es: ⟦0⟧El más grande⟦1⟧
+de: ⟦0⟧Größte Stufe⟦1⟧
+fr: ⟦0⟧Le plus grand⟦1⟧
+pt: ⟦0⟧O maior⟦1⟧
+@ui.sahipsin_evde_yerlestir
+en: ⟦0⟧Owned · place it at home⟦1⟧
+es: ⟦0⟧Ya lo tienes · colócalo en casa⟦1⟧
+de: ⟦0⟧Im Besitz · zu Hause platzieren⟦1⟧
+fr: ⟦0⟧Possédé · à placer chez toi⟦1⟧
+pt: ⟦0⟧Você já tem · coloque em casa⟦1⟧
+@ui.n_aldigin_esyalari_evdeki_dekor
+en: {0}⟦0⟧You can place what you buy from the Decor menu at home.⟦1⟧
+es: {0}⟦0⟧Puedes colocar lo que compres desde el menú Decoración de tu casa.⟦1⟧
+de: {0}⟦0⟧Gekaufte Dinge platzierst du zu Hause im Menü Einrichtung.⟦1⟧
+fr: {0}⟦0⟧Tu peux placer tes achats depuis le menu Déco de la maison.⟦1⟧
+pt: {0}⟦0⟧Você coloca o que comprar pelo menu Decoração em casa.⟦1⟧
+@ui.n_gunun_baligi_n_n
+en: ⟦0⟧{0} ⟦1⟧Fish of the day:⟦2⟧ {1} ⟦3⟧{2}⟦4⟧ · {3}/each ⟦5⟧(market {4})⟦6⟧ · purchases left today: ⟦7⟧{5}⟦8⟧⟦9⟧ ⟦10⟧⟦11⟧In hand: ⟦12⟧{6}⟦13⟧ ⟦14⟧⟦15⟧ include the chest⟦16⟧⟦17⟧{8}⟦18⟧ ⟦19⟧Table talk⟦20⟧⟦21⟧{9} {10}⟦22⟧{11}⟦23⟧Every day Master Halil buys one species, up to {12} a day, at {13}× the base price.⟦24⟧
+es: ⟦0⟧{0} ⟦1⟧Pez del día:⟦2⟧ {1} ⟦3⟧{2}⟦4⟧ · {3}/ud. ⟦5⟧(lonja {4})⟦6⟧ · compras restantes hoy: ⟦7⟧{5}⟦8⟧⟦9⟧ ⟦10⟧⟦11⟧Tienes: ⟦12⟧{6}⟦13⟧ ⟦14⟧⟦15⟧ incluir el baúl⟦16⟧⟦17⟧{8}⟦18⟧ ⟦19⟧Charla de las mesas⟦20⟧⟦21⟧{9} {10}⟦22⟧{11}⟦23⟧Cada día el maestro Halil compra una sola especie, hasta {12} al día, a {13} veces el precio base.⟦24⟧
+de: ⟦0⟧{0} ⟦1⟧Fisch des Tages:⟦2⟧ {1} ⟦3⟧{2}⟦4⟧ · {3}/Stück ⟦5⟧(Markt {4})⟦6⟧ · heute noch Ankäufe: ⟦7⟧{5}⟦8⟧⟦9⟧ ⟦10⟧⟦11⟧Vorrat: ⟦12⟧{6}⟦13⟧ ⟦14⟧⟦15⟧ Truhe einbeziehen⟦16⟧⟦17⟧{8}⟦18⟧ ⟦19⟧Gespräche an den Tischen⟦20⟧⟦21⟧{9} {10}⟦22⟧{11}⟦23⟧Meister Halil kauft jeden Tag eine Art, bis zu {12} Stück, zum {13}-fachen Grundpreis.⟦24⟧
+fr: ⟦0⟧{0} ⟦1⟧Poisson du jour :⟦2⟧ {1} ⟦3⟧{2}⟦4⟧ · {3}/pièce ⟦5⟧(halle {4})⟦6⟧ · achats restants aujourd'hui : ⟦7⟧{5}⟦8⟧⟦9⟧ ⟦10⟧⟦11⟧En stock : ⟦12⟧{6}⟦13⟧ ⟦14⟧⟦15⟧ inclure le coffre⟦16⟧⟦17⟧{8}⟦18⟧ ⟦19⟧Conversations des tables⟦20⟧⟦21⟧{9} {10}⟦22⟧{11}⟦23⟧Chaque jour, Maître Halil achète une seule espèce, jusqu'à {12} par jour, à {13} fois le prix de base.⟦24⟧
+pt: ⟦0⟧{0} ⟦1⟧Peixe do dia:⟦2⟧ {1} ⟦3⟧{2}⟦4⟧ · {3}/un. ⟦5⟧(mercado {4})⟦6⟧ · compras restantes hoje: ⟦7⟧{5}⟦8⟧⟦9⟧ ⟦10⟧⟦11⟧Você tem: ⟦12⟧{6}⟦13⟧ ⟦14⟧⟦15⟧ incluir o baú⟦16⟧⟦17⟧{8}⟦18⟧ ⟦19⟧Papo das mesas⟦20⟧⟦21⟧{9} {10}⟦22⟧{11}⟦23⟧Todo dia o Mestre Halil compra uma única espécie, até {12} por dia, a {13}× o preço base.⟦24⟧
+@ui.n_sat_n
+en: ⟦0⟧⟦1⟧−⟦2⟧⟦3⟧{1}⟦4⟧⟦5⟧+⟦6⟧⟦7⟧⟦8⟧Sell {4}⟦9⟧
+es: ⟦0⟧⟦1⟧−⟦2⟧⟦3⟧{1}⟦4⟧⟦5⟧+⟦6⟧⟦7⟧⟦8⟧Vender {4}⟦9⟧
+de: ⟦0⟧⟦1⟧−⟦2⟧⟦3⟧{1}⟦4⟧⟦5⟧+⟦6⟧⟦7⟧⟦8⟧Verkaufen {4}⟦9⟧
+fr: ⟦0⟧⟦1⟧−⟦2⟧⟦3⟧{1}⟦4⟧⟦5⟧+⟦6⟧⟦7⟧⟦8⟧Vendre {4}⟦9⟧
+pt: ⟦0⟧⟦1⟧−⟦2⟧⟦3⟧{1}⟦4⟧⟦5⟧+⟦6⟧⟦7⟧⟦8⟧Vender {4}⟦9⟧
+@ui.satilacak_yok
+en: ⟦0⟧Nothing to sell⟦1⟧
+es: ⟦0⟧Nada que vender⟦1⟧
+de: ⟦0⟧Nichts zu verkaufen⟦1⟧
+fr: ⟦0⟧Rien à vendre⟦1⟧
+pt: ⟦0⟧Nada para vender⟦1⟧
+@ui.n_n_gun_sonra_n
+en: {0} in {1} {1|day|days} ({2}, day {3}): {4}
+es: {0} dentro de {1} {1|día|días} ({2}, día {3}): {4}
+de: {0} in {1} {1|Tag|Tagen} ({2}, Tag {3}): {4}
+fr: {0} dans {1} {1|jour|jours} ({2}, jour {3}) : {4}
+pt: {0} em {1} {1|dia|dias} ({2}, dia {3}): {4}
+@ui.n_bugun_meydana_ugra
+en: {0} is today! Stop by the square.
+es: ¡{0} es hoy! Pásate por la plaza.
+de: {0} ist heute! Schau auf dem Platz vorbei.
+fr: {0}, c'est aujourd'hui ! Passe sur la place.
+pt: {0} é hoje! Passe na praça.
+@ui.n_n_bugun_n_n
+en: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ is today! · ⟦3⟧{2}⟦4⟧⟦5⟧{3} · {4} casts · costs no energy · held on the Pier⟦6⟧ ⟦7⟧⟦8⟧{5}⟦9⟧1st⟦10⟧⟦11⟧{6}⟦12⟧⟦13⟧⟦14⟧{7}⟦15⟧2nd⟦16⟧⟦17⟧{8}⟦18⟧⟦19⟧⟦20⟧{9}⟦21⟧3rd⟦22⟧⟦23⟧{10}⟦24⟧⟦25⟧⟦26⟧ ⟦27⟧Rivals⟦28⟧⟦29⟧{11}⟦30⟧ ⟦31⟧{12}⟦32⟧
+es: ⟦0⟧{0} ⟦1⟧¡{1}⟦2⟧ es hoy! · ⟦3⟧{2}⟦4⟧⟦5⟧{3} · {4} lanzamientos · no gasta energía · en el muelle⟦6⟧ ⟦7⟧⟦8⟧{5}⟦9⟧1.º⟦10⟧⟦11⟧{6}⟦12⟧⟦13⟧⟦14⟧{7}⟦15⟧2.º⟦16⟧⟦17⟧{8}⟦18⟧⟦19⟧⟦20⟧{9}⟦21⟧3.º⟦22⟧⟦23⟧{10}⟦24⟧⟦25⟧⟦26⟧ ⟦27⟧Rivales⟦28⟧⟦29⟧{11}⟦30⟧ ⟦31⟧{12}⟦32⟧
+de: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ ist heute! · ⟦3⟧{2}⟦4⟧⟦5⟧{3} · {4} Würfe · kostet keine Energie · am Steg⟦6⟧ ⟦7⟧⟦8⟧{5}⟦9⟧1.⟦10⟧⟦11⟧{6}⟦12⟧⟦13⟧⟦14⟧{7}⟦15⟧2.⟦16⟧⟦17⟧{8}⟦18⟧⟦19⟧⟦20⟧{9}⟦21⟧3.⟦22⟧⟦23⟧{10}⟦24⟧⟦25⟧⟦26⟧ ⟦27⟧Rivalen⟦28⟧⟦29⟧{11}⟦30⟧ ⟦31⟧{12}⟦32⟧
+fr: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧, c'est aujourd'hui ! · ⟦3⟧{2}⟦4⟧⟦5⟧{3} · {4} lancers · sans coût d'énergie · au Ponton⟦6⟧ ⟦7⟧⟦8⟧{5}⟦9⟧1er⟦10⟧⟦11⟧{6}⟦12⟧⟦13⟧⟦14⟧{7}⟦15⟧2e⟦16⟧⟦17⟧{8}⟦18⟧⟦19⟧⟦20⟧{9}⟦21⟧3e⟦22⟧⟦23⟧{10}⟦24⟧⟦25⟧⟦26⟧ ⟦27⟧Rivaux⟦28⟧⟦29⟧{11}⟦30⟧ ⟦31⟧{12}⟦32⟧
+pt: ⟦0⟧{0} ⟦1⟧{1}⟦2⟧ é hoje! · ⟦3⟧{2}⟦4⟧⟦5⟧{3} · {4} arremessos · não gasta energia · no Píer⟦6⟧ ⟦7⟧⟦8⟧{5}⟦9⟧1º⟦10⟧⟦11⟧{6}⟦12⟧⟦13⟧⟦14⟧{7}⟦15⟧2º⟦16⟧⟦17⟧{8}⟦18⟧⟦19⟧⟦20⟧{9}⟦21⟧3º⟦22⟧⟦23⟧{10}⟦24⟧⟦25⟧⟦26⟧ ⟦27⟧Rivais⟦28⟧⟦29⟧{11}⟦30⟧ ⟦31⟧{12}⟦32⟧
+@ui.n_oldun
+en:  · you placed #{0}
+es:  · quedaste en {0}.º lugar
+de:  · du wurdest {0}.
+fr:  · tu as fini {0}e
+pt:  · você ficou em {0}º
+@ui.yarismaya_don
+en: ⟦0⟧Back to the Contest⟦1⟧
+es: ⟦0⟧Volver al concurso⟦1⟧
+de: ⟦0⟧Zurück zum Wettbewerb⟦1⟧
+fr: ⟦0⟧Retour au concours⟦1⟧
+pt: ⟦0⟧Voltar à Competição⟦1⟧
+@ui.katildin_n
+en: ⟦0⟧Entered{0}⟦1⟧
+es: ⟦0⟧Participaste{0}⟦1⟧
+de: ⟦0⟧Teilgenommen{0}⟦1⟧
+fr: ⟦0⟧Inscrit{0}⟦1⟧
+pt: ⟦0⟧Participou{0}⟦1⟧
+@ui.kaydol_ve_yaris
+en: ⟦0⟧Sign Up & Compete⟦1⟧
+es: ⟦0⟧Inscribirse y competir⟦1⟧
+de: ⟦0⟧Anmelden & antreten⟦1⟧
+fr: ⟦0⟧S'inscrire et concourir⟦1⟧
+pt: ⟦0⟧Inscrever-se e Competir⟦1⟧
+@ui.n_bir_sonraki_senlik_n
+en: ⟦0⟧{0} Next festival: ⟦1⟧{1}⟦2⟧ — in {2} {2|day|days} ({3}, days {4}–{5})⟦3⟧
+es: ⟦0⟧{0} Próxima fiesta: ⟦1⟧{1}⟦2⟧ — dentro de {2} {2|día|días} ({3}, días {4}–{5})⟦3⟧
+de: ⟦0⟧{0} Nächstes Fest: ⟦1⟧{1}⟦2⟧ — in {2} {2|Tag|Tagen} ({3}, Tag {4}–{5})⟦3⟧
+fr: ⟦0⟧{0} Prochaine fête : ⟦1⟧{1}⟦2⟧ — dans {2} {2|jour|jours} ({3}, jours {4}–{5})⟦3⟧
+pt: ⟦0⟧{0} Próximo festival: ⟦1⟧{1}⟦2⟧ — em {2} {2|dia|dias} ({3}, dias {4}–{5})⟦3⟧
+@ui.senlik_takvimi_n
+en: ⟦0⟧Festival calendar⟦1⟧{0}
+es: ⟦0⟧Calendario de fiestas⟦1⟧{0}
+de: ⟦0⟧Festkalender⟦1⟧{0}
+fr: ⟦0⟧Calendrier des fêtes⟦1⟧{0}
+pt: ⟦0⟧Calendário de festivais⟦1⟧{0}
+@ui.n_n_n_n_gun
+en: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧· {2} day {3}⟦5⟧⟦6⟧{4}: {5}⟦7⟧⟦8⟧{6}⟦9⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧· {2}, día {3}⟦5⟧⟦6⟧{4}: {5}⟦7⟧⟦8⟧{6}⟦9⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧· {2}, Tag {3}⟦5⟧⟦6⟧{4}: {5}⟦7⟧⟦8⟧{6}⟦9⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧· {2}, jour {3}⟦5⟧⟦6⟧{4} : {5}⟦7⟧⟦8⟧{6}⟦9⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧· {2}, dia {3}⟦5⟧⟦6⟧{4}: {5}⟦7⟧⟦8⟧{6}⟦9⟧
+@ui.kupalarin_n_senlik_standindaki_ozel
+en: ⟦0⟧Your cups: {0} · The festival stall's special items are sold at Selin's boutique on festival days only.⟦1⟧
+es: ⟦0⟧Tus copas: {0} · Los artículos especiales del puesto de la fiesta se venden en la boutique de Selin solo en días de fiesta.⟦1⟧
+de: ⟦0⟧Deine Pokale: {0} · Die Sonderartikel des Feststands gibt es nur an Festtagen in Selins Boutique.⟦1⟧
+fr: ⟦0⟧Tes coupes : {0} · Les articles spéciaux du stand de la fête sont vendus à la boutique de Selin, uniquement les jours de fête.⟦1⟧
+pt: ⟦0⟧Suas taças: {0} · Os itens especiais da barraca do festival são vendidos na boutique da Selin só em dias de festival.⟦1⟧
+@ui.n_n_basarimlar
+en: {0}⟦0⟧⟦1⟧{1} Achievements⟦2⟧⟦3⟧
+es: {0}⟦0⟧⟦1⟧{1} Logros⟦2⟧⟦3⟧
+de: {0}⟦0⟧⟦1⟧{1} Erfolge⟦2⟧⟦3⟧
+fr: {0}⟦0⟧⟦1⟧{1} Succès⟦2⟧⟦3⟧
+pt: {0}⟦0⟧⟦1⟧{1} Conquistas⟦2⟧⟦3⟧
+@ui.n_n_n_yil_n
+en: ⟦0⟧{0}⟦1⟧⟦2⟧#{1}⟦3⟧ {2}⟦4⟧⟦5⟧Year {3} · {4}⟦6⟧⟦7⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧{1}.º⟦3⟧ {2}⟦4⟧⟦5⟧Año {3} · {4}⟦6⟧⟦7⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧{1}.⟦3⟧ {2}⟦4⟧⟦5⟧Jahr {3} · {4}⟦6⟧⟦7⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧{1}e⟦3⟧ {2}⟦4⟧⟦5⟧An {3} · {4}⟦6⟧⟦7⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧{1}º⟦3⟧ {2}⟦4⟧⟦5⟧Ano {3} · {4}⟦6⟧⟦7⟧
+@ui.henuz_kupan_yok_her_mevsimin
+en: ⟦0⟧No cups yet. Join the contests at the Festival Square on days 14–15 of every season!⟦1⟧
+es: ⟦0⟧Aún no tienes copas. ¡Participa en los concursos de la Plaza de las Fiestas los días 14–15 de cada estación!⟦1⟧
+de: ⟦0⟧Noch keine Pokale. Mach an Tag 14–15 jeder Jahreszeit bei den Wettbewerben auf dem Festplatz mit!⟦1⟧
+fr: ⟦0⟧Pas encore de coupe. Participe aux concours de la Place des Fêtes les jours 14–15 de chaque saison !⟦1⟧
+pt: ⟦0⟧Ainda sem taças. Participe das competições na Praça das Festas nos dias 14–15 de cada estação!⟦1⟧
+@ui.donanim_henuz_otomatik_olta_cihazin
+en: ⟦0⟧Outfitting⟦1⟧⟦2⟧You don't have any auto rod devices yet.⟦3⟧
+es: ⟦0⟧Equipamiento⟦1⟧⟦2⟧Aún no tienes dispositivos de caña automática.⟦3⟧
+de: ⟦0⟧Ausstattung⟦1⟧⟦2⟧Du hast noch keine Auto-Angelgeräte.⟦3⟧
+fr: ⟦0⟧Équipement⟦1⟧⟦2⟧Tu n'as pas encore d'appareil de canne auto.⟦3⟧
+pt: ⟦0⟧Equipamento⟦1⟧⟦2⟧Você ainda não tem dispositivos de vara automática.⟦3⟧
+@ui.donanim_yerlesimi
+en: ⟦0⟧Device layout⟦1⟧
+es: ⟦0⟧Distribución de dispositivos⟦1⟧
+de: ⟦0⟧Geräteanordnung⟦1⟧
+fr: ⟦0⟧Disposition des appareils⟦1⟧
+pt: ⟦0⟧Distribuição dos dispositivos⟦1⟧
+@ui.n_n_bos
+en: ⟦0⟧→ {3} ({4} free)⟦1⟧
+es: ⟦0⟧→ {3} ({4} libres)⟦1⟧
+de: ⟦0⟧→ {3} ({4} frei)⟦1⟧
+fr: ⟦0⟧→ {3} ({4} libres)⟦1⟧
+pt: ⟦0⟧→ {3} ({4} livres)⟦1⟧
+@ui.takili_n
+en: Mounted: {0}
+es: Montado en: {0}
+de: Montiert: {0}
+fr: Monté sur : {0}
+pt: Instalado em: {0}
+@ui.beklemede_n
+en:  · on hold: {0}
+es:  · en espera: {0}
+de:  · pausiert: {0}
+fr:  · en attente : {0}
+pt:  · em espera: {0}
+@ui.n_n_n_sayac_n
+en: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2} · counter {3}/{4}{5}⟦5⟧⟦6⟧⟦7⟧{6}{7}⟦8⟧⟦9⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2} · contador {3}/{4}{5}⟦5⟧⟦6⟧⟦7⟧{6}{7}⟦8⟧⟦9⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2} · Zähler {3}/{4}{5}⟦5⟧⟦6⟧⟦7⟧{6}{7}⟦8⟧⟦9⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2} · compteur {3}/{4}{5}⟦5⟧⟦6⟧⟦7⟧{6}{7}⟦8⟧⟦9⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2} · contador {3}/{4}{5}⟦5⟧⟦6⟧⟦7⟧{6}{7}⟦8⟧⟦9⟧
+@ui.depoda_takili_degil
+en: In storage (not mounted)
+es: Guardado (sin montar)
+de: Eingelagert (nicht montiert)
+fr: En réserve (non monté)
+pt: Guardado (não instalado)
+@ui.sok
+en: ⟦0⟧Remove⟦1⟧
+es: ⟦0⟧Desmontar⟦1⟧
+de: ⟦0⟧Abbauen⟦1⟧
+fr: ⟦0⟧Démonter⟦1⟧
+pt: ⟦0⟧Remover⟦1⟧
+@ui.yuvalar_n
+en: ⟦0⟧Slots: {0}⟦1⟧
+es: ⟦0⟧Huecos: {0}⟦1⟧
+de: ⟦0⟧Plätze: {0}⟦1⟧
+fr: ⟦0⟧Emplacements : {0}⟦1⟧
+pt: ⟦0⟧Espaços: {0}⟦1⟧
+@ui.n_olaya_katilmak_zorunlu_degil
+en: {0}. Taking part in the event is optional.
+es: {0}. Participar en el evento es opcional.
+de: {0}. Die Teilnahme am Ereignis ist freiwillig.
+fr: {0}. La participation à l'événement est facultative.
+pt: {0}. Participar do evento é opcional.
+@ui.tamam
+en: OK
+es: Vale
+de: OK
+fr: OK
+pt: OK
+@ui.kapat
+en: Close
+es: Cerrar
+de: Schließen
+fr: Fermer
+pt: Fechar
+@ui.yeni_oyun
+en: New game
+es: Nueva partida
+de: Neues Spiel
+fr: Nouvelle partie
+pt: Novo jogo
+@ui.mevcut_kaydin_yerine_yeni_bir
+en: A new game will replace your current save. The old save is backed up once as "previous save". Are you sure?
+es: Una nueva partida sustituirá a la actual. La partida antigua se guarda una vez como «partida anterior». ¿Seguro?
+de: Ein neues Spiel ersetzt deinen aktuellen Spielstand. Der alte wird einmal als „vorheriger Spielstand“ gesichert. Bist du sicher?
+fr: Une nouvelle partie va remplacer ta sauvegarde actuelle. L'ancienne est conservée une fois comme « sauvegarde précédente ». Tu es sûr ?
+pt: Um novo jogo vai substituir o save atual. O save antigo fica guardado uma vez como "save anterior". Tem certeza?
+@ui.yeni_oyun_baslat
+en: Start new game
+es: Empezar nueva partida
+de: Neues Spiel starten
+fr: Commencer une nouvelle partie
+pt: Começar novo jogo
+@ui.n_balik_aktarildi
+en: {0} fish moved.
+es: {0} {0|pez movido|peces movidos}.
+de: {0} {0|Fisch|Fische} verschoben.
+fr: {0} {0|poisson déplacé|poissons déplacés}.
+pt: {0} {0|peixe transferido|peixes transferidos}.
+@ui.n_n_denize_birakilacak_bu
+en: {0} × {1} will be released into the sea. This can't be undone.
+es: Se liberarán {0} × {1} al mar. No se puede deshacer.
+de: {0} × {1} werden ins Meer entlassen. Das kann nicht rückgängig gemacht werden.
+fr: {0} × {1} vont être relâchés en mer. C'est irréversible.
+pt: {0} × {1} serão soltos no mar. Não dá para desfazer.
+@ui.serbest_birak
+en: Release
+es: Liberar
+de: Freilassen
+fr: Relâcher
+pt: Soltar
+@ui.bu_yemden_stok_yok
+en: You're out of this bait.
+es: No te queda este cebo.
+de: Dieser Köder ist alle.
+fr: Tu n'as plus de cet appât.
+pt: Você está sem esta isca.
+@ui.n_yem_sec_n_yem
+en: ⟦0⟧{0} Choose bait⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧Visit Zeynep's shop to buy bait.⟦5⟧⟦6⟧⟦7⟧Close⟦8⟧⟦9⟧
+es: ⟦0⟧{0} Elegir cebo⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧Para comprar cebo, pásate por la tienda de Zeynep.⟦5⟧⟦6⟧⟦7⟧Cerrar⟦8⟧⟦9⟧
+de: ⟦0⟧{0} Köder wählen⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧Köder kaufst du in Zeyneps Laden.⟦5⟧⟦6⟧⟦7⟧Schließen⟦8⟧⟦9⟧
+fr: ⟦0⟧{0} Choisir l'appât⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧Passe au magasin de Zeynep pour acheter des appâts.⟦5⟧⟦6⟧⟦7⟧Fermer⟦8⟧⟦9⟧
+pt: ⟦0⟧{0} Escolher isca⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧Para comprar isca, passe na loja da Zeynep.⟦5⟧⟦6⟧⟦7⟧Fechar⟦8⟧⟦9⟧
+@ui.n_n_satildi_n
+en: {0} × {1} sold: +{2}
+es: {0} × {1} vendidos: +{2}
+de: {0} × {1} verkauft: +{2}
+fr: {0} × {1} vendus : +{2}
+pt: {0} × {1} vendidos: +{2}
+@ui.daha_iyi_teklif_var
+en: There's a better offer
+es: Hay una oferta mejor
+de: Es gibt ein besseres Angebot
+fr: Il y a une meilleure offre
+pt: Há uma oferta melhor
+@ui.n_bu_ture_ilan_panosunda
+en: ⟦0⟧⟦1⟧{0}⟦2⟧ is paying ⟦3⟧{1}⟦4⟧/each for this species on the order board (market: {2}). Sell to the market anyway?⟦5⟧
+es: ⟦0⟧⟦1⟧{0}⟦2⟧ paga ⟦3⟧{1}⟦4⟧/ud. por esta especie en el tablón de pedidos (lonja: {2}). ¿Vender en la lonja de todos modos?⟦5⟧
+de: ⟦0⟧⟦1⟧{0}⟦2⟧ zahlt an der Auftragstafel ⟦3⟧{1}⟦4⟧/Stück für diese Art (Markt: {2}). Trotzdem an den Markt verkaufen?⟦5⟧
+fr: ⟦0⟧⟦1⟧{0}⟦2⟧ paie ⟦3⟧{1}⟦4⟧/pièce pour cette espèce au tableau des commandes (halle : {2}). Vendre quand même à la halle ?⟦5⟧
+pt: ⟦0⟧⟦1⟧{0}⟦2⟧ paga ⟦3⟧{1}⟦4⟧/un. por essa espécie no quadro de pedidos (mercado: {2}). Vender ao mercado mesmo assim?⟦5⟧
+@ui.yine_de_sat
+en: Sell anyway
+es: Vender igualmente
+de: Trotzdem verkaufen
+fr: Vendre quand même
+pt: Vender mesmo assim
+@ui.n_balik_satildi_n
+en: {0} fish sold: +{1}
+es: {0} {0|pez vendido|peces vendidos}: +{1}
+de: {0} {0|Fisch|Fische} verkauft: +{1}
+fr: {0} {0|poisson vendu|poissons vendus} : +{1}
+pt: {0} {0|peixe vendido|peixes vendidos}: +{1}
+@ui.tum_uygun_baliklari_sat
+en: Sell all eligible fish
+es: Vender todos los peces válidos
+de: Alle passenden Fische verkaufen
+fr: Vendre tous les poissons éligibles
+pt: Vender todos os peixes válidos
+@ui.n_balik_favoriler_haric_n
+en: ⟦0⟧{0} fish (excluding favorites) → ⟦1⟧{1}⟦2⟧⟦3⟧{2}{3}
+es: ⟦0⟧{0} {0|pez|peces} (sin favoritos) → ⟦1⟧{1}⟦2⟧⟦3⟧{2}{3}
+de: ⟦0⟧{0} {0|Fisch|Fische} (ohne Favoriten) → ⟦1⟧{1}⟦2⟧⟦3⟧{2}{3}
+fr: ⟦0⟧{0} {0|poisson|poissons} (hors favoris) → ⟦1⟧{1}⟦2⟧⟦3⟧{2}{3}
+pt: ⟦0⟧{0} {0|peixe|peixes} (sem favoritos) → ⟦1⟧{1}⟦2⟧⟦3⟧{2}{3}
+@ui.ilanda_daha_iyi_fiyat_olan
+en: ⟦0⟧Species with a better price on orders: {0}⟦1⟧
+es: ⟦0⟧Especies con mejor precio en pedidos: {0}⟦1⟧
+de: ⟦0⟧Arten mit besserem Auftragspreis: {0}⟦1⟧
+fr: ⟦0⟧Espèces mieux payées en commande : {0}⟦1⟧
+pt: ⟦0⟧Espécies com preço melhor em pedidos: {0}⟦1⟧
+@ui.favori_turler_korunur
+en: ⟦0⟧★ Favorite species are kept.⟦1⟧
+es: ⟦0⟧★ Las especies favoritas se conservan.⟦1⟧
+de: ⟦0⟧★ Favoriten werden behalten.⟦1⟧
+fr: ⟦0⟧★ Les espèces favorites sont conservées.⟦1⟧
+pt: ⟦0⟧★ As espécies favoritas são mantidas.⟦1⟧
+@ui.hepsini_sat
+en: Sell All
+es: Vender todo
+de: Alle verkaufen
+fr: Tout vendre
+pt: Vender Tudo
+@ui.n_balik_teslim_edildi_n
+en: {0} fish delivered: +{1}
+es: {0} {0|pez entregado|peces entregados}: +{1}
+de: {0} {0|Fisch|Fische} geliefert: +{1}
+fr: {0} {0|poisson livré|poissons livrés} : +{1}
+pt: {0} {0|peixe entregue|peixes entregues}: +{1}
+@ui.n_satin_alinip_hemen_kullanilacak
+en: {0} will be bought and used right away.
+es: Se comprará {0} y se usará de inmediato.
+de: {0} wird gekauft und sofort benutzt.
+fr: {0} sera acheté et utilisé immédiatement.
+pt: {0} será comprado e usado na hora.
+@ui.canta_n_yuva
+en: Bag ({0} slots)
+es: Mochila ({0} huecos)
+de: Tasche ({0} Plätze)
+fr: Sac ({0} emplacements)
+pt: Mochila ({0} espaços)
+@ui.sirt_cantan_n_balik_yuvasina
+en: Your backpack grows to {0} fish slots.
+es: Tu mochila pasa a tener {0} huecos para peces.
+de: Dein Rucksack wächst auf {0} Fischplätze.
+fr: Ton sac à dos passe à {0} emplacements.
+pt: Sua mochila passa para {0} espaços de peixe.
+@ui.sandik_n_yuva
+en: Chest ({0} slots)
+es: Baúl ({0} huecos)
+de: Truhe ({0} Plätze)
+fr: Coffre ({0} emplacements)
+pt: Baú ({0} espaços)

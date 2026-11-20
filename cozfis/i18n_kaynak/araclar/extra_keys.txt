@@ -1,0 +1,84 @@
+@i18n.lang_title
+tr: Dil · Language
+en: Language
+es: Idioma · Language
+de: Sprache · Language
+fr: Langue · Language
+pt: Idioma · Language
+@i18n.meta_desc
+tr: CozFis — sakin bir 2D pixel art balıkçılık ve küçük işletme oyunu. Çevrimdışı çalışan tek dosya.
+en: CozFis — a cozy 2D pixel art fishing and small business game. A single file that works offline.
+es: CozFis — un acogedor juego de pesca y pequeño negocio en pixel art 2D. Un solo archivo que funciona sin conexión.
+de: CozFis — ein gemütliches 2D-Pixel-Art-Spiel über Angeln und einen kleinen Betrieb. Eine einzige Datei, die offline läuft.
+fr: CozFis — un jeu cosy de pêche et de petit commerce en pixel art 2D. Un seul fichier qui fonctionne hors ligne.
+pt: CozFis — um jogo aconchegante de pesca e pequeno negócio em pixel art 2D. Um único arquivo que funciona offline.
+@i18n.canvas_label
+tr: CozFis oyun alanı
+en: CozFis game area
+es: Área de juego de CozFis
+de: CozFis-Spielfeld
+fr: Zone de jeu de CozFis
+pt: Área de jogo do CozFis
+@i18n.rotate_title
+tr: Lütfen telefonu yatay çevirin
+en: Please turn your phone sideways
+es: Gira el teléfono en horizontal
+de: Bitte drehe dein Handy ins Querformat
+fr: Tourne ton téléphone à l'horizontale
+pt: Gire o celular na horizontal
+@i18n.rotate_text
+tr: CozFis yatay ekranda oynanır. Çevirdiğinde oyun kaldığı yerden devam eder.
+en: CozFis is played in landscape. Once you rotate, the game picks up right where you left off.
+es: CozFis se juega en horizontal. Al girarlo, la partida sigue donde la dejaste.
+de: CozFis wird im Querformat gespielt. Nach dem Drehen geht das Spiel genau dort weiter, wo du warst.
+fr: CozFis se joue en mode paysage. Une fois tourné, le jeu reprend là où tu l'avais laissé.
+pt: CozFis é jogado na horizontal. Ao girar, o jogo continua de onde você parou.
+@i18n.rotate_btn
+tr: Tam ekran + yatay kilit
+en: Fullscreen + landscape lock
+es: Pantalla completa + bloqueo horizontal
+de: Vollbild + Querformat sperren
+fr: Plein écran + verrouillage paysage
+pt: Tela cheia + travar na horizontal
+@i18n.boot
+tr: CozFis yükleniyor…
+en: Loading CozFis…
+es: Cargando CozFis…
+de: CozFis wird geladen…
+fr: Chargement de CozFis…
+pt: Carregando CozFis…
+@i18n.ach_all_species
+tr: Tüm {0} türü keşfet
+en: Discover all {0} species
+es: Descubre las {0} especies
+de: Entdecke alle {0} Arten
+fr: Découvre les {0} espèces
+pt: Descubra todas as {0} espécies
+@i18n.band_far_letter
+tr: U
+en: F
+es: L
+de: W
+fr: L
+pt: L
+@i18n.band_mid_letter
+tr: O
+en: M
+es: M
+de: M
+fr: M
+pt: M
+@i18n.band_near_letter
+tr: Y
+en: N
+es: C
+de: N
+fr: P
+pt: P
+@i18n.compass_north
+tr: K
+en: N
+es: N
+de: N
+fr: N
+pt: N

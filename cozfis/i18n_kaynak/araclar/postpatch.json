@@ -1,0 +1,92 @@
+[
+ {
+  "old": "const FEST = Object.fromEntries(FESTIVALS.map(f => [f.id, f]));",
+  "new": "const FEST = Object.fromEntries(FESTIVALS.map(f => [f.id, f]));\n/* yerelleştirme: JSON varlıklarının görünen alanları id bazında seçili dile bağlanır (id'ler ve sayısal veriler değişmez) */\nI18N.bindData({ DB, CFG, EXP, REGIONS, ACHS });",
+  "n": 1
+ },
+ {
+  "old": "ACH_REWARD[d.ach] = { type: 'decor', id: d.id, name: d.name };",
+  "new": "ACH_REWARD[d.ach] = { type: 'decor', id: d.id, get name() { return d.name; } };",
+  "n": 1
+ },
+ {
+  "old": "  out['Ü'] = acc('U', 5, null); out['İ'] = acc('I', 2, null); out['Â'] = acc('A', 2, null); out['Î'] = acc('I', 2, null); out['Û'] = acc('U', 2, null);\n  return out;",
+  "new": "  out['Ü'] = acc('U', 5, null); out['İ'] = acc('I', 2, null); out['Â'] = acc('A', 2, null); out['Î'] = acc('I', 2, null); out['Û'] = acc('U', 2, null);\n  /* çok dilli genişletme: ES/DE/FR/PT aksanları (akut=sağ nokta, grav=sol nokta, şapka=orta nokta, iki nokta, tilde=çizgi) */\n  for (const [ch, b, a, d] of [['Á', 'A', 1], ['À', 'A', 4], ['Ä', 'A', 5], ['Ã', 'A', 7], ['Å', 'A', 2], ['É', 'E', 1], ['È', 'E', 4], ['Ê', 'E', 2], ['Ë', 'E', 5], ['Í', 'I', 1], ['Ì', 'I', 4], ['Ï', 'I', 5],\n    ['Ó', 'O', 1], ['Ò', 'O', 4], ['Ô', 'O', 2], ['Õ', 'O', 7], ['Ú', 'U', 1], ['Ù', 'U', 4], ['Ñ', 'N', 7], ['Ÿ', 'Y', 5], ['Ý', 'Y', 1]]) out[ch] = acc(b, a, d);\n  const ex = { '¿': [2, 0, 2, 4, 3], '¡': [2, 0, 2, 2, 2], '«': [0, 1, 2, 1, 0], '»': [0, 4, 2, 4, 0], '„': [0, 0, 0, 5, 5], '\"': [5, 5, 0, 0, 0], '‘': [2, 2, 0, 0, 0], '’': [2, 2, 0, 0, 0],\n    ';': [0, 2, 0, 2, 4], '=': [0, 7, 0, 7, 0], '*': [5, 2, 5, 0, 0], '#': [5, 7, 5, 7, 5], '_': [0, 0, 0, 0, 7], '[': [3, 2, 2, 2, 3], ']': [6, 2, 2, 2, 6], 'º': [2, 5, 2, 0, 0],\n    '◀': [1, 3, 7, 3, 1], '▶': [4, 6, 7, 6, 4], '→': [2, 1, 7, 1, 2], '←': [2, 4, 7, 4, 2], '✓': [0, 1, 1, 5, 2], '★': [2, 7, 2, 5, 0], '<': [1, 2, 4, 2, 1], '—': [0, 0, 7, 0, 0], '−': [0, 0, 7, 0, 0] };\n  for (const k in ex) out[k] = [0].concat(ex[k], [0]);\n  return out;",
+  "n": 1
+ },
+ {
+  "old": "function textWidth(str, sc) { return upTR(str).length * 4 * (sc || 1) - (sc || 1); }",
+  "new": "/* yazı tipine uygun normalizasyon: dile göre büyük harf, glifi olmayan karakterler için taban harf / eşleme (asla '?') */\nconst FONT_MAP = { 'Œ': 'OE', 'Æ': 'AE', 'ẞ': 'SS', '…': '...', '\\u202f': ' ', '\\u00a0': ' ', '\\u2009': ' ', '‑': '-', 'ª': 'A', '·': '·', '\\u2026': '...' };\nfunction fontNorm(str) {\n  let o = ''; for (const ch of upTR(str)) {\n    if (FONT[ch]) { o += ch; continue; }\n    if (FONT_MAP[ch] != null) { o += FONT_MAP[ch]; continue; }\n    const b = ch.normalize('NFD').replace(/[\\u0300-\\u036f]/g, ''); o += FONT[b] ? b : ' ';\n  }\n  return o;\n}\nfunction textWidth(str, sc) { return fontNorm(str).length * 4 * (sc || 1) - (sc || 1); }",
+  "n": 1
+ },
+ {
+  "old": "  sc = sc || 1; str = upTR(str);\n  const isPB = target instanceof PB;",
+  "new": "  sc = sc || 1; str = fontNorm(str);\n  const isPB = target instanceof PB;",
+  "n": 1
+ },
+ {
+  "old": "      return { title: _t('ui.ayarlar'), icon: 'gear', html };",
+  "new": "      return { title: _t('ui.ayarlar'), icon: 'gear', html: this.langHtml() + html };",
+  "n": 1
+ },
+ {
+  "old": "  modalOpen() { return !!this.panel || !!this.modal; },",
+  "new": "  modalOpen() { return !!this.panel || !!this.modal; },\n  /* dil seçimi (Ayarlar): her dil kendi yerel adıyla */\n  langHtml() { return `<h4>${_t('i18n.lang_title')}</h4><div class=\"btns left langs\">${I18N.LANGS.map(l => `<button class=\"btn sm ${I18N.lang === l.code ? 'g' : ''}\" data-a=\"setLang\" data-v=\"${l.code}\" lang=\"${l.code}\">${esc(l.name)}</button>`).join('')}</div>`; },\n  /* dil değişince: önbellekteki yazılı görseller silinir, sahne çubuğu / HUD / açık panel yeniden çizilir (ilerleme etkilenmez) */\n  relocalize() {\n    try { Atlas.cache.clear(); Atlas.urls.clear(); TXT.clear(); } catch (e) { }\n    const n = Game.sceneName, sc = Game.scene;\n    try {\n      if (n === 'MainMenu') this.mainMenu(); else if (n === 'CharacterCreator') this.charCreator(sc); else if (n === 'Town') this.townBar(sc); else if (n === 'Home') this.homeBar(sc);\n      else if ((n === 'PierFishing' || n === 'BoatFishing') && !sc.bin) this.fishBar(sc); else if (n === 'SeaMap') this.mapPanel(sc); else if (n === 'Shore') this.shoreBar(sc);\n    } catch (e) { console.error('relocalize', e); }\n    this.refresh(); if (this.panel) this.renderPanel(true);\n  },",
+  "n": 1
+ },
+ {
+  "old": "  A: {\n",
+  "new": "  A: {\n    setLang(d) { if (I18N.setLang(d.v)) Sound.sfx('click'); },\n",
+  "n": 1
+ },
+ {
+  "old": "async function boot() {\n  SETTINGS = Save.settings();",
+  "new": "async function boot() {\n  I18N.applyStatic(); I18N.onChange(() => UI.relocalize());\n  SETTINGS = Save.settings();",
+  "n": 1
+ },
+ {
+  "old": "    Save.suspended = true; this.silent = true; const out = [];",
+  "new": "    Save.suspended = true; this.silent = true; const out = [];\n    /* kabul testleri Türkçe referans metinlerle yazıldı: test süresince dil geçici olarak tr (kaydedilmez, arayüz yenilenmez) */\n    const realLang = I18N.lang; I18N.setLang('tr', { noSave: true, silent: true });",
+  "n": 1
+ },
+ {
+  "old": "      S = real; Save.suspended = realSusp; this.silent = false; Fishing.autoQ = realQ; Bus.take(); Tx.busy = false;",
+  "new": "      S = real; Save.suspended = realSusp; this.silent = false; Fishing.autoQ = realQ; Bus.take(); Tx.busy = false; I18N.setLang(realLang, { noSave: true, silent: true });",
+  "n": 1
+ },
+ {
+  "old": "drawText(g, 'U', x + 18, y + 6, '#f2c230', 1, '#000'); drawText(g, 'O', x + 18, y + 46, '#5fc46a', 1, '#000'); drawText(g, 'Y', x + 18, y + 96, '#5fb8e8', 1, '#000');",
+  "new": "drawText(g, _t('i18n.band_far_letter'), x + 18, y + 6, '#f2c230', 1, '#000'); drawText(g, _t('i18n.band_mid_letter'), x + 18, y + 46, '#5fc46a', 1, '#000'); drawText(g, _t('i18n.band_near_letter'), x + 18, y + 96, '#5fb8e8', 1, '#000');",
+  "n": 1
+ },
+ {
+  "old": "drawText(pb, 'K', cx - 1, cy - 25, '#3a2414')",
+  "new": "drawText(pb, _t('i18n.compass_north'), cx - 1, cy - 25, '#3a2414')",
+  "n": 1
+ },
+ {
+  "old": "g.fillStyle = 'rgba(20,14,26,0.7)'; g.fillRect(cx - 118, cy - 4, 236, 17);\n        const lab = (d < 0 ? _t('fish.balik_sola_cekiyor') : _t('fish.balik_saga_cekiyor')) + ' · ' + (ok ? _t('fish.super') : (d < 0 ? _t('fish.oltayi_saga_yatir') : _t('fish.oltayi_sola_yatir')));\n        drawText(g, lab, cx - textWidth(lab) / 2, cy + 2, col);\n        const ax = d < 0 ? cx + 112 : cx - 112;",
+  "new": "const lab = (d < 0 ? _t('fish.balik_sola_cekiyor') : _t('fish.balik_saga_cekiyor')) + ' · ' + (ok ? _t('fish.super') : (d < 0 ? _t('fish.oltayi_saga_yatir') : _t('fish.oltayi_sola_yatir')));\n        const bw = Math.max(236, textWidth(lab) + 28); /* çeviri uzunluğuna göre kutu genişler */\n        g.fillStyle = 'rgba(20,14,26,0.7)'; g.fillRect(Math.round(cx - bw / 2), cy - 4, bw, 17);\n        drawText(g, lab, cx - textWidth(lab) / 2, cy + 2, col);\n        const ax = d < 0 ? cx + bw / 2 - 6 : cx - bw / 2 + 6;",
+  "n": 1
+ },
+ {
+  "old": ".replace('.', ',')",
+  "new": ".replace('.', I18N.num.dec)",
+  "n": 10
+ },
+ {
+  "old": "<h4 data-sec=\"screen\">`); return r; };",
+  "new": "<h4 data-sec=\"screen\">`); { const lh = this.langHtml(); r.html = lh + r.html.replace(lh, ''); } return r; };",
+  "n": 1
+ },
+ {
+  "old": "pb.rect(x0 + 18, g - 34, 32, 8, '#7a4a28'); drawText(pb, _t('world.ilan'), x0 + 26, g - 33, '#f2e2b8');",
+  "new": "{ const lt = _t('world.ilan'), lw = Math.max(32, textWidth(lt) + 8); pb.rect(Math.round(x0 + 34 - lw / 2), g - 34, lw, 8, '#7a4a28'); drawText(pb, lt, Math.round(x0 + 34 - textWidth(lt) / 2), g - 33, '#f2e2b8'); }",
+  "n": 1
+ },
+ {
+  "old": "    h += `<h4>Kabul testleri</h4><div class=\"btns left\">${B('tests', 'Tüm testleri çalıştır')}</div>`;",
+  "new": "    h += `<h4>Kabul testleri</h4><div class=\"btns left\">${B('tests', 'Tüm testleri çalıştır')}</div>`;\n    { const v = I18N.validate(); h += `<h4>Çeviri doğrulaması (i18n)</h4><div class=\"qa\">${Object.entries(v).map(([l, r]) => `<div class=\"${r.missing || r.placeholderMismatch ? 'bad' : 'ok'}\">${l}: ${r.total - r.missing}/${r.total} anahtar · eksik ${r.missing} · fazla ${r.extra} · parametre uyumsuz ${r.placeholderMismatch}</div>`).join('')}<div class=\"dim\">Çalışma anında geri dönüşe düşen anahtarlar: ${esc(I18N.missingReport().slice(0, 20).join(', ') || '—')}</div></div>`; }",
+  "n": 1
+ }
+]

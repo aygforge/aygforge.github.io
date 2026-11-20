@@ -1,0 +1,612 @@
+@sys4.kiyi_kasifi
+en: Shore Explorer
+es: Explorador de playa
+de: Strandentdecker
+fr: Explorateur du rivage
+pt: Explorador de Praia
+@sys4.6_farkli_kiyi_nesnesi_bul
+en: Find 6 different shore items
+es: Encuentra 6 objetos de playa distintos
+de: Finde 6 verschiedene Strandfunde
+fr: Trouve 6 objets du rivage différents
+pt: Encontre 6 itens de praia diferentes
+@sys4.kiyi_koleksiyonu
+en: Shore Collection
+es: Colección de playa
+de: Strandsammlung
+fr: Collection du rivage
+pt: Coleção de Praia
+@sys4.kabuk_meraklisi
+en: Shell Enthusiast
+es: Aficionado a las conchas
+de: Muschelfreund
+fr: Passionné de coquillages
+pt: Fã de Conchas
+@sys4.12_farkli_kiyi_nesnesi_bul
+en: Find 12 different shore items
+es: Encuentra 12 objetos de playa distintos
+de: Finde 12 verschiedene Strandfunde
+fr: Trouve 12 objets du rivage différents
+pt: Encontre 12 itens de praia diferentes
+@sys4.sahil_gezgini
+en: Beach Wanderer
+es: Paseante de playa
+de: Strandwanderer
+fr: Promeneur des plages
+pt: Andarilho da Praia
+@sys4.18_farkli_kiyi_nesnesi_bul
+en: Find 18 different shore items
+es: Encuentra 18 objetos de playa distintos
+de: Finde 18 verschiedene Strandfunde
+fr: Trouve 18 objets du rivage différents
+pt: Encontre 18 itens de praia diferentes
+@sys4.24_kiyi_nesnesinin_hepsini_bul
+en: Find all 24 shore items
+es: Encuentra los 24 objetos de playa
+de: Finde alle 24 Strandfunde
+fr: Trouve les 24 objets du rivage
+pt: Encontre os 24 itens de praia
+@sys4.yedi_denizin_ustasi_unvani
+en: “Master of the Seven Seas” Title
+es: Título «Maestro de los Siete Mares»
+de: Titel „Meister der Sieben Meere“
+fr: Titre « Maître des Sept Mers »
+pt: Título “Mestre dos Sete Mares”
+@sys4.kiyi_kasifi_rozeti
+en: Shore Explorer Badge
+es: Insignia de explorador de playa
+de: Strandentdecker-Abzeichen
+fr: Badge d'explorateur du rivage
+pt: Insígnia de Explorador de Praia
+@sys4.kiyi_koleksiyoncusu_unvani
+en: “Shore Collector” Title
+es: Título «Coleccionista de playa»
+de: Titel „Strandsammler“
+fr: Titre « Collectionneur du rivage »
+pt: Título “Colecionador de Praia”
+@sys4.acik_deniz_yolculugumuzdan_beri_her
+en: Ever since our open-sea voyage I've looked at the horizon every morning. One day I'll have my own boat!
+es: Desde nuestro viaje a mar abierto miro el horizonte cada mañana. ¡Algún día tendré mi propio barco!
+de: Seit unserer Fahrt auf die offene See schaue ich jeden Morgen zum Horizont. Eines Tages hab ich mein eigenes Boot!
+fr: Depuis notre voyage au large, je regarde l'horizon chaque matin. Un jour, j'aurai mon propre bateau !
+pt: Desde a nossa viagem ao mar aberto, olho o horizonte toda manhã. Um dia vou ter meu próprio barco!
+@sys4.pusulayi_hala_tasiyor_musun_ben
+en: Do you still carry the compass? I tell everyone about that voyage every day.
+es: ¿Aún llevas la brújula? Yo cuento ese viaje todos los días.
+de: Trägst du den Kompass noch? Ich erzähle jeden Tag von dieser Fahrt.
+fr: Tu as toujours la boussole ? Moi, je raconte ce voyage tous les jours.
+pt: Você ainda leva a bússola? Eu conto aquela viagem todo dia.
+@sys4.sonraki_atistan_itibaren_gecerli
+en: Applies from the next cast.
+es: Se aplica desde el próximo lanzamiento.
+de: Gilt ab dem nächsten Wurf.
+fr: S'applique à partir du prochain lancer.
+pt: Vale a partir do próximo arremesso.
+@sys4.once_bu_turu_kendin_kesfetmelisin
+en: You need to discover this species yourself first.
+es: Primero tienes que descubrir esta especie tú mismo.
+de: Du musst diese Art zuerst selbst entdecken.
+fr: Tu dois d'abord découvrir cette espèce toi-même.
+pt: Primeiro você precisa descobrir essa espécie.
+@sys4.bu_hafta_gorev_degistirme_hakkini
+en: You've already used this week's task swap.
+es: Ya usaste el cambio de tarea de esta semana.
+de: Du hast den Aufgabentausch dieser Woche schon genutzt.
+fr: Tu as déjà utilisé l'échange de tâche de la semaine.
+pt: Você já usou a troca de tarefa desta semana.
+@sys4.tamamlanan_gorev_degistirilemez
+en: A completed task can't be swapped.
+es: Una tarea completada no se puede cambiar.
+de: Eine erledigte Aufgabe kann nicht getauscht werden.
+fr: Une tâche terminée ne peut pas être échangée.
+pt: Tarefa concluída não pode ser trocada.
+@sys4.uygun_baska_gorev_yok
+en: No other suitable task.
+es: No hay otra tarea adecuada.
+de: Keine andere passende Aufgabe.
+fr: Aucune autre tâche adaptée.
+pt: Não há outra tarefa adequada.
+@sys4.bu_gorev_haftanin_tek_balikcilik
+en: This is the week's only non-fishing task; it can't be swapped.
+es: Es la única tarea de la semana que no es de pesca; no se puede cambiar.
+de: Das ist die einzige Nicht-Angel-Aufgabe der Woche; sie kann nicht getauscht werden.
+fr: C'est la seule tâche hors pêche de la semaine ; elle ne peut pas être échangée.
+pt: É a única tarefa da semana fora da pesca; não pode ser trocada.
+@sys4.gorev_henuz_tamamlanmadi
+en: The task isn't complete yet.
+es: La tarea aún no está completa.
+de: Die Aufgabe ist noch nicht erledigt.
+fr: La tâche n'est pas encore terminée.
+pt: A tarefa ainda não foi concluída.
+@sys4.odul_zaten_alindi
+en: Reward already claimed.
+es: Recompensa ya recogida.
+de: Belohnung bereits abgeholt.
+fr: Récompense déjà récupérée.
+pt: Recompensa já resgatada.
+@sys4.birlik_gorevi_tamamlandi_n
+en: Guild task complete: {0}
+es: Tarea del gremio completada: {0}
+de: Gildenaufgabe erledigt: {0}
+fr: Tâche de guilde terminée : {0}
+pt: Tarefa da guilda concluída: {0}
+@sys4.acilma_n
+en: Unlocks: {0}
+es: Se desbloquea: {0}
+de: Freischaltung: {0}
+fr: Déblocage : {0}
+pt: Desbloqueia: {0}
+@sys4.tamamlandi
+en: Complete
+es: Completado
+de: Abgeschlossen
+fr: Terminé
+pt: Concluído
+@sys4.aktif_bir_tekne_gerekli
+en: An active boat is required.
+es: Se necesita un barco activo.
+de: Ein aktives Boot ist erforderlich.
+fr: Un bateau actif est requis.
+pt: É preciso um barco ativo.
+@sys4.bugun_zaten_baska_bir_misafirin
+en: You already have another guest today.
+es: Hoy ya tienes otro invitado.
+de: Du hast heute schon einen anderen Gast.
+fr: Tu as déjà un autre invité aujourd'hui.
+pt: Você já tem outro convidado hoje.
+@sys4.elif_in_cizdigi_manzara_n
+en: The view Elif sketched: {0}. You've etched the light and the shoreline into your memory.
+es: El paisaje que dibujó Elif: {0}. Te has grabado en la memoria la luz y la línea de la costa.
+de: Die Ansicht, die Elif gezeichnet hat: {0}. Licht und Küstenlinie hast du dir genau eingeprägt.
+fr: Le paysage dessiné par Elif : {0}. Tu as gravé dans ta mémoire la lumière et la ligne du rivage.
+pt: A paisagem que a Elif desenhou: {0}. Você gravou na memória a luz e a linha da costa.
+@sys4.kiyi_kesfi_ilk_basarili_avdan
+en: Beachcombing unlocks after your first successful catch.
+es: La exploración de playa se desbloquea tras tu primera captura.
+de: Die Strandsuche wird nach deinem ersten erfolgreichen Fang freigeschaltet.
+fr: L'exploration du rivage se débloque après ta première prise.
+pt: A exploração de praia libera depois da primeira captura.
+@sys4.bugunku_kiyi_kesfini_tamamladin_yarin
+en: You've finished today's beachcombing. Come back tomorrow!
+es: Ya hiciste la exploración de playa de hoy. ¡Vuelve mañana!
+de: Die heutige Strandsuche ist erledigt. Komm morgen wieder!
+fr: Tu as fini l'exploration du rivage du jour. Reviens demain !
+pt: Você já fez a exploração de praia de hoje. Volte amanhã!
+@sys4.ilk_tekneyle_acilir
+en: Unlocks with your first boat.
+es: Se desbloquea con tu primer barco.
+de: Wird mit dem ersten Boot freigeschaltet.
+fr: Se débloque avec ton premier bateau.
+pt: Libera com o primeiro barco.
+@sys4.yalnizca_tekne_seferinde_kullanilabilir
+en: Only available on a boat trip.
+es: Solo se puede usar en una salida en barco.
+de: Nur auf einer Bootsausfahrt verfügbar.
+fr: Utilisable uniquement en sortie en bateau.
+pt: Só pode ser usado numa viagem de barco.
+@sys4.bu_seferde_durbun_etkinligi_yapildi
+en: You've already used the binoculars on this trip.
+es: Ya usaste los prismáticos en esta salida.
+de: Das Fernglas wurde auf dieser Ausfahrt schon benutzt.
+fr: Les jumelles ont déjà servi pendant cette sortie.
+pt: O binóculo já foi usado nesta viagem.
+@sys4.tekne_bir_av_noktasinda_durmali
+en: The boat must be stopped at a fishing spot.
+es: El barco tiene que estar parado en una zona de pesca.
+de: Das Boot muss an einem Angelplatz stehen.
+fr: Le bateau doit être arrêté sur un coin de pêche.
+pt: O barco precisa estar parado num ponto de pesca.
+@sys4.once_oltayi_topla
+en: Reel in your line first.
+es: Primero recoge el sedal.
+de: Hol zuerst die Schnur ein.
+fr: Ramène d'abord ta ligne.
+pt: Recolha a linha primeiro.
+@sys4.enerji_yetmiyor_5_gerekli
+en: Not enough energy (5 needed).
+es: No tienes energía suficiente (se necesitan 5).
+de: Nicht genug Energie (5 nötig).
+fr: Pas assez d'énergie (5 requis).
+pt: Energia insuficiente (precisa de 5).
+@sys4.kasaba_hikayesi_efe_nin_eski
+en: Town Story: Efe's Old Fishing Journal
+es: Historia del pueblo: El viejo diario de pesca de Efe
+de: Ortsgeschichte: Efes altes Angeltagebuch
+fr: Histoire du village : Le vieux carnet de pêche d'Efe
+pt: História da Vila: O Velho Diário de Pesca do Efe
+@sys4.kiyi_kesfi_acildi_iskele_yanindaki
+en: Beachcombing unlocked! Check out the Beach Path by the pier.
+es: ¡Exploración de playa desbloqueada! Echa un vistazo al Sendero de la playa junto al muelle.
+de: Strandsuche freigeschaltet! Schau dir den Strandweg neben dem Steg an.
+fr: Exploration du rivage débloquée ! Va voir le Sentier de la plage près du ponton.
+pt: Exploração de praia liberada! Dê uma olhada na Trilha da Praia ao lado do píer.
+@sys4.balikci_birligi_panosu_acildi_haftalik
+en: Fishers' Guild board unlocked: three weekly tasks.
+es: Tablón del Gremio de Pescadores desbloqueado: tres tareas semanales.
+de: Brett der Fischergilde freigeschaltet: drei Wochenaufgaben.
+fr: Tableau de la Guilde des pêcheurs débloqué : trois tâches par semaine.
+pt: Quadro da Guilda dos Pescadores liberado: três tarefas semanais.
+@sys4.durbunle_gozlem_acildi_teknede_sefer
+en: Binocular Watch unlocked (on the boat, once per trip).
+es: Observación con prismáticos desbloqueada (en el barco, una vez por salida).
+de: Fernglas-Beobachtung freigeschaltet (auf dem Boot, einmal pro Ausfahrt).
+fr: Observation aux jumelles débloquée (sur le bateau, une fois par sortie).
+pt: Observação de binóculo liberada (no barco, uma vez por viagem).
+@sys4.mert_elif_ve_bora_nin
+en: Mert's, Elif's and Bora's stories are unlocked.
+es: Se han desbloqueado las historias de Mert, Elif y Bora.
+de: Die Geschichten von Mert, Elif und Bora sind freigeschaltet.
+fr: Les histoires de Mert, Elif et Bora sont débloquées.
+pt: As histórias de Mert, Elif e Bora foram liberadas.
+@sys4.kasaba_hikayesi_kerem_in_deniz
+en: Town Story: Kerem's Sea Collection
+es: Historia del pueblo: La colección marina de Kerem
+de: Ortsgeschichte: Kerems Meeressammlung
+fr: Histoire du village : La collection marine de Kerem
+pt: História da Vila: A Coleção Marinha do Kerem
+@sys4.trofe_avi_balikci_defteri_nde
+en: Trophy Hunt: a new trophy target is unlocked in the Angler's Journal.
+es: Caza de trofeos: hay un nuevo trofeo objetivo en el Diario de pesca.
+de: Trophäenjagd: Ein neues Trophäenziel ist im Anglertagebuch freigeschaltet.
+fr: Chasse au trophée : un nouveau trophée cible est débloqué dans le Carnet de pêche.
+pt: Caça ao Troféu: um novo troféu-alvo foi liberado no Diário de Pesca.
+@sys4.av_temposu
+en: fishing pace
+es: ritmo de pesca
+de: Angeltempo
+fr: rythme de pêche
+pt: ritmo de pesca
+@sys4.firsatlar
+en: opportunities
+es: oportunidades
+de: Gelegenheiten
+fr: opportunités
+pt: oportunidades
+@sys4.aktif_firsat
+en: active opportunity
+es: oportunidad activa
+de: aktive Gelegenheit
+fr: opportunité active
+pt: oportunidade ativa
+@sys4.trofe_hedefi
+en: trophy target
+es: trofeo objetivo
+de: Trophäenziel
+fr: trophée ciblé
+pt: troféu-alvo
+@sys4.birlik_gorevleri
+en: guild tasks
+es: tareas del gremio
+de: Gildenaufgaben
+fr: tâches de guilde
+pt: tarefas da guilda
+@sys4.tekrarli_gorev
+en: duplicate task
+es: tarea duplicada
+de: doppelte Aufgabe
+fr: tâche en double
+pt: tarefa duplicada
+@sys4.hikaye_n
+en: story {0}
+es: historia {0}
+de: Geschichte {0}
+fr: histoire {0}
+pt: história {0}
+@sys4.hikayeler
+en: stories
+es: historias
+de: Geschichten
+fr: histoires
+pt: histórias
+@sys4.kiyi_nesnesi_n
+en: shore item {0}
+es: objeto de playa {0}
+de: Strandfund {0}
+fr: objet du rivage {0}
+pt: item de praia {0}
+@sys4.kiyi_koleksiyonu_2
+en: shore collection
+es: colección de playa
+de: Strandsammlung
+fr: collection du rivage
+pt: coleção de praia
+@sys4.album_takip
+en: album/tracking
+es: álbum/seguimiento
+de: Album/Verfolgung
+fr: album/suivi
+pt: álbum/acompanhamento
+@save.dosya_gecerli_json_degil
+en: The file isn't valid JSON.
+es: El archivo no es un JSON válido.
+de: Die Datei ist kein gültiges JSON.
+fr: Le fichier n'est pas un JSON valide.
+pt: O arquivo não é um JSON válido.
+@save.bu_bir_cozfis_kaydi_degil
+en: This isn't a CozFis save.
+es: Esto no es una partida guardada de CozFis.
+de: Das ist kein CozFis-Spielstand.
+fr: Ce n'est pas une sauvegarde CozFis.
+pt: Isto não é um save do CozFis.
+@save.kayit_daha_yeni_bir_oyun
+en: The save belongs to a newer version of the game.
+es: La partida es de una versión más nueva del juego.
+de: Der Spielstand stammt aus einer neueren Spielversion.
+fr: La sauvegarde provient d'une version plus récente du jeu.
+pt: O save é de uma versão mais nova do jogo.
+@save.kayit_saglamasi_tutmuyor_bozuk_veya
+en: The save checksum doesn't match (corrupted or edited by hand).
+es: La suma de control no coincide (dañada o editada a mano).
+de: Die Prüfsumme stimmt nicht (beschädigt oder manuell bearbeitet).
+fr: La somme de contrôle ne correspond pas (fichier corrompu ou modifié à la main).
+pt: A soma de verificação não confere (corrompido ou editado à mão).
+@save.kayit_dogrulanamadi_n
+en: Couldn't verify the save: {0}
+es: No se pudo verificar la partida: {0}
+de: Spielstand konnte nicht geprüft werden: {0}
+fr: Impossible de vérifier la sauvegarde : {0}
+pt: Não foi possível validar o save: {0}
+@save.set_n
+en: Set {0}
+es: Conjunto {0}
+de: Set {0}
+fr: Ensemble {0}
+pt: Conjunto {0}
+@save.n_sayi_degil
+en: {0} is not a number
+es: {0} no es un número
+de: {0} ist keine Zahl
+fr: {0} n'est pas un nombre
+pt: {0} não é um número
+@save.gun
+en: day
+es: día
+de: Tag
+fr: jour
+pt: dia
+@save.gun_1
+en: day < 1
+es: día < 1
+de: Tag < 1
+fr: jour < 1
+pt: dia < 1
+@save.enerji_fazla
+en: energy too high
+es: energía excesiva
+de: Energie zu hoch
+fr: énergie trop élevée
+pt: energia acima do limite
+@save.olta_gecersiz
+en: invalid rod
+es: caña no válida
+de: ungültige Angel
+fr: canne non valide
+pt: vara inválida
+@save.canta_seviyesi
+en: bag level
+es: nivel de mochila
+de: Taschenstufe
+fr: niveau du sac
+pt: nível da mochila
+@save.sandik_seviyesi
+en: chest level
+es: nivel del baúl
+de: Truhenstufe
+fr: niveau du coffre
+pt: nível do baú
+@save.cihaz_teknesi
+en: device boat
+es: barco del dispositivo
+de: Gerätboot
+fr: bateau de l'appareil
+pt: barco do dispositivo
+@save.v2_alanlari
+en: v2 fields
+es: campos v2
+de: v2-Felder
+fr: champs v2
+pt: campos v2
+@save.yuva_asimi
+en: slot overflow
+es: exceso de espacios
+de: Platzüberschreitung
+fr: dépassement d'emplacements
+pt: excesso de espaços
+@save.ic_hata
+en: internal error
+es: error interno
+de: interner Fehler
+fr: erreur interne
+pt: erro interno
+@fish.enerjin_yetmiyor_n_n_eve
+en: Not enough energy ({0}/{1}). Go home and sleep to start a new day.
+es: No tienes energía suficiente ({0}/{1}). Vuelve a casa y duerme para empezar un nuevo día.
+de: Nicht genug Energie ({0}/{1}). Geh nach Hause und schlaf, um einen neuen Tag zu beginnen.
+fr: Pas assez d'énergie ({0}/{1}). Rentre dormir pour commencer une nouvelle journée.
+pt: Energia insuficiente ({0}/{1}). Volte para casa e durma para começar um novo dia.
+@fish.n_bitti_ucretsiz_temel_yeme
+en: Out of {0}. You can switch to free basic bait.
+es: Se acabó el {0}. Puedes pasar al cebo básico gratuito.
+de: {0} ist aufgebraucht. Du kannst zum kostenlosen Grundköder wechseln.
+fr: Plus de {0}. Tu peux passer à l'appât de base gratuit.
+pt: Acabou {0}. Você pode trocar para a isca básica grátis.
+@fish.tekne_hareket_halindeyken_olta_atilamaz
+en: You can't cast while the boat is moving.
+es: No puedes lanzar con el barco en movimiento.
+de: Während das Boot fährt, kannst du nicht auswerfen.
+fr: Impossible de lancer pendant que le bateau avance.
+pt: Não dá para arremessar com o barco em movimento.
+@fish.bir_av_noktasinda_dur_samandirali
+en: Stop at a fishing spot (the buoyed area).
+es: Detente en una zona de pesca (la zona con boyas).
+de: Halte an einem Angelplatz (Bereich mit Bojen).
+fr: Arrête-toi sur un coin de pêche (zone balisée).
+pt: Pare num ponto de pesca (área com boias).
+@fish.oltan_bu_noktadaki_baliklar_icin
+en: Your rod is too weak for the fish here. You need a rod of at least power {0}.
+es: Tu caña es demasiado débil para los peces de aquí. Necesitas una caña de fuerza {0} como mínimo.
+de: Deine Angel ist zu schwach für die Fische hier. Du brauchst mindestens Stärke {0}.
+fr: Ta canne est trop faible pour les poissons d'ici. Il faut une canne de force {0} minimum.
+pt: Sua vara é fraca demais para os peixes daqui. Precisa de uma vara de força {0} no mínimo.
+@fish.sabirli_ol_samandira_dalinca_dokun
+en: Be patient… tap when the float dips.
+es: Paciencia… toca cuando se hunda el flotador.
+de: Geduld … tipp, wenn die Pose abtaucht.
+fr: Patience… touche quand le flotteur plonge.
+pt: Paciência… toque quando a boia afundar.
+@fish.atis_iptal_edildi_ucretsiz
+en: Cast canceled (free).
+es: Lanzamiento cancelado (gratis).
+de: Wurf abgebrochen (kostenlos).
+fr: Lancer annulé (gratuit).
+pt: Arremesso cancelado (grátis).
+@fish.misinayi_topladin
+en: You reeled in your line.
+es: Has recogido el sedal.
+de: Du hast die Schnur eingeholt.
+fr: Tu as ramené ta ligne.
+pt: Você recolheu a linha.
+@fish.olta_atmak_icin_dugmeyi_basili
+en: Hold the button and release to cast.
+es: Mantén pulsado el botón y suéltalo para lanzar.
+de: Halte die Taste gedrückt und lass los, um auszuwerfen.
+fr: Maintiens le bouton puis relâche pour lancer.
+pt: Segure o botão e solte para arremessar.
+@fish.n_bitti_sonraki_atislar_ucretsiz
+en: Out of {0}; the next casts use free basic bait.
+es: Se acabó el {0}; los siguientes lanzamientos usan cebo básico gratuito.
+de: {0} ist aufgebraucht; die nächsten Würfe nutzen kostenlosen Grundköder.
+fr: Plus de {0} ; les prochains lancers se font avec l'appât de base gratuit.
+pt: Acabou {0}; os próximos arremessos usam isca básica grátis.
+@fish.mukemmel_tasma
+en: PERFECT HOOK SET!
+es: ¡CLAVADA PERFECTA!
+de: PERFEKTER ANHIEB!
+fr: FERRAGE PARFAIT !
+pt: FISGADA PERFEITA!
+@fish.hizli_sar_art_arda_dokun
+en: QUICK REEL: TAP REPEATEDLY!
+es: ¡RECOGE RÁPIDO: TOCA SEGUIDO!
+de: SCHNELL KURBELN: TIPPEN!
+fr: MOULINE VITE : TAPOTE !
+pt: RECOLHA RÁPIDO: TOQUE SEGUIDO!
+@fish.balik_n
+en: FISH: {0}
+es: PEZ: {0}
+de: FISCH: {0}
+fr: POISSON : {0}
+pt: PEIXE: {0}
+@fish.balik_vurmadi_bir_dahaki_atista
+en: No bite. Better luck on the next cast!
+es: No ha picado. ¡Más suerte en el próximo lanzamiento!
+de: Kein Biss. Beim nächsten Wurf klappt's bestimmt!
+fr: Pas de touche. Bonne chance au prochain lancer !
+pt: Não fisgou. Boa sorte no próximo arremesso!
+@fish.gec_kaldin_balik_yemi_alip
+en: Too late — the fish took the bait and left.
+es: Llegaste tarde: el pez se llevó el cebo.
+de: Zu spät, der Fisch hat sich den Köder geschnappt und ist weg.
+fr: Trop tard, le poisson a pris l'appât et s'est sauvé.
+pt: Atrasou: o peixe levou a isca e foi embora.
+@fish.usta_hamle_ilerleme
+en: MASTER MOVE! +PROGRESS
+es: ¡JUGADA MAESTRA! +AVANCE
+de: MEISTERZUG! +FORTSCHRITT
+fr: COUP DE MAÎTRE ! +PROGRÈS
+pt: JOGADA DE MESTRE! +PROGRESSO
+@fish.ziplarken_gevsetmeliydin
+en: EASE OFF WHEN IT JUMPS
+es: AFLOJA CUANDO SALTE
+de: BEIM SPRUNG NACHGEBEN
+fr: RELÂCHE QUAND IL SAUTE
+pt: AFROUXE QUANDO ELE SALTAR
+@fish.ustalik_n
+en: SKILL ×{0}
+es: MAESTRÍA ×{0}
+de: KÖNNEN ×{0}
+fr: MAÎTRISE ×{0}
+pt: MAESTRIA ×{0}
+@fish.kombo_bozuldu
+en: COMBO BROKEN
+es: COMBO ROTO
+de: KOMBO VERLOREN
+fr: COMBO BRISÉ
+pt: COMBO QUEBRADO
+@fish.balik_yoruldu_hizla_sar
+en: FISH IS TIRED! REEL FAST!
+es: ¡PEZ CANSADO! ¡RECOGE RÁPIDO!
+de: FISCH IST MÜDE! SCHNELL KURBELN!
+fr: POISSON ÉPUISÉ ! MOULINE VITE !
+pt: PEIXE CANSADO! RECOLHA RÁPIDO!
+@fish.misina_gerildi_ve_koptu_ekipmanin
+en: The line went taut and snapped! Your gear is fine, but the fish got away.
+es: ¡El sedal se tensó y se rompió! Tu equipo está bien, pero el pez escapó.
+de: Die Schnur war zu straff und ist gerissen! Deine Ausrüstung ist heil, aber der Fisch ist weg.
+fr: La ligne s'est tendue et a cassé ! Ton matériel est intact, mais le poisson s'est échappé.
+pt: A linha esticou e arrebentou! Seu equipamento está inteiro, mas o peixe fugiu.
+@fish.misina_cok_gevsek_kaldi_balik
+en: The line went too slack and the fish slipped the hook.
+es: El sedal quedó demasiado flojo y el pez se soltó del anzuelo.
+de: Die Schnur war zu locker, der Fisch hat sich vom Haken gelöst.
+fr: La ligne était trop lâche, le poisson s'est décroché.
+pt: A linha ficou frouxa demais e o peixe se soltou do anzol.
+@fish.yeni_kisisel_rekor_n_n
+en: New personal record: {0} {1} cm!
+es: ¡Nuevo récord personal: {0} de {1} cm!
+de: Neuer persönlicher Rekord: {0} mit {1} cm!
+fr: Nouveau record personnel : {0} de {1} cm !
+pt: Novo recorde pessoal: {0} de {1} cm!
+@fish.secilen_yigin_bulunamadi
+en: Selected stack not found.
+es: No se encontró la pila elegida.
+de: Gewählter Stapel nicht gefunden.
+fr: Pile sélectionnée introuvable.
+pt: Pilha selecionada não encontrada.
+@fish.yarida_kalan_atis_sonlandi_balik
+en: The interrupted cast has ended: the fish got away (no double reward).
+es: El lanzamiento interrumpido terminó: el pez escapó (sin doble recompensa).
+de: Der unterbrochene Wurf wurde beendet: Der Fisch ist entkommen (keine doppelte Belohnung).
+fr: Le lancer interrompu est terminé : le poisson s'est échappé (pas de double récompense).
+pt: O arremesso interrompido terminou: o peixe fugiu (sem recompensa dupla).
+@fish.otomatik_olta_n_n_cm
+en: Auto rod: {0} ({1} cm) → {2} · Today {3}/{4}
+es: Caña automática: {0} ({1} cm) → {2} · Hoy {3}/{4}
+de: Auto-Angel: {0} ({1} cm) → {2} · Heute {3}/{4}
+fr: Canne auto : {0} ({1} cm) → {2} · Aujourd'hui {3}/{4}
+pt: Vara automática: {0} ({1} cm) → {2} · Hoje {3}/{4}
+@fish.canta
+en: bag
+es: mochila
+de: Tasche
+fr: sac
+pt: mochila
+@fish.tekne_deposu
+en: boat storage
+es: bodega del barco
+de: Laderaum
+fr: cale du bateau
+pt: porão do barco
+@fish.otomatik_olta_denedi_ama_balik
+en: The auto rod tried, but the fish got away (1 bait used).
+es: La caña automática lo intentó, pero el pez escapó (1 cebo gastado).
+de: Die Auto-Angel hat's versucht, aber der Fisch ist entkommen (1 Köder verbraucht).
+fr: La canne auto a essayé, mais le poisson s'est échappé (1 appât utilisé).
+pt: A vara automática tentou, mas o peixe fugiu (1 isca gasta).
+@fish.otomatik_olta_beklemede_n
+en: Auto rod on hold: {0}
+es: Caña automática en espera: {0}
+de: Auto-Angel pausiert: {0}
+fr: Canne auto en attente : {0}
+pt: Vara automática em espera: {0}
+@fish.agir_cekis
+en: HEAVY PULL
+es: TIRÓN FUERTE
+de: SCHWERER ZUG
+fr: TIRAGE LOURD
+pt: PUXÃO PESADO
+@fish.sar_basili_tut
+en: REEL! (HOLD)
+es: ¡RECOGE! (MANTÉN)
+de: KURBELN! (HALTEN)
+fr: MOULINE ! (MAINTIENS)
+pt: RECOLHA! (SEGURE)

@@ -1,0 +1,600 @@
+@d.fish.karagoz.name
+en: Two-banded Seabream
+es: Mojarra
+de: Zweibindenbrasse
+fr: Sar à tête noire
+pt: Sargo-safia
+@d.fish.cipura.name
+en: Gilthead Seabream
+es: Dorada
+de: Dorade
+fr: Dorade royale
+pt: Dourada
+@d.fish.sargoz.name
+en: White Seabream
+es: Sargo
+de: Großer Geißbrassen
+fr: Sar commun
+pt: Sargo
+@d.fish.levrek.name
+en: European Seabass
+es: Lubina
+de: Wolfsbarsch
+fr: Bar
+pt: Robalo-europeu
+@d.fish.tekir.name
+en: Striped Red Mullet
+es: Salmonete de roca
+de: Streifenbarbe
+fr: Rouget de roche
+pt: Salmonete-listrado
+@d.fish.barbun.name
+en: Red Mullet
+es: Salmonete de fango
+de: Rote Meerbarbe
+fr: Rouget de vase
+pt: Salmonete
+@d.fish.eskina.name
+en: Brown Meagre
+es: Corvallo
+de: Meerrabe
+fr: Corb
+pt: Corvina-preta
+@d.fish.mercan.name
+en: Common Pandora
+es: Breca
+de: Rotbrasse
+fr: Pageot commun
+pt: Bica
+@d.fish.fangri.name
+en: Red Porgy
+es: Pargo
+de: Sackbrasse
+fr: Pagre
+pt: Pargo-rosa
+@d.fish.sinarit.name
+en: Common Dentex
+es: Dentón
+de: Zahnbrasse
+fr: Denté
+pt: Dentão
+@d.fish.kolyoz.name
+en: Chub Mackerel
+es: Estornino
+de: Mittelmeermakrele
+fr: Maquereau espagnol
+pt: Cavalinha
+@d.fish.uskumru.name
+en: Atlantic Mackerel
+es: Caballa
+de: Makrele
+fr: Maquereau
+pt: Cavala
+@d.fish.lufer.name
+en: Bluefish
+es: Anchova
+de: Blaubarsch
+fr: Tassergal
+pt: Anchova
+@d.fish.palamut.name
+en: Atlantic Bonito
+es: Bonito
+de: Pelamide
+fr: Bonite à dos rayé
+pt: Bonito
+@d.fish.yazili_orkinos.name
+en: Little Tunny
+es: Bacoreta
+de: Falscher Bonito
+fr: Thonine
+pt: Bonito-pintado
+@d.fish.akya.name
+en: Leerfish
+es: Palometón
+de: Gabelmakrele
+fr: Liche
+pt: Pampo
+@d.fish.ringa.name
+en: Atlantic Herring
+es: Arenque
+de: Hering
+fr: Hareng
+pt: Arenque
+@d.fish.mezgit.name
+en: Whiting
+es: Merlán
+de: Wittling
+fr: Merlan
+pt: Badejo
+@d.fish.pisi_baligi.name
+en: European Plaice
+es: Solla
+de: Scholle
+fr: Plie
+pt: Solha
+@d.fish.morina.name
+en: Atlantic Cod
+es: Bacalao
+de: Kabeljau
+fr: Cabillaud
+pt: Bacalhau
+@d.fish.komur_baligi.name
+en: Saithe
+es: Carbonero
+de: Seelachs
+fr: Lieu noir
+pt: Escamudo
+@d.fish.halibut.name
+en: Atlantic Halibut
+es: Fletán
+de: Heilbutt
+fr: Flétan
+pt: Halibute
+@d.fish.ucan_balik.name
+en: Flying Fish
+es: Pez volador
+de: Fliegender Fisch
+fr: Poisson volant
+pt: Peixe-voador
+@d.fish.sari_kuyruklu_fusilier.name
+en: Yellowtail Fusilier
+es: Fusilero cola amarilla
+de: Gelbschwanz-Füsilier
+fr: Fusilier à queue jaune
+pt: Fuzileiro-rabo-amarelo
+@d.fish.mavi_yuzgecli_trevally.name
+en: Bluefin Trevally
+es: Jurel de aleta azul
+de: Blauflossen-Stachelmakrele
+fr: Carangue bleue
+pt: Xaréu-azul
+@d.fish.kirmizi_snapper.name
+en: Red Snapper
+es: Pargo rojo
+de: Roter Schnapper
+fr: Vivaneau rouge
+pt: Pargo-vermelho
+@d.fish.lambuka.name
+en: Mahi-mahi
+es: Dorado
+de: Goldmakrele
+fr: Coryphène
+pt: Dourado-do-mar
+@d.fish.barrakuda.name
+en: Barracuda
+es: Barracuda
+de: Barrakuda
+fr: Barracuda
+pt: Barracuda
+@d.fish.albakor.name
+en: Albacore
+es: Atún blanco
+de: Weißer Thun
+fr: Germon
+pt: Albacora
+@d.fish.sari_yuzgecli_orkinos.name
+en: Yellowfin Tuna
+es: Rabil
+de: Gelbflossenthun
+fr: Thon albacore
+pt: Atum-amarelo
+@d.fish.wahoo.name
+en: Wahoo
+es: Peto
+de: Wahoo
+fr: Thazard-bâtard
+pt: Cavala-aipim
+@d.fish.buyuk_gozlu_orkinos.name
+en: Bigeye Tuna
+es: Patudo
+de: Großaugenthun
+fr: Thon obèse
+pt: Atum-patudo
+@d.fish.kilic_baligi.name
+en: Swordfish
+es: Pez espada
+de: Schwertfisch
+fr: Espadon
+pt: Espadarte
+@d.fish.yelken_baligi.name
+en: Sailfish
+es: Pez vela
+de: Fächerfisch
+fr: Voilier
+pt: Agulhão-bandeira
+@d.fish.hamsi.name
+en: European Anchovy
+es: Boquerón
+de: Sardelle
+fr: Anchois
+pt: Anchoíta
+@d.fish.kaya_baligi.name
+en: Black Goby
+es: Chaparrudo
+de: Schwarzgrundel
+fr: Gobie noir
+pt: Góbio-negro
+@d.fish.sarpan.name
+en: Salema
+es: Salpa
+de: Goldstrieme
+fr: Saupe
+pt: Salema
+@d.fish.iskorpit.name
+en: Black Scorpionfish
+es: Rascacio
+de: Brauner Drachenkopf
+fr: Petite rascasse
+pt: Peixe-escorpião
+@d.fish.kupes.name
+en: Bogue
+es: Boga
+de: Gelbstrieme
+fr: Bogue
+pt: Boga
+@d.fish.mirmir.name
+en: Striped Seabream
+es: Herrera
+de: Marmorbrasse
+fr: Marbré
+pt: Ferreira
+@d.fish.dil_baligi.name
+en: Common Sole
+es: Lenguado
+de: Seezunge
+fr: Sole
+pt: Linguado
+@d.fish.minakop.name
+en: Shi Drum
+es: Verrugato
+de: Schattenfisch
+fr: Ombrine
+pt: Corvina-riscada
+@d.fish.hanos.name
+en: Painted Comber
+es: Serrano
+de: Schriftbarsch
+fr: Serran écriture
+pt: Serrano-riscado
+@d.fish.kirlangic.name
+en: Tub Gurnard
+es: Bejel
+de: Roter Knurrhahn
+fr: Grondin perlon
+pt: Cabrinha
+@d.fish.lahoz.name
+en: Goldblotch Grouper
+es: Falso abadejo
+de: Goldfleck-Zackenbarsch
+fr: Mérou badèche
+pt: Garoupa-dourada
+@d.fish.orfoz.name
+en: Dusky Grouper
+es: Mero
+de: Brauner Zackenbarsch
+fr: Mérou brun
+pt: Garoupa-verdadeira
+@d.fish.tirsi.name
+en: Twaite Shad
+es: Saboga
+de: Finte
+fr: Alose feinte
+pt: Saboga
+@d.fish.dulger.name
+en: John Dory
+es: Pez de San Pedro
+de: Petersfisch
+fr: Saint-pierre
+pt: Peixe-galo
+@d.fish.kalkan.name
+en: Turbot
+es: Rodaballo
+de: Steinbutt
+fr: Turbot
+pt: Rodovalho
+@d.fish.sarikuyruk.name
+en: Greater Amberjack
+es: Serviola
+de: Große Bernsteinmakrele
+fr: Sériole
+pt: Olho-de-boi
+@d.fish.kapelin.name
+en: Capelin
+es: Capelán
+de: Lodde
+fr: Capelan
+pt: Capelim
+@d.fish.topak_baligi.name
+en: Lumpfish
+es: Lumpo
+de: Seehase
+fr: Lompe
+pt: Peixe-lapa
+@d.fish.kizil_levrek.name
+en: Ocean Perch
+es: Gallineta nórdica
+de: Rotbarsch
+fr: Sébaste
+pt: Cantarilho
+@d.fish.kurt_baligi.name
+en: Atlantic Wolffish
+es: Perro del norte
+de: Gestreifter Seewolf
+fr: Loup atlantique
+pt: Peixe-lobo
+@d.fish.mavi_cerrah.name
+en: Blue Tang
+es: Cirujano azul
+de: Paletten-Doktorfisch
+fr: Chirurgien bleu
+pt: Cirurgião-patela
+@d.fish.papagan_baligi.name
+en: Parrotfish
+es: Pez loro
+de: Papageifisch
+fr: Poisson-perroquet
+pt: Peixe-papagaio
+@d.fish.mercan_hanisi.name
+en: Coral Hind
+es: Mero coral
+de: Juwelen-Zackenbarsch
+fr: Vieille de corail
+pt: Garoupa-coral
+@d.fish.dev_trevally.name
+en: Giant Trevally
+es: Jurel gigante
+de: Riesen-Stachelmakrele
+fr: Carangue ignobile
+pt: Xaréu-gigante
+@d.fish.cizgili_orkinos.name
+en: Skipjack Tuna
+es: Listado
+de: Echter Bonito
+fr: Bonite à ventre rayé
+pt: Bonito-listrado
+@d.fish.pervane_baligi.name
+en: Mola
+es: Mola
+de: Mola
+fr: Môle
+pt: Mola
+@d.fish.opah.name
+en: Opah
+es: Opah
+de: Gotteslachs
+fr: Opah
+pt: Opah
+@d.fish.mavi_marlin.name
+en: Blue Marlin
+es: Aguja azul
+de: Blauer Marlin
+fr: Makaire bleu
+pt: Marlim-azul
+@d.fish.sardalya.desc
+en: A small, silvery fish that travels in schools. One of the most familiar species in shore fishing.
+es: Pez pequeño y plateado que se mueve en bancos. Una de las especies más conocidas de la pesca de costa.
+de: Ein kleiner, silbriger Schwarmfisch. Eine der bekanntesten Arten beim Küstenangeln.
+fr: Petit poisson argenté qui se déplace en bancs. L'une des espèces les plus familières de la pêche du bord.
+pt: Peixe pequeno e prateado que anda em cardumes. Uma das espécies mais conhecidas da pesca de costa.
+@d.fish.gumus_baligi.desc
+en: Catches the eye with its slim, shiny body. Can be seen in shallow coastal waters.
+es: Llama la atención por su cuerpo fino y brillante. Se ve en aguas costeras poco profundas.
+de: Fällt durch seinen schlanken, glänzenden Körper auf. Man sieht ihn in flachen Küstengewässern.
+fr: Attire l'œil par son corps fin et brillant. On le voit dans les eaux côtières peu profondes.
+pt: Chama a atenção pelo corpo fino e brilhante. Aparece em águas costeiras rasas.
+@d.fish.istavrit.desc
+en: A fish that forms lively schools and roams between coastal and open waters.
+es: Pez que forma bancos inquietos y se mueve entre la costa y las aguas abiertas.
+de: Ein Fisch, der lebhafte Schwärme bildet und zwischen Küste und offenem Wasser wandert.
+fr: Poisson qui forme des bancs vifs et circule entre les eaux côtières et le large.
+pt: Peixe que forma cardumes agitados e circula entre a costa e as águas abertas.
+@d.fish.izmarit.desc
+en: A small-bodied species found in coastal areas.
+es: Especie de cuerpo pequeño que se encuentra en zonas costeras.
+de: Eine kleine Art, die in Küstenbereichen vorkommt.
+fr: Petite espèce qu'on rencontre près des côtes.
+pt: Espécie de corpo pequeno encontrada em áreas costeiras.
+@d.fish.kefal.desc
+en: Known for being tough. Often found in harbors and coastal waters.
+es: Conocido por su resistencia. Es frecuente en puertos y aguas costeras.
+de: Bekannt für ihre Robustheit. Häufig in Häfen und Küstengewässern anzutreffen.
+fr: Réputé pour sa robustesse. On le croise souvent dans les ports et les eaux côtières.
+pt: Conhecida pela resistência. Comum em portos e águas costeiras.
+@d.fish.zargana.desc
+en: Easy to recognize by its long, slender body. Can be caught near the surface.
+es: Se reconoce fácilmente por su cuerpo largo y fino. Se pesca cerca de la superficie.
+de: Leicht am langen, schlanken Körper zu erkennen. Lässt sich dicht unter der Oberfläche fangen.
+fr: Facile à reconnaître à son corps long et fin. Se pêche près de la surface.
+pt: Fácil de reconhecer pelo corpo longo e fino. Pode ser pescado perto da superfície.
+@d.fish.isparoz.desc
+en: A small shore fish. Can be seen in rocky and shallow areas.
+es: Pequeño pez de costa. Se ve en zonas rocosas y poco profundas.
+de: Ein kleiner Küstenfisch, zu sehen in felsigen und flachen Bereichen.
+fr: Petit poisson côtier qu'on voit dans les zones rocheuses et peu profondes.
+pt: Pequeno peixe de costa. Aparece em áreas rochosas e rasas.
+@d.fish.melanur.desc
+en: Recognized by its silvery body and the dark spot near its tail.
+es: Se reconoce por su cuerpo plateado y la mancha oscura cerca de la cola.
+de: Zu erkennen am silbrigen Körper und dem dunklen Fleck nahe der Schwanzflosse.
+fr: Se reconnaît à son corps argenté et à la tache sombre près de la queue.
+pt: Reconhecida pelo corpo prateado e a mancha escura perto da cauda.
+@d.fish.karagoz.desc
+en: One of the familiar fish of rocky shores and stony areas.
+es: Uno de los peces habituales de las costas rocosas y los pedregales.
+de: Einer der vertrauten Fische felsiger Küsten und steiniger Gründe.
+fr: L'un des poissons familiers des côtes rocheuses et des fonds caillouteux.
+pt: Um dos peixes conhecidos das costas rochosas e pedregosas.
+@d.fish.cipura.desc
+en: Stands out with its strong jaws and golden band across the forehead.
+es: Se distingue por sus fuertes mandíbulas y la banda dorada de la frente.
+de: Erkennbar an den kräftigen Kiefern und dem goldenen Stirnband.
+fr: Se distingue par ses mâchoires puissantes et son bandeau doré sur le front.
+pt: Destaca-se pelas mandíbulas fortes e a faixa dourada na testa.
+@d.fish.sargoz.desc
+en: A fish known for its distinct stripes, closely tied to rocky areas.
+es: Pez conocido por sus marcadas franjas y muy ligado a las zonas rocosas.
+de: Ein Fisch mit deutlichen Streifen, eng an felsige Gebiete gebunden.
+fr: Poisson aux rayures marquées, très lié aux zones rocheuses.
+pt: Peixe de listras marcantes, muito ligado às áreas rochosas.
+@d.fish.levrek.desc
+en: A strong, agile hunter. Offers one of the most beloved fights in coastal waters.
+es: Un cazador fuerte y ágil. Ofrece una de las peleas más queridas de la costa.
+de: Ein kräftiger, wendiger Jäger. Bietet einen der beliebtesten Drills in Küstengewässern.
+fr: Un chasseur puissant et agile. Offre l'un des combats les plus appréciés en eaux côtières.
+pt: Um caçador forte e ágil. Oferece uma das brigas mais queridas da costa.
+@d.fish.tekir.desc
+en: A small bottom-feeding fish recognized by its striped body.
+es: Pequeño pez que se alimenta en el fondo, reconocible por su cuerpo rayado.
+de: Ein kleiner Grundfisch, erkennbar am gestreiften Körper.
+fr: Petit poisson qui se nourrit au fond, reconnaissable à son corps rayé.
+pt: Pequeno peixe que se alimenta no fundo, reconhecido pelo corpo listrado.
+@d.fish.barbun.desc
+en: Known for its reddish hues and chin barbels.
+es: Se distingue por sus tonos rojizos y sus barbillas.
+de: Erkennbar an den rötlichen Tönen und den Barteln am Kinn.
+fr: Se distingue par ses tons rougeâtres et ses barbillons.
+pt: Distingue-se pelos tons avermelhados e pelos barbilhões.
+@d.fish.eskina.desc
+en: A sturdy fish associated with rocky areas.
+es: Pez robusto ligado a las zonas rocosas.
+de: Ein kräftig gebauter Fisch felsiger Gebiete.
+fr: Poisson robuste associé aux zones rocheuses.
+pt: Peixe robusto ligado às áreas rochosas.
+@d.fish.mercan.desc
+en: A prized bottom fish that stands out with its pinkish-red tones.
+es: Valioso pez de fondo que destaca por sus tonos rosados y rojizos.
+de: Ein wertvoller Grundfisch mit auffallend rosa-roten Tönen.
+fr: Poisson de fond prisé, remarquable par ses tons rose et rouge.
+pt: Peixe de fundo valioso que se destaca pelos tons rosados e avermelhados.
+@d.fish.fangri.desc
+en: Known for its powerful body; can be found in deepening rocky waters.
+es: Conocido por su cuerpo potente; se encuentra en aguas rocosas que se van haciendo profundas.
+de: Bekannt für seinen kräftigen Körper; lebt in tiefer werdenden Felsgewässern.
+fr: Connu pour son corps puissant ; vit dans les eaux rocheuses qui s'approfondissent.
+pt: Conhecido pelo corpo forte; aparece em águas rochosas mais fundas.
+@d.fish.sinarit.desc
+en: Its strong jaws and tough build make for a challenging catch.
+es: Sus fuertes mandíbulas y su resistencia lo convierten en una captura difícil.
+de: Kräftige Kiefer und große Ausdauer machen ihn zu einem anspruchsvollen Fang.
+fr: Ses mâchoires puissantes et sa résistance en font une prise exigeante.
+pt: As mandíbulas fortes e a resistência fazem dele uma captura difícil.
+@d.fish.kolyoz.desc
+en: A streamlined fish that can travel in schools.
+es: Pez de cuerpo hidrodinámico que puede moverse en bancos.
+de: Ein stromlinienförmiger Fisch, der in Schwärmen ziehen kann.
+fr: Poisson au corps fuselé qui peut se déplacer en bancs.
+pt: Peixe de corpo hidrodinâmico que pode andar em cardumes.
+@d.fish.uskumru.desc
+en: A fast swimmer, recognized by the dark wavy pattern on its back.
+es: Nada rápido y se reconoce por el dibujo ondulado oscuro del lomo.
+de: Ein schneller Schwimmer mit dunklem Wellenmuster auf dem Rücken.
+fr: Nageur rapide, reconnaissable aux motifs ondulés sombres de son dos.
+pt: Nada rápido e é reconhecida pelo desenho ondulado escuro no dorso.
+@d.fish.lufer.desc
+en: A powerful hunter known for its sharp teeth and quick moves.
+es: Un cazador potente, conocido por sus dientes afilados y sus movimientos rápidos.
+de: Ein kräftiger Jäger, bekannt für scharfe Zähne und flinke Bewegungen.
+fr: Un chasseur puissant, connu pour ses dents acérées et sa vivacité.
+pt: Um caçador forte, conhecido pelos dentes afiados e movimentos rápidos.
+@d.fish.palamut.desc
+en: A prized sea fish, a fast swimmer known for its migrations.
+es: Valioso pez marino, nadador veloz conocido por sus migraciones.
+de: Ein geschätzter, schnell schwimmender Meeresfisch, bekannt für seine Wanderungen.
+fr: Poisson de mer prisé, nageur rapide connu pour ses migrations.
+pt: Peixe marinho valioso, nadador veloz conhecido pelas migrações.
+@d.fish.yazili_orkinos.desc
+en: Stands out with the distinct markings on its body and its powerful swimming.
+es: Destaca por las marcas de su cuerpo y su potente nado.
+de: Fällt durch die deutliche Zeichnung und kraftvolles Schwimmen auf.
+fr: Se remarque par les motifs nets de son corps et sa nage puissante.
+pt: Chama a atenção pelos desenhos no corpo e pelo nado forte.
+@d.fish.akya.desc
+en: A large, powerful hunter. Calls for good gear and a patient fight.
+es: Un cazador grande y potente. Requiere buen equipo y una pelea paciente.
+de: Ein großer, kräftiger Jäger. Verlangt gute Ausrüstung und einen geduldigen Drill.
+fr: Un grand chasseur puissant. Il faut un bon matériel et un combat patient.
+pt: Um caçador grande e forte. Exige bom equipamento e uma briga paciente.
+@d.fish.ringa.desc
+en: A silvery fish found in huge schools in cold seas.
+es: Pez plateado que forma enormes bancos en los mares fríos.
+de: Ein silbriger Fisch, der in kalten Meeren riesige Schwärme bildet.
+fr: Poisson argenté qu'on trouve en immenses bancs dans les mers froides.
+pt: Peixe prateado encontrado em enormes cardumes nos mares frios.
+@d.fish.mezgit.desc
+en: A slender-bodied food fish that lives near the bottom.
+es: Pez de cuerpo esbelto que vive cerca del fondo.
+de: Ein schlanker Speisefisch, der in Bodennähe lebt.
+fr: Poisson de pêche au corps élancé qui vit près du fond.
+pt: Peixe de corpo esguio que vive perto do fundo.
+@d.fish.pisi_baligi.desc
+en: Recognized by its flat body that blends in with the seabed.
+es: Se reconoce por su cuerpo plano que se camufla con el fondo.
+de: Erkennbar am flachen Körper, der mit dem Meeresgrund verschmilzt.
+fr: Se reconnaît à son corps plat qui se fond dans le fond marin.
+pt: Reconhecido pelo corpo achatado que se mistura com o fundo do mar.
+@d.fish.morina.desc
+en: A cold-water species of great importance to fishing.
+es: Especie de aguas frías muy importante para la pesca.
+de: Eine Kaltwasserart von großer Bedeutung für die Fischerei.
+fr: Espèce d'eaux froides très importante pour la pêche.
+pt: Espécie de águas frias muito importante para a pesca.
+@d.fish.komur_baligi.desc
+en: A North Sea fish known for its dark back and strong swimming.
+es: Pez del mar del Norte conocido por su lomo oscuro y su potente nado.
+de: Ein Nordseefisch mit dunklem Rücken und kräftigem Schwimmstil.
+fr: Poisson de la mer du Nord connu pour son dos sombre et sa nage puissante.
+pt: Peixe do mar do Norte conhecido pelo dorso escuro e nado forte.
+@d.fish.halibut.desc
+en: A flatfish that can grow huge. One of the toughest catches of the north.
+es: Pez plano que puede alcanzar gran tamaño. Una de las capturas más duras del norte.
+de: Ein Plattfisch, der riesig werden kann. Einer der härtesten Fänge des Nordens.
+fr: Poisson plat qui peut devenir énorme. L'une des prises les plus coriaces du Nord.
+pt: Peixe chato que pode ficar enorme. Uma das capturas mais duras do norte.
+@d.fish.ucan_balik.desc
+en: Thanks to its long pectoral fins it can glide above the water for a short while.
+es: Gracias a sus largas aletas pectorales puede planear un rato sobre el agua.
+de: Dank langer Brustflossen kann er kurz über das Wasser gleiten.
+fr: Grâce à ses longues nageoires pectorales, il peut planer un moment au-dessus de l'eau.
+pt: Graças às longas nadadeiras peitorais, consegue planar um pouco sobre a água.
+@d.fish.sari_kuyruklu_fusilier.desc
+en: Stands out in tropical waters with its vivid colors and schooling behavior.
+es: Destaca en aguas tropicales por sus colores vivos y su vida en banco.
+de: Fällt in tropischen Gewässern durch kräftige Farben und Schwarmverhalten auf.
+fr: Se remarque dans les eaux tropicales par ses couleurs vives et son comportement grégaire.
+pt: Chama a atenção nas águas tropicais pelas cores vivas e pelo cardume.
+@d.fish.mavi_yuzgecli_trevally.desc
+en: Known for its bright blue fins and active hunting.
+es: Conocido por sus aletas azul brillante y su caza activa.
+de: Bekannt für leuchtend blaue Flossen und aktive Jagd.
+fr: Connu pour ses nageoires bleu vif et sa chasse active.
+pt: Conhecido pelas nadadeiras azul-brilhante e pela caça ativa.
+@d.fish.kirmizi_snapper.desc
+en: A tropical fish that catches the eye with its reddish body.
+es: Pez tropical que llama la atención por su cuerpo rojizo.
+de: Ein tropischer Fisch, der mit seinem rötlichen Körper auffällt.
+fr: Poisson tropical qui attire l'œil par son corps rougeâtre.
+pt: Peixe tropical que chama a atenção pelo corpo avermelhado.
+@d.fish.lambuka.desc
+en: A fast open-water hunter known for its bright blue, green and gold colors.
+es: Rápido cazador de aguas abiertas, conocido por sus brillantes colores azul, verde y dorado.
+de: Ein schneller Freiwasserjäger in leuchtendem Blau, Grün und Gold.
+fr: Chasseur rapide du large, connu pour ses couleurs bleu, vert et or éclatantes.
+pt: Caçador rápido de águas abertas, conhecido pelas cores azul, verde e dourada brilhantes.
+@d.fish.barrakuda.desc
+en: An agile predator known for its long body and sharp teeth.
+es: Depredador ágil, conocido por su cuerpo alargado y sus dientes afilados.
+de: Ein wendiger Räuber mit langem Körper und scharfen Zähnen.
+fr: Prédateur agile, connu pour son corps allongé et ses dents acérées.
+pt: Predador ágil, conhecido pelo corpo alongado e dentes afiados.
+@d.fish.albakor.desc
+en: A tuna species of the open seas, known for its long pectoral fins.
+es: Especie de atún de alta mar, conocida por sus largas aletas pectorales.
+de: Eine Thunfischart der Hochsee mit langen Brustflossen.
+fr: Espèce de thon du large, connue pour ses longues nageoires pectorales.
+pt: Espécie de atum de alto-mar, conhecida pelas longas nadadeiras peitorais.
+@d.fish.sari_yuzgecli_orkinos.desc
+en: An open-sea fish that stands out with its yellow fins and powerful swimming.
+es: Pez de alta mar que destaca por sus aletas amarillas y su potente nado.
+de: Ein Hochseefisch mit auffallend gelben Flossen und kraftvollem Schwimmen.
+fr: Poisson du large remarquable par ses nageoires jaunes et sa nage puissante.
+pt: Peixe de alto-mar que se destaca pelas nadadeiras amarelas e nado forte.

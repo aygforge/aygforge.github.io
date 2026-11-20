@@ -1,0 +1,578 @@
+@sys2.senlik_gunu_misina_satislarim_ikiye
+en: On festival days my line sales double!
+es: ¡En día de fiesta mis ventas de sedal se duplican!
+de: An Festtagen verkaufe ich doppelt so viel Schnur!
+fr: Les jours de fête, mes ventes de ligne doublent !
+pt: Em dia de festival minhas vendas de linha dobram!
+@sys2.yeni_bir_denize_mi_acildin
+en: Sailed out to new waters? Don't forget to tune your bait for the fish out there.
+es: ¿Te has lanzado a un mar nuevo? No olvides ajustar el cebo para sus peces.
+de: Neue Gewässer entdeckt? Vergiss nicht, deinen Köder auf die Fische dort abzustimmen.
+fr: Tu es parti vers de nouvelles eaux ? N'oublie pas d'adapter ton appât aux poissons du coin.
+pt: Foi para um mar novo? Não esqueça de ajustar a isca para os peixes de lá.
+@sys2.o_kocaman_baligi_hangi_oltayla
+en: Which rod did you land that whopper with? I'm dying to know!
+es: ¿Con qué caña sacaste ese pez enorme? ¡Me muero de curiosidad!
+de: Mit welcher Angel hast du diesen Riesen rausgeholt? Ich bin so neugierig!
+fr: Avec quelle canne as-tu sorti ce monstre ? Je meurs d'envie de savoir !
+pt: Com qual vara você puxou aquele peixão? Estou morrendo de curiosidade!
+@sys2.yetmis_turun_hepsi_mi_ekipmanini
+en: All seventy species? We should put your gear in a museum!
+es: ¿Las setenta especies? ¡Tu equipo debería ir a un museo!
+de: Alle siebzig Arten? Deine Ausrüstung gehört ins Museum!
+fr: Les soixante-dix espèces ? Ton matériel mérite un musée !
+pt: Todas as setenta espécies? Seu equipamento tinha que ir para um museu!
+@sys2.senlikte_tezgah_kalabalik_olur_baliklarin
+en: The stall gets busy at the festival, your fish always sell.
+es: En la fiesta el puesto se llena; tu pescado siempre se vende.
+de: Beim Fest ist am Stand viel los, deine Fische gehen immer weg.
+fr: Pendant la fête, l'étal est bondé : tes poissons partent toujours.
+pt: No festival a banca lota, seus peixes sempre vendem.
+@sys2.duydugum_o_dev_baligi_tartima
+en: I heard about that giant fish — wish you'd brought it to my scale!
+es: Me han hablado de ese pez gigante. ¡Ojalá lo hubieras traído a mi báscula!
+de: Ich hab von dem Riesenfisch gehört – hättest du ihn nur auf meine Waage gelegt!
+fr: J'ai entendu parler de ce poisson géant… si seulement tu l'avais posé sur ma balance !
+pt: Ouvi falar daquele peixe gigante. Pena que não trouxe para a minha balança!
+@sys2.dort_tekne_limanin_yarisi_senin
+en: Four boats! Half the harbor is yours now.
+es: ¡Cuatro barcos! Ya es tuya la mitad del puerto.
+de: Vier Boote! Der halbe Hafen gehört jetzt dir.
+fr: Quatre bateaux ! La moitié du port est à toi maintenant.
+pt: Quatro barcos! Metade do porto agora é sua.
+@sys2.senlik_icin_tekneleri_bayraklarla_susledim
+en: I decked the boats out with flags for the festival, you should see them.
+es: He adornado los barcos con banderas para la fiesta, tienes que verlos.
+de: Ich hab die Boote fürs Fest mit Fahnen geschmückt, das musst du sehen.
+fr: J'ai pavoisé les bateaux pour la fête, il faut que tu voies ça.
+pt: Enfeitei os barcos com bandeiras para o festival, você precisa ver.
+@sys2.yeni_rota_acilmis_tekne_govdesi
+en: A new route opened up — let's see if your hull held up.
+es: Se ha abierto una ruta nueva; a ver si el casco ha aguantado.
+de: Eine neue Route ist offen – mal sehen, ob dein Rumpf durchgehalten hat.
+fr: Une nouvelle route s'est ouverte ; voyons si ta coque a tenu le coup.
+pt: Abriu uma rota nova; vamos ver se o casco aguentou.
+@sys2.dort_teknenin_dordu_de_piril
+en: All four boats are spotless. Nice work.
+es: Los cuatro barcos están relucientes. ¡Buen trabajo!
+de: Alle vier Boote blitzen nur so. Gute Arbeit.
+fr: Les quatre bateaux sont impeccables. Beau travail.
+pt: Os quatro barcos estão um brinco. Muito bem.
+@sys2.senlikte_lokantam_dolup_tasiyor_baliga
+en: My restaurant is packed during the festival, I always need fish.
+es: En la fiesta mi restaurante se llena a reventar; siempre necesito pescado.
+de: Beim Fest platzt mein Restaurant aus allen Nähten, Fisch brauche ich immer.
+fr: Pendant la fête, mon restaurant déborde ; j'ai toujours besoin de poisson.
+pt: No festival meu restaurante fica lotado; sempre preciso de peixe.
+@sys2.sampiyonumuz_geldi_bu_aksam_yemek
+en: Here comes our champion! Dinner's on me tonight.
+es: ¡Ha llegado nuestro campeón! Esta noche invito yo a cenar.
+de: Da ist ja unser Champion! Das Abendessen geht heute auf mich.
+fr: Voilà notre champion ! Ce soir, le dîner est pour moi.
+pt: Chegou nosso campeão! O jantar hoje é por minha conta.
+@sys2.evine_akvaryum_almissin_o_baliklar
+en: You got an aquarium! Just don't let those fish end up on my menu!
+es: ¡Te has comprado un acuario! ¡Que esos peces no acaben en mi menú!
+de: Du hast dir ein Aquarium geholt! Aber die Fische kommen mir nicht auf die Karte!
+fr: Tu as pris un aquarium ! Pourvu que ces poissons ne finissent pas sur ma carte !
+pt: Você comprou um aquário! Só não deixe esses peixes irem parar no meu cardápio!
+@sys2.senlikte_acele_etme_sekiz_atis
+en: Don't rush at the festival; even eight casts go well with patience.
+es: No te apresures en la fiesta; hasta ocho lanzamientos salen bien con paciencia.
+de: Hetz dich beim Fest nicht; selbst acht Würfe gelingen mit Geduld.
+fr: Ne te presse pas à la fête : même huit lancers se passent bien avec de la patience.
+pt: Não se apresse no festival; até oito arremessos rendem com paciência.
+@sys2.yeni_bir_deniz_yeni_dersler
+en: New sea, new lessons. Keep your eyes wide open.
+es: Mar nuevo, lecciones nuevas. Abre bien los ojos.
+de: Neues Meer, neue Lektionen. Halt die Augen offen.
+fr: Nouvelle mer, nouvelles leçons. Ouvre grand les yeux.
+pt: Mar novo, lições novas. Fique de olho aberto.
+@sys2.ben_de_boyle_bir_baligi
+en: I saw a fish like that once too, back when I was young.
+es: Yo también vi un pez así una vez, de joven.
+de: So einen Fisch hab ich auch einmal gesehen, in meiner Jugend.
+fr: Moi aussi, j'ai vu un poisson pareil une fois, dans ma jeunesse.
+pt: Eu também vi um peixe assim uma vez, na juventude.
+@sys2.kupayi_aldin_ha_ustalik_sende
+en: You took the cup, huh! You've got the touch after all.
+es: ¡Así que te llevaste la copa! Tienes madera de maestro.
+de: Den Pokal hast du also geholt! Du hast das Zeug zum Meister.
+fr: Alors, tu as remporté la coupe ! Tu as l'étoffe d'un maître.
+pt: Então levou a taça! Você tem talento de mestre.
+@sys2.akvaryumun_varmis_baliklarina_simit_kirintisi
+en: You've got an aquarium! No feeding simit crumbs to your fish, mind you.
+es: ¡Tienes acuario! Pero nada de darles migas de simit a tus peces.
+de: Du hast ein Aquarium! Aber keine Simit-Krümel für deine Fische, hörst du.
+fr: Tu as un aquarium ! Mais pas de miettes de simit pour tes poissons, hein.
+pt: Você tem um aquário! Mas nada de dar farelo de simit aos peixes, hein.
+@sys2.sampiyona_bedava_simit_bugun_benden
+en: Free simit for the champion! It's on me today.
+es: ¡Simit gratis para el campeón! Hoy invito yo.
+de: Gratis-Simit für den Champion! Heute geht's auf mich.
+fr: Simit gratuit pour le champion ! Aujourd'hui, c'est moi qui offre.
+pt: Simit grátis para o campeão! Hoje é por minha conta.
+@sys2.dort_tekne_sahibi_biri_bu
+en: Someone who owns four boats has to be the best-dressed captain of the season.
+es: Alguien con cuatro barcos tiene que ser el capitán más elegante de la temporada.
+de: Wer vier Boote besitzt, muss der schickste Kapitän der Saison sein.
+fr: Quelqu'un qui possède quatre bateaux doit être le capitaine le plus chic de la saison.
+pt: Quem tem quatro barcos precisa ser o capitão mais elegante da temporada.
+@sys2.yetmis_turu_bulan_balikciya_ozel
+en: I should sew a special hat for the angler who found all seventy species.
+es: Debería coser un sombrero especial para quien encontró las setenta especies.
+de: Ich sollte einen besonderen Hut für den Angler nähen, der alle siebzig Arten gefunden hat.
+fr: Je devrais coudre un chapeau spécial pour qui a trouvé les soixante-dix espèces.
+pt: Preciso costurar um chapéu especial para quem achou as setenta espécies.
+@sys2.akvaryumun_yerine_oturdu_mu_camini
+en: Did your aquarium settle in? I polished the glass with care.
+es: ¿Ya está bien colocado tu acuario? Limpié el cristal con mimo.
+de: Steht dein Aquarium gut? Ich hab das Glas sorgfältig geputzt.
+fr: Ton aquarium est bien installé ? J'en ai soigneusement nettoyé la vitre.
+pt: Seu aquário ficou bem instalado? Limpei o vidro com carinho.
+@sys2.akvaryum_koleksiyonun_buyuyor_evin_kucuk
+en: Your aquarium collection keeps growing; your house is like a little sea.
+es: Tu colección de acuarios crece; tu casa parece un pequeño mar.
+de: Deine Aquariensammlung wächst, dein Haus ist wie ein kleines Meer.
+fr: Ta collection d'aquariums s'agrandit, ta maison est comme une petite mer.
+pt: Sua coleção de aquários está crescendo; sua casa parece um pequeno mar.
+@sys2.uzak_denizlerden_dekor_fikri_getirirsen
+en: I'd love it if you brought back decor ideas from faraway seas.
+es: Me encantaría que trajeras ideas de decoración de mares lejanos.
+de: Ich freue mich, wenn du Dekoideen von fernen Meeren mitbringst.
+fr: Ça me ferait plaisir que tu rapportes des idées déco des mers lointaines.
+pt: Eu adoraria se você trouxesse ideias de decoração de mares distantes.
+@sys2.masalarda_bugun_yalniz_senin_kupan
+en: Today every table is talking about nothing but your cup!
+es: ¡Hoy en todas las mesas solo se habla de tu copa!
+de: Heute redet an allen Tischen jeder nur von deinem Pokal!
+fr: Aujourd'hui, à toutes les tables, on ne parle que de ta coupe !
+pt: Hoje em todas as mesas só se fala da sua taça!
+@sys2.dort_teknen_var_ama_hala
+en: Four boats, and you still drink your tea here. Good.
+es: Tienes cuatro barcos y aún te tomas el té aquí. Así me gusta.
+de: Vier Boote, und trotzdem trinkst du deinen Tee noch hier. Gut so.
+fr: Quatre bateaux, et tu bois toujours ton thé ici. C'est bien.
+pt: Quatro barcos e você ainda toma seu chá aqui. Muito bom.
+@sys2.butun_turleri_gormussun_cay_bahcemde
+en: You've seen every species; there's a table reserved just for you in my tea garden.
+es: Has visto todas las especies; en mi jardín de té hay una mesa reservada para ti.
+de: Du hast alle Arten gesehen; in meinem Teegarten steht ein Tisch nur für dich.
+fr: Tu as vu toutes les espèces ; une table t'est réservée dans mon jardin de thé.
+pt: Você viu todas as espécies; na minha casa de chá tem uma mesa só sua.
+@sys2.sampiyonluk_kursusu_sana_cok_yakisti
+en: The champion's podium suits you very well.
+es: El podio de campeón te sienta de maravilla.
+de: Das Siegerpodest steht dir ausgezeichnet.
+fr: Le podium du champion te va à merveille.
+pt: O pódio de campeão combina muito com você.
+@sys2.akvaryum_koleksiyonunu_duydum_kasaba_sergisine
+en: I heard about your aquarium collection; one day we'll put it in the town exhibition.
+es: He oído hablar de tu colección de acuarios; algún día la llevaremos a la exposición del pueblo.
+de: Ich hab von deiner Aquariensammlung gehört; eines Tages kommt sie in die Ortsausstellung.
+fr: J'ai entendu parler de ta collection d'aquariums ; un jour, on l'exposera au village.
+pt: Soube da sua coleção de aquários; um dia vamos levá-la à exposição da vila.
+@sys2.boylesini_kirk_yilda_bir_gorursun
+en: You see one like that once in forty years. Well done, kiddo.
+es: Uno así se ve una vez cada cuarenta años. Bien hecho, chaval.
+de: So einen sieht man alle vierzig Jahre einmal. Gut gemacht, Kleines.
+fr: Un comme ça, on en voit un tous les quarante ans. Bravo, petit.
+pt: Um desses a gente vê uma vez a cada quarenta anos. Muito bem, garoto.
+@sys2.uzak_denizler_guzeldir_ama_iskeleyi
+en: Faraway seas are lovely, but don't forget the old pier.
+es: Los mares lejanos son bonitos, pero no te olvides del muelle.
+de: Ferne Meere sind schön, aber vergiss den Steg nicht.
+fr: Les mers lointaines, c'est beau, mais n'oublie pas le ponton.
+pt: Mares distantes são lindos, mas não esqueça do píer.
+@sys2.akvaryum_mu_aldin_bir_gun
+en: You got an aquarium? Can I come see it someday?
+es: ¿Te has comprado un acuario? ¿Puedo ir a verlo algún día?
+de: Du hast ein Aquarium? Darf ich es mir mal ansehen?
+fr: Tu as acheté un aquarium ? Je peux venir le voir un jour ?
+pt: Você comprou um aquário? Posso ir ver um dia?
+@sys2.ilk_teknen_hayirli_olsun_bana
+en: Congrats on your first boat — take me for a spin too!
+es: ¡Enhorabuena por tu primer barco! ¡Llévame a dar una vuelta!
+de: Glückwunsch zum ersten Boot – nimm mich auch mal mit!
+fr: Félicitations pour ton premier bateau, emmène-moi faire un tour !
+pt: Parabéns pelo primeiro barco, me leva para dar uma volta!
+@sys2.akvaryumundaki_turleri_defterime_cizdim_tam
+en: I sketched the species in your aquarium in my notebook — ten of them!
+es: Dibujé en mi cuaderno las especies de tu acuario. ¡Diez justas!
+de: Ich hab die Arten aus deinem Aquarium in mein Heft gezeichnet – genau zehn!
+fr: J'ai dessiné les espèces de ton aquarium dans mon carnet, pile dix !
+pt: Desenhei no caderno as espécies do seu aquário, dez certinhas!
+@sys2.yetmis_turun_hepsi_defterimde_de
+en: Thanks to you, all seventy species are in my notebook now too.
+es: Gracias a ti, ya tengo las setenta especies en mi cuaderno.
+de: Dank dir sind jetzt auch alle siebzig Arten in meinem Heft.
+fr: Grâce à toi, les soixante-dix espèces sont aussi dans mon carnet.
+pt: Graças a você, as setenta espécies também estão no meu caderno.
+@sys2.selcuk
+=
+@sys2.n_posteri
+en: {0} Poster
+es: Póster de {0}
+de: {0}-Poster
+fr: Affiche de {0}
+pt: Pôster de {0}
+@sys2.kucuk_koleksiyon
+en: Small Collection
+es: Pequeña colección
+de: Kleine Sammlung
+fr: Petite collection
+pt: Pequena coleção
+@sys2.akvaryumda_5_farkli_tur_sergile
+en: Display 5 different species in aquariums
+es: Exhibe 5 especies distintas en acuarios
+de: Zeige 5 verschiedene Arten im Aquarium
+fr: Expose 5 espèces différentes en aquarium
+pt: Exiba 5 espécies diferentes em aquários
+@sys2.akvaryum
+en: Aquarium
+es: Acuario
+de: Aquarium
+fr: Aquarium
+pt: Aquário
+@sys2.akvaryum_meraklisi
+en: Aquarium Enthusiast
+es: Aficionado a los acuarios
+de: Aquarienfreund
+fr: Passionné d'aquariums
+pt: Aquarista dedicado
+@sys2.akvaryumda_10_farkli_tur_sergile
+en: Display 10 different species in aquariums
+es: Exhibe 10 especies distintas en acuarios
+de: Zeige 10 verschiedene Arten im Aquarium
+fr: Expose 10 espèces différentes en aquarium
+pt: Exiba 10 espécies diferentes em aquários
+@sys2.deniz_koleksiyoncusu
+en: Sea Collector
+es: Coleccionista marino
+de: Meeressammler
+fr: Collectionneur marin
+pt: Colecionador do Mar
+@sys2.akvaryuma_uygun_20_turun_hepsini
+en: Display all 20 aquarium-friendly species
+es: Exhibe las 20 especies aptas para acuario
+de: Zeige alle 20 aquariumtauglichen Arten
+fr: Expose les 20 espèces adaptées à l'aquarium
+pt: Exiba todas as 20 espécies próprias para aquário
+@sys2.kucuk_akvaryum_koleksiyon_rozeti
+en: Small Aquarium Collection Badge
+es: Insignia de colección de acuario pequeño
+de: Abzeichen „Kleine Aquariensammlung“
+fr: Badge petite collection d'aquarium
+pt: Insígnia de pequena coleção de aquário
+@sys2.ozel_akvaryum_arka_plani
+en: Special Aquarium Background
+es: Fondo especial de acuario
+de: Besonderer Aquarienhintergrund
+fr: Fond d'aquarium spécial
+pt: Fundo especial de aquário
+@sys2.deniz_koleksiyoncusu_unvani
+en: “Sea Collector” Title
+es: Título «Coleccionista marino»
+de: Titel „Meeressammler“
+fr: Titre « Collectionneur marin »
+pt: Título “Colecionador do Mar”
+@sys2.yuksek
+en: High
+es: Alta
+de: Hoch
+fr: Élevée
+pt: Alta
+@sys2.dusuk
+en: Low
+es: Baja
+de: Niedrig
+fr: Faible
+pt: Baixa
+@sys2.gecersiz_tur
+en: Invalid species.
+es: Especie no válida.
+de: Ungültige Art.
+fr: Espèce non valide.
+pt: Espécie inválida.
+@sys2.en_fazla_n_hedef_secebilirsin
+en: You can pick up to {0} targets.
+es: Puedes elegir hasta {0} objetivos.
+de: Du kannst höchstens {0} Ziele wählen.
+fr: Tu peux choisir jusqu'à {0} objectifs.
+pt: Você pode escolher até {0} metas.
+@sys2.sefer_hedefi_tamam_n_n
+en: Trip goal done: {0} {1}/{2}
+es: Objetivo de salida cumplido: {0} {1}/{2}
+de: Ausfahrtsziel erreicht: {0} {1}/{2}
+fr: Objectif de sortie atteint : {0} {1}/{2}
+pt: Meta da viagem concluída: {0} {1}/{2}
+@sys2.n_bronz_ustalik_rozeti
+en: {0} Bronze Mastery badge!
+es: ¡Insignia de Maestría de Bronce en {0}!
+de: {0}: Bronze-Meisterschaftsabzeichen!
+fr: {0} : badge de Maîtrise Bronze !
+pt: {0}: insígnia de Maestria de Bronze!
+@sys2.n_gumus_ustalik_bolge_posteri
+en: {0} Silver Mastery: region poster unlocked!
+es: Maestría de Plata en {0}: ¡póster de la zona desbloqueado!
+de: {0}: Silber-Meisterschaft – Gebietsposter freigeschaltet!
+fr: {0} : Maîtrise Argent, affiche de la zone débloquée !
+pt: {0}: Maestria de Prata, pôster da região desbloqueado!
+@sys2.n_altin_ustalik_n_tekne
+en: {0} Gold Mastery: {1} boat ornament!
+es: Maestría de Oro en {0}: ¡adorno de barco {1}!
+de: {0}: Gold-Meisterschaft – Bootsschmuck {1}!
+fr: {0} : Maîtrise Or, ornement de bateau {1} !
+pt: {0}: Maestria de Ouro, enfeite de barco {1}!
+@sys2.duvarda_en_fazla_5_rekor
+en: You can display up to 5 records on the wall.
+es: En la pared caben como máximo 5 récords.
+de: An der Wand haben höchstens 5 Rekorde Platz.
+fr: Le mur peut exposer 5 records au maximum.
+pt: No mural cabem no máximo 5 recordes.
+@sys2.halil_usta_gunun_baligi
+en: Master Halil (fish of the day)
+es: Maestro Halil (pez del día)
+de: Meister Halil (Fisch des Tages)
+fr: Maître Halil (poisson du jour)
+pt: Mestre Halil (peixe do dia)
+@sys2.bu_turden_baligin_yok
+en: You don't have any fish of this species.
+es: No tienes peces de esta especie.
+de: Du hast keine Fische dieser Art.
+fr: Tu n'as aucun poisson de cette espèce.
+pt: Você não tem peixes dessa espécie.
+@sys2.mucadele_sirasinda_ekipman_degistirilemez
+en: You can't change gear during a fight.
+es: No puedes cambiar de equipo durante la pelea.
+de: Während des Drills kannst du die Ausrüstung nicht wechseln.
+fr: Impossible de changer d'équipement pendant le combat.
+pt: Não dá para trocar o equipamento durante a briga.
+@sys2.bu_set_henuz_kaydedilmedi
+en: This set hasn't been saved yet.
+es: Este conjunto aún no se ha guardado.
+de: Dieses Set ist noch nicht gespeichert.
+fr: Cet ensemble n'a pas encore été enregistré.
+pt: Este conjunto ainda não foi salvo.
+@sys2.n_sahip_degilsin
+en: {0} (not owned)
+es: {0} (no lo tienes)
+de: {0} (nicht im Besitz)
+fr: {0} (pas en ta possession)
+pt: {0} (você não tem)
+@sys2.n_stokta_yok_temel_yem
+en: {0} out of stock → basic bait
+es: {0} agotado → cebo básico
+de: {0} nicht vorrätig → Grundköder
+fr: {0} en rupture → appât de base
+pt: {0} sem estoque → isca básica
+@sys2.ekonomik
+en: Economical
+es: Económico
+de: Sparsam
+fr: Économique
+pt: Econômico
+@sys2.sabit_yem
+en: Fixed bait
+es: Cebo fijo
+de: Fester Köder
+fr: Appât fixe
+pt: Isca fixa
+@sys2.hedef_balik
+en: Target fish
+es: Pez objetivo
+de: Zielfisch
+fr: Poisson ciblé
+pt: Peixe-alvo
+@sys2.yedek_yemli
+en: With backup bait
+es: Con cebo de reserva
+de: Mit Ersatzköder
+fr: Avec appât de secours
+pt: Com isca reserva
+@sys2.temel_yem_otomatikte_kullanilamaz
+en: Basic bait can't be used on auto rods.
+es: El cebo básico no sirve en las cañas automáticas.
+de: Grundköder ist für Auto-Angeln nicht nutzbar.
+fr: L'appât de base ne peut pas servir en automatique.
+pt: A isca básica não serve nas varas automáticas.
+@sys2.n_hedef_n_bu_noktada
+en: {0}: target {1} can't be auto-caught at this spot; using economical bait.
+es: {0}: el objetivo {1} no se puede pescar en automático aquí; se usa cebo económico.
+de: {0}: Ziel {1} ist hier nicht automatisch fangbar; es wird sparsamer Köder benutzt.
+fr: {0} : la cible {1} ne peut pas être pêchée en auto ici ; appât économique utilisé.
+pt: {0}: a meta {1} não pode ser pescada no automático aqui; usando isca econômica.
+@sys2.bu_akvaryuma_zaten_sahipsin
+en: You already own this aquarium.
+es: Ya tienes este acuario.
+de: Dieses Aquarium besitzt du schon.
+fr: Tu possèdes déjà cet aquarium.
+pt: Você já tem este aquário.
+@sys2.n_akvaryuma_uygun_degil
+en: {0} isn't suited to an aquarium.
+es: {0} no es apto para acuario.
+de: {0} eignet sich nicht fürs Aquarium.
+fr: {0} ne convient pas à un aquarium.
+pt: {0} não é próprio para aquário.
+@sys2.akvaryum_yok
+en: No aquarium.
+es: No hay acuario.
+de: Kein Aquarium.
+fr: Aucun aquarium.
+pt: Nenhum aquário.
+@sys2.tur_siniri_dolu_n_tur
+en: Species limit reached ({0} species).
+es: Límite de especies alcanzado ({0} especies).
+de: Artenlimit erreicht ({0} Arten).
+fr: Limite d'espèces atteinte ({0} espèces).
+pt: Limite de espécies atingido ({0} espécies).
+@sys2.akvaryum_dolu
+en: The aquarium is full.
+es: El acuario está lleno.
+de: Das Aquarium ist voll.
+fr: L'aquarium est plein.
+pt: O aquário está cheio.
+@sys2.bu_depoda_bu_turden_balik
+en: No fish of this species in this storage.
+es: No hay peces de esta especie aquí.
+de: Keine Fische dieser Art in diesem Speicher.
+fr: Aucun poisson de cette espèce dans ce rangement.
+pt: Não há peixes dessa espécie neste depósito.
+@sys2.akvaryumda_bu_tur_yok
+en: This species isn't in the aquarium.
+es: Esta especie no está en el acuario.
+de: Diese Art ist nicht im Aquarium.
+fr: Cette espèce n'est pas dans l'aquarium.
+pt: Essa espécie não está no aquário.
+@sys2.tasima_yapilamaz
+en: Can't move it.
+es: No se puede mover.
+de: Verschieben nicht möglich.
+fr: Déplacement impossible.
+pt: Não dá para mover.
+@sys2.hedef_akvaryumda_yer_yok
+en: No room in the target aquarium.
+es: No hay espacio en el acuario de destino.
+de: Kein Platz im Zielaquarium.
+fr: Pas de place dans l'aquarium cible.
+pt: Não há espaço no aquário de destino.
+@sys2.akvaryum_verisi
+en: aquarium data
+es: datos del acuario
+de: Aquariendaten
+fr: données de l'aquarium
+pt: dados do aquário
+@sys2.akvaryum_modeli_n
+en: aquarium model {0}
+es: modelo de acuario {0}
+de: Aquarienmodell {0}
+fr: modèle d'aquarium {0}
+pt: modelo de aquário {0}
+@sys2.sahipsiz_akvaryum_n
+en: unowned aquarium {0}
+es: acuario sin dueño {0}
+de: Aquarium ohne Besitzer {0}
+fr: aquarium sans propriétaire {0}
+pt: aquário sem dono {0}
+@sys2.akvaryum_baligi_n
+en: aquarium fish {0}
+es: pez de acuario {0}
+de: Aquarienfisch {0}
+fr: poisson d'aquarium {0}
+pt: peixe de aquário {0}
+@sys2.akvaryum_kapasitesi_n
+en: aquarium capacity {0}
+es: capacidad del acuario {0}
+de: Aquarienkapazität {0}
+fr: capacité de l'aquarium {0}
+pt: capacidade do aquário {0}
+@sys2.akvaryum_tur_siniri_n
+en: aquarium species limit {0}
+es: límite de especies del acuario {0}
+de: Artenlimit des Aquariums {0}
+fr: limite d'espèces de l'aquarium {0}
+pt: limite de espécies do aquário {0}
+@sys2.dukkaninda
+en: At their shop
+es: En su tienda
+de: Im Laden
+fr: À sa boutique
+pt: Na loja
+@sys2.iskelede
+en: On the pier
+es: En el muelle
+de: Am Steg
+fr: Sur le ponton
+pt: No píer
+@sys2.iskele_ucunda
+en: At the pier end
+es: En la punta del muelle
+de: Am Stegende
+fr: Au bout du ponton
+pt: Na ponta do píer
+@sys2.cay_bahcesinde
+en: At the tea garden
+es: En el jardín de té
+de: Im Teegarten
+fr: Au jardin de thé
+pt: Na casa de chá
+@sys2.meydanda
+en: On the square
+es: En la plaza
+de: Auf dem Platz
+fr: Sur la place
+pt: Na praça
+@sys2.balik_halinin_onunde
+en: Outside the fish market
+es: Frente a la lonja
+de: Vor dem Fischmarkt
+fr: Devant la halle aux poissons
+pt: Em frente ao mercado de peixe
+@sys2.firinin_onunde
+en: Outside the bakery
+es: Frente a la panadería
+de: Vor der Bäckerei
+fr: Devant la boulangerie
+pt: Em frente à padaria
+@sys2.ilan_panosunda
+en: At the order board
+es: En el tablón de pedidos
+de: An der Auftragstafel
+fr: Au tableau des commandes
+pt: No quadro de pedidos
+@sys2.butigin_onunde
+en: Outside the boutique
+es: Frente a la boutique
+de: Vor der Boutique
+fr: Devant la boutique
+pt: Em frente à boutique
+@sys2.muhtarlikta
+en: At the town hall
+es: En el ayuntamiento
+de: Im Rathaus
+fr: À la mairie
+pt: Na prefeitura
+@sys2.lokantasinda
+en: At her restaurant
+es: En su restaurante
+de: In ihrem Restaurant
+fr: À son restaurant
+pt: No restaurante
+@sys3.samandirali_av
+en: Float Fishing
+es: Pesca con flotador
+de: Posenangeln
+fr: Pêche au flotteur
+pt: Pesca de boia
+@sys3.samandira
+en: Float
+es: Flotador
+de: Pose
+fr: Flotteur
+pt: Boia
+@sys3.mevcut_klasik_yontem_atis_bekleme
+en: The familiar classic method. Casting, waiting and hook-setting stay the same; balanced for shore, small and mid-size species.
+es: El método clásico de siempre. Lanzar, esperar y clavar no cambian; equilibrado para especies de costa, pequeñas y medianas.
+de: Die bewährte klassische Methode. Werfen, Warten und Anhieb bleiben gleich; ausgewogen für Küsten-, kleine und mittelgroße Arten.
+fr: La méthode classique habituelle. Lancer, attente et ferrage restent identiques ; équilibrée pour les espèces côtières, petites et moyennes.
+pt: O método clássico de sempre. Arremesso, espera e fisgada continuam iguais; equilibrado para espécies de costa, pequenas e médias.

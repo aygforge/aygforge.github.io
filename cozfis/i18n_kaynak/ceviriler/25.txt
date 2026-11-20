@@ -1,0 +1,132 @@
+@world.olta
+en: TACKLE
+es: PESCA
+de: ANGELN
+fr: PÊCHE
+pt: PESCA
+@world.lokanta
+en: RESTAURANT
+es: RESTAURANTE
+de: RESTAURANT
+fr: RESTAURANT
+pt: RESTAURANTE
+@world.firin
+en: BAKERY
+es: PANADERÍA
+de: BÄCKEREI
+fr: BOULANGERIE
+pt: PADARIA
+@world.meydan
+en: SQUARE
+es: PLAZA
+de: PLATZ
+fr: PLACE
+pt: PRAÇA
+@sys3.projeler
+en: projects
+es: proyectos
+de: Projekte
+fr: projets
+pt: projetos
+@sys3.filo
+en: fleet
+es: flota
+de: Flotte
+fr: flotte
+pt: frota
+@sys4.trofeler_2
+en: trophies
+es: trofeos
+de: Trophäen
+fr: trophées
+pt: troféus
+@save.para
+en: coins
+es: dinero
+de: Münzen
+fr: pièces
+pt: moedas
+@save.enerji
+en: energy
+es: energía
+de: Energie
+fr: énergie
+pt: energia
+@save.ilanlar
+en: orders
+es: pedidos
+de: Aufträge
+fr: commandes
+pt: pedidos
+@fish.daliyor
+en: DIVING
+es: SE HUNDE
+de: TAUCHT
+fr: PLONGE
+pt: AFUNDOU
+@fish.yakin
+en: NEAR
+es: CERCA
+de: NAH
+fr: PROCHE
+pt: PERTO
+@fish.orta
+en: MID
+es: MEDIA
+de: MITTEL
+fr: MOYEN
+pt: MÉDIO
+@fish.uzak
+en: FAR
+es: LEJOS
+de: WEIT
+fr: LOIN
+pt: LONGE
+@fish.mesafe
+en: DISTANCE
+es: DISTANCIA
+de: WEITE
+fr: DISTANCE
+pt: DISTÂNCIA
+@fish.dayaniklilik
+en: STAMINA
+es: AGUANTE
+de: AUSDAUER
+fr: ENDURANCE
+pt: FÔLEGO
+@fish.ustalik
+en: SKILL
+es: MAESTRÍA
+de: KÖNNEN
+fr: MAÎTRISE
+pt: MAESTRIA
+@scene.sefer
+en: TRIPS
+es: SALIDA
+de: FAHRT
+fr: SORTIE
+pt: VIAGEM
+@ui.bekle
+en: WAIT
+es: ESPERA
+de: WARTEN
+fr: ATTENDS
+pt: ESPERE
+@ui.sar
+en: REEL
+es: RECOGE
+de: KURBELN
+fr: MOULINE
+pt: RECOLHA
+@ui.dokun
+en: tap
+es: toca
+de: tippen
+fr: touche
+pt: toque
+@ui.cihaz
+en: device
+es: dispositivo
+de: Gerät
+fr: appareil
+pt: dispositivo

@@ -1,0 +1,492 @@
+@ui.ev_sandigin_n_yuvaya_cikar
+en: Your home chest grows to {0} slots.
+es: Tu baúl de casa pasa a tener {0} huecos.
+de: Deine Truhe wächst auf {0} Plätze.
+fr: Ton coffre passe à {0} emplacements.
+pt: Seu baú de casa passa para {0} espaços.
+@ui.yeni_tekne_limana_baglanacak_n
+en: The new boat will be moored at the harbor. {0}
+es: El barco nuevo quedará amarrado en el puerto. {0}
+de: Das neue Boot wird im Hafen festgemacht. {0}
+fr: Le nouveau bateau sera amarré au port. {0}
+pt: O barco novo vai ficar atracado no porto. {0}
+@ui.aktif_tekne_degismez_istersen_aktif
+en: Your active boat stays the same; you can pick it with "Make Active" if you like.
+es: El barco activo no cambia; si quieres, elígelo con «Activar».
+de: Dein aktives Boot bleibt gleich; mit „Aktivieren“ kannst du es wählen.
+fr: Ton bateau actif ne change pas ; tu peux le choisir avec « Activer ».
+pt: O barco ativo não muda; se quiser, escolha com "Ativar".
+@ui.ilk_teknen_hemen_aktif_olur
+en: Your first boat becomes active right away.
+es: Tu primer barco queda activo enseguida.
+de: Dein erstes Boot ist sofort aktiv.
+fr: Ton premier bateau devient actif tout de suite.
+pt: Seu primeiro barco fica ativo na hora.
+@ui.cihazlari_aktar
+en: Move devices?
+es: ¿Mover dispositivos?
+de: Geräte umbauen?
+fr: Déplacer les appareils ?
+pt: Transferir dispositivos?
+@ui.otomatik_olta_cihazlarin_baska_teknede
+en: Your auto rod devices are mounted on another boat. Move them to the new active boat? (Free; they're removed from the old boat.)
+es: Tus dispositivos de caña automática están en otro barco. ¿Pasarlos al nuevo barco activo? (Gratis; se quitan del barco anterior).
+de: Deine Auto-Angelgeräte sind auf einem anderen Boot montiert. Auf das neue aktive Boot umbauen? (Kostenlos; sie werden vom alten Boot abgebaut.)
+fr: Tes appareils de canne auto sont montés sur un autre bateau. Les transférer sur le nouveau bateau actif ? (Gratuit ; ils sont retirés de l'ancien.)
+pt: Seus dispositivos de vara automática estão em outro barco. Transferir para o novo barco ativo? (Grátis; saem do barco antigo.)
+@ui.aktar
+en: Move
+es: Mover
+de: Umbauen
+fr: Transférer
+pt: Transferir
+@ui.yukseltme_bu_teknenin_uzerinde_kalir
+en: The upgrade stays on this boat.
+es: La mejora se queda en este barco.
+de: Der Ausbau bleibt an diesem Boot.
+fr: L'amélioration reste sur ce bateau.
+pt: A melhoria fica neste barco.
+@ui.cihaz_bos_yuva_varsa_aktif
+en: If there's a free slot, the device is mounted on the active boat.
+es: Si hay un hueco libre, el dispositivo se monta en el barco activo.
+de: Bei freiem Platz wird das Gerät auf dem aktiven Boot montiert.
+fr: S'il y a un emplacement libre, l'appareil est monté sur le bateau actif.
+pt: Se houver espaço livre, o dispositivo vai para o barco ativo.
+@ui.global_yukseltme_tum_cihazlara_uygulanir
+en: Global upgrades apply to all devices.
+es: Las mejoras globales se aplican a todos los dispositivos.
+de: Globale Ausbauten gelten für alle Geräte.
+fr: Les améliorations globales s'appliquent à tous les appareils.
+pt: Melhorias globais valem para todos os dispositivos.
+@ui.renk_tum_teknelerinde_kullanilabilir
+en: The color can be used on all your boats.
+es: El color se puede usar en todos tus barcos.
+de: Die Farbe ist für alle deine Boote nutzbar.
+fr: La couleur est utilisable sur tous tes bateaux.
+pt: A cor pode ser usada em todos os seus barcos.
+@ui.isim_levhasi_guncellendi
+en: Nameplate updated.
+es: Placa del nombre actualizada.
+de: Namensschild aktualisiert.
+fr: Plaque du nom mise à jour.
+pt: Placa do nome atualizada.
+@ui.kalan_n_atis_hakkin_yanacak
+en: Your remaining {0} {0|cast|casts} will be forfeited and your ranking set by your current score.
+es: Perderás los {0} lanzamientos que te quedan y tu puesto se decidirá con la puntuación actual.
+de: Deine restlichen {0} {0|Wurf verfällt|Würfe verfallen} und deine Platzierung richtet sich nach dem aktuellen Stand.
+fr: Tes {0} {0|lancer restant sera perdu|lancers restants seront perdus} et ton classement sera fixé sur ton score actuel.
+pt: Você perde os {0} arremessos restantes e sua colocação será definida pela pontuação atual.
+@ui.yarismadan_cik
+en: Leave the contest?
+es: ¿Abandonar el concurso?
+de: Wettbewerb verlassen?
+fr: Quitter le concours ?
+pt: Sair da competição?
+@ui.yarismayi_bitir
+en: End contest
+es: Terminar el concurso
+de: Wettbewerb beenden
+fr: Terminer le concours
+pt: Encerrar competição
+@ui.limana_don
+en: Return to harbor
+es: Volver al puerto
+de: Zurück zum Hafen
+fr: Retour au port
+pt: Voltar ao porto
+@ui.limana_donus_ucretsiz_tekrar_denize
+en: Returning to harbor is free. Heading out again costs a new trip fee.
+es: Volver al puerto es gratis. Salir otra vez cuesta una nueva salida.
+de: Die Rückkehr zum Hafen ist kostenlos. Eine neue Ausfahrt kostet erneut.
+fr: Le retour au port est gratuit. Repartir en mer coûte une nouvelle sortie.
+pt: A volta ao porto é grátis. Sair de novo custa uma nova viagem.
+@ui.limana_don_2
+en: Return to Harbor
+es: Volver al puerto
+de: Zurück zum Hafen
+fr: Retour au port
+pt: Voltar ao Porto
+@ui.n_denize_geri_birakilacak_yakalama
+en: {0} will be released back into the sea (catch and encyclopedia records are kept).
+es: {0} volverá al mar (se conservan la captura y el registro de la enciclopedia).
+de: {0} wird wieder ins Meer entlassen (Fang und Lexikoneintrag bleiben erhalten).
+fr: {0} va être relâché en mer (la prise et l'entrée d'encyclopédie sont conservées).
+pt: {0} volta para o mar (a captura e o registro da enciclopédia ficam salvos).
+@ui.birak_2
+en: Release
+es: Liberar
+de: Freilassen
+fr: Relâcher
+pt: Soltar
+@ui.n_n_serbest_birakilacak_ve
+en: {0} × {1} will be released and {2} put in its place.
+es: Se liberarán {0} × {1} y en su lugar irá {2}.
+de: {0} × {1} werden freigelassen, an ihre Stelle kommt {2}.
+fr: {0} × {1} seront relâchés et remplacés par {2}.
+pt: {0} × {1} serão soltos e {2} ficará no lugar.
+@ui.n_depoya_kondu
+en: {0} put into storage.
+es: {0} guardado.
+de: {0} eingelagert.
+fr: {0} rangé.
+pt: {0} guardado.
+@ui.yer_degistir
+en: Swap
+es: Intercambiar
+de: Tauschen
+fr: Échanger
+pt: Trocar
+@ui.degistir_2
+en: Swap
+es: Cambiar
+de: Tauschen
+fr: Échanger
+pt: Trocar
+@ui.olmadi
+en: Never mind
+es: Mejor no
+de: Doch nicht
+fr: Finalement non
+pt: Deixa pra lá
+@ui.yalnizca_gorsel_bir_kiyafet
+en: A purely cosmetic outfit.
+es: Ropa solo estética.
+de: Rein optische Kleidung.
+fr: Une tenue purement esthétique.
+pt: Roupa só visual.
+@ui.n_icin_dekoratif_esya
+en: Decorative item for the {0}.
+es: Objeto decorativo para: {0}.
+de: Dekoobjekt für: {0}.
+fr: Objet décoratif pour : {0}.
+pt: Item decorativo para: {0}.
+@ui.kaydi_disa_aktar_dosya_indirilmezse
+en: ⟦0⟧Export Save⟦1⟧⟦2⟧If the file doesn't download, copy the text below and keep it somewhere safe.⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧⟦7⟧Close⟦8⟧⟦9⟧Copy⟦10⟧⟦11⟧Download (.json)⟦12⟧⟦13⟧
+es: ⟦0⟧Exportar partida⟦1⟧⟦2⟧Si el archivo no se descarga, copia el texto de abajo y guárdalo en un lugar seguro.⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧⟦7⟧Cerrar⟦8⟧⟦9⟧Copiar⟦10⟧⟦11⟧Descargar (.json)⟦12⟧⟦13⟧
+de: ⟦0⟧Spielstand exportieren⟦1⟧⟦2⟧Wird die Datei nicht heruntergeladen, kopiere den Text unten und bewahre ihn sicher auf.⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧⟦7⟧Schließen⟦8⟧⟦9⟧Kopieren⟦10⟧⟦11⟧Herunterladen (.json)⟦12⟧⟦13⟧
+fr: ⟦0⟧Exporter la sauvegarde⟦1⟧⟦2⟧Si le fichier ne se télécharge pas, copie le texte ci-dessous et garde-le en lieu sûr.⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧⟦7⟧Fermer⟦8⟧⟦9⟧Copier⟦10⟧⟦11⟧Télécharger (.json)⟦12⟧⟦13⟧
+pt: ⟦0⟧Exportar Save⟦1⟧⟦2⟧Se o arquivo não baixar, copie o texto abaixo e guarde em um lugar seguro.⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧⟦7⟧Fechar⟦8⟧⟦9⟧Copiar⟦10⟧⟦11⟧Baixar (.json)⟦12⟧⟦13⟧
+@ui.kayit_dosyasi_hazirlandi
+en: Save file ready.
+es: Archivo de partida listo.
+de: Speicherdatei erstellt.
+fr: Fichier de sauvegarde prêt.
+pt: Arquivo de save pronto.
+@ui.indirme_desteklenmiyor_metni_kopyala
+en: Downloading isn't supported; copy the text.
+es: La descarga no es compatible; copia el texto.
+de: Herunterladen wird nicht unterstützt; kopiere den Text.
+fr: Téléchargement non pris en charge ; copie le texte.
+pt: Download não suportado; copie o texto.
+@ui.kopyalandi
+en: Copied.
+es: Copiado.
+de: Kopiert.
+fr: Copié.
+pt: Copiado.
+@ui.elle_secip_kopyala
+en: Select and copy it manually.
+es: Selecciónalo y cópialo a mano.
+de: Markiere und kopiere ihn von Hand.
+fr: Sélectionne-le et copie-le à la main.
+pt: Selecione e copie manualmente.
+@ui.kaydi_ice_aktar_bir_json
+en: ⟦0⟧Import Save⟦1⟧⟦2⟧Choose a .json file or paste the text. Your current save won't be overwritten without your confirmation.⟦3⟧⟦4⟧⟦5|Paste your JSON save here⟧⟦6⟧⟦7⟧⟦8⟧Cancel⟦9⟧⟦10⟧Import⟦11⟧⟦12⟧
+es: ⟦0⟧Importar partida⟦1⟧⟦2⟧Elige un archivo .json o pega el texto. La partida actual no se sobrescribe sin tu confirmación.⟦3⟧⟦4⟧⟦5|Pega aquí tu partida JSON⟧⟦6⟧⟦7⟧⟦8⟧Cancelar⟦9⟧⟦10⟧Importar⟦11⟧⟦12⟧
+de: ⟦0⟧Spielstand importieren⟦1⟧⟦2⟧Wähle eine .json-Datei oder füge den Text ein. Dein aktueller Spielstand wird nicht ohne deine Bestätigung überschrieben.⟦3⟧⟦4⟧⟦5|JSON-Spielstand hier einfügen⟧⟦6⟧⟦7⟧⟦8⟧Abbrechen⟦9⟧⟦10⟧Importieren⟦11⟧⟦12⟧
+fr: ⟦0⟧Importer une sauvegarde⟦1⟧⟦2⟧Choisis un fichier .json ou colle le texte. Ta sauvegarde actuelle ne sera pas écrasée sans ton accord.⟦3⟧⟦4⟧⟦5|Colle ta sauvegarde JSON ici⟧⟦6⟧⟦7⟧⟦8⟧Annuler⟦9⟧⟦10⟧Importer⟦11⟧⟦12⟧
+pt: ⟦0⟧Importar Save⟦1⟧⟦2⟧Escolha um arquivo .json ou cole o texto. O save atual não é substituído sem sua confirmação.⟦3⟧⟦4⟧⟦5|Cole aqui o seu save em JSON⟧⟦6⟧⟦7⟧⟦8⟧Cancelar⟦9⟧⟦10⟧Importar⟦11⟧⟦12⟧
+@ui.ice_aktarma_reddedildi_n
+en: Import rejected: {0}
+es: Importación rechazada: {0}
+de: Import abgelehnt: {0}
+fr: Importation refusée : {0}
+pt: Importação recusada: {0}
+@ui.kaydi_yukle
+en: Load this save?
+es: ¿Cargar esta partida?
+de: Diesen Spielstand laden?
+fr: Charger cette sauvegarde ?
+pt: Carregar este save?
+@ui.gun_n_para_n_n
+en: ⟦0⟧Day ⟦1⟧{0}⟦2⟧ · Coins ⟦3⟧{1}⟦4⟧ · {2} · {3} species · {4} {4|boat|boats}⟦5⟧⟦6⟧Your current game will be replaced by this save (the previous save is backed up once).⟦7⟧
+es: ⟦0⟧Día ⟦1⟧{0}⟦2⟧ · Dinero ⟦3⟧{1}⟦4⟧ · {2} · {3} especies · {4} {4|barco|barcos}⟦5⟧⟦6⟧Tu partida actual será sustituida por esta (la anterior se guarda una vez como copia).⟦7⟧
+de: ⟦0⟧Tag ⟦1⟧{0}⟦2⟧ · Münzen ⟦3⟧{1}⟦4⟧ · {2} · {3} Arten · {4} {4|Boot|Boote}⟦5⟧⟦6⟧Dein aktuelles Spiel wird durch diesen Spielstand ersetzt (der vorherige wird einmal gesichert).⟦7⟧
+fr: ⟦0⟧Jour ⟦1⟧{0}⟦2⟧ · Pièces ⟦3⟧{1}⟦4⟧ · {2} · {3} espèces · {4} {4|bateau|bateaux}⟦5⟧⟦6⟧Ta partie actuelle sera remplacée par cette sauvegarde (la précédente est conservée une fois).⟦7⟧
+pt: ⟦0⟧Dia ⟦1⟧{0}⟦2⟧ · Moedas ⟦3⟧{1}⟦4⟧ · {2} · {3} espécies · {4} {4|barco|barcos}⟦5⟧⟦6⟧Seu jogo atual será substituído por este save (o anterior fica guardado uma vez).⟦7⟧
+@ui.yukle
+en: Load
+es: Cargar
+de: Laden
+fr: Charger
+pt: Carregar
+@ui.kayit_yuklendi
+en: Save loaded.
+es: Partida cargada.
+de: Spielstand geladen.
+fr: Sauvegarde chargée.
+pt: Save carregado.
+@ui.once_bir_dosya_sec_ya
+en: Choose a file or paste the text first.
+es: Primero elige un archivo o pega el texto.
+de: Wähle zuerst eine Datei oder füge Text ein.
+fr: Choisis d'abord un fichier ou colle le texte.
+pt: Escolha um arquivo ou cole o texto primeiro.
+@ui.son_uyku_anindaki_yedek_gun
+en: The backup from your last sleep (Day {0}) will be loaded.
+es: Se cargará la copia de la última vez que dormiste (Día {0}).
+de: Die Sicherung vom letzten Schlafen (Tag {0}) wird geladen.
+fr: La copie de ton dernier sommeil (Jour {0}) va être chargée.
+pt: O backup da última vez que você dormiu (Dia {0}) será carregado.
+@ui.gecerli_bir_gun_yedegi_bulunamadi
+en: No valid day backup was found.
+es: No se encontró una copia de día válida.
+de: Keine gültige Tagessicherung gefunden.
+fr: Aucune copie de journée valide trouvée.
+pt: Nenhum backup de dia válido encontrado.
+@ui.yedekten_yukle
+en: Load from backup?
+es: ¿Cargar desde la copia?
+de: Aus der Sicherung laden?
+fr: Charger depuis la copie ?
+pt: Carregar do backup?
+@ui.senlige_ozel_kozmetik
+en: Festival-exclusive cosmetic.
+es: Cosmético exclusivo de la fiesta.
+de: Festexklusives Kosmetikobjekt.
+fr: Cosmétique exclusif de la fête.
+pt: Cosmético exclusivo do festival.
+@ui.n_balik_halil_usta_ya
+en: {0} fish sold to Master Halil: +{1}
+es: {0} {0|pez vendido|peces vendidos} al maestro Halil: +{1}
+de: {0} {0|Fisch|Fische} an Meister Halil verkauft: +{1}
+fr: {0} {0|poisson vendu|poissons vendus} à Maître Halil : +{1}
+pt: {0} {0|peixe vendido|peixes vendidos} ao Mestre Halil: +{1}
+@ui.yarisma_basladi_n_atis_hakkin
+en: The contest has begun! You have {0} casts. Your rivals are on the pier too.
+es: ¡Empieza el concurso! Tienes {0} lanzamientos. Tus rivales también están en el muelle.
+de: Der Wettbewerb läuft! Du hast {0} Würfe. Deine Rivalen sind auch am Steg.
+fr: Le concours commence ! Tu as {0} lancers. Tes rivaux sont aussi sur le ponton.
+pt: A competição começou! Você tem {0} arremessos. Seus rivais também estão no píer.
+@ui.n_n_kaydolmak_icin_kasabadaki
+en: {0}: {1}. Go to the Festival Square in town to sign up.
+es: {0}: {1}. Ve a la Plaza de las Fiestas del pueblo para apuntarte.
+de: {0}: {1}. Melde dich auf dem Festplatz im Ort an.
+fr: {0} : {1}. Va sur la Place des Fêtes du village pour t'inscrire.
+pt: {0}: {1}. Vá à Praça das Festas da vila para se inscrever.
+@ui.n_n_gun_sonra_basliyor
+en: {0} starts in {1} {1|day|days}.
+es: {0} empieza dentro de {1} {1|día|días}.
+de: {0} beginnt in {1} {1|Tag|Tagen}.
+fr: {0} commence dans {1} {1|jour|jours}.
+pt: {0} começa em {1} {1|dia|dias}.
+@ui.yaklasan_senlik
+en: Upcoming festival
+es: Próxima fiesta
+de: Nächstes Fest
+fr: Fête à venir
+pt: Próximo festival
+@ui2.n_n_n_n_n
+en: ⟦0⟧{0}{1}{2}{3}{4}{5}{6}{7}{8}⟦1⟧ ⟦2⟧Other⟦3⟧⟦4⟧{9}⟦5⟧{10} Photo⟦6⟧⟦7⟧{11} Save & Main Menu⟦8⟧⟦9⟧ ⟦10⟧Saving is automatic. Last save: revision #{12}{13}.⟦11⟧
+es: ⟦0⟧{0}{1}{2}{3}{4}{5}{6}{7}{8}⟦1⟧ ⟦2⟧Otros⟦3⟧⟦4⟧{9}⟦5⟧{10} Foto⟦6⟧⟦7⟧{11} Guardar y menú principal⟦8⟧⟦9⟧ ⟦10⟧Se guarda automáticamente. Último guardado: revisión n.º {12}{13}.⟦11⟧
+de: ⟦0⟧{0}{1}{2}{3}{4}{5}{6}{7}{8}⟦1⟧ ⟦2⟧Sonstiges⟦3⟧⟦4⟧{9}⟦5⟧{10} Foto⟦6⟧⟦7⟧{11} Speichern & Hauptmenü⟦8⟧⟦9⟧ ⟦10⟧Gespeichert wird automatisch. Letzter Stand: Revision #{12}{13}.⟦11⟧
+fr: ⟦0⟧{0}{1}{2}{3}{4}{5}{6}{7}{8}⟦1⟧ ⟦2⟧Autres⟦3⟧⟦4⟧{9}⟦5⟧{10} Photo⟦6⟧⟦7⟧{11} Sauvegarder et menu principal⟦8⟧⟦9⟧ ⟦10⟧La sauvegarde est automatique. Dernière sauvegarde : révision n° {12}{13}.⟦11⟧
+pt: ⟦0⟧{0}{1}{2}{3}{4}{5}{6}{7}{8}⟦1⟧ ⟦2⟧Outros⟦3⟧⟦4⟧{9}⟦5⟧{10} Foto⟦6⟧⟦7⟧{11} Salvar e Menu Principal⟦8⟧⟦9⟧ ⟦10⟧O jogo salva sozinho. Último save: revisão nº {12}{13}.⟦11⟧
+@ui2.balikci_defteri
+en: Angler's Journal
+es: Diario de pesca
+de: Anglertagebuch
+fr: Carnet de pêche
+pt: Diário de Pesca
+@ui2.sefer_plani
+en: Trip Plan
+es: Plan de salida
+de: Ausfahrtsplan
+fr: Plan de sortie
+pt: Plano de Viagem
+@ui2.ticaret
+en: Trade
+es: Comercio
+de: Handel
+fr: Commerce
+pt: Comércio
+@ui2.mali_gunluk
+en: Ledger
+es: Libro de cuentas
+de: Kassenbuch
+fr: Livre de comptes
+pt: Livro-caixa
+@ui2.kasabalilar
+en: Townsfolk
+es: Vecinos
+de: Ortsbewohner
+fr: Villageois
+pt: Moradores
+@ui2.rekorlar
+en: Records
+es: Récords
+de: Rekorde
+fr: Records
+pt: Recordes
+@ui2.eski_kayit_sema_n_guvenle
+en:  · old save (schema {0}) migrated safely
+es:  · partida antigua (esquema {0}) migrada con seguridad
+de:  · alter Spielstand (Schema {0}) sicher übernommen
+fr:  · ancienne sauvegarde (schéma {0}) migrée sans risque
+pt:  · save antigo (esquema {0}) migrado com segurança
+@ui2.n_n_28_olta_gucu
+en: ⟦0⟧{0} {1}/28 · Rod power {2} · Open regions: {3}⟦1⟧{4}⟦2⟧Suggestions are calculated from FishDB weights, bait/weather/season/distance/event multipliers and the rod-power filter.⟦3⟧
+es: ⟦0⟧{0} {1}/28 · Fuerza de caña {2} · Zonas abiertas: {3}⟦1⟧{4}⟦2⟧Las sugerencias se calculan con los pesos de FishDB, los multiplicadores de cebo/tiempo/estación/distancia/evento y el filtro de fuerza de la caña.⟦3⟧
+de: ⟦0⟧{0} {1}/28 · Angelstärke {2} · Offene Gebiete: {3}⟦1⟧{4}⟦2⟧Die Vorschläge beruhen auf FishDB-Gewichten, Köder-/Wetter-/Jahreszeit-/Entfernungs-/Ereignis-Faktoren und dem Angelstärkefilter.⟦3⟧
+fr: ⟦0⟧{0} {1}/28 · Force de canne {2} · Zones ouvertes : {3}⟦1⟧{4}⟦2⟧Les suggestions sont calculées à partir des poids FishDB, des multiplicateurs appât/météo/saison/distance/événement et du filtre de force de canne.⟦3⟧
+pt: ⟦0⟧{0} {1}/28 · Força da vara {2} · Regiões abertas: {3}⟦1⟧{4}⟦2⟧As sugestões usam os pesos do FishDB, os multiplicadores de isca/clima/estação/distância/evento e o filtro de força da vara.⟦3⟧
+@ui2.n_n_av_uygunlugu_n
+en: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧Catch suitability: {3}⟦5⟧⟦6⟧Region: ⟦7⟧{4}⟦8⟧ · Spot: ⟦9⟧{5}⟦10⟧ · Bait: ⟦11⟧{6}⟦12⟧ · Distance: ⟦13⟧{7}⟦14⟧ · Weather: {8}{9}{10}{11}⟦15⟧⟦16⟧When a fish bites, the chance it's this species is ≈ {12}% (not guaranteed)⟦17⟧⟦18⟧⟦19⟧{14} Target⟦20⟧⟦21⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧Idoneidad: {3}⟦5⟧⟦6⟧Zona: ⟦7⟧{4}⟦8⟧ · Punto: ⟦9⟧{5}⟦10⟧ · Cebo: ⟦11⟧{6}⟦12⟧ · Distancia: ⟦13⟧{7}⟦14⟧ · Tiempo: {8}{9}{10}{11}⟦15⟧⟦16⟧Cuando pica un pez, la probabilidad de que sea esta especie es ≈ {12} % (sin garantía)⟦17⟧⟦18⟧⟦19⟧{14} Objetivo⟦20⟧⟦21⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧Fangeignung: {3}⟦5⟧⟦6⟧Gebiet: ⟦7⟧{4}⟦8⟧ · Platz: ⟦9⟧{5}⟦10⟧ · Köder: ⟦11⟧{6}⟦12⟧ · Entfernung: ⟦13⟧{7}⟦14⟧ · Wetter: {8}{9}{10}{11}⟦15⟧⟦16⟧Beißt ein Fisch, ist es mit ≈ {12} % diese Art (keine Garantie)⟦17⟧⟦18⟧⟦19⟧{14} Ziel⟦20⟧⟦21⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧Adéquation : {3}⟦5⟧⟦6⟧Zone : ⟦7⟧{4}⟦8⟧ · Coin : ⟦9⟧{5}⟦10⟧ · Appât : ⟦11⟧{6}⟦12⟧ · Distance : ⟦13⟧{7}⟦14⟧ · Météo : {8}{9}{10}{11}⟦15⟧⟦16⟧Quand ça mord, la probabilité que ce soit cette espèce est ≈ {12} % (non garanti)⟦17⟧⟦18⟧⟦19⟧{14} Cible⟦20⟧⟦21⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ⟦4⟧Adequação: {3}⟦5⟧⟦6⟧Região: ⟦7⟧{4}⟦8⟧ · Ponto: ⟦9⟧{5}⟦10⟧ · Isca: ⟦11⟧{6}⟦12⟧ · Distância: ⟦13⟧{7}⟦14⟧ · Clima: {8}{9}{10}{11}⟦15⟧⟦16⟧Quando um peixe morde, a chance de ser esta espécie é ≈ {12}% (sem garantia)⟦17⟧⟦18⟧⟦19⟧{14} Meta⟦20⟧⟦21⟧
+@ui2.mevsimi
+en:  · in season
+es:  · de temporada
+de:  · Saison
+fr:  · de saison
+pt:  · da estação
+@ui2.sevdigi_hava
+en:  · favorite weather
+es:  · su tiempo favorito
+de:  · Lieblingswetter
+fr:  · sa météo préférée
+pt:  · clima favorito
+@ui2.gunun_olayi
+en:  · event of the day
+es:  · evento del día
+de:  · Ereignis des Tages
+fr:  · événement du jour
+pt:  · evento do dia
+@ui2.henuz_oneri_icin_yeterli_kesif
+en: ⟦0⟧Not enough discoveries for suggestions yet. Catch a few species first!⟦1⟧
+es: ⟦0⟧Aún no has descubierto lo suficiente para recibir sugerencias. ¡Pesca unas cuantas especies primero!⟦1⟧
+de: ⟦0⟧Noch zu wenig entdeckt für Vorschläge. Fang zuerst ein paar Arten!⟦1⟧
+fr: ⟦0⟧Pas encore assez de découvertes pour des suggestions. Attrape d'abord quelques espèces !⟦1⟧
+pt: ⟦0⟧Ainda não há descobertas suficientes para sugestões. Pesque algumas espécies primeiro!⟦1⟧
+@ui2.gun_n
+en: Day {0}
+es: Día {0}
+de: Tag {0}
+fr: Jour {0}
+pt: Dia {0}
+@ui2.n_n_n_ilk_n
+en: ⟦0⟧{1}⟦1⟧⟦2⟧{2}⟦3⟧ ⟦4⟧×{3}⟦5⟧⟦6⟧First: {4} · Last: {5} · Record {6} cm / {7} kg⟦7⟧⟦8⟧⟦9⟧{8}⟦10⟧⟦11⟧
+es: ⟦0⟧{1}⟦1⟧⟦2⟧{2}⟦3⟧ ⟦4⟧×{3}⟦5⟧⟦6⟧Primera: {4} · Última: {5} · Récord {6} cm / {7} kg⟦7⟧⟦8⟧⟦9⟧{8}⟦10⟧⟦11⟧
+de: ⟦0⟧{1}⟦1⟧⟦2⟧{2}⟦3⟧ ⟦4⟧×{3}⟦5⟧⟦6⟧Erster: {4} · Letzter: {5} · Rekord {6} cm / {7} kg⟦7⟧⟦8⟧⟦9⟧{8}⟦10⟧⟦11⟧
+fr: ⟦0⟧{1}⟦1⟧⟦2⟧{2}⟦3⟧ ⟦4⟧×{3}⟦5⟧⟦6⟧Première : {4} · Dernière : {5} · Record {6} cm / {7} kg⟦7⟧⟦8⟧⟦9⟧{8}⟦10⟧⟦11⟧
+pt: ⟦0⟧{1}⟦1⟧⟦2⟧{2}⟦3⟧ ⟦4⟧×{3}⟦5⟧⟦6⟧Primeira: {4} · Última: {5} · Recorde {6} cm / {7} kg⟦7⟧⟦8⟧⟦9⟧{8}⟦10⟧⟦11⟧
+@ui2.bilinmiyor
+en: Unknown
+es: Desconocido
+de: Unbekannt
+fr: Inconnu
+pt: Desconhecido
+@ui2.henuz_av_kaydin_yok
+en: ⟦0⟧No catch records yet.⟦1⟧
+es: ⟦0⟧Aún no tienes registros de pesca.⟦1⟧
+de: ⟦0⟧Noch keine Fangeinträge.⟦1⟧
+fr: ⟦0⟧Aucune prise enregistrée pour l'instant.⟦1⟧
+pt: ⟦0⟧Ainda não há registros de pesca.⟦1⟧
+@ui2.n_toplam_ustalik_n_21
+en: {0}⟦0⟧Total mastery: {1}/21 tiers.⟦1⟧
+es: {0}⟦0⟧Maestría total: {1}/21 niveles.⟦1⟧
+de: {0}⟦0⟧Meisterschaft gesamt: {1}/21 Stufen.⟦1⟧
+fr: {0}⟦0⟧Maîtrise totale : {1}/21 paliers.⟦1⟧
+pt: {0}⟦0⟧Maestria total: {1}/21 níveis.⟦1⟧
+@ui2.n_kesfedilen_n_n_n
+en: ⟦0⟧{0} ⟦1⟧Discovered: {1}/{2}⟦2⟧ {3}{4}{5}⟦3⟧⟦4⟧Bronze: visit 3 spots ({6}/3) · Silver: 6 species → poster · Gold: {7} species → boat ornament⟦5⟧⟦6⟧{8}⟦7⟧
+es: ⟦0⟧{0} ⟦1⟧Descubiertas: {1}/{2}⟦2⟧ {3}{4}{5}⟦3⟧⟦4⟧Bronce: visita 3 puntos ({6}/3) · Plata: 6 especies → póster · Oro: {7} especies → adorno de barco⟦5⟧⟦6⟧{8}⟦7⟧
+de: ⟦0⟧{0} ⟦1⟧Entdeckt: {1}/{2}⟦2⟧ {3}{4}{5}⟦3⟧⟦4⟧Bronze: 3 Plätze besuchen ({6}/3) · Silber: 6 Arten → Poster · Gold: {7} Arten → Bootsschmuck⟦5⟧⟦6⟧{8}⟦7⟧
+fr: ⟦0⟧{0} ⟦1⟧Découvertes : {1}/{2}⟦2⟧ {3}{4}{5}⟦3⟧⟦4⟧Bronze : visiter 3 coins ({6}/3) · Argent : 6 espèces → affiche · Or : {7} espèces → ornement de bateau⟦5⟧⟦6⟧{8}⟦7⟧
+pt: ⟦0⟧{0} ⟦1⟧Descobertas: {1}/{2}⟦2⟧ {3}{4}{5}⟦3⟧⟦4⟧Bronze: visite 3 pontos ({6}/3) · Prata: 6 espécies → pôster · Ouro: {7} espécies → enfeite de barco⟦5⟧⟦6⟧{8}⟦7⟧
+@ui2.n_n_guc_n
+en: ⟦0|{0} · power {1}⟧{2}⟦1⟧
+es: ⟦0|{0} · fuerza {1}⟧{2}⟦1⟧
+de: ⟦0|{0} · Stärke {1}⟧{2}⟦1⟧
+fr: ⟦0|{0} · force {1}⟧{2}⟦1⟧
+pt: ⟦0|{0} · força {1}⟧{2}⟦1⟧
+@ui2.hepsi_kesfedildi
+en: ⟦0⟧All discovered!⟦1⟧
+es: ⟦0⟧¡Todo descubierto!⟦1⟧
+de: ⟦0⟧Alles entdeckt!⟦1⟧
+fr: ⟦0⟧Tout est découvert !⟦1⟧
+pt: ⟦0⟧Tudo descoberto!⟦1⟧
+@ui2.n_defter_favorileri_yalnizca_av
+en: {0}⟦0⟧Journal favorites are only for trip planning; they're unrelated to sale protection (★ in the inventory).⟦1⟧
+es: {0}⟦0⟧Los favoritos del diario son solo para planear; no tienen que ver con la protección de venta (★ del inventario).⟦1⟧
+de: {0}⟦0⟧Tagebuch-Favoriten dienen nur der Planung und haben nichts mit dem Verkaufsschutz (★ im Inventar) zu tun.⟦1⟧
+fr: {0}⟦0⟧Les favoris du carnet servent seulement à planifier ; ils n'ont rien à voir avec la protection de vente (★ de l'inventaire).⟦1⟧
+pt: {0}⟦0⟧Os favoritos do diário servem só para planejar; não têm relação com a proteção de venda (★ do inventário).⟦1⟧
+@ui2.n_n_n_sefer_planina
+en: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2}⟦5⟧⟦6⟧⟦7⟧Add to Trip Plan⟦8⟧⟦9⟧Remove⟦10⟧⟦11⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2}⟦5⟧⟦6⟧⟦7⟧Añadir al plan⟦8⟧⟦9⟧Quitar⟦10⟧⟦11⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2}⟦5⟧⟦6⟧⟦7⟧Zum Ausfahrtsplan⟦8⟧⟦9⟧Entfernen⟦10⟧⟦11⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2}⟦5⟧⟦6⟧⟦7⟧Ajouter au plan⟦8⟧⟦9⟧Retirer⟦10⟧⟦11⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧⟦4⟧{2}⟦5⟧⟦6⟧⟦7⟧Adicionar ao Plano⟦8⟧⟦9⟧Remover⟦10⟧⟦11⟧
+@ui2.defter_favorin_yok_tur_kartindan
+en: ⟦0⟧No journal favorites. You can star them from a species card.⟦1⟧
+es: ⟦0⟧No tienes favoritos en el diario. Puedes marcarlos con la estrella en la ficha de especie.⟦1⟧
+de: ⟦0⟧Keine Tagebuch-Favoriten. Markiere sie mit dem Stern auf der Artenkarte.⟦1⟧
+fr: ⟦0⟧Aucun favori dans le carnet. Ajoute-les avec l'étoile depuis la fiche d'espèce.⟦1⟧
+pt: ⟦0⟧Nenhum favorito no diário. Marque com a estrela na ficha da espécie.⟦1⟧
+@ui2.tur_rehberi
+en: Species Guide
+es: Guía de especies
+de: Artenführer
+fr: Guide des espèces
+pt: Guia de Espécies
+@ui2.bugunku_av
+en: Today's Fishing
+es: Pesca de hoy
+de: Heutiger Fang
+fr: Pêche du jour
+pt: Pesca de Hoje
+@ui2.av_kayitlari
+en: Catch Log
+es: Registro de capturas
+de: Fangbuch
+fr: Journal des prises
+pt: Registro de Capturas
+@ui2.eksik_turler
+en: Missing Species
+es: Especies que faltan
+de: Fehlende Arten
+fr: Espèces manquantes
+pt: Espécies que Faltam
+@ui2.favoriler
+en: Favorites
+es: Favoritos
+de: Favoriten
+fr: Favoris
+pt: Favoritos
+@ui2.defter_n_n_n_sularinda
+en: ⟦0⟧← Journal⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧{2} waters · power {3}⟦7⟧⟦8⟧⟦9⟧{5} Target favorite⟦10⟧⟦11⟧Add to Trip Plan⟦12⟧⟦13⟧
+es: ⟦0⟧← Diario⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧Aguas de {2} · fuerza {3}⟦7⟧⟦8⟧⟦9⟧{5} Favorito objetivo⟦10⟧⟦11⟧Añadir al plan⟦12⟧⟦13⟧
+de: ⟦0⟧← Tagebuch⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧Gewässer: {2} · Stärke {3}⟦7⟧⟦8⟧⟦9⟧{5} Zielfavorit⟦10⟧⟦11⟧Zum Ausfahrtsplan⟦12⟧⟦13⟧
+fr: ⟦0⟧← Carnet⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧Eaux de {2} · force {3}⟦7⟧⟦8⟧⟦9⟧{5} Favori ciblé⟦10⟧⟦11⟧Ajouter au plan⟦12⟧⟦13⟧
+pt: ⟦0⟧← Diário⟦1⟧⟦2⟧{0}⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧Águas de {2} · força {3}⟦7⟧⟦8⟧⟦9⟧{5} Favorito-alvo⟦10⟧⟦11⟧Adicionar ao Plano⟦12⟧⟦13⟧
+@ui2.n_bu_turu_henuz_yakalamadin
+en: {0}⟦0⟧You haven't caught this species yet; details unlock with your first catch.⟦1⟧
+es: {0}⟦0⟧Aún no has pescado esta especie; los datos se desbloquean con la primera captura.⟦1⟧
+de: {0}⟦0⟧Diese Art hast du noch nicht gefangen; Details gibt es nach dem ersten Fang.⟦1⟧
+fr: {0}⟦0⟧Tu n'as pas encore attrapé cette espèce ; les infos se débloquent à la première prise.⟦1⟧
+pt: {0}⟦0⟧Você ainda não pescou esta espécie; os dados liberam na primeira captura.⟦1⟧
+@ui2.n_n_taban_n
+en: {0} ⟦0⟧({1}, base {2}%)⟦1⟧
+es: {0} ⟦0⟧({1}, base {2} %)⟦1⟧
+de: {0} ⟦0⟧({1}, Basis {2} %)⟦1⟧
+fr: {0} ⟦0⟧({1}, base {2} %)⟦1⟧
+pt: {0} ⟦0⟧({1}, base {2}%)⟦1⟧
+@ui2.fiyat_n_guc_n_mucadele
+en: ⟦0⟧⟦1⟧⟦2⟧Price⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧⟦7⟧⟦8⟧Power⟦9⟧⟦10⟧{1}⟦11⟧⟦12⟧⟦13⟧⟦14⟧Fight⟦15⟧⟦16⟧{2}⟦17⟧⟦18⟧⟦19⟧⟦20⟧Best bait⟦21⟧⟦22⟧{3}⟦23⟧⟦24⟧⟦25⟧⟦26⟧Distance⟦27⟧⟦28⟧{4}⟦29⟧⟦30⟧⟦31⟧⟦32⟧Weather / season⟦33⟧⟦34⟧{5} / {6}⟦35⟧⟦36⟧⟦37⟧⟦38⟧Fishing spots: {7}⟦39⟧
+es: ⟦0⟧⟦1⟧⟦2⟧Precio⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧⟦7⟧⟦8⟧Fuerza⟦9⟧⟦10⟧{1}⟦11⟧⟦12⟧⟦13⟧⟦14⟧Pelea⟦15⟧⟦16⟧{2}⟦17⟧⟦18⟧⟦19⟧⟦20⟧Cebo ideal⟦21⟧⟦22⟧{3}⟦23⟧⟦24⟧⟦25⟧⟦26⟧Distancia⟦27⟧⟦28⟧{4}⟦29⟧⟦30⟧⟦31⟧⟦32⟧Tiempo / estación⟦33⟧⟦34⟧{5} / {6}⟦35⟧⟦36⟧⟦37⟧⟦38⟧Zonas de pesca: {7}⟦39⟧
+de: ⟦0⟧⟦1⟧⟦2⟧Preis⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧⟦7⟧⟦8⟧Stärke⟦9⟧⟦10⟧{1}⟦11⟧⟦12⟧⟦13⟧⟦14⟧Drill⟦15⟧⟦16⟧{2}⟦17⟧⟦18⟧⟦19⟧⟦20⟧Bester Köder⟦21⟧⟦22⟧{3}⟦23⟧⟦24⟧⟦25⟧⟦26⟧Entfernung⟦27⟧⟦28⟧{4}⟦29⟧⟦30⟧⟦31⟧⟦32⟧Wetter / Jahreszeit⟦33⟧⟦34⟧{5} / {6}⟦35⟧⟦36⟧⟦37⟧⟦38⟧Angelplätze: {7}⟦39⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧Prix⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧⟦7⟧⟦8⟧Force⟦9⟧⟦10⟧{1}⟦11⟧⟦12⟧⟦13⟧⟦14⟧Combat⟦15⟧⟦16⟧{2}⟦17⟧⟦18⟧⟦19⟧⟦20⟧Appât idéal⟦21⟧⟦22⟧{3}⟦23⟧⟦24⟧⟦25⟧⟦26⟧Distance⟦27⟧⟦28⟧{4}⟦29⟧⟦30⟧⟦31⟧⟦32⟧Météo / saison⟦33⟧⟦34⟧{5} / {6}⟦35⟧⟦36⟧⟦37⟧⟦38⟧Coins de pêche : {7}⟦39⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧Preço⟦3⟧⟦4⟧{0}⟦5⟧⟦6⟧⟦7⟧⟦8⟧Força⟦9⟧⟦10⟧{1}⟦11⟧⟦12⟧⟦13⟧⟦14⟧Briga⟦15⟧⟦16⟧{2}⟦17⟧⟦18⟧⟦19⟧⟦20⟧Isca ideal⟦21⟧⟦22⟧{3}⟦23⟧⟦24⟧⟦25⟧⟦26⟧Distância⟦27⟧⟦28⟧{4}⟦29⟧⟦30⟧⟦31⟧⟦32⟧Clima / estação⟦33⟧⟦34⟧{5} / {6}⟦35⟧⟦36⟧⟦37⟧⟦38⟧Pontos de pesca: {7}⟦39⟧

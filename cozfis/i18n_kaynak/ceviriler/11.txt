@@ -1,0 +1,402 @@
+@ui.global_yukseltme
+en: global upgrade
+es: mejora global
+de: globaler Ausbau
+fr: amélioration globale
+pt: melhoria global
+@ui.satin_al_n_4
+en: ⟦0⟧Buy {2}⟦1⟧
+es: ⟦0⟧Comprar {2}⟦1⟧
+de: ⟦0⟧Kaufen {2}⟦1⟧
+fr: ⟦0⟧Acheter {2}⟦1⟧
+pt: ⟦0⟧Comprar {2}⟦1⟧
+@ui.n_tekne_donanimi_paneli_n
+en: ⟦0⟧⟦1⟧{0} Boat Outfitting panel⟦2⟧⟦3⟧{1}
+es: ⟦0⟧⟦1⟧{0} Panel de equipamiento del barco⟦2⟧⟦3⟧{1}
+de: ⟦0⟧⟦1⟧{0} Bootsausstattung⟦2⟧⟦3⟧{1}
+fr: ⟦0⟧⟦1⟧{0} Panneau d'équipement du bateau⟦2⟧⟦3⟧{1}
+pt: ⟦0⟧⟦1⟧{0} Painel de Equipamento do Barco⟦2⟧⟦3⟧{1}
+@ui.otomatik_oltalar_yalnizca_denizde_sen
+en: ⟦0⟧Auto rods only work at sea and only advance as you make valid manual casts; they don't produce fish offline or while you wait. Each try uses 1 paid bait. Power 5 fish are always manual. All devices together can make at most 6 successful catches per day.⟦1⟧
+es: ⟦0⟧Las cañas automáticas solo funcionan en el mar y avanzan a medida que haces lanzamientos manuales válidos; no generan peces sin conexión ni mientras esperas. Cada intento gasta 1 cebo de pago. Los peces de fuerza 5 siempre son manuales. Entre todos los dispositivos, como máximo 6 capturas al día.⟦1⟧
+de: ⟦0⟧Auto-Angeln arbeiten nur auf See und nur, während du gültige Handwürfe machst; offline oder beim Warten fangen sie nichts. Jeder Versuch kostet 1 gekauften Köder. Fische der Stärke 5 sind immer Handarbeit. Alle Geräte zusammen schaffen höchstens 6 Fänge pro Tag.⟦1⟧
+fr: ⟦0⟧Les cannes auto ne fonctionnent qu'en mer et n'avancent que pendant tes lancers manuels valides ; elles ne produisent rien hors ligne ou en attendant. Chaque essai coûte 1 appât payant. Les poissons de force 5 sont toujours manuels. Tous appareils confondus : 6 prises réussies max par jour.⟦1⟧
+pt: ⟦0⟧As varas automáticas só funcionam no mar e só avançam enquanto você faz arremessos manuais válidos; não geram peixe offline nem esperando. Cada tentativa gasta 1 isca paga. Peixes de força 5 são sempre manuais. Somando todos os dispositivos, no máximo 6 capturas por dia.⟦1⟧
+@ui.govde_rengi_n_isim_levhasi
+en: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Hull color⟦4⟧⟦5⟧{1}⟦6⟧ ⟦7⟧Nameplate⟦8⟧⟦9⟧⟦10|E.G. GULL⟧⟦11⟧Save⟦12⟧⟦13⟧⟦14⟧The look is saved to this boat. Engine, storage, navigation and hull upgrades show up in the scene.⟦15⟧
+es: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Color del casco⟦4⟧⟦5⟧{1}⟦6⟧ ⟦7⟧Placa del nombre⟦8⟧⟦9⟧⟦10|P. EJ. GAVIOTA⟧⟦11⟧Guardar⟦12⟧⟦13⟧⟦14⟧El aspecto se guarda en este barco. Las mejoras de motor, bodega, navegación y casco se ven en la escena.⟦15⟧
+de: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Rumpffarbe⟦4⟧⟦5⟧{1}⟦6⟧ ⟦7⟧Namensschild⟦8⟧⟦9⟧⟦10|Z. B. MÖWE⟧⟦11⟧Speichern⟦12⟧⟦13⟧⟦14⟧Das Aussehen wird für dieses Boot gespeichert. Motor-, Laderaum-, Navigations- und Rumpfausbauten sieht man in der Szene.⟦15⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Couleur de la coque⟦4⟧⟦5⟧{1}⟦6⟧ ⟦7⟧Plaque du nom⟦8⟧⟦9⟧⟦10|EX. MOUETTE⟧⟦11⟧Enregistrer⟦12⟧⟦13⟧⟦14⟧L'apparence est enregistrée pour ce bateau. Les améliorations de moteur, cale, navigation et coque sont visibles dans la scène.⟦15⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧Cor do casco⟦4⟧⟦5⟧{1}⟦6⟧ ⟦7⟧Placa do nome⟦8⟧⟦9⟧⟦10|EX. GAIVOTA⟧⟦11⟧Salvar⟦12⟧⟦13⟧⟦14⟧A aparência fica salva neste barco. As melhorias de motor, porão, navegação e casco aparecem na cena.⟦15⟧
+@ui.kilit_n_2
+en: ⟦0⟧Locked: {0}⟦1⟧
+es: ⟦0⟧Bloqueado: {0}⟦1⟧
+de: ⟦0⟧Gesperrt: {0}⟦1⟧
+fr: ⟦0⟧Verrouillé : {0}⟦1⟧
+pt: ⟦0⟧Bloqueado: {0}⟦1⟧
+@ui.uygula
+en: ⟦0⟧Apply⟦1⟧
+es: ⟦0⟧Aplicar⟦1⟧
+de: ⟦0⟧Anwenden⟦1⟧
+fr: ⟦0⟧Appliquer⟦1⟧
+pt: ⟦0⟧Aplicar⟦1⟧
+@ui.kilitli
+en: ⟦0⟧Locked⟦1⟧
+es: ⟦0⟧Bloqueado⟦1⟧
+de: ⟦0⟧Gesperrt⟦1⟧
+fr: ⟦0⟧Verrouillé⟦1⟧
+pt: ⟦0⟧Bloqueado⟦1⟧
+@ui.tekneler
+en: Boats
+es: Barcos
+de: Boote
+fr: Bateaux
+pt: Barcos
+@ui.yukseltmeler
+en: Upgrades
+es: Mejoras
+de: Ausbauten
+fr: Améliorations
+pt: Melhorias
+@ui.gorunum
+en: Appearance
+es: Aspecto
+de: Aussehen
+fr: Apparence
+pt: Aparência
+@ui.tekne_donanimi
+en: Boat Outfitting
+es: Equipamiento del barco
+de: Bootsausstattung
+fr: Équipement du bateau
+pt: Equipamento do Barco
+@ui.bilinmeyen_tur
+en: Unknown species
+es: Especie desconocida
+de: Unbekannte Art
+fr: Espèce inconnue
+pt: Espécie desconhecida
+@ui.liste_n
+en: ⟦0⟧← List⟦1⟧⟦2⟧⟦3⟧⟦4⟧ {2}
+es: ⟦0⟧← Lista⟦1⟧⟦2⟧⟦3⟧⟦4⟧ {2}
+de: ⟦0⟧← Liste⟦1⟧⟦2⟧⟦3⟧⟦4⟧ {2}
+fr: ⟦0⟧← Liste⟦1⟧⟦2⟧⟦3⟧⟦4⟧ {2}
+pt: ⟦0⟧← Lista⟦1⟧⟦2⟧⟦3⟧⟦4⟧ {2}
+@ui.n_bolge_n_guc_n
+en: ⟦0⟧{0}⟦1⟧⟦2⟧⟦3⟧⟦4⟧Region⟦5⟧⟦6⟧{1}⟦7⟧⟦8⟧⟦9⟧⟦10⟧Power⟦11⟧⟦12⟧{2}⟦13⟧⟦14⟧⟦15⟧⟦16⟧Minimum rod⟦17⟧⟦18⟧Power {3}⟦19⟧⟦20⟧⟦21⟧⟦22⟧Base price⟦23⟧⟦24⟧{4}⟦25⟧⟦26⟧⟦27⟧⟦28⟧Best bait⟦29⟧⟦30⟧{5}⟦31⟧⟦32⟧⟦33⟧⟦34⟧Cast distance⟦35⟧⟦36⟧{6}⟦37⟧⟦38⟧⟦39⟧⟦40⟧Favorite weather⟦41⟧⟦42⟧{7}⟦43⟧⟦44⟧⟦45⟧⟦46⟧Season⟦47⟧⟦48⟧{8}⟦49⟧⟦50⟧⟦51⟧⟦52⟧Caught⟦53⟧⟦54⟧{9}⟦55⟧⟦56⟧⟦57⟧⟦58⟧Length record⟦59⟧⟦60⟧{10} cm⟦61⟧⟦62⟧⟦63⟧⟦64⟧Weight record⟦65⟧⟦66⟧{11} kg⟦67⟧⟦68⟧⟦69⟧⟦70⟧Length range⟦71⟧⟦72⟧{12} cm⟦73⟧⟦74⟧⟦75⟧⟦76⟧Fight⟦77⟧⟦78⟧{13}⟦79⟧⟦80⟧⟦81⟧⟦82⟧Fishing spots: {14}⟦83⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧⟦3⟧⟦4⟧Zona⟦5⟧⟦6⟧{1}⟦7⟧⟦8⟧⟦9⟧⟦10⟧Fuerza⟦11⟧⟦12⟧{2}⟦13⟧⟦14⟧⟦15⟧⟦16⟧Caña mínima⟦17⟧⟦18⟧Fuerza {3}⟦19⟧⟦20⟧⟦21⟧⟦22⟧Precio base⟦23⟧⟦24⟧{4}⟦25⟧⟦26⟧⟦27⟧⟦28⟧Cebo ideal⟦29⟧⟦30⟧{5}⟦31⟧⟦32⟧⟦33⟧⟦34⟧Distancia⟦35⟧⟦36⟧{6}⟦37⟧⟦38⟧⟦39⟧⟦40⟧Tiempo favorito⟦41⟧⟦42⟧{7}⟦43⟧⟦44⟧⟦45⟧⟦46⟧Estación⟦47⟧⟦48⟧{8}⟦49⟧⟦50⟧⟦51⟧⟦52⟧Capturas⟦53⟧⟦54⟧{9}⟦55⟧⟦56⟧⟦57⟧⟦58⟧Récord de longitud⟦59⟧⟦60⟧{10} cm⟦61⟧⟦62⟧⟦63⟧⟦64⟧Récord de peso⟦65⟧⟦66⟧{11} kg⟦67⟧⟦68⟧⟦69⟧⟦70⟧Rango de longitud⟦71⟧⟦72⟧{12} cm⟦73⟧⟦74⟧⟦75⟧⟦76⟧Pelea⟦77⟧⟦78⟧{13}⟦79⟧⟦80⟧⟦81⟧⟦82⟧Zonas de pesca: {14}⟦83⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧⟦3⟧⟦4⟧Gebiet⟦5⟧⟦6⟧{1}⟦7⟧⟦8⟧⟦9⟧⟦10⟧Stärke⟦11⟧⟦12⟧{2}⟦13⟧⟦14⟧⟦15⟧⟦16⟧Mindestangel⟦17⟧⟦18⟧Stärke {3}⟦19⟧⟦20⟧⟦21⟧⟦22⟧Grundpreis⟦23⟧⟦24⟧{4}⟦25⟧⟦26⟧⟦27⟧⟦28⟧Bester Köder⟦29⟧⟦30⟧{5}⟦31⟧⟦32⟧⟦33⟧⟦34⟧Wurfweite⟦35⟧⟦36⟧{6}⟦37⟧⟦38⟧⟦39⟧⟦40⟧Lieblingswetter⟦41⟧⟦42⟧{7}⟦43⟧⟦44⟧⟦45⟧⟦46⟧Jahreszeit⟦47⟧⟦48⟧{8}⟦49⟧⟦50⟧⟦51⟧⟦52⟧Gefangen⟦53⟧⟦54⟧{9}⟦55⟧⟦56⟧⟦57⟧⟦58⟧Längenrekord⟦59⟧⟦60⟧{10} cm⟦61⟧⟦62⟧⟦63⟧⟦64⟧Gewichtsrekord⟦65⟧⟦66⟧{11} kg⟦67⟧⟦68⟧⟦69⟧⟦70⟧Längenbereich⟦71⟧⟦72⟧{12} cm⟦73⟧⟦74⟧⟦75⟧⟦76⟧Drill⟦77⟧⟦78⟧{13}⟦79⟧⟦80⟧⟦81⟧⟦82⟧Angelplätze: {14}⟦83⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧⟦3⟧⟦4⟧Zone⟦5⟧⟦6⟧{1}⟦7⟧⟦8⟧⟦9⟧⟦10⟧Force⟦11⟧⟦12⟧{2}⟦13⟧⟦14⟧⟦15⟧⟦16⟧Canne minimale⟦17⟧⟦18⟧Force {3}⟦19⟧⟦20⟧⟦21⟧⟦22⟧Prix de base⟦23⟧⟦24⟧{4}⟦25⟧⟦26⟧⟦27⟧⟦28⟧Appât idéal⟦29⟧⟦30⟧{5}⟦31⟧⟦32⟧⟦33⟧⟦34⟧Distance⟦35⟧⟦36⟧{6}⟦37⟧⟦38⟧⟦39⟧⟦40⟧Météo préférée⟦41⟧⟦42⟧{7}⟦43⟧⟦44⟧⟦45⟧⟦46⟧Saison⟦47⟧⟦48⟧{8}⟦49⟧⟦50⟧⟦51⟧⟦52⟧Prises⟦53⟧⟦54⟧{9}⟦55⟧⟦56⟧⟦57⟧⟦58⟧Record de taille⟦59⟧⟦60⟧{10} cm⟦61⟧⟦62⟧⟦63⟧⟦64⟧Record de poids⟦65⟧⟦66⟧{11} kg⟦67⟧⟦68⟧⟦69⟧⟦70⟧Plage de taille⟦71⟧⟦72⟧{12} cm⟦73⟧⟦74⟧⟦75⟧⟦76⟧Combat⟦77⟧⟦78⟧{13}⟦79⟧⟦80⟧⟦81⟧⟦82⟧Coins de pêche : {14}⟦83⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧⟦3⟧⟦4⟧Região⟦5⟧⟦6⟧{1}⟦7⟧⟦8⟧⟦9⟧⟦10⟧Força⟦11⟧⟦12⟧{2}⟦13⟧⟦14⟧⟦15⟧⟦16⟧Vara mínima⟦17⟧⟦18⟧Força {3}⟦19⟧⟦20⟧⟦21⟧⟦22⟧Preço base⟦23⟧⟦24⟧{4}⟦25⟧⟦26⟧⟦27⟧⟦28⟧Isca ideal⟦29⟧⟦30⟧{5}⟦31⟧⟦32⟧⟦33⟧⟦34⟧Distância⟦35⟧⟦36⟧{6}⟦37⟧⟦38⟧⟦39⟧⟦40⟧Clima favorito⟦41⟧⟦42⟧{7}⟦43⟧⟦44⟧⟦45⟧⟦46⟧Estação⟦47⟧⟦48⟧{8}⟦49⟧⟦50⟧⟦51⟧⟦52⟧Capturas⟦53⟧⟦54⟧{9}⟦55⟧⟦56⟧⟦57⟧⟦58⟧Recorde de tamanho⟦59⟧⟦60⟧{10} cm⟦61⟧⟦62⟧⟦63⟧⟦64⟧Recorde de peso⟦65⟧⟦66⟧{11} kg⟦67⟧⟦68⟧⟦69⟧⟦70⟧Faixa de tamanho⟦71⟧⟦72⟧{12} cm⟦73⟧⟦74⟧⟦75⟧⟦76⟧Briga⟦77⟧⟦78⟧{13}⟦79⟧⟦80⟧⟦81⟧⟦82⟧Pontos de pesca: {14}⟦83⟧
+@ui.bu_turu_henuz_yakalamadin_ipucu
+en: ⟦0⟧You haven't caught this species yet. Hint: it lives in the waters of {0}. Power {1}.⟦1⟧
+es: ⟦0⟧Aún no has pescado esta especie. Pista: vive en las aguas de {0}. Fuerza {1}.⟦1⟧
+de: ⟦0⟧Diese Art hast du noch nicht gefangen. Tipp: Sie lebt in den Gewässern von {0}. Stärke {1}.⟦1⟧
+fr: ⟦0⟧Tu n'as pas encore attrapé cette espèce. Indice : elle vit dans les eaux de {0}. Force {1}.⟦1⟧
+pt: ⟦0⟧Você ainda não pescou esta espécie. Dica: ela vive nas águas de {0}. Força {1}.⟦1⟧
+@ui.balik_ansiklopedisi
+en: Fish Encyclopedia
+es: Enciclopedia de peces
+de: Fischlexikon
+fr: Encyclopédie des poissons
+pt: Enciclopédia de Peixes
+@ui.kesif_n_n_tur_n
+en: ⟦0⟧Discovered: ⟦1⟧{0}/{1}⟦2⟧ species⟦3⟧{2}
+es: ⟦0⟧Descubiertas: ⟦1⟧{0}/{1}⟦2⟧ especies⟦3⟧{2}
+de: ⟦0⟧Entdeckt: ⟦1⟧{0}/{1}⟦2⟧ Arten⟦3⟧{2}
+fr: ⟦0⟧Découvertes : ⟦1⟧{0}/{1}⟦2⟧ espèces⟦3⟧{2}
+pt: ⟦0⟧Descobertas: ⟦1⟧{0}/{1}⟦2⟧ espécies⟦3⟧{2}
+@ui.n_acilan_n_n_n
+en: ⟦0⟧{0} Unlocked: ⟦1⟧{1}/{2}⟦2⟧⟦3⟧{3}
+es: ⟦0⟧{0} Desbloqueados: ⟦1⟧{1}/{2}⟦2⟧⟦3⟧{3}
+de: ⟦0⟧{0} Freigeschaltet: ⟦1⟧{1}/{2}⟦2⟧⟦3⟧{3}
+fr: ⟦0⟧{0} Débloqués : ⟦1⟧{1}/{2}⟦2⟧⟦3⟧{3}
+pt: ⟦0⟧{0} Desbloqueadas: ⟦1⟧{1}/{2}⟦2⟧⟦3⟧{3}
+@ui.odul_n
+en: ⟦0⟧Reward: {0}⟦1⟧
+es: ⟦0⟧Recompensa: {0}⟦1⟧
+de: ⟦0⟧Belohnung: {0}⟦1⟧
+fr: ⟦0⟧Récompense : {0}⟦1⟧
+pt: ⟦0⟧Recompensa: {0}⟦1⟧
+@ui.gun_n
+en: ⟦0⟧Day {0}⟦1⟧
+es: ⟦0⟧Día {0}⟦1⟧
+de: ⟦0⟧Tag {0}⟦1⟧
+fr: ⟦0⟧Jour {0}⟦1⟧
+pt: ⟦0⟧Dia {0}⟦1⟧
+@ui.n_yil_n_n
+en: {0} (Year {1}, {2})
+es: {0} (Año {1}, {2})
+de: {0} (Jahr {1}, {2})
+fr: {0} (An {1}, {2})
+pt: {0} (Ano {1}, {2})
+@ui.n_n_n_n_n_5
+en: ⟦0⟧{0}{1}{2} {3}{4}{5}{6}{7}{8}{9}{10}{11}{12} {13}{14}{15}{16}{17}{18}{19} {20}{21}{22}{23}{24}{25}{26}{27}{28}⟦1⟧ ⟦2⟧⟦3⟧{29} Encyclopedia⟦4⟧⟦5⟧{30} Achievements⟦6⟧⟦7⟧
+es: ⟦0⟧{0}{1}{2} {3}{4}{5}{6}{7}{8}{9}{10}{11}{12} {13}{14}{15}{16}{17}{18}{19} {20}{21}{22}{23}{24}{25}{26}{27}{28}⟦1⟧ ⟦2⟧⟦3⟧{29} Enciclopedia⟦4⟧⟦5⟧{30} Logros⟦6⟧⟦7⟧
+de: ⟦0⟧{0}{1}{2} {3}{4}{5}{6}{7}{8}{9}{10}{11}{12} {13}{14}{15}{16}{17}{18}{19} {20}{21}{22}{23}{24}{25}{26}{27}{28}⟦1⟧ ⟦2⟧⟦3⟧{29} Lexikon⟦4⟧⟦5⟧{30} Erfolge⟦6⟧⟦7⟧
+fr: ⟦0⟧{0}{1}{2} {3}{4}{5}{6}{7}{8}{9}{10}{11}{12} {13}{14}{15}{16}{17}{18}{19} {20}{21}{22}{23}{24}{25}{26}{27}{28}⟦1⟧ ⟦2⟧⟦3⟧{29} Encyclopédie⟦4⟧⟦5⟧{30} Succès⟦6⟧⟦7⟧
+pt: ⟦0⟧{0}{1}{2} {3}{4}{5}{6}{7}{8}{9}{10}{11}{12} {13}{14}{15}{16}{17}{18}{19} {20}{21}{22}{23}{24}{25}{26}{27}{28}⟦1⟧ ⟦2⟧⟦3⟧{29} Enciclopédia⟦4⟧⟦5⟧{30} Conquistas⟦6⟧⟦7⟧
+@ui.gun
+en: Day
+es: Día
+de: Tag
+fr: Jour
+pt: Dia
+@ui.tamamlanan_gun
+en: Days completed
+es: Días completados
+de: Abgeschlossene Tage
+fr: Jours terminés
+pt: Dias concluídos
+@ui.para
+en: Coins
+es: Dinero
+de: Münzen
+fr: Pièces
+pt: Moedas
+@ui.manuel_atis
+en: Manual casts
+es: Lanzamientos manuales
+de: Handwürfe
+fr: Lancers manuels
+pt: Arremessos manuais
+@ui.manuel_av
+en: Manual catches
+es: Capturas manuales
+de: Handfänge
+fr: Prises manuelles
+pt: Capturas manuais
+@ui.otomatik_av
+en: Auto catches
+es: Capturas automáticas
+de: Auto-Fänge
+fr: Prises auto
+pt: Capturas automáticas
+@ui.otomatik_deneme
+en: Auto attempts
+es: Intentos automáticos
+de: Auto-Versuche
+fr: Essais auto
+pt: Tentativas automáticas
+@ui.vurmayan
+en: No bite
+es: Sin picada
+de: Kein Biss
+fr: Sans touche
+pt: Sem fisgada
+@ui.kacirilan_vurus
+en: Missed bites
+es: Picadas perdidas
+de: Verpasste Bisse
+fr: Touches manquées
+pt: Fisgadas perdidas
+@ui.kopan_misina
+en: Snapped lines
+es: Sedales rotos
+de: Gerissene Schnüre
+fr: Lignes cassées
+pt: Linhas arrebentadas
+@ui.kacan_balik
+en: Escaped fish
+es: Peces escapados
+de: Entkommene Fische
+fr: Poissons échappés
+pt: Peixes que fugiram
+@ui.serbest_birakilan
+en: Released
+es: Liberados
+de: Freigelassen
+fr: Relâchés
+pt: Soltos
+@ui.iptal_edilen_atis
+en: Canceled casts
+es: Lanzamientos cancelados
+de: Abgebrochene Würfe
+fr: Lancers annulés
+pt: Arremessos cancelados
+@ui.n_balik
+en: {0} fish
+es: {0} {0|pez|peces}
+de: {0} {0|Fisch|Fische}
+fr: {0} {0|poisson|poissons}
+pt: {0} {0|peixe|peixes}
+@ui.toplam_satis
+en: Total sales
+es: Ventas totales
+de: Gesamtverkäufe
+fr: Ventes totales
+pt: Vendas totais
+@ui.hal_satisi
+en: Market sales
+es: Ventas en la lonja
+de: Marktverkäufe
+fr: Ventes à la halle
+pt: Vendas no mercado
+@ui.ilan_satisi
+en: Order sales
+es: Ventas por pedidos
+de: Auftragsverkäufe
+fr: Ventes sur commande
+pt: Vendas por pedido
+@ui.ilana_teslim
+en: Order deliveries
+es: Entregas de pedidos
+de: Auftragslieferungen
+fr: Livraisons de commandes
+pt: Entregas de pedidos
+@ui.harcama
+en: Spending
+es: Gasto
+de: Ausgaben
+fr: Dépenses
+pt: Gastos
+@ui.kullanilan_yem
+en: Bait used
+es: Cebo usado
+de: Verbrauchte Köder
+fr: Appâts utilisés
+pt: Isca usada
+@ui.kesfedilen_tur
+en: Species discovered
+es: Especies descubiertas
+de: Entdeckte Arten
+fr: Espèces découvertes
+pt: Espécies descobertas
+@ui.rekor_gelistirme
+en: Records improved
+es: Récords superados
+de: Verbesserte Rekorde
+fr: Records améliorés
+pt: Recordes melhorados
+@ui.en_buyuk_balik
+en: Biggest fish
+es: Pez más grande
+de: Größter Fisch
+fr: Plus gros poisson
+pt: Maior peixe
+@ui.seferler
+en: Trips
+es: Salidas
+de: Ausfahrten
+fr: Sorties
+pt: Viagens
+@ui.ziyaret_edilen_bolge
+en: Regions visited
+es: Zonas visitadas
+de: Besuchte Gebiete
+fr: Zones visitées
+pt: Regiões visitadas
+@ui.av_noktasi
+en: Fishing spots
+es: Zonas de pesca
+de: Angelplätze
+fr: Coins de pêche
+pt: Pontos de pesca
+@ui.yasanan_mevsim
+en: Seasons lived
+es: Estaciones vividas
+de: Erlebte Jahreszeiten
+fr: Saisons vécues
+pt: Estações vividas
+@ui.ses_n_n_n_n
+en: ⟦0⟧Sound⟦1⟧{0}{1}{2}{3} ⟦2⟧Accessibility⟦3⟧{4}{5} ⟦4⟧Display⟦5⟧⟦6⟧⟦7⟧{6} Fullscreen / landscape lock⟦8⟧⟦9⟧ ⟦10⟧Save⟦11⟧⟦12⟧{7}⟦13⟧Import⟦14⟧{8}⟦15⟧ ⟦16⟧Storage: {9}{10}.⟦17⟧ {11}
+es: ⟦0⟧Sonido⟦1⟧{0}{1}{2}{3} ⟦2⟧Accesibilidad⟦3⟧{4}{5} ⟦4⟧Pantalla⟦5⟧⟦6⟧⟦7⟧{6} Pantalla completa / bloqueo horizontal⟦8⟧⟦9⟧ ⟦10⟧Partida⟦11⟧⟦12⟧{7}⟦13⟧Importar⟦14⟧{8}⟦15⟧ ⟦16⟧Almacenamiento: {9}{10}.⟦17⟧ {11}
+de: ⟦0⟧Ton⟦1⟧{0}{1}{2}{3} ⟦2⟧Barrierefreiheit⟦3⟧{4}{5} ⟦4⟧Anzeige⟦5⟧⟦6⟧⟦7⟧{6} Vollbild / Querformat sperren⟦8⟧⟦9⟧ ⟦10⟧Spielstand⟦11⟧⟦12⟧{7}⟦13⟧Importieren⟦14⟧{8}⟦15⟧ ⟦16⟧Speicher: {9}{10}.⟦17⟧ {11}
+fr: ⟦0⟧Son⟦1⟧{0}{1}{2}{3} ⟦2⟧Accessibilité⟦3⟧{4}{5} ⟦4⟧Affichage⟦5⟧⟦6⟧⟦7⟧{6} Plein écran / verrouillage paysage⟦8⟧⟦9⟧ ⟦10⟧Sauvegarde⟦11⟧⟦12⟧{7}⟦13⟧Importer⟦14⟧{8}⟦15⟧ ⟦16⟧Stockage : {9}{10}.⟦17⟧ {11}
+pt: ⟦0⟧Som⟦1⟧{0}{1}{2}{3} ⟦2⟧Acessibilidade⟦3⟧{4}{5} ⟦4⟧Tela⟦5⟧⟦6⟧⟦7⟧{6} Tela cheia / travar na horizontal⟦8⟧⟦9⟧ ⟦10⟧Save⟦11⟧⟦12⟧{7}⟦13⟧Importar⟦14⟧{8}⟦15⟧ ⟦16⟧Armazenamento: {9}{10}.⟦17⟧ {11}
+@ui.muzik
+en: Music
+es: Música
+de: Musik
+fr: Musique
+pt: Música
+@ui.efektler
+en: Effects
+es: Efectos
+de: Effekte
+fr: Effets
+pt: Efeitos
+@ui.ortam_sesi
+en: Ambience
+es: Sonido ambiente
+de: Umgebung
+fr: Ambiance
+pt: Som ambiente
+@ui.tum_sesleri_kapat
+en: Mute all sounds
+es: Silenciar todo
+de: Alle Töne aus
+fr: Couper tous les sons
+pt: Silenciar tudo
+@ui.rahat_mod
+en: Relaxed mode
+es: Modo relajado
+de: Entspannter Modus
+fr: Mode détente
+pt: Modo tranquilo
+@ui.tasma_penceresi_1_5_uzar
+en: Hook-set window is 1.5× longer, tension tolerance is higher
+es: La ventana para clavar dura 1,5× más y se tolera más tensión
+de: Anhiebfenster 1,5× länger, höhere Spannungstoleranz
+fr: Fenêtre de ferrage 1,5× plus longue, tolérance à la tension accrue
+pt: Janela de fisgada 1,5× maior e mais tolerância à tensão
+@ui.azaltilmis_animasyon
+en: Reduced motion
+es: Animaciones reducidas
+de: Weniger Animationen
+fr: Animations réduites
+pt: Animações reduzidas
+@ui.yagmur_ruzgar_parcaciklarini_kapatir
+en: Turns off rain/wind particles
+es: Desactiva las partículas de lluvia y viento
+de: Schaltet Regen-/Windpartikel aus
+fr: Désactive les particules de pluie/vent
+pt: Desliga as partículas de chuva/vento
+@ui.disa_aktar_json
+en: ⟦0⟧Export (JSON)⟦1⟧
+es: ⟦0⟧Exportar (JSON)⟦1⟧
+de: ⟦0⟧Exportieren (JSON)⟦1⟧
+fr: ⟦0⟧Exporter (JSON)⟦1⟧
+pt: ⟦0⟧Exportar (JSON)⟦1⟧
+@ui.son_gun_yedegine_don
+en: ⟦0⟧Restore last day's backup⟦1⟧
+es: ⟦0⟧Volver a la copia del último día⟦1⟧
+de: ⟦0⟧Sicherung vom letzten Tag laden⟦1⟧
+fr: ⟦0⟧Revenir à la copie de la veille⟦1⟧
+pt: ⟦0⟧Voltar ao backup do último dia⟦1⟧
+@ui.yalnizca_localstorage
+en: localStorage only
+es: solo localStorage
+de: nur localStorage
+fr: localStorage uniquement
+pt: só localStorage
+@ui.tarayici_kaydi_engelliyor_disa_aktarmayi
+en:  (the browser is blocking saves — use export)
+es:  (el navegador bloquea el guardado: usa la exportación)
+de:  (der Browser blockiert das Speichern – nutze den Export)
+fr:  (le navigateur bloque la sauvegarde — utilise l'export)
+pt:  (o navegador bloqueia o save — use a exportação)
+@ui.ogretici_n
+en: ⟦0⟧Tutorial⟦1⟧⟦2⟧⟦3⟧{1}⟦4⟧⟦5⟧
+es: ⟦0⟧Tutorial⟦1⟧⟦2⟧⟦3⟧{1}⟦4⟧⟦5⟧
+de: ⟦0⟧Tutorial⟦1⟧⟦2⟧⟦3⟧{1}⟦4⟧⟦5⟧
+fr: ⟦0⟧Tutoriel⟦1⟧⟦2⟧⟦3⟧{1}⟦4⟧⟦5⟧
+pt: ⟦0⟧Tutorial⟦1⟧⟦2⟧⟦3⟧{1}⟦4⟧⟦5⟧
+@ui.ogretici_ipuclarini_ac
+en: Turn tutorial tips on
+es: Activar consejos del tutorial
+de: Tutorial-Tipps einschalten
+fr: Activer les conseils du tutoriel
+pt: Ativar dicas do tutorial
+@ui.ogreticiyi_atla
+en: Skip tutorial
+es: Saltar tutorial
+de: Tutorial überspringen
+fr: Passer le tutoriel
+pt: Pular tutorial
+@ui.temel_dongu_her_gun_100
+en: ⟦0⟧Core loop⟦1⟧⟦2⟧You have 100 energy each day. Every valid cast costs your rod's energy cost (Old Bamboo: 8 → 12 casts). There's no clock during the day; sleeping at home starts a new day and restores your energy.⟦3⟧ ⟦4⟧Casting⟦5⟧⟦6⟧Hold the ⟦7⟧CAST⟦8⟧ button (≈1.2 s power bar) and release: 0–35% near, 36–70% mid, 71–100% far. Slide your finger off the button to cancel the cast for free. When the float dips, tap ⟦9⟧STRIKE!⟦10⟧ within 1.6 seconds.⟦11⟧ ⟦12⟧Fighting⟦13⟧⟦14⟧Small (power 1) fish are reeled in quickly by holding. With power 2–5 fish, ⟦15⟧hold⟦16⟧ = reel in and tension rises; ⟦17⟧release⟦18⟧ = tension drops. Stay in the green zone (30–75). Above 95 for 1.2 s the line snaps; below 10 for 1.2 s the fish escapes. Strong fish pull after a "SUDDEN PULL" warning — let go right then!⟦19⟧ ⟦20⟧Trading⟦21⟧⟦22⟧Fish prices are fixed per species; size doesn't change the price. Nihat's market buys any fish. Orders on the board pay better and accept partial deliveries: you can sell 3 fish to a buyer who wants 100.⟦23⟧ ⟦24⟧Boats and regions⟦25⟧⟦26⟧Buy a boat from Bora and head out to the map from the harbor. You pay for the trip; the return is free. Engine/navigation upgrades open new regions. Each region has 3 fishing spots; steer the boat with ◀ ▶.⟦27⟧ ⟦28⟧Auto rods⟦29⟧⟦30⟧On the boat they make attempts alongside your manual casts, use paid bait and catch at most 6 fish per day in total. Power 5 fish are always manual.⟦31⟧ ⟦32⟧Fighting fish⟦33⟧⟦34⟧⟦35⟧Perfect hook set:⟦36⟧ tap as soon as the float dips (first 0.45 s) for a head start. ⟦37⟧Direction:⟦38⟧ when the fish pulls left/right, tilt the rod the opposite way with ◀ ▶; the right direction speeds you up, the wrong one slows you down. ⟦39⟧Jumps:⟦40⟧ let go of the button while jumping species leap out of the water to earn a “Master Move”. ⟦41⟧Skill:⟦42⟧ reeling in the ideal zone fills the combo stars and speeds up the pull. ⟦43⟧Fatigue:⟦44⟧ when the stamina bar runs out the fish tires; reel fast! You can reel in small fish quickly by tapping repeatedly.⟦45⟧⟦46⟧Festivals⟦47⟧⟦48⟧On days 14–15 of every season the town holds a festival. Sign up with Mayor Hasan at the Festival Square and join the 8-cast contest on the pier (costs no energy). Finish in the top three to win a cup and prize money; your cups are displayed in the Cup Cabinet at home.⟦49⟧⟦50⟧Controls⟦51⟧⟦52⟧Touch: buttons, tap buildings to walk there. Keyboard: ←/→ or A/D walk/steer, Space cast/strike, E or Enter interact, I inventory, Esc close/cancel, 1/2/3 fishing spot on the boat.⟦53⟧⟦54⟧Tips⟦55⟧⟦56⟧Tap the buoys to steer the boat to that spot. The navigation upgrade shows the most likely species at a fishing spot (with percentages at level II). When paid bait runs out, the game switches to free basic bait automatically.⟦57⟧
+es: ⟦0⟧Ciclo básico⟦1⟧⟦2⟧Cada día tienes 100 de energía. Cada lanzamiento válido gasta el coste de energía de tu caña (Bambú viejo: 8 → 12 lanzamientos). No hay reloj durante el día; al dormir en casa empieza un nuevo día y se recupera la energía.⟦3⟧ ⟦4⟧Lanzar⟦5⟧⟦6⟧Mantén pulsado el botón ⟦7⟧LANZAR⟦8⟧ (barra de fuerza de ≈1,2 s) y suéltalo: 0–35 % cerca, 36–70 % media, 71–100 % lejos. Si deslizas el dedo fuera del botón, el lanzamiento se cancela gratis. Cuando se hunda el flotador, toca ⟦9⟧¡TIRA!⟦10⟧ en menos de 1,6 segundos.⟦11⟧ ⟦12⟧Pelea⟦13⟧⟦14⟧Los peces pequeños (fuerza 1) se recogen rápido manteniendo pulsado. Con peces de fuerza 2–5, ⟦15⟧mantener⟦16⟧ = el carrete recoge y sube la tensión; ⟦17⟧soltar⟦18⟧ = baja la tensión. Quédate en la zona verde (30–75). Si pasas 1,2 s por encima de 95, el sedal se rompe; 1,2 s por debajo de 10 y el pez escapa. Los peces fuertes tiran tras el aviso «TIRÓN»: ¡suelta en ese momento!⟦19⟧ ⟦20⟧Comercio⟦21⟧⟦22⟧El precio depende solo de la especie; el tamaño no lo cambia. La lonja de Nihat compra cualquier pez. Los pedidos del tablón pagan mejor y aceptan entregas parciales: puedes vender 3 peces a un comprador que pide 100.⟦23⟧ ⟦24⟧Barcos y zonas⟦25⟧⟦26⟧Compra un barco a Bora y sal al mapa desde el puerto. La salida se paga; la vuelta es gratis. Las mejoras de motor y navegación abren nuevas zonas. Cada zona tiene 3 puntos de pesca; maneja el barco con ◀ ▶.⟦27⟧ ⟦28⟧Cañas automáticas⟦29⟧⟦30⟧En el barco hacen intentos junto con tus lanzamientos manuales, gastan cebo de pago y pescan como máximo 6 peces al día en total. Los peces de fuerza 5 siempre son manuales.⟦31⟧ ⟦32⟧Luchar con el pez⟦33⟧⟦34⟧⟦35⟧Clavada perfecta:⟦36⟧ si tocas justo cuando se hunde el flotador (primeros 0,45 s), empiezas con ventaja. ⟦37⟧Dirección:⟦38⟧ cuando el pez tire a izquierda o derecha, inclina la caña al lado contrario con ◀ ▶; la dirección correcta acelera y la incorrecta frena. ⟦39⟧Saltos:⟦40⟧ suelta el botón cuando las especies saltarinas salgan del agua y gana una «Jugada maestra». ⟦41⟧Maestría:⟦42⟧ recoger en la zona ideal llena las estrellas de combo y acelera el tirón. ⟦43⟧Cansancio:⟦44⟧ cuando se agota la barra de resistencia el pez se cansa; ¡recoge rápido! Los peces pequeños se recogen rápido tocando seguido.⟦45⟧⟦46⟧Fiestas⟦47⟧⟦48⟧Los días 14–15 de cada estación hay fiesta en el pueblo. Apúntate con el alcalde Hasan en la Plaza de las Fiestas y participa en el concurso de 8 lanzamientos en el muelle (no gasta energía). Si quedas entre los tres primeros ganas una copa y dinero; tus copas se exhiben en la vitrina de copas de tu casa.⟦49⟧⟦50⟧Controles⟦51⟧⟦52⟧Táctil: botones; toca los edificios para ir hasta ellos. Teclado: ←/→ o A/D caminar/manejar, Espacio lanzar/tirar, E o Intro interactuar, I inventario, Esc cerrar/cancelar, 1/2/3 punto de pesca en el barco.⟦53⟧⟦54⟧Consejos⟦55⟧⟦56⟧Toca las boyas para llevar el barco a ese punto. La mejora de navegación muestra las especies más probables de cada punto (con porcentajes en el nivel II). Cuando se acaba el cebo de pago, el juego pasa solo al cebo básico gratuito.⟦57⟧
+de: ⟦0⟧Grundablauf⟦1⟧⟦2⟧Du hast jeden Tag 100 Energie. Jeder gültige Wurf kostet die Energie deiner Angel (Alter Bambus: 8 → 12 Würfe). Tagsüber gibt es keine Uhr; schläfst du zu Hause, beginnt ein neuer Tag und die Energie füllt sich auf.⟦3⟧ ⟦4⟧Auswerfen⟦5⟧⟦6⟧Halte die Taste ⟦7⟧AUSWERFEN⟦8⟧ gedrückt (≈1,2 s Kraftbalken) und lass los: 0–35 % nah, 36–70 % mittel, 71–100 % weit. Ziehst du den Finger von der Taste, wird der Wurf kostenlos abgebrochen. Taucht die Pose ab, tippe innerhalb von 1,6 Sekunden auf ⟦9⟧ANSCHLAG!⟦10⟧.⟦11⟧ ⟦12⟧Drill⟦13⟧⟦14⟧Kleine Fische (Stärke 1) holst du durch Halten schnell ein. Bei Stärke 2–5 gilt: ⟦15⟧halten⟦16⟧ = Rolle kurbelt, Spannung steigt; ⟦17⟧loslassen⟦18⟧ = Spannung sinkt. Bleib im grünen Bereich (30–75). Über 95 für 1,2 s reißt die Schnur, unter 10 für 1,2 s entkommt der Fisch. Starke Fische ziehen nach der Warnung „RUCK“ – dann sofort loslassen!⟦19⟧ ⟦20⟧Handel⟦21⟧⟦22⟧Fischpreise hängen nur von der Art ab; die Größe ändert sie nicht. Nihats Markt kauft jeden Fisch. Aufträge an der Tafel zahlen besser und nehmen Teillieferungen an: Du kannst einem Käufer, der 100 will, auch 3 Fische verkaufen.⟦23⟧ ⟦24⟧Boote und Gebiete⟦25⟧⟦26⟧Kauf bei Bora ein Boot und fahr vom Hafen auf die Karte. Die Ausfahrt kostet, die Rückfahrt ist gratis. Motor- und Navigationsausbauten öffnen neue Gebiete. Jedes Gebiet hat 3 Angelplätze; steuere das Boot mit ◀ ▶.⟦27⟧ ⟦28⟧Auto-Angeln⟦29⟧⟦30⟧Auf dem Boot versuchen sie es parallel zu deinen Handwürfen, verbrauchen gekauften Köder und fangen insgesamt höchstens 6 Fische pro Tag. Fische der Stärke 5 sind immer Handarbeit.⟦31⟧ ⟦32⟧Der Drill⟦33⟧⟦34⟧⟦35⟧Perfekter Anhieb:⟦36⟧ Tippst du gleich beim Abtauchen der Pose (erste 0,45 s), startest du mit Vorteil. ⟦37⟧Richtung:⟦38⟧ Zieht der Fisch nach links/rechts, neig die Angel mit ◀ ▶ in die Gegenrichtung; die richtige Richtung beschleunigt, die falsche bremst. ⟦39⟧Sprünge:⟦40⟧ Lass die Taste los, wenn springende Arten aus dem Wasser schießen, und hol dir einen „Meisterzug“. ⟦41⟧Können:⟦42⟧ Kurbelst du im Idealbereich, füllen sich die Kombosterne und der Zug wird schneller. ⟦43⟧Ermüdung:⟦44⟧ Ist der Ausdauerbalken leer, ermüdet der Fisch – jetzt schnell kurbeln! Kleine Fische holst du durch schnelles Tippen ein.⟦45⟧⟦46⟧Feste⟦47⟧⟦48⟧An Tag 14–15 jeder Jahreszeit feiert der Ort ein Fest. Melde dich auf dem Festplatz bei Bürgermeister Hasan an und mach beim Wettbewerb mit 8 Würfen am Steg mit (kostet keine Energie). Unter den ersten drei gewinnst du einen Pokal und Preisgeld; deine Pokale stehen im Pokalschrank zu Hause.⟦49⟧⟦50⟧Steuerung⟦51⟧⟦52⟧Touch: Tasten, auf Gebäude tippen zum Hinlaufen. Tastatur: ←/→ oder A/D laufen/steuern, Leertaste auswerfen/anschlagen, E oder Enter interagieren, I Inventar, Esc schließen/abbrechen, 1/2/3 Angelplatz auf dem Boot.⟦53⟧⟦54⟧Tipps⟦55⟧⟦56⟧Tippe auf die Bojen, um das Boot dorthin zu steuern. Der Navigationsausbau zeigt die wahrscheinlichsten Arten am Angelplatz (auf Stufe II mit Prozenten). Ist der gekaufte Köder alle, wechselt das Spiel automatisch zum kostenlosen Grundköder.⟦57⟧
+fr: ⟦0⟧Boucle de jeu⟦1⟧⟦2⟧Tu as 100 d'énergie par jour. Chaque lancer valide coûte l'énergie de ta canne (Vieux bambou : 8 → 12 lancers). Il n'y a pas d'horloge dans la journée ; dormir chez toi lance un nouveau jour et recharge l'énergie.⟦3⟧ ⟦4⟧Lancer⟦5⟧⟦6⟧Maintiens le bouton ⟦7⟧LANCER⟦8⟧ (barre de puissance ≈1,2 s) puis relâche : 0–35 % proche, 36–70 % moyenne, 71–100 % loin. Glisse ton doigt hors du bouton pour annuler gratuitement. Quand le flotteur plonge, touche ⟦9⟧FERRE !⟦10⟧ dans les 1,6 seconde.⟦11⟧ ⟦12⟧Combat⟦13⟧⟦14⟧Les petits poissons (force 1) se ramènent vite en maintenant. Pour les forces 2 à 5, ⟦15⟧maintenir⟦16⟧ = le moulinet ramène et la tension monte ; ⟦17⟧relâcher⟦18⟧ = la tension baisse. Reste dans la zone verte (30–75). Au-dessus de 95 pendant 1,2 s la ligne casse, sous 10 pendant 1,2 s le poisson s'échappe. Les poissons puissants tirent après l'alerte « TIRAGE SOUDAIN » : relâche à ce moment-là !⟦19⟧ ⟦20⟧Commerce⟦21⟧⟦22⟧Le prix dépend uniquement de l'espèce ; la taille ne le change pas. La halle de Nihat achète tous les poissons. Les commandes du tableau paient mieux et acceptent les livraisons partielles : tu peux vendre 3 poissons à un acheteur qui en veut 100.⟦23⟧ ⟦24⟧Bateaux et zones⟦25⟧⟦26⟧Achète un bateau chez Bora et pars sur la carte depuis le port. La sortie est payante, le retour gratuit. Les améliorations de moteur/navigation ouvrent de nouvelles zones. Chaque zone a 3 coins de pêche ; pilote le bateau avec ◀ ▶.⟦27⟧ ⟦28⟧Cannes auto⟦29⟧⟦30⟧Sur le bateau, elles tentent leur chance en même temps que tes lancers manuels, consomment de l'appât payant et attrapent au plus 6 poissons par jour au total. Les poissons de force 5 sont toujours manuels.⟦31⟧ ⟦32⟧Combattre le poisson⟦33⟧⟦34⟧⟦35⟧Ferrage parfait :⟦36⟧ touche dès que le flotteur plonge (0,45 premières secondes) pour partir avec un avantage. ⟦37⟧Direction :⟦38⟧ quand le poisson tire à gauche/droite, penche la canne dans l'autre sens avec ◀ ▶ ; le bon sens accélère, le mauvais ralentit. ⟦39⟧Sauts :⟦40⟧ relâche le bouton quand les espèces sauteuses jaillissent de l'eau pour gagner un « Coup de maître ». ⟦41⟧Maîtrise :⟦42⟧ mouliner dans la zone idéale remplit les étoiles de combo et accélère la remontée. ⟦43⟧Fatigue :⟦44⟧ quand la barre d'endurance est vide, le poisson fatigue : mouline vite ! Tu peux ramener les petits poissons en tapotant.⟦45⟧⟦46⟧Fêtes⟦47⟧⟦48⟧Les jours 14–15 de chaque saison, le village est en fête. Inscris-toi auprès du maire Hasan sur la Place des Fêtes et participe au concours de 8 lancers au ponton (sans coût d'énergie). Dans le top 3, tu gagnes une coupe et de l'argent ; tes coupes sont exposées dans la vitrine des coupes chez toi.⟦49⟧⟦50⟧Commandes⟦51⟧⟦52⟧Tactile : boutons, touche les bâtiments pour t'y rendre. Clavier : ←/→ ou A/D marcher/piloter, Espace lancer/ferrer, E ou Entrée interagir, I inventaire, Échap fermer/annuler, 1/2/3 coin de pêche en bateau.⟦53⟧⟦54⟧Astuces⟦55⟧⟦56⟧Touche les bouées pour y conduire le bateau. L'amélioration de navigation affiche les espèces les plus probables du coin (avec pourcentages au niveau II). Quand l'appât payant est épuisé, le jeu passe automatiquement à l'appât de base gratuit.⟦57⟧
+pt: ⟦0⟧Ciclo básico⟦1⟧⟦2⟧Você tem 100 de energia por dia. Cada arremesso válido gasta o custo de energia da sua vara (Bambu Velho: 8 → 12 arremessos). Não há relógio durante o dia; dormir em casa começa um novo dia e recarrega a energia.⟦3⟧ ⟦4⟧Arremessar⟦5⟧⟦6⟧Segure o botão ⟦7⟧ARREMESSAR⟦8⟧ (barra de força de ≈1,2 s) e solte: 0–35% perto, 36–70% média, 71–100% longe. Deslize o dedo para fora do botão para cancelar de graça. Quando a boia afundar, toque em ⟦9⟧PUXE!⟦10⟧ em até 1,6 segundo.⟦11⟧ ⟦12⟧Briga⟦13⟧⟦14⟧Peixes pequenos (força 1) vêm rápido segurando o botão. Com peixes de força 2–5, ⟦15⟧segurar⟦16⟧ = o molinete recolhe e a tensão sobe; ⟦17⟧soltar⟦18⟧ = a tensão cai. Fique na zona verde (30–75). Acima de 95 por 1,2 s a linha arrebenta; abaixo de 10 por 1,2 s o peixe foge. Peixes fortes puxam depois do aviso "PUXÃO" — solte nessa hora!⟦19⟧ ⟦20⟧Comércio⟦21⟧⟦22⟧O preço depende só da espécie; o tamanho não muda nada. O mercado do Nihat compra qualquer peixe. Os pedidos do quadro pagam melhor e aceitam entrega parcial: dá para vender 3 peixes a quem quer 100.⟦23⟧ ⟦24⟧Barcos e regiões⟦25⟧⟦26⟧Compre um barco com o Bora e saia para o mapa a partir do porto. A ida é paga; a volta é grátis. Melhorias de motor/navegação liberam novas regiões. Cada região tem 3 pontos de pesca; guie o barco com ◀ ▶.⟦27⟧ ⟦28⟧Varas automáticas⟦29⟧⟦30⟧No barco elas tentam junto com seus arremessos manuais, gastam isca paga e pegam no máximo 6 peixes por dia no total. Peixes de força 5 são sempre manuais.⟦31⟧ ⟦32⟧Brigando com o peixe⟦33⟧⟦34⟧⟦35⟧Fisgada perfeita:⟦36⟧ toque assim que a boia afundar (primeiros 0,45 s) para começar com vantagem. ⟦37⟧Direção:⟦38⟧ quando o peixe puxar para a esquerda/direita, incline a vara para o lado oposto com ◀ ▶; a direção certa acelera, a errada atrasa. ⟦39⟧Saltos:⟦40⟧ solte o botão quando as espécies saltadoras pularem da água e ganhe uma “Jogada de Mestre”. ⟦41⟧Maestria:⟦42⟧ recolher na zona ideal enche as estrelas de combo e acelera a puxada. ⟦43⟧Cansaço:⟦44⟧ quando a barra de fôlego acaba o peixe cansa; recolha rápido! Peixes pequenos vêm rápido com toques seguidos.⟦45⟧⟦46⟧Festivais⟦47⟧⟦48⟧Nos dias 14–15 de cada estação a vila faz festival. Inscreva-se com o Prefeito Hasan na Praça das Festas e entre na competição de 8 arremessos no píer (não gasta energia). Ficando entre os três primeiros você ganha taça e dinheiro; as taças ficam na estante de taças da sua casa.⟦49⟧⟦50⟧Controles⟦51⟧⟦52⟧Toque: botões; toque nos prédios para ir até eles. Teclado: ←/→ ou A/D andar/pilotar, Espaço arremessar/puxar, E ou Enter interagir, I inventário, Esc fechar/cancelar, 1/2/3 ponto de pesca no barco.⟦53⟧⟦54⟧Dicas⟦55⟧⟦56⟧Toque nas boias para levar o barco até lá. A melhoria de navegação mostra as espécies mais prováveis do ponto (com porcentagens no nível II). Quando a isca paga acaba, o jogo troca sozinho para a isca básica grátis.⟦57⟧

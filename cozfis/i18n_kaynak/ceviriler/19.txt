@@ -1,0 +1,678 @@
+@ui4.akici_av
+en: Flow Fishing
+es: Pesca fluida
+de: Flüssiges Angeln
+fr: Pêche fluide
+pt: Pesca Fluida
+@ui4.birlik_odulu_n_para_n
+en: Guild reward: +{0} coins, +{1} {2}
+es: Recompensa del gremio: +{0} monedas, +{1} {2}
+de: Gildenbelohnung: +{0} Münzen, +{1} {2}
+fr: Récompense de guilde : +{0} pièces, +{1} {2}
+pt: Recompensa da guilda: +{0} moedas, +{1} {2}
+@ui4.yeni_gorev_n
+en: New task: {0}
+es: Nueva tarea: {0}
+de: Neue Aufgabe: {0}
+fr: Nouvelle tâche : {0}
+pt: Nova tarefa: {0}
+@ui4.gorevi_degistir_2
+en: Swap task
+es: Cambiar tarea
+de: Aufgabe tauschen
+fr: Échanger la tâche
+pt: Trocar tarefa
+@ui4.haftada_bir_kez_ucretsizdir_bu
+en: Free once a week. Progress on this task doesn't carry over to the new one.
+es: Es gratis una vez por semana. El progreso de esta tarea no pasa a la nueva.
+de: Einmal pro Woche kostenlos. Der Fortschritt dieser Aufgabe geht nicht auf die neue über.
+fr: Gratuit une fois par semaine. La progression de cette tâche n'est pas reportée sur la nouvelle.
+pt: Grátis uma vez por semana. O progresso desta tarefa não passa para a nova.
+@ui4.hikaye_tamamlandi_odul_n_hatira
+en: ⟦0⟧Story complete! Reward: {0} (Keepsake Album)⟦1⟧
+es: ⟦0⟧¡Historia completada! Recompensa: {0} (Álbum de recuerdos)⟦1⟧
+de: ⟦0⟧Geschichte abgeschlossen! Belohnung: {0} (Erinnerungsalbum)⟦1⟧
+fr: ⟦0⟧Histoire terminée ! Récompense : {0} (Album souvenir)⟦1⟧
+pt: ⟦0⟧História concluída! Recompensa: {0} (Álbum de Lembranças)⟦1⟧
+@ui4.sonraki_hedef_n
+en: ⟦0⟧Next goal: {0}⟦1⟧
+es: ⟦0⟧Siguiente objetivo: {0}⟦1⟧
+de: ⟦0⟧Nächstes Ziel: {0}⟦1⟧
+fr: ⟦0⟧Objectif suivant : {0}⟦1⟧
+pt: ⟦0⟧Próxima meta: {0}⟦1⟧
+@ui4.inceleme
+en: Inspection
+es: Examen
+de: Untersuchung
+fr: Examen
+pt: Exame
+@ui4.trofe_hedefi_n
+en: Trophy target: {0}
+es: Trofeo objetivo: {0}
+de: Trophäenziel: {0}
+fr: Trophée ciblé : {0}
+pt: Troféu-alvo: {0}
+@ui4.trofe_hedefi_birakildi
+en: Trophy target dropped.
+es: Trofeo objetivo descartado.
+de: Trophäenziel aufgegeben.
+fr: Trophée ciblé abandonné.
+pt: Troféu-alvo largado.
+@ui4.bugunku_kiyi_kesfini_tamamladin_yarin
+en: You've finished today's beachcombing. You can go again tomorrow. Collection: {0}/24.
+es: Ya hiciste la exploración de hoy. Mañana podrás volver. Colección: {0}/24.
+de: Die heutige Strandsuche ist erledigt. Morgen geht es wieder. Sammlung: {0}/24.
+fr: Tu as terminé l'exploration du jour. Tu pourras recommencer demain. Collection : {0}/24.
+pt: Você já fez a exploração de hoje. Amanhã dá para ir de novo. Coleção: {0}/24.
+@ui4.kiyi_kesfi
+en: Beachcombing
+es: Exploración de playa
+de: Strandsuche
+fr: Exploration du rivage
+pt: Exploração de Praia
+@ui4.koleksiyonu_ac
+en: Open collection
+es: Abrir colección
+de: Sammlung öffnen
+fr: Ouvrir la collection
+pt: Abrir coleção
+@ui4.n_sahil_patikasi_kiyi_kesfi
+en: ⟦0⟧{0} Beach Path · Beachcombing⟦1⟧⟦2⟧One outing a day · costs no energy or coins · no time limit, no penalty for wrong picks. Collection {1}/24.⟦3⟧⟦4⟧{2}⟦5⟧⟦6⟧⟦7⟧Cancel⟦8⟧⟦9⟧
+es: ⟦0⟧{0} Sendero de la playa · Exploración⟦1⟧⟦2⟧Una exploración al día · no gasta energía ni dinero · sin límite de tiempo y sin penalización por fallar. Colección {1}/24.⟦3⟧⟦4⟧{2}⟦5⟧⟦6⟧⟦7⟧Cancelar⟦8⟧⟦9⟧
+de: ⟦0⟧{0} Strandweg · Strandsuche⟦1⟧⟦2⟧Einmal pro Tag · kostet weder Energie noch Münzen · kein Zeitlimit, keine Strafe für falsche Wahl. Sammlung {1}/24.⟦3⟧⟦4⟧{2}⟦5⟧⟦6⟧⟦7⟧Abbrechen⟦8⟧⟦9⟧
+fr: ⟦0⟧{0} Sentier de la plage · Exploration⟦1⟧⟦2⟧Une exploration par jour · sans énergie ni pièces · pas de limite de temps, aucune pénalité en cas d'erreur. Collection {1}/24.⟦3⟧⟦4⟧{2}⟦5⟧⟦6⟧⟦7⟧Annuler⟦8⟧⟦9⟧
+pt: ⟦0⟧{0} Trilha da Praia · Exploração⟦1⟧⟦2⟧Uma exploração por dia · não gasta energia nem moedas · sem limite de tempo nem punição por erro. Coleção {1}/24.⟦3⟧⟦4⟧{2}⟦5⟧⟦6⟧⟦7⟧Cancelar⟦8⟧⟦9⟧
+@ui4.ipuclari_belirginlesti_n
+en: The clues are clearer now: {0}
+es: Las pistas se ven mejor: {0}
+de: Die Hinweise sind deutlicher: {0}
+fr: Les indices sont plus visibles : {0}
+pt: As pistas ficaram mais claras: {0}
+@ui4.dogru_noktanin_ustunde_bir_ok
+en: An arrow appeared above the right spot.
+es: Ha aparecido una flecha sobre el punto correcto.
+de: Über der richtigen Stelle ist ein Pfeil erschienen.
+fr: Une flèche est apparue au-dessus du bon endroit.
+pt: Uma seta apareceu sobre o ponto certo.
+@ui4.farkli_renk_parilti_dalga_izi
+en: look for a different color, a glint, a wave mark or a row of stones.
+es: busca otro color, un brillo, una marca de ola o piedras en fila.
+de: achte auf andere Farbe, Glitzern, Wellenspur oder eine Steinreihe.
+fr: cherche une couleur différente, un reflet, une trace de vague ou des pierres alignées.
+pt: procure cor diferente, brilho, marca de onda ou pedras enfileiradas.
+@ui4.kabarciklarin_ve_kucuk_izlerin_oldugu
+en: look at the rock with bubbles and little tracks.
+es: mira la roca con burbujas y pequeñas huellas.
+de: schau dir den Stein mit Blasen und kleinen Spuren an.
+fr: regarde le rocher avec des bulles et de petites traces.
+pt: olhe a pedra com bolhas e pegadinhas.
+@ui4.su_cekilince_parlayan_nesneyi_sec
+en: pick the item that shines when the water recedes.
+es: elige el objeto que brilla cuando baja el agua.
+de: wähle den Gegenstand, der bei Ebbe glänzt.
+fr: choisis l'objet qui brille quand l'eau se retire.
+pt: escolha o objeto que brilha quando a água baixar.
+@ui4.onizleme_olusturuldu_n_n
+en: Preview created ({0}×{1}).
+es: Vista previa creada ({0}×{1}).
+de: Vorschau erstellt ({0}×{1}).
+fr: Aperçu créé ({0}×{1}).
+pt: Prévia criada ({0}×{1}).
+@ui4.onizle
+en: ⟦0⟧Preview⟦1⟧
+es: ⟦0⟧Vista previa⟦1⟧
+de: ⟦0⟧Vorschau⟦1⟧
+fr: ⟦0⟧Aperçu⟦1⟧
+pt: ⟦0⟧Prévia⟦1⟧
+@main.bir_cizim_hatasi_olustu_n
+en: A drawing error occurred: {0}
+es: Se produjo un error de dibujo: {0}
+de: Ein Zeichenfehler ist aufgetreten: {0}
+fr: Une erreur d'affichage s'est produite : {0}
+pt: Ocorreu um erro de desenho: {0}
+@main.tam_ekran_acilamadi
+en: Couldn't open fullscreen
+es: No se pudo abrir la pantalla completa
+de: Vollbild nicht möglich
+fr: Impossible de passer en plein écran
+pt: Não foi possível abrir a tela cheia
+@main.bu_tarayici_ya_da_gomulu
+en: This browser or embedded page doesn't allow fullscreen. On iPhone/iPad Safari, use Share → "Add to Home Screen" to play fullscreen, or just keep playing with your phone sideways. On desktop you can also use F11.
+es: Este navegador o página incrustada no permite la pantalla completa. En Safari de iPhone/iPad usa Compartir → «Añadir a pantalla de inicio» para jugar a pantalla completa, o sigue jugando con el teléfono en horizontal. En el ordenador también puedes usar F11.
+de: Dieser Browser oder die eingebettete Seite erlaubt kein Vollbild. In Safari auf iPhone/iPad kannst du über Teilen → „Zum Home-Bildschirm“ im Vollbild spielen oder einfach im Querformat weiterspielen. Am Computer geht auch F11.
+fr: Ce navigateur ou cette page intégrée n'autorise pas le plein écran. Sur Safari iPhone/iPad, utilise Partager → « Sur l'écran d'accueil » pour jouer en plein écran, ou continue en tenant ton téléphone à l'horizontale. Sur ordinateur, F11 fonctionne aussi.
+pt: Este navegador ou página incorporada não permite tela cheia. No Safari do iPhone/iPad, use Compartilhar → "Adicionar à Tela de Início" para jogar em tela cheia, ou continue com o celular na horizontal. No computador também dá para usar F11.
+@main.kayit_yuklenemedi_n_kayit_silinmedi
+en: Couldn't load the save: {0} The save was not deleted.
+es: No se pudo cargar la partida: {0} La partida no se ha borrado.
+de: Spielstand konnte nicht geladen werden: {0} Er wurde nicht gelöscht.
+fr: Impossible de charger la sauvegarde : {0} Elle n'a pas été supprimée.
+pt: Não foi possível carregar o save: {0} O save não foi apagado.
+@main.hos_geldin_n_sakin_liman
+en: Welcome, {0}! It's your first day in Calm Harbor. Efe is waiting for you on the pier.
+es: ¡Bienvenido, {0}! Es tu primer día en Puerto Sereno. Efe te espera en el muelle.
+de: Willkommen, {0}! Dein erster Tag im Stillen Hafen. Efe wartet am Steg auf dich.
+fr: Bienvenue, {0} ! C'est ton premier jour à Port Paisible. Efe t'attend sur le ponton.
+pt: Boas-vindas, {0}! É seu primeiro dia no Porto Sereno. O Efe está te esperando no píer.
+@d.region.sakin_liman.name
+en: Calm Harbor
+es: Puerto Sereno
+de: Stiller Hafen
+fr: Port Paisible
+pt: Porto Sereno
+@d.region.yesil_koy.name
+en: Green Cove
+es: Cala Verde
+de: Grüne Bucht
+fr: Crique Verte
+pt: Enseada Verde
+@d.region.kayalik_adalar.name
+en: Rocky Isles
+es: Islas Rocosas
+de: Felseninseln
+fr: Îles Rocheuses
+pt: Ilhas Rochosas
+@d.region.serin_akintilar.name
+en: Cool Currents
+es: Corrientes Frescas
+de: Kühle Strömungen
+fr: Courants Frais
+pt: Correntes Frias
+@d.region.sisli_kuzey.name
+en: Misty North
+es: Norte Brumoso
+de: Nebelnorden
+fr: Nord Brumeux
+pt: Norte Nebuloso
+@d.region.gunes_adalari.name
+en: Sun Isles
+es: Islas del Sol
+de: Sonneninseln
+fr: Îles du Soleil
+pt: Ilhas do Sol
+@d.region.derin_mavi.name
+en: Deep Blue
+es: Azul Profundo
+de: Tiefblau
+fr: Grand Bleu
+pt: Azul Profundo
+@d.region.sakin_liman.req
+en: Open from the start
+es: Abierta desde el principio
+de: Von Anfang an offen
+fr: Ouverte dès le départ
+pt: Aberta desde o início
+@d.region.yesil_koy.req
+en: Coastal Skiff or better
+es: Bote costero o superior
+de: Küstenboot oder besser
+fr: Barque côtière ou mieux
+pt: Bote Costeiro ou superior
+@d.region.kayalik_adalar.req
+en: Coastal Skiff with Engine II, or a boat with better range
+es: Bote costero con motor II, o un barco de mayor alcance
+de: Küstenboot mit Motor II oder ein Boot mit mehr Reichweite
+fr: Barque côtière moteur II, ou bateau de plus grande portée
+pt: Bote Costeiro com motor II, ou barco de maior alcance
+@d.region.serin_akintilar.req
+en: Motor Fishing Boat or better
+es: Pesquero a motor o superior
+de: Motorfischerboot oder besser
+fr: Bateau de pêche à moteur ou mieux
+pt: Barco de Pesca a Motor ou superior
+@d.region.sisli_kuzey.req
+en: Motor boat with Engine III + Navigation I, or equivalent better gear
+es: Barco a motor con motor III + navegación I, o equipo equivalente superior
+de: Motorboot mit Motor III + Navigation I oder gleichwertige bessere Ausstattung
+fr: Bateau à moteur moteur III + navigation I, ou équipement équivalent supérieur
+pt: Barco a motor com motor III + navegação I, ou equipamento equivalente superior
+@d.region.gunes_adalari.req
+en: Cabin boat with Engine IV, or equivalent better gear
+es: Barco con cabina con motor IV, o equipo equivalente superior
+de: Kajütboot mit Motor IV oder gleichwertige bessere Ausstattung
+fr: Bateau à cabine moteur IV, ou équipement équivalent supérieur
+pt: Barco de cabine com motor IV, ou equipamento equivalente superior
+@d.region.derin_mavi.req
+en: Offshore Boat with Engine V + Navigation II
+es: Barco de altura con motor V + navegación II
+de: Hochseeboot mit Motor V + Navigation II
+fr: Bateau de haute mer moteur V + navigation II
+pt: Barco de Alto-mar com motor V + navegação II
+@d.spot.liman_kiyi.name
+en: Sandy Shore
+es: Orilla arenosa
+de: Sandufer
+fr: Rivage sablonneux
+pt: Margem Arenosa
+@d.spot.liman_iskele.name
+en: Pier End
+es: Punta del muelle
+de: Stegende
+fr: Bout du ponton
+pt: Ponta do Píer
+@d.spot.liman_dalgakiran.name
+en: Breakwater
+es: Rompeolas
+de: Mole
+fr: Digue
+pt: Quebra-mar
+@d.spot.koy_giris.name
+en: Cove Mouth
+es: Entrada de la cala
+de: Buchteinfahrt
+fr: Entrée de la crique
+pt: Entrada da Enseada
+@d.spot.koy_kayalik.name
+en: Rocky Shore
+es: Orilla rocosa
+de: Felsufer
+fr: Rivage rocheux
+pt: Margem Rochosa
+@d.spot.koy_derin.name
+en: Deep Cove
+es: Cala profunda
+de: Tiefe Bucht
+fr: Crique profonde
+pt: Enseada Funda
+@d.spot.adalar_sig.name
+en: Shallow Reefs
+es: Rocas someras
+de: Flache Klippen
+fr: Hauts-fonds rocheux
+pt: Pedras Rasas
+@d.spot.adalar_resif.name
+en: Reef Edge
+es: Borde del arrecife
+de: Riffkante
+fr: Bord du récif
+pt: Borda do Recife
+@d.spot.adalar_derin.name
+en: Deep Island Water
+es: Aguas profundas de las islas
+de: Tiefes Inselwasser
+fr: Eaux profondes des îles
+pt: Águas Fundas da Ilha
+@d.spot.akinti_kiyi.name
+en: Current's Edge
+es: Borde de la corriente
+de: Strömungskante
+fr: Bord du courant
+pt: Beira da Correnteza
+@d.spot.akinti_orta.name
+en: Current Channel
+es: Canal de la corriente
+de: Strömungskanal
+fr: Chenal du courant
+pt: Canal da Correnteza
+@d.spot.akinti_acik.name
+en: Open Current
+es: Corriente abierta
+de: Offene Strömung
+fr: Courant du large
+pt: Correnteza Aberta
+@d.spot.kuzey_fiyort.name
+en: Fjord Mouth
+es: Boca del fiordo
+de: Fjordmündung
+fr: Embouchure du fjord
+pt: Boca do Fiorde
+@d.spot.kuzey_kiyi.name
+en: Cold Shore
+es: Costa fría
+de: Kalte Küste
+fr: Côte froide
+pt: Costa Fria
+@d.spot.kuzey_derin.name
+en: Northern Deep
+es: Profundidad del norte
+de: Nordtiefe
+fr: Profondeurs du Nord
+pt: Profundeza do Norte
+@d.spot.gunes_lagun.name
+en: Lagoon Shore
+es: Orilla de la laguna
+de: Lagunenufer
+fr: Rive du lagon
+pt: Margem da Lagoa
+@d.spot.gunes_resif.name
+en: Coral Reef
+es: Arrecife de coral
+de: Korallenriff
+fr: Récif corallien
+pt: Recife de Coral
+@d.spot.gunes_acik.name
+en: Island Offing
+es: Alta mar de las islas
+de: Vor den Inseln
+fr: Au large des îles
+pt: Mar Aberto da Ilha
+@d.spot.derin_shelf.name
+en: Continental Shelf
+es: Plataforma continental
+de: Kontinentalschelf
+fr: Plateau continental
+pt: Plataforma Continental
+@d.spot.derin_mavi_su.name
+en: Blue Water Line
+es: Línea de agua azul
+de: Blauwasserkante
+fr: Limite des eaux bleues
+pt: Linha de Água Azul
+@d.spot.derin_cukur.name
+en: Deep Ocean
+es: Océano profundo
+de: Tiefer Ozean
+fr: Océan profond
+pt: Oceano Profundo
+@d.bait.basic.name
+en: Basic Bait
+es: Cebo básico
+de: Grundköder
+fr: Appât de base
+pt: Isca Básica
+@d.bait.worm.name
+en: Worm
+es: Gusano
+de: Wurm
+fr: Ver
+pt: Minhoca
+@d.bait.shrimp.name
+en: Shrimp
+es: Gamba
+de: Garnele
+fr: Crevette
+pt: Camarão
+@d.bait.fish.name
+en: Cut Bait
+es: Trozo de pescado
+de: Fischfetzen
+fr: Morceau de poisson
+pt: Pedaço de Peixe
+@d.bait.lure.name
+en: Metal Lure
+es: Señuelo metálico
+de: Metallköder
+fr: Leurre métallique
+pt: Isca de Metal
+@d.bait.deep.name
+en: Deep-Water Bait
+es: Cebo de profundidad
+de: Tiefseeköder
+fr: Appât des profondeurs
+pt: Isca de Profundidade
+@d.rod.old_bamboo.name
+en: Old Bamboo Rod
+es: Caña de bambú vieja
+de: Alte Bambusangel
+fr: Vieille canne en bambou
+pt: Vara de Bambu Velha
+@d.rod.light.name
+en: Light Rod
+es: Caña ligera
+de: Leichte Angel
+fr: Canne légère
+pt: Vara Leve
+@d.rod.fiberglass.name
+en: Fiberglass Rod
+es: Caña de fibra de vidrio
+de: Glasfaserangel
+fr: Canne en fibre de verre
+pt: Vara de Fibra de Vidro
+@d.rod.carbon.name
+en: Carbon Rod
+es: Caña de carbono
+de: Karbonangel
+fr: Canne en carbone
+pt: Vara de Carbono
+@d.rod.professional.name
+en: Pro Sea Rod
+es: Caña de mar profesional
+de: Profi-Meeresangel
+fr: Canne de mer professionnelle
+pt: Vara de Mar Profissional
+@d.line.thin.name
+en: Thin Line
+es: Sedal fino
+de: Dünne Schnur
+fr: Ligne fine
+pt: Linha Fina
+@d.line.durable.name
+en: Durable Line
+es: Sedal resistente
+de: Robuste Schnur
+fr: Ligne résistante
+pt: Linha Resistente
+@d.line.braided.name
+en: Braided Line
+es: Sedal trenzado
+de: Geflochtene Schnur
+fr: Tresse
+pt: Linha Trançada
+@d.line.marine.name
+en: Heavy Sea Line
+es: Sedal marino fuerte
+de: Starke Meeresschnur
+fr: Ligne marine renforcée
+pt: Linha Marítima Forte
+@d.line.pro.name
+en: Pro Line
+es: Sedal profesional
+de: Profi-Schnur
+fr: Ligne professionnelle
+pt: Linha Profissional
+@d.reel.basic.name
+en: Simple Reel
+es: Carrete sencillo
+de: Einfache Rolle
+fr: Moulinet simple
+pt: Molinete Simples
+@d.reel.light.name
+en: Light Reel
+es: Carrete ligero
+de: Leichte Rolle
+fr: Moulinet léger
+pt: Molinete Leve
+@d.reel.balanced.name
+en: Balanced Reel
+es: Carrete equilibrado
+de: Ausgewogene Rolle
+fr: Moulinet équilibré
+pt: Molinete Equilibrado
+@d.reel.strong.name
+en: Strong Reel
+es: Carrete potente
+de: Starke Rolle
+fr: Moulinet puissant
+pt: Molinete Forte
+@d.reel.professional.name
+en: Pro Reel
+es: Carrete profesional
+de: Profi-Rolle
+fr: Moulinet professionnel
+pt: Molinete Profissional
+@d.hook.standard.name
+en: Standard Hook
+es: Anzuelo estándar
+de: Standardhaken
+fr: Hameçon standard
+pt: Anzol Padrão
+@d.hook.sharp.name
+en: Sharp Hook
+es: Anzuelo afilado
+de: Scharfer Haken
+fr: Hameçon affûté
+pt: Anzol Afiado
+@d.hook.reinforced.name
+en: Reinforced Hook
+es: Anzuelo reforzado
+de: Verstärkter Haken
+fr: Hameçon renforcé
+pt: Anzol Reforçado
+@d.hook.pro.name
+en: Pro Hook
+es: Anzuelo profesional
+de: Profi-Haken
+fr: Hameçon professionnel
+pt: Anzol Profissional
+@d.boat.coastal_skiff.name
+en: Coastal Skiff
+es: Bote costero
+de: Küstenboot
+fr: Barque côtière
+pt: Bote Costeiro
+@d.boat.motorboat.name
+en: Motor Fishing Boat
+es: Pesquero a motor
+de: Motorfischerboot
+fr: Bateau de pêche à moteur
+pt: Barco de Pesca a Motor
+@d.boat.cabin.name
+en: Cabin Fishing Boat
+es: Pesquero con cabina
+de: Kajüt-Fischerboot
+fr: Bateau de pêche à cabine
+pt: Barco de Pesca com Cabine
+@d.boat.offshore.name
+en: Offshore Boat
+es: Barco de altura
+de: Hochseeboot
+fr: Bateau de haute mer
+pt: Barco de Alto-mar
+@d.auto.auto1.name
+en: Basic Auto Rod
+es: Caña automática básica
+de: Einfache Auto-Angel
+fr: Canne auto basique
+pt: Vara Automática Básica
+@d.auto.auto_reel.name
+en: Auto-Reel Module
+es: Módulo de recogida automática
+de: Automatik-Kurbelmodul
+fr: Module de moulinage auto
+pt: Módulo de Recolha Automática
+@d.auto.sensing.name
+en: Precision Sensing
+es: Detección de precisión
+de: Präzisionssensor
+fr: Détection de précision
+pt: Detecção de Precisão
+@d.auto.auto2.name
+en: Second Auto Rod
+es: Segunda caña automática
+de: Zweite Auto-Angel
+fr: Deuxième canne auto
+pt: Segunda Vara Automática
+@d.auto.auto3.name
+en: Third Auto Rod
+es: Tercera caña automática
+de: Dritte Auto-Angel
+fr: Troisième canne auto
+pt: Terceira Vara Automática
+@d.auto.deep_sea_gear.name
+en: Deep-Sea Gearing
+es: Engranaje de altura
+de: Tiefsee-Getriebe
+fr: Engrenage des grands fonds
+pt: Engrenagem de Alto-mar
+@d.cust.bahar.name
+en: Bahar's Restaurant
+es: Restaurante de Bahar
+de: Bahars Restaurant
+fr: Restaurant de Bahar
+pt: Restaurante da Bahar
+@d.cust.nihat.name
+en: Harbor Fishmonger
+es: Pescadería del puerto
+de: Hafen-Fischhändler
+fr: Poissonnier du port
+pt: Peixaria do Porto
+@d.cust.sunset_hotel.name
+en: Sunset Hotel
+es: Hotel Atardecer
+de: Hotel Abendrot
+fr: Hôtel du Couchant
+pt: Hotel Pôr do Sol
+@d.cust.seafood_restaurant.name
+en: Seafood Restaurant
+es: Marisquería
+de: Fischrestaurant
+fr: Restaurant de fruits de mer
+pt: Restaurante de Frutos do Mar
+@d.cust.north_fishery.name
+en: Northern Fish House
+es: Pescadería del Norte
+de: Nordische Fischhalle
+fr: Poissonnerie du Nord
+pt: Peixaria do Norte
+@d.cust.island_cuisine.name
+en: Island Kitchen
+es: Cocina Isleña
+de: Inselküche
+fr: Cuisine des Îles
+pt: Cozinha da Ilha
+@d.cust.cooperative.name
+en: Maritime Cooperative
+es: Cooperativa Marítima
+de: Seefahrer-Genossenschaft
+fr: Coopérative maritime
+pt: Cooperativa Marítima
+@d.event.sardine_school.name
+en: Sardine School
+es: Banco de sardinas
+de: Sardinenschwarm
+fr: Banc de sardines
+pt: Cardume de Sardinhas
+@d.event.bay_activity.name
+en: Busy Cove
+es: Movimiento en la cala
+de: Reges Treiben in der Bucht
+fr: Agitation dans la crique
+pt: Agito na Enseada
+@d.event.rocky_bounty.name
+en: Bounty of the Rocks
+es: La abundancia de las rocas
+de: Reichtum der Felsen
+fr: Abondance des rochers
+pt: Fartura das Pedras
+@d.event.currents_day.name
+en: Day of the Currents
+es: El día de las corrientes
+de: Tag der Strömungen
+fr: Jour des courants
+pt: Dia das Correntes
+@d.event.calm_north.name
+en: Calm Seas Up North
+es: Mar en calma en el norte
+de: Ruhige See im Norden
+fr: Mer calme au Nord
+pt: Mar Calmo no Norte
+@d.event.tropical_activity.name
+en: Tropical Fish Frenzy
+es: Movimiento de peces tropicales
+de: Reges Treiben der Tropenfische
+fr: Effervescence tropicale
+pt: Agito de Peixes Tropicais
+@d.event.special_restaurant.name
+en: Restaurant's Special Order
+es: Compra especial del restaurante
+de: Sonderauftrag des Restaurants
+fr: Achat spécial du restaurant
+pt: Compra Especial do Restaurante
+@d.event.harbor_market.name
+en: Harbor Market
+es: Mercado del puerto
+de: Hafenmarkt
+fr: Marché du port
+pt: Feira do Porto
+@d.event.bait_discount.name
+en: Tackle Shop Sale
+es: Rebajas en la tienda de pesca
+de: Rabatt im Angelladen
+fr: Promo au magasin de pêche
+pt: Promoção na Loja de Pesca
+@d.event.open_sea_current.name
+en: Favorable Open-Sea Current
+es: Corriente favorable en alta mar
+de: Günstige Hochseeströmung
+fr: Courant favorable au large
+pt: Correnteza Favorável em Alto-mar

@@ -1,0 +1,378 @@
+@d.fish.wahoo.desc
+en: A hunter with a long, slender body that can swim extremely fast.
+es: Cazador de cuerpo largo y estilizado que nada a enorme velocidad.
+de: Ein Jäger mit langem, schlankem Körper, der extrem schnell schwimmt.
+fr: Chasseur au corps long et fin, capable de nager extrêmement vite.
+pt: Caçador de corpo longo e fino que nada extremamente rápido.
+@d.fish.buyuk_gozlu_orkinos.desc
+en: A powerful species of open and deep waters, told apart by its big eyes.
+es: Especie potente de aguas abiertas y profundas, que se distingue por sus grandes ojos.
+de: Eine kräftige Art des offenen, tiefen Wassers, erkennbar an den großen Augen.
+fr: Espèce puissante des eaux profondes du large, reconnaissable à ses grands yeux.
+pt: Espécie forte de águas abertas e profundas, que se distingue pelos olhos grandes.
+@d.fish.kilic_baligi.desc
+en: Easily recognized by its long, sword-shaped upper jaw.
+es: Se reconoce fácilmente por su mandíbula superior larga en forma de espada.
+de: Leicht am langen, schwertförmigen Oberkiefer zu erkennen.
+fr: Facilement reconnaissable à sa longue mâchoire supérieure en forme d'épée.
+pt: Fácil de reconhecer pela longa mandíbula superior em forma de espada.
+@d.fish.yelken_baligi.desc
+en: A fast, impressive open-sea fish that stands out with its huge dorsal fin.
+es: Pez de alta mar rápido e impresionante que destaca por su enorme aleta dorsal.
+de: Ein schneller, beeindruckender Hochseefisch mit riesiger Rückenflosse.
+fr: Poisson du large rapide et impressionnant, remarquable par son immense nageoire dorsale.
+pt: Peixe de alto-mar rápido e impressionante, que se destaca pela enorme nadadeira dorsal.
+@d.fish.hamsi.desc
+en: A small, slim, silvery schooling fish. Known for the schools that come close to shore in the cold months.
+es: Pez de banco pequeño, fino y plateado. Famoso por los bancos que se acercan a la costa en los meses fríos.
+de: Ein kleiner, schlanker, silbriger Schwarmfisch. Bekannt für Schwärme, die in kalten Monaten an die Küste kommen.
+fr: Petit poisson grégaire, fin et argenté. Connu pour ses bancs qui s'approchent des côtes pendant les mois froids.
+pt: Peixe de cardume pequeno, fino e prateado. Famoso pelos cardumes que chegam perto da costa nos meses frios.
+@d.fish.kaya_baligi.desc
+en: A small, spotted, big-headed fish that hides among the stones. Often seen under the pier.
+es: Pez pequeño, moteado y de cabeza grande que se esconde entre las piedras. Frecuente bajo el muelle.
+de: Ein kleiner, gefleckter Fisch mit großem Kopf, der sich zwischen Steinen versteckt. Oft unter dem Steg zu sehen.
+fr: Petit poisson tacheté à grosse tête qui se cache entre les pierres. Souvent vu sous le ponton.
+pt: Peixe pequeno, pintado e cabeçudo que se esconde entre as pedras. Comum embaixo do píer.
+@d.fish.sarpan.desc
+en: Recognized by the golden-yellow stripes on its body. Wanders the shallows grazing on seaweed.
+es: Se reconoce por las rayas amarillo dorado del cuerpo. Recorre las aguas someras comiendo algas.
+de: Erkennbar an den goldgelben Streifen. Zieht durchs Flachwasser und weidet Algen ab.
+fr: Se reconnaît aux rayures jaune doré de son corps. Parcourt les hauts-fonds en broutant les algues.
+pt: Reconhecida pelas listras amarelo-douradas no corpo. Anda no raso pastando algas.
+@d.fish.iskorpit.desc
+en: Blends into the rocks with its spiny fins and camouflaged reddish-brown color. Handle with care.
+es: Se camufla entre las rocas con sus aletas espinosas y su color pardo rojizo. Hay que cogerlo con cuidado.
+de: Verschmilzt mit stacheligen Flossen und rotbrauner Tarnfarbe mit den Felsen. Vorsichtig anfassen!
+fr: Se fond dans les rochers grâce à ses nageoires épineuses et sa couleur brun-rouge. À manipuler avec précaution.
+pt: Mistura-se às pedras com as nadadeiras espinhosas e a cor marrom-avermelhada. Pegue com cuidado.
+@d.fish.kupes.desc
+en: A big-eyed schooling fish with yellowish stripes. Forms lively groups in the shallow waters of coves.
+es: Pez de banco de ojos grandes y rayas amarillentas. Forma grupos inquietos en las aguas someras de las calas.
+de: Ein großäugiger Schwarmfisch mit gelblichen Streifen. Bildet lebhafte Gruppen im Flachwasser der Buchten.
+fr: Poisson grégaire aux grands yeux et rayures jaunâtres. Forme des groupes vifs dans les eaux peu profondes des criques.
+pt: Peixe de cardume de olhos grandes e listras amareladas. Forma grupos agitados nas águas rasas das enseadas.
+@d.fish.mirmir.desc
+en: Recognized by the dark vertical bars on its silvery body. Rummages through sandy bottoms with its snout.
+es: Se reconoce por las franjas verticales oscuras de su cuerpo plateado. Hurga en los fondos arenosos con el hocico.
+de: Erkennbar an dunklen Querstreifen auf silbrigem Körper. Wühlt mit der Schnauze im sandigen Grund.
+fr: Se reconnaît aux bandes verticales sombres sur son corps argenté. Fouille les fonds sableux avec son museau.
+pt: Reconhecida pelas faixas verticais escuras no corpo prateado. Revira o fundo de areia com o focinho.
+@d.fish.dil_baligi.desc
+en: Hides on the bottom with its long oval flat body and sand-colored skin. Famous for its flavor.
+es: Se oculta en el fondo con su cuerpo plano y ovalado del color de la arena. Famoso por su sabor.
+de: Versteckt sich mit langem, ovalem, flachem Körper in Sandfarbe am Grund. Berühmt für seinen Geschmack.
+fr: Se cache au fond grâce à son long corps ovale et plat couleur sable. Réputée pour sa saveur.
+pt: Esconde-se no fundo com o corpo achatado, oval e cor de areia. Famoso pelo sabor.
+@d.fish.minakop.desc
+en: Told apart by the short barbel on its chin and slanted wavy lines. Comes close to shore in the evening.
+es: Se distingue por la barbilla corta y las líneas onduladas oblicuas. Se acerca a la costa al atardecer.
+de: Erkennbar an der kurzen Bartel am Kinn und schrägen Wellenlinien. Kommt abends an die Küste.
+fr: Se distingue par son court barbillon et ses lignes ondulées obliques. S'approche du rivage en fin de journée.
+pt: Distingue-se pelo barbilhão curto e as linhas onduladas inclinadas. Chega perto da costa ao entardecer.
+@d.fish.hanos.desc
+en: A colorful rock fish with a blue patch on its belly and dark bands on its sides.
+es: Colorido pez de roca con una mancha azul en el vientre y bandas oscuras en los costados.
+de: Ein farbenfroher Felsfisch mit blauem Bauchfleck und dunklen Seitenbinden.
+fr: Poisson de roche coloré, avec une tache bleue sur le ventre et des bandes sombres sur les flancs.
+pt: Peixe de pedra colorido, com uma mancha azul na barriga e faixas escuras nas laterais.
+@d.fish.kirlangic.desc
+en: Its huge blue-edged pectoral fins open like wings. It can "walk" on the bottom with them.
+es: Sus enormes aletas pectorales con borde azul se abren como alas. Puede «caminar» por el fondo con ellas.
+de: Riesige, blau gesäumte Brustflossen öffnen sich wie Flügel. Mit ihnen kann er über den Grund „laufen“.
+fr: Ses immenses nageoires pectorales bordées de bleu s'ouvrent comme des ailes. Il peut « marcher » au fond avec.
+pt: As enormes nadadeiras peitorais de borda azul se abrem como asas. Com elas, consegue "andar" no fundo.
+@d.fish.lahoz.desc
+en: A grouper relative known for the golden-yellow blotch near its tail. Loves cave-like rocks.
+es: Pariente del mero que se reconoce por la mancha amarillo dorado cerca de la cola. Le encantan las rocas con cuevas.
+de: Ein Verwandter des Zackenbarschs mit goldgelbem Fleck nahe dem Schwanz. Liebt höhlenreiche Felsen.
+fr: Cousin du mérou, reconnaissable à la tache jaune doré près de la queue. Adore les rochers à cavités.
+pt: Parente da garoupa, conhecida pela mancha amarelo-dourada perto da cauda. Adora pedras com tocas.
+@d.fish.orfoz.desc
+en: A big, patient hunter of the rocky depths. Hides in crevices with its spotted brown body.
+es: Gran cazador paciente de las profundidades rocosas. Se esconde en las grietas con su cuerpo pardo moteado.
+de: Ein großer, geduldiger Jäger der Felstiefen. Versteckt sich mit geflecktem braunem Körper in Spalten.
+fr: Grand chasseur patient des profondeurs rocheuses. Se cache dans les failles avec son corps brun tacheté.
+pt: Caçador grande e paciente das profundezas rochosas. Esconde-se em fendas com o corpo marrom pintado.
+@d.fish.tirsi.desc
+en: A schooling fish with a bluish back and silvery sides. Recognized by the row of dark spots along its flank.
+es: Pez de banco con el lomo azulado y los costados plateados. Se reconoce por la fila de manchas oscuras del costado.
+de: Ein Schwarmfisch mit bläulichem Rücken und silbrigen Seiten. Erkennbar an der Reihe dunkler Flecken an der Flanke.
+fr: Poisson grégaire au dos bleuté et aux flancs argentés. Reconnaissable à sa rangée de taches sombres sur le flanc.
+pt: Peixe de cardume de dorso azulado e laterais prateadas. Reconhecido pela fileira de manchas escuras na lateral.
+@d.fish.dulger.desc
+en: Carries a round dark spot in the middle of its thin, deep body. Its long dorsal spines stand out.
+es: Lleva una mancha oscura redonda en el centro de su cuerpo alto y comprimido. Destacan sus largas espinas dorsales.
+de: Trägt mitten auf dem schmalen, hohen Körper einen runden dunklen Fleck. Auffällig sind die langen Rückenstacheln.
+fr: Porte une tache sombre ronde au milieu de son corps haut et aplati. Ses longues épines dorsales attirent l'œil.
+pt: Tem uma mancha escura redonda no meio do corpo alto e achatado. Os longos espinhos dorsais chamam a atenção.
+@d.fish.kalkan.desc
+en: An almost round, flat bottom fish with bony knobs on its back. A prized catch.
+es: Pez de fondo casi redondo y plano, con tubérculos óseos en el dorso. Una captura muy valorada.
+de: Ein fast runder, flacher Grundfisch mit Knochenhöckern auf dem Rücken. Ein wertvoller Fang.
+fr: Poisson de fond presque rond et plat, au dos parsemé de tubercules osseux. Une prise de valeur.
+pt: Peixe de fundo quase redondo e achatado, com botões ósseos no dorso. Uma captura valiosa.
+@d.fish.sarikuyruk.desc
+en: A very powerful hunter with an amber band running from its eye to its tail.
+es: Cazador muy potente con una banda ámbar que va del ojo a la cola.
+de: Ein sehr kräftiger Jäger mit bernsteinfarbenem Band vom Auge bis zum Schwanz.
+fr: Chasseur très puissant, avec une bande ambrée de l'œil à la queue.
+pt: Caçador muito forte, com uma faixa cor de âmbar do olho até a cauda.
+@d.fish.kapelin.desc
+en: A small, greenish fish that forms giant schools in cold waters. The base of the northern food chain.
+es: Pez pequeño y verdoso que forma bancos gigantes en aguas frías. La base de la cadena alimentaria del norte.
+de: Ein kleiner, grünlicher Fisch, der in kaltem Wasser riesige Schwärme bildet. Die Basis der nördlichen Nahrungskette.
+fr: Petit poisson verdâtre formant des bancs géants en eaux froides. La base de la chaîne alimentaire du Nord.
+pt: Peixe pequeno e esverdeado que forma cardumes gigantes em águas frias. A base da cadeia alimentar do norte.
+@d.fish.topak_baligi.desc
+en: Clings to rocks with its round, knobby body and the sucker on its belly. Looks adorable.
+es: Se agarra a las rocas con su cuerpo redondo y abultado y la ventosa del vientre. Tiene un aspecto adorable.
+de: Hält sich mit rundem, höckrigem Körper und Saugnapf am Bauch an Felsen fest. Sieht putzig aus.
+fr: S'accroche aux rochers grâce à son corps rond et bosselé et à la ventouse de son ventre. Trop mignon.
+pt: Gruda nas pedras com o corpo redondo e cheio de botões e a ventosa da barriga. Tem um jeito fofo.
+@d.fish.kizil_levrek.desc
+en: A fish of deep, cold waters with a bright red color and big eyes.
+es: Pez de aguas profundas y frías, de color rojo intenso y ojos grandes.
+de: Ein Fisch tiefer, kalter Gewässer mit leuchtend roter Farbe und großen Augen.
+fr: Poisson des eaux profondes et froides, rouge vif aux grands yeux.
+pt: Peixe de águas fundas e frias, vermelho vivo e de olhos grandes.
+@d.fish.kurt_baligi.desc
+en: Cracks shellfish with its strong jaws and canine teeth. Its grey body has dark bands.
+es: Rompe moluscos con sus fuertes mandíbulas y colmillos. Su cuerpo gris tiene bandas oscuras.
+de: Knackt Schalentiere mit kräftigen Kiefern und Fangzähnen. Der graue Körper trägt dunkle Binden.
+fr: Brise les coquillages avec ses mâchoires puissantes et ses crocs. Son corps gris porte des bandes sombres.
+pt: Quebra mariscos com as mandíbulas fortes e os caninos. O corpo cinza tem faixas escuras.
+@d.fish.mavi_cerrah.desc
+en: With its vivid blue body and yellow tail, one of the most colorful fish on the reef.
+es: Con su cuerpo azul intenso y su cola amarilla, uno de los peces más coloridos del arrecife.
+de: Mit leuchtend blauem Körper und gelbem Schwanz einer der buntesten Fische des Riffs.
+fr: Avec son corps bleu vif et sa queue jaune, l'un des poissons les plus colorés du récif.
+pt: Com o corpo azul vivo e a cauda amarela, um dos peixes mais coloridos do recife.
+@d.fish.papagan_baligi.desc
+en: Nibbles coralline algae with its beak-like fused teeth. Shimmers in green, blue and pink.
+es: Mordisquea algas coralinas con sus dientes soldados en forma de pico. Brilla en verde, azul y rosa.
+de: Knabbert mit schnabelartig verwachsenen Zähnen an Kalkalgen. Schimmert grün, blau und rosa.
+fr: Grignote les algues corallines avec ses dents soudées en bec. Brille de vert, de bleu et de rose.
+pt: Rói algas coralinas com os dentes unidos em forma de bico. Brilha em verde, azul e rosa.
+@d.fish.mercan_hanisi.desc
+en: A small grouper species decorated with blue spots scattered over its red body.
+es: Pequeña especie de mero adornada con manchas azules sobre su cuerpo rojo.
+de: Eine kleine Zackenbarschart mit blauen Tupfen auf rotem Körper.
+fr: Petite espèce de mérou ornée de points bleus sur son corps rouge.
+pt: Pequena espécie de garoupa enfeitada com pintas azuis sobre o corpo vermelho.
+@d.fish.dev_trevally.desc
+en: A big, stubborn hunter of reef edges. Recognized by its steep forehead and silvery body.
+es: Cazador grande y terco de los bordes del arrecife. Se reconoce por su frente abrupta y su cuerpo plateado.
+de: Ein großer, sturer Jäger der Riffkanten. Erkennbar an steiler Stirn und silbrigem Körper.
+fr: Grand chasseur têtu des bords de récif. Reconnaissable à son front abrupt et son corps argenté.
+pt: Caçador grande e teimoso das bordas do recife. Reconhecido pela testa íngreme e o corpo prateado.
+@d.fish.cizgili_orkinos.desc
+en: A small, fast schooling tuna recognized by the dark lengthwise stripes on its belly.
+es: Pequeño atún rápido que vive en bancos; se reconoce por las rayas oscuras longitudinales del vientre.
+de: Ein kleiner, schneller Schwarmthun, erkennbar an dunklen Längsstreifen am Bauch.
+fr: Petit thon rapide vivant en bancs, reconnaissable aux rayures sombres longitudinales de son ventre.
+pt: Pequeno atum rápido que anda em cardumes, reconhecido pelas listras escuras longitudinais na barriga.
+@d.fish.pervane_baligi.desc
+en: Sunbathes at the surface with its huge round body that looks as if its tail was cut off. One of the heaviest bony fish in the world.
+es: Toma el sol en la superficie con su enorme cuerpo redondo que parece no tener cola. Uno de los peces óseos más pesados del mundo.
+de: Sonnt sich an der Oberfläche mit riesigem rundem Körper, der wie abgeschnitten wirkt. Einer der schwersten Knochenfische der Welt.
+fr: Se dore au soleil en surface avec son énorme corps rond qui semble amputé de sa queue. L'un des poissons osseux les plus lourds du monde.
+pt: Toma sol na superfície com o enorme corpo redondo que parece sem cauda. Um dos peixes ósseos mais pesados do mundo.
+@d.fish.opah.desc
+en: Its disc-shaped, silvery-red body is decorated with white spots. Its red fins gleam.
+es: Su cuerpo en forma de disco, rojo plateado, está adornado con manchas blancas. Sus aletas rojas relucen.
+de: Der scheibenförmige, silbrig-rote Körper ist mit weißen Tupfen verziert. Die roten Flossen leuchten.
+fr: Son corps en disque, rouge argenté, est orné de points blancs. Ses nageoires rouges brillent.
+pt: O corpo em forma de disco, vermelho-prateado, é enfeitado com pintas brancas. As nadadeiras vermelhas brilham.
+@d.fish.mavi_marlin.desc
+en: With its spear-like upper jaw and cobalt-blue back, the legendary catch of the open sea.
+es: Con su mandíbula superior como una lanza y su lomo azul cobalto, la captura legendaria del mar abierto.
+de: Mit speerartigem Oberkiefer und kobaltblauem Rücken der legendäre Fang der Hochsee.
+fr: Avec sa mâchoire en lance et son dos bleu cobalt, la prise légendaire du grand large.
+pt: Com a mandíbula superior em forma de lança e o dorso azul-cobalto, a captura lendária do mar aberto.
+@d.npc.zeynep.first_meet
+en: Hi there! Treat your first rod well and it'll serve you for a long time.
+es: ¡Hola! Si cuidas bien tu primera caña, te durará mucho tiempo.
+de: Hallo! Wenn du deine erste Angel gut behandelst, hält sie dich lange über Wasser.
+fr: Salut ! Si tu prends soin de ta première canne, elle te servira longtemps.
+pt: Oi! Se você cuidar bem da sua primeira vara, ela vai te servir por muito tempo.
+@d.npc.zeynep.day_generic1
+en: A good reel sometimes does more for you than a pricey rod.
+es: Un buen carrete a veces rinde más que una caña cara.
+de: Eine gute Rolle bringt manchmal mehr als eine teure Angel.
+fr: Un bon moulinet fait parfois plus qu'une canne hors de prix.
+pt: Um bom molinete às vezes rende mais que uma vara cara.
+@d.npc.zeynep.day_generic2
+en: A hook may be small, but it's a big part of a safe catch.
+es: El anzuelo será pequeño, pero es clave para una captura segura.
+de: Ein Haken ist klein, aber ein wichtiger Teil eines sicheren Fangs.
+fr: L'hameçon est petit, mais il compte beaucoup pour une prise sûre.
+pt: O anzol pode ser pequeno, mas é parte importante de uma captura segura.
+@d.npc.zeynep.day_generic3
+en: When you pick your bait, think about the spot you're fishing.
+es: Al elegir el cebo, piensa en el sitio donde vas a pescar.
+de: Denk bei der Köderwahl an den Platz, an dem du angelst.
+fr: Quand tu choisis ton appât, pense au coin où tu pêches.
+pt: Na hora de escolher a isca, pense no ponto onde você vai pescar.
+@d.npc.zeynep.sunny
+en: Sunshine is lovely, but not every species likes the same weather.
+es: El sol es precioso, pero no a todas las especies les gusta el mismo tiempo.
+de: Sonne ist schön, aber nicht jede Art mag dasselbe Wetter.
+fr: Le soleil, c'est agréable, mais toutes les espèces n'aiment pas le même temps.
+pt: O sol é ótimo, mas nem toda espécie gosta do mesmo tempo.
+@d.npc.zeynep.rain
+en: Rainy days have their own kind of bounty too.
+es: Los días de lluvia también tienen su propia abundancia.
+de: Auch Regentage haben ihren eigenen Segen.
+fr: Les jours de pluie ont aussi leur part d'abondance.
+pt: Os dias de chuva também têm a sua fartura.
+@d.npc.zeynep.wind
+en: In the wind, set up your cast a little more carefully.
+es: Con viento, ajusta tu lanzamiento con un poco más de cuidado.
+de: Bei Wind solltest du deinen Wurf etwas sorgfältiger ansetzen.
+fr: Par grand vent, règle ton lancer avec un peu plus de soin.
+pt: Com vento, ajuste o arremesso com um pouco mais de cuidado.
+@d.npc.zeynep.rod2
+en: The light rod will help you save your energy.
+es: La caña ligera te ayudará a ahorrar energía.
+de: Die leichte Angel hilft dir, Energie zu sparen.
+fr: La canne légère t'aidera à économiser ton énergie.
+pt: A vara leve vai te ajudar a poupar energia.
+@d.npc.zeynep.rod3
+en: With the fiberglass rod you can take on rocky waters more comfortably.
+es: Con la caña de fibra de vidrio te atreverás mejor con las aguas rocosas.
+de: Mit der Glasfaserangel kannst du felsige Gewässer entspannter angehen.
+fr: Avec la canne en fibre de verre, tu pourras tenter les eaux rocheuses plus sereinement.
+pt: Com a vara de fibra de vidro você encara as águas rochosas com mais tranquilidade.
+@d.npc.zeynep.rod4
+en: The carbon rod feels great when you're closing in on strong fish.
+es: La caña de carbono da muy buenas sensaciones con los peces fuertes.
+de: Die Karbonangel fühlt sich bei starken Fischen richtig gut an.
+fr: La canne en carbone donne de bonnes sensations face aux poissons puissants.
+pt: A vara de carbono passa uma ótima sensação com peixes fortes.
+@d.npc.zeynep.rod5
+en: Now you've got a professional sea rod in your hands.
+es: Ahora tienes en tus manos una caña de mar profesional.
+de: Jetzt hältst du eine echte Profi-Meeresangel in den Händen.
+fr: Te voilà avec une vraie canne de mer professionnelle en main.
+pt: Agora você tem nas mãos uma vara de mar profissional.
+@d.npc.zeynep.first_boat
+en: Don't forget to pick up the right bait for the boat, too.
+es: No olvides comprar también el cebo adecuado para el barco.
+de: Vergiss nicht, auch passenden Köder fürs Boot mitzunehmen.
+fr: N'oublie pas de prendre aussi les bons appâts pour le bateau.
+pt: Não esqueça de levar também a isca certa para o barco.
+@d.npc.zeynep.kuzey
+en: A sturdy line is good preparation for the Misty North.
+es: Un sedal resistente es buena preparación para el Norte Brumoso.
+de: Eine robuste Schnur ist eine gute Vorbereitung für den Nebelnorden.
+fr: Une ligne solide, c'est une bonne préparation pour le Nord Brumeux.
+pt: Uma linha resistente é uma boa preparação para o Norte Nebuloso.
+@d.npc.zeynep.tropik
+en: With tropical fish you'll really see the difference the right bait makes.
+es: Con los peces tropicales notarás la diferencia del cebo adecuado.
+de: Bei Tropenfischen merkst du richtig, was der passende Köder ausmacht.
+fr: Avec les poissons tropicaux, tu verras toute la différence que fait le bon appât.
+pt: Com peixes tropicais você vai ver a diferença que a isca certa faz.
+@d.npc.zeynep.record
+en: I heard about your new record! It really is all about patience.
+es: ¡Me han contado tu nuevo récord! Es cuestión de paciencia, de verdad.
+de: Ich hab von deinem neuen Rekord gehört! Das ist wirklich Geduldssache.
+fr: J'ai entendu parler de ton nouveau record ! C'est vraiment une affaire de patience.
+pt: Fiquei sabendo do seu novo recorde! É mesmo questão de paciência.
+@d.npc.nihat.first_meet
+en: Whatever fish you bring today, there's room for it on my counter.
+es: Traigas el pez que traigas hoy, en mi mostrador hay sitio.
+de: Egal welchen Fisch du heute bringst, auf meinem Tresen ist Platz dafür.
+fr: Quel que soit le poisson que tu m'apportes aujourd'hui, il y a de la place sur mon étal.
+pt: Traga o peixe que for hoje, no meu balcão tem lugar.
+@d.npc.nihat.day_generic1
+en: Prices at the fish market are fixed; you always know what you'll earn.
+es: En la lonja los precios son fijos; siempre sabes lo que vas a ganar.
+de: Am Fischmarkt sind die Preise fest; du weißt immer, was du bekommst.
+fr: À la halle, les prix sont fixes ; tu sais toujours ce que tu vas gagner.
+pt: No mercado os preços são fixos; você sempre sabe quanto vai ganhar.
+@d.npc.nihat.day_generic2
+en: Check the order board; sometimes there's a better offer.
+es: Mira el tablón de pedidos; a veces sale una oferta mejor.
+de: Schau an der Auftragstafel vorbei, manchmal gibt es ein besseres Angebot.
+fr: Jette un œil au tableau des commandes ; il y a parfois une meilleure offre.
+pt: Dá uma olhada no quadro de pedidos; às vezes aparece oferta melhor.
+@d.npc.nihat.day_generic3
+en: Bringing in just a few fish is trading too.
+es: Traer pocos peces también es comerciar.
+de: Auch ein paar Fische zu bringen ist Handel.
+fr: Apporter peu de poissons, c'est aussi du commerce.
+pt: Trazer poucos peixes também é comércio.
+@d.npc.nihat.sunny
+en: Sunny days bring the harbor to life.
+es: Los días de sol llenan de vida el puerto.
+de: Sonnige Tage bringen Leben in den Hafen.
+fr: Les journées ensoleillées animent le port.
+pt: Os dias de sol enchem o porto de vida.
+@d.npc.nihat.rain
+en: A bit of rain never scared off a fisher.
+es: Un poco de lluvia no asusta a los pescadores.
+de: Ein bisschen Regen schreckt keinen Fischer ab.
+fr: Un peu de pluie n'a jamais effrayé un pêcheur.
+pt: Um pouco de chuva não assusta pescador.
+@d.npc.nihat.wind
+en: On a windy day, sturdy gear is a good thing.
+es: En un día de viento, un buen equipo resistente se agradece.
+de: An einem windigen Tag ist robuste Ausrüstung Gold wert.
+fr: Un jour de vent, un équipement solide, ça ne se refuse pas.
+pt: Em dia de vento, equipamento resistente faz diferença.
+@d.npc.nihat.first_sale
+en: Congratulations on your first sale!
+es: ¡Enhorabuena por tu primera venta!
+de: Glückwunsch zu deinem ersten Verkauf!
+fr: Félicitations pour ta première vente !
+pt: Parabéns pela primeira venda!
+@d.npc.nihat.sales10k
+en: You've brought plenty of fish to my counter. Well done.
+es: Has traído un montón de pescado a mi mostrador. ¡Bravo!
+de: Du hast ordentlich Fisch an meinen Tresen gebracht. Glückwunsch.
+fr: Tu as apporté pas mal de poissons à mon étal. Bravo.
+pt: Você trouxe bastante peixe para o meu balcão. Parabéns.
+@d.npc.nihat.sales100k
+en: Everyone in town is talking about you.
+es: Todo el pueblo habla de ti.
+de: Der ganze Ort redet über dich.
+fr: Tout le village parle de toi.
+pt: A vila inteira está falando de você.
+@d.npc.nihat.first_boat
+en: Looks like we'll be seeing some different species now.
+es: Parece que ahora veremos especies distintas.
+de: Sieht so aus, als bekämen wir jetzt andere Arten zu sehen.
+fr: On dirait qu'on va voir de nouvelles espèces maintenant.
+pt: Parece que agora vamos ver espécies diferentes.
+@d.npc.nihat.second_boat
+en: I'm expecting some fine catches from your new boat.
+es: Espero buenas capturas con tu barco nuevo.
+de: Ich erwarte schöne Fänge mit dem neuen Boot.
+fr: J'attends de belles prises avec ton nouveau bateau.
+pt: Espero boas capturas com o barco novo.
+@d.npc.nihat.north
+en: Northern fish find buyers too.
+es: Los peces del norte también encuentran comprador.
+de: Auch Fische aus dem Norden finden Käufer.
+fr: Les poissons du Nord trouvent aussi preneur.
+pt: Os peixes do norte também têm comprador.
+@d.npc.nihat.tropics
+en: The colors of island fish are something else.
+es: Los colores de los peces de las islas son otra cosa.
+de: Die Farben der Inselfische sind etwas ganz anderes.
+fr: Les couleurs des poissons des îles, c'est autre chose.
+pt: As cores dos peixes das ilhas são outra coisa.
+@d.npc.nihat.record
+en: I'd love to get a look at that record fish.
+es: Me encantaría ver ese pez de récord.
+de: Diesen Rekordfisch würde ich zu gern mal sehen.
+fr: J'aimerais bien voir ce poisson record.
+pt: Eu adoraria ver esse peixe recordista.
+@d.npc.bora.first_meet
+en: Your first boat may be small, but it'll take you to beautiful places.
+es: Tu primer barco será pequeño, pero te llevará a sitios preciosos.
+de: Dein erstes Boot mag klein sein, aber es bringt dich an schöne Orte.
+fr: Ton premier bateau est peut-être petit, mais il t'emmènera dans de beaux endroits.
+pt: Seu primeiro barco pode ser pequeno, mas vai te levar a lugares lindos.

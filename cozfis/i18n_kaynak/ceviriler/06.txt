@@ -1,0 +1,582 @@
+@sys4.ufukta_martilarin_ardindan_gittigimiz_an
+en: That moment we followed the gulls toward the horizon… I'll never forget it. Take this little compass as a keepsake!
+es: Ese momento siguiendo a las gaviotas hacia el horizonte… Nunca lo olvidaré. ¡Quédate esta pequeña brújula de recuerdo!
+de: Wie wir den Möwen zum Horizont gefolgt sind … das vergesse ich nie. Nimm diesen kleinen Kompass als Andenken!
+fr: Ce moment où on a suivi les mouettes vers l'horizon… je ne l'oublierai jamais. Prends cette petite boussole en souvenir !
+pt: Aquele momento seguindo as gaivotas rumo ao horizonte… nunca vou esquecer. Fique com esta bussolinha de lembrança!
+@sys4.ilk_yolculuk_hatirasi
+en: First Voyage Keepsake
+es: Recuerdo del primer viaje
+de: Andenken an die erste Fahrt
+fr: Souvenir du premier voyage
+pt: Lembrança da Primeira Viagem
+@sys4.elif_in_deniz_cizimleri
+en: Elif's Sea Sketches
+es: Los dibujos marinos de Elif
+de: Elifs Meereszeichnungen
+fr: Les croquis marins d'Elif
+pt: Os Desenhos do Mar da Elif
+@sys4.elif_ile_konus_cizim_defterindeki
+en: Talk to Elif: get a clue about the two views in her sketchbook.
+es: Habla con Elif: averigua la pista de los dos paisajes de su cuaderno.
+de: Sprich mit Elif: Erfahre den Hinweis zu den zwei Ansichten in ihrem Skizzenbuch.
+fr: Parle à Elif : découvre l'indice des deux paysages de son carnet de croquis.
+pt: Fale com a Elif: descubra a pista das duas paisagens do caderno dela.
+@sys4.defterimde_iki_manzara_yarim_kaldi
+en: Two views in my notebook are still unfinished. Could you go see those spots and tell me about them?
+es: Tengo dos paisajes a medias en mi cuaderno. ¿Puedes ir a verlos y contármelo?
+de: Zwei Ansichten in meinem Heft sind noch unfertig. Kannst du dir die Orte ansehen und mir davon erzählen?
+fr: Deux paysages de mon carnet sont inachevés. Tu peux aller voir ces endroits et me les décrire ?
+pt: Duas paisagens no meu caderno ficaram pela metade. Você pode ver esses lugares e me contar?
+@sys4.tekneyle_iki_manzara_noktasini_ziyaret
+en: Visit the two viewpoints by boat and take in the view there.
+es: Visita en barco los dos miradores y contempla el paisaje.
+de: Besuche mit dem Boot die beiden Aussichtspunkte und betrachte die Aussicht.
+fr: Rends-toi en bateau aux deux points de vue et observe le paysage.
+pt: Visite de barco os dois mirantes e observe a paisagem.
+@sys4.elif_e_don_ve_cizimleri
+en: Go back to Elif and see the sketches.
+es: Vuelve con Elif y mira los dibujos.
+de: Geh zurück zu Elif und sieh dir die Zeichnungen an.
+fr: Retourne voir Elif et regarde les croquis.
+pt: Volte à Elif e veja os desenhos.
+@sys4.anlattiklarin_sayesinde_tamamladim_bu_iki
+en: Thanks to your descriptions I finished them! These two sketches are yours; I made a little board for your home too.
+es: ¡Gracias a lo que me contaste los he terminado! Estos dos dibujos son tuyos; también te hice un tablón para tu casa.
+de: Dank deiner Beschreibung sind sie fertig! Die beiden Zeichnungen gehören dir; ich hab dir auch eine kleine Tafel fürs Haus gemacht.
+fr: Grâce à tes descriptions, je les ai terminés ! Ces deux croquis sont à toi ; je t'ai aussi fait un petit tableau pour ta maison.
+pt: Graças ao que você contou, terminei! Esses dois desenhos são seus; também fiz um quadrinho para a sua casa.
+@sys4.iki_deniz_cizimi_ve_cizim
+en: Two Sea Sketches and a Sketch Board
+es: Dos dibujos marinos y un tablón de dibujos
+de: Zwei Meereszeichnungen und eine Zeichentafel
+fr: Deux croquis marins et un tableau de croquis
+pt: Dois Desenhos do Mar e um Quadro de Desenhos
+@sys4.kerem_in_deniz_koleksiyonu
+en: Kerem's Sea Collection
+es: La colección marina de Kerem
+de: Kerems Meeressammlung
+fr: La collection marine de Kerem
+pt: A Coleção Marinha do Kerem
+@sys4.ilk_kiyi_kesfi
+en: First beachcombing
+es: Primera exploración de playa
+de: Erste Strandsuche
+fr: Première exploration du rivage
+pt: Primeira exploração de praia
+@sys4.kerem_ile_konus_deniz_koleksiyonu
+en: Talk to Kerem: hear his idea for a sea collection.
+es: Habla con Kerem: descubre su idea de una colección marina.
+de: Sprich mit Kerem: Erfahre von seiner Idee einer Meeressammlung.
+fr: Parle à Kerem : découvre son idée de collection marine.
+pt: Fale com o Kerem: conheça a ideia dele de uma coleção marinha.
+@sys4.kiyida_buldugun_kabuklar_ve_camlar
+en: The shells and sea glass you find on the shore would make a wonderful display in my shop!
+es: ¡Las conchas y cristales que encuentras en la playa serían una exposición preciosa en mi tienda!
+de: Die Muscheln und Gläser, die du am Strand findest, wären eine tolle Ausstellung in meinem Laden!
+fr: Les coquillages et verres que tu trouves sur le rivage feraient une superbe vitrine dans ma boutique !
+pt: As conchas e vidros que você acha na praia dariam uma exposição linda na minha loja!
+@sys4.kiyi_koleksiyonu_nda_uc_farkli
+en: Have three different items in your Shore Collection (I'll count the ones you found earlier too).
+es: Reúne tres objetos distintos en tu Colección de playa (cuento también los que ya encontraste).
+de: Hab drei verschiedene Gegenstände in deiner Strandsammlung (früher gefundene zählen auch).
+fr: Aie trois objets différents dans ta Collection du rivage (je compte aussi ceux trouvés avant).
+pt: Tenha três itens diferentes na Coleção de Praia (conto também os que você já achou).
+@sys4.kerem_e_don_ve_sergi
+en: Go back to Kerem and open the display corner.
+es: Vuelve con Kerem e inaugura el rincón de exposición.
+de: Geh zurück zu Kerem und eröffne die Ausstellungsecke.
+fr: Retourne voir Kerem et inaugure le coin d'exposition.
+pt: Volte ao Kerem e inaugure o cantinho da exposição.
+@sys4.sergi_kosesi_hazir_bir_benzerini
+en: The display corner is ready! I made one just like it for your home too.
+es: ¡El rincón de exposición está listo! También te hice uno igual para tu casa.
+de: Die Ausstellungsecke ist fertig! Ich hab dir auch eine fürs Haus gemacht.
+fr: Le coin d'exposition est prêt ! J'en ai fait un pareil pour ta maison.
+pt: O cantinho da exposição está pronto! Fiz um igual para a sua casa.
+@sys4.kalici_deniz_sergisi
+en: Permanent Sea Exhibit
+es: Exposición marina permanente
+de: Dauerhafte Meeresausstellung
+fr: Exposition marine permanente
+pt: Exposição Marinha Permanente
+@sys4.bora_nin_eski_teknesi
+en: Bora's Old Boat
+es: El viejo barco de Bora
+de: Boras altes Boot
+fr: Le vieux bateau de Bora
+pt: O Barco Antigo do Bora
+@sys4.bora_ile_konus_eski_kiyi
+en: Talk to Bora: learn about the old coastal route.
+es: Habla con Bora: conoce la vieja ruta costera.
+de: Sprich mit Bora: Erfahre von der alten Küstenroute.
+fr: Parle à Bora : découvre l'ancienne route côtière.
+pt: Fale com o Bora: conheça a antiga rota costeira.
+@sys4.ilk_teknemle_hep_iki_noktayi
+en: With my first boat I always cruised between two spots. Give that route a try with your boat!
+es: Con mi primer barco siempre recorría dos puntos. ¡Prueba esa ruta con tu barco!
+de: Mit meinem ersten Boot bin ich immer zwischen zwei Plätzen gefahren. Probier die Route mit deinem Boot!
+fr: Avec mon premier bateau, je faisais toujours le tour de deux coins. Essaie cette route avec le tien !
+pt: Com meu primeiro barco eu sempre rodava dois pontos. Experimente essa rota com o seu barco!
+@sys4.teknenle_iki_farkli_av_noktasini
+en: Visit two different fishing spots with your boat.
+es: Visita dos zonas de pesca distintas con tu barco.
+de: Besuche mit deinem Boot zwei verschiedene Angelplätze.
+fr: Visite deux coins de pêche différents avec ton bateau.
+pt: Visite dois pontos de pesca diferentes com seu barco.
+@sys4.limana_don_ve_bora_ya
+en: Return to the harbor and tell Bora about the trip.
+es: Vuelve al puerto y cuéntale a Bora el viaje.
+de: Kehr in den Hafen zurück und erzähl Bora von der Fahrt.
+fr: Rentre au port et raconte la sortie à Bora.
+pt: Volte ao porto e conte a viagem ao Bora.
+@sys4.demek_rota_hala_guzel_eski
+en: So the route is still beautiful… I'm giving you my old boat's nameplate — keep it alive.
+es: Así que la ruta sigue siendo bonita… Te doy la placa de mi viejo barco; mantenla viva tú.
+de: Die Route ist also immer noch schön … Ich schenke dir das Namensschild meines alten Boots, halt es in Ehren.
+fr: Alors la route est toujours belle… Je te donne la plaque de mon vieux bateau, fais-la vivre.
+pt: Então a rota continua linda… Vou te dar a placa do meu barco antigo; mantenha-a viva.
+@sys4.bora_nin_hatira_levhasi
+en: Bora's Keepsake Nameplate
+es: La placa de recuerdo de Bora
+de: Boras Erinnerungsschild
+fr: La plaque souvenir de Bora
+pt: A Placa de Lembrança do Bora
+@sys4.kabuk
+en: Shell
+es: Concha
+de: Muschel
+fr: Coquillage
+pt: Concha
+@sys4.midye_kabugu
+en: Mussel Shell
+es: Concha de mejillón
+de: Miesmuschelschale
+fr: Coquille de moule
+pt: Concha de mexilhão
+@sys4.mor_siyah_iki_parcali_kabugun
+en: One half of a purple-black two-part shell.
+es: Una mitad de una concha bivalva negra y morada.
+de: Eine Hälfte einer violett-schwarzen zweiteiligen Schale.
+fr: Une moitié de coquille bivalve noire et violette.
+pt: Uma metade de concha de duas partes, roxa e preta.
+@sys4.deniz_taragi
+en: Scallop
+es: Vieira
+de: Jakobsmuschel
+fr: Coquille Saint-Jacques
+pt: Vieira
+@sys4.yelpaze_bicimli_cizgili_kabuk
+en: A fan-shaped, ribbed shell.
+es: Concha estriada en forma de abanico.
+de: Fächerförmige, gerippte Schale.
+fr: Coquille striée en éventail.
+pt: Concha listrada em forma de leque.
+@sys4.spiral_kabuk
+en: Spiral Shell
+es: Concha en espiral
+de: Spiralmuschel
+fr: Coquille en spirale
+pt: Concha espiral
+@sys4.kivrilarak_buyuyen_kucuk_salyangoz_kabugu
+en: A small snail shell that grows in a coil.
+es: Pequeña concha de caracol que crece en espiral.
+de: Kleines Schneckenhaus, das sich beim Wachsen windet.
+fr: Petite coquille d'escargot qui grandit en s'enroulant.
+pt: Pequena concha de caramujo que cresce enrolada.
+@sys4.cizgili_istiridye_kabugu
+en: Striped Oyster Shell
+es: Concha de ostra rayada
+de: Gestreifte Austernschale
+fr: Coquille d'huître rayée
+pt: Concha de ostra listrada
+@sys4.puruzlu_dis_yuzu_sedefli_ici
+en: Rough on the outside, mother-of-pearl inside.
+es: Rugosa por fuera y nacarada por dentro.
+de: Außen rau, innen Perlmutt.
+fr: Rugueuse à l'extérieur, nacrée à l'intérieur.
+pt: Áspera por fora, perolada por dentro.
+@sys4.kucuk_deniz_minaresi
+en: Little Auger Shell
+es: Pequeña concha barrena
+de: Kleine Turmschnecke
+fr: Petite tourelle de mer
+pt: Pequena concha-torre
+@sys4.ince_uzun_ve_sivri_helezon
+en: A slim, long, pointed spiral shell.
+es: Concha en espiral fina, larga y puntiaguda.
+de: Schlanke, lange, spitze Spiralschale.
+fr: Coquille en spirale fine, longue et pointue.
+pt: Concha espiral fina, longa e pontuda.
+@sys4.sedefli_kabuk
+en: Pearly Shell
+es: Concha nacarada
+de: Perlmuttmuschel
+fr: Coquille nacrée
+pt: Concha perolada
+@sys4.isikta_gokkusagi_gibi_parlayan_nadir
+en: A rare shell that shimmers like a rainbow in the light.
+es: Concha rara que brilla como un arcoíris a la luz.
+de: Seltene Schale, die im Licht wie ein Regenbogen schimmert.
+fr: Coquille rare qui scintille comme un arc-en-ciel à la lumière.
+pt: Concha rara que brilha como arco-íris na luz.
+@sys4.deniz_cami
+en: Sea Glass
+es: Cristal marino
+de: Meerglas
+fr: Verre de mer
+pt: Vidro do mar
+@sys4.yesil_deniz_cami
+en: Green Sea Glass
+es: Cristal marino verde
+de: Grünes Meerglas
+fr: Verre de mer vert
+pt: Vidro do mar verde
+@sys4.dalgalarla_yumusamis_eski_sise_cami
+en: Old bottle glass smoothed by the waves.
+es: Vidrio de botella viejo, pulido por las olas.
+de: Altes Flaschenglas, von den Wellen glatt geschliffen.
+fr: Vieux verre de bouteille poli par les vagues.
+pt: Vidro de garrafa antigo, alisado pelas ondas.
+@sys4.mavi_deniz_cami
+en: Blue Sea Glass
+es: Cristal marino azul
+de: Blaues Meerglas
+fr: Verre de mer bleu
+pt: Vidro do mar azul
+@sys4.koyu_mavi_buzlu_yuzeyli_cam
+en: A dark blue piece of glass with a frosted surface.
+es: Trozo de cristal azul oscuro de superficie esmerilada.
+de: Dunkelblaues Glasstück mit milchiger Oberfläche.
+fr: Éclat de verre bleu foncé à la surface givrée.
+pt: Caco de vidro azul-escuro com superfície fosca.
+@sys4.buz_beyazi_cam
+en: Frost-White Glass
+es: Cristal blanco hielo
+de: Eisweißes Glas
+fr: Verre blanc givré
+pt: Vidro branco-gelo
+@sys4.sut_beyazi_yuvarlak_kenarli_cam
+en: Milk-white glass with rounded edges.
+es: Cristal blanco lechoso de bordes redondeados.
+de: Milchweißes Glas mit runden Kanten.
+fr: Verre blanc laiteux aux bords arrondis.
+pt: Vidro branco-leitoso de bordas arredondadas.
+@sys4.amber_deniz_cami
+en: Amber Sea Glass
+es: Cristal marino ámbar
+de: Bernsteinfarbenes Meerglas
+fr: Verre de mer ambré
+pt: Vidro do mar âmbar
+@sys4.bal_renginde_sicak_tonlu_cam
+en: Honey-colored glass with a warm tone.
+es: Cristal color miel de tono cálido.
+de: Honigfarbenes Glas mit warmem Ton.
+fr: Verre couleur miel aux tons chauds.
+pt: Vidro cor de mel de tom quente.
+@sys4.turkuaz_deniz_cami
+en: Turquoise Sea Glass
+es: Cristal marino turquesa
+de: Türkises Meerglas
+fr: Verre de mer turquoise
+pt: Vidro do mar turquesa
+@sys4.denizin_rengini_tasiyan_parlak_cam
+en: Bright glass that carries the color of the sea.
+es: Cristal brillante con el color del mar.
+de: Leuchtendes Glas in der Farbe des Meeres.
+fr: Verre éclatant qui a la couleur de la mer.
+pt: Vidro brilhante com a cor do mar.
+@sys4.mor_deniz_cami
+en: Purple Sea Glass
+es: Cristal marino morado
+de: Violettes Meerglas
+fr: Verre de mer violet
+pt: Vidro do mar roxo
+@sys4.guneste_zamanla_morarmis_cok_eski
+en: Very old glass that turned purple in the sun over time.
+es: Cristal muy antiguo que el sol ha vuelto morado con los años.
+de: Sehr altes Glas, das in der Sonne mit der Zeit violett geworden ist.
+fr: Verre très ancien devenu violet au soleil avec le temps.
+pt: Vidro muito antigo que ficou roxo com o sol ao longo do tempo.
+@sys4.kiyi_tasi
+en: Beach Stone
+es: Piedra de playa
+de: Strandstein
+fr: Pierre de plage
+pt: Pedra de praia
+@sys4.yuvarlak_cakil
+en: Round Pebble
+es: Canto rodado
+de: Runder Kiesel
+fr: Galet rond
+pt: Seixo redondo
+@sys4.puruzsuz_avuc_icine_sigan_gri
+en: A smooth grey pebble that fits in your palm.
+es: Guijarro gris y liso que cabe en la palma.
+de: Glatter grauer Kiesel, der in die Handfläche passt.
+fr: Galet gris et lisse qui tient dans la paume.
+pt: Seixo cinza e liso que cabe na palma da mão.
+@sys4.beyaz_kuvars
+en: White Quartz
+es: Cuarzo blanco
+de: Weißer Quarz
+fr: Quartz blanc
+pt: Quartzo branco
+@sys4.yari_saydam_beyaz_mineral
+en: A translucent white mineral.
+es: Mineral blanco translúcido.
+de: Durchscheinendes weißes Mineral.
+fr: Minéral blanc translucide.
+pt: Mineral branco translúcido.
+@sys4.siyah_bazalt
+en: Black Basalt
+es: Basalto negro
+de: Schwarzer Basalt
+fr: Basalte noir
+pt: Basalto negro
+@sys4.volkanik_koyu_ve_agir_tas
+en: A dark, heavy volcanic stone.
+es: Piedra volcánica oscura y pesada.
+de: Dunkler, schwerer Vulkanstein.
+fr: Pierre volcanique sombre et lourde.
+pt: Pedra vulcânica escura e pesada.
+@sys4.benekli_tas
+en: Speckled Stone
+es: Piedra moteada
+de: Gesprenkelter Stein
+fr: Pierre mouchetée
+pt: Pedra pintada
+@sys4.uzeri_kucuk_acik_renk_beneklerle
+en: Covered in little light-colored speckles.
+es: Cubierta de motitas de color claro.
+de: Übersät mit kleinen hellen Sprenkeln.
+fr: Couverte de petites mouchetures claires.
+pt: Coberta de pintinhas claras.
+@sys4.delikli_sahil_tasi
+en: Holey Beach Stone
+es: Piedra de playa agujereada
+de: Hühnergott
+fr: Pierre trouée
+pt: Pedra furada de praia
+@sys4.dalgalarin_actigi_bir_deligi_olan
+en: A lucky stone with a hole worn through by the waves.
+es: Piedra de la suerte con un agujero abierto por las olas.
+de: Glücksstein mit einem Loch, das die Wellen gebohrt haben.
+fr: Pierre porte-bonheur percée par les vagues.
+pt: Pedra da sorte com um furo aberto pelas ondas.
+@sys4.cizgili_mineral_tasi
+en: Banded Mineral Stone
+es: Piedra mineral veteada
+de: Gebänderter Mineralstein
+fr: Pierre minérale rubanée
+pt: Pedra mineral rajada
+@sys4.katman_katman_renkli_damarlar_tasiyor
+en: Layer upon layer of colorful veins.
+es: Tiene vetas de colores en capas.
+de: Schicht um Schicht farbige Adern.
+fr: Des veines colorées, couche après couche.
+pt: Tem veios coloridos em camadas.
+@sys4.deniz_hatirasi
+en: Sea Keepsake
+es: Recuerdo del mar
+de: Andenken vom Meer
+fr: Souvenir de la mer
+pt: Lembrança do Mar
+@sys4.eski_denizci_dugmesi
+en: Old Sailor's Button
+es: Botón de marinero antiguo
+de: Alter Seemannsknopf
+fr: Vieux bouton de marin
+pt: Botão de marinheiro antigo
+@sys4.uzerinde_capa_islenmis_pirinc_dugme
+en: A brass button engraved with an anchor.
+es: Botón de latón con un ancla grabada.
+de: Messingknopf mit eingraviertem Anker.
+fr: Bouton en laiton gravé d'une ancre.
+pt: Botão de latão com uma âncora gravada.
+@sys4.kucuk_seramik_parcasi
+en: Small Ceramic Shard
+es: Trocito de cerámica
+de: Kleine Keramikscherbe
+fr: Petit tesson de céramique
+pt: Caquinho de cerâmica
+@sys4.mavi_desenli_eski_bir_tabaktan
+en: From an old plate with a blue pattern.
+es: Viene de un plato antiguo con dibujos azules.
+de: Stammt von einem alten Teller mit blauem Muster.
+fr: Provient d'une vieille assiette à motifs bleus.
+pt: Veio de um prato antigo com desenhos azuis.
+@sys4.pasli_capa_susu
+en: Rusty Anchor Charm
+es: Colgante de ancla oxidado
+de: Rostiger Ankeranhänger
+fr: Breloque d'ancre rouillée
+pt: Pingente de âncora enferrujado
+@sys4.bir_tekne_anahtarligindan_dusmus_minik
+en: A tiny anchor that fell off a boat keychain.
+es: Diminuta ancla caída de un llavero de barco.
+de: Winziger Anker, der von einem Bootsschlüsselanhänger abgefallen ist.
+fr: Minuscule ancre tombée d'un porte-clés de bateau.
+pt: Âncora minúscula que caiu de um chaveiro de barco.
+@sys4.minik_gemi_jetonu
+en: Tiny Ferry Token
+es: Ficha de barco diminuta
+de: Winzige Fährmarke
+fr: Petit jeton de bac
+pt: Fichinha de balsa
+@sys4.eski_vapur_iskelesinden_kalma_pirinc
+en: A brass token from the old ferry pier.
+es: Ficha de latón del antiguo muelle del vapor.
+de: Messingmarke vom alten Dampferanleger.
+fr: Jeton en laiton de l'ancien embarcadère du vapeur.
+pt: Ficha de latão do antigo cais da balsa.
+@sys4.oyulmus_ahsap_parcasi
+en: Carved Wooden Piece
+es: Pieza de madera tallada
+de: Geschnitztes Holzstück
+fr: Morceau de bois sculpté
+pt: Peça de madeira entalhada
+@sys4.bir_balikcinin_oydugu_kucuk_balik
+en: A little fish figure carved by an angler.
+es: Figurita de pez tallada por un pescador.
+de: Kleine Fischfigur, von einem Angler geschnitzt.
+fr: Petite figurine de poisson sculptée par un pêcheur.
+pt: Figurinha de peixe entalhada por um pescador.
+@sys4.eski_denizci_dudugu
+en: Old Bosun's Whistle
+es: Silbato de marinero antiguo
+de: Alte Bootsmannspfeife
+fr: Vieux sifflet de bosco
+pt: Apito de marinheiro antigo
+@sys4.hala_ince_bir_ses_cikaran
+en: A silver whistle that still gives a thin note.
+es: Silbato de plata que aún suena fino.
+de: Silberpfeife, die noch einen hellen Ton gibt.
+fr: Sifflet en argent qui émet encore un son aigu.
+pt: Apito de prata que ainda dá um som fino.
+@sys4.kumluk_sahil
+en: Sandy Beach
+es: Playa de arena
+de: Sandstrand
+fr: Plage de sable
+pt: Praia de areia
+@sys4.kumun_uzerindeki_ipuclarini_farkli_renk
+en: Find the clues in the sand (a different color, a glint, a wave mark, a row of stones) and dig.
+es: Busca las pistas en la arena (otro color, un brillo, una marca de ola, piedras en fila) y cava.
+de: Finde die Hinweise im Sand (andere Farbe, Glitzern, Wellenspur, Steinreihe) und grab.
+fr: Repère les indices dans le sable (couleur différente, reflet, trace de vague, pierres alignées) et creuse.
+pt: Ache as pistas na areia (cor diferente, brilho, marca de onda, pedras enfileiradas) e cave.
+@sys4.kayalik_kiyi
+en: Rocky Shore
+es: Costa rocosa
+de: Felsküste
+fr: Côte rocheuse
+pt: Costão rochoso
+@sys4.kabarciklari_ve_kucuk_izleri_takip
+en: Follow the bubbles and little tracks, then lift the right rock.
+es: Sigue las burbujas y las pequeñas huellas y levanta la roca correcta.
+de: Folge den Blasen und kleinen Spuren und heb den richtigen Stein an.
+fr: Suis les bulles et les petites traces, puis soulève le bon rocher.
+pt: Siga as bolhas e as pegadinhas e levante a pedra certa.
+@sys4.gelgit_havuzlari
+en: Tide Pools
+es: Pozas de marea
+de: Gezeitentümpel
+fr: Mares de marée
+pt: Poças de maré
+@sys4.su_cekildiginde_havuzlarda_beliren_nesneyi
+en: When the water recedes, pick the item that appears in the pools; it ebbs again, no rush.
+es: Cuando baja el agua, elige el objeto que aparece en las pozas; el agua vuelve a bajar, sin prisa.
+de: Bei Ebbe wähle den Gegenstand, der in den Tümpeln auftaucht; das Wasser geht wieder zurück, keine Eile.
+fr: À marée basse, choisis l'objet qui apparaît dans les mares ; l'eau redescendra, pas de presse.
+pt: Quando a água baixar, escolha o objeto que aparece nas poças; ela baixa de novo, sem pressa.
+@sys4.trofe_kiyinin_oku
+en: Trophy: Arrow of the Shore
+es: Trofeo: La flecha de la costa
+de: Trophäe: Pfeil der Küste
+fr: Trophée : La flèche du rivage
+pt: Troféu: Flecha da Costa
+@sys4.trofe_derinligin_devi
+en: Trophy: Giant of the Deep
+es: Trofeo: El gigante de las profundidades
+de: Trophäe: Riese der Tiefe
+fr: Trophée : Le géant des profondeurs
+pt: Troféu: Gigante das Profundezas
+@sys4.trofe_acik_denizin_sampiyonu
+en: Trophy: Champion of the Open Sea
+es: Trofeo: El campeón del mar abierto
+de: Trophäe: Champion der Hochsee
+fr: Trophée : Le champion du large
+pt: Troféu: Campeão do Mar Aberto
+@sys4.hikaye_efe_nin_eski_av
+en: Story: Efe's Old Fishing Journal
+es: Historia: El viejo diario de pesca de Efe
+de: Geschichte: Efes altes Angeltagebuch
+fr: Histoire : Le vieux carnet de pêche d'Efe
+pt: História: O Velho Diário de Pesca do Efe
+@sys4.elif_in_cizim_panosu
+en: Elif's Sketch Board
+es: El tablón de dibujos de Elif
+de: Elifs Zeichentafel
+fr: Le tableau de croquis d'Elif
+pt: O Quadro de Desenhos da Elif
+@sys4.hikaye_elif_in_deniz_cizimleri
+en: Story: Elif's Sea Sketches
+es: Historia: Los dibujos marinos de Elif
+de: Geschichte: Elifs Meereszeichnungen
+fr: Histoire : Les croquis marins d'Elif
+pt: História: Os Desenhos do Mar da Elif
+@sys4.hikaye_kerem_in_deniz_koleksiyonu
+en: Story: Kerem's Sea Collection
+es: Historia: La colección marina de Kerem
+de: Geschichte: Kerems Meeressammlung
+fr: Histoire : La collection marine de Kerem
+pt: História: A Coleção Marinha do Kerem
+@sys4.hikaye_bora_nin_eski_teknesi
+en: Story: Bora's Old Boat
+es: Historia: El viejo barco de Bora
+de: Geschichte: Boras altes Boot
+fr: Histoire : Le vieux bateau de Bora
+pt: História: O Barco Antigo do Bora
+@sys4.deniz_kabugu_sergisi
+en: Seashell Display
+es: Exposición de conchas
+de: Muschelausstellung
+fr: Vitrine de coquillages
+pt: Exposição de Conchas
+@sys4.sahil_temali_poster
+en: Beach-Themed Poster
+es: Póster de playa
+de: Strand-Poster
+fr: Affiche thème plage
+pt: Pôster de Praia
+@sys4.akinti_deseni
+en: Current Pattern
+es: Motivo de corriente
+de: Strömungsmuster
+fr: Motif courant
+pt: Padrão de Correnteza
+@sys4.trofe_akintinin_gucu_akya
+en: Trophy: Power of the Current (Leerfish)
+es: Trofeo: La fuerza de la corriente (palometón)
+de: Trophäe: Kraft der Strömung (Gabelmakrele)
+fr: Trophée : La force du courant (liche)
+pt: Troféu: Força da Correnteza (pampo)
+@sys4.yedi_denizin_ustasi
+en: Master of the Seven Seas
+es: Maestro de los Siete Mares
+de: Meister der Sieben Meere
+fr: Maître des Sept Mers
+pt: Mestre dos Sete Mares
+@sys4.yedi_bolgesel_trofenin_hepsini_yakala
+en: Catch all seven regional trophies
+es: Pesca los siete trofeos regionales
+de: Fange alle sieben Gebietstrophäen
+fr: Attrape les sept trophées régionaux
+pt: Pesque os sete troféus regionais
+@sys4.trofeler
+en: Trophies
+es: Trofeos
+de: Trophäen
+fr: Trophées
+pt: Troféus

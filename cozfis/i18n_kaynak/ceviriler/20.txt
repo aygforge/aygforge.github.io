@@ -1,0 +1,726 @@
+@d.ach.first_catch.name
+en: First Catch
+es: Primera captura
+de: Erster Fang
+fr: Première prise
+pt: Primeira Captura
+@d.ach.first_catch.cond
+en: Catch your first fish
+es: Pesca tu primer pez
+de: Fang deinen ersten Fisch
+fr: Attrape ton premier poisson
+pt: Pesque seu primeiro peixe
+@d.ach.first_sale.name
+en: First Earnings
+es: Primeras ganancias
+de: Erster Verdienst
+fr: Premier gain
+pt: Primeiro Lucro
+@d.ach.first_sale.cond
+en: Sell your first fish
+es: Vende tu primer pez
+de: Verkaufe deinen ersten Fisch
+fr: Vends ton premier poisson
+pt: Venda seu primeiro peixe
+@d.ach.first_partial.name
+en: Order Delivered
+es: Pedido entregado
+de: Auftrag geliefert
+fr: Commande livrée
+pt: Pedido Entregue
+@d.ach.first_partial.cond
+en: Make your first partial order sale
+es: Haz tu primera venta parcial a un pedido
+de: Liefere zum ersten Mal teilweise für einen Auftrag
+fr: Effectue ta première vente partielle sur commande
+pt: Faça sua primeira venda parcial de pedido
+@d.ach.first_sleep.name
+en: A New Day
+es: Un nuevo día
+de: Ein neuer Tag
+fr: Un nouveau jour
+pt: Um Novo Dia
+@d.ach.first_sleep.cond
+en: Sleep for the first time
+es: Duerme por primera vez
+de: Schlaf zum ersten Mal
+fr: Dors pour la première fois
+pt: Durma pela primeira vez
+@d.ach.first_gear.name
+en: Gearing Up
+es: Me pongo a punto
+de: Aufgerüstet
+fr: Bien équipé
+pt: Me Equipando
+@d.ach.first_gear.cond
+en: Buy your first piece of gear
+es: Compra tu primer equipo
+de: Kauf deine erste Ausrüstung
+fr: Achète ton premier équipement
+pt: Compre seu primeiro equipamento
+@d.ach.ten_fish.name
+en: Little Angler
+es: Pequeño pescador
+de: Kleiner Angler
+fr: Petit pêcheur
+pt: Pequeno Pescador
+@d.ach.ten_fish.cond
+en: Catch 10 fish in total
+es: Pesca 10 peces en total
+de: Fang insgesamt 10 Fische
+fr: Attrape 10 poissons au total
+pt: Pesque 10 peixes no total
+@d.ach.fifty_manual.name
+en: Regular Angler
+es: Pescador habitual
+de: Stammangler
+fr: Pêcheur assidu
+pt: Pescador Assíduo
+@d.ach.fifty_manual.cond
+en: Make 50 manual catches
+es: Consigue 50 capturas manuales
+de: Schaffe 50 Handfänge
+fr: Réussis 50 prises manuelles
+pt: Faça 50 capturas manuais
+@d.ach.twofifty_manual.name
+en: Seasoned Angler
+es: Pescador experimentado
+de: Erfahrener Angler
+fr: Pêcheur expérimenté
+pt: Pescador Experiente
+@d.ach.twofifty_manual.cond
+en: Make 250 manual catches
+es: Consigue 250 capturas manuales
+de: Schaffe 250 Handfänge
+fr: Réussis 250 prises manuelles
+pt: Faça 250 capturas manuais
+@d.ach.thousand_manual.name
+en: Master of the Rod
+es: Maestro de la caña
+de: Meister der Angel
+fr: Maître de la canne
+pt: Mestre da Vara
+@d.ach.thousand_manual.cond
+en: Make 1,000 manual catches
+es: Consigue 1.000 capturas manuales
+de: Schaffe 1.000 Handfänge
+fr: Réussis 1 000 prises manuelles
+pt: Faça 1.000 capturas manuais
+@d.ach.first_power4.name
+en: Worthy Opponent
+es: Rival digno
+de: Starker Gegner
+fr: Adversaire de taille
+pt: Rival à Altura
+@d.ach.first_power4.cond
+en: Catch your first power 4 fish
+es: Pesca tu primer pez de fuerza 4
+de: Fang deinen ersten Fisch der Stärke 4
+fr: Attrape ton premier poisson de force 4
+pt: Pesque seu primeiro peixe de força 4
+@d.ach.first_power5.name
+en: Battle at Sea
+es: Batalla en el mar
+de: Kampf auf See
+fr: Combat en mer
+pt: Batalha no Mar
+@d.ach.first_power5.cond
+en: Catch your first power 5 fish
+es: Pesca tu primer pez de fuerza 5
+de: Fang deinen ersten Fisch der Stärke 5
+fr: Attrape ton premier poisson de force 5
+pt: Pesque seu primeiro peixe de força 5
+@d.ach.species25.name
+en: A Bit of Everything
+es: De todo un poco
+de: Von allem etwas
+fr: Un peu de tout
+pt: Um Pouco de Tudo
+@d.ach.species25.cond
+en: Catch 25 different species
+es: Pesca 25 especies distintas
+de: Fang 25 verschiedene Arten
+fr: Attrape 25 espèces différentes
+pt: Pesque 25 espécies diferentes
+@d.ach.first_trip.name
+en: First Voyage
+es: Primer viaje
+de: Erste Fahrt
+fr: Premier voyage
+pt: Primeira Viagem
+@d.ach.first_trip.cond
+en: Take your boat to your first region
+es: Ve en barco a tu primera zona
+de: Fahr mit dem Boot in dein erstes Gebiet
+fr: Rends-toi en bateau dans ta première zone
+pt: Vá de barco à sua primeira região
+@d.ach.visit3.name
+en: Coast Wanderer
+es: Viajero de la costa
+de: Küstenwanderer
+fr: Vagabond des côtes
+pt: Andarilho da Costa
+@d.ach.visit3.cond
+en: Visit 3 regions
+es: Visita 3 zonas
+de: Besuche 3 Gebiete
+fr: Visite 3 zones
+pt: Visite 3 regiões
+@d.ach.visit7.name
+en: Sea Explorer
+es: Explorador marino
+de: Meeresentdecker
+fr: Explorateur des mers
+pt: Explorador dos Mares
+@d.ach.visit7.cond
+en: Visit 7 regions
+es: Visita 7 zonas
+de: Besuche 7 Gebiete
+fr: Visite 7 zones
+pt: Visite 7 regiões
+@d.ach.spots10.name
+en: Fishing Spots
+es: Zonas de pesca
+de: Angelplätze
+fr: Coins de pêche
+pt: Pontos de Pesca
+@d.ach.spots10.cond
+en: Visit 10 different fishing spots
+es: Visita 10 zonas de pesca distintas
+de: Besuche 10 verschiedene Angelplätze
+fr: Visite 10 coins de pêche différents
+pt: Visite 10 pontos de pesca diferentes
+@d.ach.spots21.name
+en: Every Cove Has a Story
+es: Cada cala tiene su historia
+de: Jede Bucht hat ihre Geschichte
+fr: Chaque crique a son histoire
+pt: Cada Enseada Tem Sua História
+@d.ach.spots21.cond
+en: Visit all 21 fishing spots
+es: Visita las 21 zonas de pesca
+de: Besuche alle 21 Angelplätze
+fr: Visite les 21 coins de pêche
+pt: Visite os 21 pontos de pesca
+@d.ach.all_seasons.name
+en: Four Seasons
+es: Cuatro estaciones
+de: Vier Jahreszeiten
+fr: Quatre saisons
+pt: Quatro Estações
+@d.ach.all_seasons.cond
+en: Live through all four seasons
+es: Vive las cuatro estaciones
+de: Erlebe alle vier Jahreszeiten
+fr: Vis les quatre saisons
+pt: Viva as quatro estações
+@d.ach.sales10k.name
+en: First Savings
+es: Primeros ahorros
+de: Erste Ersparnisse
+fr: Premières économies
+pt: Primeiras Economias
+@d.ach.sales10k.cond
+en: 10,000 total sales income
+es: 10.000 en ingresos por ventas
+de: 10.000 Verkaufseinnahmen insgesamt
+fr: 10 000 de revenus de vente au total
+pt: 10.000 em receita total de vendas
+@d.ach.sales100k.name
+en: Fish Merchant
+es: Comerciante de pescado
+de: Fischhändler
+fr: Marchand de poisson
+pt: Comerciante de Peixe
+@d.ach.sales100k.cond
+en: 100,000 total sales income
+es: 100.000 en ingresos por ventas
+de: 100.000 Verkaufseinnahmen insgesamt
+fr: 100 000 de revenus de vente au total
+pt: 100.000 em receita total de vendas
+@d.ach.orders50.name
+en: Reliable Supplier
+es: Proveedor habitual
+de: Zuverlässiger Lieferant
+fr: Fournisseur régulier
+pt: Fornecedor Regular
+@d.ach.orders50.cond
+en: Deliver 50 fish to orders
+es: Entrega 50 peces a pedidos
+de: Liefere 50 Fische für Aufträge
+fr: Livre 50 poissons pour des commandes
+pt: Entregue 50 peixes a pedidos
+@d.ach.orders500.name
+en: Major Supplier
+es: Gran proveedor
+de: Großlieferant
+fr: Grand fournisseur
+pt: Grande Fornecedor
+@d.ach.orders500.cond
+en: Deliver 500 fish to orders
+es: Entrega 500 peces a pedidos
+de: Liefere 500 Fische für Aufträge
+fr: Livre 500 poissons pour des commandes
+pt: Entregue 500 peixes a pedidos
+@d.ach.buyers5.name
+en: The Town's Angler
+es: El pescador del pueblo
+de: Angler des Ortes
+fr: Le pêcheur du village
+pt: O Pescador da Vila
+@d.ach.buyers5.cond
+en: Sell to 5 different customers
+es: Vende a 5 clientes distintos
+de: Verkaufe an 5 verschiedene Kunden
+fr: Vends à 5 clients différents
+pt: Venda para 5 clientes diferentes
+@d.ach.relation3.name
+en: Trusted Partner
+es: Socio de confianza
+de: Verlässlicher Partner
+fr: Partenaire de confiance
+pt: Parceiro de Confiança
+@d.ach.relation3.cond
+en: Reach relationship level 3 with a customer
+es: Alcanza el nivel de relación 3 con un cliente
+de: Erreiche Beziehungsstufe 3 bei einem Kunden
+fr: Atteins le niveau de relation 3 avec un client
+pt: Chegue ao nível de relacionamento 3 com um cliente
+@d.ach.first_boat.name
+en: My First Boat
+es: Mi primer barco
+de: Mein erstes Boot
+fr: Mon premier bateau
+pt: Meu Primeiro Barco
+@d.ach.first_boat.cond
+en: Buy the Coastal Skiff
+es: Compra el Bote costero
+de: Kauf das Küstenboot
+fr: Achète la Barque côtière
+pt: Compre o Bote Costeiro
+@d.ach.second_boat.name
+en: Captain Twice Over
+es: Capitán por partida doble
+de: Doppelter Kapitän
+fr: Deux fois capitaine
+pt: Capitão em Dobro
+@d.ach.second_boat.cond
+en: Buy a second boat
+es: Compra un segundo barco
+de: Kauf ein zweites Boot
+fr: Achète un deuxième bateau
+pt: Compre um segundo barco
+@d.ach.all_boats.name
+en: Boat Collection
+es: Colección de barcos
+de: Bootssammlung
+fr: Collection de bateaux
+pt: Coleção de Barcos
+@d.ach.all_boats.cond
+en: Own all four boats
+es: Ten los cuatro barcos
+de: Besitze alle vier Boote
+fr: Possède les quatre bateaux
+pt: Tenha os quatro barcos
+@d.ach.first_auto.name
+en: Automatic Helper
+es: Ayudante automático
+de: Automatischer Helfer
+fr: Assistant automatique
+pt: Ajudante Automático
+@d.ach.first_auto.cond
+en: Catch your first auto fish
+es: Consigue tu primera captura automática
+de: Mach deinen ersten Auto-Fang
+fr: Réussis ta première prise auto
+pt: Faça sua primeira captura automática
+@d.ach.auto100.name
+en: Efficient Fishing
+es: Pesca eficiente
+de: Effizientes Angeln
+fr: Pêche efficace
+pt: Pesca Eficiente
+@d.ach.auto100.cond
+en: Catch 100 fish in total with automation
+es: Pesca 100 peces en total con automatización
+de: Fang insgesamt 100 Fische per Automatik
+fr: Attrape 100 poissons au total en automatique
+pt: Pesque 100 peixes no total com automação
+@d.ach.motor5.name
+en: Open Sea Captain
+es: Capitán de altura
+de: Hochseekapitän
+fr: Capitaine au long cours
+pt: Capitão de Alto-mar
+@d.ach.motor5.cond
+en: Upgrade the last boat's engine to level V
+es: Mejora el motor del último barco al nivel V
+de: Bau den Motor des letzten Boots auf Stufe V aus
+fr: Améliore le moteur du dernier bateau au niveau V
+pt: Melhore o motor do último barco até o nível V
+@d.ach.species5.name
+en: First Discoveries
+es: Primeros descubrimientos
+de: Erste Entdeckungen
+fr: Premières découvertes
+pt: Primeiras Descobertas
+@d.ach.species5.cond
+en: Discover 5 different species
+es: Descubre 5 especies distintas
+de: Entdecke 5 verschiedene Arten
+fr: Découvre 5 espèces différentes
+pt: Descubra 5 espécies diferentes
+@d.ach.species20.name
+en: Halfway There
+es: A mitad de camino
+de: Halbzeit
+fr: À mi-chemin
+pt: Meio Caminho
+@d.ach.species20.cond
+en: Discover 20 different species
+es: Descubre 20 especies distintas
+de: Entdecke 20 verschiedene Arten
+fr: Découvre 20 espèces différentes
+pt: Descubra 20 espécies diferentes
+@d.ach.species42.name
+en: Fish Encyclopedia
+es: Enciclopedia de peces
+de: Fischlexikon
+fr: Encyclopédie des poissons
+pt: Enciclopédia de Peixes
+@d.ach.species42.cond
+en: Discover all 42 species
+es: Descubre las 42 especies
+de: Entdecke alle 42 Arten
+fr: Découvre les 42 espèces
+pt: Descubra as 42 espécies
+@d.ach.records10.name
+en: Record Chaser
+es: A la caza de récords
+de: Rekordjäger
+fr: Chasseur de records
+pt: Caçador de Recordes
+@d.ach.records10.cond
+en: Improve a personal length record 10 times
+es: Supera 10 veces un récord personal de longitud
+de: Verbessere 10-mal einen persönlichen Längenrekord
+fr: Améliore 10 fois un record de taille personnel
+pt: Melhore um recorde pessoal de tamanho 10 vezes
+@d.ach.day100.name
+en: A Long Journey
+es: Un largo viaje
+de: Eine lange Reise
+fr: Un long voyage
+pt: Uma Longa Jornada
+@d.ach.day100.cond
+en: Complete 100 game days
+es: Completa 100 días de juego
+de: Schließe 100 Spieltage ab
+fr: Termine 100 jours de jeu
+pt: Complete 100 dias de jogo
+@d.ach.home3.name
+en: Home Sweet Home
+es: Hogar, dulce hogar
+de: Trautes Heim
+fr: Doux foyer
+pt: Lar, Doce Lar
+@d.ach.home3.cond
+en: Place 3 decorative items in your home
+es: Coloca 3 objetos decorativos en tu casa
+de: Platziere 3 Dekoobjekte in deinem Haus
+fr: Place 3 objets décoratifs chez toi
+pt: Coloque 3 itens decorativos em casa
+@d.ach.first_trophy.name
+en: First Cup
+es: Primera copa
+de: Erster Pokal
+fr: Première coupe
+pt: Primeira Taça
+@d.ach.first_trophy.cond
+en: Finish in the top three of a festival contest
+es: Queda entre los tres primeros en un concurso de fiesta
+de: Lande bei einem Festwettbewerb unter den ersten drei
+fr: Termine dans le top 3 d'un concours de fête
+pt: Fique entre os três primeiros numa competição de festival
+@d.ach.gold_trophy.name
+en: Champion
+es: Campeón
+de: Champion
+fr: Champion
+pt: Campeão
+@d.ach.gold_trophy.cond
+en: Win a festival contest
+es: Gana un concurso de fiesta
+de: Gewinne einen Festwettbewerb
+fr: Remporte un concours de fête
+pt: Vença uma competição de festival
+@d.ach.festival4.name
+en: Festival Spirit
+es: Espíritu festivo
+de: Festgeist
+fr: Esprit de fête
+pt: Espírito Festivo
+@d.ach.festival4.cond
+en: Compete at festivals in four different seasons
+es: Compite en las fiestas de cuatro estaciones distintas
+de: Tritt bei Festen in vier verschiedenen Jahreszeiten an
+fr: Participe aux fêtes de quatre saisons différentes
+pt: Compita em festivais de quatro estações diferentes
+@d.ach.trophies8.name
+en: Cup Collection
+es: Colección de copas
+de: Pokalsammlung
+fr: Collection de coupes
+pt: Coleção de Taças
+@d.ach.trophies8.cond
+en: Win 8 cups
+es: Gana 8 copas
+de: Gewinne 8 Pokale
+fr: Remporte 8 coupes
+pt: Ganhe 8 taças
+@d.achcat.i_lk_adimlar
+en: First Steps
+es: Primeros pasos
+de: Erste Schritte
+fr: Premiers pas
+pt: Primeiros Passos
+@d.achcat.avcilik
+en: Fishing
+es: Pesca
+de: Angeln
+fr: Pêche
+pt: Pesca
+@d.achcat.kesif
+en: Exploration
+es: Exploración
+de: Erkundung
+fr: Exploration
+pt: Exploração
+@d.achcat.ticaret
+en: Trade
+es: Comercio
+de: Handel
+fr: Commerce
+pt: Comércio
+@d.achcat.tekneler
+en: Boats
+es: Barcos
+de: Boote
+fr: Bateaux
+pt: Barcos
+@d.achcat.koleksiyon
+en: Collection
+es: Colección
+de: Sammlung
+fr: Collection
+pt: Coleção
+@d.achcat.senlikler
+en: Festivals
+es: Fiestas
+de: Feste
+fr: Fêtes
+pt: Festivais
+@d.shop.bakery.name
+en: Auntie Fatma's Bakery
+es: Panadería de la tía Fatma
+de: Tante Fatmas Bäckerei
+fr: Boulangerie de Tata Fatma
+pt: Padaria da Tia Fatma
+@d.shop.boutique.name
+en: Selin's Boutique
+es: Boutique de Selin
+de: Selins Boutique
+fr: Boutique de Selin
+pt: Boutique da Selin
+@d.shop.homegoods.name
+en: Kerem's Home Goods
+es: Hogar de Kerem
+de: Kerems Wohnbedarf
+fr: Maison & Déco de Kerem
+pt: Artigos para o Lar do Kerem
+@d.shop.square.name
+en: Festival Square · Town Hall
+es: Plaza de las Fiestas · Ayuntamiento
+de: Festplatz · Rathaus
+fr: Place des Fêtes · Mairie
+pt: Praça das Festas · Prefeitura
+@d.shop.teahouse.name
+en: Master Halil's Tea Garden
+es: Jardín de té del maestro Halil
+de: Meister Halils Teegarten
+fr: Jardin de thé de Maître Halil
+pt: Casa de Chá do Mestre Halil
+@d.snack.simit.name
+en: Sesame Simit
+es: Simit de sésamo
+de: Sesam-Simit
+fr: Simit au sésame
+pt: Simit de Gergelim
+@d.snack.simit.desc
+en: Today your tap window on a bite lasts +0.4 s longer.
+es: Hoy tu margen para tocar en la picada dura +0,4 s más.
+de: Heute hast du beim Biss +0,4 s mehr Zeit zum Tippen.
+fr: Aujourd'hui, ta fenêtre de touche dure +0,4 s de plus.
+pt: Hoje sua janela para tocar na fisgada dura +0,4 s a mais.
+@d.snack.pogaca.name
+en: Cheese Poğaça
+es: Poğaça de queso
+de: Käse-Poğaça
+fr: Poğaça au fromage
+pt: Poğaça de Queijo
+@d.snack.pogaca.desc
+en: Today tension builds 8% slower during fights.
+es: Hoy la tensión sube un 8 % menos en las peleas.
+de: Heute steigt die Spannung im Drill um 8 % langsamer.
+fr: Aujourd'hui, la tension monte 8 % moins vite pendant les combats.
+pt: Hoje a tensão sobe 8% mais devagar nas brigas.
+@d.snack.borek.name
+en: Spinach Börek
+es: Börek de espinacas
+de: Spinat-Börek
+fr: Börek aux épinards
+pt: Börek de Espinafre
+@d.snack.borek.desc
+en: Today your reel speed increases by 8%.
+es: Hoy tu carrete recoge un 8 % más rápido.
+de: Heute kurbelt deine Rolle 8 % schneller.
+fr: Aujourd'hui, ton moulinet remonte 8 % plus vite.
+pt: Hoje seu molinete recolhe 8% mais rápido.
+@d.fest.bahar_senligi.name
+en: Spring Fish Festival
+es: Fiesta del Pescado de Primavera
+de: Frühlings-Fischfest
+fr: Fête du poisson de printemps
+pt: Festival do Peixe de Primavera
+@d.fest.bahar_senligi.comp
+en: Total Weight Contest
+es: Concurso de peso total
+de: Wettbewerb Gesamtgewicht
+fr: Concours du poids total
+pt: Competição de Peso Total
+@d.fest.bahar_senligi.rule
+en: Total weight of the fish you catch in 8 casts (kg)
+es: Peso total de los peces que pesques en 8 lanzamientos (kg)
+de: Gesamtgewicht der Fische, die du mit 8 Würfen fängst (kg)
+fr: Poids total des poissons attrapés en 8 lancers (kg)
+pt: Peso total dos peixes pescados em 8 arremessos (kg)
+@d.fest.yaz_festivali.name
+en: Summer Sea Festival
+es: Festival del Mar de Verano
+de: Sommer-Meeresfest
+fr: Festival de la mer d'été
+pt: Festival do Mar de Verão
+@d.fest.yaz_festivali.comp
+en: Species Hunter Contest
+es: Concurso de cazador de especies
+de: Wettbewerb Artenjäger
+fr: Concours du chasseur d'espèces
+pt: Competição Caçador de Espécies
+@d.fest.yaz_festivali.rule
+en: Number of different species caught in 8 casts (ties broken by total weight)
+es: Número de especies distintas pescadas en 8 lanzamientos (en caso de empate, peso total)
+de: Anzahl verschiedener Arten in 8 Würfen (bei Gleichstand zählt das Gesamtgewicht)
+fr: Nombre d'espèces différentes attrapées en 8 lancers (égalité départagée au poids total)
+pt: Número de espécies diferentes pescadas em 8 arremessos (empate decidido pelo peso total)
+@d.fest.hasat_senligi.name
+en: Harvest & Bluefish Festival
+es: Fiesta de la Cosecha y la Anchova
+de: Ernte- und Blaubarschfest
+fr: Fête des récoltes et du tassergal
+pt: Festival da Colheita e da Anchova
+@d.fest.hasat_senligi.comp
+en: Giant Fish Contest
+es: Concurso del pez gigante
+de: Wettbewerb Riesenfisch
+fr: Concours du poisson géant
+pt: Competição do Peixe Gigante
+@d.fest.hasat_senligi.rule
+en: Heaviest single fish caught in 8 casts (kg)
+es: El pez más pesado pescado en 8 lanzamientos (kg)
+de: Schwerster einzelner Fisch aus 8 Würfen (kg)
+fr: Le poisson le plus lourd attrapé en 8 lancers (kg)
+pt: O peixe mais pesado pescado em 8 arremessos (kg)
+@d.fest.fener_senligi.name
+en: Winter Lantern Festival
+es: Fiesta de los Farolillos de Invierno
+de: Winterliches Laternenfest
+fr: Fête des lanternes d'hiver
+pt: Festival das Lanternas de Inverno
+@d.fest.fener_senligi.comp
+en: Master Angler Cup
+es: Copa del Maestro Pescador
+de: Meisterangler-Pokal
+fr: Coupe du maître pêcheur
+pt: Taça do Mestre Pescador
+@d.fest.fener_senligi.rule
+en: Total base value of the fish you catch in 8 casts
+es: Valor base total de los peces pescados en 8 lanzamientos
+de: Gesamter Grundwert der Fische aus 8 Würfen
+fr: Valeur de base totale des poissons attrapés en 8 lancers
+pt: Valor base total dos peixes pescados em 8 arremessos
+@d.rival.ali.name
+en: Uncle Ali
+es: Tío Ali
+de: Onkel Ali
+fr: Tonton Ali
+pt: Tio Ali
+@d.rival.mert.name
+=
+@d.rival.elif.name
+=
+@d.rival.efe.name
+=
+@d.rival.selcuk.name
+en: Selçuk (Kayalıköy champion)
+es: Selçuk (campeón de Kayalıköy)
+de: Selçuk (Champion von Kayalıköy)
+fr: Selçuk (champion de Kayalıköy)
+pt: Selçuk (campeão de Kayalıköy)
+@d.fish.sardalya.name
+en: Sardine
+es: Sardina
+de: Sardine
+fr: Sardine
+pt: Sardinha
+@d.fish.gumus_baligi.name
+en: Sand Smelt
+es: Pejerrey
+de: Ährenfisch
+fr: Athérine
+pt: Peixe-rei
+@d.fish.istavrit.name
+en: Horse Mackerel
+es: Jurel
+de: Stöcker
+fr: Chinchard
+pt: Xixarro
+@d.fish.izmarit.name
+en: Picarel
+es: Caramel
+de: Pikarel
+fr: Picarel
+pt: Picarel
+@d.fish.kefal.name
+en: Grey Mullet
+es: Mújol
+de: Meeräsche
+fr: Mulet
+pt: Tainha
+@d.fish.zargana.name
+en: Garfish
+es: Aguja
+de: Hornhecht
+fr: Orphie
+pt: Peixe-agulha
+@d.fish.isparoz.name
+en: Annular Seabream
+es: Raspallón
+de: Ringelbrasse
+fr: Sparaillon
+pt: Sargo-anelado
+@d.fish.melanur.name
+en: Saddled Seabream
+es: Oblada
+de: Brandbrasse
+fr: Oblade
+pt: Oblada

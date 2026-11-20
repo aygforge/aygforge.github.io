@@ -1,0 +1,648 @@
+@fish.gerilim
+en: TENSION
+es: TENSIÓN
+de: SPANNUNG
+fr: TENSION
+pt: TENSÃO
+@fish.cok_gergin_birak
+en: TOO TIGHT! LET GO!
+es: ¡MUY TENSO! ¡SUELTA!
+de: ZU STRAFF! LOSLASSEN!
+fr: TROP TENDU ! LÂCHE !
+pt: MUITO TENSO! SOLTE!
+@fish.gevsek_cek
+en: SLACK! PULL!
+es: ¡FLOJO! ¡TIRA!
+de: ZU LOCKER! ZIEHEN!
+fr: TROP LÂCHE ! TIRE !
+pt: FROUXO! PUXE!
+@fish.ideal
+en: IDEAL
+es: IDEAL
+de: IDEAL
+fr: IDÉAL
+pt: IDEAL
+@fish.ani_cekis_geliyor
+en: !! SUDDEN PULL INCOMING !!
+es: ¡¡ VIENE UN TIRÓN !!
+de: !! GLEICH KOMMT EIN RUCK !!
+fr: !! TIRAGE SOUDAIN !!
+pt: !! PUXÃO VINDO !!
+@fish.balik_kaciyor_birak
+en: FISH IS RUNNING – LET GO!
+es: EL PEZ HUYE – ¡SUELTA!
+de: FISCH FLÜCHTET – LOSLASSEN!
+fr: LE POISSON FILE – LÂCHE !
+pt: O PEIXE ESTÁ FUGINDO – SOLTE!
+@fish.yorgun
+en: TIRED!
+es: ¡CANSADO!
+de: MÜDE!
+fr: ÉPUISÉ !
+pt: CANSADO!
+@fish.balik_sola_cekiyor
+en: FISH PULLS LEFT
+es: PEZ A LA IZQUIERDA
+de: FISCH ZIEHT NACH LINKS
+fr: LE POISSON TIRE À GAUCHE
+pt: PEIXE PUXA À ESQUERDA
+@fish.balik_saga_cekiyor
+en: FISH PULLS RIGHT
+es: PEZ A LA DERECHA
+de: FISCH ZIEHT NACH RECHTS
+fr: LE POISSON TIRE À DROITE
+pt: PEIXE PUXA À DIREITA
+@fish.super
+en: GREAT!
+es: ¡GENIAL!
+de: SUPER!
+fr: SUPER !
+pt: ÓTIMO!
+@fish.oltayi_saga_yatir
+en: TILT ROD RIGHT
+es: CAÑA A LA DERECHA
+de: ANGEL NACH RECHTS NEIGEN
+fr: PENCHE LA CANNE À DROITE
+pt: VARA PARA A DIREITA
+@fish.oltayi_sola_yatir
+en: TILT ROD LEFT
+es: CAÑA A LA IZQUIERDA
+de: ANGEL NACH LINKS NEIGEN
+fr: PENCHE LA CANNE À GAUCHE
+pt: VARA PARA A ESQUERDA
+@fish.zipladi_birak
+en: IT JUMPED! LET GO!
+es: ¡SALTÓ! ¡SUELTA!
+de: SPRUNG! LOSLASSEN!
+fr: IL SAUTE ! LÂCHE !
+pt: SALTOU! SOLTE!
+@fish.dokun
+en: TAP!
+es: ¡TOCA!
+de: TIPPEN!
+fr: TOUCHE !
+pt: TOQUE!
+@fish.bir_sey_yaklasiyor_simdi_sabirla
+en: Something's coming… wait patiently now.
+es: Algo se acerca… espera con paciencia.
+de: Da kommt etwas … jetzt geduldig warten.
+fr: Quelque chose approche… attends patiemment.
+pt: Algo está chegando… espere com paciência.
+@fish.yem_oynadi_n_n
+en: LURE MOVED {0}/{1}
+es: SEÑUELO MOVIDO {0}/{1}
+de: KÖDER BEWEGT {0}/{1}
+fr: LEURRE ANIMÉ {0}/{1}
+pt: ISCA MEXEU {0}/{1}
+@fish.yeterli_hareket_bekle
+en: ENOUGH MOVES – WAIT
+es: SUFICIENTES MOVIMIENTOS – ESPERA
+de: GENUG BEWEGT – WARTEN
+fr: ASSEZ ANIMÉ – ATTENDS
+pt: MOVIMENTO SUFICIENTE – ESPERE
+@fish.cok_sik_yemin_durmasini_bekle
+en: TOO OFTEN! WAIT FOR THE LURE TO STOP
+es: ¡DEMASIADO SEGUIDO! ESPERA A QUE PARE
+de: ZU OFT! WARTE, BIS DER KÖDER STEHT
+fr: TROP SOUVENT ! ATTENDS L'ARRÊT DU LEURRE
+pt: RÁPIDO DEMAIS! ESPERE A ISCA PARAR
+@fish.once_bir_kez_normal_atis
+en: Make one normal cast first.
+es: Primero haz un lanzamiento normal.
+de: Mach zuerst einen normalen Wurf.
+fr: Fais d'abord un lancer normal.
+pt: Faça primeiro um arremesso normal.
+@fish.canta_ve_tekne_deposu_dolu
+en: Bag and boat storage are full; make some room first.
+es: La mochila y la bodega están llenas; haz sitio primero.
+de: Tasche und Laderaum sind voll; schaff zuerst Platz.
+fr: Le sac et la cale sont pleins ; fais d'abord de la place.
+pt: Mochila e porão cheios; abra espaço primeiro.
+@fish.kamis_ucunu_izle_belirgin_bukulunce
+en: Watch the rod tip; strike when it bends clearly.
+es: Vigila la puntera; tira cuando se doble claramente.
+de: Beobachte die Rutenspitze; schlag an, wenn sie sich deutlich biegt.
+fr: Surveille le scion ; ferre quand il plie nettement.
+pt: Observe a ponta da vara; puxe quando vergar bem.
+@fish.kamis_ucu_bukuldu
+en: THE TIP BENT!
+es: ¡LA PUNTERA SE DOBLÓ!
+de: SPITZE BIEGT SICH!
+fr: LE SCION PLIE !
+pt: A PONTA VERGOU!
+@fish.sabret
+en: PATIENCE…
+es: PACIENCIA…
+de: GEDULD …
+fr: PATIENCE…
+pt: PACIÊNCIA…
+@fish.yem_durdu_dokun
+en: LURE STOPPED – TAP!
+es: SEÑUELO PARADO – ¡TOCA!
+de: KÖDER STEHT – TIPPEN!
+fr: LEURRE ARRÊTÉ – TOUCHE !
+pt: ISCA PAROU – TOQUE!
+@fish.yem_batiyor
+en: LURE SINKING…
+es: EL SEÑUELO SE HUNDE…
+de: KÖDER SINKT …
+fr: LE LEURRE COULE…
+pt: ISCA AFUNDANDO…
+@fish.n_hareket_n_n
+en: {0}  MOVES {1}/{2}
+es: {0}  MOVIMIENTOS {1}/{2}
+de: {0}  BEWEGUNGEN {1}/{2}
+fr: {0}  MOUVEMENTS {1}/{2}
+pt: {0}  MOVIMENTOS {1}/{2}
+@fish.kamis_ucu_bukuldu_cek
+en: TIP BENT – STRIKE!
+es: PUNTERA DOBLADA – ¡TIRA!
+de: SPITZE BIEGT SICH – ANSCHLAGEN!
+fr: LE SCION PLIE – FERRE !
+pt: A PONTA VERGOU – PUXE!
+@fish.uc_sallaniyor
+en: TIP WOBBLING…
+es: LA PUNTERA SE MUEVE…
+de: SPITZE ZITTERT …
+fr: LE SCION BOUGE…
+pt: A PONTA BALANÇA…
+@fish.kamis_ucunu_izle
+en: WATCH THE ROD TIP
+es: VIGILA LA PUNTERA
+de: RUTENSPITZE BEOBACHTEN
+fr: SURVEILLE LE SCION
+pt: OLHE A PONTA DA VARA
+@fish.kacis_birak
+en: RUN! LET GO
+es: ¡HUIDA! SUELTA
+de: FLUCHT! LOSLASSEN
+fr: FUITE ! LÂCHE
+pt: FUGA! SOLTE
+@fish.kaldirma_firsati_basili_tut
+en: LIFT CHANCE! HOLD
+es: ¡OCASIÓN DE LEVANTAR! MANTÉN
+de: CHANCE ZUM ANHEBEN! HALTEN
+fr: CHANCE DE SOULEVER ! MAINTIENS
+pt: CHANCE DE ERGUER! SEGURE
+@fish.yana_kacis_ters_yone_yatir
+en: SIDE RUN! TILT THE OTHER WAY
+es: ¡HUIDA LATERAL! INCLINA AL OTRO LADO
+de: SEITENFLUCHT! GEGENRICHTUNG NEIGEN
+fr: FUITE LATÉRALE ! PENCHE À L'OPPOSÉ
+pt: FUGA LATERAL! INCLINE AO CONTRÁRIO
+@fish.sicrama_birak
+en: LEAP! LET GO
+es: ¡SALTO! SUELTA
+de: SPRUNG! LOSLASSEN
+fr: SAUT ! LÂCHE
+pt: SALTO! SOLTE
+@fish.ozel_hamle_uzun_kacis_geliyor
+en: SPECIAL MOVE: LONG RUN COMING
+es: JUGADA ESPECIAL: VIENE UNA HUIDA LARGA
+de: SPEZIALZUG: LANGE FLUCHT KOMMT
+fr: COUP SPÉCIAL : LONGUE FUITE
+pt: JOGADA ESPECIAL: VEM FUGA LONGA
+@fish.ozel_hamle_balik_yavasliyor
+en: SPECIAL MOVE: FISH SLOWING DOWN
+es: JUGADA ESPECIAL: EL PEZ FRENA
+de: SPEZIALZUG: FISCH WIRD LANGSAMER
+fr: COUP SPÉCIAL : LE POISSON RALENTIT
+pt: JOGADA ESPECIAL: PEIXE DESACELERA
+@fish.ozel_hamle_yon_degistiriyor
+en: SPECIAL MOVE: CHANGING DIRECTION
+es: JUGADA ESPECIAL: CAMBIA DE DIRECCIÓN
+de: SPEZIALZUG: RICHTUNGSWECHSEL
+fr: COUP SPÉCIAL : CHANGE DE DIRECTION
+pt: JOGADA ESPECIAL: MUDA DE DIREÇÃO
+@fish.ozel_hamle_sudan_sicrayacak
+en: SPECIAL MOVE: ABOUT TO LEAP
+es: JUGADA ESPECIAL: VA A SALTAR
+de: SPEZIALZUG: GLEICH SPRINGT ER
+fr: COUP SPÉCIAL : IL VA SAUTER
+pt: JOGADA ESPECIAL: VAI SALTAR
+@fish.ilk_direnc
+en: FIRST RESISTANCE
+es: PRIMERA RESISTENCIA
+de: ERSTER WIDERSTAND
+fr: PREMIÈRE RÉSISTANCE
+pt: PRIMEIRA RESISTÊNCIA
+@fish.karsi_hamle
+en: COUNTERMOVE
+es: CONTRAATAQUE
+de: GEGENZUG
+fr: CONTRE-ATTAQUE
+pt: CONTRA-ATAQUE
+@fish.son_cekis
+en: FINAL PULL
+es: TIRÓN FINAL
+de: LETZTER ZUG
+fr: DERNIER TIRAGE
+pt: PUXADA FINAL
+@fish.harika_hamle
+en: GREAT MOVE!
+es: ¡GRAN JUGADA!
+de: KLASSE ZUG!
+fr: BEAU COUP !
+pt: ÓTIMA JOGADA!
+@fish.hamleyi_kacirdin
+en: YOU MISSED THE MOVE
+es: FALLASTE LA JUGADA
+de: ZUG VERPASST
+fr: COUP RATÉ
+pt: VOCÊ PERDEU A JOGADA
+@fish.trofe_izi_n
+en: TROPHY SIGN: {0}!
+es: ¡RASTRO DE TROFEO: {0}!
+de: TROPHÄENSPUR: {0}!
+fr: TRACE DE TROPHÉE : {0} !
+pt: SINAL DE TROFÉU: {0}!
+@fish.cekiliyor
+en: REELING IN!
+es: ¡RECOGIENDO!
+de: WIRD EINGEHOLT!
+fr: ON RAMÈNE !
+pt: PUXANDO!
+@fish.trofe_n
+en: TROPHY: {0}
+es: TROFEO: {0}
+de: TROPHÄE: {0}
+fr: TROPHÉE : {0}
+pt: TROFÉU: {0}
+@fish.sahte_vurustu_kamis_ucu_yalnizca
+en: False bite! The tip only trembled; on a real bite it bends deep.
+es: ¡Picada falsa! La puntera solo tembló; con una picada real se dobla mucho.
+de: Fehlbiss! Die Spitze hat nur gezittert; bei einem echten Biss biegt sie sich tief.
+fr: Fausse touche ! Le scion a juste tremblé ; sur une vraie touche, il plie fort.
+pt: Mordida falsa! A ponta só tremeu; numa mordida de verdade ela verga fundo.
+@fish.kamis_ucunu_izle_gercek_vurusta
+en: Watch the rod tip: on a real bite it bends deep.
+es: Vigila la puntera: con una picada real se dobla mucho.
+de: Beobachte die Rutenspitze: Bei einem echten Biss biegt sie sich tief.
+fr: Surveille le scion : sur une vraie touche, il plie fort.
+pt: Olhe a ponta da vara: numa mordida de verdade ela verga fundo.
+@fish.trofe_n_odul_n
+en: TROPHY: {0} · reward: {1}
+es: TROFEO: {0} · recompensa: {1}
+de: TROPHÄE: {0} · Belohnung: {1}
+fr: TROPHÉE : {0} · récompense : {1}
+pt: TROFÉU: {0} · recompensa: {1}
+@fish.trofe_n_2
+en: TROPHY · {0}
+es: TROFEO · {0}
+de: TROPHÄE · {0}
+fr: TROPHÉE · {0}
+pt: TROFÉU · {0}
+@fish.guc_5_n_n_3
+en: POWER 5 · {0} ({1}/3)
+es: FUERZA 5 · {0} ({1}/3)
+de: STÄRKE 5 · {0} ({1}/3)
+fr: FORCE 5 · {0} ({1}/3)
+pt: FORÇA 5 · {0} ({1}/3)
+@fish.uc_titredi_sahte_olabilir_bekle
+en: TIP TREMBLED… (MAYBE FALSE, WAIT)
+es: LA PUNTERA TEMBLÓ… (PUEDE SER FALSA, ESPERA)
+de: SPITZE ZITTERT … (VIELLEICHT FALSCH, WARTEN)
+fr: LE SCION TREMBLE… (PEUT-ÊTRE FAUX, ATTENDS)
+pt: A PONTA TREMEU… (PODE SER FALSO, ESPERE)
+@fish.gercek_vurus_kamis_derin_bukuldu
+en: REAL BITE: THE TIP BENT DEEP!
+es: PICADA REAL: ¡LA PUNTERA SE DOBLÓ MUCHO!
+de: ECHTER BISS: SPITZE TIEF GEBOGEN!
+fr: VRAIE TOUCHE : LE SCION PLIE FORT !
+pt: MORDIDA REAL: A PONTA VERGOU FUNDO!
+@fish.firsat_n_n_n_atis
+en: CHANCE: {0}{1} · {2} {2|CAST|CASTS}
+es: OCASIÓN: {0}{1} · {2} {2|LANZAMIENTO|LANZAMIENTOS}
+de: CHANCE: {0}{1} · {2} {2|WURF|WÜRFE}
+fr: OCCASION : {0}{1} · {2} {2|LANCER|LANCERS}
+pt: CHANCE: {0}{1} · {2} {2|ARREMESSO|ARREMESSOS}
+@fish.dip_oltasi
+en:  · BOTTOM RIG
+es:  · PESCA DE FONDO
+de:  · GRUNDANGEL
+fr:  · PÊCHE AU FOND
+pt:  · PESCA DE FUNDO
+@fish.spin
+en:  · SPIN
+es:  · SPINNING
+de:  · SPINNFISCHEN
+fr:  · LANCER
+pt:  · ARREMESSO
+@scene.sakin_bir_balikcilik_hikayesi
+en: A CALM FISHING TALE
+es: UNA TRANQUILA HISTORIA DE PESCA
+de: EINE GEMÜTLICHE ANGELGESCHICHTE
+fr: UNE PAISIBLE HISTOIRE DE PÊCHE
+pt: UMA TRANQUILA HISTÓRIA DE PESCA
+@scene.henuz_bir_teknen_yok_bora
+en: You don't have a boat yet. You can buy a Coastal Skiff (2,200) at Bora's yard. Pier fishing is free!
+es: Aún no tienes barco. Puedes comprar un Bote costero (2.200) en el astillero de Bora. ¡Pescar en el muelle es gratis!
+de: Du hast noch kein Boot. In Boras Werft gibt es das Küstenboot (2.200). Am Steg angelst du kostenlos!
+fr: Tu n'as pas encore de bateau. Tu peux acheter une Barque côtière (2 200) au chantier de Bora. Pêcher au ponton est gratuit !
+pt: Você ainda não tem barco. Pode comprar um Bote Costeiro (2.200) no estaleiro do Bora. Pescar no píer é grátis!
+@scene.aktif
+en: ACTIVE
+es: ACTIVO
+de: AKTIV
+fr: ACTIF
+pt: ATIVO
+@scene.sonuc
+en: RESULT
+es: RESULTADO
+de: ERGEBNIS
+fr: RÉSULTAT
+pt: RESULTADO
+@scene.kalan_atis_n_n
+en: CASTS LEFT: {0}/{1}
+es: LANZAMIENTOS: {0}/{1}
+de: WÜRFE ÜBRIG: {0}/{1}
+fr: LANCERS RESTANTS : {0}/{1}
+pt: ARREMESSOS: {0}/{1}
+@scene.sakin_liman_n_n_n
+en: CALM HARBOR · {0} · {1} · {2}
+es: PUERTO SERENO · {0} · {1} · {2}
+de: STILLER HAFEN · {0} · {1} · {2}
+fr: PORT PAISIBLE · {0} · {1} · {2}
+pt: PORTO SERENO · {0} · {1} · {2}
+@scene.bu_bolge_icin_eksik_n
+en: Missing for this region: {0}
+es: Te falta para esta zona: {0}
+de: Für dieses Gebiet fehlt: {0}
+fr: Il te manque pour cette zone : {0}
+pt: Falta para esta região: {0}
+@scene.once_oltayi_topla_avi_bitir
+en: Reel in / finish the catch first.
+es: Primero recoge el sedal / termina la pesca.
+de: Zuerst Schnur einholen / Fang beenden.
+fr: Ramène ta ligne / termine la prise d'abord.
+pt: Recolha a linha / termine a pescaria primeiro.
+@scene.n_n_atis_onerilir
+en: {0} ({1} cast recommended)
+es: {0} (se recomienda lanzamiento {1})
+de: {0} ({1} Wurf empfohlen)
+fr: {0} (lancer {1} conseillé)
+pt: {0} (arremesso {1} recomendado)
+@scene.durak_n_n
+en:  · Stop {0}/{1}
+es:  · Parada {0}/{1}
+de:  · Halt {0}/{1}
+fr:  · Étape {0}/{1}
+pt:  · Parada {0}/{1}
+@scene.yaklasiyor
+en:  (approaching)
+es:  (acercándose)
+de:  (in Anfahrt)
+fr:  (en approche)
+pt:  (chegando)
+@scene.n_henuz_yok_kerem_in
+en: No {0} yet. You can buy one in the Aquariums section of Kerem's Home Goods.
+es: Aún no tienes {0}. Puedes comprarlo en la sección de Acuarios de la tienda de Kerem.
+de: Noch kein {0}. Du bekommst es im Bereich Aquarien bei Kerems Wohnbedarf.
+fr: Pas encore de {0}. Tu peux en acheter dans le rayon Aquariums de chez Kerem.
+pt: Ainda não há {0}. Você pode comprar na seção Aquários da loja do Kerem.
+@scene.kupa_yok
+en: NO CUPS
+es: SIN COPAS
+de: KEINE POKALE
+fr: AUCUNE COUPE
+pt: SEM TAÇAS
+@scene.aktif_tekne_filo_gorevinde
+en: Your active boat is on a fleet job.
+es: Tu barco activo está en una misión de flota.
+de: Dein aktives Boot ist im Flotteneinsatz.
+fr: Ton bateau actif est en mission de flotte.
+pt: Seu barco ativo está em missão de frota.
+@scene.sefer_n
+en: TRIP: {0} > ?
+es: SALIDA: {0} > ?
+de: AUSFAHRT: {0} > ?
+fr: SORTIE : {0} > ?
+pt: VIAGEM: {0} > ?
+@scene.seyir_terasinda
+en: On the view terrace
+es: En el mirador
+de: Auf der Aussichtsterrasse
+fr: Sur la terrasse panoramique
+pt: No mirante
+@scene.balikci_birligi_panosu
+en: Fishers' Guild Board
+es: Tablón del Gremio de Pescadores
+de: Brett der Fischergilde
+fr: Tableau de la Guilde des pêcheurs
+pt: Quadro da Guilda dos Pescadores
+@scene.sahil_patikasi_kiyi_kesfi
+en: Beach Path · Beachcombing
+es: Sendero de la playa · Exploración
+de: Strandweg · Strandsuche
+fr: Sentier de la plage · Exploration
+pt: Trilha da Praia · Exploração
+@scene.balikci_birligi_3_oyun_gununde
+en: The Fishers' Guild opens on game day 3.
+es: El Gremio de Pescadores abre el día 3 de juego.
+de: Die Fischergilde öffnet am 3. Spieltag.
+fr: La Guilde des pêcheurs ouvre au 3e jour de jeu.
+pt: A Guilda dos Pescadores abre no 3º dia de jogo.
+@scene.burayi_zaten_inceledin
+en: You've already searched here.
+es: Ya has mirado aquí.
+de: Hier hast du schon gesucht.
+fr: Tu as déjà fouillé ici.
+pt: Você já examinou aqui.
+@scene.su_yuksek_havuz_cekilince_nesneler
+en: The water is high; items appear when the pool drains. No rush, the tide will go out again.
+es: El agua está alta; los objetos aparecen cuando baja. Sin prisa, volverá a bajar.
+de: Das Wasser steht hoch; Gegenstände zeigen sich bei Ebbe. Keine Eile, es geht wieder zurück.
+fr: L'eau est haute ; les objets apparaissent quand la mare se vide. Pas de presse, la mer redescendra.
+pt: A água está alta; os objetos aparecem quando baixar. Sem pressa, ela vai baixar de novo.
+@scene.buldun_n_n
+en: Found: {0}{1}
+es: Encontraste: {0}{1}
+de: Gefunden: {0}{1}
+fr: Trouvé : {0}{1}
+pt: Encontrou: {0}{1}
+@scene.yeni
+en:  (new!)
+es:  (¡nuevo!)
+de:  (neu!)
+fr:  (nouveau !)
+pt:  (novo!)
+@scene.kayanin_altindan_kucuk_bir_yengec
+en: A little crab scuttled out from under the rock; nothing here.
+es: Un cangrejito salió corriendo de debajo de la roca; aquí no hay nada.
+de: Unter dem Stein flitzt eine kleine Krabbe hervor; hier ist nichts.
+fr: Un petit crabe a filé de sous le rocher ; rien ici.
+pt: Um caranguejinho saiu correndo de baixo da pedra; nada aqui.
+@scene.bu_yalnizca_siradan_bir_cakil
+en: It's just an ordinary pebble.
+es: Solo es un guijarro normal.
+de: Nur ein gewöhnlicher Kiesel.
+fr: Ce n'est qu'un galet ordinaire.
+pt: É só um seixo comum.
+@scene.burada_yalnizca_kum_var_baska
+en: Only sand here. Look for another clue!
+es: Aquí solo hay arena. ¡Busca otra pista!
+de: Hier ist nur Sand. Such nach einem anderen Hinweis!
+fr: Rien que du sable ici. Cherche un autre indice !
+pt: Aqui só tem areia. Procure outra pista!
+@scene.n_bulunan_n_n_n
+en: {0} · FOUND {1}/{2}{3}
+es: {0} · HALLADOS {1}/{2}{3}
+de: {0} · GEFUNDEN {1}/{2}{3}
+fr: {0} · TROUVÉS {1}/{2}{3}
+pt: {0} · ACHADOS {1}/{2}{3}
+@scene.su_cekildi
+en:  · LOW TIDE
+es:  · MAREA BAJA
+de:  · EBBE
+fr:  · MARÉE BASSE
+pt:  · MARÉ BAIXA
+@scene.su_yuksek
+en:  · HIGH TIDE
+es:  · MAREA ALTA
+de:  · FLUT
+fr:  · MARÉE HAUTE
+pt:  · MARÉ ALTA
+@scene.durbun_indirildi_bu_seferde_ufuk
+en: Binoculars lowered. The horizon was quiet this trip; {0}
+es: Bajas los prismáticos. El horizonte estuvo tranquilo esta vez; {0}
+de: Fernglas abgesetzt. Der Horizont war diesmal ruhig; {0}
+fr: Jumelles baissées. L'horizon était calme cette fois ; {0}
+pt: Binóculo abaixado. O horizonte estava calmo nesta viagem; {0}
+@scene.etkinlik_tamamlandi
+en: activity complete.
+es: actividad completada.
+de: Aktivität abgeschlossen.
+fr: activité terminée.
+pt: atividade concluída.
+@scene.n_gozlendi_bugunku_gozlem_siniri
+en: {0} spotted; today's sighting limit (4) is reached, so no new entry was added to the journal.
+es: Has visto {0}; se alcanzó el límite diario de avistamientos (4), así que no se añadió al diario.
+de: {0} gesichtet; das heutige Sichtungslimit (4) ist erreicht, daher kein neuer Tagebucheintrag.
+fr: {0} observé ; la limite d'observations du jour (4) est atteinte, aucune nouvelle entrée au carnet.
+pt: {0} avistado; o limite de avistamentos de hoje (4) foi atingido, então nada novo foi anotado.
+@scene.odaklandi_n
+en: FOCUSED: {0}!
+es: ¡ENFOCADO: {0}!
+de: SCHARF GESTELLT: {0}!
+fr: MISE AU POINT : {0} !
+pt: FOCADO: {0}!
+@scene.durbun_ile_tara_isareti_ortaya
+en: BINOCULARS · SCAN WITH ◀ ▶ · CENTER THE MARK · {0} S
+es: PRISMÁTICOS · BUSCA CON ◀ ▶ · CENTRA LA MARCA · {0} S
+de: FERNGLAS · MIT ◀ ▶ SUCHEN · MARKE MITTIG · {0} S
+fr: JUMELLES · BALAIE AVEC ◀ ▶ · CENTRE LE REPÈRE · {0} S
+pt: BINÓCULO · VARRA COM ◀ ▶ · CENTRALIZE A MARCA · {0} S
+@scene.once_durbunu_indir
+en: Lower the binoculars first.
+es: Primero baja los prismáticos.
+de: Setz zuerst das Fernglas ab.
+fr: Baisse d'abord les jumelles.
+pt: Abaixe o binóculo primeiro.
+@ui.n_menu
+en: ⟦0|Menu⟧{0}⟦1⟧
+es: ⟦0|Menú⟧{0}⟦1⟧
+de: ⟦0|Menü⟧{0}⟦1⟧
+fr: ⟦0|Menu⟧{0}⟦1⟧
+pt: ⟦0|Menu⟧{0}⟦1⟧
+@ui.n_gun_n_n_n
+en: ⟦0|Day / season⟧{0}⟦1⟧Day {1}⟦2⟧⟦3⟧{2} {3}/28 · Year {4}⟦4⟧⟦5⟧
+es: ⟦0|Día / estación⟧{0}⟦1⟧Día {1}⟦2⟧⟦3⟧{2} {3}/28 · Año {4}⟦4⟧⟦5⟧
+de: ⟦0|Tag / Jahreszeit⟧{0}⟦1⟧Tag {1}⟦2⟧⟦3⟧{2} {3}/28 · Jahr {4}⟦4⟧⟦5⟧
+fr: ⟦0|Jour / saison⟧{0}⟦1⟧Jour {1}⟦2⟧⟦3⟧{2} {3}/28 · An {4}⟦4⟧⟦5⟧
+pt: ⟦0|Dia / estação⟧{0}⟦1⟧Dia {1}⟦2⟧⟦3⟧{2} {3}/28 · Ano {4}⟦4⟧⟦5⟧
+@ui.n_n_hava_n
+en: ⟦0|Weather: {0}⟧{1}⟦1⟧{2}⟦2⟧⟦3⟧
+es: ⟦0|Tiempo: {0}⟧{1}⟦1⟧{2}⟦2⟧⟦3⟧
+de: ⟦0|Wetter: {0}⟧{1}⟦1⟧{2}⟦2⟧⟦3⟧
+fr: ⟦0|Météo : {0}⟧{1}⟦1⟧{2}⟦2⟧⟦3⟧
+pt: ⟦0|Tempo: {0}⟧{1}⟦1⟧{2}⟦2⟧⟦3⟧
+@ui.n_n_gunun_olayi
+en: ⟦0|Event of the day⟧{0}⟦1⟧{1}⟦2⟧⟦3⟧
+es: ⟦0|Evento del día⟧{0}⟦1⟧{1}⟦2⟧⟦3⟧
+de: ⟦0|Ereignis des Tages⟧{0}⟦1⟧{1}⟦2⟧⟦3⟧
+fr: ⟦0|Événement du jour⟧{0}⟦1⟧{1}⟦2⟧⟦3⟧
+pt: ⟦0|Evento do dia⟧{0}⟦1⟧{1}⟦2⟧⟦3⟧
+@ui.n_n_senlik
+en: ⟦0|Festival⟧{0}⟦1⟧{1}⟦2⟧⟦3⟧
+es: ⟦0|Fiesta⟧{0}⟦1⟧{1}⟦2⟧⟦3⟧
+de: ⟦0|Fest⟧{0}⟦1⟧{1}⟦2⟧⟦3⟧
+fr: ⟦0|Fête⟧{0}⟦1⟧{1}⟦2⟧⟦3⟧
+pt: ⟦0|Festival⟧{0}⟦1⟧{1}⟦2⟧⟦3⟧
+@ui.n_n_gun_yaklasan_senlik
+en: ⟦0|Upcoming festival⟧{0}⟦1⟧{1} {1|day|days}⟦2⟧⟦3⟧
+es: ⟦0|Próxima fiesta⟧{0}⟦1⟧{1} {1|día|días}⟦2⟧⟦3⟧
+de: ⟦0|Nächstes Fest⟧{0}⟦1⟧{1} {1|Tag|Tage}⟦2⟧⟦3⟧
+fr: ⟦0|Prochaine fête⟧{0}⟦1⟧{1} j⟦2⟧⟦3⟧
+pt: ⟦0|Próximo festival⟧{0}⟦1⟧{1} {1|dia|dias}⟦2⟧⟦3⟧
+@ui.n_n_n_atis_enerji
+en: ⟦0|Energy⟧{0}⟦1⟧⟦2⟧⟦3⟧⟦4⟧⟦5⟧{2}⟦6⟧⟦7⟧({3} {3|cast|casts})⟦8⟧⟦9⟧
+es: ⟦0|Energía⟧{0}⟦1⟧⟦2⟧⟦3⟧⟦4⟧⟦5⟧{2}⟦6⟧⟦7⟧({3} lanz.)⟦8⟧⟦9⟧
+de: ⟦0|Energie⟧{0}⟦1⟧⟦2⟧⟦3⟧⟦4⟧⟦5⟧{2}⟦6⟧⟦7⟧({3} {3|Wurf|Würfe})⟦8⟧⟦9⟧
+fr: ⟦0|Énergie⟧{0}⟦1⟧⟦2⟧⟦3⟧⟦4⟧⟦5⟧{2}⟦6⟧⟦7⟧({3} {3|lancer|lancers})⟦8⟧⟦9⟧
+pt: ⟦0|Energia⟧{0}⟦1⟧⟦2⟧⟦3⟧⟦4⟧⟦5⟧{2}⟦6⟧⟦7⟧({3} arrem.)⟦8⟧⟦9⟧
+@ui.n_n_n_gunluk_otomatik
+en: ⟦0|Daily auto catches⟧{0}⟦1⟧{1}/{2}⟦2⟧⟦3⟧
+es: ⟦0|Capturas automáticas del día⟧{0}⟦1⟧{1}/{2}⟦2⟧⟦3⟧
+de: ⟦0|Auto-Fänge heute⟧{0}⟦1⟧{1}/{2}⟦2⟧⟦3⟧
+fr: ⟦0|Prises auto du jour⟧{0}⟦1⟧{1}/{2}⟦2⟧⟦3⟧
+pt: ⟦0|Capturas automáticas do dia⟧{0}⟦1⟧{1}/{2}⟦2⟧⟦3⟧
+@ui.n_tam_ekran
+en: ⟦0⟧⟦1⟧⟦2|Fullscreen⟧{0}⟦3⟧
+es: ⟦0⟧⟦1⟧⟦2|Pantalla completa⟧{0}⟦3⟧
+de: ⟦0⟧⟦1⟧⟦2|Vollbild⟧{0}⟦3⟧
+fr: ⟦0⟧⟦1⟧⟦2|Plein écran⟧{0}⟦3⟧
+pt: ⟦0⟧⟦1⟧⟦2|Tela cheia⟧{0}⟦3⟧
+@ui.n_n_ogreticiyi_atla
+en: ⟦0⟧{0}⟦1⟧{1}⟦2⟧⟦3|Skip tutorial⟧✕⟦4⟧⟦5⟧
+es: ⟦0⟧{0}⟦1⟧{1}⟦2⟧⟦3|Saltar tutorial⟧✕⟦4⟧⟦5⟧
+de: ⟦0⟧{0}⟦1⟧{1}⟦2⟧⟦3|Tutorial überspringen⟧✕⟦4⟧⟦5⟧
+fr: ⟦0⟧{0}⟦1⟧{1}⟦2⟧⟦3|Passer le tutoriel⟧✕⟦4⟧⟦5⟧
+pt: ⟦0⟧{0}⟦1⟧{1}⟦2⟧⟦3|Pular tutorial⟧✕⟦4⟧⟦5⟧
+@ui.once_avi_tamamla
+en: Finish the catch first.
+es: Termina la pesca primero.
+de: Bring den Fang erst zu Ende.
+fr: Termine d'abord la prise.
+pt: Termine a pescaria primeiro.
+@ui.n_n_bakiye_n_n
+en: ⟦0⟧{0}⟦1⟧{1}⟦2⟧⟦3⟧⟦4⟧Balance: {2} → ⟦5⟧{4}⟦6⟧⟦7⟧
+es: ⟦0⟧{0}⟦1⟧{1}⟦2⟧⟦3⟧⟦4⟧Saldo: {2} → ⟦5⟧{4}⟦6⟧⟦7⟧
+de: ⟦0⟧{0}⟦1⟧{1}⟦2⟧⟦3⟧⟦4⟧Kontostand: {2} → ⟦5⟧{4}⟦6⟧⟦7⟧
+fr: ⟦0⟧{0}⟦1⟧{1}⟦2⟧⟦3⟧⟦4⟧Solde : {2} → ⟦5⟧{4}⟦6⟧⟦7⟧
+pt: ⟦0⟧{0}⟦1⟧{1}⟦2⟧⟦3⟧⟦4⟧Saldo: {2} → ⟦5⟧{4}⟦6⟧⟦7⟧
+@ui.vazgec
+en: Cancel
+es: Cancelar
+de: Abbrechen
+fr: Annuler
+pt: Cancelar
+@ui.onayla
+en: Confirm
+es: Confirmar
+de: Bestätigen
+fr: Confirmer
+pt: Confirmar
+@ui.paran_yetmiyor_n_gerekli
+en: Not enough coins: {0} needed.
+es: No tienes suficiente dinero: necesitas {0}.
+de: Nicht genug Münzen: {0} nötig.
+fr: Pas assez de pièces : il en faut {0}.
+pt: Moedas insuficientes: precisa de {0}.
+@ui.n_satin_alindi
+en: {0} purchased!
+es: ¡{0} comprado!
+de: {0} gekauft!
+fr: {0} acheté !
+pt: {0} comprado!
+@ui.satin_al
+en: Buy
+es: Comprar
+de: Kaufen
+fr: Acheter
+pt: Comprar
+@ui.n_yeni_oyun_n_ayarlar
+en: ⟦0⟧ {0} ⟦1⟧New Game⟦2⟧ ⟦3⟧⟦4⟧{2} Settings⟦5⟧⟦6⟧{3} Help⟦7⟧⟦8⟧{4} Fullscreen⟦9⟧⟦10⟧ ⟦11⟧⟦12⟧Import Save⟦13⟧{5}⟦14⟧ {6} ⟦15⟧Single offline file · All art and sound are generated in-game⟦16⟧⟦17⟧
+es: ⟦0⟧ {0} ⟦1⟧Nueva partida⟦2⟧ ⟦3⟧⟦4⟧{2} Ajustes⟦5⟧⟦6⟧{3} Ayuda⟦7⟧⟦8⟧{4} Pantalla completa⟦9⟧⟦10⟧ ⟦11⟧⟦12⟧Importar partida⟦13⟧{5}⟦14⟧ {6} ⟦15⟧Un solo archivo sin conexión · Todo el arte y el sonido se generan en el juego⟦16⟧⟦17⟧
+de: ⟦0⟧ {0} ⟦1⟧Neues Spiel⟦2⟧ ⟦3⟧⟦4⟧{2} Einstellungen⟦5⟧⟦6⟧{3} Hilfe⟦7⟧⟦8⟧{4} Vollbild⟦9⟧⟦10⟧ ⟦11⟧⟦12⟧Spielstand importieren⟦13⟧{5}⟦14⟧ {6} ⟦15⟧Eine Offline-Datei · Alle Grafiken und Klänge entstehen im Spiel⟦16⟧⟦17⟧
+fr: ⟦0⟧ {0} ⟦1⟧Nouvelle partie⟦2⟧ ⟦3⟧⟦4⟧{2} Paramètres⟦5⟧⟦6⟧{3} Aide⟦7⟧⟦8⟧{4} Plein écran⟦9⟧⟦10⟧ ⟦11⟧⟦12⟧Importer une sauvegarde⟦13⟧{5}⟦14⟧ {6} ⟦15⟧Un seul fichier hors ligne · Graphismes et sons générés dans le jeu⟦16⟧⟦17⟧
+pt: ⟦0⟧ {0} ⟦1⟧Novo Jogo⟦2⟧ ⟦3⟧⟦4⟧{2} Configurações⟦5⟧⟦6⟧{3} Ajuda⟦7⟧⟦8⟧{4} Tela Cheia⟦9⟧⟦10⟧ ⟦11⟧⟦12⟧Importar Save⟦13⟧{5}⟦14⟧ {6} ⟦15⟧Arquivo único offline · Toda a arte e o som são gerados no jogo⟦16⟧⟦17⟧

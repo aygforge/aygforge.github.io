@@ -1,0 +1,702 @@
+@world.ilan
+en: ORDERS
+es: PEDIDOS
+de: AUFTRÄGE
+fr: COMMANDES
+pt: PEDIDOS
+@world.butik
+en: BOUTIQUE
+es: BOUTIQUE
+de: BOUTIQUE
+fr: BOUTIQUE
+pt: BOUTIQUE
+@world.ev_esyasi
+en: HOME GOODS
+es: HOGAR
+de: WOHNBEDARF
+fr: MAISON
+pt: CASA & LAR
+@world.cay_bahcesi
+en: TEA GARDEN
+es: JARDÍN DE TÉ
+de: TEEGARTEN
+fr: JARDIN DE THÉ
+pt: CASA DE CHÁ
+@world.yatak_uyu
+en: Bed – Sleep
+es: Cama – Dormir
+de: Bett – Schlafen
+fr: Lit – Dormir
+pt: Cama – Dormir
+@world.gardirop
+en: Wardrobe
+es: Armario
+de: Kleiderschrank
+fr: Garde-robe
+pt: Guarda-roupa
+@world.balik_sandigi
+en: Fish Chest
+es: Baúl de peces
+de: Fischtruhe
+fr: Coffre à poissons
+pt: Baú de peixes
+@world.kasabaya_cik
+en: Go to Town
+es: Salir al pueblo
+de: In den Ort gehen
+fr: Sortir au village
+pt: Ir para a vila
+@world.kupa_dolabi
+en: Cup Cabinet
+es: Vitrina de copas
+de: Pokalschrank
+fr: Vitrine des coupes
+pt: Estante de taças
+@world.istatistikler_ansiklopedi
+en: Statistics & Encyclopedia
+es: Estadísticas y enciclopedia
+de: Statistiken & Lexikon
+fr: Statistiques & encyclopédie
+pt: Estatísticas e enciclopédia
+@world.kisisel_av_rekorlari
+en: Personal Catch Records
+es: Récords personales de pesca
+de: Persönliche Fangrekorde
+fr: Records de pêche personnels
+pt: Recordes pessoais de pesca
+@world.kucuk_akvaryum
+en: Small Aquarium
+es: Acuario pequeño
+de: Kleines Aquarium
+fr: Petit aquarium
+pt: Aquário pequeno
+@world.orta_akvaryum
+en: Medium Aquarium
+es: Acuario mediano
+de: Mittleres Aquarium
+fr: Aquarium moyen
+pt: Aquário médio
+@world.buyuk_akvaryum
+en: Large Aquarium
+es: Acuario grande
+de: Großes Aquarium
+fr: Grand aquarium
+pt: Aquário grande
+@world.rekor_duvari
+en: RECORD WALL
+es: MURO DE RÉCORDS
+de: REKORDWAND
+fr: MUR DES RECORDS
+pt: MURAL DE RECORDES
+@world.bos
+en: EMPTY
+es: VACÍO
+de: LEER
+fr: VIDE
+pt: VAZIO
+@world.sampiyon
+en: CHAMPION!
+es: ¡CAMPEÓN!
+de: MEISTER!
+fr: CHAMPION !
+pt: CAMPEÃO!
+@world.kasaba_yenilendi
+en: TOWN RENEWED!
+es: ¡PUEBLO RENOVADO!
+de: ORT ERNEUERT!
+fr: VILLAGE RÉNOVÉ !
+pt: VILA RENOVADA!
+@world.birlik
+en: GUILD
+es: GREMIO
+de: GILDE
+fr: GUILDE
+pt: GUILDA
+@world.sahil
+en: BEACH
+es: PLAYA
+de: STRAND
+fr: PLAGE
+pt: PRAIA
+@sys.islem_suruyor
+en: Working on it…
+es: Procesando…
+de: Wird bearbeitet…
+fr: Traitement en cours…
+pt: Processando…
+@sys.beklenmeyen_hata_islem_geri_alindi
+en: Unexpected error, the action was rolled back.
+es: Error inesperado; la acción se ha revertido.
+de: Unerwarteter Fehler, die Aktion wurde rückgängig gemacht.
+fr: Erreur inattendue, l'action a été annulée.
+pt: Erro inesperado; a ação foi desfeita.
+@sys.n_deposu
+en: {0} storage
+es: Bodega de {0}
+de: Laderaum: {0}
+fr: Cale de {0}
+pt: Porão do {0}
+@sys.sirt_cantasi
+en: Backpack
+es: Mochila
+de: Rucksack
+fr: Sac à dos
+pt: Mochila
+@sys.ev_sandigi
+en: Home Chest
+es: Baúl de casa
+de: Truhe zu Hause
+fr: Coffre de la maison
+pt: Baú de casa
+@sys.hedef_depoda_yer_yok
+en: No room in the target storage.
+es: No hay espacio en el destino.
+de: Kein Platz im Zielspeicher.
+fr: Pas de place dans le rangement cible.
+pt: Não há espaço no destino.
+@sys.aktarilabilecek_balik_veya_yer_yok
+en: No fish or space to transfer.
+es: No hay peces ni espacio para mover.
+de: Keine Fische oder kein Platz zum Umlagern.
+fr: Aucun poisson ou aucune place pour transférer.
+pt: Não há peixes nem espaço para transferir.
+@sys.n_dizi_degil
+en: {0} is not a list
+es: {0} no es una lista
+de: {0} ist keine Liste
+fr: {0} n'est pas une liste
+pt: {0} não é uma lista
+@sys.n_kapasite_asimi_n_n
+en: {0} over capacity {1}>{2}
+es: {0} supera la capacidad {1}>{2}
+de: {0} Kapazität überschritten {1}>{2}
+fr: {0} capacité dépassée {1}>{2}
+pt: {0} acima da capacidade {1}>{2}
+@sys.n_bozuk_stack_n
+en: {0} broken stack {1}
+es: {0} pila dañada {1}
+de: {0} fehlerhafter Stapel {1}
+fr: {0} pile corrompue {1}
+pt: {0} pilha corrompida {1}
+@sys.tekne_yok_n
+en: missing boat {0}
+es: falta el barco {0}
+de: Boot fehlt {0}
+fr: bateau manquant {0}
+pt: barco ausente {0}
+@sys.negatif_deger
+en: negative value
+es: valor negativo
+de: negativer Wert
+fr: valeur négative
+pt: valor negativo
+@sys.negatif_yem
+en: negative bait
+es: cebo negativo
+de: negativer Köder
+fr: appât négatif
+pt: isca negativa
+@sys.satilacak_balik_yok
+en: No fish to sell.
+es: No hay peces para vender.
+de: Keine Fische zum Verkaufen.
+fr: Aucun poisson à vendre.
+pt: Não há peixes para vender.
+@sys.satilacak_uygun_balik_yok
+en: No suitable fish to sell.
+es: No hay peces adecuados para vender.
+de: Keine passenden Fische zum Verkaufen.
+fr: Aucun poisson adéquat à vendre.
+pt: Não há peixes adequados para vender.
+@sys.ilan_gecerli_degil
+en: This order is no longer valid.
+es: Este pedido ya no es válido.
+de: Dieser Auftrag ist nicht mehr gültig.
+fr: Cette commande n'est plus valable.
+pt: Este pedido não é mais válido.
+@sys.ilan_doldu
+en: The order is complete.
+es: El pedido está completo.
+de: Der Auftrag ist erfüllt.
+fr: La commande est complète.
+pt: O pedido está completo.
+@sys.elinde_bu_turden_balik_yok
+en: You don't have any fish of this species.
+es: No tienes peces de esta especie.
+de: Du hast keine Fische dieser Art.
+fr: Tu n'as aucun poisson de cette espèce.
+pt: Você não tem peixes dessa espécie.
+@sys.n_ile_iliski_seviyesi_n
+en: Your relationship with {0} reached level {1}!
+es: ¡Tu relación con {0} ha subido al nivel {1}!
+de: Deine Beziehung zu {0} hat Stufe {1} erreicht!
+fr: Ta relation avec {0} passe au niveau {1} !
+pt: Seu relacionamento com {0} chegou ao nível {1}!
+@sys.zaten_sahipsin
+en: You already own this.
+es: Ya lo tienes.
+de: Das besitzt du schon.
+fr: Tu l'as déjà.
+pt: Você já tem isso.
+@sys.once_bir_onceki_seviyeyi_almalisin
+en: You need to buy the previous level first.
+es: Primero tienes que comprar el nivel anterior.
+de: Zuerst brauchst du die vorherige Stufe.
+fr: Tu dois d'abord acheter le niveau précédent.
+pt: Primeiro você precisa comprar o nível anterior.
+@sys.paran_yetmiyor
+en: Not enough coins.
+es: No tienes suficiente dinero.
+de: Nicht genug Münzen.
+fr: Pas assez de pièces.
+pt: Moedas insuficientes.
+@sys.canta_en_ust_seviyede
+en: Your bag is already at the top level.
+es: La mochila ya está al nivel máximo.
+de: Die Tasche ist schon auf der höchsten Stufe.
+fr: Le sac est déjà au niveau maximum.
+pt: A mochila já está no nível máximo.
+@sys.sandik_en_ust_seviyede
+en: The chest is already at the top level.
+es: El baúl ya está al nivel máximo.
+de: Die Truhe ist schon auf der höchsten Stufe.
+fr: Le coffre est déjà au niveau maximum.
+pt: O baú já está no nível máximo.
+@sys.satin_alinamaz
+en: Can't be bought.
+es: No se puede comprar.
+de: Kann nicht gekauft werden.
+fr: Impossible à acheter.
+pt: Não pode ser comprado.
+@sys.yeni_kozmetik_acildi_n
+en: New cosmetic unlocked: {0}
+es: Nuevo cosmético desbloqueado: {0}
+de: Neues Kosmetikobjekt freigeschaltet: {0}
+fr: Nouveau cosmétique débloqué : {0}
+pt: Novo cosmético desbloqueado: {0}
+@sys.kum_sarisi_tekne_boyasi
+en: Sand Yellow boat paint
+es: Pintura de barco amarillo arena
+de: Bootsfarbe Sandgelb
+fr: Peinture de bateau jaune sable
+pt: Tinta de barco amarelo-areia
+@sys.bu_tekneye_zaten_sahipsin
+en: You already own this boat.
+es: Ya tienes este barco.
+de: Dieses Boot besitzt du schon.
+fr: Tu possèdes déjà ce bateau.
+pt: Você já tem este barco.
+@sys.zaten_yuklu
+en: Already installed.
+es: Ya está instalado.
+de: Bereits eingebaut.
+fr: Déjà installé.
+pt: Já instalado.
+@sys.once_onceki_basamak_gerekli
+en: The previous step is required first.
+es: Primero necesitas el paso anterior.
+de: Zuerst wird die vorherige Stufe benötigt.
+fr: L'étape précédente est requise d'abord.
+pt: Primeiro é preciso a etapa anterior.
+@sys.tekne_yok
+en: No boat.
+es: No hay barco.
+de: Kein Boot.
+fr: Aucun bateau.
+pt: Nenhum barco.
+@sys.tekne_gerekli
+en: Boat required
+es: Se necesita un barco
+de: Boot erforderlich
+fr: Bateau requis
+pt: Barco necessário
+@sys.en_az_n
+en: At least {0}
+es: Al menos {0}
+de: Mindestens {0}
+fr: Au moins {0}
+pt: Pelo menos {0}
+@sys.motor_n
+en: Engine {0}
+es: Motor {0}
+de: Motor {0}
+fr: Moteur {0}
+pt: Motor {0}
+@sys.navigasyon_n
+en: Navigation {0}
+es: Navegación {0}
+de: Navigation {0}
+fr: Navigation {0}
+pt: Navegação {0}
+@sys.n_artik_erisilebilir
+en: {0} is now reachable!
+es: ¡Ya puedes llegar a {0}!
+de: {0} ist jetzt erreichbar!
+fr: {0} est désormais accessible !
+pt: {0} agora está acessível!
+@sys.once_n_gerekli
+en: {0} required first.
+es: Primero necesitas {0}.
+de: Zuerst wird {0} benötigt.
+fr: {0} requis d'abord.
+pt: Primeiro é preciso {0}.
+@sys.cihaz_yok
+en: No device.
+es: No hay dispositivo.
+de: Kein Gerät.
+fr: Aucun appareil.
+pt: Nenhum dispositivo.
+@sys.zaten_bu_teknede
+en: Already on this boat.
+es: Ya está en este barco.
+de: Schon auf diesem Boot.
+fr: Déjà sur ce bateau.
+pt: Já está neste barco.
+@sys.teknede_bos_olta_yuvasi_yok
+en: No free rod slot on the boat.
+es: No hay huecos libres para cañas en el barco.
+de: Kein freier Angelplatz auf dem Boot.
+fr: Aucun emplacement de canne libre sur le bateau.
+pt: Não há espaço livre para vara no barco.
+@sys.bu_cihazin_gunluk_6_otomatik
+en: This device has hit its daily limit of 6 auto catches
+es: Este dispositivo alcanzó su límite diario de 6 capturas automáticas
+de: Dieses Gerät hat sein Tageslimit von 6 Auto-Fängen erreicht
+fr: Cet appareil a atteint sa limite de 6 prises auto par jour
+pt: Este dispositivo atingiu o limite diário de 6 capturas automáticas
+@sys.bu_noktadaki_turler_cihaz_gucunu
+en: The species at this spot are too strong for the device
+es: Las especies de esta zona superan la potencia del dispositivo
+de: Die Arten an diesem Platz sind zu stark für das Gerät
+fr: Les espèces de ce coin dépassent la puissance de l'appareil
+pt: As espécies deste ponto são fortes demais para o dispositivo
+@sys.ucretli_yem_yok_temel_yem
+en: No paid bait (basic bait can't be used)
+es: Sin cebo de pago (el cebo básico no sirve)
+de: Kein gekaufter Köder (Grundköder geht nicht)
+fr: Pas d'appât payant (l'appât de base est exclu)
+pt: Sem isca paga (a isca básica não serve)
+@sys.depo_ve_canta_dolu
+en: Storage and bag are full
+es: La bodega y la mochila están llenas
+de: Laderaum und Tasche sind voll
+fr: La cale et le sac sont pleins
+pt: O porão e a mochila estão cheios
+@sys.n_n_gorulme_agirligi_n
+en: {0}: {1} appears ×{2} as often
+es: {0}: {1} aparece ×{2} más a menudo
+de: {0}: {1} erscheint ×{2} so oft
+fr: {0} : {1} apparaît ×{2} plus souvent
+pt: {0}: {1} aparece ×{2} mais vezes
+@sys.n_misina_gerilim_artisi_n
+en: {0}: line tension builds ×{1}
+es: {0}: la tensión del sedal sube ×{1}
+de: {0}: Schnurspannung steigt ×{1}
+fr: {0} : la tension de la ligne monte ×{1}
+pt: {0}: a tensão da linha sobe ×{1}
+@sys.bahar_lokantasi_panoya_yuksek_primli
+en: Bahar's Restaurant posted an extra high-bonus order on the board
+es: El Restaurante de Bahar ha colgado un pedido extra con buena prima
+de: Bahars Restaurant hat einen Extra-Auftrag mit hohem Bonus ausgehängt
+fr: Le Restaurant de Bahar a affiché une commande bonus bien payée
+pt: O Restaurante da Bahar pendurou um pedido extra com bônus alto
+@sys.panoda_bugunluk_bir_ek_alim
+en: There's an extra buy order on the board today
+es: Hoy hay un pedido de compra extra en el tablón
+de: Heute hängt ein zusätzlicher Ankaufsauftrag an der Tafel
+fr: Une commande d'achat en plus est affichée aujourd'hui
+pt: Hoje há um pedido de compra extra no quadro
+@sys.zeynep_in_dukkaninda_yem_fiyatlari
+en: Bait prices at Zeynep's shop ×{0}
+es: Precios del cebo en la tienda de Zeynep ×{0}
+de: Köderpreise in Zeyneps Laden ×{0}
+fr: Prix des appâts chez Zeynep ×{0}
+pt: Preço das iscas na loja da Zeynep ×{0}
+@sys.n_vurma_sansi_n
+en: {0}: bite chance +{1}%
+es: {0}: probabilidad de picada +{1} %
+de: {0}: Bisschance +{1} %
+fr: {0} : chance de touche +{1} %
+pt: {0}: chance de fisgada +{1}%
+@sys.basarim_n_n
+en: Achievement: {0}{1}
+es: Logro: {0}{1}
+de: Erfolg: {0}{1}
+fr: Succès : {0}{1}
+pt: Conquista: {0}{1}
+@sys.odul_n
+en:  · Reward: {0}
+es:  · Recompensa: {0}
+de:  · Belohnung: {0}
+fr:  · Récompense : {0}
+pt:  · Recompensa: {0}
+@sys.bugun_n_n
+en: Today {0} is {1}.
+es: Hoy en {0} está {1}.
+de: Heute ist es in {0} {1}.
+fr: Aujourd'hui, à {0}, le temps est {1}.
+pt: Hoje em {0} está {1}.
+@sys.n_bu_havayi_sever
+en:  {0} loves this weather.
+es:  A {0} le encanta este tiempo.
+de:  {0} mag dieses Wetter.
+fr:  {0} adore ce temps.
+pt:  {0} adora esse tempo.
+@sys.bu_mevsim_n_daha_sik
+en:  This season {0} show up more often.
+es:  Esta temporada se ven más a menudo {0}.
+de:  In dieser Jahreszeit zeigen sich {0} häufiger.
+fr:  Cette saison, on voit plus souvent {0}.
+pt:  Nesta estação, {0} aparecem com mais frequência.
+@sys.iskeleye_yuru_ve_efe_ile
+en: Walk to the pier and meet Efe
+es: Camina hasta el muelle y conoce a Efe
+de: Geh zum Steg und lerne Efe kennen
+fr: Va au ponton et rencontre Efe
+pt: Vá até o píer e conheça o Efe
+@sys.iskele_ucunda_olta_at_ve
+en: Cast from the end of the pier and catch your first fish
+es: Lanza desde la punta del muelle y pesca tu primer pez
+de: Wirf am Stegende aus und fang deinen ersten Fisch
+fr: Lance depuis le bout du ponton et attrape ton premier poisson
+pt: Lance da ponta do píer e pesque seu primeiro peixe
+@sys.baligini_nihat_in_haline_sat
+en: Sell your fish at Nihat's market or deliver it to an order on the board
+es: Vende tu pescado en la lonja de Nihat o entrégalo a un pedido del tablón
+de: Verkaufe deinen Fisch an Nihats Markt oder liefere ihn für einen Auftrag an der Tafel
+fr: Vends ton poisson à la halle de Nihat ou livre-le pour une commande du tableau
+pt: Venda seu peixe no mercado do Nihat ou entregue-o a um pedido do quadro
+@sys.bora_nin_tekne_atolyesi_ne
+en: Drop by Bora's Boatyard: first boat goal 2,200
+es: Pásate por el Astillero de Bora: primer barco, meta 2.200
+de: Schau in Boras Bootswerft vorbei: erstes Boot, Ziel 2.200
+fr: Passe au chantier naval de Bora : premier bateau, objectif 2 200
+pt: Passe no Estaleiro do Bora: primeiro barco, meta 2.200
+@fest.bugun_senlik_yok
+en: No festival today.
+es: Hoy no hay fiesta.
+de: Heute ist kein Fest.
+fr: Pas de fête aujourd'hui.
+pt: Hoje não tem festival.
+@fest.bu_senligin_yarismasina_zaten_katildin
+en: You've already entered this festival's contest.
+es: Ya participaste en el concurso de esta fiesta.
+de: Du hast an diesem Festwettbewerb schon teilgenommen.
+fr: Tu as déjà participé au concours de cette fête.
+pt: Você já participou da competição deste festival.
+@fest.zaten_bir_yarismadasin
+en: You're already in a contest.
+es: Ya estás en un concurso.
+de: Du bist schon in einem Wettbewerb.
+fr: Tu es déjà en plein concours.
+pt: Você já está numa competição.
+@fest.n_tur
+en: {0} {0|species|species}
+es: {0} {0|especie|especies}
+de: {0} {0|Art|Arten}
+fr: {0} {0|espèce|espèces}
+pt: {0} {0|espécie|espécies}
+@fest.n_deger
+en: {0} value
+es: {0} de valor
+de: {0} Wert
+fr: {0} de valeur
+pt: {0} de valor
+@fest.n_sen
+en: {0} (you)
+es: {0} (tú)
+de: {0} (du)
+fr: {0} (toi)
+pt: {0} (você)
+@fest.bugun_zaten_bir_sey_yedin
+en: You've already had a treat today; come back tomorrow!
+es: Hoy ya comiste algo; ¡vuelve mañana!
+de: Du hast heute schon etwas gegessen – komm morgen wieder!
+fr: Tu as déjà mangé quelque chose aujourd'hui ; reviens demain !
+pt: Você já comeu algo hoje; volte amanhã!
+@fest.senlik_standi_bugun_kapali
+en: The festival stall is closed today.
+es: El puesto de la fiesta está cerrado hoy.
+de: Der Feststand ist heute geschlossen.
+fr: Le stand de la fête est fermé aujourd'hui.
+pt: A barraca do festival está fechada hoje.
+@fest.satilacak_balik_yok_ya_da
+en: No fish to sell, or today's purchase limit is reached.
+es: No hay peces para vender o ya se llenó la compra del día.
+de: Keine Fische zum Verkaufen oder das Tageslimit ist erreicht.
+fr: Aucun poisson à vendre ou la limite d'achat du jour est atteinte.
+pt: Não há peixes para vender ou a compra do dia já encheu.
+@sys2.kucuk_masa_ustu_akvaryum
+en: Small tabletop aquarium
+es: Pequeño acuario de sobremesa
+de: Kleines Tischaquarium
+fr: Petit aquarium de table
+pt: Aquário pequeno de mesa
+@sys2.dolap_ustu_orta_boy_akvaryum
+en: Medium aquarium for the cabinet top
+es: Acuario mediano para encima del mueble
+de: Mittleres Aquarium für den Schrank
+fr: Aquarium moyen pour le dessus du meuble
+pt: Aquário médio para cima do armário
+@sys2.genis_dekoratif_akvaryum
+en: Wide decorative aquarium
+es: Acuario decorativo amplio
+de: Breites Dekoaquarium
+fr: Grand aquarium décoratif
+pt: Aquário decorativo amplo
+@sys2.kumlu_dip
+en: Sandy Bottom
+es: Fondo de arena
+de: Sandboden
+fr: Fond sableux
+pt: Fundo de areia
+@sys2.yesil_bitkiler
+en: Green Plants
+es: Plantas verdes
+de: Grüne Pflanzen
+fr: Plantes vertes
+pt: Plantas verdes
+@sys2.kayalik_dekor
+en: Rocky Decor
+es: Decoración rocosa
+de: Felsdeko
+fr: Décor rocheux
+pt: Decoração de pedras
+@sys2.mercan_dekoru
+en: Coral Decor
+es: Decoración de coral
+de: Korallendeko
+fr: Décor de corail
+pt: Decoração de coral
+@sys2.pirinc_capa_amblemi
+en: Brass Anchor Emblem
+es: Emblema de ancla de latón
+de: Messinganker-Emblem
+fr: Emblème d'ancre en laiton
+pt: Emblema de âncora de latão
+@sys2.zeytin_dali_celengi
+en: Olive Branch Wreath
+es: Corona de rama de olivo
+de: Olivenzweig-Kranz
+fr: Couronne d'olivier
+pt: Guirlanda de ramo de oliveira
+@sys2.deniz_kabugu_susu
+en: Seashell Ornament
+es: Adorno de concha
+de: Muschelschmuck
+fr: Ornement de coquillage
+pt: Enfeite de concha
+@sys2.ruzgar_flamasi
+en: Wind Pennant
+es: Banderín de viento
+de: Windwimpel
+fr: Fanion du vent
+pt: Flâmula de vento
+@sys2.kuzey_feneri
+en: Northern Lantern
+es: Farol del norte
+de: Nordlaterne
+fr: Lanterne du Nord
+pt: Lanterna do Norte
+@sys2.cicek_kolyesi
+en: Flower Garland
+es: Collar de flores
+de: Blumenkette
+fr: Collier de fleurs
+pt: Colar de flores
+@sys2.altin_marlin_figuru
+en: Golden Marlin Figure
+es: Figura de marlín dorado
+de: Goldene Marlinfigur
+fr: Figurine de marlin doré
+pt: Figura de marlim dourado
+@sys2.buyuk_av_ustasi
+en: Big-catch master
+es: Maestro de piezas grandes
+de: Meister der großen Fänge
+fr: Maître des grosses prises
+pt: Mestre das grandes capturas
+@sys2.buyuk_baliklar
+en: Big fish
+es: Peces grandes
+de: Große Fische
+fr: Gros poissons
+pt: Peixes grandes
+@sys2.kirk_yildir_ayni_iskelede_iri
+en: Forty years on the same pier. He can smell where the big fish are hiding.
+es: Cuarenta años en el mismo muelle. Sabe por el olfato dónde se esconde el pez gordo.
+de: Seit vierzig Jahren am selben Steg. Er riecht förmlich, wo die dicken Fische stehen.
+fr: Quarante ans sur le même ponton. Il sent à l'odeur où se cachent les gros poissons.
+pt: Quarenta anos no mesmo píer. Ele sabe pelo cheiro onde o peixe grande está.
+@sys2.merakli_genc
+en: Curious youngster
+es: Joven curioso
+de: Neugieriger Jungspund
+fr: Jeune curieux
+pt: Jovem curioso
+@sys2.tur_cesitliligi
+en: Species variety
+es: Variedad de especies
+de: Artenvielfalt
+fr: Variété d'espèces
+pt: Variedade de espécies
+@sys2.her_yeni_turu_gormek_ister
+en: Wants to see every new species; dreams of heading out in his own boat one day.
+es: Quiere ver cada especie nueva; sueña con salir algún día en su propio barco.
+de: Will jede neue Art sehen und träumt davon, eines Tages mit dem eigenen Boot hinauszufahren.
+fr: Veut voir chaque nouvelle espèce ; rêve de partir un jour sur son propre bateau.
+pt: Quer ver cada espécie nova; sonha em sair um dia com o próprio barco.
+@sys2.istikrarli_cizer
+en: Steady sketcher
+es: Dibujante constante
+de: Beständige Zeichnerin
+fr: Dessinatrice régulière
+pt: Desenhista constante
+@sys2.dengeli_av
+en: Balanced catches
+es: Capturas equilibradas
+de: Ausgewogene Fänge
+fr: Prises équilibrées
+pt: Capturas equilibradas
+@sys2.defterine_her_baligi_cizer_acele
+en: She sketches every fish in her notebook. Never rushes, rarely comes back empty-handed.
+es: Dibuja cada pez en su cuaderno. No tiene prisa y casi nunca vuelve con las manos vacías.
+de: Sie zeichnet jeden Fisch in ihr Heft. Nie in Eile, selten mit leeren Händen.
+fr: Elle dessine chaque poisson dans son carnet. Jamais pressée, rarement bredouille.
+pt: Desenha cada peixe no caderno. Nunca tem pressa e raramente volta de mãos vazias.
+@sys2.kasabanin_bilgesi
+en: The town's sage
+es: El sabio del pueblo
+de: Der Weise des Ortes
+fr: Le sage du village
+pt: O sábio da vila
+@sys2.deneyim
+en: Experience
+es: Experiencia
+de: Erfahrung
+fr: Expérience
+pt: Experiência
+@sys2.denizi_en_iyi_taniyan_isim
+en: Nobody knows the sea better. He even gives his rivals tips.
+es: Nadie conoce mejor el mar. Hasta les da pistas a sus rivales.
+de: Niemand kennt das Meer besser. Er gibt sogar seinen Rivalen Tipps.
+fr: Personne ne connaît mieux la mer. Il donne même des conseils à ses rivaux.
+pt: Ninguém conhece melhor o mar. Ele dá dicas até para os rivais.
+@sys2.kayalikoy_sampiyonu
+en: Kayalıköy champion
+es: Campeón de Kayalıköy
+de: Champion von Kayalıköy
+fr: Champion de Kayalıköy
+pt: Campeão de Kayalıköy
+@sys2.profesyonel_rekabet
+en: Pro competitor
+es: Competidor profesional
+de: Profi-Konkurrent
+fr: Compétiteur pro
+pt: Competidor profissional
+@sys2.komsu_kasabanin_yenilmez_yarismacisi_her
+en: The neighboring town's unbeatable contender. Shows up to every festival out to win.
+es: El rival imbatible del pueblo vecino. Llega a cada fiesta dispuesto a ganar.
+de: Der unschlagbare Teilnehmer aus dem Nachbarort. Kommt zu jedem Fest, um zu gewinnen.
+fr: L'invincible concurrent du village voisin. Il vient à chaque fête pour gagner.
+pt: O competidor imbatível da vila vizinha. Chega a cada festival para ganhar.

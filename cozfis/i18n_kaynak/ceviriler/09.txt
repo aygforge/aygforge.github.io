@@ -1,0 +1,492 @@
+@ui.devam_et
+en: ⟦0⟧Continue⟦1⟧
+es: ⟦0⟧Continuar⟦1⟧
+de: ⟦0⟧Weiterspielen⟦1⟧
+fr: ⟦0⟧Continuer⟦1⟧
+pt: ⟦0⟧Continuar⟦1⟧
+@ui.kaydi_disa_aktar
+en: ⟦0⟧Export Save⟦1⟧
+es: ⟦0⟧Exportar partida⟦1⟧
+de: ⟦0⟧Spielstand exportieren⟦1⟧
+fr: ⟦0⟧Exporter la sauvegarde⟦1⟧
+pt: ⟦0⟧Exportar Save⟦1⟧
+@ui.n_yedekten_yukle_bozuk_kaydi
+en: ⟦0⟧{0}⟦1⟧⟦2⟧Load Backup⟦3⟧ ⟦4⟧Download corrupted save⟦5⟧⟦6⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧Cargar copia de seguridad⟦3⟧ ⟦4⟧Descargar partida dañada⟦5⟧⟦6⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧Sicherung laden⟦3⟧ ⟦4⟧Beschädigten Spielstand herunterladen⟦5⟧⟦6⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧Charger la copie de secours⟦3⟧ ⟦4⟧Télécharger la sauvegarde corrompue⟦5⟧⟦6⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧Carregar Backup⟦3⟧ ⟦4⟧Baixar save corrompido⟦5⟧⟦6⟧
+@ui.balikcini_olustur_isim_n_n
+en: ⟦0⟧⟦1⟧Create Your Angler⟦2⟧ ⟦3⟧⟦4⟧Name⟦5⟧⟦6⟧⟦7⟧ {1}{2}{3}{4} ⟦8⟧⟦9⟧Outfit⟦10⟧⟦11⟧{5}⟦12⟧⟦13⟧ ⟦14⟧⟦15⟧Hat⟦16⟧⟦17⟧{6}⟦18⟧⟦19⟧ ⟦20⟧⟦21⟧Back⟦22⟧⟦23⟧Start the Adventure⟦24⟧⟦25⟧⟦26⟧
+es: ⟦0⟧⟦1⟧Crea tu pescador⟦2⟧ ⟦3⟧⟦4⟧Nombre⟦5⟧⟦6⟧⟦7⟧ {1}{2}{3}{4} ⟦8⟧⟦9⟧Ropa⟦10⟧⟦11⟧{5}⟦12⟧⟦13⟧ ⟦14⟧⟦15⟧Sombrero⟦16⟧⟦17⟧{6}⟦18⟧⟦19⟧ ⟦20⟧⟦21⟧Atrás⟦22⟧⟦23⟧Empezar la aventura⟦24⟧⟦25⟧⟦26⟧
+de: ⟦0⟧⟦1⟧Erstelle deine Spielfigur⟦2⟧ ⟦3⟧⟦4⟧Name⟦5⟧⟦6⟧⟦7⟧ {1}{2}{3}{4} ⟦8⟧⟦9⟧Kleidung⟦10⟧⟦11⟧{5}⟦12⟧⟦13⟧ ⟦14⟧⟦15⟧Hut⟦16⟧⟦17⟧{6}⟦18⟧⟦19⟧ ⟦20⟧⟦21⟧Zurück⟦22⟧⟦23⟧Abenteuer beginnen⟦24⟧⟦25⟧⟦26⟧
+fr: ⟦0⟧⟦1⟧Crée ton pêcheur⟦2⟧ ⟦3⟧⟦4⟧Nom⟦5⟧⟦6⟧⟦7⟧ {1}{2}{3}{4} ⟦8⟧⟦9⟧Tenue⟦10⟧⟦11⟧{5}⟦12⟧⟦13⟧ ⟦14⟧⟦15⟧Chapeau⟦16⟧⟦17⟧{6}⟦18⟧⟦19⟧ ⟦20⟧⟦21⟧Retour⟦22⟧⟦23⟧Commencer l'aventure⟦24⟧⟦25⟧⟦26⟧
+pt: ⟦0⟧⟦1⟧Crie seu Pescador⟦2⟧ ⟦3⟧⟦4⟧Nome⟦5⟧⟦6⟧⟦7⟧ {1}{2}{3}{4} ⟦8⟧⟦9⟧Roupa⟦10⟧⟦11⟧{5}⟦12⟧⟦13⟧ ⟦14⟧⟦15⟧Chapéu⟦16⟧⟦17⟧{6}⟦18⟧⟦19⟧ ⟦20⟧⟦21⟧Voltar⟦22⟧⟦23⟧Começar a Aventura⟦24⟧⟦25⟧⟦26⟧
+@ui.beden
+en: Body
+es: Cuerpo
+de: Statur
+fr: Corpulence
+pt: Corpo
+@ui.ten
+en: Skin
+es: Piel
+de: Haut
+fr: Peau
+pt: Pele
+@ui.sac
+en: Hair
+es: Pelo
+de: Haare
+fr: Cheveux
+pt: Cabelo
+@ui.sac_rengi
+en: Hair color
+es: Color de pelo
+de: Haarfarbe
+fr: Couleur des cheveux
+pt: Cor do cabelo
+@ui.binalara_dokun_ya_da_yuru
+en: ⟦0⟧Tap buildings or walk⟦1⟧
+es: ⟦0⟧Toca los edificios o camina⟦1⟧
+de: ⟦0⟧Tippe auf Gebäude oder laufe⟦1⟧
+fr: ⟦0⟧Touche les bâtiments ou marche⟦1⟧
+pt: ⟦0⟧Toque nos prédios ou ande⟦1⟧
+@ui.n_liman_n_n
+en: ⟦0⟧{0}⟦1⟧Harbor⟦2⟧⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧{2}⟦7⟧
+es: ⟦0⟧{0}⟦1⟧Puerto⟦2⟧⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧{2}⟦7⟧
+de: ⟦0⟧{0}⟦1⟧Hafen⟦2⟧⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧{2}⟦7⟧
+fr: ⟦0⟧{0}⟦1⟧Port⟦2⟧⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧{2}⟦7⟧
+pt: ⟦0⟧{0}⟦1⟧Porto⟦2⟧⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧{2}⟦7⟧
+@ui.n_kasaba_n_n
+en: ⟦0⟧{0}⟦1⟧Town⟦2⟧⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧{2}⟦7⟧
+es: ⟦0⟧{0}⟦1⟧Pueblo⟦2⟧⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧{2}⟦7⟧
+de: ⟦0⟧{0}⟦1⟧Ort⟦2⟧⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧{2}⟦7⟧
+fr: ⟦0⟧{0}⟦1⟧Village⟦2⟧⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧{2}⟦7⟧
+pt: ⟦0⟧{0}⟦1⟧Vila⟦2⟧⟦3⟧⟦4⟧{1}⟦5⟧⟦6⟧{2}⟦7⟧
+@ui.n_n_n_topla
+en: ⟦0⟧{0}{1}⟦1⟧⟦2⟧⟦3⟧⟦4⟧⟦5⟧ ⟦6⟧⟦7⟧⟦8⟧⟦9⟧{2}⟦10⟧⟦11⟧Reel in⟦12⟧⟦13⟧⟦14⟧⟦15⟧⟦16⟧⟦17⟧
+es: ⟦0⟧{0}{1}⟦1⟧⟦2⟧⟦3⟧⟦4⟧⟦5⟧ ⟦6⟧⟦7⟧⟦8⟧⟦9⟧{2}⟦10⟧⟦11⟧Recoger⟦12⟧⟦13⟧⟦14⟧⟦15⟧⟦16⟧⟦17⟧
+de: ⟦0⟧{0}{1}⟦1⟧⟦2⟧⟦3⟧⟦4⟧⟦5⟧ ⟦6⟧⟦7⟧⟦8⟧⟦9⟧{2}⟦10⟧⟦11⟧Einholen⟦12⟧⟦13⟧⟦14⟧⟦15⟧⟦16⟧⟦17⟧
+fr: ⟦0⟧{0}{1}⟦1⟧⟦2⟧⟦3⟧⟦4⟧⟦5⟧ ⟦6⟧⟦7⟧⟦8⟧⟦9⟧{2}⟦10⟧⟦11⟧Ramener⟦12⟧⟦13⟧⟦14⟧⟦15⟧⟦16⟧⟦17⟧
+pt: ⟦0⟧{0}{1}⟦1⟧⟦2⟧⟦3⟧⟦4⟧⟦5⟧ ⟦6⟧⟦7⟧⟦8⟧⟦9⟧{2}⟦10⟧⟦11⟧Recolher⟦12⟧⟦13⟧⟦14⟧⟦15⟧⟦16⟧⟦17⟧
+@ui.olta_at
+en: CAST
+es: LANZAR
+de: AUSWERFEN
+fr: LANCER
+pt: ARREMESSAR
+@ui.birak
+en: RELEASE!
+es: ¡SUELTA!
+de: LOSLASSEN!
+fr: LÂCHE !
+pt: SOLTE!
+@ui.cek
+en: STRIKE!
+es: ¡TIRA!
+de: ANSCHLAG!
+fr: FERRE !
+pt: PUXE!
+@ui.cek_2
+en: REEL
+es: TIRAR
+de: ZIEHEN
+fr: TIRER
+pt: PUXAR
+@ui.basili_tut
+en: hold
+es: mantén pulsado
+de: gedrückt halten
+fr: maintiens
+pt: segure
+@ui.kaydir_iptal
+en: slide = cancel
+es: desliza = cancelar
+de: wischen = abbrechen
+fr: glisser = annuler
+pt: deslize = cancelar
+@ui.tut_birak
+en: hold / release
+es: mantén / suelta
+de: halten / loslassen
+fr: maintiens / lâche
+pt: segure / solte
+@ui.n_onerilen_n
+en: ⟦0⟧{0} · recommended: {1}⟦1⟧
+es: ⟦0⟧{0} · recomendado: {1}⟦1⟧
+de: ⟦0⟧{0} · empfohlen: {1}⟦1⟧
+fr: ⟦0⟧{0} · conseillé : {1}⟦1⟧
+pt: ⟦0⟧{0} · recomendado: {1}⟦1⟧
+@ui.n_onerilen_atis_n
+en: ⟦0⟧{0} · recommended cast: {1}⟦1⟧
+es: ⟦0⟧{0} · lanzamiento recomendado: {1}⟦1⟧
+de: ⟦0⟧{0} · empfohlener Wurf: {1}⟦1⟧
+fr: ⟦0⟧{0} · lancer conseillé : {1}⟦1⟧
+pt: ⟦0⟧{0} · arremesso recomendado: {1}⟦1⟧
+@ui.yem_bitti
+en: Out of bait
+es: Sin cebo
+de: Köder alle
+fr: Plus d'appât
+pt: Sem isca
+@ui.secili_yemin_tukendi_ucretsiz_ve
+en: Your selected bait has run out. Switch to free, unlimited basic bait?
+es: Se acabó el cebo elegido. ¿Quieres pasar al cebo básico gratuito e ilimitado?
+de: Dein gewählter Köder ist aufgebraucht. Zum kostenlosen, unbegrenzten Grundköder wechseln?
+fr: Ton appât sélectionné est épuisé. Passer à l'appât de base gratuit et illimité ?
+pt: Sua isca acabou. Quer trocar para a isca básica grátis e ilimitada?
+@ui.temel_yeme_gec
+en: Switch to basic bait
+es: Usar cebo básico
+de: Zum Grundköder
+fr: Passer à l'appât de base
+pt: Usar isca básica
+@ui.n_yolunda_gec
+en: ⟦0⟧⟦1⟧On the way to {0}…⟦2⟧⟦3⟧Skip⟦4⟧⟦5⟧
+es: ⟦0⟧⟦1⟧Rumbo a {0}…⟦2⟧⟦3⟧Saltar⟦4⟧⟦5⟧
+de: ⟦0⟧⟦1⟧Unterwegs nach {0} …⟦2⟧⟦3⟧Überspringen⟦4⟧⟦5⟧
+fr: ⟦0⟧⟦1⟧En route vers {0}…⟦2⟧⟦3⟧Passer⟦4⟧⟦5⟧
+pt: ⟦0⟧⟦1⟧A caminho de {0}…⟦2⟧⟦3⟧Pular⟦4⟧⟦5⟧
+@ui.n_n_hava_n_n
+en: ⟦0⟧⟦1⟧{0} {1}⟦2⟧ ⟦3⟧⟦4⟧Weather⟦5⟧⟦6⟧{2} {3}⟦7⟧⟦8⟧ ⟦9⟧⟦10⟧Trip cost⟦11⟧⟦12⟧{4}⟦13⟧⟦14⟧ ⟦15⟧⟦16⟧Requirement⟦17⟧⟦18⟧{5}⟦19⟧⟦20⟧ ⟦21⟧⟦22⟧Active boat⟦23⟧⟦24⟧{6} {7}⟦25⟧⟦26⟧ {8} {9} ⟦27⟧⟦28⟧Species found⟦29⟧⟦30⟧{10}/{11}⟦31⟧⟦32⟧ ⟦33⟧{12}⟦34⟧ ⟦35⟧⟦36⟧Fishing spots⟦37⟧⟦38⟧{13}⟦39⟧⟦40⟧ ⟦41⟧{14}⟦42⟧{15} Back to Harbor⟦43⟧⟦44⟧{17} Set Sail ({18})⟦45⟧⟦46⟧ ⟦47⟧The return to harbor is free. {19}⟦48⟧⟦49⟧
+es: ⟦0⟧⟦1⟧{0} {1}⟦2⟧ ⟦3⟧⟦4⟧Tiempo⟦5⟧⟦6⟧{2} {3}⟦7⟧⟦8⟧ ⟦9⟧⟦10⟧Coste de salida⟦11⟧⟦12⟧{4}⟦13⟧⟦14⟧ ⟦15⟧⟦16⟧Requisito⟦17⟧⟦18⟧{5}⟦19⟧⟦20⟧ ⟦21⟧⟦22⟧Barco activo⟦23⟧⟦24⟧{6} {7}⟦25⟧⟦26⟧ {8} {9} ⟦27⟧⟦28⟧Especies descubiertas⟦29⟧⟦30⟧{10}/{11}⟦31⟧⟦32⟧ ⟦33⟧{12}⟦34⟧ ⟦35⟧⟦36⟧Zonas de pesca⟦37⟧⟦38⟧{13}⟦39⟧⟦40⟧ ⟦41⟧{14}⟦42⟧{15} Volver al puerto⟦43⟧⟦44⟧{17} Zarpar ({18})⟦45⟧⟦46⟧ ⟦47⟧La vuelta al puerto es gratis. {19}⟦48⟧⟦49⟧
+de: ⟦0⟧⟦1⟧{0} {1}⟦2⟧ ⟦3⟧⟦4⟧Wetter⟦5⟧⟦6⟧{2} {3}⟦7⟧⟦8⟧ ⟦9⟧⟦10⟧Fahrtkosten⟦11⟧⟦12⟧{4}⟦13⟧⟦14⟧ ⟦15⟧⟦16⟧Voraussetzung⟦17⟧⟦18⟧{5}⟦19⟧⟦20⟧ ⟦21⟧⟦22⟧Aktives Boot⟦23⟧⟦24⟧{6} {7}⟦25⟧⟦26⟧ {8} {9} ⟦27⟧⟦28⟧Entdeckte Arten⟦29⟧⟦30⟧{10}/{11}⟦31⟧⟦32⟧ ⟦33⟧{12}⟦34⟧ ⟦35⟧⟦36⟧Angelplätze⟦37⟧⟦38⟧{13}⟦39⟧⟦40⟧ ⟦41⟧{14}⟦42⟧{15} Zurück zum Hafen⟦43⟧⟦44⟧{17} Ablegen ({18})⟦45⟧⟦46⟧ ⟦47⟧Die Rückfahrt zum Hafen ist kostenlos. {19}⟦48⟧⟦49⟧
+fr: ⟦0⟧⟦1⟧{0} {1}⟦2⟧ ⟦3⟧⟦4⟧Météo⟦5⟧⟦6⟧{2} {3}⟦7⟧⟦8⟧ ⟦9⟧⟦10⟧Coût de la sortie⟦11⟧⟦12⟧{4}⟦13⟧⟦14⟧ ⟦15⟧⟦16⟧Condition⟦17⟧⟦18⟧{5}⟦19⟧⟦20⟧ ⟦21⟧⟦22⟧Bateau actif⟦23⟧⟦24⟧{6} {7}⟦25⟧⟦26⟧ {8} {9} ⟦27⟧⟦28⟧Espèces découvertes⟦29⟧⟦30⟧{10}/{11}⟦31⟧⟦32⟧ ⟦33⟧{12}⟦34⟧ ⟦35⟧⟦36⟧Coins de pêche⟦37⟧⟦38⟧{13}⟦39⟧⟦40⟧ ⟦41⟧{14}⟦42⟧{15} Retour au port⟦43⟧⟦44⟧{17} Prendre la mer ({18})⟦45⟧⟦46⟧ ⟦47⟧Le retour au port est gratuit. {19}⟦48⟧⟦49⟧
+pt: ⟦0⟧⟦1⟧{0} {1}⟦2⟧ ⟦3⟧⟦4⟧Tempo⟦5⟧⟦6⟧{2} {3}⟦7⟧⟦8⟧ ⟦9⟧⟦10⟧Custo da viagem⟦11⟧⟦12⟧{4}⟦13⟧⟦14⟧ ⟦15⟧⟦16⟧Requisito⟦17⟧⟦18⟧{5}⟦19⟧⟦20⟧ ⟦21⟧⟦22⟧Barco ativo⟦23⟧⟦24⟧{6} {7}⟦25⟧⟦26⟧ {8} {9} ⟦27⟧⟦28⟧Espécies descobertas⟦29⟧⟦30⟧{10}/{11}⟦31⟧⟦32⟧ ⟦33⟧{12}⟦34⟧ ⟦35⟧⟦36⟧Pontos de pesca⟦37⟧⟦38⟧{13}⟦39⟧⟦40⟧ ⟦41⟧{14}⟦42⟧{15} Voltar ao Porto⟦43⟧⟦44⟧{17} Zarpar ({18})⟦45⟧⟦46⟧ ⟦47⟧A volta ao porto é grátis. {19}⟦48⟧⟦49⟧
+@ui.degistir
+en: ⟦0⟧Change⟦1⟧
+es: ⟦0⟧Cambiar⟦1⟧
+de: ⟦0⟧Wechseln⟦1⟧
+fr: ⟦0⟧Changer⟦1⟧
+pt: ⟦0⟧Trocar⟦1⟧
+@ui.bu_tekneyle_gidilebilir
+en: ⟦0⟧✓ Reachable with this boat⟦1⟧
+es: ⟦0⟧✓ Se puede ir con este barco⟦1⟧
+de: ⟦0⟧✓ Mit diesem Boot erreichbar⟦1⟧
+fr: ⟦0⟧✓ Accessible avec ce bateau⟦1⟧
+pt: ⟦0⟧✓ Dá para ir com este barco⟦1⟧
+@ui.eksik_n
+en: ⟦0⟧✗ Missing: {0}⟦1⟧
+es: ⟦0⟧✗ Falta: {0}⟦1⟧
+de: ⟦0⟧✗ Fehlt: {0}⟦1⟧
+fr: ⟦0⟧✗ Manque : {0}⟦1⟧
+pt: ⟦0⟧✗ Falta: {0}⟦1⟧
+@ui.n_donanim
+en: ⟦0⟧{0} Outfitting⟦1⟧
+es: ⟦0⟧{0} Equipamiento⟦1⟧
+de: ⟦0⟧{0} Ausstattung⟦1⟧
+fr: ⟦0⟧{0} Équipement⟦1⟧
+pt: ⟦0⟧{0} Equipamento⟦1⟧
+@ui.sakin_liman_da_tekneyle_de
+en: You can also fish from your boat in Calm Harbor; pier fishing is always free.
+es: En Puerto Sereno también puedes pescar en barco; pescar en el muelle siempre es gratis.
+de: Im Stillen Hafen kannst du auch vom Boot aus angeln; Stegangeln ist immer kostenlos.
+fr: À Port Paisible, tu peux aussi pêcher en bateau ; la pêche au ponton est toujours gratuite.
+pt: No Porto Sereno você também pode pescar de barco; a pesca no píer é sempre grátis.
+@ui.ekipman
+en: Gear
+es: Equipo
+de: Ausrüstung
+fr: Équipement
+pt: Equipamento
+@ui.yem
+en: Bait
+es: Cebo
+de: Köder
+fr: Appât
+pt: Isca
+@ui.yakit
+en: Fuel
+es: Combustible
+de: Treibstoff
+fr: Carburant
+pt: Combustível
+@ui.tekne
+en: Boat
+es: Barco
+de: Boot
+fr: Bateau
+pt: Barco
+@ui.otomasyon
+en: Automation
+es: Automatización
+de: Automatik
+fr: Automatisation
+pt: Automação
+@ui.kozmetik
+en: Cosmetics
+es: Cosméticos
+de: Kosmetik
+fr: Cosmétiques
+pt: Cosméticos
+@ui.n_n_gun_sona_erdi
+en: ⟦0⟧⟦1⟧{0} Day {1} Is Over⟦2⟧ ⟦3⟧ ⟦4⟧⟦5⟧Manual catches⟦6⟧⟦7⟧{2}⟦8⟧⟦9⟧⟦10⟧⟦11⟧Auto catches⟦12⟧⟦13⟧{3}⟦14⟧⟦15⟧ ⟦16⟧⟦17⟧Casts⟦18⟧⟦19⟧{4}⟦20⟧⟦21⟧⟦22⟧⟦23⟧Released⟦24⟧⟦25⟧{5}⟦26⟧⟦27⟧ ⟦28⟧⟦29⟧Fish market income⟦30⟧⟦31⟧{6}⟦32⟧⟦33⟧⟦34⟧⟦35⟧Order income⟦36⟧⟦37⟧{7}⟦38⟧⟦39⟧ ⟦40⟧⟦41⟧Expenses⟦42⟧⟦43⟧{8}⟦44⟧⟦45⟧⟦46⟧⟦47⟧Net change⟦48⟧⟦49⟧{10}{11}⟦50⟧⟦51⟧ ⟦52⟧{12} {13} {14} {15} ⟦53⟧⟦54⟧{16}{17}Tomorrow: ⟦55⟧Day {18}⟦56⟧ · {19} · Calm Harbor {20}{21}⟦57⟧ ⟦58⟧⟦59⟧{22} Start a New Day⟦60⟧⟦61⟧⟦62⟧
+es: ⟦0⟧⟦1⟧{0} Fin del día {1}⟦2⟧ ⟦3⟧ ⟦4⟧⟦5⟧Capturas manuales⟦6⟧⟦7⟧{2}⟦8⟧⟦9⟧⟦10⟧⟦11⟧Capturas automáticas⟦12⟧⟦13⟧{3}⟦14⟧⟦15⟧ ⟦16⟧⟦17⟧Lanzamientos⟦18⟧⟦19⟧{4}⟦20⟧⟦21⟧⟦22⟧⟦23⟧Liberados⟦24⟧⟦25⟧{5}⟦26⟧⟦27⟧ ⟦28⟧⟦29⟧Ingresos de la lonja⟦30⟧⟦31⟧{6}⟦32⟧⟦33⟧⟦34⟧⟦35⟧Ingresos por pedidos⟦36⟧⟦37⟧{7}⟦38⟧⟦39⟧ ⟦40⟧⟦41⟧Gastos⟦42⟧⟦43⟧{8}⟦44⟧⟦45⟧⟦46⟧⟦47⟧Cambio neto⟦48⟧⟦49⟧{10}{11}⟦50⟧⟦51⟧ ⟦52⟧{12} {13} {14} {15} ⟦53⟧⟦54⟧{16}{17}Mañana: ⟦55⟧Día {18}⟦56⟧ · {19} · Puerto Sereno {20}{21}⟦57⟧ ⟦58⟧⟦59⟧{22} Empezar un nuevo día⟦60⟧⟦61⟧⟦62⟧
+de: ⟦0⟧⟦1⟧{0} Tag {1} ist vorbei⟦2⟧ ⟦3⟧ ⟦4⟧⟦5⟧Handfänge⟦6⟧⟦7⟧{2}⟦8⟧⟦9⟧⟦10⟧⟦11⟧Auto-Fänge⟦12⟧⟦13⟧{3}⟦14⟧⟦15⟧ ⟦16⟧⟦17⟧Würfe⟦18⟧⟦19⟧{4}⟦20⟧⟦21⟧⟦22⟧⟦23⟧Freigelassen⟦24⟧⟦25⟧{5}⟦26⟧⟦27⟧ ⟦28⟧⟦29⟧Fischmarkt-Einnahmen⟦30⟧⟦31⟧{6}⟦32⟧⟦33⟧⟦34⟧⟦35⟧Auftragseinnahmen⟦36⟧⟦37⟧{7}⟦38⟧⟦39⟧ ⟦40⟧⟦41⟧Ausgaben⟦42⟧⟦43⟧{8}⟦44⟧⟦45⟧⟦46⟧⟦47⟧Bilanz⟦48⟧⟦49⟧{10}{11}⟦50⟧⟦51⟧ ⟦52⟧{12} {13} {14} {15} ⟦53⟧⟦54⟧{16}{17}Morgen: ⟦55⟧Tag {18}⟦56⟧ · {19} · Stiller Hafen {20}{21}⟦57⟧ ⟦58⟧⟦59⟧{22} Neuen Tag beginnen⟦60⟧⟦61⟧⟦62⟧
+fr: ⟦0⟧⟦1⟧{0} Fin du jour {1}⟦2⟧ ⟦3⟧ ⟦4⟧⟦5⟧Prises manuelles⟦6⟧⟦7⟧{2}⟦8⟧⟦9⟧⟦10⟧⟦11⟧Prises auto⟦12⟧⟦13⟧{3}⟦14⟧⟦15⟧ ⟦16⟧⟦17⟧Lancers⟦18⟧⟦19⟧{4}⟦20⟧⟦21⟧⟦22⟧⟦23⟧Relâchés⟦24⟧⟦25⟧{5}⟦26⟧⟦27⟧ ⟦28⟧⟦29⟧Revenus de la halle⟦30⟧⟦31⟧{6}⟦32⟧⟦33⟧⟦34⟧⟦35⟧Revenus des commandes⟦36⟧⟦37⟧{7}⟦38⟧⟦39⟧ ⟦40⟧⟦41⟧Dépenses⟦42⟧⟦43⟧{8}⟦44⟧⟦45⟧⟦46⟧⟦47⟧Bilan net⟦48⟧⟦49⟧{10}{11}⟦50⟧⟦51⟧ ⟦52⟧{12} {13} {14} {15} ⟦53⟧⟦54⟧{16}{17}Demain : ⟦55⟧Jour {18}⟦56⟧ · {19} · Port Paisible {20}{21}⟦57⟧ ⟦58⟧⟦59⟧{22} Commencer une nouvelle journée⟦60⟧⟦61⟧⟦62⟧
+pt: ⟦0⟧⟦1⟧{0} Fim do Dia {1}⟦2⟧ ⟦3⟧ ⟦4⟧⟦5⟧Capturas manuais⟦6⟧⟦7⟧{2}⟦8⟧⟦9⟧⟦10⟧⟦11⟧Capturas automáticas⟦12⟧⟦13⟧{3}⟦14⟧⟦15⟧ ⟦16⟧⟦17⟧Arremessos⟦18⟧⟦19⟧{4}⟦20⟧⟦21⟧⟦22⟧⟦23⟧Soltos⟦24⟧⟦25⟧{5}⟦26⟧⟦27⟧ ⟦28⟧⟦29⟧Renda do mercado⟦30⟧⟦31⟧{6}⟦32⟧⟦33⟧⟦34⟧⟦35⟧Renda de pedidos⟦36⟧⟦37⟧{7}⟦38⟧⟦39⟧ ⟦40⟧⟦41⟧Despesas⟦42⟧⟦43⟧{8}⟦44⟧⟦45⟧⟦46⟧⟦47⟧Saldo do dia⟦48⟧⟦49⟧{10}{11}⟦50⟧⟦51⟧ ⟦52⟧{12} {13} {14} {15} ⟦53⟧⟦54⟧{16}{17}Amanhã: ⟦55⟧Dia {18}⟦56⟧ · {19} · Porto Sereno {20}{21}⟦57⟧ ⟦58⟧⟦59⟧{22} Começar um Novo Dia⟦60⟧⟦61⟧⟦62⟧
+@ui.yeni_turler_n_n
+en: ⟦0⟧New species⟦1⟧⟦2⟧{0} {1}⟦3⟧
+es: ⟦0⟧Nuevas especies⟦1⟧⟦2⟧{0} {1}⟦3⟧
+de: ⟦0⟧Neue Arten⟦1⟧⟦2⟧{0} {1}⟦3⟧
+fr: ⟦0⟧Nouvelles espèces⟦1⟧⟦2⟧{0} {1}⟦3⟧
+pt: ⟦0⟧Novas espécies⟦1⟧⟦2⟧{0} {1}⟦3⟧
+@ui.rekorlar_n
+en: ⟦0⟧Records⟦1⟧⟦2⟧{0}⟦3⟧
+es: ⟦0⟧Récords⟦1⟧⟦2⟧{0}⟦3⟧
+de: ⟦0⟧Rekorde⟦1⟧⟦2⟧{0}⟦3⟧
+fr: ⟦0⟧Records⟦1⟧⟦2⟧{0}⟦3⟧
+pt: ⟦0⟧Recordes⟦1⟧⟦2⟧{0}⟦3⟧
+@ui.basarimlar_n
+en: ⟦0⟧Achievements⟦1⟧⟦2⟧{0}⟦3⟧
+es: ⟦0⟧Logros⟦1⟧⟦2⟧{0}⟦3⟧
+de: ⟦0⟧Erfolge⟦1⟧⟦2⟧{0}⟦3⟧
+fr: ⟦0⟧Succès⟦1⟧⟦2⟧{0}⟦3⟧
+pt: ⟦0⟧Conquistas⟦1⟧⟦2⟧{0}⟦3⟧
+@ui.yeni_yil_basladi
+en: ⟦0⟧A new year has begun! ⟦1⟧
+es: ⟦0⟧¡Ha empezado un nuevo año! ⟦1⟧
+de: ⟦0⟧Ein neues Jahr hat begonnen! ⟦1⟧
+fr: ⟦0⟧Une nouvelle année commence ! ⟦1⟧
+pt: ⟦0⟧Começou um novo ano! ⟦1⟧
+@ui.n_geldi
+en: ⟦0⟧{0} has arrived! ⟦1⟧
+es: ⟦0⟧¡Ha llegado {0}! ⟦1⟧
+de: ⟦0⟧{0} ist da! ⟦1⟧
+fr: ⟦0⟧{0} est là ! ⟦1⟧
+pt: ⟦0⟧Chegou: {0}! ⟦1⟧
+@ui.olay_n
+en:  · Event: ⟦0⟧{0}⟦1⟧
+es:  · Evento: ⟦0⟧{0}⟦1⟧
+de:  · Ereignis: ⟦0⟧{0}⟦1⟧
+fr:  · Événement : ⟦0⟧{0}⟦1⟧
+pt:  · Evento: ⟦0⟧{0}⟦1⟧
+@ui.gunaydin_gun_n_n_n
+en: Good morning! Day {0} · {1} {2}/28 · Energy 100 · {3} {3|order|orders} on the board
+es: ¡Buenos días! Día {0} · {1} {2}/28 · Energía 100 · {3} {3|pedido|pedidos} en el tablón
+de: Guten Morgen! Tag {0} · {1} {2}/28 · Energie 100 · {3} {3|Auftrag|Aufträge} an der Tafel
+fr: Bonjour ! Jour {0} · {1} {2}/28 · Énergie 100 · {3} {3|commande|commandes} au tableau
+pt: Bom dia! Dia {0} · {1} {2}/28 · Energia 100 · {3} {3|pedido|pedidos} no quadro
+@ui.gunun_olayi_n_n
+en: Event of the day: {0} — {1}
+es: Evento del día: {0} — {1}
+de: Ereignis des Tages: {0} — {1}
+fr: Événement du jour : {0} — {1}
+pt: Evento do dia: {0} — {1}
+@ui.uyu_ve_gunu_bitir
+en: Sleep and end the day
+es: Dormir y terminar el día
+de: Schlafen und Tag beenden
+fr: Dormir et finir la journée
+pt: Dormir e encerrar o dia
+@ui.n_uyuyunca_enerji_100_olur
+en: ⟦0⟧{0}⟦1⟧⟦2⟧When you sleep: energy returns to 100, orders and weather refresh, and the auto-catch limit resets.⟦3⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧Al dormir: la energía vuelve a 100, se renuevan los pedidos y el tiempo, y se reinicia el límite de capturas automáticas.⟦3⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧Beim Schlafen: Energie wieder auf 100, Aufträge und Wetter werden erneuert, das Auto-Fanglimit wird zurückgesetzt.⟦3⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧En dormant : l'énergie remonte à 100, les commandes et la météo se renouvellent, la limite de prises auto est remise à zéro.⟦3⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧Ao dormir: a energia volta a 100, pedidos e clima se renovam e o limite de capturas automáticas zera.⟦3⟧
+@ui.hala_n_enerjin_var_n
+en: You still have ⟦0⟧{0}⟦1⟧ energy ({1} {1|cast|casts}). Unused energy doesn't carry over to the next day.
+es: Aún te queda ⟦0⟧{0}⟦1⟧ de energía ({1} {1|lanzamiento|lanzamientos}). La energía no usada no pasa al día siguiente.
+de: Du hast noch ⟦0⟧{0}⟦1⟧ Energie ({1} {1|Wurf|Würfe}). Unverbrauchte Energie verfällt am nächsten Tag.
+fr: Il te reste ⟦0⟧{0}⟦1⟧ d'énergie ({1} {1|lancer|lancers}). L'énergie non utilisée n'est pas reportée.
+pt: Você ainda tem ⟦0⟧{0}⟦1⟧ de energia ({1} {1|arremesso|arremessos}). A energia não usada não passa para o dia seguinte.
+@ui.bugun_guzel_bir_gundu_dinlenme
+en: It was a lovely day. Time to rest!
+es: Ha sido un buen día. ¡Hora de descansar!
+de: Das war ein schöner Tag. Zeit zum Ausruhen!
+fr: C'était une belle journée. L'heure de se reposer !
+pt: Foi um dia lindo. Hora de descansar!
+@ui.uyu
+en: Sleep
+es: Dormir
+de: Schlafen
+fr: Dormir
+pt: Dormir
+@ui.n_n_n_n_n
+en: ⟦0⟧⟦1⟧⟦2⟧{0}⟦3⟧{1}⟦4⟧⟦5⟧{2}⟦6⟧ ⟦7⟧{3}⟦8⟧ {4} ⟦9⟧⟦10⟧Great!⟦11⟧⟦12⟧⟦13⟧
+es: ⟦0⟧⟦1⟧⟦2⟧{0}⟦3⟧{1}⟦4⟧⟦5⟧{2}⟦6⟧ ⟦7⟧{3}⟦8⟧ {4} ⟦9⟧⟦10⟧¡Genial!⟦11⟧⟦12⟧⟦13⟧
+de: ⟦0⟧⟦1⟧⟦2⟧{0}⟦3⟧{1}⟦4⟧⟦5⟧{2}⟦6⟧ ⟦7⟧{3}⟦8⟧ {4} ⟦9⟧⟦10⟧Super!⟦11⟧⟦12⟧⟦13⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧{0}⟦3⟧{1}⟦4⟧⟦5⟧{2}⟦6⟧ ⟦7⟧{3}⟦8⟧ {4} ⟦9⟧⟦10⟧Génial !⟦11⟧⟦12⟧⟦13⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧{0}⟦3⟧{1}⟦4⟧⟦5⟧{2}⟦6⟧ ⟦7⟧{3}⟦8⟧ {4} ⟦9⟧⟦10⟧Ótimo!⟦11⟧⟦12⟧⟦13⟧
+@ui.n_oldun_2
+en: ⟦0⟧YOU PLACED #{0}!⟦1⟧
+es: ⟦0⟧¡QUEDASTE EN {0}.º LUGAR!⟦1⟧
+de: ⟦0⟧DU BIST {0}. GEWORDEN!⟦1⟧
+fr: ⟦0⟧TU FINIS {0}E !⟦1⟧
+pt: ⟦0⟧VOCÊ FICOU EM {0}º!⟦1⟧
+@ui.n_sira
+en: ⟦0⟧#{0}⟦1⟧
+es: ⟦0⟧{0}.º puesto⟦1⟧
+de: ⟦0⟧Platz {0}⟦1⟧
+fr: ⟦0⟧{0}e place⟦1⟧
+pt: ⟦0⟧{0}º lugar⟦1⟧
+@ui.n_n_n_n_balik
+en: ⟦0⟧⟦1⟧{1}. {2}⟦2⟧⟦3⟧{3}⟦4⟧⟦5⟧{4} fish⟦6⟧⟦7⟧
+es: ⟦0⟧⟦1⟧{1}. {2}⟦2⟧⟦3⟧{3}⟦4⟧⟦5⟧{4} {4|pez|peces}⟦6⟧⟦7⟧
+de: ⟦0⟧⟦1⟧{1}. {2}⟦2⟧⟦3⟧{3}⟦4⟧⟦5⟧{4} {4|Fisch|Fische}⟦6⟧⟦7⟧
+fr: ⟦0⟧⟦1⟧{1}. {2}⟦2⟧⟦3⟧{3}⟦4⟧⟦5⟧{4} {4|poisson|poissons}⟦6⟧⟦7⟧
+pt: ⟦0⟧⟦1⟧{1}. {2}⟦2⟧⟦3⟧{3}⟦4⟧⟦5⟧{4} {4|peixe|peixes}⟦6⟧⟦7⟧
+@ui.n_n_kupan_evindeki_kupa
+en: ⟦0⟧{0}⟦1⟧+{1}⟦2⟧⟦3⟧⟦4⟧Your cup has been placed in the Cup Cabinet at home!⟦5⟧
+es: ⟦0⟧{0}⟦1⟧+{1}⟦2⟧⟦3⟧⟦4⟧¡Tu copa ya está en la vitrina de copas de tu casa!⟦5⟧
+de: ⟦0⟧{0}⟦1⟧+{1}⟦2⟧⟦3⟧⟦4⟧Dein Pokal steht jetzt im Pokalschrank zu Hause!⟦5⟧
+fr: ⟦0⟧{0}⟦1⟧+{1}⟦2⟧⟦3⟧⟦4⟧Ta coupe a rejoint la vitrine des coupes chez toi !⟦5⟧
+pt: ⟦0⟧{0}⟦1⟧+{1}⟦2⟧⟦3⟧⟦4⟧Sua taça foi para a estante de taças da sua casa!⟦5⟧
+@ui.bu_sefer_kupa_yok_bir
+en: ⟦0⟧No cup this time; try again at the next festival!⟦1⟧
+es: ⟦0⟧Esta vez no hay copa; ¡inténtalo en la próxima fiesta!⟦1⟧
+de: ⟦0⟧Diesmal kein Pokal; versuch's beim nächsten Fest wieder!⟦1⟧
+fr: ⟦0⟧Pas de coupe cette fois ; retente ta chance à la prochaine fête !⟦1⟧
+pt: ⟦0⟧Sem taça desta vez; tente de novo no próximo festival!⟦1⟧
+@ui.yeni_tur
+en: ⟦0⟧NEW SPECIES!⟦1⟧
+es: ⟦0⟧¡NUEVA ESPECIE!⟦1⟧
+de: ⟦0⟧NEUE ART!⟦1⟧
+fr: ⟦0⟧NOUVELLE ESPÈCE !⟦1⟧
+pt: ⟦0⟧NOVA ESPÉCIE!⟦1⟧
+@ui.kisisel_rekor
+en: ⟦0⟧PERSONAL RECORD!⟦1⟧
+es: ⟦0⟧¡RÉCORD PERSONAL!⟦1⟧
+de: ⟦0⟧PERSÖNLICHER REKORD!⟦1⟧
+fr: ⟦0⟧RECORD PERSONNEL !⟦1⟧
+pt: ⟦0⟧RECORDE PESSOAL!⟦1⟧
+@ui.iri
+en: ⟦0⟧Big⟦1⟧
+es: ⟦0⟧Grande⟦1⟧
+de: ⟦0⟧Groß⟦1⟧
+fr: ⟦0⟧Gros⟦1⟧
+pt: ⟦0⟧Grande⟦1⟧
+@ui.olaganustu_iri
+en: ⟦0⟧Exceptionally Big!⟦1⟧
+es: ⟦0⟧¡Excepcionalmente grande!⟦1⟧
+de: ⟦0⟧Außergewöhnlich groß!⟦1⟧
+fr: ⟦0⟧Exceptionnellement gros !⟦1⟧
+pt: ⟦0⟧Excepcionalmente grande!⟦1⟧
+@ui.canta_n_dolu_baligi_serbest
+en: ⟦0⟧No room in your bag{0}! You can release the fish or drop a stack to make room for it.⟦1⟧ ⟦2⟧⟦3⟧{1} Release⟦4⟧⟦5⟧{2} Swap⟦6⟧⟦7⟧⟦8⟧⟦9⟧Pick the stack to drop in its place (you'll be asked to confirm):⟦10⟧{3}⟦11⟧
+es: ⟦0⟧¡Sin espacio en la mochila{0}! Puedes liberar el pez o soltar una pila para hacerle sitio.⟦1⟧ ⟦2⟧⟦3⟧{1} Liberar⟦4⟧⟦5⟧{2} Intercambiar⟦6⟧⟦7⟧⟦8⟧⟦9⟧Elige la pila que vas a soltar (se pedirá confirmación):⟦10⟧{3}⟦11⟧
+de: ⟦0⟧Kein Platz in der Tasche{0}! Du kannst den Fisch freilassen oder einen Stapel dafür abgeben.⟦1⟧ ⟦2⟧⟦3⟧{1} Freilassen⟦4⟧⟦5⟧{2} Tauschen⟦6⟧⟦7⟧⟦8⟧⟦9⟧Wähle den Stapel, der Platz machen soll (mit Bestätigung):⟦10⟧{3}⟦11⟧
+fr: ⟦0⟧Plus de place dans le sac{0} ! Tu peux relâcher le poisson ou laisser une pile pour lui faire de la place.⟦1⟧ ⟦2⟧⟦3⟧{1} Relâcher⟦4⟧⟦5⟧{2} Échanger⟦6⟧⟦7⟧⟦8⟧⟦9⟧Choisis la pile à laisser à sa place (confirmation demandée) :⟦10⟧{3}⟦11⟧
+pt: ⟦0⟧Sem espaço na mochila{0}! Você pode soltar o peixe ou largar uma pilha para dar lugar a ele.⟦1⟧ ⟦2⟧⟦3⟧{1} Soltar⟦4⟧⟦5⟧{2} Trocar⟦6⟧⟦7⟧⟦8⟧⟦9⟧Escolha a pilha que vai sair (pede confirmação):⟦10⟧{3}⟦11⟧
+@ui.ve_tekne_deposu
+en:  or boat storage
+es:  ni en la bodega
+de:  und im Laderaum
+fr:  et la cale
+pt:  e no porão
+@ui.n_na_eklendi
+en: Added to {0}
+es: Añadido a: {0}
+de: Hinzugefügt: {0}
+fr: Ajouté à : {0}
+pt: Adicionado a: {0}
+@ui.n_devam
+en: ⟦0⟧→ {0}⟦1⟧⟦2⟧⟦3⟧Continue⟦4⟧⟦5⟧
+es: ⟦0⟧→ {0}⟦1⟧⟦2⟧⟦3⟧Continuar⟦4⟧⟦5⟧
+de: ⟦0⟧→ {0}⟦1⟧⟦2⟧⟦3⟧Weiter⟦4⟧⟦5⟧
+fr: ⟦0⟧→ {0}⟦1⟧⟦2⟧⟦3⟧Continuer⟦4⟧⟦5⟧
+pt: ⟦0⟧→ {0}⟦1⟧⟦2⟧⟦3⟧Continuar⟦4⟧⟦5⟧
+@ui.sirt_cantasina_eklendi
+en: Added to backpack
+es: Añadido a la mochila
+de: In den Rucksack gelegt
+fr: Ajouté au sac à dos
+pt: Adicionado à mochila
+@ui.n_n_boy_n_cm
+en: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧⟦4⟧{3}⟦5⟧⟦6⟧{4}⟦7⟧ ⟦8⟧⟦9⟧⟦10⟧Length⟦11⟧⟦12⟧{5} cm⟦13⟧⟦14⟧⟦15⟧⟦16⟧Weight⟦17⟧⟦18⟧{6} kg⟦19⟧⟦20⟧⟦21⟧⟦22⟧Base price⟦23⟧⟦24⟧{7}⟦25⟧⟦26⟧⟦27⟧ ⟦28⟧Power {8} · {9} · Size doesn't affect price⟦29⟧{10}⟦30⟧
+es: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧⟦4⟧{3}⟦5⟧⟦6⟧{4}⟦7⟧ ⟦8⟧⟦9⟧⟦10⟧Longitud⟦11⟧⟦12⟧{5} cm⟦13⟧⟦14⟧⟦15⟧⟦16⟧Peso⟦17⟧⟦18⟧{6} kg⟦19⟧⟦20⟧⟦21⟧⟦22⟧Precio base⟦23⟧⟦24⟧{7}⟦25⟧⟦26⟧⟦27⟧ ⟦28⟧Fuerza {8} · {9} · El tamaño no cambia el precio⟦29⟧{10}⟦30⟧
+de: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧⟦4⟧{3}⟦5⟧⟦6⟧{4}⟦7⟧ ⟦8⟧⟦9⟧⟦10⟧Länge⟦11⟧⟦12⟧{5} cm⟦13⟧⟦14⟧⟦15⟧⟦16⟧Gewicht⟦17⟧⟦18⟧{6} kg⟦19⟧⟦20⟧⟦21⟧⟦22⟧Grundpreis⟦23⟧⟦24⟧{7}⟦25⟧⟦26⟧⟦27⟧ ⟦28⟧Stärke {8} · {9} · Größe ändert den Preis nicht⟦29⟧{10}⟦30⟧
+fr: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧⟦4⟧{3}⟦5⟧⟦6⟧{4}⟦7⟧ ⟦8⟧⟦9⟧⟦10⟧Taille⟦11⟧⟦12⟧{5} cm⟦13⟧⟦14⟧⟦15⟧⟦16⟧Poids⟦17⟧⟦18⟧{6} kg⟦19⟧⟦20⟧⟦21⟧⟦22⟧Prix de base⟦23⟧⟦24⟧{7}⟦25⟧⟦26⟧⟦27⟧ ⟦28⟧Force {8} · {9} · La taille ne change pas le prix⟦29⟧{10}⟦30⟧
+pt: ⟦0⟧⟦1⟧⟦2⟧⟦3⟧⟦4⟧{3}⟦5⟧⟦6⟧{4}⟦7⟧ ⟦8⟧⟦9⟧⟦10⟧Comprimento⟦11⟧⟦12⟧{5} cm⟦13⟧⟦14⟧⟦15⟧⟦16⟧Peso⟦17⟧⟦18⟧{6} kg⟦19⟧⟦20⟧⟦21⟧⟦22⟧Preço base⟦23⟧⟦24⟧{7}⟦25⟧⟦26⟧⟦27⟧ ⟦28⟧Força {8} · {9} · O tamanho não muda o preço⟦29⟧{10}⟦30⟧
+@ui.menu
+en: Menu
+es: Menú
+de: Menü
+fr: Menu
+pt: Menu
+@ui.n_n_n_n_n_2
+en: ⟦0⟧{0}{1}{2}{3}{4}{5}{6}{7}⟦1⟧{8}⟦2⟧Save & Main Menu⟦3⟧⟦4⟧⟦5⟧⟦6⟧Saving is automatic (on catches, sales, purchases, orders, sleep, transfers and scene changes). Last save: revision #{9}.⟦7⟧
+es: ⟦0⟧{0}{1}{2}{3}{4}{5}{6}{7}⟦1⟧{8}⟦2⟧Guardar y menú principal⟦3⟧⟦4⟧⟦5⟧⟦6⟧Se guarda automáticamente (al pescar, vender, comprar, entregar pedidos, dormir, mover objetos y cambiar de escena). Último guardado: revisión n.º {9}.⟦7⟧
+de: ⟦0⟧{0}{1}{2}{3}{4}{5}{6}{7}⟦1⟧{8}⟦2⟧Speichern & Hauptmenü⟦3⟧⟦4⟧⟦5⟧⟦6⟧Gespeichert wird automatisch (bei Fang, Verkauf, Kauf, Aufträgen, Schlaf, Umlagern und Szenenwechsel). Letzter Stand: Revision #{9}.⟦7⟧
+fr: ⟦0⟧{0}{1}{2}{3}{4}{5}{6}{7}⟦1⟧{8}⟦2⟧Sauvegarder et menu principal⟦3⟧⟦4⟧⟦5⟧⟦6⟧La sauvegarde est automatique (prise, vente, achat, commande, sommeil, transfert et changement de scène). Dernière sauvegarde : révision n° {9}.⟦7⟧
+pt: ⟦0⟧{0}{1}{2}{3}{4}{5}{6}{7}⟦1⟧{8}⟦2⟧Salvar e Menu Principal⟦3⟧⟦4⟧⟦5⟧⟦6⟧O jogo salva sozinho (ao pescar, vender, comprar, entregar pedidos, dormir, transferir e trocar de cena). Último save: revisão nº {9}.⟦7⟧
+@ui.envanter
+en: Inventory
+es: Inventario
+de: Inventar
+fr: Inventaire
+pt: Inventário
+@ui.ansiklopedi
+en: Encyclopedia
+es: Enciclopedia
+de: Lexikon
+fr: Encyclopédie
+pt: Enciclopédia
+@ui.basarimlar
+en: Achievements
+es: Logros
+de: Erfolge
+fr: Succès
+pt: Conquistas
+@ui.istatistikler
+en: Statistics
+es: Estadísticas
+de: Statistiken
+fr: Statistiques
+pt: Estatísticas
+@ui.ilanlar
+en: Orders
+es: Pedidos
+de: Aufträge
+fr: Commandes
+pt: Pedidos
+@ui.ayarlar
+en: Settings
+es: Ajustes
+de: Einstellungen
+fr: Paramètres
+pt: Configurações
+@ui.kupalar
+en: Cups
+es: Copas
+de: Pokale
+fr: Coupes
+pt: Taças
+@ui.yardim
+en: Help
+es: Ayuda
+de: Hilfe
+fr: Aide
+pt: Ajuda
+@ui.n_n_n_yuva_n
+en: ⟦0⟧⟦1⟧{0} ⟦2⟧{1}/{2} slots · {3} fish⟦3⟧⟦4⟧⟦5⟧{4}⟦6⟧⟦7⟧
+es: ⟦0⟧⟦1⟧{0} ⟦2⟧{1}/{2} huecos · {3} {3|pez|peces}⟦3⟧⟦4⟧⟦5⟧{4}⟦6⟧⟦7⟧
+de: ⟦0⟧⟦1⟧{0} ⟦2⟧{1}/{2} Plätze · {3} {3|Fisch|Fische}⟦3⟧⟦4⟧⟦5⟧{4}⟦6⟧⟦7⟧
+fr: ⟦0⟧⟦1⟧{0} ⟦2⟧{1}/{2} emplacements · {3} {3|poisson|poissons}⟦3⟧⟦4⟧⟦5⟧{4}⟦6⟧⟦7⟧
+pt: ⟦0⟧⟦1⟧{0} ⟦2⟧{1}/{2} espaços · {3} {3|peixe|peixes}⟦3⟧⟦4⟧⟦5⟧{4}⟦6⟧⟦7⟧
+@ui.tumu_tumu
+en: ⟦0⟧All →⟦1⟧⟦2⟧← All⟦3⟧
+es: ⟦0⟧Todo →⟦1⟧⟦2⟧← Todo⟦3⟧
+de: ⟦0⟧Alle →⟦1⟧⟦2⟧← Alle⟦3⟧
+fr: ⟦0⟧Tout →⟦1⟧⟦2⟧← Tout⟦3⟧
+pt: ⟦0⟧Tudo →⟦1⟧⟦2⟧← Tudo⟦3⟧
+@ui.sandik
+en: Chest
+es: Baúl
+de: Truhe
+fr: Coffre
+pt: Baú
+@ui.burada_baska_depo_yok_tekne
+en: ⟦0⟧No other storage here. Boat storage is available at the harbor/on the boat; the chest is at home.⟦1⟧
+es: ⟦0⟧Aquí no hay otro almacén. La bodega está en el puerto/el barco y el baúl, en casa.⟦1⟧
+de: ⟦0⟧Hier gibt es keinen anderen Speicher. Den Laderaum erreichst du im Hafen/auf dem Boot, die Truhe zu Hause.⟦1⟧
+fr: ⟦0⟧Aucun autre rangement ici. La cale est accessible au port/sur le bateau, le coffre à la maison.⟦1⟧
+pt: ⟦0⟧Não há outro depósito aqui. O porão fica no porto/no barco e o baú, em casa.⟦1⟧
+@ui.n_n_n_taban_n
+en: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ×{2} ⟦4⟧· base {3}/each⟦5⟧⟦6⟧⟦7⟧{5}⟦8⟧{6}⟦9⟧Release⟦10⟧⟦11⟧⟦12⟧⟦13⟧
+es: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ×{2} ⟦4⟧· base {3}/ud.⟦5⟧⟦6⟧⟦7⟧{5}⟦8⟧{6}⟦9⟧Liberar⟦10⟧⟦11⟧⟦12⟧⟦13⟧
+de: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ×{2} ⟦4⟧· Grundpreis {3}/Stück⟦5⟧⟦6⟧⟦7⟧{5}⟦8⟧{6}⟦9⟧Freilassen⟦10⟧⟦11⟧⟦12⟧⟦13⟧
+fr: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ×{2} ⟦4⟧· base {3}/pièce⟦5⟧⟦6⟧⟦7⟧{5}⟦8⟧{6}⟦9⟧Relâcher⟦10⟧⟦11⟧⟦12⟧⟦13⟧
+pt: ⟦0⟧{0}⟦1⟧⟦2⟧{1}⟦3⟧ ×{2} ⟦4⟧· base {3}/un.⟦5⟧⟦6⟧⟦7⟧{5}⟦8⟧{6}⟦9⟧Soltar⟦10⟧⟦11⟧⟦12⟧⟦13⟧

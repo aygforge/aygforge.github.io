@@ -1,0 +1,566 @@
+@sys3.akinti_luferi_getirir_martilar_toplaninca
+en: The current brings the bluefish; get ready when the gulls gather.
+es: La corriente trae a las anchovas; prepárate cuando se junten las gaviotas.
+de: Die Strömung bringt die Blaubarsche; mach dich bereit, wenn sich die Möwen sammeln.
+fr: Le courant amène les tassergals ; prépare-toi quand les mouettes se rassemblent.
+pt: A correnteza traz as anchovas; prepare-se quando as gaivotas se juntarem.
+@sys3.sis_cokunce_fener_sesini_dinle
+en: When the fog rolls in, listen for the lighthouse horn and you won't get lost.
+es: Cuando baje la niebla, escucha la sirena del faro y no te perderás.
+de: Wenn der Nebel kommt, hör auf das Nebelhorn des Leuchtturms, dann verirrst du dich nicht.
+fr: Quand le brouillard tombe, écoute la corne du phare et tu ne te perdras pas.
+pt: Quando a neblina baixar, escute a sirene do farol e você não se perde.
+@sys3.burada_su_oyle_berrak_ki
+en: The water here is so clear you can look the fish right in the eye.
+es: Aquí el agua es tan clara que puedes mirar a los peces a los ojos.
+de: Das Wasser ist hier so klar, dass du den Fischen in die Augen schauen kannst.
+fr: Ici, l'eau est si claire qu'on peut regarder les poissons dans les yeux.
+pt: Aqui a água é tão clara que dá para olhar o peixe nos olhos.
+@sys3.derin_mavi_de_sabir_her
+en: Patience is everything in the Deep Blue; the big ones never hurry.
+es: En el Azul Profundo la paciencia lo es todo; los grandes nunca tienen prisa.
+de: Im Tiefblau ist Geduld alles; die Großen haben es nie eilig.
+fr: Au Grand Bleu, la patience fait tout ; les gros ne se pressent jamais.
+pt: No Azul Profundo, paciência é tudo; os grandes nunca têm pressa.
+@sys3.gunes_parlak_ama_golge_arayan
+en: The sun is bright, but fish looking for shade stay near the bottom.
+es: El sol brilla, pero los peces que buscan sombra se quedan cerca del fondo.
+de: Die Sonne ist grell, aber Fische, die Schatten suchen, bleiben am Grund.
+fr: Le soleil est vif, mais les poissons qui cherchent l'ombre restent près du fond.
+pt: O sol está forte, mas os peixes que procuram sombra ficam perto do fundo.
+@sys3.bulutlu_hava_baligi_cesaretlendirir_sansimiz
+en: Cloudy skies make fish bolder; our luck is wide open.
+es: El cielo nublado envalentona a los peces; tenemos buena suerte.
+de: Bewölkter Himmel macht Fische mutiger; das Glück ist auf unserer Seite.
+fr: Le temps couvert rend les poissons plus hardis ; la chance est avec nous.
+pt: O tempo nublado deixa o peixe mais ousado; a sorte está do nosso lado.
+@sys3.yagmur_suyu_karistirir_birazdan_istahlari
+en: Rain stirs up the water; they'll get hungry soon.
+es: La lluvia remueve el agua; enseguida les entrará el hambre.
+de: Regen wühlt das Wasser auf; gleich bekommen sie Appetit.
+fr: La pluie remue l'eau ; ils vont bientôt avoir faim.
+pt: A chuva mexe a água; já já eles ficam com fome.
+@sys3.sis_yumusak_bir_ortu_gibi
+en: The fog is like a soft blanket; listen closely to every sound.
+es: La niebla es como una manta suave; escucha bien los sonidos.
+de: Der Nebel ist wie eine weiche Decke; hör genau auf die Geräusche.
+fr: Le brouillard est comme une douce couverture ; écoute bien les sons.
+pt: A neblina é como um cobertor macio; escute os sons com atenção.
+@sys3.ruzgarli_gun_misinayi_zorlar_gerilimi
+en: A windy day strains the line; keep a close eye on the tension.
+es: Un día de viento castiga el sedal; vigila bien la tensión.
+de: Ein windiger Tag strapaziert die Schnur; behalt die Spannung im Auge.
+fr: Un jour de vent met la ligne à rude épreuve ; surveille bien la tension.
+pt: Dia de vento força a linha; fique de olho na tensão.
+@sys3.vay_canina_bu_bir_canavar
+en: Wow, that's a monster! The whole town will hear about it.
+es: ¡Madre mía, es un monstruo! Todo el pueblo se va a enterar.
+de: Wahnsinn, ein echtes Monster! Das wird der ganze Ort erfahren.
+fr: Waouh, c'est un monstre ! Tout le village va en entendre parler.
+pt: Nossa, é um monstro! A vila inteira vai ficar sabendo.
+@sys3.bunu_daha_once_hic_gormemistim
+en: I've never seen one of these before! Let's write it in the notebook right away.
+es: ¡Nunca había visto uno! Apuntémoslo en el cuaderno ahora mismo.
+de: So einen hab ich noch nie gesehen! Schnell ins Heft damit.
+fr: Je n'en avais jamais vu ! Notons-le tout de suite dans le carnet.
+pt: Nunca tinha visto um desses! Vamos anotar no caderno agora mesmo.
+@sys3.guzel_av_elin_iyice_alisti
+en: Nice catch! You've really got the hang of it.
+es: ¡Buena pesca! Ya le has cogido el truco.
+de: Schöner Fang! Du hast den Dreh raus.
+fr: Belle prise ! Tu as vraiment pris le coup de main.
+pt: Bela pescaria! Você pegou o jeito.
+@sys3.guzel_bir_geziydi_beni_de
+en: That was a lovely trip, thanks for inviting me along.
+es: Ha sido un paseo precioso, gracias por invitarme.
+de: Das war ein schöner Ausflug, danke, dass du mich mitgenommen hast.
+fr: C'était une belle sortie, merci de m'avoir invité.
+pt: Foi um passeio lindo, obrigado por me chamar.
+@sys3.kiyi_uzmani
+en: Shore Specialist
+es: Especialista de costa
+de: Küstenspezialist
+fr: Spécialiste du littoral
+pt: Especialista de costa
+@sys3.sakin_ve_sabirli_kucuk_ve
+en: Calm and patient; good with small and shore fish.
+es: Tranquilo y paciente; se le dan bien los peces pequeños y de costa.
+de: Ruhig und geduldig; gut mit kleinen und Küstenfischen.
+fr: Calme et patient ; doué pour les petits poissons et ceux du littoral.
+pt: Calmo e paciente; bom com peixes pequenos e de costa.
+@sys3.balikci_selin
+en: Selin the Angler
+es: Selin la pescadora
+de: Anglerin Selin
+fr: Selin la pêcheuse
+pt: Selin, a pescadora
+@sys3.dengeli_balikci
+en: All-round Angler
+es: Pescadora equilibrada
+de: Allround-Anglerin
+fr: Pêcheuse polyvalente
+pt: Pescadora equilibrada
+@sys3.her_bolgede_dengeli_tur_dagilimiyla
+en: Comes back with a balanced mix of species in every region. (Not to be confused with Selin from the boutique.)
+es: Vuelve con una mezcla equilibrada de especies en cualquier zona. (No confundir con Selin, la de la boutique.)
+de: Kommt in jedem Gebiet mit einer ausgewogenen Artenmischung zurück. (Nicht mit Selin aus der Boutique verwechseln.)
+fr: Revient avec un mélange équilibré d'espèces dans chaque zone. (À ne pas confondre avec Selin de la boutique.)
+pt: Volta com uma mistura equilibrada de espécies em qualquer região. (Não confundir com a Selin da boutique.)
+@sys3.kayalik_ve_dip_avcisi
+en: Rock & Bottom Hunter
+es: Cazador de roca y fondo
+de: Fels- und Grundjäger
+fr: Chasseur de roche et de fond
+pt: Caçador de pedra e fundo
+@sys3.kayalik_diplerin_ustasi_dip_turlerini
+en: A master of rocky bottoms; prefers bottom species.
+es: Maestro de los fondos rocosos; prefiere las especies de fondo.
+de: Meister felsiger Gründe; bevorzugt Grundfische.
+fr: Maître des fonds rocheux ; préfère les espèces de fond.
+pt: Mestre dos fundos rochosos; prefere espécies de fundo.
+@sys3.suru_balikcisi
+en: School Fisher
+es: Pescador de bancos
+de: Schwarmfischer
+fr: Pêcheur de bancs
+pt: Pescador de cardumes
+@sys3.kucuk_suru_baliklarini_bulur_4
+en: Finds small schooling fish; a slightly higher chance to return with 4 fish.
+es: Encuentra peces pequeños de banco; algo más de probabilidad de volver con 4 peces.
+de: Findet kleine Schwarmfische; etwas höhere Chance, mit 4 Fischen zurückzukommen.
+fr: Trouve les petits poissons en banc ; un peu plus de chances de revenir avec 4 poissons.
+pt: Encontra peixinhos de cardume; chance um pouco maior de voltar com 4 peixes.
+@sys3.riza
+=
+@sys3.ekonomik_balikci
+en: Budget Angler
+es: Pescador económico
+de: Sparsamer Angler
+fr: Pêcheur économique
+pt: Pescador econômico
+@sys3.ucuza_calisir_ama_guclu_turlerde
+en: Works cheap, but is less effective with strong species.
+es: Cobra poco, pero rinde menos con especies fuertes.
+de: Arbeitet günstig, ist bei starken Arten aber weniger erfolgreich.
+fr: Travaille pour pas cher, mais moins efficace sur les espèces puissantes.
+pt: Cobra barato, mas rende menos com espécies fortes.
+@sys3.akinti_uzmani
+en: Current Specialist
+es: Especialista en corrientes
+de: Strömungsspezialistin
+fr: Spécialiste des courants
+pt: Especialista em correntes
+@sys3.hareketli_deniz_baliklarinda_basarili_serin
+en: Good with lively sea fish; more productive in the Cool Currents.
+es: Buena con peces marinos activos; rinde más en las Corrientes Frescas.
+de: Stark bei lebhaften Meeresfischen; ergiebiger in den Kühlen Strömungen.
+fr: Douée avec les poissons vifs ; plus productive dans les Courants Frais.
+pt: Boa com peixes agitados; rende mais nas Correntes Frias.
+@sys3.acik_deniz_uzmani
+en: Open Sea Specialist
+es: Especialista de mar abierto
+de: Hochseespezialist
+fr: Spécialiste de la haute mer
+pt: Especialista de mar aberto
+@sys3.kabinli_veya_acik_deniz_teknesiyle
+en: Can reach power 4 species with the Cabin or Offshore boat.
+es: Con el barco con cabina o el de altura puede llegar a especies de fuerza 4.
+de: Erreicht mit Kajüt- oder Hochseeboot Arten der Stärke 4.
+fr: Peut atteindre les espèces de force 4 avec le bateau à cabine ou de haute mer.
+pt: Com o barco de cabine ou de alto-mar alcança espécies de força 4.
+@sys3.tropik_deniz_uzmani
+en: Tropical Sea Specialist
+es: Especialista en mares tropicales
+de: Tropenmeer-Spezialistin
+fr: Spécialiste des mers tropicales
+pt: Especialista em mares tropicais
+@sys3.tropik_ve_resif_baliklarini_tercih
+en: Prefers tropical and reef fish; more productive around the Sun Isles.
+es: Prefiere peces tropicales y de arrecife; rinde más en las Islas del Sol.
+de: Bevorzugt Tropen- und Rifffische; ergiebiger bei den Sonneninseln.
+fr: Préfère les poissons tropicaux et de récif ; plus productive aux Îles du Soleil.
+pt: Prefere peixes tropicais e de recife; rende mais nas Ilhas do Sol.
+@sys3.atis_veya_mucadele_surerken_yontem
+en: You can't change method during a cast or a fight.
+es: No puedes cambiar de método durante un lanzamiento o una pelea.
+de: Während Wurf oder Drill kannst du die Methode nicht wechseln.
+fr: Impossible de changer de méthode pendant un lancer ou un combat.
+pt: Não dá para trocar de método durante o arremesso ou a briga.
+@sys3.yarismada_standart_samandirali_av_kullanilir
+en: Contests use standard float fishing.
+es: En el concurso se usa la pesca con flotador estándar.
+de: Im Wettbewerb wird normal mit Pose geangelt.
+fr: Le concours se fait à la pêche au flotteur standard.
+pt: Na competição usa-se a pesca de boia padrão.
+@sys3.seferde_gun_isigi_sefer_boyunca
+en: On a trip, the time of day stays fixed. You can change it back at the harbor.
+es: En una salida, la luz del día no cambia. Puedes cambiarla al volver al puerto.
+de: Während einer Ausfahrt bleibt die Tageszeit fest. Im Hafen kannst du sie ändern.
+fr: Pendant une sortie, le moment de la journée reste fixe. Tu pourras le changer au port.
+pt: Na viagem, o período do dia fica fixo. Dá para mudar ao voltar ao porto.
+@sys3.atis_surerken_degistirilemez
+en: Can't be changed during a cast.
+es: No se puede cambiar durante un lanzamiento.
+de: Während eines Wurfs nicht änderbar.
+fr: Impossible à changer pendant un lancer.
+pt: Não pode ser mudado durante o arremesso.
+@sys3.bu_proje_zaten_tamamlandi
+en: This project is already complete.
+es: Este proyecto ya está terminado.
+de: Dieses Projekt ist schon abgeschlossen.
+fr: Ce projet est déjà terminé.
+pt: Este projeto já foi concluído.
+@sys3.bagis_icin_paran_yok
+en: You don't have any coins to donate.
+es: No tienes dinero para donar.
+de: Du hast keine Münzen zum Spenden.
+fr: Tu n'as pas de pièces à donner.
+pt: Você não tem moedas para doar.
+@sys3.gecersiz_miktar
+en: Invalid amount.
+es: Cantidad no válida.
+de: Ungültige Menge.
+fr: Montant non valide.
+pt: Quantia inválida.
+@sys3.n_tamamlandi_kasaba_yenilendi
+en: {0} complete! The town has been renewed.
+es: ¡{0} terminado! El pueblo se ha renovado.
+de: {0} abgeschlossen! Der Ort wurde erneuert.
+fr: {0} terminé ! Le village a été rénové.
+pt: {0} concluído! A vila foi renovada.
+@sys3.aktif_sefer_yok
+en: No active trip.
+es: No hay ninguna salida activa.
+de: Keine aktive Ausfahrt.
+fr: Aucune sortie en cours.
+pt: Nenhuma viagem ativa.
+@sys3.n_tek_bolgelik_seferler_yapabilir
+en: {0} can only make single-region trips.
+es: {0} solo puede hacer salidas a una zona.
+de: {0} kann nur Ausfahrten in ein Gebiet machen.
+fr: {0} ne peut faire que des sorties sur une seule zone.
+pt: {0} só pode fazer viagens a uma região.
+@sys3.bir_seferde_en_fazla_iki
+en: At most two main regions per trip. You need to return to the harbor.
+es: Como máximo dos zonas principales por salida. Tienes que volver al puerto.
+de: Höchstens zwei Hauptgebiete pro Ausfahrt. Du musst zurück in den Hafen.
+fr: Deux zones principales au maximum par sortie. Tu dois rentrer au port.
+pt: No máximo duas regiões principais por viagem. Você precisa voltar ao porto.
+@sys3.zaten_bu_bolgedesin
+en: You're already in this region.
+es: Ya estás en esta zona.
+de: Du bist schon in diesem Gebiet.
+fr: Tu es déjà dans cette zone.
+pt: Você já está nesta região.
+@sys3.bu_bolgeyi_bu_seferde_zaten
+en: You've already visited this region on this trip.
+es: Ya visitaste esta zona en esta salida.
+de: Dieses Gebiet hast du auf dieser Ausfahrt schon besucht.
+fr: Tu as déjà visité cette zone pendant cette sortie.
+pt: Você já visitou esta região nesta viagem.
+@sys3.bu_tekne_oraya_ulasamaz_n
+en: This boat can't get there: {0}
+es: Este barco no puede llegar allí: {0}
+de: Dieses Boot kommt dort nicht hin: {0}
+fr: Ce bateau ne peut pas y aller : {0}
+pt: Este barco não chega lá: {0}
+@sys3.yakit_icin_paran_yetmiyor_n
+en: Not enough coins for fuel ({0}).
+es: No tienes dinero para el combustible ({0}).
+de: Nicht genug Münzen für Treibstoff ({0}).
+fr: Pas assez de pièces pour le carburant ({0}).
+pt: Moedas insuficientes para o combustível ({0}).
+@sys3.yeni_gozlem
+en: New sighting:
+es: Nuevo avistamiento:
+de: Neue Sichtung:
+fr: Nouvelle observation :
+pt: Novo avistamento:
+@sys3.gozlem
+en: Sighting:
+es: Avistamiento:
+de: Sichtung:
+fr: Observation :
+pt: Avistamento:
+@sys3.deniz_yasami_posteri
+en: Sea Life Poster
+es: Póster de vida marina
+de: Meeresleben-Poster
+fr: Affiche de la vie marine
+pt: Pôster da Vida Marinha
+@sys3.doga_gozlemcisi
+en: Nature Watcher
+es: Observador de la naturaleza
+de: Naturbeobachter
+fr: Observateur de la nature
+pt: Observador da Natureza
+@sys3.8_farkli_deniz_canlisi_gozlemle
+en: Spot 8 different sea creatures
+es: Observa 8 animales marinos distintos
+de: Beobachte 8 verschiedene Meerestiere
+fr: Observe 8 créatures marines différentes
+pt: Aviste 8 animais marinhos diferentes
+@sys3.deniz_yasami
+en: Sea Life
+es: Vida marina
+de: Meeresleben
+fr: Vie marine
+pt: Vida Marinha
+@sys3.deniz_biyologu
+en: Marine Biologist
+es: Biólogo marino
+de: Meeresbiologe
+fr: Biologiste marin
+pt: Biólogo Marinho
+@sys3.16_farkli_deniz_canlisi_gozlemle
+en: Spot 16 different sea creatures
+es: Observa 16 animales marinos distintos
+de: Beobachte 16 verschiedene Meerestiere
+fr: Observe 16 créatures marines différentes
+pt: Aviste 16 animais marinhos diferentes
+@sys3.yedi_denizin_tanigi
+en: Witness of the Seven Seas
+es: Testigo de los Siete Mares
+de: Zeuge der Sieben Meere
+fr: Témoin des Sept Mers
+pt: Testemunha dos Sete Mares
+@sys3.24_deniz_canlisinin_hepsini_gozlemle
+en: Spot all 24 sea creatures
+es: Observa los 24 animales marinos
+de: Beobachte alle 24 Meerestiere
+fr: Observe les 24 créatures marines
+pt: Aviste os 24 animais marinhos
+@sys3.doga_gozlemcisi_rozeti
+en: Nature Watcher Badge
+es: Insignia de observador de la naturaleza
+de: Naturbeobachter-Abzeichen
+fr: Badge d'observateur de la nature
+pt: Insígnia de Observador da Natureza
+@sys3.yedi_denizin_tanigi_unvani
+en: “Witness of the Seven Seas” Title
+es: Título «Testigo de los Siete Mares»
+de: Titel „Zeuge der Sieben Meere“
+fr: Titre « Témoin des Sept Mers »
+pt: Título “Testemunha dos Sete Mares”
+@sys3.bu_kisi_su_an_geziye
+en: This person can't join a trip right now.
+es: Esta persona no puede unirse a una salida ahora.
+de: Diese Person kann gerade nicht mitfahren.
+fr: Cette personne ne peut pas se joindre à une sortie pour l'instant.
+pt: Essa pessoa não pode ir na viagem agora.
+@sys3.misafir_almak_icin_bir_teknen
+en: You need a boat to take a guest along.
+es: Necesitas un barco para llevar invitados.
+de: Für einen Gast brauchst du ein Boot.
+fr: Il te faut un bateau pour emmener un invité.
+pt: Você precisa de um barco para levar convidados.
+@sys3.sefer_surerken_misafir_alinamaz
+en: You can't take a guest aboard during a trip.
+es: No puedes recoger invitados durante una salida.
+de: Während einer Ausfahrt kannst du keinen Gast aufnehmen.
+fr: Impossible de prendre un invité pendant une sortie.
+pt: Não dá para levar convidados durante a viagem.
+@sys3.ayni_anda_yalnizca_bir_misafir
+en: You can only take one guest at a time ({0} is already invited).
+es: Solo puedes llevar un invitado a la vez ({0} ya está invitado).
+de: Du kannst nur einen Gast zur Zeit mitnehmen ({0} ist schon eingeladen).
+fr: Tu ne peux emmener qu'un invité à la fois ({0} est déjà invité).
+pt: Você só pode levar um convidado por vez ({0} já foi convidado).
+@sys3.bu_tekneye_sahip_degilsin
+en: You don't own this boat.
+es: Este barco no es tuyo.
+de: Dieses Boot gehört dir nicht.
+fr: Ce bateau n'est pas à toi.
+pt: Este barco não é seu.
+@sys3.filo_gorevi_icin_en_az
+en: A fleet job needs at least two boats.
+es: Para una misión de flota necesitas al menos dos barcos.
+de: Für einen Flottenauftrag brauchst du mindestens zwei Boote.
+fr: Une mission de flotte nécessite au moins deux bateaux.
+pt: Uma missão de frota exige pelo menos dois barcos.
+@sys3.aktif_teknen_goreve_gonderilemez_once
+en: Your active boat can't be sent on a job. Make another boat active first.
+es: Tu barco activo no puede ir de misión. Activa antes otro barco.
+de: Dein aktives Boot kann nicht losgeschickt werden. Mach zuerst ein anderes Boot aktiv.
+fr: Ton bateau actif ne peut pas partir en mission. Active d'abord un autre bateau.
+pt: Seu barco ativo não pode ir em missão. Ative outro barco antes.
+@sys3.bu_tekne_zaten_bir_gorevde
+en: This boat is already on a job or waiting for delivery.
+es: Este barco ya está de misión o esperando la entrega.
+de: Dieses Boot ist schon im Einsatz oder wartet auf die Lieferung.
+fr: Ce bateau est déjà en mission ou attend sa livraison.
+pt: Este barco já está em missão ou aguardando a entrega.
+@sys3.filo_kapasitesi_dolu_n
+en: Fleet capacity is full ({0}).
+es: La flota está al completo ({0}).
+de: Flottenkapazität erschöpft ({0}).
+fr: Capacité de la flotte atteinte ({0}).
+pt: A capacidade da frota está cheia ({0}).
+@sys3.goreve_cikmadan_once_tekne_deposu
+en: Empty the boat's storage before it sets out on a job.
+es: Vacía la bodega del barco antes de que salga de misión.
+de: Leere den Laderaum, bevor das Boot ausläuft.
+fr: Vide la cale avant que le bateau parte en mission.
+pt: Esvazie o porão antes de o barco sair em missão.
+@sys3.balikci_bulunamadi
+en: Angler not found.
+es: No se encontró al pescador.
+de: Angler nicht gefunden.
+fr: Pêcheur introuvable.
+pt: Pescador não encontrado.
+@sys3.n_baska_bir_gorevde
+en: {0} is on another job.
+es: {0} está en otra misión.
+de: {0} ist bei einem anderen Auftrag.
+fr: {0} est sur une autre mission.
+pt: {0} está em outra missão.
+@sys3.n_bugun_is_ilanlarinda_degil
+en: {0} isn't on today's job board.
+es: {0} no está hoy en la bolsa de trabajo.
+de: {0} steht heute nicht auf der Jobliste.
+fr: {0} ne figure pas parmi les offres du jour.
+pt: {0} não está nas vagas de hoje.
+@sys3.gecersiz_bolge
+en: Invalid region.
+es: Zona no válida.
+de: Ungültiges Gebiet.
+fr: Zone non valide.
+pt: Região inválida.
+@sys3.n_bu_bolgeye_ulasamaz_n
+en: {0} can't reach this region: {1}
+es: {0} no puede llegar a esta zona: {1}
+de: {0} erreicht dieses Gebiet nicht: {1}
+fr: {0} ne peut pas atteindre cette zone : {1}
+pt: {0} não alcança esta região: {1}
+@sys3.bu_bolgede_henuz_kendin_kesfettigin
+en: You haven't discovered any suitable species in this region yourself yet. Explore it yourself first.
+es: Aún no has descubierto tú mismo ninguna especie adecuada en esta zona. Explórala primero.
+de: Du hast in diesem Gebiet noch keine passende Art selbst entdeckt. Erkunde es zuerst selbst.
+fr: Tu n'as encore découvert toi-même aucune espèce adaptée dans cette zone. Explore-la d'abord.
+pt: Você ainda não descobriu nenhuma espécie adequada nesta região. Explore-a primeiro.
+@sys3.paran_yetmiyor_n
+en: Not enough coins ({0}).
+es: No tienes suficiente dinero ({0}).
+de: Nicht genug Münzen ({0}).
+fr: Pas assez de pièces ({0}).
+pt: Moedas insuficientes ({0}).
+@sys3.balikci_limana_dondu_n
+en: ANGLER BACK IN PORT! {0}
+es: ¡EL PESCADOR VOLVIÓ AL PUERTO! {0}
+de: ANGLER ZURÜCK IM HAFEN! {0}
+fr: PÊCHEUR DE RETOUR AU PORT ! {0}
+pt: PESCADOR VOLTOU AO PORTO! {0}
+@sys3.n_n_balik
+en: {0} ({1} fish)
+es: {0} ({1} {1|pez|peces})
+de: {0} ({1} {1|Fisch|Fische})
+fr: {0} ({1} {1|poisson|poissons})
+pt: {0} ({1} {1|peixe|peixes})
+@sys3.teslim_alinacak_balik_yok
+en: No fish to collect.
+es: No hay peces que recoger.
+de: Keine Fische abzuholen.
+fr: Aucun poisson à récupérer.
+pt: Não há peixes para retirar.
+@sys3.teslimat_yalnizca_limandan_kasabadan_alinabilir
+en: Deliveries can only be collected at the harbor (in town).
+es: La entrega solo se recoge en el puerto (en el pueblo).
+de: Lieferungen können nur im Hafen (im Ort) abgeholt werden.
+fr: Les livraisons ne se récupèrent qu'au port (au village).
+pt: A entrega só pode ser retirada no porto (na vila).
+@sys3.secilen_depoda_yer_yok_baliklar
+en: No room in the chosen storage; the fish are waiting in the delivery crate.
+es: No hay espacio en el almacén elegido; los peces esperan en la caja de entrega.
+de: Kein Platz im gewählten Speicher; die Fische warten in der Lieferkiste.
+fr: Pas de place dans le rangement choisi ; les poissons attendent dans la caisse de livraison.
+pt: Não há espaço no depósito escolhido; os peixes esperam na caixa de entrega.
+@sys3.n_su_an_filo_gorevinde
+en: {0} is currently on a fleet job.
+es: {0} está ahora en una misión de flota.
+de: {0} ist gerade im Flotteneinsatz.
+fr: {0} est actuellement en mission de flotte.
+pt: {0} está agora em missão de frota.
+@sys3.tekne_gorevde
+en: Boat on a job.
+es: Barco de misión.
+de: Boot im Einsatz.
+fr: Bateau en mission.
+pt: Barco em missão.
+@sys3.tekne_degistirme_yalnizca_limanda_yapilabilir
+en: You can only switch boats at the harbor.
+es: Solo puedes cambiar de barco en el puerto.
+de: Boote wechseln geht nur im Hafen.
+fr: Tu ne peux changer de bateau qu'au port.
+pt: Só dá para trocar de barco no porto.
+@sys3.tekne_filo_gorevinde
+en: Boat is on a fleet job.
+es: El barco está en una misión de flota.
+de: Boot ist im Flotteneinsatz.
+fr: Bateau en mission de flotte.
+pt: O barco está em missão de frota.
+@sys3.av_yontemi
+en: fishing method
+es: método de pesca
+de: Angelmethode
+fr: méthode de pêche
+pt: método de pesca
+@sys3.gun_isigi
+en: time of day
+es: luz del día
+de: Tageszeit
+fr: moment de la journée
+pt: período do dia
+@sys3.filo_gorevi_n
+en: fleet job {0}
+es: misión de flota {0}
+de: Flottenauftrag {0}
+fr: mission de flotte {0}
+pt: missão de frota {0}
+@sys3.teslim_kasasi
+en: delivery crate
+es: caja de entrega
+de: Lieferkiste
+fr: caisse de livraison
+pt: caixa de entrega
+@sys3.filo_kapasitesi
+en: fleet capacity
+es: capacidad de flota
+de: Flottenkapazität
+fr: capacité de la flotte
+pt: capacidade da frota
+@sys3.sefer_raporlari
+en: trip reports
+es: informes de salida
+de: Ausfahrtsberichte
+fr: rapports de sortie
+pt: relatórios de viagem
+@sys3.aktif_sefer
+en: active trip
+es: salida activa
+de: aktive Ausfahrt
+fr: sortie en cours
+pt: viagem ativa
+@sys3.gozlem_n
+en: sighting {0}
+es: avistamiento {0}
+de: Sichtung {0}
+fr: observation {0}
+pt: avistamento {0}
+@sys3.gozlemler
+en: sightings
+es: avistamientos
+de: Sichtungen
+fr: observations
+pt: avistamentos
+@sys4.balik_surusu
+en: Fish School
+es: Banco de peces
+de: Fischschwarm
+fr: Banc de poissons
+pt: Cardume
+@sys4.yuzeyde_sicramalar_surunun_mesafesine_atis
+en: Splashes on the surface! Cast at the school's distance and schooling fish bite ×1.30 more often.
+es: ¡Chapoteos en la superficie! Si lanzas a la distancia del banco, los peces de banco pican ×1,30 más a menudo.
+de: Spritzer an der Oberfläche! Wirfst du auf die Entfernung des Schwarms, beißen Schwarmfische ×1,30 häufiger.
+fr: Des éclaboussures en surface ! Lance à la distance du banc et les poissons grégaires mordent ×1,30 plus souvent.
+pt: Respingos na superfície! Arremesse na distância do cardume e os peixes de cardume vêm ×1,30 mais.

@@ -1,0 +1,480 @@
+@d.npc.bora.day_generic1
+en: A good hull means a comfortable voyage.
+es: Un buen casco es sinónimo de un viaje cómodo.
+de: Ein guter Rumpf bedeutet eine angenehme Fahrt.
+fr: Une bonne coque, c'est un voyage confortable.
+pt: Um bom casco é sinônimo de viagem tranquila.
+@d.npc.bora.day_generic2
+en: You'll feel the engine upgrade in your range.
+es: La mejora del motor se nota en el alcance.
+de: Den Motorausbau merkst du an der Reichweite.
+fr: L'amélioration du moteur se sent sur la portée.
+pt: A melhoria do motor você sente no alcance.
+@d.npc.bora.day_generic3
+en: Keeping your boat storage tidy makes your work easier.
+es: Tener ordenada la bodega del barco te facilita el trabajo.
+de: Ein aufgeräumter Laderaum macht dir die Arbeit leichter.
+fr: Garder la cale bien rangée te facilite la tâche.
+pt: Manter o porão organizado facilita seu trabalho.
+@d.npc.bora.sunny
+en: On a day like this, even painting boats is a pleasure.
+es: Con un día así, hasta pintar barcos es un placer.
+de: An so einem Tag macht sogar Boote streichen Spaß.
+fr: Par un temps pareil, même peindre les bateaux est un plaisir.
+pt: Num dia assim, até pintar barco é um prazer.
+@d.npc.bora.rain
+en: Rain gives the workshop a nice rhythm.
+es: La lluvia le da un buen ritmo al taller.
+de: Regen bringt einen schönen Rhythmus in die Werkstatt.
+fr: La pluie donne un bon rythme à l'atelier.
+pt: A chuva dá um ritmo bom à oficina.
+@d.npc.bora.wind
+en: If the wind's strong, check your hull fittings.
+es: Si el viento sopla fuerte, revisa el equipamiento del casco.
+de: Wenn der Wind stark ist, prüf die Rumpfausstattung.
+fr: Si le vent est fort, vérifie l'équipement de la coque.
+pt: Se o vento estiver forte, confira o equipamento do casco.
+@d.npc.bora.first_boat
+en: Congratulations on your Coastal Skiff!
+es: ¡Enhorabuena por tu Bote costero!
+de: Glückwunsch zu deinem Küstenboot!
+fr: Félicitations pour ta Barque côtière !
+pt: Parabéns pelo seu Bote Costeiro!
+@d.npc.bora.second_boat
+en: With a motor boat you'll go much farther now.
+es: Con un barco a motor ahora llegarás mucho más lejos.
+de: Mit dem Motorboot kommst du jetzt viel weiter.
+fr: Avec un bateau à moteur, tu iras beaucoup plus loin.
+pt: Com um barco a motor você vai bem mais longe agora.
+@d.npc.bora.third_boat
+en: A cabin boat is a fine choice for long trips.
+es: Un barco con cabina es una gran elección para viajes largos.
+de: Ein Kajütboot ist eine gute Wahl für lange Fahrten.
+fr: Un bateau à cabine, c'est un bon choix pour les longues sorties.
+pt: Um barco de cabine é uma ótima escolha para viagens longas.
+@d.npc.bora.fourth_boat
+en: Now that's a real offshore boat!
+es: ¡Esto sí que es un auténtico barco de altura!
+de: Das ist ein echtes Hochseeboot!
+fr: Ça, c'est un vrai bateau de haute mer !
+pt: Isso sim é um barco de alto-mar de verdade!
+@d.npc.bora.first_auto
+en: Keep an eye on your auto rod's bait hopper.
+es: Echa un ojo al depósito de cebo de tu caña automática.
+de: Behalte den Ködervorrat deiner Auto-Angel im Auge.
+fr: Garde un œil sur la réserve d'appâts de ta canne auto.
+pt: Fique de olho no reservatório de isca da vara automática.
+@d.npc.bora.deep_gear
+en: The Deep-Sea Gearing is ready for power 4 catches.
+es: El engranaje de altura está listo para capturas de fuerza 4.
+de: Das Tiefsee-Getriebe ist bereit für Fänge der Stärke 4.
+fr: L'engrenage des grands fonds est prêt pour les prises de force 4.
+pt: A engrenagem de alto-mar está pronta para capturas de força 4.
+@d.npc.bora.max_hull
+en: You can be proud of this hull.
+es: Puedes estar orgulloso de este casco.
+de: Auf diesen Rumpf kannst du stolz sein.
+fr: Tu peux être fier de cette coque.
+pt: Você pode se orgulhar deste casco.
+@d.npc.bora.record
+en: Big catches deserve a fine boat.
+es: Las grandes capturas se merecen un buen barco.
+de: Große Fänge verdienen ein schönes Boot.
+fr: Les belles prises méritent un beau bateau.
+pt: Grandes capturas merecem um belo barco.
+@d.npc.bahar.first_meet
+en: Even if you bring just three sea bass, I'll take them. That's enough for today's menu.
+es: Aunque me traigas solo tres lubinas, me las quedo. Con eso tengo para el menú de hoy.
+de: Selbst drei Wolfsbarsche nehme ich dir ab. Das reicht für die heutige Karte.
+fr: Même si tu m'apportes seulement trois bars, je les prends. Ça suffit pour le menu du jour.
+pt: Mesmo que você traga só três robalos, eu fico. Já dá para o cardápio de hoje.
+@d.npc.bahar.day_generic1
+en: We might post a new buy order tomorrow too.
+es: Mañana quizá colguemos otro pedido de compra.
+de: Morgen hängen wir vielleicht wieder einen Ankaufsauftrag aus.
+fr: Demain, on affichera peut-être une nouvelle commande.
+pt: Amanhã talvez a gente pendure um novo pedido de compra.
+@d.npc.bahar.day_generic2
+en: No need to wait for the full amount — bring what you have.
+es: No hace falta esperar a tener la cantidad exacta; trae lo que tengas.
+de: Du musst nicht auf die volle Menge warten, bring einfach, was du hast.
+fr: Pas besoin d'attendre d'avoir la quantité complète, apporte ce que tu as.
+pt: Não precisa esperar a quantidade exata; traga o que tiver.
+@d.npc.bahar.day_generic3
+en: Fresh ideas sometimes turn into new menus.
+es: Las ideas frescas a veces dan lugar a menús nuevos.
+de: Frische Ideen werden manchmal zu neuen Gerichten.
+fr: Les idées fraîches donnent parfois de nouveaux menus.
+pt: Ideias frescas às vezes viram cardápios novos.
+@d.npc.bahar.sunny
+en: On sunny days the seaside tables fill right up.
+es: Los días de sol se llenan las mesas junto al mar.
+de: An sonnigen Tagen sind die Tische am Wasser voll.
+fr: Les jours de soleil, les tables en bord de mer sont pleines.
+pt: Nos dias de sol as mesas à beira-mar lotam.
+@d.npc.bahar.rain
+en: In the rain, a warm restaurant hits the spot.
+es: Con lluvia, un restaurante calentito sienta de maravilla.
+de: Bei Regen tut ein warmes Restaurant richtig gut.
+fr: Sous la pluie, un restaurant bien chaud fait du bien.
+pt: Na chuva, um restaurante quentinho cai muito bem.
+@d.npc.bahar.wind
+en: Whatever the weather's doing outside, the kitchen keeps cooking.
+es: Haga el tiempo que haga fuera, la cocina sigue trabajando.
+de: Egal, wie das Wetter draußen ist, die Küche läuft.
+fr: Quel que soit le temps dehors, la cuisine tourne.
+pt: Não importa o tempo lá fora, a cozinha continua funcionando.
+@d.npc.bahar.first_partial
+en: Thank you for your first delivery.
+es: Gracias por tu primera entrega.
+de: Danke für deine erste Lieferung.
+fr: Merci pour ta première livraison.
+pt: Obrigada pela sua primeira entrega.
+@d.npc.bahar.order50
+en: Your steady supply is a big help to us.
+es: Tu suministro constante nos viene de maravilla.
+de: Deine regelmäßigen Lieferungen helfen uns sehr.
+fr: Tes livraisons régulières nous rendent bien service.
+pt: Seu fornecimento regular ajuda muito a gente.
+@d.npc.bahar.relationship2
+en: We've started to trust your choice of fish.
+es: Ya confiamos en cómo eliges el pescado.
+de: Wir vertrauen inzwischen deiner Fischauswahl.
+fr: On commence à faire confiance à ton choix de poissons.
+pt: Já confiamos na sua escolha de peixes.
+@d.npc.bahar.north
+en: Northern fish add some variety to the menu.
+es: Los peces del norte le dan variedad al menú.
+de: Fische aus dem Norden bringen Abwechslung auf die Karte.
+fr: Les poissons du Nord apportent de la variété au menu.
+pt: Os peixes do norte dão variedade ao cardápio.
+@d.npc.bahar.tropics
+en: I wonder what Island Kitchen bought today.
+es: Me pregunto qué habrá comprado hoy Cocina Isleña.
+de: Ich frag mich, was die Inselküche heute eingekauft hat.
+fr: Je me demande ce que la Cuisine des Îles a acheté aujourd'hui.
+pt: Fico curiosa para saber o que a Cozinha da Ilha comprou hoje.
+@d.npc.bahar.big_order
+en: The order looks big, but even a small amount is fine.
+es: El pedido parece grande, pero con traer poco basta.
+de: Der Auftrag sieht groß aus, aber auch eine kleine Menge reicht.
+fr: La commande a l'air grosse, mais une petite quantité suffit.
+pt: O pedido parece grande, mas trazer pouco já serve.
+@d.npc.bahar.record
+en: Tell me about your big catch, I'm curious!
+es: ¡Cuéntame lo de tu gran captura, que me pica la curiosidad!
+de: Erzähl von deinem großen Fang, ich bin neugierig!
+fr: Raconte-moi ta grosse prise, je suis curieuse !
+pt: Me conta da sua grande captura, fiquei curiosa!
+@d.npc.bahar.generic_after
+en: I hope you have a good catch today.
+es: Espero que hoy tengas buena pesca.
+de: Ich hoffe, du hast heute einen guten Fang.
+fr: J'espère que tu feras une belle pêche aujourd'hui.
+pt: Espero que você tenha uma boa pescaria hoje.
+@d.npc.efe.first_meet
+en: Not every fish is far away. Sometimes the best catch is right at the end of the pier.
+es: No todos los peces están lejos. A veces la mejor captura está en la punta del muelle.
+de: Nicht jeder Fisch ist weit draußen. Manchmal wartet der schönste Fang am Ende des Stegs.
+fr: Tous les poissons ne sont pas au large. Parfois, la plus belle prise est au bout du ponton.
+pt: Nem todo peixe está longe. Às vezes a melhor captura está na ponta do píer.
+@d.npc.efe.day_generic1
+en: Don't rush when you cast.
+es: No tengas prisa al lanzar.
+de: Lass dir beim Auswerfen Zeit.
+fr: Ne te précipite pas quand tu lances.
+pt: Não se apresse ao arremessar.
+@d.npc.efe.day_generic2
+en: Sometimes a short cast works better than a long one.
+es: A veces un lanzamiento corto da mejor resultado que uno largo.
+de: Manchmal bringt ein kurzer Wurf mehr als ein weiter.
+fr: Parfois, un lancer court marche mieux qu'un lancer long.
+pt: Às vezes um arremesso curto rende mais que um longo.
+@d.npc.efe.day_generic3
+en: Feel the fish pull, then ease off the reel.
+es: Siente el tirón del pez y luego suelta el carrete.
+de: Spür den Zug des Fisches, dann gib die Rolle frei.
+fr: Sens le poisson tirer, puis relâche le moulinet.
+pt: Sinta o puxão do peixe e depois solte o molinete.
+@d.npc.efe.sunny
+en: The sea looks calm today.
+es: El mar parece tranquilo hoy.
+de: Das Meer sieht heute ruhig aus.
+fr: La mer a l'air calme aujourd'hui.
+pt: O mar parece calmo hoje.
+@d.npc.efe.rain
+en: Fishing to the sound of rain is a fine thing.
+es: Pescar con el sonido de la lluvia es una delicia.
+de: Beim Geräusch des Regens zu angeln ist etwas Schönes.
+fr: Pêcher au son de la pluie, c'est un bonheur.
+pt: Pescar ouvindo a chuva é muito bom.
+@d.npc.efe.wind
+en: In the wind, try not to strain your line.
+es: Con viento, procura no forzar el sedal.
+de: Bei Wind solltest du die Schnur nicht überlasten.
+fr: Par grand vent, évite de forcer sur ta ligne.
+pt: Com vento, procure não forçar a linha.
+@d.npc.efe.first_catch
+en: You caught your first fish — a good start.
+es: Has pescado tu primer pez; buen comienzo.
+de: Dein erster Fisch – ein guter Anfang.
+fr: Tu as attrapé ton premier poisson, c'est un bon début.
+pt: Você pescou seu primeiro peixe; um bom começo.
+@d.npc.efe.first_boat
+en: Time to learn the way to the coves now.
+es: Ahora toca aprender el camino a las calas.
+de: Zeit, den Weg zu den Buchten zu lernen.
+fr: Il est temps d'apprendre le chemin des criques.
+pt: Agora é hora de aprender o caminho das enseadas.
+@d.npc.efe.rocky
+en: Rocky waters reward the patient angler.
+es: Las aguas rocosas premian al pescador paciente.
+de: Felsige Gewässer belohnen den geduldigen Angler.
+fr: Les eaux rocheuses récompensent le pêcheur patient.
+pt: As águas rochosas recompensam o pescador paciente.
+@d.npc.efe.currents
+en: In the current, tire the fish out instead of fighting it head-on.
+es: En la corriente, en vez de pelearte con el pez, cánsalo.
+de: In der Strömung ermüde den Fisch, statt dich mit ihm anzulegen.
+fr: Dans le courant, épuise le poisson au lieu de t'entêter.
+pt: Na correnteza, em vez de teimar com o peixe, canse-o.
+@d.npc.efe.north
+en: The Misty North might surprise you.
+es: El Norte Brumoso puede sorprenderte.
+de: Der Nebelnorden kann dich überraschen.
+fr: Le Nord Brumeux pourrait te surprendre.
+pt: O Norte Nebuloso pode te surpreender.
+@d.npc.efe.tropics
+en: The Sun Isles will be a nice change.
+es: Las Islas del Sol serán un buen cambio.
+de: Die Sonneninseln werden eine schöne Abwechslung.
+fr: Les Îles du Soleil, ce sera un beau changement.
+pt: As Ilhas do Sol vão ser uma bela mudança.
+@d.npc.efe.deep
+en: The Deep Blue isn't a place anyone gets used to on the first try.
+es: El Azul Profundo no es un sitio al que uno se acostumbre a la primera.
+de: An das Tiefblau gewöhnt sich niemand beim ersten Versuch.
+fr: Le Grand Bleu, personne ne s'y habitue du premier coup.
+pt: O Azul Profundo não é lugar com que alguém se acostume na primeira vez.
+@d.npc.efe.all_species
+en: You've seen every species; you and the sea have become good friends.
+es: Has visto todas las especies; te has hecho buen amigo del mar.
+de: Du hast jede Art gesehen; du und das Meer seid gute Freunde geworden.
+fr: Tu as vu toutes les espèces ; la mer et toi êtes devenus bons amis.
+pt: Você viu todas as espécies; ficou amigo do mar de verdade.
+@d.npc.fatma.first_meet
+en: Welcome, my dear! My warm simit is every fisher's lucky charm.
+es: ¡Bienvenido, cariño! Mi simit calentito es el amuleto de la suerte de los pescadores.
+de: Willkommen, mein Kind! Mein warmer Simit ist der Glücksbringer aller Fischer.
+fr: Bienvenue, mon petit ! Mon simit tout chaud porte bonheur aux pêcheurs.
+pt: Seja bem-vindo, meu bem! Meu simit quentinho é o amuleto da sorte dos pescadores.
+@d.npc.fatma.day_generic1
+en: I open early in the morning; grab a bite before you head out to sea.
+es: Abro temprano por la mañana; come algo antes de salir al mar.
+de: Ich mache früh morgens auf; iss was, bevor du rausfährst.
+fr: J'ouvre tôt le matin ; mange un morceau avant de prendre la mer.
+pt: Abro cedinho; coma alguma coisa antes de ir para o mar.
+@d.npc.fatma.day_generic2
+en: Whoever eats my poğaça has steady hands and an easy line.
+es: Quien come mi poğaça no tiene temblores y no castiga el sedal.
+de: Wer meine Poğaça isst, hat ruhige Hände und schont die Schnur.
+fr: Qui mange ma poğaça a la main sûre et ménage sa ligne.
+pt: Quem come minha poğaça tem a mão firme e não cansa a linha.
+@d.npc.fatma.day_generic3
+en: I put plenty of spinach in the börek; you'll turn that reel with ease.
+es: Le he puesto mucha espinaca al börek; girarás el carrete sin esfuerzo.
+de: In den Börek kommt reichlich Spinat, damit kurbelst du ganz locker.
+fr: J'ai mis plein d'épinards dans le börek, tu tourneras ton moulinet sans peine.
+pt: Coloquei bastante espinafre no börek; você vai girar o molinete fácil.
+@d.npc.fatma.sunny
+en: On sunny days my counter is crowded with fishers.
+es: Los días de sol mi mostrador se llena de pescadores.
+de: An sonnigen Tagen drängen sich die Fischer vor meinem Tresen.
+fr: Les jours de soleil, mon comptoir est plein de pêcheurs.
+pt: Nos dias de sol o meu balcão lota de pescadores.
+@d.npc.fatma.rain
+en: In the rain, the warmth of the oven warms your heart. Come sit a while.
+es: Con lluvia, el calor del horno te reconforta. Ven, siéntate un rato.
+de: Bei Regen wärmt dich die Ofenwärme von innen. Setz dich ein bisschen.
+fr: Sous la pluie, la chaleur du four réchauffe le cœur. Viens t'asseoir un peu.
+pt: Na chuva, o calor do forno aquece o coração. Venha, sente um pouco.
+@d.npc.fatma.wind
+en: The wind keeps slamming the door, but the dough's rising beautifully, bless it.
+es: El viento da portazos, pero la masa sube de maravilla, bendita sea.
+de: Der Wind knallt die Tür zu, aber der Teig geht prächtig auf, Gott sei Dank.
+fr: Le vent fait claquer la porte, mais la pâte lève à merveille, Dieu merci.
+pt: O vento bate a porta, mas a massa está crescendo que é uma beleza, graças a Deus.
+@d.npc.fatma.festival_soon
+en: The festival's coming; the pastry orders have already started!
+es: ¡Se acerca la fiesta y ya han empezado los encargos de bollos!
+de: Das Fest naht, die ersten Gebäckbestellungen sind schon da!
+fr: La fête approche, les commandes de brioches ont déjà commencé !
+pt: O festival está chegando, as encomendas de rosca já começaram!
+@d.npc.fatma.festival_today
+en: It's festival day! Grab a simit before the contest, it brings luck.
+es: ¡Hoy hay fiesta! Cómprate un simit antes del concurso, da suerte.
+de: Heute ist Fest! Hol dir vor dem Wettbewerb einen Simit, der bringt Glück.
+fr: C'est jour de fête ! Prends un simit avant le concours, ça porte bonheur.
+pt: Hoje tem festival! Leve um simit antes da competição, dá sorte.
+@d.npc.fatma.first_boat
+en: I heard you bought a boat! Shall I wrap up some börek for you to eat on board?
+es: ¡Me han dicho que tienes barco! ¿Te envuelvo un börek para comer a bordo?
+de: Ich hab gehört, du hast ein Boot! Soll ich dir Börek für unterwegs einpacken?
+fr: Il paraît que tu as un bateau ! Je t'emballe un börek pour le manger à bord ?
+pt: Soube que você comprou um barco! Quer que eu embrulhe um börek para comer a bordo?
+@d.npc.fatma.trophy_first
+en: I saw your cup — the whole neighborhood is proud of you.
+es: He visto tu copa; todo el barrio está orgulloso de ti.
+de: Ich hab deinen Pokal gesehen – das ganze Viertel ist stolz auf dich.
+fr: J'ai vu ta coupe, tout le quartier est fier de toi.
+pt: Vi sua taça; o bairro inteiro está orgulhoso de você.
+@d.npc.selin.first_meet
+en: Hi! You can be stylish at sea too, believe me.
+es: ¡Hola! También se puede ir elegante en el mar, créeme.
+de: Hallo! Auch auf See kann man schick sein, glaub mir.
+fr: Coucou ! On peut être chic en mer aussi, crois-moi.
+pt: Oi! Dá para ser elegante no mar também, pode acreditar.
+@d.npc.selin.day_generic1
+en: New fabrics just arrived; the striped tees are perfect for a sailor.
+es: Han llegado telas nuevas; las camisetas de rayas son puro estilo marinero.
+de: Neue Stoffe sind da; die gestreiften Shirts sind echt Seemannsstil.
+fr: De nouveaux tissus sont arrivés ; les marinières, c'est tout à fait marin.
+pt: Chegaram tecidos novos; as camisetas listradas são a cara do marinheiro.
+@d.npc.selin.day_generic2
+en: When picking a hat, think about the sun first; color comes second.
+es: Al elegir sombrero, piensa primero en el sol; el color viene después.
+de: Denk bei der Hutwahl erst an die Sonne, die Farbe kommt danach.
+fr: Pour choisir un chapeau, pense d'abord au soleil ; la couleur vient après.
+pt: Na hora de escolher chapéu, pense no sol primeiro; a cor vem depois.
+@d.npc.selin.day_generic3
+en: My clothes won't help you fish, but they'll give you confidence!
+es: Mi ropa no te ayudará a pescar, ¡pero te dará confianza!
+de: Meine Kleidung fängt keine Fische, aber sie gibt Selbstvertrauen!
+fr: Mes vêtements ne t'aident pas à pêcher, mais ils donnent confiance en soi !
+pt: Minhas roupas não ajudam a pescar, mas dão autoconfiança!
+@d.npc.selin.sunny
+en: In sunshine like this, a straw hat is number one.
+es: Con este sol, un sombrero de paja es lo mejor.
+de: Bei dieser Sonne ist ein Strohhut die Nummer eins.
+fr: Avec un soleil pareil, le chapeau de paille, c'est le top.
+pt: Com um sol desses, chapéu de palha é o número um.
+@d.npc.selin.rain
+en: Raincoat season! I've painted the shop window yellow.
+es: ¡Temporada de impermeables! He pintado el escaparate de amarillo.
+de: Regenjacken-Saison! Ich hab das Schaufenster gelb dekoriert.
+fr: C'est la saison des cirés ! J'ai peint la vitrine en jaune.
+pt: Temporada de capa de chuva! Pintei a vitrine de amarelo.
+@d.npc.selin.wind
+en: On a windy day a beanie stays put — a hat flies off.
+es: Con viento, el gorro se queda en su sitio; el sombrero sale volando.
+de: Bei Wind bleibt die Mütze auf dem Kopf, der Hut fliegt weg.
+fr: Par grand vent, le bonnet reste en place, le chapeau s'envole.
+pt: Em dia de vento o gorro fica, o chapéu voa.
+@d.npc.selin.festival_today
+en: On festival day everyone wears their best outfit — so should you!
+es: El día de la fiesta todos se ponen su mejor ropa, ¡tú también!
+de: Am Festtag tragen alle ihr schönstes Outfit – du auch!
+fr: Le jour de la fête, tout le monde met sa plus belle tenue, toi aussi !
+pt: No dia do festival todo mundo usa a melhor roupa; você também!
+@d.npc.selin.trophy_gold
+en: The champion is here! I really ought to give you a special discount.
+es: ¡Ha llegado el campeón! En realidad debería hacerte un descuento especial.
+de: Der Champion ist da! Eigentlich müsste ich dir einen Sonderrabatt geben.
+fr: Voilà le champion ! Je devrais te faire une remise spéciale, en fait.
+pt: O campeão chegou! Na verdade eu deveria te dar um desconto especial.
+@d.npc.selin.sales10k
+en: Business is booming — perfect time to refresh your wardrobe.
+es: Te va bien el negocio; es el momento perfecto para renovar el armario.
+de: Die Geschäfte laufen – perfekte Zeit, die Garderobe aufzufrischen.
+fr: Tes affaires marchent bien, c'est le moment idéal pour renouveler ta garde-robe.
+pt: Os negócios vão bem; hora perfeita de renovar o guarda-roupa.
+@d.npc.kerem.first_meet
+en: Welcome. A home is partly about the things inside it.
+es: Bienvenido. Un hogar también son las cosas que hay dentro.
+de: Willkommen. Ein Zuhause sind auch die Dinge darin.
+fr: Bienvenue. Une maison, c'est aussi les objets qu'elle contient.
+pt: Bem-vindo. Um lar também é feito das coisas que tem dentro.
+@d.npc.kerem.day_generic1
+en: These shelves are walnut; they'll last a hundred years.
+es: Estas estanterías son de nogal; aguantarán cien años.
+de: Diese Regale sind aus Nussbaum, die halten hundert Jahre.
+fr: Ces étagères sont en noyer, elles tiendront cent ans.
+pt: Estas prateleiras são de nogueira; duram cem anos.
+@d.npc.kerem.day_generic2
+en: If your chest is full, I'll make you a bigger one.
+es: Si se te llena el baúl, te hago uno más grande.
+de: Ist deine Truhe voll, baue ich dir eine größere.
+fr: Si ton coffre est plein, je t'en fabrique un plus grand.
+pt: Se o baú encher, eu faço um maior.
+@d.npc.kerem.day_generic3
+en: Put a flowerpot on the windowsill and the house smiles right away.
+es: Pon una maceta en el alféizar y la casa sonríe al momento.
+de: Stell einen Blumentopf aufs Fensterbrett, schon lächelt das Haus.
+fr: Mets un pot de fleurs au rebord de la fenêtre et la maison sourit aussitôt.
+pt: Coloque um vaso no parapeito e a casa sorri na hora.
+@d.npc.kerem.sunny
+en: Look how polished wood shines in the sun, eh?
+es: Mira cómo brilla la madera barnizada al sol, ¿eh?
+de: Sieh nur, wie poliertes Holz in der Sonne glänzt, oder?
+fr: Regarde comme le bois ciré brille au soleil, hein ?
+pt: Olha como a madeira envernizada brilha no sol, né?
+@d.npc.kerem.rain
+en: Planing wood to the sound of rain gives me peace.
+es: Cepillar madera con el sonido de la lluvia me da paz.
+de: Beim Regenrauschen zu hobeln beruhigt mich.
+fr: Raboter au son de la pluie, ça m'apaise.
+pt: Aplainar madeira ouvindo a chuva me traz paz.
+@d.npc.kerem.wind
+en: My wind chimes are singing all by themselves today.
+es: Mis campanillas de viento cantan solas hoy.
+de: Meine Windspiele singen heute ganz von allein.
+fr: Mes carillons chantent tout seuls aujourd'hui.
+pt: Meus sinos de vento estão cantando sozinhos hoje.
+@d.npc.kerem.decor1
+en: You've put some things in your home; it's becoming a cozy nest.
+es: Has puesto cosas en tu casa; se está convirtiendo en un nido acogedor.
+de: Du hast dein Haus eingerichtet; es wird ein gemütliches Nest.
+fr: Tu as installé des objets chez toi, ça devient un nid douillet.
+pt: Você colocou coisas na sua casa; está virando um ninho aconchegante.
+@d.npc.kerem.festival_today
+en: I nailed the festival stalls together myself, I promise they're sturdy.
+es: Los puestos de la fiesta los monté yo; te prometo que son firmes.
+de: Die Festbuden hab ich selbst gezimmert, die sind stabil, versprochen.
+fr: C'est moi qui ai monté les stands de la fête, promis, ils sont solides.
+pt: Fui eu que montei as barracas do festival, prometo que estão firmes.
+@d.npc.kerem.trophy_first
+en: Your cups need a nice cabinet; it would suit the shelf at home.
+es: Tus copas necesitan una buena vitrina; quedaría bien en el estante de casa.
+de: Deine Pokale brauchen einen schönen Schrank, der passt gut ins Regal zu Hause.
+fr: Tes coupes méritent une belle vitrine, elle irait bien sur l'étagère de la maison.
+pt: Suas taças precisam de uma boa estante; ficaria bem na prateleira de casa.
+@d.npc.halil.first_meet
+en: Come, have a seat — the teapot's freshly brewed. I'll ask you about the fish of the day, too.
+es: Pasa, siéntate, la tetera está recién hecha. Ya te preguntaré por el pez del día.
+de: Komm, setz dich, der Tee ist frisch aufgebrüht. Nach dem Fisch des Tages frag ich dich auch.
+fr: Viens t'asseoir, la théière vient d'infuser. Je te demanderai aussi le poisson du jour.
+pt: Venha, sente-se, o chá acabou de ficar pronto. Depois te pergunto do peixe do dia.
+@d.npc.halil.day_generic1
+en: "No net is cast before tea," my late father used to say.
+es: «No se echa la red sin antes tomar té», decía mi difunto padre.
+de: „Ohne Tee wird kein Netz ausgeworfen“, sagte mein seliger Vater immer.
+fr: « Pas de filet jeté sans un thé avant », disait feu mon père.
+pt: "Sem chá não se lança rede", dizia meu falecido pai.
+@d.npc.halil.day_generic2
+en: I pay well to whoever brings today's fish.
+es: Pago bien a quien me traiga el pez de hoy.
+de: Wer mir den Fisch des Tages bringt, wird gut bezahlt.
+fr: Je paie bien celui qui m'apporte le poisson du jour.
+pt: Pago bem a quem trouxer o peixe de hoje.
+@d.npc.halil.day_generic3
+en: What everyone talks about at the tables is yesterday's catch.
+es: De lo que más se habla en las mesas es de la pesca de ayer.
+de: An den Tischen redet man am meisten über den gestrigen Fang.
+fr: Aux tables, on parle surtout de la pêche de la veille.
+pt: O assunto mais falado nas mesas é a pescaria de ontem.
+@d.npc.halil.sunny
+en: In the sun, the tea garden feels like a festival ground.
+es: Con sol, el jardín de té parece un lugar de fiesta.
+de: In der Sonne ist der Teegarten wie ein Festplatz.
+fr: Au soleil, le jardin de thé a des airs de fête.
+pt: No sol a casa de chá parece lugar de festa.

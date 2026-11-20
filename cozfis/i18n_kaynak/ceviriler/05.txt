@@ -1,0 +1,534 @@
+@sys4.buyuk_balik_izleri
+en: Big Fish Signs
+es: Rastro de pez grande
+de: Spuren großer Fische
+fr: Traces de gros poisson
+pt: Sinais de Peixe Grande
+@sys4.suyun_altinda_iri_bir_golge
+en: A big shadow under the water. Cast at the shadow's distance for a better chance of a large fish (not guaranteed).
+es: Una gran sombra bajo el agua. Si lanzas a su distancia, sube la probabilidad de un pez grande (sin garantía).
+de: Ein großer Schatten unter Wasser. Wirfst du auf seine Entfernung, steigt die Chance auf einen großen Fisch (ohne Garantie).
+fr: Une grande ombre sous l'eau. Lance à sa distance pour augmenter tes chances de gros poisson (sans garantie).
+pt: Uma sombra grande debaixo d'água. Arremesse na distância dela para ter mais chance de peixe grande (sem garantia).
+@sys4.dip_hareketliligi
+en: Bottom Activity
+es: Actividad en el fondo
+de: Bewegung am Grund
+fr: Activité au fond
+pt: Movimento no Fundo
+@sys4.dipte_kabarciklar_ve_kum_bulutlari
+en: Bubbles and sand clouds on the bottom. With the Bottom Rig, bottom species bite ×1.30 more often.
+es: Burbujas y nubes de arena en el fondo. Con la pesca de fondo, las especies de fondo pican ×1,30 más a menudo.
+de: Blasen und Sandwolken am Grund. Mit der Grundangel beißen Grundfische ×1,30 häufiger.
+fr: Bulles et nuages de sable au fond. Avec la pêche au fond, les espèces de fond mordent ×1,30 plus souvent.
+pt: Bolhas e nuvens de areia no fundo. Com a pesca de fundo, as espécies de fundo vêm ×1,30 mais.
+@sys4.avci_balik_takibi
+en: Predator on the Hunt
+es: Depredador al acecho
+de: Raubfisch auf Jagd
+fr: Prédateur en chasse
+pt: Predador à Caça
+@sys4.hizli_bir_golge_yem_ariyor
+en: A fast shadow is hunting for prey. Rhythmic lure moves with Spin raise the bite chance a little.
+es: Una sombra rápida busca presa. Con spinning, mover el señuelo con ritmo sube un poco la probabilidad de picada.
+de: Ein schneller Schatten sucht Beute. Rhythmische Köderführung beim Spinnfischen erhöht die Bisschance etwas.
+fr: Une ombre rapide cherche une proie. Au lancer, des mouvements de leurre rythmés augmentent un peu les touches.
+pt: Uma sombra rápida procura presa. No arremesso, mexer a isca com ritmo aumenta um pouco a chance de fisgada.
+@sys4.kiyinin_oku
+en: Arrow of the Shore
+es: La flecha de la costa
+de: Pfeil der Küste
+fr: La flèche du rivage
+pt: Flecha da Costa
+@sys4.yuzeye_yakin_hizli_kacis_kisa
+en: A fast run near the surface, a short leap and one sudden change of direction.
+es: Huida rápida cerca de la superficie, un salto corto y un cambio brusco de dirección.
+de: Schnelle Flucht dicht unter der Oberfläche, ein kurzer Sprung und ein plötzlicher Richtungswechsel.
+fr: Fuite rapide près de la surface, un petit saut et un brusque changement de direction.
+pt: Fuga rápida perto da superfície, um salto curto e uma mudança brusca de direção.
+@sys4.zargana_trofesi
+en: Garfish Trophy
+es: Trofeo de la aguja
+de: Hornhecht-Trophäe
+fr: Trophée de l'orphie
+pt: Troféu do Peixe-agulha
+@sys4.koyun_avcisi
+en: Hunter of the Cove
+es: El cazador de la cala
+de: Jäger der Bucht
+fr: Le chasseur de la crique
+pt: Caçador da Enseada
+@sys4.iki_ani_kacis_kisa_sakinlesme
+en: Two sudden runs, a brief calm and an advantage if you pull at the right moment.
+es: Dos huidas bruscas, una calma breve y ventaja si tiras en el momento justo.
+de: Zwei plötzliche Fluchten, eine kurze Ruhepause und ein Vorteil, wenn du im richtigen Moment ziehst.
+fr: Deux fuites soudaines, un bref répit et un avantage si tu tires au bon moment.
+pt: Duas fugas bruscas, uma calmaria curta e vantagem ao puxar na hora certa.
+@sys4.levrek_desenli_tekne_bayragi
+en: Sea Bass Boat Flag
+es: Bandera de barco con lubina
+de: Bootsflagge mit Wolfsbarsch
+fr: Pavillon de bateau au bar
+pt: Bandeira de barco com robalo
+@sys4.kayalarin_hakimi
+en: Ruler of the Rocks
+es: El señor de las rocas
+de: Herr der Felsen
+fr: Le maître des rochers
+pt: Senhor das Pedras
+@sys4.kayaliklara_dalis_misinayi_germe_ve
+en: Dives into the rocks, strains the line, and gives you a chance to pull the opposite way.
+es: Se mete entre las rocas, tensa el sedal y te da ocasión de tirar en sentido contrario.
+de: Taucht in die Felsen, spannt die Schnur und bietet die Chance zum Gegenzug.
+fr: Plonge dans les rochers, tend la ligne et t'offre l'occasion de tirer à contresens.
+pt: Mergulha nas pedras, estica a linha e dá chance de puxar no sentido contrário.
+@sys4.kayalik_adalar_olta_susu
+en: Rocky Isles Rod Charm
+es: Adorno de caña de las Islas Rocosas
+de: Felseninseln-Angelanhänger
+fr: Breloque de canne des Îles Rocheuses
+pt: Enfeite de vara das Ilhas Rochosas
+@sys4.akintinin_gucu
+en: Power of the Current
+es: La fuerza de la corriente
+de: Kraft der Strömung
+fr: La force du courant
+pt: Força da Correnteza
+@sys4.akinti_yonunde_guclu_kacis_kisa
+en: A strong run with the current, a brief slowdown and a chance for a powerful pull.
+es: Fuerte huida a favor de la corriente, un breve frenazo y ocasión de un tirón potente.
+de: Starke Flucht mit der Strömung, kurzes Abbremsen und die Chance auf einen kräftigen Zug.
+fr: Forte fuite dans le sens du courant, bref ralentissement et occasion d'un tirage puissant.
+pt: Fuga forte a favor da correnteza, uma breve desacelerada e chance de puxão forte.
+@sys4.akinti_desenli_govde_boyasi
+en: Current-Pattern Hull Paint
+es: Pintura de casco con motivo de corriente
+de: Rumpffarbe mit Strömungsmuster
+fr: Peinture de coque motif courant
+pt: Pintura de casco com padrão de correnteza
+@sys4.derinligin_devi
+en: Giant of the Deep
+es: El gigante de las profundidades
+de: Riese der Tiefe
+fr: Le géant des profondeurs
+pt: Gigante das Profundezas
+@sys4.dibe_dogru_agir_direnc_ve
+en: Heavy resistance toward the bottom and regular chances to lift it up.
+es: Fuerte resistencia hacia el fondo y ocasiones periódicas para levantarlo.
+de: Schwerer Widerstand Richtung Grund und regelmäßige Chancen, ihn anzuheben.
+fr: Lourde résistance vers le fond et occasions régulières de le soulever.
+pt: Resistência pesada rumo ao fundo e chances regulares de erguê-lo.
+@sys4.kuzey_denizleri_balik_tablosu
+en: Northern Seas Fish Painting
+es: Cuadro de peces de los mares del norte
+de: Fischgemälde der Nordmeere
+fr: Tableau des poissons des mers du Nord
+pt: Quadro de peixes dos mares do norte
+@sys4.tropik_avci
+en: Tropical Hunter
+es: Cazador tropical
+de: Tropenjäger
+fr: Chasseur tropical
+pt: Caçador Tropical
+@sys4.yuksek_hizli_ani_hareketler_ve
+en: Very fast sudden moves and quick switches between two directions; chases spin lures.
+es: Movimientos bruscos muy rápidos y cambios veloces entre dos direcciones; persigue el señuelo de spinning.
+de: Blitzschnelle Bewegungen und rasche Wechsel zwischen zwei Richtungen; folgt dem Spinnköder.
+fr: Mouvements brusques très rapides et changements vifs entre deux directions ; suit le leurre.
+pt: Movimentos bruscos muito rápidos e trocas velozes entre duas direções; persegue a isca de arremesso.
+@sys4.tropik_deniz_flamasi
+en: Tropical Sea Pennant
+es: Banderín de mar tropical
+de: Tropenmeer-Wimpel
+fr: Fanion des mers tropicales
+pt: Flâmula do Mar Tropical
+@sys4.acik_denizin_sampiyonu
+en: Champion of the Open Sea
+es: El campeón del mar abierto
+de: Champion der Hochsee
+fr: Le champion du large
+pt: Campeão do Mar Aberto
+@sys4.uzun_ilk_kacis_sudan_sicrama
+en: A long first run, a leap out of the water and a final tug-of-war.
+es: Una primera huida larga, un salto fuera del agua y un último pulso.
+de: Lange erste Flucht, ein Sprung aus dem Wasser und ein finales Kräftemessen.
+fr: Longue première fuite, saut hors de l'eau et bras de fer final.
+pt: Uma longa primeira fuga, um salto para fora d'água e um cabo de guerra final.
+@sys4.yelken_baligi_altin_kupasi
+en: Sailfish Gold Cup
+es: Copa de Oro del Pez Vela
+de: Goldpokal des Fächerfischs
+fr: Coupe d'or du voilier
+pt: Taça de Ouro do Agulhão-bandeira
+@sys4.samandira_ustasi
+en: Float Master
+es: Maestro del flotador
+de: Posenmeister
+fr: Maître du flotteur
+pt: Mestre da Boia
+@sys4.samandirali_yontemle_3_balik_yakala
+en: Catch 3 fish with float fishing.
+es: Pesca 3 peces con flotador.
+de: Fange 3 Fische mit der Pose.
+fr: Attrape 3 poissons au flotteur.
+pt: Pesque 3 peixes com boia.
+@sys4.dip_avcisi
+en: Bottom Hunter
+es: Cazador de fondo
+de: Grundjäger
+fr: Chasseur de fond
+pt: Caçador de Fundo
+@sys4.dip_oltasi_ile_3_balik
+en: Catch 3 fish with the Bottom Rig.
+es: Pesca 3 peces con pesca de fondo.
+de: Fange 3 Fische mit der Grundangel.
+fr: Attrape 3 poissons en pêche au fond.
+pt: Pesque 3 peixes com pesca de fundo.
+@sys4.spin_deneyimi
+en: Spin Experience
+es: Experiencia de spinning
+de: Spinnfisch-Erfahrung
+fr: Expérience du lancer
+pt: Experiência de Arremesso
+@sys4.spin_yontemiyle_3_balik_yakala
+en: Catch 3 fish with Spin.
+es: Pesca 3 peces con spinning.
+de: Fange 3 Fische beim Spinnfischen.
+fr: Attrape 3 poissons au lancer.
+pt: Pesque 3 peixes com arremesso.
+@sys4.uc_yontem
+en: Three Methods
+es: Tres métodos
+de: Drei Methoden
+fr: Trois méthodes
+pt: Três Métodos
+@sys4.uc_farkli_av_yontemiyle_birer
+en: Catch one fish with each of the three fishing methods.
+es: Pesca un pez con cada uno de los tres métodos.
+de: Fange je einen Fisch mit allen drei Angelmethoden.
+fr: Attrape un poisson avec chacune des trois méthodes.
+pt: Pesque um peixe com cada um dos três métodos.
+@sys4.kusursuz_tasma
+en: Perfect Hook Set
+es: Clavada perfecta
+de: Perfekter Anhieb
+fr: Ferrage parfait
+pt: Fisgada Perfeita
+@sys4.3_mukemmel_tasma_gerceklestir
+en: Land 3 perfect hook sets.
+es: Consigue 3 clavadas perfectas.
+de: Setze 3 perfekte Anhiebe.
+fr: Réussis 3 ferrages parfaits.
+pt: Faça 3 fisgadas perfeitas.
+@sys4.buyuk_mucadele
+en: Big Fight
+es: Gran pelea
+de: Großer Drill
+fr: Grand combat
+pt: Grande Briga
+@sys4.guc_3_veya_uzeri_bir
+en: Catch a fish of power 3 or higher.
+es: Pesca un pez de fuerza 3 o más.
+de: Fange einen Fisch der Stärke 3 oder höher.
+fr: Attrape un poisson de force 3 ou plus.
+pt: Pesque um peixe de força 3 ou mais.
+@sys4.kiyi_gezgini
+en: Spot Hopper
+es: Explorador de zonas
+de: Platzwechsler
+fr: Explorateur de coins
+pt: Explorador de Pontos
+@sys4.bir_seferde_veya_iskele_avinda
+en: Visit 2 different fishing spots on one trip or pier session.
+es: Visita 2 zonas de pesca distintas en una salida o en el muelle.
+de: Besuche bei einer Ausfahrt oder am Steg 2 verschiedene Angelplätze.
+fr: Visite 2 coins de pêche différents lors d'une sortie ou au ponton.
+pt: Visite 2 pontos de pesca diferentes numa viagem ou no píer.
+@sys4.denizler_arasi
+en: Between Seas
+es: Entre mares
+de: Zwischen den Meeren
+fr: D'une mer à l'autre
+pt: Entre Mares
+@sys4.tek_seferde_2_farkli_ana
+en: Visit 2 different main regions on a single trip.
+es: Ve a 2 zonas principales distintas en una sola salida.
+de: Fahre auf einer Ausfahrt in 2 verschiedene Hauptgebiete.
+fr: Va dans 2 zones principales différentes en une seule sortie.
+pt: Vá a 2 regiões principais diferentes numa única viagem.
+@sys4.sabah_balikcisi
+en: Morning Angler
+es: Pescador madrugador
+de: Morgenangler
+fr: Pêcheur du matin
+pt: Pescador da Manhã
+@sys4.sabah_atmosferinde_2_basarili_av
+en: Make 2 successful catches in the morning.
+es: Consigue 2 capturas por la mañana.
+de: Gelingen 2 Fänge am Morgen.
+fr: Réussis 2 prises le matin.
+pt: Faça 2 capturas de manhã.
+@sys4.gun_batimi_avi
+en: Sunset Catch
+es: Pesca al atardecer
+de: Fang im Abendrot
+fr: Prise au coucher du soleil
+pt: Pesca ao Pôr do Sol
+@sys4.aksamustu_atmosferinde_2_basarili_av
+en: Make 2 successful catches in the evening.
+es: Consigue 2 capturas al atardecer.
+de: Gelingen 2 Fänge am Abend.
+fr: Réussis 2 prises en fin de journée.
+pt: Faça 2 capturas ao entardecer.
+@sys4.durbunle_gozlem_etkinligini_1_kez
+en: Complete a Binocular Watch once (a new creature isn't required).
+es: Completa una observación con prismáticos (no hace falta un animal nuevo).
+de: Schließe einmal eine Fernglas-Beobachtung ab (kein neues Tier nötig).
+fr: Termine une observation aux jumelles (pas besoin d'une nouvelle créature).
+pt: Conclua uma observação de binóculo (não precisa ser animal novo).
+@sys4.trofe_izinde
+en: On a Trophy's Trail
+es: Tras el trofeo
+de: Auf Trophäenspur
+fr: Sur la piste d'un trophée
+pt: Na Trilha do Troféu
+@sys4.aktif_trofe_hedefinde_ozel_karsilasma
+en: Find a special encounter for your active trophy target (catching it isn't required).
+es: Encuentra un encuentro especial con tu trofeo objetivo (no hace falta pescarlo).
+de: Finde eine besondere Begegnung mit deinem aktiven Trophäenziel (Fangen nicht nötig).
+fr: Provoque une rencontre spéciale avec ton trophée ciblé (pas besoin de l'attraper).
+pt: Encontre um encontro especial com seu troféu-alvo (não precisa pescar).
+@sys4.balik_hali_ziyareti
+en: Market Visit
+es: Visita a la lonja
+de: Besuch am Fischmarkt
+fr: Visite à la halle
+pt: Visita ao Mercado
+@sys4.balik_haline_en_az_3
+en: Sell at least 3 fish at the fish market.
+es: Vende al menos 3 peces en la lonja.
+de: Verkaufe mindestens 3 Fische am Fischmarkt.
+fr: Vends au moins 3 poissons à la halle.
+pt: Venda pelo menos 3 peixes no mercado.
+@sys4.siparis_teslimati
+en: Order Delivery
+es: Entrega de pedido
+de: Auftragslieferung
+fr: Livraison de commande
+pt: Entrega de Pedido
+@sys4.bir_siparise_en_az_bir
+en: Make at least one valid delivery to an order.
+es: Haz al menos una entrega válida a un pedido.
+de: Liefere mindestens einmal gültig für einen Auftrag.
+fr: Effectue au moins une livraison valide pour une commande.
+pt: Faça pelo menos uma entrega válida a um pedido.
+@sys4.cay_molasi
+en: Tea Break
+es: Pausa para el té
+de: Teepause
+fr: Pause thé
+pt: Pausa para o Chá
+@sys4.cay_bahcesine_gunun_baligindan_en
+en: Sell at least 1 fish of the day to the tea garden.
+es: Vende al jardín de té al menos 1 pez del día.
+de: Verkaufe dem Teegarten mindestens 1 Fisch des Tages.
+fr: Vends au moins 1 poisson du jour au jardin de thé.
+pt: Venda à casa de chá pelo menos 1 peixe do dia.
+@sys4.kasaba_dostu
+en: Friend of the Town
+es: Amigo del pueblo
+de: Freund des Ortes
+fr: Ami du village
+pt: Amigo da Vila
+@sys4.2_farkli_kasabaliyla_konus
+en: Talk to 2 different townsfolk.
+es: Habla con 2 vecinos distintos.
+de: Sprich mit 2 verschiedenen Ortsbewohnern.
+fr: Parle à 2 villageois différents.
+pt: Converse com 2 moradores diferentes.
+@sys4.misafir_kaptan
+en: Guest Captain
+es: Capitán anfitrión
+de: Gastkapitän
+fr: Capitaine d'accueil
+pt: Capitão Anfitrião
+@sys4.bir_npc_misafiriyle_tekne_seferi
+en: Complete a boat trip with an NPC guest.
+es: Completa una salida en barco con un invitado.
+de: Schließe eine Bootsausfahrt mit einem Gast ab.
+fr: Termine une sortie en bateau avec un invité.
+pt: Conclua uma viagem de barco com um convidado.
+@sys4.kasaba_yatirimi
+en: Town Investment
+es: Inversión en el pueblo
+de: Investition in den Ort
+fr: Investissement au village
+pt: Investimento na Vila
+@sys4.acik_bir_kasaba_projesine_toplam
+en: Donate at least 100 coins in total to an open town project.
+es: Dona al menos 100 monedas en total a un proyecto del pueblo abierto.
+de: Spende insgesamt mindestens 100 Münzen für ein offenes Ortsprojekt.
+fr: Donne au moins 100 pièces au total à un projet du village en cours.
+pt: Doe pelo menos 100 moedas no total a um projeto aberto da vila.
+@sys4.akvaryum_duzenle
+en: Arrange the Aquarium
+es: Organiza el acuario
+de: Aquarium einrichten
+fr: Aménage l'aquarium
+pt: Arrume o Aquário
+@sys4.bir_akvaryuma_balik_ekle_veya
+en: Add a fish to an aquarium or move fish between aquariums.
+es: Añade un pez a un acuario o mueve peces entre acuarios.
+de: Setze einen Fisch ins Aquarium oder verschiebe Fische zwischen Aquarien.
+fr: Ajoute un poisson à un aquarium ou déplace des poissons entre aquariums.
+pt: Adicione um peixe a um aquário ou mova peixes entre aquários.
+@sys4.kiyi_koleksiyoncusu
+en: Shore Collector
+es: Coleccionista de playa
+de: Strandsammler
+fr: Collectionneur du rivage
+pt: Colecionador de Praia
+@sys4.kiyi_kesfi_etkinligini_1_kez
+en: Complete a Beachcombing outing once.
+es: Completa una exploración de playa una vez.
+de: Schließe einmal eine Strandsuche ab.
+fr: Termine une exploration du rivage une fois.
+pt: Conclua uma exploração de praia uma vez.
+@sys4.deniz_fotografcisi
+en: Sea Photographer
+es: Fotógrafo marino
+de: Meeresfotograf
+fr: Photographe marin
+pt: Fotógrafo do Mar
+@sys4.fotograf_modunda_bir_deniz_doga
+en: Create a preview of a sea/nature scene in Photo Mode.
+es: Crea la vista previa de una escena de mar o naturaleza en el modo foto.
+de: Erstelle im Fotomodus eine Vorschau einer Meeres- oder Naturszene.
+fr: Crée l'aperçu d'une scène de mer ou de nature en mode photo.
+pt: Crie a prévia de uma cena de mar/natureza no modo foto.
+@sys4.filo_isletmecisi
+en: Fleet Operator
+es: Armador
+de: Flottenbetreiber
+fr: Armateur
+pt: Armador
+@sys4.bir_npc_filo_gorevinden_donen
+en: Collect the fish brought back from an NPC fleet job.
+es: Recoge los peces que trae una misión de flota.
+de: Hol die Fische ab, die von einem Flottenauftrag zurückkommen.
+fr: Récupère les poissons rapportés d'une mission de flotte.
+pt: Retire os peixes trazidos de uma missão de frota.
+@sys4.olta_hazirligi
+en: Rod Prep
+es: Preparar la caña
+de: Angel vorbereiten
+fr: Préparation de la canne
+pt: Preparar a Vara
+@sys4.farkli_bir_kayitli_ekipman_setini
+en: Apply a different saved gear set and make a successful catch with it.
+es: Aplica otro conjunto de equipo guardado y consigue una captura con él.
+de: Wende ein anderes gespeichertes Ausrüstungsset an und fang damit einen Fisch.
+fr: Applique un autre ensemble d'équipement enregistré et réussis une prise avec.
+pt: Aplique outro conjunto de equipamento salvo e faça uma captura com ele.
+@sys4.gunluk_inceleme
+en: Log Review
+es: Revisión del diario
+de: Logbuch prüfen
+fr: Revue du journal
+pt: Revisão do Diário
+@sys4.en_az_iki_farkli_av
+en: Complete a trip where you visit at least two different fishing spots, and view its report.
+es: Completa una salida visitando al menos dos zonas de pesca distintas y mira su informe.
+de: Beende eine Ausfahrt mit mindestens zwei verschiedenen Angelplätzen und sieh dir den Bericht an.
+fr: Termine une sortie en visitant au moins deux coins de pêche différents et consulte son rapport.
+pt: Conclua uma viagem visitando pelo menos dois pontos de pesca diferentes e veja o relatório.
+@sys4.efe_nin_eski_av_defteri
+en: Efe's Old Fishing Journal
+es: El viejo diario de pesca de Efe
+de: Efes altes Angeltagebuch
+fr: Le vieux carnet de pêche d'Efe
+pt: O Velho Diário de Pesca do Efe
+@sys4.ilk_basarili_manuel_av
+en: First successful manual catch
+es: Primera captura manual
+de: Erster erfolgreicher Handfang
+fr: Première prise manuelle réussie
+pt: Primeira captura manual
+@sys4.efe_ile_konus_kayip_defter
+en: Talk to Efe: get a clue about the lost journal page.
+es: Habla con Efe: consigue una pista sobre la página perdida del diario.
+de: Sprich mit Efe: Hol dir einen Hinweis zur verlorenen Tagebuchseite.
+fr: Parle à Efe : obtiens un indice sur la page perdue du carnet.
+pt: Fale com o Efe: consiga uma pista da página perdida do diário.
+@sys4.gencken_bir_defter_tutardim_bir
+en: When I was young I kept a journal. One page got stuck between the stones of the Breakwater… Maybe it's still there.
+es: De joven llevaba un diario. Una página se quedó entre las piedras del Rompeolas… Quizá siga allí.
+de: Als junger Kerl hab ich Tagebuch geführt. Eine Seite blieb zwischen den Steinen der Mole hängen … Vielleicht ist sie noch da.
+fr: Jeune, je tenais un carnet. Une page est restée coincée entre les pierres de la Digue… Elle y est peut-être encore.
+pt: Quando jovem eu tinha um diário. Uma página ficou presa entre as pedras do Quebra-mar… Talvez ainda esteja lá.
+@sys4.iskeledeki_dalgakiran_noktasina_git_ve
+en: Go to the Breakwater spot on the pier and inspect the memento (no fishing needed).
+es: Ve al punto del Rompeolas en el muelle y examina el recuerdo (no hace falta pescar).
+de: Geh zum Platz an der Mole und sieh dir das Andenken an (kein Angeln nötig).
+fr: Va au coin de la Digue sur le ponton et examine le souvenir (pas besoin de pêcher).
+pt: Vá ao ponto do Quebra-mar no píer e examine a lembrança (não precisa pescar).
+@sys4.taslarin_arasinda_yagmurdan_korunmus_eski
+en: Between the stones, an old page sheltered from the rain: “The morning after the storm, my first bluefish.”
+es: Entre las piedras, una vieja página a salvo de la lluvia: «La mañana después de la tormenta, mi primera anchova».
+de: Zwischen den Steinen, vor dem Regen geschützt, eine alte Seite: „Am Morgen nach dem Sturm, mein erster Blaubarsch.“
+fr: Entre les pierres, une vieille page à l'abri de la pluie : « Le matin après la tempête, mon premier tassergal. »
+pt: Entre as pedras, uma página antiga protegida da chuva: “Na manhã depois da tempestade, minha primeira anchova.”
+@sys4.efe_ye_don_ve_hikayesini
+en: Go back to Efe and hear his story.
+es: Vuelve con Efe y escucha su historia.
+de: Geh zurück zu Efe und hör dir seine Geschichte an.
+fr: Retourne voir Efe et écoute son histoire.
+pt: Volte ao Efe e ouça a história dele.
+@sys4.o_sabah_babamla_cikmistik_bu
+en: That morning I'd gone out with my father… You keep this page; take my photo too. It suits someone who loves the sea the way you do.
+es: Aquella mañana había salido con mi padre… Guarda tú esta página; llévate también mi foto. Le va bien a alguien que ama el mar como tú.
+de: An dem Morgen war ich mit meinem Vater draußen … Behalte du diese Seite, nimm auch mein Foto. Es passt zu jemandem, der das Meer so liebt wie du.
+fr: Ce matin-là, j'étais sorti avec mon père… Garde cette page, prends aussi ma photo. Elle va bien à quelqu'un qui aime la mer comme toi.
+pt: Naquela manhã eu tinha saído com meu pai… Guarde esta página; leve também a minha foto. Combina com alguém que ama o mar como você.
+@sys4.efe_nin_eski_fotografi
+en: Efe's Old Photo
+es: La vieja foto de Efe
+de: Efes altes Foto
+fr: La vieille photo d'Efe
+pt: A Foto Antiga do Efe
+@sys4.mert_in_ilk_acik_deniz
+en: Mert's First Open-Sea Voyage
+es: El primer viaje a mar abierto de Mert
+de: Merts erste Fahrt auf die offene See
+fr: Le premier voyage en haute mer de Mert
+pt: A Primeira Viagem de Mert ao Mar Aberto
+@sys4.ilk_tekne
+en: First boat
+es: Primer barco
+de: Erstes Boot
+fr: Premier bateau
+pt: Primeiro barco
+@sys4.mert_ile_konus_ve_onu
+en: Talk to Mert and invite him on a boat trip.
+es: Habla con Mert e invítalo a una salida en barco.
+de: Sprich mit Mert und lade ihn zu einer Bootsfahrt ein.
+fr: Parle à Mert et invite-le à une sortie en bateau.
+pt: Fale com o Mert e convide-o para uma viagem de barco.
+@sys4.bir_gun_tekneyle_acilmak_en
+en: Heading out on a boat one day is my biggest dream! Will you take me along?
+es: ¡Salir algún día en barco es mi mayor sueño! ¿Me llevarás?
+de: Eines Tages mit dem Boot rauszufahren ist mein größter Traum! Nimmst du mich mit?
+fr: Partir un jour en bateau, c'est mon plus grand rêve ! Tu m'emmènes ?
+pt: Sair de barco um dia é o meu maior sonho! Você me leva?
+@sys4.mert_misafirinle_sakin_liman_disindaki
+en: With Mert as your guest, sail to a region outside Calm Harbor and return to port.
+es: Con Mert de invitado, haz una salida a una zona fuera de Puerto Sereno y vuelve al puerto.
+de: Fahre mit Mert als Gast in ein Gebiet außerhalb des Stillen Hafens und kehre zurück.
+fr: Avec Mert comme invité, pars vers une zone hors de Port Paisible et reviens au port.
+pt: Com o Mert de convidado, vá a uma região fora do Porto Sereno e volte ao porto.
+@sys4.geziden_sonra_mert_ile_konus
+en: Talk to Mert after the trip.
+es: Habla con Mert después de la salida.
+de: Sprich nach der Fahrt mit Mert.
+fr: Parle à Mert après la sortie.
+pt: Fale com o Mert depois da viagem.

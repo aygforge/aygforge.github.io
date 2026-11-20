@@ -1,0 +1,12 @@
+Sakin Liman: Calm Harbor | Puerto Sereno | Stiller Hafen | Port Paisible | Porto Sereno
+Yeşil Koy: Green Cove | Cala Verde | Grüne Bucht | Crique Verte | Enseada Verde
+Kayalık Adalar: Rocky Isles | Islas Rocosas | Felseninseln | Îles Rocheuses | Ilhas Rochosas
+Serin Akıntılar: Cool Currents | Corrientes Frescas | Kühle Strömungen | Courants Frais | Correntes Frias
+Sisli Kuzey: Misty North | Norte Brumoso | Nebelnorden | Nord Brumeux | Norte Nebuloso
+Güneş Adaları: Sun Isles | Islas del Sol | Sonneninseln | Îles du Soleil | Ilhas do Sol
+Derin Mavi: Deep Blue | Azul Profundo | Tiefblau | Grand Bleu | Azul Profundo
+Kupa=Cup|copa|Pokal|coupe|taça ; Trofe=Trophy|trofeo|Trophäe|trophée|troféu
+Sefer=trip|salida|Ausfahrt|sortie|viagem ; Birlik=Guild|Gremio|Gilde|Guilde|Guilda
+Balıkçı Defteri=Angler's Journal|Diario de pesca|Anglertagebuch|Carnet de pêche|Diário de Pesca
+Akıcı Av=Flow Fishing|Pesca fluida|Flüssiges Angeln|Pêche fluide|Pesca Fluida; Klasik Av=Classic Fishing|Pesca clásica|Klassisches Angeln|Pêche classique|Pesca Clássica
+para=coins|monedas|Münzen|pièces|moedas ; ilan=order|pedido|Auftrag|commande|pedido
