@@ -1,7 +1,7 @@
 // Alpha 0.4A — stage adaptörü, enerji, kayıt migrasyonu, level ödülleri (hedefli, hızlı testler).
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { STAGES, CAMPAIGN, stageByLevel, findChapter } from '../../src/data/stages.js';
+import { STAGES, IDENTITY, stageByLevel, findChapter } from '../../src/data/stages.js';
 import { ENEMIES } from '../../src/data/content.js';
 import { defaultEnergy, tickEnergy, debitForRun, applyAdRefill, refundFirstClear } from '../../src/systems/EnergyService.js';
 import { SaveService, defaultSave, migrateToAlpha04, SAVE_KEY } from '../../src/systems/SaveService.js';
@@ -11,21 +11,21 @@ import { makeRun, memStorage } from './helpers.mjs';
 const MIN = 60000;
 const T0 = Date.UTC(2026, 10, 21, 10, 0, 0);
 
-test('adapter: 20 levels, 6 JSON waves each, finals and HP exactly from the campaign JSON', () => {
+test('adapter: 20 levels from the 0.4C identity JSON (waves, recipes, HP, rewards); bosses 42/54 kept', () => {
   assert.equal(STAGES.length, 20);
-  for (const L of CAMPAIGN.levels) {
+  for (const L of IDENTITY.levels) {
     const s = stageByLevel(L.level);
     assert.deepEqual(s.waves, L.waves);
-    assert.equal(s.waves.length, 6);
+    assert.equal(s.waves.length, L.waveCount);
     for (const [t, v] of Object.entries(L.enemyBalance.alpha03BaseHpById)) assert.equal(s.balance.hp[t], Math.round(v * L.enemyBalance.hpScale));
-    assert.equal(s.balance.bossHp, L.finalEncounter.hp);
     assert.deepEqual(s.recipe, L.recipe);
+    assert.equal(s.baseTip, L.rewards.baseTips);
     assert.equal(findChapter(s.id), s);
   }
   assert.equal(stageByLevel(10).boss, 'giant_tomato');
   assert.deepEqual([stageByLevel(10).balance.bossHp, stageByLevel(20).balance.bossHp, stageByLevel(20).boss], [42, 54, 'potato_king']);
   const mini = ENEMIES[stageByLevel(5).boss];
-  assert.deepEqual([mini.boss, mini.recipe, mini.sprite, stageByLevel(5).balance.bossHp], [true, null, 'giant_tomato', 28]);
+  assert.deepEqual([mini.boss, mini.recipe, mini.sprite, mini.hp], [true, null, 'giant_tomato', 28]);
   assert.equal(stageByLevel(15).stageType, 'mini_boss');
   assert.ok(findChapter('menemen') && findChapter('fries'), 'legacy chapters still resolvable');
 });

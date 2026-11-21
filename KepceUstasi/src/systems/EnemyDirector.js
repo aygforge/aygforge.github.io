@@ -105,16 +105,27 @@ export function spawnWave(run, chapter, rng) {
   run.enemies = run.enemies.filter((e) => !e.dead && !e.escaped); // keep the list small
   const spawned = [];
   if (run.wave > chapter.waves.length) {
-    const e = makeEnemy(run, chapter.boss, chapter.balance?.bossX ?? 0.86, 0.5);
-    spawned.push(e);
+    // final wave: one boss/elite, or two elites placed apart vertically (Alpha 0.4C)
+    const finals = chapter.finals || [chapter.boss];
+    const ys = finals.length === 1 ? [0.5] : [0.32, 0.68];
+    finals.forEach((t, i) => spawned.push(makeEnemy(run, t, (chapter.balance?.bossX ?? 0.86) - i * 0.04, ys[i])));
     return spawned;
   }
   const comp = chapter.waves[run.wave - 1];
   const list = [];
   for (const [type, n] of Object.entries(comp)) for (let i = 0; i < n; i++) list.push(type);
-  for (const type of rng.shuffle(list)) {
+  const staggered = chapter.identity?.spawnStyle === 'staggered';
+  for (const [i, type] of rng.shuffle(list).entries()) {
     const b = chapter.balance || FIELD;
-    const spot = pickSpot(run, rng, b.spawnXMin ?? FIELD.spawnXMin, b.spawnXMax ?? FIELD.spawnXMax, 0.16);
+    let xMin = b.spawnXMin ?? FIELD.spawnXMin;
+    let xMax = b.spawnXMax ?? FIELD.spawnXMax;
+    if (staggered) {
+      // staggered: groups at three depths (no lanes; y stays free)
+      const g = i % 3;
+      xMin = Math.min(0.88, xMin + g * 0.08);
+      xMax = Math.min(0.9, xMax + g * 0.08);
+    }
+    const spot = pickSpot(run, rng, xMin, xMax, 0.16);
     spawned.push(makeEnemy(run, type, spot.x, spot.y));
   }
   return spawned;

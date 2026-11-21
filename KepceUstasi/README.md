@@ -1,7 +1,9 @@
-# Kepçe Ustası — Alpha 0.4B (HTML5)
+# Kepçe Ustası — Alpha 0.4C (HTML5)
 
 **Stüdyo:** Ayg Forge · **Çalışma adı:** Kepçe Ustası · **Sürüm:** Alpha 0.3 (Menemen + Patates Kızartması; yakalama hissi ve build dengesi)
 
+> **Alpha 0.4C:** 20 level'ın her biri kendi kimliğiyle: 3–6 dalga (her normal dalgadan sonra 1 kart), yakın/kademeli spawn, tarif hedefi, mini boss / çift elit / bölüm bossu finalleri, level giriş başlığı. Ayrıntı: `CHANGELOG_ALPHA04C.md`.
+>
 > **Alpha 0.4B:** 4 ekipman yuvası (Common/Uncommon/Rare, garantili craft), Altın Mutfak (L7) ve Malzeme Deposu (L15) dungeon'ları, Şef Gücü göstergesi. Ayrıntı: `CHANGELOG_ALPHA04B.md`.
 > **Alpha 0.4A:** 20 level kampanya (L1–L20, `src/data/alpha04/*.json`) + enerji (30 maks, giriş 10, 12 dk'da +1). Ayrıntı: `CHANGELOG_ALPHA04A.md`.
 > **Alpha 0.3:** `CHANGELOG_ALPHA03.md` · `ALPHA03_FEEL_REPORT.md` (yakalama hissi) · `ALPHA03_BALANCE_REPORT.md` · `TEST_PLAN_ALPHA03.md`.

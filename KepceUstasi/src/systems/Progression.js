@@ -104,8 +104,9 @@ export function currentLevel(save) {
 // Failure keeps the Alpha 0.1 partial formula on the stage's base tips.
 export function computeStageReward(stage, { victory, stars, completedWaves, firstClear }) {
   if (!victory) {
-    const w = Math.max(0, Math.min(NORMAL_WAVES, completedWaves));
-    const fail = Math.floor((stage.baseTip * ECONOMY.failFactor * w) / NORMAL_WAVES);
+    const nw = stage.waves?.length || NORMAL_WAVES; // Alpha 0.4C: 3–6 waves per level
+    const w = Math.max(0, Math.min(nw, completedWaves));
+    const fail = Math.floor((stage.baseTip * ECONOMY.failFactor * w) / nw);
     return { base: 0, quality: 0, firstBonus: 0, failReward: fail, total: fail };
   }
   const mult = stage.starMultipliers?.[String(stars)] ?? 1;
@@ -120,7 +121,8 @@ export function applyStageResult(save, stage, run, { victory, stars }, now = Dat
   if (save.claimedRuns.includes(run.runId)) return { duplicate: true, reward: null };
   const st = { ...stageState(save, stage.level) };
   const firstClear = victory && !st.cleared;
-  const completedWaves = run.wave > NORMAL_WAVES ? NORMAL_WAVES : run.stats.completedWaves;
+  const nw = stage.waves?.length || NORMAL_WAVES;
+  const completedWaves = run.wave > nw ? nw : run.stats.completedWaves;
   const reward = computeStageReward(stage, { victory, stars, completedWaves, firstClear });
   save.tips += reward.total;
   st.plays++;

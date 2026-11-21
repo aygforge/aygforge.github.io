@@ -247,6 +247,8 @@ export class GameScene extends Phaser.Scene {
     const half = spr.displayHeight / 2;
     const status = this.add.container(0, -half - 26);
     c.add([spr, bar, status]);
+    // Alpha 0.4C: elites/finals reuse the base sprite (bigger) + a short name tag; no new animation
+    if (ENEMIES[e.type].elite) c.add(text(this, 0, spr.displayHeight / 2 + 12, ENEMIES[e.type].name, 13, ENEMIES[e.type].miniBoss ? '#ff9a8a' : '#ffd84a'));
     const view = { id: e.id, c, spr, bar, status, half, boss: e.boss, maxHp: e.maxHp, maxShield: e.maxShield, dead: false };
     this.views.set(e.id, view);
     this.drawBar(view, e.hp, e.shield);
@@ -501,7 +503,11 @@ export class GameScene extends Phaser.Scene {
     this.refreshHud();
     if (e.isBoss) {
       audio.play('warn');
-      this.flash(`BOSS: ${ENEMIES[this.chapter.boss].name}`, 1100 / sp);
+      this.flash(`${this.chapter.finals?.length > 1 ? 'ÇİFT FİNAL' : 'FİNAL'}: ${this.chapter.finalName || ENEMIES[this.chapter.boss].name}`, 1100 / sp);
+    } else if (e.wave === 1 && this.chapter.identity) {
+      // short level intro: title, rule label, recipe target (1.6 s, then the run starts)
+      const goal = Object.entries(this.chapter.recipe).map(([k, n]) => `${n} ${RECIPE_LABELS[k]}`).join(' · ');
+      this.flash(`L${this.chapter.level} · ${this.chapter.identity.subtitle}\n${this.chapter.identity.label} · ${this.chapter.waves.length} dalga\nHedef: ${goal}`, 1600 / sp);
     } else {
       this.flash(`Dalga ${e.wave}/${this.chapter.waves.length}`, 800 / sp);
     }
@@ -510,7 +516,8 @@ export class GameScene extends Phaser.Scene {
       const p = fieldToScreen(this.L, en.x, en.y);
       this.tweens.add({ targets: v.c, x: p.x, duration: 520 / sp, ease: 'Quad.out' });
     }
-    this.time.delayedCall((e.isBoss ? 1100 : 760) / sp, () => {
+    const introMs = e.wave === 1 && this.chapter.identity && !e.isBoss ? 1600 : 760;
+    this.time.delayedCall((e.isBoss ? 1100 : introMs) / sp, () => {
       this.refreshStatuses();
       this.controller.ack(e.token);
     });
@@ -1068,7 +1075,7 @@ export class GameScene extends Phaser.Scene {
       const r = out.reward;
       lines = e.victory
         ? [`Temel bahşiş: ${r.base}`, `Kalite bonusu: ${r.quality}`, `İlk servis bonusu: ${r.firstBonus}`]
-        : [`Tamamlanan dalga: ${Math.min(6, run.wave > 6 ? 6 : run.stats.completedWaves)}/6`, `Kısmi bahşiş: ${r.failReward}`];
+        : [`Tamamlanan dalga: ${Math.min(this.chapter.waves.length, run.stats.completedWaves)}/${this.chapter.waves.length}`, `Kısmi bahşiş: ${r.failReward}`];
       lines.push(`TOPLAM: +${r.total}`);
       if (out.energyRefund) lines.push(`İlk temizleme enerji iadesi: +${out.energyRefund}`);
       if (out.unlocked?.length) lines.push(`Açıldı: ${out.unlocked.map((id) => UNLOCK_LABELS[id] || id).join(', ')}`);

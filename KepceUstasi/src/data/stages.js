@@ -7,43 +7,57 @@
 import campaign from './alpha04/alpha04_campaign_20.json' with { type: 'json' };
 import economy from './alpha04/alpha04_progression_economy.json' with { type: 'json' };
 import dungeons from './alpha04/alpha04_dungeons.json' with { type: 'json' };
+import identity from './alpha04/alpha04c_level_identity_20.json' with { type: 'json' };
 import { CHAPTERS, ENEMIES } from './content.js';
 
 export const CAMPAIGN = campaign;
 export const ECONOMY04 = economy;
-export const LEVEL_COUNT = campaign.levels.length;
+export const LEVEL_COUNT = identity.levels.length;
+export const IDENTITY = identity;
 export const stageId = (n) => `L${n}`;
 
 const BASE_CHAPTER = Object.fromEntries(CHAPTERS.map((c) => [c.id, c]));
 
-function finalEnemyType(L) {
+// Alpha 0.4C: levels come from the level-identity JSON (names, 3–6 waves, own recipes, 1–2 final enemies,
+// spawn style, big-oil multiplier). Rewards/energy/unlocks/SG keep the 0.4A values carried in the same file.
+// Chapter bosses (L10 / L20) keep the existing boss type and AI.
+function finalTypes(L) {
   const f = L.finalEncounter;
-  if (f.useExistingAlpha03Behavior) return f.baseEnemyId; // real boss behaviour, HP/shield from balance
-  const type = `final_L${L.level}`;
-  const base = ENEMIES[f.baseEnemyId];
-  ENEMIES[type] = {
-    id: type,
-    name: f.displayName,
-    hp: f.hp,
-    shield: f.shield || 0,
-    move: f.move || 'one',
-    recipe: null, // the final enemy completes the order, it is not a recipe ingredient
-    speed: f.move === 'odd' ? 0.5 : 1,
-    boss: true, // completion authority: defeating it wins the level (existing victory gate)
-    contactDamage: f.contactDamage ?? 1,
-    retreatX: f.retreatX ?? 0.62,
-    sprite: f.spriteReuse || base.sprite || f.baseEnemyId,
-    elite: true,
-  };
-  return type;
+  if (f.keepAlpha04BBossBehavior || f.originalData?.useExistingAlpha03Behavior) {
+    const o = f.originalData;
+    return { types: [o.baseEnemyId], names: [o.displayName], bossHp: o.hp, bossShield: o.shield ?? null };
+  }
+  const types = f.enemies.map((e, i) => {
+    const type = `final_L${L.level}_${i + 1}`;
+    const base = ENEMIES[e.baseEnemyId];
+    ENEMIES[type] = {
+      id: type,
+      name: e.displayName,
+      hp: e.hp,
+      shield: e.shield || 0,
+      move: e.move || base.move, // the elite moves like its base vegetable (still only once per turn, leftwards)
+      recipe: null, // finals complete the order, they are not recipe ingredients
+      speed: base.speed,
+      boss: true, // completion authority: ALL finals must be defeated (CombatResolver victory gate)
+      contactDamage: e.contactDamage ?? base.contactDamage ?? 1,
+      retreatX: e.retreatX ?? 0.62,
+      sprite: e.spriteReuse || base.sprite || e.baseEnemyId,
+      elite: true,
+      miniBoss: !!e.isMiniBoss,
+      tint: f.enemies.length > 1 ? [0xffd0a0, 0xa0d8ff][i] : e.isMiniBoss ? 0xffc0c0 : 0xffe9a0, // small visual cue only
+    };
+    return type;
+  });
+  // synthetic finals carry their own HP/shield -> no stage-level boss override
+  return { types, names: f.enemies.map((e) => e.displayName), bossHp: null, bossShield: null };
 }
 
 function buildStage(L) {
   const base = BASE_CHAPTER[L.chapterId];
   const eb = L.enemyBalance;
+  const id = L.stageIdentity || {};
   const hp = Object.fromEntries(Object.entries(eb.alpha03BaseHpById).map(([t, v]) => [t, Math.max(1, Math.round(v * eb.hpScale))]));
-  const f = L.finalEncounter;
-  const boss = finalEnemyType(L);
+  const fin = finalTypes(L);
   return {
     id: stageId(L.level),
     isStage: true,
@@ -53,11 +67,13 @@ function buildStage(L) {
     withinChapter: L.withinChapter,
     stageType: L.stageType,
     name: L.name,
+    identity: { format: id.format, spawnStyle: id.spawnStyle || 'normal', label: id.onScreenRuleLabel || '', subtitle: id.displaySubtitle || L.name },
     customer: base.customer,
     tags: base.tags,
     recipe: { ...L.recipe },
-    boss,
-    finalName: f.displayName,
+    boss: fin.types[0],
+    finals: fin.types,
+    finalName: fin.names.join(' + '),
     baseTip: L.rewards.baseTips,
     firstClearBonus: L.rewards.firstClearTips,
     starMultipliers: L.rewards.starMultipliers,
@@ -66,13 +82,15 @@ function buildStage(L) {
     recommendedChefPower: L.recommendedChefPower,
     powerWall: L.powerWall,
     energyCost: L.energyCost,
-    bigOilRate: base.bigOilRate,
+    // pot_bonus: only the big-oil roll chance changes (RunController still caps it at 18 %)
+    bigOilRate: +(base.bigOilRate * (id.bigOilRateMultiplier || 1)).toFixed(4),
     dish: L.chapterId === 'menemen' ? 'dish_menemen' : 'dish_fries',
+    skillWaves: L.skillPicksAfterWaves || L.waves.map((_, i) => i + 1),
     balance: {
       hp,
       move: base.balance?.move, // Alpha 0.3 behaviour kept (quick salt in fries)
-      bossHp: f.hp,
-      bossShield: f.shield ?? null,
+      bossHp: fin.bossHp,
+      bossShield: fin.bossShield,
       spawnXMin: eb.spawnXRange[0],
       spawnXMax: eb.spawnXRange[1],
       bossX: base.balance?.bossX ?? 0.7,
@@ -81,7 +99,7 @@ function buildStage(L) {
   };
 }
 
-export const STAGES = campaign.levels.map(buildStage);
+export const STAGES = identity.levels.map(buildStage);
 
 // ---------------------------------------------------------------- Alpha 0.4B dungeons (same engine)
 // 4 normal waves + final, a skill pick after each normal wave, no recipe/star requirement. Enemy HP = Alpha03 base

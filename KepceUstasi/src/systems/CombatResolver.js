@@ -112,7 +112,8 @@ export function killEnemy(run, chapter, e, cause, ctx) {
   }
   ctx.events.push({ type: 'kill', id: e.id, enemyType: e.type, recipeKey: def.recipe, counted, cause, recipe: { ...run.recipe } });
   if (e.boss) {
-    ctx.victory = true;
+    // victory only when EVERY final (boss/elite) of the level is down (Alpha 0.4C dual elites)
+    if (!run.enemies.some((x) => x.boss && !x.dead && !x.escaped)) ctx.victory = true;
     return;
   }
   if (!ctx.chains) return; // reflect kills do not start pan chains

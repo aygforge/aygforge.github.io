@@ -68,7 +68,7 @@ export class MenuScene extends Phaser.Scene {
     // Alpha 0.4B: two small buttons only (minimal menu)
     button(this, W / 2 - 84, y1 + 64, 150, 40, 'EKİPMAN', () => this.openEquipment(), { size: 16, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 });
     button(this, W / 2 + 84, y1 + 64, 150, 40, 'DUNGEON', () => this.openDungeons(), { size: 16, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 });
-    text(this, W / 2, H - 22, 'Alpha 0.4B · Ayg Forge · çevrimdışı · reklamsız', 16, '#d8c9b0');
+    text(this, W / 2, H - 22, 'Alpha 0.4C · Ayg Forge · çevrimdışı · reklamsız', 16, '#d8c9b0');
 
     if (app.notice) {
       this.toast(app.notice);

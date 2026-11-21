@@ -1,5 +1,5 @@
 // Kepçe Ustası offline cache (auto-generated)
-const CACHE = 'kepce-ustasi-mwq8a2vm';
+const CACHE = 'kepce-ustasi-mwqalp8z';
 const FILES = [
  "./",
  "./assets/audio/catch.wav",
@@ -26,7 +26,7 @@ const FILES = [
  "./assets/enemies/potato.png",
  "./assets/enemies/salt.png",
  "./assets/enemies/tomato.png",
- "./assets/index-Cm57EknS.js",
+ "./assets/index-CP00RwI-.js",
  "./assets/index-DSB8h3iu.css",
  "./assets/kitchen/battle_bg.png",
  "./assets/kitchen/bubble.png",
