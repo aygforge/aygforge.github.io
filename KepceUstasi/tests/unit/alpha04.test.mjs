@@ -118,7 +118,8 @@ test('stage result: JSON rewards, first clear once, unlocks L7/L15/L16 recorded 
   assert.equal(s.stageProgress.levels[1].stars, 3, 'best stars kept');
   for (let l = 2; l <= 16; l++) win(l, `w${l}`);
   assert.deepEqual(s.unlockEvents.map((u) => [u.id, u.level]), [['gold_kitchen', 7], ['chapter2_fries', 10], ['materials_depot', 15], ['materials_starter_grant_18', 15], ['rare_crafting', 16]]);
-  assert.deepEqual(s.pendingGrants, ['materials_starter_grant_18']);
+  // Alpha 0.4B: the L15 grant is paid in the same result write, exactly once
+  assert.deepEqual([s.pendingGrants, s.paidGrants, s.currencyParts], [[], ['materials_starter_grant_18'], 18]);
   win(7, 'again7');
   assert.equal(s.unlockEvents.length, 5, 'replay does not re-record unlocks');
   assert.equal(s.stageProgress.highestUnlocked, 17);

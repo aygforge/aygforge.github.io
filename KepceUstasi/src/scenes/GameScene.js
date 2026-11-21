@@ -4,9 +4,9 @@ import Phaser from 'phaser';
 import { app } from '../game/AppState.js';
 import { computeLayout, fieldToScreen } from '../config/layout.js';
 import { RunController, PHASE } from '../systems/RunController.js';
-import { permStats, applyRunResult, applyStageResult, isStageUnlocked } from '../systems/Progression.js';
+import { permStats, applyRunResult, applyStageResult, isStageUnlocked, applyDungeonResult, dungeonFullLeft } from '../systems/Progression.js';
 import { findChapter, stageByLevel, LEVEL_COUNT } from '../data/stages.js';
-import { launchLevel } from '../game/StageLauncher.js';
+import { launchLevel, launchDungeon } from '../game/StageLauncher.js';
 import { living, nextSteps } from '../systems/EnemyDirector.js';
 import { CHAPTERS, ENEMIES, RECIPE_LABELS, ABILITY_BY_ID, ABILITY_CATS, NORMAL_WAVES, FIELD, LADLE } from '../data/content.js';
 import { recipeComplete, STAR2_MAX_HP_LOSS } from '../systems/RecipeTracker.js';
@@ -19,11 +19,11 @@ import { text, panel, button, blocker, COLORS } from '../ui/widgets.js';
 const CAT_COLORS = { catch: 0x3a7de0, attack: 0xe8582f, defense: 0x4caf3a, pan: 0xf2b11c, control: 0x7fd8f0 };
 const ROMAN = ['', 'I', 'II', 'III'];
 export const UNLOCK_LABELS = {
-  gold_kitchen: 'Altın Mutfak (Yakında)',
+  gold_kitchen: 'Altın Mutfak (DUNGEON)',
   chapter2_fries: 'Patates Kızartması bölümü',
-  materials_depot: 'Malzeme Deposu (Yakında)',
-  materials_starter_grant_18: '18 parça (0.4B ile verilecek)',
-  rare_crafting: 'Nadir Üretim (Yakında)',
+  materials_depot: 'Malzeme Deposu (DUNGEON)',
+  materials_starter_grant_18: '+18 parça',
+  rare_crafting: 'Rare üretim (EKİPMAN)',
   alpha04_campaign_complete: 'Kampanya tamamlandı',
 };
 const SOURCE_LABEL = { pan_burst: 'Tava Patlaması', tomato_splash: 'Sos Sıçraması', pan_echo: 'Tava Yankısı', explosive_oil: 'Patlama', piercing_oil: 'Delme', knockback_boss: 'Püskürtme' };
@@ -192,7 +192,8 @@ export class GameScene extends Phaser.Scene {
   refreshHud() {
     const run = this.controller.run;
     const L = this.L;
-    this.hudWave.setText(run.wave > NORMAL_WAVES ? 'BOSS · Servis zamanı' : `Dalga ${run.wave}/${NORMAL_WAVES}`);
+    const nw = this.chapter.waves.length;
+    this.hudWave.setText(run.wave > nw ? 'BOSS · Servis zamanı' : `Dalga ${run.wave}/${nw}`);
     this.heartsC.removeAll(true);
     const n = run.chef.maxHp;
     const x0 = L.W - 74 - n * 24;
@@ -368,7 +369,7 @@ export class GameScene extends Phaser.Scene {
           app.save.tutorialDone = true;
           app.persist();
         }
-        this.flash(e.wave <= NORMAL_WAVES ? 'Dalga temizlendi!' : '', 900);
+        this.flash(e.wave <= this.chapter.waves.length ? 'Dalga temizlendi!' : '', 900);
         break;
       case 'skillChoice':
         this.showSkillChoice(e);
@@ -502,7 +503,7 @@ export class GameScene extends Phaser.Scene {
       audio.play('warn');
       this.flash(`BOSS: ${ENEMIES[this.chapter.boss].name}`, 1100 / sp);
     } else {
-      this.flash(`Dalga ${e.wave}/${NORMAL_WAVES}`, 800 / sp);
+      this.flash(`Dalga ${e.wave}/${this.chapter.waves.length}`, 800 / sp);
     }
     for (const en of e.enemies) {
       const v = this.createView(en, true);
@@ -580,7 +581,7 @@ export class GameScene extends Phaser.Scene {
       } else if (ev.type === 'knockback' || ev.type === 'freeze' || ev.type === 'freezeResisted' || ev.type === 'explosion' || ev.type === 'heal' || ev.type === 'capReached') {
         this.time.delayedCall(lastLand + 10, () => this.effectFx(ev));
       } else if (ev.type === 'bonusReady') {
-        this.time.delayedCall(lastLand + 60, () => this.floatText(this.chefPos.x + 40, this.chefPos.y - 90, ev.source === 'chain_cooking' ? 'Zincir Pişirme: +1 yağ' : 'Tava Ustalığı: +1 yağ', '#8be07a'));
+        this.time.delayedCall(lastLand + 60, () => this.floatText(this.chefPos.x + 40, this.chefPos.y - 90, { chain_cooking: 'Zincir Pişirme: +1 yağ', pan_mastery: 'Tava Ustalığı: +1 yağ', eq_pan: 'Tava (ekipman): +1 yağ' }[ev.source] || '+1 yağ', '#8be07a'));
       } else if (ev.type === 'fizzle') {
         // queue closes safely: no living target
       }
@@ -1010,7 +1011,9 @@ export class GameScene extends Phaser.Scene {
     let out = null;
     if (!this.rewardApplied) {
       this.rewardApplied = true;
-      out = this.chapter.isStage
+      out = this.chapter.isDungeon
+        ? applyDungeonResult(app.save, this.chapter, run, { victory: e.victory })
+        : this.chapter.isStage
         ? applyStageResult(app.save, this.chapter, run, { victory: e.victory, stars: e.stars })
         : applyRunResult(app.save, this.chapter, run, { victory: e.victory, stars: e.stars });
       app.persist(); // reward + cleared snapshot in ONE write
@@ -1053,9 +1056,15 @@ export class GameScene extends Phaser.Scene {
       .join('   ');
     c.add(text(this, L.W / 2, top + 268, recipeLines, 17, recipeComplete(run, this.chapter) ? '#8be07a' : COLORS.cream));
     const starRules = ['1★ Boss yenildi', `2★ Tam tarif + can kaybı ≤ ${STAR2_MAX_HP_LOSS}`, `3★ Toplam can kaybı ≤ 1 (bu koşu: ${run.stats.hpLost})`];
-    c.add(text(this, L.W / 2, top + 312, starRules.join('\n'), 14, '#d8c9b0', { lineSpacing: 4 }));
+    c.add(text(this, L.W / 2, top + 312, this.chapter.isDungeon ? 'Dungeon: tarif ve yıldız gerekmez' : starRules.join('\n'), 14, '#d8c9b0', { lineSpacing: 4 }));
     let lines;
-    if (out && !out.duplicate) {
+    if (out && !out.duplicate && this.chapter.isDungeon) {
+      const r = out.reward;
+      const left = dungeonFullLeft(app.save, this.chapter);
+      lines = e.victory
+        ? [`${r.full ? 'Tam ödül' : 'Tekrar ödülü'}: ${r.tips ? `+${r.tips} bahşiş` : ''}${r.parts ? `+${r.parts} parça` : ''}`, r.firstBonus ? `İlk temizleme bonusu dahil (+${r.firstBonus})` : '', `Bugün kalan tam ödül: ${left}/2 · Parça: ${app.save.currencyParts}`].filter(Boolean)
+        : ['Dungeon başarısız: ödül yok', `Bugün kalan tam ödül: ${left}/2 (kullanılmadı)`];
+    } else if (out && !out.duplicate) {
       const r = out.reward;
       lines = e.victory
         ? [`Temel bahşiş: ${r.base}`, `Kalite bonusu: ${r.quality}`, `İlk servis bonusu: ${r.firstBonus}`]
@@ -1073,7 +1082,9 @@ export class GameScene extends Phaser.Scene {
     // campaign levels go through the launcher (energy debit, one per new runId); legacy chapters as before
     const replay = () => this.startOrder(this.chapter.isStage ? this.chapter.level : null, this.chapter.id);
     let next;
-    if (this.chapter.isStage) {
+    if (this.chapter.isDungeon) {
+      next = null;
+    } else if (this.chapter.isStage) {
       const n = this.chapter.level + 1;
       next = n <= LEVEL_COUNT && isStageUnlocked(app.save, n) ? { name: `L${n} · ${stageByLevel(n).name}`, go: () => this.startOrder(n) } : null;
     } else {
@@ -1095,8 +1106,12 @@ export class GameScene extends Phaser.Scene {
 
   // Start a campaign level (energy is charged by the launcher) or replay a legacy chapter.
   startOrder(level, legacyId) {
+    if (level == null && this.chapter.isDungeon) return this.handleLaunch(launchDungeon(this, this.chapter.dungeonId));
     if (level == null) return this.scene.start('Game', { chapterId: legacyId });
-    const r = launchLevel(this, level);
+    return this.handleLaunch(launchLevel(this, level));
+  }
+
+  handleLaunch(r) {
     if (!r.ok) {
       this.floatText(this.L.W / 2, this.L.H / 2, r.reason === 'energy' ? 'Enerji yetersiz — restorana dönülüyor' : 'Level kilitli', '#ff8a7a', 20);
       this.time.delayedCall(1200, () => this.scene.start('Menu'));

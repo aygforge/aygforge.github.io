@@ -9,6 +9,7 @@
 //    tetiklemez, kritik olmaz, kendini kopyalamaz. Fiziksel topçuk sayısı asla artmaz.
 import { ENEMIES, FIELD, OILS, SECONDARY_EVENT_CAP, AREA_RADIUS, ABILITY_VALUES, CHAPTERS } from '../data/content.js';
 import { findChapter } from '../data/stages.js';
+import { weaponEffect, panEvery } from './Equipment.js';
 import { living, nextSteps, BOSS_FREEZE_EVERY } from './EnemyDirector.js';
 import { addRecipe } from './RecipeTracker.js';
 import { Rng } from '../core/rng.js';
@@ -102,6 +103,7 @@ export function killEnemy(run, chapter, e, cause, ctx) {
   run.stats.kills++;
   run.turnKills = (run.turnKills || 0) + 1;
   run.counters.panKills++;
+  run.counters.eqPanKills = (run.counters.eqPanKills || 0) + 1; // Tava equipment (unique kills only: killEnemy runs once per enemy)
   const def = ENEMIES[e.type];
   let counted = false;
   if (!e.counted) {
@@ -196,6 +198,15 @@ export function resolveVolley(run, chapter, shots) {
     }
     if (shot.oil === 'normal' && real) {
       run.stats.normalShots++;
+      const wpn = weaponEffect(run.perm.equip); // Yağ Silahı (own counter, stacks with mastery/power_shot)
+      if (wpn) {
+        run.counters.weaponShot = (run.counters.weaponShot || 0) + 1;
+        if (run.counters.weaponShot >= wpn.every) {
+          run.counters.weaponShot = 0;
+          dmg += wpn.bonus;
+          bonusParts.push('eq_weapon');
+        }
+      }
       const m = run.perm.mastery; // permanent Atış Ustalığı (separate counter)
       if (m) {
         run.counters.permShot++;
@@ -339,6 +350,12 @@ export function resolveVolley(run, chapter, shots) {
       run.pending.mastery += 1;
       events.push({ type: 'bonusReady', source: 'pan_mastery' });
     }
+    const eqEvery = panEvery(run.perm.equip);
+    if (eqEvery && run.counters.eqPanKills >= eqEvery) {
+      run.counters.eqPanKills -= eqEvery; // max one per turn
+      run.pending.eqPan = (run.pending.eqPan || 0) + 1;
+      events.push({ type: 'bonusReady', source: 'eq_pan' });
+    }
   }
   if (ctx.capped) events.push({ type: 'capReached', dropped: ctx.capped });
   if (ctx.victory) events.push({ type: 'victory' });
@@ -361,8 +378,10 @@ export function buildShots(run, caught) {
   const shots = [];
   for (let i = 0; i < run.pending.chain; i++) shots.push({ oil: 'normal', isBonus: true, canProc: false, source: 'chain_cooking' });
   for (let i = 0; i < run.pending.mastery; i++) shots.push({ oil: 'normal', isBonus: true, canProc: false, source: 'pan_mastery' });
+  for (let i = 0; i < (run.pending.eqPan || 0); i++) shots.push({ oil: 'normal', isBonus: true, canProc: false, source: 'eq_pan' });
   run.pending.chain = 0;
   run.pending.mastery = 0;
+  run.pending.eqPan = 0;
   for (const b of caught) shots.push({ oil: b.type, isBonus: false, canProc: true, source: 'pot', ballId: b.id });
   if (caught.length === 0) shots.push({ oil: 'normal', isBonus: true, canProc: false, source: 'guarantee' });
   return shots;

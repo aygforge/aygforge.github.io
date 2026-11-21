@@ -1,5 +1,6 @@
 // Progression — bahşiş, kalıcı geliştirmeler, chapter açılımı ve koşu ödülü.
 import { UPGRADES, UPGRADE_BY_ID, MAX_UPGRADE_LEVEL, CHAPTERS, ECONOMY, NORMAL_WAVES } from '../data/content.js';
+import { apronHpBonus, defaultEquipment } from './Equipment.js';
 
 export function upgradeValue(save, id) {
   const u = UPGRADE_BY_ID[id];
@@ -29,11 +30,12 @@ export function permStats(save) {
   return {
     capacity: upgradeValue(save, 'capacity'),
     width: upgradeValue(save, 'width'),
-    hp: tough.hp,
+    hp: tough.hp + apronHpBonus(save.equipment), // Alpha 0.4B: Önlük adds max HP
     shield: tough.shield,
     mastery: upgradeValue(save, 'mastery'),
     pan: upgradeValue(save, 'pan'),
     spice: upgradeValue(save, 'spice'),
+    equip: { ...defaultEquipment(), ...(save.equipment || {}) }, // copied into the run (snapshot-safe)
   };
 }
 
@@ -136,6 +138,7 @@ export function applyStageResult(save, stage, run, { victory, stars }, now = Dat
         unlocked.push(id);
         if (id.includes('_grant_') && !save.pendingGrants.includes(id)) save.pendingGrants.push(id);
       }
+      settleGrants(save); // Alpha 0.4B: grants are paid in the same atomic result write
     }
   }
   save.stageProgress.levels[stage.level] = st;
@@ -155,4 +158,67 @@ export function chefPower(save) {
   for (const [id, weight] of Object.entries(w)) p += weight * ((save.upgrades[id] || 1) - 1);
   for (const item of ECONOMY04.equipment.items) p += item.power[save.equipment?.[item.slot] || 'common'] || 0;
   return p;
+}
+
+// ---------------------------------------------------------------- Alpha 0.4B: parts grants + dungeons
+import { utcDay } from './EnergyService.js';
+
+// Pays recorded grants (e.g. "materials_starter_grant_18" from L15) exactly once.
+export function settleGrants(save) {
+  save.paidGrants ||= [];
+  for (const id of save.pendingGrants || []) {
+    if (save.paidGrants.includes(id)) continue;
+    const m = /_grant_(\d+)$/.exec(id);
+    if (m) save.currencyParts += Number(m[1]);
+    save.paidGrants.push(id);
+  }
+  save.pendingGrants = [];
+  return save;
+}
+
+// UTC-day reset of dungeon full-reward rights.
+export function dungeonDaily(save, now = Date.now()) {
+  const d = (save.dungeonDaily ||= {});
+  d.fullUsed ||= {};
+  d.cleared ||= {};
+  const day = utcDay(now);
+  if (d.day !== day) {
+    d.day = day;
+    d.fullUsed = {};
+  }
+  return d;
+}
+export const isDungeonUnlocked = (save, dg) => !!stageState(save, dg.unlockedAfterLevel).cleared;
+export function dungeonFullLeft(save, dg, now = Date.now()) {
+  return Math.max(0, dg.reward.fullRewardRunsPerUtcDay - (dungeonDaily(save, now).fullUsed[dg.dungeonId] || 0));
+}
+
+// Dungeon result, once per runId. Win: full reward (2 per UTC day) else repeat reward; first clear bonus once.
+// Loss: nothing (energy stays spent, no daily right used).
+export function applyDungeonResult(save, dg, run, { victory }, now = Date.now()) {
+  if (save.claimedRuns.includes(run.runId)) return { duplicate: true, reward: null };
+  const d = dungeonDaily(save, now);
+  const def = dg.reward;
+  const reward = { tips: 0, parts: 0, full: false, firstBonus: 0, total: 0 };
+  if (victory) {
+    reward.full = (d.fullUsed[dg.dungeonId] || 0) < def.fullRewardRunsPerUtcDay;
+    if (reward.full) d.fullUsed[dg.dungeonId] = (d.fullUsed[dg.dungeonId] || 0) + 1;
+    reward.tips = (reward.full ? def.fullRewardTips : def.repeatRewardTips) || 0;
+    reward.parts = (reward.full ? def.fullRewardParts : def.repeatRewardParts) || 0;
+    if (!d.cleared[dg.dungeonId]) {
+      d.cleared[dg.dungeonId] = true;
+      reward.firstBonus = def.firstClearPartsBonus || def.firstClearExtraTips || 0;
+      if (def.firstClearPartsBonus) reward.parts += def.firstClearPartsBonus;
+      if (def.firstClearExtraTips) reward.tips += def.firstClearExtraTips;
+    }
+    save.tips += reward.tips;
+    save.currencyParts += reward.parts;
+    reward.total = reward.tips;
+  }
+  save.claimedRuns.push(run.runId);
+  if (save.claimedRuns.length > 50) save.claimedRuns.splice(0, save.claimedRuns.length - 50);
+  save.activeRun = null;
+  save.stats.runs++;
+  if (victory) save.stats.wins++;
+  return { duplicate: false, reward };
 }

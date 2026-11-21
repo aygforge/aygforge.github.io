@@ -1,6 +1,7 @@
 // Abilities — koşu içi 24 geçici yetenek: uygunluk, teklif (3 kart), seçim ve etkiler.
 // Kart metni ve mekanik aynı veri kaynağını (ABILITY_VALUES) kullanır.
 import { ABILITIES, ABILITY_BY_ID, ABILITY_VALUES, LADLE, COMBAT_CARD_CATS, SKILL_WAVES } from '../data/content.js';
+import { ladleWidthBonus } from './Equipment.js';
 
 const AV = ABILITY_VALUES;
 
@@ -78,7 +79,8 @@ export function ladleParams(run) {
   const slow = ab.slow_swing ? AV.slow_swing[ab.slow_swing - 1] : 0;
   const rim = ab.stable_rim ? AV.stable_rim[ab.stable_rim - 1] : 0;
   return {
-    radius: +(LADLE.radius * run.perm.width * (1 + wide)).toFixed(3),
+    // equipment ladle bonus stacks multiplicatively with the width upgrade and Geniş Kepçe (real collider radius)
+    radius: +(LADLE.radius * run.perm.width * (1 + wide) * (1 + ladleWidthBonus(run.perm.equip))).toFixed(3),
     capacity: run.perm.capacity + deep,
     period: +(LADLE.swingPeriod / (1 - slow)).toFixed(4),
     rimLift: +(LADLE.rimBase + rim).toFixed(3),

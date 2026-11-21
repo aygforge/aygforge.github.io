@@ -5,7 +5,10 @@ import { CHAPTERS, UPGRADES, RECIPE_LABELS, MAX_UPGRADE_LEVEL } from '../data/co
 import { purchaseUpgrade, upgradeCost, upgradeValue, isUnlocked, currentLevel, stageState, isStageUnlocked, chefPower } from '../systems/Progression.js';
 import { findChapter, stageByLevel, LEVEL_COUNT } from '../data/stages.js';
 import { tickEnergy, msToNextPoint, msToUtcReset, adRefillsLeft, applyAdRefill, ENERGY } from '../systems/EnergyService.js';
-import { launchLevel } from '../game/StageLauncher.js';
+import { launchLevel, launchDungeon } from '../game/StageLauncher.js';
+import { DUNGEONS, stageByLevel as _stage } from '../data/stages.js';
+import { EQUIP, SLOT_LABEL, RARITY_LABEL, EFFECT_TEXT, craftInfo, craft } from '../systems/Equipment.js';
+import { isDungeonUnlocked, dungeonFullLeft } from '../systems/Progression.js';
 import { adService } from '../platform/AdService.js';
 import { purchaseService } from '../platform/PurchaseService.js';
 import { audio } from '../platform/AudioService.js';
@@ -62,7 +65,10 @@ export class MenuScene extends Phaser.Scene {
     button(this, W / 2 - 172, y1, 160, 62, 'LEVEL SEÇ', () => this.openLevels(), { size: 19 });
     button(this, W / 2, y1, 160, 62, 'GELİŞTİR', () => this.openUpgrades(), { size: 20 });
     button(this, W / 2 + 172, y1, 160, 62, 'MAĞAZA', () => this.openShop(), { size: 20 });
-    text(this, W / 2, H - 22, 'Alpha 0.4A · Ayg Forge · çevrimdışı · reklamsız', 16, '#d8c9b0');
+    // Alpha 0.4B: two small buttons only (minimal menu)
+    button(this, W / 2 - 84, y1 + 64, 150, 40, 'EKİPMAN', () => this.openEquipment(), { size: 16, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 });
+    button(this, W / 2 + 84, y1 + 64, 150, 40, 'DUNGEON', () => this.openDungeons(), { size: 16, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 });
+    text(this, W / 2, H - 22, 'Alpha 0.4B · Ayg Forge · çevrimdışı · reklamsız', 16, '#d8c9b0');
 
     if (app.notice) {
       this.toast(app.notice);
@@ -125,7 +131,7 @@ export class MenuScene extends Phaser.Scene {
     // future content unlocked by levels 7 / 15 / 16: recorded as data, screens come with 0.4B
     const ev = (id) => app.save.unlockEvents.some((u) => u.id === id);
     const fut = [['gold_kitchen', 'Altın Mutfak', 7], ['materials_depot', 'Malzeme Deposu', 15], ['rare_crafting', 'Nadir Üretim', 16]]
-      .map(([id, name, l]) => `${name}: ${ev(id) ? 'açıldı · Yakında' : `L${l}'de açılır`}`)
+      .map(([id, name, l]) => `${name}: ${ev(id) ? 'açıldı' : `L${l}'de açılır`}`)
       .join('\n');
     c.add(text(this, 46, fy, fut, 15, '#d8c9b0', { ox: 0, oy: 0, align: 'left', lineSpacing: 4 }));
     const left = adRefillsLeft(app.save.energy, now);
@@ -143,6 +149,65 @@ export class MenuScene extends Phaser.Scene {
     c.add(ad);
     const legacy = app.save.legacyCompletedChapters;
     if (legacy.length) c.add(text(this, this.W / 2, top + 100, `Eski sürüm rozetleri: ${legacy.map((id) => `${CHAPTERS.find((x) => x.id === id)?.name} ${'★'.repeat(app.save.chapters[id]?.stars || 0)}`).join(' · ')}`, 13, '#b7a9c4'));
+  }
+
+  // ---------------- equipment & crafting (Alpha 0.4B) ----------------
+  openEquipment() {
+    const { c, top } = this.openOverlay('EKİPMAN', 800);
+    const sg = chefPower(app.save);
+    c.add(text(this, this.W / 2, top + 66, `Şef Gücü ${sg} · öneri L10 ${_stage(10).recommendedChefPower} · L20 ${_stage(20).recommendedChefPower}`, 16, '#9ef0ff'));
+    c.add(text(this, this.W / 2, top + 92, `Parça ${app.save.currencyParts} · Bahşiş ${app.save.tips} · SG yalnız öneridir, kilit değil`, 14, '#d8c9b0'));
+    const rows = [];
+    const render = () => {
+      for (const r of rows) r.destroy(true);
+      rows.length = 0;
+      EQUIP.slots.forEach((slot, i) => {
+        const y = top + 118 + i * 140;
+        const info = craftInfo(app.save, slot);
+        const row = this.add.container(0, 0);
+        row.add(panel(this, 40, y, this.W - 80, 126, { fill: 0x3d3447, light: 0x51465d }));
+        row.add(text(this, 58, y + 22, `${SLOT_LABEL[slot]} · ${RARITY_LABEL[info.cur]}`, 20, info.cur === 'rare' ? '#7fb0ff' : info.cur === 'uncommon' ? '#8be07a' : COLORS.cream, { ox: 0 }));
+        row.add(text(this, 58, y + 52, EFFECT_TEXT[slot][info.cur], 14, '#e9dcc4', { ox: 0, wrap: 300, align: 'left' }));
+        if (info.next) {
+          row.add(text(this, 58, y + 82, `→ ${RARITY_LABEL[info.next]}: ${EFFECT_TEXT[slot][info.next]}`, 13, '#b7a9c4', { ox: 0, oy: 0, wrap: 290, align: 'left' }));
+          const label = info.unlocked ? `${info.cost.parts}P + ${info.cost.tips}` : `L${info.gateLevel}'da açılır`;
+          row.add(button(this, this.W - 112, y + 40, 128, 50, label, () => {
+            if (craft(app.save, slot).ok) {
+              app.persist(); // atomic craft: parts + tips + rarity in one write
+              audio.play('coin');
+              this.refreshTips();
+              this.closeOverlay();
+              this.openEquipment();
+            }
+          }, { size: 14, enabled: info.unlocked && info.affordable, fill: COLORS.btnGreen, dark: COLORS.btnGreenDark, light: 0x8be07a }));
+        } else row.add(text(this, this.W - 112, y + 40, 'MAKS', 16, COLORS.gold));
+        rows.push(row);
+        c.add(row);
+      });
+    };
+    render();
+  }
+
+  // ---------------- dungeons (Alpha 0.4B) ----------------
+  openDungeons() {
+    const { c, top } = this.openOverlay('DUNGEON', 560);
+    const reset = Math.ceil(msToUtcReset(Date.now()) / 3600000);
+    c.add(text(this, this.W / 2, top + 66, `Günde 2 tam ödül · sonra düşük ödül · giriş 10 enerji · UTC sıfırlama ~${reset} sa`, 13, '#d8c9b0', { wrap: 460 }));
+    DUNGEONS.forEach((dg, i) => {
+      const y = top + 96 + i * 180;
+      const open = isDungeonUnlocked(app.save, dg);
+      const d = dg.reward;
+      const full = d.fullRewardTips ? `${d.fullRewardTips} bahşiş` : `${d.fullRewardParts} parça`;
+      const rep = d.repeatRewardTips ? `${d.repeatRewardTips} bahşiş` : `${d.repeatRewardParts} parça`;
+      c.add(panel(this, 40, y, this.W - 80, 164, { fill: 0x3d3447, light: 0x51465d }));
+      c.add(text(this, 58, y + 24, dg.name, 22, open ? COLORS.cream : '#9a92a6', { ox: 0 }));
+      c.add(text(this, 58, y + 58, `Tam: ${full} · Tekrar: ${rep}${d.firstClearPartsBonus ? ` · İlk: +${d.firstClearPartsBonus} parça` : ''}`, 14, '#e9dcc4', { ox: 0 }));
+      c.add(text(this, 58, y + 84, open ? `Bugün kalan tam ödül: ${dungeonFullLeft(app.save, dg)}/2 · 4 dalga + ${dg.finalName}` : `L${dg.unlockedAfterLevel} temizlenince açılır`, 14, open ? '#9ef0ff' : '#ffb35a', { ox: 0 }));
+      c.add(button(this, this.W / 2, y + 128, 260, 44, open ? 'GİR (10 enerji)' : 'KİLİTLİ', () => {
+        const r = launchDungeon(this, dg.dungeonId);
+        if (!r.ok) this.toast(r.reason === 'energy' ? 'Enerji yetersiz.' : 'Dungeon kilitli.');
+      }, { size: 17, enabled: open }));
+    });
   }
 
   startRun(data) {

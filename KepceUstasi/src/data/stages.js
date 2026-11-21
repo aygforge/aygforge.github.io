@@ -6,6 +6,7 @@
 // - Alpha 0.1–0.3 chapter'ları (CHAPTERS) eski kayıtlar ve yarım koşular için aynen kalır.
 import campaign from './alpha04/alpha04_campaign_20.json' with { type: 'json' };
 import economy from './alpha04/alpha04_progression_economy.json' with { type: 'json' };
+import dungeons from './alpha04/alpha04_dungeons.json' with { type: 'json' };
 import { CHAPTERS, ENEMIES } from './content.js';
 
 export const CAMPAIGN = campaign;
@@ -81,7 +82,47 @@ function buildStage(L) {
 }
 
 export const STAGES = campaign.levels.map(buildStage);
-const BY_ID = Object.fromEntries(STAGES.map((s) => [s.id, s]));
+
+// ---------------------------------------------------------------- Alpha 0.4B dungeons (same engine)
+// 4 normal waves + final, a skill pick after each normal wave, no recipe/star requirement. Enemy HP = Alpha03 base
+// (JSON enemyHpAlpha03 of the matching chapter), spawn range = that chapter's Alpha03 balance.
+const DUNGEON_BASE = { gold_kitchen: 'menemen', materials_depot: 'fries' };
+function buildDungeon(d) {
+  const def = economy.dungeons.definitions.find((x) => x.id === d.id);
+  const chapterId = DUNGEON_BASE[d.id];
+  const base = BASE_CHAPTER[chapterId];
+  const hpBase = campaign.chapters.find((c) => c.id === chapterId).enemyHpAlpha03;
+  const f = d.finalEncounter;
+  const type = `final_${d.id}`;
+  ENEMIES[type] = {
+    id: type, name: f.displayName, hp: f.hp, shield: f.shield || 0, move: f.move || 'one', recipe: null,
+    speed: 1, boss: true, contactDamage: f.contactDamage ?? 1, retreatX: f.retreatX ?? 0.62, sprite: f.spriteReuse, elite: true,
+  };
+  return {
+    id: `D_${d.id}`,
+    isDungeon: true,
+    dungeonId: d.id,
+    name: def.name,
+    index: base.index,
+    chapterId,
+    tags: base.tags,
+    recipe: {},
+    boss: type,
+    finalName: f.displayName,
+    baseTip: 0,
+    bigOilRate: base.bigOilRate,
+    dish: chapterId === 'menemen' ? 'dish_menemen' : 'dish_fries',
+    energyCost: economy.dungeons.runCostEnergy,
+    unlockedAfterLevel: def.unlockedAfterLevel,
+    reward: def,
+    skillWaves: d.skillPicksAfterWaves,
+    balance: { hp: { ...hpBase }, move: base.balance?.move, bossHp: f.hp, bossShield: f.shield ?? 0, spawnXMin: base.balance.spawnXMin, spawnXMax: base.balance.spawnXMax, bossX: base.balance?.bossX ?? 0.7 },
+    waves: d.waves.map((w) => ({ ...w })),
+  };
+}
+export const DUNGEONS = dungeons.encounters.map(buildDungeon);
+export const dungeonById = (id) => DUNGEONS.find((d) => d.dungeonId === id) || null;
+const BY_ID = Object.fromEntries([...STAGES, ...DUNGEONS].map((s) => [s.id, s]));
 
 export function stageByLevel(n) {
   return STAGES[n - 1] || null;

@@ -8,15 +8,16 @@ import { defaultEnergy } from './EnergyService.js';
 // Alpha 0.4A fields (data/alpha04_progression_economy.json -> saveMigration.newSaveFields)
 function alpha04Fields(now = Date.now()) {
   return {
-    dataVersion: 4,
+    dataVersion: 5,
     stageProgress: { highestUnlocked: 1, levels: {} }, // new 20-level track always starts at L1
     energy: defaultEnergy(now),
     equipment: { weapon: 'common', ladle: 'common', apron: 'common', pan: 'common' }, // 0.4B uses these
-    dungeonDaily: {},
+    dungeonDaily: { day: '', fullUsed: {}, cleared: {} },
     currencyParts: 0,
     legacyCompletedChapters: [],
     unlockEvents: [], // [{ id, level, at }] recorded once (L7 gold_kitchen, L10, L15 depot, L16 rare_crafting, L20)
-    pendingGrants: [], // e.g. materials_starter_grant_18 -> paid out by the 0.4B materials economy
+    pendingGrants: [], // e.g. materials_starter_grant_18 -> paid out by settleGrants (0.4B)
+    paidGrants: [],
   };
 }
 
@@ -30,7 +31,18 @@ export function migrateToAlpha04(s, now = Date.now()) {
   for (const [k, v] of Object.entries(defaultEnergy(now))) if (e[k] === undefined) e[k] = v;
   const legacy = Object.entries(s.chapters || {}).filter(([, c]) => c && c.cleared).map(([id]) => id);
   for (const id of legacy) if (!s.legacyCompletedChapters.includes(id)) s.legacyCompletedChapters.push(id);
-  s.dataVersion = 4;
+  // Alpha 0.4B: fill equipment slots, dungeon daily object; pay grants recorded by a 0.4A save (once)
+  s.equipment = { weapon: 'common', ladle: 'common', apron: 'common', pan: 'common', ...(s.equipment || {}) };
+  s.dungeonDaily = { day: '', fullUsed: {}, cleared: {}, ...(s.dungeonDaily || {}) };
+  s.paidGrants ||= [];
+  for (const id of s.pendingGrants || []) {
+    if (s.paidGrants.includes(id)) continue;
+    const m = /_grant_(\d+)$/.exec(id);
+    if (m) s.currencyParts += Number(m[1]);
+    s.paidGrants.push(id);
+  }
+  s.pendingGrants = [];
+  s.dataVersion = 5;
   return s;
 }
 
@@ -87,6 +99,7 @@ function merge(s) {
     legacyCompletedChapters: s.legacyCompletedChapters,
     unlockEvents: s.unlockEvents,
     pendingGrants: s.pendingGrants,
+    paidGrants: s.paidGrants,
     dataVersion: s.dataVersion,
   };
 }

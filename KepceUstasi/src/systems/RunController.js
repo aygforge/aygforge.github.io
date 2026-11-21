@@ -37,7 +37,7 @@ const MAX_STEPS_PER_UPDATE = 6;
 // Alpha 0.2 run counters. Missing keys in an Alpha 0.1 snapshot are filled by migrateRunState().
 export const RUN_COUNTER_DEFAULTS = {
   permShot: 0, powerShot: 0, doubleShot: 0, panKills: 0, echoUsedThisWave: false,
-  pierce: 0, explode: 0, knock: 0, healDmg: 0, shuffleUsedThisWave: false,
+  pierce: 0, explode: 0, knock: 0, healDmg: 0, shuffleUsedThisWave: false, weaponShot: 0, eqPanKills: 0,
 };
 
 // Safe migration of an older (Alpha 0.1) wave snapshot: only adds missing fields with neutral defaults.
@@ -68,7 +68,7 @@ export function newRunState({ chapter, perm, seed, runId }) {
     abilities: {},
     perm: { ...perm },
     counters: { ...RUN_COUNTER_DEFAULTS },
-    pending: { chain: 0, mastery: 0 },
+    pending: { chain: 0, mastery: 0, eqPan: 0 },
     recipe: emptyRecipe(chapter),
     stats: {
       hpLost: 0, kills: 0, escaped: 0, shots: 0, normalShots: 0, damageDealt: 0,
@@ -93,6 +93,9 @@ export class RunController {
    */
   constructor(opts) {
     this.chapter = findChapter(opts.snapshot ? opts.snapshot.chapterId : opts.chapterId);
+    // Alpha 0.4B: wave count / skill-pick waves come from the chapter (campaign 6+6, dungeon 4+4)
+    this.normalWaves = this.chapter?.waves.length ?? NORMAL_WAVES;
+    this.skillWaves = this.chapter?.skillWaves ?? SKILL_WAVES;
     if (!this.chapter) throw new Error('unknown chapter');
     this.listeners = [];
     this.autoAck = !!opts.autoAck;
@@ -187,14 +190,14 @@ export class RunController {
     this.run.counters.echoUsedThisWave = false;
     this.run.counters.shuffleUsedThisWave = false;
     this.run.waveTurn = 0;
-    if (this.run.wave > NORMAL_WAVES && this.run.stats.bossStartTurn == null) this.run.stats.bossStartTurn = this.run.turn;
+    if (this.run.wave > this.normalWaves && this.run.stats.bossStartTurn == null) this.run.stats.bossStartTurn = this.run.turn;
     const spawned = spawnWave(this.run, this.chapter, this.rng);
     const firstOfRun = this.run.turn === 0;
     this.onAck = () => (firstOfRun ? this.enterSwing(true) : this.enterPotRefill(true));
     this.awaitAck({
       kind: 'wavePrep',
       wave: this.run.wave,
-      isBoss: this.run.wave > NORMAL_WAVES,
+      isBoss: this.run.wave > this.normalWaves,
       enemies: spawned.map((e) => ({ ...e })),
     });
   }
@@ -281,9 +284,9 @@ export class RunController {
 
   waveCleared() {
     this.setPhase(PHASE.WAVE_OR_TURN_END);
-    if (this.run.wave <= NORMAL_WAVES) this.run.stats.completedWaves = this.run.wave;
+    if (this.run.wave <= this.normalWaves) this.run.stats.completedWaves = this.run.wave;
     this.emit({ kind: 'waveCleared', wave: this.run.wave });
-    if (SKILL_WAVES.includes(this.run.wave)) return this.enterSkillChoice();
+    if (this.skillWaves.includes(this.run.wave)) return this.enterSkillChoice();
     this.nextWave();
   }
 
@@ -299,7 +302,7 @@ export class RunController {
     this.run.offerSeq++;
     this.run.choiceCount++;
     this.setPhase(PHASE.SKILL_CHOICE);
-    this.emit({ kind: 'skillChoice', offer, offerSeq: this.run.offerSeq, rerollAvailable: !this.run.rerollUsed, choice: this.run.choiceCount, total: SKILL_WAVES.length });
+    this.emit({ kind: 'skillChoice', offer, offerSeq: this.run.offerSeq, rerollAvailable: !this.run.rerollUsed, choice: this.run.choiceCount, total: this.skillWaves.length });
   }
 
   rerollSkills() {
@@ -308,7 +311,7 @@ export class RunController {
     const offer = makeOffer(this.run, this.chapter, this.rng, this.run.offer);
     this.run.offer = offer;
     this.run.offerSeq++;
-    this.emit({ kind: 'skillChoice', offer, offerSeq: this.run.offerSeq, rerollAvailable: false, choice: this.run.choiceCount, total: SKILL_WAVES.length, rerolled: true });
+    this.emit({ kind: 'skillChoice', offer, offerSeq: this.run.offerSeq, rerollAvailable: false, choice: this.run.choiceCount, total: this.skillWaves.length, rerolled: true });
     return true;
   }
 
