@@ -1,0 +1,5 @@
+{"level":1,"type":"standard","finished":true,"results":1,"victory":true,"stars":3,"turns":15,"wavesCleared":6,"picks":6,"final":{"type":"final_L1","maxHp":14,"shield":0,"dead":true},"hpLost":0,"tips":108,"errors":0}
+{"level":5,"type":"mini_boss","finished":true,"results":1,"victory":true,"stars":3,"turns":24,"wavesCleared":6,"picks":6,"final":{"type":"final_L5","maxHp":28,"shield":0,"dead":true},"hpLost":0,"tips":122,"errors":0}
+{"level":10,"type":"chapter_boss","finished":true,"results":1,"victory":true,"stars":3,"turns":33,"wavesCleared":6,"picks":6,"final":{"type":"giant_tomato","maxHp":42,"shield":4,"dead":true},"hpLost":1,"tips":144,"errors":0}
+{"level":15,"type":"mini_boss","finished":true,"results":1,"victory":true,"stars":3,"turns":28,"wavesCleared":6,"picks":6,"final":{"type":"final_L15","maxHp":36,"shield":2,"dead":true},"hpLost":0,"tips":168,"errors":0}
+{"level":20,"type":"chapter_boss","finished":true,"results":1,"victory":true,"stars":1,"turns":44,"wavesCleared":6,"picks":6,"final":{"type":"potato_king","maxHp":54,"shield":4,"dead":true},"hpLost":5,"tips":164,"errors":0}

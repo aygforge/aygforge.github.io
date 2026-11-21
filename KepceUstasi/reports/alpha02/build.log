@@ -1,0 +1,28 @@
+
+> kepce-ustasi@0.2.0 build
+> vite build
+
+vite v6.4.6 building for production...
+transforming...
+✓ 35 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                                    2.35 kB │ gzip:   1.02 kB
+dist/sw.js                                                         3.14 kB
+dist/assets/pixelify-sans-cyrillic-700-normal-CYtG5Rfp.woff2       3.17 kB
+dist/assets/pixelify-sans-cyrillic-400-normal-Ckz2YJkH.woff2       3.18 kB
+dist/assets/pixelify-sans-cyrillic-700-normal-BrZTw8tu.woff        4.41 kB
+dist/assets/pixelify-sans-cyrillic-400-normal-DfOZNMlW.woff        4.41 kB
+dist/assets/pixelify-sans-latin-ext-400-normal-DdH6zlBQ.woff2      5.36 kB
+dist/assets/pixelify-sans-latin-ext-700-normal-ClyJstAh.woff2      5.42 kB
+dist/assets/pixelify-sans-latin-ext-400-normal-BkfTUL4s.woff       7.44 kB
+dist/assets/pixelify-sans-latin-ext-700-normal-BadXkHzZ.woff       7.47 kB
+dist/assets/pixelify-sans-latin-400-normal-DLrIX9QE.woff2          7.69 kB
+dist/assets/pixelify-sans-latin-700-normal-D3Xxx3QE.woff2          7.90 kB
+dist/assets/pixelify-sans-latin-400-normal-JapMNN6Z.woff          10.26 kB
+dist/assets/pixelify-sans-latin-700-normal-BctWAS0u.woff          10.49 kB
+dist/assets/index-DSB8h3iu.css                                     2.25 kB │ gzip:   0.52 kB
+dist/assets/matter-elkLEKeR.js                                    85.54 kB │ gzip:  27.49 kB
+dist/assets/index-d7ppC4tJ.js                                     87.73 kB │ gzip:  31.72 kB
+dist/assets/phaser-DzTDBLkw.js                                 1,481.89 kB │ gzip: 339.88 kB
+✓ built in 5.31s

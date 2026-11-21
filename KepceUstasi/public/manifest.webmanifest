@@ -1,0 +1,10 @@
+{
+  "name": "Kepçe Ustası",
+  "short_name": "Kepçe Ustası",
+  "start_url": "./index.html",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#1e1a26",
+  "theme_color": "#1e1a26",
+  "icons": [{ "src": "assets/oils/oil_big.png", "sizes": "11x11", "type": "image/png" }]
+}

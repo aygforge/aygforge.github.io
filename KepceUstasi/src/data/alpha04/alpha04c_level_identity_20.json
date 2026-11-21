@@ -1,0 +1,1962 @@
+{
+  "schema": "kepce-alpha04c-identity/1",
+  "status": "DESIGN_PROPOSAL_REQUIRES_ADAPTATION_TO_LIVE_ALPHA04B",
+  "basedOn": "Kepce_Ustasi_120_Level_Progression_v1_1.xlsx Level_120 1-20 + Alpha03 reports",
+  "integrationNotice": "Constructed from prior Alpha 0.4 design JSON, NOT inspected from current 0.4B branch. Opus must map differences after reading current source.",
+  "gameplayInvariants": {
+    "portraitTwoHalves": true,
+    "oneUnnamedChef": true,
+    "realMatterLadle": true,
+    "hybridPot": true,
+    "enemyMovesOnlyAfterVolleyRightToLeft": true,
+    "existing24Abilities": true,
+    "sixSkillPicksPerRun": true,
+    "singleKillCredit": true
+  },
+  "existingAlpha03BehaviorPolicy": "Keep Alpha 0.3 pot parameters and combat logic unchanged unless stage-data integration requires small adaptation.",
+  "chapters": [
+    {
+      "id": "menemen",
+      "name": "Menemen",
+      "originalChapterId": "menemen",
+      "recipe": {
+        "tomato": 3,
+        "pepper": 2,
+        "egg": 1
+      },
+      "enemyHpAlpha03": {
+        "tomato": 7,
+        "pepper": 5,
+        "egg": 3,
+        "tomato_minion": 3
+      },
+      "enemyIds": [
+        "tomato",
+        "pepper",
+        "egg"
+      ],
+      "chapterBossId": "giant_tomato",
+      "chapterBossName": "Dev Domates"
+    },
+    {
+      "id": "fries",
+      "name": "Patates Kızartması",
+      "originalChapterId": "fries",
+      "recipe": {
+        "potato": 6,
+        "salt": 2
+      },
+      "enemyHpAlpha03": {
+        "potato": 6,
+        "armored_potato": 14,
+        "salt": 4
+      },
+      "enemyIds": [
+        "potato",
+        "armored_potato",
+        "salt"
+      ],
+      "chapterBossId": "potato_king",
+      "chapterBossName": "Patates Kral"
+    }
+  ],
+  "levels": [
+    {
+      "level": 1,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 1,
+      "name": "İlk Menemen",
+      "stageType": "standard",
+      "recommendedChefPower": 100,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 3,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3
+      ],
+      "waves": [
+        {
+          "tomato": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 1
+        },
+        {
+          "tomato": 1,
+          "egg": 1
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 0.75,
+        "spawnXRange": [
+          0.68,
+          0.74
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "elite",
+        "enemies": [
+          {
+            "baseEnemyId": "tomato",
+            "displayName": "İlk Domates",
+            "hp": 14,
+            "shield": 0,
+            "spriteReuse": "tomato",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "tomato": 3,
+        "pepper": 1,
+        "egg": 1
+      },
+      "rewards": {
+        "baseTips": 60,
+        "firstClearTips": 30,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 10
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "intro",
+      "stageIdentity": {
+        "format": "intro",
+        "spawnStyle": "normal",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "İlk Menemen",
+        "onScreenRuleLabel": "Tanışma"
+      }
+    },
+    {
+      "level": 2,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 2,
+      "name": "Biber Koşturmacası",
+      "stageType": "standard",
+      "recommendedChefPower": 102,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 4,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "waves": [
+        {
+          "pepper": 2
+        },
+        {
+          "pepper": 2,
+          "tomato": 1
+        },
+        {
+          "pepper": 1,
+          "egg": 1
+        },
+        {
+          "pepper": 2,
+          "tomato": 1
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 0.78,
+        "spawnXRange": [
+          0.6,
+          0.66
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "elite",
+        "enemies": [
+          {
+            "baseEnemyId": "pepper",
+            "displayName": "Hızlı Biber",
+            "hp": 17,
+            "shield": 0,
+            "spriteReuse": "pepper",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "tomato": 2,
+        "pepper": 4,
+        "egg": 1
+      },
+      "rewards": {
+        "baseTips": 62,
+        "firstClearTips": 31,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 10
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "rush",
+      "stageIdentity": {
+        "format": "rush",
+        "spawnStyle": "near",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Biber Koşturmacası",
+        "onScreenRuleLabel": "Acele Sipariş"
+      }
+    },
+    {
+      "level": 3,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 3,
+      "name": "Yumurta Yağmuru",
+      "stageType": "standard",
+      "recommendedChefPower": 105,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 4,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "waves": [
+        {
+          "egg": 2,
+          "tomato": 1
+        },
+        {
+          "egg": 2,
+          "pepper": 1
+        },
+        {
+          "egg": 3
+        },
+        {
+          "tomato": 2,
+          "pepper": 1,
+          "egg": 1
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 0.81,
+        "spawnXRange": [
+          0.658,
+          0.718
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "elite",
+        "enemies": [
+          {
+            "baseEnemyId": "egg",
+            "displayName": "İri Yumurta",
+            "hp": 18,
+            "shield": 0,
+            "spriteReuse": "egg",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "egg": 5,
+        "tomato": 2,
+        "pepper": 1
+      },
+      "rewards": {
+        "baseTips": 64,
+        "firstClearTips": 32,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 10
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "swarm",
+      "stageIdentity": {
+        "format": "swarm",
+        "spawnStyle": "normal",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Yumurta Yağmuru",
+        "onScreenRuleLabel": "Kalabalık Sipariş"
+      }
+    },
+    {
+      "level": 4,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 4,
+      "name": "Acılı Menemen",
+      "stageType": "standard",
+      "recommendedChefPower": 107,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 5,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "waves": [
+        {
+          "tomato": 2,
+          "pepper": 1
+        },
+        {
+          "pepper": 3
+        },
+        {
+          "tomato": 1,
+          "egg": 2
+        },
+        {
+          "pepper": 2,
+          "egg": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 0.85,
+        "spawnXRange": [
+          0.647,
+          0.707
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "dual_elite",
+        "enemies": [
+          {
+            "baseEnemyId": "pepper",
+            "displayName": "Acı Biber",
+            "hp": 17,
+            "shield": 0,
+            "spriteReuse": "pepper",
+            "isMiniBoss": false
+          },
+          {
+            "baseEnemyId": "tomato",
+            "displayName": "Sert Domates",
+            "hp": 13,
+            "shield": 0,
+            "spriteReuse": "tomato",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "tomato": 3,
+        "pepper": 5,
+        "egg": 2
+      },
+      "rewards": {
+        "baseTips": 66,
+        "firstClearTips": 33,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "mixed",
+      "stageIdentity": {
+        "format": "mixed",
+        "spawnStyle": "staggered",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Acılı Menemen",
+        "onScreenRuleLabel": "Karışık Sipariş"
+      }
+    },
+    {
+      "level": 5,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 5,
+      "name": "Elit Domates",
+      "stageType": "mini_boss",
+      "recommendedChefPower": 119,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 5,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "waves": [
+        {
+          "tomato": 2,
+          "egg": 1
+        },
+        {
+          "pepper": 2,
+          "tomato": 1
+        },
+        {
+          "egg": 2,
+          "pepper": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 2
+        },
+        {
+          "tomato": 2,
+          "egg": 2,
+          "pepper": 1
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 0.9,
+        "spawnXRange": [
+          0.636,
+          0.696
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "mini_boss",
+        "enemies": [
+          {
+            "baseEnemyId": "giant_tomato",
+            "displayName": "Elit Domates",
+            "hp": 28,
+            "shield": 0,
+            "spriteReuse": "giant_tomato",
+            "isMiniBoss": true
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "tomato": 4,
+        "pepper": 3,
+        "egg": 2
+      },
+      "rewards": {
+        "baseTips": 68,
+        "firstClearTips": 34,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "mini_boss",
+      "stageIdentity": {
+        "format": "mini_boss",
+        "spawnStyle": "normal",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Elit Domates",
+        "onScreenRuleLabel": "Mini Boss"
+      }
+    },
+    {
+      "level": 6,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 6,
+      "name": "Domates Sürüsü",
+      "stageType": "standard",
+      "recommendedChefPower": 112,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 4,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "waves": [
+        {
+          "tomato": 3
+        },
+        {
+          "tomato": 4,
+          "pepper": 1
+        },
+        {
+          "tomato": 4,
+          "egg": 1
+        },
+        {
+          "pepper": 2,
+          "tomato": 4,
+          "egg": 1
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 0.92,
+        "spawnXRange": [
+          0.624,
+          0.684
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "dual_elite",
+        "enemies": [
+          {
+            "baseEnemyId": "tomato",
+            "displayName": "Öncü Domates",
+            "hp": 17,
+            "shield": 0,
+            "spriteReuse": "tomato",
+            "isMiniBoss": false
+          },
+          {
+            "baseEnemyId": "pepper",
+            "displayName": "Öncü Biber",
+            "hp": 15,
+            "shield": 0,
+            "spriteReuse": "pepper",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "tomato": 7,
+        "pepper": 1,
+        "egg": 1
+      },
+      "rewards": {
+        "baseTips": 70,
+        "firstClearTips": 35,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "swarm",
+      "stageIdentity": {
+        "format": "swarm",
+        "spawnStyle": "normal",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Domates Sürüsü",
+        "onScreenRuleLabel": "Kalabalık Sipariş"
+      }
+    },
+    {
+      "level": 7,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 7,
+      "name": "Bereketli Tencere",
+      "stageType": "standard",
+      "recommendedChefPower": 115,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 4,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "waves": [
+        {
+          "egg": 2
+        },
+        {
+          "tomato": 2,
+          "egg": 1
+        },
+        {
+          "pepper": 2,
+          "egg": 2
+        },
+        {
+          "tomato": 2,
+          "pepper": 1,
+          "egg": 1
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 0.97,
+        "spawnXRange": [
+          0.613,
+          0.673
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "elite",
+        "enemies": [
+          {
+            "baseEnemyId": "egg",
+            "displayName": "Altın Sarılı Yumurta",
+            "hp": 23,
+            "shield": 0,
+            "spriteReuse": "egg",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "egg": 4,
+        "tomato": 2,
+        "pepper": 2
+      },
+      "rewards": {
+        "baseTips": 72,
+        "firstClearTips": 36,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [
+        "gold_kitchen"
+      ],
+      "designTag": "pot_bonus",
+      "stageIdentity": {
+        "format": "pot_bonus",
+        "spawnStyle": "normal",
+        "bigOilRateMultiplier": 1.35,
+        "displaySubtitle": "Bereketli Tencere",
+        "onScreenRuleLabel": "Büyük Yağ Bonusu"
+      }
+    },
+    {
+      "level": 8,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 8,
+      "name": "Tehlike Yaklaşıyor",
+      "stageType": "special",
+      "recommendedChefPower": 122,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 5,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "waves": [
+        {
+          "pepper": 2,
+          "tomato": 1
+        },
+        {
+          "pepper": 2,
+          "egg": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 2
+        },
+        {
+          "pepper": 3,
+          "tomato": 1,
+          "egg": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 2,
+          "egg": 1
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 1.02,
+        "spawnXRange": [
+          0.53,
+          0.59
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "elite",
+        "enemies": [
+          {
+            "baseEnemyId": "pepper",
+            "displayName": "Öncü Biber",
+            "hp": 26,
+            "shield": 0,
+            "spriteReuse": "pepper",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "tomato": 3,
+        "pepper": 6,
+        "egg": 2
+      },
+      "rewards": {
+        "baseTips": 75,
+        "firstClearTips": 38,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "rush",
+      "stageIdentity": {
+        "format": "rush",
+        "spawnStyle": "near",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Tehlike Yaklaşıyor",
+        "onScreenRuleLabel": "Acele Sipariş"
+      }
+    },
+    {
+      "level": 9,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 9,
+      "name": "Çifte Sipariş",
+      "stageType": "special",
+      "recommendedChefPower": 125,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 5,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "waves": [
+        {
+          "tomato": 2,
+          "pepper": 1
+        },
+        {
+          "tomato": 2,
+          "egg": 2
+        },
+        {
+          "pepper": 2,
+          "tomato": 2
+        },
+        {
+          "egg": 2,
+          "pepper": 2
+        },
+        {
+          "tomato": 3,
+          "egg": 1,
+          "pepper": 1
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 1.08,
+        "spawnXRange": [
+          0.591,
+          0.651
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "dual_elite",
+        "enemies": [
+          {
+            "baseEnemyId": "tomato",
+            "displayName": "Domates Şampiyonu",
+            "hp": 21,
+            "shield": 0,
+            "spriteReuse": "tomato",
+            "isMiniBoss": false
+          },
+          {
+            "baseEnemyId": "pepper",
+            "displayName": "Biber Şampiyonu",
+            "hp": 20,
+            "shield": 0,
+            "spriteReuse": "pepper",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "tomato": 4,
+        "pepper": 4,
+        "egg": 2
+      },
+      "rewards": {
+        "baseTips": 77,
+        "firstClearTips": 39,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "dual_elite",
+      "stageIdentity": {
+        "format": "dual_elite",
+        "spawnStyle": "staggered",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Çifte Sipariş",
+        "onScreenRuleLabel": "Çift Elit"
+      }
+    },
+    {
+      "level": 10,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 10,
+      "name": "Dev Domates",
+      "stageType": "chapter_boss",
+      "recommendedChefPower": 138,
+      "powerWall": "softwall",
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "tomato": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 3,
+          "egg": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 1,
+          "egg": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 1.12,
+        "spawnXRange": [
+          0.58,
+          0.64
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "chapter_boss",
+        "keepAlpha04BBossBehavior": true,
+        "originalData": {
+          "baseEnemyId": "giant_tomato",
+          "displayName": "Dev Domates",
+          "hp": 42,
+          "shield": 4,
+          "contactDamage": 1,
+          "spriteReuse": "giant_tomato",
+          "completionAuthority": "finalEnemyDefeated",
+          "isChapterBoss": true,
+          "isMiniBoss": false,
+          "useExistingAlpha03Behavior": true,
+          "summonAt": 0.6,
+          "summonCount": 2
+        }
+      },
+      "recipe": {
+        "tomato": 3,
+        "pepper": 2,
+        "egg": 1
+      },
+      "rewards": {
+        "baseTips": 80,
+        "firstClearTips": 40,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [
+        "chapter2_fries"
+      ],
+      "designTag": "chapter_boss",
+      "stageIdentity": {
+        "format": "chapter_boss",
+        "spawnStyle": "normal",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Dev Domates",
+        "onScreenRuleLabel": "Chapter Boss"
+      }
+    },
+    {
+      "level": 11,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 1,
+      "name": "İlk Patates",
+      "stageType": "standard",
+      "recommendedChefPower": 126,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 3,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3
+      ],
+      "waves": [
+        {
+          "potato": 2
+        },
+        {
+          "salt": 1,
+          "potato": 2
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 0.75,
+        "spawnXRange": [
+          0.64,
+          0.7
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "elite",
+        "enemies": [
+          {
+            "baseEnemyId": "potato",
+            "displayName": "İri Patates",
+            "hp": 20,
+            "shield": 0,
+            "spriteReuse": "potato",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "potato": 5,
+        "salt": 1
+      },
+      "rewards": {
+        "baseTips": 82,
+        "firstClearTips": 41,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "intro",
+      "stageIdentity": {
+        "format": "intro",
+        "spawnStyle": "normal",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "İlk Patates",
+        "onScreenRuleLabel": "Tanışma"
+      }
+    },
+    {
+      "level": 12,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 2,
+      "name": "Tuz Fırtınası",
+      "stageType": "standard",
+      "recommendedChefPower": 128,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 4,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "waves": [
+        {
+          "salt": 2
+        },
+        {
+          "salt": 2,
+          "potato": 1
+        },
+        {
+          "salt": 3,
+          "potato": 1
+        },
+        {
+          "salt": 2,
+          "potato": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 0.8,
+        "spawnXRange": [
+          0.56,
+          0.62
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "elite",
+        "enemies": [
+          {
+            "baseEnemyId": "salt",
+            "displayName": "Çılgın Tuz",
+            "hp": 20,
+            "shield": 0,
+            "spriteReuse": "salt",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "potato": 3,
+        "salt": 5
+      },
+      "rewards": {
+        "baseTips": 85,
+        "firstClearTips": 43,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "rush",
+      "stageIdentity": {
+        "format": "rush",
+        "spawnStyle": "near",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Tuz Fırtınası",
+        "onScreenRuleLabel": "Acele Sipariş"
+      }
+    },
+    {
+      "level": 13,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 3,
+      "name": "Zırh Kırma",
+      "stageType": "standard",
+      "recommendedChefPower": 131,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 4,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "waves": [
+        {
+          "armored_potato": 1,
+          "potato": 2
+        },
+        {
+          "armored_potato": 2
+        },
+        {
+          "armored_potato": 1,
+          "salt": 1,
+          "potato": 1
+        },
+        {
+          "armored_potato": 2,
+          "salt": 1
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 0.84,
+        "spawnXRange": [
+          0.613,
+          0.673
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "elite",
+        "enemies": [
+          {
+            "baseEnemyId": "armored_potato",
+            "displayName": "Demir Kabuk",
+            "hp": 26,
+            "shield": 3,
+            "spriteReuse": "armored_potato",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "potato": 3,
+        "salt": 2
+      },
+      "rewards": {
+        "baseTips": 88,
+        "firstClearTips": 44,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "armor",
+      "stageIdentity": {
+        "format": "armor",
+        "spawnStyle": "normal",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Zırh Kırma",
+        "onScreenRuleLabel": "Zırh Kırma"
+      }
+    },
+    {
+      "level": 14,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 4,
+      "name": "Çıtır Kalabalık",
+      "stageType": "standard",
+      "recommendedChefPower": 134,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 5,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "waves": [
+        {
+          "potato": 4
+        },
+        {
+          "potato": 4,
+          "salt": 1
+        },
+        {
+          "potato": 5
+        },
+        {
+          "potato": 4,
+          "salt": 2
+        },
+        {
+          "potato": 5,
+          "armored_potato": 1
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 0.89,
+        "spawnXRange": [
+          0.6,
+          0.66
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "dual_elite",
+        "enemies": [
+          {
+            "baseEnemyId": "potato",
+            "displayName": "Koca Patates",
+            "hp": 31,
+            "shield": 0,
+            "spriteReuse": "potato",
+            "isMiniBoss": false
+          },
+          {
+            "baseEnemyId": "salt",
+            "displayName": "Tuz Yağmuru",
+            "hp": 13,
+            "shield": 0,
+            "spriteReuse": "salt",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "potato": 9,
+        "salt": 2
+      },
+      "rewards": {
+        "baseTips": 90,
+        "firstClearTips": 45,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "swarm",
+      "stageIdentity": {
+        "format": "swarm",
+        "spawnStyle": "normal",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Çıtır Kalabalık",
+        "onScreenRuleLabel": "Kalabalık Sipariş"
+      }
+    },
+    {
+      "level": 15,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 5,
+      "name": "Elit Patates",
+      "stageType": "mini_boss",
+      "recommendedChefPower": 148,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 5,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "waves": [
+        {
+          "potato": 2,
+          "armored_potato": 1
+        },
+        {
+          "salt": 2,
+          "potato": 2
+        },
+        {
+          "armored_potato": 2,
+          "salt": 1
+        },
+        {
+          "potato": 3,
+          "salt": 2
+        },
+        {
+          "armored_potato": 2,
+          "potato": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 0.93,
+        "spawnXRange": [
+          0.587,
+          0.647
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "mini_boss",
+        "enemies": [
+          {
+            "baseEnemyId": "armored_potato",
+            "displayName": "Elit Patates",
+            "hp": 36,
+            "shield": 2,
+            "spriteReuse": "armored_potato",
+            "isMiniBoss": true
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "potato": 7,
+        "salt": 4
+      },
+      "rewards": {
+        "baseTips": 93,
+        "firstClearTips": 47,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [
+        "materials_depot",
+        "materials_starter_grant_18"
+      ],
+      "designTag": "mini_boss",
+      "stageIdentity": {
+        "format": "mini_boss",
+        "spawnStyle": "normal",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Elit Patates",
+        "onScreenRuleLabel": "Mini Boss"
+      }
+    },
+    {
+      "level": 16,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 6,
+      "name": "Kalın Kabuk",
+      "stageType": "standard",
+      "recommendedChefPower": 141,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 4,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "waves": [
+        {
+          "armored_potato": 1,
+          "potato": 2
+        },
+        {
+          "armored_potato": 2,
+          "potato": 1
+        },
+        {
+          "armored_potato": 2,
+          "salt": 1
+        },
+        {
+          "armored_potato": 2,
+          "potato": 2,
+          "salt": 1
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 0.95,
+        "spawnXRange": [
+          0.573,
+          0.633
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "elite",
+        "enemies": [
+          {
+            "baseEnemyId": "armored_potato",
+            "displayName": "Taş Kabuk",
+            "hp": 35,
+            "shield": 4,
+            "spriteReuse": "armored_potato",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "potato": 4,
+        "salt": 2
+      },
+      "rewards": {
+        "baseTips": 96,
+        "firstClearTips": 48,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [
+        "rare_crafting"
+      ],
+      "designTag": "armor",
+      "stageIdentity": {
+        "format": "armor",
+        "spawnStyle": "normal",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Kalın Kabuk",
+        "onScreenRuleLabel": "Zırh Kırma"
+      }
+    },
+    {
+      "level": 17,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 7,
+      "name": "Tuz ve Kalkan",
+      "stageType": "standard",
+      "recommendedChefPower": 144,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 4,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "waves": [
+        {
+          "salt": 2,
+          "armored_potato": 1
+        },
+        {
+          "potato": 2,
+          "salt": 2
+        },
+        {
+          "armored_potato": 2,
+          "salt": 2
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 1.0,
+        "spawnXRange": [
+          0.56,
+          0.62
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "dual_elite",
+        "enemies": [
+          {
+            "baseEnemyId": "armored_potato",
+            "displayName": "Zırhlı Nöbetçi",
+            "hp": 29,
+            "shield": 2,
+            "spriteReuse": "armored_potato",
+            "isMiniBoss": false
+          },
+          {
+            "baseEnemyId": "salt",
+            "displayName": "Tuz Öncüsü",
+            "hp": 17,
+            "shield": 0,
+            "spriteReuse": "salt",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "potato": 3,
+        "salt": 6
+      },
+      "rewards": {
+        "baseTips": 99,
+        "firstClearTips": 50,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "mixed",
+      "stageIdentity": {
+        "format": "mixed",
+        "spawnStyle": "staggered",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Tuz ve Kalkan",
+        "onScreenRuleLabel": "Karışık Sipariş"
+      }
+    },
+    {
+      "level": 18,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 8,
+      "name": "Daralan Mesafe",
+      "stageType": "special",
+      "recommendedChefPower": 153,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 5,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "waves": [
+        {
+          "potato": 3,
+          "salt": 1
+        },
+        {
+          "salt": 3,
+          "potato": 2
+        },
+        {
+          "armored_potato": 2,
+          "potato": 2
+        },
+        {
+          "salt": 2,
+          "potato": 2
+        },
+        {
+          "potato": 3,
+          "armored_potato": 1,
+          "salt": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 1.06,
+        "spawnXRange": [
+          0.48,
+          0.54
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "elite",
+        "enemies": [
+          {
+            "baseEnemyId": "salt",
+            "displayName": "Öncü Tuz",
+            "hp": 30,
+            "shield": 0,
+            "spriteReuse": "salt",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "potato": 7,
+        "salt": 5
+      },
+      "rewards": {
+        "baseTips": 102,
+        "firstClearTips": 51,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "rush",
+      "stageIdentity": {
+        "format": "rush",
+        "spawnStyle": "near",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Daralan Mesafe",
+        "onScreenRuleLabel": "Acele Sipariş"
+      }
+    },
+    {
+      "level": 19,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 9,
+      "name": "İki Zırhlı",
+      "stageType": "special",
+      "recommendedChefPower": 157,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 5,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "waves": [
+        {
+          "armored_potato": 2,
+          "potato": 1
+        },
+        {
+          "armored_potato": 2,
+          "salt": 2
+        },
+        {
+          "potato": 3,
+          "salt": 2
+        },
+        {
+          "armored_potato": 3,
+          "potato": 1
+        },
+        {
+          "armored_potato": 2,
+          "potato": 2,
+          "salt": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 1.1,
+        "spawnXRange": [
+          0.533,
+          0.593
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "dual_elite",
+        "enemies": [
+          {
+            "baseEnemyId": "armored_potato",
+            "displayName": "Sağ Muhafız",
+            "hp": 30,
+            "shield": 2,
+            "spriteReuse": "armored_potato",
+            "isMiniBoss": false
+          },
+          {
+            "baseEnemyId": "armored_potato",
+            "displayName": "Sol Muhafız",
+            "hp": 30,
+            "shield": 2,
+            "spriteReuse": "armored_potato",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "potato": 5,
+        "salt": 3
+      },
+      "rewards": {
+        "baseTips": 106,
+        "firstClearTips": 53,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "dual_elite",
+      "stageIdentity": {
+        "format": "dual_elite",
+        "spawnStyle": "staggered",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "İki Zırhlı",
+        "onScreenRuleLabel": "Çift Elit"
+      }
+    },
+    {
+      "level": 20,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 10,
+      "name": "Patates Kral",
+      "stageType": "chapter_boss",
+      "recommendedChefPower": 183,
+      "powerWall": "hardwall",
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "potato": 2
+        },
+        {
+          "potato": 2,
+          "salt": 1
+        },
+        {
+          "potato": 1,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 2
+        },
+        {
+          "potato": 2,
+          "armored_potato": 2,
+          "salt": 1
+        },
+        {
+          "potato": 3,
+          "armored_potato": 1,
+          "salt": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 1.15,
+        "spawnXRange": [
+          0.52,
+          0.58
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "type": "chapter_boss",
+        "keepAlpha04BBossBehavior": true,
+        "originalData": {
+          "baseEnemyId": "potato_king",
+          "displayName": "Patates Kral",
+          "hp": 54,
+          "shield": 4,
+          "contactDamage": 2,
+          "spriteReuse": "potato_king",
+          "completionAuthority": "finalEnemyDefeated",
+          "isChapterBoss": true,
+          "isMiniBoss": false,
+          "useExistingAlpha03Behavior": true,
+          "hasteAt": 0.5
+        }
+      },
+      "recipe": {
+        "potato": 6,
+        "salt": 2
+      },
+      "rewards": {
+        "baseTips": 109,
+        "firstClearTips": 55,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [
+        "alpha04_campaign_complete"
+      ],
+      "designTag": "chapter_boss",
+      "stageIdentity": {
+        "format": "chapter_boss",
+        "spawnStyle": "normal",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Patates Kral",
+        "onScreenRuleLabel": "Chapter Boss"
+      }
+    }
+  ],
+  "levelIdentityRules": {
+    "finalVictory": "allFinalEnemiesDefeated; boss stage preserves existing win authority",
+    "enemyMovement": "only once per completed turn, right to left except explicit hit knockback",
+    "waveToSkill": "one pick after each normal wave, no pick after final",
+    "mutators": {
+      "normal": "use regular spawn distribution",
+      "near": "shift spawn closer within readable combat area; no mid-turn movement",
+      "staggered": "stage different X spawn groups in each wave; preserve natural Y offsets"
+    },
+    "potBonus": "large oil spawn rate increase only when stage potBonusMultiplier>0; cap and true capture physics unchanged",
+    "visualCost": "Reuse current sprites with simple tint/scale/label for elites; no new long animation requirements"
+  },
+  "metaNotes": [
+    "Data specifies stage identities and wave definitions, not code implementation",
+    "Existing 0.4B save migration and current completed level progress must be preserved",
+    "If actual code cannot support finalEnemies arrays, implement minimal adapter only; keep boss unique",
+    "Do not adjust equipment, energy, reward, dungeon, or SG formulas in this pass"
+  ]
+}
