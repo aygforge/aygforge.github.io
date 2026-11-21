@@ -30,7 +30,8 @@ export function threatScore(e) {
 function speedOf(e) {
   if (e.type === 'potato_king' && e.hasted) return 1;
   if (e.frozen) return 0; // a frozen enemy will not move next phase
-  if (e.move === 'pepper') return 2;
+  if (e.move === 'pepper' || e.altFrom != null) return 2; // 0.5A: cracked onion / Koca Mantar phase 2
+
   return ENEMIES[e.type].speed;
 }
 
@@ -43,7 +44,7 @@ export function selectTarget(run) {
       (b.frozen ? 0 : threatScore(b)) - (a.frozen ? 0 : threatScore(a)) ||
       speedOf(b) - speedOf(a) ||
       a.x - b.x ||
-      a.hp + a.shield - (b.hp + b.shield) ||
+      a.hp + a.shield + (a.shell || 0) - (b.hp + b.shield + (b.shell || 0)) ||
       a.id - b.id,
   );
   return alive[0];
@@ -66,7 +67,8 @@ export function behindTarget(run, target) {
   return cands[0] || null;
 }
 
-// Applies damage to an enemy: guard (-1) -> shield points -> HP. HP never negative.
+// Applies damage to an enemy: guard (-1) -> shield points -> shell (Alpha 0.5A onion) -> HP. HP never negative.
+// Shell break only flags the enemy: its faster 1,2 pattern starts at its NEXT move (EnemyDirector.stepsFor).
 export function applyDamage(e, amount) {
   let dmg = Math.max(0, amount);
   let guarded = 0;
@@ -78,9 +80,29 @@ export function applyDamage(e, amount) {
   const shieldDmg = Math.min(e.shield, dmg);
   e.shield -= shieldDmg;
   dmg -= shieldDmg;
+  let shellDmg = 0;
+  let cracked = false;
+  if (e.shell > 0 && dmg > 0) {
+    shellDmg = Math.min(e.shell, dmg);
+    e.shell -= shellDmg;
+    dmg -= shellDmg; // the rest overflows into HP
+    if (e.shell === 0) {
+      cracked = true;
+      if (ENEMIES[e.type]?.crackSpeed && e.altFrom == null) e.altFrom = e.moveOpp;
+    }
+  }
   const hpDmg = Math.min(e.hp, dmg);
   e.hp -= hpDmg;
-  return { guarded, shieldDmg, hpDmg, shieldBroken: shieldDmg > 0 && e.shield === 0 };
+  // Elit Şapka (L25): once, after surviving a hit at <= 50 % HP: +2 shield (cap 4)
+  let halfShield = 0;
+  const hs = ENEMIES[e.type]?.halfHpShield;
+  if (hs && e.hp > 0 && !e.halfShieldUsed && e.hp <= e.maxHp * 0.5) {
+    e.halfShieldUsed = true;
+    halfShield = Math.max(0, Math.min(hs.cap, e.shield + hs.gain) - e.shield);
+    e.shield += halfShield;
+    e.maxShield = Math.max(e.maxShield || 0, e.shield);
+  }
+  return { guarded, shieldDmg, shellDmg, cracked, halfShield, hpDmg, shieldBroken: shieldDmg > 0 && e.shield === 0 };
 }
 
 // Deterministic crit roll from a dedicated RNG stream stored in the run (snapshot-safe).
@@ -141,7 +163,7 @@ function secondaryHit(run, chapter, ctx, source, from, target, dmg, extra = {}) 
   run.turnSecondary++;
   const r = applyDamage(target, dmg);
   ctx.hpDamage += r.hpDmg;
-  run.stats.damageDealt += r.hpDmg + r.shieldDmg;
+  run.stats.damageDealt += r.hpDmg + r.shieldDmg + r.shellDmg;
   ctx.events.push({ type: 'area', source, fromId: from.id, fromX: from.x, fromY: from.y, targetId: target.id, damage: dmg, ...r, hp: target.hp, shield: target.shield, ...extra });
   if (target.hp <= 0) killEnemy(run, chapter, target, source, ctx);
   const owner = { knockback_boss: 'oil_knockback' }[source] || source;
@@ -251,7 +273,7 @@ export function resolveVolley(run, chapter, shots) {
     const r = applyDamage(target, dmg);
     ctx.hpDamage += r.hpDmg;
     run.stats.shots++;
-    run.stats.damageDealt += r.hpDmg + r.shieldDmg;
+    run.stats.damageDealt += r.hpDmg + r.shieldDmg + r.shellDmg;
     const shotEv = {
       type: 'shot', index: i, shotId: shot.id, parentShotId: shot.parentShotId, oil: shot.oil, isBonus: !!shot.isBonus,
       canProc: real, source: shot.source, targetId: target.id, damage: dmg, crit, bonusParts, ...r, hp: target.hp, shield: target.shield,
@@ -367,7 +389,7 @@ export function resolveVolley(run, chapter, shots) {
 export function resolveReflect(run, chapter, e, dmg) {
   const ctx = makeCtx(run, false);
   const r = applyDamage(e, dmg);
-  run.stats.damageDealt += r.hpDmg + r.shieldDmg;
+  run.stats.damageDealt += r.hpDmg + r.shieldDmg + r.shellDmg;
   ctx.events.push({ type: 'reflect', id: e.id, damage: dmg, ...r, hp: e.hp, shield: e.shield });
   proc(run, 'spiked_apron');
   if (e.hp <= 0) killEnemy(run, chapter, e, 'reflect', ctx);

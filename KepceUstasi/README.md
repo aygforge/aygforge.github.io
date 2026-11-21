@@ -1,7 +1,9 @@
-# Kepçe Ustası — Alpha 0.4C (HTML5)
+# Kepçe Ustası — Alpha 0.5A (HTML5)
 
 **Stüdyo:** Ayg Forge · **Çalışma adı:** Kepçe Ustası · **Sürüm:** Alpha 0.3 (Menemen + Patates Kızartması; yakalama hissi ve build dengesi)
 
+> **Alpha 0.5A:** Mantarlı Omlet, L21–30: Mantar, Koruyucu Mantar (kalkan pulse), Kabuklu Soğan (kabuk + hızlanma), Elit Şapka mini boss, 4 çift final ve Koca Mantar chapter boss. Ayrıntı: `CHANGELOG_ALPHA05A.md`.
+>
 > **Alpha 0.4C:** 20 level'ın her biri kendi kimliğiyle: 3–6 dalga (her normal dalgadan sonra 1 kart), yakın/kademeli spawn, tarif hedefi, mini boss / çift elit / bölüm bossu finalleri, level giriş başlığı. Ayrıntı: `CHANGELOG_ALPHA04C.md`.
 >
 > **Alpha 0.4B:** 4 ekipman yuvası (Common/Uncommon/Rare, garantili craft), Altın Mutfak (L7) ve Malzeme Deposu (L15) dungeon'ları, Şef Gücü göstergesi. Ayrıntı: `CHANGELOG_ALPHA04B.md`.

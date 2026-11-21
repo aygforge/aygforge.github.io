@@ -144,6 +144,56 @@ function eyes(p, x1, x2, y, opts = {}) {
   }
 }
 
+
+// ---------------------------------------------------------------- Alpha 0.5A: Mantarlı Omlet
+function mushroomSprite(file, w, h, cap, capLight, capDark, opts = {}) {
+  const p = new Px(w, h);
+  const cx = w / 2;
+  const s = w / 16;
+  // stem
+  p.ball(cx, h * 0.72, 3.6 * s, 4.4 * s, '#efe2c4', '#fff6e2', '#c9b48e');
+  // cap
+  p.ball(cx, h * 0.38, 7.4 * s, 5.2 * s, cap, capLight, capDark, '#ffffff');
+  p.rect(Math.round(cx - 7 * s), Math.round(h * 0.38 + 2 * s), Math.round(14 * s), Math.max(1, Math.round(s)), capDark);
+  for (const [dx, dy] of [[-3.5, -2], [2.5, -2.5], [0, -0.5], [-5, 0.5], [4.6, 0.2]]) p.rect(Math.round(cx + dx * s), Math.round(h * 0.38 + dy * s), Math.max(1, Math.round(1.4 * s)), Math.max(1, Math.round(1.2 * s)), '#fff4e2');
+  const ey = Math.round(h * 0.66);
+  eyes(p, Math.round(cx - 3 * s), Math.round(cx + 1.6 * s), ey, { angry: !!opts.angry });
+  p.hline(Math.round(cx - 1 * s), Math.round(cx + 1 * s), ey + Math.round(3 * s), '#5a3a20');
+  if (opts.guard) {
+    // small shield emblem on the stem: the "Koruyucu" read
+    p.rect(Math.round(cx - 1), Math.round(h * 0.84), 3, 3, '#8fc6f0');
+    p.set(Math.round(cx), Math.round(h * 0.84) + 3, '#8fc6f0');
+  }
+  p.outline('#2a1a14');
+  p.save(file);
+}
+function onion() {
+  const p = new Px(16, 19);
+  p.ball(8, 11.5, 6.6, 6.6, '#c98ad8', '#e8b8f0', '#8e4fa0', '#ffffff');
+  p.rect(7, 2, 2, 4, '#6aa84f');
+  p.set(6, 1, '#6aa84f');
+  p.set(9, 0, '#6aa84f');
+  for (const y of [8, 11, 14]) p.set(4, y, '#f3d8f7');
+  for (const y of [9, 12, 15]) p.set(12, y, '#7a3d8c');
+  eyes(p, 5, 9, 10, { angry: true });
+  p.hline(6, 9, 14, '#3a1440');
+  p.outline('#2a1030');
+  p.save('enemies/onion.png');
+}
+function omeletDish() {
+  const d = new Px(30, 20);
+  d.rect(2, 8, 26, 9, '#3a3f48');
+  d.hline(2, 27, 8, '#6b7380');
+  d.ball(15, 11, 11, 5, '#f7c21c', '#ffe06a', '#d49a12');
+  for (const [x, y] of [[8, 10], [14, 9], [20, 11], [11, 12], [18, 13]]) {
+    d.rect(x, y, 3, 2, '#e9dcc4');
+    d.set(x + 1, y, '#9a6a4a');
+  }
+  for (const [x, y] of [[10, 9], [16, 12], [22, 10]]) d.set(x, y, '#c98ad8');
+  d.outline('#141418');
+  d.save('kitchen/dish_omelet.png');
+}
+
 // ---------------------------------------------------------------- characters
 function chef() {
   const p = new Px(26, 33);
@@ -741,6 +791,11 @@ potato();
 armoredPotato();
 salt();
 potatoKing();
+mushroomSprite('enemies/mushroom.png', 16, 18, '#c8553d', '#e8826a', '#8e3424');
+mushroomSprite('enemies/mushroom_guard.png', 16, 18, '#4a7fc0', '#7fb0ff', '#2c5288', { guard: true });
+onion();
+mushroomSprite('bosses/giant_mushroom.png', 34, 36, '#c8553d', '#e8826a', '#8e3424', { angry: true });
+omeletDish();
 oils();
 catIcons();
 pan();

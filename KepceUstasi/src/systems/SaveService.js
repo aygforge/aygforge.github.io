@@ -27,6 +27,8 @@ export function migrateToAlpha04(s, now = Date.now()) {
   for (const k of Object.keys(f)) if (s[k] === undefined) s[k] = f[k];
   s.stageProgress.levels ||= {};
   s.stageProgress.highestUnlocked ||= 1;
+  // Alpha 0.5A: a save that already cleared L20 (old track end) opens L21 — nothing else changes
+  if (s.stageProgress.levels[20]?.cleared) s.stageProgress.highestUnlocked = Math.max(s.stageProgress.highestUnlocked, 21);
   const e = s.energy;
   for (const [k, v] of Object.entries(defaultEnergy(now))) if (e[k] === undefined) e[k] = v;
   const legacy = Object.entries(s.chapters || {}).filter(([, c]) => c && c.cleared).map(([id]) => id);

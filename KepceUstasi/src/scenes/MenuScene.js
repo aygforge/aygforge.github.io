@@ -68,7 +68,7 @@ export class MenuScene extends Phaser.Scene {
     // Alpha 0.4B: two small buttons only (minimal menu)
     button(this, W / 2 - 84, y1 + 64, 150, 40, 'EKİPMAN', () => this.openEquipment(), { size: 16, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 });
     button(this, W / 2 + 84, y1 + 64, 150, 40, 'DUNGEON', () => this.openDungeons(), { size: 16, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 });
-    text(this, W / 2, H - 22, 'Alpha 0.4C · Ayg Forge · çevrimdışı · reklamsız', 16, '#d8c9b0');
+    text(this, W / 2, H - 22, 'Alpha 0.5A · Ayg Forge · çevrimdışı · reklamsız', 16, '#d8c9b0');
 
     if (app.notice) {
       this.toast(app.notice);
@@ -102,7 +102,7 @@ export class MenuScene extends Phaser.Scene {
     }
   }
 
-  // ---------------- level select (L1–L20) ----------------
+  // ---------------- level select (L1–L30; Alpha 0.5A: 5 columns so 30 levels fit) ----------------
   openLevels() {
     const { c, top, h } = this.openOverlay('LEVEL SEÇ', 860);
     const now = Date.now();
@@ -110,24 +110,25 @@ export class MenuScene extends Phaser.Scene {
     const cur = currentLevel(app.save);
     const cs = stageByLevel(cur);
     c.add(text(this, this.W / 2, top + 68, `Şef Gücü ${sg} · L${cur} önerisi ${cs.recommendedChefPower}${cs.powerWall ? ` (${cs.powerWall})` : ''}`, 16, sg >= cs.recommendedChefPower ? '#8be07a' : '#ffb35a'));
-    const cols = 4;
-    const bw = 104;
-    const bh = 92;
+    const cols = 5;
+    const bw = 88;
+    const bh = 74;
+    const rows = Math.ceil(LEVEL_COUNT / cols);
     for (let i = 0; i < LEVEL_COUNT; i++) {
       const lvl = i + 1;
       const st = stageByLevel(lvl);
       const ss = stageState(app.save, lvl);
       const open = isStageUnlocked(app.save, lvl);
       const x = this.W / 2 + (i % cols - (cols - 1) / 2) * (bw + 12);
-      const y = top + 140 + Math.floor(i / cols) * (bh + 12);
+      const y = top + 130 + Math.floor(i / cols) * (bh + 10);
       const fill = st.stageType === 'chapter_boss' ? 0xb5341f : st.stageType === 'mini_boss' ? 0x8a4fc0 : COLORS.btn;
-      const b = button(this, x, y, bw, bh, open ? `L${lvl}` : `L${lvl}\nKİLİT`, () => this.playLevel(lvl), { size: open ? 26 : 16, enabled: open, fill });
-      b.label.y -= open ? 12 : 0;
+      const b = button(this, x, y, bw, bh, open ? `L${lvl}` : `L${lvl}\nKİLİT`, () => this.playLevel(lvl), { size: open ? 22 : 14, enabled: open, fill });
+      b.label.y -= open ? 10 : 0;
       c.add(b);
-      if (open) for (let k = 0; k < 3; k++) c.add(this.add.image(x - 26 + k * 26, y + 24, k < ss.stars ? 'star' : 'star_empty').setScale(1.5));
+      if (open) for (let k = 0; k < 3; k++) c.add(this.add.image(x - 22 + k * 22, y + 20, k < ss.stars ? 'star' : 'star_empty').setScale(1.25));
       if (lvl === cur) c.add(text(this, x, y - bh / 2 - 6, '▶', 14, COLORS.gold));
     }
-    const fy = top + 140 + 5 * (bh + 12) - 20;
+    const fy = top + 130 + rows * (bh + 10) - 22;
     // future content unlocked by levels 7 / 15 / 16: recorded as data, screens come with 0.4B
     const ev = (id) => app.save.unlockEvents.some((u) => u.id === id);
     const fut = [['gold_kitchen', 'Altın Mutfak', 7], ['materials_depot', 'Malzeme Deposu', 15], ['rare_crafting', 'Nadir Üretim', 16]]

@@ -32,6 +32,8 @@ export function living(run) {
 export function stepsFor(e, opp) {
   const def = ENEMIES[e.type];
   if (e.type === 'potato_king' && e.hasted) return 1;
+  // Alpha 0.5A: cracked onion / Koca Mantar phase 2 alternate 1,2,1,2… from their next move on
+  if (e.altFrom != null) return (opp - e.altFrom) % 2 === 1 ? 1 : 2;
   switch (e.move || def.move) { // e.move: chapter balance override (Alpha 0.3), set at spawn
     case 'pepper':
       return opp % 3 === 0 ? 2 : 1;
@@ -71,6 +73,10 @@ function makeEnemy(run, type, x, y) {
     summoned: false,
     hasted: false,
     move: chapterOf(run).balance?.move?.[type] || def.move, // movement pattern (chapter override allowed)
+    shell: def.shell || 0, // Alpha 0.5A onion shell (separate from shield, never scaled, never regrows)
+    maxShell: def.shell || 0,
+    altFrom: null, // move index after which the 1,2 pattern starts (shell broken / boss phase 2)
+    pulses: 0, // guard / Koca Mantar shield pulses used
     frozen: false, // Soğuk Sos: skips its next move once
     lastFrozenAction: null, // bosses: freeze limited to once per BOSS_FREEZE_EVERY actions
   };
@@ -132,6 +138,64 @@ export function spawnWave(run, chapter, rng) {
 }
 
 // One enemy action phase. Returns presentation events. Deterministic order (by id).
+export const GUARD_RULE = { every: 3, maxPulses: 2, amount: 2, cap: 3, range: 0.26 };
+
+// Koca Mantar (L30): first time at <= 50 % HP -> once, 2 mushrooms (6 HP, recipe mushroom) + phase 2 (1,2 moves).
+function giantMushroomPhase(run, e, def, events) {
+  if (e.summoned || e.hp > e.maxHp * def.phaseAt) return;
+  e.summoned = true;
+  e.altFrom = e.moveOpp; // the new pattern begins with this action's move
+  const cap = FIELD.activeEnemyCap - living(run).length;
+  const n = Math.max(0, Math.min(def.summonCount, cap));
+  const minions = [];
+  const offsets = [-0.24, 0.24];
+  for (let i = 0; i < n; i++) {
+    let y = e.y + offsets[i];
+    if (y < 0.12 || y > 0.88) y = e.y - offsets[i] * 1.6;
+    y = Math.max(0.1, Math.min(0.9, y));
+    const m = makeEnemy(run, 'mushroom', Math.min(0.93, e.x + 0.03), y);
+    m.hp = m.maxHp = def.summonHp;
+    m.summonedBy = e.id;
+    minions.push({ ...m });
+  }
+  events.push({ type: 'phase', id: e.id });
+  events.push({ type: 'summon', id: e.id, minions, label: 'Koca Mantar iki mantar çağırdı!' });
+}
+
+// Support pulses happen after every move of the phase (before contact). At most ONE guard shield event per phase.
+function supportPulses(run, actors, events) {
+  let granted = false;
+  for (const g of actors) {
+    if (g.dead || g.escaped) continue;
+    const def = ENEMIES[g.type];
+    if (def.guardPulse && g.actionCount % GUARD_RULE.every === 0 && g.pulses < GUARD_RULE.maxPulses) {
+      g.pulses++; // a pulse with no target (or blocked by this phase's event) is lost, never made up
+      if (granted) continue;
+      const t = living(run)
+        .filter((o) => o.id !== g.id && !ENEMIES[o.type].guardPulse && o.shield < GUARD_RULE.cap && Math.abs(o.x - g.x) <= GUARD_RULE.range + 1e-9)
+        .sort((a, b) => Math.abs(a.x - g.x) - Math.abs(b.x - g.x) || a.id - b.id)[0];
+      if (!t) continue;
+      const amount = Math.min(GUARD_RULE.cap, t.shield + GUARD_RULE.amount) - t.shield;
+      t.shield += amount;
+      t.maxShield = Math.max(t.maxShield, t.shield);
+      granted = true;
+      events.push({ type: 'shieldGranted', id: g.id, targetId: t.id, amount, shield: t.shield });
+    }
+    if (g.type === 'giant_mushroom' && g.actionCount % def.pulseEvery === 0 && g.pulses < def.maxPulses) {
+      g.pulses++;
+      const m = living(run)
+        .filter((o) => o.summonedBy === g.id && o.shield < 3)
+        .sort((a, b) => Math.hypot(a.x - g.x, a.y - g.y) - Math.hypot(b.x - g.x, b.y - g.y) || a.id - b.id)[0];
+      const t = m || (g.shield < 4 ? g : null);
+      if (!t) continue;
+      const amount = m ? Math.min(3, m.shield + 2) - m.shield : 1;
+      t.shield += amount;
+      t.maxShield = Math.max(t.maxShield, t.shield);
+      events.push({ type: 'shieldGranted', id: g.id, targetId: t.id, amount, shield: t.shield, boss: true });
+    }
+  }
+}
+
 export function enemyAction(run, rng) {
   const events = [];
   const actors = living(run).sort((a, b) => a.id - b.id);
@@ -139,6 +203,11 @@ export function enemyAction(run, rng) {
     if (e.dead || e.escaped) continue;
     const def = ENEMIES[e.type];
     let skipMove = false;
+    if (def.guardPulse) e.actionCount++; // own actions (frozen ones included) drive the 3rd/6th pulse
+    if (e.type === 'giant_mushroom') {
+      e.actionCount++;
+      giantMushroomPhase(run, e, def, events);
+    }
     if (e.type === 'giant_tomato') {
       e.actionCount++;
       if (!e.summoned && e.hp <= def.hp * def.summonAt) {
@@ -187,6 +256,7 @@ export function enemyAction(run, rng) {
       events.push({ type: 'rest', id: e.id });
     }
   }
+  supportPulses(run, actors, events);
   return events;
 }
 

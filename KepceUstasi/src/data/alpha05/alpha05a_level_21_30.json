@@ -1,0 +1,1151 @@
+{
+  "schema": "kepce-alpha05a-content/1",
+  "status": "DESIGN_PROPOSAL_REQUIRES_LIVE_SOURCE_ADAPTATION",
+  "sourceBasis": "Alpha04C_Level_Identity_20.json (prior design contract) + user-confirmed Alpha04C delivered behavior; current Alpha04C source ZIP not provided",
+  "integrationNotice": "Map 21-30 to the actual Alpha04C level adapter. Do not assume this file is direct plug-and-play. Keep 1-20 byte-for-byte logically unchanged.",
+  "preserved": [
+    "portraitTwoHalves",
+    "oneUnnamedChef",
+    "MatterJsRealCapture",
+    "hybridPot",
+    "rightToLeftEndTurnMovement",
+    "24RunAbilities",
+    "4EquipmentSlotsCommonUncommonRare",
+    "energy30Cost10Regen12m",
+    "twoExistingDungeons",
+    "saveAndRewardsExactlyOnce",
+    "minimalMenu"
+  ],
+  "chapters": [
+    {
+      "id": "omelet",
+      "name": "Mantarlı Omlet",
+      "index": 3,
+      "levels": [
+        21,
+        30
+      ],
+      "enemyIds": [
+        "mushroom",
+        "mushroom_guard",
+        "onion",
+        "egg"
+      ],
+      "bossId": "giant_mushroom",
+      "ingredientAliases": {
+        "mushroom": "mushroom",
+        "mushroom_guard": "mushroom",
+        "giant_mushroom": "mushroom",
+        "onion": "onion",
+        "egg": "egg"
+      },
+      "enemyBaseHP": {
+        "mushroom": 7,
+        "mushroom_guard": 9,
+        "onion": 8,
+        "egg": 3
+      },
+      "newArtAssets": [
+        "mushroom",
+        "onion",
+        "giant_mushroom"
+      ],
+      "reuseArt": [
+        "egg"
+      ],
+      "chefPowerChapterBoss": 216
+    }
+  ],
+  "enemyRules": {
+    "mushroom_guard": {
+      "ruleId": "guard_shield_pulse",
+      "trigger": "afterEnemyMovementOnOwn3rdAnd6thAction",
+      "pulseEveryOwnActions": 3,
+      "maxPulsesPerEnemy": 2,
+      "maxShieldGrantEventsPerEnemyActionPhase": 1,
+      "target": "nearestAliveNonGuardAllyWithinNormalizedX0.26TieId",
+      "amountShield": 2,
+      "maxGrantedShieldPerTarget": 3,
+      "canTargetSelf": false,
+      "canTargetOtherGuards": false,
+      "whenNoEligibleTarget": "skipPulse",
+      "event": "shieldGranted",
+      "userFeedback": "smallShieldIcon"
+    },
+    "onion": {
+      "ruleId": "onion_crack_speed",
+      "baseShellHP": 2,
+      "hpDamageOverflowFromShell": true,
+      "afterShellBreakMovePattern": [
+        1,
+        2
+      ],
+      "beforeShellBreakMovePattern": [
+        1
+      ],
+      "trigger": "afterHitsOnly, startNewPatternNextEnemyAction",
+      "shellRegeneration": false,
+      "userFeedback": "crackIconAndSmallMoveWarning"
+    },
+    "elite_mushroom": {
+      "ruleId": "elite_half_hp_guard",
+      "shieldAtSpawn": 3,
+      "onceAtHpFractionOrBelow": 0.5,
+      "shieldGain": 2,
+      "shieldCap": 4,
+      "trigger": "afterSurvivingHit",
+      "userFeedback": "briefShieldIcon"
+    },
+    "giant_mushroom": {
+      "ruleId": "giant_mushroom_alpha05a",
+      "hp": 72,
+      "shieldAtSpawn": 4,
+      "contactDamage": 2,
+      "spawnX": 0.7,
+      "phaseAtHpFractionOrBelow": 0.5,
+      "phase2MovementPattern": [
+        1,
+        2
+      ],
+      "phase1MovementPattern": [
+        1
+      ],
+      "summonAtPhaseTransitionOnce": {
+        "minions": [
+          {
+            "enemyId": "mushroom",
+            "hp": 6,
+            "count": 2,
+            "countsAsRecipeIngredient": "mushroom"
+          }
+        ],
+        "placement": "withinBattleBoundsNearBossWithSmallYOffsets",
+        "maxTotalSummons": 2,
+        "doNotSpawnIfBossDead": true
+      },
+      "shieldPulse": {
+        "triggerEveryBossOwnEnemyActions": 3,
+        "maxPulsesTotal": 2,
+        "target": "nearestAliveSummonedMinionElseSelf",
+        "grantToMinion": 2,
+        "grantToSelfWhenAlone": 1,
+        "maxShieldOnMinion": 3,
+        "maxShieldOnBoss": 4
+      },
+      "onDeath": "immediateVictoryCancelQueuedActionsAndSummons",
+      "userFeedback": "smallShieldAndPhaseIconsNoNewAnimationSet"
+    }
+  },
+  "levels": [
+    {
+      "level": 21,
+      "chapterId": "omelet",
+      "chapterIndex": 3,
+      "withinChapter": 1,
+      "name": "İlk Mantarlı Omlet",
+      "stageType": "standard",
+      "recommendedChefPower": 165,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 3,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3
+      ],
+      "waves": [
+        {
+          "egg": 2,
+          "mushroom": 1
+        },
+        {
+          "mushroom": 2,
+          "egg": 1
+        },
+        {
+          "onion": 1,
+          "mushroom": 1
+        }
+      ],
+      "enemyBalance": {
+        "baseHpById": {
+          "mushroom": 7,
+          "mushroom_guard": 9,
+          "onion": 8,
+          "egg": 3
+        },
+        "hpScale": 0.92,
+        "spawnXRange": [
+          0.66,
+          0.73
+        ],
+        "contactDamage": 1,
+        "shieldHPNotScaled": true
+      },
+      "finalEncounter": {
+        "type": "elite",
+        "enemies": [
+          {
+            "baseEnemyId": "mushroom",
+            "displayName": "Tombul Mantar",
+            "hp": 20,
+            "shield": 0,
+            "spriteReuse": "mushroom",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "mushroom": 3,
+        "egg": 2,
+        "onion": 1
+      },
+      "rewards": {
+        "baseTips": 112,
+        "firstClearTips": 56,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "stageIdentity": {
+        "format": "elite",
+        "spawnStyle": "normal",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Temel mantar ve soğanla tanış",
+        "onScreenRuleLabel": "Yeni Lezzet"
+      }
+    },
+    {
+      "level": 22,
+      "chapterId": "omelet",
+      "chapterIndex": 3,
+      "withinChapter": 2,
+      "name": "Çatlayan Kabuk",
+      "stageType": "armor",
+      "recommendedChefPower": 169,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 4,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "waves": [
+        {
+          "onion": 2,
+          "egg": 1
+        },
+        {
+          "onion": 1,
+          "mushroom": 1
+        },
+        {
+          "onion": 2,
+          "egg": 1
+        },
+        {
+          "onion": 2,
+          "mushroom": 1
+        }
+      ],
+      "enemyBalance": {
+        "baseHpById": {
+          "mushroom": 7,
+          "mushroom_guard": 9,
+          "onion": 8,
+          "egg": 3
+        },
+        "hpScale": 0.96,
+        "spawnXRange": [
+          0.64,
+          0.71
+        ],
+        "contactDamage": 1,
+        "shieldHPNotScaled": true
+      },
+      "finalEncounter": {
+        "type": "elite",
+        "enemies": [
+          {
+            "baseEnemyId": "onion",
+            "displayName": "Çıtır Kabuk",
+            "hp": 24,
+            "shield": 0,
+            "spriteReuse": "onion",
+            "isMiniBoss": false,
+            "shellHP": 4
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "onion": 4,
+        "egg": 2,
+        "mushroom": 1
+      },
+      "rewards": {
+        "baseTips": 115,
+        "firstClearTips": 58,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "stageIdentity": {
+        "format": "elite",
+        "spawnStyle": "normal",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Kabuğu kırılan soğan hızlanır",
+        "onScreenRuleLabel": "Kabuk Kır"
+      }
+    },
+    {
+      "level": 23,
+      "chapterId": "omelet",
+      "chapterIndex": 3,
+      "withinChapter": 3,
+      "name": "Koruyucu Şapkalar",
+      "stageType": "support",
+      "recommendedChefPower": 174,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 4,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "waves": [
+        {
+          "mushroom_guard": 1,
+          "mushroom": 1,
+          "egg": 1
+        },
+        {
+          "mushroom_guard": 1,
+          "onion": 1,
+          "mushroom": 1
+        },
+        {
+          "mushroom_guard": 1,
+          "mushroom": 2,
+          "egg": 1
+        },
+        {
+          "mushroom_guard": 1,
+          "onion": 1,
+          "mushroom": 2
+        }
+      ],
+      "enemyBalance": {
+        "baseHpById": {
+          "mushroom": 7,
+          "mushroom_guard": 9,
+          "onion": 8,
+          "egg": 3
+        },
+        "hpScale": 1.0,
+        "spawnXRange": [
+          0.63,
+          0.7
+        ],
+        "contactDamage": 1,
+        "shieldHPNotScaled": true
+      },
+      "finalEncounter": {
+        "type": "dual_elite",
+        "enemies": [
+          {
+            "baseEnemyId": "mushroom_guard",
+            "displayName": "Muhafız Mantar",
+            "hp": 22,
+            "shield": 0,
+            "spriteReuse": "mushroom",
+            "isMiniBoss": false
+          },
+          {
+            "baseEnemyId": "mushroom",
+            "displayName": "Korunan Mantar",
+            "hp": 16,
+            "shield": 0,
+            "spriteReuse": "mushroom",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "mushroom": 4,
+        "onion": 2,
+        "egg": 2
+      },
+      "rewards": {
+        "baseTips": 118,
+        "firstClearTips": 59,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "stageIdentity": {
+        "format": "dual_elite",
+        "spawnStyle": "staggered",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Koruyucu mantar kalkan verir",
+        "onScreenRuleLabel": "Kalkan Desteği"
+      }
+    },
+    {
+      "level": 24,
+      "chapterId": "omelet",
+      "chapterIndex": 3,
+      "withinChapter": 4,
+      "name": "Kabuk ve Kalkan",
+      "stageType": "mixed",
+      "recommendedChefPower": 178,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 5,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "waves": [
+        {
+          "onion": 2,
+          "mushroom": 1
+        },
+        {
+          "mushroom_guard": 1,
+          "mushroom": 2
+        },
+        {
+          "onion": 2,
+          "egg": 2
+        },
+        {
+          "mushroom_guard": 1,
+          "onion": 1,
+          "mushroom": 2
+        },
+        {
+          "onion": 2,
+          "mushroom_guard": 1,
+          "egg": 2
+        }
+      ],
+      "enemyBalance": {
+        "baseHpById": {
+          "mushroom": 7,
+          "mushroom_guard": 9,
+          "onion": 8,
+          "egg": 3
+        },
+        "hpScale": 1.03,
+        "spawnXRange": [
+          0.61,
+          0.69
+        ],
+        "contactDamage": 1,
+        "shieldHPNotScaled": true
+      },
+      "finalEncounter": {
+        "type": "dual_elite",
+        "enemies": [
+          {
+            "baseEnemyId": "onion",
+            "displayName": "Kabuk Bekçisi",
+            "hp": 23,
+            "shield": 0,
+            "spriteReuse": "onion",
+            "isMiniBoss": false,
+            "shellHP": 4
+          },
+          {
+            "baseEnemyId": "mushroom_guard",
+            "displayName": "Kalkan Şapkası",
+            "hp": 22,
+            "shield": 0,
+            "spriteReuse": "mushroom",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "onion": 5,
+        "mushroom": 4,
+        "egg": 2
+      },
+      "rewards": {
+        "baseTips": 121,
+        "firstClearTips": 61,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "stageIdentity": {
+        "format": "dual_elite",
+        "spawnStyle": "staggered",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Korunan soğanlar ile destekçi mantarlar",
+        "onScreenRuleLabel": "İki Tehdit"
+      }
+    },
+    {
+      "level": 25,
+      "chapterId": "omelet",
+      "chapterIndex": 3,
+      "withinChapter": 5,
+      "name": "Elit Şapka",
+      "stageType": "mini_boss",
+      "recommendedChefPower": 191,
+      "powerWall": "softwall",
+      "energyCost": 10,
+      "waveCount": 5,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "waves": [
+        {
+          "mushroom": 2,
+          "egg": 2
+        },
+        {
+          "mushroom_guard": 1,
+          "onion": 2
+        },
+        {
+          "mushroom_guard": 1,
+          "mushroom": 2,
+          "egg": 1
+        },
+        {
+          "onion": 2,
+          "mushroom": 2
+        },
+        {
+          "mushroom_guard": 1,
+          "onion": 1,
+          "egg": 2
+        }
+      ],
+      "enemyBalance": {
+        "baseHpById": {
+          "mushroom": 7,
+          "mushroom_guard": 9,
+          "onion": 8,
+          "egg": 3
+        },
+        "hpScale": 1.08,
+        "spawnXRange": [
+          0.6,
+          0.67
+        ],
+        "contactDamage": 1,
+        "shieldHPNotScaled": true
+      },
+      "finalEncounter": {
+        "type": "mini_boss",
+        "enemies": [
+          {
+            "baseEnemyId": "mushroom",
+            "displayName": "Elit Şapka",
+            "hp": 38,
+            "shield": 3,
+            "spriteReuse": "mushroom",
+            "isMiniBoss": true,
+            "uniqueRule": "eliteHalfHpShieldOnce",
+            "shieldGrantedAtHalfHp": 2,
+            "shieldCap": 4
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "mushroom": 5,
+        "onion": 3,
+        "egg": 2
+      },
+      "rewards": {
+        "baseTips": 124,
+        "firstClearTips": 62,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [
+        "boss_kitchen_future_eligibility"
+      ],
+      "stageIdentity": {
+        "format": "mini_boss",
+        "spawnStyle": "normal",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Elit mantarın koruma kabuğu",
+        "onScreenRuleLabel": "Mini Boss"
+      }
+    },
+    {
+      "level": 26,
+      "chapterId": "omelet",
+      "chapterIndex": 3,
+      "withinChapter": 6,
+      "name": "Yumurta Telaşı",
+      "stageType": "swarm",
+      "recommendedChefPower": 185,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 3,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3
+      ],
+      "waves": [
+        {
+          "egg": 5,
+          "mushroom": 1
+        },
+        {
+          "egg": 4,
+          "onion": 2
+        },
+        {
+          "egg": 5,
+          "mushroom": 2,
+          "mushroom_guard": 1
+        }
+      ],
+      "enemyBalance": {
+        "baseHpById": {
+          "mushroom": 7,
+          "mushroom_guard": 9,
+          "onion": 8,
+          "egg": 3
+        },
+        "hpScale": 1.04,
+        "spawnXRange": [
+          0.65,
+          0.72
+        ],
+        "contactDamage": 1,
+        "shieldHPNotScaled": true
+      },
+      "finalEncounter": {
+        "type": "elite",
+        "enemies": [
+          {
+            "baseEnemyId": "egg",
+            "displayName": "Yumurta Kaptanı",
+            "hp": 22,
+            "shield": 0,
+            "spriteReuse": "egg",
+            "isMiniBoss": false
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "egg": 10,
+        "mushroom": 3,
+        "onion": 1
+      },
+      "rewards": {
+        "baseTips": 127,
+        "firstClearTips": 64,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "stageIdentity": {
+        "format": "elite",
+        "spawnStyle": "normal",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Çok sayıda düşük HP düşman",
+        "onScreenRuleLabel": "Yumurta Sürüsü"
+      }
+    },
+    {
+      "level": 27,
+      "chapterId": "omelet",
+      "chapterIndex": 3,
+      "withinChapter": 7,
+      "name": "Kalkan Zinciri",
+      "stageType": "support",
+      "recommendedChefPower": 190,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 4,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "waves": [
+        {
+          "mushroom_guard": 1,
+          "mushroom": 2
+        },
+        {
+          "onion": 2,
+          "mushroom_guard": 1
+        },
+        {
+          "mushroom_guard": 2,
+          "mushroom": 1,
+          "egg": 2
+        },
+        {
+          "mushroom_guard": 1,
+          "onion": 2,
+          "mushroom": 2
+        }
+      ],
+      "enemyBalance": {
+        "baseHpById": {
+          "mushroom": 7,
+          "mushroom_guard": 9,
+          "onion": 8,
+          "egg": 3
+        },
+        "hpScale": 1.07,
+        "spawnXRange": [
+          0.6,
+          0.68
+        ],
+        "contactDamage": 1,
+        "shieldHPNotScaled": true
+      },
+      "finalEncounter": {
+        "type": "dual_elite",
+        "enemies": [
+          {
+            "baseEnemyId": "mushroom_guard",
+            "displayName": "Büyük Koruyucu",
+            "hp": 29,
+            "shield": 0,
+            "spriteReuse": "mushroom",
+            "isMiniBoss": false
+          },
+          {
+            "baseEnemyId": "onion",
+            "displayName": "Korunan Soğan",
+            "hp": 22,
+            "shield": 0,
+            "spriteReuse": "onion",
+            "isMiniBoss": false,
+            "shellHP": 2
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "mushroom": 5,
+        "onion": 3,
+        "egg": 2
+      },
+      "rewards": {
+        "baseTips": 130,
+        "firstClearTips": 65,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "stageIdentity": {
+        "format": "dual_elite",
+        "spawnStyle": "staggered",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Birden fazla koruyucu; tek pulse sınırı",
+        "onScreenRuleLabel": "Koruyucular"
+      }
+    },
+    {
+      "level": 28,
+      "chapterId": "omelet",
+      "chapterIndex": 3,
+      "withinChapter": 8,
+      "name": "Kabuğun Altında",
+      "stageType": "rush",
+      "recommendedChefPower": 197,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 5,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "waves": [
+        {
+          "onion": 2,
+          "egg": 2
+        },
+        {
+          "onion": 3,
+          "mushroom": 1
+        },
+        {
+          "onion": 2,
+          "mushroom_guard": 1
+        },
+        {
+          "onion": 3,
+          "egg": 2
+        },
+        {
+          "onion": 2,
+          "mushroom": 2,
+          "egg": 1
+        }
+      ],
+      "enemyBalance": {
+        "baseHpById": {
+          "mushroom": 7,
+          "mushroom_guard": 9,
+          "onion": 8,
+          "egg": 3
+        },
+        "hpScale": 1.12,
+        "spawnXRange": [
+          0.55,
+          0.62
+        ],
+        "contactDamage": 1,
+        "shieldHPNotScaled": true
+      },
+      "finalEncounter": {
+        "type": "elite",
+        "enemies": [
+          {
+            "baseEnemyId": "onion",
+            "displayName": "Hızlı Soğan",
+            "hp": 34,
+            "shield": 0,
+            "spriteReuse": "onion",
+            "isMiniBoss": false,
+            "shellHP": 4
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "onion": 7,
+        "egg": 3,
+        "mushroom": 2
+      },
+      "rewards": {
+        "baseTips": 133,
+        "firstClearTips": 67,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "stageIdentity": {
+        "format": "elite",
+        "spawnStyle": "near",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Soğanlar daha yakından gelir",
+        "onScreenRuleLabel": "Yakın Tehlike"
+      }
+    },
+    {
+      "level": 29,
+      "chapterId": "omelet",
+      "chapterIndex": 3,
+      "withinChapter": 9,
+      "name": "İkili Mutfak",
+      "stageType": "dual",
+      "recommendedChefPower": 203,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 5,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "waves": [
+        {
+          "mushroom_guard": 1,
+          "onion": 2
+        },
+        {
+          "mushroom": 2,
+          "egg": 3
+        },
+        {
+          "mushroom_guard": 1,
+          "onion": 2,
+          "mushroom": 1
+        },
+        {
+          "onion": 2,
+          "egg": 2,
+          "mushroom_guard": 1
+        },
+        {
+          "mushroom_guard": 1,
+          "mushroom": 2,
+          "onion": 2
+        }
+      ],
+      "enemyBalance": {
+        "baseHpById": {
+          "mushroom": 7,
+          "mushroom_guard": 9,
+          "onion": 8,
+          "egg": 3
+        },
+        "hpScale": 1.17,
+        "spawnXRange": [
+          0.57,
+          0.64
+        ],
+        "contactDamage": 1,
+        "shieldHPNotScaled": true
+      },
+      "finalEncounter": {
+        "type": "dual_elite",
+        "enemies": [
+          {
+            "baseEnemyId": "mushroom_guard",
+            "displayName": "Şapka Muhafızı",
+            "hp": 28,
+            "shield": 0,
+            "spriteReuse": "mushroom",
+            "isMiniBoss": false
+          },
+          {
+            "baseEnemyId": "onion",
+            "displayName": "Kabuk Generali",
+            "hp": 30,
+            "shield": 0,
+            "spriteReuse": "onion",
+            "isMiniBoss": false,
+            "shellHP": 4
+          }
+        ],
+        "completionAuthority": "allFinalEnemiesDefeated",
+        "visualReuse": true
+      },
+      "recipe": {
+        "mushroom": 5,
+        "onion": 5,
+        "egg": 3
+      },
+      "rewards": {
+        "baseTips": 136,
+        "firstClearTips": 68,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "stageIdentity": {
+        "format": "dual_elite",
+        "spawnStyle": "staggered",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "İki final düşmanı da yenilmeli",
+        "onScreenRuleLabel": "Çift Elit"
+      }
+    },
+    {
+      "level": 30,
+      "chapterId": "omelet",
+      "chapterIndex": 3,
+      "withinChapter": 10,
+      "name": "Koca Mantar",
+      "stageType": "chapter_boss",
+      "recommendedChefPower": 216,
+      "powerWall": "softwall",
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "mushroom": 2,
+          "egg": 2
+        },
+        {
+          "onion": 2,
+          "mushroom": 1
+        },
+        {
+          "mushroom_guard": 1,
+          "mushroom": 2,
+          "egg": 1
+        },
+        {
+          "onion": 2,
+          "mushroom_guard": 1,
+          "mushroom": 1
+        },
+        {
+          "mushroom_guard": 1,
+          "onion": 2,
+          "egg": 2
+        },
+        {
+          "mushroom_guard": 1,
+          "onion": 2,
+          "mushroom": 2,
+          "egg": 2
+        }
+      ],
+      "enemyBalance": {
+        "baseHpById": {
+          "mushroom": 7,
+          "mushroom_guard": 9,
+          "onion": 8,
+          "egg": 3
+        },
+        "hpScale": 1.22,
+        "spawnXRange": [
+          0.57,
+          0.64
+        ],
+        "contactDamage": 1,
+        "shieldHPNotScaled": true
+      },
+      "finalEncounter": {
+        "type": "chapter_boss",
+        "enemies": [
+          {
+            "baseEnemyId": "giant_mushroom",
+            "displayName": "Koca Mantar",
+            "hp": 72,
+            "shield": 4,
+            "spriteReuse": "mushroom",
+            "isMiniBoss": false,
+            "isChapterBoss": true,
+            "contactDamage": 2,
+            "useNewChapterBossBehavior": true,
+            "bossRuleId": "giant_mushroom_alpha05a"
+          }
+        ],
+        "completionAuthority": "bossDefeated",
+        "visualReuse": false
+      },
+      "recipe": {
+        "mushroom": 7,
+        "onion": 5,
+        "egg": 4
+      },
+      "rewards": {
+        "baseTips": 139,
+        "firstClearTips": 70,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [
+        "chapter4_pasta_future_eligibility"
+      ],
+      "stageIdentity": {
+        "format": "chapter_boss",
+        "spawnStyle": "normal",
+        "bigOilRateMultiplier": 1.0,
+        "displaySubtitle": "Koca Mantar: koruma, çağırma ve faz değişimi",
+        "onScreenRuleLabel": "Chapter Boss"
+      }
+    }
+  ],
+  "integrationRules": {
+    "wavePicks": "exactlyOneAfterEachNormalWaveNoFinalPick",
+    "finalWin": "requiresAllFinalEnemiesExceptBossInstantVictory",
+    "shield": "existingShieldResolverNoDirectHPInversion",
+    "attackPriority": "preserveExistingAutomaticTargeting",
+    "stateMachine": "existingRunControllerAuthority",
+    "waveEnd": "allAliveEnemiesEliminatedOrEscaped",
+    "enemyActionOrder": "attackAndKillEffectsThenMoveThenSupportPulseThenContactThenNextTurn",
+    "save": "preserveAllOldProgressAndCurrentRunId",
+    "futureUnlocks": "storeEligibilityFlagButDoNotExposeUnavailableMode",
+    "sprites": "smallOriginalSpritesOnlyNoHeavyAnimations",
+    "reward": "firstClearAndFinalSingleGrantIdempotent"
+  },
+  "testBudget": {
+    "must": [
+      "npm run build",
+      "targetedExistingUnitTests",
+      "L23_guard_shield",
+      "L22_onion_shell",
+      "L25_mini_boss",
+      "L29_dual_final",
+      "L30_boss_spawn_and_win",
+      "save_no_double_reward"
+    ],
+    "smokeRunsMax": 3,
+    "prohibit": [
+      "largeMonteCarlo",
+      "100plusSeedBatch",
+      "heavyBenchmark",
+      "broadBalanceReport"
+    ]
+  }
+}

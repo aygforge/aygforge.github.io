@@ -270,10 +270,19 @@ export class GameScene extends Phaser.Scene {
     g.fillRect(-w / 2, y, Math.round((w * hp) / view.maxHp), 6);
     g.fillStyle(frozen ? 0xbfeaff : 0xff8a7a, 1);
     g.fillRect(-w / 2, y, Math.round((w * hp) / view.maxHp), 2);
-    if (view.maxShield > 0) {
-      for (let i = 0; i < view.maxShield; i++) {
+    const maxSh = Math.max(view.maxShield || 0, shield || 0); // guard pulses can add shield to anyone
+    if (maxSh > 0) {
+      for (let i = 0; i < maxSh; i++) {
         g.fillStyle(i < shield ? 0x8fc6f0 : 0x3b4148, 1);
         g.fillRect(-w / 2 + i * 12, y - 9, 10, 5);
+      }
+    }
+    // Alpha 0.5A: onion shell pips (purple) under the shield row
+    const le = this.controller?.run?.enemies.find((x) => x.id === view.id);
+    if (le?.maxShell) {
+      for (let i = 0; i < le.maxShell; i++) {
+        g.fillStyle(i < le.shell ? 0xc98ad8 : 0x3b4148, 1);
+        g.fillRect(w / 2 - (i + 1) * 9, y - 9, 7, 5);
       }
     }
   }
@@ -635,8 +644,10 @@ export class GameScene extends Phaser.Scene {
           this.time.delayedCall(70, () => tv.spr.active && tv.spr.clearTint());
           if (ev.shieldBroken) this.floatText(tv.c.x, tv.c.y - tv.half - 30, 'Kalkan kırıldı!', '#8fc6f0');
           if (ev.guarded) this.floatText(tv.c.x, tv.c.y - tv.half - 44, 'Savundu -1', '#8fc6f0');
+          if (ev.cracked) this.floatText(tv.c.x, tv.c.y - tv.half - 44, 'Kabuk çatladı! Hızlanacak', '#e8b8f0', 15);
+          if (ev.halfShield) this.floatText(tv.c.x, tv.c.y - tv.half - 56, `Kalkan +${ev.halfShield}`, '#8fc6f0', 15);
         }
-        const label = ev.shieldDmg && !ev.hpDmg ? `-${ev.shieldDmg} kalkan` : `-${ev.damage}`;
+        const label = ev.shieldDmg && !ev.hpDmg ? `-${ev.shieldDmg} kalkan` : ev.shellDmg && !ev.hpDmg ? `-${ev.shellDmg} kabuk` : `-${ev.damage}`;
         if (ev.crit) {
           // critical: bigger number + short flash on the target
           this.floatText(end.x + 10, end.y - 30, `KRİTİK ${label}`, '#ffef5a', 26);
@@ -759,7 +770,7 @@ export class GameScene extends Phaser.Scene {
           mv.c.setPosition(v ? v.c.x : p.x, v ? v.c.y : p.y).setScale(0.2);
           this.tweens.add({ targets: mv.c, x: p.x, y: p.y, scale: 1, duration: 420 / sp, ease: 'Back.out' });
         }
-        this.floatText(v ? v.c.x : 400, v ? v.c.y - 90 : 200, 'İki küçük domates çağırdı!', '#ff8a7a', 16);
+        this.floatText(v ? v.c.x : 400, v ? v.c.y - 90 : 200, ev.label || 'İki küçük domates çağırdı!', '#ff8a7a', 16);
         dur = Math.max(dur, 520 / sp);
       } else if (ev.type === 'frozenSkip' && v) {
         v.spr.clearTint();
@@ -769,6 +780,17 @@ export class GameScene extends Phaser.Scene {
       } else if (ev.type === 'guardUp' && v) {
         audio.play('shield');
         this.floatText(v.c.x, v.c.y - v.half - 50, 'Savunma: sonraki vuruş -1', '#8fc6f0', 15);
+      } else if (ev.type === 'phase' && v) {
+        this.floatText(v.c.x, v.c.y - v.half - 64, 'Koca Mantar 2. FAZ: hızlanıyor!', '#ff8a7a', 16);
+      } else if (ev.type === 'shieldGranted') {
+        // Alpha 0.5A: guard / boss shield pulse — a short shield icon, no new animation
+        const tv = this.views.get(ev.targetId);
+        if (tv && !tv.dead) {
+          audio.play('shield');
+          const ic = this.add.image(tv.c.x, tv.c.y - tv.half - 20, 'shield').setScale(2.2).setDepth(60);
+          this.tweens.add({ targets: ic, y: ic.y - 26, alpha: 0, duration: 700 / sp, onComplete: () => ic.destroy() });
+          this.floatText(tv.c.x, tv.c.y - tv.half - 44, `+${ev.amount} kalkan`, '#8fc6f0', 14);
+        }
       } else if (ev.type === 'haste' && v) {
         audio.play('warn');
         this.shake(v.c, 6);

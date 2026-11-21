@@ -42,6 +42,17 @@ export const ENEMIES = {
     contactDamage: 2, retreatX: 0.6,
     hasteAt: 0.5,
   },
+  // Alpha 0.5A — Mantarlı Omlet (L21–30). Numbers come from data/alpha05/alpha05a_level_21_30.json (enemyRules).
+  mushroom: { id: 'mushroom', name: 'Mantar', hp: 7, shield: 0, move: 'one', recipe: 'mushroom', speed: 1, contactDamage: 1 },
+  // Koruyucu: on its own 3rd/6th action gives +2 shield (cap 3) to the nearest non-guard ally within x 0.26
+  mushroom_guard: { id: 'mushroom_guard', name: 'Koruyucu Mantar', hp: 9, shield: 0, move: 'one', recipe: 'mushroom', speed: 1, contactDamage: 1, guardPulse: true },
+  // Kabuklu Soğan: 2 shell (not scaled); external shield -> shell -> HP; after the shell breaks it moves 1,2,1,2…
+  onion: { id: 'onion', name: 'Kabuklu Soğan', hp: 8, shield: 0, shell: 2, crackSpeed: true, move: 'one', recipe: 'onion', speed: 1, contactDamage: 1 },
+  giant_mushroom: {
+    id: 'giant_mushroom', name: 'Koca Mantar', hp: 72, shield: 4, move: 'one', recipe: 'mushroom', speed: 1, boss: true,
+    contactDamage: 2, retreatX: 0.6, chapterBoss: true,
+    phaseAt: 0.5, summonCount: 2, summonHp: 6, pulseEvery: 3, maxPulses: 2,
+  },
 };
 
 export const CHAPTERS = [
@@ -81,7 +92,7 @@ export const CHAPTERS = [
   },
 ];
 
-export const RECIPE_LABELS = { tomato: 'Domates', pepper: 'Biber', egg: 'Yumurta', potato: 'Patates', salt: 'Tuz' };
+export const RECIPE_LABELS = { tomato: 'Domates', pepper: 'Biber', egg: 'Yumurta', potato: 'Patates', salt: 'Tuz', mushroom: 'Mantar', onion: 'Soğan' };
 
 export const SKILL_WAVES = [1, 2, 3, 4, 5, 6]; // Alpha 0.2: every normal wave, none after the boss
 export const NORMAL_WAVES = 6;

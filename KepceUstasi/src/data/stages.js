@@ -8,15 +8,25 @@ import campaign from './alpha04/alpha04_campaign_20.json' with { type: 'json' };
 import economy from './alpha04/alpha04_progression_economy.json' with { type: 'json' };
 import dungeons from './alpha04/alpha04_dungeons.json' with { type: 'json' };
 import identity from './alpha04/alpha04c_level_identity_20.json' with { type: 'json' };
+import omelet from './alpha05/alpha05a_level_21_30.json' with { type: 'json' };
 import { CHAPTERS, ENEMIES } from './content.js';
 
 export const CAMPAIGN = campaign;
 export const ECONOMY04 = economy;
-export const LEVEL_COUNT = identity.levels.length;
 export const IDENTITY = identity;
+export const OMELET = omelet; // Alpha 0.5A: L21–30 Mantarlı Omlet
+const ALL_LEVELS = [...identity.levels, ...omelet.levels];
+export const LEVEL_COUNT = ALL_LEVELS.length;
 export const stageId = (n) => `L${n}`;
 
 const BASE_CHAPTER = Object.fromEntries(CHAPTERS.map((c) => [c.id, c]));
+// Alpha 0.5A: engine base for chapter 3 (only used by stages L21–30; not a legacy playable chapter)
+const OMELET_BASE = {
+  id: 'omelet', index: 3, name: omelet.chapters[0].name, customer: 'Kahvaltı müdavimi', tags: ['mushroom', 'onion', 'egg'],
+  bigOilRate: 0.08, balance: { bossX: 0.7 },
+};
+const STAGE_BASE = { ...BASE_CHAPTER, omelet: OMELET_BASE };
+const DISH = { menemen: 'dish_menemen', fries: 'dish_fries', omelet: 'dish_omelet' };
 
 // Alpha 0.4C: levels come from the level-identity JSON (names, 3–6 waves, own recipes, 1–2 final enemies,
 // spawn style, big-oil multiplier). Rewards/energy/unlocks/SG keep the 0.4A values carried in the same file.
@@ -27,6 +37,11 @@ function finalTypes(L) {
     const o = f.originalData;
     return { types: [o.baseEnemyId], names: [o.displayName], bossHp: o.hp, bossShield: o.shield ?? null };
   }
+  if (f.type === 'chapter_boss' && f.enemies[0]?.useNewChapterBossBehavior) {
+    const o = f.enemies[0]; // Alpha 0.5A Koca Mantar: own type + AI (EnemyDirector), HP/shield from the JSON
+    return { types: [o.baseEnemyId], names: [o.displayName], bossHp: o.hp, bossShield: o.shield ?? null };
+  }
+  const omeletCh = L.chapterId === 'omelet';
   const types = f.enemies.map((e, i) => {
     const type = `final_L${L.level}_${i + 1}`;
     const base = ENEMIES[e.baseEnemyId];
@@ -36,7 +51,12 @@ function finalTypes(L) {
       hp: e.hp,
       shield: e.shield || 0,
       move: e.move || base.move, // the elite moves like its base vegetable (still only once per turn, leftwards)
-      recipe: null, // finals complete the order, they are not recipe ingredients
+      // 0.4C finals are not ingredients; 0.5A finals count once for their ingredient (chapter ingredientAliases)
+      recipe: omeletCh ? omelet.chapters[0].ingredientAliases[e.baseEnemyId] || null : null,
+      shell: e.shellHP ?? base.shell ?? 0, // onion finals: own shell (not scaled)
+      crackSpeed: !!base.crackSpeed,
+      guardPulse: !!base.guardPulse, // a guard-based final still shields the other final
+      halfHpShield: e.uniqueRule === 'eliteHalfHpShieldOnce' ? { gain: e.shieldGrantedAtHalfHp ?? 2, cap: e.shieldCap ?? 4 } : null,
       speed: base.speed,
       boss: true, // completion authority: ALL finals must be defeated (CombatResolver victory gate)
       contactDamage: e.contactDamage ?? base.contactDamage ?? 1,
@@ -53,10 +73,10 @@ function finalTypes(L) {
 }
 
 function buildStage(L) {
-  const base = BASE_CHAPTER[L.chapterId];
+  const base = STAGE_BASE[L.chapterId];
   const eb = L.enemyBalance;
   const id = L.stageIdentity || {};
-  const hp = Object.fromEntries(Object.entries(eb.alpha03BaseHpById).map(([t, v]) => [t, Math.max(1, Math.round(v * eb.hpScale))]));
+  const hp = Object.fromEntries(Object.entries(eb.alpha03BaseHpById || eb.baseHpById).map(([t, v]) => [t, Math.max(1, Math.round(v * eb.hpScale))]));
   const fin = finalTypes(L);
   return {
     id: stageId(L.level),
@@ -84,7 +104,7 @@ function buildStage(L) {
     energyCost: L.energyCost,
     // pot_bonus: only the big-oil roll chance changes (RunController still caps it at 18 %)
     bigOilRate: +(base.bigOilRate * (id.bigOilRateMultiplier || 1)).toFixed(4),
-    dish: L.chapterId === 'menemen' ? 'dish_menemen' : 'dish_fries',
+    dish: DISH[L.chapterId],
     skillWaves: L.skillPicksAfterWaves || L.waves.map((_, i) => i + 1),
     balance: {
       hp,
@@ -99,7 +119,7 @@ function buildStage(L) {
   };
 }
 
-export const STAGES = identity.levels.map(buildStage);
+export const STAGES = ALL_LEVELS.map(buildStage);
 
 // ---------------------------------------------------------------- Alpha 0.4B dungeons (same engine)
 // 4 normal waves + final, a skill pick after each normal wave, no recipe/star requirement. Enemy HP = Alpha03 base
