@@ -1,0 +1,219 @@
+{
+  "schema": "kepce-alpha04-progression/1",
+  "status": "DESIGN_PROPOSAL_NOT_IMPLEMENTED",
+  "energy": {
+    "max": 30,
+    "initial": 30,
+    "costPerRun": 10,
+    "regenMinutesPerPoint": 12,
+    "dailyAdFullRefills": 2,
+    "dailyReset": "00:00 UTC",
+    "fillBehavior": "setEnergyToMax30NotPlus30",
+    "oneDebitPerRunId": true,
+    "onFailedRun": "costStillSpent",
+    "onResume": "doNotDebitAgain",
+    "regenClock": "persistLastRegenAtUTC; apply offline elapsed whole intervals; carry remainder",
+    "adReward": "grantOnlyAfterVerifiedReward; never on unavailable/failed/cancelled",
+    "webBehavior": "ad UI unavailable outside native; no fake grants; developer-only mocked reward adapter allowed",
+    "firstClearRefundLevels": [
+      1,
+      2,
+      3
+    ],
+    "firstClearRefundPerLevel": 10,
+    "firstClearRefundOnce": true
+  },
+  "chefPower": {
+    "formula": "100 + Σ(weight[upgradeId]*(level-1)) + Σ(equippedItem.powerScoreByRarity) [do not count temporary in-run abilities]",
+    "upgradeWeights": {
+      "capacity": 7,
+      "width": 6,
+      "toughness": 9,
+      "mastery": 10,
+      "pan": 5,
+      "spice": 5
+    },
+    "recommendationOnlyNoAutomaticPowerCheck": true,
+    "targetLevel10": 138,
+    "targetLevel20": 183,
+    "expectedEntryLevel20": 159,
+    "expectedGap20": 24,
+    "interpretation": "A UI guide, not a hidden damage multiplier or numerical level lock. All contributions are tied to real implemented item/upgrade effects."
+  },
+  "equipment": {
+    "slots": [
+      "weapon",
+      "ladle",
+      "apron",
+      "pan"
+    ],
+    "raritiesAlpha04": [
+      "common",
+      "uncommon",
+      "rare"
+    ],
+    "futureRaritiesReserved": [
+      "epic",
+      "legendary"
+    ],
+    "noRandomGachaInAlpha04": true,
+    "startWithFourCommonEquipped": true,
+    "oneEquippedPerSlot": true,
+    "permanentSharedSingleChef": true,
+    "crafting": {
+      "materialId": "depot_parts",
+      "unlockUncommonAfterLevel": 15,
+      "unlockRareAfterLevel": 16,
+      "commonToUncommon": {
+        "parts": 40,
+        "tips": 120
+      },
+      "uncommonToRare": {
+        "parts": 60,
+        "tips": 260
+      },
+      "totalPartsFromCommonToRare": 100,
+      "materialNonRng": true
+    },
+    "items": [
+      {
+        "slot": "weapon",
+        "name": "Yağ Silahı",
+        "power": {
+          "common": 0,
+          "uncommon": 8,
+          "rare": 20
+        },
+        "realEffects": {
+          "common": "base",
+          "uncommon": "each 6th REAL normal shot +1 damage",
+          "rare": "each 4th REAL normal shot +1 damage; replaces uncommon threshold"
+        }
+      },
+      {
+        "slot": "ladle",
+        "name": "Kepçe",
+        "power": {
+          "common": 0,
+          "uncommon": 7,
+          "rare": 18
+        },
+        "realEffects": {
+          "common": "base",
+          "uncommon": "real mouth width +3%; collision geometry changes",
+          "rare": "real mouth width +6% total; collision geometry changes"
+        }
+      },
+      {
+        "slot": "apron",
+        "name": "Önlük",
+        "power": {
+          "common": 0,
+          "uncommon": 8,
+          "rare": 20
+        },
+        "realEffects": {
+          "common": "base",
+          "uncommon": "maxHP +1",
+          "rare": "maxHP +2 total"
+        }
+      },
+      {
+        "slot": "pan",
+        "name": "Tava",
+        "power": {
+          "common": 0,
+          "uncommon": 7,
+          "rare": 18
+        },
+        "realEffects": {
+          "common": "base",
+          "uncommon": "every 7th unique kill grants one non-proccing bonus normal oil next volley",
+          "rare": "every 5th unique kill grants one non-proccing bonus normal oil next volley; replaces uncommon threshold"
+        }
+      }
+    ],
+    "effectSafety": "Bonus attacks cannot re-trigger critical, bonus generation or pan chains; no infinite proc loops. Existing ability and permanent upgrade effects stack explicitly, not by replacing.",
+    "inventoryScope": "Alpha04 uses slot progression + guaranteed crafting, no equipment inventory, random affixes, merge or loot-box inventory. Design for eventual item inventory without building it now."
+  },
+  "dungeons": {
+    "dailyFullRewardRunLimit": 2,
+    "runCostEnergy": 10,
+    "afterDailyLimit": "repeatable with smaller fixed rewards; continue costing energy",
+    "noAdvertisementsRequiredToEnter": true,
+    "definitions": [
+      {
+        "id": "gold_kitchen",
+        "name": "Altın Mutfak",
+        "unlockedAfterLevel": 7,
+        "fullRewardTips": 240,
+        "repeatRewardTips": 120,
+        "fullRewardRunsPerUtcDay": 2,
+        "firstClearExtraTips": 0,
+        "targetRunMinutes": "2-4"
+      },
+      {
+        "id": "materials_depot",
+        "name": "Malzeme Deposu",
+        "unlockedAfterLevel": 15,
+        "fullRewardParts": 18,
+        "repeatRewardParts": 8,
+        "fullRewardRunsPerUtcDay": 2,
+        "firstClearPartsBonus": 10,
+        "targetRunMinutes": "2-4"
+      }
+    ]
+  },
+  "stageMilestones": {
+    "7": "gold_kitchen",
+    "10": "chapter2_fries",
+    "15": "materials_depot",
+    "16": "rare_crafting",
+    "20": "alpha04_campaign_complete"
+  },
+  "softHardWallEconomyExamples": {
+    "level10": {
+      "type": "softwall",
+      "recommendedPower": 138,
+      "expectedEntryPower": 130,
+      "gap": 8,
+      "targetPreparationRuns": 2
+    },
+    "level20": {
+      "type": "hardwall",
+      "recommendedPower": 183,
+      "expectedEntryPower": 159,
+      "gap": 24,
+      "targetPreparationRuns": {
+        "materials": 4,
+        "gold": 1
+      },
+      "guaranteedMaterialRoute": "level15 first-clear gives 18 parts + first materials dungeon win gives 10 parts + four full-reward dungeon wins give 72 parts = 100 total; uncommon spends 40, rare spends 60",
+      "rareWeaponPower": 20,
+      "additionalUpgradeNeeded": "a normal permanent upgrade can cover remaining ~4 power"
+    },
+    "manualValidation": "Numbers are targets, not actual measured SG; no hidden hard lock."
+  },
+  "rewardAtomicity": "Energy, first-clear tips, dungeon parts and completed-stage rewards are committed exactly once per runId.",
+  "saveMigration": {
+    "oldSource": "Alpha03 schemaVersion1 with chapter stars/tips/upgrades",
+    "newSaveFields": [
+      "stageProgress",
+      "energy",
+      "equipment",
+      "dungeonDaily",
+      "currencyParts",
+      "legacyCompletedChapters"
+    ],
+    "legacyTipsAndUpgradeLevels": "preserve",
+    "legacyChapterStars": "preserve as legacy badges",
+    "newCampaignProgress": "start at level1 (new 20-stage track), do not pretend older single chapter completion cleared 10 new levels",
+    "neverResetExistingSaveSilently": true,
+    "migrationIdempotent": true
+  },
+  "testBudget": {
+    "npmTest": "existing suite plus <= 12 targeted new assertions",
+    "e2e": "only menu/stage1/stage10 unlock/energy/dungeon/old save smoke checks",
+    "sim": "maximum 10 deterministic short runs total; no thousands of seeds or long reports unless explicitly requested"
+  }
+}

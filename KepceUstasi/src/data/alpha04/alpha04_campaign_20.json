@@ -1,0 +1,1919 @@
+{
+  "schema": "kepce-alpha04-campaign/1",
+  "status": "DESIGN_PROPOSAL_NOT_ALREADY_IMPLEMENTED",
+  "basedOn": "Kepce_Ustasi_120_Level_Progression_v1_1.xlsx Level_120 1-20 + Alpha03 reports",
+  "integrationNotice": "Alpha 0.3 source ZIP was not supplied. This is a NEW external JSON content contract, not an assertion of current code schema. Map to current RunController/content.js after reading the actual project.",
+  "gameplayInvariants": {
+    "portraitTwoHalves": true,
+    "oneUnnamedChef": true,
+    "realMatterLadle": true,
+    "hybridPot": true,
+    "enemyMovesOnlyAfterVolleyRightToLeft": true,
+    "existing24Abilities": true,
+    "sixSkillPicksPerRun": true,
+    "singleKillCredit": true
+  },
+  "existingAlpha03BehaviorPolicy": "Keep Alpha 0.3 pot parameters and combat logic unchanged unless stage-data integration requires small adaptation.",
+  "chapters": [
+    {
+      "id": "menemen",
+      "name": "Menemen",
+      "originalChapterId": "menemen",
+      "recipe": {
+        "tomato": 3,
+        "pepper": 2,
+        "egg": 1
+      },
+      "enemyHpAlpha03": {
+        "tomato": 7,
+        "pepper": 5,
+        "egg": 3,
+        "tomato_minion": 3
+      },
+      "enemyIds": [
+        "tomato",
+        "pepper",
+        "egg"
+      ],
+      "chapterBossId": "giant_tomato",
+      "chapterBossName": "Dev Domates"
+    },
+    {
+      "id": "fries",
+      "name": "Patates Kızartması",
+      "originalChapterId": "fries",
+      "recipe": {
+        "potato": 6,
+        "salt": 2
+      },
+      "enemyHpAlpha03": {
+        "potato": 6,
+        "armored_potato": 14,
+        "salt": 4
+      },
+      "enemyIds": [
+        "potato",
+        "armored_potato",
+        "salt"
+      ],
+      "chapterBossId": "potato_king",
+      "chapterBossName": "Patates Kral"
+    }
+  ],
+  "levels": [
+    {
+      "level": 1,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 1,
+      "name": "Menemen 1/10",
+      "stageType": "standard",
+      "recommendedChefPower": 100,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "tomato": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 2,
+          "egg": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 1,
+          "egg": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 0.75,
+        "spawnXRange": [
+          0.68,
+          0.74
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "tomato",
+        "displayName": "Güçlü Domates",
+        "hp": 14,
+        "shield": 0,
+        "contactDamage": 1,
+        "spriteReuse": "tomato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": false,
+        "move": "one",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "tomato": 3,
+        "pepper": 2,
+        "egg": 1
+      },
+      "rewards": {
+        "baseTips": 60,
+        "firstClearTips": 30,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 10
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "tutorial"
+    },
+    {
+      "level": 2,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 2,
+      "name": "Menemen 2/10",
+      "stageType": "standard",
+      "recommendedChefPower": 102,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "tomato": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 1,
+          "egg": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 2,
+          "egg": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 1,
+          "egg": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 0.78,
+        "spawnXRange": [
+          0.669,
+          0.729
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "tomato",
+        "displayName": "Güçlü Domates",
+        "hp": 16,
+        "shield": 0,
+        "contactDamage": 1,
+        "spriteReuse": "tomato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": false,
+        "move": "one",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "tomato": 3,
+        "pepper": 2,
+        "egg": 1
+      },
+      "rewards": {
+        "baseTips": 62,
+        "firstClearTips": 31,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 10
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "speed_pressure"
+    },
+    {
+      "level": 3,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 3,
+      "name": "Menemen 3/10",
+      "stageType": "standard",
+      "recommendedChefPower": 105,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "tomato": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 3
+        },
+        {
+          "tomato": 1,
+          "pepper": 2,
+          "egg": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 1,
+          "egg": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 0.81,
+        "spawnXRange": [
+          0.658,
+          0.718
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "tomato",
+        "displayName": "Güçlü Domates",
+        "hp": 18,
+        "shield": 0,
+        "contactDamage": 1,
+        "spriteReuse": "tomato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": false,
+        "move": "one",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "tomato": 3,
+        "pepper": 2,
+        "egg": 1
+      },
+      "rewards": {
+        "baseTips": 64,
+        "firstClearTips": 32,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 10
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "armor_pressure"
+    },
+    {
+      "level": 4,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 4,
+      "name": "Menemen 4/10",
+      "stageType": "standard",
+      "recommendedChefPower": 107,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "tomato": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 2,
+          "egg": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 1,
+          "egg": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 0.85,
+        "spawnXRange": [
+          0.647,
+          0.707
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "tomato",
+        "displayName": "Güçlü Domates",
+        "hp": 20,
+        "shield": 0,
+        "contactDamage": 1,
+        "spriteReuse": "tomato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": false,
+        "move": "one",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "tomato": 3,
+        "pepper": 2,
+        "egg": 1
+      },
+      "rewards": {
+        "baseTips": 66,
+        "firstClearTips": 33,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "grouping"
+    },
+    {
+      "level": 5,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 5,
+      "name": "Menemen 5/10",
+      "stageType": "mini_boss",
+      "recommendedChefPower": 119,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "tomato": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 2,
+          "egg": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 1,
+          "egg": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 0.9,
+        "spawnXRange": [
+          0.636,
+          0.696
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "giant_tomato",
+        "displayName": "Elit Domates",
+        "hp": 28,
+        "shield": 0,
+        "contactDamage": 1,
+        "spriteReuse": "giant_tomato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": true,
+        "useExistingAlpha03Behavior": false,
+        "move": "one",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "tomato": 3,
+        "pepper": 2,
+        "egg": 1
+      },
+      "rewards": {
+        "baseTips": 68,
+        "firstClearTips": 34,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "mini_boss"
+    },
+    {
+      "level": 6,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 6,
+      "name": "Menemen 6/10",
+      "stageType": "standard",
+      "recommendedChefPower": 112,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "tomato": 2,
+          "pepper": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 2,
+          "egg": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 1,
+          "egg": 3
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 0.92,
+        "spawnXRange": [
+          0.624,
+          0.684
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "tomato",
+        "displayName": "Güçlü Domates",
+        "hp": 22,
+        "shield": 0,
+        "contactDamage": 1,
+        "spriteReuse": "tomato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": false,
+        "move": "one",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "tomato": 3,
+        "pepper": 2,
+        "egg": 1
+      },
+      "rewards": {
+        "baseTips": 70,
+        "firstClearTips": 35,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "swarms"
+    },
+    {
+      "level": 7,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 7,
+      "name": "Menemen 7/10",
+      "stageType": "standard",
+      "recommendedChefPower": 115,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "tomato": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 2
+        },
+        {
+          "tomato": 2,
+          "pepper": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 2
+        },
+        {
+          "tomato": 2,
+          "pepper": 2,
+          "egg": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 1,
+          "egg": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 0.97,
+        "spawnXRange": [
+          0.613,
+          0.673
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "tomato",
+        "displayName": "Güçlü Domates",
+        "hp": 24,
+        "shield": 0,
+        "contactDamage": 1,
+        "spriteReuse": "tomato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": false,
+        "move": "one",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "tomato": 3,
+        "pepper": 2,
+        "egg": 1
+      },
+      "rewards": {
+        "baseTips": 72,
+        "firstClearTips": 36,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [
+        "gold_kitchen"
+      ],
+      "designTag": "support_pressure"
+    },
+    {
+      "level": 8,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 8,
+      "name": "Menemen 8/10",
+      "stageType": "special",
+      "recommendedChefPower": 122,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "tomato": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 1
+        },
+        {
+          "tomato": 3,
+          "pepper": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 2,
+          "egg": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 2,
+          "egg": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 1.02,
+        "spawnXRange": [
+          0.602,
+          0.662
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "tomato",
+        "displayName": "Güçlü Domates",
+        "hp": 26,
+        "shield": 0,
+        "contactDamage": 1,
+        "spriteReuse": "tomato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": false,
+        "move": "one",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "tomato": 3,
+        "pepper": 2,
+        "egg": 1
+      },
+      "rewards": {
+        "baseTips": 75,
+        "firstClearTips": 38,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "multi_group"
+    },
+    {
+      "level": 9,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 9,
+      "name": "Menemen 9/10",
+      "stageType": "special",
+      "recommendedChefPower": 125,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "tomato": 2
+        },
+        {
+          "tomato": 2,
+          "pepper": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 2,
+          "egg": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 2,
+          "egg": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 2,
+          "egg": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 1.08,
+        "spawnXRange": [
+          0.591,
+          0.651
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "tomato",
+        "displayName": "Güçlü Domates",
+        "hp": 29,
+        "shield": 0,
+        "contactDamage": 1,
+        "spriteReuse": "tomato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": false,
+        "move": "one",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "tomato": 3,
+        "pepper": 2,
+        "egg": 1
+      },
+      "rewards": {
+        "baseTips": 77,
+        "firstClearTips": 39,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "mixed_priority"
+    },
+    {
+      "level": 10,
+      "chapterId": "menemen",
+      "chapterIndex": 1,
+      "withinChapter": 10,
+      "name": "Menemen 10/10",
+      "stageType": "chapter_boss",
+      "recommendedChefPower": 138,
+      "powerWall": "softwall",
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "tomato": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 2
+        },
+        {
+          "tomato": 1,
+          "pepper": 3,
+          "egg": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 1,
+          "egg": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "tomato": 7,
+          "pepper": 5,
+          "egg": 3,
+          "tomato_minion": 3
+        },
+        "hpScale": 1.12,
+        "spawnXRange": [
+          0.58,
+          0.64
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "giant_tomato",
+        "displayName": "Dev Domates",
+        "hp": 42,
+        "shield": 4,
+        "contactDamage": 1,
+        "spriteReuse": "giant_tomato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": true,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": true,
+        "summonAt": 0.6,
+        "summonCount": 2
+      },
+      "recipe": {
+        "tomato": 3,
+        "pepper": 2,
+        "egg": 1
+      },
+      "rewards": {
+        "baseTips": 80,
+        "firstClearTips": 40,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [
+        "chapter2_fries"
+      ],
+      "designTag": "chapter_boss"
+    },
+    {
+      "level": 11,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 1,
+      "name": "Patates Kızartması 1/10",
+      "stageType": "standard",
+      "recommendedChefPower": 126,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "potato": 2
+        },
+        {
+          "potato": 2,
+          "salt": 1
+        },
+        {
+          "potato": 1,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 0.75,
+        "spawnXRange": [
+          0.64,
+          0.7
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "armored_potato",
+        "displayName": "Güçlü Patates",
+        "hp": 20,
+        "shield": 2,
+        "contactDamage": 1,
+        "spriteReuse": "armored_potato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": false,
+        "move": "odd",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "potato": 6,
+        "salt": 2
+      },
+      "rewards": {
+        "baseTips": 82,
+        "firstClearTips": 41,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "tutorial"
+    },
+    {
+      "level": 12,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 2,
+      "name": "Patates Kızartması 2/10",
+      "stageType": "standard",
+      "recommendedChefPower": 128,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "potato": 2
+        },
+        {
+          "potato": 2,
+          "salt": 2
+        },
+        {
+          "potato": 1,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 0.8,
+        "spawnXRange": [
+          0.627,
+          0.687
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "armored_potato",
+        "displayName": "Güçlü Patates",
+        "hp": 23,
+        "shield": 2,
+        "contactDamage": 1,
+        "spriteReuse": "armored_potato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": false,
+        "move": "odd",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "potato": 6,
+        "salt": 2
+      },
+      "rewards": {
+        "baseTips": 85,
+        "firstClearTips": 43,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "speed_pressure"
+    },
+    {
+      "level": 13,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 3,
+      "name": "Patates Kızartması 3/10",
+      "stageType": "standard",
+      "recommendedChefPower": 131,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "potato": 2
+        },
+        {
+          "potato": 2,
+          "salt": 1
+        },
+        {
+          "potato": 1,
+          "armored_potato": 2,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 0.84,
+        "spawnXRange": [
+          0.613,
+          0.673
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "armored_potato",
+        "displayName": "Güçlü Patates",
+        "hp": 25,
+        "shield": 2,
+        "contactDamage": 1,
+        "spriteReuse": "armored_potato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": false,
+        "move": "odd",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "potato": 6,
+        "salt": 2
+      },
+      "rewards": {
+        "baseTips": 88,
+        "firstClearTips": 44,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "armor_pressure"
+    },
+    {
+      "level": 14,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 4,
+      "name": "Patates Kızartması 4/10",
+      "stageType": "standard",
+      "recommendedChefPower": 134,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "potato": 2
+        },
+        {
+          "potato": 2,
+          "salt": 1
+        },
+        {
+          "potato": 1,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 2
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 0.89,
+        "spawnXRange": [
+          0.6,
+          0.66
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "armored_potato",
+        "displayName": "Güçlü Patates",
+        "hp": 28,
+        "shield": 2,
+        "contactDamage": 1,
+        "spriteReuse": "armored_potato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": false,
+        "move": "odd",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "potato": 6,
+        "salt": 2
+      },
+      "rewards": {
+        "baseTips": 90,
+        "firstClearTips": 45,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "grouping"
+    },
+    {
+      "level": 15,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 5,
+      "name": "Patates Kızartması 5/10",
+      "stageType": "mini_boss",
+      "recommendedChefPower": 148,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "potato": 2
+        },
+        {
+          "potato": 2,
+          "salt": 1
+        },
+        {
+          "potato": 1,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 3,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 0.93,
+        "spawnXRange": [
+          0.587,
+          0.647
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "armored_potato",
+        "displayName": "Elit Patates",
+        "hp": 36,
+        "shield": 2,
+        "contactDamage": 1,
+        "spriteReuse": "armored_potato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": true,
+        "useExistingAlpha03Behavior": false,
+        "move": "odd",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "potato": 6,
+        "salt": 2
+      },
+      "rewards": {
+        "baseTips": 93,
+        "firstClearTips": 47,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [
+        "materials_depot",
+        "materials_starter_grant_18"
+      ],
+      "designTag": "mini_boss"
+    },
+    {
+      "level": 16,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 6,
+      "name": "Patates Kızartması 6/10",
+      "stageType": "standard",
+      "recommendedChefPower": 141,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "potato": 2,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "salt": 1
+        },
+        {
+          "potato": 1,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 3,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 0.95,
+        "spawnXRange": [
+          0.573,
+          0.633
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "armored_potato",
+        "displayName": "Güçlü Patates",
+        "hp": 30,
+        "shield": 2,
+        "contactDamage": 1,
+        "spriteReuse": "armored_potato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": false,
+        "move": "odd",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "potato": 6,
+        "salt": 2
+      },
+      "rewards": {
+        "baseTips": 96,
+        "firstClearTips": 48,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [
+        "rare_crafting"
+      ],
+      "designTag": "swarms"
+    },
+    {
+      "level": 17,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 7,
+      "name": "Patates Kızartması 7/10",
+      "stageType": "standard",
+      "recommendedChefPower": 144,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "potato": 2
+        },
+        {
+          "potato": 3,
+          "salt": 1
+        },
+        {
+          "potato": 1,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 2
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 1.0,
+        "spawnXRange": [
+          0.56,
+          0.62
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "armored_potato",
+        "displayName": "Güçlü Patates",
+        "hp": 34,
+        "shield": 2,
+        "contactDamage": 1,
+        "spriteReuse": "armored_potato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": false,
+        "move": "odd",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "potato": 6,
+        "salt": 2
+      },
+      "rewards": {
+        "baseTips": 99,
+        "firstClearTips": 50,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "support_pressure"
+    },
+    {
+      "level": 18,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 8,
+      "name": "Patates Kızartması 8/10",
+      "stageType": "special",
+      "recommendedChefPower": 153,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "potato": 2
+        },
+        {
+          "potato": 2,
+          "salt": 1
+        },
+        {
+          "potato": 1,
+          "armored_potato": 1,
+          "salt": 2
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 3,
+          "armored_potato": 1,
+          "salt": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 1.06,
+        "spawnXRange": [
+          0.547,
+          0.607
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "armored_potato",
+        "displayName": "Güçlü Patates",
+        "hp": 38,
+        "shield": 2,
+        "contactDamage": 1,
+        "spriteReuse": "armored_potato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": false,
+        "move": "odd",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "potato": 6,
+        "salt": 2
+      },
+      "rewards": {
+        "baseTips": 102,
+        "firstClearTips": 51,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "multi_group"
+    },
+    {
+      "level": 19,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 9,
+      "name": "Patates Kızartması 9/10",
+      "stageType": "special",
+      "recommendedChefPower": 157,
+      "powerWall": null,
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "potato": 2
+        },
+        {
+          "potato": 2,
+          "salt": 1
+        },
+        {
+          "potato": 1,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 2,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 3
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 1.1,
+        "spawnXRange": [
+          0.533,
+          0.593
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "armored_potato",
+        "displayName": "Güçlü Patates",
+        "hp": 42,
+        "shield": 2,
+        "contactDamage": 1,
+        "spriteReuse": "armored_potato",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": false,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": false,
+        "move": "odd",
+        "retreatX": 0.62
+      },
+      "recipe": {
+        "potato": 6,
+        "salt": 2
+      },
+      "rewards": {
+        "baseTips": 106,
+        "firstClearTips": 53,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [],
+      "designTag": "mixed_priority"
+    },
+    {
+      "level": 20,
+      "chapterId": "fries",
+      "chapterIndex": 2,
+      "withinChapter": 10,
+      "name": "Patates Kızartması 10/10",
+      "stageType": "chapter_boss",
+      "recommendedChefPower": 183,
+      "powerWall": "hardwall",
+      "energyCost": 10,
+      "waveCount": 6,
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "waves": [
+        {
+          "potato": 2
+        },
+        {
+          "potato": 2,
+          "salt": 1
+        },
+        {
+          "potato": 1,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 2
+        },
+        {
+          "potato": 2,
+          "armored_potato": 2,
+          "salt": 1
+        },
+        {
+          "potato": 3,
+          "armored_potato": 1,
+          "salt": 2
+        }
+      ],
+      "enemyBalance": {
+        "alpha03BaseHpById": {
+          "potato": 6,
+          "armored_potato": 14,
+          "salt": 4
+        },
+        "hpScale": 1.15,
+        "spawnXRange": [
+          0.52,
+          0.58
+        ],
+        "contactDamage": 1
+      },
+      "finalEncounter": {
+        "baseEnemyId": "potato_king",
+        "displayName": "Patates Kral",
+        "hp": 54,
+        "shield": 4,
+        "contactDamage": 2,
+        "spriteReuse": "potato_king",
+        "completionAuthority": "finalEnemyDefeated",
+        "isChapterBoss": true,
+        "isMiniBoss": false,
+        "useExistingAlpha03Behavior": true,
+        "hasteAt": 0.5
+      },
+      "recipe": {
+        "potato": 6,
+        "salt": 2
+      },
+      "rewards": {
+        "baseTips": 109,
+        "firstClearTips": 55,
+        "starMultipliers": {
+          "1": 1.0,
+          "2": 1.15,
+          "3": 1.3
+        },
+        "firstClearEnergyRefund": 0
+      },
+      "unlocksOnFirstClear": [
+        "alpha04_campaign_complete"
+      ],
+      "designTag": "chapter_boss"
+    }
+  ]
+}

@@ -2,7 +2,8 @@
 // Sıra: kepçe → mermi kuyruğu → isabet → ölüm/tava/yetenek → boss zafer kapısı → düşman eylemi →
 //       sağdan sola hareket → temas → dalga/boss geçişi → hibrit tencere yenileme → sonraki kepçe.
 // Sahne (Phaser) yalnızca olayları oynatır ve token ile "bitti" bildirir; hiçbir oyun sonucu sahnede hesaplanmaz.
-import { CHAPTERS, CHEF, POT, SKILL_WAVES, NORMAL_WAVES, COLD_OIL_RATE } from '../data/content.js';
+import { CHEF, POT, SKILL_WAVES, NORMAL_WAVES, COLD_OIL_RATE } from '../data/content.js';
+import { findChapter } from '../data/stages.js';
 import { Rng } from '../core/rng.js';
 import { PotPhysics, STEP_MS } from './PotPhysics.js';
 import { LadleController } from './LadleController.js';
@@ -91,7 +92,7 @@ export class RunController {
    * opts: { chapterId, perm, seed, runId, snapshot, autoAck }
    */
   constructor(opts) {
-    this.chapter = CHAPTERS.find((c) => c.id === (opts.snapshot ? opts.snapshot.chapterId : opts.chapterId));
+    this.chapter = findChapter(opts.snapshot ? opts.snapshot.chapterId : opts.chapterId);
     if (!this.chapter) throw new Error('unknown chapter');
     this.listeners = [];
     this.autoAck = !!opts.autoAck;

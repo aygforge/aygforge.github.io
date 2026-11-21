@@ -8,6 +8,7 @@
 //  - Bonus mermi (çifte atış, zincir pişirme, tava ustalığı, güvence damlası): canProc=false → hiçbir şey
 //    tetiklemez, kritik olmaz, kendini kopyalamaz. Fiziksel topçuk sayısı asla artmaz.
 import { ENEMIES, FIELD, OILS, SECONDARY_EVENT_CAP, AREA_RADIUS, ABILITY_VALUES, CHAPTERS } from '../data/content.js';
+import { findChapter } from '../data/stages.js';
 import { living, nextSteps, BOSS_FREEZE_EVERY } from './EnemyDirector.js';
 import { addRecipe } from './RecipeTracker.js';
 import { Rng } from '../core/rng.js';
@@ -91,7 +92,7 @@ function rollCrit(run, chance) {
 }
 
 function chapterFor(run, chapter) {
-  return chapter || CHAPTERS.find((c) => c.id === run.chapterId) || CHAPTERS[0];
+  return chapter || findChapter(run.chapterId) || CHAPTERS[0];
 }
 
 // Shared death path: an enemy dies exactly once; the recipe counts exactly once (countedForRecipe).

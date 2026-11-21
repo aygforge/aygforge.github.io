@@ -8,7 +8,9 @@ export class AdService {
   isAvailable() {
     return false;
   }
-  // kind: 'rewarded_tip_bonus' | 'rewarded_continue' | 'rewarded_reroll' | 'interstitial'
+  // kind: 'rewarded_tip_bonus' | 'rewarded_continue' | 'rewarded_reroll' | 'rewarded_energy_refill' | 'interstitial'
+  // Native adapter contract: resolve { status: 'rewarded', verified: true } ONLY after the SDK's verified reward
+  // callback. EnergyService.applyAdRefill grants nothing for any other result.
   async show(kind) {
     return { status: 'unavailable', kind, rewarded: false };
   }

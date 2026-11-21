@@ -4,7 +4,9 @@ import Phaser from 'phaser';
 import { app } from '../game/AppState.js';
 import { computeLayout, fieldToScreen } from '../config/layout.js';
 import { RunController, PHASE } from '../systems/RunController.js';
-import { permStats, applyRunResult } from '../systems/Progression.js';
+import { permStats, applyRunResult, applyStageResult, isStageUnlocked } from '../systems/Progression.js';
+import { findChapter, stageByLevel, LEVEL_COUNT } from '../data/stages.js';
+import { launchLevel } from '../game/StageLauncher.js';
 import { living, nextSteps } from '../systems/EnemyDirector.js';
 import { CHAPTERS, ENEMIES, RECIPE_LABELS, ABILITY_BY_ID, ABILITY_CATS, NORMAL_WAVES, FIELD, LADLE } from '../data/content.js';
 import { recipeComplete, STAR2_MAX_HP_LOSS } from '../systems/RecipeTracker.js';
@@ -16,6 +18,14 @@ import { text, panel, button, blocker, COLORS } from '../ui/widgets.js';
 
 const CAT_COLORS = { catch: 0x3a7de0, attack: 0xe8582f, defense: 0x4caf3a, pan: 0xf2b11c, control: 0x7fd8f0 };
 const ROMAN = ['', 'I', 'II', 'III'];
+export const UNLOCK_LABELS = {
+  gold_kitchen: 'Altın Mutfak (Yakında)',
+  chapter2_fries: 'Patates Kızartması bölümü',
+  materials_depot: 'Malzeme Deposu (Yakında)',
+  materials_starter_grant_18: '18 parça (0.4B ile verilecek)',
+  rare_crafting: 'Nadir Üretim (Yakında)',
+  alpha04_campaign_complete: 'Kampanya tamamlandı',
+};
 const SOURCE_LABEL = { pan_burst: 'Tava Patlaması', tomato_splash: 'Sos Sıçraması', pan_echo: 'Tava Yankısı', explosive_oil: 'Patlama', piercing_oil: 'Delme', knockback_boss: 'Püskürtme' };
 
 export class GameScene extends Phaser.Scene {
@@ -48,8 +58,9 @@ export class GameScene extends Phaser.Scene {
 
     const snapshot = this.startData.snapshot || null;
     const chapterId = snapshot ? snapshot.chapterId : this.startData.chapterId || 'menemen';
-    this.chapter = CHAPTERS.find((c) => c.id === chapterId);
-    this.tutorial = !app.save.tutorialDone && this.chapter.id === 'menemen';
+    this.chapter = findChapter(chapterId) || CHAPTERS[0];
+    this.dishKey = this.chapter.dish || (this.chapter.id === 'fries' ? 'dish_fries' : 'dish_menemen');
+    this.tutorial = !app.save.tutorialDone && (this.chapter.id === 'menemen' || this.chapter.level === 1);
 
     this.buildBattle();
     this.buildPot();
@@ -60,7 +71,7 @@ export class GameScene extends Phaser.Scene {
       chapterId,
       perm: permStats(app.save),
       seed,
-      runId: `${Date.now().toString(36)}-${seed.toString(36)}`,
+      runId: this.startData.runId || `${Date.now().toString(36)}-${seed.toString(36)}`, // campaign runs get the runId that paid the energy
       snapshot,
     });
     this.controller.on((e) => this.onEvent(e));
@@ -151,7 +162,7 @@ export class GameScene extends Phaser.Scene {
     g.fillRect(0, 0, L.W, L.hud);
     g.fillStyle(0x3d3447, 1);
     g.fillRect(0, L.hud - 4, L.W, 4);
-    this.hudDish = text(this, 12, 18, this.chapter.name, 18, COLORS.gold, { ox: 0 }).setDepth(41);
+    this.hudDish = text(this, 12, 18, this.chapter.isStage ? `L${this.chapter.level} · ${this.chapter.name}` : this.chapter.name, 18, COLORS.gold, { ox: 0 }).setDepth(41);
     this.hudWave = text(this, 12, 40, '', 15, COLORS.cream, { ox: 0 }).setDepth(41);
     this.hearts = [];
     this.pauseBtn = button(this, L.W - 34, 28, 52, 44, 'II', () => this.togglePause(), { size: 22, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 });
@@ -999,14 +1010,16 @@ export class GameScene extends Phaser.Scene {
     let out = null;
     if (!this.rewardApplied) {
       this.rewardApplied = true;
-      out = applyRunResult(app.save, this.chapter, run, { victory: e.victory, stars: e.stars });
+      out = this.chapter.isStage
+        ? applyStageResult(app.save, this.chapter, run, { victory: e.victory, stars: e.stars })
+        : applyRunResult(app.save, this.chapter, run, { victory: e.victory, stars: e.stars });
       app.persist(); // reward + cleared snapshot in ONE write
     }
     const sp = this.speed;
     if (e.victory) {
       audio.play('victory');
       // short serve effect: dish pops onto the counter
-      const dish = this.add.image(this.L.W / 2, this.L.battle.bottom - 80, this.chapter.id === 'menemen' ? 'dish_menemen' : 'dish_fries').setScale(0.5).setDepth(70);
+      const dish = this.add.image(this.L.W / 2, this.L.battle.bottom - 80, this.dishKey).setScale(0.5).setDepth(70);
       this.tweens.add({ targets: dish, scale: 4, y: dish.y - 60, duration: 420 / sp, ease: 'Back.out' });
       this.flash('SERVİS EDİLDİ!', 1400);
     } else {
@@ -1026,7 +1039,7 @@ export class GameScene extends Phaser.Scene {
     c.add(panel(this, 24, top, L.W - 48, 800));
     c.add(text(this, L.W / 2, top + 40, e.victory ? 'SİPARİŞ TAMAM!' : 'SİPARİŞ YANDI', 32, e.victory ? COLORS.gold : '#ff8a7a'));
     c.add(text(this, L.W / 2, top + 78, this.chapter.name, 20, COLORS.cream));
-    c.add(this.add.image(L.W / 2, top + 140, this.chapter.id === 'menemen' ? 'dish_menemen' : 'dish_fries').setScale(3.4).setAlpha(e.victory ? 1 : 0.45));
+    c.add(this.add.image(L.W / 2, top + 140, this.dishKey).setScale(3.4).setAlpha(e.victory ? 1 : 0.45));
     for (let s = 0; s < 3; s++) {
       const st = this.add.image(L.W / 2 - 56 + s * 56, top + 218, s < e.stars ? 'star' : 'star_empty').setScale(3.4);
       c.add(st);
@@ -1048,6 +1061,8 @@ export class GameScene extends Phaser.Scene {
         ? [`Temel bahşiş: ${r.base}`, `Kalite bonusu: ${r.quality}`, `İlk servis bonusu: ${r.firstBonus}`]
         : [`Tamamlanan dalga: ${Math.min(6, run.wave > 6 ? 6 : run.stats.completedWaves)}/6`, `Kısmi bahşiş: ${r.failReward}`];
       lines.push(`TOPLAM: +${r.total}`);
+      if (out.energyRefund) lines.push(`İlk temizleme enerji iadesi: +${out.energyRefund}`);
+      if (out.unlocked?.length) lines.push(`Açıldı: ${out.unlocked.map((id) => UNLOCK_LABELS[id] || id).join(', ')}`);
     } else {
       lines = ['Bu koşunun ödülü zaten verildi.'];
     }
@@ -1055,17 +1070,36 @@ export class GameScene extends Phaser.Scene {
     c.add(this.add.image(L.W / 2 - 100, top + 506, 'coin').setScale(2.2));
     c.add(text(this, L.W / 2 - 80, top + 506, `Toplam bahşiş: ${app.save.tips}`, 18, COLORS.cream, { ox: 0 }));
     c.add(button(this, L.W / 2, top + 560, 380, 44, 'Reklamla +%40 bahşiş — Android sürümünde', () => {}, { size: 14, enabled: adService.isAvailable() }));
-    const next = CHAPTERS.find((ch) => ch.index === this.chapter.index + 1);
+    // campaign levels go through the launcher (energy debit, one per new runId); legacy chapters as before
+    const replay = () => this.startOrder(this.chapter.isStage ? this.chapter.level : null, this.chapter.id);
+    let next;
+    if (this.chapter.isStage) {
+      const n = this.chapter.level + 1;
+      next = n <= LEVEL_COUNT && isStageUnlocked(app.save, n) ? { name: `L${n} · ${stageByLevel(n).name}`, go: () => this.startOrder(n) } : null;
+    } else {
+      const nc = CHAPTERS.find((ch) => ch.index === this.chapter.index + 1);
+      next = nc && app.save.highestUnlocked >= nc.index ? { name: nc.name, go: () => this.scene.start('Game', { chapterId: nc.id }) } : null;
+    }
     let y = top + 624;
-    if (e.victory && next && app.save.highestUnlocked >= next.index) {
-      c.add(button(this, L.W / 2, y, 380, 58, `SONRAKİ: ${next.name.toUpperCase()}`, () => this.scene.start('Game', { chapterId: next.id }), { size: 20, fill: COLORS.btnGreen, dark: COLORS.btnGreenDark, light: 0x8be07a }));
+    if (e.victory && next) {
+      c.add(button(this, L.W / 2, y, 380, 58, `SONRAKİ: ${next.name.toUpperCase()}`, next.go, { size: 18, fill: COLORS.btnGreen, dark: COLORS.btnGreenDark, light: 0x8be07a }));
       y += 70;
-      c.add(button(this, L.W / 2 - 98, y, 180, 54, 'TEKRAR', () => this.scene.start('Game', { chapterId: this.chapter.id }), { size: 20 }));
+      c.add(button(this, L.W / 2 - 98, y, 180, 54, 'TEKRAR', replay, { size: 20 }));
       c.add(button(this, L.W / 2 + 98, y, 180, 54, 'RESTORAN', () => this.scene.start('Menu'), { size: 20, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 }));
     } else {
-      c.add(button(this, L.W / 2, y, 380, 58, 'TEKRAR OYNA', () => this.scene.start('Game', { chapterId: this.chapter.id }), { size: 22 }));
+      c.add(button(this, L.W / 2, y, 380, 58, 'TEKRAR OYNA', replay, { size: 22 }));
       c.add(button(this, L.W / 2, y + 70, 380, 54, 'RESTORANA DÖN', () => this.scene.start('Menu'), { size: 20, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 }));
     }
     this.overlay = c;
+  }
+
+  // Start a campaign level (energy is charged by the launcher) or replay a legacy chapter.
+  startOrder(level, legacyId) {
+    if (level == null) return this.scene.start('Game', { chapterId: legacyId });
+    const r = launchLevel(this, level);
+    if (!r.ok) {
+      this.floatText(this.L.W / 2, this.L.H / 2, r.reason === 'energy' ? 'Enerji yetersiz — restorana dönülüyor' : 'Level kilitli', '#ff8a7a', 20);
+      this.time.delayedCall(1200, () => this.scene.start('Menu'));
+    }
   }
 }

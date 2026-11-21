@@ -1,0 +1,87 @@
+{
+  "schema": "kepce-alpha04-dungeons/1",
+  "status": "DESIGN_PROPOSAL_NOT_IMPLEMENTED",
+  "integration": "Use same lower pot physics and upper battle with RunController; enable a dungeonRun flag, shorter 4 normal waves + final; skill choice after each normal wave; no recipe/star requirements.",
+  "encounters": [
+    {
+      "id": "gold_kitchen",
+      "waveCount": 4,
+      "waves": [
+        {
+          "tomato": 2
+        },
+        {
+          "tomato": 2,
+          "pepper": 1
+        },
+        {
+          "tomato": 1,
+          "pepper": 2,
+          "egg": 1
+        },
+        {
+          "tomato": 2,
+          "pepper": 2,
+          "egg": 1
+        }
+      ],
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "finalEncounter": {
+        "baseEnemyId": "giant_tomato",
+        "displayName": "Altın Domates",
+        "hp": 22,
+        "shield": 0,
+        "spriteReuse": "giant_tomato",
+        "contactDamage": 1,
+        "summonCount": 0
+      },
+      "rewardRef": "progression.dungeons.definitions.gold_kitchen"
+    },
+    {
+      "id": "materials_depot",
+      "waveCount": 4,
+      "waves": [
+        {
+          "potato": 2
+        },
+        {
+          "potato": 2,
+          "salt": 1
+        },
+        {
+          "potato": 1,
+          "armored_potato": 1,
+          "salt": 1
+        },
+        {
+          "potato": 2,
+          "armored_potato": 1,
+          "salt": 2
+        }
+      ],
+      "skillPicksAfterWaves": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "finalEncounter": {
+        "baseEnemyId": "armored_potato",
+        "displayName": "Depo Muhafızı",
+        "hp": 28,
+        "shield": 2,
+        "spriteReuse": "armored_potato",
+        "contactDamage": 1,
+        "summonCount": 0
+      },
+      "rewardRef": "progression.dungeons.definitions.materials_depot"
+    }
+  ],
+  "failureRewards": "0 for dungeon by default; only completed dungeon grants full or repeat rewards. No extra daily attempts charged by failed runs; energy is still spent.",
+  "allKills": "maintain unique kill credit; boss defeat ends run exactly once"
+}

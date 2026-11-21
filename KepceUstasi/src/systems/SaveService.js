@@ -3,6 +3,37 @@ export const SCHEMA_VERSION = 1;
 export const SAVE_KEY = 'kepceUstasi.save.v1';
 export const BACKUP_KEY = 'kepceUstasi.save.v1.bak';
 
+import { defaultEnergy } from './EnergyService.js';
+
+// Alpha 0.4A fields (data/alpha04_progression_economy.json -> saveMigration.newSaveFields)
+function alpha04Fields(now = Date.now()) {
+  return {
+    dataVersion: 4,
+    stageProgress: { highestUnlocked: 1, levels: {} }, // new 20-level track always starts at L1
+    energy: defaultEnergy(now),
+    equipment: { weapon: 'common', ladle: 'common', apron: 'common', pan: 'common' }, // 0.4B uses these
+    dungeonDaily: {},
+    currencyParts: 0,
+    legacyCompletedChapters: [],
+    unlockEvents: [], // [{ id, level, at }] recorded once (L7 gold_kitchen, L10, L15 depot, L16 rare_crafting, L20)
+    pendingGrants: [], // e.g. materials_starter_grant_18 -> paid out by the 0.4B materials economy
+  };
+}
+
+// Idempotent Alpha 0.1–0.3 -> 0.4A migration: never touches tips/upgrades/settings/legacy chapter stars.
+export function migrateToAlpha04(s, now = Date.now()) {
+  const f = alpha04Fields(now);
+  for (const k of Object.keys(f)) if (s[k] === undefined) s[k] = f[k];
+  s.stageProgress.levels ||= {};
+  s.stageProgress.highestUnlocked ||= 1;
+  const e = s.energy;
+  for (const [k, v] of Object.entries(defaultEnergy(now))) if (e[k] === undefined) e[k] = v;
+  const legacy = Object.entries(s.chapters || {}).filter(([, c]) => c && c.cleared).map(([id]) => id);
+  for (const id of legacy) if (!s.legacyCompletedChapters.includes(id)) s.legacyCompletedChapters.push(id);
+  s.dataVersion = 4;
+  return s;
+}
+
 export function defaultSave() {
   return {
     schemaVersion: SCHEMA_VERSION,
@@ -15,6 +46,7 @@ export function defaultSave() {
     claimedRuns: [],
     activeRun: null,
     stats: { runs: 0, wins: 0 },
+    ...alpha04Fields(),
   };
 }
 
@@ -46,6 +78,16 @@ function merge(s) {
     settings: { ...d.settings, ...s.settings },
     stats: { ...d.stats, ...s.stats },
     chapters: { ...s.chapters },
+    // keep the stored Alpha 0.4 objects (or let migration create them) instead of the fresh defaults
+    stageProgress: s.stageProgress,
+    energy: s.energy,
+    equipment: s.equipment,
+    dungeonDaily: s.dungeonDaily,
+    currencyParts: s.currencyParts,
+    legacyCompletedChapters: s.legacyCompletedChapters,
+    unlockEvents: s.unlockEvents,
+    pendingGrants: s.pendingGrants,
+    dataVersion: s.dataVersion,
   };
 }
 
@@ -83,7 +125,7 @@ export class SaveService {
       const env = JSON.parse(raw);
       if (!env || typeof env.data !== 'string' || checksum(env.data) !== env.sum) return { corrupt: true };
       const s = JSON.parse(env.data);
-      return validate(s) ? { save: merge(s) } : { corrupt: true };
+      return validate(s) ? { save: migrateToAlpha04(merge(s)) } : { corrupt: true };
     } catch {
       return { corrupt: true };
     }

@@ -1,12 +1,13 @@
 // EnemyDirector — dalga spawn'ı, SAĞDAN SOLA tur bazlı hareket, boss davranışları ve temas.
 // Hareket yalnızca ENEMY_ACTION fazında, tur başına bir kez çağrılır. Asla sürekli hareket yok.
 import { ENEMIES, FIELD, CHAPTERS, ABILITY_VALUES } from '../data/content.js';
+import { findChapter } from '../data/stages.js';
 import { resolveReflect } from './CombatResolver.js';
 
 export const BOSS_FREEZE_EVERY = 3; // a boss can be frozen at most once per 3 of its own actions
 
 export function chapterOf(run) {
-  return CHAPTERS.find((c) => c.id === run.chapterId) || CHAPTERS[0];
+  return findChapter(run.chapterId) || CHAPTERS[0];
 }
 
 // Spawned HP for this chapter's balance (base HP table unchanged; boss HP explicit).
@@ -48,6 +49,8 @@ export function nextSteps(e) {
 function makeEnemy(run, type, x, y) {
   const def = ENEMIES[type];
   const hp = scaledHp(chapterOf(run), type);
+  const bal = chapterOf(run).balance;
+  const bossShield = def.boss && bal?.bossShield != null ? bal.bossShield : def.shield; // Alpha 0.4 final shield
   const e = {
     id: run.nextEnemyId++,
     type,
@@ -55,8 +58,8 @@ function makeEnemy(run, type, x, y) {
     y,
     hp,
     maxHp: hp,
-    shield: def.shield,
-    maxShield: def.shield,
+    shield: bossShield,
+    maxShield: bossShield,
     moveOpp: 0,
     dead: false,
     escaped: false,

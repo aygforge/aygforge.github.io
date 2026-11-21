@@ -1,8 +1,12 @@
-// MenuScene — minimal restoran ana ekranı: OYNA, TARİFLER, GELİŞTİR, MAĞAZA, AYARLAR.
+// MenuScene — minimal restoran ana ekranı: OYNA (sıradaki level), LEVEL SEÇ, GELİŞTİR, MAĞAZA, AYARLAR, enerji.
 import Phaser from 'phaser';
 import { app } from '../game/AppState.js';
 import { CHAPTERS, UPGRADES, RECIPE_LABELS, MAX_UPGRADE_LEVEL } from '../data/content.js';
-import { purchaseUpgrade, upgradeCost, upgradeValue, isUnlocked } from '../systems/Progression.js';
+import { purchaseUpgrade, upgradeCost, upgradeValue, isUnlocked, currentLevel, stageState, isStageUnlocked, chefPower } from '../systems/Progression.js';
+import { findChapter, stageByLevel, LEVEL_COUNT } from '../data/stages.js';
+import { tickEnergy, msToNextPoint, msToUtcReset, adRefillsLeft, applyAdRefill, ENERGY } from '../systems/EnergyService.js';
+import { launchLevel } from '../game/StageLauncher.js';
+import { adService } from '../platform/AdService.js';
 import { purchaseService } from '../platform/PurchaseService.js';
 import { audio } from '../platform/AudioService.js';
 import { lifecycle } from '../platform/Lifecycle.js';
@@ -34,25 +38,31 @@ export class MenuScene extends Phaser.Scene {
     this.add.image(38, 36, 'coin').setScale(2.6);
     this.tipText = text(this, 60, 36, String(app.save.tips), 24, COLORS.gold, { ox: 0 });
     button(this, W - 70, 36, 112, 46, 'AYARLAR', () => this.openSettings(), { size: 18, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 });
+    // energy indicator (ticks every second; offline regeneration is applied on open)
+    panel(this, 176, 14, 230, 44);
+    this.energyText = text(this, 192, 36, '', 20, '#9ef0ff', { ox: 0 });
+    this.refreshEnergy();
+    this.time.addEvent({ delay: 1000, loop: true, callback: () => this.refreshEnergy() });
 
     // main actions
     const run = app.save.activeRun;
     const y0 = off + 700;
     if (run) {
-      const ch = CHAPTERS.find((c) => c.id === run.chapterId);
+      const ch = findChapter(run.chapterId) || CHAPTERS[0];
       const wave = run.run.wave > 6 ? 'Boss' : `Dalga ${run.run.wave}`;
       button(this, W / 2, y0, 330, 86, 'DEVAM ET', () => this.startRun({ snapshot: run }), { size: 34, fill: COLORS.btnGreen, dark: COLORS.btnGreenDark, light: 0x8be07a });
-      text(this, W / 2, y0 + 60, `${ch.name} · ${wave} başı`, 20, COLORS.cream);
+      text(this, W / 2, y0 + 60, `${ch.isStage ? `L${ch.level} · ` : ''}${ch.name} · ${wave} başı (enerji düşmez)`, 18, COLORS.cream);
     } else {
-      const ch = this.defaultChapter();
-      button(this, W / 2, y0, 330, 86, 'OYNA', () => this.startRun({ chapterId: ch.id }), { size: 40 });
-      text(this, W / 2, y0 + 60, `Sipariş: ${ch.name}`, 20, COLORS.cream);
+      const lvl = currentLevel(app.save);
+      const st = stageByLevel(lvl);
+      button(this, W / 2, y0, 330, 86, `OYNA · L${lvl}`, () => this.playLevel(lvl), { size: 34 });
+      text(this, W / 2, y0 + 60, `${st.name}${stageState(app.save, lvl).cleared ? ' (tekrar)' : ''} · ${st.energyCost} enerji`, 18, COLORS.cream);
     }
     const y1 = off + 818;
-    button(this, W / 2 - 172, y1, 160, 62, 'TARİFLER', () => this.openChapters(), { size: 20 });
+    button(this, W / 2 - 172, y1, 160, 62, 'LEVEL SEÇ', () => this.openLevels(), { size: 19 });
     button(this, W / 2, y1, 160, 62, 'GELİŞTİR', () => this.openUpgrades(), { size: 20 });
     button(this, W / 2 + 172, y1, 160, 62, 'MAĞAZA', () => this.openShop(), { size: 20 });
-    text(this, W / 2, H - 22, 'Alpha 0.3 · Ayg Forge · çevrimdışı · reklamsız', 16, '#d8c9b0');
+    text(this, W / 2, H - 22, 'Alpha 0.4A · Ayg Forge · çevrimdışı · reklamsız', 16, '#d8c9b0');
 
     if (app.notice) {
       this.toast(app.notice);
@@ -66,6 +76,73 @@ export class MenuScene extends Phaser.Scene {
   defaultChapter() {
     const open = CHAPTERS.filter((c) => isUnlocked(app.save, c.index));
     return open.find((c) => !app.save.chapters[c.id]?.cleared) || open[open.length - 1];
+  }
+
+  refreshEnergy() {
+    const now = Date.now();
+    const e = tickEnergy(app.save.energy, now);
+    const ms = msToNextPoint(e, now);
+    const mm = String(Math.floor(ms / 60000)).padStart(2, '0');
+    const ss = String(Math.floor((ms % 60000) / 1000)).padStart(2, '0');
+    this.energyText.setText(`ENERJİ ${e.value}/${ENERGY.max}${ms ? `  +1 ${mm}:${ss}` : ''}`);
+  }
+
+  playLevel(level) {
+    audio.play('click');
+    const r = launchLevel(this, level);
+    if (!r.ok) {
+      const ms = msToNextPoint(app.save.energy, Date.now());
+      this.toast(r.reason === 'energy' ? `Enerji yetersiz (${app.save.energy.value}/${ENERGY.max}). Sonraki +1: ${Math.ceil(ms / 60000)} dk.` : 'Bu level henüz kilitli.');
+    }
+  }
+
+  // ---------------- level select (L1–L20) ----------------
+  openLevels() {
+    const { c, top, h } = this.openOverlay('LEVEL SEÇ', 860);
+    const now = Date.now();
+    const sg = chefPower(app.save);
+    const cur = currentLevel(app.save);
+    const cs = stageByLevel(cur);
+    c.add(text(this, this.W / 2, top + 68, `Şef Gücü ${sg} · L${cur} önerisi ${cs.recommendedChefPower}${cs.powerWall ? ` (${cs.powerWall})` : ''}`, 16, sg >= cs.recommendedChefPower ? '#8be07a' : '#ffb35a'));
+    const cols = 4;
+    const bw = 104;
+    const bh = 92;
+    for (let i = 0; i < LEVEL_COUNT; i++) {
+      const lvl = i + 1;
+      const st = stageByLevel(lvl);
+      const ss = stageState(app.save, lvl);
+      const open = isStageUnlocked(app.save, lvl);
+      const x = this.W / 2 + (i % cols - (cols - 1) / 2) * (bw + 12);
+      const y = top + 140 + Math.floor(i / cols) * (bh + 12);
+      const fill = st.stageType === 'chapter_boss' ? 0xb5341f : st.stageType === 'mini_boss' ? 0x8a4fc0 : COLORS.btn;
+      const b = button(this, x, y, bw, bh, open ? `L${lvl}` : `L${lvl}\nKİLİT`, () => this.playLevel(lvl), { size: open ? 26 : 16, enabled: open, fill });
+      b.label.y -= open ? 12 : 0;
+      c.add(b);
+      if (open) for (let k = 0; k < 3; k++) c.add(this.add.image(x - 26 + k * 26, y + 24, k < ss.stars ? 'star' : 'star_empty').setScale(1.5));
+      if (lvl === cur) c.add(text(this, x, y - bh / 2 - 6, '▶', 14, COLORS.gold));
+    }
+    const fy = top + 140 + 5 * (bh + 12) - 20;
+    // future content unlocked by levels 7 / 15 / 16: recorded as data, screens come with 0.4B
+    const ev = (id) => app.save.unlockEvents.some((u) => u.id === id);
+    const fut = [['gold_kitchen', 'Altın Mutfak', 7], ['materials_depot', 'Malzeme Deposu', 15], ['rare_crafting', 'Nadir Üretim', 16]]
+      .map(([id, name, l]) => `${name}: ${ev(id) ? 'açıldı · Yakında' : `L${l}'de açılır`}`)
+      .join('\n');
+    c.add(text(this, 46, fy, fut, 15, '#d8c9b0', { ox: 0, oy: 0, align: 'left', lineSpacing: 4 }));
+    const left = adRefillsLeft(app.save.energy, now);
+    const reset = Math.ceil(msToUtcReset(now) / 3600000);
+    c.add(text(this, this.W - 46, fy, `Reklam dolumu: ${left}/${ENERGY.dailyAdFullRefills}\nUTC sıfırlama: ~${reset} sa`, 15, '#9ef0ff', { ox: 1, oy: 0, align: 'right', lineSpacing: 4 }));
+    // rewarded energy refill: only a verified native reward counts; in the browser the button stays disabled
+    const ad = button(this, this.W / 2, top + h - 104, 380, 44, adService.isAvailable() ? 'ENERJİYİ DOLDUR (reklam)' : 'Enerji dolumu (reklam) — Android sürümünde', async () => {
+      const res = await adService.show('rewarded_energy_refill');
+      const r = applyAdRefill(app.save.energy, res, Date.now());
+      if (r.ok) {
+        app.persist();
+        this.refreshEnergy();
+      } else this.toast('Reklam ödülü doğrulanmadı; enerji verilmedi.');
+    }, { size: 15, enabled: adService.isAvailable() && left > 0 });
+    c.add(ad);
+    const legacy = app.save.legacyCompletedChapters;
+    if (legacy.length) c.add(text(this, this.W / 2, top + 100, `Eski sürüm rozetleri: ${legacy.map((id) => `${CHAPTERS.find((x) => x.id === id)?.name} ${'★'.repeat(app.save.chapters[id]?.stars || 0)}`).join(' · ')}`, 13, '#b7a9c4'));
   }
 
   startRun(data) {

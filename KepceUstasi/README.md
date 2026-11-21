@@ -1,7 +1,8 @@
-# Kepçe Ustası — Alpha 0.3 (HTML5)
+# Kepçe Ustası — Alpha 0.4A (HTML5)
 
 **Stüdyo:** Ayg Forge · **Çalışma adı:** Kepçe Ustası · **Sürüm:** Alpha 0.3 (Menemen + Patates Kızartması; yakalama hissi ve build dengesi)
 
+> **Alpha 0.4A:** 20 level kampanya (L1–L20, `src/data/alpha04/*.json`) + enerji (30 maks, giriş 10, 12 dk'da +1). Ayrıntı: `CHANGELOG_ALPHA04A.md`.
 > **Alpha 0.3:** `CHANGELOG_ALPHA03.md` · `ALPHA03_FEEL_REPORT.md` (yakalama hissi) · `ALPHA03_BALANCE_REPORT.md` · `TEST_PLAN_ALPHA03.md`.
 > Alpha 0.2 belgeleri: `CHANGELOG_ALPHA02.md`, `TEST_PLAN_ALPHA02.md`, `BALANCE_REPORT_ALPHA02.md`.
 > Alpha 0.1 belgeleri (`CHANGELOG.md`, `TEST_PLAN.md`) tarihsel kayıt olarak duruyor.
