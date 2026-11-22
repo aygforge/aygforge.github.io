@@ -18,6 +18,7 @@ export const OMELET = omelet; // Alpha 0.5A: L21–30 Mantarlı Omlet
 const ALL_LEVELS = [...identity.levels, ...omelet.levels];
 export const LEVEL_COUNT = ALL_LEVELS.length;
 export const stageId = (n) => `L${n}`;
+const RUN_COST = 5; // Alpha 0.5A.1: all run entries 5 energy (same value as EnergyService.RUN_ENERGY_COST)
 
 const BASE_CHAPTER = Object.fromEntries(CHAPTERS.map((c) => [c.id, c]));
 // Alpha 0.5A: engine base for chapter 3 (only used by stages L21–30; not a legacy playable chapter)
@@ -97,11 +98,11 @@ function buildStage(L) {
     baseTip: L.rewards.baseTips,
     firstClearBonus: L.rewards.firstClearTips,
     starMultipliers: L.rewards.starMultipliers,
-    firstClearEnergyRefund: L.rewards.firstClearEnergyRefund || 0,
+    firstClearEnergyRefund: L.rewards.firstClearEnergyRefund ? RUN_COST : 0, // full entry cost back (L1–L3)
     unlocksOnFirstClear: L.unlocksOnFirstClear || [],
     recommendedChefPower: L.recommendedChefPower,
     powerWall: L.powerWall,
-    energyCost: L.energyCost,
+    energyCost: RUN_COST,
     // pot_bonus: only the big-oil roll chance changes (RunController still caps it at 18 %)
     bigOilRate: +(base.bigOilRate * (id.bigOilRateMultiplier || 1)).toFixed(4),
     dish: DISH[L.chapterId],
@@ -150,7 +151,7 @@ function buildDungeon(d) {
     baseTip: 0,
     bigOilRate: base.bigOilRate,
     dish: chapterId === 'menemen' ? 'dish_menemen' : 'dish_fries',
-    energyCost: economy.dungeons.runCostEnergy,
+    energyCost: RUN_COST,
     unlockedAfterLevel: def.unlockedAfterLevel,
     reward: def,
     skillWaves: d.skillPicksAfterWaves,

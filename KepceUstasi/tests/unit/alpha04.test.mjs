@@ -34,25 +34,27 @@ test('energy: +1 per 12 min with remainder carried, never above 30, clock going 
   const e = defaultEnergy(T0);
   assert.equal(e.value, 30);
   debitForRun(e, 'a', T0);
-  assert.equal(e.value, 20);
+  assert.equal(e.value, 25); // Alpha 0.5A.1: entry costs 5
   tickEnergy(e, T0 + 30 * MIN); // 2 points, 6 min carried
-  assert.equal(e.value, 22);
+  assert.equal(e.value, 27);
   tickEnergy(e, T0 + 36 * MIN);
-  assert.equal(e.value, 23);
+  assert.equal(e.value, 28);
   tickEnergy(e, T0 + 10 * MIN); // clock moved backwards
-  assert.equal(e.value, 23);
+  assert.equal(e.value, 28);
   tickEnergy(e, T0 + 100 * 24 * 60 * MIN);
   assert.equal(e.value, 30);
 });
 
 test('energy: one debit per runId (resume/reload never charges again), refused when short', () => {
   const e = defaultEnergy(T0);
-  assert.deepEqual(debitForRun(e, 'run1', T0), { ok: true, charged: 10 });
+  assert.deepEqual(debitForRun(e, 'run1', T0), { ok: true, charged: 5 });
   assert.deepEqual(debitForRun(e, 'run1', T0 + 1000), { ok: true, charged: 0 });
+  assert.equal(e.value, 25);
   debitForRun(e, 'run2', T0);
-  debitForRun(e, 'run3', T0);
+  assert.equal(e.value, 20, '30 -> 25 -> 20');
+  for (let i = 3; i <= 6; i++) debitForRun(e, `run${i}`, T0);
   assert.equal(e.value, 0);
-  assert.equal(debitForRun(e, 'run4', T0).ok, false);
+  assert.equal(debitForRun(e, 'run7', T0).ok, false);
 });
 
 test('energy: rewarded refill only when verified, fills to 30 (not +30), 2 per UTC day, resets next UTC day', () => {
@@ -69,14 +71,15 @@ test('energy: rewarded refill only when verified, fills to 30 (not +30), 2 per U
   assert.ok(applyAdRefill(e, ok, Date.UTC(2026, 10, 22, 0, 1)).ok, 'new UTC day');
 });
 
-test('energy: L1–L3 first clear refund +10 once each, never for L4', () => {
+test('energy: L1–L3 first clear refund = entry cost (5) once each, never for L4', () => {
   const e = defaultEnergy(T0);
   debitForRun(e, 'a', T0);
   debitForRun(e, 'b', T0);
-  assert.equal(refundFirstClear(e, 1, 10, T0), 10);
-  assert.equal(refundFirstClear(e, 1, 10, T0), 0);
-  assert.equal(refundFirstClear(e, 4, 10, T0), 0);
-  assert.equal(e.value, 20);
+  assert.deepEqual([stageByLevel(1).firstClearEnergyRefund, stageByLevel(4).firstClearEnergyRefund, stageByLevel(1).energyCost], [5, 0, 5]);
+  assert.equal(refundFirstClear(e, 1, 5, T0), 5);
+  assert.equal(refundFirstClear(e, 1, 5, T0), 0);
+  assert.equal(refundFirstClear(e, 4, 5, T0), 0);
+  assert.equal(e.value, 25);
 });
 
 test('migration: Alpha 0.3 save keeps tips/upgrades/legacy stars, new track starts at L1, idempotent', () => {
@@ -109,7 +112,7 @@ test('stage result: JSON rewards, first clear once, unlocks L7/L15/L16 recorded 
   debitForRun(s.energy, 'r1', T0);
   const a = win(1, 'r1');
   assert.equal(a.reward.total, Math.round(60 * 1.3) + 30);
-  assert.equal(a.energyRefund, 10);
+  assert.equal(a.energyRefund, 5);
   assert.equal(s.energy.value, 30);
   assert.equal(win(1, 'r1').duplicate, true);
   assert.equal(s.tips, 108);

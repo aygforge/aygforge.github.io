@@ -97,12 +97,12 @@ test('enemies move only in ENEMY_ACTION and only leftwards', () => {
   assert.ok(changes.length > 0);
   for (const ch of changes) {
     if (ch.dx < 0) assert.equal(ch.kind, 'enemyAction', 'leftward moves happen only in the enemy action phase');
-    else assert.ok((ch.boss && ch.kind === 'contact') || ch.knocked, 'rightward only as a boss retreat or an explicit knockback hit effect');
+    else assert.ok(ch.kind === 'contact' || ch.knocked, 'rightward only as a contact retreat or an explicit knockback hit effect');
   }
 });
 
 test('boss dies -> instant victory: no enemy action / contact after, result emitted once', () => {
-  const r = simulateRun({ chapterId: 'menemen', seed: 3 });
+  const r = simulateRun({ chapterId: 'menemen', seed: 3, policy: 'perfect' });
   assert.equal(r.result.victory, true);
   assert.equal(r.log.results, 1);
   const c = r.ctl;
@@ -153,7 +153,8 @@ test('checkpoint snapshot: restore resumes at wave start without double kill, do
   const ev = [];
   c.on((e) => ev.push(e));
   c.start();
-  assert.equal(c.phase, PHASE.SWING_WAIT);
+  // Alpha 0.5A.1: with leftover ammo the wave starts with its volley, otherwise with the ladle swing
+  assert.equal(c.phase, snap.run.pendingAmmo?.length ? PHASE.VOLLEY : PHASE.SWING_WAIT);
   assert.equal(c.run.wave, snap.run.wave);
   assert.equal(JSON.stringify(c.run.recipe), recipeAtSnap);
   assert.equal(c.run.stats.kills, killsAtSnap);

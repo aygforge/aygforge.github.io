@@ -381,8 +381,9 @@ export function resolveVolley(run, chapter, shots) {
     }
   }
   if (ctx.capped) events.push({ type: 'capReached', dropped: ctx.capped });
+  ctx.realFired = events.filter((e) => e.type === 'shot' && e.source === 'pot').length;
   if (ctx.victory) events.push({ type: 'victory' });
-  return { events, victory: ctx.victory };
+  return { events, victory: ctx.victory, realFired: ctx.realFired };
 }
 
 // Dikenli Önlük: reflect damage on the enemy that touched the chef (same damage/death authority).
@@ -396,8 +397,10 @@ export function resolveReflect(run, chapter, e, dmg) {
   return { events: ctx.events, victory: ctx.victory };
 }
 
-// Builds the shot list for a volley from the PHYSICALLY caught balls (one shot per ball) + flagged bonuses.
-export function buildShots(run, caught) {
+// Builds the shot list for a volley: flagged bonuses + one real shot per PHYSICALLY caught ball still waiting in
+// run.pendingAmmo (Alpha 0.5A.1: ordered, typed, kept across waves; only consumed by a real hit on a live target).
+// `caught` (legacy callers/tests) is used when no ammo queue is given.
+export function buildShots(run, caught, ammo = null) {
   const shots = [];
   for (let i = 0; i < run.pending.chain; i++) shots.push({ oil: 'normal', isBonus: true, canProc: false, source: 'chain_cooking' });
   for (let i = 0; i < run.pending.mastery; i++) shots.push({ oil: 'normal', isBonus: true, canProc: false, source: 'pan_mastery' });
@@ -405,7 +408,8 @@ export function buildShots(run, caught) {
   run.pending.chain = 0;
   run.pending.mastery = 0;
   run.pending.eqPan = 0;
-  for (const b of caught) shots.push({ oil: b.type, isBonus: false, canProc: true, source: 'pot', ballId: b.id });
-  if (caught.length === 0) shots.push({ oil: 'normal', isBonus: true, canProc: false, source: 'guarantee' });
+  const real = ammo || caught.map((b) => ({ oil: b.type, ballId: b.id }));
+  for (const b of real) shots.push({ oil: b.oil, isBonus: false, canProc: true, source: 'pot', ballId: b.ballId });
+  if (real.length === 0) shots.push({ oil: 'normal', isBonus: true, canProc: false, source: 'guarantee' });
   return shots;
 }

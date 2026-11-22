@@ -1,12 +1,15 @@
 // EnergyService — Alpha 0.4A enerji kuralları (data/alpha04_progression_economy.json -> energy).
 // Saf fonksiyonlar: kayıt nesnesi + UTC zaman damgası (ms) alır, aynı nesneyi günceller. Kalıcı yazım çağıranın işidir.
-//  - maks/başlangıç 30, giriş 10, 12 dakikada +1 (çevrimdışı da işler, artık süre devreder, 30 üstü birikmez)
+//  - maks/başlangıç 30, giriş 5 (0.5A.1), 12 dakikada +1 (çevrimdışı da işler, artık süre devreder, 30 üstü birikmez)
 //  - runId başına TEK düşüm (devam / yeniden yükleme ikinci kez düşmez)
 //  - UTC günü başına 2 doğrulanmış reklam tam dolumu (30'a tamamlar, +30 değil); doğrulanmayan ödül hak yemez
-//  - L1–L3 ilk temizlemesinde bir defalık +10 iade
+//  - L1–L3 ilk temizlemesinde bir defalık +5 iade (giriş bedeli)
 import { ECONOMY04 } from '../data/stages.js';
 
-export const ENERGY = ECONOMY04.energy;
+// Alpha 0.5A.1: every run entry (level and dungeon) costs 5; the L1–L3 first-clear refund is the full entry cost (5).
+// Max 30, +1 / 12 min and 2 daily ad refills are unchanged.
+export const RUN_ENERGY_COST = 5;
+export const ENERGY = { ...ECONOMY04.energy, costPerRun: RUN_ENERGY_COST, firstClearRefundPerLevel: RUN_ENERGY_COST };
 const MIN = 60 * 1000;
 const INTERVAL = ENERGY.regenMinutesPerPoint * MIN;
 

@@ -130,7 +130,7 @@ test('enemy movement: only to the LEFT, only in the action phase; pepper 2 steps
   assert.deepEqual([1, 2, 3, 4].map((o) => stepsFor({ type: 'armored_potato' }, o)), [1, 0, 1, 0]);
 });
 
-test('contact: normal enemy hits for 1, leaves, is NOT counted; salt shield and start shield absorb first', () => {
+test('contact: normal enemy hits for 1, steps back (stays alive), is NOT counted; salt shield and start shield absorb first', () => {
   const run = makeRun();
   run.chef.saltCharges = 1;
   run.chef.shield = 1;
@@ -140,7 +140,8 @@ test('contact: normal enemy hits for 1, leaves, is NOT counted; salt shield and 
   const ev = resolveContacts(run);
   assert.equal(ev.filter((e) => e.type === 'contact').length, 3);
   assert.deepEqual([run.chef.hp, run.stats.hpLost, run.chef.saltCharges, run.chef.shield], [4, 1, 0, 0]);
-  assert.ok(a.escaped && b.escaped && c.escaped);
+  assert.ok([a, b, c].every((e) => !e.escaped && !e.dead && e.contactState === 'retreated'));
+  assert.deepEqual([a.x, b.x, c.x], [0.3, 0.25, 0.2]); // one step (0.1) back each
   assert.equal(run.recipe.tomato, 0);
 });
 

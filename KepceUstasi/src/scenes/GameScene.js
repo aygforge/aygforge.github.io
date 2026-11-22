@@ -176,6 +176,8 @@ export class GameScene extends Phaser.Scene {
     this.hint = text(this, L.W / 2, L.pot.y + 40, '', 22, COLORS.gold, { strokeThickness: 5 }).setDepth(50).setAlpha(0);
     this.hintArrow = this.add.graphics().setDepth(13);
     this.ammoText = text(this, this.chefPos.x, this.chefPos.y - 84, '', 20, COLORS.gold).setDepth(26);
+    // Alpha 0.5A.1: the real pendingAmmo queue, shown as small oil icons right under the chef (+N when long)
+    this.ammoRow = this.add.container(this.chefPos.x, this.chefPos.y + 50).setDepth(26);
     // offline debug metrics (GDD §15/§20) — only with ?dev=1 / ?test=1, never in the normal player UI
     if (app.dev) this.debugText = text(this, 8, L.H - 8, '', 12, '#9ef0ff', { ox: 0, oy: 1, strokeThickness: 2 }).setDepth(200);
   }
@@ -337,6 +339,7 @@ export class GameScene extends Phaser.Scene {
         break;
       case 'restored':
         for (const en of living(e.run)) this.createView(en);
+        this.renderAmmo((e.run.pendingAmmo || []).map((a) => a.oil));
         this.refreshHud();
         this.refreshStatuses();
         this.flash('Kayıttan devam: dalga başı', 1200);
@@ -566,7 +569,20 @@ export class GameScene extends Phaser.Scene {
       this.floatText(L.W / 2, L.railY - 26, `${norm} normal${big ? ` + ${big} büyük` : ''}  (yük ${e.load}/${e.capacity})`, '#fff4dc');
     }
     if (e.spilled.length) this.floatText(L.W / 2, L.railY - 2, `Kapasite doldu: ${e.spilled.length} topçuk geri döküldü`, '#ffb35a');
-    this.ammoText.setText(`x${Math.max(1, e.caught.length)}`);
+    this.renderAmmo(e.ammo || []);
+  }
+
+  renderAmmo(list) {
+    const row = this.ammoRow;
+    if (!row) return;
+    row.removeAll(true);
+    const MAX = 6;
+    const shown = list.slice(0, MAX);
+    const extra = list.length - shown.length;
+    const gap = 15;
+    const w = (shown.length - 1) * gap + (extra > 0 ? 26 : 0);
+    shown.forEach((oil, i) => row.add(this.add.image(-w / 2 + i * gap, 0, `oil_${oil}`).setScale(oil === 'big' ? 1.6 : 1.3)));
+    if (extra > 0) row.add(text(this, -w / 2 + (shown.length - 1) * gap + 22, 0, `+${extra}`, 14, COLORS.gold));
   }
 
   // ======================================================== presentation: volley
@@ -577,12 +593,19 @@ export class GameScene extends Phaser.Scene {
     const travel = 230 / sp;
     let t = 0;
     let lastLand = 0;
-    let remainingShots = e.events.filter((x) => x.type === 'shot').length;
+    const ammo = [...(e.ammoBefore || [])];
+    this.renderAmmo(ammo);
+    if (ammo.length && e.ammoBefore.length > 0 && this.controller.lastCatch?.load === 0 && !this.controller.lastCatch.caught.length) {
+      this.flash('Kalan yağ ateşleniyor', 700 / sp); // wave-start volley of leftover ammo
+    }
     for (const ev of e.events) {
       if (ev.type === 'shot') {
         const at = t;
         this.time.delayedCall(at, () => {
-          this.ammoText.setText(remainingShots > 1 ? `x${--remainingShots}` : '');
+          if (ev.source === 'pot') {
+            ammo.shift(); // one real ball used per real shot
+            this.renderAmmo(ammo);
+          }
           this.fireShot(ev, travel);
         });
         lastLand = at + travel;
@@ -604,6 +627,7 @@ export class GameScene extends Phaser.Scene {
     }
     this.time.delayedCall(Math.max(t, lastLand) + 420 / sp, () => {
       this.ammoText.setText('');
+      this.renderAmmo(e.ammoAfter || []);
       this.syncViewsToLogic();
       this.controller.ack(e.token);
     });

@@ -47,7 +47,9 @@ export function migrateRunState(run) {
   if (!run.critRng) run.critRng = ((run.seed || 1) ^ 0x9e3779b9) >>> 0 || 1;
   if (run.offerSeq == null) run.offerSeq = 0;
   if (run.lastOffer === undefined) run.lastOffer = null;
+  if (!Array.isArray(run.pendingAmmo)) run.pendingAmmo = []; // Alpha 0.5A.1: old snapshots open with an empty queue
   for (const e of run.enemies || []) {
+    if (e.contactState === undefined) e.contactState = null; // old snapshot: normal approach
     if (e.frozen == null) e.frozen = false;
     if (e.lastFrozenAction === undefined) e.lastFrozenAction = null;
   }
@@ -69,6 +71,7 @@ export function newRunState({ chapter, perm, seed, runId }) {
     perm: { ...perm },
     counters: { ...RUN_COUNTER_DEFAULTS },
     pending: { chain: 0, mastery: 0, eqPan: 0 },
+    pendingAmmo: [], // Alpha 0.5A.1: caught oil balls not fired yet [{ oil, ballId }], kept across waves of THIS run
     recipe: emptyRecipe(chapter),
     stats: {
       hpLost: 0, kills: 0, escaped: 0, shots: 0, normalShots: 0, damageDealt: 0,
@@ -145,7 +148,8 @@ export class RunController {
       this.ladle = new LadleController(this.pot);
       this.ladle.configure(ladleParams(this.run));
       this.emit({ kind: 'restored', run: this.run });
-      this.enterSwing(false);
+      if (this.run.pendingAmmo.length) this.enterAmmoVolley(false); // leftover ammo fires before any new ladle drop
+      else this.enterSwing(false);
       return;
     }
     this.rng = new Rng(o.seed);
@@ -193,7 +197,8 @@ export class RunController {
     if (this.run.wave > this.normalWaves && this.run.stats.bossStartTurn == null) this.run.stats.bossStartTurn = this.run.turn;
     const spawned = spawnWave(this.run, this.chapter, this.rng);
     const firstOfRun = this.run.turn === 0;
-    this.onAck = () => (firstOfRun ? this.enterSwing(true) : this.enterPotRefill(true));
+    // leftover caught oil keeps firing at the new wave before the ladle opens again (Alpha 0.5A.1)
+    this.onAck = () => (this.run.pendingAmmo.length ? this.enterAmmoVolley(true) : firstOfRun ? this.enterSwing(true) : this.enterPotRefill(true));
     this.awaitAck({
       kind: 'wavePrep',
       wave: this.run.wave,
@@ -242,16 +247,30 @@ export class RunController {
     for (const id of ['wide_ladle', 'deep_ladle', 'slow_swing', 'stable_rim']) {
       if (this.run.abilities[id]) this.run.stats.procs[id] = (this.run.stats.procs[id] || 0) + 1;
     }
+    for (const b of res.caught) this.run.pendingAmmo.push({ oil: b.type, ballId: b.id });
     this.setPhase(PHASE.CLAW_RETURN);
-    this.emit({ kind: 'catch', ...res });
+    this.emit({ kind: 'catch', ...res, ammo: this.run.pendingAmmo.map((a) => a.oil) });
   }
 
   enterVolley() {
     this.setPhase(PHASE.VOLLEY);
-    const shots = buildShots(this.run, this.lastCatch.caught);
+    const ammoBefore = this.run.pendingAmmo.map((a) => a.oil);
+    const shots = buildShots(this.run, [], this.run.pendingAmmo);
     const res = resolveVolley(this.run, this.chapter, shots);
+    // only shots that really hit a live target use up ammo; the rest waits for the next wave
+    this.run.pendingAmmo.splice(0, res.realFired);
+    if (res.victory) this.run.pendingAmmo = []; // never carried into another run
     this.onAck = () => this.afterVolley(res.victory);
-    this.awaitAck({ kind: 'volley', shots, events: res.events });
+    this.awaitAck({ kind: 'volley', shots, events: res.events, ammoBefore, ammoAfter: this.run.pendingAmmo.map((a) => a.oil) });
+  }
+
+  // A volley of leftover ammo at the start of a wave (no ladle drop). Counts as a turn like a normal volley.
+  enterAmmoVolley(waveStart) {
+    if (waveStart) this.emit({ kind: 'checkpoint', snapshot: this.snapshot() });
+    this.run.turn++;
+    this.run.waveTurn++;
+    this.lastCatch = { caught: [], load: 0 };
+    this.enterVolley();
   }
 
   afterVolley(victory) {
@@ -333,6 +352,7 @@ export class RunController {
     this.inputArmed = false;
     this.waitToken = null; // late presentation acks can no longer advance the run
     this.onAck = null;
+    this.run.pendingAmmo = []; // leftover balls end with the run
     const stars = starsFor(this.run, this.chapter, victory);
     this.run.result = { victory, stars };
     this.setPhase(victory ? PHASE.BOSS_RESULT : PHASE.GAME_OVER);

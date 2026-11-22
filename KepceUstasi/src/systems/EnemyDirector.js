@@ -20,6 +20,13 @@ export function scaledHp(chapter, type) {
   return Math.max(1, Math.round(def.hp * (b.hpScale ?? 1)));
 }
 
+// Alpha 0.5A.1: who uses the repeating contact loop (hit -> 1 step back -> 1 step in -> hit …): every enemy that is
+// not a boss, plus elite finals (not mini/chapter bosses). Bosses keep their own contact/retreat logic untouched.
+export function usesContactLoop(e) {
+  const def = ENEMIES[e.type];
+  return !e.boss || (!!def.elite && !def.miniBoss);
+}
+
 export function enemyDef(e) {
   return ENEMIES[e.type];
 }
@@ -77,6 +84,7 @@ function makeEnemy(run, type, x, y) {
     maxShell: def.shell || 0,
     altFrom: null, // move index after which the 1,2 pattern starts (shell broken / boss phase 2)
     pulses: 0, // guard / Koca Mantar shield pulses used
+    contactState: null, // Alpha 0.5A.1 non-boss contact loop: null | 'retreated' | 'approached' | 'strike'
     frozen: false, // Soğuk Sos: skips its next move once
     lastFrozenAction: null, // bosses: freeze limited to once per BOSS_FREEZE_EVERY actions
   };
@@ -247,6 +255,22 @@ export function enemyAction(run, rng) {
     }
     e.moveOpp++;
     if (skipMove) continue;
+    // contact loop (frozen enemies never reach here, so a pending approach/strike simply waits)
+    if (e.contactState === 'retreated') {
+      const fromX = e.x;
+      e.x = +(e.x - FIELD.step).toFixed(4); // exactly one step back in
+      e.contactState = e.x <= FIELD.contactX + 1e-6 ? 'approached' : null;
+      events.push({ type: 'move', id: e.id, fromX, toX: e.x, steps: 1, approach: true });
+      continue;
+    }
+    if (e.contactState === 'approached') {
+      if (e.x <= FIELD.contactX + 1e-6) {
+        e.contactState = 'strike'; // holds at the chef; strikes in this action's contact phase
+        events.push({ type: 'rest', id: e.id, strike: true });
+        continue;
+      }
+      e.contactState = null; // pushed away (knockback): walk normally again
+    }
     const steps = stepsFor(e, e.moveOpp);
     if (steps > 0) {
       const fromX = e.x;
@@ -284,8 +308,9 @@ export function damageChef(run, amount) {
 
 export function resolveContacts(run, chapter = chapterOf(run)) {
   const events = [];
+  // loop enemies only strike when walking in (state null) or on their 'strike' action — never right after an approach
   const touching = living(run)
-    .filter((e) => e.x <= FIELD.contactX + 1e-6)
+    .filter((e) => e.x <= FIELD.contactX + 1e-6 && (!usesContactLoop(e) || e.contactState == null || e.contactState === 'strike'))
     .sort((a, b) => a.id - b.id);
   const spikes = run.abilities.spiked_apron ? ABILITY_VALUES.spiked_apron[run.abilities.spiked_apron - 1] : 0;
   for (const e of touching) {
@@ -303,15 +328,17 @@ export function resolveContacts(run, chapter = chapterOf(run)) {
         events.push({ type: 'victory' });
         return events; // boss died on the spikes: nothing else happens this turn
       }
-      if (e.dead) continue; // cooked in the pan (counted once), not escaped
+      if (e.dead) continue; // cooked in the pan (counted once)
     }
-    if (e.boss) {
-      e.x = def.retreatX; // safe retreat, one contact per turn
+    if (usesContactLoop(e)) {
+      // Alpha 0.5A.1: one hit, one step back; it stays alive/targetable with HP, shield, shell and speed kept
+      e.x = +(e.x + FIELD.step).toFixed(4);
+      e.contactState = 'retreated';
       ev.retreatX = e.x;
+      ev.loop = true;
     } else {
-      e.escaped = true; // leaves the field, NOT counted for the recipe
-      run.stats.escaped++;
-      ev.escaped = true;
+      e.x = def.retreatX; // boss: safe retreat, one contact per turn (unchanged)
+      ev.retreatX = e.x;
     }
   }
   if (run.chef.hp <= 0) events.push({ type: 'chefDown' });

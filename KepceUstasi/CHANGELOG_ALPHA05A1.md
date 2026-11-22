@@ -1,0 +1,6 @@
+# Alpha 0.5A.1 — Hedefli düzeltmeler
+
+1. **Temas döngüsü** (`EnemyDirector`): boss olmayan düşmanlar (normal, çağrılmış, elit finaller; mini/chapter boss hariç) Şef'e vurunca silinmez, 1 adım geri çekilir (`contactState: retreated`). Sonraki eylemde 1 adım yaklaşır (`approached`, vuruş yok), ondan sonraki eylemde yerinde kalıp vurur ve yine geri çekilir (`strike`). Her temas fazında tek vuruş; donma bekleyen adımı erteler; HP/kalkan/kabuk/hız korunur; öldürülünce tarif bir kez sayılır. Boss mantığı değişmedi. Durum snapshot'ta; eski kayıtta `null`.
+2. **pendingAmmo** (`RunController`, `CombatResolver.buildShots`): yakalanan toplar sıralı ve türüyle kuyrukta; yalnızca canlı hedefe yapılan gerçek atış bir top düşürür. Dalga erken biterse kalanlar silinmez; yetenek seçiminden sonra yeni dalgada kepçe açılmadan otomatik ateşlenir. Bonus mermiler kuyruğa girmez. Run bitince kuyruk temizlenir. Şef'in altında küçük yağ ikonları, 6'dan fazlası `+N`.
+3. **Enerji**: level ve dungeon girişi 5; L1–L3 ilk temizleme iadesi 5. Maks 30, 12 dk/+1, günde 2 reklam dolumu değişmedi; eski kaydın enerjisine dokunulmaz.
+- Testler: `tests/unit/alpha05a1.test.mjs` (4 test); eski kuralı (kaçış, 10 enerji) doğrulayan 9 test yeni kurala göre güncellendi.

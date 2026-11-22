@@ -155,9 +155,10 @@ for (const [level, dmg] of [[1, 2], [2, 3]]) {
     assert.ok(weak.dead && !weak.escaped && weak.counted);
     assert.equal(run.recipe.tomato, 1);
     assert.equal(ev.filter((e) => e.type === 'kill').length, 1);
-    assert.ok(strong.escaped && !strong.dead);
+    // Alpha 0.5A.1: no escape any more — it steps one step back and keeps its HP loss
+    assert.ok(!strong.escaped && !strong.dead && strong.x === 0.3 && strong.contactState === 'retreated');
     assert.equal(strong.hp, 10 - dmg);
-    assert.equal(run.stats.escaped, 1);
+    assert.equal(run.stats.escaped, 0);
   });
 }
 

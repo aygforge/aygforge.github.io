@@ -68,7 +68,7 @@ export class MenuScene extends Phaser.Scene {
     // Alpha 0.4B: two small buttons only (minimal menu)
     button(this, W / 2 - 84, y1 + 64, 150, 40, 'EKİPMAN', () => this.openEquipment(), { size: 16, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 });
     button(this, W / 2 + 84, y1 + 64, 150, 40, 'DUNGEON', () => this.openDungeons(), { size: 16, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 });
-    text(this, W / 2, H - 22, 'Alpha 0.5A · Ayg Forge · çevrimdışı · reklamsız', 16, '#d8c9b0');
+    text(this, W / 2, H - 22, 'Alpha 0.5A.1 · Ayg Forge · çevrimdışı · reklamsız', 16, '#d8c9b0');
 
     if (app.notice) {
       this.toast(app.notice);
@@ -193,7 +193,7 @@ export class MenuScene extends Phaser.Scene {
   openDungeons() {
     const { c, top } = this.openOverlay('DUNGEON', 560);
     const reset = Math.ceil(msToUtcReset(Date.now()) / 3600000);
-    c.add(text(this, this.W / 2, top + 66, `Günde 2 tam ödül · sonra düşük ödül · giriş 10 enerji · UTC sıfırlama ~${reset} sa`, 13, '#d8c9b0', { wrap: 460 }));
+    c.add(text(this, this.W / 2, top + 66, `Günde 2 tam ödül · sonra düşük ödül · giriş ${DUNGEONS[0]?.energyCost ?? 5} enerji · UTC sıfırlama ~${reset} sa`, 13, '#d8c9b0', { wrap: 460 }));
     DUNGEONS.forEach((dg, i) => {
       const y = top + 96 + i * 180;
       const open = isDungeonUnlocked(app.save, dg);
@@ -204,7 +204,7 @@ export class MenuScene extends Phaser.Scene {
       c.add(text(this, 58, y + 24, dg.name, 22, open ? COLORS.cream : '#9a92a6', { ox: 0 }));
       c.add(text(this, 58, y + 58, `Tam: ${full} · Tekrar: ${rep}${d.firstClearPartsBonus ? ` · İlk: +${d.firstClearPartsBonus} parça` : ''}`, 14, '#e9dcc4', { ox: 0 }));
       c.add(text(this, 58, y + 84, open ? `Bugün kalan tam ödül: ${dungeonFullLeft(app.save, dg)}/2 · 4 dalga + ${dg.finalName}` : `L${dg.unlockedAfterLevel} temizlenince açılır`, 14, open ? '#9ef0ff' : '#ffb35a', { ox: 0 }));
-      c.add(button(this, this.W / 2, y + 128, 260, 44, open ? 'GİR (10 enerji)' : 'KİLİTLİ', () => {
+      c.add(button(this, this.W / 2, y + 128, 260, 44, open ? `GİR (${dg.energyCost} enerji)` : 'KİLİTLİ', () => {
         const r = launchDungeon(this, dg.dungeonId);
         if (!r.ok) this.toast(r.reason === 'energy' ? 'Enerji yetersiz.' : 'Dungeon kilitli.');
       }, { size: 17, enabled: open }));
