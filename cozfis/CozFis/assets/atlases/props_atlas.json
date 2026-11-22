@@ -1,0 +1,3770 @@
+{
+ "atlas": "props_atlas",
+ "image": "props_atlas.png",
+ "size": [
+  1023,
+  73
+ ],
+ "frames": {
+  "sun_evening": {
+   "file": "assets/environments/props/sun_evening.png",
+   "rect": [
+    0,
+    0,
+    34,
+    34
+   ],
+   "w": 34,
+   "h": 34,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "dpsun:evening"
+  },
+  "sun_morning": {
+   "file": "assets/environments/props/sun_morning.png",
+   "rect": [
+    35,
+    0,
+    34,
+    34
+   ],
+   "w": 34,
+   "h": 34,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "dpsun:morning"
+  },
+  "sun_day": {
+   "file": "assets/environments/props/sun_day.png",
+   "rect": [
+    70,
+    0,
+    30,
+    30
+   ],
+   "w": 30,
+   "h": 30,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sun"
+  },
+  "shrock0": {
+   "file": "assets/environments/props/shrock0.png",
+   "rect": [
+    101,
+    0,
+    42,
+    26
+   ],
+   "w": 42,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shrock0"
+  },
+  "shrock1": {
+   "file": "assets/environments/props/shrock1.png",
+   "rect": [
+    144,
+    0,
+    42,
+    26
+   ],
+   "w": 42,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shrock1"
+  },
+  "shrock2": {
+   "file": "assets/environments/props/shrock2.png",
+   "rect": [
+    187,
+    0,
+    42,
+    26
+   ],
+   "w": 42,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shrock2"
+  },
+  "shrock3": {
+   "file": "assets/environments/props/shrock3.png",
+   "rect": [
+    230,
+    0,
+    42,
+    26
+   ],
+   "w": 42,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shrock3"
+  },
+  "wild_gri_balikcil_left_f0": {
+   "file": "assets/environments/props/wild_gri_balikcil_left_f0.png",
+   "rect": [
+    273,
+    0,
+    12,
+    22
+   ],
+   "w": 12,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:gri_balikcil:0"
+  },
+  "wild_gri_balikcil_left_f1": {
+   "file": "assets/environments/props/wild_gri_balikcil_left_f1.png",
+   "rect": [
+    286,
+    0,
+    12,
+    22
+   ],
+   "w": 12,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:gri_balikcil:1"
+  },
+  "wild_gri_balikcil_right_f0": {
+   "file": "assets/environments/props/wild_gri_balikcil_right_f0.png",
+   "rect": [
+    299,
+    0,
+    12,
+    22
+   ],
+   "w": 12,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:gri_balikcil:0"
+  },
+  "wild_gri_balikcil_right_f1": {
+   "file": "assets/environments/props/wild_gri_balikcil_right_f1.png",
+   "rect": [
+    312,
+    0,
+    12,
+    22
+   ],
+   "w": 12,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:gri_balikcil:1"
+  },
+  "wild_gri_balikcil_ui": {
+   "file": "assets/environments/props/wild_gri_balikcil_ui.png",
+   "rect": [
+    325,
+    0,
+    12,
+    22
+   ],
+   "w": 12,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:gri_balikcil"
+  },
+  "wild_gri_balikcil_ui_sil": {
+   "file": "assets/environments/props/wild_gri_balikcil_ui_sil.png",
+   "rect": [
+    338,
+    0,
+    12,
+    22
+   ],
+   "w": 12,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:gri_balikcil:sil"
+  },
+  "wild_ay_baligi_left_f0": {
+   "file": "assets/environments/props/wild_ay_baligi_left_f0.png",
+   "rect": [
+    351,
+    0,
+    18,
+    18
+   ],
+   "w": 18,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:ay_baligi:0"
+  },
+  "wild_ay_baligi_left_f1": {
+   "file": "assets/environments/props/wild_ay_baligi_left_f1.png",
+   "rect": [
+    370,
+    0,
+    18,
+    18
+   ],
+   "w": 18,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:ay_baligi:1"
+  },
+  "wild_ay_baligi_right_f0": {
+   "file": "assets/environments/props/wild_ay_baligi_right_f0.png",
+   "rect": [
+    389,
+    0,
+    18,
+    18
+   ],
+   "w": 18,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:ay_baligi:0"
+  },
+  "wild_ay_baligi_right_f1": {
+   "file": "assets/environments/props/wild_ay_baligi_right_f1.png",
+   "rect": [
+    408,
+    0,
+    18,
+    18
+   ],
+   "w": 18,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:ay_baligi:1"
+  },
+  "wild_ay_baligi_ui": {
+   "file": "assets/environments/props/wild_ay_baligi_ui.png",
+   "rect": [
+    427,
+    0,
+    18,
+    18
+   ],
+   "w": 18,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:ay_baligi"
+  },
+  "wild_ay_baligi_ui_sil": {
+   "file": "assets/environments/props/wild_ay_baligi_ui_sil.png",
+   "rect": [
+    446,
+    0,
+    18,
+    18
+   ],
+   "w": 18,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:ay_baligi:sil"
+  },
+  "wild_kambur_balina_left_f0": {
+   "file": "assets/environments/props/wild_kambur_balina_left_f0.png",
+   "rect": [
+    465,
+    0,
+    30,
+    16
+   ],
+   "w": 30,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:kambur_balina:0"
+  },
+  "wild_kambur_balina_left_f1": {
+   "file": "assets/environments/props/wild_kambur_balina_left_f1.png",
+   "rect": [
+    496,
+    0,
+    30,
+    16
+   ],
+   "w": 30,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:kambur_balina:1"
+  },
+  "wild_kambur_balina_right_f0": {
+   "file": "assets/environments/props/wild_kambur_balina_right_f0.png",
+   "rect": [
+    527,
+    0,
+    30,
+    16
+   ],
+   "w": 30,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:kambur_balina:0"
+  },
+  "wild_kambur_balina_right_f1": {
+   "file": "assets/environments/props/wild_kambur_balina_right_f1.png",
+   "rect": [
+    558,
+    0,
+    30,
+    16
+   ],
+   "w": 30,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:kambur_balina:1"
+  },
+  "wild_kambur_balina_ui": {
+   "file": "assets/environments/props/wild_kambur_balina_ui.png",
+   "rect": [
+    589,
+    0,
+    30,
+    16
+   ],
+   "w": 30,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:kambur_balina"
+  },
+  "wild_kambur_balina_ui_sil": {
+   "file": "assets/environments/props/wild_kambur_balina_ui_sil.png",
+   "rect": [
+    620,
+    0,
+    30,
+    16
+   ],
+   "w": 30,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:kambur_balina:sil"
+  },
+  "wild_deniz_ati_left_f0": {
+   "file": "assets/environments/props/wild_deniz_ati_left_f0.png",
+   "rect": [
+    651,
+    0,
+    9,
+    16
+   ],
+   "w": 9,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:deniz_ati:0"
+  },
+  "wild_deniz_ati_left_f1": {
+   "file": "assets/environments/props/wild_deniz_ati_left_f1.png",
+   "rect": [
+    661,
+    0,
+    9,
+    16
+   ],
+   "w": 9,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:deniz_ati:1"
+  },
+  "wild_deniz_ati_right_f0": {
+   "file": "assets/environments/props/wild_deniz_ati_right_f0.png",
+   "rect": [
+    671,
+    0,
+    9,
+    16
+   ],
+   "w": 9,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:deniz_ati:0"
+  },
+  "wild_deniz_ati_right_f1": {
+   "file": "assets/environments/props/wild_deniz_ati_right_f1.png",
+   "rect": [
+    681,
+    0,
+    9,
+    16
+   ],
+   "w": 9,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:deniz_ati:1"
+  },
+  "wild_deniz_ati_ui": {
+   "file": "assets/environments/props/wild_deniz_ati_ui.png",
+   "rect": [
+    691,
+    0,
+    9,
+    16
+   ],
+   "w": 9,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:deniz_ati"
+  },
+  "wild_deniz_ati_ui_sil": {
+   "file": "assets/environments/props/wild_deniz_ati_ui_sil.png",
+   "rect": [
+    701,
+    0,
+    9,
+    16
+   ],
+   "w": 9,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:deniz_ati:sil"
+  },
+  "wild_pusula_denizanasi_left_f0": {
+   "file": "assets/environments/props/wild_pusula_denizanasi_left_f0.png",
+   "rect": [
+    711,
+    0,
+    14,
+    15
+   ],
+   "w": 14,
+   "h": 15,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:pusula_denizanasi:0"
+  },
+  "wild_pusula_denizanasi_left_f1": {
+   "file": "assets/environments/props/wild_pusula_denizanasi_left_f1.png",
+   "rect": [
+    726,
+    0,
+    14,
+    15
+   ],
+   "w": 14,
+   "h": 15,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:pusula_denizanasi:1"
+  },
+  "wild_pusula_denizanasi_right_f0": {
+   "file": "assets/environments/props/wild_pusula_denizanasi_right_f0.png",
+   "rect": [
+    741,
+    0,
+    14,
+    15
+   ],
+   "w": 14,
+   "h": 15,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:pusula_denizanasi:0"
+  },
+  "wild_pusula_denizanasi_right_f1": {
+   "file": "assets/environments/props/wild_pusula_denizanasi_right_f1.png",
+   "rect": [
+    756,
+    0,
+    14,
+    15
+   ],
+   "w": 14,
+   "h": 15,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:pusula_denizanasi:1"
+  },
+  "wild_pusula_denizanasi_ui": {
+   "file": "assets/environments/props/wild_pusula_denizanasi_ui.png",
+   "rect": [
+    771,
+    0,
+    14,
+    15
+   ],
+   "w": 14,
+   "h": 15,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:pusula_denizanasi"
+  },
+  "wild_pusula_denizanasi_ui_sil": {
+   "file": "assets/environments/props/wild_pusula_denizanasi_ui_sil.png",
+   "rect": [
+    786,
+    0,
+    14,
+    15
+   ],
+   "w": 14,
+   "h": 15,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:pusula_denizanasi:sil"
+  },
+  "wild_orka_left_f0": {
+   "file": "assets/environments/props/wild_orka_left_f0.png",
+   "rect": [
+    801,
+    0,
+    26,
+    14
+   ],
+   "w": 26,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:orka:0"
+  },
+  "wild_orka_left_f1": {
+   "file": "assets/environments/props/wild_orka_left_f1.png",
+   "rect": [
+    828,
+    0,
+    26,
+    14
+   ],
+   "w": 26,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:orka:1"
+  },
+  "wild_orka_right_f0": {
+   "file": "assets/environments/props/wild_orka_right_f0.png",
+   "rect": [
+    855,
+    0,
+    26,
+    14
+   ],
+   "w": 26,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:orka:0"
+  },
+  "wild_orka_right_f1": {
+   "file": "assets/environments/props/wild_orka_right_f1.png",
+   "rect": [
+    882,
+    0,
+    26,
+    14
+   ],
+   "w": 26,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:orka:1"
+  },
+  "wild_orka_ui": {
+   "file": "assets/environments/props/wild_orka_ui.png",
+   "rect": [
+    909,
+    0,
+    26,
+    14
+   ],
+   "w": 26,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:orka"
+  },
+  "wild_orka_ui_sil": {
+   "file": "assets/environments/props/wild_orka_ui_sil.png",
+   "rect": [
+    936,
+    0,
+    26,
+    14
+   ],
+   "w": 26,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:orka:sil"
+  },
+  "wild_ahtapot_left_f0": {
+   "file": "assets/environments/props/wild_ahtapot_left_f0.png",
+   "rect": [
+    963,
+    0,
+    16,
+    14
+   ],
+   "w": 16,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:ahtapot:0"
+  },
+  "wild_ahtapot_left_f1": {
+   "file": "assets/environments/props/wild_ahtapot_left_f1.png",
+   "rect": [
+    980,
+    0,
+    16,
+    14
+   ],
+   "w": 16,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:ahtapot:1"
+  },
+  "wild_ahtapot_right_f0": {
+   "file": "assets/environments/props/wild_ahtapot_right_f0.png",
+   "rect": [
+    997,
+    0,
+    16,
+    14
+   ],
+   "w": 16,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:ahtapot:0"
+  },
+  "wild_ahtapot_right_f1": {
+   "file": "assets/environments/props/wild_ahtapot_right_f1.png",
+   "rect": [
+    0,
+    35,
+    16,
+    14
+   ],
+   "w": 16,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:ahtapot:1"
+  },
+  "wild_ahtapot_ui": {
+   "file": "assets/environments/props/wild_ahtapot_ui.png",
+   "rect": [
+    17,
+    35,
+    16,
+    14
+   ],
+   "w": 16,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:ahtapot"
+  },
+  "wild_ahtapot_ui_sil": {
+   "file": "assets/environments/props/wild_ahtapot_ui_sil.png",
+   "rect": [
+    34,
+    35,
+    16,
+    14
+   ],
+   "w": 16,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:ahtapot:sil"
+  },
+  "wild_ay_denizanasi_left_f0": {
+   "file": "assets/environments/props/wild_ay_denizanasi_left_f0.png",
+   "rect": [
+    51,
+    35,
+    14,
+    14
+   ],
+   "w": 14,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:ay_denizanasi:0"
+  },
+  "wild_ay_denizanasi_left_f1": {
+   "file": "assets/environments/props/wild_ay_denizanasi_left_f1.png",
+   "rect": [
+    66,
+    35,
+    14,
+    14
+   ],
+   "w": 14,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:ay_denizanasi:1"
+  },
+  "wild_ay_denizanasi_right_f0": {
+   "file": "assets/environments/props/wild_ay_denizanasi_right_f0.png",
+   "rect": [
+    81,
+    35,
+    14,
+    14
+   ],
+   "w": 14,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:ay_denizanasi:0"
+  },
+  "wild_ay_denizanasi_right_f1": {
+   "file": "assets/environments/props/wild_ay_denizanasi_right_f1.png",
+   "rect": [
+    96,
+    35,
+    14,
+    14
+   ],
+   "w": 14,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:ay_denizanasi:1"
+  },
+  "wild_ay_denizanasi_ui": {
+   "file": "assets/environments/props/wild_ay_denizanasi_ui.png",
+   "rect": [
+    111,
+    35,
+    14,
+    14
+   ],
+   "w": 14,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:ay_denizanasi"
+  },
+  "wild_ay_denizanasi_ui_sil": {
+   "file": "assets/environments/props/wild_ay_denizanasi_ui_sil.png",
+   "rect": [
+    126,
+    35,
+    14,
+    14
+   ],
+   "w": 14,
+   "h": 14,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:ay_denizanasi:sil"
+  },
+  "wild_deniz_yildizi_left_f0": {
+   "file": "assets/environments/props/wild_deniz_yildizi_left_f0.png",
+   "rect": [
+    141,
+    35,
+    13,
+    13
+   ],
+   "w": 13,
+   "h": 13,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:deniz_yildizi:0"
+  },
+  "wild_deniz_yildizi_left_f1": {
+   "file": "assets/environments/props/wild_deniz_yildizi_left_f1.png",
+   "rect": [
+    155,
+    35,
+    13,
+    13
+   ],
+   "w": 13,
+   "h": 13,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:deniz_yildizi:1"
+  },
+  "wild_deniz_yildizi_right_f0": {
+   "file": "assets/environments/props/wild_deniz_yildizi_right_f0.png",
+   "rect": [
+    169,
+    35,
+    13,
+    13
+   ],
+   "w": 13,
+   "h": 13,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:deniz_yildizi:0"
+  },
+  "wild_deniz_yildizi_right_f1": {
+   "file": "assets/environments/props/wild_deniz_yildizi_right_f1.png",
+   "rect": [
+    183,
+    35,
+    13,
+    13
+   ],
+   "w": 13,
+   "h": 13,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:deniz_yildizi:1"
+  },
+  "wild_deniz_yildizi_ui": {
+   "file": "assets/environments/props/wild_deniz_yildizi_ui.png",
+   "rect": [
+    197,
+    35,
+    13,
+    13
+   ],
+   "w": 13,
+   "h": 13,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:deniz_yildizi"
+  },
+  "wild_deniz_yildizi_ui_sil": {
+   "file": "assets/environments/props/wild_deniz_yildizi_ui_sil.png",
+   "rect": [
+    211,
+    35,
+    13,
+    13
+   ],
+   "w": 13,
+   "h": 13,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:deniz_yildizi:sil"
+  },
+  "wild_manta_left_f0": {
+   "file": "assets/environments/props/wild_manta_left_f0.png",
+   "rect": [
+    225,
+    35,
+    24,
+    12
+   ],
+   "w": 24,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:manta:0"
+  },
+  "wild_manta_left_f1": {
+   "file": "assets/environments/props/wild_manta_left_f1.png",
+   "rect": [
+    250,
+    35,
+    24,
+    12
+   ],
+   "w": 24,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:manta:1"
+  },
+  "wild_manta_right_f0": {
+   "file": "assets/environments/props/wild_manta_right_f0.png",
+   "rect": [
+    275,
+    35,
+    24,
+    12
+   ],
+   "w": 24,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:manta:0"
+  },
+  "wild_manta_right_f1": {
+   "file": "assets/environments/props/wild_manta_right_f1.png",
+   "rect": [
+    300,
+    35,
+    24,
+    12
+   ],
+   "w": 24,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:manta:1"
+  },
+  "wild_manta_ui": {
+   "file": "assets/environments/props/wild_manta_ui.png",
+   "rect": [
+    325,
+    35,
+    24,
+    12
+   ],
+   "w": 24,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:manta"
+  },
+  "wild_manta_ui_sil": {
+   "file": "assets/environments/props/wild_manta_ui_sil.png",
+   "rect": [
+    350,
+    35,
+    24,
+    12
+   ],
+   "w": 24,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:manta:sil"
+  },
+  "shore_ahsap": {
+   "file": "assets/environments/props/shore_ahsap.png",
+   "rect": [
+    375,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:ahsap"
+  },
+  "shore_ahsap_ui": {
+   "file": "assets/environments/props/shore_ahsap_ui.png",
+   "rect": [
+    388,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:ahsap"
+  },
+  "shore_ahsap_ui_sil": {
+   "file": "assets/environments/props/shore_ahsap_ui_sil.png",
+   "rect": [
+    401,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:ahsap:s"
+  },
+  "shore_bazalt": {
+   "file": "assets/environments/props/shore_bazalt.png",
+   "rect": [
+    414,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:bazalt"
+  },
+  "shore_bazalt_ui": {
+   "file": "assets/environments/props/shore_bazalt_ui.png",
+   "rect": [
+    427,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:bazalt"
+  },
+  "shore_bazalt_ui_sil": {
+   "file": "assets/environments/props/shore_bazalt_ui_sil.png",
+   "rect": [
+    440,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:bazalt:s"
+  },
+  "shore_benekli": {
+   "file": "assets/environments/props/shore_benekli.png",
+   "rect": [
+    453,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:benekli"
+  },
+  "shore_benekli_ui": {
+   "file": "assets/environments/props/shore_benekli_ui.png",
+   "rect": [
+    466,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:benekli"
+  },
+  "shore_benekli_ui_sil": {
+   "file": "assets/environments/props/shore_benekli_ui_sil.png",
+   "rect": [
+    479,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:benekli:s"
+  },
+  "shore_cakil": {
+   "file": "assets/environments/props/shore_cakil.png",
+   "rect": [
+    492,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:cakil"
+  },
+  "shore_cakil_ui": {
+   "file": "assets/environments/props/shore_cakil_ui.png",
+   "rect": [
+    505,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:cakil"
+  },
+  "shore_cakil_ui_sil": {
+   "file": "assets/environments/props/shore_cakil_ui_sil.png",
+   "rect": [
+    518,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:cakil:s"
+  },
+  "shore_cam_amber": {
+   "file": "assets/environments/props/shore_cam_amber.png",
+   "rect": [
+    531,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:cam_amber"
+  },
+  "shore_cam_amber_ui": {
+   "file": "assets/environments/props/shore_cam_amber_ui.png",
+   "rect": [
+    544,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:cam_amber"
+  },
+  "shore_cam_amber_ui_sil": {
+   "file": "assets/environments/props/shore_cam_amber_ui_sil.png",
+   "rect": [
+    557,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:cam_amber:s"
+  },
+  "shore_cam_beyaz": {
+   "file": "assets/environments/props/shore_cam_beyaz.png",
+   "rect": [
+    570,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:cam_beyaz"
+  },
+  "shore_cam_beyaz_ui": {
+   "file": "assets/environments/props/shore_cam_beyaz_ui.png",
+   "rect": [
+    583,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:cam_beyaz"
+  },
+  "shore_cam_beyaz_ui_sil": {
+   "file": "assets/environments/props/shore_cam_beyaz_ui_sil.png",
+   "rect": [
+    596,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:cam_beyaz:s"
+  },
+  "shore_cam_mavi": {
+   "file": "assets/environments/props/shore_cam_mavi.png",
+   "rect": [
+    609,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:cam_mavi"
+  },
+  "shore_cam_mavi_ui": {
+   "file": "assets/environments/props/shore_cam_mavi_ui.png",
+   "rect": [
+    622,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:cam_mavi"
+  },
+  "shore_cam_mavi_ui_sil": {
+   "file": "assets/environments/props/shore_cam_mavi_ui_sil.png",
+   "rect": [
+    635,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:cam_mavi:s"
+  },
+  "shore_cam_mor": {
+   "file": "assets/environments/props/shore_cam_mor.png",
+   "rect": [
+    648,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:cam_mor"
+  },
+  "shore_cam_mor_ui": {
+   "file": "assets/environments/props/shore_cam_mor_ui.png",
+   "rect": [
+    661,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:cam_mor"
+  },
+  "shore_cam_mor_ui_sil": {
+   "file": "assets/environments/props/shore_cam_mor_ui_sil.png",
+   "rect": [
+    674,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:cam_mor:s"
+  },
+  "shore_cam_turkuaz": {
+   "file": "assets/environments/props/shore_cam_turkuaz.png",
+   "rect": [
+    687,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:cam_turkuaz"
+  },
+  "shore_cam_turkuaz_ui": {
+   "file": "assets/environments/props/shore_cam_turkuaz_ui.png",
+   "rect": [
+    700,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:cam_turkuaz"
+  },
+  "shore_cam_turkuaz_ui_sil": {
+   "file": "assets/environments/props/shore_cam_turkuaz_ui_sil.png",
+   "rect": [
+    713,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:cam_turkuaz:s"
+  },
+  "shore_cam_yesil": {
+   "file": "assets/environments/props/shore_cam_yesil.png",
+   "rect": [
+    726,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:cam_yesil"
+  },
+  "shore_cam_yesil_ui": {
+   "file": "assets/environments/props/shore_cam_yesil_ui.png",
+   "rect": [
+    739,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:cam_yesil"
+  },
+  "shore_cam_yesil_ui_sil": {
+   "file": "assets/environments/props/shore_cam_yesil_ui_sil.png",
+   "rect": [
+    752,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:cam_yesil:s"
+  },
+  "shore_capa_sus": {
+   "file": "assets/environments/props/shore_capa_sus.png",
+   "rect": [
+    765,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:capa_sus"
+  },
+  "shore_capa_sus_ui": {
+   "file": "assets/environments/props/shore_capa_sus_ui.png",
+   "rect": [
+    778,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:capa_sus"
+  },
+  "shore_capa_sus_ui_sil": {
+   "file": "assets/environments/props/shore_capa_sus_ui_sil.png",
+   "rect": [
+    791,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:capa_sus:s"
+  },
+  "shore_cizgili_tas": {
+   "file": "assets/environments/props/shore_cizgili_tas.png",
+   "rect": [
+    804,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:cizgili_tas"
+  },
+  "shore_cizgili_tas_ui": {
+   "file": "assets/environments/props/shore_cizgili_tas_ui.png",
+   "rect": [
+    817,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:cizgili_tas"
+  },
+  "shore_cizgili_tas_ui_sil": {
+   "file": "assets/environments/props/shore_cizgili_tas_ui_sil.png",
+   "rect": [
+    830,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:cizgili_tas:s"
+  },
+  "shore_delikli": {
+   "file": "assets/environments/props/shore_delikli.png",
+   "rect": [
+    843,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:delikli"
+  },
+  "shore_delikli_ui": {
+   "file": "assets/environments/props/shore_delikli_ui.png",
+   "rect": [
+    856,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:delikli"
+  },
+  "shore_delikli_ui_sil": {
+   "file": "assets/environments/props/shore_delikli_ui_sil.png",
+   "rect": [
+    869,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:delikli:s"
+  },
+  "shore_duduk": {
+   "file": "assets/environments/props/shore_duduk.png",
+   "rect": [
+    882,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:duduk"
+  },
+  "shore_duduk_ui": {
+   "file": "assets/environments/props/shore_duduk_ui.png",
+   "rect": [
+    895,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:duduk"
+  },
+  "shore_duduk_ui_sil": {
+   "file": "assets/environments/props/shore_duduk_ui_sil.png",
+   "rect": [
+    908,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:duduk:s"
+  },
+  "shore_dugme": {
+   "file": "assets/environments/props/shore_dugme.png",
+   "rect": [
+    921,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:dugme"
+  },
+  "shore_dugme_ui": {
+   "file": "assets/environments/props/shore_dugme_ui.png",
+   "rect": [
+    934,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:dugme"
+  },
+  "shore_dugme_ui_sil": {
+   "file": "assets/environments/props/shore_dugme_ui_sil.png",
+   "rect": [
+    947,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:dugme:s"
+  },
+  "shore_istiridye": {
+   "file": "assets/environments/props/shore_istiridye.png",
+   "rect": [
+    960,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:istiridye"
+  },
+  "shore_istiridye_ui": {
+   "file": "assets/environments/props/shore_istiridye_ui.png",
+   "rect": [
+    973,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:istiridye"
+  },
+  "shore_istiridye_ui_sil": {
+   "file": "assets/environments/props/shore_istiridye_ui_sil.png",
+   "rect": [
+    986,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:istiridye:s"
+  },
+  "shore_jeton": {
+   "file": "assets/environments/props/shore_jeton.png",
+   "rect": [
+    999,
+    35,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:jeton"
+  },
+  "shore_jeton_ui": {
+   "file": "assets/environments/props/shore_jeton_ui.png",
+   "rect": [
+    0,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:jeton"
+  },
+  "shore_jeton_ui_sil": {
+   "file": "assets/environments/props/shore_jeton_ui_sil.png",
+   "rect": [
+    13,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:jeton:s"
+  },
+  "shore_kuvars": {
+   "file": "assets/environments/props/shore_kuvars.png",
+   "rect": [
+    26,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:kuvars"
+  },
+  "shore_kuvars_ui": {
+   "file": "assets/environments/props/shore_kuvars_ui.png",
+   "rect": [
+    39,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:kuvars"
+  },
+  "shore_kuvars_ui_sil": {
+   "file": "assets/environments/props/shore_kuvars_ui_sil.png",
+   "rect": [
+    52,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:kuvars:s"
+  },
+  "shore_midye": {
+   "file": "assets/environments/props/shore_midye.png",
+   "rect": [
+    65,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:midye"
+  },
+  "shore_midye_ui": {
+   "file": "assets/environments/props/shore_midye_ui.png",
+   "rect": [
+    78,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:midye"
+  },
+  "shore_midye_ui_sil": {
+   "file": "assets/environments/props/shore_midye_ui_sil.png",
+   "rect": [
+    91,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:midye:s"
+  },
+  "shore_minare": {
+   "file": "assets/environments/props/shore_minare.png",
+   "rect": [
+    104,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:minare"
+  },
+  "shore_minare_ui": {
+   "file": "assets/environments/props/shore_minare_ui.png",
+   "rect": [
+    117,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:minare"
+  },
+  "shore_minare_ui_sil": {
+   "file": "assets/environments/props/shore_minare_ui_sil.png",
+   "rect": [
+    130,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:minare:s"
+  },
+  "shore_sedef": {
+   "file": "assets/environments/props/shore_sedef.png",
+   "rect": [
+    143,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:sedef"
+  },
+  "shore_sedef_ui": {
+   "file": "assets/environments/props/shore_sedef_ui.png",
+   "rect": [
+    156,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:sedef"
+  },
+  "shore_sedef_ui_sil": {
+   "file": "assets/environments/props/shore_sedef_ui_sil.png",
+   "rect": [
+    169,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:sedef:s"
+  },
+  "shore_seramik": {
+   "file": "assets/environments/props/shore_seramik.png",
+   "rect": [
+    182,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:seramik"
+  },
+  "shore_seramik_ui": {
+   "file": "assets/environments/props/shore_seramik_ui.png",
+   "rect": [
+    195,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:seramik"
+  },
+  "shore_seramik_ui_sil": {
+   "file": "assets/environments/props/shore_seramik_ui_sil.png",
+   "rect": [
+    208,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:seramik:s"
+  },
+  "shore_spiral": {
+   "file": "assets/environments/props/shore_spiral.png",
+   "rect": [
+    221,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:spiral"
+  },
+  "shore_spiral_ui": {
+   "file": "assets/environments/props/shore_spiral_ui.png",
+   "rect": [
+    234,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:spiral"
+  },
+  "shore_spiral_ui_sil": {
+   "file": "assets/environments/props/shore_spiral_ui_sil.png",
+   "rect": [
+    247,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:spiral:s"
+  },
+  "shore_tarak": {
+   "file": "assets/environments/props/shore_tarak.png",
+   "rect": [
+    260,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sh:tarak"
+  },
+  "shore_tarak_ui": {
+   "file": "assets/environments/props/shore_tarak_ui.png",
+   "rect": [
+    273,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:tarak"
+  },
+  "shore_tarak_ui_sil": {
+   "file": "assets/environments/props/shore_tarak_ui_sil.png",
+   "rect": [
+    286,
+    50,
+    12,
+    12
+   ],
+   "w": 12,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shu:tarak:s"
+  },
+  "wild_akdeniz_foku_left_f0": {
+   "file": "assets/environments/props/wild_akdeniz_foku_left_f0.png",
+   "rect": [
+    299,
+    50,
+    14,
+    11
+   ],
+   "w": 14,
+   "h": 11,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:akdeniz_foku:0"
+  },
+  "wild_akdeniz_foku_left_f1": {
+   "file": "assets/environments/props/wild_akdeniz_foku_left_f1.png",
+   "rect": [
+    314,
+    50,
+    14,
+    11
+   ],
+   "w": 14,
+   "h": 11,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:akdeniz_foku:1"
+  },
+  "wild_akdeniz_foku_right_f0": {
+   "file": "assets/environments/props/wild_akdeniz_foku_right_f0.png",
+   "rect": [
+    329,
+    50,
+    14,
+    11
+   ],
+   "w": 14,
+   "h": 11,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:akdeniz_foku:0"
+  },
+  "wild_akdeniz_foku_right_f1": {
+   "file": "assets/environments/props/wild_akdeniz_foku_right_f1.png",
+   "rect": [
+    344,
+    50,
+    14,
+    11
+   ],
+   "w": 14,
+   "h": 11,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:akdeniz_foku:1"
+  },
+  "wild_akdeniz_foku_ui": {
+   "file": "assets/environments/props/wild_akdeniz_foku_ui.png",
+   "rect": [
+    359,
+    50,
+    14,
+    11
+   ],
+   "w": 14,
+   "h": 11,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:akdeniz_foku"
+  },
+  "wild_akdeniz_foku_ui_sil": {
+   "file": "assets/environments/props/wild_akdeniz_foku_ui_sil.png",
+   "rect": [
+    374,
+    50,
+    14,
+    11
+   ],
+   "w": 14,
+   "h": 11,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:akdeniz_foku:sil"
+  },
+  "wild_liman_foku_left_f0": {
+   "file": "assets/environments/props/wild_liman_foku_left_f0.png",
+   "rect": [
+    389,
+    50,
+    14,
+    11
+   ],
+   "w": 14,
+   "h": 11,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:liman_foku:0"
+  },
+  "wild_liman_foku_left_f1": {
+   "file": "assets/environments/props/wild_liman_foku_left_f1.png",
+   "rect": [
+    404,
+    50,
+    14,
+    11
+   ],
+   "w": 14,
+   "h": 11,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:liman_foku:1"
+  },
+  "wild_liman_foku_right_f0": {
+   "file": "assets/environments/props/wild_liman_foku_right_f0.png",
+   "rect": [
+    419,
+    50,
+    14,
+    11
+   ],
+   "w": 14,
+   "h": 11,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:liman_foku:0"
+  },
+  "wild_liman_foku_right_f1": {
+   "file": "assets/environments/props/wild_liman_foku_right_f1.png",
+   "rect": [
+    434,
+    50,
+    14,
+    11
+   ],
+   "w": 14,
+   "h": 11,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:liman_foku:1"
+  },
+  "wild_liman_foku_ui": {
+   "file": "assets/environments/props/wild_liman_foku_ui.png",
+   "rect": [
+    449,
+    50,
+    14,
+    11
+   ],
+   "w": 14,
+   "h": 11,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:liman_foku"
+  },
+  "wild_liman_foku_ui_sil": {
+   "file": "assets/environments/props/wild_liman_foku_ui_sil.png",
+   "rect": [
+    464,
+    50,
+    14,
+    11
+   ],
+   "w": 14,
+   "h": 11,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:liman_foku:sil"
+  },
+  "bobber": {
+   "file": "assets/environments/props/bobber.png",
+   "rect": [
+    1014,
+    0,
+    5,
+    11
+   ],
+   "w": 5,
+   "h": 11,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "bobber"
+  },
+  "wild_caretta_left_f0": {
+   "file": "assets/environments/props/wild_caretta_left_f0.png",
+   "rect": [
+    479,
+    50,
+    20,
+    10
+   ],
+   "w": 20,
+   "h": 10,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:caretta:0"
+  },
+  "wild_caretta_left_f1": {
+   "file": "assets/environments/props/wild_caretta_left_f1.png",
+   "rect": [
+    500,
+    50,
+    20,
+    10
+   ],
+   "w": 20,
+   "h": 10,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:caretta:1"
+  },
+  "wild_caretta_right_f0": {
+   "file": "assets/environments/props/wild_caretta_right_f0.png",
+   "rect": [
+    521,
+    50,
+    20,
+    10
+   ],
+   "w": 20,
+   "h": 10,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:caretta:0"
+  },
+  "wild_caretta_right_f1": {
+   "file": "assets/environments/props/wild_caretta_right_f1.png",
+   "rect": [
+    542,
+    50,
+    20,
+    10
+   ],
+   "w": 20,
+   "h": 10,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:caretta:1"
+  },
+  "wild_caretta_ui": {
+   "file": "assets/environments/props/wild_caretta_ui.png",
+   "rect": [
+    563,
+    50,
+    20,
+    10
+   ],
+   "w": 20,
+   "h": 10,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:caretta"
+  },
+  "wild_caretta_ui_sil": {
+   "file": "assets/environments/props/wild_caretta_ui_sil.png",
+   "rect": [
+    584,
+    50,
+    20,
+    10
+   ],
+   "w": 20,
+   "h": 10,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:caretta:sil"
+  },
+  "wild_yesil_kaplumbaga_left_f0": {
+   "file": "assets/environments/props/wild_yesil_kaplumbaga_left_f0.png",
+   "rect": [
+    605,
+    50,
+    20,
+    10
+   ],
+   "w": 20,
+   "h": 10,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:yesil_kaplumbaga:0"
+  },
+  "wild_yesil_kaplumbaga_left_f1": {
+   "file": "assets/environments/props/wild_yesil_kaplumbaga_left_f1.png",
+   "rect": [
+    626,
+    50,
+    20,
+    10
+   ],
+   "w": 20,
+   "h": 10,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:yesil_kaplumbaga:1"
+  },
+  "wild_yesil_kaplumbaga_right_f0": {
+   "file": "assets/environments/props/wild_yesil_kaplumbaga_right_f0.png",
+   "rect": [
+    647,
+    50,
+    20,
+    10
+   ],
+   "w": 20,
+   "h": 10,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:yesil_kaplumbaga:0"
+  },
+  "wild_yesil_kaplumbaga_right_f1": {
+   "file": "assets/environments/props/wild_yesil_kaplumbaga_right_f1.png",
+   "rect": [
+    668,
+    50,
+    20,
+    10
+   ],
+   "w": 20,
+   "h": 10,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:yesil_kaplumbaga:1"
+  },
+  "wild_yesil_kaplumbaga_ui": {
+   "file": "assets/environments/props/wild_yesil_kaplumbaga_ui.png",
+   "rect": [
+    689,
+    50,
+    20,
+    10
+   ],
+   "w": 20,
+   "h": 10,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:yesil_kaplumbaga"
+  },
+  "wild_yesil_kaplumbaga_ui_sil": {
+   "file": "assets/environments/props/wild_yesil_kaplumbaga_ui_sil.png",
+   "rect": [
+    710,
+    50,
+    20,
+    10
+   ],
+   "w": 20,
+   "h": 10,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:yesil_kaplumbaga:sil"
+  },
+  "cat0": {
+   "file": "assets/environments/props/cat0.png",
+   "rect": [
+    731,
+    50,
+    14,
+    10
+   ],
+   "w": 14,
+   "h": 10,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "cat0"
+  },
+  "cat1": {
+   "file": "assets/environments/props/cat1.png",
+   "rect": [
+    746,
+    50,
+    14,
+    10
+   ],
+   "w": 14,
+   "h": 10,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "cat1"
+  },
+  "wild_afalina_left_f0": {
+   "file": "assets/environments/props/wild_afalina_left_f0.png",
+   "rect": [
+    761,
+    50,
+    22,
+    9
+   ],
+   "w": 22,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:afalina:0"
+  },
+  "wild_afalina_left_f1": {
+   "file": "assets/environments/props/wild_afalina_left_f1.png",
+   "rect": [
+    784,
+    50,
+    22,
+    9
+   ],
+   "w": 22,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:afalina:1"
+  },
+  "wild_afalina_right_f0": {
+   "file": "assets/environments/props/wild_afalina_right_f0.png",
+   "rect": [
+    807,
+    50,
+    22,
+    9
+   ],
+   "w": 22,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:afalina:0"
+  },
+  "wild_afalina_right_f1": {
+   "file": "assets/environments/props/wild_afalina_right_f1.png",
+   "rect": [
+    830,
+    50,
+    22,
+    9
+   ],
+   "w": 22,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:afalina:1"
+  },
+  "wild_afalina_ui": {
+   "file": "assets/environments/props/wild_afalina_ui.png",
+   "rect": [
+    853,
+    50,
+    22,
+    9
+   ],
+   "w": 22,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:afalina"
+  },
+  "wild_afalina_ui_sil": {
+   "file": "assets/environments/props/wild_afalina_ui_sil.png",
+   "rect": [
+    876,
+    50,
+    22,
+    9
+   ],
+   "w": 22,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:afalina:sil"
+  },
+  "wild_firkateyn_left_f0": {
+   "file": "assets/environments/props/wild_firkateyn_left_f0.png",
+   "rect": [
+    899,
+    50,
+    22,
+    9
+   ],
+   "w": 22,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:firkateyn:0"
+  },
+  "wild_firkateyn_left_f1": {
+   "file": "assets/environments/props/wild_firkateyn_left_f1.png",
+   "rect": [
+    922,
+    50,
+    22,
+    9
+   ],
+   "w": 22,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:firkateyn:1"
+  },
+  "wild_firkateyn_right_f0": {
+   "file": "assets/environments/props/wild_firkateyn_right_f0.png",
+   "rect": [
+    945,
+    50,
+    22,
+    9
+   ],
+   "w": 22,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:firkateyn:0"
+  },
+  "wild_firkateyn_right_f1": {
+   "file": "assets/environments/props/wild_firkateyn_right_f1.png",
+   "rect": [
+    968,
+    50,
+    22,
+    9
+   ],
+   "w": 22,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:firkateyn:1"
+  },
+  "wild_firkateyn_ui": {
+   "file": "assets/environments/props/wild_firkateyn_ui.png",
+   "rect": [
+    991,
+    50,
+    22,
+    9
+   ],
+   "w": 22,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:firkateyn"
+  },
+  "wild_firkateyn_ui_sil": {
+   "file": "assets/environments/props/wild_firkateyn_ui_sil.png",
+   "rect": [
+    0,
+    63,
+    22,
+    9
+   ],
+   "w": 22,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:firkateyn:sil"
+  },
+  "wild_sumsuk_left_f0": {
+   "file": "assets/environments/props/wild_sumsuk_left_f0.png",
+   "rect": [
+    23,
+    63,
+    18,
+    9
+   ],
+   "w": 18,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:sumsuk:0"
+  },
+  "wild_sumsuk_left_f1": {
+   "file": "assets/environments/props/wild_sumsuk_left_f1.png",
+   "rect": [
+    42,
+    63,
+    18,
+    9
+   ],
+   "w": 18,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:sumsuk:1"
+  },
+  "wild_sumsuk_right_f0": {
+   "file": "assets/environments/props/wild_sumsuk_right_f0.png",
+   "rect": [
+    61,
+    63,
+    18,
+    9
+   ],
+   "w": 18,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:sumsuk:0"
+  },
+  "wild_sumsuk_right_f1": {
+   "file": "assets/environments/props/wild_sumsuk_right_f1.png",
+   "rect": [
+    80,
+    63,
+    18,
+    9
+   ],
+   "w": 18,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:sumsuk:1"
+  },
+  "wild_sumsuk_ui": {
+   "file": "assets/environments/props/wild_sumsuk_ui.png",
+   "rect": [
+    99,
+    63,
+    18,
+    9
+   ],
+   "w": 18,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:sumsuk"
+  },
+  "wild_sumsuk_ui_sil": {
+   "file": "assets/environments/props/wild_sumsuk_ui_sil.png",
+   "rect": [
+    118,
+    63,
+    18,
+    9
+   ],
+   "w": 18,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:sumsuk:sil"
+  },
+  "wild_karabatak_left_f0": {
+   "file": "assets/environments/props/wild_karabatak_left_f0.png",
+   "rect": [
+    137,
+    63,
+    16,
+    9
+   ],
+   "w": 16,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:karabatak:0"
+  },
+  "wild_karabatak_left_f1": {
+   "file": "assets/environments/props/wild_karabatak_left_f1.png",
+   "rect": [
+    154,
+    63,
+    16,
+    9
+   ],
+   "w": 16,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:karabatak:1"
+  },
+  "wild_karabatak_right_f0": {
+   "file": "assets/environments/props/wild_karabatak_right_f0.png",
+   "rect": [
+    171,
+    63,
+    16,
+    9
+   ],
+   "w": 16,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:karabatak:0"
+  },
+  "wild_karabatak_right_f1": {
+   "file": "assets/environments/props/wild_karabatak_right_f1.png",
+   "rect": [
+    188,
+    63,
+    16,
+    9
+   ],
+   "w": 16,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:karabatak:1"
+  },
+  "wild_karabatak_ui": {
+   "file": "assets/environments/props/wild_karabatak_ui.png",
+   "rect": [
+    205,
+    63,
+    16,
+    9
+   ],
+   "w": 16,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:karabatak"
+  },
+  "wild_karabatak_ui_sil": {
+   "file": "assets/environments/props/wild_karabatak_ui_sil.png",
+   "rect": [
+    222,
+    63,
+    16,
+    9
+   ],
+   "w": 16,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:karabatak:sil"
+  },
+  "wild_puffin_left_f0": {
+   "file": "assets/environments/props/wild_puffin_left_f0.png",
+   "rect": [
+    239,
+    63,
+    12,
+    9
+   ],
+   "w": 12,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:puffin:0"
+  },
+  "wild_puffin_left_f1": {
+   "file": "assets/environments/props/wild_puffin_left_f1.png",
+   "rect": [
+    252,
+    63,
+    12,
+    9
+   ],
+   "w": 12,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:puffin:1"
+  },
+  "wild_puffin_right_f0": {
+   "file": "assets/environments/props/wild_puffin_right_f0.png",
+   "rect": [
+    265,
+    63,
+    12,
+    9
+   ],
+   "w": 12,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:puffin:0"
+  },
+  "wild_puffin_right_f1": {
+   "file": "assets/environments/props/wild_puffin_right_f1.png",
+   "rect": [
+    278,
+    63,
+    12,
+    9
+   ],
+   "w": 12,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:puffin:1"
+  },
+  "wild_puffin_ui": {
+   "file": "assets/environments/props/wild_puffin_ui.png",
+   "rect": [
+    291,
+    63,
+    12,
+    9
+   ],
+   "w": 12,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:puffin"
+  },
+  "wild_puffin_ui_sil": {
+   "file": "assets/environments/props/wild_puffin_ui_sil.png",
+   "rect": [
+    304,
+    63,
+    12,
+    9
+   ],
+   "w": 12,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:puffin:sil"
+  },
+  "gullS": {
+   "file": "assets/environments/props/gullS.png",
+   "rect": [
+    1012,
+    35,
+    10,
+    9
+   ],
+   "w": 10,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "gullS"
+  },
+  "wild_donen_yunus_left_f0": {
+   "file": "assets/environments/props/wild_donen_yunus_left_f0.png",
+   "rect": [
+    317,
+    63,
+    20,
+    8
+   ],
+   "w": 20,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:donen_yunus:0"
+  },
+  "wild_donen_yunus_left_f1": {
+   "file": "assets/environments/props/wild_donen_yunus_left_f1.png",
+   "rect": [
+    338,
+    63,
+    20,
+    8
+   ],
+   "w": 20,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:donen_yunus:1"
+  },
+  "wild_donen_yunus_right_f0": {
+   "file": "assets/environments/props/wild_donen_yunus_right_f0.png",
+   "rect": [
+    359,
+    63,
+    20,
+    8
+   ],
+   "w": 20,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:donen_yunus:0"
+  },
+  "wild_donen_yunus_right_f1": {
+   "file": "assets/environments/props/wild_donen_yunus_right_f1.png",
+   "rect": [
+    380,
+    63,
+    20,
+    8
+   ],
+   "w": 20,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:donen_yunus:1"
+  },
+  "wild_donen_yunus_ui": {
+   "file": "assets/environments/props/wild_donen_yunus_ui.png",
+   "rect": [
+    401,
+    63,
+    20,
+    8
+   ],
+   "w": 20,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:donen_yunus"
+  },
+  "wild_donen_yunus_ui_sil": {
+   "file": "assets/environments/props/wild_donen_yunus_ui_sil.png",
+   "rect": [
+    422,
+    63,
+    20,
+    8
+   ],
+   "w": 20,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:donen_yunus:sil"
+  },
+  "dolphin": {
+   "file": "assets/environments/props/dolphin.png",
+   "rect": [
+    443,
+    63,
+    18,
+    8
+   ],
+   "w": 18,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "dolphin"
+  },
+  "wild_fulmar_left_f0": {
+   "file": "assets/environments/props/wild_fulmar_left_f0.png",
+   "rect": [
+    462,
+    63,
+    16,
+    8
+   ],
+   "w": 16,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:fulmar:0"
+  },
+  "wild_fulmar_left_f1": {
+   "file": "assets/environments/props/wild_fulmar_left_f1.png",
+   "rect": [
+    479,
+    63,
+    16,
+    8
+   ],
+   "w": 16,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:fulmar:1"
+  },
+  "wild_fulmar_right_f0": {
+   "file": "assets/environments/props/wild_fulmar_right_f0.png",
+   "rect": [
+    496,
+    63,
+    16,
+    8
+   ],
+   "w": 16,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:fulmar:0"
+  },
+  "wild_fulmar_right_f1": {
+   "file": "assets/environments/props/wild_fulmar_right_f1.png",
+   "rect": [
+    513,
+    63,
+    16,
+    8
+   ],
+   "w": 16,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:fulmar:1"
+  },
+  "wild_fulmar_ui": {
+   "file": "assets/environments/props/wild_fulmar_ui.png",
+   "rect": [
+    530,
+    63,
+    16,
+    8
+   ],
+   "w": 16,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:fulmar"
+  },
+  "wild_fulmar_ui_sil": {
+   "file": "assets/environments/props/wild_fulmar_ui_sil.png",
+   "rect": [
+    547,
+    63,
+    16,
+    8
+   ],
+   "w": 16,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:fulmar:sil"
+  },
+  "wild_gumus_marti_left_f0": {
+   "file": "assets/environments/props/wild_gumus_marti_left_f0.png",
+   "rect": [
+    564,
+    63,
+    15,
+    8
+   ],
+   "w": 15,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:gumus_marti:0"
+  },
+  "wild_gumus_marti_left_f1": {
+   "file": "assets/environments/props/wild_gumus_marti_left_f1.png",
+   "rect": [
+    580,
+    63,
+    15,
+    8
+   ],
+   "w": 15,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:gumus_marti:1"
+  },
+  "wild_gumus_marti_right_f0": {
+   "file": "assets/environments/props/wild_gumus_marti_right_f0.png",
+   "rect": [
+    596,
+    63,
+    15,
+    8
+   ],
+   "w": 15,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:gumus_marti:0"
+  },
+  "wild_gumus_marti_right_f1": {
+   "file": "assets/environments/props/wild_gumus_marti_right_f1.png",
+   "rect": [
+    612,
+    63,
+    15,
+    8
+   ],
+   "w": 15,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:gumus_marti:1"
+  },
+  "wild_gumus_marti_ui": {
+   "file": "assets/environments/props/wild_gumus_marti_ui.png",
+   "rect": [
+    628,
+    63,
+    15,
+    8
+   ],
+   "w": 15,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:gumus_marti"
+  },
+  "wild_gumus_marti_ui_sil": {
+   "file": "assets/environments/props/wild_gumus_marti_ui_sil.png",
+   "rect": [
+    644,
+    63,
+    15,
+    8
+   ],
+   "w": 15,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:gumus_marti:sil"
+  },
+  "wild_kiyi_yengeci_left_f0": {
+   "file": "assets/environments/props/wild_kiyi_yengeci_left_f0.png",
+   "rect": [
+    660,
+    63,
+    12,
+    8
+   ],
+   "w": 12,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:kiyi_yengeci:0"
+  },
+  "wild_kiyi_yengeci_left_f1": {
+   "file": "assets/environments/props/wild_kiyi_yengeci_left_f1.png",
+   "rect": [
+    673,
+    63,
+    12,
+    8
+   ],
+   "w": 12,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:kiyi_yengeci:1"
+  },
+  "wild_kiyi_yengeci_right_f0": {
+   "file": "assets/environments/props/wild_kiyi_yengeci_right_f0.png",
+   "rect": [
+    686,
+    63,
+    12,
+    8
+   ],
+   "w": 12,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:kiyi_yengeci:0"
+  },
+  "wild_kiyi_yengeci_right_f1": {
+   "file": "assets/environments/props/wild_kiyi_yengeci_right_f1.png",
+   "rect": [
+    699,
+    63,
+    12,
+    8
+   ],
+   "w": 12,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:kiyi_yengeci:1"
+  },
+  "wild_kiyi_yengeci_ui": {
+   "file": "assets/environments/props/wild_kiyi_yengeci_ui.png",
+   "rect": [
+    712,
+    63,
+    12,
+    8
+   ],
+   "w": 12,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:kiyi_yengeci"
+  },
+  "wild_kiyi_yengeci_ui_sil": {
+   "file": "assets/environments/props/wild_kiyi_yengeci_ui_sil.png",
+   "rect": [
+    725,
+    63,
+    12,
+    8
+   ],
+   "w": 12,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:kiyi_yengeci:sil"
+  },
+  "wild_ucan_balik_suru_left_f0": {
+   "file": "assets/environments/props/wild_ucan_balik_suru_left_f0.png",
+   "rect": [
+    738,
+    63,
+    16,
+    7
+   ],
+   "w": 16,
+   "h": 7,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:ucan_balik_suru:0"
+  },
+  "wild_ucan_balik_suru_left_f1": {
+   "file": "assets/environments/props/wild_ucan_balik_suru_left_f1.png",
+   "rect": [
+    755,
+    63,
+    16,
+    7
+   ],
+   "w": 16,
+   "h": 7,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wild:ucan_balik_suru:1"
+  },
+  "wild_ucan_balik_suru_right_f0": {
+   "file": "assets/environments/props/wild_ucan_balik_suru_right_f0.png",
+   "rect": [
+    772,
+    63,
+    16,
+    7
+   ],
+   "w": 16,
+   "h": 7,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:ucan_balik_suru:0"
+  },
+  "wild_ucan_balik_suru_right_f1": {
+   "file": "assets/environments/props/wild_ucan_balik_suru_right_f1.png",
+   "rect": [
+    789,
+    63,
+    16,
+    7
+   ],
+   "w": 16,
+   "h": 7,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildR:ucan_balik_suru:1"
+  },
+  "wild_ucan_balik_suru_ui": {
+   "file": "assets/environments/props/wild_ucan_balik_suru_ui.png",
+   "rect": [
+    806,
+    63,
+    16,
+    7
+   ],
+   "w": 16,
+   "h": 7,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:ucan_balik_suru"
+  },
+  "wild_ucan_balik_suru_ui_sil": {
+   "file": "assets/environments/props/wild_ucan_balik_suru_ui_sil.png",
+   "rect": [
+    823,
+    63,
+    16,
+    7
+   ],
+   "w": 16,
+   "h": 7,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "wildu:ucan_balik_suru:sil"
+  },
+  "gull0": {
+   "file": "assets/environments/props/gull0.png",
+   "rect": [
+    840,
+    63,
+    13,
+    7
+   ],
+   "w": 13,
+   "h": 7,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "gull0"
+  },
+  "gull1": {
+   "file": "assets/environments/props/gull1.png",
+   "rect": [
+    854,
+    63,
+    13,
+    7
+   ],
+   "w": 13,
+   "h": 7,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "gull1"
+  },
+  "gull2": {
+   "file": "assets/environments/props/gull2.png",
+   "rect": [
+    868,
+    63,
+    13,
+    7
+   ],
+   "w": 13,
+   "h": 7,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "gull2"
+  },
+  "follower": {
+   "file": "assets/environments/props/follower.png",
+   "rect": [
+    882,
+    63,
+    16,
+    6
+   ],
+   "w": 16,
+   "h": 6,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "follower"
+  },
+  "sinker": {
+   "file": "assets/environments/props/sinker.png",
+   "rect": [
+    1014,
+    50,
+    5,
+    6
+   ],
+   "w": 5,
+   "h": 6,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "sinker"
+  },
+  "lure0": {
+   "file": "assets/environments/props/lure0.png",
+   "rect": [
+    899,
+    63,
+    9,
+    5
+   ],
+   "w": 9,
+   "h": 5,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "lure0"
+  },
+  "lure1": {
+   "file": "assets/environments/props/lure1.png",
+   "rect": [
+    909,
+    63,
+    9,
+    5
+   ],
+   "w": 9,
+   "h": 5,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "lure1"
+  }
+ }
+}

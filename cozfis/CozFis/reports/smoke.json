@@ -1,0 +1,56 @@
+{
+ "http": {
+  "sound": {
+   "ctx": true,
+   "state": "running",
+   "started": true
+  },
+  "creatorScene": "CharacterCreator",
+  "creatorButtons": 33,
+  "player": {
+   "hair": 6,
+   "hat": "fener_beresi",
+   "sprite": "20x31",
+   "hand": [
+    14,
+    16
+   ]
+  },
+  "langs": [
+   "en:Inventory Fish Gea",
+   "es:Inventario Peces E",
+   "de:Inventar Fische Au",
+   "fr:Inventaire Poisson",
+   "pt-BR:Inventário Peixes ",
+   "tr:Envanter Balıklar "
+  ],
+  "atlasHits": 175,
+  "fallbacks": 0,
+  "photoDataUrl": true,
+  "remoteRequests": [],
+  "requestCount": 45,
+  "errors": []
+ },
+ "fileModular": {
+  "assets": false,
+  "reason": "canvas kirlendi (file:// ?) — prosedürel mod",
+  "panelImgs": 71,
+  "photo": true,
+  "errors": []
+ },
+ "standalone": {
+  "assets": true,
+  "pages": 9,
+  "qa": "149/149",
+  "bad": [],
+  "hits": 159,
+  "errors": []
+ },
+ "offlineAfterLoad": {
+  "scene": "BoatFishing",
+  "assets": true,
+  "errors": [
+   "Failed to load resource: net::ERR_INTERNET_DISCONNECTED"
+  ]
+ }
+}

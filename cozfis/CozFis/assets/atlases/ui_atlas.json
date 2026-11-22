@@ -1,0 +1,3850 @@
+{
+ "atlas": "ui_atlas",
+ "image": "ui_atlas.png",
+ "size": [
+  1024,
+  93
+ ],
+ "frames": {
+  "skin_btn": {
+   "file": "assets/ui/skin_btn.png",
+   "rect": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "w": 24,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "skin:btn"
+  },
+  "skin_btnB": {
+   "file": "assets/ui/skin_btnB.png",
+   "rect": [
+    25,
+    0,
+    24,
+    24
+   ],
+   "w": 24,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "skin:btnB"
+  },
+  "skin_btnG": {
+   "file": "assets/ui/skin_btnG.png",
+   "rect": [
+    50,
+    0,
+    24,
+    24
+   ],
+   "w": 24,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "skin:btnG"
+  },
+  "skin_btnP": {
+   "file": "assets/ui/skin_btnP.png",
+   "rect": [
+    75,
+    0,
+    24,
+    24
+   ],
+   "w": 24,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "skin:btnP"
+  },
+  "skin_btnR": {
+   "file": "assets/ui/skin_btnR.png",
+   "rect": [
+    100,
+    0,
+    24,
+    24
+   ],
+   "w": 24,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "skin:btnR"
+  },
+  "skin_dark": {
+   "file": "assets/ui/skin_dark.png",
+   "rect": [
+    125,
+    0,
+    24,
+    24
+   ],
+   "w": 24,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "skin:dark"
+  },
+  "skin_paper": {
+   "file": "assets/ui/skin_paper.png",
+   "rect": [
+    150,
+    0,
+    24,
+    24
+   ],
+   "w": 24,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "skin:paper"
+  },
+  "skin_slot": {
+   "file": "assets/ui/skin_slot.png",
+   "rect": [
+    175,
+    0,
+    24,
+    24
+   ],
+   "w": 24,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "skin:slot"
+  },
+  "skin_wood": {
+   "file": "assets/ui/skin_wood.png",
+   "rect": [
+    200,
+    0,
+    24,
+    24
+   ],
+   "w": 24,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "skin:wood"
+  },
+  "icon_al_bora_plate": {
+   "file": "assets/ui/icon_al_bora_plate.png",
+   "rect": [
+    225,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:al_bora_plate"
+  },
+  "icon_al_efe_photo": {
+   "file": "assets/ui/icon_al_efe_photo.png",
+   "rect": [
+    242,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:al_efe_photo"
+  },
+  "icon_al_elif_drawings": {
+   "file": "assets/ui/icon_al_elif_drawings.png",
+   "rect": [
+    259,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:al_elif_drawings"
+  },
+  "icon_al_kerem_exhibit": {
+   "file": "assets/ui/icon_al_kerem_exhibit.png",
+   "rect": [
+    276,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:al_kerem_exhibit"
+  },
+  "icon_al_mert_trip": {
+   "file": "assets/ui/icon_al_mert_trip.png",
+   "rect": [
+    293,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:al_mert_trip"
+  },
+  "icon_album": {
+   "file": "assets/ui/icon_album.png",
+   "rect": [
+    310,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:album"
+  },
+  "icon_anchor": {
+   "file": "assets/ui/icon_anchor.png",
+   "rect": [
+    327,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:anchor"
+  },
+  "icon_aquarium": {
+   "file": "assets/ui/icon_aquarium.png",
+   "rect": [
+    344,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:aquarium"
+  },
+  "icon_auto1": {
+   "file": "assets/ui/icon_auto1.png",
+   "rect": [
+    361,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:auto1"
+  },
+  "icon_auto2": {
+   "file": "assets/ui/icon_auto2.png",
+   "rect": [
+    378,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:auto2"
+  },
+  "icon_auto3": {
+   "file": "assets/ui/icon_auto3.png",
+   "rect": [
+    395,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:auto3"
+  },
+  "icon_auto_reel": {
+   "file": "assets/ui/icon_auto_reel.png",
+   "rect": [
+    412,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:auto_reel"
+  },
+  "icon_autumn": {
+   "file": "assets/ui/icon_autumn.png",
+   "rect": [
+    429,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:autumn"
+  },
+  "icon_badge_b": {
+   "file": "assets/ui/icon_badge_b.png",
+   "rect": [
+    446,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:badge_b"
+  },
+  "icon_badge_g": {
+   "file": "assets/ui/icon_badge_g.png",
+   "rect": [
+    463,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:badge_g"
+  },
+  "icon_badge_s": {
+   "file": "assets/ui/icon_badge_s.png",
+   "rect": [
+    480,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:badge_s"
+  },
+  "icon_bag": {
+   "file": "assets/ui/icon_bag.png",
+   "rect": [
+    497,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:bag"
+  },
+  "icon_bagUp": {
+   "file": "assets/ui/icon_bagUp.png",
+   "rect": [
+    514,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:bagUp"
+  },
+  "icon_bait_basic": {
+   "file": "assets/ui/icon_bait_basic.png",
+   "rect": [
+    531,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:bait_basic"
+  },
+  "icon_bait_deep": {
+   "file": "assets/ui/icon_bait_deep.png",
+   "rect": [
+    548,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:bait_deep"
+  },
+  "icon_bait_fish": {
+   "file": "assets/ui/icon_bait_fish.png",
+   "rect": [
+    565,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:bait_fish"
+  },
+  "icon_bait_lure": {
+   "file": "assets/ui/icon_bait_lure.png",
+   "rect": [
+    582,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:bait_lure"
+  },
+  "icon_bait_shrimp": {
+   "file": "assets/ui/icon_bait_shrimp.png",
+   "rect": [
+    599,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:bait_shrimp"
+  },
+  "icon_bait_worm": {
+   "file": "assets/ui/icon_bait_worm.png",
+   "rect": [
+    616,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:bait_worm"
+  },
+  "icon_bakery": {
+   "file": "assets/ui/icon_bakery.png",
+   "rect": [
+    633,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:bakery"
+  },
+  "icon_bc_akinti": {
+   "file": "assets/ui/icon_bc_akinti.png",
+   "rect": [
+    650,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:bc_akinti"
+  },
+  "icon_bc_coral": {
+   "file": "assets/ui/icon_bc_coral.png",
+   "rect": [
+    667,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:bc_coral"
+  },
+  "icon_bc_navy": {
+   "file": "assets/ui/icon_bc_navy.png",
+   "rect": [
+    684,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:bc_navy"
+  },
+  "icon_bc_sand": {
+   "file": "assets/ui/icon_bc_sand.png",
+   "rect": [
+    701,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:bc_sand"
+  },
+  "icon_bc_sea_green": {
+   "file": "assets/ui/icon_bc_sea_green.png",
+   "rect": [
+    718,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:bc_sea_green"
+  },
+  "icon_binoc": {
+   "file": "assets/ui/icon_binoc.png",
+   "rect": [
+    735,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:binoc"
+  },
+  "icon_boat": {
+   "file": "assets/ui/icon_boat.png",
+   "rect": [
+    752,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:boat"
+  },
+  "icon_book": {
+   "file": "assets/ui/icon_book.png",
+   "rect": [
+    769,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:book"
+  },
+  "icon_boutique": {
+   "file": "assets/ui/icon_boutique.png",
+   "rect": [
+    786,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:boutique"
+  },
+  "icon_camera": {
+   "file": "assets/ui/icon_camera.png",
+   "rect": [
+    803,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:camera"
+  },
+  "icon_cast": {
+   "file": "assets/ui/icon_cast.png",
+   "rect": [
+    820,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:cast"
+  },
+  "icon_charm_sinarit": {
+   "file": "assets/ui/icon_charm_sinarit.png",
+   "rect": [
+    837,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:charm_sinarit"
+  },
+  "icon_chart": {
+   "file": "assets/ui/icon_chart.png",
+   "rect": [
+    854,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:chart"
+  },
+  "icon_check": {
+   "file": "assets/ui/icon_check.png",
+   "rect": [
+    871,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:check"
+  },
+  "icon_chest": {
+   "file": "assets/ui/icon_chest.png",
+   "rect": [
+    888,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:chest"
+  },
+  "icon_chestUp": {
+   "file": "assets/ui/icon_chestUp.png",
+   "rect": [
+    905,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:chestUp"
+  },
+  "icon_cloudy": {
+   "file": "assets/ui/icon_cloudy.png",
+   "rect": [
+    922,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:cloudy"
+  },
+  "icon_coin": {
+   "file": "assets/ui/icon_coin.png",
+   "rect": [
+    939,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:coin"
+  },
+  "icon_crate": {
+   "file": "assets/ui/icon_crate.png",
+   "rect": [
+    956,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:crate"
+  },
+  "icon_cross": {
+   "file": "assets/ui/icon_cross.png",
+   "rect": [
+    973,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:cross"
+  },
+  "icon_cup_1": {
+   "file": "assets/ui/icon_cup_1.png",
+   "rect": [
+    990,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:cup_1"
+  },
+  "icon_cup_2": {
+   "file": "assets/ui/icon_cup_2.png",
+   "rect": [
+    1007,
+    0,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:cup_2"
+  },
+  "icon_cup_3": {
+   "file": "assets/ui/icon_cup_3.png",
+   "rect": [
+    0,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:cup_3"
+  },
+  "icon_cust_bahar": {
+   "file": "assets/ui/icon_cust_bahar.png",
+   "rect": [
+    17,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:cust_bahar"
+  },
+  "icon_cust_cooperative": {
+   "file": "assets/ui/icon_cust_cooperative.png",
+   "rect": [
+    34,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:cust_cooperative"
+  },
+  "icon_cust_island_cuisine": {
+   "file": "assets/ui/icon_cust_island_cuisine.png",
+   "rect": [
+    51,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:cust_island_cuisine"
+  },
+  "icon_cust_nihat": {
+   "file": "assets/ui/icon_cust_nihat.png",
+   "rect": [
+    68,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:cust_nihat"
+  },
+  "icon_cust_north_fishery": {
+   "file": "assets/ui/icon_cust_north_fishery.png",
+   "rect": [
+    85,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:cust_north_fishery"
+  },
+  "icon_cust_seafood_restaurant": {
+   "file": "assets/ui/icon_cust_seafood_restaurant.png",
+   "rect": [
+    102,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:cust_seafood_restaurant"
+  },
+  "icon_cust_sunset_hotel": {
+   "file": "assets/ui/icon_cust_sunset_hotel.png",
+   "rect": [
+    119,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:cust_sunset_hotel"
+  },
+  "icon_decor": {
+   "file": "assets/ui/icon_decor.png",
+   "rect": [
+    136,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor"
+  },
+  "icon_decor_ahsap_saat": {
+   "file": "assets/ui/icon_decor_ahsap_saat.png",
+   "rect": [
+    153,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_ahsap_saat"
+  },
+  "icon_decor_altin_olta": {
+   "file": "assets/ui/icon_decor_altin_olta.png",
+   "rect": [
+    170,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_altin_olta"
+  },
+  "icon_decor_balik_posteri": {
+   "file": "assets/ui/icon_decor_balik_posteri.png",
+   "rect": [
+    187,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_balik_posteri"
+  },
+  "icon_decor_bora_levha": {
+   "file": "assets/ui/icon_decor_bora_levha.png",
+   "rect": [
+    204,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_bora_levha"
+  },
+  "icon_decor_cay_seti": {
+   "file": "assets/ui/icon_decor_cay_seti.png",
+   "rect": [
+    221,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_cay_seti"
+  },
+  "icon_decor_cerceve_balik": {
+   "file": "assets/ui/icon_decor_cerceve_balik.png",
+   "rect": [
+    238,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_cerceve_balik"
+  },
+  "icon_decor_cicek": {
+   "file": "assets/ui/icon_decor_cicek.png",
+   "rect": [
+    255,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_cicek"
+  },
+  "icon_decor_deniz_sergisi": {
+   "file": "assets/ui/icon_decor_deniz_sergisi.png",
+   "rect": [
+    272,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_deniz_sergisi"
+  },
+  "icon_decor_dumen": {
+   "file": "assets/ui/icon_decor_dumen.png",
+   "rect": [
+    289,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_dumen"
+  },
+  "icon_decor_efe_foto": {
+   "file": "assets/ui/icon_decor_efe_foto.png",
+   "rect": [
+    306,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_efe_foto"
+  },
+  "icon_decor_elif_pano": {
+   "file": "assets/ui/icon_decor_elif_pano.png",
+   "rect": [
+    323,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_elif_pano"
+  },
+  "icon_decor_fener_maket": {
+   "file": "assets/ui/icon_decor_fener_maket.png",
+   "rect": [
+    340,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_fener_maket"
+  },
+  "icon_decor_gaz_lambasi": {
+   "file": "assets/ui/icon_decor_gaz_lambasi.png",
+   "rect": [
+    357,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_gaz_lambasi"
+  },
+  "icon_decor_gemi_maketi": {
+   "file": "assets/ui/icon_decor_gemi_maketi.png",
+   "rect": [
+    374,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_gemi_maketi"
+  },
+  "icon_decor_harita_pano": {
+   "file": "assets/ui/icon_decor_harita_pano.png",
+   "rect": [
+    391,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_harita_pano"
+  },
+  "icon_decor_kabuk_sergisi": {
+   "file": "assets/ui/icon_decor_kabuk_sergisi.png",
+   "rect": [
+    408,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_kabuk_sergisi"
+  },
+  "icon_decor_kabuklar": {
+   "file": "assets/ui/icon_decor_kabuklar.png",
+   "rect": [
+    425,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_kabuklar"
+  },
+  "icon_decor_kartpostal": {
+   "file": "assets/ui/icon_decor_kartpostal.png",
+   "rect": [
+    442,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_kartpostal"
+  },
+  "icon_decor_kitaplar": {
+   "file": "assets/ui/icon_decor_kitaplar.png",
+   "rect": [
+    459,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_kitaplar"
+  },
+  "icon_decor_mercan_parca": {
+   "file": "assets/ui/icon_decor_mercan_parca.png",
+   "rect": [
+    476,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_mercan_parca"
+  },
+  "icon_decor_poster_derin_mavi": {
+   "file": "assets/ui/icon_decor_poster_derin_mavi.png",
+   "rect": [
+    493,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_poster_derin_mavi"
+  },
+  "icon_decor_poster_gunes_adalari": {
+   "file": "assets/ui/icon_decor_poster_gunes_adalari.png",
+   "rect": [
+    510,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_poster_gunes_adalari"
+  },
+  "icon_decor_poster_kayalik_adalar": {
+   "file": "assets/ui/icon_decor_poster_kayalik_adalar.png",
+   "rect": [
+    527,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_poster_kayalik_adalar"
+  },
+  "icon_decor_poster_sakin_liman": {
+   "file": "assets/ui/icon_decor_poster_sakin_liman.png",
+   "rect": [
+    544,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_poster_sakin_liman"
+  },
+  "icon_decor_poster_serin_akintilar": {
+   "file": "assets/ui/icon_decor_poster_serin_akintilar.png",
+   "rect": [
+    561,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_poster_serin_akintilar"
+  },
+  "icon_decor_poster_shore": {
+   "file": "assets/ui/icon_decor_poster_shore.png",
+   "rect": [
+    578,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_poster_shore"
+  },
+  "icon_decor_poster_sisli_kuzey": {
+   "file": "assets/ui/icon_decor_poster_sisli_kuzey.png",
+   "rect": [
+    595,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_poster_sisli_kuzey"
+  },
+  "icon_decor_poster_wild": {
+   "file": "assets/ui/icon_decor_poster_wild.png",
+   "rect": [
+    612,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_poster_wild"
+  },
+  "icon_decor_poster_yesil_koy": {
+   "file": "assets/ui/icon_decor_poster_yesil_koy.png",
+   "rect": [
+    629,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_poster_yesil_koy"
+  },
+  "icon_decor_pusula": {
+   "file": "assets/ui/icon_decor_pusula.png",
+   "rect": [
+    646,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_pusula"
+  },
+  "icon_decor_rekor_pano": {
+   "file": "assets/ui/icon_decor_rekor_pano.png",
+   "rect": [
+    663,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_rekor_pano"
+  },
+  "icon_decor_ruzgar_cani": {
+   "file": "assets/ui/icon_decor_ruzgar_cani.png",
+   "rect": [
+    680,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_ruzgar_cani"
+  },
+  "icon_decor_saksi": {
+   "file": "assets/ui/icon_decor_saksi.png",
+   "rect": [
+    697,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_saksi"
+  },
+  "icon_decor_sampiyon_flama": {
+   "file": "assets/ui/icon_decor_sampiyon_flama.png",
+   "rect": [
+    714,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_sampiyon_flama"
+  },
+  "icon_decor_sise_gemi": {
+   "file": "assets/ui/icon_decor_sise_gemi.png",
+   "rect": [
+    731,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_sise_gemi"
+  },
+  "icon_decor_tablo_deniz": {
+   "file": "assets/ui/icon_decor_tablo_deniz.png",
+   "rect": [
+    748,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_tablo_deniz"
+  },
+  "icon_decor_takvim": {
+   "file": "assets/ui/icon_decor_takvim.png",
+   "rect": [
+    765,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_takvim"
+  },
+  "icon_decor_tr_halibut": {
+   "file": "assets/ui/icon_decor_tr_halibut.png",
+   "rect": [
+    782,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_tr_halibut"
+  },
+  "icon_decor_tr_yelken": {
+   "file": "assets/ui/icon_decor_tr_yelken.png",
+   "rect": [
+    799,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_tr_yelken"
+  },
+  "icon_decor_tr_zargana": {
+   "file": "assets/ui/icon_decor_tr_zargana.png",
+   "rect": [
+    816,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:decor_tr_zargana"
+  },
+  "icon_deep_sea_gear": {
+   "file": "assets/ui/icon_deep_sea_gear.png",
+   "rect": [
+    833,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:deep_sea_gear"
+  },
+  "icon_dp_day": {
+   "file": "assets/ui/icon_dp_day.png",
+   "rect": [
+    850,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:dp_day"
+  },
+  "icon_dp_evening": {
+   "file": "assets/ui/icon_dp_evening.png",
+   "rect": [
+    867,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:dp_evening"
+  },
+  "icon_dp_morning": {
+   "file": "assets/ui/icon_dp_morning.png",
+   "rect": [
+    884,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:dp_morning"
+  },
+  "icon_energy": {
+   "file": "assets/ui/icon_energy.png",
+   "rect": [
+    901,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:energy"
+  },
+  "icon_ev_bait_discount": {
+   "file": "assets/ui/icon_ev_bait_discount.png",
+   "rect": [
+    918,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:ev_bait_discount"
+  },
+  "icon_ev_bay_activity": {
+   "file": "assets/ui/icon_ev_bay_activity.png",
+   "rect": [
+    935,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:ev_bay_activity"
+  },
+  "icon_ev_calm_north": {
+   "file": "assets/ui/icon_ev_calm_north.png",
+   "rect": [
+    952,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:ev_calm_north"
+  },
+  "icon_ev_currents_day": {
+   "file": "assets/ui/icon_ev_currents_day.png",
+   "rect": [
+    969,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:ev_currents_day"
+  },
+  "icon_ev_harbor_market": {
+   "file": "assets/ui/icon_ev_harbor_market.png",
+   "rect": [
+    986,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:ev_harbor_market"
+  },
+  "icon_ev_open_sea_current": {
+   "file": "assets/ui/icon_ev_open_sea_current.png",
+   "rect": [
+    1003,
+    25,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:ev_open_sea_current"
+  },
+  "icon_ev_rocky_bounty": {
+   "file": "assets/ui/icon_ev_rocky_bounty.png",
+   "rect": [
+    0,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:ev_rocky_bounty"
+  },
+  "icon_ev_sardine_school": {
+   "file": "assets/ui/icon_ev_sardine_school.png",
+   "rect": [
+    17,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:ev_sardine_school"
+  },
+  "icon_ev_special_restaurant": {
+   "file": "assets/ui/icon_ev_special_restaurant.png",
+   "rect": [
+    34,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:ev_special_restaurant"
+  },
+  "icon_ev_tropical_activity": {
+   "file": "assets/ui/icon_ev_tropical_activity.png",
+   "rect": [
+    51,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:ev_tropical_activity"
+  },
+  "icon_event": {
+   "file": "assets/ui/icon_event.png",
+   "rect": [
+    68,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:event"
+  },
+  "icon_exit": {
+   "file": "assets/ui/icon_exit.png",
+   "rect": [
+    85,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:exit"
+  },
+  "icon_festival": {
+   "file": "assets/ui/icon_festival.png",
+   "rect": [
+    102,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:festival"
+  },
+  "icon_finance": {
+   "file": "assets/ui/icon_finance.png",
+   "rect": [
+    119,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:finance"
+  },
+  "icon_fishI": {
+   "file": "assets/ui/icon_fishI.png",
+   "rect": [
+    136,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:fishI"
+  },
+  "icon_fleet": {
+   "file": "assets/ui/icon_fleet.png",
+   "rect": [
+    153,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:fleet"
+  },
+  "icon_fleet_back": {
+   "file": "assets/ui/icon_fleet_back.png",
+   "rect": [
+    170,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:fleet_back"
+  },
+  "icon_fleet_idle": {
+   "file": "assets/ui/icon_fleet_idle.png",
+   "rect": [
+    187,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:fleet_idle"
+  },
+  "icon_fleet_out": {
+   "file": "assets/ui/icon_fleet_out.png",
+   "rect": [
+    204,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:fleet_out"
+  },
+  "icon_fog": {
+   "file": "assets/ui/icon_fog.png",
+   "rect": [
+    221,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:fog"
+  },
+  "icon_fullscreen": {
+   "file": "assets/ui/icon_fullscreen.png",
+   "rect": [
+    238,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:fullscreen"
+  },
+  "icon_gear": {
+   "file": "assets/ui/icon_gear.png",
+   "rect": [
+    255,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:gear"
+  },
+  "icon_gearset": {
+   "file": "assets/ui/icon_gearset.png",
+   "rect": [
+    272,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:gearset"
+  },
+  "icon_guest": {
+   "file": "assets/ui/icon_guest.png",
+   "rect": [
+    289,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:guest"
+  },
+  "icon_guild": {
+   "file": "assets/ui/icon_guild.png",
+   "rect": [
+    306,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:guild"
+  },
+  "icon_help": {
+   "file": "assets/ui/icon_help.png",
+   "rect": [
+    323,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:help"
+  },
+  "icon_home": {
+   "file": "assets/ui/icon_home.png",
+   "rect": [
+    340,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:home"
+  },
+  "icon_homegoods": {
+   "file": "assets/ui/icon_homegoods.png",
+   "rect": [
+    357,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:homegoods"
+  },
+  "icon_hook_pro": {
+   "file": "assets/ui/icon_hook_pro.png",
+   "rect": [
+    374,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:hook_pro"
+  },
+  "icon_hook_reinforced": {
+   "file": "assets/ui/icon_hook_reinforced.png",
+   "rect": [
+    391,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:hook_reinforced"
+  },
+  "icon_hook_sharp": {
+   "file": "assets/ui/icon_hook_sharp.png",
+   "rect": [
+    408,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:hook_sharp"
+  },
+  "icon_hook_standard": {
+   "file": "assets/ui/icon_hook_standard.png",
+   "rect": [
+    425,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:hook_standard"
+  },
+  "icon_inspect": {
+   "file": "assets/ui/icon_inspect.png",
+   "rect": [
+    442,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:inspect"
+  },
+  "icon_jobs": {
+   "file": "assets/ui/icon_jobs.png",
+   "rect": [
+    459,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:jobs"
+  },
+  "icon_journal": {
+   "file": "assets/ui/icon_journal.png",
+   "rect": [
+    476,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:journal"
+  },
+  "icon_left": {
+   "file": "assets/ui/icon_left.png",
+   "rect": [
+    493,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:left"
+  },
+  "icon_line_braided": {
+   "file": "assets/ui/icon_line_braided.png",
+   "rect": [
+    510,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:line_braided"
+  },
+  "icon_line_durable": {
+   "file": "assets/ui/icon_line_durable.png",
+   "rect": [
+    527,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:line_durable"
+  },
+  "icon_line_marine": {
+   "file": "assets/ui/icon_line_marine.png",
+   "rect": [
+    544,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:line_marine"
+  },
+  "icon_line_pro": {
+   "file": "assets/ui/icon_line_pro.png",
+   "rect": [
+    561,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:line_pro"
+  },
+  "icon_line_thin": {
+   "file": "assets/ui/icon_line_thin.png",
+   "rect": [
+    578,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:line_thin"
+  },
+  "icon_lock": {
+   "file": "assets/ui/icon_lock.png",
+   "rect": [
+    595,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:lock"
+  },
+  "icon_m_bottom": {
+   "file": "assets/ui/icon_m_bottom.png",
+   "rect": [
+    612,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:m_bottom"
+  },
+  "icon_m_float": {
+   "file": "assets/ui/icon_m_float.png",
+   "rect": [
+    629,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:m_float"
+  },
+  "icon_m_spin": {
+   "file": "assets/ui/icon_m_spin.png",
+   "rect": [
+    646,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:m_spin"
+  },
+  "icon_map": {
+   "file": "assets/ui/icon_map.png",
+   "rect": [
+    663,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:map"
+  },
+  "icon_market": {
+   "file": "assets/ui/icon_market.png",
+   "rect": [
+    680,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:market"
+  },
+  "icon_menu": {
+   "file": "assets/ui/icon_menu.png",
+   "rect": [
+    697,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:menu"
+  },
+  "icon_nameplate": {
+   "file": "assets/ui/icon_nameplate.png",
+   "rect": [
+    714,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:nameplate"
+  },
+  "icon_op_big": {
+   "file": "assets/ui/icon_op_big.png",
+   "rect": [
+    731,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:op_big"
+  },
+  "icon_op_bottom": {
+   "file": "assets/ui/icon_op_bottom.png",
+   "rect": [
+    748,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:op_bottom"
+  },
+  "icon_op_predator": {
+   "file": "assets/ui/icon_op_predator.png",
+   "rect": [
+    765,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:op_predator"
+  },
+  "icon_op_school": {
+   "file": "assets/ui/icon_op_school.png",
+   "rect": [
+    782,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:op_school"
+  },
+  "icon_order": {
+   "file": "assets/ui/icon_order.png",
+   "rect": [
+    799,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:order"
+  },
+  "icon_orn_derin_mavi": {
+   "file": "assets/ui/icon_orn_derin_mavi.png",
+   "rect": [
+    816,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:orn_derin_mavi"
+  },
+  "icon_orn_gunes_adalari": {
+   "file": "assets/ui/icon_orn_gunes_adalari.png",
+   "rect": [
+    833,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:orn_gunes_adalari"
+  },
+  "icon_orn_kayalik_adalar": {
+   "file": "assets/ui/icon_orn_kayalik_adalar.png",
+   "rect": [
+    850,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:orn_kayalik_adalar"
+  },
+  "icon_orn_sakin_liman": {
+   "file": "assets/ui/icon_orn_sakin_liman.png",
+   "rect": [
+    867,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:orn_sakin_liman"
+  },
+  "icon_orn_serin_akintilar": {
+   "file": "assets/ui/icon_orn_serin_akintilar.png",
+   "rect": [
+    884,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:orn_serin_akintilar"
+  },
+  "icon_orn_sisli_kuzey": {
+   "file": "assets/ui/icon_orn_sisli_kuzey.png",
+   "rect": [
+    901,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:orn_sisli_kuzey"
+  },
+  "icon_orn_tr_barrakuda": {
+   "file": "assets/ui/icon_orn_tr_barrakuda.png",
+   "rect": [
+    918,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:orn_tr_barrakuda"
+  },
+  "icon_orn_tr_levrek": {
+   "file": "assets/ui/icon_orn_tr_levrek.png",
+   "rect": [
+    935,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:orn_tr_levrek"
+  },
+  "icon_orn_yesil_koy": {
+   "file": "assets/ui/icon_orn_yesil_koy.png",
+   "rect": [
+    952,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:orn_yesil_koy"
+  },
+  "icon_paint": {
+   "file": "assets/ui/icon_paint.png",
+   "rect": [
+    969,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:paint"
+  },
+  "icon_people": {
+   "file": "assets/ui/icon_people.png",
+   "rect": [
+    986,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:people"
+  },
+  "icon_plan": {
+   "file": "assets/ui/icon_plan.png",
+   "rect": [
+    1003,
+    42,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:plan"
+  },
+  "icon_proj_lighthouse": {
+   "file": "assets/ui/icon_proj_lighthouse.png",
+   "rect": [
+    0,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:proj_lighthouse"
+  },
+  "icon_proj_market": {
+   "file": "assets/ui/icon_proj_market.png",
+   "rect": [
+    17,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:proj_market"
+  },
+  "icon_proj_pier": {
+   "file": "assets/ui/icon_proj_pier.png",
+   "rect": [
+    34,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:proj_pier"
+  },
+  "icon_proj_terrace": {
+   "file": "assets/ui/icon_proj_terrace.png",
+   "rect": [
+    51,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:proj_terrace"
+  },
+  "icon_quick": {
+   "file": "assets/ui/icon_quick.png",
+   "rect": [
+    68,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:quick"
+  },
+  "icon_rain": {
+   "file": "assets/ui/icon_rain.png",
+   "rect": [
+    85,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:rain"
+  },
+  "icon_records": {
+   "file": "assets/ui/icon_records.png",
+   "rect": [
+    102,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:records"
+  },
+  "icon_reel_balanced": {
+   "file": "assets/ui/icon_reel_balanced.png",
+   "rect": [
+    119,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:reel_balanced"
+  },
+  "icon_reel_basic": {
+   "file": "assets/ui/icon_reel_basic.png",
+   "rect": [
+    136,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:reel_basic"
+  },
+  "icon_reel_light": {
+   "file": "assets/ui/icon_reel_light.png",
+   "rect": [
+    153,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:reel_light"
+  },
+  "icon_reel_professional": {
+   "file": "assets/ui/icon_reel_professional.png",
+   "rect": [
+    170,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:reel_professional"
+  },
+  "icon_reel_strong": {
+   "file": "assets/ui/icon_reel_strong.png",
+   "rect": [
+    187,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:reel_strong"
+  },
+  "icon_release": {
+   "file": "assets/ui/icon_release.png",
+   "rect": [
+    204,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:release"
+  },
+  "icon_report": {
+   "file": "assets/ui/icon_report.png",
+   "rect": [
+    221,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:report"
+  },
+  "icon_right": {
+   "file": "assets/ui/icon_right.png",
+   "rect": [
+    238,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:right"
+  },
+  "icon_rod_carbon": {
+   "file": "assets/ui/icon_rod_carbon.png",
+   "rect": [
+    255,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:rod_carbon"
+  },
+  "icon_rod_fiberglass": {
+   "file": "assets/ui/icon_rod_fiberglass.png",
+   "rect": [
+    272,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:rod_fiberglass"
+  },
+  "icon_rod_light": {
+   "file": "assets/ui/icon_rod_light.png",
+   "rect": [
+    289,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:rod_light"
+  },
+  "icon_rod_old_bamboo": {
+   "file": "assets/ui/icon_rod_old_bamboo.png",
+   "rect": [
+    306,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:rod_old_bamboo"
+  },
+  "icon_rod_professional": {
+   "file": "assets/ui/icon_rod_professional.png",
+   "rect": [
+    323,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:rod_professional"
+  },
+  "icon_route": {
+   "file": "assets/ui/icon_route.png",
+   "rect": [
+    340,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:route"
+  },
+  "icon_sensing": {
+   "file": "assets/ui/icon_sensing.png",
+   "rect": [
+    357,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:sensing"
+  },
+  "icon_shop": {
+   "file": "assets/ui/icon_shop.png",
+   "rect": [
+    374,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:shop"
+  },
+  "icon_shore": {
+   "file": "assets/ui/icon_shore.png",
+   "rect": [
+    391,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:shore"
+  },
+  "icon_sleep": {
+   "file": "assets/ui/icon_sleep.png",
+   "rect": [
+    408,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:sleep"
+  },
+  "icon_snack_borek": {
+   "file": "assets/ui/icon_snack_borek.png",
+   "rect": [
+    425,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:snack_borek"
+  },
+  "icon_snack_pogaca": {
+   "file": "assets/ui/icon_snack_pogaca.png",
+   "rect": [
+    442,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:snack_pogaca"
+  },
+  "icon_snack_simit": {
+   "file": "assets/ui/icon_snack_simit.png",
+   "rect": [
+    459,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:snack_simit"
+  },
+  "icon_sound": {
+   "file": "assets/ui/icon_sound.png",
+   "rect": [
+    476,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:sound"
+  },
+  "icon_spring": {
+   "file": "assets/ui/icon_spring.png",
+   "rect": [
+    493,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:spring"
+  },
+  "icon_square": {
+   "file": "assets/ui/icon_square.png",
+   "rect": [
+    510,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:square"
+  },
+  "icon_star": {
+   "file": "assets/ui/icon_star.png",
+   "rect": [
+    527,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:star"
+  },
+  "icon_starOff": {
+   "file": "assets/ui/icon_starOff.png",
+   "rect": [
+    544,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:starOff"
+  },
+  "icon_story": {
+   "file": "assets/ui/icon_story.png",
+   "rect": [
+    561,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:story"
+  },
+  "icon_summer": {
+   "file": "assets/ui/icon_summer.png",
+   "rect": [
+    578,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:summer"
+  },
+  "icon_sunny": {
+   "file": "assets/ui/icon_sunny.png",
+   "rect": [
+    595,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:sunny"
+  },
+  "icon_swap": {
+   "file": "assets/ui/icon_swap.png",
+   "rect": [
+    612,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:swap"
+  },
+  "icon_swatch": {
+   "file": "assets/ui/icon_swatch.png",
+   "rect": [
+    629,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:swatch"
+  },
+  "icon_teahouse": {
+   "file": "assets/ui/icon_teahouse.png",
+   "rect": [
+    646,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:teahouse"
+  },
+  "icon_tempo": {
+   "file": "assets/ui/icon_tempo.png",
+   "rect": [
+    663,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:tempo"
+  },
+  "icon_tilt": {
+   "file": "assets/ui/icon_tilt.png",
+   "rect": [
+    680,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:tilt"
+  },
+  "icon_title": {
+   "file": "assets/ui/icon_title.png",
+   "rect": [
+    697,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:title"
+  },
+  "icon_tr_t_akya": {
+   "file": "assets/ui/icon_tr_t_akya.png",
+   "rect": [
+    714,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:tr_t_akya"
+  },
+  "icon_tr_t_barrakuda": {
+   "file": "assets/ui/icon_tr_t_barrakuda.png",
+   "rect": [
+    731,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:tr_t_barrakuda"
+  },
+  "icon_tr_t_halibut": {
+   "file": "assets/ui/icon_tr_t_halibut.png",
+   "rect": [
+    748,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:tr_t_halibut"
+  },
+  "icon_tr_t_levrek": {
+   "file": "assets/ui/icon_tr_t_levrek.png",
+   "rect": [
+    765,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:tr_t_levrek"
+  },
+  "icon_tr_t_sinarit": {
+   "file": "assets/ui/icon_tr_t_sinarit.png",
+   "rect": [
+    782,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:tr_t_sinarit"
+  },
+  "icon_tr_t_yelken": {
+   "file": "assets/ui/icon_tr_t_yelken.png",
+   "rect": [
+    799,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:tr_t_yelken"
+  },
+  "icon_tr_t_zargana": {
+   "file": "assets/ui/icon_tr_t_zargana.png",
+   "rect": [
+    816,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:tr_t_zargana"
+  },
+  "icon_trade": {
+   "file": "assets/ui/icon_trade.png",
+   "rect": [
+    833,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:trade"
+  },
+  "icon_transfer": {
+   "file": "assets/ui/icon_transfer.png",
+   "rect": [
+    850,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:transfer"
+  },
+  "icon_trash": {
+   "file": "assets/ui/icon_trash.png",
+   "rect": [
+    867,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:trash"
+  },
+  "icon_trophy": {
+   "file": "assets/ui/icon_trophy.png",
+   "rect": [
+    884,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:trophy"
+  },
+  "icon_trophy_t": {
+   "file": "assets/ui/icon_trophy_t.png",
+   "rect": [
+    901,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:trophy_t"
+  },
+  "icon_upg_hull": {
+   "file": "assets/ui/icon_upg_hull.png",
+   "rect": [
+    918,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:upg_hull"
+  },
+  "icon_upg_motor": {
+   "file": "assets/ui/icon_upg_motor.png",
+   "rect": [
+    935,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:upg_motor"
+  },
+  "icon_upg_navigation": {
+   "file": "assets/ui/icon_upg_navigation.png",
+   "rect": [
+    952,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:upg_navigation"
+  },
+  "icon_upg_storage": {
+   "file": "assets/ui/icon_upg_storage.png",
+   "rect": [
+    969,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:upg_storage"
+  },
+  "icon_wardrobe": {
+   "file": "assets/ui/icon_wardrobe.png",
+   "rect": [
+    986,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:wardrobe"
+  },
+  "icon_wild_badge": {
+   "file": "assets/ui/icon_wild_badge.png",
+   "rect": [
+    1003,
+    59,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:wild_badge"
+  },
+  "icon_wild_book": {
+   "file": "assets/ui/icon_wild_book.png",
+   "rect": [
+    0,
+    76,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:wild_book"
+  },
+  "icon_wind": {
+   "file": "assets/ui/icon_wind.png",
+   "rect": [
+    17,
+    76,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:wind"
+  },
+  "icon_winter": {
+   "file": "assets/ui/icon_winter.png",
+   "rect": [
+    34,
+    76,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:winter"
+  },
+  "icon_yard": {
+   "file": "assets/ui/icon_yard.png",
+   "rect": [
+    51,
+    76,
+    16,
+    16
+   ],
+   "w": 16,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "icon:yard"
+  }
+ }
+}

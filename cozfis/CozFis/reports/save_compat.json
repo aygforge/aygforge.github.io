@@ -1,0 +1,59 @@
+{
+ "lsKeysAfterBoot": [
+  "cozyfishing_backup_v1",
+  "cozyfishing_save_v1"
+ ],
+ "A_to_B": {
+  "made": {
+   "day": 23,
+   "cash": 96565,
+   "boats": [
+    "coastal_skiff"
+   ],
+   "rev": 1,
+   "bag": "[{\"f\":\"levrek\",\"q\":2},{\"f\":\"kefal\",\"q\":5}]",
+   "name": "Eski Kayıt"
+  },
+  "loaded": {
+   "hasSave": true,
+   "err": null,
+   "day": 23,
+   "cash": 96565,
+   "boats": [
+    "coastal_skiff"
+   ],
+   "bag": "[{\"f\":\"levrek\",\"q\":2},{\"f\":\"kefal\",\"q\":5}]",
+   "name": "Eski Kayıt",
+   "keys": [
+    "cozyfishing",
+    "saves",
+    "cozyfishing_save_v1",
+    "cozyfishing_backup_v1",
+    "cozyfishing_prev_v1",
+    "cozyfishing_settings_v1"
+   ],
+   "schema": 5,
+   "format": "cozyfishing-save",
+   "assets": true
+  },
+  "sameState": true,
+  "storageUntouchedOnBoot": true,
+  "errors": []
+ },
+ "B_to_A": {
+  "cont": {
+   "scene": "Town",
+   "day": 24,
+   "cash": 96676
+  },
+  "back": {
+   "hasSave": true,
+   "err": null,
+   "day": 24,
+   "cash": 96676
+  },
+  "ok": true,
+  "errors": []
+ },
+ "pass": true
+}

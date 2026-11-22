@@ -1,0 +1,263 @@
+'use strict';
+/* ---- 01_core.js ---- */
+/* =====================================================================
+   COZFIS — Tam Sürüm (tek dosya, çevrimdışı)
+   01_core.js : Config / FishDB bağlantısı, yardımcılar, RNG, içerik verisi, GameState
+   ===================================================================== */
+const DB = window.FISHDB_DATA, CFG = window.GAMECONFIG_DATA, EXP = window.EXPANSION_DATA;
+Object.assign(CFG.npc_dialogues, EXP.npc_dialogues);
+const LW = CFG.platform.logical_resolution[0], LH = CFG.platform.logical_resolution[1];
+const SCHEMA = 5;
+
+/* ---------- Config: veri kaynaklarından türetilmiş tablolar ---------- */
+const FISH_LIST = DB.fish;
+const FISH = Object.fromEntries(DB.fish.map(f => [f.id, f]));
+const SPOT_LIST = DB.spots;
+const SPOTS = Object.fromEntries(DB.spots.map(s => [s.id, s]));
+const REGIONS = DB.regions.map((r, i) => Object.assign({ idx: i }, CFG.regions.find(c => c.id === r.id), r));
+const REGION = Object.fromEntries(REGIONS.map(r => [r.id, r]));
+const RODS = CFG.shop.rods, LINES = CFG.shop.lines, REELS = CFG.shop.reels, HOOKS = CFG.shop.hooks, BAITS = CFG.shop.bait;
+const GEAR = { rod: RODS, line: LINES, reel: REELS, hook: HOOKS };
+const GEAR_TR = { get rod() { return _t('core.olta'); }, set rod(v) { _sv(this, "rod", v); }, get line() { return _t('core.misina'); }, set line(v) { _sv(this, "line", v); }, get reel() { return _t('core.makara'); }, set reel(v) { _sv(this, "reel", v); }, get hook() { return _t('core.igne'); }, set hook(v) { _sv(this, "hook", v); } };
+const BOATS = CFG.boats, BOAT = Object.fromEntries(BOATS.map(b => [b.id, b]));
+const AUTOS = CFG.automation, AUTO = Object.fromEntries(AUTOS.map(a => [a.id, a]));
+const CUSTOMERS = CFG.customers, CUST = Object.fromEntries(CUSTOMERS.map(c => [c.id, c]));
+const EVENTS = CFG.events, EVENT = Object.fromEntries(EVENTS.map(e => [e.id, e]));
+const ACHS = CFG.achievements.concat(EXP.achievements);
+const FESTIVALS = EXP.festivals, RIVALS = EXP.rivals, SNACKS = EXP.snacks, COMP = EXP.competition;
+const FEST = Object.fromEntries(FESTIVALS.map(f => [f.id, f]));
+/* yerelleştirme: JSON varlıklarının görünen alanları id bazında seçili dile bağlanır (id'ler ve sayısal veriler değişmez) */
+I18N.bindData({ DB, CFG, EXP, REGIONS, ACHS });
+/* species42 koşul metni I18N.bindData içinde dile göre üretilir */
+const RC = CFG.reeling, CORE = CFG.core, INVC = CFG.inventory, K = DB.constants;
+const STACK = INVC.fish_stack_per_slot;
+const SEASONS = ['spring', 'summer', 'autumn', 'winter'];
+const SEASON_TR = { get spring() { return _t('core.ilkbahar'); }, set spring(v) { _sv(this, "spring", v); }, get summer() { return _t('core.yaz'); }, set summer(v) { _sv(this, "summer", v); }, get autumn() { return _t('core.sonbahar'); }, set autumn(v) { _sv(this, "autumn", v); }, get winter() { return _t('core.kis'); }, set winter(v) { _sv(this, "winter", v); } };
+const WEATHER_TR = { get sunny() { return _t('core.gunesli'); }, set sunny(v) { _sv(this, "sunny", v); }, get cloudy() { return _t('core.bulutlu'); }, set cloudy(v) { _sv(this, "cloudy", v); }, get rain() { return _t('core.yagmurlu'); }, set rain(v) { _sv(this, "rain", v); }, get fog() { return _t('core.sisli'); }, set fog(v) { _sv(this, "fog", v); }, get wind() { return _t('core.ruzgarli'); }, set wind(v) { _sv(this, "wind", v); } };
+const BAND_TR = { get near() { return _t('core.yakin'); }, set near(v) { _sv(this, "near", v); }, get mid() { return _t('core.orta'); }, set mid(v) { _sv(this, "mid", v); }, get far() { return _t('core.uzak'); }, set far(v) { _sv(this, "far", v); } };
+const BAIT = Object.fromEntries(BAITS.map(b => [b.id, b]));
+const PAID_BAITS = BAITS.filter(b => b.id !== 'basic').map(b => b.id);
+const BAIT_HINT = { get basic() { return _t('core.notr_sinirsiz_otomatikte_kullanilamaz'); }, set basic(v) { _sv(this, "basic", v); }, get worm() { return _t('core.kucuk_kiyi_turleri'); }, set worm(v) { _sv(this, "worm", v); }, get shrimp() { return _t('core.cipura_levrek_ve_dip_turleri'); }, set shrimp(v) { _sv(this, "shrimp", v); }, get fish() { return _t('core.yirtici_turler'); }, set fish(v) { _sv(this, "fish", v); }, get lure() { return _t('core.akinti_acik_su_turleri'); }, set lure(v) { _sv(this, "lure", v); }, get deep() { return _t('core.guclu_derin_turler'); }, set deep(v) { _sv(this, "deep", v); } };
+const ROMAN = { I: 1, II: 2, III: 3, IV: 4, V: 5 };
+const ROMAN_S = ['', 'I', 'II', 'III', 'IV', 'V'];
+
+/* Bölge erişim gereksinimleri — GameConfig.regions[].requirements metninin sayısal karşılığı (GDD 4.1) */
+const REGION_REQ = {
+  sakin_liman: { tier: 0, motor: 0, nav: 0 },
+  yesil_koy: { tier: 1, motor: 1, nav: 0 },
+  kayalik_adalar: { tier: 1, motor: 2, nav: 0 },
+  serin_akintilar: { tier: 2, motor: 2, nav: 0 },
+  sisli_kuzey: { tier: 2, motor: 3, nav: 1 },
+  gunes_adalari: { tier: 3, motor: 4, nav: 1 },
+  derin_mavi: { tier: 4, motor: 5, nav: 2 }
+};
+/* Teknelerin hazır navigasyon seviyesi (GameConfig yükseltme ağacından çıkarım: navigasyon_I olmayan tekneler I ile gelir) */
+const BOAT_NAV0 = { coastal_skiff: 0, motorboat: 0, cabin: 1, offshore: 1 };
+const UPG_TR = { get motor() { return _t('core.motor'); }, set motor(v) { _sv(this, "motor", v); }, get storage() { return _t('core.depo'); }, set storage(v) { _sv(this, "storage", v); }, get navigation() { return _t('core.navigasyon'); }, set navigation(v) { _sv(this, "navigation", v); }, get hull() { return _t('core.govde'); }, set hull(v) { _sv(this, "hull", v); } };
+
+function parseUpg(key) {
+  const i = key.indexOf('_'); const type = key.slice(0, i), v = key.slice(i + 1);
+  return { type, val: ROMAN[v] != null ? ROMAN[v] : parseInt(v, 10) };
+}
+const BOAT_INFO = {};
+BOATS.forEach((b, i) => {
+  const ups = Object.entries(b.upgrades).map(([key, price]) => Object.assign({ key, price }, parseUpg(key)));
+  ups.sort((a, c) => a.type < c.type ? -1 : a.type > c.type ? 1 : a.val - c.val);
+  ups.forEach(u => { const prev = ups.filter(x => x.type === u.type && x.val < u.val).sort((a, c) => c.val - a.val)[0]; u.req = prev ? prev.key : null; });
+  BOAT_INFO[b.id] = { tier: i + 1, nav0: BOAT_NAV0[b.id] || 0, ups };
+});
+
+/* İklim ağırlıkları (bölgesel hava, deterministik günlük) */
+const CLIMATE = {
+  sakin_liman: { sunny: 40, cloudy: 25, rain: 15, fog: 8, wind: 12 },
+  yesil_koy: { sunny: 45, cloudy: 24, rain: 15, fog: 6, wind: 10 },
+  kayalik_adalar: { sunny: 36, cloudy: 24, rain: 12, fog: 8, wind: 20 },
+  serin_akintilar: { sunny: 24, cloudy: 26, rain: 14, fog: 6, wind: 30 },
+  sisli_kuzey: { sunny: 12, cloudy: 25, rain: 18, fog: 35, wind: 10 },
+  gunes_adalari: { sunny: 56, cloudy: 18, rain: 16, fog: 2, wind: 8 },
+  derin_mavi: { sunny: 36, cloudy: 24, rain: 12, fog: 10, wind: 18 }
+};
+const SEASON_WX = {
+  spring: { rain: 1.15 }, summer: { sunny: 1.4, rain: 0.6, fog: 0.7 },
+  autumn: { wind: 1.3, cloudy: 1.2 }, winter: { rain: 1.35, fog: 1.3, sunny: 0.6, wind: 1.15 }
+};
+/* Olumsuz hava eşlemesi (GDD 4.2: olumlu ×1,10 / olumsuz ×0,90) */
+const WX_BAD = { sunny: 'rain', cloudy: 'sunny', rain: 'sunny', fog: 'wind', wind: 'fog' };
+
+/* ---------- Özgün kozmetik içerik (GDD 12.3, 13.2) ---------- */
+const SKINS = [['#f6d7c0', '#e3b89d'], ['#eec4a2', '#d6a27f'], ['#d9a37c', '#bd845e'], ['#b97f58', '#9a6342'], ['#8d5a3b', '#71462d'], ['#5e3b27', '#4a2d1d']];
+const HAIR_COLORS = [_LA(['#2a2226', '#45383d', _L(() => _t('core.siyah'))]), _LA(['#4a2f22', '#6b4632', _L(() => _t('core.koyu_kahve'))]), _LA(['#7a4a2a', '#9c6538', _L(() => _t('core.kestane'))]), _LA(['#b0502a', '#d0703e', _L(() => _t('core.bakir'))]), _LA(['#d8b45a', '#f0d27c', _L(() => _t('core.sari'))]), _LA(['#9a7a52', '#b89a6a', _L(() => _t('core.kumral'))]), _LA(['#9a9aa2', '#c4c4ca', _L(() => _t('core.gri'))]), _LA(['#2c3e6e', '#44609a', _L(() => _t('core.lacivert'))])];
+const HAIR_STYLES = _LA([_L(() => _t('core.kisa')), _L(() => _t('core.dikenli')), _L(() => _t('core.yana_tarali')), _L(() => _t('core.uzun')), _L(() => _t('core.at_kuyrugu')), _L(() => _t('core.topuz')), _L(() => _t('core.kivircik')), _L(() => _t('core.kut'))]);
+const BODY_TYPES = _LA([_L(() => _t('core.ince')), _L(() => _t('core.genis'))]);
+const OUTFITS = [
+  { id: 'tisort', get name() { return _t('core.mavi_tisort'); }, set name(v) { _sv(this, "name", v); }, start: true, shirt: '#4f86c6', shirt2: '#3a6aa2', pants: '#3b4656', shoes: '#5a3b2a', pat: 'plain' },
+  { id: 'ekose', get name() { return _t('core.kirmizi_ekose_gomlek'); }, set name(v) { _sv(this, "name", v); }, start: true, shirt: '#c4473f', shirt2: '#8e2f2b', pants: '#4d5a3b', shoes: '#3a2a22', pat: 'plaid' },
+  { id: 'yelek', get name() { return _t('core.balikci_yelegi'); }, set name(v) { _sv(this, "name", v); }, start: true, shirt: '#e8dcc0', shirt2: '#5f7a4a', pants: '#5a4a3a', shoes: '#3a2a22', pat: 'vest' },
+  { id: 'kazak', get name() { return _t('core.bej_kazak'); }, set name(v) { _sv(this, "name", v); }, start: true, shirt: '#d8c39a', shirt2: '#b49f76', pants: '#3e4a5e', shoes: '#4a3428', pat: 'knit' },
+  { id: 'yagmurluk', get name() { return _t('core.yagmurluk'); }, set name(v) { _sv(this, "name", v); }, price: 650, shirt: '#f2c230', shirt2: '#c8961c', pants: '#3b4656', shoes: '#2a2f3a', pat: 'rain' },
+  { id: 'denizci', get name() { return _t('core.denizci_montu'); }, set name(v) { _sv(this, "name", v); }, price: 1200, shirt: '#2a3a66', shirt2: '#1c2848', pants: '#e8e4da', shoes: '#2a2226', pat: 'buttons' },
+  { id: 'kuzey', get name() { return _t('core.kuzey_kazagi'); }, set name(v) { _sv(this, "name", v); }, unlock: 'visit:sisli_kuzey', get unlockTr() { return _t('core.sisli_kuzey_kesfi'); }, set unlockTr(v) { _sv(this, "unlockTr", v); }, shirt: '#9a2f34', shirt2: '#f0eadc', pants: '#3a3a44', shoes: '#3a2a22', pat: 'nordic' },
+  { id: 'tropik', get name() { return _t('core.tropik_gomlek'); }, set name(v) { _sv(this, "name", v); }, unlock: 'visit:gunes_adalari', get unlockTr() { return _t('core.gunes_adalari_kesfi'); }, set unlockTr(v) { _sv(this, "unlockTr", v); }, shirt: '#2fa39a', shirt2: '#f2d04a', pants: '#e0d2b0', shoes: '#8a5a3a', pat: 'flower' },
+  { id: 'cizgili', get name() { return _t('core.cizgili_denizci_tisortu'); }, set name(v) { _sv(this, "name", v); }, price: 450, shirt: '#f4f0e4', shirt2: '#2a4a8a', pants: '#3b4656', shoes: '#2a2226', pat: 'stripes' },
+  { id: 'tulum', get name() { return _t('core.kot_tulum'); }, set name(v) { _sv(this, "name", v); }, price: 800, shirt: '#e8dcc0', shirt2: '#c8b898', pants: '#3a5a8a', shoes: '#5a3b2a', pat: 'overalls', apron: '#3a5a8a' },
+  { id: 'keten', get name() { return _t('core.keten_gomlek'); }, set name(v) { _sv(this, "name", v); }, price: 950, shirt: '#e8e0c8', shirt2: '#c8bca0', pants: '#8a7a5a', shoes: '#6a4a32', pat: 'buttons' },
+  { id: 'festival_tisort', get name() { return _t('core.festival_tisortu'); }, set name(v) { _sv(this, "name", v); }, fest: 'yaz_festivali', shirt: '#f28a3a', shirt2: '#f2d030', pants: '#3a4a6a', shoes: '#2a2226', pat: 'logo' },
+  { id: 'orgu_hirka', get name() { return _t('core.orgu_hirka'); }, set name(v) { _sv(this, "name", v); }, fest: 'hasat_senligi', shirt: '#9a5a3a', shirt2: '#c8844a', pants: '#4a3a3a', shoes: '#3a2a22', pat: 'knit' }
+];
+const HATS = [
+  { id: 'none', get name() { return _t('core.sapkasiz'); }, set name(v) { _sv(this, "name", v); }, start: true },
+  { id: 'klasik', get name() { return _t('core.klasik_sapka'); }, set name(v) { _sv(this, "name", v); }, start: true },
+  { id: 'bere', get name() { return _t('core.yun_bere'); }, set name(v) { _sv(this, "name", v); }, start: true },
+  { id: 'hasir', get name() { return _t('core.hasir_sapka'); }, set name(v) { _sv(this, "name", v); }, price: 300 },
+  { id: 'usta', get name() { return _t('core.usta_balikci_sapkasi'); }, set name(v) { _sv(this, "name", v); }, unlock: 'ach:species42', get unlockTr() { return _t('core.tum_turleri_kesfet'); }, set unlockTr(v) { _sv(this, "unlockTr", v); } },
+  { id: 'kaptan', get name() { return _t('core.kaptan_sapkasi'); }, set name(v) { _sv(this, "name", v); }, unlock: 'ach:all_boats', get unlockTr() { return _t('core.4_tekneye_sahip_ol'); }, set unlockTr(v) { _sv(this, "unlockTr", v); } },
+  { id: 'kasket', get name() { return _t('core.kasket'); }, set name(v) { _sv(this, "name", v); }, price: 250 },
+  { id: 'denizci_bere', get name() { return _t('core.denizci_beresi'); }, set name(v) { _sv(this, "name", v); }, price: 400 },
+  { id: 'cicek_taci', get name() { return _t('core.cicek_taci'); }, set name(v) { _sv(this, "name", v); }, fest: 'bahar_senligi' },
+  { id: 'fener_beresi', get name() { return _t('core.fenerli_bere'); }, set name(v) { _sv(this, "name", v); }, fest: 'fener_senligi' }
+];
+const BOAT_COLORS = [
+  { id: 'sea_green', get name() { return _t('core.deniz_yesili'); }, set name(v) { _sv(this, "name", v); }, price: 0, c: ['#3f9a86', '#2c7466', '#6cc2ac'] },
+  { id: 'navy', get name() { return _t('core.lacivert'); }, set name(v) { _sv(this, "name", v); }, price: 750, c: ['#2e4a7a', '#1f3358', '#4c6ea6'] },
+  { id: 'coral', get name() { return _t('core.mercan_kirmizisi'); }, set name(v) { _sv(this, "name", v); }, price: 750, c: ['#d45a4a', '#a33f34', '#ec8a76'] },
+  { id: 'sand', get name() { return _t('core.kum_sarisi'); }, set name(v) { _sv(this, "name", v); }, unlock: 'species30', get unlockTr() { return _t('core.30_tur_kesfi'); }, set unlockTr(v) { _sv(this, "unlockTr", v); }, c: ['#e2c27a', '#b89650', '#f2dc9e'] }
+];
+const DECOR_SLOTS = { get wall() { return _t('core.duvar'); }, set wall(v) { _sv(this, "wall", v); }, get shelf() { return _t('core.raf'); }, set shelf(v) { _sv(this, "shelf", v); }, get table() { return _t('core.masa'); }, set table(v) { _sv(this, "table", v); }, get window() { return _t('core.pencere_kenari'); }, set window(v) { _sv(this, "window", v); }, get board() { return _t('core.koleksiyon_panosu'); }, set board(v) { _sv(this, "board", v); } };
+const DECOR = [
+  { id: 'tablo_deniz', get name() { return _t('core.deniz_manzarasi_tablosu'); }, set name(v) { _sv(this, "name", v); }, slot: 'wall', price: 300 },
+  { id: 'cerceve_balik', get name() { return _t('core.cerceveli_ilk_balik'); }, set name(v) { _sv(this, "name", v); }, slot: 'wall', ach: 'first_catch' },
+  { id: 'altin_olta', get name() { return _t('core.altin_olta_plaketi'); }, set name(v) { _sv(this, "name", v); }, slot: 'wall', ach: 'thousand_manual' },
+  { id: 'dumen', get name() { return _t('core.eski_dumen'); }, set name(v) { _sv(this, "name", v); }, slot: 'wall', ach: 'all_boats' },
+  { id: 'takvim', get name() { return _t('core.dort_mevsim_takvimi'); }, set name(v) { _sv(this, "name", v); }, slot: 'wall', ach: 'all_seasons' },
+  { id: 'fener_maket', get name() { return _t('core.deniz_feneri_maketi'); }, set name(v) { _sv(this, "name", v); }, slot: 'shelf', price: 450 },
+  { id: 'sise_gemi', get name() { return _t('core.sisede_gemi'); }, set name(v) { _sv(this, "name", v); }, slot: 'shelf', ach: 'first_boat' },
+  { id: 'kitaplar', get name() { return _t('core.balik_kitaplari'); }, set name(v) { _sv(this, "name", v); }, slot: 'shelf', ach: 'species20' },
+  { id: 'cicek', get name() { return _t('core.kir_cicekleri'); }, set name(v) { _sv(this, "name", v); }, slot: 'table', price: 120 },
+  { id: 'cay_seti', get name() { return _t('core.cay_seti'); }, set name(v) { _sv(this, "name", v); }, slot: 'table', price: 200 },
+  { id: 'pusula', get name() { return _t('core.pirinc_pusula'); }, set name(v) { _sv(this, "name", v); }, slot: 'table', ach: 'first_trip' },
+  { id: 'saksi', get name() { return _t('core.saksida_feslegen'); }, set name(v) { _sv(this, "name", v); }, slot: 'window', price: 150 },
+  { id: 'kabuklar', get name() { return _t('core.deniz_kabuklari'); }, set name(v) { _sv(this, "name", v); }, slot: 'window', ach: 'visit3' },
+  { id: 'mercan_parca', get name() { return _t('core.cam_samandira'); }, set name(v) { _sv(this, "name", v); }, slot: 'window', ach: 'visit7' },
+  { id: 'rekor_pano', get name() { return _t('core.rekor_panosu'); }, set name(v) { _sv(this, "name", v); }, slot: 'board', ach: 'records10' },
+  { id: 'harita_pano', get name() { return _t('core.av_noktalari_haritasi'); }, set name(v) { _sv(this, "name", v); }, slot: 'board', ach: 'spots10' },
+  { id: 'kartpostal', get name() { return _t('core.musteri_kartpostallari'); }, set name(v) { _sv(this, "name", v); }, slot: 'board', ach: 'buyers5' },
+  { id: 'ahsap_saat', get name() { return _t('core.ahsap_duvar_saati'); }, set name(v) { _sv(this, "name", v); }, slot: 'wall', price: 350 },
+  { id: 'gemi_maketi', get name() { return _t('core.yelkenli_maketi'); }, set name(v) { _sv(this, "name", v); }, slot: 'shelf', price: 600 },
+  { id: 'gaz_lambasi', get name() { return _t('core.gaz_lambasi'); }, set name(v) { _sv(this, "name", v); }, slot: 'table', price: 260 },
+  { id: 'ruzgar_cani', get name() { return _t('core.ruzgar_cani'); }, set name(v) { _sv(this, "name", v); }, slot: 'window', price: 180 },
+  { id: 'balik_posteri', get name() { return _t('core.balik_turleri_posteri'); }, set name(v) { _sv(this, "name", v); }, slot: 'board', price: 220 },
+  { id: 'sampiyon_flama', get name() { return _t('core.sampiyonluk_flamasi'); }, set name(v) { _sv(this, "name", v); }, slot: 'wall', ach: 'gold_trophy' }
+];
+const DECOR_BY = Object.fromEntries(DECOR.map(d => [d.id, d]));
+/* Başarım → kozmetik ödül eşlemesi */
+const ACH_REWARD = {};
+DECOR.forEach(d => { if (d.ach) ACH_REWARD[d.ach] = { type: 'decor', id: d.id, get name() { return d.name; } }; });
+ACH_REWARD.species42 = { type: 'hat', id: 'usta', get name() { return _t('core.usta_balikci_sapkasi'); }, set name(v) { _sv(this, "name", v); } };
+ACH_REWARD.all_boats2 = null;
+
+/* Deniz haritasında bölge konumları (640×360) */
+const MAP_POS = {
+  sakin_liman: [62, 262], yesil_koy: [112, 168], kayalik_adalar: [196, 290], serin_akintilar: [228, 112],
+  sisli_kuzey: [300, 58], gunes_adalari: [318, 232], derin_mavi: [376, 158]
+};
+
+/* NPC tanımları */
+const NPCS = {
+  zeynep: { name: 'Zeynep', get role() { return _t('core.olta_dukkani'); }, set role(v) { _sv(this, "role", v); }, look: { skin: 1, hair: 4, hairColor: 2, body: 0, outfit: { shirt: '#4a8a6a', shirt2: '#2f6a4e', pants: '#3a3a4a', shoes: '#4a3428', pat: 'apron', apron: '#e8d8b0' }, hat: 'none', glasses: false } },
+  nihat: { name: 'Nihat', get role() { return _t('core.balik_hali'); }, set role(v) { _sv(this, "role", v); }, look: { skin: 2, hair: 0, hairColor: 6, body: 1, outfit: { shirt: '#6a8aa8', shirt2: '#4a6a88', pants: '#2f3a4a', shoes: '#2a2226', pat: 'apron', apron: '#f0f0ea' }, hat: 'flat', mustache: true } },
+  bora: { name: 'Bora', get role() { return _t('core.tekne_atolyesi'); }, set role(v) { _sv(this, "role", v); }, look: { skin: 3, hair: 1, hairColor: 0, body: 1, outfit: { shirt: '#c8643a', shirt2: '#9a4a2a', pants: '#3a5a8a', shoes: '#3a2a22', pat: 'overalls', apron: '#3a5a8a' }, hat: 'bandana', beard: true } },
+  bahar: { name: 'Bahar', get role() { return _t('core.bahar_lokantasi'); }, set role(v) { _sv(this, "role", v); }, look: { skin: 0, hair: 5, hairColor: 3, body: 0, outfit: { shirt: '#f0eadc', shirt2: '#d8cfb8', pants: '#5a3a4a', shoes: '#3a2a22', pat: 'apron', apron: '#c8423a' }, hat: 'none', scarf: '#c8423a' } },
+  efe: { name: 'Efe', get role() { return _t('core.deneyimli_balikci'); }, set role(v) { _sv(this, "role", v); }, look: { skin: 2, hair: 0, hairColor: 6, body: 0, outfit: { shirt: '#3a4e6a', shirt2: '#26364e', pants: '#4a4a3a', shoes: '#2a2226', pat: 'buttons' }, hat: 'klasik', beard: true, beardColor: '#e8e8e8' } },
+  fatma: { get name() { return _t('core.fatma_teyze'); }, set name(v) { _sv(this, "name", v); }, get role() { return _t('core.firin'); }, set role(v) { _sv(this, "role", v); }, look: { skin: 1, hair: 5, hairColor: 6, body: 1, outfit: { shirt: '#c86a5a', shirt2: '#a84a3a', pants: '#4a3a4a', shoes: '#3a2a22', pat: 'apron', apron: '#f4f0e4' }, hat: 'none', scarf: '#e8b830' } },
+  selin: { name: 'Selin', get role() { return _t('core.butik'); }, set role(v) { _sv(this, "role", v); }, look: { skin: 0, hair: 7, hairColor: 0, body: 0, outfit: { shirt: '#c85a9a', shirt2: '#a83a7a', pants: '#2a2a3a', shoes: '#1a1a22', pat: 'plain' }, hat: 'none' } },
+  kerem: { name: 'Kerem', get role() { return _t('core.ev_esyalari'); }, set role(v) { _sv(this, "role", v); }, look: { skin: 2, hair: 2, hairColor: 2, body: 1, outfit: { shirt: '#6a8a4a', shirt2: '#4a6a32', pants: '#4a3a2a', shoes: '#3a2a22', pat: 'apron', apron: '#a8743e' }, hat: 'none', mustache: true } },
+  hasan: { get name() { return _t('core.muhtar_hasan'); }, set name(v) { _sv(this, "name", v); }, get role() { return _t('core.senlik_meydani'); }, set role(v) { _sv(this, "role", v); }, look: { skin: 3, hair: 0, hairColor: 6, body: 1, outfit: { shirt: '#4a3a5a', shirt2: '#2e2440', pants: '#2a2a3a', shoes: '#1a1a22', pat: 'buttons' }, hat: 'flat', mustache: true } },
+  halil: { get name() { return _t('core.halil_usta'); }, set name(v) { _sv(this, "name", v); }, get role() { return _t('core.cay_bahcesi'); }, set role(v) { _sv(this, "role", v); }, look: { skin: 4, hair: 0, hairColor: 0, body: 1, outfit: { shirt: '#f0eadc', shirt2: '#d8cfb8', pants: '#3a3a3a', shoes: '#2a2226', pat: 'vest' }, hat: 'none', mustache: true } },
+  ali: { get name() { return _t('core.ali_dayi'); }, set name(v) { _sv(this, "name", v); }, get role() { return _t('core.iskele_balikcisi'); }, set role(v) { _sv(this, "role", v); }, look: { skin: 3, hair: 0, hairColor: 6, body: 0, outfit: { shirt: '#5a6a4a', shirt2: '#3e4a32', pants: '#3a3a44', shoes: '#2a2226', pat: 'vest' }, hat: 'klasik', beard: true, beardColor: '#c8c8c8' } },
+  mert: { name: 'Mert', get role() { return _t('core.iskele_balikcisi'); }, set role(v) { _sv(this, "role", v); }, look: { skin: 1, hair: 1, hairColor: 1, body: 0, outfit: { shirt: '#e86a3a', shirt2: '#c84a2a', pants: '#3a4a6a', shoes: '#2a2226', pat: 'plain' }, hat: 'none' } },
+  elif: { name: 'Elif', get role() { return _t('core.iskele_balikcisi'); }, set role(v) { _sv(this, "role", v); }, look: { skin: 2, hair: 4, hairColor: 3, body: 0, outfit: { shirt: '#5ab8c8', shirt2: '#3a98a8', pants: '#4a3a5a', shoes: '#2a2226', pat: 'plain' }, hat: 'hasir' } }
+};
+
+/* ---------- yardımcılar ---------- */
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const lerp = (a, b, t) => a + (b - a) * t;
+const roundHalfUp = x => Math.floor(x + 0.5);
+const round2 = x => Math.round(x * 100) / 100;
+const fmt = n => { const s = String(Math.abs(Math.round(n))).replace(/\B(?=(\d{3})+(?!\d))/g, I18N.num.group); return n < 0 ? '-' + s : s; };
+const fmtKg = n => (n < 10 ? n.toFixed(2) : n.toFixed(1)).replace('.', I18N.num.dec);
+const upTR = s => I18N.upper(s);
+const pct = x => I18N.pct(Math.round(x * 100));
+const deepClone = o => JSON.parse(JSON.stringify(o));
+const sum = a => a.reduce((x, y) => x + y, 0);
+
+/* ---------- RNG ---------- */
+function hash32() {
+  let h = 0x811c9dc5 >>> 0;
+  for (let k = 0; k < arguments.length; k++) {
+    const s = String(arguments[k]);
+    for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193); }
+    h ^= 0x7f; h = Math.imul(h, 0x01000193);
+  }
+  h ^= h >>> 16; h = Math.imul(h, 0x85ebca6b); h ^= h >>> 13; h = Math.imul(h, 0xc2b2ae35); h ^= h >>> 16;
+  return h >>> 0;
+}
+function mulberry(seed) {
+  let a = seed | 0;
+  return function () { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+/* Kalıcı oyun RNG akışı: yalnızca tanımlı oyun işlemlerinde tüketilir, durumu kayda yazılır */
+function rand() {
+  let a = S.rng | 0; a = (a + 0x6D2B79F5) | 0; S.rng = a;
+  let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+}
+const hrand = (...a) => hash32(S.seed, ...a) / 4294967296;
+function wpick(list, wf, r) { const tot = sum(list.map(wf)); let x = r * tot; for (const it of list) { x -= wf(it); if (x < 0) return it; } return list[list.length - 1]; }
+
+/* ---------- GameState ---------- */
+let S = null;
+function newToday(s) {
+  return { day: s.day, manualCatches: 0, autoCatches: 0, casts: 0, marketIncome: 0, orderIncome: 0, teaIncome: 0, prizeIncome: 0, fleetFish: 0, guildIncome: 0, expenses: 0, expBy: {}, newSpecies: [], records: [], achievements: [], startCash: s.cash, released: 0 };
+}
+function newState(look) {
+  const seed = (Math.random() * 4294967296) >>> 0;
+  const s = {
+    schemaVersion: SCHEMA, saveId: 'cf' + Date.now().toString(36) + (seed % 46656).toString(36), revision: 0, savedAt: 0,
+    seed, rng: (seed ^ 0x5bd1e995) | 0, txSeq: 0, lastTx: '',
+    day: 1, energy: CORE.daily_energy, cash: CORE.start_cash,
+    scene: 'Town', regionId: 'sakin_liman', spotId: 'liman_iskele', townX: 330,
+    player: Object.assign({ name: _t('core.balikci'), body: 0, skin: 1, hair: 0, hairColor: 1, outfit: 'tisort', hat: 'klasik' }, look || {}),
+    wardrobe: { outfits: OUTFITS.filter(o => o.start).map(o => o.id), hats: HATS.filter(h => h.start).map(h => h.id) },
+    gear: { owned: { rod: ['old_bamboo'], line: ['thin'], reel: ['basic'], hook: ['standard'] }, rod: 'old_bamboo', line: 'thin', reel: 'basic', hook: 'standard', bait: 'basic' },
+    baitStock: { worm: 0, shrimp: 0, fish: 0, lure: 0, deep: 0 },
+    bagLevel: 0, chestLevel: 0, bag: [], chest: [], favorites: {},
+    boats: { owned: [], active: null, byId: {} },
+    auto: { devices: {}, globals: {}, dailyCaught: 0, dailyDay: 1, total: 0, attempts: 0 },
+    orders: [], orderSeq: 1, customers: {},
+    ency: {}, ach: {}, npc: {},
+    world: { unlocked: { sakin_liman: true }, weather: {}, eventId: null, eventHist: [], seasonsSeen: {} },
+    stats: {
+      manualCasts: 0, manualCatches: 0, autoCatches: 0, released: 0, lineBreaks: 0, escapes: 0, missed: 0, noBite: 0, cancels: 0,
+      totalSales: 0, marketSales: 0, orderSales: 0, fishSoldMarket: 0, ordersDelivered: 0, buyers: {}, records: 0,
+      daysCompleted: 0, trips: 0, fuelSpent: 0, baitUsed: 0, regionsVisited: {}, spotsVisited: {}, gearBought: 0, spent: 0,
+      biggestCm: 0, biggestId: null, power4: 0, power5: 0, autoAttempts: 0, autoFails: 0, teaSales: 0, prizes: 0, comps: 0, festSeasons: {}, snacks: 0, teaSold: 0
+    },
+    today: null,
+    home: { decor: { wall: null, shelf: null, table: null, window: null, board: null }, owned: [] },
+    cosmetics: { boatColors: ['sea_green'] },
+    tutorial: { step: 0, skipped: false },
+    pendingCast: null, trophies: [], fest: {}, comp: null, buff: null, tea: { day: 0, n: 0 },
+    journal: { fav: {}, log: {} }, plan: { goals: [], keep: true }, mastery: {}, rivals: {}, rivalLog: {}, compHist: [],
+    records: [], recWall: [], recSeq: 0, gearSets: [{ name: _t('core.kiyi_avi') }, { name: _t('core.kayalik_avi') }, { name: _t('core.acik_deniz') }], fin: [],
+    aq: { owned: {}, tanks: {}, decor: ['sand'], seen: {} }, ui: { photoLabel: true },
+    method: 'float', daypart: 'day', trip: null, tripLog: [], tripSeq: 0, lastCast: null, quickCast: true,
+    projects: { pier: { paid: 0, done: 0 }, market: { paid: 0, done: 0 }, lighthouse: { paid: 0, done: 0, fc: [] }, terrace: { paid: 0, done: 0 } },
+    wild: { seen: {}, log: {}, day: 0, n: 0 }, guest: null, guestLog: {},
+    fleet: { cand: { day: 0, ids: [] }, missions: [], log: [], seq: 0, stats: { missions: 0, fish: 0, value: 0, wages: 0, fuel: 0 } },
+    tempo: 'flow', opp: { active: null, seq: 0, per: {}, log: [] }, trophy: { target: null, done: {}, best: {}, miss: {}, enc: 0 },
+    guild: null, stories: {}, storyTrack: [], album: [], shore: { day: 0, runs: 0, dup: 0, items: {}, session: null }, unlocks: {}, v4: { introDay: 0 },
+    flags: {}
+  };
+  s.today = newToday(s);
+  return s;
+}

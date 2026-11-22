@@ -1,0 +1,596 @@
+{
+ "tr/mainmenu": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "MainMenu",
+  "errsA": [],
+  "errsB": []
+ },
+ "tr/creator": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "CharacterCreator",
+  "errsA": [],
+  "errsB": []
+ },
+ "tr/town": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "tr/pier": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "PierFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "tr/fishing": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "PierFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "tr/boat": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "BoatFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "tr/seamap": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "SeaMap",
+  "errsA": [],
+  "errsB": []
+ },
+ "tr/inventory": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "tr/encyclopedia": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "tr/home_decor": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Home",
+  "errsA": [],
+  "errsB": []
+ },
+ "tr/settings": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "en/mainmenu": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "MainMenu",
+  "errsA": [],
+  "errsB": []
+ },
+ "en/creator": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "CharacterCreator",
+  "errsA": [],
+  "errsB": []
+ },
+ "en/town": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "en/pier": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "PierFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "en/fishing": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "PierFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "en/boat": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "BoatFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "en/seamap": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "SeaMap",
+  "errsA": [],
+  "errsB": []
+ },
+ "en/inventory": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "en/encyclopedia": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "en/home_decor": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Home",
+  "errsA": [],
+  "errsB": []
+ },
+ "en/settings": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "es/mainmenu": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "MainMenu",
+  "errsA": [],
+  "errsB": []
+ },
+ "es/creator": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "CharacterCreator",
+  "errsA": [],
+  "errsB": []
+ },
+ "es/town": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "es/pier": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "PierFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "es/fishing": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "PierFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "es/boat": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "BoatFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "es/seamap": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "SeaMap",
+  "errsA": [],
+  "errsB": []
+ },
+ "es/inventory": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "es/encyclopedia": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "es/home_decor": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Home",
+  "errsA": [],
+  "errsB": []
+ },
+ "es/settings": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "de/mainmenu": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "MainMenu",
+  "errsA": [],
+  "errsB": []
+ },
+ "de/creator": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "CharacterCreator",
+  "errsA": [],
+  "errsB": []
+ },
+ "de/town": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "de/pier": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "PierFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "de/fishing": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "PierFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "de/boat": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "BoatFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "de/seamap": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "SeaMap",
+  "errsA": [],
+  "errsB": []
+ },
+ "de/inventory": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "de/encyclopedia": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "de/home_decor": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Home",
+  "errsA": [],
+  "errsB": []
+ },
+ "de/settings": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "fr/mainmenu": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "MainMenu",
+  "errsA": [],
+  "errsB": []
+ },
+ "fr/creator": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "CharacterCreator",
+  "errsA": [],
+  "errsB": []
+ },
+ "fr/town": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "fr/pier": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "PierFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "fr/fishing": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "PierFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "fr/boat": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "BoatFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "fr/seamap": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "SeaMap",
+  "errsA": [],
+  "errsB": []
+ },
+ "fr/inventory": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "fr/encyclopedia": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "fr/home_decor": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Home",
+  "errsA": [],
+  "errsB": []
+ },
+ "fr/settings": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "pt-BR/mainmenu": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "MainMenu",
+  "errsA": [],
+  "errsB": []
+ },
+ "pt-BR/creator": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "CharacterCreator",
+  "errsA": [],
+  "errsB": []
+ },
+ "pt-BR/town": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "pt-BR/pier": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "PierFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "pt-BR/fishing": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "PierFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "pt-BR/boat": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "BoatFishing",
+  "errsA": [],
+  "errsB": []
+ },
+ "pt-BR/seamap": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "SeaMap",
+  "errsA": [],
+  "errsB": []
+ },
+ "pt-BR/inventory": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "pt-BR/encyclopedia": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ },
+ "pt-BR/home_decor": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Home",
+  "errsA": [],
+  "errsB": []
+ },
+ "pt-BR/settings": {
+  "w": 844,
+  "h": 390,
+  "diffPixels": 0,
+  "sizeMatch": true,
+  "scene": "Town",
+  "errsA": [],
+  "errsB": []
+ }
+}

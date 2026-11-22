@@ -1,0 +1,70 @@
+{
+ "atlas": "environment_region_sakin_liman_summer",
+ "image": "environment_region_sakin_liman_summer.png",
+ "size": [
+  1798,
+  617
+ ],
+ "frames": {
+  "env_region_sakin_liman_summer_near": {
+   "file": "assets/environments/regions/env_region_sakin_liman_summer_near.png",
+   "rect": [
+    0,
+    0,
+    1500,
+    254
+   ],
+   "w": 1500,
+   "h": 254,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_region_sakin_liman_summer_mid": {
+   "file": "assets/environments/regions/env_region_sakin_liman_summer_mid.png",
+   "rect": [
+    0,
+    255,
+    1027,
+    214
+   ],
+   "w": 1027,
+   "h": 214,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_region_sakin_liman_summer_far": {
+   "file": "assets/environments/regions/env_region_sakin_liman_summer_far.png",
+   "rect": [
+    1028,
+    255,
+    769,
+    214
+   ],
+   "w": 769,
+   "h": 214,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_region_sakin_liman_summer_bed": {
+   "file": "assets/environments/regions/env_region_sakin_liman_summer_bed.png",
+   "rect": [
+    0,
+    470,
+    1500,
+    146
+   ],
+   "w": 1500,
+   "h": 146,
+   "pivot": [
+    0,
+    0
+   ]
+  }
+ }
+}

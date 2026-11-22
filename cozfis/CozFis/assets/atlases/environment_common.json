@@ -1,0 +1,101 @@
+{
+ "atlas": "environment_common",
+ "image": "environment_common.png",
+ "size": [
+  686,
+  361
+ ],
+ "frames": {
+  "env_seamap": {
+   "file": "assets/environments/env_seamap.png",
+   "rect": [
+    0,
+    0,
+    640,
+    360
+   ],
+   "w": 640,
+   "h": 360,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "seamap"
+  },
+  "env_seamap__en_0": {
+   "file": "assets/l10n/env_seamap__en_0.png",
+   "rect": [
+    641,
+    0,
+    8,
+    8
+   ],
+   "w": 8,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_seamap__es_0": {
+   "file": "assets/l10n/env_seamap__es_0.png",
+   "rect": [
+    650,
+    0,
+    8,
+    8
+   ],
+   "w": 8,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_seamap__de_0": {
+   "file": "assets/l10n/env_seamap__de_0.png",
+   "rect": [
+    659,
+    0,
+    8,
+    8
+   ],
+   "w": 8,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_seamap__fr_0": {
+   "file": "assets/l10n/env_seamap__fr_0.png",
+   "rect": [
+    668,
+    0,
+    8,
+    8
+   ],
+   "w": 8,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_seamap__ptBR_0": {
+   "file": "assets/l10n/env_seamap__ptBR_0.png",
+   "rect": [
+    677,
+    0,
+    8,
+    8
+   ],
+   "w": 8,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  }
+ }
+}

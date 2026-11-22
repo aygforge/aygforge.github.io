@@ -1,0 +1,89 @@
+{
+ "langs": [
+  "tr"
+ ],
+ "ms": 13254,
+ "A_vs_B": {
+  "cache": {
+   "compared": 4476,
+   "identical": 4475,
+   "different": 1,
+   "missingInB": 0,
+   "examples": [
+    "tr|fish:kefal"
+   ],
+   "missing": []
+  },
+  "urls": {
+   "compared": 497,
+   "identical": 496,
+   "different": 1,
+   "missingInB": 0,
+   "examples": [
+    "tr|fish:kefal@2"
+   ],
+   "missing": []
+  },
+  "frames": {
+   "compared": 43,
+   "identical": 43,
+   "different": 0,
+   "missingInB": 0,
+   "examples": [],
+   "missing": []
+  }
+ },
+ "A_vs_C": {
+  "cache": {
+   "compared": 4476,
+   "identical": 4476,
+   "different": 0,
+   "missingInB": 0,
+   "examples": [],
+   "missing": []
+  },
+  "urls": {
+   "compared": 497,
+   "identical": 497,
+   "different": 0,
+   "missingInB": 0,
+   "examples": [],
+   "missing": []
+  },
+  "frames": {
+   "compared": 43,
+   "identical": 43,
+   "different": 0,
+   "missingInB": 0,
+   "examples": [],
+   "missing": []
+  }
+ },
+ "B_assetStats": {
+  "enabled": true,
+  "stats": {
+   "hits": 1384,
+   "fallbacks": 0,
+   "fallbackKeys": [],
+   "pbHits": 389,
+   "loadMs": 33,
+   "bytes": 4216308,
+   "pages": 21,
+   "errors": []
+  },
+  "reason": null
+ },
+ "errors": {
+  "A": [],
+  "B": [],
+  "C": []
+ },
+ "frameErrors": [
+  "tr|EndDay ERR Cannot read properties of undefined (reading 'endCash')"
+ ],
+ "driverMs": {
+  "A": 4593,
+  "B": 2977,
+  "C": 4500
+ }
+}

@@ -1,0 +1,774 @@
+{
+ "chars": {
+  "styles": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "hats": [
+   "klasik",
+   "bere",
+   "hasir",
+   "kaptan",
+   "usta",
+   "kasket",
+   "flat",
+   "denizci_bere",
+   "cicek_taci",
+   "fener_beresi",
+   "bandana"
+  ],
+  "colors": 8
+ },
+ "boats": {
+  "coastal_skiff": {
+   "tuples": 54,
+   "levels": {
+    "motor": [
+     2
+    ],
+    "hull": [
+     1,
+     2
+    ],
+    "nav": [
+     1,
+     2
+    ],
+    "storage": [
+     9,
+     12
+    ]
+   },
+   "base": {
+    "motor": 1,
+    "hull": 0,
+    "nav": 0,
+    "storage": 6
+   }
+  },
+  "motorboat": {
+   "tuples": 36,
+   "levels": {
+    "motor": [
+     3
+    ],
+    "hull": [
+     1,
+     2
+    ],
+    "nav": [
+     1
+    ],
+    "storage": [
+     16,
+     20
+    ]
+   },
+   "base": {
+    "motor": 2,
+    "hull": 0,
+    "nav": 0,
+    "storage": 12
+   }
+  },
+  "cabin": {
+   "tuples": 36,
+   "levels": {
+    "motor": [
+     4
+    ],
+    "hull": [
+     1,
+     2
+    ],
+    "nav": [
+     2
+    ],
+    "storage": [
+     23,
+     28
+    ]
+   },
+   "base": {
+    "motor": 3,
+    "hull": 0,
+    "nav": 1,
+    "storage": 18
+   }
+  },
+  "offshore": {
+   "tuples": 36,
+   "levels": {
+    "motor": [
+     5
+    ],
+    "hull": [
+     1,
+     2
+    ],
+    "nav": [
+     2
+    ],
+    "storage": [
+     30,
+     36
+    ]
+   },
+   "base": {
+    "motor": 4,
+    "hull": 0,
+    "nav": 1,
+    "storage": 24
+   }
+  }
+ },
+ "report": {
+  "dynamic": [],
+  "excluded": [
+   {
+    "scene": "EndDay",
+    "err": "Cannot read properties of undefined (reading 'endCash')"
+   },
+   {
+    "key": "sky:town:cloudy:300",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "cloud:0cloudy",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "cloud:1cloudy",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "cloud:2cloudy",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,4,2,0,\"#4a8a6aapron\",\"none\",null,null,null]:idle1:f",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,5,6,1,\"#c86a5aapron\",\"none\",null,null,\"#e8b830\"]:idle0:f",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[2,0,6,1,\"#6a8aa8apron\",\"flat\",null,true,null]:idle0:f",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[0,7,0,0,\"#c85a9aplain\",\"none\",null,null,null]:idle0:f",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[3,1,0,1,\"#c8643aoveralls\",\"bandana\",true,null,null]:idle1:f",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[2,2,2,1,\"#6a8a4aapron\",\"none\",null,true,null]:idle0:f",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[4,0,0,1,\"#f0eadcvest\",\"none\",null,true,null]:idle0:f",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[2,0,6,0,\"#3a4e6abuttons\",\"klasik\",true,null,null]:idle1:f",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[4,7,0,0,\"#d87a4aplain\",\"none\",null,null,null]:walk0",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,0,1,0,\"tisort\",\"klasik\",null,null,null]:idle1",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "sky:sakin_liman:sunny:214",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "cloud:0sunny",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "cloud:1sunny",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "cloud:2sunny",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "uw:sakin_limansunny146",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,0,1,0,\"tisort\",\"klasik\",null,null,null]:hold",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "wave:sakin_liman:0",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "region:sakin_liman:spring",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "boat:coastal_skiff:{\"color\":\"coral\",\"name\":\"\",\"motor\":1,\"hull\":1,\"nav\":0,\"storage\":6}",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "wave:sakin_liman:1",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "wave:sakin_liman:2",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "wave:sakin_liman:3",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "wave:sakin_liman:4",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "wave:sakin_liman:5",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "wave:sakin_liman:6",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "wave:sakin_liman:7",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,0,1,0,\"tisort\",\"klasik\",null,null,null]:idle0",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "pp:[1,0,1,0,\"tisort\",\"klasik\",null,null,null]",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,0,1,0,\"tisort\",\"klasik\",null,null,null]:walk0",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,0,1,0,\"tisort\",\"klasik\",null,null,null]:walk1",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,0,1,0,\"tisort\",\"klasik\",null,null,null]:walk2",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,0,1,0,\"tisort\",\"klasik\",null,null,null]:walk3",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,0,1,0,\"tisort\",\"klasik\",null,null,null]:catch",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "town:spring:0000",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[4,7,0,0,\"#d87a4aplain\",\"none\",null,null,null]:walk1",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[4,7,0,0,\"#d87a4aplain\",\"none\",null,null,null]:walk2",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[4,7,0,0,\"#d87a4aplain\",\"none\",null,null,null]:walk3",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,4,2,0,\"#4a8a6aapron\",\"none\",null,null,null]:idle0:f",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,5,6,1,\"#c86a5aapron\",\"none\",null,null,\"#e8b830\"]:idle1:f",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[2,0,6,1,\"#6a8aa8apron\",\"flat\",null,true,null]:idle1:f",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[0,7,0,0,\"#c85a9aplain\",\"none\",null,null,null]:idle1:f",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[3,1,0,1,\"#c8643aoveralls\",\"bandana\",true,null,null]:idle0:f",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[2,2,2,1,\"#6a8a4aapron\",\"none\",null,true,null]:idle1:f",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[4,0,0,1,\"#f0eadcvest\",\"none\",null,true,null]:idle1:f",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[2,0,6,0,\"#3a4e6abuttons\",\"klasik\",true,null,null]:idle0:f",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "sky:pier:cloudy:236",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "uw:piercloudy124",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "pier:1spring:0000",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[3,0,6,0,\"#5a6a4avest\",\"klasik\",true,null,null]:hold",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "wave:pier:0",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "wave:pier:1",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "wave:pier:2",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "wave:pier:3",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "wave:pier:4",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "wave:pier:5",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "wave:pier:6",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "wave:pier:7",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[3,0,6,0,\"#5a6a4avest\",\"klasik\",true,null,null]:reel0",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[3,0,6,0,\"#5a6a4avest\",\"klasik\",true,null,null]:reel1",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,4,2,0,\"#4a8a6aapron\",\"none\",null,null,null]:idle1",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,5,6,1,\"#c86a5aapron\",\"none\",null,null,\"#e8b830\"]:idle0",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[2,0,6,1,\"#6a8aa8apron\",\"flat\",null,true,null]:idle0",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[0,7,0,0,\"#c85a9aplain\",\"none\",null,null,null]:idle0",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[3,1,0,1,\"#c8643aoveralls\",\"bandana\",true,null,null]:idle1",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[2,2,2,1,\"#6a8a4aapron\",\"none\",null,true,null]:idle0",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[4,0,0,1,\"#f0eadcvest\",\"none\",null,true,null]:idle0",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[2,0,6,0,\"#3a4e6abuttons\",\"klasik\",true,null,null]:idle1",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,4,2,0,\"#4a8a6aapron\",\"none\",null,null,null]:idle0",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,5,6,1,\"#c86a5aapron\",\"none\",null,null,\"#e8b830\"]:idle1",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[2,0,6,1,\"#6a8aa8apron\",\"flat\",null,true,null]:idle1",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[0,7,0,0,\"#c85a9aplain\",\"none\",null,null,null]:idle1",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[3,1,0,1,\"#c8643aoveralls\",\"bandana\",true,null,null]:idle0",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[2,2,2,1,\"#6a8a4aapron\",\"none\",null,true,null]:idle1",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[4,0,0,1,\"#f0eadcvest\",\"none\",null,true,null]:idle1",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[2,0,6,0,\"#3a4e6abuttons\",\"klasik\",true,null,null]:idle0",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,0,1,0,\"tisort\",\"klasik\",null,null,null]:idle1:f",
+    "why": "prosedürel aile"
+   },
+   {
+    "key": "p:[1,0,1,0,\"tisort\",\"klasik\",null,null,null]:idle0:f",
+    "why": "prosedürel aile"
+   }
+  ],
+  "collisions": [
+   {
+    "key": "gull0",
+    "sigs": 2
+   },
+   {
+    "key": "gull1",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:sardalya",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:gumus_baligi",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:istavrit",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:izmarit",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:kefal",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:zargana",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:isparoz",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:melanur",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:karagoz",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:cipura",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:sargoz",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:levrek",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:tekir",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:barbun",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:eskina",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:mercan",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:fangri",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:sinarit",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:kolyoz",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:uskumru",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:lufer",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:palamut",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:yazili_orkinos",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:akya",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:ringa",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:mezgit",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:pisi_baligi",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:morina",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:komur_baligi",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:halibut",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:ucan_balik",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:sari_kuyruklu_fusilier",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:mavi_yuzgecli_trevally",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:kirmizi_snapper",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:lambuka",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:barrakuda",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:albakor",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:sari_yuzgecli_orkinos",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:wahoo",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:buyuk_gozlu_orkinos",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:kilic_baligi",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:yelken_baligi",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:hamsi",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:kaya_baligi",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:sarpan",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:iskorpit",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:kupes",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:mirmir",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:dil_baligi",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:minakop",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:hanos",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:kirlangic",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:lahoz",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:orfoz",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:tirsi",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:dulger",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:kalkan",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:sarikuyruk",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:kapelin",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:topak_baligi",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:kizil_levrek",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:kurt_baligi",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:mavi_cerrah",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:papagan_baligi",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:mercan_hanisi",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:dev_trevally",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:cizgili_orkinos",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:pervane_baligi",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:opah",
+    "sigs": 2
+   },
+   {
+    "key": "fishsil:mavi_marlin",
+    "sigs": 2
+   },
+   {
+    "key": "icon:fishI",
+    "sigs": 2
+   },
+   {
+    "key": "gull2",
+    "sigs": 2
+   }
+  ],
+  "langSized": [],
+  "boatsExcluded": {},
+  "keysSeen": 853,
+  "timeDependent": [
+   "lure0"
+  ]
+ },
+ "n": 1218,
+ "patches": 225,
+ "ms": 12631,
+ "files": 1443,
+ "bytes": 3957491,
+ "errs": []
+}

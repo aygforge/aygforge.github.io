@@ -1,0 +1,62 @@
+{
+ "tr": {
+  "n": 149,
+  "ok": 149,
+  "bad": [],
+  "lang": "tr",
+  "assets": true,
+  "hits": 159,
+  "missing": 0,
+  "errors": []
+ },
+ "en": {
+  "n": 149,
+  "ok": 149,
+  "bad": [],
+  "lang": "en",
+  "assets": true,
+  "hits": 158,
+  "missing": 0,
+  "errors": []
+ },
+ "es": {
+  "n": 149,
+  "ok": 149,
+  "bad": [],
+  "lang": "es",
+  "assets": true,
+  "hits": 158,
+  "missing": 0,
+  "errors": []
+ },
+ "de": {
+  "n": 149,
+  "ok": 149,
+  "bad": [],
+  "lang": "de",
+  "assets": true,
+  "hits": 159,
+  "missing": 0,
+  "errors": []
+ },
+ "fr": {
+  "n": 149,
+  "ok": 149,
+  "bad": [],
+  "lang": "fr",
+  "assets": true,
+  "hits": 158,
+  "missing": 0,
+  "errors": []
+ },
+ "pt-BR": {
+  "n": 149,
+  "ok": 149,
+  "bad": [],
+  "lang": "pt-BR",
+  "assets": true,
+  "hits": 158,
+  "missing": 0,
+  "errors": []
+ }
+}

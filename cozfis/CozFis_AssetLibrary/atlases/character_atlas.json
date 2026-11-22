@@ -1,0 +1,1210 @@
+{
+ "atlas": "character_atlas",
+ "image": "character_atlas.png",
+ "size": [
+  864,
+  15
+ ],
+ "frames": {
+  "char_hair_3_c0": {
+   "file": "assets/characters/char_hair_3_c0.png",
+   "rect": [
+    0,
+    0,
+    11,
+    14
+   ],
+   "w": 11,
+   "h": 14,
+   "pivot": [
+    -2,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_3_c1": {
+   "file": "assets/characters/char_hair_3_c1.png",
+   "rect": [
+    12,
+    0,
+    11,
+    14
+   ],
+   "w": 11,
+   "h": 14,
+   "pivot": [
+    -2,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_3_c2": {
+   "file": "assets/characters/char_hair_3_c2.png",
+   "rect": [
+    24,
+    0,
+    11,
+    14
+   ],
+   "w": 11,
+   "h": 14,
+   "pivot": [
+    -2,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_3_c3": {
+   "file": "assets/characters/char_hair_3_c3.png",
+   "rect": [
+    36,
+    0,
+    11,
+    14
+   ],
+   "w": 11,
+   "h": 14,
+   "pivot": [
+    -2,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_3_c4": {
+   "file": "assets/characters/char_hair_3_c4.png",
+   "rect": [
+    48,
+    0,
+    11,
+    14
+   ],
+   "w": 11,
+   "h": 14,
+   "pivot": [
+    -2,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_3_c5": {
+   "file": "assets/characters/char_hair_3_c5.png",
+   "rect": [
+    60,
+    0,
+    11,
+    14
+   ],
+   "w": 11,
+   "h": 14,
+   "pivot": [
+    -2,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_3_c6": {
+   "file": "assets/characters/char_hair_3_c6.png",
+   "rect": [
+    72,
+    0,
+    11,
+    14
+   ],
+   "w": 11,
+   "h": 14,
+   "pivot": [
+    -2,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_3_c7": {
+   "file": "assets/characters/char_hair_3_c7.png",
+   "rect": [
+    84,
+    0,
+    11,
+    14
+   ],
+   "w": 11,
+   "h": 14,
+   "pivot": [
+    -2,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_6_c0": {
+   "file": "assets/characters/char_hair_6_c0.png",
+   "rect": [
+    96,
+    0,
+    13,
+    11
+   ],
+   "w": 13,
+   "h": 11,
+   "pivot": [
+    -2,
+    0
+   ],
+   "layer": "hair"
+  },
+  "char_hair_6_c1": {
+   "file": "assets/characters/char_hair_6_c1.png",
+   "rect": [
+    110,
+    0,
+    13,
+    11
+   ],
+   "w": 13,
+   "h": 11,
+   "pivot": [
+    -2,
+    0
+   ],
+   "layer": "hair"
+  },
+  "char_hair_6_c2": {
+   "file": "assets/characters/char_hair_6_c2.png",
+   "rect": [
+    124,
+    0,
+    13,
+    11
+   ],
+   "w": 13,
+   "h": 11,
+   "pivot": [
+    -2,
+    0
+   ],
+   "layer": "hair"
+  },
+  "char_hair_6_c3": {
+   "file": "assets/characters/char_hair_6_c3.png",
+   "rect": [
+    138,
+    0,
+    13,
+    11
+   ],
+   "w": 13,
+   "h": 11,
+   "pivot": [
+    -2,
+    0
+   ],
+   "layer": "hair"
+  },
+  "char_hair_6_c4": {
+   "file": "assets/characters/char_hair_6_c4.png",
+   "rect": [
+    152,
+    0,
+    13,
+    11
+   ],
+   "w": 13,
+   "h": 11,
+   "pivot": [
+    -2,
+    0
+   ],
+   "layer": "hair"
+  },
+  "char_hair_6_c5": {
+   "file": "assets/characters/char_hair_6_c5.png",
+   "rect": [
+    166,
+    0,
+    13,
+    11
+   ],
+   "w": 13,
+   "h": 11,
+   "pivot": [
+    -2,
+    0
+   ],
+   "layer": "hair"
+  },
+  "char_hair_6_c6": {
+   "file": "assets/characters/char_hair_6_c6.png",
+   "rect": [
+    180,
+    0,
+    13,
+    11
+   ],
+   "w": 13,
+   "h": 11,
+   "pivot": [
+    -2,
+    0
+   ],
+   "layer": "hair"
+  },
+  "char_hair_6_c7": {
+   "file": "assets/characters/char_hair_6_c7.png",
+   "rect": [
+    194,
+    0,
+    13,
+    11
+   ],
+   "w": 13,
+   "h": 11,
+   "pivot": [
+    -2,
+    0
+   ],
+   "layer": "hair"
+  },
+  "char_hair_4_c0": {
+   "file": "assets/characters/char_hair_4_c0.png",
+   "rect": [
+    208,
+    0,
+    12,
+    10
+   ],
+   "w": 12,
+   "h": 10,
+   "pivot": [
+    -1,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_4_c1": {
+   "file": "assets/characters/char_hair_4_c1.png",
+   "rect": [
+    221,
+    0,
+    12,
+    10
+   ],
+   "w": 12,
+   "h": 10,
+   "pivot": [
+    -1,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_4_c2": {
+   "file": "assets/characters/char_hair_4_c2.png",
+   "rect": [
+    234,
+    0,
+    12,
+    10
+   ],
+   "w": 12,
+   "h": 10,
+   "pivot": [
+    -1,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_4_c3": {
+   "file": "assets/characters/char_hair_4_c3.png",
+   "rect": [
+    247,
+    0,
+    12,
+    10
+   ],
+   "w": 12,
+   "h": 10,
+   "pivot": [
+    -1,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_4_c4": {
+   "file": "assets/characters/char_hair_4_c4.png",
+   "rect": [
+    260,
+    0,
+    12,
+    10
+   ],
+   "w": 12,
+   "h": 10,
+   "pivot": [
+    -1,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_4_c5": {
+   "file": "assets/characters/char_hair_4_c5.png",
+   "rect": [
+    273,
+    0,
+    12,
+    10
+   ],
+   "w": 12,
+   "h": 10,
+   "pivot": [
+    -1,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_4_c6": {
+   "file": "assets/characters/char_hair_4_c6.png",
+   "rect": [
+    286,
+    0,
+    12,
+    10
+   ],
+   "w": 12,
+   "h": 10,
+   "pivot": [
+    -1,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_4_c7": {
+   "file": "assets/characters/char_hair_4_c7.png",
+   "rect": [
+    299,
+    0,
+    12,
+    10
+   ],
+   "w": 12,
+   "h": 10,
+   "pivot": [
+    -1,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_5_c0": {
+   "file": "assets/characters/char_hair_5_c0.png",
+   "rect": [
+    312,
+    0,
+    11,
+    10
+   ],
+   "w": 11,
+   "h": 10,
+   "pivot": [
+    -2,
+    1
+   ],
+   "layer": "hair"
+  },
+  "char_hair_5_c1": {
+   "file": "assets/characters/char_hair_5_c1.png",
+   "rect": [
+    324,
+    0,
+    11,
+    10
+   ],
+   "w": 11,
+   "h": 10,
+   "pivot": [
+    -2,
+    1
+   ],
+   "layer": "hair"
+  },
+  "char_hair_5_c2": {
+   "file": "assets/characters/char_hair_5_c2.png",
+   "rect": [
+    336,
+    0,
+    11,
+    10
+   ],
+   "w": 11,
+   "h": 10,
+   "pivot": [
+    -2,
+    1
+   ],
+   "layer": "hair"
+  },
+  "char_hair_5_c3": {
+   "file": "assets/characters/char_hair_5_c3.png",
+   "rect": [
+    348,
+    0,
+    11,
+    10
+   ],
+   "w": 11,
+   "h": 10,
+   "pivot": [
+    -2,
+    1
+   ],
+   "layer": "hair"
+  },
+  "char_hair_5_c4": {
+   "file": "assets/characters/char_hair_5_c4.png",
+   "rect": [
+    360,
+    0,
+    11,
+    10
+   ],
+   "w": 11,
+   "h": 10,
+   "pivot": [
+    -2,
+    1
+   ],
+   "layer": "hair"
+  },
+  "char_hair_5_c5": {
+   "file": "assets/characters/char_hair_5_c5.png",
+   "rect": [
+    372,
+    0,
+    11,
+    10
+   ],
+   "w": 11,
+   "h": 10,
+   "pivot": [
+    -2,
+    1
+   ],
+   "layer": "hair"
+  },
+  "char_hair_5_c6": {
+   "file": "assets/characters/char_hair_5_c6.png",
+   "rect": [
+    384,
+    0,
+    11,
+    10
+   ],
+   "w": 11,
+   "h": 10,
+   "pivot": [
+    -2,
+    1
+   ],
+   "layer": "hair"
+  },
+  "char_hair_5_c7": {
+   "file": "assets/characters/char_hair_5_c7.png",
+   "rect": [
+    396,
+    0,
+    11,
+    10
+   ],
+   "w": 11,
+   "h": 10,
+   "pivot": [
+    -2,
+    1
+   ],
+   "layer": "hair"
+  },
+  "char_hair_7_c0": {
+   "file": "assets/characters/char_hair_7_c0.png",
+   "rect": [
+    408,
+    0,
+    10,
+    10
+   ],
+   "w": 10,
+   "h": 10,
+   "pivot": [
+    -3,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_7_c1": {
+   "file": "assets/characters/char_hair_7_c1.png",
+   "rect": [
+    419,
+    0,
+    10,
+    10
+   ],
+   "w": 10,
+   "h": 10,
+   "pivot": [
+    -3,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_7_c2": {
+   "file": "assets/characters/char_hair_7_c2.png",
+   "rect": [
+    430,
+    0,
+    10,
+    10
+   ],
+   "w": 10,
+   "h": 10,
+   "pivot": [
+    -3,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_7_c3": {
+   "file": "assets/characters/char_hair_7_c3.png",
+   "rect": [
+    441,
+    0,
+    10,
+    10
+   ],
+   "w": 10,
+   "h": 10,
+   "pivot": [
+    -3,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_7_c4": {
+   "file": "assets/characters/char_hair_7_c4.png",
+   "rect": [
+    452,
+    0,
+    10,
+    10
+   ],
+   "w": 10,
+   "h": 10,
+   "pivot": [
+    -3,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_7_c5": {
+   "file": "assets/characters/char_hair_7_c5.png",
+   "rect": [
+    463,
+    0,
+    10,
+    10
+   ],
+   "w": 10,
+   "h": 10,
+   "pivot": [
+    -3,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_7_c6": {
+   "file": "assets/characters/char_hair_7_c6.png",
+   "rect": [
+    474,
+    0,
+    10,
+    10
+   ],
+   "w": 10,
+   "h": 10,
+   "pivot": [
+    -3,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_7_c7": {
+   "file": "assets/characters/char_hair_7_c7.png",
+   "rect": [
+    485,
+    0,
+    10,
+    10
+   ],
+   "w": 10,
+   "h": 10,
+   "pivot": [
+    -3,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_1_c0": {
+   "file": "assets/characters/char_hair_1_c0.png",
+   "rect": [
+    496,
+    0,
+    9,
+    9
+   ],
+   "w": 9,
+   "h": 9,
+   "pivot": [
+    -4,
+    0
+   ],
+   "layer": "hair"
+  },
+  "char_hair_1_c1": {
+   "file": "assets/characters/char_hair_1_c1.png",
+   "rect": [
+    506,
+    0,
+    9,
+    9
+   ],
+   "w": 9,
+   "h": 9,
+   "pivot": [
+    -4,
+    0
+   ],
+   "layer": "hair"
+  },
+  "char_hair_1_c2": {
+   "file": "assets/characters/char_hair_1_c2.png",
+   "rect": [
+    516,
+    0,
+    9,
+    9
+   ],
+   "w": 9,
+   "h": 9,
+   "pivot": [
+    -4,
+    0
+   ],
+   "layer": "hair"
+  },
+  "char_hair_1_c3": {
+   "file": "assets/characters/char_hair_1_c3.png",
+   "rect": [
+    526,
+    0,
+    9,
+    9
+   ],
+   "w": 9,
+   "h": 9,
+   "pivot": [
+    -4,
+    0
+   ],
+   "layer": "hair"
+  },
+  "char_hair_1_c4": {
+   "file": "assets/characters/char_hair_1_c4.png",
+   "rect": [
+    536,
+    0,
+    9,
+    9
+   ],
+   "w": 9,
+   "h": 9,
+   "pivot": [
+    -4,
+    0
+   ],
+   "layer": "hair"
+  },
+  "char_hair_1_c5": {
+   "file": "assets/characters/char_hair_1_c5.png",
+   "rect": [
+    546,
+    0,
+    9,
+    9
+   ],
+   "w": 9,
+   "h": 9,
+   "pivot": [
+    -4,
+    0
+   ],
+   "layer": "hair"
+  },
+  "char_hair_1_c6": {
+   "file": "assets/characters/char_hair_1_c6.png",
+   "rect": [
+    556,
+    0,
+    9,
+    9
+   ],
+   "w": 9,
+   "h": 9,
+   "pivot": [
+    -4,
+    0
+   ],
+   "layer": "hair"
+  },
+  "char_hair_1_c7": {
+   "file": "assets/characters/char_hair_1_c7.png",
+   "rect": [
+    566,
+    0,
+    9,
+    9
+   ],
+   "w": 9,
+   "h": 9,
+   "pivot": [
+    -4,
+    0
+   ],
+   "layer": "hair"
+  },
+  "char_hair_0_c0": {
+   "file": "assets/characters/char_hair_0_c0.png",
+   "rect": [
+    576,
+    0,
+    9,
+    7
+   ],
+   "w": 9,
+   "h": 7,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_0_c1": {
+   "file": "assets/characters/char_hair_0_c1.png",
+   "rect": [
+    586,
+    0,
+    9,
+    7
+   ],
+   "w": 9,
+   "h": 7,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_0_c2": {
+   "file": "assets/characters/char_hair_0_c2.png",
+   "rect": [
+    596,
+    0,
+    9,
+    7
+   ],
+   "w": 9,
+   "h": 7,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_0_c3": {
+   "file": "assets/characters/char_hair_0_c3.png",
+   "rect": [
+    606,
+    0,
+    9,
+    7
+   ],
+   "w": 9,
+   "h": 7,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_0_c4": {
+   "file": "assets/characters/char_hair_0_c4.png",
+   "rect": [
+    616,
+    0,
+    9,
+    7
+   ],
+   "w": 9,
+   "h": 7,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_0_c5": {
+   "file": "assets/characters/char_hair_0_c5.png",
+   "rect": [
+    626,
+    0,
+    9,
+    7
+   ],
+   "w": 9,
+   "h": 7,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_0_c6": {
+   "file": "assets/characters/char_hair_0_c6.png",
+   "rect": [
+    636,
+    0,
+    9,
+    7
+   ],
+   "w": 9,
+   "h": 7,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_0_c7": {
+   "file": "assets/characters/char_hair_0_c7.png",
+   "rect": [
+    646,
+    0,
+    9,
+    7
+   ],
+   "w": 9,
+   "h": 7,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_2_c0": {
+   "file": "assets/characters/char_hair_2_c0.png",
+   "rect": [
+    656,
+    0,
+    9,
+    7
+   ],
+   "w": 9,
+   "h": 7,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_2_c1": {
+   "file": "assets/characters/char_hair_2_c1.png",
+   "rect": [
+    666,
+    0,
+    9,
+    7
+   ],
+   "w": 9,
+   "h": 7,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_2_c2": {
+   "file": "assets/characters/char_hair_2_c2.png",
+   "rect": [
+    676,
+    0,
+    9,
+    7
+   ],
+   "w": 9,
+   "h": 7,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_2_c3": {
+   "file": "assets/characters/char_hair_2_c3.png",
+   "rect": [
+    686,
+    0,
+    9,
+    7
+   ],
+   "w": 9,
+   "h": 7,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_2_c4": {
+   "file": "assets/characters/char_hair_2_c4.png",
+   "rect": [
+    696,
+    0,
+    9,
+    7
+   ],
+   "w": 9,
+   "h": 7,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_2_c5": {
+   "file": "assets/characters/char_hair_2_c5.png",
+   "rect": [
+    706,
+    0,
+    9,
+    7
+   ],
+   "w": 9,
+   "h": 7,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_2_c6": {
+   "file": "assets/characters/char_hair_2_c6.png",
+   "rect": [
+    716,
+    0,
+    9,
+    7
+   ],
+   "w": 9,
+   "h": 7,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hair_2_c7": {
+   "file": "assets/characters/char_hair_2_c7.png",
+   "rect": [
+    726,
+    0,
+    9,
+    7
+   ],
+   "w": 9,
+   "h": 7,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hair"
+  },
+  "char_hat_hasir": {
+   "file": "assets/characters/char_hat_hasir.png",
+   "rect": [
+    736,
+    0,
+    15,
+    6
+   ],
+   "w": 15,
+   "h": 6,
+   "pivot": [
+    -1,
+    0
+   ],
+   "layer": "hat"
+  },
+  "char_hat_klasik": {
+   "file": "assets/characters/char_hat_klasik.png",
+   "rect": [
+    752,
+    0,
+    11,
+    6
+   ],
+   "w": 11,
+   "h": 6,
+   "pivot": [
+    -3,
+    0
+   ],
+   "layer": "hat"
+  },
+  "char_hat_bandana": {
+   "file": "assets/characters/char_hat_bandana.png",
+   "rect": [
+    764,
+    0,
+    11,
+    5
+   ],
+   "w": 11,
+   "h": 5,
+   "pivot": [
+    -2,
+    -2
+   ],
+   "layer": "hat"
+  },
+  "char_hat_kaptan": {
+   "file": "assets/characters/char_hat_kaptan.png",
+   "rect": [
+    776,
+    0,
+    11,
+    5
+   ],
+   "w": 11,
+   "h": 5,
+   "pivot": [
+    -4,
+    0
+   ],
+   "layer": "hat"
+  },
+  "char_hat_usta": {
+   "file": "assets/characters/char_hat_usta.png",
+   "rect": [
+    788,
+    0,
+    11,
+    5
+   ],
+   "w": 11,
+   "h": 5,
+   "pivot": [
+    -3,
+    0
+   ],
+   "layer": "hat"
+  },
+  "char_hat_bere": {
+   "file": "assets/characters/char_hat_bere.png",
+   "rect": [
+    800,
+    0,
+    9,
+    5
+   ],
+   "w": 9,
+   "h": 5,
+   "pivot": [
+    -4,
+    0
+   ],
+   "layer": "hat"
+  },
+  "char_hat_denizci_bere": {
+   "file": "assets/characters/char_hat_denizci_bere.png",
+   "rect": [
+    810,
+    0,
+    9,
+    5
+   ],
+   "w": 9,
+   "h": 5,
+   "pivot": [
+    -4,
+    0
+   ],
+   "layer": "hat"
+  },
+  "char_hat_fener_beresi": {
+   "file": "assets/characters/char_hat_fener_beresi.png",
+   "rect": [
+    820,
+    0,
+    9,
+    5
+   ],
+   "w": 9,
+   "h": 5,
+   "pivot": [
+    -4,
+    0
+   ],
+   "layer": "hat"
+  },
+  "char_hat_flat": {
+   "file": "assets/characters/char_hat_flat.png",
+   "rect": [
+    830,
+    0,
+    11,
+    3
+   ],
+   "w": 11,
+   "h": 3,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hat"
+  },
+  "char_hat_kasket": {
+   "file": "assets/characters/char_hat_kasket.png",
+   "rect": [
+    842,
+    0,
+    11,
+    3
+   ],
+   "w": 11,
+   "h": 3,
+   "pivot": [
+    -4,
+    -2
+   ],
+   "layer": "hat"
+  },
+  "char_hat_cicek_taci": {
+   "file": "assets/characters/char_hat_cicek_taci.png",
+   "rect": [
+    854,
+    0,
+    9,
+    3
+   ],
+   "w": 9,
+   "h": 3,
+   "pivot": [
+    -4,
+    -1
+   ],
+   "layer": "hat"
+  }
+ }
+}

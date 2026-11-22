@@ -1,0 +1,26 @@
+{
+  "name": "cozfis",
+  "version": "1.1.0-asset-pipeline",
+  "private": true,
+  "description": "CozFis — 2D piksel sanat balıkçılık oyunu. Modüler proje + hibrit PNG atlas / prosedürel çizim hattı. Çevrimdışı çalışır.",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "node tools/serve.js . 8080",
+    "serve": "node tools/serve.js . 8080",
+    "export-assets": "node tools/export-assets/export.js",
+    "pack": "node tools/build/pack.js",
+    "build": "node tools/build/build.js",
+    "validate": "node tools/validate/pixel-validate.js",
+    "validate:offline": "node tools/validate/offline-check.js",
+    "test": "bash tests/run-all.sh",
+    "test:qa": "node tests/qa-langs.js",
+    "test:screens": "node tests/screens-ab.js",
+    "test:saves": "node tests/save-compat.js",
+    "test:smoke": "node tests/smoke.js",
+    "test:perf": "node tests/perf.js --runs 3"
+  },
+  "devDependencies": {
+    "playwright": "^1.40.0"
+  },
+  "engines": { "node": ">=18" }
+}

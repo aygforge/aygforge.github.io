@@ -1,0 +1,6 @@
+A↔B önbellek: 9071/9071 aynı, 0 farklı, 0 eksik
+A↔B data-URL: 2982/2982 aynı, 0 farklı, 0 eksik
+A↔B sahne kareleri: 258/258 aynı, 0 farklı, 0 eksik
+A↔C önbellek: 9071/9071 aynı, 0 farklı, 0 eksik | kareler: 258/258 aynı, 0 farklı, 0 eksik
+B atlas istatistikleri: {"hits":6336,"fallbacks":0,"fallbackKeys":[],"pbHits":509,"loadMs":41,"bytes":4216318,"pages":21,"errors":[]} hatalar: {"A":[],"B":[],"C":[]}
+exit=0

@@ -1,0 +1,288 @@
+=== çevrimdışı statik tarama
+{
+ "files": 35,
+ "scannedChars": 2330790,
+ "pages": 42,
+ "problems": []
+}
+=== dağıtım (dist/)
+dist/web: 6151 KB · dist/CozFis_Standalone.html: 7432 KB · 512 ms
+=== piksel doğrulama A/B/C
+A↔B önbellek: 9071/9071 aynı, 0 farklı, 0 eksik
+A↔B data-URL: 2982/2982 aynı, 0 farklı, 0 eksik
+A↔B sahne kareleri: 258/258 aynı, 0 farklı, 0 eksik
+A↔C önbellek: 9071/9071 aynı, 0 farklı, 0 eksik | kareler: 258/258 aynı, 0 farklı, 0 eksik
+B atlas istatistikleri: {"hits":6213,"fallbacks":0,"fallbackKeys":[],"pbHits":384,"loadMs":57,"bytes":3938828,"pages":42,"errors":[]} hatalar: {"A":[],"B":[],"C":[]}
+=== ekran A/B (11 ekran × 6 dil)
+tr mainmenu      fark pikseli: 0 
+tr creator       fark pikseli: 0 
+tr town          fark pikseli: 0 
+tr pier          fark pikseli: 0 
+tr fishing       fark pikseli: 0 
+tr boat          fark pikseli: 0 
+tr seamap        fark pikseli: 0 
+tr inventory     fark pikseli: 0 
+tr encyclopedia  fark pikseli: 0 
+tr home_decor    fark pikseli: 0 
+tr settings      fark pikseli: 0 
+en mainmenu      fark pikseli: 0 
+en creator       fark pikseli: 0 
+en town          fark pikseli: 0 
+en pier          fark pikseli: 0 
+en fishing       fark pikseli: 0 
+en boat          fark pikseli: 0 
+en seamap        fark pikseli: 0 
+en inventory     fark pikseli: 0 
+en encyclopedia  fark pikseli: 0 
+en home_decor    fark pikseli: 0 
+en settings      fark pikseli: 0 
+es mainmenu      fark pikseli: 0 
+es creator       fark pikseli: 0 
+es town          fark pikseli: 0 
+es pier          fark pikseli: 0 
+es fishing       fark pikseli: 0 
+es boat          fark pikseli: 0 
+es seamap        fark pikseli: 0 
+es inventory     fark pikseli: 0 
+es encyclopedia  fark pikseli: 0 
+es home_decor    fark pikseli: 0 
+es settings      fark pikseli: 0 
+de mainmenu      fark pikseli: 0 
+de creator       fark pikseli: 0 
+de town          fark pikseli: 0 
+de pier          fark pikseli: 0 
+de fishing       fark pikseli: 0 
+de boat          fark pikseli: 0 
+de seamap        fark pikseli: 0 
+de inventory     fark pikseli: 0 
+de encyclopedia  fark pikseli: 0 
+de home_decor    fark pikseli: 0 
+de settings      fark pikseli: 0 
+fr mainmenu      fark pikseli: 0 
+fr creator       fark pikseli: 0 
+fr town          fark pikseli: 0 
+fr pier          fark pikseli: 0 
+fr fishing       fark pikseli: 0 
+fr boat          fark pikseli: 0 
+fr seamap        fark pikseli: 0 
+fr inventory     fark pikseli: 0 
+fr encyclopedia  fark pikseli: 0 
+fr home_decor    fark pikseli: 0 
+fr settings      fark pikseli: 0 
+pt-BR mainmenu      fark pikseli: 0 
+pt-BR creator       fark pikseli: 0 
+pt-BR town          fark pikseli: 0 
+pt-BR pier          fark pikseli: 0 
+pt-BR fishing       fark pikseli: 0 
+pt-BR boat          fark pikseli: 0 
+pt-BR seamap        fark pikseli: 0 
+pt-BR inventory     fark pikseli: 0 
+pt-BR encyclopedia  fark pikseli: 0 
+pt-BR home_decor    fark pikseli: 0 
+pt-BR settings      fark pikseli: 0 
+=== QA 149 × 6 dil
+tr 149/149   atlas: true 159
+en 149/149   atlas: true 158
+es 149/149   atlas: true 158
+de 149/149   atlas: true 159
+fr 149/149   atlas: true 158
+pt-BR 149/149   atlas: true 158
+=== kayıt uyumluluğu
+{
+ "lsKeysAfterBoot": [
+  "cozyfishing_backup_v1",
+  "cozyfishing_save_v1"
+ ],
+ "A_to_B": {
+  "made": {
+   "day": 23,
+   "cash": 96565,
+   "boats": [
+    "coastal_skiff"
+   ],
+   "rev": 1,
+   "bag": "[{\"f\":\"levrek\",\"q\":2},{\"f\":\"kefal\",\"q\":5}]",
+   "name": "Eski Kayıt"
+  },
+  "loaded": {
+   "hasSave": true,
+   "err": null,
+   "day": 23,
+   "cash": 96565,
+   "boats": [
+    "coastal_skiff"
+   ],
+   "bag": "[{\"f\":\"levrek\",\"q\":2},{\"f\":\"kefal\",\"q\":5}]",
+   "name": "Eski Kayıt",
+   "keys": [
+    "cozyfishing",
+    "saves",
+    "cozyfishing_save_v1",
+    "cozyfishing_backup_v1",
+    "cozyfishing_prev_v1",
+    "cozyfishing_settings_v1"
+   ],
+   "schema": 5,
+   "format": "cozyfishing-save",
+   "assets": true
+  },
+  "sameState": true,
+  "storageUntouchedOnBoot": true,
+  "errors": []
+ },
+ "B_to_A": {
+  "cont": {
+   "scene": "Town",
+   "day": 24,
+   "cash": 96676
+  },
+  "back": {
+   "hasSave": true,
+   "err": null,
+   "day": 24,
+   "cash": 96676
+  },
+  "ok": true,
+  "errors": []
+ },
+ "pass": true
+}
+=== duman testleri
+{
+ "http": {
+  "sound": {
+   "ctx": true,
+   "state": "running",
+   "started": true
+  },
+  "creatorScene": "CharacterCreator",
+  "creatorButtons": 33,
+  "player": {
+   "hair": 6,
+   "hat": "fener_beresi",
+   "sprite": "20x31",
+   "hand": [
+    14,
+    16
+   ]
+  },
+  "langs": [
+   "en:Inventory Fish Gea",
+   "es:Inventario Peces E",
+   "de:Inventar Fische Au",
+   "fr:Inventaire Poisson",
+   "pt-BR:Inventário Peixes ",
+   "tr:Envanter Balıklar "
+  ],
+  "atlasHits": 175,
+  "fallbacks": 0,
+  "photoDataUrl": true,
+  "remoteRequests": [],
+  "requestCount": 45,
+  "errors": []
+ },
+ "fileModular": {
+  "assets": false,
+  "reason": "canvas kirlendi (file:// ?) — prosedürel mod",
+  "panelImgs": 71,
+  "photo": true,
+  "errors": []
+ },
+ "standalone": {
+  "assets": true,
+  "pages": 9,
+  "qa": "149/149",
+  "bad": [],
+  "hits": 159,
+  "errors": []
+ },
+ "offlineAfterLoad": {
+  "scene": "BoatFishing",
+  "assets": true,
+  "errors": [
+   "Failed to load resource: net::ERR_INTERNET_DISCONNECTED"
+  ]
+ }
+}
+=== performans
+{
+ "A": {
+  "boot": 173,
+  "assetsMs": 0,
+  "townFirst": 70,
+  "homeFirst": 18.3,
+  "boatFirst": 20.3,
+  "encyclopediaFirst": 57.9,
+  "town": {
+   "fps": 60,
+   "renderAvgMs": 0.282,
+   "renderP95Ms": 0.5
+  },
+  "boat": {
+   "fps": 60,
+   "renderAvgMs": 0.328,
+   "renderP95Ms": 0.5
+  },
+  "cacheMB": 15,
+  "cacheEntries": 169,
+  "atlasHeldMB": 0,
+  "atlasAllPagesMB": 0,
+  "jsHeapMB": 7.9,
+  "bytesKB": 2109,
+  "requests": 1,
+  "remoteRequests": 0
+ },
+ "B": {
+  "boot": 177,
+  "assetsMs": 20,
+  "townFirst": 37,
+  "homeFirst": 4.1,
+  "boatFirst": 18.1,
+  "encyclopediaFirst": 9.5,
+  "town": {
+   "fps": 60,
+   "renderAvgMs": 0.288,
+   "renderP95Ms": 0.6
+  },
+  "boat": {
+   "fps": 60.3,
+   "renderAvgMs": 0.36,
+   "renderP95Ms": 0.6
+  },
+  "cacheMB": 15,
+  "cacheEntries": 167,
+  "atlasHeldMB": 27.2,
+  "atlasAllPagesMB": 191.7,
+  "jsHeapMB": 7.2,
+  "bytesKB": 3051,
+  "requests": 45,
+  "remoteRequests": 0
+ },
+ "C": {
+  "boot": 164,
+  "assetsMs": 0,
+  "townFirst": 61.5,
+  "homeFirst": 18.3,
+  "boatFirst": 19.3,
+  "encyclopediaFirst": 53.9,
+  "town": {
+   "fps": 60,
+   "renderAvgMs": 0.289,
+   "renderP95Ms": 0.6
+  },
+  "boat": {
+   "fps": 60,
+   "renderAvgMs": 0.343,
+   "renderP95Ms": 0.6
+  },
+  "cacheMB": 15,
+  "cacheEntries": 168,
+  "atlasHeldMB": 0,
+  "atlasAllPagesMB": 0,
+  "jsHeapMB": 8.3,
+  "bytesKB": 2304,
+  "requests": 36,
+  "remoteRequests": 0
+ }
+}
+RC=0

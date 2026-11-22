@@ -1,0 +1,5610 @@
+{
+ "atlas": "fish_atlas",
+ "image": "fish_atlas.png",
+ "size": [
+  1024,
+  469
+ ],
+ "frames": {
+  "fish_pervane_baligi_left": {
+   "file": "assets/fish/fish_pervane_baligi_left.png",
+   "rect": [
+    0,
+    0,
+    49,
+    80
+   ],
+   "w": 49,
+   "h": 80,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:pervane_baligi"
+  },
+  "fish_pervane_baligi_right": {
+   "file": "assets/fish/fish_pervane_baligi_right.png",
+   "rect": [
+    50,
+    0,
+    49,
+    80
+   ],
+   "w": 49,
+   "h": 80,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:pervane_baligi"
+  },
+  "fish_pervane_baligi_sil_left": {
+   "file": "assets/fish/fish_pervane_baligi_sil_left.png",
+   "rect": [
+    100,
+    0,
+    49,
+    80
+   ],
+   "w": 49,
+   "h": 80,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:pervane_baligi"
+  },
+  "fish_pervane_baligi_sil_left_ui": {
+   "file": "assets/fish/fish_pervane_baligi_sil_left_ui.png",
+   "rect": [
+    150,
+    0,
+    49,
+    80
+   ],
+   "w": 49,
+   "h": 80,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:pervane_baligi"
+  },
+  "fish_pervane_baligi_sil_right": {
+   "file": "assets/fish/fish_pervane_baligi_sil_right.png",
+   "rect": [
+    200,
+    0,
+    49,
+    80
+   ],
+   "w": 49,
+   "h": 80,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:pervane_baligi"
+  },
+  "fish_opah_left": {
+   "file": "assets/fish/fish_opah_left.png",
+   "rect": [
+    250,
+    0,
+    49,
+    50
+   ],
+   "w": 49,
+   "h": 50,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:opah"
+  },
+  "fish_opah_right": {
+   "file": "assets/fish/fish_opah_right.png",
+   "rect": [
+    300,
+    0,
+    49,
+    50
+   ],
+   "w": 49,
+   "h": 50,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:opah"
+  },
+  "fish_opah_sil_left": {
+   "file": "assets/fish/fish_opah_sil_left.png",
+   "rect": [
+    350,
+    0,
+    49,
+    50
+   ],
+   "w": 49,
+   "h": 50,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:opah"
+  },
+  "fish_opah_sil_left_ui": {
+   "file": "assets/fish/fish_opah_sil_left_ui.png",
+   "rect": [
+    400,
+    0,
+    49,
+    50
+   ],
+   "w": 49,
+   "h": 50,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:opah"
+  },
+  "fish_opah_sil_right": {
+   "file": "assets/fish/fish_opah_sil_right.png",
+   "rect": [
+    450,
+    0,
+    49,
+    50
+   ],
+   "w": 49,
+   "h": 50,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:opah"
+  },
+  "fish_dulger_left": {
+   "file": "assets/fish/fish_dulger_left.png",
+   "rect": [
+    500,
+    0,
+    41,
+    47
+   ],
+   "w": 41,
+   "h": 47,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:dulger"
+  },
+  "fish_dulger_right": {
+   "file": "assets/fish/fish_dulger_right.png",
+   "rect": [
+    542,
+    0,
+    41,
+    47
+   ],
+   "w": 41,
+   "h": 47,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:dulger"
+  },
+  "fish_dulger_sil_left": {
+   "file": "assets/fish/fish_dulger_sil_left.png",
+   "rect": [
+    584,
+    0,
+    41,
+    47
+   ],
+   "w": 41,
+   "h": 47,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:dulger"
+  },
+  "fish_dulger_sil_left_ui": {
+   "file": "assets/fish/fish_dulger_sil_left_ui.png",
+   "rect": [
+    626,
+    0,
+    41,
+    47
+   ],
+   "w": 41,
+   "h": 47,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:dulger"
+  },
+  "fish_dulger_sil_right": {
+   "file": "assets/fish/fish_dulger_sil_right.png",
+   "rect": [
+    668,
+    0,
+    41,
+    47
+   ],
+   "w": 41,
+   "h": 47,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:dulger"
+  },
+  "fish_kalkan_left": {
+   "file": "assets/fish/fish_kalkan_left.png",
+   "rect": [
+    710,
+    0,
+    43,
+    40
+   ],
+   "w": 43,
+   "h": 40,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:kalkan"
+  },
+  "fish_kalkan_right": {
+   "file": "assets/fish/fish_kalkan_right.png",
+   "rect": [
+    754,
+    0,
+    43,
+    40
+   ],
+   "w": 43,
+   "h": 40,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:kalkan"
+  },
+  "fish_kalkan_sil_left": {
+   "file": "assets/fish/fish_kalkan_sil_left.png",
+   "rect": [
+    798,
+    0,
+    43,
+    40
+   ],
+   "w": 43,
+   "h": 40,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kalkan"
+  },
+  "fish_kalkan_sil_left_ui": {
+   "file": "assets/fish/fish_kalkan_sil_left_ui.png",
+   "rect": [
+    842,
+    0,
+    43,
+    40
+   ],
+   "w": 43,
+   "h": 40,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kalkan"
+  },
+  "fish_kalkan_sil_right": {
+   "file": "assets/fish/fish_kalkan_sil_right.png",
+   "rect": [
+    886,
+    0,
+    43,
+    40
+   ],
+   "w": 43,
+   "h": 40,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:kalkan"
+  },
+  "fish_yelken_baligi_left": {
+   "file": "assets/fish/fish_yelken_baligi_left.png",
+   "rect": [
+    930,
+    0,
+    79,
+    39
+   ],
+   "w": 79,
+   "h": 39,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:yelken_baligi"
+  },
+  "fish_yelken_baligi_right": {
+   "file": "assets/fish/fish_yelken_baligi_right.png",
+   "rect": [
+    0,
+    81,
+    79,
+    39
+   ],
+   "w": 79,
+   "h": 39,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:yelken_baligi"
+  },
+  "fish_yelken_baligi_sil_left": {
+   "file": "assets/fish/fish_yelken_baligi_sil_left.png",
+   "rect": [
+    80,
+    81,
+    79,
+    39
+   ],
+   "w": 79,
+   "h": 39,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:yelken_baligi"
+  },
+  "fish_yelken_baligi_sil_left_ui": {
+   "file": "assets/fish/fish_yelken_baligi_sil_left_ui.png",
+   "rect": [
+    160,
+    81,
+    79,
+    39
+   ],
+   "w": 79,
+   "h": 39,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:yelken_baligi"
+  },
+  "fish_yelken_baligi_sil_right": {
+   "file": "assets/fish/fish_yelken_baligi_sil_right.png",
+   "rect": [
+    240,
+    81,
+    79,
+    39
+   ],
+   "w": 79,
+   "h": 39,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:yelken_baligi"
+  },
+  "fish_sari_yuzgecli_orkinos_left": {
+   "file": "assets/fish/fish_sari_yuzgecli_orkinos_left.png",
+   "rect": [
+    320,
+    81,
+    63,
+    38
+   ],
+   "w": 63,
+   "h": 38,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:sari_yuzgecli_orkinos"
+  },
+  "fish_sari_yuzgecli_orkinos_right": {
+   "file": "assets/fish/fish_sari_yuzgecli_orkinos_right.png",
+   "rect": [
+    384,
+    81,
+    63,
+    38
+   ],
+   "w": 63,
+   "h": 38,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:sari_yuzgecli_orkinos"
+  },
+  "fish_sari_yuzgecli_orkinos_sil_left": {
+   "file": "assets/fish/fish_sari_yuzgecli_orkinos_sil_left.png",
+   "rect": [
+    448,
+    81,
+    63,
+    38
+   ],
+   "w": 63,
+   "h": 38,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:sari_yuzgecli_orkinos"
+  },
+  "fish_sari_yuzgecli_orkinos_sil_left_ui": {
+   "file": "assets/fish/fish_sari_yuzgecli_orkinos_sil_left_ui.png",
+   "rect": [
+    512,
+    81,
+    63,
+    38
+   ],
+   "w": 63,
+   "h": 38,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:sari_yuzgecli_orkinos"
+  },
+  "fish_sari_yuzgecli_orkinos_sil_right": {
+   "file": "assets/fish/fish_sari_yuzgecli_orkinos_sil_right.png",
+   "rect": [
+    576,
+    81,
+    63,
+    38
+   ],
+   "w": 63,
+   "h": 38,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:sari_yuzgecli_orkinos"
+  },
+  "fish_dev_trevally_left": {
+   "file": "assets/fish/fish_dev_trevally_left.png",
+   "rect": [
+    640,
+    81,
+    57,
+    37
+   ],
+   "w": 57,
+   "h": 37,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:dev_trevally"
+  },
+  "fish_dev_trevally_right": {
+   "file": "assets/fish/fish_dev_trevally_right.png",
+   "rect": [
+    698,
+    81,
+    57,
+    37
+   ],
+   "w": 57,
+   "h": 37,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:dev_trevally"
+  },
+  "fish_dev_trevally_sil_left": {
+   "file": "assets/fish/fish_dev_trevally_sil_left.png",
+   "rect": [
+    756,
+    81,
+    57,
+    37
+   ],
+   "w": 57,
+   "h": 37,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:dev_trevally"
+  },
+  "fish_dev_trevally_sil_left_ui": {
+   "file": "assets/fish/fish_dev_trevally_sil_left_ui.png",
+   "rect": [
+    814,
+    81,
+    57,
+    37
+   ],
+   "w": 57,
+   "h": 37,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:dev_trevally"
+  },
+  "fish_dev_trevally_sil_right": {
+   "file": "assets/fish/fish_dev_trevally_sil_right.png",
+   "rect": [
+    872,
+    81,
+    57,
+    37
+   ],
+   "w": 57,
+   "h": 37,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:dev_trevally"
+  },
+  "fish_mavi_marlin_left": {
+   "file": "assets/fish/fish_mavi_marlin_left.png",
+   "rect": [
+    930,
+    81,
+    87,
+    36
+   ],
+   "w": 87,
+   "h": 36,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:mavi_marlin"
+  },
+  "fish_mavi_marlin_right": {
+   "file": "assets/fish/fish_mavi_marlin_right.png",
+   "rect": [
+    0,
+    121,
+    87,
+    36
+   ],
+   "w": 87,
+   "h": 36,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:mavi_marlin"
+  },
+  "fish_mavi_marlin_sil_left": {
+   "file": "assets/fish/fish_mavi_marlin_sil_left.png",
+   "rect": [
+    88,
+    121,
+    87,
+    36
+   ],
+   "w": 87,
+   "h": 36,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:mavi_marlin"
+  },
+  "fish_mavi_marlin_sil_left_ui": {
+   "file": "assets/fish/fish_mavi_marlin_sil_left_ui.png",
+   "rect": [
+    176,
+    121,
+    87,
+    36
+   ],
+   "w": 87,
+   "h": 36,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:mavi_marlin"
+  },
+  "fish_mavi_marlin_sil_right": {
+   "file": "assets/fish/fish_mavi_marlin_sil_right.png",
+   "rect": [
+    264,
+    121,
+    87,
+    36
+   ],
+   "w": 87,
+   "h": 36,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:mavi_marlin"
+  },
+  "fish_halibut_left": {
+   "file": "assets/fish/fish_halibut_left.png",
+   "rect": [
+    352,
+    121,
+    59,
+    36
+   ],
+   "w": 59,
+   "h": 36,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:halibut"
+  },
+  "fish_halibut_right": {
+   "file": "assets/fish/fish_halibut_right.png",
+   "rect": [
+    412,
+    121,
+    59,
+    36
+   ],
+   "w": 59,
+   "h": 36,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:halibut"
+  },
+  "fish_halibut_sil_left": {
+   "file": "assets/fish/fish_halibut_sil_left.png",
+   "rect": [
+    472,
+    121,
+    59,
+    36
+   ],
+   "w": 59,
+   "h": 36,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:halibut"
+  },
+  "fish_halibut_sil_left_ui": {
+   "file": "assets/fish/fish_halibut_sil_left_ui.png",
+   "rect": [
+    532,
+    121,
+    59,
+    36
+   ],
+   "w": 59,
+   "h": 36,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:halibut"
+  },
+  "fish_halibut_sil_right": {
+   "file": "assets/fish/fish_halibut_sil_right.png",
+   "rect": [
+    592,
+    121,
+    59,
+    36
+   ],
+   "w": 59,
+   "h": 36,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:halibut"
+  },
+  "fish_buyuk_gozlu_orkinos_left": {
+   "file": "assets/fish/fish_buyuk_gozlu_orkinos_left.png",
+   "rect": [
+    652,
+    121,
+    61,
+    34
+   ],
+   "w": 61,
+   "h": 34,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:buyuk_gozlu_orkinos"
+  },
+  "fish_buyuk_gozlu_orkinos_right": {
+   "file": "assets/fish/fish_buyuk_gozlu_orkinos_right.png",
+   "rect": [
+    714,
+    121,
+    61,
+    34
+   ],
+   "w": 61,
+   "h": 34,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:buyuk_gozlu_orkinos"
+  },
+  "fish_buyuk_gozlu_orkinos_sil_left": {
+   "file": "assets/fish/fish_buyuk_gozlu_orkinos_sil_left.png",
+   "rect": [
+    776,
+    121,
+    61,
+    34
+   ],
+   "w": 61,
+   "h": 34,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:buyuk_gozlu_orkinos"
+  },
+  "fish_buyuk_gozlu_orkinos_sil_left_ui": {
+   "file": "assets/fish/fish_buyuk_gozlu_orkinos_sil_left_ui.png",
+   "rect": [
+    838,
+    121,
+    61,
+    34
+   ],
+   "w": 61,
+   "h": 34,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:buyuk_gozlu_orkinos"
+  },
+  "fish_buyuk_gozlu_orkinos_sil_right": {
+   "file": "assets/fish/fish_buyuk_gozlu_orkinos_sil_right.png",
+   "rect": [
+    900,
+    121,
+    61,
+    34
+   ],
+   "w": 61,
+   "h": 34,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:buyuk_gozlu_orkinos"
+  },
+  "fish_kilic_baligi_left": {
+   "file": "assets/fish/fish_kilic_baligi_left.png",
+   "rect": [
+    0,
+    158,
+    91,
+    31
+   ],
+   "w": 91,
+   "h": 31,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:kilic_baligi"
+  },
+  "fish_kilic_baligi_right": {
+   "file": "assets/fish/fish_kilic_baligi_right.png",
+   "rect": [
+    92,
+    158,
+    91,
+    31
+   ],
+   "w": 91,
+   "h": 31,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:kilic_baligi"
+  },
+  "fish_kilic_baligi_sil_left": {
+   "file": "assets/fish/fish_kilic_baligi_sil_left.png",
+   "rect": [
+    184,
+    158,
+    91,
+    31
+   ],
+   "w": 91,
+   "h": 31,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kilic_baligi"
+  },
+  "fish_kilic_baligi_sil_left_ui": {
+   "file": "assets/fish/fish_kilic_baligi_sil_left_ui.png",
+   "rect": [
+    276,
+    158,
+    91,
+    31
+   ],
+   "w": 91,
+   "h": 31,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kilic_baligi"
+  },
+  "fish_kilic_baligi_sil_right": {
+   "file": "assets/fish/fish_kilic_baligi_sil_right.png",
+   "rect": [
+    368,
+    158,
+    91,
+    31
+   ],
+   "w": 91,
+   "h": 31,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:kilic_baligi"
+  },
+  "fish_topak_baligi_left": {
+   "file": "assets/fish/fish_topak_baligi_left.png",
+   "rect": [
+    962,
+    121,
+    33,
+    31
+   ],
+   "w": 33,
+   "h": 31,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:topak_baligi"
+  },
+  "fish_topak_baligi_right": {
+   "file": "assets/fish/fish_topak_baligi_right.png",
+   "rect": [
+    460,
+    158,
+    33,
+    31
+   ],
+   "w": 33,
+   "h": 31,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:topak_baligi"
+  },
+  "fish_topak_baligi_sil_left": {
+   "file": "assets/fish/fish_topak_baligi_sil_left.png",
+   "rect": [
+    494,
+    158,
+    33,
+    31
+   ],
+   "w": 33,
+   "h": 31,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:topak_baligi"
+  },
+  "fish_topak_baligi_sil_left_ui": {
+   "file": "assets/fish/fish_topak_baligi_sil_left_ui.png",
+   "rect": [
+    528,
+    158,
+    33,
+    31
+   ],
+   "w": 33,
+   "h": 31,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:topak_baligi"
+  },
+  "fish_topak_baligi_sil_right": {
+   "file": "assets/fish/fish_topak_baligi_sil_right.png",
+   "rect": [
+    562,
+    158,
+    33,
+    31
+   ],
+   "w": 33,
+   "h": 31,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:topak_baligi"
+  },
+  "fish_orfoz_left": {
+   "file": "assets/fish/fish_orfoz_left.png",
+   "rect": [
+    596,
+    158,
+    55,
+    30
+   ],
+   "w": 55,
+   "h": 30,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:orfoz"
+  },
+  "fish_orfoz_right": {
+   "file": "assets/fish/fish_orfoz_right.png",
+   "rect": [
+    652,
+    158,
+    55,
+    30
+   ],
+   "w": 55,
+   "h": 30,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:orfoz"
+  },
+  "fish_orfoz_sil_left": {
+   "file": "assets/fish/fish_orfoz_sil_left.png",
+   "rect": [
+    708,
+    158,
+    55,
+    30
+   ],
+   "w": 55,
+   "h": 30,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:orfoz"
+  },
+  "fish_orfoz_sil_left_ui": {
+   "file": "assets/fish/fish_orfoz_sil_left_ui.png",
+   "rect": [
+    764,
+    158,
+    55,
+    30
+   ],
+   "w": 55,
+   "h": 30,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:orfoz"
+  },
+  "fish_orfoz_sil_right": {
+   "file": "assets/fish/fish_orfoz_sil_right.png",
+   "rect": [
+    820,
+    158,
+    55,
+    30
+   ],
+   "w": 55,
+   "h": 30,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:orfoz"
+  },
+  "fish_kirmizi_snapper_left": {
+   "file": "assets/fish/fish_kirmizi_snapper_left.png",
+   "rect": [
+    876,
+    158,
+    47,
+    29
+   ],
+   "w": 47,
+   "h": 29,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:kirmizi_snapper"
+  },
+  "fish_kirmizi_snapper_right": {
+   "file": "assets/fish/fish_kirmizi_snapper_right.png",
+   "rect": [
+    924,
+    158,
+    47,
+    29
+   ],
+   "w": 47,
+   "h": 29,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:kirmizi_snapper"
+  },
+  "fish_kirmizi_snapper_sil_left": {
+   "file": "assets/fish/fish_kirmizi_snapper_sil_left.png",
+   "rect": [
+    972,
+    158,
+    47,
+    29
+   ],
+   "w": 47,
+   "h": 29,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kirmizi_snapper"
+  },
+  "fish_kirmizi_snapper_sil_left_ui": {
+   "file": "assets/fish/fish_kirmizi_snapper_sil_left_ui.png",
+   "rect": [
+    0,
+    190,
+    47,
+    29
+   ],
+   "w": 47,
+   "h": 29,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kirmizi_snapper"
+  },
+  "fish_kirmizi_snapper_sil_right": {
+   "file": "assets/fish/fish_kirmizi_snapper_sil_right.png",
+   "rect": [
+    48,
+    190,
+    47,
+    29
+   ],
+   "w": 47,
+   "h": 29,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:kirmizi_snapper"
+  },
+  "fish_cipura_left": {
+   "file": "assets/fish/fish_cipura_left.png",
+   "rect": [
+    96,
+    190,
+    39,
+    29
+   ],
+   "w": 39,
+   "h": 29,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:cipura"
+  },
+  "fish_cipura_right": {
+   "file": "assets/fish/fish_cipura_right.png",
+   "rect": [
+    136,
+    190,
+    39,
+    29
+   ],
+   "w": 39,
+   "h": 29,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:cipura"
+  },
+  "fish_cipura_sil_left": {
+   "file": "assets/fish/fish_cipura_sil_left.png",
+   "rect": [
+    176,
+    190,
+    39,
+    29
+   ],
+   "w": 39,
+   "h": 29,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:cipura"
+  },
+  "fish_cipura_sil_left_ui": {
+   "file": "assets/fish/fish_cipura_sil_left_ui.png",
+   "rect": [
+    216,
+    190,
+    39,
+    29
+   ],
+   "w": 39,
+   "h": 29,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:cipura"
+  },
+  "fish_cipura_sil_right": {
+   "file": "assets/fish/fish_cipura_sil_right.png",
+   "rect": [
+    256,
+    190,
+    39,
+    29
+   ],
+   "w": 39,
+   "h": 29,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:cipura"
+  },
+  "fish_pisi_baligi_left": {
+   "file": "assets/fish/fish_pisi_baligi_left.png",
+   "rect": [
+    296,
+    190,
+    39,
+    29
+   ],
+   "w": 39,
+   "h": 29,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:pisi_baligi"
+  },
+  "fish_pisi_baligi_right": {
+   "file": "assets/fish/fish_pisi_baligi_right.png",
+   "rect": [
+    336,
+    190,
+    39,
+    29
+   ],
+   "w": 39,
+   "h": 29,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:pisi_baligi"
+  },
+  "fish_pisi_baligi_sil_left": {
+   "file": "assets/fish/fish_pisi_baligi_sil_left.png",
+   "rect": [
+    376,
+    190,
+    39,
+    29
+   ],
+   "w": 39,
+   "h": 29,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:pisi_baligi"
+  },
+  "fish_pisi_baligi_sil_left_ui": {
+   "file": "assets/fish/fish_pisi_baligi_sil_left_ui.png",
+   "rect": [
+    416,
+    190,
+    39,
+    29
+   ],
+   "w": 39,
+   "h": 29,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:pisi_baligi"
+  },
+  "fish_pisi_baligi_sil_right": {
+   "file": "assets/fish/fish_pisi_baligi_sil_right.png",
+   "rect": [
+    456,
+    190,
+    39,
+    29
+   ],
+   "w": 39,
+   "h": 29,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:pisi_baligi"
+  },
+  "fish_akya_left": {
+   "file": "assets/fish/fish_akya_left.png",
+   "rect": [
+    496,
+    190,
+    55,
+    28
+   ],
+   "w": 55,
+   "h": 28,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:akya"
+  },
+  "fish_akya_right": {
+   "file": "assets/fish/fish_akya_right.png",
+   "rect": [
+    552,
+    190,
+    55,
+    28
+   ],
+   "w": 55,
+   "h": 28,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:akya"
+  },
+  "fish_akya_sil_left": {
+   "file": "assets/fish/fish_akya_sil_left.png",
+   "rect": [
+    608,
+    190,
+    55,
+    28
+   ],
+   "w": 55,
+   "h": 28,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:akya"
+  },
+  "fish_akya_sil_left_ui": {
+   "file": "assets/fish/fish_akya_sil_left_ui.png",
+   "rect": [
+    664,
+    190,
+    55,
+    28
+   ],
+   "w": 55,
+   "h": 28,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:akya"
+  },
+  "fish_akya_sil_right": {
+   "file": "assets/fish/fish_akya_sil_right.png",
+   "rect": [
+    720,
+    190,
+    55,
+    28
+   ],
+   "w": 55,
+   "h": 28,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:akya"
+  },
+  "fish_lambuka_left": {
+   "file": "assets/fish/fish_lambuka_left.png",
+   "rect": [
+    776,
+    190,
+    55,
+    28
+   ],
+   "w": 55,
+   "h": 28,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:lambuka"
+  },
+  "fish_lambuka_right": {
+   "file": "assets/fish/fish_lambuka_right.png",
+   "rect": [
+    832,
+    190,
+    55,
+    28
+   ],
+   "w": 55,
+   "h": 28,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:lambuka"
+  },
+  "fish_lambuka_sil_left": {
+   "file": "assets/fish/fish_lambuka_sil_left.png",
+   "rect": [
+    888,
+    190,
+    55,
+    28
+   ],
+   "w": 55,
+   "h": 28,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:lambuka"
+  },
+  "fish_lambuka_sil_left_ui": {
+   "file": "assets/fish/fish_lambuka_sil_left_ui.png",
+   "rect": [
+    944,
+    190,
+    55,
+    28
+   ],
+   "w": 55,
+   "h": 28,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:lambuka"
+  },
+  "fish_lambuka_sil_right": {
+   "file": "assets/fish/fish_lambuka_sil_right.png",
+   "rect": [
+    0,
+    220,
+    55,
+    28
+   ],
+   "w": 55,
+   "h": 28,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:lambuka"
+  },
+  "fish_mavi_yuzgecli_trevally_left": {
+   "file": "assets/fish/fish_mavi_yuzgecli_trevally_left.png",
+   "rect": [
+    56,
+    220,
+    45,
+    28
+   ],
+   "w": 45,
+   "h": 28,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:mavi_yuzgecli_trevally"
+  },
+  "fish_mavi_yuzgecli_trevally_right": {
+   "file": "assets/fish/fish_mavi_yuzgecli_trevally_right.png",
+   "rect": [
+    102,
+    220,
+    45,
+    28
+   ],
+   "w": 45,
+   "h": 28,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:mavi_yuzgecli_trevally"
+  },
+  "fish_mavi_yuzgecli_trevally_sil_left": {
+   "file": "assets/fish/fish_mavi_yuzgecli_trevally_sil_left.png",
+   "rect": [
+    148,
+    220,
+    45,
+    28
+   ],
+   "w": 45,
+   "h": 28,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:mavi_yuzgecli_trevally"
+  },
+  "fish_mavi_yuzgecli_trevally_sil_left_ui": {
+   "file": "assets/fish/fish_mavi_yuzgecli_trevally_sil_left_ui.png",
+   "rect": [
+    194,
+    220,
+    45,
+    28
+   ],
+   "w": 45,
+   "h": 28,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:mavi_yuzgecli_trevally"
+  },
+  "fish_mavi_yuzgecli_trevally_sil_right": {
+   "file": "assets/fish/fish_mavi_yuzgecli_trevally_sil_right.png",
+   "rect": [
+    240,
+    220,
+    45,
+    28
+   ],
+   "w": 45,
+   "h": 28,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:mavi_yuzgecli_trevally"
+  },
+  "fish_sarikuyruk_left": {
+   "file": "assets/fish/fish_sarikuyruk_left.png",
+   "rect": [
+    286,
+    220,
+    59,
+    26
+   ],
+   "w": 59,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:sarikuyruk"
+  },
+  "fish_sarikuyruk_right": {
+   "file": "assets/fish/fish_sarikuyruk_right.png",
+   "rect": [
+    346,
+    220,
+    59,
+    26
+   ],
+   "w": 59,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:sarikuyruk"
+  },
+  "fish_sarikuyruk_sil_left": {
+   "file": "assets/fish/fish_sarikuyruk_sil_left.png",
+   "rect": [
+    406,
+    220,
+    59,
+    26
+   ],
+   "w": 59,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:sarikuyruk"
+  },
+  "fish_sarikuyruk_sil_left_ui": {
+   "file": "assets/fish/fish_sarikuyruk_sil_left_ui.png",
+   "rect": [
+    466,
+    220,
+    59,
+    26
+   ],
+   "w": 59,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:sarikuyruk"
+  },
+  "fish_sarikuyruk_sil_right": {
+   "file": "assets/fish/fish_sarikuyruk_sil_right.png",
+   "rect": [
+    526,
+    220,
+    59,
+    26
+   ],
+   "w": 59,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:sarikuyruk"
+  },
+  "fish_sinarit_left": {
+   "file": "assets/fish/fish_sinarit_left.png",
+   "rect": [
+    586,
+    220,
+    49,
+    26
+   ],
+   "w": 49,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:sinarit"
+  },
+  "fish_sinarit_right": {
+   "file": "assets/fish/fish_sinarit_right.png",
+   "rect": [
+    636,
+    220,
+    49,
+    26
+   ],
+   "w": 49,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:sinarit"
+  },
+  "fish_sinarit_sil_left": {
+   "file": "assets/fish/fish_sinarit_sil_left.png",
+   "rect": [
+    686,
+    220,
+    49,
+    26
+   ],
+   "w": 49,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:sinarit"
+  },
+  "fish_sinarit_sil_left_ui": {
+   "file": "assets/fish/fish_sinarit_sil_left_ui.png",
+   "rect": [
+    736,
+    220,
+    49,
+    26
+   ],
+   "w": 49,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:sinarit"
+  },
+  "fish_sinarit_sil_right": {
+   "file": "assets/fish/fish_sinarit_sil_right.png",
+   "rect": [
+    786,
+    220,
+    49,
+    26
+   ],
+   "w": 49,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:sinarit"
+  },
+  "fish_fangri_left": {
+   "file": "assets/fish/fish_fangri_left.png",
+   "rect": [
+    836,
+    220,
+    43,
+    26
+   ],
+   "w": 43,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:fangri"
+  },
+  "fish_fangri_right": {
+   "file": "assets/fish/fish_fangri_right.png",
+   "rect": [
+    880,
+    220,
+    43,
+    26
+   ],
+   "w": 43,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:fangri"
+  },
+  "fish_fangri_sil_left": {
+   "file": "assets/fish/fish_fangri_sil_left.png",
+   "rect": [
+    924,
+    220,
+    43,
+    26
+   ],
+   "w": 43,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:fangri"
+  },
+  "fish_fangri_sil_left_ui": {
+   "file": "assets/fish/fish_fangri_sil_left_ui.png",
+   "rect": [
+    968,
+    220,
+    43,
+    26
+   ],
+   "w": 43,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:fangri"
+  },
+  "fish_fangri_sil_right": {
+   "file": "assets/fish/fish_fangri_sil_right.png",
+   "rect": [
+    0,
+    249,
+    43,
+    26
+   ],
+   "w": 43,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:fangri"
+  },
+  "fish_kirlangic_left": {
+   "file": "assets/fish/fish_kirlangic_left.png",
+   "rect": [
+    44,
+    249,
+    43,
+    26
+   ],
+   "w": 43,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:kirlangic"
+  },
+  "fish_kirlangic_right": {
+   "file": "assets/fish/fish_kirlangic_right.png",
+   "rect": [
+    88,
+    249,
+    43,
+    26
+   ],
+   "w": 43,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:kirlangic"
+  },
+  "fish_kirlangic_sil_left": {
+   "file": "assets/fish/fish_kirlangic_sil_left.png",
+   "rect": [
+    132,
+    249,
+    43,
+    26
+   ],
+   "w": 43,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kirlangic"
+  },
+  "fish_kirlangic_sil_left_ui": {
+   "file": "assets/fish/fish_kirlangic_sil_left_ui.png",
+   "rect": [
+    176,
+    249,
+    43,
+    26
+   ],
+   "w": 43,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kirlangic"
+  },
+  "fish_kirlangic_sil_right": {
+   "file": "assets/fish/fish_kirlangic_sil_right.png",
+   "rect": [
+    220,
+    249,
+    43,
+    26
+   ],
+   "w": 43,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:kirlangic"
+  },
+  "fish_mavi_cerrah_left": {
+   "file": "assets/fish/fish_mavi_cerrah_left.png",
+   "rect": [
+    264,
+    249,
+    33,
+    26
+   ],
+   "w": 33,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:mavi_cerrah"
+  },
+  "fish_mavi_cerrah_right": {
+   "file": "assets/fish/fish_mavi_cerrah_right.png",
+   "rect": [
+    298,
+    249,
+    33,
+    26
+   ],
+   "w": 33,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:mavi_cerrah"
+  },
+  "fish_mavi_cerrah_sil_left": {
+   "file": "assets/fish/fish_mavi_cerrah_sil_left.png",
+   "rect": [
+    332,
+    249,
+    33,
+    26
+   ],
+   "w": 33,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:mavi_cerrah"
+  },
+  "fish_mavi_cerrah_sil_left_ui": {
+   "file": "assets/fish/fish_mavi_cerrah_sil_left_ui.png",
+   "rect": [
+    366,
+    249,
+    33,
+    26
+   ],
+   "w": 33,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:mavi_cerrah"
+  },
+  "fish_mavi_cerrah_sil_right": {
+   "file": "assets/fish/fish_mavi_cerrah_sil_right.png",
+   "rect": [
+    400,
+    249,
+    33,
+    26
+   ],
+   "w": 33,
+   "h": 26,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:mavi_cerrah"
+  },
+  "fish_albakor_left": {
+   "file": "assets/fish/fish_albakor_left.png",
+   "rect": [
+    434,
+    249,
+    57,
+    25
+   ],
+   "w": 57,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:albakor"
+  },
+  "fish_albakor_right": {
+   "file": "assets/fish/fish_albakor_right.png",
+   "rect": [
+    492,
+    249,
+    57,
+    25
+   ],
+   "w": 57,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:albakor"
+  },
+  "fish_albakor_sil_left": {
+   "file": "assets/fish/fish_albakor_sil_left.png",
+   "rect": [
+    550,
+    249,
+    57,
+    25
+   ],
+   "w": 57,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:albakor"
+  },
+  "fish_albakor_sil_left_ui": {
+   "file": "assets/fish/fish_albakor_sil_left_ui.png",
+   "rect": [
+    608,
+    249,
+    57,
+    25
+   ],
+   "w": 57,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:albakor"
+  },
+  "fish_albakor_sil_right": {
+   "file": "assets/fish/fish_albakor_sil_right.png",
+   "rect": [
+    666,
+    249,
+    57,
+    25
+   ],
+   "w": 57,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:albakor"
+  },
+  "fish_lahoz_left": {
+   "file": "assets/fish/fish_lahoz_left.png",
+   "rect": [
+    724,
+    249,
+    45,
+    25
+   ],
+   "w": 45,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:lahoz"
+  },
+  "fish_lahoz_right": {
+   "file": "assets/fish/fish_lahoz_right.png",
+   "rect": [
+    770,
+    249,
+    45,
+    25
+   ],
+   "w": 45,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:lahoz"
+  },
+  "fish_lahoz_sil_left": {
+   "file": "assets/fish/fish_lahoz_sil_left.png",
+   "rect": [
+    816,
+    249,
+    45,
+    25
+   ],
+   "w": 45,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:lahoz"
+  },
+  "fish_lahoz_sil_left_ui": {
+   "file": "assets/fish/fish_lahoz_sil_left_ui.png",
+   "rect": [
+    862,
+    249,
+    45,
+    25
+   ],
+   "w": 45,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:lahoz"
+  },
+  "fish_lahoz_sil_right": {
+   "file": "assets/fish/fish_lahoz_sil_right.png",
+   "rect": [
+    908,
+    249,
+    45,
+    25
+   ],
+   "w": 45,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:lahoz"
+  },
+  "fish_eskina_left": {
+   "file": "assets/fish/fish_eskina_left.png",
+   "rect": [
+    954,
+    249,
+    41,
+    25
+   ],
+   "w": 41,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:eskina"
+  },
+  "fish_eskina_right": {
+   "file": "assets/fish/fish_eskina_right.png",
+   "rect": [
+    0,
+    276,
+    41,
+    25
+   ],
+   "w": 41,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:eskina"
+  },
+  "fish_eskina_sil_left": {
+   "file": "assets/fish/fish_eskina_sil_left.png",
+   "rect": [
+    42,
+    276,
+    41,
+    25
+   ],
+   "w": 41,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:eskina"
+  },
+  "fish_eskina_sil_left_ui": {
+   "file": "assets/fish/fish_eskina_sil_left_ui.png",
+   "rect": [
+    84,
+    276,
+    41,
+    25
+   ],
+   "w": 41,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:eskina"
+  },
+  "fish_eskina_sil_right": {
+   "file": "assets/fish/fish_eskina_sil_right.png",
+   "rect": [
+    126,
+    276,
+    41,
+    25
+   ],
+   "w": 41,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:eskina"
+  },
+  "fish_sargoz_left": {
+   "file": "assets/fish/fish_sargoz_left.png",
+   "rect": [
+    168,
+    276,
+    37,
+    25
+   ],
+   "w": 37,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:sargoz"
+  },
+  "fish_sargoz_right": {
+   "file": "assets/fish/fish_sargoz_right.png",
+   "rect": [
+    206,
+    276,
+    37,
+    25
+   ],
+   "w": 37,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:sargoz"
+  },
+  "fish_sargoz_sil_left": {
+   "file": "assets/fish/fish_sargoz_sil_left.png",
+   "rect": [
+    244,
+    276,
+    37,
+    25
+   ],
+   "w": 37,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:sargoz"
+  },
+  "fish_sargoz_sil_left_ui": {
+   "file": "assets/fish/fish_sargoz_sil_left_ui.png",
+   "rect": [
+    282,
+    276,
+    37,
+    25
+   ],
+   "w": 37,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:sargoz"
+  },
+  "fish_sargoz_sil_right": {
+   "file": "assets/fish/fish_sargoz_sil_right.png",
+   "rect": [
+    320,
+    276,
+    37,
+    25
+   ],
+   "w": 37,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:sargoz"
+  },
+  "fish_minakop_left": {
+   "file": "assets/fish/fish_minakop_left.png",
+   "rect": [
+    358,
+    276,
+    47,
+    24
+   ],
+   "w": 47,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:minakop"
+  },
+  "fish_minakop_right": {
+   "file": "assets/fish/fish_minakop_right.png",
+   "rect": [
+    406,
+    276,
+    47,
+    24
+   ],
+   "w": 47,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:minakop"
+  },
+  "fish_minakop_sil_left": {
+   "file": "assets/fish/fish_minakop_sil_left.png",
+   "rect": [
+    454,
+    276,
+    47,
+    24
+   ],
+   "w": 47,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:minakop"
+  },
+  "fish_minakop_sil_left_ui": {
+   "file": "assets/fish/fish_minakop_sil_left_ui.png",
+   "rect": [
+    502,
+    276,
+    47,
+    24
+   ],
+   "w": 47,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:minakop"
+  },
+  "fish_minakop_sil_right": {
+   "file": "assets/fish/fish_minakop_sil_right.png",
+   "rect": [
+    550,
+    276,
+    47,
+    24
+   ],
+   "w": 47,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:minakop"
+  },
+  "fish_kizil_levrek_left": {
+   "file": "assets/fish/fish_kizil_levrek_left.png",
+   "rect": [
+    598,
+    276,
+    43,
+    24
+   ],
+   "w": 43,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:kizil_levrek"
+  },
+  "fish_kizil_levrek_right": {
+   "file": "assets/fish/fish_kizil_levrek_right.png",
+   "rect": [
+    642,
+    276,
+    43,
+    24
+   ],
+   "w": 43,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:kizil_levrek"
+  },
+  "fish_kizil_levrek_sil_left": {
+   "file": "assets/fish/fish_kizil_levrek_sil_left.png",
+   "rect": [
+    686,
+    276,
+    43,
+    24
+   ],
+   "w": 43,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kizil_levrek"
+  },
+  "fish_kizil_levrek_sil_left_ui": {
+   "file": "assets/fish/fish_kizil_levrek_sil_left_ui.png",
+   "rect": [
+    730,
+    276,
+    43,
+    24
+   ],
+   "w": 43,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kizil_levrek"
+  },
+  "fish_kizil_levrek_sil_right": {
+   "file": "assets/fish/fish_kizil_levrek_sil_right.png",
+   "rect": [
+    774,
+    276,
+    43,
+    24
+   ],
+   "w": 43,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:kizil_levrek"
+  },
+  "fish_karagoz_left": {
+   "file": "assets/fish/fish_karagoz_left.png",
+   "rect": [
+    818,
+    276,
+    35,
+    24
+   ],
+   "w": 35,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:karagoz"
+  },
+  "fish_karagoz_right": {
+   "file": "assets/fish/fish_karagoz_right.png",
+   "rect": [
+    854,
+    276,
+    35,
+    24
+   ],
+   "w": 35,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:karagoz"
+  },
+  "fish_karagoz_sil_left": {
+   "file": "assets/fish/fish_karagoz_sil_left.png",
+   "rect": [
+    890,
+    276,
+    35,
+    24
+   ],
+   "w": 35,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:karagoz"
+  },
+  "fish_karagoz_sil_left_ui": {
+   "file": "assets/fish/fish_karagoz_sil_left_ui.png",
+   "rect": [
+    926,
+    276,
+    35,
+    24
+   ],
+   "w": 35,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:karagoz"
+  },
+  "fish_karagoz_sil_right": {
+   "file": "assets/fish/fish_karagoz_sil_right.png",
+   "rect": [
+    962,
+    276,
+    35,
+    24
+   ],
+   "w": 35,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:karagoz"
+  },
+  "fish_iskorpit_left": {
+   "file": "assets/fish/fish_iskorpit_left.png",
+   "rect": [
+    0,
+    302,
+    33,
+    24
+   ],
+   "w": 33,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:iskorpit"
+  },
+  "fish_iskorpit_right": {
+   "file": "assets/fish/fish_iskorpit_right.png",
+   "rect": [
+    34,
+    302,
+    33,
+    24
+   ],
+   "w": 33,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:iskorpit"
+  },
+  "fish_iskorpit_sil_left": {
+   "file": "assets/fish/fish_iskorpit_sil_left.png",
+   "rect": [
+    68,
+    302,
+    33,
+    24
+   ],
+   "w": 33,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:iskorpit"
+  },
+  "fish_iskorpit_sil_left_ui": {
+   "file": "assets/fish/fish_iskorpit_sil_left_ui.png",
+   "rect": [
+    102,
+    302,
+    33,
+    24
+   ],
+   "w": 33,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:iskorpit"
+  },
+  "fish_iskorpit_sil_right": {
+   "file": "assets/fish/fish_iskorpit_sil_right.png",
+   "rect": [
+    136,
+    302,
+    33,
+    24
+   ],
+   "w": 33,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:iskorpit"
+  },
+  "fish_morina_left": {
+   "file": "assets/fish/fish_morina_left.png",
+   "rect": [
+    170,
+    302,
+    51,
+    23
+   ],
+   "w": 51,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:morina"
+  },
+  "fish_morina_right": {
+   "file": "assets/fish/fish_morina_right.png",
+   "rect": [
+    222,
+    302,
+    51,
+    23
+   ],
+   "w": 51,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:morina"
+  },
+  "fish_morina_sil_left": {
+   "file": "assets/fish/fish_morina_sil_left.png",
+   "rect": [
+    274,
+    302,
+    51,
+    23
+   ],
+   "w": 51,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:morina"
+  },
+  "fish_morina_sil_left_ui": {
+   "file": "assets/fish/fish_morina_sil_left_ui.png",
+   "rect": [
+    326,
+    302,
+    51,
+    23
+   ],
+   "w": 51,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:morina"
+  },
+  "fish_morina_sil_right": {
+   "file": "assets/fish/fish_morina_sil_right.png",
+   "rect": [
+    378,
+    302,
+    51,
+    23
+   ],
+   "w": 51,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:morina"
+  },
+  "fish_cizgili_orkinos_left": {
+   "file": "assets/fish/fish_cizgili_orkinos_left.png",
+   "rect": [
+    430,
+    302,
+    49,
+    23
+   ],
+   "w": 49,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:cizgili_orkinos"
+  },
+  "fish_cizgili_orkinos_right": {
+   "file": "assets/fish/fish_cizgili_orkinos_right.png",
+   "rect": [
+    480,
+    302,
+    49,
+    23
+   ],
+   "w": 49,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:cizgili_orkinos"
+  },
+  "fish_cizgili_orkinos_sil_left": {
+   "file": "assets/fish/fish_cizgili_orkinos_sil_left.png",
+   "rect": [
+    530,
+    302,
+    49,
+    23
+   ],
+   "w": 49,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:cizgili_orkinos"
+  },
+  "fish_cizgili_orkinos_sil_left_ui": {
+   "file": "assets/fish/fish_cizgili_orkinos_sil_left_ui.png",
+   "rect": [
+    580,
+    302,
+    49,
+    23
+   ],
+   "w": 49,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:cizgili_orkinos"
+  },
+  "fish_cizgili_orkinos_sil_right": {
+   "file": "assets/fish/fish_cizgili_orkinos_sil_right.png",
+   "rect": [
+    630,
+    302,
+    49,
+    23
+   ],
+   "w": 49,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:cizgili_orkinos"
+  },
+  "fish_ucan_balik_left": {
+   "file": "assets/fish/fish_ucan_balik_left.png",
+   "rect": [
+    680,
+    302,
+    37,
+    23
+   ],
+   "w": 37,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:ucan_balik"
+  },
+  "fish_ucan_balik_right": {
+   "file": "assets/fish/fish_ucan_balik_right.png",
+   "rect": [
+    718,
+    302,
+    37,
+    23
+   ],
+   "w": 37,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:ucan_balik"
+  },
+  "fish_ucan_balik_sil_left": {
+   "file": "assets/fish/fish_ucan_balik_sil_left.png",
+   "rect": [
+    756,
+    302,
+    37,
+    23
+   ],
+   "w": 37,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:ucan_balik"
+  },
+  "fish_ucan_balik_sil_left_ui": {
+   "file": "assets/fish/fish_ucan_balik_sil_left_ui.png",
+   "rect": [
+    794,
+    302,
+    37,
+    23
+   ],
+   "w": 37,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:ucan_balik"
+  },
+  "fish_ucan_balik_sil_right": {
+   "file": "assets/fish/fish_ucan_balik_sil_right.png",
+   "rect": [
+    832,
+    302,
+    37,
+    23
+   ],
+   "w": 37,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:ucan_balik"
+  },
+  "fish_isparoz_left": {
+   "file": "assets/fish/fish_isparoz_left.png",
+   "rect": [
+    870,
+    302,
+    31,
+    23
+   ],
+   "w": 31,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:isparoz"
+  },
+  "fish_isparoz_right": {
+   "file": "assets/fish/fish_isparoz_right.png",
+   "rect": [
+    902,
+    302,
+    31,
+    23
+   ],
+   "w": 31,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:isparoz"
+  },
+  "fish_isparoz_sil_left": {
+   "file": "assets/fish/fish_isparoz_sil_left.png",
+   "rect": [
+    934,
+    302,
+    31,
+    23
+   ],
+   "w": 31,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:isparoz"
+  },
+  "fish_isparoz_sil_left_ui": {
+   "file": "assets/fish/fish_isparoz_sil_left_ui.png",
+   "rect": [
+    966,
+    302,
+    31,
+    23
+   ],
+   "w": 31,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:isparoz"
+  },
+  "fish_isparoz_sil_right": {
+   "file": "assets/fish/fish_isparoz_sil_right.png",
+   "rect": [
+    0,
+    327,
+    31,
+    23
+   ],
+   "w": 31,
+   "h": 23,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:isparoz"
+  },
+  "fish_yazili_orkinos_left": {
+   "file": "assets/fish/fish_yazili_orkinos_left.png",
+   "rect": [
+    32,
+    327,
+    51,
+    22
+   ],
+   "w": 51,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:yazili_orkinos"
+  },
+  "fish_yazili_orkinos_right": {
+   "file": "assets/fish/fish_yazili_orkinos_right.png",
+   "rect": [
+    84,
+    327,
+    51,
+    22
+   ],
+   "w": 51,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:yazili_orkinos"
+  },
+  "fish_yazili_orkinos_sil_left": {
+   "file": "assets/fish/fish_yazili_orkinos_sil_left.png",
+   "rect": [
+    136,
+    327,
+    51,
+    22
+   ],
+   "w": 51,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:yazili_orkinos"
+  },
+  "fish_yazili_orkinos_sil_left_ui": {
+   "file": "assets/fish/fish_yazili_orkinos_sil_left_ui.png",
+   "rect": [
+    188,
+    327,
+    51,
+    22
+   ],
+   "w": 51,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:yazili_orkinos"
+  },
+  "fish_yazili_orkinos_sil_right": {
+   "file": "assets/fish/fish_yazili_orkinos_sil_right.png",
+   "rect": [
+    240,
+    327,
+    51,
+    22
+   ],
+   "w": 51,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:yazili_orkinos"
+  },
+  "fish_papagan_baligi_left": {
+   "file": "assets/fish/fish_papagan_baligi_left.png",
+   "rect": [
+    292,
+    327,
+    43,
+    22
+   ],
+   "w": 43,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:papagan_baligi"
+  },
+  "fish_papagan_baligi_right": {
+   "file": "assets/fish/fish_papagan_baligi_right.png",
+   "rect": [
+    336,
+    327,
+    43,
+    22
+   ],
+   "w": 43,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:papagan_baligi"
+  },
+  "fish_papagan_baligi_sil_left": {
+   "file": "assets/fish/fish_papagan_baligi_sil_left.png",
+   "rect": [
+    380,
+    327,
+    43,
+    22
+   ],
+   "w": 43,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:papagan_baligi"
+  },
+  "fish_papagan_baligi_sil_left_ui": {
+   "file": "assets/fish/fish_papagan_baligi_sil_left_ui.png",
+   "rect": [
+    424,
+    327,
+    43,
+    22
+   ],
+   "w": 43,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:papagan_baligi"
+  },
+  "fish_papagan_baligi_sil_right": {
+   "file": "assets/fish/fish_papagan_baligi_sil_right.png",
+   "rect": [
+    468,
+    327,
+    43,
+    22
+   ],
+   "w": 43,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:papagan_baligi"
+  },
+  "fish_dil_baligi_left": {
+   "file": "assets/fish/fish_dil_baligi_left.png",
+   "rect": [
+    512,
+    327,
+    41,
+    22
+   ],
+   "w": 41,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:dil_baligi"
+  },
+  "fish_dil_baligi_right": {
+   "file": "assets/fish/fish_dil_baligi_right.png",
+   "rect": [
+    554,
+    327,
+    41,
+    22
+   ],
+   "w": 41,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:dil_baligi"
+  },
+  "fish_dil_baligi_sil_left": {
+   "file": "assets/fish/fish_dil_baligi_sil_left.png",
+   "rect": [
+    596,
+    327,
+    41,
+    22
+   ],
+   "w": 41,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:dil_baligi"
+  },
+  "fish_dil_baligi_sil_left_ui": {
+   "file": "assets/fish/fish_dil_baligi_sil_left_ui.png",
+   "rect": [
+    638,
+    327,
+    41,
+    22
+   ],
+   "w": 41,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:dil_baligi"
+  },
+  "fish_dil_baligi_sil_right": {
+   "file": "assets/fish/fish_dil_baligi_sil_right.png",
+   "rect": [
+    680,
+    327,
+    41,
+    22
+   ],
+   "w": 41,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:dil_baligi"
+  },
+  "fish_mercan_hanisi_left": {
+   "file": "assets/fish/fish_mercan_hanisi_left.png",
+   "rect": [
+    722,
+    327,
+    37,
+    22
+   ],
+   "w": 37,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:mercan_hanisi"
+  },
+  "fish_mercan_hanisi_right": {
+   "file": "assets/fish/fish_mercan_hanisi_right.png",
+   "rect": [
+    760,
+    327,
+    37,
+    22
+   ],
+   "w": 37,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:mercan_hanisi"
+  },
+  "fish_mercan_hanisi_sil_left": {
+   "file": "assets/fish/fish_mercan_hanisi_sil_left.png",
+   "rect": [
+    798,
+    327,
+    37,
+    22
+   ],
+   "w": 37,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:mercan_hanisi"
+  },
+  "fish_mercan_hanisi_sil_left_ui": {
+   "file": "assets/fish/fish_mercan_hanisi_sil_left_ui.png",
+   "rect": [
+    836,
+    327,
+    37,
+    22
+   ],
+   "w": 37,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:mercan_hanisi"
+  },
+  "fish_mercan_hanisi_sil_right": {
+   "file": "assets/fish/fish_mercan_hanisi_sil_right.png",
+   "rect": [
+    874,
+    327,
+    37,
+    22
+   ],
+   "w": 37,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:mercan_hanisi"
+  },
+  "fish_mirmir_left": {
+   "file": "assets/fish/fish_mirmir_left.png",
+   "rect": [
+    912,
+    327,
+    37,
+    22
+   ],
+   "w": 37,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:mirmir"
+  },
+  "fish_mirmir_right": {
+   "file": "assets/fish/fish_mirmir_right.png",
+   "rect": [
+    950,
+    327,
+    37,
+    22
+   ],
+   "w": 37,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:mirmir"
+  },
+  "fish_mirmir_sil_left": {
+   "file": "assets/fish/fish_mirmir_sil_left.png",
+   "rect": [
+    0,
+    351,
+    37,
+    22
+   ],
+   "w": 37,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:mirmir"
+  },
+  "fish_mirmir_sil_left_ui": {
+   "file": "assets/fish/fish_mirmir_sil_left_ui.png",
+   "rect": [
+    38,
+    351,
+    37,
+    22
+   ],
+   "w": 37,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:mirmir"
+  },
+  "fish_mirmir_sil_right": {
+   "file": "assets/fish/fish_mirmir_sil_right.png",
+   "rect": [
+    76,
+    351,
+    37,
+    22
+   ],
+   "w": 37,
+   "h": 22,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:mirmir"
+  },
+  "fish_levrek_left": {
+   "file": "assets/fish/fish_levrek_left.png",
+   "rect": [
+    114,
+    351,
+    45,
+    21
+   ],
+   "w": 45,
+   "h": 21,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:levrek"
+  },
+  "fish_levrek_right": {
+   "file": "assets/fish/fish_levrek_right.png",
+   "rect": [
+    160,
+    351,
+    45,
+    21
+   ],
+   "w": 45,
+   "h": 21,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:levrek"
+  },
+  "fish_levrek_sil_left": {
+   "file": "assets/fish/fish_levrek_sil_left.png",
+   "rect": [
+    206,
+    351,
+    45,
+    21
+   ],
+   "w": 45,
+   "h": 21,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:levrek"
+  },
+  "fish_levrek_sil_left_ui": {
+   "file": "assets/fish/fish_levrek_sil_left_ui.png",
+   "rect": [
+    252,
+    351,
+    45,
+    21
+   ],
+   "w": 45,
+   "h": 21,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:levrek"
+  },
+  "fish_levrek_sil_right": {
+   "file": "assets/fish/fish_levrek_sil_right.png",
+   "rect": [
+    298,
+    351,
+    45,
+    21
+   ],
+   "w": 45,
+   "h": 21,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:levrek"
+  },
+  "fish_mercan_left": {
+   "file": "assets/fish/fish_mercan_left.png",
+   "rect": [
+    344,
+    351,
+    39,
+    21
+   ],
+   "w": 39,
+   "h": 21,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:mercan"
+  },
+  "fish_mercan_right": {
+   "file": "assets/fish/fish_mercan_right.png",
+   "rect": [
+    384,
+    351,
+    39,
+    21
+   ],
+   "w": 39,
+   "h": 21,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:mercan"
+  },
+  "fish_mercan_sil_left": {
+   "file": "assets/fish/fish_mercan_sil_left.png",
+   "rect": [
+    424,
+    351,
+    39,
+    21
+   ],
+   "w": 39,
+   "h": 21,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:mercan"
+  },
+  "fish_mercan_sil_left_ui": {
+   "file": "assets/fish/fish_mercan_sil_left_ui.png",
+   "rect": [
+    464,
+    351,
+    39,
+    21
+   ],
+   "w": 39,
+   "h": 21,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:mercan"
+  },
+  "fish_mercan_sil_right": {
+   "file": "assets/fish/fish_mercan_sil_right.png",
+   "rect": [
+    504,
+    351,
+    39,
+    21
+   ],
+   "w": 39,
+   "h": 21,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:mercan"
+  },
+  "fish_komur_baligi_left": {
+   "file": "assets/fish/fish_komur_baligi_left.png",
+   "rect": [
+    544,
+    351,
+    49,
+    20
+   ],
+   "w": 49,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:komur_baligi"
+  },
+  "fish_komur_baligi_right": {
+   "file": "assets/fish/fish_komur_baligi_right.png",
+   "rect": [
+    594,
+    351,
+    49,
+    20
+   ],
+   "w": 49,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:komur_baligi"
+  },
+  "fish_komur_baligi_sil_left": {
+   "file": "assets/fish/fish_komur_baligi_sil_left.png",
+   "rect": [
+    644,
+    351,
+    49,
+    20
+   ],
+   "w": 49,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:komur_baligi"
+  },
+  "fish_komur_baligi_sil_left_ui": {
+   "file": "assets/fish/fish_komur_baligi_sil_left_ui.png",
+   "rect": [
+    694,
+    351,
+    49,
+    20
+   ],
+   "w": 49,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:komur_baligi"
+  },
+  "fish_komur_baligi_sil_right": {
+   "file": "assets/fish/fish_komur_baligi_sil_right.png",
+   "rect": [
+    744,
+    351,
+    49,
+    20
+   ],
+   "w": 49,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:komur_baligi"
+  },
+  "fish_palamut_left": {
+   "file": "assets/fish/fish_palamut_left.png",
+   "rect": [
+    794,
+    351,
+    49,
+    20
+   ],
+   "w": 49,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:palamut"
+  },
+  "fish_palamut_right": {
+   "file": "assets/fish/fish_palamut_right.png",
+   "rect": [
+    844,
+    351,
+    49,
+    20
+   ],
+   "w": 49,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:palamut"
+  },
+  "fish_palamut_sil_left": {
+   "file": "assets/fish/fish_palamut_sil_left.png",
+   "rect": [
+    894,
+    351,
+    49,
+    20
+   ],
+   "w": 49,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:palamut"
+  },
+  "fish_palamut_sil_left_ui": {
+   "file": "assets/fish/fish_palamut_sil_left_ui.png",
+   "rect": [
+    944,
+    351,
+    49,
+    20
+   ],
+   "w": 49,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:palamut"
+  },
+  "fish_palamut_sil_right": {
+   "file": "assets/fish/fish_palamut_sil_right.png",
+   "rect": [
+    0,
+    374,
+    49,
+    20
+   ],
+   "w": 49,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:palamut"
+  },
+  "fish_lufer_left": {
+   "file": "assets/fish/fish_lufer_left.png",
+   "rect": [
+    50,
+    374,
+    47,
+    20
+   ],
+   "w": 47,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:lufer"
+  },
+  "fish_lufer_right": {
+   "file": "assets/fish/fish_lufer_right.png",
+   "rect": [
+    98,
+    374,
+    47,
+    20
+   ],
+   "w": 47,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:lufer"
+  },
+  "fish_lufer_sil_left": {
+   "file": "assets/fish/fish_lufer_sil_left.png",
+   "rect": [
+    146,
+    374,
+    47,
+    20
+   ],
+   "w": 47,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:lufer"
+  },
+  "fish_lufer_sil_left_ui": {
+   "file": "assets/fish/fish_lufer_sil_left_ui.png",
+   "rect": [
+    194,
+    374,
+    47,
+    20
+   ],
+   "w": 47,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:lufer"
+  },
+  "fish_lufer_sil_right": {
+   "file": "assets/fish/fish_lufer_sil_right.png",
+   "rect": [
+    242,
+    374,
+    47,
+    20
+   ],
+   "w": 47,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:lufer"
+  },
+  "fish_tirsi_left": {
+   "file": "assets/fish/fish_tirsi_left.png",
+   "rect": [
+    290,
+    374,
+    41,
+    20
+   ],
+   "w": 41,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:tirsi"
+  },
+  "fish_tirsi_right": {
+   "file": "assets/fish/fish_tirsi_right.png",
+   "rect": [
+    332,
+    374,
+    41,
+    20
+   ],
+   "w": 41,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:tirsi"
+  },
+  "fish_tirsi_sil_left": {
+   "file": "assets/fish/fish_tirsi_sil_left.png",
+   "rect": [
+    374,
+    374,
+    41,
+    20
+   ],
+   "w": 41,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:tirsi"
+  },
+  "fish_tirsi_sil_left_ui": {
+   "file": "assets/fish/fish_tirsi_sil_left_ui.png",
+   "rect": [
+    416,
+    374,
+    41,
+    20
+   ],
+   "w": 41,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:tirsi"
+  },
+  "fish_tirsi_sil_right": {
+   "file": "assets/fish/fish_tirsi_sil_right.png",
+   "rect": [
+    458,
+    374,
+    41,
+    20
+   ],
+   "w": 41,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:tirsi"
+  },
+  "fish_barbun_left": {
+   "file": "assets/fish/fish_barbun_left.png",
+   "rect": [
+    988,
+    327,
+    35,
+    20
+   ],
+   "w": 35,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:barbun"
+  },
+  "fish_barbun_right": {
+   "file": "assets/fish/fish_barbun_right.png",
+   "rect": [
+    500,
+    374,
+    35,
+    20
+   ],
+   "w": 35,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:barbun"
+  },
+  "fish_barbun_sil_left": {
+   "file": "assets/fish/fish_barbun_sil_left.png",
+   "rect": [
+    536,
+    374,
+    35,
+    20
+   ],
+   "w": 35,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:barbun"
+  },
+  "fish_barbun_sil_left_ui": {
+   "file": "assets/fish/fish_barbun_sil_left_ui.png",
+   "rect": [
+    572,
+    374,
+    35,
+    20
+   ],
+   "w": 35,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:barbun"
+  },
+  "fish_barbun_sil_right": {
+   "file": "assets/fish/fish_barbun_sil_right.png",
+   "rect": [
+    608,
+    374,
+    35,
+    20
+   ],
+   "w": 35,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:barbun"
+  },
+  "fish_melanur_left": {
+   "file": "assets/fish/fish_melanur_left.png",
+   "rect": [
+    644,
+    374,
+    35,
+    19
+   ],
+   "w": 35,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:melanur"
+  },
+  "fish_melanur_right": {
+   "file": "assets/fish/fish_melanur_right.png",
+   "rect": [
+    680,
+    374,
+    35,
+    19
+   ],
+   "w": 35,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:melanur"
+  },
+  "fish_melanur_sil_left": {
+   "file": "assets/fish/fish_melanur_sil_left.png",
+   "rect": [
+    716,
+    374,
+    35,
+    19
+   ],
+   "w": 35,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:melanur"
+  },
+  "fish_melanur_sil_left_ui": {
+   "file": "assets/fish/fish_melanur_sil_left_ui.png",
+   "rect": [
+    752,
+    374,
+    35,
+    19
+   ],
+   "w": 35,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:melanur"
+  },
+  "fish_melanur_sil_right": {
+   "file": "assets/fish/fish_melanur_sil_right.png",
+   "rect": [
+    788,
+    374,
+    35,
+    19
+   ],
+   "w": 35,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:melanur"
+  },
+  "fish_sarpan_left": {
+   "file": "assets/fish/fish_sarpan_left.png",
+   "rect": [
+    824,
+    374,
+    35,
+    19
+   ],
+   "w": 35,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:sarpan"
+  },
+  "fish_sarpan_right": {
+   "file": "assets/fish/fish_sarpan_right.png",
+   "rect": [
+    860,
+    374,
+    35,
+    19
+   ],
+   "w": 35,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:sarpan"
+  },
+  "fish_sarpan_sil_left": {
+   "file": "assets/fish/fish_sarpan_sil_left.png",
+   "rect": [
+    896,
+    374,
+    35,
+    19
+   ],
+   "w": 35,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:sarpan"
+  },
+  "fish_sarpan_sil_left_ui": {
+   "file": "assets/fish/fish_sarpan_sil_left_ui.png",
+   "rect": [
+    932,
+    374,
+    35,
+    19
+   ],
+   "w": 35,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:sarpan"
+  },
+  "fish_sarpan_sil_right": {
+   "file": "assets/fish/fish_sarpan_sil_right.png",
+   "rect": [
+    968,
+    374,
+    35,
+    19
+   ],
+   "w": 35,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:sarpan"
+  },
+  "fish_hanos_left": {
+   "file": "assets/fish/fish_hanos_left.png",
+   "rect": [
+    0,
+    395,
+    33,
+    19
+   ],
+   "w": 33,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:hanos"
+  },
+  "fish_hanos_right": {
+   "file": "assets/fish/fish_hanos_right.png",
+   "rect": [
+    34,
+    395,
+    33,
+    19
+   ],
+   "w": 33,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:hanos"
+  },
+  "fish_hanos_sil_left": {
+   "file": "assets/fish/fish_hanos_sil_left.png",
+   "rect": [
+    68,
+    395,
+    33,
+    19
+   ],
+   "w": 33,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:hanos"
+  },
+  "fish_hanos_sil_left_ui": {
+   "file": "assets/fish/fish_hanos_sil_left_ui.png",
+   "rect": [
+    102,
+    395,
+    33,
+    19
+   ],
+   "w": 33,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:hanos"
+  },
+  "fish_hanos_sil_right": {
+   "file": "assets/fish/fish_hanos_sil_right.png",
+   "rect": [
+    136,
+    395,
+    33,
+    19
+   ],
+   "w": 33,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:hanos"
+  },
+  "fish_tekir_left": {
+   "file": "assets/fish/fish_tekir_left.png",
+   "rect": [
+    170,
+    395,
+    33,
+    19
+   ],
+   "w": 33,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:tekir"
+  },
+  "fish_tekir_right": {
+   "file": "assets/fish/fish_tekir_right.png",
+   "rect": [
+    204,
+    395,
+    33,
+    19
+   ],
+   "w": 33,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:tekir"
+  },
+  "fish_tekir_sil_left": {
+   "file": "assets/fish/fish_tekir_sil_left.png",
+   "rect": [
+    238,
+    395,
+    33,
+    19
+   ],
+   "w": 33,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:tekir"
+  },
+  "fish_tekir_sil_left_ui": {
+   "file": "assets/fish/fish_tekir_sil_left_ui.png",
+   "rect": [
+    272,
+    395,
+    33,
+    19
+   ],
+   "w": 33,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:tekir"
+  },
+  "fish_tekir_sil_right": {
+   "file": "assets/fish/fish_tekir_sil_right.png",
+   "rect": [
+    306,
+    395,
+    33,
+    19
+   ],
+   "w": 33,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:tekir"
+  },
+  "fish_wahoo_left": {
+   "file": "assets/fish/fish_wahoo_left.png",
+   "rect": [
+    340,
+    395,
+    65,
+    18
+   ],
+   "w": 65,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:wahoo"
+  },
+  "fish_wahoo_right": {
+   "file": "assets/fish/fish_wahoo_right.png",
+   "rect": [
+    406,
+    395,
+    65,
+    18
+   ],
+   "w": 65,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:wahoo"
+  },
+  "fish_wahoo_sil_left": {
+   "file": "assets/fish/fish_wahoo_sil_left.png",
+   "rect": [
+    472,
+    395,
+    65,
+    18
+   ],
+   "w": 65,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:wahoo"
+  },
+  "fish_wahoo_sil_left_ui": {
+   "file": "assets/fish/fish_wahoo_sil_left_ui.png",
+   "rect": [
+    538,
+    395,
+    65,
+    18
+   ],
+   "w": 65,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:wahoo"
+  },
+  "fish_wahoo_sil_right": {
+   "file": "assets/fish/fish_wahoo_sil_right.png",
+   "rect": [
+    604,
+    395,
+    65,
+    18
+   ],
+   "w": 65,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:wahoo"
+  },
+  "fish_kurt_baligi_left": {
+   "file": "assets/fish/fish_kurt_baligi_left.png",
+   "rect": [
+    670,
+    395,
+    59,
+    18
+   ],
+   "w": 59,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:kurt_baligi"
+  },
+  "fish_kurt_baligi_right": {
+   "file": "assets/fish/fish_kurt_baligi_right.png",
+   "rect": [
+    730,
+    395,
+    59,
+    18
+   ],
+   "w": 59,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:kurt_baligi"
+  },
+  "fish_kurt_baligi_sil_left": {
+   "file": "assets/fish/fish_kurt_baligi_sil_left.png",
+   "rect": [
+    790,
+    395,
+    59,
+    18
+   ],
+   "w": 59,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kurt_baligi"
+  },
+  "fish_kurt_baligi_sil_left_ui": {
+   "file": "assets/fish/fish_kurt_baligi_sil_left_ui.png",
+   "rect": [
+    850,
+    395,
+    59,
+    18
+   ],
+   "w": 59,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kurt_baligi"
+  },
+  "fish_kurt_baligi_sil_right": {
+   "file": "assets/fish/fish_kurt_baligi_sil_right.png",
+   "rect": [
+    910,
+    395,
+    59,
+    18
+   ],
+   "w": 59,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:kurt_baligi"
+  },
+  "fish_kefal_left": {
+   "file": "assets/fish/fish_kefal_left.png",
+   "rect": [
+    970,
+    395,
+    43,
+    18
+   ],
+   "w": 43,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:kefal"
+  },
+  "fish_kefal_right": {
+   "file": "assets/fish/fish_kefal_right.png",
+   "rect": [
+    0,
+    415,
+    43,
+    18
+   ],
+   "w": 43,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:kefal"
+  },
+  "fish_kefal_sil_left": {
+   "file": "assets/fish/fish_kefal_sil_left.png",
+   "rect": [
+    44,
+    415,
+    43,
+    18
+   ],
+   "w": 43,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kefal"
+  },
+  "fish_kefal_sil_left_ui": {
+   "file": "assets/fish/fish_kefal_sil_left_ui.png",
+   "rect": [
+    88,
+    415,
+    43,
+    18
+   ],
+   "w": 43,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kefal"
+  },
+  "fish_kefal_sil_right": {
+   "file": "assets/fish/fish_kefal_sil_right.png",
+   "rect": [
+    132,
+    415,
+    43,
+    18
+   ],
+   "w": 43,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:kefal"
+  },
+  "fish_sari_kuyruklu_fusilier_left": {
+   "file": "assets/fish/fish_sari_kuyruklu_fusilier_left.png",
+   "rect": [
+    176,
+    415,
+    35,
+    18
+   ],
+   "w": 35,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:sari_kuyruklu_fusilier"
+  },
+  "fish_sari_kuyruklu_fusilier_right": {
+   "file": "assets/fish/fish_sari_kuyruklu_fusilier_right.png",
+   "rect": [
+    212,
+    415,
+    35,
+    18
+   ],
+   "w": 35,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:sari_kuyruklu_fusilier"
+  },
+  "fish_sari_kuyruklu_fusilier_sil_left": {
+   "file": "assets/fish/fish_sari_kuyruklu_fusilier_sil_left.png",
+   "rect": [
+    248,
+    415,
+    35,
+    18
+   ],
+   "w": 35,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:sari_kuyruklu_fusilier"
+  },
+  "fish_sari_kuyruklu_fusilier_sil_left_ui": {
+   "file": "assets/fish/fish_sari_kuyruklu_fusilier_sil_left_ui.png",
+   "rect": [
+    284,
+    415,
+    35,
+    18
+   ],
+   "w": 35,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:sari_kuyruklu_fusilier"
+  },
+  "fish_sari_kuyruklu_fusilier_sil_right": {
+   "file": "assets/fish/fish_sari_kuyruklu_fusilier_sil_right.png",
+   "rect": [
+    320,
+    415,
+    35,
+    18
+   ],
+   "w": 35,
+   "h": 18,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:sari_kuyruklu_fusilier"
+  },
+  "fish_barrakuda_left": {
+   "file": "assets/fish/fish_barrakuda_left.png",
+   "rect": [
+    356,
+    415,
+    59,
+    17
+   ],
+   "w": 59,
+   "h": 17,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:barrakuda"
+  },
+  "fish_barrakuda_right": {
+   "file": "assets/fish/fish_barrakuda_right.png",
+   "rect": [
+    416,
+    415,
+    59,
+    17
+   ],
+   "w": 59,
+   "h": 17,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:barrakuda"
+  },
+  "fish_barrakuda_sil_left": {
+   "file": "assets/fish/fish_barrakuda_sil_left.png",
+   "rect": [
+    476,
+    415,
+    59,
+    17
+   ],
+   "w": 59,
+   "h": 17,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:barrakuda"
+  },
+  "fish_barrakuda_sil_left_ui": {
+   "file": "assets/fish/fish_barrakuda_sil_left_ui.png",
+   "rect": [
+    536,
+    415,
+    59,
+    17
+   ],
+   "w": 59,
+   "h": 17,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:barrakuda"
+  },
+  "fish_barrakuda_sil_right": {
+   "file": "assets/fish/fish_barrakuda_sil_right.png",
+   "rect": [
+    596,
+    415,
+    59,
+    17
+   ],
+   "w": 59,
+   "h": 17,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:barrakuda"
+  },
+  "fish_ringa_left": {
+   "file": "assets/fish/fish_ringa_left.png",
+   "rect": [
+    656,
+    415,
+    37,
+    17
+   ],
+   "w": 37,
+   "h": 17,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:ringa"
+  },
+  "fish_ringa_right": {
+   "file": "assets/fish/fish_ringa_right.png",
+   "rect": [
+    694,
+    415,
+    37,
+    17
+   ],
+   "w": 37,
+   "h": 17,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:ringa"
+  },
+  "fish_ringa_sil_left": {
+   "file": "assets/fish/fish_ringa_sil_left.png",
+   "rect": [
+    732,
+    415,
+    37,
+    17
+   ],
+   "w": 37,
+   "h": 17,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:ringa"
+  },
+  "fish_ringa_sil_left_ui": {
+   "file": "assets/fish/fish_ringa_sil_left_ui.png",
+   "rect": [
+    770,
+    415,
+    37,
+    17
+   ],
+   "w": 37,
+   "h": 17,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:ringa"
+  },
+  "fish_ringa_sil_right": {
+   "file": "assets/fish/fish_ringa_sil_right.png",
+   "rect": [
+    808,
+    415,
+    37,
+    17
+   ],
+   "w": 37,
+   "h": 17,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:ringa"
+  },
+  "fish_istavrit_left": {
+   "file": "assets/fish/fish_istavrit_left.png",
+   "rect": [
+    846,
+    415,
+    35,
+    17
+   ],
+   "w": 35,
+   "h": 17,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:istavrit"
+  },
+  "fish_istavrit_right": {
+   "file": "assets/fish/fish_istavrit_right.png",
+   "rect": [
+    882,
+    415,
+    35,
+    17
+   ],
+   "w": 35,
+   "h": 17,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:istavrit"
+  },
+  "fish_istavrit_sil_left": {
+   "file": "assets/fish/fish_istavrit_sil_left.png",
+   "rect": [
+    918,
+    415,
+    35,
+    17
+   ],
+   "w": 35,
+   "h": 17,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:istavrit"
+  },
+  "fish_istavrit_sil_left_ui": {
+   "file": "assets/fish/fish_istavrit_sil_left_ui.png",
+   "rect": [
+    954,
+    415,
+    35,
+    17
+   ],
+   "w": 35,
+   "h": 17,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:istavrit"
+  },
+  "fish_istavrit_sil_right": {
+   "file": "assets/fish/fish_istavrit_sil_right.png",
+   "rect": [
+    0,
+    434,
+    35,
+    17
+   ],
+   "w": 35,
+   "h": 17,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:istavrit"
+  },
+  "fish_uskumru_left": {
+   "file": "assets/fish/fish_uskumru_left.png",
+   "rect": [
+    36,
+    434,
+    43,
+    16
+   ],
+   "w": 43,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:uskumru"
+  },
+  "fish_uskumru_right": {
+   "file": "assets/fish/fish_uskumru_right.png",
+   "rect": [
+    80,
+    434,
+    43,
+    16
+   ],
+   "w": 43,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:uskumru"
+  },
+  "fish_uskumru_sil_left": {
+   "file": "assets/fish/fish_uskumru_sil_left.png",
+   "rect": [
+    124,
+    434,
+    43,
+    16
+   ],
+   "w": 43,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:uskumru"
+  },
+  "fish_uskumru_sil_left_ui": {
+   "file": "assets/fish/fish_uskumru_sil_left_ui.png",
+   "rect": [
+    168,
+    434,
+    43,
+    16
+   ],
+   "w": 43,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:uskumru"
+  },
+  "fish_uskumru_sil_right": {
+   "file": "assets/fish/fish_uskumru_sil_right.png",
+   "rect": [
+    212,
+    434,
+    43,
+    16
+   ],
+   "w": 43,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:uskumru"
+  },
+  "fish_kolyoz_left": {
+   "file": "assets/fish/fish_kolyoz_left.png",
+   "rect": [
+    256,
+    434,
+    41,
+    16
+   ],
+   "w": 41,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:kolyoz"
+  },
+  "fish_kolyoz_right": {
+   "file": "assets/fish/fish_kolyoz_right.png",
+   "rect": [
+    298,
+    434,
+    41,
+    16
+   ],
+   "w": 41,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:kolyoz"
+  },
+  "fish_kolyoz_sil_left": {
+   "file": "assets/fish/fish_kolyoz_sil_left.png",
+   "rect": [
+    340,
+    434,
+    41,
+    16
+   ],
+   "w": 41,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kolyoz"
+  },
+  "fish_kolyoz_sil_left_ui": {
+   "file": "assets/fish/fish_kolyoz_sil_left_ui.png",
+   "rect": [
+    382,
+    434,
+    41,
+    16
+   ],
+   "w": 41,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kolyoz"
+  },
+  "fish_kolyoz_sil_right": {
+   "file": "assets/fish/fish_kolyoz_sil_right.png",
+   "rect": [
+    424,
+    434,
+    41,
+    16
+   ],
+   "w": 41,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:kolyoz"
+  },
+  "fish_mezgit_left": {
+   "file": "assets/fish/fish_mezgit_left.png",
+   "rect": [
+    466,
+    434,
+    41,
+    16
+   ],
+   "w": 41,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:mezgit"
+  },
+  "fish_mezgit_right": {
+   "file": "assets/fish/fish_mezgit_right.png",
+   "rect": [
+    508,
+    434,
+    41,
+    16
+   ],
+   "w": 41,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:mezgit"
+  },
+  "fish_mezgit_sil_left": {
+   "file": "assets/fish/fish_mezgit_sil_left.png",
+   "rect": [
+    550,
+    434,
+    41,
+    16
+   ],
+   "w": 41,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:mezgit"
+  },
+  "fish_mezgit_sil_left_ui": {
+   "file": "assets/fish/fish_mezgit_sil_left_ui.png",
+   "rect": [
+    592,
+    434,
+    41,
+    16
+   ],
+   "w": 41,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:mezgit"
+  },
+  "fish_mezgit_sil_right": {
+   "file": "assets/fish/fish_mezgit_sil_right.png",
+   "rect": [
+    634,
+    434,
+    41,
+    16
+   ],
+   "w": 41,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:mezgit"
+  },
+  "fish_izmarit_left": {
+   "file": "assets/fish/fish_izmarit_left.png",
+   "rect": [
+    990,
+    415,
+    33,
+    16
+   ],
+   "w": 33,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:izmarit"
+  },
+  "fish_izmarit_right": {
+   "file": "assets/fish/fish_izmarit_right.png",
+   "rect": [
+    676,
+    434,
+    33,
+    16
+   ],
+   "w": 33,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:izmarit"
+  },
+  "fish_izmarit_sil_left": {
+   "file": "assets/fish/fish_izmarit_sil_left.png",
+   "rect": [
+    710,
+    434,
+    33,
+    16
+   ],
+   "w": 33,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:izmarit"
+  },
+  "fish_izmarit_sil_left_ui": {
+   "file": "assets/fish/fish_izmarit_sil_left_ui.png",
+   "rect": [
+    744,
+    434,
+    33,
+    16
+   ],
+   "w": 33,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:izmarit"
+  },
+  "fish_izmarit_sil_right": {
+   "file": "assets/fish/fish_izmarit_sil_right.png",
+   "rect": [
+    778,
+    434,
+    33,
+    16
+   ],
+   "w": 33,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:izmarit"
+  },
+  "fish_sardalya_left": {
+   "file": "assets/fish/fish_sardalya_left.png",
+   "rect": [
+    812,
+    434,
+    33,
+    16
+   ],
+   "w": 33,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:sardalya"
+  },
+  "fish_sardalya_right": {
+   "file": "assets/fish/fish_sardalya_right.png",
+   "rect": [
+    846,
+    434,
+    33,
+    16
+   ],
+   "w": 33,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:sardalya"
+  },
+  "fish_sardalya_sil_left": {
+   "file": "assets/fish/fish_sardalya_sil_left.png",
+   "rect": [
+    880,
+    434,
+    33,
+    16
+   ],
+   "w": 33,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:sardalya"
+  },
+  "fish_sardalya_sil_left_ui": {
+   "file": "assets/fish/fish_sardalya_sil_left_ui.png",
+   "rect": [
+    914,
+    434,
+    33,
+    16
+   ],
+   "w": 33,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:sardalya"
+  },
+  "fish_sardalya_sil_right": {
+   "file": "assets/fish/fish_sardalya_sil_right.png",
+   "rect": [
+    948,
+    434,
+    33,
+    16
+   ],
+   "w": 33,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:sardalya"
+  },
+  "fish_kaya_baligi_left": {
+   "file": "assets/fish/fish_kaya_baligi_left.png",
+   "rect": [
+    994,
+    351,
+    29,
+    16
+   ],
+   "w": 29,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:kaya_baligi"
+  },
+  "fish_kaya_baligi_right": {
+   "file": "assets/fish/fish_kaya_baligi_right.png",
+   "rect": [
+    982,
+    434,
+    29,
+    16
+   ],
+   "w": 29,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:kaya_baligi"
+  },
+  "fish_kaya_baligi_sil_left": {
+   "file": "assets/fish/fish_kaya_baligi_sil_left.png",
+   "rect": [
+    0,
+    452,
+    29,
+    16
+   ],
+   "w": 29,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kaya_baligi"
+  },
+  "fish_kaya_baligi_sil_left_ui": {
+   "file": "assets/fish/fish_kaya_baligi_sil_left_ui.png",
+   "rect": [
+    30,
+    452,
+    29,
+    16
+   ],
+   "w": 29,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kaya_baligi"
+  },
+  "fish_kaya_baligi_sil_right": {
+   "file": "assets/fish/fish_kaya_baligi_sil_right.png",
+   "rect": [
+    60,
+    452,
+    29,
+    16
+   ],
+   "w": 29,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:kaya_baligi"
+  },
+  "fish_zargana_left": {
+   "file": "assets/fish/fish_zargana_left.png",
+   "rect": [
+    90,
+    452,
+    63,
+    15
+   ],
+   "w": 63,
+   "h": 15,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:zargana"
+  },
+  "fish_zargana_right": {
+   "file": "assets/fish/fish_zargana_right.png",
+   "rect": [
+    154,
+    452,
+    63,
+    15
+   ],
+   "w": 63,
+   "h": 15,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:zargana"
+  },
+  "fish_zargana_sil_left": {
+   "file": "assets/fish/fish_zargana_sil_left.png",
+   "rect": [
+    218,
+    452,
+    63,
+    15
+   ],
+   "w": 63,
+   "h": 15,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:zargana"
+  },
+  "fish_zargana_sil_left_ui": {
+   "file": "assets/fish/fish_zargana_sil_left_ui.png",
+   "rect": [
+    282,
+    452,
+    63,
+    15
+   ],
+   "w": 63,
+   "h": 15,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:zargana"
+  },
+  "fish_zargana_sil_right": {
+   "file": "assets/fish/fish_zargana_sil_right.png",
+   "rect": [
+    346,
+    452,
+    63,
+    15
+   ],
+   "w": 63,
+   "h": 15,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:zargana"
+  },
+  "fish_kupes_left": {
+   "file": "assets/fish/fish_kupes_left.png",
+   "rect": [
+    410,
+    452,
+    31,
+    15
+   ],
+   "w": 31,
+   "h": 15,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:kupes"
+  },
+  "fish_kupes_right": {
+   "file": "assets/fish/fish_kupes_right.png",
+   "rect": [
+    442,
+    452,
+    31,
+    15
+   ],
+   "w": 31,
+   "h": 15,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:kupes"
+  },
+  "fish_kupes_sil_left": {
+   "file": "assets/fish/fish_kupes_sil_left.png",
+   "rect": [
+    474,
+    452,
+    31,
+    15
+   ],
+   "w": 31,
+   "h": 15,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kupes"
+  },
+  "fish_kupes_sil_left_ui": {
+   "file": "assets/fish/fish_kupes_sil_left_ui.png",
+   "rect": [
+    506,
+    452,
+    31,
+    15
+   ],
+   "w": 31,
+   "h": 15,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kupes"
+  },
+  "fish_kupes_sil_right": {
+   "file": "assets/fish/fish_kupes_sil_right.png",
+   "rect": [
+    538,
+    452,
+    31,
+    15
+   ],
+   "w": 31,
+   "h": 15,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:kupes"
+  },
+  "fish_gumus_baligi_left": {
+   "file": "assets/fish/fish_gumus_baligi_left.png",
+   "rect": [
+    570,
+    452,
+    29,
+    12
+   ],
+   "w": 29,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:gumus_baligi"
+  },
+  "fish_gumus_baligi_right": {
+   "file": "assets/fish/fish_gumus_baligi_right.png",
+   "rect": [
+    600,
+    452,
+    29,
+    12
+   ],
+   "w": 29,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:gumus_baligi"
+  },
+  "fish_gumus_baligi_sil_left": {
+   "file": "assets/fish/fish_gumus_baligi_sil_left.png",
+   "rect": [
+    630,
+    452,
+    29,
+    12
+   ],
+   "w": 29,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:gumus_baligi"
+  },
+  "fish_gumus_baligi_sil_left_ui": {
+   "file": "assets/fish/fish_gumus_baligi_sil_left_ui.png",
+   "rect": [
+    660,
+    452,
+    29,
+    12
+   ],
+   "w": 29,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:gumus_baligi"
+  },
+  "fish_gumus_baligi_sil_right": {
+   "file": "assets/fish/fish_gumus_baligi_sil_right.png",
+   "rect": [
+    690,
+    452,
+    29,
+    12
+   ],
+   "w": 29,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:gumus_baligi"
+  },
+  "fish_hamsi_left": {
+   "file": "assets/fish/fish_hamsi_left.png",
+   "rect": [
+    996,
+    121,
+    27,
+    12
+   ],
+   "w": 27,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:hamsi"
+  },
+  "fish_hamsi_right": {
+   "file": "assets/fish/fish_hamsi_right.png",
+   "rect": [
+    996,
+    249,
+    27,
+    12
+   ],
+   "w": 27,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:hamsi"
+  },
+  "fish_hamsi_sil_left": {
+   "file": "assets/fish/fish_hamsi_sil_left.png",
+   "rect": [
+    720,
+    452,
+    27,
+    12
+   ],
+   "w": 27,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:hamsi"
+  },
+  "fish_hamsi_sil_left_ui": {
+   "file": "assets/fish/fish_hamsi_sil_left_ui.png",
+   "rect": [
+    748,
+    452,
+    27,
+    12
+   ],
+   "w": 27,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:hamsi"
+  },
+  "fish_hamsi_sil_right": {
+   "file": "assets/fish/fish_hamsi_sil_right.png",
+   "rect": [
+    776,
+    452,
+    27,
+    12
+   ],
+   "w": 27,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:hamsi"
+  },
+  "fish_kapelin_left": {
+   "file": "assets/fish/fish_kapelin_left.png",
+   "rect": [
+    804,
+    452,
+    27,
+    12
+   ],
+   "w": 27,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fish:kapelin"
+  },
+  "fish_kapelin_right": {
+   "file": "assets/fish/fish_kapelin_right.png",
+   "rect": [
+    832,
+    452,
+    27,
+    12
+   ],
+   "w": 27,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishR:kapelin"
+  },
+  "fish_kapelin_sil_left": {
+   "file": "assets/fish/fish_kapelin_sil_left.png",
+   "rect": [
+    860,
+    452,
+    27,
+    12
+   ],
+   "w": 27,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kapelin"
+  },
+  "fish_kapelin_sil_left_ui": {
+   "file": "assets/fish/fish_kapelin_sil_left_ui.png",
+   "rect": [
+    888,
+    452,
+    27,
+    12
+   ],
+   "w": 27,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsil:kapelin"
+  },
+  "fish_kapelin_sil_right": {
+   "file": "assets/fish/fish_kapelin_sil_right.png",
+   "rect": [
+    916,
+    452,
+    27,
+    12
+   ],
+   "w": 27,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "fishsilR:kapelin"
+  }
+ }
+}

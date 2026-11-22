@@ -1,0 +1,2650 @@
+{
+ "atlas": "boat_atlas",
+ "image": "boat_atlas.png",
+ "size": [
+  1024,
+  710
+ ],
+ "frames": {
+  "boat_offshore_akinti_base_back": {
+   "file": "assets/boats/boat_offshore_akinti_base_back.png",
+   "rect": [
+    0,
+    0,
+    176,
+    126
+   ],
+   "w": 176,
+   "h": 126,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_akinti_base_front": {
+   "file": "assets/boats/boat_offshore_akinti_base_front.png",
+   "rect": [
+    177,
+    0,
+    176,
+    126
+   ],
+   "w": 176,
+   "h": 126,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_offshore_coral_base_back": {
+   "file": "assets/boats/boat_offshore_coral_base_back.png",
+   "rect": [
+    354,
+    0,
+    176,
+    126
+   ],
+   "w": 176,
+   "h": 126,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_coral_base_front": {
+   "file": "assets/boats/boat_offshore_coral_base_front.png",
+   "rect": [
+    531,
+    0,
+    176,
+    126
+   ],
+   "w": 176,
+   "h": 126,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_offshore_navy_base_back": {
+   "file": "assets/boats/boat_offshore_navy_base_back.png",
+   "rect": [
+    708,
+    0,
+    176,
+    126
+   ],
+   "w": 176,
+   "h": 126,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_navy_base_front": {
+   "file": "assets/boats/boat_offshore_navy_base_front.png",
+   "rect": [
+    0,
+    127,
+    176,
+    126
+   ],
+   "w": 176,
+   "h": 126,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_offshore_sand_base_back": {
+   "file": "assets/boats/boat_offshore_sand_base_back.png",
+   "rect": [
+    177,
+    127,
+    176,
+    126
+   ],
+   "w": 176,
+   "h": 126,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_sand_base_front": {
+   "file": "assets/boats/boat_offshore_sand_base_front.png",
+   "rect": [
+    354,
+    127,
+    176,
+    126
+   ],
+   "w": 176,
+   "h": 126,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_offshore_sea_green_base_back": {
+   "file": "assets/boats/boat_offshore_sea_green_base_back.png",
+   "rect": [
+    531,
+    127,
+    176,
+    126
+   ],
+   "w": 176,
+   "h": 126,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_sea_green_base_front": {
+   "file": "assets/boats/boat_offshore_sea_green_base_front.png",
+   "rect": [
+    708,
+    127,
+    176,
+    126
+   ],
+   "w": 176,
+   "h": 126,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_cabin_akinti_base_back": {
+   "file": "assets/boats/boat_cabin_akinti_base_back.png",
+   "rect": [
+    0,
+    254,
+    140,
+    98
+   ],
+   "w": 140,
+   "h": 98,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_akinti_base_front": {
+   "file": "assets/boats/boat_cabin_akinti_base_front.png",
+   "rect": [
+    141,
+    254,
+    140,
+    98
+   ],
+   "w": 140,
+   "h": 98,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_cabin_coral_base_back": {
+   "file": "assets/boats/boat_cabin_coral_base_back.png",
+   "rect": [
+    282,
+    254,
+    140,
+    98
+   ],
+   "w": 140,
+   "h": 98,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_coral_base_front": {
+   "file": "assets/boats/boat_cabin_coral_base_front.png",
+   "rect": [
+    423,
+    254,
+    140,
+    98
+   ],
+   "w": 140,
+   "h": 98,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_cabin_navy_base_back": {
+   "file": "assets/boats/boat_cabin_navy_base_back.png",
+   "rect": [
+    564,
+    254,
+    140,
+    98
+   ],
+   "w": 140,
+   "h": 98,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_navy_base_front": {
+   "file": "assets/boats/boat_cabin_navy_base_front.png",
+   "rect": [
+    705,
+    254,
+    140,
+    98
+   ],
+   "w": 140,
+   "h": 98,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_cabin_sand_base_back": {
+   "file": "assets/boats/boat_cabin_sand_base_back.png",
+   "rect": [
+    846,
+    254,
+    140,
+    98
+   ],
+   "w": 140,
+   "h": 98,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_sand_base_front": {
+   "file": "assets/boats/boat_cabin_sand_base_front.png",
+   "rect": [
+    0,
+    353,
+    140,
+    98
+   ],
+   "w": 140,
+   "h": 98,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_cabin_sea_green_base_back": {
+   "file": "assets/boats/boat_cabin_sea_green_base_back.png",
+   "rect": [
+    141,
+    353,
+    140,
+    98
+   ],
+   "w": 140,
+   "h": 98,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_sea_green_base_front": {
+   "file": "assets/boats/boat_cabin_sea_green_base_front.png",
+   "rect": [
+    282,
+    353,
+    140,
+    98
+   ],
+   "w": 140,
+   "h": 98,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_motorboat_akinti_base_back": {
+   "file": "assets/boats/boat_motorboat_akinti_base_back.png",
+   "rect": [
+    885,
+    0,
+    116,
+    74
+   ],
+   "w": 116,
+   "h": 74,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_akinti_base_front": {
+   "file": "assets/boats/boat_motorboat_akinti_base_front.png",
+   "rect": [
+    885,
+    127,
+    116,
+    74
+   ],
+   "w": 116,
+   "h": 74,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_motorboat_coral_base_back": {
+   "file": "assets/boats/boat_motorboat_coral_base_back.png",
+   "rect": [
+    423,
+    353,
+    116,
+    74
+   ],
+   "w": 116,
+   "h": 74,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_coral_base_front": {
+   "file": "assets/boats/boat_motorboat_coral_base_front.png",
+   "rect": [
+    540,
+    353,
+    116,
+    74
+   ],
+   "w": 116,
+   "h": 74,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_motorboat_navy_base_back": {
+   "file": "assets/boats/boat_motorboat_navy_base_back.png",
+   "rect": [
+    657,
+    353,
+    116,
+    74
+   ],
+   "w": 116,
+   "h": 74,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_navy_base_front": {
+   "file": "assets/boats/boat_motorboat_navy_base_front.png",
+   "rect": [
+    774,
+    353,
+    116,
+    74
+   ],
+   "w": 116,
+   "h": 74,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_motorboat_sand_base_back": {
+   "file": "assets/boats/boat_motorboat_sand_base_back.png",
+   "rect": [
+    891,
+    353,
+    116,
+    74
+   ],
+   "w": 116,
+   "h": 74,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_sand_base_front": {
+   "file": "assets/boats/boat_motorboat_sand_base_front.png",
+   "rect": [
+    0,
+    452,
+    116,
+    74
+   ],
+   "w": 116,
+   "h": 74,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_motorboat_sea_green_base_back": {
+   "file": "assets/boats/boat_motorboat_sea_green_base_back.png",
+   "rect": [
+    117,
+    452,
+    116,
+    74
+   ],
+   "w": 116,
+   "h": 74,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_sea_green_base_front": {
+   "file": "assets/boats/boat_motorboat_sea_green_base_front.png",
+   "rect": [
+    234,
+    452,
+    116,
+    74
+   ],
+   "w": 116,
+   "h": 74,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_cabin_akinti_motor4_back": {
+   "file": "assets/boats/boat_cabin_akinti_motor4_back.png",
+   "rect": [
+    351,
+    452,
+    79,
+    68
+   ],
+   "w": 79,
+   "h": 68,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_coral_motor4_back": {
+   "file": "assets/boats/boat_cabin_coral_motor4_back.png",
+   "rect": [
+    431,
+    452,
+    79,
+    68
+   ],
+   "w": 79,
+   "h": 68,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_navy_motor4_back": {
+   "file": "assets/boats/boat_cabin_navy_motor4_back.png",
+   "rect": [
+    511,
+    452,
+    79,
+    68
+   ],
+   "w": 79,
+   "h": 68,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_sand_motor4_back": {
+   "file": "assets/boats/boat_cabin_sand_motor4_back.png",
+   "rect": [
+    591,
+    452,
+    79,
+    68
+   ],
+   "w": 79,
+   "h": 68,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_sea_green_motor4_back": {
+   "file": "assets/boats/boat_cabin_sea_green_motor4_back.png",
+   "rect": [
+    671,
+    452,
+    79,
+    68
+   ],
+   "w": 79,
+   "h": 68,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_akinti_base_back": {
+   "file": "assets/boats/boat_coastal_skiff_akinti_base_back.png",
+   "rect": [
+    751,
+    452,
+    84,
+    52
+   ],
+   "w": 84,
+   "h": 52,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_akinti_base_front": {
+   "file": "assets/boats/boat_coastal_skiff_akinti_base_front.png",
+   "rect": [
+    836,
+    452,
+    84,
+    52
+   ],
+   "w": 84,
+   "h": 52,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_coastal_skiff_coral_base_back": {
+   "file": "assets/boats/boat_coastal_skiff_coral_base_back.png",
+   "rect": [
+    921,
+    452,
+    84,
+    52
+   ],
+   "w": 84,
+   "h": 52,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_coral_base_front": {
+   "file": "assets/boats/boat_coastal_skiff_coral_base_front.png",
+   "rect": [
+    0,
+    527,
+    84,
+    52
+   ],
+   "w": 84,
+   "h": 52,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_coastal_skiff_navy_base_back": {
+   "file": "assets/boats/boat_coastal_skiff_navy_base_back.png",
+   "rect": [
+    85,
+    527,
+    84,
+    52
+   ],
+   "w": 84,
+   "h": 52,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_navy_base_front": {
+   "file": "assets/boats/boat_coastal_skiff_navy_base_front.png",
+   "rect": [
+    170,
+    527,
+    84,
+    52
+   ],
+   "w": 84,
+   "h": 52,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_coastal_skiff_sand_base_back": {
+   "file": "assets/boats/boat_coastal_skiff_sand_base_back.png",
+   "rect": [
+    255,
+    527,
+    84,
+    52
+   ],
+   "w": 84,
+   "h": 52,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_sand_base_front": {
+   "file": "assets/boats/boat_coastal_skiff_sand_base_front.png",
+   "rect": [
+    340,
+    527,
+    84,
+    52
+   ],
+   "w": 84,
+   "h": 52,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_coastal_skiff_sea_green_base_back": {
+   "file": "assets/boats/boat_coastal_skiff_sea_green_base_back.png",
+   "rect": [
+    425,
+    527,
+    84,
+    52
+   ],
+   "w": 84,
+   "h": 52,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_sea_green_base_front": {
+   "file": "assets/boats/boat_coastal_skiff_sea_green_base_front.png",
+   "rect": [
+    510,
+    527,
+    84,
+    52
+   ],
+   "w": 84,
+   "h": 52,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_offshore_akinti_hull2_front": {
+   "file": "assets/boats/boat_offshore_akinti_hull2_front.png",
+   "rect": [
+    595,
+    527,
+    163,
+    42
+   ],
+   "w": 163,
+   "h": 42,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_offshore_coral_hull2_front": {
+   "file": "assets/boats/boat_offshore_coral_hull2_front.png",
+   "rect": [
+    759,
+    527,
+    163,
+    42
+   ],
+   "w": 163,
+   "h": 42,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_offshore_navy_hull2_front": {
+   "file": "assets/boats/boat_offshore_navy_hull2_front.png",
+   "rect": [
+    0,
+    580,
+    163,
+    42
+   ],
+   "w": 163,
+   "h": 42,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_offshore_sand_hull2_front": {
+   "file": "assets/boats/boat_offshore_sand_hull2_front.png",
+   "rect": [
+    164,
+    580,
+    163,
+    42
+   ],
+   "w": 163,
+   "h": 42,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_offshore_sea_green_hull2_front": {
+   "file": "assets/boats/boat_offshore_sea_green_hull2_front.png",
+   "rect": [
+    328,
+    580,
+    163,
+    42
+   ],
+   "w": 163,
+   "h": 42,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_cabin_akinti_hull2_front": {
+   "file": "assets/boats/boat_cabin_akinti_hull2_front.png",
+   "rect": [
+    492,
+    580,
+    129,
+    34
+   ],
+   "w": 129,
+   "h": 34,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_cabin_coral_hull2_front": {
+   "file": "assets/boats/boat_cabin_coral_hull2_front.png",
+   "rect": [
+    622,
+    580,
+    129,
+    34
+   ],
+   "w": 129,
+   "h": 34,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_cabin_navy_hull2_front": {
+   "file": "assets/boats/boat_cabin_navy_hull2_front.png",
+   "rect": [
+    752,
+    580,
+    129,
+    34
+   ],
+   "w": 129,
+   "h": 34,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_cabin_sand_hull2_front": {
+   "file": "assets/boats/boat_cabin_sand_hull2_front.png",
+   "rect": [
+    882,
+    580,
+    129,
+    34
+   ],
+   "w": 129,
+   "h": 34,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_cabin_sea_green_hull2_front": {
+   "file": "assets/boats/boat_cabin_sea_green_hull2_front.png",
+   "rect": [
+    0,
+    623,
+    129,
+    34
+   ],
+   "w": 129,
+   "h": 34,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_motorboat_akinti_hull2_front": {
+   "file": "assets/boats/boat_motorboat_akinti_hull2_front.png",
+   "rect": [
+    130,
+    623,
+    105,
+    27
+   ],
+   "w": 105,
+   "h": 27,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_motorboat_coral_hull2_front": {
+   "file": "assets/boats/boat_motorboat_coral_hull2_front.png",
+   "rect": [
+    236,
+    623,
+    105,
+    27
+   ],
+   "w": 105,
+   "h": 27,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_motorboat_navy_hull2_front": {
+   "file": "assets/boats/boat_motorboat_navy_hull2_front.png",
+   "rect": [
+    342,
+    623,
+    105,
+    27
+   ],
+   "w": 105,
+   "h": 27,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_motorboat_sand_hull2_front": {
+   "file": "assets/boats/boat_motorboat_sand_hull2_front.png",
+   "rect": [
+    448,
+    623,
+    105,
+    27
+   ],
+   "w": 105,
+   "h": 27,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_motorboat_sea_green_hull2_front": {
+   "file": "assets/boats/boat_motorboat_sea_green_hull2_front.png",
+   "rect": [
+    554,
+    623,
+    105,
+    27
+   ],
+   "w": 105,
+   "h": 27,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_coastal_skiff_akinti_nav2_back": {
+   "file": "assets/boats/boat_coastal_skiff_akinti_nav2_back.png",
+   "rect": [
+    1002,
+    0,
+    7,
+    25
+   ],
+   "w": 7,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_coral_nav2_back": {
+   "file": "assets/boats/boat_coastal_skiff_coral_nav2_back.png",
+   "rect": [
+    1010,
+    0,
+    7,
+    25
+   ],
+   "w": 7,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_navy_nav2_back": {
+   "file": "assets/boats/boat_coastal_skiff_navy_nav2_back.png",
+   "rect": [
+    1002,
+    127,
+    7,
+    25
+   ],
+   "w": 7,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_sand_nav2_back": {
+   "file": "assets/boats/boat_coastal_skiff_sand_nav2_back.png",
+   "rect": [
+    1010,
+    127,
+    7,
+    25
+   ],
+   "w": 7,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_sea_green_nav2_back": {
+   "file": "assets/boats/boat_coastal_skiff_sea_green_nav2_back.png",
+   "rect": [
+    987,
+    254,
+    7,
+    25
+   ],
+   "w": 7,
+   "h": 25,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_akinti_motor2_back": {
+   "file": "assets/boats/boat_coastal_skiff_akinti_motor2_back.png",
+   "rect": [
+    995,
+    254,
+    9,
+    24
+   ],
+   "w": 9,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_coral_motor2_back": {
+   "file": "assets/boats/boat_coastal_skiff_coral_motor2_back.png",
+   "rect": [
+    1005,
+    254,
+    9,
+    24
+   ],
+   "w": 9,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_navy_motor2_back": {
+   "file": "assets/boats/boat_coastal_skiff_navy_motor2_back.png",
+   "rect": [
+    1008,
+    353,
+    9,
+    24
+   ],
+   "w": 9,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_sand_motor2_back": {
+   "file": "assets/boats/boat_coastal_skiff_sand_motor2_back.png",
+   "rect": [
+    1006,
+    452,
+    9,
+    24
+   ],
+   "w": 9,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_sea_green_motor2_back": {
+   "file": "assets/boats/boat_coastal_skiff_sea_green_motor2_back.png",
+   "rect": [
+    923,
+    527,
+    9,
+    24
+   ],
+   "w": 9,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_akinti_motor5_back": {
+   "file": "assets/boats/boat_offshore_akinti_motor5_back.png",
+   "rect": [
+    1018,
+    0,
+    5,
+    24
+   ],
+   "w": 5,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_coral_motor5_back": {
+   "file": "assets/boats/boat_offshore_coral_motor5_back.png",
+   "rect": [
+    1018,
+    127,
+    5,
+    24
+   ],
+   "w": 5,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_navy_motor5_back": {
+   "file": "assets/boats/boat_offshore_navy_motor5_back.png",
+   "rect": [
+    1015,
+    254,
+    5,
+    24
+   ],
+   "w": 5,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_sand_motor5_back": {
+   "file": "assets/boats/boat_offshore_sand_motor5_back.png",
+   "rect": [
+    1018,
+    353,
+    5,
+    24
+   ],
+   "w": 5,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_sea_green_motor5_back": {
+   "file": "assets/boats/boat_offshore_sea_green_motor5_back.png",
+   "rect": [
+    1016,
+    452,
+    5,
+    24
+   ],
+   "w": 5,
+   "h": 24,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_akinti_hull1_front": {
+   "file": "assets/boats/boat_offshore_akinti_hull1_front.png",
+   "rect": [
+    660,
+    623,
+    133,
+    21
+   ],
+   "w": 133,
+   "h": 21,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_offshore_coral_hull1_front": {
+   "file": "assets/boats/boat_offshore_coral_hull1_front.png",
+   "rect": [
+    794,
+    623,
+    133,
+    21
+   ],
+   "w": 133,
+   "h": 21,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_offshore_navy_hull1_front": {
+   "file": "assets/boats/boat_offshore_navy_hull1_front.png",
+   "rect": [
+    0,
+    658,
+    133,
+    21
+   ],
+   "w": 133,
+   "h": 21,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_offshore_sand_hull1_front": {
+   "file": "assets/boats/boat_offshore_sand_hull1_front.png",
+   "rect": [
+    134,
+    658,
+    133,
+    21
+   ],
+   "w": 133,
+   "h": 21,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_offshore_sea_green_hull1_front": {
+   "file": "assets/boats/boat_offshore_sea_green_hull1_front.png",
+   "rect": [
+    268,
+    658,
+    133,
+    21
+   ],
+   "w": 133,
+   "h": 21,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_cabin_akinti_hull1_front": {
+   "file": "assets/boats/boat_cabin_akinti_hull1_front.png",
+   "rect": [
+    402,
+    658,
+    104,
+    20
+   ],
+   "w": 104,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_cabin_coral_hull1_front": {
+   "file": "assets/boats/boat_cabin_coral_hull1_front.png",
+   "rect": [
+    507,
+    658,
+    104,
+    20
+   ],
+   "w": 104,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_cabin_navy_hull1_front": {
+   "file": "assets/boats/boat_cabin_navy_hull1_front.png",
+   "rect": [
+    612,
+    658,
+    104,
+    20
+   ],
+   "w": 104,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_cabin_sand_hull1_front": {
+   "file": "assets/boats/boat_cabin_sand_hull1_front.png",
+   "rect": [
+    717,
+    658,
+    104,
+    20
+   ],
+   "w": 104,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_cabin_sea_green_hull1_front": {
+   "file": "assets/boats/boat_cabin_sea_green_hull1_front.png",
+   "rect": [
+    822,
+    658,
+    104,
+    20
+   ],
+   "w": 104,
+   "h": 20,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_coastal_skiff_akinti_hull2_front": {
+   "file": "assets/boats/boat_coastal_skiff_akinti_hull2_front.png",
+   "rect": [
+    933,
+    527,
+    71,
+    19
+   ],
+   "w": 71,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_coastal_skiff_coral_hull2_front": {
+   "file": "assets/boats/boat_coastal_skiff_coral_hull2_front.png",
+   "rect": [
+    928,
+    623,
+    71,
+    19
+   ],
+   "w": 71,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_coastal_skiff_navy_hull2_front": {
+   "file": "assets/boats/boat_coastal_skiff_navy_hull2_front.png",
+   "rect": [
+    927,
+    658,
+    71,
+    19
+   ],
+   "w": 71,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_coastal_skiff_sand_hull2_front": {
+   "file": "assets/boats/boat_coastal_skiff_sand_hull2_front.png",
+   "rect": [
+    0,
+    680,
+    71,
+    19
+   ],
+   "w": 71,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_coastal_skiff_sea_green_hull2_front": {
+   "file": "assets/boats/boat_coastal_skiff_sea_green_hull2_front.png",
+   "rect": [
+    72,
+    680,
+    71,
+    19
+   ],
+   "w": 71,
+   "h": 19,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_motorboat_akinti_hull1_front": {
+   "file": "assets/boats/boat_motorboat_akinti_hull1_front.png",
+   "rect": [
+    144,
+    680,
+    86,
+    16
+   ],
+   "w": 86,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_motorboat_coral_hull1_front": {
+   "file": "assets/boats/boat_motorboat_coral_hull1_front.png",
+   "rect": [
+    231,
+    680,
+    86,
+    16
+   ],
+   "w": 86,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_motorboat_navy_hull1_front": {
+   "file": "assets/boats/boat_motorboat_navy_hull1_front.png",
+   "rect": [
+    318,
+    680,
+    86,
+    16
+   ],
+   "w": 86,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_motorboat_sand_hull1_front": {
+   "file": "assets/boats/boat_motorboat_sand_hull1_front.png",
+   "rect": [
+    405,
+    680,
+    86,
+    16
+   ],
+   "w": 86,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_motorboat_sea_green_hull1_front": {
+   "file": "assets/boats/boat_motorboat_sea_green_hull1_front.png",
+   "rect": [
+    492,
+    680,
+    86,
+    16
+   ],
+   "w": 86,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_coastal_skiff_akinti_nav1_back": {
+   "file": "assets/boats/boat_coastal_skiff_akinti_nav1_back.png",
+   "rect": [
+    1005,
+    527,
+    5,
+    13
+   ],
+   "w": 5,
+   "h": 13,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_coral_nav1_back": {
+   "file": "assets/boats/boat_coastal_skiff_coral_nav1_back.png",
+   "rect": [
+    1011,
+    527,
+    5,
+    13
+   ],
+   "w": 5,
+   "h": 13,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_navy_nav1_back": {
+   "file": "assets/boats/boat_coastal_skiff_navy_nav1_back.png",
+   "rect": [
+    1017,
+    527,
+    5,
+    13
+   ],
+   "w": 5,
+   "h": 13,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_sand_nav1_back": {
+   "file": "assets/boats/boat_coastal_skiff_sand_nav1_back.png",
+   "rect": [
+    1012,
+    580,
+    5,
+    13
+   ],
+   "w": 5,
+   "h": 13,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_sea_green_nav1_back": {
+   "file": "assets/boats/boat_coastal_skiff_sea_green_nav1_back.png",
+   "rect": [
+    1018,
+    580,
+    5,
+    13
+   ],
+   "w": 5,
+   "h": 13,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_akinti_hull1_front": {
+   "file": "assets/boats/boat_coastal_skiff_akinti_hull1_front.png",
+   "rect": [
+    579,
+    680,
+    55,
+    12
+   ],
+   "w": 55,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_coastal_skiff_coral_hull1_front": {
+   "file": "assets/boats/boat_coastal_skiff_coral_hull1_front.png",
+   "rect": [
+    635,
+    680,
+    55,
+    12
+   ],
+   "w": 55,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_coastal_skiff_navy_hull1_front": {
+   "file": "assets/boats/boat_coastal_skiff_navy_hull1_front.png",
+   "rect": [
+    691,
+    680,
+    55,
+    12
+   ],
+   "w": 55,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_coastal_skiff_sand_hull1_front": {
+   "file": "assets/boats/boat_coastal_skiff_sand_hull1_front.png",
+   "rect": [
+    747,
+    680,
+    55,
+    12
+   ],
+   "w": 55,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_coastal_skiff_sea_green_hull1_front": {
+   "file": "assets/boats/boat_coastal_skiff_sea_green_hull1_front.png",
+   "rect": [
+    803,
+    680,
+    55,
+    12
+   ],
+   "w": 55,
+   "h": 12,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "front"
+  },
+  "boat_offshore_akinti_storage36_back": {
+   "file": "assets/boats/boat_offshore_akinti_storage36_back.png",
+   "rect": [
+    859,
+    680,
+    30,
+    9
+   ],
+   "w": 30,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_coral_storage36_back": {
+   "file": "assets/boats/boat_offshore_coral_storage36_back.png",
+   "rect": [
+    890,
+    680,
+    30,
+    9
+   ],
+   "w": 30,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_navy_storage36_back": {
+   "file": "assets/boats/boat_offshore_navy_storage36_back.png",
+   "rect": [
+    921,
+    680,
+    30,
+    9
+   ],
+   "w": 30,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_sand_storage36_back": {
+   "file": "assets/boats/boat_offshore_sand_storage36_back.png",
+   "rect": [
+    952,
+    680,
+    30,
+    9
+   ],
+   "w": 30,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_sea_green_storage36_back": {
+   "file": "assets/boats/boat_offshore_sea_green_storage36_back.png",
+   "rect": [
+    983,
+    680,
+    30,
+    9
+   ],
+   "w": 30,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_akinti_storage28_back": {
+   "file": "assets/boats/boat_cabin_akinti_storage28_back.png",
+   "rect": [
+    0,
+    700,
+    25,
+    9
+   ],
+   "w": 25,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_coral_storage28_back": {
+   "file": "assets/boats/boat_cabin_coral_storage28_back.png",
+   "rect": [
+    26,
+    700,
+    25,
+    9
+   ],
+   "w": 25,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_navy_storage28_back": {
+   "file": "assets/boats/boat_cabin_navy_storage28_back.png",
+   "rect": [
+    52,
+    700,
+    25,
+    9
+   ],
+   "w": 25,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_sand_storage28_back": {
+   "file": "assets/boats/boat_cabin_sand_storage28_back.png",
+   "rect": [
+    78,
+    700,
+    25,
+    9
+   ],
+   "w": 25,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_sea_green_storage28_back": {
+   "file": "assets/boats/boat_cabin_sea_green_storage28_back.png",
+   "rect": [
+    104,
+    700,
+    25,
+    9
+   ],
+   "w": 25,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_akinti_storage20_back": {
+   "file": "assets/boats/boat_motorboat_akinti_storage20_back.png",
+   "rect": [
+    1000,
+    623,
+    22,
+    9
+   ],
+   "w": 22,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_coral_storage20_back": {
+   "file": "assets/boats/boat_motorboat_coral_storage20_back.png",
+   "rect": [
+    999,
+    658,
+    22,
+    9
+   ],
+   "w": 22,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_navy_storage20_back": {
+   "file": "assets/boats/boat_motorboat_navy_storage20_back.png",
+   "rect": [
+    130,
+    700,
+    22,
+    9
+   ],
+   "w": 22,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_sand_storage20_back": {
+   "file": "assets/boats/boat_motorboat_sand_storage20_back.png",
+   "rect": [
+    153,
+    700,
+    22,
+    9
+   ],
+   "w": 22,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_sea_green_storage20_back": {
+   "file": "assets/boats/boat_motorboat_sea_green_storage20_back.png",
+   "rect": [
+    176,
+    700,
+    22,
+    9
+   ],
+   "w": 22,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_akinti_nav2_back": {
+   "file": "assets/boats/boat_offshore_akinti_nav2_back.png",
+   "rect": [
+    199,
+    700,
+    10,
+    9
+   ],
+   "w": 10,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_coral_nav2_back": {
+   "file": "assets/boats/boat_offshore_coral_nav2_back.png",
+   "rect": [
+    210,
+    700,
+    10,
+    9
+   ],
+   "w": 10,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_navy_nav2_back": {
+   "file": "assets/boats/boat_offshore_navy_nav2_back.png",
+   "rect": [
+    221,
+    700,
+    10,
+    9
+   ],
+   "w": 10,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_sand_nav2_back": {
+   "file": "assets/boats/boat_offshore_sand_nav2_back.png",
+   "rect": [
+    232,
+    700,
+    10,
+    9
+   ],
+   "w": 10,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_sea_green_nav2_back": {
+   "file": "assets/boats/boat_offshore_sea_green_nav2_back.png",
+   "rect": [
+    243,
+    700,
+    10,
+    9
+   ],
+   "w": 10,
+   "h": 9,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_akinti_nav2_back": {
+   "file": "assets/boats/boat_cabin_akinti_nav2_back.png",
+   "rect": [
+    254,
+    700,
+    11,
+    8
+   ],
+   "w": 11,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_coral_nav2_back": {
+   "file": "assets/boats/boat_cabin_coral_nav2_back.png",
+   "rect": [
+    266,
+    700,
+    11,
+    8
+   ],
+   "w": 11,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_navy_nav2_back": {
+   "file": "assets/boats/boat_cabin_navy_nav2_back.png",
+   "rect": [
+    278,
+    700,
+    11,
+    8
+   ],
+   "w": 11,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_sand_nav2_back": {
+   "file": "assets/boats/boat_cabin_sand_nav2_back.png",
+   "rect": [
+    290,
+    700,
+    11,
+    8
+   ],
+   "w": 11,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_sea_green_nav2_back": {
+   "file": "assets/boats/boat_cabin_sea_green_nav2_back.png",
+   "rect": [
+    302,
+    700,
+    11,
+    8
+   ],
+   "w": 11,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_akinti_motor3_back": {
+   "file": "assets/boats/boat_motorboat_akinti_motor3_back.png",
+   "rect": [
+    1014,
+    680,
+    7,
+    8
+   ],
+   "w": 7,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_coral_motor3_back": {
+   "file": "assets/boats/boat_motorboat_coral_motor3_back.png",
+   "rect": [
+    314,
+    700,
+    7,
+    8
+   ],
+   "w": 7,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_navy_motor3_back": {
+   "file": "assets/boats/boat_motorboat_navy_motor3_back.png",
+   "rect": [
+    322,
+    700,
+    7,
+    8
+   ],
+   "w": 7,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_sand_motor3_back": {
+   "file": "assets/boats/boat_motorboat_sand_motor3_back.png",
+   "rect": [
+    330,
+    700,
+    7,
+    8
+   ],
+   "w": 7,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_sea_green_motor3_back": {
+   "file": "assets/boats/boat_motorboat_sea_green_motor3_back.png",
+   "rect": [
+    338,
+    700,
+    7,
+    8
+   ],
+   "w": 7,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_akinti_storage12_back": {
+   "file": "assets/boats/boat_coastal_skiff_akinti_storage12_back.png",
+   "rect": [
+    346,
+    700,
+    16,
+    6
+   ],
+   "w": 16,
+   "h": 6,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_coral_storage12_back": {
+   "file": "assets/boats/boat_coastal_skiff_coral_storage12_back.png",
+   "rect": [
+    363,
+    700,
+    16,
+    6
+   ],
+   "w": 16,
+   "h": 6,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_navy_storage12_back": {
+   "file": "assets/boats/boat_coastal_skiff_navy_storage12_back.png",
+   "rect": [
+    380,
+    700,
+    16,
+    6
+   ],
+   "w": 16,
+   "h": 6,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_sand_storage12_back": {
+   "file": "assets/boats/boat_coastal_skiff_sand_storage12_back.png",
+   "rect": [
+    397,
+    700,
+    16,
+    6
+   ],
+   "w": 16,
+   "h": 6,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_sea_green_storage12_back": {
+   "file": "assets/boats/boat_coastal_skiff_sea_green_storage12_back.png",
+   "rect": [
+    414,
+    700,
+    16,
+    6
+   ],
+   "w": 16,
+   "h": 6,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_akinti_nav1_back": {
+   "file": "assets/boats/boat_motorboat_akinti_nav1_back.png",
+   "rect": [
+    431,
+    700,
+    12,
+    6
+   ],
+   "w": 12,
+   "h": 6,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_coral_nav1_back": {
+   "file": "assets/boats/boat_motorboat_coral_nav1_back.png",
+   "rect": [
+    444,
+    700,
+    12,
+    6
+   ],
+   "w": 12,
+   "h": 6,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_navy_nav1_back": {
+   "file": "assets/boats/boat_motorboat_navy_nav1_back.png",
+   "rect": [
+    457,
+    700,
+    12,
+    6
+   ],
+   "w": 12,
+   "h": 6,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_sand_nav1_back": {
+   "file": "assets/boats/boat_motorboat_sand_nav1_back.png",
+   "rect": [
+    470,
+    700,
+    12,
+    6
+   ],
+   "w": 12,
+   "h": 6,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_sea_green_nav1_back": {
+   "file": "assets/boats/boat_motorboat_sea_green_nav1_back.png",
+   "rect": [
+    483,
+    700,
+    12,
+    6
+   ],
+   "w": 12,
+   "h": 6,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_akinti_storage9_back": {
+   "file": "assets/boats/boat_coastal_skiff_akinti_storage9_back.png",
+   "rect": [
+    496,
+    700,
+    8,
+    6
+   ],
+   "w": 8,
+   "h": 6,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_coral_storage9_back": {
+   "file": "assets/boats/boat_coastal_skiff_coral_storage9_back.png",
+   "rect": [
+    505,
+    700,
+    8,
+    6
+   ],
+   "w": 8,
+   "h": 6,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_navy_storage9_back": {
+   "file": "assets/boats/boat_coastal_skiff_navy_storage9_back.png",
+   "rect": [
+    514,
+    700,
+    8,
+    6
+   ],
+   "w": 8,
+   "h": 6,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_sand_storage9_back": {
+   "file": "assets/boats/boat_coastal_skiff_sand_storage9_back.png",
+   "rect": [
+    523,
+    700,
+    8,
+    6
+   ],
+   "w": 8,
+   "h": 6,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_coastal_skiff_sea_green_storage9_back": {
+   "file": "assets/boats/boat_coastal_skiff_sea_green_storage9_back.png",
+   "rect": [
+    532,
+    700,
+    8,
+    6
+   ],
+   "w": 8,
+   "h": 6,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_akinti_storage16_back": {
+   "file": "assets/boats/boat_motorboat_akinti_storage16_back.png",
+   "rect": [
+    541,
+    700,
+    10,
+    5
+   ],
+   "w": 10,
+   "h": 5,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_coral_storage16_back": {
+   "file": "assets/boats/boat_motorboat_coral_storage16_back.png",
+   "rect": [
+    552,
+    700,
+    10,
+    5
+   ],
+   "w": 10,
+   "h": 5,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_navy_storage16_back": {
+   "file": "assets/boats/boat_motorboat_navy_storage16_back.png",
+   "rect": [
+    563,
+    700,
+    10,
+    5
+   ],
+   "w": 10,
+   "h": 5,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_sand_storage16_back": {
+   "file": "assets/boats/boat_motorboat_sand_storage16_back.png",
+   "rect": [
+    574,
+    700,
+    10,
+    5
+   ],
+   "w": 10,
+   "h": 5,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_motorboat_sea_green_storage16_back": {
+   "file": "assets/boats/boat_motorboat_sea_green_storage16_back.png",
+   "rect": [
+    585,
+    700,
+    10,
+    5
+   ],
+   "w": 10,
+   "h": 5,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_akinti_storage30_back": {
+   "file": "assets/boats/boat_offshore_akinti_storage30_back.png",
+   "rect": [
+    596,
+    700,
+    14,
+    4
+   ],
+   "w": 14,
+   "h": 4,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_coral_storage30_back": {
+   "file": "assets/boats/boat_offshore_coral_storage30_back.png",
+   "rect": [
+    611,
+    700,
+    14,
+    4
+   ],
+   "w": 14,
+   "h": 4,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_navy_storage30_back": {
+   "file": "assets/boats/boat_offshore_navy_storage30_back.png",
+   "rect": [
+    626,
+    700,
+    14,
+    4
+   ],
+   "w": 14,
+   "h": 4,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_sand_storage30_back": {
+   "file": "assets/boats/boat_offshore_sand_storage30_back.png",
+   "rect": [
+    641,
+    700,
+    14,
+    4
+   ],
+   "w": 14,
+   "h": 4,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_offshore_sea_green_storage30_back": {
+   "file": "assets/boats/boat_offshore_sea_green_storage30_back.png",
+   "rect": [
+    656,
+    700,
+    14,
+    4
+   ],
+   "w": 14,
+   "h": 4,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_akinti_storage23_back": {
+   "file": "assets/boats/boat_cabin_akinti_storage23_back.png",
+   "rect": [
+    671,
+    700,
+    11,
+    4
+   ],
+   "w": 11,
+   "h": 4,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_coral_storage23_back": {
+   "file": "assets/boats/boat_cabin_coral_storage23_back.png",
+   "rect": [
+    683,
+    700,
+    11,
+    4
+   ],
+   "w": 11,
+   "h": 4,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_navy_storage23_back": {
+   "file": "assets/boats/boat_cabin_navy_storage23_back.png",
+   "rect": [
+    695,
+    700,
+    11,
+    4
+   ],
+   "w": 11,
+   "h": 4,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_sand_storage23_back": {
+   "file": "assets/boats/boat_cabin_sand_storage23_back.png",
+   "rect": [
+    707,
+    700,
+    11,
+    4
+   ],
+   "w": 11,
+   "h": 4,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  },
+  "boat_cabin_sea_green_storage23_back": {
+   "file": "assets/boats/boat_cabin_sea_green_storage23_back.png",
+   "rect": [
+    719,
+    700,
+    11,
+    4
+   ],
+   "w": 11,
+   "h": 4,
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "back"
+  }
+ }
+}

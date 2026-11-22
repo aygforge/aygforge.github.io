@@ -1,0 +1,974 @@
+{
+ "atlas": "environment_season_autumn",
+ "image": "environment_season_autumn.png",
+ "size": [
+  2045,
+  1625
+ ],
+ "frames": {
+  "env_home_autumn": {
+   "file": "assets/environments/env_home_autumn.png",
+   "rect": [
+    0,
+    0,
+    960,
+    360
+   ],
+   "w": 960,
+   "h": 360,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "home:autumn"
+  },
+  "env_pier_0_autumn": {
+   "file": "assets/environments/pier/env_pier_0_autumn.png",
+   "rect": [
+    961,
+    0,
+    640,
+    360
+   ],
+   "w": 640,
+   "h": 360,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_pier_1_autumn": {
+   "file": "assets/environments/pier/env_pier_1_autumn.png",
+   "rect": [
+    0,
+    361,
+    640,
+    360
+   ],
+   "w": 640,
+   "h": 360,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_pier_2_autumn": {
+   "file": "assets/environments/pier/env_pier_2_autumn.png",
+   "rect": [
+    641,
+    361,
+    640,
+    360
+   ],
+   "w": 640,
+   "h": 360,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_shore_rocks_autumn": {
+   "file": "assets/environments/env_shore_rocks_autumn.png",
+   "rect": [
+    1282,
+    361,
+    640,
+    360
+   ],
+   "w": 640,
+   "h": 360,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shore:rocksautumn"
+  },
+  "env_shore_sand_autumn": {
+   "file": "assets/environments/env_shore_sand_autumn.png",
+   "rect": [
+    0,
+    722,
+    640,
+    360
+   ],
+   "w": 640,
+   "h": 360,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shore:sandautumn"
+  },
+  "env_shore_tide_autumn": {
+   "file": "assets/environments/env_shore_tide_autumn.png",
+   "rect": [
+    641,
+    722,
+    640,
+    360
+   ],
+   "w": 640,
+   "h": 360,
+   "pivot": [
+    0,
+    0
+   ],
+   "key": "shore:tideautumn"
+  },
+  "env_town_autumn_mid": {
+   "file": "assets/environments/town/env_town_autumn_mid.png",
+   "rect": [
+    0,
+    1083,
+    1684,
+    280
+   ],
+   "w": 1684,
+   "h": 280,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_far": {
+   "file": "assets/environments/town/env_town_autumn_far.png",
+   "rect": [
+    0,
+    1364,
+    988,
+    260
+   ],
+   "w": 988,
+   "h": 260,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_home_autumn__ptBR_0": {
+   "file": "assets/l10n/env_home_autumn__ptBR_0.png",
+   "rect": [
+    1602,
+    0,
+    72,
+    16
+   ],
+   "w": 72,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_home_autumn__es_0": {
+   "file": "assets/l10n/env_home_autumn__es_0.png",
+   "rect": [
+    1675,
+    0,
+    64,
+    16
+   ],
+   "w": 64,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_home_autumn__fr_0": {
+   "file": "assets/l10n/env_home_autumn__fr_0.png",
+   "rect": [
+    1740,
+    0,
+    64,
+    16
+   ],
+   "w": 64,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__en_2": {
+   "file": "assets/l10n/env_town_autumn_main__en_2.png",
+   "rect": [
+    1805,
+    0,
+    64,
+    16
+   ],
+   "w": 64,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__es_2": {
+   "file": "assets/l10n/env_town_autumn_main__es_2.png",
+   "rect": [
+    1870,
+    0,
+    64,
+    16
+   ],
+   "w": 64,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__de_2": {
+   "file": "assets/l10n/env_town_autumn_main__de_2.png",
+   "rect": [
+    1935,
+    0,
+    64,
+    16
+   ],
+   "w": 64,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__fr_2": {
+   "file": "assets/l10n/env_town_autumn_main__fr_2.png",
+   "rect": [
+    1923,
+    361,
+    64,
+    16
+   ],
+   "w": 64,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__ptBR_2": {
+   "file": "assets/l10n/env_town_autumn_main__ptBR_2.png",
+   "rect": [
+    1282,
+    722,
+    64,
+    16
+   ],
+   "w": 64,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__fr_9": {
+   "file": "assets/l10n/env_town_autumn_main__fr_9.png",
+   "rect": [
+    1988,
+    361,
+    56,
+    16
+   ],
+   "w": 56,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_home_autumn__en_0": {
+   "file": "assets/l10n/env_home_autumn__en_0.png",
+   "rect": [
+    2000,
+    0,
+    40,
+    16
+   ],
+   "w": 40,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__en_5": {
+   "file": "assets/l10n/env_town_autumn_main__en_5.png",
+   "rect": [
+    1347,
+    722,
+    40,
+    16
+   ],
+   "w": 40,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__en_6": {
+   "file": "assets/l10n/env_town_autumn_main__en_6.png",
+   "rect": [
+    1388,
+    722,
+    40,
+    16
+   ],
+   "w": 40,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__es_5": {
+   "file": "assets/l10n/env_town_autumn_main__es_5.png",
+   "rect": [
+    1429,
+    722,
+    40,
+    16
+   ],
+   "w": 40,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__es_6": {
+   "file": "assets/l10n/env_town_autumn_main__es_6.png",
+   "rect": [
+    1470,
+    722,
+    40,
+    16
+   ],
+   "w": 40,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__es_9": {
+   "file": "assets/l10n/env_town_autumn_main__es_9.png",
+   "rect": [
+    1511,
+    722,
+    40,
+    16
+   ],
+   "w": 40,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__de_5": {
+   "file": "assets/l10n/env_town_autumn_main__de_5.png",
+   "rect": [
+    1552,
+    722,
+    40,
+    16
+   ],
+   "w": 40,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__de_6": {
+   "file": "assets/l10n/env_town_autumn_main__de_6.png",
+   "rect": [
+    1593,
+    722,
+    40,
+    16
+   ],
+   "w": 40,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__de_9": {
+   "file": "assets/l10n/env_town_autumn_main__de_9.png",
+   "rect": [
+    1634,
+    722,
+    40,
+    16
+   ],
+   "w": 40,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__fr_5": {
+   "file": "assets/l10n/env_town_autumn_main__fr_5.png",
+   "rect": [
+    1675,
+    722,
+    40,
+    16
+   ],
+   "w": 40,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__fr_6": {
+   "file": "assets/l10n/env_town_autumn_main__fr_6.png",
+   "rect": [
+    1716,
+    722,
+    40,
+    16
+   ],
+   "w": 40,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__ptBR_5": {
+   "file": "assets/l10n/env_town_autumn_main__ptBR_5.png",
+   "rect": [
+    1757,
+    722,
+    40,
+    16
+   ],
+   "w": 40,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__ptBR_6": {
+   "file": "assets/l10n/env_town_autumn_main__ptBR_6.png",
+   "rect": [
+    1798,
+    722,
+    40,
+    16
+   ],
+   "w": 40,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__ptBR_9": {
+   "file": "assets/l10n/env_town_autumn_main__ptBR_9.png",
+   "rect": [
+    1839,
+    722,
+    40,
+    16
+   ],
+   "w": 40,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_home_autumn__de_0": {
+   "file": "assets/l10n/env_home_autumn__de_0.png",
+   "rect": [
+    1880,
+    722,
+    32,
+    16
+   ],
+   "w": 32,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__en_4": {
+   "file": "assets/l10n/env_town_autumn_main__en_4.png",
+   "rect": [
+    1913,
+    722,
+    24,
+    16
+   ],
+   "w": 24,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__en_9": {
+   "file": "assets/l10n/env_town_autumn_main__en_9.png",
+   "rect": [
+    1938,
+    722,
+    24,
+    16
+   ],
+   "w": 24,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__es_4": {
+   "file": "assets/l10n/env_town_autumn_main__es_4.png",
+   "rect": [
+    1963,
+    722,
+    24,
+    16
+   ],
+   "w": 24,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__de_4": {
+   "file": "assets/l10n/env_town_autumn_main__de_4.png",
+   "rect": [
+    1988,
+    722,
+    24,
+    16
+   ],
+   "w": 24,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__fr_4": {
+   "file": "assets/l10n/env_town_autumn_main__fr_4.png",
+   "rect": [
+    2013,
+    722,
+    24,
+    16
+   ],
+   "w": 24,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__ptBR_4": {
+   "file": "assets/l10n/env_town_autumn_main__ptBR_4.png",
+   "rect": [
+    1685,
+    1083,
+    24,
+    16
+   ],
+   "w": 24,
+   "h": 16,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__fr_0": {
+   "file": "assets/l10n/env_town_autumn_main__fr_0.png",
+   "rect": [
+    1710,
+    1083,
+    80,
+    8
+   ],
+   "w": 80,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__ptBR_0": {
+   "file": "assets/l10n/env_town_autumn_main__ptBR_0.png",
+   "rect": [
+    1791,
+    1083,
+    72,
+    8
+   ],
+   "w": 72,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__en_0": {
+   "file": "assets/l10n/env_town_autumn_main__en_0.png",
+   "rect": [
+    1864,
+    1083,
+    56,
+    8
+   ],
+   "w": 56,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__es_3": {
+   "file": "assets/l10n/env_town_autumn_main__es_3.png",
+   "rect": [
+    1921,
+    1083,
+    56,
+    8
+   ],
+   "w": 56,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__es_8": {
+   "file": "assets/l10n/env_town_autumn_main__es_8.png",
+   "rect": [
+    1978,
+    1083,
+    56,
+    8
+   ],
+   "w": 56,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__fr_3": {
+   "file": "assets/l10n/env_town_autumn_main__fr_3.png",
+   "rect": [
+    989,
+    1364,
+    56,
+    8
+   ],
+   "w": 56,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__ptBR_8": {
+   "file": "assets/l10n/env_town_autumn_main__ptBR_8.png",
+   "rect": [
+    1046,
+    1364,
+    56,
+    8
+   ],
+   "w": 56,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__en_3": {
+   "file": "assets/l10n/env_town_autumn_main__en_3.png",
+   "rect": [
+    1103,
+    1364,
+    48,
+    8
+   ],
+   "w": 48,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__en_8": {
+   "file": "assets/l10n/env_town_autumn_main__en_8.png",
+   "rect": [
+    1152,
+    1364,
+    48,
+    8
+   ],
+   "w": 48,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__es_0": {
+   "file": "assets/l10n/env_town_autumn_main__es_0.png",
+   "rect": [
+    1201,
+    1364,
+    48,
+    8
+   ],
+   "w": 48,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__de_0": {
+   "file": "assets/l10n/env_town_autumn_main__de_0.png",
+   "rect": [
+    1250,
+    1364,
+    48,
+    8
+   ],
+   "w": 48,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__de_3": {
+   "file": "assets/l10n/env_town_autumn_main__de_3.png",
+   "rect": [
+    1299,
+    1364,
+    48,
+    8
+   ],
+   "w": 48,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__de_8": {
+   "file": "assets/l10n/env_town_autumn_main__de_8.png",
+   "rect": [
+    1348,
+    1364,
+    48,
+    8
+   ],
+   "w": 48,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__fr_7": {
+   "file": "assets/l10n/env_town_autumn_main__fr_7.png",
+   "rect": [
+    1397,
+    1364,
+    48,
+    8
+   ],
+   "w": 48,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__fr_8": {
+   "file": "assets/l10n/env_town_autumn_main__fr_8.png",
+   "rect": [
+    1446,
+    1364,
+    48,
+    8
+   ],
+   "w": 48,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__ptBR_3": {
+   "file": "assets/l10n/env_town_autumn_main__ptBR_3.png",
+   "rect": [
+    1495,
+    1364,
+    48,
+    8
+   ],
+   "w": 48,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__es_7": {
+   "file": "assets/l10n/env_town_autumn_main__es_7.png",
+   "rect": [
+    1544,
+    1364,
+    40,
+    8
+   ],
+   "w": 40,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__de_7": {
+   "file": "assets/l10n/env_town_autumn_main__de_7.png",
+   "rect": [
+    1585,
+    1364,
+    40,
+    8
+   ],
+   "w": 40,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__en_1": {
+   "file": "assets/l10n/env_town_autumn_main__en_1.png",
+   "rect": [
+    1626,
+    1364,
+    32,
+    8
+   ],
+   "w": 32,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__en_7": {
+   "file": "assets/l10n/env_town_autumn_main__en_7.png",
+   "rect": [
+    1659,
+    1364,
+    32,
+    8
+   ],
+   "w": 32,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__es_1": {
+   "file": "assets/l10n/env_town_autumn_main__es_1.png",
+   "rect": [
+    1692,
+    1364,
+    32,
+    8
+   ],
+   "w": 32,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__de_1": {
+   "file": "assets/l10n/env_town_autumn_main__de_1.png",
+   "rect": [
+    1725,
+    1364,
+    32,
+    8
+   ],
+   "w": 32,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__fr_1": {
+   "file": "assets/l10n/env_town_autumn_main__fr_1.png",
+   "rect": [
+    1758,
+    1364,
+    32,
+    8
+   ],
+   "w": 32,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__ptBR_1": {
+   "file": "assets/l10n/env_town_autumn_main__ptBR_1.png",
+   "rect": [
+    1791,
+    1364,
+    32,
+    8
+   ],
+   "w": 32,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "env_town_autumn_main__ptBR_7": {
+   "file": "assets/l10n/env_town_autumn_main__ptBR_7.png",
+   "rect": [
+    1824,
+    1364,
+    32,
+    8
+   ],
+   "w": 32,
+   "h": 8,
+   "pivot": [
+    0,
+    0
+   ]
+  }
+ }
+}

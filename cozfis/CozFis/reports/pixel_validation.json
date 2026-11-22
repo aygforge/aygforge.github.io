@@ -1,0 +1,95 @@
+{
+ "langs": [
+  "tr",
+  "en",
+  "es",
+  "de",
+  "fr",
+  "pt-BR"
+ ],
+ "ms": 41000,
+ "A_vs_B": {
+  "cache": {
+   "compared": 9071,
+   "identical": 9071,
+   "different": 0,
+   "missingInB": 0,
+   "examples": [],
+   "missing": []
+  },
+  "urls": {
+   "compared": 2982,
+   "identical": 2982,
+   "different": 0,
+   "missingInB": 0,
+   "examples": [],
+   "missing": []
+  },
+  "frames": {
+   "compared": 258,
+   "identical": 258,
+   "different": 0,
+   "missingInB": 0,
+   "examples": [],
+   "missing": []
+  }
+ },
+ "A_vs_C": {
+  "cache": {
+   "compared": 9071,
+   "identical": 9071,
+   "different": 0,
+   "missingInB": 0,
+   "examples": [],
+   "missing": []
+  },
+  "urls": {
+   "compared": 2982,
+   "identical": 2982,
+   "different": 0,
+   "missingInB": 0,
+   "examples": [],
+   "missing": []
+  },
+  "frames": {
+   "compared": 258,
+   "identical": 258,
+   "different": 0,
+   "missingInB": 0,
+   "examples": [],
+   "missing": []
+  }
+ },
+ "B_assetStats": {
+  "enabled": true,
+  "stats": {
+   "hits": 6213,
+   "fallbacks": 0,
+   "fallbackKeys": [],
+   "pbHits": 384,
+   "loadMs": 57,
+   "bytes": 3938828,
+   "pages": 42,
+   "errors": []
+  },
+  "reason": null
+ },
+ "errors": {
+  "A": [],
+  "B": [],
+  "C": []
+ },
+ "frameErrors": [
+  "tr|EndDay ERR Cannot read properties of undefined (reading 'endCash')",
+  "en|EndDay ERR Cannot read properties of undefined (reading 'endCash')",
+  "es|EndDay ERR Cannot read properties of undefined (reading 'endCash')",
+  "de|EndDay ERR Cannot read properties of undefined (reading 'endCash')",
+  "fr|EndDay ERR Cannot read properties of undefined (reading 'endCash')",
+  "pt-BR|EndDay ERR Cannot read properties of undefined (reading 'endCash')"
+ ],
+ "driverMs": {
+  "A": 15664,
+  "B": 8089,
+  "C": 15909
+ }
+}
