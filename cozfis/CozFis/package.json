@@ -1,6 +1,6 @@
 {
   "name": "cozfis",
-  "version": "1.1.0-asset-pipeline",
+  "version": "1.2.0-android",
   "private": true,
   "description": "CozFis — 2D piksel sanat balıkçılık oyunu. Modüler proje + hibrit PNG atlas / prosedürel çizim hattı. Çevrimdışı çalışır.",
   "license": "UNLICENSED",
@@ -17,10 +17,25 @@
     "test:screens": "node tests/screens-ab.js",
     "test:saves": "node tests/save-compat.js",
     "test:smoke": "node tests/smoke.js",
-    "test:perf": "node tests/perf.js --runs 3"
+    "test:perf": "node tests/perf.js --runs 3",
+    "android:sync": "node tools/build/build.js && npx cap sync android",
+    "android:apk": "node tools/android/build.js debug",
+    "android:release": "node tools/android/build.js release",
+    "android:aab": "node tools/android/build.js bundle",
+    "android:open": "npx cap open android"
   },
   "devDependencies": {
-    "playwright": "^1.40.0"
+    "@capacitor/cli": "8.6.2",
+    "playwright": "1.63.0"
   },
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.6.2",
+    "@capacitor/app": "8.1.2",
+    "@capacitor/core": "8.6.2",
+    "@capacitor/filesystem": "8.1.5",
+    "@capacitor/share": "8.0.3"
+  }
 }

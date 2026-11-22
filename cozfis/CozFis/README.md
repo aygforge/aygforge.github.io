@@ -113,6 +113,11 @@ Kütüphane şunları içerir: tek tek PNG'ler, atlaslar, manifest, `CATALOG.md`
 - Kayıt ve ayar anahtarları değişmedi: IndexedDB `cozyfishing` / `saves`; localStorage `cozyfishing_save_v1`,
   `cozyfishing_backup_v1`, `cozyfishing_prev_v1`, `cozyfishing_settings_v1`, `cozyfishing_lang_v1`.
 
+## Android (Faz 3)
+
+Capacitor 8 tabanlı Android projesi `android/` klasöründedir. APK üretmek için `npm run android:apk` (→ `dist/CozFis_Debug.apk`).
+Ayrıntılar: `README_Android.md`, `CozFis_Android_Build_Report.md`, `CozFis_Android_Test_Checklist.md`.
+
 ## Raporlar
 
 `Asset_Inventory.md` · `Rendering_Migration_Report.md` · `Asset_Comparison_Report.md` · `Performance_Report.md`. Ham test çıktıları `reports/` klasöründedir.

@@ -1,0 +1,22 @@
+{
+  "appId": "com.aygforge.cozfis",
+  "appName": "CozFis",
+  "webDir": "dist/web",
+  "android": {
+    "path": "android",
+    "allowMixedContent": false,
+    "captureInput": false,
+    "loggingBehavior": "debug"
+  },
+  "server": {
+    "androidScheme": "https",
+    "hostname": "localhost"
+  },
+  "plugins": {
+    "SystemBars": {
+      "insetsHandling": "css",
+      "initialViewportFitValueHint": "cover",
+      "hidden": true
+    }
+  }
+}

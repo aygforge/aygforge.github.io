@@ -13,7 +13,7 @@ const copy = (rel, destRoot) => { const d = path.join(destRoot, rel); fs.mkdirSy
 
 function build() {
   const t0 = Date.now();
-  fs.rmSync(DIST, { recursive: true, force: true });
+  fs.rmSync(path.join(DIST, 'web'), { recursive: true, force: true }); fs.rmSync(path.join(DIST, 'CozFis_Standalone.html'), { force: true });   // APK/AAB çıktıları korunur
   const html = read('index.html');
   const scripts = [...html.matchAll(/<script src="([^"]+)"><\/script>/g)].map(m => m[1]);
   const css = [...html.matchAll(/<link rel="stylesheet" href="([^"]+)">/g)].map(m => m[1]);

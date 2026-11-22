@@ -24,11 +24,11 @@
    "pt-BR:Inventário Peixes ",
    "tr:Envanter Balıklar "
   ],
-  "atlasHits": 175,
+  "atlasHits": 176,
   "fallbacks": 0,
   "photoDataUrl": true,
   "remoteRequests": [],
-  "requestCount": 45,
+  "requestCount": 46,
   "errors": []
  },
  "fileModular": {
@@ -43,7 +43,7 @@
   "pages": 9,
   "qa": "149/149",
   "bad": [],
-  "hits": 159,
+  "hits": 146,
   "errors": []
  },
  "offlineAfterLoad": {

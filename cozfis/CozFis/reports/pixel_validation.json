@@ -7,7 +7,7 @@
   "fr",
   "pt-BR"
  ],
- "ms": 41000,
+ "ms": 41092,
  "A_vs_B": {
   "cache": {
    "compared": 9071,
@@ -67,7 +67,7 @@
    "fallbacks": 0,
    "fallbackKeys": [],
    "pbHits": 384,
-   "loadMs": 57,
+   "loadMs": 77,
    "bytes": 3938828,
    "pages": 42,
    "errors": []
@@ -88,8 +88,8 @@
   "pt-BR|EndDay ERR Cannot read properties of undefined (reading 'endCash')"
  ],
  "driverMs": {
-  "A": 15664,
-  "B": 8089,
-  "C": 15909
+  "A": 15448,
+  "B": 8410,
+  "C": 15633
  }
 }

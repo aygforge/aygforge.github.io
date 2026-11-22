@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="title_activity_main">CozFis</string>
+    <string name="package_name">com.aygforge.cozfis</string>
+    <string name="custom_url_scheme">com.aygforge.cozfis</string>
+</resources>

@@ -1,0 +1,122 @@
+{
+ "mode": "SİMÜLASYON (masaüstü Chromium + sahte Capacitor köprüsü)",
+ "checks": {
+  "açılış: AndroidShell yerel modda, ana menü": {
+   "ok": true
+  },
+  "ölçek: 16:9 korunur, ortalanır, canvas fiziksel piksel, yumuşatma kapalı": {
+   "ok": true,
+   "info": {
+    "vw": 863,
+    "vh": 360,
+    "fw": 640,
+    "fh": 360,
+    "fx": 112,
+    "cw": 1680,
+    "ch": 945,
+    "dpr": 2.625,
+    "smooth": false
+   }
+  },
+  "güvenli alan: --safe-area-inset-left 48px → oyun alanı kesikten uzak": {
+   "ok": true,
+   "info": {
+    "left": 136,
+    "right": 87,
+    "w": 640
+   }
+  },
+  "dokunma: dil seçimi (EN) dokunuşla çalışır, tercih saklanır": {
+   "ok": true
+  },
+  "geri: ana menüde tek basış çıkmaz (uyarı), 2 sn içinde ikinci basış kaydedip çıkar": {
+   "ok": true,
+   "info": {
+    "r1": "MainMenu:hint",
+    "r2": "MainMenu:exit"
+   }
+  },
+  "geri: karakter oluşturmada ana menüye döner": {
+   "ok": true
+  },
+  "geri: oyunda açık şey yoksa Menü paneli açılır, ikinci basış kapatır; uygulama kapanmaz": {
+   "ok": true,
+   "info": {
+    "t1": "Town:menu",
+    "pOpen": "Menu",
+    "t2": "Town:escape"
+   }
+  },
+  "geri: açık onay penceresini (vazgeç gibi) kapatır, işlemi çalıştırmaz": {
+   "ok": true
+  },
+  "geri: açık paneli (envanter) kapatır": {
+   "ok": true
+  },
+  "yaşam döngüsü: arka planda duraklar, kaydeder, ses askıya alınır; zaman ilerlemez": {
+   "ok": true,
+   "info": {
+    "bg": {
+     "paused": true,
+     "audio": "suspended",
+     "savedCash": 424242,
+     "active": false
+    },
+    "tAdvancedInBg": 0,
+    "fg": {
+     "paused": false,
+     "audio": "running"
+    },
+    "twoFramesDt": 0.033
+   }
+  },
+  "yaşam döngüsü: dönüşte sürer, ses devam eder, zaman sıçraması yok (2 kare ≤ 0,1 sn)": {
+   "ok": true,
+   "info": {
+    "paused": false,
+    "audio": "running"
+   }
+  },
+  "ses odağı: arama/başka uygulama → ses askıda; geri gelince sürer": {
+   "ok": true,
+   "info": [
+    "suspended",
+    "running"
+   ]
+  },
+  "dışa aktarma: kayıt dosyası önbelleğe yazılır ve Android paylaşım sayfası açılır (biçim cozyfishing-save, şema 5)": {
+   "ok": true,
+   "info": {
+    "path": "exports/cozyfishing_gun1.json",
+    "dir": "CACHE",
+    "format": "cozyfishing-save",
+    "schema": 5,
+    "cash": 424242,
+    "share": {
+     "title": "cozyfishing_gun1.json",
+     "files": [
+      "file:///data/user/0/cache/exports/cozyfishing_gun1.json"
+     ],
+     "dialogTitle": "Dosyayı paylaş veya kaydet"
+    },
+    "unpackOk": true
+   }
+  },
+  "içe aktarma: dosya seçiciden gelen kayıt doğrulanır ve onay penceresi açılır": {
+   "ok": true
+  },
+  "149 kabul testi (Android kabuğu etkin)": {
+   "ok": true,
+   "info": {
+    "n": 149,
+    "ok": 149,
+    "bad": []
+   }
+  },
+  "sayfa hatası yok": {
+   "ok": true,
+   "info": []
+  }
+ },
+ "pass": true
+}

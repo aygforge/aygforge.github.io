@@ -3,173 +3,119 @@
  "note": "Headless Chromium; medyan değerler. A=özgün tek dosya, B=modüler+atlas, C=modüler prosedürel",
  "summary": {
   "A": {
-   "boot": 173,
+   "boot": 255,
    "assetsMs": 0,
-   "townFirst": 70,
-   "homeFirst": 18.3,
-   "boatFirst": 20.3,
-   "encyclopediaFirst": 57.9,
+   "townFirst": 76.2,
+   "homeFirst": 21.4,
+   "boatFirst": 20.2,
+   "encyclopediaFirst": 61.7,
    "town": {
-    "fps": 60,
-    "renderAvgMs": 0.282,
+    "fps": 59.7,
+    "renderAvgMs": 0.297,
     "renderP95Ms": 0.5
    },
    "boat": {
     "fps": 60,
-    "renderAvgMs": 0.328,
-    "renderP95Ms": 0.5
+    "renderAvgMs": 0.351,
+    "renderP95Ms": 0.6
    },
    "cacheMB": 15,
-   "cacheEntries": 169,
+   "cacheEntries": 167,
    "atlasHeldMB": 0,
    "atlasAllPagesMB": 0,
-   "jsHeapMB": 7.9,
+   "jsHeapMB": 8.5,
    "bytesKB": 2109,
    "requests": 1,
    "remoteRequests": 0
   },
   "B": {
-   "boot": 177,
-   "assetsMs": 20,
-   "townFirst": 37,
-   "homeFirst": 4.1,
-   "boatFirst": 18.1,
-   "encyclopediaFirst": 9.5,
+   "boot": 214,
+   "assetsMs": 46,
+   "townFirst": 47.1,
+   "homeFirst": 6.1,
+   "boatFirst": 17.9,
+   "encyclopediaFirst": 9.6,
    "town": {
-    "fps": 60,
-    "renderAvgMs": 0.288,
-    "renderP95Ms": 0.6
+    "fps": 60.3,
+    "renderAvgMs": 0.27,
+    "renderP95Ms": 0.4
    },
    "boat": {
-    "fps": 60.3,
-    "renderAvgMs": 0.36,
-    "renderP95Ms": 0.6
+    "fps": 60,
+    "renderAvgMs": 0.362,
+    "renderP95Ms": 0.5
    },
-   "cacheMB": 15,
-   "cacheEntries": 167,
+   "cacheMB": 14.1,
+   "cacheEntries": 164,
    "atlasHeldMB": 27.2,
    "atlasAllPagesMB": 191.7,
-   "jsHeapMB": 7.2,
-   "bytesKB": 3051,
-   "requests": 45,
+   "jsHeapMB": 6.9,
+   "bytesKB": 3050,
+   "requests": 46,
    "remoteRequests": 0
   },
   "C": {
-   "boot": 164,
+   "boot": 161,
    "assetsMs": 0,
-   "townFirst": 61.5,
-   "homeFirst": 18.3,
-   "boatFirst": 19.3,
-   "encyclopediaFirst": 53.9,
+   "townFirst": 62.4,
+   "homeFirst": 17.7,
+   "boatFirst": 18.7,
+   "encyclopediaFirst": 50.9,
    "town": {
     "fps": 60,
-    "renderAvgMs": 0.289,
-    "renderP95Ms": 0.6
+    "renderAvgMs": 0.292,
+    "renderP95Ms": 0.5
    },
    "boat": {
     "fps": 60,
-    "renderAvgMs": 0.343,
+    "renderAvgMs": 0.364,
     "renderP95Ms": 0.6
    },
-   "cacheMB": 15,
-   "cacheEntries": 168,
+   "cacheMB": 14.1,
+   "cacheEntries": 165,
    "atlasHeldMB": 0,
    "atlasAllPagesMB": 0,
    "jsHeapMB": 8.3,
-   "bytesKB": 2304,
-   "requests": 36,
+   "bytesKB": 2303,
+   "requests": 37,
    "remoteRequests": 0
   }
  },
  "raw": {
   "A": [
    {
-    "boot": 173,
+    "boot": 255,
     "assetsMs": 0,
-    "townFirst": 70,
-    "homeFirst": 24.1,
-    "boatFirst": 20.6,
-    "encyclopediaFirst": 57.9,
+    "townFirst": 87,
+    "homeFirst": 23.5,
+    "boatFirst": 27.4,
+    "encyclopediaFirst": 64.7,
     "town": {
-     "fps": 60,
-     "renderAvgMs": 0.277,
-     "renderP95Ms": 0.6
-    },
-    "boat": {
-     "fps": 60,
-     "renderAvgMs": 0.308,
-     "renderP95Ms": 0.6
-    },
-    "cacheMB": 15,
-    "cacheEntries": 169,
-    "atlasHeldMB": 0,
-    "atlasAllPagesMB": 0,
-    "jsHeapMB": 8.4,
-    "bytesKB": 2109,
-    "requests": 1,
-    "remoteRequests": 0
-   },
-   {
-    "boot": 132,
-    "assetsMs": 0,
-    "townFirst": 60.5,
-    "homeFirst": 18.3,
-    "boatFirst": 20.3,
-    "encyclopediaFirst": 68.4,
-    "town": {
-     "fps": 60,
-     "renderAvgMs": 0.282,
+     "fps": 59.7,
+     "renderAvgMs": 0.297,
      "renderP95Ms": 0.5
     },
     "boat": {
-     "fps": 60,
-     "renderAvgMs": 0.328,
+     "fps": 60.3,
+     "renderAvgMs": 0.351,
      "renderP95Ms": 0.5
     },
     "cacheMB": 15,
     "cacheEntries": 167,
     "atlasHeldMB": 0,
     "atlasAllPagesMB": 0,
-    "jsHeapMB": 7.6,
+    "jsHeapMB": 8.5,
     "bytesKB": 2109,
     "requests": 1,
     "remoteRequests": 0
    },
    {
-    "boot": 276,
+    "boot": 158,
     "assetsMs": 0,
-    "townFirst": 75.7,
-    "homeFirst": 16.2,
-    "boatFirst": 16.5,
-    "encyclopediaFirst": 44.3,
-    "town": {
-     "fps": 60,
-     "renderAvgMs": 0.318,
-     "renderP95Ms": 0.5
-    },
-    "boat": {
-     "fps": 60,
-     "renderAvgMs": 0.355,
-     "renderP95Ms": 0.5
-    },
-    "cacheMB": 15,
-    "cacheEntries": 170,
-    "atlasHeldMB": 0,
-    "atlasAllPagesMB": 0,
-    "jsHeapMB": 7.9,
-    "bytesKB": 2109,
-    "requests": 1,
-    "remoteRequests": 0
-   }
-  ],
-  "B": [
-   {
-    "boot": 188,
-    "assetsMs": 20,
-    "townFirst": 34.4,
-    "homeFirst": 3.8,
-    "boatFirst": 24.4,
-    "encyclopediaFirst": 9.2,
+    "townFirst": 76.2,
+    "homeFirst": 21.4,
+    "boatFirst": 20.2,
+    "encyclopediaFirst": 61.7,
     "town": {
      "fps": 60,
      "renderAvgMs": 0.288,
@@ -177,148 +123,202 @@
     },
     "boat": {
      "fps": 60,
-     "renderAvgMs": 0.36,
-     "renderP95Ms": 0.6
-    },
-    "cacheMB": 15,
-    "cacheEntries": 170,
-    "atlasHeldMB": 27.2,
-    "atlasAllPagesMB": 191.7,
-    "jsHeapMB": 6.7,
-    "bytesKB": 3051,
-    "requests": 45,
-    "remoteRequests": 0
-   },
-   {
-    "boot": 166,
-    "assetsMs": 19,
-    "townFirst": 38.6,
-    "homeFirst": 4.3,
-    "boatFirst": 18.1,
-    "encyclopediaFirst": 10.3,
-    "town": {
-     "fps": 60,
-     "renderAvgMs": 0.305,
-     "renderP95Ms": 0.6
-    },
-    "boat": {
-     "fps": 60.3,
-     "renderAvgMs": 0.401,
+     "renderAvgMs": 0.386,
      "renderP95Ms": 0.6
     },
     "cacheMB": 15,
     "cacheEntries": 167,
-    "atlasHeldMB": 27.2,
-    "atlasAllPagesMB": 191.7,
-    "jsHeapMB": 7.2,
-    "bytesKB": 3051,
-    "requests": 45,
+    "atlasHeldMB": 0,
+    "atlasAllPagesMB": 0,
+    "jsHeapMB": 8.6,
+    "bytesKB": 2109,
+    "requests": 1,
     "remoteRequests": 0
    },
    {
-    "boot": 177,
-    "assetsMs": 23,
-    "townFirst": 37,
-    "homeFirst": 4.1,
-    "boatFirst": 14.4,
-    "encyclopediaFirst": 9.5,
+    "boot": 261,
+    "assetsMs": 0,
+    "townFirst": 58.7,
+    "homeFirst": 18.2,
+    "boatFirst": 15,
+    "encyclopediaFirst": 52.3,
     "town": {
-     "fps": 60,
-     "renderAvgMs": 0.274,
+     "fps": 59.7,
+     "renderAvgMs": 0.299,
      "renderP95Ms": 0.6
     },
     "boat": {
-     "fps": 60.3,
-     "renderAvgMs": 0.353,
+     "fps": 60,
+     "renderAvgMs": 0.34,
      "renderP95Ms": 0.6
     },
     "cacheMB": 14.1,
-    "cacheEntries": 166,
+    "cacheEntries": 163,
+    "atlasHeldMB": 0,
+    "atlasAllPagesMB": 0,
+    "jsHeapMB": 8.2,
+    "bytesKB": 2109,
+    "requests": 1,
+    "remoteRequests": 0
+   }
+  ],
+  "B": [
+   {
+    "boot": 214,
+    "assetsMs": 46,
+    "townFirst": 47.3,
+    "homeFirst": 6.1,
+    "boatFirst": 19.3,
+    "encyclopediaFirst": 11.7,
+    "town": {
+     "fps": 60.3,
+     "renderAvgMs": 0.27,
+     "renderP95Ms": 0.4
+    },
+    "boat": {
+     "fps": 60,
+     "renderAvgMs": 0.354,
+     "renderP95Ms": 0.7
+    },
+    "cacheMB": 14.1,
+    "cacheEntries": 163,
     "atlasHeldMB": 27.2,
     "atlasAllPagesMB": 191.7,
-    "jsHeapMB": 7.6,
-    "bytesKB": 3051,
-    "requests": 45,
+    "jsHeapMB": 7.3,
+    "bytesKB": 3050,
+    "requests": 46,
+    "remoteRequests": 0
+   },
+   {
+    "boot": 227,
+    "assetsMs": 50,
+    "townFirst": 36.7,
+    "homeFirst": 4,
+    "boatFirst": 17.9,
+    "encyclopediaFirst": 8.4,
+    "town": {
+     "fps": 60,
+     "renderAvgMs": 0.299,
+     "renderP95Ms": 0.5
+    },
+    "boat": {
+     "fps": 60.3,
+     "renderAvgMs": 0.362,
+     "renderP95Ms": 0.5
+    },
+    "cacheMB": 15,
+    "cacheEntries": 168,
+    "atlasHeldMB": 27.2,
+    "atlasAllPagesMB": 191.7,
+    "jsHeapMB": 6.9,
+    "bytesKB": 3050,
+    "requests": 46,
+    "remoteRequests": 0
+   },
+   {
+    "boot": 154,
+    "assetsMs": 19,
+    "townFirst": 47.1,
+    "homeFirst": 6.5,
+    "boatFirst": 15.3,
+    "encyclopediaFirst": 9.6,
+    "town": {
+     "fps": 60.3,
+     "renderAvgMs": 0.266,
+     "renderP95Ms": 0.4
+    },
+    "boat": {
+     "fps": 60,
+     "renderAvgMs": 0.368,
+     "renderP95Ms": 0.5
+    },
+    "cacheMB": 14.1,
+    "cacheEntries": 164,
+    "atlasHeldMB": 27.2,
+    "atlasAllPagesMB": 191.7,
+    "jsHeapMB": 6.1,
+    "bytesKB": 3050,
+    "requests": 46,
     "remoteRequests": 0
    }
   ],
   "C": [
    {
-    "boot": 261,
+    "boot": 146,
     "assetsMs": 0,
-    "townFirst": 80.1,
-    "homeFirst": 23.5,
-    "boatFirst": 28.7,
-    "encyclopediaFirst": 72.2,
+    "townFirst": 53.9,
+    "homeFirst": 15.4,
+    "boatFirst": 14.5,
+    "encyclopediaFirst": 48.8,
     "town": {
      "fps": 60,
-     "renderAvgMs": 0.251,
+     "renderAvgMs": 0.273,
+     "renderP95Ms": 0.5
+    },
+    "boat": {
+     "fps": 60,
+     "renderAvgMs": 0.354,
+     "renderP95Ms": 0.5
+    },
+    "cacheMB": 14.1,
+    "cacheEntries": 165,
+    "atlasHeldMB": 0,
+    "atlasAllPagesMB": 0,
+    "jsHeapMB": 8.3,
+    "bytesKB": 2303,
+    "requests": 37,
+    "remoteRequests": 0
+   },
+   {
+    "boot": 259,
+    "assetsMs": 0,
+    "townFirst": 85.7,
+    "homeFirst": 25.6,
+    "boatFirst": 23.3,
+    "encyclopediaFirst": 63,
+    "town": {
+     "fps": 60,
+     "renderAvgMs": 0.319,
      "renderP95Ms": 0.6
     },
     "boat": {
      "fps": 60,
-     "renderAvgMs": 0.322,
+     "renderAvgMs": 0.373,
      "renderP95Ms": 0.6
     },
     "cacheMB": 15,
     "cacheEntries": 169,
     "atlasHeldMB": 0,
     "atlasAllPagesMB": 0,
-    "jsHeapMB": 8.2,
-    "bytesKB": 2304,
-    "requests": 36,
+    "jsHeapMB": 7.9,
+    "bytesKB": 2303,
+    "requests": 37,
     "remoteRequests": 0
    },
    {
-    "boot": 150,
+    "boot": 161,
     "assetsMs": 0,
-    "townFirst": 56.3,
-    "homeFirst": 16.3,
-    "boatFirst": 14,
-    "encyclopediaFirst": 53.9,
+    "townFirst": 62.4,
+    "homeFirst": 17.7,
+    "boatFirst": 18.7,
+    "encyclopediaFirst": 50.9,
     "town": {
-     "fps": 59.7,
-     "renderAvgMs": 0.325,
-     "renderP95Ms": 0.6
+     "fps": 60,
+     "renderAvgMs": 0.292,
+     "renderP95Ms": 0.5
     },
     "boat": {
      "fps": 60.3,
-     "renderAvgMs": 0.343,
+     "renderAvgMs": 0.364,
      "renderP95Ms": 0.6
     },
     "cacheMB": 14.1,
-    "cacheEntries": 162,
+    "cacheEntries": 161,
     "atlasHeldMB": 0,
     "atlasAllPagesMB": 0,
-    "jsHeapMB": 8.3,
-    "bytesKB": 2304,
-    "requests": 36,
-    "remoteRequests": 0
-   },
-   {
-    "boot": 164,
-    "assetsMs": 0,
-    "townFirst": 61.5,
-    "homeFirst": 18.3,
-    "boatFirst": 19.3,
-    "encyclopediaFirst": 49.1,
-    "town": {
-     "fps": 60,
-     "renderAvgMs": 0.289,
-     "renderP95Ms": 0.6
-    },
-    "boat": {
-     "fps": 60,
-     "renderAvgMs": 0.381,
-     "renderP95Ms": 0.8
-    },
-    "cacheMB": 15,
-    "cacheEntries": 168,
-    "atlasHeldMB": 0,
-    "atlasAllPagesMB": 0,
-    "jsHeapMB": 8.5,
-    "bytesKB": 2304,
-    "requests": 36,
+    "jsHeapMB": 8.4,
+    "bytesKB": 2303,
+    "requests": 37,
     "remoteRequests": 0
    }
   ]
