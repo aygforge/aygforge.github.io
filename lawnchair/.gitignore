@@ -1,0 +1,8 @@
+node_modules/
+parts/
+*.mp4
+*.wav
+*.png
+test*/
+chk/
+nasm.html
