@@ -6,3 +6,5 @@ parts/
 test*/
 chk/
 nasm.html
+dl/
+*.jpg

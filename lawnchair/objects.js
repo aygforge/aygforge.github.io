@@ -42,10 +42,11 @@ function chairBack(o = {}) {
   shape(P.R(-56, -152, 112, 144), C.alu, { size: 140, hatch: false });
   const cols = [C.web1, C.web2, C.web3, C.web1, C.web2];
   for (let i = 0; i < 5; i++) shape(P.R(-50, -146 + i * 27.5, 100, 25), cols[i], { size: 100, lw: 1.6, gap: 5 });
+  for (let i = -2; i <= 2; i++) line([[i * 20, -148], [i * 20, -10]], '#4a3029', 5, { plain: true, alpha: 0.7 });
 }
 function chairSeat() {
   shape(P.poly([[-60, -14], [60, -14], [72, 22], [-72, 22]]), C.web1, { size: 140, ha: 50 });
-  for (let i = -2; i <= 2; i++) line([[i * 24, -14], [i * 29, 22]], C.web2, 4, { plain: true, alpha: 0.8 });
+  for (let i = -2; i <= 2; i++) line([[i * 24, -14], [i * 29, 22]], '#4a3029', 5, { plain: true, alpha: 0.7 });
 }
 function chairFront(o = {}) {
   shape(P.R(-76, 16, 10, 76), C.alu, { size: 80, hatch: false, lw: 2 });
@@ -54,10 +55,11 @@ function chairFront(o = {}) {
   shape(P.poly([[86, -62], [56, -64], [56, -54], [84, -50]]), C.alu, { size: 40, hatch: false, lw: 2 });
   line([[-80, -52], [-72, 18]], C.alu, 6, { rough: 0.4 }); line([[80, -52], [72, 18]], C.alu, 6, { rough: 0.4 });
   if (o.jugs) {
+    for (const s of [-1, 1]) for (const jy of [-70]) { line([[s * 82, jy - 8], [s * 90, jy]], '#6b5a4a', 1.6, { plain: true }); shape(P.RR(s * 96 - 18, jy, 36, 50, 9), '#e6eef1', { size: 50, alpha: 0.95, hatchColor: '#c3d3da' }); shape(P.R(s * 96 - 6, jy - 6, 12, 8), '#e9e9e9', { size: 14, hatch: false }); }
     for (const s of [-1, 1]) {
       line([[s * 70, 24], [s * 74, 44]], '#6b5a4a', 1.6, { plain: true });
       shape(P.RR(s * 74 - 18, 44, 36, 50, 9), '#e6eef1', { size: 50, alpha: 0.95, hatchColor: '#c3d3da' });
-      shape(P.R(s * 74 - 6, 38, 12, 8), '#5c86b5', { size: 14, hatch: false });
+      shape(P.R(s * 74 - 6, 38, 12, 8), '#e9e9e9', { size: 14, hatch: false });
       shape(P.R(s * 74 - 14, 70, 28, 20), '#bcd2dd', { size: 30, hatch: false, stroke: false, alpha: 0.6 });
     }
   }

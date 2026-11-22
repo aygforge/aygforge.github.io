@@ -11,7 +11,7 @@ const NAVY = '#2b2d5c', NAVY2 = '#3a3168';
 const C = {
   cream: '#f3ead7', sky: '#9cc3e0', skyTop: '#7fa9d1', skyPale: '#cfe0ea', yellow: '#e8c766', red: '#c55d4b',
   green: '#8db27a', green2: '#6f9a63', skin: '#eec39c', hair: '#4a3426', jeans: '#506d9b', shirt: '#c55d4b',
-  alu: '#b5bcc9', web1: '#86b277', web2: '#f1e8d2', web3: '#e8c35a', brown: '#8a6748', grey: '#a8adb8',
+  alu: '#ebe3cc', web1: '#5e4034', web2: '#7a5546', web3: '#6b4a3c', brown: '#8a6748', grey: '#a8adb8',
 };
 const BAL = ['#c95e4e', '#e6c45e', '#8fb47a', '#6fa3c9', '#e09a5c', '#a68fc6', '#d98da1', '#efe5cf', '#5f9e9a', '#d4b36a'];
 

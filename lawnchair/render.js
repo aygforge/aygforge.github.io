@@ -75,11 +75,12 @@ function frame(g) {
   if (HAS_PHOTO && g > PHOTO_IN - 0.5) {
     const a = ease.sine(clamp((g - (PHOTO_IN - 0.5)) / 0.6)); const z = 1 + 0.035 * clamp((g - PHOTO_IN + 0.5) / 3.8);
     mctx.save(); mctx.globalAlpha = a; mctx.fillStyle = '#f3ead7'; mctx.fillRect(0, 0, W, H);
-    const bw = 960, bh = Math.min(1300, bw * PHOTO.height / PHOTO.width), cx = 540, cy = 1080;
+    const bw = 940, bh = Math.min(1300, bw * PHOTO.height / PHOTO.width), cx = 540, cy = 1060;
     mctx.fillStyle = '#fbf6ea'; mctx.shadowColor = 'rgba(0,0,0,0.25)'; mctx.shadowBlur = 24; mctx.fillRect(cx - bw / 2 - 26, cy - bh / 2 - 26, bw + 52, bh + 52); mctx.shadowBlur = 0;
     mctx.beginPath(); mctx.rect(cx - bw / 2, cy - bh / 2, bw, bh); mctx.clip();
     const iw = bw * z, ih = iw * PHOTO.height / PHOTO.width; mctx.drawImage(PHOTO, cx - iw / 2, cy - ih / 2, iw, ih);
     mctx.restore();
+    mctx.save(); mctx.globalAlpha = a; mctx.font = '400 34px Caveat'; mctx.textAlign = 'center'; mctx.fillStyle = 'rgba(35,37,90,0.75)'; mctx.fillText('Fotoğraf: Smithsonian National Air and Space Museum', 540, cy + bh / 2 + 70); mctx.restore();
     if (process.env.PHOTO_LABEL) { mctx.save(); mctx.globalAlpha = a; card(mctx, 160, 150, 760, 150, 1); mctx.font = '700 84px Caveat'; mctx.textAlign = 'center'; mctx.fillStyle = '#23255a'; mctx.fillText(process.env.PHOTO_LABEL, 540, 250); mctx.restore(); }
   }
   // grain over illustration
