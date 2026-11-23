@@ -1,0 +1,2078 @@
+{
+ "version": 1,
+ "generated": "deterministic",
+ "champions": {
+  "boran": {
+   "atlas": "champ_boran",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  },
+  "korruk": {
+   "atlas": "champ_korruk",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  },
+  "tharok": {
+   "atlas": "champ_tharok",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  },
+  "rovan": {
+   "atlas": "champ_rovan",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  },
+  "selda": {
+   "atlas": "champ_selda",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  },
+  "malvek": {
+   "atlas": "champ_malvek",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  },
+  "asira": {
+   "atlas": "champ_asira",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  },
+  "liris": {
+   "atlas": "champ_liris",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  },
+  "orun": {
+   "atlas": "champ_orun",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  },
+  "nyra": {
+   "atlas": "champ_nyra",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  },
+  "zereth": {
+   "atlas": "champ_zereth",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  },
+  "vaelis": {
+   "atlas": "champ_vaelis",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  },
+  "edrin": {
+   "atlas": "champ_edrin",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  },
+  "tessa": {
+   "atlas": "champ_tessa",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  },
+  "dorn": {
+   "atlas": "champ_dorn",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  },
+  "rughan": {
+   "atlas": "champ_rughan",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  },
+  "nekmar": {
+   "atlas": "champ_nekmar",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  },
+  "ilvara": {
+   "atlas": "champ_ilvara",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 14,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s2": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "ult": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    },
+    "recall": {
+     "frames": 4,
+     "rate": 6,
+     "repeat": -1
+    }
+   }
+  }
+ },
+ "units": {
+  "minion_melee_0": {
+   "atlas": "unit_minion_melee_0",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  },
+  "minion_melee_1": {
+   "atlas": "unit_minion_melee_1",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  },
+  "minion_ranged_0": {
+   "atlas": "unit_minion_ranged_0",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  },
+  "minion_ranged_1": {
+   "atlas": "unit_minion_ranged_1",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  },
+  "minion_siege_0": {
+   "atlas": "unit_minion_siege_0",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  },
+  "minion_siege_1": {
+   "atlas": "unit_minion_siege_1",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  },
+  "alphawolf": {
+   "atlas": "unit_alphawolf",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  },
+  "wolfling": {
+   "atlas": "unit_wolfling",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  },
+  "wolf": {
+   "atlas": "unit_wolf",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  },
+  "beast": {
+   "atlas": "unit_beast",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  },
+  "golem": {
+   "atlas": "unit_golem",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  },
+  "spirit": {
+   "atlas": "unit_spirit",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  },
+  "wisp": {
+   "atlas": "unit_wisp",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  },
+  "skeleton": {
+   "atlas": "unit_skeleton",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  },
+  "bonegiant": {
+   "atlas": "unit_bonegiant",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  },
+  "sentry": {
+   "atlas": "unit_sentry",
+   "size": 48,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  },
+  "boss_blood": {
+   "atlas": "unit_boss_blood",
+   "size": 96,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  },
+  "boss_titan": {
+   "atlas": "unit_boss_titan",
+   "size": 96,
+   "anims": {
+    "idle": {
+     "frames": 4,
+     "rate": 5,
+     "repeat": -1
+    },
+    "walk": {
+     "frames": 6,
+     "rate": 10,
+     "repeat": -1
+    },
+    "attack": {
+     "frames": 5,
+     "rate": 12,
+     "repeat": 0
+    },
+    "s1": {
+     "frames": 5,
+     "rate": 10,
+     "repeat": 0
+    },
+    "hit": {
+     "frames": 2,
+     "rate": 10,
+     "repeat": 0
+    },
+    "death": {
+     "frames": 6,
+     "rate": 8,
+     "repeat": 0
+    }
+   }
+  }
+ },
+ "vfx": {
+  "fireExplosion": {
+   "frames": 7,
+   "rate": 18,
+   "loop": false,
+   "size": 64
+  },
+  "explosion": {
+   "frames": 7,
+   "rate": 18,
+   "loop": false,
+   "size": 64
+  },
+  "bigExplosion": {
+   "frames": 8,
+   "rate": 16,
+   "loop": false,
+   "size": 96
+  },
+  "smallBoom": {
+   "frames": 5,
+   "rate": 20,
+   "loop": false,
+   "size": 32
+  },
+  "iceBurst": {
+   "frames": 6,
+   "rate": 16,
+   "loop": false,
+   "size": 64
+  },
+  "voidBurst": {
+   "frames": 6,
+   "rate": 16,
+   "loop": false,
+   "size": 64
+  },
+  "poisonBurst": {
+   "frames": 6,
+   "rate": 16,
+   "loop": false,
+   "size": 48
+  },
+  "shadowPuff": {
+   "frames": 6,
+   "rate": 16,
+   "loop": false,
+   "size": 48
+  },
+  "smoke": {
+   "frames": 6,
+   "rate": 12,
+   "loop": false,
+   "size": 64
+  },
+  "hitSpark": {
+   "frames": 4,
+   "rate": 24,
+   "loop": false,
+   "size": 24
+  },
+  "slash": {
+   "frames": 4,
+   "rate": 20,
+   "loop": false,
+   "size": 48
+  },
+  "bloodSlash": {
+   "frames": 4,
+   "rate": 20,
+   "loop": false,
+   "size": 48
+  },
+  "wideSlash": {
+   "frames": 5,
+   "rate": 18,
+   "loop": false,
+   "size": 64
+  },
+  "riftSlash": {
+   "frames": 4,
+   "rate": 20,
+   "loop": false,
+   "size": 48
+  },
+  "heal": {
+   "frames": 6,
+   "rate": 12,
+   "loop": false,
+   "size": 32
+  },
+  "levelUp": {
+   "frames": 6,
+   "rate": 12,
+   "loop": false,
+   "size": 48
+  },
+  "stun": {
+   "frames": 4,
+   "rate": 10,
+   "loop": true,
+   "size": 32
+  },
+  "shieldBubble": {
+   "frames": 4,
+   "rate": 8,
+   "loop": true,
+   "size": 64
+  },
+  "frostRoot": {
+   "frames": 4,
+   "rate": 8,
+   "loop": true,
+   "size": 48
+  },
+  "recallRing": {
+   "frames": 6,
+   "rate": 10,
+   "loop": true,
+   "size": 64
+  },
+  "deathPuff": {
+   "frames": 6,
+   "rate": 12,
+   "loop": false,
+   "size": 48
+  },
+  "crystalShatter": {
+   "frames": 8,
+   "rate": 12,
+   "loop": false,
+   "size": 96
+  },
+  "towerRubble": {
+   "frames": 6,
+   "rate": 10,
+   "loop": false,
+   "size": 64
+  },
+  "quake": {
+   "frames": 6,
+   "rate": 14,
+   "loop": false,
+   "size": 96
+  },
+  "bloodNova": {
+   "frames": 6,
+   "rate": 14,
+   "loop": false,
+   "size": 96
+  },
+  "titanSlam": {
+   "frames": 6,
+   "rate": 14,
+   "loop": false,
+   "size": 96
+  },
+  "telegraph": {
+   "frames": 1,
+   "rate": 1,
+   "loop": false,
+   "size": 64
+  },
+  "meteor": {
+   "frames": 4,
+   "rate": 16,
+   "loop": false,
+   "size": 48
+  },
+  "goldCoin": {
+   "frames": 4,
+   "rate": 12,
+   "loop": true,
+   "size": 16
+  },
+  "speedBuff": {
+   "frames": 4,
+   "rate": 12,
+   "loop": true,
+   "size": 32
+  },
+  "runeBuild": {
+   "frames": 6,
+   "rate": 12,
+   "loop": false,
+   "size": 48
+  },
+  "soulWisp": {
+   "frames": 4,
+   "rate": 12,
+   "loop": true,
+   "size": 16
+  },
+  "hawk": {
+   "frames": 4,
+   "rate": 12,
+   "loop": true,
+   "size": 32
+  },
+  "flameGround": {
+   "frames": 4,
+   "rate": 10,
+   "loop": true,
+   "size": 96
+  },
+  "frostGround": {
+   "frames": 4,
+   "rate": 8,
+   "loop": true,
+   "size": 96
+  },
+  "poisonGround": {
+   "frames": 4,
+   "rate": 8,
+   "loop": true,
+   "size": 96
+  },
+  "voidGround": {
+   "frames": 4,
+   "rate": 8,
+   "loop": true,
+   "size": 64
+  },
+  "fortressGround": {
+   "frames": 4,
+   "rate": 8,
+   "loop": true,
+   "size": 96
+  },
+  "hawkGround": {
+   "frames": 1,
+   "rate": 1,
+   "loop": false,
+   "size": 96
+  },
+  "p_arrow": {
+   "frames": 1,
+   "rate": 1,
+   "loop": false,
+   "size": 24
+  },
+  "p_pierceArrow": {
+   "frames": 2,
+   "rate": 12,
+   "loop": true,
+   "size": 32
+  },
+  "p_dawnArrow": {
+   "frames": 2,
+   "rate": 12,
+   "loop": true,
+   "size": 48
+  },
+  "p_bolt": {
+   "frames": 1,
+   "rate": 1,
+   "loop": false,
+   "size": 24
+  },
+  "p_shot": {
+   "frames": 1,
+   "rate": 1,
+   "loop": false,
+   "size": 16
+  },
+  "p_cannon": {
+   "frames": 1,
+   "rate": 1,
+   "loop": false,
+   "size": 16
+  },
+  "p_bomb": {
+   "frames": 2,
+   "rate": 10,
+   "loop": true,
+   "size": 24
+  },
+  "p_barrel": {
+   "frames": 2,
+   "rate": 10,
+   "loop": true,
+   "size": 32
+  },
+  "p_fireball": {
+   "frames": 3,
+   "rate": 14,
+   "loop": true,
+   "size": 32
+  },
+  "p_emberBolt": {
+   "frames": 2,
+   "rate": 14,
+   "loop": true,
+   "size": 16
+  },
+  "p_frostBolt": {
+   "frames": 2,
+   "rate": 14,
+   "loop": true,
+   "size": 16
+  },
+  "p_iceLance": {
+   "frames": 2,
+   "rate": 14,
+   "loop": true,
+   "size": 32
+  },
+  "p_voidBolt": {
+   "frames": 2,
+   "rate": 14,
+   "loop": true,
+   "size": 16
+  },
+  "p_voidWave": {
+   "frames": 3,
+   "rate": 14,
+   "loop": true,
+   "size": 48
+  },
+  "p_soulBolt": {
+   "frames": 2,
+   "rate": 14,
+   "loop": true,
+   "size": 16
+  },
+  "p_runeBolt": {
+   "frames": 2,
+   "rate": 14,
+   "loop": true,
+   "size": 16
+  },
+  "p_disk": {
+   "frames": 4,
+   "rate": 16,
+   "loop": true,
+   "size": 32
+  },
+  "p_diskBig": {
+   "frames": 4,
+   "rate": 16,
+   "loop": true,
+   "size": 48
+  },
+  "p_poisonDagger": {
+   "frames": 2,
+   "rate": 16,
+   "loop": true,
+   "size": 24
+  },
+  "p_hook": {
+   "frames": 1,
+   "rate": 1,
+   "loop": false,
+   "size": 24
+  },
+  "p_towerBlue": {
+   "frames": 2,
+   "rate": 16,
+   "loop": true,
+   "size": 24
+  },
+  "p_towerRed": {
+   "frames": 2,
+   "rate": 16,
+   "loop": true,
+   "size": 24
+  },
+  "p_minionBoltBlue": {
+   "frames": 2,
+   "rate": 14,
+   "loop": true,
+   "size": 12
+  },
+  "p_minionBoltRed": {
+   "frames": 2,
+   "rate": 14,
+   "loop": true,
+   "size": 12
+  },
+  "p_wisp": {
+   "frames": 2,
+   "rate": 14,
+   "loop": true,
+   "size": 16
+  },
+  "p_bone": {
+   "frames": 1,
+   "rate": 1,
+   "loop": false,
+   "size": 16
+  },
+  "p_bolt2": {
+   "frames": 1,
+   "rate": 1,
+   "loop": false,
+   "size": 24
+  }
+ },
+ "structures": {
+  "tower": {
+   "idle": 4,
+   "attack": 2
+  },
+  "crystal": {
+   "idle": 6
+  }
+ },
+ "atlases": [
+  "champ_boran",
+  "champ_korruk",
+  "champ_tharok",
+  "champ_rovan",
+  "champ_selda",
+  "champ_malvek",
+  "champ_asira",
+  "champ_liris",
+  "champ_orun",
+  "champ_nyra",
+  "champ_zereth",
+  "champ_vaelis",
+  "champ_edrin",
+  "champ_tessa",
+  "champ_dorn",
+  "champ_rughan",
+  "champ_nekmar",
+  "champ_ilvara",
+  "unit_minion_melee_0",
+  "unit_minion_melee_1",
+  "unit_minion_ranged_0",
+  "unit_minion_ranged_1",
+  "unit_minion_siege_0",
+  "unit_minion_siege_1",
+  "unit_alphawolf",
+  "unit_wolfling",
+  "unit_wolf",
+  "unit_beast",
+  "unit_golem",
+  "unit_spirit",
+  "unit_wisp",
+  "unit_skeleton",
+  "unit_bonegiant",
+  "unit_sentry",
+  "unit_boss_blood",
+  "unit_boss_titan",
+  "structures",
+  "tiles",
+  "decor",
+  "vfx",
+  "icons",
+  "portraits"
+ ],
+ "runtimeDecor": [
+  {
+   "key": "brazier",
+   "x": 390,
+   "y": 810
+  },
+  {
+   "key": "brazier",
+   "x": 390,
+   "y": 1010
+  },
+  {
+   "key": "brazier",
+   "x": 2810,
+   "y": 810
+  },
+  {
+   "key": "brazier",
+   "x": 2810,
+   "y": 1010
+  },
+  {
+   "key": "brazier",
+   "x": 1430,
+   "y": 640
+  },
+  {
+   "key": "brazier",
+   "x": 1770,
+   "y": 640
+  },
+  {
+   "key": "brazier",
+   "x": 1430,
+   "y": 1160
+  },
+  {
+   "key": "brazier",
+   "x": 1770,
+   "y": 1160
+  }
+ ],
+ "counts": {
+  "atlases": 42,
+  "frames": 5500,
+  "champions": 18,
+  "units": 18,
+  "vfx": 66,
+  "icons": 46,
+  "portraits": 18,
+  "tiles": 18,
+  "decor": 27
+ }
+}
