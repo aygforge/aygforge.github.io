@@ -98,7 +98,7 @@ async function playViaUI(page, maxSteps = 4000, onDecision = null) {
     await page.waitForTimeout(300);
     if (!(await page.$('.laneGrid')) && (await page.$('.modal .btn.primary'))) { await page.click('.modal .btn.primary'); await page.waitForTimeout(300); }
     laneHidden = await page.evaluate(() => { const t = document.querySelector('.laneGrid').textContent; const names = window.__tof.core.run.visit.lanes.map((l) => l.harborId); return names.every((id) => !t.includes(window.__tof.harborName(id))); });
-    numbersOk = await page.evaluate(() => getComputedStyle(document.querySelector('.statusbar .stat b')).fontFamily.includes('Roboto'));
+    numbersOk = await page.evaluate(() => getComputedStyle(document.querySelector('.statusbar .stat b')).fontFamily.includes('Jersey 10') && document.fonts.check('24px "Jersey 10"', '0123456789ğşİı'));
     const ov2 = await overflow(page);
     check(`${vp.width}×${vp.height} run baştan sona UI ile oynandı`, !!phases && !errors.length, `fazlar: ${phases ? [...phases].slice(0, 12).join(',') : '-'} ${errors.slice(0, 2).join(' | ')}`);
     check(`${vp.width}×${vp.height} gemi top-down (dikey) çiziliyor`, !!topDown);

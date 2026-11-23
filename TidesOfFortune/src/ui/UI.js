@@ -317,17 +317,40 @@ export class UI {
   drawBubbles(list) {
     const layer = this.bubbleLayer;
     const visible = this.renderer.scene === 'world';
-    while (layer.children.length < list.length) layer.appendChild(h('div.bubble'));
+    while (layer.children.length < list.length) layer.appendChild(h('div.bubble', {}, h('span.bt')));
+    const SW = 1280, M = 10; // sahne mantıksal genişliği, kenar payı
+    const placed = []; // çakışma önleme: daha önce yerleştirilen konuşma balonlarının kutuları
     [...layer.children].forEach((el, i) => {
       const b = list[i];
-      if (!b || !visible) { el.style.display = 'none'; return; }
+      if (!b || !visible) { el.style.display = 'none'; el._txt = null; return; }
       el.style.display = 'block';
-      const cls = b.kind === 'float' ? 'bubble float' : 'bubble';
-      if (el.className !== cls) el.className = cls;
-      if (el.textContent !== b.text) el.textContent = b.text;
-      el.style.color = b.kind === 'float' ? b.color : '';
-      el.style.opacity = b.kind === 'float' ? Math.max(0, Math.min(1, b.a * 1.6)) : '';
-      el.style.transform = `translate(${Math.round(b.x)}px, ${Math.round(b.y)}px) translate(-50%, -100%)`;
+      const float = b.kind === 'float';
+      const cls = float ? 'bubble float' : 'bubble';
+      if (el.className.replace(' pop', '') !== cls) el.className = cls;
+      const span = el.firstChild;
+      if (el._txt !== b.text) {
+        span.textContent = b.text;
+        el._txt = b.text;
+        if (!float) {
+          // yeni replik: ölçüyü bir kez al, küçük bir "pat" animasyonuyla belir
+          el.style.transform = 'none';
+          el._w = el.offsetWidth; el._h = el.offsetHeight;
+          el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+        }
+      }
+      el.style.color = float ? b.color : '';
+      el.style.opacity = float ? Math.max(0, Math.min(1, b.a * 1.6)) : '';
+      if (float) { el.style.transform = `translate(${Math.round(b.x)}px, ${Math.round(b.y)}px) translate(-50%, -100%)`; return; }
+      const w = el._w || 120, hh = el._h || 40;
+      // balon ekrandan taşmasın: kutu kaydırılır, kuyruk yine konuşana bakar
+      let left = Math.max(M, Math.min(SW - M - w, b.x - w / 2));
+      let top = b.y - hh - 14;
+      for (const r of placed) if (left < r.x + r.w && left + w > r.x && top < r.y + r.h && top + hh > r.y) top = r.y - hh - 4;
+      top = Math.max(M, top);
+      placed.push({ x: left, y: top, w, h: hh });
+      const tail = Math.max(18, Math.min(w - 18, b.x - left));
+      el.style.setProperty('--tail', `${Math.round(tail)}px`);
+      el.style.transform = `translate(${Math.round(left)}px, ${Math.round(top)}px)`;
     });
   }
 

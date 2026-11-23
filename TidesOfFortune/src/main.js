@@ -58,7 +58,7 @@ function boot() {
 
 if (document.fonts && document.fonts.load) {
   Promise.race([
-    Promise.all([document.fonts.load('24px Rubik'), document.fonts.load('600 24px Rubik'), document.fonts.load('24px Rubik', 'ğşİı')]),
+    Promise.all([document.fonts.load('24px "Jersey 10"'), document.fonts.load('700 24px "Jersey 10"'), document.fonts.load('24px "Jersey 10"', 'ğşİı')]),
     new Promise((r) => setTimeout(r, 1500)),
   ]).finally(boot);
 } else boot();
