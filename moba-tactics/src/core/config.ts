@@ -29,7 +29,7 @@ export const BALANCE = {
   cdrCap: 0.3,
   sellRatio: 0.7,
   noMinionTowerReduction: 0.8,
-  champSiegeMul: 2.0, // champion damage multiplier vs structures while allied minions support
+  champSiegeMul: 2.4, // champion damage multiplier vs structures while allied minions support
   crystalChampDamage: 75,
   fortifyUntil: 2.5, // minutes
   fortifyFade: 4,

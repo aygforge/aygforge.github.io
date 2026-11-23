@@ -56,6 +56,6 @@ bot maçı (hepsi kristal yıkımıyla biter, sıkışan minyon/arazi dışı bi
 ## Bilinen sınırlamalar
 - Gerçek Android cihazda test edilmedi; yalnızca headless Chromium'da 1280×720 ve 915×412 yatay görünümler denendi.
 - Sağ yön kareleri sol yönün yansımasıdır (yan profil çizimi tek, aynalanmış).
-- Bot-bot maç süresi ortalaması ~8–9 dk (hedef 6–8 dk); bazı maçlar 13 dk'ya uzayabiliyor.
+- Bot-bot maç süresi ortalaması ~7,6 dk (hedef 6–8 dk), ancak dağılım geniş: 4,5–13 dk arası maçlar görülüyor.
 - Olay akışı (`GameEvent`) henüz takıma göre filtrelenmiyor; PvP sunucusu için `observe()` dışında olay filtresi eklenmeli.
 - Ses efektleri basit Web Audio sentezidir; müzik yok.
