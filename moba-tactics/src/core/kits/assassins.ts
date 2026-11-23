@@ -43,7 +43,8 @@ const nyra: Kit = {
     exec({ w, u, rank }, p) {
       const t = p.tgt!;
       const end = pointToward(u, t.x, t.y, Math.max(0, dist(u.x, u.y, t.x, t.y) - (u.radius + t.radius)));
-      u.x = end.x; u.y = end.y;
+      const safe = isWalkable(end.x, end.y) ? end : nearestWalkable(end.x, end.y);
+      u.x = safe.x; u.y = safe.y; u.path = [];
       vfx(w, 'lastWhisper', t.x, t.y, { id: t.id });
       abil(w, u, t, R(rank, 120, 200) + 1.0 * u.stats.ad, 'phys', 'ult');
       if (t.alive) dealDamage(w, u, t, (t.stats.maxHp - t.hp) * 0.25, 'phys', { ability: 'ult', percent: true, noProc: true });

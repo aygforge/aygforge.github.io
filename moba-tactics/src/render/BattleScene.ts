@@ -151,7 +151,7 @@ export class BattleScene extends Phaser.Scene {
       cam.centerOn(WORLD_W / 2, WORLD_H / 2 + (h < 500 ? 40 : 0));
       return;
     }
-    const z = (h / 820) * this.zoomClose;
+    const z = (h / (h < 520 ? 640 : 820)) * this.zoomClose;
     cam.setZoom(z);
     let tx: number, ty: number;
     if (this.b.camFocus) { tx = this.b.camFocus.x; ty = this.b.camFocus.y; }
@@ -393,6 +393,7 @@ export class BattleScene extends Phaser.Scene {
           const sz = MANIFEST.vfx[m.key]?.size ?? 48;
           const scale = e.r ? (e.r * 2) / sz : (m.base ?? 1) * 1.8;
           const s = this.fx(m.key, e.x!, e.y! - (e.r ? 0 : 30), scale * (e.r ? m.base ?? 1 : 1), m.tint, e.r ? -400 + e.y! : undefined);
+          if (s && m.key === 'telegraph') s.setAlpha(0.45);
           if (s && e.dur && MANIFEST.vfx[m.key].loop) { this.time.delayedCall(e.dur * 1000, () => s.destroy()); }
           if (['explosion', 'bigExplosion', 'fireExplosion', 'quake', 'titanSlam', 'bloodNova', 'iceBurst'].includes(m.key) && this.near(e.x!, e.y!)) sfx('boom', 120);
           if (s && e.id && m.key === 'shieldBubble') { const u = w.get(e.id); if (u) this.follow(s, u, -30, e.dur ?? 2); }

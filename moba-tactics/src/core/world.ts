@@ -708,8 +708,9 @@ export class World {
     if (d <= stopDist) { u.moving = false; return true; }
     if (u.isRooted(this.time) || u.stats.ms <= 0) { u.moving = false; return false; }
     let gx = tx, gy = ty;
-    if (u.kind !== 'minion') {
-      const direct = lineWalkable(u.x, u.y, tx, ty);
+    {
+      // minions normally walk the open lane; they only path-find when displaced (e.g. pulled into the jungle)
+      const direct = u.kind === 'minion' && this.tick % 4 !== u.id % 4 && !u.path.length ? true : lineWalkable(u.x, u.y, tx, ty);
       if (!direct) {
         if (!u.path.length || dist(u.pathGoalX, u.pathGoalY, tx, ty) > 70 || this.time - u.pathAt > 2) {
           u.path = findPath(u.x, u.y, tx, ty);
@@ -1082,6 +1083,10 @@ export class World {
     }
 
     this.separate();
+    // safety net: never leave a mobile unit inside blocked terrain
+    if (this.tick % 10 === 0) for (const u of this.units) {
+      if (u.alive && !u.dash && !u.isStructure && u.sub !== 'sentry' && !isWalkable(u.x, u.y)) { const p = nearestWalkable(u.x, u.y); u.x = p.x; u.y = p.y; u.path = []; }
+    }
     this.stepProjectiles();
     this.stepZones();
     this.stepDots();

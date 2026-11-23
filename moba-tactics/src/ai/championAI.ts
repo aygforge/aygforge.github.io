@@ -243,7 +243,11 @@ function chooseChampTarget(w: World, u: Unit, P: Perception, ai: AIState, sp: ty
   const c = u.champ!;
   const raidLane: LaneId | null = c.order === 'raid_top' ? 'top' : c.order === 'raid_bot' ? 'bot' : ai.autoRaid?.lane ?? null;
   const acquire = u.stats.range + (c.position === 'jungle' || raidLane ? 450 : 280);
-  const cands = P.enemyChampsNear(u.x, u.y, Math.max(acquire, sp.chase));
+  let cands = P.enemyChampsNear(u.x, u.y, Math.max(acquire, sp.chase));
+  if (c.order === 'defend' && c.lane) {
+    const tw = ownFrontTower(P, c.lane, u.team as TeamId);
+    if (tw) cands = cands.filter((t) => dist(t.x, t.y, tw.x, tw.y) < 750);
+  }
   if (!cands.length) return null;
   const myBurst = burst(w, u);
   const risk = sp.risk * (raidLane ? 1.3 : 1) * (c.order === 'defend' ? 1.15 : 1);
@@ -372,8 +376,8 @@ function lane(w: World, u: Unit, P: Perception, ai: AIState, mode: 'farm' | 'pus
     if (!soon && (foes.length > allyMinions.length + 1 || allyMinions.length === 0)) target = foes.sort((a, b) => b.hp - a.hp || a.id - b.id)[0];
     else if (!soon && c.style === 'aggressive') target = foes.sort((a, b) => b.hp - a.hp || a.id - b.id)[0];
   }
-  // structures
-  if (!target) {
+  // structures (not while defending)
+  if (!target && effMode !== 'defend') {
     for (const s of P.enemyTowers()) {
       if (!P.attackable(s) || dist(s.x, s.y, u.x, u.y) > acq + 200) continue;
       const tankers = P.alliesNear(s.x, s.y, s.stats.range, 'minion').length;
@@ -569,8 +573,11 @@ function raid(w: World, u: Unit, P: Perception, laneId: LaneId, ordered: boolean
   const now = w.time;
   const od = c.orderData;
   const finish = () => { if (ordered) w.setOrder(u, c.baseOrder); else ai.autoRaid = null; };
-  if (ordered && od.startKills === undefined) { od.startKills = w.teams[team].kills; od.lastEnemy = now; }
-  if (ordered && (now - c.orderSince > 32 || w.teams[team].kills > od.startKills!)) return finish();
+  const enemies = P.enemyChampIds().map((id) => w.get(id)!);
+  if (ordered && od.started === undefined) { od.started = 1; od.lastEnemy = now; for (const e of enemies) od['d' + e.id] = e.champ!.deaths; }
+  // raid succeeds when an enemy champion dies near the raiding jungler (public kill feed), or times out
+  const killedHere = ordered && enemies.some((e) => e.champ!.deaths > (od['d' + e.id] ?? 0) && dist(e.x, e.y, u.x, u.y) < 800);
+  if (ordered && (now - c.orderSince > 32 || killedHere)) return finish();
   // anchor: our laner in that lane, else lane middle
   const laner = P.allyChamps().find((a) => a.champ!.lane === laneId && a.alive && a !== u);
   let ax: number, ay: number;
