@@ -1,0 +1,985 @@
+{
+ "source": "football-wars-v4.html FWEngine (unmodified)",
+ "cases": [
+  {
+   "a": "REF_0",
+   "b": "REF_1",
+   "seed": 11,
+   "ruleset": "classic",
+   "winner": 0,
+   "endTick": 2166,
+   "hash": "de690d0d",
+   "events": 6574,
+   "survivors": 52,
+   "goals": null
+  },
+  {
+   "a": "REF_0",
+   "b": "REF_1",
+   "seed": 4242,
+   "ruleset": "classic",
+   "winner": 0,
+   "endTick": 1722,
+   "hash": "8e637acb",
+   "events": 5390,
+   "survivors": 78,
+   "goals": null
+  },
+  {
+   "a": "REF_0",
+   "b": "REF_1",
+   "seed": 11,
+   "ruleset": "fusion",
+   "winner": 0,
+   "endTick": 2497,
+   "hash": "c1e06551",
+   "events": 7019,
+   "survivors": 50,
+   "goals": [
+    2,
+    1
+   ]
+  },
+  {
+   "a": "REF_0",
+   "b": "REF_1",
+   "seed": 4242,
+   "ruleset": "fusion",
+   "winner": 0,
+   "endTick": 1743,
+   "hash": "a01ad305",
+   "events": 5336,
+   "survivors": 82,
+   "goals": [
+    0,
+    0
+   ]
+  },
+  {
+   "a": "REF_12",
+   "b": "REF_77",
+   "seed": 11,
+   "ruleset": "classic",
+   "winner": 1,
+   "endTick": 2384,
+   "hash": "6249442e",
+   "events": 6749,
+   "survivors": 59,
+   "goals": null
+  },
+  {
+   "a": "REF_12",
+   "b": "REF_77",
+   "seed": 4242,
+   "ruleset": "classic",
+   "winner": 1,
+   "endTick": 2417,
+   "hash": "55cc2fd0",
+   "events": 6655,
+   "survivors": 58,
+   "goals": null
+  },
+  {
+   "a": "REF_12",
+   "b": "REF_77",
+   "seed": 11,
+   "ruleset": "fusion",
+   "winner": 1,
+   "endTick": 2234,
+   "hash": "3a30fc6c",
+   "events": 6425,
+   "survivors": 73,
+   "goals": [
+    0,
+    2
+   ]
+  },
+  {
+   "a": "REF_12",
+   "b": "REF_77",
+   "seed": 4242,
+   "ruleset": "fusion",
+   "winner": 1,
+   "endTick": 2408,
+   "hash": "3d05a1ae",
+   "events": 6854,
+   "survivors": 57,
+   "goals": [
+    0,
+    1
+   ]
+  },
+  {
+   "a": "REF_33",
+   "b": "REF_150",
+   "seed": 11,
+   "ruleset": "classic",
+   "winner": 0,
+   "endTick": 2546,
+   "hash": "b3cedbcb",
+   "events": 7245,
+   "survivors": 31,
+   "goals": null
+  },
+  {
+   "a": "REF_33",
+   "b": "REF_150",
+   "seed": 4242,
+   "ruleset": "classic",
+   "winner": 0,
+   "endTick": 1942,
+   "hash": "5de5da53",
+   "events": 5975,
+   "survivors": 55,
+   "goals": null
+  },
+  {
+   "a": "REF_33",
+   "b": "REF_150",
+   "seed": 11,
+   "ruleset": "fusion",
+   "winner": 0,
+   "endTick": 3018,
+   "hash": "a78596ac",
+   "events": 7420,
+   "survivors": 29,
+   "goals": [
+    2,
+    0
+   ]
+  },
+  {
+   "a": "REF_33",
+   "b": "REF_150",
+   "seed": 4242,
+   "ruleset": "fusion",
+   "winner": 0,
+   "endTick": 2281,
+   "hash": "b18ed701",
+   "events": 6382,
+   "survivors": 45,
+   "goals": [
+    3,
+    0
+   ]
+  },
+  {
+   "a": "REF_60",
+   "b": "REF_61",
+   "seed": 11,
+   "ruleset": "classic",
+   "winner": 1,
+   "endTick": 3104,
+   "hash": "e2585fc2",
+   "events": 8332,
+   "survivors": 25,
+   "goals": null
+  },
+  {
+   "a": "REF_60",
+   "b": "REF_61",
+   "seed": 4242,
+   "ruleset": "classic",
+   "winner": 0,
+   "endTick": 3075,
+   "hash": "56caa002",
+   "events": 7907,
+   "survivors": 17,
+   "goals": null
+  },
+  {
+   "a": "REF_60",
+   "b": "REF_61",
+   "seed": 11,
+   "ruleset": "fusion",
+   "winner": 1,
+   "endTick": 2861,
+   "hash": "2480f033",
+   "events": 7794,
+   "survivors": 36,
+   "goals": [
+    0,
+    1
+   ]
+  },
+  {
+   "a": "REF_60",
+   "b": "REF_61",
+   "seed": 4242,
+   "ruleset": "fusion",
+   "winner": 0,
+   "endTick": 2618,
+   "hash": "95ab000d",
+   "events": 7539,
+   "survivors": 41,
+   "goals": [
+    1,
+    0
+   ]
+  },
+  {
+   "a": "REF_101",
+   "b": "REF_190",
+   "seed": 11,
+   "ruleset": "classic",
+   "winner": 0,
+   "endTick": 2343,
+   "hash": "4ffe49fe",
+   "events": 7116,
+   "survivors": 62,
+   "goals": null
+  },
+  {
+   "a": "REF_101",
+   "b": "REF_190",
+   "seed": 4242,
+   "ruleset": "classic",
+   "winner": 0,
+   "endTick": 3167,
+   "hash": "31ab2c91",
+   "events": 9189,
+   "survivors": 19,
+   "goals": null
+  },
+  {
+   "a": "REF_101",
+   "b": "REF_190",
+   "seed": 11,
+   "ruleset": "fusion",
+   "winner": 0,
+   "endTick": 2904,
+   "hash": "87dc8273",
+   "events": 7945,
+   "survivors": 44,
+   "goals": [
+    1,
+    0
+   ]
+  },
+  {
+   "a": "REF_101",
+   "b": "REF_190",
+   "seed": 4242,
+   "ruleset": "fusion",
+   "winner": 0,
+   "endTick": 3136,
+   "hash": "7fd0316",
+   "events": 9044,
+   "survivors": 39,
+   "goals": [
+    1,
+    0
+   ]
+  },
+  {
+   "a": "REF_5",
+   "b": "REF_140",
+   "seed": 11,
+   "ruleset": "classic",
+   "winner": 0,
+   "endTick": 1845,
+   "hash": "386218f",
+   "events": 6080,
+   "survivors": 72,
+   "goals": null
+  },
+  {
+   "a": "REF_5",
+   "b": "REF_140",
+   "seed": 4242,
+   "ruleset": "classic",
+   "winner": 0,
+   "endTick": 2379,
+   "hash": "d1c9fb4",
+   "events": 7678,
+   "survivors": 63,
+   "goals": null
+  },
+  {
+   "a": "REF_5",
+   "b": "REF_140",
+   "seed": 11,
+   "ruleset": "fusion",
+   "winner": 0,
+   "endTick": 2005,
+   "hash": "db2611d1",
+   "events": 6081,
+   "survivors": 78,
+   "goals": [
+    1,
+    1
+   ]
+  },
+  {
+   "a": "REF_5",
+   "b": "REF_140",
+   "seed": 4242,
+   "ruleset": "fusion",
+   "winner": 0,
+   "endTick": 2571,
+   "hash": "b06f7bd2",
+   "events": 8142,
+   "survivors": 58,
+   "goals": [
+    2,
+    2
+   ]
+  }
+ ],
+ "teams": {
+  "REF_0": {
+   "id": "REF_0",
+   "name": "Ref 0",
+   "visual": {
+    "primary_color": "#E5AA27",
+    "secondary_color": "#B51C35"
+   },
+   "battle_profile": {
+    "power_index": 84,
+    "archetype": "high_press",
+    "archetype_label_tr": "Yoğun pres",
+    "attributes": {
+     "attack": 81,
+     "defense": 79,
+     "speed": 89,
+     "pressing": 91,
+     "stamina": 87,
+     "teamwork": 79,
+     "physical": 80,
+     "technique": 86,
+     "goalkeeping": 87,
+     "finishing": 84
+    },
+    "roles_per_100": {
+     "striker": 20,
+     "winger": 22,
+     "playmaker": 15,
+     "defender": 22,
+     "goalkeeper": 8,
+     "support": 8,
+     "captain": 5
+    },
+    "specials": [
+     "pressing_storm",
+     "high_line_interception"
+    ],
+    "aggression": 68,
+    "variance": {
+     "team_form_std_pct": 9,
+     "unit_trait_std_pct": 14,
+     "critical_chance_pct": 7,
+     "critical_multiplier": 1.45,
+     "streak_adaptation": true
+    },
+    "gameplay_fields_are_inferred": true
+   }
+  },
+  "REF_1": {
+   "id": "REF_1",
+   "name": "Ref 1",
+   "visual": {
+    "primary_color": "#167D50",
+    "secondary_color": "#E32936"
+   },
+   "battle_profile": {
+    "power_index": 67,
+    "archetype": "counter",
+    "archetype_label_tr": "Kontraatak",
+    "attributes": {
+     "attack": 64,
+     "defense": 61,
+     "speed": 77,
+     "pressing": 68,
+     "stamina": 65,
+     "teamwork": 67,
+     "physical": 68,
+     "technique": 65,
+     "goalkeeping": 64,
+     "finishing": 71
+    },
+    "roles_per_100": {
+     "striker": 24,
+     "winger": 24,
+     "playmaker": 12,
+     "defender": 20,
+     "goalkeeper": 8,
+     "support": 7,
+     "captain": 5
+    },
+    "specials": [
+     "counter_burst",
+     "quick_transition"
+    ],
+    "aggression": 56,
+    "variance": {
+     "team_form_std_pct": 9,
+     "unit_trait_std_pct": 14,
+     "critical_chance_pct": 7,
+     "critical_multiplier": 1.45,
+     "streak_adaptation": true
+    },
+    "gameplay_fields_are_inferred": true
+   }
+  },
+  "REF_12": {
+   "id": "REF_12",
+   "name": "Ref 12",
+   "visual": {
+    "primary_color": "#2078B0",
+    "secondary_color": "#1D923D"
+   },
+   "battle_profile": {
+    "power_index": 67,
+    "archetype": "counter",
+    "archetype_label_tr": "Kontraatak",
+    "attributes": {
+     "attack": 64,
+     "defense": 62,
+     "speed": 75,
+     "pressing": 68,
+     "stamina": 63,
+     "teamwork": 70,
+     "physical": 65,
+     "technique": 64,
+     "goalkeeping": 63,
+     "finishing": 70
+    },
+    "roles_per_100": {
+     "striker": 24,
+     "winger": 24,
+     "playmaker": 12,
+     "defender": 20,
+     "goalkeeper": 8,
+     "support": 7,
+     "captain": 5
+    },
+    "specials": [
+     "counter_burst",
+     "quick_transition"
+    ],
+    "aggression": 56,
+    "variance": {
+     "team_form_std_pct": 9,
+     "unit_trait_std_pct": 14,
+     "critical_chance_pct": 7,
+     "critical_multiplier": 1.45,
+     "streak_adaptation": true
+    },
+    "gameplay_fields_are_inferred": true
+   }
+  },
+  "REF_77": {
+   "id": "REF_77",
+   "name": "Ref 77",
+   "visual": {
+    "primary_color": "#F9F9F9",
+    "secondary_color": "#141414"
+   },
+   "battle_profile": {
+    "power_index": 75,
+    "archetype": "defensive_block",
+    "archetype_label_tr": "Kapalı savunma",
+    "attributes": {
+     "attack": 75,
+     "defense": 82,
+     "speed": 72,
+     "pressing": 69,
+     "stamina": 77,
+     "teamwork": 78,
+     "physical": 76,
+     "technique": 75,
+     "goalkeeping": 78,
+     "finishing": 70
+    },
+    "roles_per_100": {
+     "striker": 14,
+     "winger": 12,
+     "playmaker": 12,
+     "defender": 32,
+     "goalkeeper": 12,
+     "support": 13,
+     "captain": 5
+    },
+    "specials": [
+     "iron_wall",
+     "last_line_save"
+    ],
+    "aggression": 57,
+    "variance": {
+     "team_form_std_pct": 9,
+     "unit_trait_std_pct": 14,
+     "critical_chance_pct": 7,
+     "critical_multiplier": 1.45,
+     "streak_adaptation": true
+    },
+    "gameplay_fields_are_inferred": true
+   }
+  },
+  "REF_33": {
+   "id": "REF_33",
+   "name": "Ref 33",
+   "visual": {
+    "primary_color": "#D02A34",
+    "secondary_color": "#FFFFFF"
+   },
+   "battle_profile": {
+    "power_index": 87,
+    "archetype": "counter",
+    "archetype_label_tr": "Kontraatak",
+    "attributes": {
+     "attack": 89,
+     "defense": 81,
+     "speed": 92,
+     "pressing": 84,
+     "stamina": 83,
+     "teamwork": 83,
+     "physical": 87,
+     "technique": 86,
+     "goalkeeping": 89,
+     "finishing": 91
+    },
+    "roles_per_100": {
+     "striker": 24,
+     "winger": 24,
+     "playmaker": 12,
+     "defender": 20,
+     "goalkeeper": 8,
+     "support": 7,
+     "captain": 5
+    },
+    "specials": [
+     "counter_burst",
+     "quick_transition"
+    ],
+    "aggression": 64,
+    "variance": {
+     "team_form_std_pct": 9,
+     "unit_trait_std_pct": 14,
+     "critical_chance_pct": 7,
+     "critical_multiplier": 1.45,
+     "streak_adaptation": true
+    },
+    "gameplay_fields_are_inferred": true
+   }
+  },
+  "REF_150": {
+   "id": "REF_150",
+   "name": "Ref 150",
+   "visual": {
+    "primary_color": "#2564A3",
+    "secondary_color": "#141414"
+   },
+   "battle_profile": {
+    "power_index": 88,
+    "archetype": "high_press",
+    "archetype_label_tr": "Yoğun pres",
+    "attributes": {
+     "attack": 88,
+     "defense": 82,
+     "speed": 95,
+     "pressing": 99,
+     "stamina": 88,
+     "teamwork": 89,
+     "physical": 87,
+     "technique": 89,
+     "goalkeeping": 85,
+     "finishing": 84
+    },
+    "roles_per_100": {
+     "striker": 20,
+     "winger": 22,
+     "playmaker": 15,
+     "defender": 22,
+     "goalkeeper": 8,
+     "support": 8,
+     "captain": 5
+    },
+    "specials": [
+     "pressing_storm",
+     "high_line_interception"
+    ],
+    "aggression": 72,
+    "variance": {
+     "team_form_std_pct": 9,
+     "unit_trait_std_pct": 14,
+     "critical_chance_pct": 7,
+     "critical_multiplier": 1.45,
+     "streak_adaptation": true
+    },
+    "gameplay_fields_are_inferred": true
+   }
+  },
+  "REF_60": {
+   "id": "REF_60",
+   "name": "Ref 60",
+   "visual": {
+    "primary_color": "#8B2938",
+    "secondary_color": "#D8A340"
+   },
+   "battle_profile": {
+    "power_index": 87,
+    "archetype": "counter",
+    "archetype_label_tr": "Kontraatak",
+    "attributes": {
+     "attack": 82,
+     "defense": 86,
+     "speed": 92,
+     "pressing": 90,
+     "stamina": 87,
+     "teamwork": 89,
+     "physical": 87,
+     "technique": 87,
+     "goalkeeping": 84,
+     "finishing": 88
+    },
+    "roles_per_100": {
+     "striker": 24,
+     "winger": 24,
+     "playmaker": 12,
+     "defender": 20,
+     "goalkeeper": 8,
+     "support": 7,
+     "captain": 5
+    },
+    "specials": [
+     "counter_burst",
+     "quick_transition"
+    ],
+    "aggression": 68,
+    "variance": {
+     "team_form_std_pct": 9,
+     "unit_trait_std_pct": 14,
+     "critical_chance_pct": 7,
+     "critical_multiplier": 1.45,
+     "streak_adaptation": true
+    },
+    "gameplay_fields_are_inferred": true
+   }
+  },
+  "REF_61": {
+   "id": "REF_61",
+   "name": "Ref 61",
+   "visual": {
+    "primary_color": "#CF2F3D",
+    "secondary_color": "#101010"
+   },
+   "battle_profile": {
+    "power_index": 85,
+    "archetype": "high_press",
+    "archetype_label_tr": "Yoğun pres",
+    "attributes": {
+     "attack": 88,
+     "defense": 84,
+     "speed": 86,
+     "pressing": 92,
+     "stamina": 87,
+     "teamwork": 83,
+     "physical": 81,
+     "technique": 80,
+     "goalkeeping": 84,
+     "finishing": 84
+    },
+    "roles_per_100": {
+     "striker": 20,
+     "winger": 22,
+     "playmaker": 15,
+     "defender": 22,
+     "goalkeeper": 8,
+     "support": 8,
+     "captain": 5
+    },
+    "specials": [
+     "pressing_storm",
+     "high_line_interception"
+    ],
+    "aggression": 68,
+    "variance": {
+     "team_form_std_pct": 9,
+     "unit_trait_std_pct": 14,
+     "critical_chance_pct": 7,
+     "critical_multiplier": 1.45,
+     "streak_adaptation": true
+    },
+    "gameplay_fields_are_inferred": true
+   }
+  },
+  "REF_101": {
+   "id": "REF_101",
+   "name": "Ref 101",
+   "visual": {
+    "primary_color": "#CA2A37",
+    "secondary_color": "#111111"
+   },
+   "battle_profile": {
+    "power_index": 78,
+    "archetype": "defensive_block",
+    "archetype_label_tr": "Kapalı savunma",
+    "attributes": {
+     "attack": 78,
+     "defense": 83,
+     "speed": 73,
+     "pressing": 72,
+     "stamina": 75,
+     "teamwork": 79,
+     "physical": 73,
+     "technique": 79,
+     "goalkeeping": 86,
+     "finishing": 75
+    },
+    "roles_per_100": {
+     "striker": 14,
+     "winger": 12,
+     "playmaker": 12,
+     "defender": 32,
+     "goalkeeper": 12,
+     "support": 13,
+     "captain": 5
+    },
+    "specials": [
+     "iron_wall",
+     "last_line_save"
+    ],
+    "aggression": 58,
+    "variance": {
+     "team_form_std_pct": 9,
+     "unit_trait_std_pct": 14,
+     "critical_chance_pct": 7,
+     "critical_multiplier": 1.45,
+     "streak_adaptation": true
+    },
+    "gameplay_fields_are_inferred": true
+   }
+  },
+  "REF_190": {
+   "id": "REF_190",
+   "name": "Ref 190",
+   "visual": {
+    "primary_color": "#E2A340",
+    "secondary_color": "#8C2338"
+   },
+   "battle_profile": {
+    "power_index": 63,
+    "archetype": "counter",
+    "archetype_label_tr": "Kontraatak",
+    "attributes": {
+     "attack": 65,
+     "defense": 61,
+     "speed": 66,
+     "pressing": 60,
+     "stamina": 58,
+     "teamwork": 62,
+     "physical": 64,
+     "technique": 60,
+     "goalkeeping": 63,
+     "finishing": 68
+    },
+    "roles_per_100": {
+     "striker": 24,
+     "winger": 24,
+     "playmaker": 12,
+     "defender": 20,
+     "goalkeeper": 8,
+     "support": 7,
+     "captain": 5
+    },
+    "specials": [
+     "counter_burst",
+     "quick_transition"
+    ],
+    "aggression": 52,
+    "variance": {
+     "team_form_std_pct": 9,
+     "unit_trait_std_pct": 14,
+     "critical_chance_pct": 7,
+     "critical_multiplier": 1.45,
+     "streak_adaptation": true
+    },
+    "gameplay_fields_are_inferred": true
+   }
+  },
+  "REF_5": {
+   "id": "REF_5",
+   "name": "Ref 5",
+   "visual": {
+    "primary_color": "#E5CB33",
+    "secondary_color": "#142B60"
+   },
+   "battle_profile": {
+    "power_index": 81,
+    "archetype": "possession",
+    "archetype_label_tr": "Pas ve kontrol",
+    "attributes": {
+     "attack": 84,
+     "defense": 82,
+     "speed": 82,
+     "pressing": 79,
+     "stamina": 76,
+     "teamwork": 92,
+     "physical": 80,
+     "technique": 84,
+     "goalkeeping": 79,
+     "finishing": 77
+    },
+    "roles_per_100": {
+     "striker": 16,
+     "winger": 16,
+     "playmaker": 25,
+     "defender": 20,
+     "goalkeeper": 8,
+     "support": 10,
+     "captain": 5
+    },
+    "specials": [
+     "one_two_combo",
+     "precision_through_ball"
+    ],
+    "aggression": 62,
+    "variance": {
+     "team_form_std_pct": 9,
+     "unit_trait_std_pct": 14,
+     "critical_chance_pct": 7,
+     "critical_multiplier": 1.45,
+     "streak_adaptation": true
+    },
+    "gameplay_fields_are_inferred": true
+   }
+  },
+  "REF_140": {
+   "id": "REF_140",
+   "name": "Ref 140",
+   "visual": {
+    "primary_color": "#278759",
+    "secondary_color": "#FFFFFF"
+   },
+   "battle_profile": {
+    "power_index": 68,
+    "archetype": "physical",
+    "archetype_label_tr": "Fiziksel mücadele",
+    "attributes": {
+     "attack": 69,
+     "defense": 68,
+     "speed": 70,
+     "pressing": 64,
+     "stamina": 75,
+     "teamwork": 64,
+     "physical": 78,
+     "technique": 68,
+     "goalkeeping": 69,
+     "finishing": 70
+    },
+    "roles_per_100": {
+     "striker": 20,
+     "winger": 12,
+     "playmaker": 11,
+     "defender": 30,
+     "goalkeeper": 10,
+     "support": 10,
+     "captain": 7
+    },
+    "specials": [
+     "shoulder_charge",
+     "stamina_surge"
+    ],
+    "aggression": 54,
+    "variance": {
+     "team_form_std_pct": 9,
+     "unit_trait_std_pct": 14,
+     "critical_chance_pct": 7,
+     "critical_multiplier": 1.45,
+     "streak_adaptation": true
+    },
+    "gameplay_fields_are_inferred": true
+   }
+  }
+ },
+ "cfg": {
+  "simulation_engine_recommendation": {
+   "seed_handling": "Use unpredictable crypto random seed per new match; fixed seed allowed for exact replay/export.",
+   "team_form_multiplier": "Lognormal or truncated normal per match around 1.0; clamp 0.80..1.20",
+   "individual_performance_multiplier": "Per-unit draw clamp 0.78..1.22, unique per unit and match",
+   "soft_cap_strength": "Use matchup elo difference with a soft nonlinear cap; never directly multiply raw Elo into damage.",
+   "upset_control": {
+    "power_advantage_cap_pct": 18,
+    "suggested_baseline_upset_floor_pct": 6,
+    "note": "Use for balancing; do not force upset or predetermine winners."
+   },
+   "outcome": "Last side with at least one living unit wins. On very rare simultaneous elimination, play sudden-death between each team’s last captain or respawn 1 each.",
+   "deterministic_replay": "Record seed and fixed-step battle event log; rendering and MP4 export replay same outcome.",
+   "target_duration_s": [
+    35,
+    65
+   ],
+   "internal_sim_fps": 60,
+   "export_fps": 30,
+   "video_resolution": [
+    1080,
+    1920
+   ],
+   "copyright": "No official logos, player names, club-owned sprite images, or trademarked assets bundled."
+  },
+  "archetype_definitions": {
+   "high_press": {
+    "tr": "Yoğun pres",
+    "tendency": "close_range",
+    "stat": {
+     "pressing": 8,
+     "speed": 4,
+     "stamina": 2,
+     "defense": -2
+    },
+    "special": "PRESSING_STORM"
+   },
+   "possession": {
+    "tr": "Pas ve kontrol",
+    "tendency": "formation",
+    "stat": {
+     "teamwork": 8,
+     "technique": 6,
+     "pressing": -2
+    },
+    "special": "ONE_TWO_COMBO"
+   },
+   "counter": {
+    "tr": "Kontraatak",
+    "tendency": "burst",
+    "stat": {
+     "speed": 7,
+     "finishing": 5,
+     "defense": -2
+    },
+    "special": "COUNTER_BURST"
+   },
+   "defensive_block": {
+    "tr": "Kapalı savunma",
+    "tendency": "hold_line",
+    "stat": {
+     "defense": 9,
+     "goalkeeping": 6,
+     "speed": -4,
+     "pressing": -3
+    },
+    "special": "IRON_WALL"
+   },
+   "wing_attack": {
+    "tr": "Kanat hücumu",
+    "tendency": "flank",
+    "stat": {
+     "speed": 7,
+     "attack": 5,
+     "teamwork": 2
+    },
+    "special": "CROSS_FIRE"
+   },
+   "physical": {
+    "tr": "Fiziksel mücadele",
+    "tendency": "brawl",
+    "stat": {
+     "physical": 8,
+     "stamina": 6,
+     "technique": -3
+    },
+    "special": "SHOULDER_CHARGE"
+   }
+  }
+ }
+}
