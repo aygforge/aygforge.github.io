@@ -101,6 +101,22 @@ function glow(col) {
   g.fillStyle = gr; g.fillRect(0, 0, 64, 64); glowCache.set(col, c); return c;
 }
 
+// ---------- ROAD TO GLORY: stands decoration by club stage (performance friendly, drawn into the cached field) ----------
+function decorStands(cv, D, frame) {
+  const g = cv.getContext('2d'), p = D.primary, s2 = D.secondary, st = D.stage | 0;
+  const flag = (x, y, c1, c2, h) => { g.fillStyle = '#c9c9c9'; g.fillRect(x, y, 1, h + 3); g.fillStyle = c1; g.fillRect(x + 1, y, 6, h); g.fillStyle = c2; g.fillRect(x + 1, y + (h >> 1), 6, h - (h >> 1)); };
+  const nFlags = [1, 4, 6, 8, 10, 12][st] || 1;
+  for (let i = 0; i < nFlags; i++) { const x = 18 + Math.round(i * (324 / nFlags)) + (frame && st >= 1 ? (i % 2) : 0); flag(x, 624 + (i % 2), i % 2 ? s2 : p, i % 2 ? p : s2, 6); }
+  if (st >= 2) { const w = 64, x = 180 - w / 2; g.fillStyle = p; g.fillRect(x, 628, w, 9); g.fillStyle = s2; g.fillRect(x, 628, w, 2); F.draw(g, D.short, 180, 629, { color: C.lum(p) > 0.5 ? '#111' : '#fff', align: 'center' }); }
+  if (st >= 3) for (let x = 2; x < LW; x += 6) { g.fillStyle = ((x / 6) | 0) % 2 ? p : s2; g.globalAlpha = 0.55; g.fillRect(x, 638, 4, 2); g.globalAlpha = 1; }
+  if (st >= 4) { g.fillStyle = '#ffcf3f'; g.fillRect(0, 621, LW, 1); for (let x = 30; x < LW; x += 60) { g.fillStyle = frame ? '#fff3b0' : '#ffcf3f'; g.fillRect(x, 633, 2, 2); } }
+  if (st >= 5) { for (let i = 0; i < 5; i++) { const x = 40 + i * 70; g.fillStyle = '#ffcf3f'; g.fillRect(x + 2, 64 + (frame ? 0 : 1), 3, 1); g.fillRect(x + 3, 63, 1, 3); } }
+  if (D.banner) { g.fillStyle = '#ffcf3f'; g.fillRect(6, 70, 52, 12); g.fillStyle = p; g.fillRect(7, 71, 50, 10); F.draw(g, 'ETERNAL', 32, 72, { color: '#fff', align: 'center' }); }
+}
+const PFX_COL = { rocket_boots: '#ff8a3d', pinball_strike: '#ffe14d', wing_stampede: '#7dd3ff', golden_volley: '#ffcf3f', berserker_attack: '#ff3d4d', meteor_shot: '#ff6b1a',
+  fortress: '#7fb8ff', counter_shield: '#7df9ff', interception_net: '#b8f7ff', iron_curtain: '#9fb8d8', miracle_save: '#ffffff', last_stand: '#ffd23f',
+  domino_impact: '#c77dff', wild_ball: '#7dff6a', bowling_charge: '#f5f5f5', thunder_tackle: '#fff27a', turbo_madness: '#ff4fd8', ricochet_fever: '#ff4fd8',
+  second_wind: '#7dffb0', captains_rally: '#ffd23f', medical_rush: '#ff6b7a', adrenaline_wave: '#ff9ad5', tactical_genius: '#9be7ff', star_spotlight: '#fff6c8' };
 function createRenderer(o) {
   // o: {world, teams:[A,B], kits, atlases, logos:[{small,big}], lang, labels, modeLabel, fictional}
   const w = o.world;
@@ -108,6 +124,7 @@ function createRenderer(o) {
   const hudCv = mk(LW, LH), hg = hudCv.getContext('2d');
   wg.imageSmoothingEnabled = false; hg.imageSmoothingEnabled = false;
   const fields = [buildField(o.kits, 0, w.seed), buildField(o.kits, 1, w.seed)];
+  if (o.decor) fields.forEach((f, i) => decorStands(f, o.decor, i)); // ROAD TO GLORY: club evolution in the stands (drawn once)
   const rings = [S.baseRing(o.kits[0], o.hc), S.baseRing(o.kits[1], o.hc)];
   const balls = { white: ballSprite('#ffffff', '#20232e'), pass: ballSprite('#9ff6ff', '#2bd1ff'), power: ballSprite('#ffd166', '#ff6b1a'), cross: ballSprite('#fff27a', '#ff3d6e') };
   const tc = [C.vivid(o.teams[0].visual.primary_color), C.vivid(o.teams[1].visual.primary_color)];
@@ -163,6 +180,37 @@ function createRenderer(o) {
         g.fillStyle = 'rgba(11,13,22,0.8)'; g.fillRect(x - 4, y - 20, 8, 2);
         g.fillStyle = fr > 0.5 ? '#7dff9a' : fr > 0.25 ? '#ffb020' : '#ff3d4d'; g.fillRect(x - 4, y - 20, Math.max(1, Math.round(8 * fr)), 1);
       }
+    }
+  }
+  function drawPowerFx(g) { // one distinct visual language per Power, driven by the engine's cosmetic w.pfx list
+    const lo = o.fxLevel === 0;
+    for (const f of w.pfx) {
+      const age = w.t - f.t0, k = cl(age / f.dur, 0, 1), a = cl(1 - k, 0, 1), col = PFX_COL[f.k] || '#fff', U = f.ids.map(id => w.units[id]).filter(u => u && u.alive);
+      g.save(); g.globalAlpha = 0.85 * a; g.strokeStyle = col; g.fillStyle = col; g.lineWidth = 1;
+      switch (f.k) {
+        case 'rocket_boots': for (const u of U) { g.fillRect(Math.round(u.x - 2), Math.round(u.y + 1), 1, 4); g.fillRect(Math.round(u.x + 1), Math.round(u.y + 1), 1, 3); } break;
+        case 'wing_stampede': for (const u of U) { const d = u.side === 0 ? 1 : -1; g.beginPath(); g.moveTo(u.x - 3, u.y + 6 * d); g.lineTo(u.x, u.y + 2 * d); g.lineTo(u.x + 3, u.y + 6 * d); g.stroke(); } break;
+        case 'berserker_attack': for (const u of U) { g.globalAlpha = a * (0.5 + 0.5 * Math.sin(age * 30)); g.strokeRect(Math.round(u.x) - 5, Math.round(u.y) - 16, 10, 17); } break;
+        case 'pinball_strike': case 'golden_volley': case 'meteor_shot': case 'ricochet_fever': { const b = w.fb && w.fb.ball; if (b && (b.state === 'SHOOTING' || age < 0.4)) { const r = f.k === 'meteor_shot' ? 6 : 4; g.beginPath(); g.arc(b.x, b.y - 2, r + Math.sin(age * 40), 0, 6.283); g.stroke(); if (!lo && f.k === 'meteor_shot') { g.globalAlpha = 0.5 * a; g.fillRect(Math.round(b.x - b.vx * 0.03) - 2, Math.round(b.y - b.vy * 0.03) - 2, 4, 4); } if (f.k === 'ricochet_fever') { g.setLineDash([2, 2]); g.strokeRect(E.ARENA.x0 + 1, E.ARENA.y0 + 1, E.ARENA.x1 - E.ARENA.x0 - 2, E.ARENA.y1 - E.ARENA.y0 - 2); } } break; }
+        case 'fortress': { g.beginPath(); g.arc(f.x, f.y + (f.side === 0 ? 30 : -30), 64, f.side === 0 ? Math.PI : 0, f.side === 0 ? 2 * Math.PI : Math.PI); g.setLineDash([3, 3]); g.stroke(); break; }
+        case 'counter_shield': for (const u of U) { g.beginPath(); g.arc(u.x, u.y - 6, 8, 0, 6.283); g.stroke(); } break;
+        case 'interception_net': for (let i = 0; i < U.length; i++) for (let j = i + 1; j < U.length; j++) { if (Math.abs(U[i].x - U[j].x) + Math.abs(U[i].y - U[j].y) > 90) continue; g.beginPath(); g.moveTo(U[i].x, U[i].y - 5); g.lineTo(U[j].x, U[j].y - 5); g.stroke(); } break;
+        case 'iron_curtain': for (const u of U) { g.fillRect(Math.round(u.x) - 6, Math.round(u.y) - 18, 12, 2); } break;
+        case 'miracle_save': { g.lineWidth = 2; g.beginPath(); g.arc(f.x, f.y - 6, 10 + age * 30, 0, 6.283); g.stroke(); break; }
+        case 'last_stand': for (const u of U) { g.beginPath(); g.ellipse(u.x, u.y, 9, 4, 0, 0, 6.283); g.stroke(); } break;
+        case 'domino_impact': { g.setLineDash([1, 3]); g.beginPath(); g.arc(f.x, f.y, 30 + 10 * Math.sin(age * 8), 0, 6.283); g.stroke(); break; }
+        case 'wild_ball': { const b = w.fb && w.fb.ball; if (b) for (let i = 0; i < (lo ? 2 : 5); i++) { g.fillStyle = ['#7dff6a', '#ffe14d', '#ff4fd8', '#7dd3ff', '#fff'][i]; g.fillRect(Math.round(b.x - b.vx * 0.012 * i), Math.round(b.y - b.vy * 0.012 * i), 2, 2); } break; }
+        case 'bowling_charge': for (const u of U) { g.beginPath(); g.arc(u.x, u.y - 5, 10, 0, 6.283); g.stroke(); } break;
+        case 'thunder_tackle': { g.lineWidth = 2; for (let i = 0; i < (lo ? 3 : 6); i++) { const an = i * 1.05 + age * 3; g.beginPath(); g.moveTo(f.x, f.y - 6); g.lineTo(f.x + Math.cos(an) * 14, f.y - 6 + Math.sin(an) * 8); g.lineTo(f.x + Math.cos(an) * 26, f.y - 6 + Math.sin(an + 0.4) * 14); g.stroke(); } break; }
+        case 'turbo_madness': { g.globalAlpha = 0.12 * a; g.fillRect(E.ARENA.x0, E.ARENA.y0, E.ARENA.x1 - E.ARENA.x0, E.ARENA.y1 - E.ARENA.y0); break; }
+        case 'second_wind': for (const u of U) { g.fillRect(Math.round(u.x) - 1, Math.round(u.y) - 22 - Math.round(age * 6), 3, 1); g.fillRect(Math.round(u.x), Math.round(u.y) - 23 - Math.round(age * 6), 1, 3); } break;
+        case 'captains_rally': { g.beginPath(); g.arc(f.x, f.y, 70 * Math.min(1, age * 3), 0, 6.283); g.stroke(); break; }
+        case 'medical_rush': for (const u of U) { g.fillRect(Math.round(u.x) - 2, Math.round(u.y) - 24, 5, 1); g.fillRect(Math.round(u.x), Math.round(u.y) - 26, 1, 5); } break;
+        case 'adrenaline_wave': { g.beginPath(); g.arc(f.x, f.y, 20 + 60 * ((age * 1.5) % 1), 0, 6.283); g.stroke(); break; }
+        case 'tactical_genius': { const b = w.fb && w.fb.ball; if (b && b.owner >= 0) { const c = w.units[b.owner]; g.setLineDash([2, 2]); for (const m of w.teams[c.side].aliveList) { if (m === c || Math.abs(m.x - c.x) + Math.abs(m.y - c.y) > 80) continue; g.beginPath(); g.moveTo(c.x, c.y - 3); g.lineTo(m.x, m.y - 3); g.stroke(); } } break; }
+        case 'star_spotlight': for (const u of U) { g.globalAlpha = 0.25 * a; g.beginPath(); g.moveTo(u.x - 3, E.ARENA.y0); g.lineTo(u.x + 3, E.ARENA.y0); g.lineTo(u.x + 12, u.y); g.lineTo(u.x - 12, u.y); g.closePath(); g.fill(); } break;
+      }
+      g.restore();
     }
   }
   function drawTelegraphs(g) {
@@ -235,6 +283,7 @@ function createRenderer(o) {
   function drawTexts(g) {
     for (const t of w.texts) { if (!o.labels && t.text !== 'CRIT') continue; F.draw(g, t.text, Math.round(t.x), Math.round(t.y), { color: t.color, align: 'center', alpha: cl(t.life / t.max * 1.6, 0, 1) }); }
     if (o.labels) for (const b of w.banners) {
+      if (b.key.startsWith('power:')) { const age = w.t - b.t0; const nm = o.powerNames && o.powerNames[b.key.slice(6)]; if (nm && age <= b.dur) F.draw(g, F.upper(nm), Math.round(cl(b.x, 70, 290)), Math.round(cl(b.y - 24 - age * 8, 110, 600)), { color: b.side === 0 ? '#ffe14d' : '#ff9a9a', align: 'center', bold: true, alpha: cl((b.dur - age) * 3, 0, 1) }); continue; }
       if (b.key.startsWith('cmd:')) { const age = w.t - b.t0; if (age <= b.dur) F.draw(g, CMD_N[b.key.slice(4)] || '', Math.round(cl(b.x, 60, 300)), Math.round(cl(b.y - 20 - age * 8, 110, 600)), { color: b.side === 0 ? '#ffe14d' : '#ff8a8a', align: 'center', bold: true, alpha: cl((b.dur - age) * 3, 0, 1) }); continue; }
       if (!b.key.startsWith('special:')) continue;
       const age = w.t - b.t0; if (age > b.dur) continue;
@@ -259,6 +308,7 @@ function createRenderer(o) {
     if (w.storm && !w.sudden) { g.fillStyle = `rgba(255,40,70,${0.06 + 0.05 * Math.sin(w.t * 8)})`; g.fillRect(0, 0, LW, LH); }
     drawZone(g);
     drawTelegraphs(g);
+    if (w.pfx && w.pfx.length) drawPowerFx(g);
     if (V3 && v3.vfx) V3.drawSpecials(g, T);
     drawUnits(g, T);
     drawProj(g);

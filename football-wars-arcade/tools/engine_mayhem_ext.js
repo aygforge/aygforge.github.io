@@ -29,7 +29,8 @@ function mayInit(w, A) {
   };
   if (w.fb) w.fb.goalAdv = false; // Mayhem: the goal reward is reinforcements, not the V4 +6 % buff
   // every unit gets the same extra fields in the same order (one hidden class -> fast property access)
-  for (const u of w.units) { if (!u.star) u.star = null; u.rushT = 0; u.rushX = 0; u.rushY = 0; u.ironT = 0; u.ironX = 0; u.ironY = 0; u.rampT = 0; u.koHist = null; u.rushHits = 0; u.rushVictimT = -9; }
+  for (const u of w.units) { if (!u.star) u.star = null; u.rushT = 0; u.rushX = 0; u.rushY = 0; u.ironT = 0; u.ironX = 0; u.ironY = 0; u.rampT = 0; u.koHist = null; u.rushHits = 0; u.rushVictimT = -9;
+    u.rushSpd = 0; u.rushMax = 0; u.rushDmg = 0; u.rushKB = 0; u.ironDR = 0; u.miracleT = 0; u.miracleK = 0; } // 0 = Mayhem defaults
 }
 function mayGain(w, side, amt, isGoal) {
   if (side < 0 || side > 1 || w.phase !== 'battle') return;
@@ -101,7 +102,7 @@ function mayKick(w, u, tx, ty, rec) {
   const fb = w.fb, b = fb.ball, T = w.teams[u.side], r = w.may.rng;
   const err = r.normal() * 0.035 * (1.35 - T.at.finishing / 100);
   const ang = Math.atan2(ty - b.y, tx - b.x) + err;
-  const sp = MAY.PK_SPEED;
+  const sp = rec.speed || MAY.PK_SPEED;
   b.state = 'SHOOTING'; b.vx = Math.cos(ang) * sp; b.vy = Math.sin(ang) * sp; b.owner = -1; b.flight = 0; b.checked.length = 0;
   const gy = fbGoalY(u.side);
   const tGoal = b.vy !== 0 ? (gy - b.y) / b.vy : -1;
@@ -117,16 +118,18 @@ function mayKick(w, u, tx, ty, rec) {
 // called from fbTick SHOOTING for Power Kick shots: defenders may block, up to 2 opponents get a limited hit
 function mayKickPath(w, b, sh) {
   const shooter = w.units[sh.shooter];
+  if (sh.lob && b.flight < sh.lob) return false; // lofted volley: flies over the first defenders
   for (const e of query(w, b.x, b.y + 2, 7, 1 - sh.side).slice()) {
     if (e.role === 'goalkeeper' || b.checked.indexOf(e.id) >= 0) continue;
     b.checked.push(e.id);
-    if (sh.hits.length < MAY.PK_HITS) {
+    if (sh.hits.length < (sh.maxHits || MAY.PK_HITS)) {
       sh.hits.push(e.id); w.may.s[sh.side].st.pkHits++;
-      applyDamage(w, shooter, e, MAY.PK_DMG, { kb: MAY.PK_KB, fx: b.x - b.vx * 0.05, fy: b.y - b.vy * 0.05, noAssist: true, chain: true });
+      applyDamage(w, shooter, e, sh.dmg || MAY.PK_DMG, { kb: sh.kb || MAY.PK_KB, fx: b.x - b.vx * 0.05, fy: b.y - b.vy * 0.05, noAssist: true, chain: true });
       ev(w, EV.PK_HIT, sh.side, e.id, 0, e.x, e.y);
     }
     let p = MAY.PK_BLOCK + (e.role === 'defender' ? 0.1 : 0) + (e.ironT > 0 ? 0.15 : 0);
     if (w.fb.rng.next() < p) { // deflected: the ball becomes loose, no goal
+      if (w.pow && powBounce(w, b, sh, 'block')) return true; // Pinball / Ricochet: the block sends it back toward goal
       sh.result = 'blocked'; if (e.ironT > 0) { w.may.s[e.side].st.ironStops++; ev(w, EV.IRON_STOP, e.side, e.id, 0, e.x, e.y); }
       b.state = 'LOOSE'; b.shot = null; b.looseT = 0; b.vx = -b.vx * 0.25 + (w.fb.rng.next() - 0.5) * 60; b.vy = -b.vy * 0.3; ev(w, EV.INTERCEPT, e.id, sh.shooter, 2, b.x, b.y);
       return true;
@@ -165,7 +168,7 @@ function mayRevive(w, u, k) {
 function mayChainQueue(w, att, tgt, dmg, kb) {
   const sec = Math.floor(w.battleT); if (sec !== w.may.chainSec) { w.may.chainSec = sec; w.may.chainN = 0; }
   if (w.may.chainN >= MAY.CHAIN_SEC || w.may.chainQ.length > 16) return;
-  w.may.chainN++; w.may.chainQ.push({ a: att.id, t: tgt.id, dmg, kb });
+  w.may.chainN++; w.may.chainQ.push({ a: att.id, t: tgt.id, dmg, kb, mul: w.pow && w.pow.s[att.side].dominoT > 0 ? 0.45 : MAY.CHAIN_MUL });
 }
 function mayChainResolve(w) {
   const Q = w.may.chainQ; if (!Q.length) return;
@@ -176,7 +179,7 @@ function mayChainResolve(w) {
     if (!near.length) continue;
     w.may.s[att.side].st.chains++;
     ev(w, EV.CHAIN, att.side, t.id, near.length, t.x, t.y);
-    for (const o of near) applyDamage(w, att.alive ? att : att, o, c.dmg * MAY.CHAIN_MUL, { kb: 14, fx: t.x, fy: t.y, noAssist: true, chain: true, silent: true });
+    for (const o of near) applyDamage(w, att.alive ? att : att, o, c.dmg * (c.mul || MAY.CHAIN_MUL), { kb: 14, fx: t.x, fy: t.y, noAssist: true, chain: true, silent: true });
   }
 }
 // ---------- KO Rampage ----------
@@ -190,23 +193,23 @@ function mayRampage(w, k) {
   }
 }
 // combined, NON-stacking speed / attack multipliers (max of haste / frenzy / rampage)
-function mayHaste(w, u) { let h = u.hasteT > 0 ? u.hasteMul : 1; if (w.may.frenzy) h = Math.max(h, MAY.FRENZY_SPD); if (u.rampT > 0) h = Math.max(h, MAY.RAMP_MUL); return h; }
-function mayAtk(w, u) { let h = u.atkSpdT > 0 ? u.atkSpdMul : 1; if (w.may.frenzy) h = Math.max(h, MAY.FRENZY_ATK); if (u.rampT > 0) h = Math.max(h, MAY.RAMP_MUL); return h; }
+function mayHaste(w, u) { let h = u.hasteT > 0 ? u.hasteMul : 1; if (w.may.frenzy) h = Math.max(h, MAY.FRENZY_SPD); if (u.rampT > 0) h = Math.max(h, MAY.RAMP_MUL); if (w.pow && w.pow.turboT > 0) h = Math.max(h, 1.2); return h; }
+function mayAtk(w, u) { let h = u.atkSpdT > 0 ? u.atkSpdMul : 1; if (w.may.frenzy) h = Math.max(h, MAY.FRENZY_ATK); if (u.rampT > 0) h = Math.max(h, MAY.RAMP_MUL); if (w.pow && w.pow.turboT > 0) h = Math.max(h, 1.2); return h; }
 // ---------- Team Rush / Iron Defense movement (inside updateUnit) ----------
 function mayRush(w, u) {
   const dx = u.rushX - u.x, dy = u.rushY - u.y, d = Math.sqrt(dx * dx + dy * dy);
   if (d < 4) { u.rushT = 0; return false; }
-  const s = curSpeed(w, u) * MAY.RUSH_SPD, vx = dx / d * s, vy = dy / d * s;
+  const s = curSpeed(w, u) * (u.rushSpd || MAY.RUSH_SPD), vx = dx / d * s, vy = dy / d * s;
   u.x += vx * DT; u.y += vy * DT; u.mvx = vx; u.mvy = vy; u.state = 'run'; if (Math.abs(vx) > 2) u.face = vx < 0 ? -1 : 1; u.back = vy < 0;
   u.sta = Math.max(0, u.sta - 4 * w.teams[u.side].drain * DT);
-  if (u.rushHits < MAY.RUSH_HITS) {
+  if (u.rushHits < (u.rushMax || MAY.RUSH_HITS)) {
     const near = query(w, u.x, u.y, 7, 1 - u.side);
-    for (let k = 0; k < near.length && u.rushHits < MAY.RUSH_HITS; k++) {
+    for (let k = 0; k < near.length && u.rushHits < (u.rushMax || MAY.RUSH_HITS); k++) {
       const e = near[k]; if (w.t - e.rushVictimT < MAY.RUSH_VICTIM_CD) continue; // one rush hit per victim per 0.6 s
       e.rushVictimT = w.t; u.rushHits++;
       const st = w.may.s[u.side].st; st.rushHits++;
       const wasAlive = e.alive;
-      applyDamage(w, u, e, MAY.RUSH_DMG, { kb: MAY.RUSH_KB, stun: 0.25, noAssist: true });
+      applyDamage(w, u, e, u.rushDmg || MAY.RUSH_DMG, { kb: u.rushKB || MAY.RUSH_KB, stun: 0.25, noAssist: true });
       if (wasAlive && !e.alive) st.rushKO++;
       ev(w, EV.RUSH_HIT, u.side, e.id, 0, e.x, e.y);
       break; // query buffer may be reused by applyDamage side effects: one hit per tick
@@ -229,7 +232,7 @@ function mayAlerts(w) {
 }
 // ---------- AI War Commands (deterministic, from the real battle state) ----------
 function mayAI(w, side) {
-  const m = w.may.s[side]; if (m.mode === 'manual') return null;
+  const m = w.may.s[side]; if (m.mode === 'manual' || m.mode === 'off') return null;
   if ((w.tick % 30) !== side * 15) return null;              // decide twice a second
   const cons = m.mode === 'auto';                             // conservative auto (Quick Simulate player)
   if (w.battleT - m.lastCmdT < (cons ? 4 : 2.6)) return null;
@@ -263,6 +266,7 @@ function mayTick(w) {
   while (A.queue.length && A.queue[0].tick <= w.tick) { const c = A.queue.shift(); mayApply(w, c.side, c); }
   for (let s = 0; s < 2; s++) { const c = mayAI(w, s); if (c && !mayValid(w, s, c)) mayApply(w, s, c); } // AI only issues commands that can really apply
   mayReinfDeploy(w);
+  if (w.pow) powTick(w);
   if ((w.tick % 6) === 0) mayAlerts(w);
   for (const u of w.units) if (u.alive) { if (u.rushT > 0) u.rushT -= DT; if (u.ironT > 0) u.ironT -= DT; if (u.rampT > 0) u.rampT -= DT; }
 }

@@ -41,6 +41,20 @@ function extraBank() {
     const [f, wv, hits] = AB[id];
     B['ab_' + id] = tone(0.5, t => { let v = 0; hits.forEach((h, i) => { const tt = t - h; if (tt >= 0) { const ff = f * (1 + i * 0.25); v += (wv === 'sq' ? sq(tt * ff, 0.3) : wv === 'tri' ? tri(tt * ff) : Math.sin(tt * ff * 6.283)) * Math.exp(-tt * 10); } }); return v * 0.5 + (id === 'iron_wall' ? noise() * 0.2 * Math.exp(-t * 6) : 0); });
   }
+  // 24 Road-to-Glory Power signatures: base pitch, waveform, rhythm and pitch sweep differ per Power
+  const PWS = { rocket_boots: [330, 'sq', [0, 0.05, 0.1], 1.6], pinball_strike: [880, 'sq', [0, 0.07, 0.14, 0.21], 0], wing_stampede: [262, 'tri', [0, 0.04, 0.08, 0.12, 0.16], 0.6],
+    golden_volley: [784, 'sin', [0, 0.12], 0.5], berserker_attack: [147, 'sq', [0, 0.06, 0.12], -0.3], meteor_shot: [98, 'sq', [0], 3.2],
+    fortress: [196, 'tri', [0, 0.18], 0], counter_shield: [660, 'tri', [0, 0.09], -0.2], interception_net: [1047, 'sin', [0, 0.05, 0.1, 0.15], 0],
+    iron_curtain: [110, 'sq', [0, 0.1], 0], miracle_save: [1319, 'sin', [0, 0.1, 0.2], 0.4], last_stand: [174, 'tri', [0, 0.2, 0.4], 0.3],
+    domino_impact: [220, 'sq', [0, 0.08, 0.16, 0.24], -0.4], wild_ball: [523, 'sq', [0, 0.03, 0.09, 0.12, 0.2], 1.2], bowling_charge: [123, 'tri', [0, 0.25], -0.5],
+    thunder_tackle: [82, 'sq', [0, 0.04], 0], turbo_madness: [440, 'sq', [0, 0.04, 0.08, 0.12, 0.16, 0.2], 2.4], ricochet_fever: [1175, 'sq', [0, 0.06, 0.13, 0.19, 0.26], -0.5],
+    second_wind: [392, 'sin', [0, 0.1], 0.8], captains_rally: [294, 'sq', [0, 0.1, 0.2], 0.25], medical_rush: [988, 'sin', [0, 0.08], -0.25],
+    adrenaline_wave: [587, 'tri', [0, 0.05, 0.1], 1], tactical_genius: [698, 'sin', [0, 0.09, 0.18], 0.12], star_spotlight: [1568, 'sin', [0, 0.15, 0.3], 0.2] };
+  for (const id in PWS) {
+    const [f, wv, hits, sw] = PWS[id];
+    B['pw_' + id] = tone(0.6, t => { let v = 0; hits.forEach((h, i) => { const tt = t - h; if (tt >= 0) { const ff = f * (1 + i * 0.12) * (1 + sw * tt); v += (wv === 'sq' ? sq(tt * ff, 0.35) : wv === 'tri' ? tri(tt * ff) : Math.sin(tt * ff * 6.283)) * Math.exp(-tt * 9); } });
+      return v * 0.5 + ((id === 'thunder_tackle' || id === 'meteor_shot' || id === 'iron_curtain') ? noise() * 0.3 * Math.exp(-t * 7) : 0); });
+  }
   return B;
 }
 const AA = {

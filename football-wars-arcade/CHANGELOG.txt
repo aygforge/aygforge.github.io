@@ -1,0 +1,91 @@
+FOOTBALL WARS — ROAD TO GLORY · CHANGELOG
+Source: FootballWars_Arcade_Mayhem.html (Arcade Mayhem V2)  →  FootballWars_Full_Test.html (+ FootballWars_Full_Test_itch.zip)
+The earlier builds FootballWars_Arcade.html and FootballWars_Arcade_Mayhem.html are left unchanged in the repository.
+
+CORE / CAREER
+- Create Your Club replaces the real-club picker: name (3–22), short name (2–5), 3 crest shapes, 8 original pixel crest
+  symbols, 2 kit colours, starting formation. Editable later for free (Club → Edit). Stored as save.profile;
+  the player's club uses the permanent id PLAYER_CLUB everywhere (divisions, fixtures, table, battle team).
+- 199 rival source clubs + your club fill the 10 Divisions (20 each); the 200th source club is kept as the guest of the
+  new Glory Cup (one extra card per Division on the Challenge Board).
+- Three formations with real role counts: Balanced 16/14/12/34/8/15/1, All-Out Attack 22/20/14/25/7/11/1,
+  Iron Fortress 12/10/10/44/10/13/1. Raw HP and damage-per-second budgets are equalised; a small measured
+  effectiveness calibration (Attack ×0.96, Fortress ×0.98) keeps win rates level in same-seed probes. Each formation
+  brings its own two V4 team signature moves.
+- Five permanent Training stats (Lv 1–30, same cost curve) unchanged.
+- ARC_CFG power-gap curve softened from 0.35/18 to 0.25/22 (Powers and AI stars now add strength on both sides).
+  Snapshots store the values they were started with; pre-Glory snapshots keep 0.35/18.
+- Rival clubs field Division-appropriate stars in league and AI-vs-AI matches (D10–8: 0, D7–5: 1, D4–2: 2, D1: 3).
+
+AUTO POWER MAYHEM (engine stage 3: tools/patch_glory.py + tools/engine_glory_ext.js)
+- Manual War Commands (Power Kick / Team Rush / Iron Defense buttons, energy bar, targeting) removed from the UI;
+  Momentum Strike does not return. Player and AI teams run under identical automatic Power rules.
+- 24 Powers with their own id, trigger condition, real effect, cooldown, event (EV.POWER 90), visual and sound:
+  Attack: Rocket Boots, Pinball Strike, Wing Stampede, Golden Volley, Berserker Attack, Meteor Shot
+  Defense: Fortress, Counter Shield, Interception Net, Iron Curtain, Miracle Save, Last Stand
+  Chaos: Domino Impact, Wild Ball, Bowling Charge, Thunder Tackle, Turbo Madness, Ricochet Fever
+  Support: Second Wind, Captain's Rally, Medical Rush, Adrenaline Wave, Tactical Genius, Star Spotlight
+  Shot Powers use the real match ball (SHOOTING state, keeper saves, blocks, posts, wide, GOAL); Pinball / Ricochet
+  bounce the real ball; Wild Ball changes real loose-ball physics; movement Powers use real runs and collisions.
+- Loadout per match: 2 Favorites + 2 Wilds (rarity weights 60/28/10/2 on the unlocked collection, re-normalised,
+  4 different Powers, max 1 Legendary), fixed in the battle snapshot. First chance ~6–9 s, then every ~8–12 s,
+  Favorite/Wild 50/50 unless a real scoring chance is on, same Power ≥10 s apart, ≤2 active Power effects per team,
+  a Power that cannot apply is not consumed. Miracle Save and Last Stand react to real moments.
+- Power Mastery: rank 2 at 15 successful uses (+5 %), rank 3 at 40 (+10 %), scaling each Power's own parameters.
+  Counted once per use, from official fixtures (final result only) and first Challenge wins; never from REMATCH
+  first attempts, repeat Challenges or Promotion Challenge retries.
+- Unlocks: 6 starters; Team Level 4/6/8/12/16/20/23; Divisions 9/8/6/4/2/1; 25 career ball wins; 10 career goals;
+  D5 Signature Showdown first win; first D1 title; Team Level 35 + Division 5.
+- Kept from Mayhem: goal reinforcements (+3 per goal, max +9, ≤100 alive, never stars), no zone, no storm,
+  Final Frenzy at 40 s, chain collision, KO Rampage, counterattack alerts, time-up decided without K.O.s.
+  The +6 % V4 goal buff stays off.
+
+STARS / DRAFT / ACADEMY
+- Stars are permanent (no contracts): Stars.canEquip/consume/cleanupExpired/battleList, Draft.open/pick and all
+  contract UI were changed or removed. Max 5 active; role limits follow the chosen formation.
+- Star Mastery: Rookie 0 / Rising 8 / Skilled 24 / Veteran 48 / Club Legend 80 XP → +0 / 0.75 / 1.5 / 2.5 / 3.5
+  effective OVR and +0–8 % signature ability power (both really used by the battle unit). Star XP: official win +3,
+  loss +1 (final result), Challenge first win +2.
+- League Adaptation: an active star with 6 final official matches in a Division adapts to that Division's rarity floor −2
+  (one time per Division, never weaker, ≤99).
+- Draft: same packs, prices, odds and pity. Duplicates give Star XP (6/9/13/18) — or Pack Fragments (2/3/5/8) for a
+  Club Legend — shown before signing.
+- Contract Tickets became Academy Training Tickets (+5 / +10 Star XP).
+
+PROGRESSION / REWARDS
+- Mobile League Milestones after matches 4 / 9 / 14 (+2 F, +2 F, +2 F + Academy +5); D10–D2 once per Division,
+  D1 every Endless season. Free Standard Pack after match 3 kept. Founder's Bonus +45 C once (first final result).
+- Coach Analysis after losses (≤3 tips from the real battle: power gap, shots/possession, Power use, bench stars,
+  Academy tickets, affordable Training); Comeback Roadmap after 3 final losses in a row. Rival strength never changes.
+- REMATCH: one per fixture; squad, formation and Favorites can be changed before it; one final result per fixture.
+- Trophy Cabinet (Division Champion, Direct Promotion, Promotion Survivor, Division 1 Championship, Champions League
+  titles). First D1 title → Golden Champion Crest; Team Level 50 → Eternal Club Banner (the old Golden Crest
+  conflict is resolved).
+- Visual Club Evolution: 6 stages by highest Division unlock kit patterns (stripes, hoops, halves, sash, sleeves) and
+  crest frames (silver, steel, gold, world, champion); the player's stands gain flags, banner, tifo, gold trim and
+  stars (drawn once into the cached pitch). Cosmetic only.
+- Progressive onboarding: short dismissible tips tied to real progress for the first 5 matches.
+
+UI / PRESENTATION
+- Mobile-first 5-tab navigation: Club (BATTLE, next rival, Training, identity, Trophy Cabinet, Club Journey) ·
+  Squad (formations, active five, collection, Star Mastery, Academy) · Powers (24 cards, Favorites, mastery,
+  unlock conditions) · League (table, fixtures, season milestones, Division Journey, Challenge Board + Glory Cup,
+  history) · Rewards (Draft packs, Academy, earned-reward log).
+- Battle HUD without command buttons: your loadout (Favorites ★ / Wilds ◆, lit while active), active star portraits
+  (tap = Star Focus, ~5 s camera follow), one big Power notice at a time (rarity-styled; legendary flash), pause,
+  1×/2×, smart-camera toggle, full screen. Smart camera capped at 1.22× (Action Focus on goals, epic/legendary
+  Powers, miracle saves, rampages). Each Power has its own in-world visual and sound.
+- Full-screen button kept in the top bar and on the battle screen.
+
+SAVE
+- Save schema v3 (same storage key, backup copy, validation, export/import). v1 and v2 careers migrate
+  automatically with an explanatory notice: credits, fragments, XP/level, Division, fixtures, results, Training,
+  stars (+OVR), packs, pity, challenges, endless history and claims are kept; the old real club keeps its name /
+  colours as the custom profile (id renamed to PLAYER_CLUB in divisions, fixtures, results and claims) and becomes the
+  Glory Cup guest; remaining contracts → Star XP (1 per 2, max 20); Contract Tickets → Academy Tickets.
+- An unfinished Reborn or Mayhem battle resumes with its original rules and frozen teams (byte-identical replay).
+
+REMOVED FROM THE TEST SUITE
+- Old Reborn/Mayhem-specific test files that exercised the removed APIs (contracts, manual commands) were replaced by
+  tools/test_glory.js, tools/ui_glory.js and tools/ref_freeze.js (frozen Legacy/Mayhem/V4 battles); they remain in git
+  history.
