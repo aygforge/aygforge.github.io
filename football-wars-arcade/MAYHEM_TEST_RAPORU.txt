@@ -1,0 +1,96 @@
+FOOTBALL WARS — ARCADE MAYHEM V2 · TEST RAPORU
+==============================================
+Kaynak  : FootballWars_Arcade.html (Arcade Reborn) — DEĞİŞTİRİLMEDİ (dosya yeniden üretilmedi, git'te aynı)
+Hedef   : FootballWars_Arcade_Mayhem.html (tek HTML, ~666 KB, çevrim dışı, harici kaynak yok)
+Testler : bash tools/run_tests.sh — son koşu: 191 PASS, 0 FAIL
+
+1) GERÇEKTE YAPILAN DEĞİŞİKLİKLER
+---------------------------------
+Motor (tools/patch_mayhem.py + tools/engine_mayhem_ext.js → src/engine.js; tüm kancalar `w.may` ile korunur,
+`w.may` yalnızca snapshot.mech === 'mayhem' olan savaşlarda oluşur):
+- Eski Momentum Strike yeni maçlarda kapalı (zamanlama çubuğu, STRIKE, 4 kullanım, arcFire, Perfect popup, eski HUD yok).
+  w.arc ve 12 yıldız imza yeteneği aynen çalışır. Eski Momentum kodu yalnız, güncelleme öncesi başlamış yarım
+  savaşların aynı kurallarla devam edebilmesi için motorda tutuldu.
+- Battle Energy: başlangıç 25, +3,5/sn; pas +1, top kazanma +2, kurtarış +5, KO +1 (gol dışı olaylar saniyede
+  en fazla +2,5), gol +12 (sınırsız), en fazla 100.
+- Komutlar tick'e bağlı girişlerdir { tick, side, type, tx, ty }; enerji, cooldown, top sahipliği, hedef ve
+  "aynı tick'te tek komut" kuralı motorda doğrulanır. Geçersiz komut enerji/cooldown harcamaz.
+  Power Kick 55 / 8 sn · Team Rush 45 / 9 sn · Iron Defense 35 / 8 sn.
+- Power Kick: gerçek maç topu V4 SHOOTING durumuna girer (şut istatistiği, isabet, GK kurtarışı, direk/aut, GOAL olayı).
+  Yol üstündeki savunmacı bloklayabilir; en fazla 2 rakibe sınırlı çarpma hasarı + geri itme. Gol garantisi yok.
+- Team Rush: hedefe en yakın 8–10 canlı saha oyuncusu (kaleci hariç) ~1,2 sn gerçek hareketle koşar
+  (ışınlama yok), çarpışma hasarı/geri itme/kısa sersemletme; oyuncu başına 2 çarpma, kurban başına 0,6 sn koruma.
+- Iron Defense: bölgedeki en fazla 10 defans/destek/kaptan 2,8 sn: %38 hasar azaltma, %65 geri itme direnci,
+  artan müdahale / pas kesme / şut bloklama, bölgede kalma. İyileştirme yok.
+- Goal Reinforcements: her gerçek EV.GOAL → +3 hak, maçta en fazla +9; yalnız KO olmuş yıldız olmayan yuvalar
+  sıfırlanıp kendi kalesi önünde (giriş halkası + "SUB!") yeniden etkinleşir; 100 canlı sınırı aşılmaz, boş yuva
+  yoksa hak bekler. V4'ün gol sonrası %6 güçlenmesi Mayhem'de kapalı.
+- Zone daralması ve Storm hasarı Mayhem'de yok (saha ARENA'da sabit, Sudden Death de tam saha);
+  "hunt" yalnız toplam ≤16 oyuncuda devreye girer.
+- Final Frenzy (savaşın 40. sn): hız ×1,12, saldırı sıklığı ×1,18, daha hızlı hedef yenileme; hız ve saldırı
+  bonusları üst üste çarpılmaz (haste / Frenzy / Rampage için en büyük değer). Doğrudan hasar yok.
+- Süre sonu (59,2 sn, MAX_BATTLE korunur): kimse KO edilmeden ayakta kalan sayısı → toplam sağlık → gol → seed.
+  Sonuç ekranı nedeni açıklar ("TIME UP — won on …").
+- Chain Collision (≥38 geri itmeli güçlü darbeler): en fazla 2 ek rakip, %30 hasar, yeniden zincir yok, saniyede
+  en fazla 6; tick sonunda kuyruktan çözülür (grid sorgu tamponu bozulmaz).
+- KO Rampage: 4 sn'de 3 KO → 2,5 sn +%15 hız/saldırı, üst üste birikmez.
+- Counterattack Alert: gerçek top sahibinin rakip kaleye 190 px'ten yakın ve az savunmayla hücumundan; 6 sn bekleme.
+- AI War Commands (deterministik, gerçek durumdan): şut fırsatında Power Kick, rakipte tehlikeli top/alarmda
+  Iron Defense, kalabalık rakip grubunda Team Rush; yalnız geçerli komut verir, komutlar arası ≥2,6 sn.
+  Lig AI-AI maçlarında iki tarafa, Quick Simulate'te oyuncuya muhafazakâr otomatik mod.
+- Performans: Mayhem alanları tüm birimlere aynı sırayla başlatılır (V8 tek gizli sınıf); headless Mayhem
+  savaşı ~520 ms'den ~205 ms'ye indi (aynı sonuç).
+Kariyer katmanı (arcade_core.js): snapshot'a mech:'mayhem'; kayıt şeması v1 → v2 (yalnız `wc` istatistikleri
+eklenir, eski Momentum istatistikleri tarihsel olarak kalır); savaş kaydına komut listesi (cmds); Battle.result
+War Commands özeti. Kulüp, Division, fikstür, ekonomi, upgrade, yıldız, sözleşme, paket, pity, challenge,
+endless, claim kodlarına dokunulmadı.
+Arayüz: alt HUD = Battle Energy (35/45/55 işaretli) + 3 komut butonu (maliyet, cooldown, eksik enerji / NO BALL)
++ yardım satırı (hedefleme, Counterattack uyarısı, Final Frenzy). Hedefleme: butona bas → sahada sürükle →
+bırakınca uygulanır; 0,55× yavaş çekim (en fazla 1,6 sn gerçek zaman, yalnız sunum), kamera sabit; ekran →
+dünya dönüşümü Smart Camera görünümü ve ölçekli Canvas'a göre. PC: 1/2/3, fare, Esc veya sağ tık iptal;
+Space artık komut kullanmaz. Renderer: FINAL FRENZY bandı, komut etiketleri, Iron/Rampage/Rush işaretleri.
+Sonuç ekranı: komut sayıları, Power Kick şut→gol (kurtarılan/bloklanan), Rush etkisi, Iron ile durdurulan
+saldırılar ve emilen hasar, zincir çarpışma, Rampage, yedekler, rakip komutları, süre sonu açıklaması.
+
+2) DOĞRULANAN TESTLER (son koşu)
+--------------------------------
+[V4 regresyon] 6 Fusion savaşı, mevcut motor = orijinal V4 (hash/kazanan/gol/süre) ............ PASS
+[test_mayhem.js] 33/33 PASS (9,8 sn), seçilmiş az sayıda seed:
+  P1 Power Kick gerçek topla gol (GOAL olayı, gol ve şut sayacı) · P2 gerçek kaleci kurtarışı (SAVE_GOAL)
+  P3 topsuz Power Kick reddi (enerji/cooldown harcanmaz)
+  R1–R4 Rush 8–10 saha oyuncusu, gerçek koşu (tick başına adım < 6 px), gerçek çarpışmalar
+  E1–E3 yetersiz enerji / geçersiz hedef enerji harcamaz, aynı tick'te tek komut
+  I1 aynı seed ikiz dünya: Iron ile korunan oyuncular 2,8 sn'de 345 vs 986 hasar · I2 gerçek durdurma/emme
+  G1 gerçek gol → +3 yedek sahaya · G2 100 canlı / +9 sınırı (12 savaş, her tick) · G3 KO yıldız geri gelmez
+  G4 99 canlı + gol → 100 canlı + 2 bekleyen · G5 +9 tavanı · G6 yedek sıfırlanmış standart oyuncu, kendi kalesinde
+  Z1 tam süreli savaşta zone/storm yok · Z2 süre sonu kimse KO edilmeden (health tie-break)
+  F1 aynı seed Frenzy açık/kapalı: 40–50 sn saldırı olayları 1840 vs 1577 · F2 Frenzy hasarı yok
+  C1 zincir ≤6/sn, ≤2 hedef · C2 Rampage oluşur, aynı oyuncuda birikmez · A1 uyarılar gerçek top hücumundan
+  D1 aynı seed + kadro + komut listesi = aynı hash (headless / render) · D2 yarıda kayıt + devam = aynı hash
+  Q1 AI-AI lig maçı iki tarafta komut, sıfır geçersiz · Q2 Quick Simulate oyuncu + rakip komutları
+  L1 eski (Mayhem öncesi) savaş snapshot'ı önceki sürümle aynı hash · L2 düz V4 aynı
+  S1 v1 → v2 migrasyonu bütün ilerleme alanlarını byte-düzeyinde korur
+[energy_budget.js] aktif (açgözlü) oyuncu: 6,6 komut / 48,5 sn ≈ 6,8 / 50 sn (hedef 6–9; ayar gerekmedi).
+  AI rakip ortalama 4,8 komut / savaş.
+[test_core.js] 50/50 · [test_career.js] 50/50 — 190 maçlık tam D10 sezonu artık Mayhem AI komutlarıyla gerçek
+  savaş; eski Momentum testleri "legacy battle" yolunu doğrular.
+[ui_mayhem.js] 18/18 (Chromium): yeni HUD, eski STRIKE/zamanlama yok; mobil dokunmatik sürükle-bırak
+  (CDP touch) ile Team Rush, ekran→dünya dönüşümü topa <14 px; motorda enerji −45 ve 10 koşucu; uygulanamaz
+  komut iptali; sayfa yenileme → RESUME aynı tick'te kayıtlı komutu yeniden çalıştırır; sonuç ekranı War
+  Commands; masaüstü 3 tuşu + fare tıklaması Iron Defense, Esc ve sağ tık iptal; Arcade Reborn dosyasıyla
+  oluşturulmuş gerçek v1 kaydı + yarım eski savaş → v2 migrasyon, ilerleme aynı, eski kurallarla devam,
+  sözleşme tekrar düşmez; hata/ağ isteği yok.
+[ui_test.js] 24/24 · [ui_season.js] 8/8 · [ui_fullscreen.js] 7/7 — kariyer, paket, koleksiyon, export/import,
+  sezon sonu, terfi, D1 şampiyonluğu, tam ekran yeni dosyada çalışıyor.
+[perf_ui.js] headless Chromium (yazılımsal render), 200 oyuncu: masaüstü Medium / mobil Low / mobil High ~60 FPS.
+
+3) BİLİNEN SORUNLAR / SINIRLAR
+------------------------------
+- Fiziksel Android ve iOS cihazda test edilmedi (Chromium mobil emülasyonu + CDP dokunma). FPS ölçümü cihaz değil.
+- Komut sesleri mevcut prosedürel ses bankasından seçildi (yeni komuta özel ses sentezlenmedi); kulakla dinlenmedi.
+- Savaşlar ortalama ~48 sn sürüyor; Final Frenzy (40. sn) her maçta değil, uzun süren maçlarda devreye giriyor.
+- Zincir çarpışmalar sınır içinde ama sık (savaş başına taraf başı ~20–30).
+- Güncelleme öncesi yarım kalmış bir savaş eski kurallarla bitirilir; o savaşta kayıtlı eski Momentum girişleri
+  yeniden oynanır, ancak eski HUD kaldırıldığı için yeni Momentum Strike girilemez (komut butonları gizli, not gösterilir).
+- Kaynak ağacı artık Mayhem'i üretir; korunmuş FootballWars_Arcade.html'in kaynakları git geçmişindedir (commit 00e9683).
+- Power Kick isabet/gol oranı yalnız hedefli testlerle gözlendi; geniş denge araştırması yapılmadı.

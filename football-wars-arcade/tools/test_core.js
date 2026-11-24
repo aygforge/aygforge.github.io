@@ -45,7 +45,7 @@ T('D7 upgrades reach the V4 battle profile', tB.battle_profile.attributes.speed 
   const evs = new Set(); // events got trimmed? (headless keeps all in this loop)
   for (const e of w.events) evs.add(e.type);
   T('A3 real winner + football events (pass/shot/KO)', sm.winner >= 0 && evs.has(E.EV.BALL_PASS) && evs.has(E.EV.SHOT_ON_GOAL) && evs.has(E.EV.KO), { winner: sm.winner, goals: sm.football.goals, t: sm.battleSeconds });
-  T('A4 last team standing rule', w.teams[1 - sm.winner].alive === 0 && w.teams[sm.winner].alive > 0); }
+  T('A4 last team standing (or Mayhem time-up on survivors, nobody K.O.\'d by the clock)', (w.teams[1 - sm.winner].alive === 0 || /TIME_UP/.test(sm.rules.join())) && w.teams[sm.winner].alive > 0); }
 // ---- E/F. packs, pity, duplicates, contracts ----
 { const s2 = A.Save.fresh('ENG_ARSENAL', 7);
   s2.credits = 1e7; s2.fragments = 1e6; const counts = { common: 0, rare: 0, epic: 0, legendary: 0 }, slot3 = { common: 0, rare: 0, epic: 0, legendary: 0 }; let twoRoles = true, uniq = true, n = 4000;
@@ -98,26 +98,26 @@ T('D7 upgrades reach the V4 battle profile', tB.battle_profile.attributes.speed 
   A.Stars.renew(st5, ex, 't5'); A.Stars.renew(st5, ex, 't10');
   T('F8 contract tickets +5 / +10', st5.stars[ex].contract === 15 && st5.tickets.t5 === 0 && st5.tickets.t10 === 0);
   T('F9 cannot renew without tickets', A.Stars.renew(st5, ex, 't5') === false); }
-// ---- G. momentum ----
-{ const snap = B.snapshot(s, 'league'); const opts = B.worldOpts(snap, { headless: true });
+// ---- G. legacy Momentum Strike (kept only so pre-Mayhem unfinished battles resume exactly) ----
+{ const snap = Object.assign(B.snapshot(s, 'league'), { mech: undefined }); const opts = B.worldOpts(snap, { headless: true });
   const w = E.createWorld(opts); let readyT = null; while (w.phase !== 'ended' && w.t < 90) { E.step(w); if (readyT == null && w.arc.mom[0].ready) readyT = w.battleT; }
-  T('G1 first Momentum ready ~9-13 s (real events add up)', readyT >= 8.5 && readyT <= 14.3, readyT);
-  T('G2 manual side never fires without input', w.arc.used.filter(m => m.side === 0).length === 0);
+  T('G1 [legacy battle] first Momentum ready ~9-13 s (real events add up)', readyT >= 8.5 && readyT <= 14.3, readyT);
+  T('G2 [legacy battle] manual side never fires without input', w.arc.used.filter(m => m.side === 0).length === 0);
   // quality by marker
   const w2 = E.createWorld(opts); while (!w2.arc.mom[0].ready) E.step(w2);
   const rt = w2.arc.mom[0].readyTick; const qAt = k => { const save = w2.tick; void save; const ph = ((k - rt) % 90) / 90; const pos = ph < 0.5 ? ph * 2 : 2 - ph * 2; const d = Math.abs(pos - 0.5); return d <= 0.06 ? 'perfect' : d <= 0.2 ? 'good' : 'normal'; };
   let pk = w2.tick; while (qAt(pk + 1) !== 'perfect') pk++;
   while (w2.tick < pk) E.step(w2); E.arcInput(w2, 'tap'); E.step(w2);
   const last = w2.arc.used[w2.arc.used.length - 1];
-  T('G3 Perfect timing computed from the tick-based marker', last && last.side === 0 && last.q === 'perfect', last);
+  T('G3 [legacy battle] Perfect timing computed from the tick-based marker', last && last.side === 0 && last.q === 'perfect', last);
   const buffed = w2.units.filter(u => u.side === 0 && u.alive && u.hasteT > 2);
-  T('G4 strike changes real unit state (<=12 units buffed)', buffed.length > 0 && buffed.length <= 12, buffed.length);
+  T('G4 [legacy battle] strike changes real unit state (<=12 units buffed)', buffed.length > 0 && buffed.length <= 12, buffed.length);
   const w3 = E.createWorld(Object.assign({}, opts, { arcade: Object.assign({}, opts.arcade, { momentum: ['normal', 'normal'] }) })); while (w3.phase !== 'ended' && w3.t < 90) E.step(w3);
-  T('G5 max 4 strikes per side', w3.arc.mom.every(m => m.uses <= 4));
+  T('G5 [legacy battle] max 4 strikes per side', w3.arc.mom.every(m => m.uses <= 4));
   // determinism incl. inputs
   const inp = [{ tick: pk + 1, q: 'tap' }];
   const h1 = B.simulate(B.worldOpts(snap, { headless: true, inputs: inp })).hash, h2 = B.simulate(B.worldOpts(snap, { headless: false, fxLevel: 2, inputs: inp })).hash;
-  T('G6 same seed + snapshot + inputs => same result (headless vs rendered fx)', h1 === h2); }
+  T('G6 [legacy battle] same seed + snapshot + inputs => same result (headless vs rendered fx)', h1 === h2); }
 // ---- V4 regression ----
 { const V4 = (() => { delete require.cache[require.resolve('../src/v4_engine.js')]; const saved = global.FWEngine; const m = require('../src/v4_engine.js'); global.FWEngine = saved; return m; })();
   let same = true; for (let i = 0; i < 4; i++) { const o = { seed: 31337 + i, teamA: FW_MASTER_DB.clubs[i * 7], teamB: FW_MASTER_DB.clubs[i * 11 + 3], cfg: FW_ENGINE_CONFIG, ruleset: i % 2 ? 'fusion' : 'classic', duration: 'standard' }; if (V4.summaryV4(V4.simulate(o, 80)).hash !== E.summaryV4(E.simulate(o, 80)).hash) same = false; }

@@ -4,7 +4,7 @@ const order = ['data.js', 'v4_font.js', 'engine.js', 'v4_director.js', 'v4_sprit
 let html = S('shell.html').replace('/*@@CSS@@*/', () => S('style.css'));
 const scripts = order.map(f => '<script>/* ---- ' + f + ' ---- */\n' + S(f).replace(/<\/script/gi, '<\\/script') + '\n</script>').join('\n');
 html = html.replace('<!--@@SCRIPTS@@-->', () => scripts);
-const out = path.join(__dirname, '../FootballWars_Arcade.html');
+const out = path.join(__dirname, '../FootballWars_Arcade_Mayhem.html'); // FootballWars_Arcade.html (Reborn) is kept untouched
 fs.writeFileSync(out, html);
 console.log('built', out, (html.length / 1024).toFixed(1) + ' KB');
 if (/https?:\/\/[^"' )]*\.(js|css)/.test(html.replace(/beyondelo|footballsquads|fifa|creativecommons|wikimedia/gi, ''))) console.log('WARNING: external script/css reference?');

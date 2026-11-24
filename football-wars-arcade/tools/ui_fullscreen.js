@@ -1,6 +1,6 @@
 // Full-screen button test (top bar + battle screen + F key).
 const { chromium } = require('playwright'); const path = require('path');
-const OUT = process.env.SHOTS || '.'; const FILE = 'file://' + path.resolve(__dirname, '../FootballWars_Arcade.html');
+const OUT = process.env.SHOTS || '.'; const FILE = 'file://' + path.resolve(__dirname, '../FootballWars_Arcade_Mayhem.html');
 let pass = 0, fail = 0; const T = (n, ok, info) => { ok ? pass++ : fail++; console.log((ok ? 'PASS ' : 'FAIL ') + n + (info !== undefined ? '  ' + JSON.stringify(info) : '')); };
 (async () => {
   const b = await chromium.launch();

@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <meta name="theme-color" content="#070b17">
 <meta name="mobile-web-app-capable" content="yes">
-<title>Football Wars — Arcade Reborn</title>
-<meta name="description" content="FOOTBALL WARS — ARCADE REBORN: 100 vs 100 pixel football battles, 10-division arcade career, star draft packs, Momentum Strike. Single offline HTML file.">
+<title>Football Wars — Arcade Mayhem</title>
+<meta name="description" content="FOOTBALL WARS — ARCADE MAYHEM: 100 vs 100 pixel football battles you command (Power Kick, Team Rush, Iron Defense), 10-division arcade career, star draft packs. Single offline HTML file.">
 <style>/*@@CSS@@*/</style>
 </head>
 <body>
@@ -24,13 +24,18 @@
 </div></nav>
 <section id="battle" class="hidden" aria-label="Battle">
   <div class="bt-top"><button id="btPause" aria-label="Pause">❚❚</button><span class="lbl" id="btLabel"></span><button id="btSpeed" aria-label="Speed">1×</button><button id="btCam" aria-label="Smart camera">🎥</button><button id="btFull" class="fsbtn" data-act="fullscreen" aria-label="Full screen">⛶</button></div>
-  <div id="stageWrap"><canvas id="stage" width="360" height="640"></canvas><div id="btLoading" class="loading hidden">RESTORING BATTLE…</div><button id="btSkip" class="skiphint hidden">Tap to continue ▸</button><div id="pauseBox" class="pausebox hidden"></div></div>
-  <div class="hud"><div class="mom">
-    <div><div class="lab"><span id="momTxt">MOMENTUM</span><span id="momUses">STRIKES 0/4</span></div>
-      <div class="fill"><i id="momFill"></i></div>
-      <div class="timing off" id="timing"><div class="good"></div><div class="perf"></div><div class="mk hidden" id="mk"></div><div class="tx" id="timingTx">TIMING BAR · NORMAL · GOOD · PERFECT</div></div></div>
-    <button id="strikeBtn" class="strike">STRIKE<small>tap or SPACE</small></button>
-  </div></div>
+  <div id="stageWrap"><canvas id="stage" width="360" height="640"></canvas><div id="btLoading" class="loading hidden">RESTORING BATTLE…</div><button id="btSkip" class="skiphint hidden">Tap to continue ▸</button><canvas id="ovl" class="ovl"></canvas><div id="pauseBox" class="pausebox hidden"></div></div>
+  <div class="hud">
+    <div class="enrow"><span id="enTxt">BATTLE ENERGY 25</span><span id="reinfTxt"></span></div>
+    <div class="energy"><i id="enFill"></i><b style="left:35%"></b><b style="left:45%"></b><b style="left:55%"></b></div>
+    <div id="cmdBar" class="cmds">
+      <button id="cmd_kick" class="cmd kick" aria-label="Power Kick (1)"><span class="ic">🎯</span><span class="nm">POWER KICK</span><span class="cs">55⚡ · 1</span><span class="cd"></span></button>
+      <button id="cmd_rush" class="cmd rush" aria-label="Team Rush (2)"><span class="ic">💥</span><span class="nm">TEAM RUSH</span><span class="cs">45⚡ · 2</span><span class="cd"></span></button>
+      <button id="cmd_iron" class="cmd iron" aria-label="Iron Defense (3)"><span class="ic">🛡️</span><span class="nm">IRON DEFENSE</span><span class="cs">35⚡ · 3</span><span class="cd"></span></button>
+    </div>
+    <div id="legacyNote" class="cmdhelp hidden">This battle was started before the Mayhem update and finishes with its original rules.</div>
+    <div id="cmdHelp" class="cmdhelp">Pick a command — or just watch</div>
+  </div>
 </section>
 <div id="modal" class="hidden"></div>
 <div id="toast"></div>

@@ -8,7 +8,8 @@
 const E = root.FWEngine, DATA = root.ArcadeData;
 const Rng = E.Rng, hashStr = E.hashStr;
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
-const SAVE_VERSION = 1;
+const SAVE_VERSION = 2; // v2 = ARCADE MAYHEM (War Commands); v1 careers migrate without touching progress
+const MECH = 'mayhem';
 const DEFAULT_SETTINGS = { master: 0.8, music: 0.5, sfx: 0.8, crowd: 0.6, mute: false, vibration: true, quality: 'medium', speed: 1, smartCam: true };
 const ROLES = E.ROLES;
 const STAT_KEYS = ['attack', 'defense', 'speed', 'technique', 'stamina'];
@@ -83,6 +84,7 @@ function tx(save, id, fn) {
 }
 
 // ======================= ArcadeSave =======================
+function newWC() { return { commands: 0, kick: 0, rush: 0, iron: 0, pkGoals: 0, rushHits: 0, ironStops: 0, chains: 0, rampages: 0, reinforcements: 0 }; }
 const Save = {
   KEY: 'fwa_save_v1', BAK: 'fwa_save_v1_bak',
   fresh(clubId, careerSeed) {
@@ -94,7 +96,7 @@ const Save = {
       stars: {}, active: [],
       division: 10, highestDiv: 10, seasonNo: 0, officialPlayed: 0, divPlayed: {},
       divisions: null, league: null, history: [], challenges: { unlocked: {}, done: {} },
-      endless: { seasons: 0, titles: 0, firstTitle: false }, stats: { battles: 0, wins: 0, losses: 0, goals: 0, strikes: 0, perfects: 0 },
+      endless: { seasons: 0, titles: 0, firstTitle: false }, stats: { battles: 0, wins: 0, losses: 0, goals: 0, strikes: 0, perfects: 0 }, wc: newWC(),
       claims: {}, txn: 0, pendingBattle: null, pendingDecision: null, promo: null, lastResult: null,
       settings: Object.assign({}, DEFAULT_SETTINGS)
     };
@@ -119,7 +121,12 @@ const Save = {
   },
   migrate(s) {
     if (!s || typeof s !== 'object') return s;
-    // v1 is the first arcade schema; future versions add fields here without resetting progress.
+    // v1 -> v2 (Mayhem): only ADDS war-command stats. Club, divisions, fixtures, currencies, XP/level, upgrades,
+    // stars, contracts, packs, pity, challenges, endless, claims are left exactly as they were. Old Momentum Strike
+    // stats stay as history (stats.strikes / stats.perfects). An unfinished v1 battle keeps its legacy snapshot
+    // (no mech) and resumes with the legacy rules it was started with — its contracts were already used once.
+    if ((s.v || 1) < 2) { s.wc = s.wc || newWC(); s.migratedFrom = s.v || 1; s.v = 2; }
+    if (!s.wc) s.wc = newWC();
     s.settings = Object.assign({}, DEFAULT_SETTINGS, s.settings || {});
     if (!s.stats) s.stats = { battles: 0, wins: 0, losses: 0, goals: 0, strikes: 0, perfects: 0 };
     if (!s.challenges) s.challenges = { unlocked: {}, done: {} };
@@ -534,27 +541,29 @@ const Battle = {
       seed: seedOf(save, 'battle:' + battleId),
       teamA: playerTeam(save), teamB: clubTeam(save, oppId, oppRating, tactic),
       stars: Stars.battleList(save), starIds: save.active.filter(id => save.stars[id] && save.stars[id].contract > 0), oppStars,
-      aiMom: d <= 3 ? 'good' : 'normal', created: Date.now()
+      aiMom: d <= 3 ? 'good' : 'normal', mech: MECH, created: Date.now()
     };
     return snap;
   },
   worldOpts(snap, o) {
     o = o || {};
     return { seed: snap.seed, teamA: snap.teamA, teamB: snap.teamB, cfg: root.FW_ENGINE_CONFIG, duration: 'standard', fxLevel: o.fxLevel == null ? 1 : o.fxLevel,
-      ruleset: 'fusion', fbIntensity: 'normal', goalAdv: true, headless: !!o.headless,
-      arcade: { advCap: ARC_CFG.advCap, advScale: ARC_CFG.advScale, stars: [snap.stars, snap.oppStars || []], momentum: [o.auto ? 'normal' : 'manual', snap.aiMom || 'normal'], inputs: o.inputs || [] } };
+      ruleset: 'fusion', fbIntensity: 'normal', goalAdv: snap.mech !== MECH, headless: !!o.headless,
+      arcade: snap.mech === MECH
+        ? { advCap: ARC_CFG.advCap, advScale: ARC_CFG.advScale, stars: [snap.stars, snap.oppStars || []], mech: MECH, cmdModes: [o.auto ? 'auto' : 'manual', 'ai'], cmds: o.cmds || [] }
+        : { advCap: ARC_CFG.advCap, advScale: ARC_CFG.advScale, stars: [snap.stars, snap.oppStars || []], momentum: [o.auto ? 'normal' : 'manual', snap.aiMom || 'normal'], inputs: o.inputs || [] } };
   },
   aiOpts(save, job) {
     const L = save.league;
     const ta = clubTeam(save, job.a, League.rating(save, job.a, job.div, job.seasonId), L.tactics && L.tactics[job.a]);
     const tb = clubTeam(save, job.b, League.rating(save, job.b, job.div, job.seasonId), L.tactics && L.tactics[job.b]);
-    return { seed: job.seed, teamA: ta, teamB: tb, cfg: root.FW_ENGINE_CONFIG, duration: 'standard', fxLevel: 0, ruleset: 'fusion', fbIntensity: 'normal', goalAdv: true, headless: true,
-      arcade: { advCap: ARC_CFG.advCap, advScale: ARC_CFG.advScale, stars: [[], []], momentum: ['normal', 'normal'], inputs: [] } };
+    return { seed: job.seed, teamA: ta, teamB: tb, cfg: root.FW_ENGINE_CONFIG, duration: 'standard', fxLevel: 0, ruleset: 'fusion', fbIntensity: 'normal', goalAdv: false, headless: true,
+      arcade: { advCap: ARC_CFG.advCap, advScale: ARC_CFG.advScale, stars: [[], []], mech: MECH, cmdModes: ['ai', 'ai'], cmds: [] } };
   },
   result(w) {
-    const s = E.summaryV4(w), a = E.arcSummary(w);
+    const s = E.summaryV4(w), a = E.arcSummary(w), m = E.maySummary ? E.maySummary(w) : null;
     return { winner: s.winner, won: s.winner === 0, survivors: s.survivors, alive: [w.teams[0].alive, w.teams[1].alive], goals: s.football ? s.football.goals.slice() : [0, 0],
-      hash: s.hash, battleSeconds: s.battleSeconds, endTick: w.endTick, football: s.football, momentum: a ? a.momentum : [], inputs: a ? a.inputs : [], stars: a ? a.stars : [], kills: s.kills, tiebreak: s.tiebreak };
+      hash: s.hash, battleSeconds: s.battleSeconds, endTick: w.endTick, football: s.football, momentum: a ? a.momentum : [], inputs: a ? a.inputs : [], stars: a ? a.stars : [], kills: s.kills, tiebreak: s.tiebreak, mayhem: m, cmds: m ? m.inputs : [] };
   },
   // headless run in slices (callers yield between slices so mobile UIs never freeze)
   runSlice(w, ticks) { let n = 0; while (w.phase !== 'ended' && w.t < 90 && n++ < ticks) { E.step(w); if (w.events.length > 4000) w.events.length = 0; } return w.phase === 'ended' || w.t >= 90; },
@@ -562,7 +571,7 @@ const Battle = {
   // official / challenge battle bookkeeping
   begin(save, snap) {
     Stars.consume(save, snap.battleId, snap.starIds);
-    save.pendingBattle = { snap, inputs: [], lastTick: 0, startedAt: Date.now() };
+    save.pendingBattle = { snap, inputs: [], cmds: [], lastTick: 0, startedAt: Date.now() };
     save.stats.battles++;
   },
   // apply a finished battle (the single entry point for all match outcomes)
@@ -572,7 +581,8 @@ const Battle = {
     save.pendingBattle = null;
     Stars.cleanupExpired(save);
     save.stats.goals += res.goals[0];
-    for (const m of res.momentum) if (m.side === 0) { save.stats.strikes++; if (m.q === 'perfect') save.stats.perfects++; }
+    for (const m of res.momentum || []) if (m.side === 0) { save.stats.strikes++; if (m.q === 'perfect') save.stats.perfects++; } // legacy battles only
+    if (res.mayhem) { const M = res.mayhem.sides[0], W = save.wc || (save.wc = newWC()); W.commands += M.commands; W.kick += M.kick; W.rush += M.rush; W.iron += M.iron; W.pkGoals += M.pkGoals; W.rushHits += M.rushHits; W.ironStops += M.ironStops; W.chains += M.chains; W.rampages += M.rampages; W.reinforcements += M.entered; }
     if (snap.kind === 'league') {
       const fx = League.playerFixture(save);
       if (!fx || fx.id !== snap.fixtureId) { out.stale = true; return out; }
@@ -601,7 +611,7 @@ const Battle = {
   }
 };
 
-const Arcade = { VERSION: SAVE_VERSION, tx, clubs, club, Save, Upgrades, Progression, Economy, Stars, Draft, League, Challenges, Endgame, Battle,
+const Arcade = { VERSION: SAVE_VERSION, MECH, tx, clubs, club, Save, Upgrades, Progression, Economy, Stars, Draft, League, Challenges, Endgame, Battle,
   PLAYER_ROLES, RARITIES, CONTRACT, OVR_REF, PACKS, applyReward, seedOf };
 root.Arcade = Arcade;
 if (typeof module !== 'undefined' && module.exports) module.exports = Arcade;

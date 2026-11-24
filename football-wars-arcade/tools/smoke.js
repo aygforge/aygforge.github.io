@@ -8,7 +8,7 @@ const OUT = process.env.SHOTS || '.';
   p.on('pageerror', e => errs.push('pageerror: ' + e.message));
   p.on('console', m => { if (m.type() === 'error') errs.push('console: ' + m.text()); });
   await ctx.route('**/*', r => r.request().url().startsWith('file:') ? r.continue() : (errs.push('NETWORK ' + r.request().url()), r.abort()));
-  await p.goto('file://' + require('path').resolve(__dirname, '../FootballWars_Arcade.html'));
+  await p.goto('file://' + require('path').resolve(__dirname, '../FootballWars_Arcade_Mayhem.html'));
   await p.waitForTimeout(600);
   await p.screenshot({ path: OUT + '/01_title.png' });
   await p.fill('#clubSearch', 'galatasaray');

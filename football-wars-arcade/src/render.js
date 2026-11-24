@@ -6,6 +6,7 @@
 const E = root.FWEngine, S = root.FWSprites, F = root.FWFont;
 const LW = 360, LH = 640;
 const C = S.color;
+const CMD_N = { kick: 'POWER KICK!', rush: 'TEAM RUSH!', iron: 'IRON DEFENSE!' };
 const STAR_COL = { common: '#d8dee9', rare: '#5ab8ff', epic: '#c77dff', legendary: '#ffd23f' };
 
 const TXT = {
@@ -150,6 +151,9 @@ function createRenderer(o) {
         g.fillStyle = sc; g.fillRect(x, yy, 1, 5); g.fillRect(x - 2, yy + 2, 5, 1); g.fillRect(x - 1, yy + 1, 3, 3); g.fillRect(x - 2, yy + 4, 1, 1); g.fillRect(x + 2, yy + 4, 1, 1);
         if (u.star.rarity === 'legendary' || u.star.rarity === 'epic') { g.globalAlpha = 0.25 + 0.2 * Math.sin(u.animT * 6); g.strokeStyle = sc; g.beginPath(); g.ellipse(x + 0.5, y - 0.5, 9, 3.5, 0, 0, 6.283); g.stroke(); g.globalAlpha = 1; }
       }
+      if (u.ironT > 0) { g.fillStyle = '#0b0d16'; g.fillRect(x - 4, y - 27, 9, 6); g.fillStyle = '#7fb8ff'; g.fillRect(x - 3, y - 26, 7, 3); g.fillRect(x - 2, y - 23, 5, 1); g.fillRect(x - 1, y - 22, 3, 1); }
+      if (u.rampT > 0) { g.globalAlpha = 0.5 + 0.3 * Math.sin(u.animT * 20); g.strokeStyle = '#ff6b4a'; g.beginPath(); g.ellipse(x + 0.5, y - 0.5, 8, 3, 0, 0, 6.283); g.stroke(); g.globalAlpha = 1; }
+      if (u.rushT > 0) { g.fillStyle = 'rgba(255,140,90,0.75)'; const sx = -Math.sign(u.mvx || 1); g.fillRect(x + sx * 7, y - 11, 4, 1); g.fillRect(x + sx * 8, y - 8, 4, 1); g.fillRect(x + sx * 7, y - 5, 4, 1); }
       if (u.role === 'support') { const p = 0.25 + 0.2 * Math.sin(u.animT * 5); g.globalAlpha = p; g.strokeStyle = '#8ffcff'; g.beginPath(); g.ellipse(x + 0.5, y - 0.5, 8, 3, 0, 0, 6.283); g.stroke(); g.globalAlpha = 1; }
       if (u.shieldT > 0) { g.globalAlpha = 0.5; g.strokeStyle = '#7fb8ff'; g.strokeRect(x - 6.5, y - 17.5, 13, 18); g.globalAlpha = 1; }
       if (u.stun > 0) { const a = u.animT * 9; g.fillStyle = '#ffe14d'; g.fillRect(x + Math.round(Math.cos(a) * 4), y - 20 + Math.round(Math.sin(a) * 1.5), 1, 1); g.fillRect(x + Math.round(Math.cos(a + 3.14) * 4), y - 20 + Math.round(Math.sin(a + 3.14) * 1.5), 1, 1); }
@@ -231,6 +235,7 @@ function createRenderer(o) {
   function drawTexts(g) {
     for (const t of w.texts) { if (!o.labels && t.text !== 'CRIT') continue; F.draw(g, t.text, Math.round(t.x), Math.round(t.y), { color: t.color, align: 'center', alpha: cl(t.life / t.max * 1.6, 0, 1) }); }
     if (o.labels) for (const b of w.banners) {
+      if (b.key.startsWith('cmd:')) { const age = w.t - b.t0; if (age <= b.dur) F.draw(g, CMD_N[b.key.slice(4)] || '', Math.round(cl(b.x, 60, 300)), Math.round(cl(b.y - 20 - age * 8, 110, 600)), { color: b.side === 0 ? '#ffe14d' : '#ff8a8a', align: 'center', bold: true, alpha: cl((b.dur - age) * 3, 0, 1) }); continue; }
       if (!b.key.startsWith('special:')) continue;
       const age = w.t - b.t0; if (age > b.dur) continue;
       const id = b.key.slice(8), nm = (E.SPECIAL_NAMES[id] || {})[o.lang] || id;
@@ -395,7 +400,7 @@ function createRenderer(o) {
         g.globalAlpha = 0.35 * a; g.fillStyle = '#ff2050'; g.fillRect(0, 270, LW, 60); g.globalAlpha = 1;
         bigCenter(g, 'FINAL CLASH', 284 - pop * 2, 4 + pop, '#ffe14d', a, '#ff6b1a');
       } else {
-        const txt = b.key === 'zone' ? L.zone : b.key === 'storm' ? L.storm : b.key === 'sudden' ? L.sudden : '';
+        const txt = b.key === 'zone' ? L.zone : b.key === 'storm' ? L.storm : b.key === 'sudden' ? L.sudden : b.key === 'frenzy' ? 'FINAL FRENZY' : '';
         if (!txt) continue;
         const sc = F.fitScale(txt, 330, 3, true);
         g.globalAlpha = 0.5 * a; g.fillStyle = '#12050a'; g.fillRect(0, 286, LW, 34); g.globalAlpha = 1;

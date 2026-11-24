@@ -1,7 +1,7 @@
 // Season-end / promotion / Division 1 first-title UI flow. Rounds 1-18 are pre-filled through the real
 // game API with forged scores (test shortcut); round 19 (player + 9 AI matches) runs as real battles.
 const { chromium } = require('playwright'); const path = require('path');
-const OUT = process.env.SHOTS || '.'; const FILE = 'file://' + path.resolve(__dirname, '../FootballWars_Arcade.html');
+const OUT = process.env.SHOTS || '.'; const FILE = 'file://' + path.resolve(__dirname, '../FootballWars_Arcade_Mayhem.html');
 let pass = 0, fail = 0; const T = (n, ok, info) => { ok ? pass++ : fail++; console.log((ok ? 'PASS ' : 'FAIL ') + n + (info !== undefined ? '  ' + JSON.stringify(info) : '')); };
 (async () => {
   const b = await chromium.launch();

@@ -1,7 +1,7 @@
 // Desktop layout screenshot + rough frame-rate sample of a live battle (headless Chromium = software rendering,
 // so numbers are a lower bound, not a device benchmark).
 const { chromium } = require('playwright'); const path = require('path');
-const OUT = process.env.SHOTS || '.'; const FILE = 'file://' + path.resolve(__dirname, '../FootballWars_Arcade.html');
+const OUT = process.env.SHOTS || '.'; const FILE = 'file://' + path.resolve(__dirname, '../FootballWars_Arcade_Mayhem.html');
 (async () => {
   const b = await chromium.launch();
   for (const [name, vp, q] of [['desktop', { width: 1280, height: 800 }, 'medium'], ['mobile_low', { width: 393, height: 852 }, 'low'], ['mobile_high', { width: 393, height: 852 }, 'high']]) {

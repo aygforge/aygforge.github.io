@@ -1,6 +1,6 @@
 // Browser UI flow tests (Playwright + the pre-installed Chromium). Real clicks on the built single HTML file.
 const { chromium } = require('playwright'); const path = require('path'); const fs = require('fs');
-const OUT = process.env.SHOTS || '.'; const FILE = 'file://' + path.resolve(__dirname, '../FootballWars_Arcade.html');
+const OUT = process.env.SHOTS || '.'; const FILE = 'file://' + path.resolve(__dirname, '../FootballWars_Arcade_Mayhem.html');
 let pass = 0, fail = 0; const T = (n, ok, info) => { ok ? pass++ : fail++; console.log((ok ? 'PASS ' : 'FAIL ') + n + (info !== undefined ? '  ' + JSON.stringify(info) : '')); };
 (async () => {
   const b = await chromium.launch();
@@ -85,7 +85,7 @@ let pass = 0, fail = 0; const T = (n, ok, info) => { ok ? pass++ : fail++; conso
   await p.evaluate(() => { ArcadeApp.st.save.settings.quality = 'low'; ArcadeApp.st.save.settings.mute = true; ArcadeApp.persist(); });
   await p.click('#tabbar [data-tab="home"]').catch(() => {}); await p.click('.battle-btn'); await p.waitForTimeout(800);
   T('UI23 Low quality + muted: still 100 v 100 and running', await p.evaluate(() => [0, 1].map(sd => ArcadeApp.st.battle.w.units.filter(u => u.side === sd).length).join() === '100,100'));
-  await p.tap('#strikeBtn').catch(() => {});
+  await p.tap('#cmd_iron'); await p.waitForTimeout(100); await p.evaluate(() => { if (ArcadeApp.st.battle && ArcadeApp.st.battle.tgt) document.getElementById('ovl').dispatchEvent(new MouseEvent('contextmenu', { bubbles: true })); });
   await p.click('#btPause'); await p.click('#pauseBox [data-b="abandon"]'); await p.waitForTimeout(200);
   T('UI24 no page errors / no network requests', errs.length === 0, errs.slice(0, 5));
   console.log('ui tests: ' + pass + ' pass, ' + fail + ' fail');

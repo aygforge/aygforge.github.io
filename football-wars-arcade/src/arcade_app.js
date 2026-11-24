@@ -1,6 +1,6 @@
-/* FOOTBALL WARS — ARCADE REBORN: ArcadeApp + ArcadeUI + ArcadeMomentum (DOM layer).
+/* FOOTBALL WARS — ARCADE MAYHEM V2: ArcadeApp + ArcadeUI + War Commands HUD/targeting (DOM layer).
  * Screens: Title/Club select · Home · League · Upgrades · Star Packs (Three-Star Draft) · Star Collection ·
- * Challenges · Battle (V4 canvas + Momentum Strike HUD) · Results · Season end / Championship · Settings. */
+ * Challenges · Battle (V4 canvas + War Commands HUD) · Results · Season end / Championship · Settings. */
 (function (root) {
 'use strict';
 const E = root.FWEngine, R = root.FWRender, S = root.FWSprites, F = root.FWFont, D = root.FWDirector, A = root.Arcade, AU = root.ArcadeAudio;
@@ -289,7 +289,7 @@ function leagueHTML() {
   } else {
     const hs = s.history.slice().reverse();
     body = '<div class="card">' + (hs.length ? hs.map(h => '<div class="fx"><div class="a">' + esc(h.season) + '</div><div class="s">#' + h.rank + '</div><div>' + esc(h.outcome) + '</div></div>').join('') : '<p class="dim small">No completed seasons yet.</p>') + '</div>' +
-      '<div class="card small"><div class="kv"><dt>Official fixtures played</dt><dd>' + s.officialPlayed + '</dd><dt>Highest division</dt><dd>' + s.highestDiv + '</dd><dt>Champions League seasons</dt><dd>' + s.endless.seasons + '</dd><dt>Champions League titles</dt><dd>' + s.endless.titles + '</dd><dt>Goals scored</dt><dd>' + s.stats.goals + '</dd><dt>Momentum Strikes (Perfect)</dt><dd>' + s.stats.strikes + ' (' + s.stats.perfects + ')</dd></div></div>';
+      '<div class="card small"><div class="kv"><dt>Official fixtures played</dt><dd>' + s.officialPlayed + '</dd><dt>Highest division</dt><dd>' + s.highestDiv + '</dd><dt>Champions League seasons</dt><dd>' + s.endless.seasons + '</dd><dt>Champions League titles</dt><dd>' + s.endless.titles + '</dd><dt>Goals scored</dt><dd>' + s.stats.goals + '</dd><dt>War Commands (Kick / Rush / Iron)</dt><dd>' + (s.wc ? s.wc.commands + ' (' + s.wc.kick + ' / ' + s.wc.rush + ' / ' + s.wc.iron + ')' : 0) + '</dd><dt>Power Kick goals · subs on pitch</dt><dd>' + (s.wc ? s.wc.pkGoals + ' · ' + s.wc.reinforcements : 0) + '</dd>' + (s.stats.strikes ? '<dt>Momentum Strikes (legacy, Perfect)</dt><dd>' + s.stats.strikes + ' (' + s.stats.perfects + ')</dd>' : '') + '</div></div>';
   }
   return '<div class="title">' + (L.div === 1 ? 'Champions League' : 'Division ' + L.div) + ' <span class="sp"></span><span class="pill">' + esc(L.seasonId) + '</span></div>' + seg + '<div style="height:8px"></div>' + body;
 }
@@ -482,10 +482,10 @@ function startBattle(kind, ctx, quick) {
 function resumeBattle() {
   const P = st.save.pendingBattle; if (!P) return;
   stopAI();
-  liveBattle(P.snap, { inputs: P.inputs || [], lastTick: P.lastTick || 0 });
+  liveBattle(P.snap, { inputs: P.inputs || [], cmds: P.cmds || [], lastTick: P.lastTick || 0 });
 }
 function quickSim(snap) {
-  modal('<h2>Quick Simulate</h2><p class="small dim">Running the real 100 vs 100 battle (automatic Momentum Strikes for both teams)…</p><div class="bar"><i id="qsBar" style="width:0"></i></div>');
+  modal('<h2>Quick Simulate</h2><p class="small dim">Running the real 100 vs 100 battle (conservative automatic War Commands for you, AI commands for the rival)…</p><div class="bar"><i id="qsBar" style="width:0"></i></div>');
   const w = E.createWorld(A.Battle.worldOpts(snap, { headless: true, auto: true }));
   st.battle = { quick: true };
   const stepf = () => {
@@ -503,12 +503,19 @@ function fitStage() {
   const k = Math.max(1, Math.min(4, Math.round(h * dpr / 640)));
   B.cv.width = 360 * k; B.cv.height = 640 * k; B.cv.style.width = Math.floor(w) + 'px'; B.cv.style.height = Math.floor(h) + 'px';
 }
+const CMD_UI = {
+  kick: { name: 'POWER KICK', key: '1', help: 'Drag on the pitch to aim the real ball — release to shoot', col: '#ffcf3f' },
+  rush: { name: 'TEAM RUSH', key: '2', help: 'Touch the zone to charge — release to send 8–10 players', col: '#ff7a59' },
+  iron: { name: 'IRON DEFENSE', key: '3', help: 'Touch the zone to defend — release to lock it down', col: '#7fb8ff' }
+};
+const WHY_TXT = { energy: 'Not enough Battle Energy', cooldown: 'Command cooling down', no_ball: 'Your team needs the ball', no_players: 'No eligible players near that zone', target: 'Pick a spot on the pitch', not_now: 'Not available right now', same_tick: 'One command at a time' };
 function liveBattle(snap, resume) {
   const s = st.save, set = s.settings, q = QUALITY[set.quality] || QUALITY.medium;
   AU.init(); AU.apply(Object.assign({}, set));
   const bt = $('battle'); bt.classList.remove('hidden'); document.body.style.overflow = 'hidden';
   $('btLabel').textContent = snap.label;
-  const w = E.createWorld(A.Battle.worldOpts(snap, { fxLevel: q.fx, inputs: resume ? resume.inputs : [] }));
+  const legacy = snap.mech !== A.MECH; // a battle started before the Mayhem update resumes with its original rules
+  const w = E.createWorld(A.Battle.worldOpts(snap, { fxLevel: q.fx, inputs: resume ? resume.inputs || [] : [], cmds: resume ? resume.cmds || [] : [] }));
   w.observer = D.createObserver({ smartCam: true, intensity: 'normal', epicFinale: true, mvpStreaks: true, fbAlerts: true, fbFollow: true });
   const teams = [snap.teamA, snap.teamB];
   const hc = S.color.cdist(S.color.vivid(teams[0].visual.primary_color), S.color.vivid(teams[1].visual.primary_color)) < 210;
@@ -517,30 +524,36 @@ function liveBattle(snap, resume) {
   const logos = teams.map((t, i) => ({ small: crestCv(t.id, 26, i === 0 && s.goldenCrest), big: crestCv(t.id, 96, i === 0 && s.goldenCrest) }));
   const renderer = R.createRenderer({ world: w, teams, kits, atlases, logos, lang: 'en', labels: true, story: true, hc, fxLevel: q.fx, v3: { vfx: true, finale: true, mvp: true, momentum: false }, modeLabel: snap.label.toUpperCase(), fictional: false });
   const cv = $('stage'); const ctx = cv.getContext('2d');
-  const B = st.battle = { snap, w, renderer, cv, ctx, paused: false, speed: set.speed === 2 ? 2 : 1, cam: set.smartCam !== false, last: performance.now(), evI: 0, savedTick: resume ? resume.lastTick : 0, waitInput: false, autoQ: false, ended: false, skip: false, ff: !!(resume && resume.lastTick > 0), usedSeen: 0 };
+  const B = st.battle = { snap, w, renderer, cv, ctx, legacy, paused: false, speed: set.speed === 2 ? 2 : 1, cam: set.smartCam !== false, last: performance.now(), evI: 0, savedTick: resume ? resume.lastTick : 0,
+    ended: false, skip: false, ff: !!(resume && resume.lastTick > 0), usedSeen: 0, tgt: null, frozenCam: null, alertUntil: 0 };
+  $('cmdBar').classList.toggle('hidden', legacy); $('legacyNote').classList.toggle('hidden', !legacy);
   fitStage(); updateBattleButtons();
   $('btLoading').classList.toggle('hidden', !B.ff);
   AU.battleStart();
-  const ff = () => { // resume: recompute silently up to the last safe tick (same seed, snapshot and Momentum inputs)
+  const ff = () => { // resume: recompute silently up to the last safe tick (same seed, snapshot and recorded commands)
     let n = 0; while (w.tick < resume.lastTick && n++ < 400) E.step(w);
-    B.evI = w.events.length; B.usedSeen = w.arc.used.length;
+    B.evI = w.events.length; B.usedSeen = w.may ? w.may.used.length : 0;
     if (w.tick < resume.lastTick) { $('btLoading').textContent = 'RESTORING BATTLE… ' + Math.round(w.tick / resume.lastTick * 100) + '%'; setTimeout(ff, 0); return; }
     B.ff = false; $('btLoading').classList.add('hidden'); B.last = performance.now(); B.raf = requestAnimationFrame(frame);
   };
   const frame = now => {
     if (st.battle !== B) return;
-    const dt = Math.min(0.1, (now - B.last) / 1000); B.last = now;
+    const dtReal = Math.min(0.1, (now - B.last) / 1000); B.last = now;
     if (!B.paused) {
-      if (B.speed === 2 && w.arc.mom[0].ready && !B.autoQ && w.phase === 'battle') { E.arcInput(w, 'auto'); B.autoQ = true; }
-      E.advanceTo(w, w.t + dt * B.speed);
+      let k = B.speed;
+      if (B.tgt) { B.tgt.real += dtReal; if (B.tgt.real < 1.6) k = Math.min(k, 0.55); } // short targeting slow-motion (presentation only)
+      E.advanceTo(w, w.t + dtReal * k);
     }
-    if (!B.cam) { w.cam.x = 180; w.cam.y = E.MIDY; w.cam.z = 1; }
+    if (B.tgt && B.frozenCam) { w.cam.x = B.frozenCam.x; w.cam.y = B.frozenCam.y; w.cam.z = B.frozenCam.z; }
+    else if (!B.cam) { w.cam.x = 180; w.cam.y = E.MIDY; w.cam.z = 1; }
     renderer.render(ctx, w.t, cv.width, cv.height);
     battleEvents(B);
-    momentumHUD(B);
+    commandHUD(B);
+    drawTargeting(B);
     AU.battleFeed(w, w.observer && w.observer.state);
     if (!B.paused && w.phase === 'battle' && w.tick - B.savedTick >= 120) saveProgress(B);
     if (w.phase === 'ended') {
+      if (B.tgt) cancelTarget();
       if (!B.ended) { B.ended = true; $('btSkip').classList.remove('hidden'); AU.vibrate([60, 40, 120]); }
       if (B.skip || w.t >= w.endT + w.outroLen) { endLive(B); return; }
     }
@@ -548,47 +561,120 @@ function liveBattle(snap, resume) {
   };
   if (B.ff) setTimeout(ff, 30); else B.raf = requestAnimationFrame(frame);
 }
-function saveProgress(B) { const P = st.save.pendingBattle; if (!P || P.snap.battleId !== B.snap.battleId) return; P.inputs = B.w.arc.log.slice(); P.lastTick = B.w.tick; B.savedTick = B.w.tick; Store.write(); }
+function saveProgress(B) {
+  const P = st.save.pendingBattle; if (!P || P.snap.battleId !== B.snap.battleId) return;
+  if (B.w.may) P.cmds = B.w.may.log.slice(); else P.inputs = B.w.arc.log.slice();
+  P.lastTick = B.w.tick; B.savedTick = B.w.tick; Store.write();
+}
 function battleEvents(B) {
   const w = B.w, ev = w.events, EV = E.EV, names = Object.keys(E.SPECIAL_NAMES);
   for (; B.evI < ev.length; B.evI++) {
     const e = ev[B.evI];
     if (e.type === EV.SPECIAL_FIRE) AU.play('ab_' + names[e.c], e.a === 0 ? 0.5 : 0.35, 0, 1);
     else if (e.type === EV.STAR_SPECIAL && e.a === 0) AU.vibrate(20);
-    else if (e.type === EV.MOM_READY && e.a === 0) { AU.play('mom_ready', 0.6); AU.vibrate(25); }
     else if (e.type === EV.GOAL) AU.vibrate(e.b === 0 ? [50, 30, 50] : 30);
+    else if (e.type === EV.REINF_GAIN) { qpop('+' + e.b + ' REINFORCEMENTS', e.a === 0 ? '#3df2b5' : '#ff8a8a', 'small'); AU.play('mom_ready', 0.5); }
+    else if (e.type === EV.REINF_ENTER && e.a === 0) AU.play('heal', 0.35);
+    else if (e.type === EV.RAMPAGE) { if (e.a === 0) { qpop('KO RAMPAGE!', '#ff6b4a', 'small'); AU.play('ab_counter_burst', 0.45); } }
+    else if (e.type === EV.FRENZY) { AU.play('whistle3', 0.5); AU.vibrate([40, 40, 40]); }
+    else if (e.type === EV.ALERT && e.a === 1) { B.alertUntil = performance.now() + 2200; AU.play('final', 0.45); AU.vibrate(35); }
+    else if (e.type === EV.IRON_STOP && e.a === 0) AU.play('save', 0.35);
   }
-  const U = w.arc.used;
+  if (!w.may) return;
+  const U = w.may.used;
   for (; B.usedSeen < U.length; B.usedSeen++) {
-    const m = U[B.usedSeen];
-    if (m.side !== 0) { qpop('RIVAL STRIKE', '#ff8a8a'); continue; }
-    B.waitInput = false; B.autoQ = false;
-    const txt = m.q === 'perfect' ? 'PERFECT!' : m.q === 'good' ? 'GOOD!' : 'STRIKE';
-    qpop(txt + ' · ' + m.mode.toUpperCase(), m.q === 'perfect' ? '#ffcf3f' : m.q === 'good' ? '#3df2b5' : '#bfe4ff');
-    AU.play('mom_' + m.q, 0.8); AU.vibrate(m.q === 'perfect' ? [30, 30, 90] : m.q === 'good' ? 50 : 25);
+    const c = U[B.usedSeen], ui = CMD_UI[c.type];
+    if (c.side !== 0) { if (c.ok) qpop('RIVAL ' + ui.name, '#ff8a8a', 'small'); continue; }
+    if (!c.ok) { qpop(WHY_TXT[c.why] || 'Command cancelled', '#ff8a8a', 'small'); AU.play('error', 0.3); continue; }
+    qpop(ui.name + (c.type !== 'kick' ? ' ×' + c.n : c.onTarget ? ' · ON TARGET' : ''), ui.col);
+    AU.play(c.type === 'kick' ? 'mom_perfect' : c.type === 'rush' ? 'mom_good' : 'ab_iron_wall', 0.75);
+    AU.vibrate(c.type === 'kick' ? [30, 30, 80] : 45);
     saveProgress(B);
   }
 }
-function qpop(text, col) { const d = document.createElement('div'); d.className = 'qpop'; d.style.color = col; d.textContent = text; $('stageWrap').appendChild(d); setTimeout(() => d.remove(), 950); }
-function momentumHUD(B) {
-  const w = B.w, m = w.arc.mom[0];
-  $('momFill').style.width = (m.v | 0) + '%';
-  $('momFill').parentNode.classList.toggle('ready', m.ready);
-  $('momTxt').textContent = m.uses >= 4 ? 'ALL STRIKES USED' : m.ready ? 'STRIKE READY!' : 'MOMENTUM ' + (m.v | 0) + '%';
-  $('momUses').textContent = 'STRIKES ' + m.uses + '/4';
-  const tm = $('timing'); tm.classList.toggle('off', !m.ready);
-  $('mk').style.left = (E.ARC.marker(w, 0) * 100).toFixed(2) + '%';
-  $('mk').classList.toggle('hidden', !m.ready);
-  $('timingTx').classList.toggle('hidden', m.ready);
-  const sb = $('strikeBtn'); sb.classList.toggle('ready', m.ready && w.phase === 'battle');
-  sb.innerHTML = (B.speed === 2 && m.ready ? 'AUTO' : 'STRIKE') + '<small>' + (B.speed === 2 ? '2× auto (Normal)' : 'tap or SPACE') + '</small>';
+function qpop(text, col, cls) { const d = document.createElement('div'); d.className = 'qpop' + (cls ? ' ' + cls : ''); d.style.color = col; d.textContent = text; $('stageWrap').appendChild(d); setTimeout(() => d.remove(), 950); }
+function cmdBlock(B, type) { // reason a command cannot start now (UI hint; the engine validates again on its tick)
+  const w = B.w; if (!w.may) return 'not_now';
+  const m = w.may.s[0], C = E.MAY.CMD[type];
+  if (w.phase !== 'battle' || w.sudden) return 'not_now';
+  if (m.cd[type] > 0) return 'cooldown';
+  if (m.energy < C.cost) return 'energy';
+  if (type === 'kick' && !E.MAY.carrier(w, 0)) return 'no_ball';
+  return null;
 }
-function strike() {
-  const B = st.battle; if (!B || !B.w || B.paused || B.ff) return;
-  const w = B.w, m = w.arc.mom[0];
-  if (!m.ready || w.phase !== 'battle') { AU.play('error', 0.25); return; }
-  if (B.waitInput) return;
-  E.arcInput(w, 'tap'); B.waitInput = true;
+function commandHUD(B) {
+  const w = B.w; if (!w.may) return;
+  const m = w.may.s[0], en = m.energy;
+  $('enFill').style.width = en.toFixed(1) + '%';
+  $('enTxt').textContent = 'BATTLE ENERGY ' + Math.floor(en);
+  $('reinfTxt').textContent = 'SUBS +' + m.entered + (m.pending ? ' (' + m.pending + ' waiting)' : '') + ' · ' + (m.st.kick + m.st.rush + m.st.iron) + ' CMDS';
+  for (const t of E.MAY.TYPES) {
+    const b = $('cmd_' + t), why = cmdBlock(B, t), cd = m.cd[t];
+    b.classList.toggle('ready', !why); b.classList.toggle('sel', !!(B.tgt && B.tgt.type === t));
+    b.querySelector('.cd').textContent = cd > 0 ? Math.ceil(cd) + 's' : why === 'energy' ? Math.ceil(E.MAY.CMD[t].cost - en) + '⚡' : why === 'no_ball' ? 'NO BALL' : '';
+  }
+  const alert = performance.now() < B.alertUntil;
+  $('cmdHelp').classList.toggle('alert', alert && !B.tgt);
+  $('cmdHelp').textContent = B.tgt ? CMD_UI[B.tgt.type].help + ' · Esc / right-click to cancel' : alert ? '⚠ COUNTERATTACK! Rival is breaking through — IRON DEFENSE (3)' : w.may.frenzy ? '🔥 FINAL FRENZY — everyone attacks faster' : 'Pick a command: 1 Power Kick · 2 Team Rush · 3 Iron Defense — or just watch';
+}
+// ---------- targeting (screen <-> world through the renderer's current camera view) ----------
+function toWorld(B, cx, cy) {
+  const r = B.cv.getBoundingClientRect(), v = B.renderer.view(); if (!v) return null;
+  return { x: v.sx + (cx - r.left) / r.width * v.sw, y: v.sy + (cy - r.top) / r.height * v.sh };
+}
+function toScreen(B, x, y, ow, oh) { const v = B.renderer.view(); return [(x - v.sx) / v.sw * ow, (y - v.sy) / v.sh * oh]; }
+function startTarget(type) {
+  const B = st.battle; if (!B || !B.w || B.paused || B.ff || B.legacy) return;
+  if (B.tgt && B.tgt.type === type) { cancelTarget(); return; }
+  const why = cmdBlock(B, type);
+  if (why) { qpop(WHY_TXT[why], '#ff8a8a', 'small'); AU.play('error', 0.3); return; }
+  const w = B.w, v = B.renderer.view();
+  B.frozenCam = { x: w.cam.x, y: w.cam.y, z: w.cam.z };
+  const def = type === 'kick' ? { x: 180, y: E.GOAL.yTop } : { x: w.fb.ball.x, y: w.fb.ball.y };
+  B.tgt = { type, real: 0, aim: def, down: false };
+  $('ovl').classList.add('on'); AU.ui(); AU.vibrate(10); void v;
+}
+function cancelTarget() { const B = st.battle; if (!B) return; B.tgt = null; B.frozenCam = null; $('ovl').classList.remove('on'); const o = $('ovl'); o.getContext('2d').clearRect(0, 0, o.width, o.height); }
+function confirmTarget() {
+  const B = st.battle; if (!B || !B.tgt) return;
+  const t = B.tgt, w = B.w;
+  const why = cmdBlock(B, t.type) || (t.type !== 'kick' && !E.MAY.pick(w, 0, t.type, t.aim.x, t.aim.y).length ? 'no_players' : null);
+  cancelTarget();
+  if (why) { qpop(WHY_TXT[why] + ' — cancelled', '#ff8a8a', 'small'); AU.play('error', 0.3); return; } // nothing sent, no energy used
+  E.mayCommand(w, t.type, t.aim.x, t.aim.y); // applied (and validated) on the next simulation tick
+}
+function drawTargeting(B) {
+  const o = $('ovl'); if (!B.tgt) return;
+  const r = B.cv.getBoundingClientRect(), dpr = Math.min(2, root.devicePixelRatio || 1);
+  const W = Math.round(r.width * dpr), H = Math.round(r.height * dpr);
+  if (o.width !== W || o.height !== H) { o.width = W; o.height = H; }
+  o.style.width = r.width + 'px'; o.style.height = r.height + 'px';
+  const wr = $('stageWrap').getBoundingClientRect(); o.style.left = (r.left - wr.left) + 'px'; o.style.top = (r.top - wr.top) + 'px';
+  const g = o.getContext('2d'); g.clearRect(0, 0, W, H);
+  const w = B.w, t = B.tgt, P = (x, y) => toScreen(B, x, y, W, H), sc = W / 360 * (B.renderer.view().sw ? 360 / B.renderer.view().sw : 1);
+  const col = CMD_UI[t.type].col; g.lineWidth = Math.max(2, 1.4 * sc); g.strokeStyle = col; g.fillStyle = col;
+  g.fillStyle = 'rgba(5,8,16,0.18)'; g.fillRect(0, 0, W, H); g.fillStyle = col;
+  const [ax, ay] = P(t.aim.x, t.aim.y);
+  if (t.type === 'kick') {
+    const u = E.MAY.carrier(w, 0), b = w.fb.ball;
+    if (u) { const [ux, uy] = P(u.x, u.y - 4); g.beginPath(); g.arc(ux, uy, 9 * sc, 0, 6.283); g.stroke(); }
+    const [bx, by] = P(b.x, b.y); g.beginPath(); g.arc(bx, by, 3 * sc, 0, 6.283); g.fill();
+    const dx = t.aim.x - b.x, dy = t.aim.y - b.y, d = Math.hypot(dx, dy) || 1, L = 300;
+    const [ex, ey] = P(b.x + dx / d * L, b.y + dy / d * L);
+    g.setLineDash([6 * sc, 4 * sc]); g.beginPath(); g.moveTo(bx, by); g.lineTo(ex, ey); g.stroke(); g.setLineDash([]);
+    const G = E.GOAL, [g0x, g0y] = P(G.x0, G.yTop), [g1x] = P(G.x1, G.yTop);
+    const gy = G.yTop, tG = dy !== 0 ? (gy - b.y) / dy : -1, hx = b.x + dx * tG, on = tG > 0 && hx > G.x0 + G.post && hx < G.x1 - G.post;
+    g.fillStyle = on ? 'rgba(61,242,181,0.55)' : 'rgba(255,90,100,0.45)'; g.fillRect(g0x, g0y - 4 * sc, g1x - g0x, 6 * sc);
+    g.fillStyle = col; g.beginPath(); g.arc(ax, ay, 5 * sc, 0, 6.283); g.fill();
+  } else {
+    const L = E.MAY.pick(w, 0, t.type, t.aim.x, t.aim.y);
+    g.globalAlpha = 0.85;
+    for (const u of L) { const [ux, uy] = P(u.x, u.y - 4); g.beginPath(); g.arc(ux, uy, 6 * sc, 0, 6.283); g.stroke(); if (t.type === 'rush') { g.setLineDash([3 * sc, 3 * sc]); g.beginPath(); g.moveTo(ux, uy); g.lineTo(ax, ay); g.stroke(); g.setLineDash([]); } }
+    g.globalAlpha = 1;
+    g.beginPath(); g.arc(ax, ay, (t.type === 'iron' ? 26 : 16) * sc, 0, 6.283); g.stroke();
+    if (t.type === 'iron') { g.setLineDash([4 * sc, 4 * sc]); g.globalAlpha = 0.5; g.beginPath(); g.arc(ax, ay, E.MAY.IRON_R * sc, 0, 6.283); g.stroke(); g.setLineDash([]); g.globalAlpha = 1; }
+    g.font = 'bold ' + Math.round(11 * sc) + 'px system-ui'; g.textAlign = 'center'; g.fillText(L.length ? L.length + ' players' : 'no players here', ax, ay - 22 * sc);
+  }
 }
 function updateBattleButtons() {
   const B = st.battle; if (!B) return;
@@ -597,6 +683,7 @@ function updateBattleButtons() {
 }
 function setPause(on) {
   const B = st.battle; if (!B || !B.w) return;
+  if (on && B.tgt) cancelTarget();
   B.paused = on; AU.pause(on); updateBattleButtons();
   const pb = $('pauseBox');
   if (on) {
@@ -632,14 +719,14 @@ function showResults(out, before) {
   const lv = (r.levelUps || []).length ? '<div class="card gold"><b>⬆️ TEAM LEVEL ' + r.levelUps[r.levelUps.length - 1] + '!</b>' + ((r.milestones || []).length ? '<br>Milestone reward unlocked (Lv ' + r.milestones.join(', ') + ')' : '') + '</div>' : '';
   const html = '<div class="res-hd"><div class="tiny dim" style="font-weight:900;letter-spacing:.12em">' + esc(snap.label.toUpperCase()) + '</div><div class="big ' + (won ? 'win' : 'loss') + '">' + (won ? 'VICTORY' : 'DEFEAT') + '</div>' +
     '<div class="vs" style="margin-top:10px"><div>' + cimg(snap.teamA.id, 44) + '<div class="nm">' + esc(snap.teamA.name) + '</div><div class="pw">' + (res.alive ? res.alive[0] : 0) + ' standing</div></div><div class="mid mono">' + res.goals[0] + ' - ' + res.goals[1] + '<div class="tiny dim">goals</div></div><div>' + cimg(snap.teamB.id, 44) + '<div class="nm">' + esc(snap.teamB.name) + '</div><div class="pw">' + (res.alive ? res.alive[1] : 0) + ' standing</div></div></div></div>' +
-    extra + lv +
+    extra + timeUpHTML(res) + warHTML(res) + lv +
     (out.canRematch ? '' : '<div class="rew"><div><b class="gold-t">+' + fmt(r.credits || 0) + '</b><span>CREDITS</span></div><div><b class="mint">+' + (r.xp || 0) + '</b><span>TEAM XP</span></div><div><b style="color:#8ff3ff">+' + (r.frags || 0) + '</b><span>FRAGMENTS</span></div></div>') +
     ((r.labels || []).length ? '<p class="tiny dim" style="text-align:center">' + r.labels.map(esc).join(' · ') + '</p>' : '') +
     (r.packs || r.tickets || r.crest ? '<p class="small" style="text-align:center">' + rewardLine({ packs: r.packs, tickets: r.tickets, crest: r.crest }) + '</p>' : '') +
     (stars ? '<div class="title">Star contracts</div><div class="card" style="padding:6px 10px">' + stars + '</div>' : '') +
     '<details class="card small"><summary style="font-weight:800;cursor:pointer">Match stats</summary><div class="kv" style="margin-top:8px">' +
     (fb ? '<dt>Possession</dt><dd>' + fb.possession.join(' / ') + ' %</dd><dt>Shots (on target)</dt><dd>' + fb.shots[0] + ' (' + fb.onTarget[0] + ') / ' + fb.shots[1] + ' (' + fb.onTarget[1] + ')</dd><dt>Saves</dt><dd>' + fb.saves.join(' / ') + '</dd><dt>Passes</dt><dd>' + fb.passes.join(' / ') + '</dd><dt>Interceptions</dt><dd>' + fb.intercepts.join(' / ') + '</dd>' : '') +
-    '<dt>K.O.s</dt><dd>' + (res.kills ? res.kills.join(' / ') : '-') + '</dd><dt>Battle time</dt><dd>' + (res.battleSeconds || 0).toFixed(1) + ' s</dd><dt>Your Momentum Strikes</dt><dd>' + res.momentum.filter(m => m.side === 0).map(m => m.q[0].toUpperCase()).join(' ') + '</dd><dt>Rival strikes</dt><dd>' + res.momentum.filter(m => m.side === 1).length + '</dd>' + (res.abandoned ? '<dt>Note</dt><dd>abandoned</dd>' : '') + '</div></details>' +
+    '<dt>K.O.s</dt><dd>' + (res.kills ? res.kills.join(' / ') : '-') + '</dd><dt>Battle time</dt><dd>' + (res.battleSeconds || 0).toFixed(1) + ' s</dd>' + (res.mayhem ? '' : '<dt>Momentum Strikes (legacy battle)</dt><dd>' + (res.momentum || []).filter(m => m.side === 0).length + '</dd>') + (res.abandoned ? '<dt>Note</dt><dd>abandoned</dd>' : '') + '</div></details>' +
     (out.canRematch ? '<div class="grid2"><button class="btn ghost" data-m="accept">Accept loss</button><button class="btn gold" data-m="rematch">REMATCH</button></div>' : '<button class="btn gold block" data-m="next">' + (out.kind === 'league' ? 'NEXT MATCH' : 'CONTINUE') + '</button>');
   modal(html, m => {
     if (m === 'rematch') { closeModal(); startBattle('league', { attempt: 2 }); return; }
@@ -648,6 +735,24 @@ function showResults(out, before) {
   });
   if (won) celebrate(12);
   render();
+}
+function timeUpHTML(res) {
+  const why = { survivors: 'more players still standing', health: 'more total health (same number standing)', goals: 'more goals (same players and health)', seed: 'deterministic tie-break (everything level)' }[res.tiebreak];
+  if (!why || !res.alive) return '';
+  return '<div class="card small"><b>⏱ TIME UP</b> — ' + (res.won ? 'won' : 'lost') + ' on ' + why + ' · ' + res.alive[0] + ' vs ' + res.alive[1] + ' standing. Nobody was knocked out by the clock.</div>';
+}
+function warHTML(res) {
+  const M = res.mayhem; if (!M) return '';
+  const a = M.sides[0], b = M.sides[1];
+  return '<div class="title">War Commands</div><div class="card small"><div class="kv">' +
+    '<dt>Commands used (Kick / Rush / Iron)</dt><dd>' + a.commands + ' (' + a.kick + ' / ' + a.rush + ' / ' + a.iron + ')</dd>' +
+    '<dt>Power Kick shots → goals</dt><dd>' + a.pkShots + ' → ' + a.pkGoals + (a.pkSaved ? ' · ' + a.pkSaved + ' saved' : '') + (a.pkBlocked ? ' · ' + a.pkBlocked + ' blocked' : '') + '</dd>' +
+    '<dt>Team Rush: players sent / hits / K.O.</dt><dd>' + a.rushUnits + ' / ' + a.rushHits + ' / ' + a.rushKO + '</dd>' +
+    '<dt>Iron Defense: attacks stopped · damage absorbed</dt><dd>' + a.ironStops + ' · ' + Math.round(a.ironReduced) + '</dd>' +
+    '<dt>Chain collisions</dt><dd>' + a.chains + '</dd><dt>KO Rampages</dt><dd>' + a.rampages + '</dd>' +
+    '<dt>Goal reinforcements (earned / on pitch)</dt><dd>' + a.earned + ' / ' + a.entered + '</dd>' +
+    '<dt>Rival commands · rival subs</dt><dd>' + b.commands + ' · ' + b.entered + '</dd>' +
+    (a.rejected ? '<dt>Commands cancelled (no energy spent)</dt><dd>' + a.rejected + '</dd>' : '') + '</div></div>';
 }
 function celebrate(n) {
   const c = document.createElement('div'); c.className = 'confetti'; const cols = ['#ffcf3f', '#3df2b5', '#5ab8ff', '#ff5a64', '#ffffff'];
@@ -763,7 +868,14 @@ function boot() {
   document.addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (b && !b.disabled) { e.preventDefault(); onAct(b.dataset.act, b); } const sc = e.target.closest('#screen [data-star]'); if (sc && st.save && st.save.stars[sc.dataset.star]) starModal(sc.dataset.star); });
   document.querySelectorAll('#tabbar [data-tab]').forEach(b => b.onclick = () => { AU.init(); AU.ui(); go(b.dataset.tab); });
   // battle controls
-  $('strikeBtn').addEventListener('pointerdown', e => { e.preventDefault(); strike(); });
+  for (const t of ['kick', 'rush', 'iron']) $('cmd_' + t).addEventListener('pointerdown', e => { e.preventDefault(); startTarget(t); });
+  const ovl = $('ovl');
+  const aimAt = e => { const B = st.battle; if (!B || !B.tgt) return; const p = toWorld(B, e.clientX, e.clientY); if (p) B.tgt.aim = p; };
+  ovl.addEventListener('pointerdown', e => { const B = st.battle; if (!B || !B.tgt) return; e.preventDefault(); if (e.button === 2) { cancelTarget(); return; } B.tgt.down = true; try { ovl.setPointerCapture(e.pointerId); } catch (x) {} aimAt(e); });
+  ovl.addEventListener('pointermove', e => { const B = st.battle; if (!B || !B.tgt) return; if (B.tgt.down || e.pointerType === 'mouse') aimAt(e); });
+  ovl.addEventListener('pointerup', e => { const B = st.battle; if (!B || !B.tgt || !B.tgt.down || e.button === 2) return; aimAt(e); confirmTarget(); });
+  ovl.addEventListener('pointercancel', () => cancelTarget());
+  ovl.addEventListener('contextmenu', e => { e.preventDefault(); cancelTarget(); });
   $('btPause').onclick = () => setPause(!st.battle.paused);
   $('btSpeed').onclick = () => { const B = st.battle; B.speed = B.speed === 2 ? 1 : 2; st.save.settings.speed = B.speed; Store.write(); updateBattleButtons(); };
   $('btCam').onclick = () => { const B = st.battle; B.cam = !B.cam; st.save.settings.smartCam = B.cam; Store.write(); updateBattleButtons(); };
@@ -778,11 +890,14 @@ function boot() {
   };
   document.addEventListener('keydown', e => {
     if (!st.battle || !st.battle.w) return;
-    if (e.code === 'Space') { e.preventDefault(); strike(); }
+    if (e.code === 'Digit1' || e.code === 'Numpad1') startTarget('kick');
+    else if (e.code === 'Digit2' || e.code === 'Numpad2') startTarget('rush');
+    else if (e.code === 'Digit3' || e.code === 'Numpad3') startTarget('iron');
+    else if (e.code === 'Escape' && st.battle.tgt) cancelTarget();
     else if (e.code === 'KeyP' || e.code === 'Escape') setPause(!st.battle.paused);
   });
   document.addEventListener('visibilitychange', () => { if (document.hidden && st.battle && st.battle.w && !st.battle.paused) setPause(true); if (document.hidden && st.save) Store.write(); });
-  window.addEventListener('resize', fitStage);
+  window.addEventListener('resize', () => { fitStage(); if (st.battle && st.battle.tgt) cancelTarget(); });
   document.addEventListener('fullscreenchange', onFullChange); document.addEventListener('webkitfullscreenchange', onFullChange);
   if (!fsSupported()) document.documentElement.classList.add('no-fs');
   document.addEventListener('keydown', e => { if (e.code === 'KeyF' && !e.ctrlKey && !e.metaKey && !e.altKey && !(e.target && /INPUT|TEXTAREA/.test(e.target.tagName))) toggleFull(); });
