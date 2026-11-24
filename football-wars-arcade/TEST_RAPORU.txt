@@ -1,0 +1,140 @@
+FOOTBALL WARS — ARCADE REBORN · TEST RAPORU
+=============================================
+Teslim dosyası : FootballWars_Arcade.html (tek HTML, ~630 KB, çevrim dışı; harici script/CSS/font yok)
+Kaynak         : football-wars-v4.html (tek kaynak) → src/ altında modüllere ayrıldı, tools/build.js ile birleştirilir
+Tüm testler    : bash tools/run_tests.sh   (son çalıştırma: 133 PASS, 0 FAIL)
+
+1) TAMAMLANAN SİSTEMLER
+-----------------------
+- Gerçek 100'e 100 Football Fusion savaşı (V4 FWEngine): top sahipliği, pas, şut, gol, kaleci kurtarışı,
+  müdahale, KO, son ayakta kalan kazanır; V4 süre sınırı / zone / storm / sudden death korunur.
+- 200 gerçek kulüp: V4'teki 194 kulüp + Boca Juniors, River Plate, Flamengo, Palmeiras, Inter Miami,
+  Los Angeles FC (V4'te bulunmadıkları test edildi). sourceName ≠ displayName (ör. Galatasaray → Galata Lions).
+  200 benzersiz, elle yazılmış görünen isim. Millî takımlar kariyere girmez.
+- 10 Division × 20 kulüp, oyuncu D10'dan başlar; tek devreli round-robin (19 tur × 10 maç), AI maçları
+  gerçek headless simülasyon (arka planda, 12 ms'lik dilimler), puan tablosu (G=3, M=0, beraberlik yok).
+- Yükselme: 1. şampiyon (5× bonus), 2–3 doğrudan (3×), 4–20 Promotion Challenge (en iyi 3 maç, 2× bonus,
+  sınırsız tekrar; lig ödülü üretmez). Alternatif: aynı Division sezonunu yeniden oynama. Düşme yok.
+- Resmî maç REMATCH (tek ücretsiz hak, ödül yalnız kesin sonuçta, sözleşme her savaşta düşer).
+- 5 kalıcı yükseltme (Lv 1–30, maliyet roundTo5(90·1.16^(L−1)), +1,65/seviye) → V4'ün 10 niteliğine
+  eşleme (pressing = Hız+Savunma+Dayanıklılık vb.) + motorun power index'i.
+- Oyuncu şablonu 16/14/12/34/8/15/1; en fazla 5 aktif yıldız, her biri kendi rolündeki standart oyuncunun yerini alır.
+- 98 kurgusal yıldız (7 rol × 14; 35 Common, 28 Rare, 21 Epic, 14 Legendary), prosedürel pixel portre,
+  12 V4 özel yeteneğinin tamamı yıldızlara dağıtılmış (kademe I–IV: %100/%108/%116/%124).
+- Three-Star Draft: 3 farklı aday, en az 2 pozisyon, tek seçim; Standard/Premium/Legend oranları, garanti
+  kartları, Premium (10.) ve Legend (4.) pity; Credits VEYA Fragments; kilitli paket envanterde saklanır;
+  ödeme+RNG+pity+adaylar tek işlemde kaydedilir (yenileme adayları değiştirmez); duplicate → sözleşme eklenir.
+- Sözleşmeler: yalnız gerçek savaşta −1 (lig, rematch, promo, challenge, quick sim); süresi biten kart
+  koleksiyonda kalır (Expired), aktif kadrodan çıkar; +5 / +10 Contract Ticket ile yenilenir.
+- Momentum Strike: 0–100, +7/sn, olay bonusları (pas +1, top kazanma +2, kurtarış +5, gol +10, KO +1;
+  saniyede en fazla +4), işaretçi 1,5 sn gidiş-dönüş, Perfect %12 merkez; Normal %50 / Good %100 /
+  Perfect %140; top durumuna göre hücum / pres / pozisyon desteği, ≤12 oyuncu, 2,5 sn, maçta en fazla 4.
+  Tick tabanlı; girişler kaydedilir; 2× hızda otomatik Normal; Quick Sim'de iki taraf otomatik.
+- Challenge Board: 10 × 3 = 30 (Power Clash, Last Stand bronz/gümüş/altın, Signature Showdown 1–5 rakip
+  yıldız); 3. resmî fikstürden sonra açılır; ilk galibiyet / %25 tekrar ödülü; Quick Sim kapalı.
+- Ekonomi: Division tabloları, lig sonu bonusları, ilk yükselme/ilk tamamlama/ilk 10 fikstür ödülleri;
+  her tek seferlik ödül için kalıcı claimId (tx) — iki kez ödenemez.
+- Team Level 1–50 (xpToNext = 40+6(L−1), toplam 9.016 XP), seviye Credits'i, 10 milestone, Golden Team Crest.
+  Team Level savaş gücüne etki etmez.
+- Endless Champions League (D1): 85–97 güç bandı, sezonluk taktik/güç varyasyonu, sezon ödülleri
+  (1: 10.000 C + Premium + +10 bilet; 2–3: 6.000 C + +5; 4–10: 2.000 C), ilk şampiyonluk bonusu bir kez.
+- Kayıt: localStorage otomatik kayıt + yedek kopya, şema sürümü (v1) + migrate + doğrulama,
+  JSON Export/Import, kayıt hatasında uyarı şeridi; yarım kalan savaş RESUME / ABANDON.
+- Arayüz: Home, League (tablo/fikstür/geçmiş), Upgrades, Star Packs + Draft, Star Collection
+  (All/Active/Reserve/Expired; OVR/Nadirlik/Pozisyon/Sözleşme; Equip/Remove/Replace/Renew), Challenges,
+  Battle (V4 canvas + HUD + Momentum çubuğu + STRIKE), Results, Season end / Championship, Settings.
+- Ses: V4 FWAudio bankası + arcade sesleri (UI, ödül, level up, 3 Momentum kalitesi, 3 paket, 4 nadirlik,
+  12 yetenek motifi), kategoriler (Master/Music/SFX/Crowd/Mute), öncelik + kısma, titreşim (destek yoksa sessiz).
+
+2) GERÇEKTEN ÇALIŞTIRILAN TESTLER VE SONUÇLAR (son tam koşu)
+-----------------------------------------------------------
+Ortam: Node 22 + Playwright/Chromium (headless). Mobil = 393–412 px dokunmatik emülasyon.
+
+[V4 regresyon] tools/perf.js — 6 Fusion savaşı, arcade motoru (arcade kapalı) vs orijinal V4:
+  hash/kazanan/gol/süre birebir aynı ............................................ PASS
+  + test_core R1: 4 savaş (Fusion + Classic) hash eşitliği ........................ PASS
+
+[test_core.js] 50 PASS / 0 FAIL (3,8 sn) — örnekler:
+  B1–B8  200 benzersiz kulüp/isim, yer tutucu yok, 6 yeni kulüp V4'te yok, 10×20 dağılım, oyuncu D10'da
+  C1–C3  19 tur × 10 maç, her ikili bir kez (190), deterministik fikstür
+  D1–D8  maliyetler 90/340/720/1510/3170/5740, tek özellik toplamı 41.055 C, Lv30 sınırı,
+         yükseltme → V4 takım profili ve gerçek birim hızı (speedMul 1,015 → 1,068)
+  A1–A4  iki takım tam 100, oyuncu rol şablonu, pas/şut/KO olayları, son ayakta kalan kuralı
+  E1–E11 Standard oranları (4.000 paket: C %70,3 / R %25,8 / E %3,6 / L %0,4), 3. kart Rare+,
+         3 farklı yıldız + ≥2 pozisyon, ödeme, Premium pity ≤9 boşluk, Legend pity ≤3, kilit,
+         yeniden yüklemede aynı adaylar / yeniden açılamaz, tek seçim, duplicate birleştirme, OVR tabloları
+  F1–F9  5 aktif sınırı, tek kaptan yıldız, yıldızlar sahada gerçek birim, sözleşme bir kez düşer,
+         süresi biten koleksiyonda kalır, imza yetenekleri gerçekten tetiklenir (≤2), biletler
+  G1–G6  ilk Momentum 12,3 sn, manuel taraf girişsiz kullanmaz, Perfect tick-işaretçiden hesaplanır,
+         ≤12 birime gerçek buff, maçta ≤4, aynı seed+snapshot+giriş → aynı hash (headless vs render)
+
+[test_career.js] 50 PASS / 0 FAIL (30,4 sn) — gerçek headless savaşlarla tam D10 sezonu (190 maç):
+  C4–C17 ilk mağlubiyet → rematch, ödül yalnız kesin sonuçta, aynı fikstür/savaş iki kez ödenmez,
+         AI sonucu iki kez işlenmez, 190 gerçek sonuç, tablo tutarlılığı, ücretsiz paket, ilk-10 bileti,
+         Challenge kilidi (sezon: 5. sıra, 14 galibiyet, 7 rematch, yükseltmesiz oyuncu)
+  C18–C27 sezon kapanışı bir kez, Division tamamlama bileti, Promotion Challenge (D9 rakipleri, başarısız
+         → tekrar, başarı → 2× bonus), D9'a yükselme (+60 XP, +6 F, +10 bilet), 20'şer kulüp korunur
+  H1–H9  Challenge ödülleri (180 / %25=30 / Last Stand 150+20+40 / board +5 bilet), rakip yıldız gerçek
+         birim, lig tablosunu değiştirmez, 30 benzersiz challenge
+  I1–I7  XP formülü, 9.016 XP, Lv50 sınırı, 10 milestone bir kez, Golden Crest, seviye ödülü tekrar ödenmez
+  J1–J6  D1'e ulaşma, D1 sezonları (düşme yok), şampiyonluk 10.000 C her sezon, ilk şampiyonluk bonusu bir kez
+  K1–K4  export/import, bozuk kayıt reddi, yeniden yüklemede sözleşme tekrar düşmez, ABANDON = mağlubiyet
+
+[ui_test.js] 24 PASS / 0 FAIL — gerçek tıklamalarla tarayıcıda:
+  kaynak isimle arama, yükseltme butonu, paket animasyonu (atlanabilir), sayfa yenileme sonrası aynı
+  draft, tek imza, koleksiyon equip/remove, savaş ortasında sayfa yenileme → RESUME aynı tick'ten devam
+  ve sözleşme tekrar düşmüyor, 2× ile bitiş, Quick Simulate, arka plan AI (27 gerçek sonuç), Challenge
+  (quick sim yok), Pause → Abandon, Export → Import, Low kalite + sessiz modda 100'e 100,
+  hiçbir sayfa hatası ve hiçbir ağ isteği yok (çevrim dışı).
+
+[ui_season.js] 8 PASS / 0 FAIL — sezon sonu ekranı, şampiyonluk, D9'a terfi, D1'e çıkış, ilk D1
+  şampiyonluğu (Legend Pack + Golden Crest), yeni Endless sezonu. (1–18. turlar test kısayoluyla gerçek
+  oyun API'si üzerinden doldurulur; son tur — oyuncu + 9 AI maçı — gerçek savaş.)
+
+[perf_ui.js] headless Chromium (yazılımsal render), savaşın 10. saniyesi, 200 oyuncu:
+  masaüstü 1280×800 Medium ~60 FPS · mobil 393×852 Low ~60 FPS · mobil High ~60 FPS · hata yok.
+
+Denge yoklaması (tools/balance2.js, otomatik Normal Momentum, manuel Perfect avantajı hariç):
+  D10 (rakip ort. 37,9; 40 savaş): Lv1 güç 37,8 → %57 · tüm özellikler Lv4 (42,8) → %82 · Lv1 + 3 Rare yıldız → %80
+  D1  (rakip ort. 92,5; 30 savaş): tüm özellikler Lv30 (85,7) → %30 · + 5 Epic yıldız → %63
+
+3) BİLİNEN SORUNLAR / SINIRLAR
+------------------------------
+- Fiziksel Android cihazda ve iOS Safari'de test edilmedi; mobil testler Chromium dokunmatik emülasyonudur.
+  FPS değerleri headless yazılımsal render içindir, cihaz performansını garanti etmez.
+- Sesler yalnızca hatasız oluşturulup çalındığı açısından doğrulandı; kulakla dinleme testi yapılmadı.
+- Tam D10 → D1 insan oyunu yapılmadı; denge kısa yoklamalarla ayarlandı, ileri Division'larda ince ayar gerekebilir.
+- AI kulüpleri Division değiştirmez; yalnız oyuncu yükselirken üst ligin en zayıf kulübüyle yer değiştirir
+  (her Division her zaman 20 kulüp).
+- REMATCH yeni bir seed ile oynanır (aynı maçın tekrarı değil, yeni savaş).
+- Canlı savaşta V4 olay günlüğü kırpılmaz (V4 davranışı, birkaç MB); headless AI/Quick Sim günlükleri kırpılır.
+- file:// altında bazı tarayıcılar localStorage'ı engelleyebilir; bu durumda oyun uyarı gösterir ve
+  Export Save önerir (ilerleme o tarayıcıda kaydedilmez).
+- Kulüp isimleri lisanslı değildir; küçük isim değişiklikleri marka riskini ortadan kaldırmaz.
+  Ticari dağıtımdan önce hukuki inceleme gerekir. Resmî logo/forma/sponsor/gerçek oyuncu kullanılmadı.
+- V3'ün yalnızca görsel "momentum" çubuğu aktif Momentum Strike ile karışmaması için kapatıldı.
+
+4) MOBİL UYUMLULUK
+------------------
+- Mobil öncelikli düzen, safe-area (çentik / gezinme çubuğu) payları, ≥42 px dokunma hedefleri,
+  alt sekme çubuğu; STRIKE butonu alt bölümde (pointerdown ile anında), Space (PC), P/Esc pause.
+- Savaş Canvas'ı 9:16 korunarak tamsayı çarpanla ölçeklenir (pixel-art keskin, deformasyon yok).
+- Low/Medium/High: yalnız parçacık, sarsıntı ve piksel yoğunluğu değişir; 100'e 100 her zaman korunur.
+- Arka plana geçince savaş otomatik durur ve ilerleme kaydedilir; titreşim desteklenmiyorsa sessizce atlanır.
+
+5) V4 ÇEKİRDEĞİNDE YAPILAN ZORUNLU DEĞİŞİKLİKLER
+-----------------------------------------------
+Tümü opts.arcade / opts.headless ile açılan dar uzantılar; ikisi de yokken motor V4 kod yolunu birebir
+izler (hash regresyon testleri). Uygulama: tools/patch_engine.py + tools/engine_arcade_ext.js.
+- deriveTeam: arcade modunda güç farkı tavanı/ölçeği parametreli (0,35 / 18) — yükseltmelerin etkisi için.
+- part/ftext/banner: headless modda atlanır (yalnız kozmetik; savaş RNG'si ve durumu değişmez).
+- ev(): arcade modunda Momentum olay kancası.
+- updateSpecials: yıldız imza yetenekleri (ilk hazırlık 4–7 sn, bekleme 12–18 sn, yıldız başına 2,
+  takım başına 8, takım içi 3 sn koruma); KO olmuş yıldızın yeteneği tetiklenmez.
+- fireSpecial: kademe gücü p (p=1 iken V4 sayılarıyla birebir); yıldızın kullandığı takım çapındaki
+  etkiler (counter burst, flank overload, high line, quick transition) yıldız çevresiyle sınırlı.
+- step: arcTick (Momentum dolumu, işaretçi, girişler, AI otomatik kullanım). Yeni olaylar EV 60–62.
+- render.js: yıldız işareti (nadirlik rengi) ve yetenek etiketinde yıldız adı.
+- v3.js: stüdyo kapak/turnuva araçları çıkarıldı (savaş görsel katmanı korunur).
+- data: millî takımlar ve bayrak görselleri çıkarıldı (kariyerde kullanılmıyor); kulüp verisi aynen korunur.
+- Kaldırılan stüdyo parçaları: MP4/WebM muxer'ları, video export, kapak, Tournament Studio, eski app UI.

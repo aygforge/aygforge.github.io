@@ -1,0 +1,10 @@
+const fs = require('fs'), path = require('path');
+const S = f => fs.readFileSync(path.join(__dirname, '../src', f), 'utf8');
+const order = ['data.js', 'v4_font.js', 'engine.js', 'v4_director.js', 'v4_sprites.js', 'render.js', 'v3.js', 'v4_audio.js', 'arcade_data.js', 'arcade_core.js', 'arcade_audio.js', 'arcade_app.js'];
+let html = S('shell.html').replace('/*@@CSS@@*/', () => S('style.css'));
+const scripts = order.map(f => '<script>/* ---- ' + f + ' ---- */\n' + S(f).replace(/<\/script/gi, '<\\/script') + '\n</script>').join('\n');
+html = html.replace('<!--@@SCRIPTS@@-->', () => scripts);
+const out = path.join(__dirname, '../FootballWars_Arcade.html');
+fs.writeFileSync(out, html);
+console.log('built', out, (html.length / 1024).toFixed(1) + ' KB');
+if (/https?:\/\/[^"' )]*\.(js|css)/.test(html.replace(/beyondelo|footballsquads|fifa|creativecommons|wikimedia/gi, ''))) console.log('WARNING: external script/css reference?');
