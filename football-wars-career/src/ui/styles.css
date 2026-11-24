@@ -7,11 +7,11 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.45;-webkit-text-size-adjust:100%}
-body{background:radial-gradient(1100px 560px at 50% -220px,#1a2456 0%,transparent 60%),radial-gradient(700px 480px at 100% 100%,#2a0f33 0%,transparent 55%),var(--bg);min-height:100vh;overflow-x:hidden}
+body{background:radial-gradient(1100px 560px at 50% -220px,#1a2456 0%,transparent 60%),radial-gradient(700px 480px at 100% 100%,#2a0f33 0%,transparent 55%),var(--bg);min-height:100vh}
 button,select,input{font:inherit;color:inherit}
 a{color:var(--acc)}
 .hidden{display:none!important}
-#app{max-width:1280px;margin:0 auto;padding:calc(10px + var(--safe-t)) 16px calc(84px + var(--safe-b))}
+#app{overflow-x:hidden;overflow-x:clip;max-width:1280px;margin:0 auto;padding:calc(10px + var(--safe-t)) 16px calc(84px + var(--safe-b))}
 /* top bar */
 .topbar{display:flex;align-items:center;gap:12px;padding:6px 0 10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .topbar .club{display:flex;align-items:center;gap:10px;min-width:0;flex:1 1 240px}
@@ -125,3 +125,11 @@ table.t tr.up td:first-child{box-shadow:inset 3px 0 var(--ok)} table.t tr.po td:
 @media (min-width:960px){.tutorial{bottom:20px}}
 .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--dim);margin-top:8px}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+
+/* club creation: actions always reachable (sticky bar), compact preview on short / landscape phones */
+.createbar{position:fixed;left:0;right:0;bottom:0;z-index:55;display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;padding:10px 16px calc(10px + var(--safe-b));background:#090c18;border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(0,0,0,.45)}
+.createbar .btn{flex:1 1 160px;max-width:360px}
+.createbar .err{flex-basis:100%;text-align:center;margin:0}
+.createwrap{padding-bottom:110px}
+#crestPrev{width:144px;height:144px}
+@media (max-height:560px){#crestPrev{width:72px;height:72px}#kitPrev{width:180px!important}.createwrap h1{font-size:18px;margin:0 0 8px}.createwrap .card{padding:10px}}

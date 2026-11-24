@@ -118,7 +118,7 @@ let draft = null;
 function newDraft(slot) { return { slot, step: 1, name: '', short: '', city: '', stadium: '', primary: '#e63946', secondary: '#ffffff', pattern: 'stripes', crest: 'chevron', formation: { ...DEFAULT_FORMATION }, err: '' }; }
 function createView() {
   const d = draft;
-  if (d.step === 1) return `<div style="grid-column:1/-1;max-width:760px;margin:0 auto;width:100%"><h1>Found your club</h1>
+  if (d.step === 1) return `<div class="createwrap" style="grid-column:1/-1;max-width:760px;margin:0 auto;width:100%"><h1>Found your club</h1>
   <div class="grid g2"><div class="card">
     <label class="f" for="cName">Club name</label><input type="text" id="cName" maxlength="28" value="${esc(d.name)}" placeholder="e.g. Harbour City FC">
     <div class="grid g2" style="gap:10px"><div><label class="f" for="cShort">Short name (2–4)</label><input type="text" id="cShort" maxlength="4" value="${esc(d.short)}" placeholder="HCF"></div>
@@ -128,18 +128,17 @@ function createView() {
     <div class="row" style="margin-top:6px">${PALETTE.slice(0, 12).map(c => `<button class="btn sm" data-act="pal" data-v="${c}" style="background:${c};width:28px;min-height:24px;padding:0" title="${c}"></button>`).join('')}</div>
     <div class="grid g2" style="gap:10px"><div><label class="f" for="cPat">Kit pattern</label><select id="cPat">${KIT_PATTERNS.map(p => `<option ${p === d.pattern ? 'selected' : ''}>${p}</option>`).join('')}</select></div>
     <div><label class="f" for="cCrest">Crest template</label><select id="cCrest">${CREST_SHAPES.map(p => `<option ${p === d.crest ? 'selected' : ''}>${p}</option>`).join('')}</select></div></div>
-    <p class="bad small" id="cErr">${esc(d.err)}</p>
-    <div class="row"><button class="btn ghost" data-act="title">Back</button><button class="btn pri" data-act="createNext">Next: build the squad →</button></div>
-  </div><div class="card hl" style="text-align:center"><h2>Preview</h2><canvas id="crestPrev" width="96" height="96" style="width:144px;height:144px;image-rendering:pixelated"></canvas>
+  </div><div class="card hl" style="text-align:center"><h2>Preview</h2><canvas id="crestPrev" width="96" height="96" style="image-rendering:pixelated"></canvas>
     <canvas id="kitPrev" width="120" height="40" style="width:300px;max-width:100%;height:auto;image-rendering:pixelated;margin-top:10px"></canvas>
-    <p class="dim small" id="prevName"></p><p class="small dim">Your club starts in <b>Division 10</b> with 1,600 C, 100 amateur players (quality ≈37.5), no stars and level-1 facilities.</p></div></div></div>`;
+    <p class="dim small" id="prevName"></p><p class="small dim">Your club starts in <b>Division 10</b> with 1,600 C, 100 amateur players (quality ≈37.5), no stars and level-1 facilities.</p></div></div></div>
+  <div class="createbar">${d.err ? `<p class="bad small err" id="cErr">${esc(d.err)}</p>` : ''}<button class="btn ghost" data-act="title">Back</button><button class="btn pri" data-act="createNext">Next: build the squad →</button></div>`;
   const f = d.formation, tot = ROLES.reduce((n, r) => n + (f[r] | 0), 0);
-  return `<div style="grid-column:1/-1;max-width:760px;margin:0 auto;width:100%"><h1>Starter Squad Builder</h1>
+  return `<div class="createwrap" style="grid-column:1/-1;max-width:760px;margin:0 auto;width:100%"><h1>Starter Squad Builder</h1>
   <div class="card"><p class="dim">Distribute your 100 amateur players across the seven roles. This is free now; later, permanent role changes need training or transfers. There is always exactly <b>one captain</b>.</p>
   ${ROLES.map(r => `<div class="rolerow"><span class="rn">${ROLE_LABEL[r]}</span><input type="range" min="${r === 'captain' ? 1 : 0}" max="${r === 'captain' ? 1 : 60}" value="${f[r]}" data-role="${r}" ${r === 'captain' ? 'disabled' : ''} aria-label="${ROLE_LABEL[r]}"><input type="number" min="0" max="60" value="${f[r]}" data-rolen="${r}" ${r === 'captain' ? 'disabled' : ''} aria-label="${ROLE_LABEL[r]} count"></div><div class="small dim" style="margin:-4px 0 6px 120px">${esc(ROLE_DESC[r])}</div>`).join('')}
   <div class="row sb" style="margin-top:12px"><div class="big ${tot === 100 ? 'ok' : 'bad'}" id="fTot">${tot} / 100</div><button class="btn sm" data-act="fdef">Default distribution</button></div>
-  <p class="bad small">${esc(d.err)}</p>
-  <div class="row"><button class="btn ghost" data-act="createBack">← Back</button><button class="btn pri" data-act="createGo" ${tot === 100 ? '' : 'disabled'} id="btnGo">Found the club & start Season 1</button></div></div></div>`;
+  </div></div>
+  <div class="createbar">${d.err ? `<p class="bad small err">${esc(d.err)}</p>` : ''}<button class="btn ghost" data-act="createBack">← Back</button><button class="btn pri" data-act="createGo" ${tot === 100 ? '' : 'disabled'} id="btnGo">Found the club & start Season 1</button></div>`;
 }
 function readCreate() {
   if (draft.step !== 1) return;
