@@ -3,7 +3,7 @@ import { PROFILES } from '../data/profiles.js';
 import { makeNameFactory } from '../data/names.js';
 import { Rng, mix32, clamp, round1 } from './util.js';
 import { ROLES, DIV_BASE, divSpread, START_CREDITS, START_QUALITY, FACILITIES, SPONSOR, ARCH_PROFILE, AI_PROFILES, PROFILE_TACTIC,
-  SAVE_VERSION, ENGINE_VERSION, AI_POLICY_VERSION, STADIUM_CAP, MAX_ACTIVE_STARS } from '../data/balance.js';
+  SAVE_VERSION, ENGINE_VERSION, AI_POLICY_VERSION, STADIUM_CAP, MAX_ACTIVE_STARS, DEFAULT_FORMATION } from '../data/balance.js';
 import { makeStar } from './stars.js';
 
 export const PLAYER_ID = 'PLAYER';
@@ -25,11 +25,23 @@ const PROFILE_ROLES = {
   physical: { striker: 18, winger: 14, playmaker: 10, defender: 34, goalkeeper: 8, support: 12, captain: 4 },
   defensive_block: { striker: 14, winger: 12, playmaker: 12, defender: 38, goalkeeper: 10, support: 10, captain: 4 }
 };
+// AI formations: the standard shape with a small archetype flavour (the raw V4 role tables, e.g. 40 defenders and
+// 10 keepers, proved far too weak in tests: they lost almost every match against the default distribution).
+const FLAVOUR = { high_press: { striker: 2, winger: 1, defender: -3 }, physical: { defender: 2, support: 1, playmaker: -3 }, defensive_block: { defender: 3, striker: -2, winger: -1 },
+  counter: { winger: 3, defender: -2, playmaker: -1 }, wing_attack: { winger: 4, playmaker: -2, defender: -2 }, possession: { playmaker: 3, defender: -2, winger: -1 } };
+export function aiFormation(arch, r) {
+  const f = { ...DEFAULT_FORMATION }; const fl = FLAVOUR[arch] || {};
+  for (const k in fl) f[k] += fl[k];
+  // a little club-to-club variety that keeps 100 players and one captain
+  const movable = ['striker', 'winger', 'playmaker', 'defender', 'support'];
+  for (let i = 0; i < 2; i++) { const a = r.pick(movable), b = r.pick(movable); if (a !== b && f[b] > 6) { f[a]++; f[b]--; } }
+  return f;
+}
 export function newFacilities(lvl) { const f = {}; for (const k of FACILITIES) f[k] = lvl; return f; }
 
 function aiClub(r, nf, id, prof, power, div) {
   const nm = nf.club(); const kit = nf.kit();
-  const form = formationFromProfile(PROFILE_ROLES[prof.a] || PROFILE_ROLES.possession);
+  const form = aiFormation(prof.a, r);
   // role quality follows the attribute shape a little (attack-minded clubs have better forwards etc.)
   const at = prof.at; const mean = ATTRS.reduce((n, k) => n + at[k], 0) / ATTRS.length;
   const roleBias = { striker: (at.finishing + at.attack) / 2, winger: (at.speed + at.attack) / 2, playmaker: (at.technique + at.teamwork) / 2, defender: (at.defense + at.physical) / 2,

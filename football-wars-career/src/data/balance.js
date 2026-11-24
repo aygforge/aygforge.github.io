@@ -96,5 +96,5 @@ export const PROFILE_LABEL = { aggressive: 'Aggressive', defensive: 'Defensive',
 export const PROFILE_TACTIC = { aggressive: 'high_press', defensive: 'fortress', counter: 'counter', technical: 'total', balanced: 'total' };
 export const ARCH_PROFILE = { high_press: 'aggressive', physical: 'aggressive', defensive_block: 'defensive', counter: 'counter', wing_attack: 'counter', possession: 'technical' };
 export const coachLevel = div => 11 - div; // Division 10 -> 1 (basic), Division 1 -> 10 (elite)
-export const coachEvery = lvl => 150 - lvl * 12;
-export const PLAYER_ASSISTANT = { level: 6, profile: 'balanced' };
+export const coachEvery = lvl => 150 - lvl * 6; // measured: very frequent re-evaluation burns commands early
+export const PLAYER_ASSISTANT = { level: 'division (min 2)', profile: 'balanced' };

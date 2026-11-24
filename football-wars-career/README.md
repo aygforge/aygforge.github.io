@@ -39,7 +39,7 @@ Requires Node 18+ (tested on Node 22). Browser smoke tests use Playwright/Chromi
    starting style, up to 5 stars. Then:
    * **Play Match** — live battle; you switch **Attack / Balanced / Defend** (8 s cooldown, free) and fire up to
      **3 coach commands** per match: **FULL PRESS**, **HOLD LINE**, **FAST BREAK** (4 s effect, 8 s cooldown).
-   * **Auto Coach** — watch while your assistant uses the same AI policy the AI managers use.
+   * **Auto Coach** — watch while your assistant (as good as the managers of your division) uses the same AI policy as the AI clubs.
    * **Quick Simulate** — the same battle computed without drawing (identical to Auto Coach for the same seed).
 4. **Next week** — the rest of the world (all divisions + cups) is simulated in Web Workers in the background.
 

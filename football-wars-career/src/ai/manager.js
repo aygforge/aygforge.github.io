@@ -2,7 +2,7 @@
 // Same rules as the player: 2 actions per week, real prices, transfer windows, squad limits. No free money.
 import { ROLES, FACILITIES, facCost, FAC_MAX, MAX_STARS, PROFILE_TACTIC, DIV_BASE, SPONSOR, MAX_ACTIVE_STARS } from '../data/balance.js';
 import { Rng, mix32 } from '../career/util.js';
-import { actionsLeft, packagesFor, buyPackage, trainGroup, trainCost, upgradeFacility, inWindow, askFor, trainStar, roleCount, signAtAsk } from '../career/management.js';
+import { releaseStar, actionsLeft, packagesFor, buyPackage, trainGroup, trainCost, upgradeFacility, inWindow, askFor, trainStar, roleCount, signAtAsk } from '../career/management.js';
 import { weeklyBreakdown, avgStandardQ, standardCount, takeAdvance, canAdvance } from '../career/economy.js';
 import { autoPickStars } from '../career/world.js';
 import { starValue, pendingSpecs, SPECS } from '../career/stars.js';
@@ -18,7 +18,10 @@ export function aiWeek(S, c) {
   const weekly = weeklyBreakdown(S, c).net;
   const reserve = Math.max(SPONSOR[c.division] * 2, -weekly * 6);
   // emergency: negative budget -> sponsor advance (once per season) and sell the most expensive star
-  if (c.budget < 0) { if (canAdvance(S, c)) takeAdvance(S, c); const exp = c.stars.map(id => S.stars[id]).sort((a, b) => b.wage - a.wage)[0]; if (exp && exp.lockSeason !== S.season) exp.listed = true; }
+  const byWage = () => c.stars.map(id => S.stars[id]).sort((a, b) => b.wage - a.wage);
+  if (c.budget < 0) { if (canAdvance(S, c)) takeAdvance(S, c); const exp = byWage()[0]; if (exp && exp.lockSeason !== S.season) exp.listed = true; }
+  // deep trouble and still losing money every week: release the most expensive star (pays the same compensation as the player)
+  if (c.budget < -SPONSOR[c.division] * 4 && weekly < 0) { const exp = byWage()[0]; if (exp) releaseStar(S, c, exp.id); }
   // free choices: specialisations, active stars
   for (const id of c.stars) { const s = S.stars[id]; while (pendingSpecs(s) > 0) s.specs.push(SPECS[s.role][r.int(3)].id); }
   let guard = 0;
@@ -55,11 +58,12 @@ export function aiWeek(S, c) {
 }
 const lowestQ = (c, role) => { const g = c.groups.filter(x => x.role === role); return g.length ? Math.min(...g.map(x => x.q)) : 0; };
 function bestStarTarget(S, c, spare, r) {
-  const power = avgStandardQ(c);
+  const power = avgStandardQ(c), wageBill = c.stars.reduce((n, id) => n + S.stars[id].wage, 0);
+  if (weeklyBreakdown(S, c).net < 0) return null;
   const pool = Object.values(S.stars).filter(s => !s.academy && s.clubId !== c.id && (s.clubId === null || s.listed) && (s.clubId === null || S.clubs[s.clubId].ai) && s.ovr > power + 3 && s.age <= 32);
   let best = null, bs = -1e9;
   for (const s of pool) {
-    const a = askFor(S, c, s); if (a.refuses || a.fee > spare || a.wage > SPONSOR[c.division] * 0.25) continue;
+    const a = askFor(S, c, s); if (a.refuses || a.fee > spare || a.wage > SPONSOR[c.division] * 0.2 || wageBill + a.wage > SPONSOR[c.division] * 0.55) continue;
     const sc = (s.ovr - power) * 10 + (s.pot - s.ovr) * 2 - a.fee / 100 - a.wage + r.next() * 5;
     if (sc > bs) { bs = sc; best = s; }
   }

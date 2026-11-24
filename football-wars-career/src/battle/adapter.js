@@ -55,6 +55,14 @@ export function buildLineup(club, stars, season, week) {
 }
 export const lineupPower = units => Math.round(units.reduce((n, u) => n + u.q, 0) / Math.max(1, units.length) * 100) / 100;
 
+// Career clubs keep their attribute *identity* but with softened extremes: V4 profiles amplified by the engine
+// (x1.4 around the mean) made some archetypes (e.g. deep-block clubs with very low pace) hopeless in a league.
+export const ATTR_SPREAD = 0.4;
+export function careerAttributes(at) {
+  const ks = Object.keys(at); const mean = ks.reduce((n, k) => n + at[k], 0) / ks.length; const out = {};
+  for (const k of ks) out[k] = Math.round((70 + (at[k] - mean) * ATTR_SPREAD) * 10) / 10;
+  return out;
+}
 // Full battle snapshot (plain JSON) — this is what the engine, the workers and replays consume.
 export function snapshot(club, stars, season, week, opts = {}) {
   const L = buildLineup(club, stars, season, week);
@@ -66,7 +74,7 @@ export function snapshot(club, stars, season, week, opts = {}) {
     team: {
       id: club.id, name: club.name, short: club.short, type: 'club',
       visual: { primary_color: club.kit.primary, secondary_color: club.kit.secondary, pattern: club.kit.pattern, crest: club.kit.crest },
-      battle_profile: { power_index: power, archetype: TAC_ARCH[tactic], attributes: club.attributes, roles_per_100: roles, specials: TAC_SPECIALS[tactic], aggression: club.aggression || 60, variance: VARIANCE }
+      battle_profile: { power_index: power, archetype: TAC_ARCH[tactic], attributes: careerAttributes(club.attributes), roles_per_100: roles, specials: TAC_SPECIALS[tactic], aggression: club.aggression || 60, variance: VARIANCE }
     },
     lineup: compactLineup(L.units)
   };
@@ -82,7 +90,8 @@ export function compactLineup(units) {
   return out;
 }
 export function expandLineup(lu) { const units = []; for (const e of lu) { if (e.star) units.push(e); else for (let i = 0; i < e.n; i++) units.push({ role: e.role, q: e.q }); } return units; }
-export function coachPolicy(club) { const lvl = club.ai ? coachLevel(club.division) : 6; return { level: lvl, profile: club.ai ? club.aiProfile : 'balanced', every: coachEvery(lvl) }; }
+// the player's assistant coach is as good as the managers of the division (minimum level 2)
+export function coachPolicy(club) { const lvl = club.ai ? coachLevel(club.division) : Math.max(2, coachLevel(club.division)); return { level: lvl, profile: club.ai ? club.aiProfile : 'balanced', every: coachEvery(lvl) }; }
 
 // engine options for a match. home side = 0.
 export function matchOptions(snapA, snapB, seed, o = {}) {

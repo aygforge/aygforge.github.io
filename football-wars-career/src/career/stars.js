@@ -72,8 +72,8 @@ export const pendingSpecs = s => SPEC_LEVELS.filter(L => s.level >= L).length - 
 
 export function wageFor(s, div) {
   // weekly wage: grows with quality; a few % of the weekly sponsor of the division the star belongs in
-  // ~15–25% of the weekly sponsor of the division a star belongs in (≈40 C at quality 45, ≈600 C at 90)
-  const base = 40 * Math.pow(1.062, s.ovr - 45);
+  // ~10–15% of the weekly sponsor of the division a star belongs in (≈25 C at quality 45, ≈330 C at 88)
+  const base = 25 * Math.pow(1.062, s.ovr - 45);
   return Math.max(8, Math.round(base * (1 + Math.max(0, s.pot - s.ovr) / 120)));
 }
 export function starValue(s) {

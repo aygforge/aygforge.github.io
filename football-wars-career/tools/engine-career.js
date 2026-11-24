@@ -18,8 +18,8 @@ const STYLES = {
 };
 const COMMANDS = {
   press: { speed: 1.18, atk: 1.15, chase: 2, drain: 1.8, armor: -0.05, tackle: 0.05 },
-  hold: { home: 0.03, armor: 0.10, dmg: 0.88, fwd: -0.2, support: -1, chase: -1 },
-  fast: { speedAtk: 1.28, fwdAtk: 0.5, carry: 1.3, armor: -0.06, shoot: 1.15 }
+  hold: { home: 0.012, armor: 0.13, atk: 1.04, fwd: -0.08, support: -1 },
+  fast: { speedAtk: 1.22, fwdAtk: 0.25, carry: 1.3, armor: -0.025, shoot: 1.2, atk: 1.06 }
 };
 const STYLE_IDS = ['attack', 'balanced', 'defend'], CMD_IDS = ['press', 'hold', 'fast'];
 const EVC = { CMD: 60, STYLE: 61, COUNTER: 62, CMD_END: 63 };
@@ -154,29 +154,26 @@ function coachDecide(w, side, pol) {
   if (w.phase !== 'battle') return null;
   const c = w.teams[side].car, f = coachFeatures(w, side), L = pol.level || 1, B = COACH_BIAS[pol.profile] || COACH_BIAS.balanced;
   let style = c.style, cmd = null;
-  if (L <= 3) { // basic manager: simple reactive rules
-    if (f.myLoss - f.oppLoss >= 3) style = 'defend'; else if (f.diff > 0.12) style = 'attack'; else if (f.diff > -0.05) style = 'balanced';
-    if (f.cmdLeft > 0 && f.bt > 6 && (f.myLoss >= 2 || f.poss > 0)) cmd = B.fav;
-  } else {
-    const late = f.bt > w.dur.hunt;
-    const u = {
-      attack: 0.10 + 0.9 * f.diff + 0.06 * (f.oppLoss - f.myLoss) + (f.poss > 0 ? 0.12 : 0) + (late && f.diff > 0 ? 0.15 : 0) + B.attack,
-      defend: 0.05 - 0.9 * f.diff + 0.07 * (f.myLoss - f.oppLoss) + f.danger * (f.poss < 0 ? 0.25 : 0.1) + (f.oppCmd === 'press' || f.oppCmd === 'fast' ? 0.12 : 0) + B.defend,
-      balanced: 0.18 + B.balanced
-    };
-    let best = style; for (const k of STYLE_IDS) if (u[k] > u[best] + (k === style ? 0 : (L >= 7 ? 0.08 : 0.04))) best = k;
-    style = best;
-    if (f.cmdLeft > 0) {
-      const v = {
-        press: (f.poss < 0 && f.danger < 0.35 ? 0.35 : 0) + 0.5 * f.diff + (f.oppStyle === 'attack' ? 0.1 : 0) + B.press,
-        hold: (f.myLoss >= 3 ? 0.4 : 0) + (f.poss < 0 ? f.danger * 0.4 : 0) + (f.oppCmd === 'press' || f.oppCmd === 'fast' ? 0.25 : 0) + B.hold,
-        fast: (f.poss > 0 && f.held < 0.6 ? 0.45 : 0) + (f.oppStyle === 'attack' ? 0.15 : 0) + (f.oppCmd === 'press' ? 0.2 : 0) + B.fast
-      };
-      let k = 'press'; for (const x of CMD_IDS) if (v[x] > v[k]) k = x;
-      const keepOne = L >= 6 && f.cmdLeft === 1 && f.bt < w.dur.zone && f.myLoss < 4;
-      if (v[k] >= (L >= 8 ? 0.5 : 0.55) && !keepOne) cmd = k;
+  const lossGap = f.myLoss - f.oppLoss;
+  // styles: protect the team when it bleeds players, push when clearly ahead. Better managers read it earlier
+  // and keep the shape when the opponent is attacking their goal.
+  const bleed = L >= 7 ? 2 : 3, lead = L >= 7 ? 0.08 : 0.12;
+  if (lossGap >= bleed || (L >= 4 && f.diff < -0.1)) style = 'defend';
+  else if (f.diff > lead) style = L >= 4 && f.poss < 0 && f.danger > 0.6 ? 'balanced' : 'attack';
+  else if (f.diff > -0.05 && lossGap <= 0) style = 'balanced';
+  if (f.cmdLeft > 0 && f.bt > (L >= 7 ? 3 : 6)) {
+    if (L <= 3) { if (f.myLoss >= 2 || f.poss > 0) cmd = B.fav; }
+    else {
+      // situational choice; elite managers answer the opponent's visible command
+      // spread the three commands over the battle instead of burning them early
+      const spacing = f.bt >= (3 - f.cmdLeft) * 7 + 4;
+      if (!spacing) cmd = null;
+      else if (L >= 7 && f.oppCmd === 'press' && lossGap >= 1) cmd = 'hold';
+      else if (lossGap >= 4) cmd = 'hold';
+      else if (f.myLoss >= 2 || f.poss > 0) cmd = B.fav === 'fast' && L < 7 ? 'fast' : 'press';
     }
   }
+  if (pol.noStyle) style = c.style; if (pol.noCmd) cmd = null; // ablation switches (testing only)
   if (style !== c.style) careerIssue(w, side, 'style', style, 'coach');
   if (cmd) careerIssue(w, side, 'cmd', cmd, 'coach');
   return { style, cmd };

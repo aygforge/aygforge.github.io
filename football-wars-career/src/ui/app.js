@@ -54,11 +54,16 @@ export function kickSim() {
   const st = { key, n: 0, total: jobs.length, done: false };
   App.sim = st;
   st.p = runJobs(jobs, (n, t) => { st.n = n; st.total = t; const c = document.querySelector('.topbar .chips'); if (c && App.view !== 'battle') { const ch = c.querySelector('.chip:last-child'); if (ch && /World sim/.test(ch.textContent)) ch.innerHTML = `World sim <b>${n}/${t}</b>`; } const p = document.getElementById('simprog'); if (p) p.style.width = (n / t * 100).toFixed(1) + '%'; })
-    .then(res => { if (!App.S || !App.S.lock || App.S.lock.key !== key) return; Object.assign(App.S.lock.results, res); st.done = true; autosave(); if (App.view === 'dashboard') render(); })
+    .then(res => { if (!App.S || !App.S.lock || App.S.lock.key !== key) return; Object.assign(App.S.lock.results, res); st.done = true; autosave(); if (App.view === 'dashboard' && !App.busy) render(); })
     .catch(e => { st.failed = true; console.error(e); toast('World simulation error: ' + e.message, 'bad'); });
   return st.p;
 }
 export async function nextWeek() {
+  if (App.busy) return;
+  App.busy = true;
+  try { await nextWeekInner(); } finally { App.busy = false; }
+}
+async function nextWeekInner() {
   const S = App.S; const c = canEndWeek(S);
   if (!c.ok && c.missing) {
     const m = modal(`<h2>Simulating the football world</h2><p class="dim">${c.missing.length} matches across 10 divisions and the cups are being played with the full battle engine (${esc(poolMode() || 'starting…')}).</p><div class="progress"><i id="simprog" style="width:${App.sim ? (App.sim.n / Math.max(1, App.sim.total) * 100).toFixed(1) : 0}%"></i></div>`);
@@ -284,6 +289,7 @@ async function firstFreeSlot() { for (const s of SLOTS) if (!(await slotInfo(s))
 export function boot() {
   document.addEventListener('click', e => {
     const el = e.target.closest('[data-act]'); if (!el || el.disabled) return;
+    if (App.busy) { e.preventDefault(); return; } // week transition in progress
     const fn = ACTIONS[el.dataset.act]; if (!fn) return;
     e.preventDefault(); Promise.resolve(fn(el.dataset, el)).catch(err => { console.error(err); toast(String(err && err.message || err), 'bad'); });
   });

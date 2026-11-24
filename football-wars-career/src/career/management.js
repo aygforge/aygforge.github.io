@@ -144,7 +144,7 @@ export function listStar(S, c, starId, on) {
 }
 export function releaseStar(S, c, starId) {
   const s = S.stars[starId]; if (!s || s.clubId !== c.id) return fail('Not your star.');
-  const comp = s.wage * 10; if (c.budget < comp) return fail(`Releasing costs ${comp} C compensation.`);
+  const comp = s.wage * 10; if (!c.ai && c.budget < comp) return fail(`Releasing costs ${comp} C compensation.`);
   spend(S, c, comp, `Released ${s.name}`); detach(S, s); s.clubId = null; s.listed = false;
   news(S, c, `${s.name} was released.`); return { ok: true };
 }
