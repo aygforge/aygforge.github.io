@@ -216,6 +216,8 @@ input[type=range]{width:100%;accent-color:var(--mint)}
 .note{font-size:11px;color:var(--dim);margin-top:8px;line-height:1.45}
 .warnbar{background:#3a1018;border:1px solid #7a2430;color:#ffc2c7;border-radius:10px;padding:8px 10px;font-size:12px;margin-bottom:10px}
 .spark{animation:pop .35s both}
+
+.no-fs .fsbtn{display:none!important}
 </style>
 </head>
 <body>
@@ -232,7 +234,7 @@ input[type=range]{width:100%;accent-color:var(--mint)}
   <button data-tab="challenges"><span class="ic">🎯</span>Challenges</button>
 </div></nav>
 <section id="battle" class="hidden" aria-label="Battle">
-  <div class="bt-top"><button id="btPause" aria-label="Pause">❚❚</button><span class="lbl" id="btLabel"></span><button id="btSpeed" aria-label="Speed">1×</button><button id="btCam" aria-label="Smart camera">🎥</button></div>
+  <div class="bt-top"><button id="btPause" aria-label="Pause">❚❚</button><span class="lbl" id="btLabel"></span><button id="btSpeed" aria-label="Speed">1×</button><button id="btCam" aria-label="Smart camera">🎥</button><button id="btFull" class="fsbtn" data-act="fullscreen" aria-label="Full screen">⛶</button></div>
   <div id="stageWrap"><canvas id="stage" width="360" height="640"></canvas><div id="btLoading" class="loading hidden">RESTORING BATTLE…</div><button id="btSkip" class="skiphint hidden">Tap to continue ▸</button><div id="pauseBox" class="pausebox hidden"></div></div>
   <div class="hud"><div class="mom">
     <div><div class="lab"><span id="momTxt">MOMENTUM</span><span id="momUses">STRIKES 0/4</span></div>
@@ -4680,6 +4682,23 @@ function rewardLine(r) {
   return p.join(' · ');
 }
 
+// ======================= full screen =======================
+const fsEl = () => document.fullscreenElement || document.webkitFullscreenElement || null;
+function isFull() { return !!fsEl(); }
+function fsSupported() { const d = document.documentElement; return !!(d.requestFullscreen || d.webkitRequestFullscreen) && (document.fullscreenEnabled !== false || document.webkitFullscreenEnabled); }
+function toggleFull() {
+  try {
+    if (isFull()) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
+    const d = document.documentElement, r = (d.requestFullscreen || d.webkitRequestFullscreen).call(d, { navigationUI: 'hide' });
+    if (r && r.catch) r.catch(() => toast('Full screen is not allowed here', 'bad'));
+  } catch (e) { toast('Full screen is not supported in this browser', 'bad'); }
+}
+function onFullChange() {
+  const on = isFull();
+  document.querySelectorAll('.fsbtn').forEach(b => { b.textContent = on ? '🗗' : '⛶'; b.classList.toggle('on', on); b.setAttribute('aria-label', on ? 'Exit full screen' : 'Full screen'); });
+  setTimeout(fitStage, 60);
+}
+
 // ======================= top bar / tab bar =======================
 function renderTop() {
   const s = st.save; const tb = $('topbar');
@@ -4689,6 +4708,7 @@ function renderTop() {
   tb.innerHTML = '<img class="crest" src="' + crestURL(s.club) + '" alt=""><div class="who"><b>' + esc(c.displayName) + '</b><small>Div ' + s.division + ' · Lv ' + s.level +
     '</small><div class="bar" style="height:4px;margin-top:3px;max-width:150px"><i style="width:' + Math.round(pr.pct * 100) + '%"></i></div></div>' +
     '<span class="cur"><i class="c">C</i>' + fmt(s.credits) + '</span><span class="cur"><i class="f"><span>F</span></i>' + fmt(s.fragments) + '</span>' +
+    '<button class="iconbtn fsbtn" data-act="fullscreen" aria-label="Full screen">' + (isFull() ? '🗗' : '⛶') + '</button>' +
     '<button class="iconbtn" data-act="settings" aria-label="Settings">⚙️</button>';
   const badge = (k, n) => { const b = document.querySelector('#tabbar [data-tab="' + k + '"] .badge'); if (b) { b.textContent = n; b.classList.toggle('hidden', !n); } };
   badge('packs', (s.pendingDraft ? 1 : 0) + s.packs.standard + (A.Draft.unlocked(s, 'premium') ? s.packs.premium : 0) + (A.Draft.unlocked(s, 'legend') ? s.packs.legend : 0));
@@ -4973,6 +4993,7 @@ function onAct(act, el) {
   const s = st.save;
   AU.init();
   if (act.startsWith('tab:')) { AU.ui(); return go(act.slice(4)); }
+  if (act === 'fullscreen') return toggleFull();
   if (act === 'settings') return settingsModal();
   if (act === 'import') return importSave();
   if (act.startsWith('lsub:')) { st.sub.league = act.slice(5); return render(); }
@@ -5318,6 +5339,9 @@ function boot() {
   });
   document.addEventListener('visibilitychange', () => { if (document.hidden && st.battle && st.battle.w && !st.battle.paused) setPause(true); if (document.hidden && st.save) Store.write(); });
   window.addEventListener('resize', fitStage);
+  document.addEventListener('fullscreenchange', onFullChange); document.addEventListener('webkitfullscreenchange', onFullChange);
+  if (!fsSupported()) document.documentElement.classList.add('no-fs');
+  document.addEventListener('keydown', e => { if (e.code === 'KeyF' && !e.ctrlKey && !e.metaKey && !e.altKey && !(e.target && /INPUT|TEXTAREA/.test(e.target.tagName))) toggleFull(); });
   window.addEventListener('pagehide', () => { if (st.battle && st.battle.w) saveProgress(st.battle); });
   render(); boot2(); if (st.save) startAI();
 }

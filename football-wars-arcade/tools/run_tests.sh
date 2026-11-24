@@ -9,4 +9,5 @@ node tools/test_core.js
 node tools/test_career.js
 SHOTS=${SHOTS:-/tmp} node tools/ui_test.js
 SHOTS=${SHOTS:-/tmp} node tools/ui_season.js
+SHOTS=${SHOTS:-/tmp} node tools/ui_fullscreen.js
 SHOTS=${SHOTS:-/tmp} node tools/perf_ui.js

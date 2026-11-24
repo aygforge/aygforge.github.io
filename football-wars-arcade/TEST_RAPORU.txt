@@ -2,7 +2,7 @@ FOOTBALL WARS — ARCADE REBORN · TEST RAPORU
 =============================================
 Teslim dosyası : FootballWars_Arcade.html (tek HTML, ~630 KB, çevrim dışı; harici script/CSS/font yok)
 Kaynak         : football-wars-v4.html (tek kaynak) → src/ altında modüllere ayrıldı, tools/build.js ile birleştirilir
-Tüm testler    : bash tools/run_tests.sh   (son çalıştırma: 133 PASS, 0 FAIL)
+Tüm testler    : bash tools/run_tests.sh   (son çalıştırma: 133 PASS + tam ekran 7 PASS, 0 FAIL)
 
 1) TAMAMLANAN SİSTEMLER
 -----------------------
@@ -90,6 +90,10 @@ Ortam: Node 22 + Playwright/Chromium (headless). Mobil = 393–412 px dokunmatik
 [ui_season.js] 8 PASS / 0 FAIL — sezon sonu ekranı, şampiyonluk, D9'a terfi, D1'e çıkış, ilk D1
   şampiyonluğu (Legend Pack + Golden Crest), yeni Endless sezonu. (1–18. turlar test kısayoluyla gerçek
   oyun API'si üzerinden doldurulur; son tur — oyuncu + 9 AI maçı — gerçek savaş.)
+
+[ui_fullscreen.js] 7 PASS / 0 FAIL — üst çubuktaki ve savaş ekranındaki tam ekran butonu, F tuşu,
+  tam ekranda savaş kesintisiz sürer ve Canvas yeniden ölçeklenir. (Fullscreen API olmayan tarayıcılarda,
+  ör. iPhone Safari, buton gizlenir.)
 
 [perf_ui.js] headless Chromium (yazılımsal render), savaşın 10. saniyesi, 200 oyuncu:
   masaüstü 1280×800 Medium ~60 FPS · mobil 393×852 Low ~60 FPS · mobil High ~60 FPS · hata yok.
