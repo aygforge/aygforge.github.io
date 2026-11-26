@@ -2,5 +2,18 @@
   "appId": "com.aygforge.tidesoffortune",
   "appName": "Tides of Fortune",
   "webDir": "dist/web",
-  "android": { "backgroundColor": "#120c18" }
+  "server": {
+    "androidScheme": "https",
+    "hostname": "localhost"
+  },
+  "android": {
+    "backgroundColor": "#120c18",
+    "allowMixedContent": false,
+    "webContentsDebuggingEnabled": false
+  },
+  "plugins": {
+    "SystemBars": {
+      "insetsHandling": "css"
+    }
+  }
 }

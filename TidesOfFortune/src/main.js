@@ -11,10 +11,13 @@ import { tickVoyage } from './ui/screens/voyage.js';
 import { T } from './data/strings.js';
 import { HARBOR_BY_ID } from './data/harbors.js';
 import { installDevHooks } from './dev.js';
+import { isNative, prepareStorage, installNative } from './platform/native.js';
 
-function boot() {
+async function boot() {
   injectIconStyles();
-  const core = new GameCore(browserStorage());
+  // Android'de kayıtlar ayrıca kalıcı yedeğe yansıtılır (kayıt biçimi değişmez); web'de depo aynen kullanılır
+  const storage = await prepareStorage(browserStorage());
+  const core = new GameCore(storage);
   const canvas = document.getElementById('scene');
   const renderer = new Renderer(canvas, core);
   const audio = new AudioEngine(core.settings);
@@ -50,8 +53,11 @@ function boot() {
   }
   window.__tof = { core, ui, renderer, audio, stage, world: renderer.world, harborName: (id) => HARBOR_BY_ID[id]?.name || id };
   installDevHooks(window.__tof);
+  installNative({ core, ui, storage });
 
-  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && !window.__TOF_SINGLE_FILE__) {
+  // Android uygulamasında service worker kullanılmaz: dosyalar uygulamanın içinden gelir; önbellek,
+  // mağaza güncellemesinden sonra eski oyun dosyalarının sunulmasına yol açabilirdi.
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && !window.__TOF_SINGLE_FILE__ && !isNative()) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   }
 }

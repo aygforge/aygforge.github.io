@@ -11,6 +11,13 @@
     "serve": "node tools/serve.mjs"
   },
   "devDependencies": {
+    "@capacitor/cli": "8.6.2",
     "esbuild": "0.24.0"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.6.2",
+    "@capacitor/app": "8.1.2",
+    "@capacitor/core": "8.6.2",
+    "@capacitor/preferences": "8.0.1"
   }
 }

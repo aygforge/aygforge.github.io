@@ -10,12 +10,16 @@ export class Stage {
     this.H = 720;
     this.scale = 1;
     this.probe = document.createElement('div');
-    this.probe.style.cssText = 'position:fixed;inset:0;pointer-events:none;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)';
+    // güvenli alan: tarayıcının env() değeri ya da Android uygulamasının (Capacitor SystemBars) verdiği --safe-area-inset-* (hangisi büyükse)
+    const side = (k) => `max(env(safe-area-inset-${k}, 0px), var(--safe-area-inset-${k}, 0px))`;
+    this.probe.style.cssText = `position:fixed;inset:0;pointer-events:none;visibility:hidden;padding:${side('top')} ${side('right')} ${side('bottom')} ${side('left')}`;
     document.body.appendChild(this.probe);
     const relayout = () => this.layout();
     window.addEventListener('resize', relayout);
     window.addEventListener('orientationchange', () => setTimeout(relayout, 120));
     if (window.visualViewport) window.visualViewport.addEventListener('resize', relayout);
+    // Android uygulaması güvenli alanı sayfa yüklendikten sonra <html> stiline yazar: değişince yeniden yerleştir
+    if (typeof MutationObserver === 'function') new MutationObserver(relayout).observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
     this.layout();
   }
 

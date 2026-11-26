@@ -252,6 +252,7 @@ export class UI {
         ),
       ),
     );
+    wrap._close = close; // Android geri tuşu en üstteki pencereyi kapatır
     this.overlay.appendChild(wrap);
     this.modals.push(wrap);
     return close;

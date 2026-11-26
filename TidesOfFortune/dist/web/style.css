@@ -544,3 +544,6 @@ b.neutral { opacity: .8; }
 .tutBtns { display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px; flex-wrap: wrap; }
 .tutBubble.center .tutBtns { justify-content: center; }
 .tutSkip { opacity: .75; }
+
+/* Android uygulaması: tam ekran sistem tarafından yönetilir, tarayıcı tam ekran düğmesi gizli */
+html.native .menuTop { display: none; }
