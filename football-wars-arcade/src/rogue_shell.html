@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#070b17">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Football Wars: Roguelite Reborn</title>
+<meta name="description" content="FOOTBALL WARS: ROGUELITE REBORN — lead a 100-player Survivor Army through 200 levels of real-time 100 vs N football battles. Survive the waves, draft roguelite cards, unlock five Star Leaders. Single offline HTML file.">
+<style>/*@@CSS@@*/</style>
+</head>
+<body>
+<div id="app">
+  <header id="topbar">
+    <button id="tbHome" class="hq" data-nav="hq" aria-label="Arcade HQ"><span class="logo">FW</span><span class="t"><b>ARCADE HQ</b><small id="tbSub"></small></span></button>
+    <span class="cur" id="tbCoins" aria-label="Coins"><i>¢</i><span>0</span></span>
+    <button class="iconbtn" data-act="fullscreen" aria-label="Full screen">⛶</button>
+  </header>
+  <main id="screen" tabindex="-1"></main>
+</div>
+<nav id="tabbar"><div class="in">
+  <button data-nav="map"><span class="ic">🗺️</span>Map</button>
+  <button data-nav="training"><span class="ic">🏋️</span>Training</button>
+  <button data-nav="codex"><span class="ic">🃏</span>Codex</button>
+  <button data-nav="leaders"><span class="ic">⭐</span>Leaders</button>
+  <button data-nav="trophy"><span class="ic">🏆</span>Trophies</button>
+  <button data-nav="settings"><span class="ic">⚙️</span>Settings</button>
+</div></nav>
+<section id="battle" class="hidden" aria-label="Battle">
+  <div class="bhud">
+    <div class="bh1"><button id="btPause" aria-label="Pause">❚❚</button><span id="hLevel" class="hl"></span><span id="hMission" class="hm"></span><span id="hWave" class="hw"></span><span id="hTime" class="ht">0:45</span><button class="fsb" data-act="fullscreen" aria-label="Full screen">⛶</button></div>
+    <div class="bh2"><span class="hs"><small>SURVIVORS</small><b id="hSurv">100</b></span><span id="hGoalBox" class="hg"><small>GOALS</small><b id="hGoals">0/0</b></span><span class="hr"><small>RIVALS</small><b id="hRiv">0</b></span></div>
+  </div>
+  <div id="stageWrap"><canvas id="stage" width="360" height="640"></canvas><div id="btTip" class="bttip hidden"></div><div id="btLoading" class="loading hidden">RESTORING WAVE…</div><button id="btSkip" class="skiphint hidden">Tap to continue ▸</button><div id="pauseBox" class="pausebox hidden"></div></div>
+  <div class="bfoot">
+    <div id="leadBar" class="leadbar"></div>
+    <div class="focusrow">
+      <button class="fbtn goal" data-focus="goal"><b>⚽ GOAL</b><small>attack the goal</small><i></i></button>
+      <button class="fbtn ko" data-focus="ko"><b>💥 KO</b><small>hunt rivals</small><i></i></button>
+      <button class="fbtn surv" data-focus="survive"><b>🛡 SURVIVE</b><small>protect the hurt</small><i></i></button>
+    </div>
+    <div id="focusInfo" class="focusinfo"></div>
+  </div>
+</section>
+<div id="modal" class="hidden"></div>
+<div id="toast"></div>
+<!--@@SCRIPTS@@-->
+</body>
+</html>

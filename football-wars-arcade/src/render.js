@@ -553,6 +553,32 @@ function createRenderer(o) {
     F.draw(g, line, x0 + 36, y0 + 8, { bold: true, color: '#ffffff', alpha: a });
     return true;
   }
+  // ---------- ROGUELITE REBORN: wave intro + Campaign banners ----------
+  function drawWaveIntro(g, T) {
+    const R = o.rogue, a = T < 0.25 ? T / 0.25 : T > 1.9 ? cl((2.3 - T) / 0.4, 0, 1) : 1;
+    g.globalAlpha = 0.55 * a; g.fillStyle = '#05060e'; g.fillRect(0, 240, LW, 120); g.globalAlpha = 1;
+    g.fillStyle = R.boss ? '#ff4d6d' : '#ffe14d'; g.globalAlpha = a; g.fillRect(0, 240, LW, 2); g.fillRect(0, 358, LW, 2); g.globalAlpha = 1;
+    const t1 = R.title, sc = F.fitScale(t1, 330, 4, true);
+    F.draw(g, t1, 180, 254 - Math.round((1 - ease(T / 0.3)) * 20), { scale: sc, bold: true, color: '#ffffff', color2: R.boss ? '#ff4d6d' : '#ffe14d', align: 'center', alpha: a });
+    F.draw(g, R.sub, 180, 300, { scale: F.fitScale(R.sub, 330, 2, true), bold: true, color: '#7df9ff', align: 'center', alpha: a });
+    if (R.sub2) F.draw(g, R.sub2, 180, 330, { color: '#c9d1ff', align: 'center', alpha: a });
+    const cd = [[1.55, '3'], [1.75, '2'], [1.95, '1']];
+    for (const [t0, n] of cd) if (T >= t0 && T < t0 + 0.2) { const k = (T - t0) / 0.2; bigCenter(g, n, 380, 4, '#ffffff', 1 - Math.max(0, k - 0.7) / 0.3, '#ffe14d'); }
+  }
+  const RB_TXT = { 'rg:ot': 'OVERTIME +10s', 'rg:egk': 'EMERGENCY KEEPER', 'rg:focus:goal': 'FOCUS: GOAL', 'rg:focus:ko': 'FOCUS: KO', 'rg:focus:survive': 'FOCUS: SURVIVE' };
+  function drawRogueBanners(g) {
+    let y = 120;
+    for (const b of w.banners) {
+      if (!b.key.startsWith('rg:')) continue;
+      const age = w.t - b.t0; if (age < 0 || age > b.dur) continue;
+      const txt = RB_TXT[b.key] || (b.key.startsWith('rg:card:') && o.rogue.cardNames ? F.upper(o.rogue.cardNames[b.key.slice(8)] || '') : '');
+      if (!txt) continue;
+      const a = cl(Math.min(age / 0.1, (b.dur - age) / 0.3), 0, 1), sc = F.fitScale(txt, 320, 2, true);
+      g.globalAlpha = 0.6 * a; g.fillStyle = '#0a0c18'; g.fillRect(0, y - 4, LW, 7 * sc + 8); g.globalAlpha = 1;
+      F.draw(g, txt, 180, y, { scale: sc, bold: true, color: b.color || '#ffe14d', align: 'center', alpha: a });
+      y += 7 * sc + 12;
+    }
+  }
   // ---------- V2: Battle Story alerts (real events from the observer), shown in OUTPUT time ----------
   const D = root.FWDirector;
   function drawAlerts(g, T, outT) {
@@ -586,6 +612,11 @@ function createRenderer(o) {
     // HUD/overlay layer
     const g = hg; g.clearRect(0, 0, LW, LH);
     const hudA = T < 1.05 ? 0 : T < 1.45 ? (T - 1.05) / 0.4 : (w.phase === 'ended' ? cl(1 - (T - w.endT - 0.45) / 0.4, 0.35, 1) : 1);
+    if (o.rogue) { // ROGUELITE REBORN: the HUD is DOM; canvas shows the wave intro and Campaign banners only
+      if (T < E.TL.battleStart + 0.1) drawWaveIntro(g, T);
+      drawBanners(g, T); drawRogueBanners(g);
+      if (!drawGoal(g, T, outT)) drawAlerts(g, T, outT);
+    } else {
     brand(g, T < 0.35 ? ease(T / 0.35) : 1);
     hudPanel(g, hudA);
     if (V3 && v3.momentum) V3.drawMomentum(g, hudA, obsS());
@@ -593,6 +624,7 @@ function createRenderer(o) {
     drawBanners(g, T);
     if (!drawGoal(g, T, outT)) drawAlerts(g, T, outT); // never two big messages at once
     if (w.phase === 'ended') drawOutro(g, T);
+    }
     if (V3 && v3.mvp && w.phase === 'ended') V3.drawMvp(g, T, o.teams.map(t => S.shortName(t, 110, o.lang)));
     // compose (only the world layer follows the camera; the HUD never moves)
     out.imageSmoothingEnabled = false;

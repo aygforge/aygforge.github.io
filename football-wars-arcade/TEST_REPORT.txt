@@ -1,0 +1,123 @@
+FOOTBALL WARS: ROGUELITE REBORN — KISA TEST RAPORU
+Dosya: FootballWars_Roguelite_Reborn.html (tek dosya, ~816 KB, internetsiz; harici script / CSS / asset yok)
+Tarih: 2026-11-26 · Ortam: Linux, Node 22, önceden kurulu Chromium (Playwright, yazılım çizimi, GPU yok)
+Testleri yeniden çalıştırmak: bash tools/run_rogue_tests.sh   (hızlı: --quick)
+
+Bu raporda yalnızca gerçekten çalıştırılmış testler yazılıdır. Gerçek telefonda test YAPILMADI.
+
+1) ÇALIŞAN SİSTEMLER
+- Arcade HQ (Portrait): Episode / level / Coins / sonraki kart-lider açılışı, PLAY / CONTINUE; alt menüde
+  Map · Training · Codex · Leaders · Trophies · Settings.
+- Survivor Army: her denemede tam 100 oyuncu (16/14/12/34/8/15/1), kalıcı kimlik (pid), HP dalgalar arasında korunur,
+  K.O. olan oyuncu o denemede geri gelmez; dalga sonu %10 iyileşme (+Field Medic, toplam ≤%25, max HP'yi aşmaz);
+  son kaleci düşünce canlı bir defans oyuncusu acil kaleci olur.
+- 3 görev türü: Survival (140), Goal Challenge (40), Total KO (20); Normal 3 / Elite 4 / Boss 5 dalga; dalga 45 s,
+  Goal finali ve Total KO'da en fazla +10 s uzatma. Kararları FWObjectiveResolver verir (aynı tick önceliği:
+  ordu sıfırsa her durumda mağlubiyet).
+- V4'ün tek maçlık kuralları Campaign'de kapalı: hunt / zone / storm / sudden death / revive / HP-yazı tura tiebreak /
+  65 s video sınırı yok; süre dolunca kimse sahte K.O. edilmez.
+- 200 level veri haritası (listeler şartnameyle birebir), 10 Episode × 20, Soft/Hard Wall, Elite, 10 Boss ve beşer
+  dalgalık Boss planları, 10 Episode taktiği + Boss dalga taktikleri (gerçek AI parametreleri: pres, pas, şut, müdahale,
+  kompaktlık, pas arası, geçiş, risk).
+- 48 kart (6 kategori × 8; 20 C / 16 R / 9 E / 3 L), Rank I-II-III gerçek sayısal değerlerle, gerçek motor olaylarına
+  bağlı (KO, CRIT, PASS_COMPLETE, PASS_INTERCEPT, BALL_GAIN, GOAL, SAVE_GOAL, POST, BALL_LOOSE; EV.PASS ve EV.SAVE
+  kullanılmaz). Kartların ürettiği etkiler kartları tekrar tetiklemez. Kart RNG'si savaş RNG'sinden ayrıdır.
+- Balanced Category Draft: 60/30/9/1, aynı teklifte tekrar yok, Rank III tekrar gelmez, en az 2 kategori, reroll yok;
+  teklif kayda yazılır, yeniden açılışta aynı üç kart gelir.
+- 5 Star Leader (0 / 5 / 15 / 30 / 50), kendi rolündeki bir oyuncunun yerine geçer (ordu yine 100), +%25 HP;
+  sinerjiler yalnızca lider ayaktayken.
+- Tactical Focus GOAL / KO / SURVIVE: dalga başına 2, 8 s, bitişten sonra 5 s bekleme, aynı anda tek; giriş tick'i
+  kaydedilir. Kaleciler etkilenmez; yönlendirilen oyuncu sayısı sınırlı (14 / 40 / 30).
+- Goal Advantage: V4'ün gerçek top sistemi; gol +%6 hız/hasar 2,8 s, birikmez, iki takım için de.
+- Training (5 stat, 1–100, tier katsayıları 0.60/0.48/0.38/0.30/0.24, maliyet formülü birebir), sadece run dışında;
+  kampanya bitince salt okunur.
+- Coins: Episode temel ödülleri, Boss > Elite > Soft > Normal çarpanı, madalya + lider bonusu (≤%10), mağlubiyet
+  formülü, terk = 0. İlk galibiyet tek atomik işlem (ledger: level:N:first_clear).
+- Survivor Medals, 10 Boss kupası, 3 lider başarısı, değiştirilemez ilk-galibiyet arşivi, Campaign Complete (Level 201 /
+  Endless / NG+ yok).
+- FWSaveManager: FW_RRB_SAVE_V1 + yedek, doğrulama/onarım, JSON dışa/içe aktarma. Aktif dalga: dalga başlangıç
+  görüntüsü + Focus giriş kaydı + tick ile kaydedilir; açılışta aynı tick'e deterministik tekrar oynatılır ve
+  duraklatılmış başlar. Arka plana geçince savaş durur ve kaydedilir; kaçırılan süre simüle edilmez.
+- Bağlamsal öğretici (L1, L2–3, ilk gol, ilk K.O., L5, L6, L7, L9, L10, L14, L15, L17, L19, L20), kapatılabilir,
+  Settings → Help archive'da tekrar okunur; savaşı etkilemez.
+- Ses: V4 prosedürel ses bankası + yeni gömülü sesler (Focus, kart, dalga, Boss alarmı, mağlubiyet, kampanya).
+- Kamera: normalde 1×, kısa odak en fazla 1.12×; Reduce Motion = zoom ve sarsıntı yok.
+
+2) VERİ BÜTÜNLÜĞÜ TESTLERİ (FWValidation, oyun açılışında da çalışır; Settings → Diagnostics) — 28/28 GEÇTİ
+200 level · 10×20 · 140/40/20 · Goal∩KO boş · 20 Soft (12/6/2) · 14 Hard (5/5/4) · 30 Elite · 10 Boss ·
+Elite+Hard = 53,72,136,151,191 · 3/4/5 dalga · rakip sayıları 50-65-80 / 45-60-75-90 / 40-55-70-85-100 ·
+Boss görevleri (80 KO, 120 Goal×3) · gol hedefleri · 48 kart 6×8 · 20/16/9/3 · başlangıç 16 kart (10/5/1) ·
+32 açılış, L159'da 48/48 · her kartın 3 farklı rank'i · liderler 0/5/15/30/50 · ordu 100 · Episode rol satırları 100 ·
+dalga kadroları sayıya eşit · Level 201 yok · Training maliyet formülü.
+
+3) MEKANİK TESTLERİ (tools/test_rogue.js, gerçek motor) — 123/123 GEÇTİ
+- V4 regresyonu: Campaign katmanı olmadan 4 Classic/Fusion savaş orijinal V4 ile birebir aynı hash.
+- Resolver: 16 durum (süre, tüm rakipler K.O., aynı tick'te iki taraf da biterse mağlubiyet, gol Survival'ı bitirmez,
+  Goal finali/uzatma/hedef eksik, Total KO uzatma).
+- Motor: Survival dalgası rakipler ayaktayken tam 45.000 s'de biter; hiç hunt/zone/storm/sudden/tiebreak yok;
+  Total KO'da rakip kalırsa 55 s'de mağlubiyet; ordu biterse kimse dirilmez; gol sayacı = gerçek GOAL olayı;
+  Goal finali hedef tamamsa 45 s'de galibiyet, eksikse uzatma; dalga sonrası yalnızca hayatta kalanlar doğar
+  (100'e tamamlanmaz); K.O. olan lider sonraki dalgada yok; acil kaleci; aynı seed + aynı Focus tick'leri = aynı sonuç.
+- Focus: 2 hak, aynı anda tek, 8 s + 5 s aralık, simülasyon zamanıyla akar (pause'da tick yok = süre yok).
+- Kartlar: 47 kart tek başına (Rank III) gerçek bir dalgayı değiştiriyor; Field Medic dalga sonu iyileşmeyi değiştiriyor;
+  48 kart birlikte döngüsüz çalışıyor. Sınırlar canlı fonksiyonlarda ölçüldü: hasar azaltma ≤%35, hız ≤%35,
+  saldırı ≤%40, saldırı hızı ≤%30, kurtarış ≤%90. Lider sinerjisi lider K.O. olunca bitiyor (Pao: +0.04 → 0).
+- Draft: 300 teklifte Rank III/keşfedilmemiş kart yok, tekrar yok; 3000 teklifte en az 2 kategori ve nadirlik
+  %59.6 / %30.3 / %9.1 / %1.0; az kart kaldığında yalnızca gerçek seçenekler.
+- Ekonomi: temel ödüller, Gold + liderler = tam %10, bonus hiç %10'u aşmıyor, madalya eşikleri, mağlubiyet formülü
+  (L1: 90 / 255), başarısız satın alma para harcamıyor, Level 101 alınamıyor, L5 ilk galibiyet Pao + Second Wind açıyor,
+  ikinci ödeme engelleniyor, tamamlanan level başlatılamıyor, terk = 0 Coins.
+- Kayıt: gidiş-dönüş, bozuk ana kayıt → yedekten kurtarma, yabancı/bozuk JSON reddi, yanlış tür/aralık onarımı.
+
+4) HEDEFLİ SAVAŞ TESTLERİ (gerçek motor, 3 seed; "referans oyuncu": gerçek Coin ekonomisinden hesaplanan dengeli
+   Training, rastgele kart seçimi, dalga başına 2 basit Focus). Her galibiyette görev kuralları ve açılışlar doğrulandı.
+  L1 Survival 3/3 (ort. 41 survivor) · L5 3/3 (33, Pao + Second Wind açıldı) · L7 Goal×2 3/3 (56) · L9 Elite KO 3/3 (61)
+  L14 Soft Goal×3 2/3 (56) · L15 3/3 (57, Nazar + Last Eleven) · L20 ilk Boss 3/3 (62, Rookie Cup) · L30 3/3 (57, Xav)
+  L32 Hard Goal×3 3/3 (34) · L50 3/3 (54, Buffo + Last Line) · L53 Elite+Hard 3/3 (45) · L72 Elite+Hard KO 1/3 (48)
+  L80 KO Boss 3/3 (76) · L100 Boss 3/3 (34) · L120 Goal Boss ×3 2/3 (8) · L136 Elite+Hard KO 1/3 (56)
+  L151 Elite+Hard Goal×4 1/3 (2) · L159 3/3 (24, 48/48 kart) · L160 Boss 1/3 (44) · L191 Elite+Hard 1/3 (3)
+  L199 Hard KO 2/3 (51) · L200 final Boss 3/3 (6, Legends Cup + Campaign Complete; Training'ler 100 değil, ~94)
+  Zorluk kalibrasyonu (tools/rogue_calibrate.js, rogue_tune*.js): Episode başına sabit güç katsayısı, Elite ×0.88,
+  Boss ×0.62, Total KO ×0.81 ve 9 sınav level'ı için küçük ayarlar. Rakipler oyuncunun Training'ini hiç okumaz.
+
+5) MOBİL ARAYÜZ VE KAYIT/DEVAM (tools/ui_rogue.js, Chromium) — 43/43 GEÇTİ
+- 360×800: HQ, 6 sekme hatasız; haritada 20 düğüm, yalnızca L1 açık, kilitli level başlamıyor; draft 3 farklı kart;
+  yeniden yüklemede aynı teklif; savaş HUD'u; KO Focus motor tarafından uygulanıyor; ikinci Focus reddediliyor;
+  pause'da tick ilerlemiyor; devam ediyor.
+- Dalga ortasında sayfa yeniden yüklendi → CONTINUE → aynı tick'e tekrar oynatma: hash, survivor ve rakip sayıları
+  başsız tekrar oynatmayla birebir; duraklatılmış başlıyor; ordu yeniden 100'e kurulmuyor.
+- Dalga temizlendi ekranı, K.O. olanlar sonraki dalgada yok, dalga sonrası draft, level sonucu, Coins kalıcı,
+  tamamlanan level yalnızca kayıt olarak açılıyor, ikinci ödeme yok, Training satın alma.
+- Level 200 gerçekten oynandı → Campaign Complete ekranı; yeniden açılışta PLAY yok, Level 201 yok, Training salt
+  okunur, haritada tüm düğümler tamamlandı.
+- 320×568, 360×780, 412×915: savaş alanı ekran yüksekliğinin %68–78'i, HUD ve Focus düğmeleri ekranda, yatay
+  kaydırma yok, dokunma hedefleri 48–56 px, sayfa hatası yok.
+- Performans (tools/perf_rogue.js, 393×852, Boss W5, 200 birim, yazılım çizimi): ~60 FPS, simülasyon hızı 1.00×,
+  en kötü kare 26 ms.
+- Ekran görüntüleri: screenshots_rogue/ (çalışan oyundan, telefon emülasyonu).
+
+6) KAYNAKTAN KORUNAN V4 SİSTEMLERİ
+FWEngine (deterministik 100v100, 60 Hz, mulberry32), FWFootball / Football Fusion maç topu (LOOSE / CONTROLLED /
+PASSING / SHOOTING / GOAL, kaleci kurtarışı, direk, aut), 7 rol, 10 nitelik, 12 özel yetenek, spatial grid,
+FWSprites / FWRender / FWVisualV3 / FWDirector / FWAudio, orijinal 249 takımlık gömülü veritabanı (v4_data.js
+değiştirilmeden dosyada). Campaign kancaları yalnızca opts.rogue varken çalışır (src/engine_rogue.js,
+tools/patch_rogue.py). V4 stüdyo / video dışa aktarma bu sürümün ön yüzünde yok.
+
+7) BİLİNEN SINIRLAMALAR VE RİSKLER
+- Gerçek telefon testi, seslerin kulakla dinlenmesi ve 1'den 200'e insan oyunu yapılmadı.
+- Denge, referans oyuncu modeline göre ayarlandı; gerçek oyuncu farklı harcayabilir. En zor sınavlar (L72, L136,
+  L151, L160, L191) referansla ilk denemede ~1/3; 100v100 savaşlar çok "kartopu" etkili olduğundan küçük güç farkı
+  büyük sonuç farkı yaratır.
+- Mağlubiyet Coins'i (şartnamedeki formül) son dalgada kaybedince temel ödülün %85'ini verir ve sınırsız
+  tekrarlanabilir: ör. E1 Normal'de son dalgada kaybetmek deneme başına 255 Coins (galibiyet bir kez 300–330);
+  E10 Boss'ta son dalgada kayıp ~30.940 Coins. Bu, Coins/dakika açısından bilinçli kayıpla farm riski taşır;
+  şartname gereği ek ceza eklenmedi.
+- V4 futbolunda şut/pas olayları seyrek olabildiği için bazı futbol kartları (Keeper Breaker, Goalkeeper's Instinct)
+  sakin dalgalarda az tetiklenir; Storm of Passes bu yüzden 2. ardışık pasta tetikleniyor (3 yerine).
+- Aktif dalgaya dönüş, dalga başından kayıtlı tick'e tekrar oynatarak yapılır (birkaç yüz ms – ~1 s "RESTORING").
+- Her dalga V4'ün 2,2 s giriş animasyonuyla başlar.
+- Acil kaleci olan defans oyuncusu sahada kaleci görünümüne geçer (kalıcı rolü defans kalır).
+- Önceki Road to Glory sürümünde olası hata (düzeltilmedi, orada ölçülmedi): Roguelite'ın ilk sürümü aynı
+  "advanceTo(w.t + dt)" döngüsünü kullanıyordu ve ölçümde simülasyonu gerçek zamandan 1,62 kat hızlı ilerletti
+  (tick ızgarasına yukarı yuvarlama). Road to Glory'nin canlı döngüsü (src/arcade_app.js) aynı kalıbı kullanıyor.
+  Roguelite Reborn'da döngü sabit adımlı biriktiriciyle yeniden yazıldı (ölçülen hız 1.00×).
