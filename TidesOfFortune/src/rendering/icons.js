@@ -258,6 +258,16 @@ import { X3FX } from './td/Props6.js';
       let k = IK;
       rect(t, 7, 5, 2, 10, k.w), vline(t, 7, 5, 14, k.wL), vline(t, 8, 6, 14, k.wD), disc(t, 7, 3, 3, k.gD), disc(t, 7, 3, 2, k.g), px(t, 6, 2, "#fff6c0"), px(t, 7, 3, k.gL), hline(t, 6, 9, 6, k.gD), px(t, 2, 2, k.gL), px(t, 12, 1, k.gL), px(t, 12, 5, k.gL), px(t, 3, 6, k.gL);
     },
+    // Pusula eşyası (iç kimliği ITEM_SEXTANT, eski adı sekstant): ahşap kutulu cep pusulası; genel "compass" simgesinden ayırt edilir
+    pocketCompass: (t) => {
+      let k = IK;
+      rect(t, 1, 2, 13, 13, k.wD), rect(t, 2, 3, 11, 11, k.w), hline(t, 2, 12, 3, k.wL), vline(t, 2, 3, 13, k.wL), rect(t, 5, 1, 5, 1, k.gD), px(t, 7, 1, k.gL),
+        disc(t, 7, 8, 5, k.gD), disc(t, 7, 8, 4, k.pa), px(t, 5, 5, "#fff6c0"),
+        vline(t, 7, 4, 12, k.paD), hline(t, 3, 11, 8, k.paD), px(t, 5, 10, k.paD), px(t, 9, 6, k.paD), px(t, 9, 10, k.paD), px(t, 5, 6, k.paD),
+        vline(t, 7, 4, 7, k.r), px(t, 6, 6, k.rD), px(t, 8, 6, k.r), px(t, 6, 7, k.rD), px(t, 8, 7, k.r),
+        vline(t, 7, 9, 12, k.ink), px(t, 6, 9, k.ink), px(t, 8, 9, k.ink), px(t, 6, 10, k.sD), px(t, 8, 10, k.sD),
+        px(t, 7, 8, k.gL);
+    },
     sextant: (t) => {
       let k = IK;
       line(t, 7, 1, 2, 11, k.g), line(t, 8, 1, 13, 11, k.g), line(t, 8, 1, 3, 11, k.gD), icRows(t, [[11, 2, 13], [12, 3, 12], [13, 5, 10]], k.g), hline(t, 3, 12, 12, k.gD), line(t, 7, 2, 9, 12, k.sD), disc(t, 7, 2, 1, k.gL), px(t, 4, 11, k.ink), px(t, 7, 11, k.ink), px(t, 10, 11, k.ink), rect(t, 10, 4, 3, 2, k.s), px(t, 13, 4, k.cL);

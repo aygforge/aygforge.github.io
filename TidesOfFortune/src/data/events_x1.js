@@ -262,7 +262,7 @@ export const X1_EVENTS = [
       { label: 'Akıntıya karşı mücadele', icon: 'sail', chance: 65, tags: ['maneuver'],
         win: { text: `Tüm yelkenler ve tüm kollar! Gemi akıntıyı yenip açığa çıktı.`, fx: { xp: 10 } },
         lose: { text: `Akıntı kazandı; gemi kayalara sürtündü ve rotanı uzattı.`, fx: { hull: -15, extra: 1 } } },
-      { label: 'Sekstantla güvenli yolu bul', icon: 'sextant', req: { item: 'ITEM_SEXTANT' },
+      { label: 'Pusulayla güvenli yolu bul', icon: 'pocketCompass', req: { item: 'ITEM_SEXTANT' },
         win: { text: `Yıldızları okuyup akıntının zayıf kolunu buldun.`, fx: { xp: 10 } } },
       { label: 'Bekle', icon: 'anchor', tags: PASS,
         win: { text: `Demir attın; akıntı sakinleşene kadar bekledin.`, fx: { x1: { delay: 25 } } } },

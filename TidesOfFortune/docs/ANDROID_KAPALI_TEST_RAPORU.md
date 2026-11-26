@@ -1,4 +1,13 @@
-# Tides of Fortune — Android kapalı test sürümü raporu (0.1.0 / 1)
+# Tides of Fortune — Android kapalı test sürümü raporu
+
+## Sürüm geçmişi
+| Sürüm | Kod | AAB SHA-256 | Değişiklik |
+|---|---|---|---|
+| 0.1.0 | 1 | `13f624b5…2d91057` | İlk kapalı test sürümü |
+| 0.1.1 | 2 | `636632df…c54556fa` | "Sekstant" eşyası her yerde "Pusula" oldu; eşyaya ayrı bir cep pusulası ikonu çizildi. İç kimlik `ITEM_SEXTANT` korundu, kayıtlar etkilenmez. |
+
+Aşağıdaki ayrıntılar ilk sürüm (0.1.0 / 1) içindir. 0.1.1 aynı yükleme anahtarıyla imzalandı (sertifika SHA-256 aynı).
+
 
 > ⚠️ **Bu derleme yalnızca Google Play KAPALI TEST kanalı içindir. Üretim (production) kanalına doğrudan
 > çıkarılmamalı, Play Console'da "üretime yükselt" (promote) ile de taşınmamalıdır.**

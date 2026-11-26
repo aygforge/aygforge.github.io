@@ -203,7 +203,7 @@ export const MYSTERY_SCENES = {
     approach: () => [par(slow(10), move('stars', { alpha: 1 }, 3)), par(react('fortune', side), lookout('Yıldızlar o kadar parlak ki… sanki bir harita.', { dur: 2.6 }))],
     intro: () => [T(0.4)],
     opts: [
-      () => [par(work(['CAPTAIN'], 'helm', 'Sekstantla yıldızları okuyor', 5, 1.2), cap('Kutup yıldızı… şuradan bir çizgi…', 2.6, 0.6)), par(spawn(sky({ id: 'cons', kind: 'stars', x: 260, y: 60, opts: { n: 0, lines: [[0, 0], [30, 14], [62, 6], [90, 30], [120, 22]] } })), sfx('magic')), cap('Kısa bir yol var!', 2, 0.8)],
+      () => [par(work(['CAPTAIN'], 'helm', 'Pusulayla yıldızları okuyor', 5, 1.2), cap('Kutup yıldızı… şuradan bir çizgi…', 2.6, 0.6)), par(spawn(sky({ id: 'cons', kind: 'stars', x: 260, y: 60, opts: { n: 0, lines: [[0, 0], [30, 14], [62, 6], [90, 30], [120, 22]] } })), sfx('magic')), cap('Kısa bir yol var!', 2, 0.8)],
       () => [par(deckProp('map', 'mapTable', 'center'), work(['CREW_COMPASS'], 'center', 'Yıldızları haritaya döküyor', 5, 1.4)), only('CREW_COMPASS', 'Şu takımyıldız bize en kısa rotayı söylüyor.', { dur: 2.8 }), par(spawn(sky({ id: 'cons', kind: 'stars', x: 220, y: 50, opts: { n: 0, lines: [[0, 0], [30, 14], [62, 6], [90, 30], [120, 22], [150, 40]] } })), sfx('magic')), remove('map')],
     ],
     exit: () => [par(move('stars', { alpha: 0 }, 1.5), move('cons', { alpha: 0 }, 1.5)), weather({ restore: true }), remove('moon'), remove('stars'), remove('cons'), go(30)],

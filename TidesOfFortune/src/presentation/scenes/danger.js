@@ -245,8 +245,8 @@ export const DANGER_SCENES = {
           : par(spawn({ id: 'reef', kind: 'reef', x: 0, y: -260 }), move('reef', { y: 30 }, 3, { ease: 'linear' }), move('enc', { y: -380, alpha: 0 }, 3, { wait: false }), lookout('Sığlık! Adam kaçtı!', { dur: 2.2 })),
       ],
       (c) => [cap('Kestirmeni başkasına sat.', 2.2, 0.8), move('enc', { y: 240 }, 2.5)],
-      (c) => [ // Sekstant
-        work(['CAPTAIN'], 'helm', 'Sekstantla ölçüyor', 4, 1.5),
+      (c) => [ // Pusula
+        work(['CAPTAIN'], 'helm', 'Pusulayla ölçüyor', 4, 1.5),
         cap('Yıldızlar başka bir yol söylüyor. Yalancı!', 2.6, 0.8),
         par(say('enc', 'Eh… ben… hoşça kal!', 2, 0.4), move('enc', { y: 260, x: besides(c, 90) }, 2.6)),
       ],

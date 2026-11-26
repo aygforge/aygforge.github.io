@@ -299,7 +299,7 @@ export const X1_SCENES = {
     intro: () => [T(0.3)],
     opts: [
       (c, info) => [par(go(70), sfx('depart'), cap('Tüm kollar! Akıntıyı yeneceğiz!', 2.2, 0.4)), ...rock(0.06), ...(info.success ? [par(S('shipTo', { y: 0 }), move('rk', { y: 340 }, 3))] : [par(S('shipTo', { y: 50 }), move('rk', { y: c.len / 2 + 20 }, 1.6)), par(sfx('creak'), fx('splinter', { rail: side, dy: 60 }, 30), S('shake', { amount: 10 }))])],
-      () => [par(work(['CAPTAIN'], 'helm', 'Sekstantla akıntının zayıf kolunu buluyor', 4, 1.2), cap('Şurada! İskeleye üç kulaç!', 2.2, 0.4)), par(S('shipTo', { x: -side * 40, y: 0 }), go(30), move('rk', { y: 340 }, 3))],
+      () => [par(work(['CAPTAIN'], 'helm', 'Pusulayla akıntının zayıf kolunu buluyor', 4, 1.2), cap('Şurada! İskeleye üç kulaç!', 2.2, 0.4)), par(S('shipTo', { x: -side * 40, y: 0 }), go(30), move('rk', { y: 340 }, 3))],
       () => [stop(), cap('Demir atın. Akıntı dönene kadar bekleyeceğiz.', 2.4, 0.6), T(2), par(S('shipTo', { y: 0 }), move('rk', { y: 360 }, 3))],
     ],
     exit: () => [remove('cur'), ...driftAll(), weather({ restore: true }), T(0.6)],

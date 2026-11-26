@@ -557,7 +557,7 @@ export function evalOption(G, ev, o, flags = {}, cur = null) {
       if (pirate && hasPet(G, 'PET_KIRMIZI')) add('Kaptan Kırmızı', 15);
       if ((etags.includes('storm') || etags.includes('wave')) && hasUpgrade(G.meta, 'UPG_STORM_SENSE')) add('Fırtına Sezgisi', 10);
     }
-    if (tags.includes('navigate') && !explicitIds.has('ITEM_SEXTANT') && hasItem(G, 'ITEM_SEXTANT')) add('Sekstant', 30);
+    if (tags.includes('navigate') && !explicitIds.has('ITEM_SEXTANT') && hasItem(G, 'ITEM_SEXTANT')) add('Pusula', 30);
     // Yeni hayvanlar
     if (tags.includes('escape') && hasPet(G, 'PET_AHTAPOT')) add('Mürekkep', 10);
     if ((etags.includes('wreck') || etags.includes('deep') || tags.includes('dive') || /\bdal/i.test(o.label || '')) && hasPet(G, 'PET_AHTAPOT')) add('Mürekkep (dalış)', 15);
