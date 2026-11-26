@@ -80,6 +80,8 @@ export class EncounterDirector {
     this.world.shipTargetY = 0;
     this.world.flagUp = false;
     this.world.deck.temp = [];
+    this.world.softRemove = false;
+    this.stepUntil = null;
   }
 
   // ───────── Kurulum (ekran değişince) ─────────
@@ -146,6 +148,7 @@ export class EncounterDirector {
     const w = this.world;
     w.mode = 'harbor';
     w.clearEncounter();
+    for (const e of w.entities) if (e.leaving) e.leaving.still = true; // limanda kaymaz, söner
     w.remove('escortShip');
     w.coast = null;
     w.harbor = { type, offY: 0, seed };
@@ -262,11 +265,13 @@ export class EncounterDirector {
       }
       const step = this.steps.shift();
       let d = 0;
-      for (const a of [].concat(step)) d = Math.max(d, this.exec(a, false) || 0);
+      this.stepUntil = null;
+      for (const a of [].concat(step)) { d = Math.max(d, this.exec(a, false) || 0); if (a.type === 'until') this.stepUntil = a.fn; }
       this.stepDur = d;
       this.stepT = 0;
     }
     this.stepT += dt;
+    if (this.stepUntil && this.stepUntil(this)) { this.stepUntil = null; this.stepDur = -1; return; }
     if (this.stepT >= this.stepDur) this.stepDur = -1;
   }
 
@@ -288,6 +293,11 @@ export class EncounterDirector {
         const e = w.get(a.id);
         if (!e) return 0;
         if (instant) { Object.assign(e, a.to); return 0; }
+        // Olay kapanışı: yanımızdaki gemi/tekne ileri (ekranın üstüne) gönderiliyorsa bir anda uzaklaşmaz;
+        // gemimiz hızlanıp onu geçiyormuş gibi aşağı kayarak geride kalır. Sönerek kaybolan (alpha→0) çıkışlar korunur.
+        if (this.phase === PH.EXIT && a.to.y != null && a.to.y < -250 && (a.to.alpha == null || a.to.alpha > 0.3) && /boat|ship|raft/i.test(e.kind || '') && w.retire(e)) {
+          return a.wait === false ? 0 : 0.9;
+        }
         const from = {};
         for (const k of Object.keys(a.to)) from[k] = e[k] ?? 0;
         e.tween = { from, to: a.to, t: 0, dur: a.dur, ease: a.ease };
@@ -432,6 +442,8 @@ export class EncounterDirector {
       }
       case 'syncDisplay': w.cargoOverride = null; this.display = null; this.hooks.onDisplay?.(); return 0;
       case 'call': if (!instant) a.fn?.(this); return a.dur || 0;
+      // koşul sağlanana kadar bekle (en fazla max sn)
+      case 'until': return instant ? 0 : (a.max ?? 5);
       // ───── sahne kiti ilkelleri ─────
       case 'board': return this.board(a, instant);
       case 'unboard': return this.unboard(a, instant);
@@ -495,6 +507,7 @@ export class EncounterDirector {
     const L = w.layout();
     const s0 = L.stations.find((q) => q.type === (a.to || 'railR')) || L.stations[0];
     t.busy = true;
+    t.leavingDeck = true;
     t.onArrive = () => { setTimeout(() => { w.deck.temp = w.deck.temp.filter((q) => q !== t); }, 150); };
     w.deck.goto(t, s0.x, s0.y, 'walk');
     if (t.carry === null || a.carry) { if (a.carry) { t.carry = 'crate'; t.crateGood = a.carry; } }
@@ -736,6 +749,8 @@ export class EncounterDirector {
   continueAfter() {
     const run = this.run;
     if (run.phase === 'arrival') {
+      // limanda: sahne nesneleri bir anda silinmez, yerinde söner (yeni sahneyle kimlik çakışmaz)
+      for (const e of [...this.world.entities]) if (!e.persist) this.world.retire(e, { fade: true });
       this.world.clearEncounter();
       this.display = null;
       this.phase = PH.DOCKED;
@@ -747,7 +762,41 @@ export class EncounterDirector {
     if (this.core.run.ended) return;
     this.setPhase(PH.EXIT);
     const c = this.ctx();
-    this.runSteps([...this.scene.exit(c, this.lastInfo || {}), { type: 'syncDisplay' }], () => this.toSail());
+    this.runSteps([...this.wrapUpSteps(), ...this.scene.exit(c, this.lastInfo || {}), { type: 'syncDisplay' }], () => this.toSail());
+  }
+
+  /**
+   * Olay kapanışının ortak sırası (sahnenin kendi çıkışından ÖNCE):
+   *  1) güvertemize geçmiş yabancılar kendi gemilerine/teknelerine döner, yağmacılar işini bitirip geri geçer;
+   *  2) halat, kanca ve iskeleler geri çekilir;
+   *  3) sahnenin çıkışı oynar; bu sırada ve seyre dönüşte kaldırılan görünür nesneler bir anda silinmez,
+   *     gemimiz ilerliyormuş gibi aşağı kayarak geride kalır (World.retire).
+   */
+  wrapUpSteps() {
+    const w = this.world;
+    const walkersBusy = () => w.entities.some((e) => e.walkers && e.walkers.some((x) => !x.dead));
+    const hooksOut = () => w.entities.some((e) => e.hooks && e.hooks.length);
+    return [
+      { type: 'call', fn: (d) => { d.world.softRemove = true; d.sendBoardersHome(); } },
+      { type: 'until', fn: () => !w.deck.temp.length && !walkersBusy(), max: 7 },
+      { type: 'call', fn: (d) => { d.world.deck.temp = []; for (const e of d.world.entities) if (e.walkers) e.walkers = []; for (const e of d.world.entities) if (e.hooks && e.hooks.length) { e.hooksK = e.hooksK ?? 1; e.hooksRetract = true; } } },
+      { type: 'until', fn: () => !hooksOut(), max: 0.8 },
+    ];
+  }
+
+  /** Güvertedeki yabancı NPC'leri en yakın yabancı gemi/tekne tarafındaki küpeşteye yürütüp indir */
+  sendBoardersHome() {
+    const w = this.world;
+    const L = w.layout();
+    const near = w.entities.filter((e) => !e.persist && !e.leaving && e.encounter !== false && ['ship', 'boat', 'rowboat', 'raft', 'tentBoat', 'wreck'].includes(e.kind) && Math.abs(e.y - w.ship.y) < 260);
+    for (const t of [...w.deck.temp]) {
+      if (t.leavingDeck) continue;
+      const tw = w.shipToWorld(t.x, t.y);
+      let side = 0, best = Infinity;
+      for (const e of near) { const dd = Math.hypot(e.x - tw.x, e.y - tw.y); if (dd < best) { best = dd; side = Math.sign(e.x - w.ship.x); } }
+      const to = side ? (side < 0 ? 'railL' : 'railR') : (t.x < L.cx ? 'railL' : 'railR');
+      this.unboard({ id: t.id, to, wait: false }, false);
+    }
   }
 
   toSail() {
@@ -756,8 +805,12 @@ export class EncounterDirector {
     w.deck.react('calm');
     w.flagUp = false;
     this.restoreWeather();
+    w.softRemove = true;
     this.runSteps([{ type: 'sails', state: 'full' }, { type: 'speed', v: SAIL_SPEED }, { type: 'camera' }, { type: 'wait', dur: 1.2 }], () => {
-      w.entities = w.entities.filter((e) => e.persist || (e.y > 400 || e.y < -400 ? false : !e.encounter));
+      // sahnede kalan her şey: görünürse aşağı kayarak geride kalır, görünmüyorsa kaldırılır
+      for (const e of [...w.entities]) if (!e.persist && !e.leaving && e.encounter) w.retire(e);
+      w.entities = w.entities.filter((e) => e.persist || e.leaving || (e.y > 400 || e.y < -400 ? false : !e.encounter));
+      w.softRemove = false;
       this.ensureEscort();
       this.moveEscort(false);
       this.setPhase(PH.SAIL);

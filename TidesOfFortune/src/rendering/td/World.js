@@ -15,6 +15,9 @@ import { iconCanvas } from '../icons.js';
 
 const lerp = (a, b, t) => a + (b - a) * t;
 
+/** Kayarak değil yerinde sönerek ayrılan efekt/atmosfer nesneleri */
+const FADE_KINDS = new Set(['duelPlank', 'fog', 'mist', 'glowRing', 'glowPatch', 'sparkles', 'stars', 'smoke', 'spray', 'splash', 'bubbles', 'soundRings', 'lightBeam', 'lightOrb', 'windStreaks', 'rainbow', 'moon', 'stormFront', 'seaGlyphs', 'reverseCurrent', 'frost', 'shadow', 'danger', 'mechSphere', 'glassWave', 'spark', 'flare', 'whirlpool']);
+
 export class World {
   constructor() {
     this.ocean = new Ocean();
@@ -66,7 +69,34 @@ export class World {
   }
 
   remove(id) {
+    // olay kapanışında (softRemove) görünen sahne nesnesi bir anda silinmez: yumuşakça ayrılır
+    if (this.softRemove) { const e = this.get(id); if (e && this.retire(e)) return; }
     this.entities = this.entities.filter((e) => e.id !== id);
+  }
+
+  /**
+   * Sahne nesnesini yumuşakça ayır. Ekranda görünüyorsa: açık denizde gemimiz ilerliyormuş gibi aşağı kayarak
+   * geride kalır (rotamızın önündeyse yana da açılır); güverteye bağlı/kaplama nesneler ve limanda yerinde söner.
+   * Görünmüyorsa hemen kaldırılır. Döner: yumuşak ayrılış başladıysa true.
+   */
+  retire(e, { fade = false } = {}) {
+    if (!e || e.persist) return false;
+    if (e.leaving) return true;
+    const W = this.W || 640, H = this.H || 360;
+    const s = this.toScreen(e.x, e.y, W, H);
+    const visible = (e.alpha ?? 1) > 0.05 && s.x > -90 && s.x < W + 90 && s.y > -90 && s.y < H + 90;
+    if (!visible) { this.entities = this.entities.filter((q) => q !== e); return false; }
+    e.id = `${e.id}~${this.idSeq++}`; // aynı kimlikle gelecek yeni sahne nesnesiyle karışmasın
+    e.encounter = false;
+    e.tween = null;
+    e.drift = false;
+    e.walkers = null;
+    e.say = null;
+    if (e.hooks) { e.hooksK = e.hooksK ?? 1; e.hooksRetract = true; }
+    const still = fade || FADE_KINDS.has(e.kind) || !!e.local || !!e.screen || (e.layer || 0) >= 3 || this.mode !== 'sail';
+    const ahead = Math.abs(e.x - this.ship.x) < 130 && e.y < this.ship.y + 40;
+    e.leaving = { still, vx: !still && ahead ? (Math.sign(e.x - this.ship.x) || 1) * 70 : 0, fade: FADE_KINDS.has(e.kind) ? 0.9 : 0.5 };
+    return true;
   }
 
   /** Kasaba görüntüsü önbelleğini doldur (ekrana çizmeden) */
@@ -78,7 +108,8 @@ export class World {
   }
 
   clearEncounter() {
-    this.entities = this.entities.filter((e) => e.persist);
+    this.softRemove = false;
+    this.entities = this.entities.filter((e) => e.persist || e.leaving);
     this.cargoOverride = null;
     this.deck.temp = [];
   }
@@ -191,7 +222,17 @@ export class World {
     // varlıklar
     for (const e of this.entities) {
       e.t += dt;
-      if (e.tween) {
+      if (e.leaving) {
+        const L = e.leaving;
+        if (L.still) { e.alpha = (e.alpha ?? 1) - dt / L.fade; if (e.alpha <= 0) e.dead = true; }
+        else {
+          L.age = (L.age || 0) + dt;
+          // gemimiz ilerliyor (ve hızlanıyor): nesne yavaşça başlayıp hızlanarak aşağı kayar, geride kalır
+          e.y += (Math.max(this.speed, 30) + Math.min(70, L.age * 28)) * dt;
+          e.x += L.vx * dt;
+          if (this.toScreen(e.x, e.y, this.W || 640, this.H || 360).y > (this.H || 360) + 220) e.dead = true;
+        }
+      } else if (e.tween) {
         const tw = e.tween;
         tw.t += dt;
         const f = Math.min(1, tw.t / tw.dur);
@@ -200,6 +241,12 @@ export class World {
         if (f >= 1) { e.tween = null; tw.done?.(); }
       } else if (e.drift) e.y += this.speed * dt;
       if (e.walkers) for (const w of e.walkers) this.updateWalker(w, dt);
+      if (e.hooks) {
+        // halat/iskele uçları kendi gemisine bağlı: gemi hareket ederse uç onunla gelir
+        if (e._hp && e._hp.ref === e.hooks) { const dx = e.x - e._hp.x, dy = e.y - e._hp.y; if (dx || dy) for (const h of e.hooks) { h.x0 += dx; h.y0 += dy; } }
+        e._hp = { x: e.x, y: e.y, ref: e.hooks };
+        if (e.hooksRetract) { e.hooksK = (e.hooksK ?? 1) - dt * 2.4; if (e.hooksK <= 0) { e.hooks = null; e.hooksRetract = false; e.hooksK = 1; } }
+      }
     }
     this.entities = this.entities.filter((e) => !e.dead && (e.persist || e.y < H + 300));
     // efektler
@@ -419,11 +466,14 @@ export class World {
             a.fire && DRAW.fire(e, n + (a.fire.dx || 0), i + (a.fire.dy || 0), this.t, { n: 14, w: 20, h: 14 }),
             a.hooks)
           )
-            for (let l of a.hooks)
+            for (let l0 of a.hooks) {
+              const hk = a.hooksRetract ? Math.max(0, a.hooksK ?? 1) : 1;
+              const l = hk < 1 ? { ...l0, x1: l0.x0 + (l0.x1 - l0.x0) * hk, y1: l0.y0 + (l0.y1 - l0.y0) * hk } : l0;
               if (l.plank) {
                 for (let d = -2; d <= 2; d++) line(e, r.x + l.x0, r.y + l.y0 + d, r.x + l.x1, r.y + l.y1 + d, Math.abs(d) === 2 ? "#3a2412" : d === -1 ? "#c89a62" : "#a87a4a");
                 line(e, r.x + l.x0, r.y + l.y0 + 3, r.x + l.x1, r.y + l.y1 + 3, "rgba(20,10,4,0.3)");
               } else line(e, r.x + l.x0, r.y + l.y0, r.x + l.x1, r.y + l.y1, "#3a2a1a"), line(e, r.x + l.x0, r.y + l.y0 - 1, r.x + l.x1, r.y + l.y1 - 1, "#c8a070");
+            }
           if (a.walkers)
             for (let l of [...a.walkers].sort((A, B) => A.y - B.y))
               (e.fillStyle = "rgba(20,10,4,0.22)"),
