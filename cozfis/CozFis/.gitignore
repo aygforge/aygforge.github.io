@@ -1,2 +1,7 @@
 node_modules/
 dist/
+# imza anahtarları ve şifreleri asla Git'e girmez
+*.jks
+*.keystore
+*.p12
+keystore.properties

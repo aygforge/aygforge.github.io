@@ -96,9 +96,11 @@ yalnızca derleme hattının çalıştığını gösterir. İmzalamak için:
    Google da uygulama imzalama anahtarını yönetir.
 
 **Yayından önce karar verilmesi gerekenler** (bkz. `CozFis_Android_Build_Report.md` §7):
-- Kalıcı uygulama kimliği. Şu anki `com.aygforge.cozfis` **geçicidir**. Uygulama Google Play'de yayımlandıktan sonra kimlik değiştirilemez.
+- ~~Kalıcı uygulama kimliği~~ → `com.aygforge.cozfis` 26.11.2026'da onaylandı ve ilk imzalı AAB bu kimlikle üretildi.
 - Gerçek marka ikonu. Şu anki ikon ve açılış ekranı, oyunun çipura sprite'ından üretilmiş **geçici geliştirme görselleridir**.
 - Gizlilik politikası ve veri güvenliği formu (oyun ağ kullanmaz ve izin istemez).
+
+Upload anahtarının saklanması ve yedeklenmesi: `KEYSTORE_BACKUP.md`.
 
 ## 7. Yapılandırma özeti
 

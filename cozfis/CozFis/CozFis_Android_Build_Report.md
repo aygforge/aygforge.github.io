@@ -8,7 +8,7 @@ Kaynak: Faz 2 modüler projesi (`cozfis/CozFis/`, commit `274ef8a`). Android uyg
 | Teslim | Durum |
 |---|---|
 | `CozFis_Debug.apk` | ✅ **Gerçekten derlendi.** Debug anahtarıyla imzalı (`apksigner verify` başarılı), 8,52 MB, `com.aygforge.cozfis.debug`. Emülatöre kuruldu ve etkinlik başlatıldı (bkz. §5) |
-| Release APK / AAB | ✅ Derleme hattı çalışıyor: `CozFis_Release.apk` 7,42 MB, `CozFis_Release.aab` 6,70 MB. ⚠️ **İmzasız taslaklardır**, yüklenemez (yayın anahtarı yok, bkz. §7) |
+| `CozFis_Release.aab` | ✅ **İmzalı (upload anahtarı `cozfis-upload`), Google Play'e yüklenebilir**, 6,73 MB, versionCode 1 / 0.3.0. Bkz. §9 |
 | Emülatörde oynanış testi | ❌ **Yapılamadı.** Ortamda donanım hızlandırma (KVM) yok. Yazılımsal öykünmede Android System WebView başlatılırken çöküyor. Sistemin kendi WebView test uygulaması da aynı şekilde çöküyor, yani sorun CozFis'te değil (§5) |
 | Gerçek cihaz testi | ⏭️ Fiziksel cihaz bağlı değildi → `CozFis_Android_Test_Checklist.md` |
 | Android kabuk mantığı | ✅ 16/16. Ancak bu bir **simülasyondur**: masaüstü Chromium + sahte Capacitor köprüsü (§6) |
@@ -37,7 +37,7 @@ Ortama özgü iki not:
 
 | Alan | Değer | Durum |
 |---|---|---|
-| Release `applicationId` | `com.aygforge.cozfis` | ⚠️ **GEÇİCİ.** Depoda, Play Console bilgisinde ya da marka dosyalarında kayıtlı bir kimlik bulunamadı. Depoda yalnızca `app-ads.txt` dosyası var: bir AdMob yayıncı satırı içeriyor, uygulama kimliği içermiyor. Yayından önce onaylanmalı; Google Play'e ilk yüklemeden sonra kimlik değiştirilemez |
+| Release `applicationId` | `com.aygforge.cozfis` | ✅ **KALICI — 26.11.2026'da onaylandı.** (Önceki not: Depoda, Play Console bilgisinde ya da marka dosyalarında kayıtlı bir kimlik bulunamadı. Depoda yalnızca `app-ads.txt` dosyası var: bir AdMob yayıncı satırı içeriyor, uygulama kimliği içermiyor. Google Play'e ilk yüklemeden sonra değiştirilemez.) |
 | Debug `applicationId` | `com.aygforge.cozfis.debug` | Test içindir; yayın sürümüyle yan yana kurulabilir |
 | Görünen ad | `CozFis` (debug: `CozFis (debug)`) | ✔ |
 | İkon ve açılış ekranı | Oyunun çipura sprite'ı (`assets/fish/fish_cipura_left.png`), koyu mor zemin üzerinde | ⚠️ **GEÇİCİ geliştirme ikonu.** Stüdyonun marka logosu değildir, gerçek ikonla değiştirilmelidir |
@@ -165,9 +165,9 @@ Emülatör kapatılıp yeniden çalıştırıldığında 66/66 geçti.
 
 | Adım | Durum |
 |---|---|
-| AAB derleme komutu (`npm run android:aab` → `bundleRelease`) | ✅ Çalışıyor. Çıktı **imzasız taslak**, yüklenemez |
-| Yükleme anahtarı (upload key) ve `keystore.properties` | ❌ Yok. Sahte bir anahtar **oluşturulmadı**; adımlar README_Android §6'da |
-| Kalıcı uygulama kimliği | ❌ Onay bekliyor (`com.aygforge.cozfis` geçici) |
+| AAB derleme komutu (`npm run android:aab` → `bundleRelease`) | ✅ Çalışıyor; imzalı AAB üretildi (§9) |
+| Yükleme anahtarı (upload key) ve `keystore.properties` | ✅ RSA 4096 upload anahtarı oluşturuldu, kullanıcıya teslim edildi; saklama süreci `KEYSTORE_BACKUP.md` |
+| Kalıcı uygulama kimliği | ✅ `com.aygforge.cozfis` onaylandı |
 | Marka ikonu ve açılış ekranı | ❌ Geçici geliştirme ikonu kullanılıyor |
 | Gizlilik politikası, veri güvenliği formu, mağaza girişi | ❌ Bu fazın kapsamı dışında |
 | Gerçek cihaz testleri | ❌ `CozFis_Android_Test_Checklist.md` |
@@ -184,3 +184,21 @@ Emülatör kapatılıp yeniden çalıştırıldığında 66/66 geçti.
 5. Tarayıcı sürümündeki kayıtlar uygulamaya otomatik taşınmaz (farklı köken). Taşıma yolu, oyunun "Kaydı dışa aktar / içe aktar"
    özelliğidir; bu akış Android paylaşım sayfası ve dosya seçicisiyle uyumlu hale getirildi.
 6. Debug kimliği (`.debug`) ile yayın kimliği farklıdır. Debug sürümde yapılan test kayıtları yayın sürümüne geçmez. Bu bilinçli bir tercihtir.
+
+## 9. İmzalı release AAB (26.11.2026)
+
+| | |
+|---|---|
+| Komut | `npm run android:aab` (`bundleRelease`; `android/keystore.properties` dosyasındaki imza ile) |
+| Çıktı | `dist/CozFis_Release.aab`, 7.056.828 bayt (6,73 MB) |
+| Paket / sürüm | `com.aygforge.cozfis`, versionCode **1**, versionName **0.3.0** |
+| SDK | minSdk 24, targetSdk 36 |
+| İzinler | Yok. Yalnızca AndroidX'in uygulamaya özel, imza düzeyindeki `DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION` kaydı var |
+| Yerel kütüphane | Yok (`base/lib/` yok) → 16 KB sayfa uyumu sorunu yok |
+| Web içeriği | `base/assets/public/` (dist/web); yapılandırmada geliştirme sunucusu adresi (`server.url`) yok |
+| Hata ayıklama | `debuggable` yok (release), WebView hata ayıklama kapalı |
+| İmza doğrulama | `jarsigner -verify` → **jar verified**. `keytool -printcert -jarfile` → `CN=Ayg Forge, O=Ayg Forge`, SHA-256 `3C:66:C7:9F:…:39:AE:B7` (upload anahtarıyla aynı) |
+| bundletool doğrulaması | Yapılamadı: bu ortamda bundletool jar'ını indirip çalıştırmaya izin verilmedi. Paket içeriği ve manifest Gradle'ın birleştirdiği release manifesti ve arşiv listesiyle kontrol edildi. Google Play yükleme sırasında paketi ayrıca doğrular |
+
+Oyun kodu, 6 dil ve kayıt sistemi bu adımda değişmedi; yalnızca imza yapılandırması ve belgeler eklendi.
+Sonraki her yüklemede `android/version.properties` dosyasındaki `versionCode` artırılmalıdır.
