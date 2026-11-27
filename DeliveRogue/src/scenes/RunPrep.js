@@ -15,7 +15,10 @@ import { ENEMY_DB, ENEMY_SHORT } from '../data/enemies.js';
 import { ENEMY_CATALOG } from '../data/enemyCatalog.js';
 import { EPISODE_IDS } from '../data/ids.js';
 import { MODES } from '../data/modes.js';
-import { PACKAGES } from '../data/packages.js';
+import { PACKAGES, pkgOf } from '../data/packages.js';
+import { chapterKey } from '../data/ids.js';
+import { resolveMystery } from '../systems/PackageRules.js';
+import { CONFIG } from '../data/config.js';
 import { GARAGE_ORDER } from '../data/garage.js';
 import { COSMETICS } from '../data/cosmetics.js';
 import { icon } from '../ui/icons.js';
@@ -64,13 +67,16 @@ export const RunPrep = {
       const tone = lk ? 'locked' : on ? 'gold' : done ? 'teal' : 'blue';
       return `<button class="rp-card p-card p-${tone} ${on ? 'on' : ''}" data-a="sel" data-n="${k}">
         <div class="rp-card-h"><span class="rp-num">${lk ? icon('lock') : k}</span><span class="rp-cn">${esc(c.name)}</span></div>
-        <div class="rp-card-m">${stars(s.stars[k - 1], 3, 'sm')}<span class="rp-pk" style="--pc:${PACKAGES[c.pkg].color}">${T('pkgShort_' + c.pkg)}</span></div>
+        <div class="rp-card-m">${stars(s.stars[k - 1], 3, 'sm')}<span class="rp-pk" style="--pc:${pkgOf(c.pkg).color}">${c.boss ? '🐉 ' : ''}${T('pkgShort_' + c.pkg)}</span></div>
         <div class="rp-card-f">${lk ? T('lockedChapter') : on ? T('selectedRoute') : done ? T('completed') : T('tapToSelect')}</div></button>`;
     }).join('');
-    const rd = routeData(ch), inf = rd.info;
+    const rd = routeData(ch), inf = rd.info, pk = pkgOf(ch.pkg);
+    // Mystery: the rule is fixed per attempt in the save (re-opening RunPrep never rerolls it)
+    let ruleId = pk.id;
+    if (pk.rule === 'mystery') { const key = chapterKey('campaign', 'COF', n); s.mysteries = s.mysteries || {}; if (!s.mysteries[key]) { s.mysteries[key] = { attempt: (s.mysteryAttempts = (s.mysteryAttempts || 0) + 1), rule: null }; s.mysteries[key].rule = resolveMystery(key, s.mysteries[key].attempt, ch); Save.write(); } ruleId = s.mysteries[key].rule; }
     const enemies = chapterEnemies(ch);
     const threat = enemies.map(e => `<span class="rp-en ${e.d.elite ? 'elite' : ''}" title="${esc(e.d.name)}"><img alt="" src="${Art.url(Art.portrait(e.sh))}"><b>×${e.n}</b></span>`).join('');
-    const first = !s.completed[n - 1], firstBonus = first ? Math.round(ch.coins * 0.5) : 0, xp = Math.round((40 + 15 * ch.n) * (first ? 1.5 : 1));
+    const first = !s.completed[n - 1], firstBonus = (first ? Math.round(ch.coins * 0.5) : 0) + Math.round(ch.coins * (pk.reward - 1)) + (ch.boss && !s.bossClears.COF ? CONFIG.bossFirstClearCoins.COF : 0), xp = Math.round((40 + 15 * ch.n) * (first ? 1.5 : 1));
     const obst = [
       inf.jets ? ['steam', T('ob_jets', inf.jets)] : null, inf.grates ? ['grate', T('ob_grates', inf.grates)] : null,
       inf.spill ? ['spill', T('ob_spill')] : null, inf.carts ? ['cart', T('ob_carts', inf.carts)] : null,
@@ -90,14 +96,15 @@ export const RunPrep = {
       <div class="rp-main">
         <div class="rp-cards">${btn(icon('up'), `data-a="step" data-d="-1" aria-label="${T('prev')}" ${n <= 1 ? 'disabled' : ''}`, 'steel', 'icon xs')}${cards}${btn(icon('down'), `data-a="step" data-d="1" aria-label="${T('next')}" ${n >= CHAPTERS.length ? 'disabled' : ''}`, 'steel', 'icon xs')}</div>
         <div class="rp-prev p-card p-navy">
-          <div class="rp-prev-h"><small>${T('episodeN', 1)} · ${T('chapter')} ${n}</small><b>${esc(ch.name)}</b><em style="color:${PACKAGES[ch.pkg].color}">${T('pkg_' + ch.pkg)}</em></div>
+          <div class="rp-prev-h"><small>${T('episodeN', 1)} · ${T('chapter')} ${n}</small><b>${esc(ch.name)}</b><em style="color:${pk.color}">${T('pkg_' + ch.pkg)}${ruleId !== pk.id ? ' → ' + T('pkg_' + ruleId) : ''}</em><i class="rp-type">${T('ctype_' + ch.type)}</i></div>
           <div class="rp-prev-b">
             <div class="rp-map"><canvas width="132" height="300"></canvas><div class="rp-map-k"><span class="k-start">${T('start')}</span><span class="k-drop">${T('drop')}</span></div></div>
             <div class="rp-info">
               <div class="rp-k">${T('threat')}</div><div class="rp-v warn">${T('diff')[ch.diff]} · ${ch.enemies}</div>
               <div class="rp-ens">${threat}</div>
               <div class="rp-k">${T('route')}</div><div class="rp-v">${T('routeSegs', inf.segs, inf.combatSegs)}</div>
-              <div class="rp-k">${T('deliveries')}</div><div class="rp-v ok">0/1</div>
+              <div class="rp-k">${T('deliveries')}</div><div class="rp-v ok">0/${rd.info.drops}</div>
+              ${ch.boss ? `<div class="rp-k">${T('bossFight')}</div><div class="rp-v warn">🐉 ${ENEMY_DB[ch.boss].name} · ${T('secShort', CONFIG.bossArenaTime)}</div>` : ''}
               <div class="rp-k">${T('timer')}</div><div class="rp-v">${T('secShort', ch.timer)}</div>
               <div class="rp-k">${T('rewards')}</div><div class="rp-v gold">${icon('coin')}${fmtNum(ch.coins + firstBonus)}${first ? ` <small>${T('firstClear')}</small>` : ''}</div>
               <div class="rp-v xp">${icon('xp')}${xp} XP</div>
@@ -107,7 +114,7 @@ export const RunPrep = {
       </div>
       <div class="rp-details">
         <div class="rp-box p-card p-navy"><div class="rp-bh">${T('keyObstacles')}</div>${obst}</div>
-        <div class="rp-box p-card p-navy"><div class="rp-bh">${T('packageRule')}</div><div class="rp-li">${`<img alt="" src="${Art.url(Art.pkgIcon(ch.pkg, 28))}">`}<span>${T('pkgd_' + ch.pkg)}</span></div><div class="rp-bh">${T('starGoals')}</div>${goals}</div>
+        <div class="rp-box p-card p-navy"><div class="rp-bh">${T('packageRule')}</div><div class="rp-li">${`<img alt="" src="${Art.url(Art.pkgIcon(ch.pkg, 28))}">`}<span>${ruleId !== pk.id ? `<b>${T('mysteryRule')}: ${T('pkg_' + ruleId)}</b> — ${T('pkgd_' + ruleId)} (+%40)` : T('pkgd_' + ch.pkg)}</span></div>${ch.n === 12 && s.legacyFinalClear ? `<div class="rp-li muted">${T('legacyFinal')}</div>` : ''}<div class="rp-bh">${T('starGoals')}</div>${goals}</div>
         <div class="rp-box p-card p-navy wide"><div class="rp-bh">${T('mastery')} ${s.stars[n - 1] >= 3 ? '' : `<small>(${T('masteryHint')})</small>`}</div>${mast}${s.bestTime[n - 1] ? `<div class="rp-li">${icon('clock')}<span>${T('best')}: ${s.bestTime[n - 1].toFixed(1)} s</span></div>` : ''}</div>
       </div>
       <div class="rp-start">

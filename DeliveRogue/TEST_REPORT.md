@@ -1,46 +1,62 @@
-# TEST REPORT — Phase 03 Combat & Skill Expansion
+# TEST REPORT — Phase 04 Coffee District Complete
 
-Environment: Linux container, Node 22.23, Vite 5, Playwright Chromium (headless), mobile emulation 412×870 @2x
-with touch; multi-touch via Chrome DevTools Protocol touch events. **No physical Android device was used.**
+Environment: Linux container, Node 22.23, Vite 5, Playwright Chromium (headless). **No physical Android device.**
 FPS / memory **not measured**.
 
 ## Commands actually run
 | Command | Result |
 |---|---|
 | `npm run build` | OK |
-| `npm test` | **27/27 pass** (core 11, UI 5, skills/XP 11) |
-| `node tests/smoke/smoke.mjs dist` | **49/49 pass** |
+| `npm test` | **33/33 pass** (core, UI, skills/XP, Coffee data/maps/save) |
+| `node tests/smoke/smoke.mjs dist` | **49/49 pass** (UI flow, manual fire, C1 real run, fail path) |
 | `node tests/smoke/skills_runtime.mjs dist` | **28/28 pass** |
-| `baseline.mjs` legacy HTML vs `dist` (12 chapters, map + spawn + HP) | **byte-identical** |
+| `node tests/smoke/coffee_runtime.mjs dist` | **44/44 pass** |
+| `baseline.mjs --geometry` legacy HTML vs `dist` (variants off) | C1–C6, C8–C10 **identical** geometry + spawns; C7 / C11 / C12 changed on purpose (customer segment / boss arena) |
 
-## Acceptance (Master Prompt Faz 03)
+## Acceptance (Master Prompt Faz 04)
 | Criterion | Evidence |
 |---|---|
-| Multi-touch | CDP: joystick + FIRE touched together → courier moved 29 px and fired 2 shots; releasing the joystick touch kept FIRE held; both clear on release |
-| No idle fire | target locked in range, no fire input for 1.2 s → 0 shots, 0 projectiles |
-| Target / cooldown | real pointer tap = exactly 1 shot; hold 1.3 s at .60 s interval = 3 shots; release → 0 more; Space fires; pause clears fire and freezes shooting |
-| Existing 20 regression | the 20 preserved ids/order are asserted; every one runs in the engine; legacy semantics (e.g. Payment / Pierce / Ricochet falloffs, element exclusivity, shield) kept; baseline worlds identical |
-| New skills / evolutions runtime + cap | all 60 skills and all 20 evolutions apply and run 1.5 s in the engine without errors or non-finite state, each changes the derived modifiers; targeted checks: Power +15 %, Extended range, Rapid, Overcharged 5th shot, Explosive AoE, Electric chain, Frozen/Frostbite slow, Burn DoT, Flame Burst, Venom Spread, Heavy Armor −20 %, Last Stand, Time Extension, Second Choice, Fast Learner, checkpoint skills, Golden Receipt (success only), Payment Storm, Infinity Receipt, Iron Courier; caps DR 80 % / interval .12 s / crit 100 %; worst-case proc build peaks at 13 ≤ 14 procs per window |
-| Deterministic choices | same seed → identical offer sequence (12 picks); free reroll replaces the offer from the engine stream; a choice not in the offer is rejected |
+| All Coffee chapters playable | engine sweep with steering + held fire: **C1–C12 delivered**, C4–C12 on **3 variant seeds each** (30 runs). Delivery times 31–84 s against 60–160 s timers; C12 boss killed in 58–85 s of the 90 s boss timer (random skill picks, no garage). Sweep uses debug invulnerability (traversal check); damage / fail paths are tested separately. |
+| No kill gate on normal chapters | C1–C11 delivered **without firing one card** (0 shots) |
+| Boss gate on the final | exit gate closed until the boss dies; standing in the final drop before that does nothing |
+| Route-only XP sufficient | no-fire runs still gain extra picks on every chapter; unit test: route-only XP reaches the minimum pick target on all 12 chapters (C12 before the arena) |
+| Map validation | every chapter canonical + each combat segment in variants B and C individually + 5 seeded combinations: pickup, each drop in order, checkpoint, arena gates, spawn clearance; failure falls back to canonical with a log |
+| Real success / fail | success after boss + delivery; fails tested: courier HP, package rules (cold / melt / burst / vip), boss timer, delivery timer, plus Phase 02/03 paths |
 
-## Other checks
-Rarity class frequencies over 6000 offers ≈ 55/30/12/3 · filters (prerequisites, single base element, checkpoint /
-boss / package context) never violated over 200 seeds · evolution exclusivity (Ricochet used by Infinity Receipt
-blocks Chain Reaction) · utility fallback only when nothing is valid · Run XP budget: route-only XP reaches the
-minimum pick target on all 12 chapters, full XP stays within target · C1 real run: route 120 + combat 80 XP →
-run level 3, 3 skills, delivered.
+## Boss (Latte Art Dragon)
+Idle and untargetable before the arena · entry gate closes on entry · immune intro roar · delivery timer frozen, boss
+timer running · phase-1 attacks telegraph warn → active → recover and land · phase 2 at 70 % (immune roar, reset) ·
+helpers spawn with cap ≤ 4, helper kills give no XP and no kill stats · phase 3 at 30 % with its own patterns ·
+death from a real card hit = one BOSS_DEFEATED event, exit opens, helpers removed · delivery timer resumes ·
+boss + delivery = success, +400 first-clear coins once, episode complete · replay gives no second first-clear
+reward · boss timer 0 = failure (`bossTime`).
 
-## Known limitations / deferred (stated honestly)
-- Context-gated skills exist and work but are **not offered in this build** because their context does not exist
-  yet: Boss Invoice (boss chapters, Phase 04), Insulated Box / Cooling System (Hot/Frozen packages, Phase 04),
-  Smooth Rider (Fizzy package, Phase 04). Consequently **Titan Breaker** and **Thermal Master** become reachable in
-  Phase 04 (their reachability is verified in unit tests with the intended context).
-- Ad reroll (extra_skill_reroll placement) not shown: browser build has no ads (PlatformAdapter unavailable).
-- Endless-length selection budget not tested (Endless arrives in Phase 10).
-- Evolution icons are a star badge placeholder; skill icons for the 40 new skills are procedural glyphs.
-- Balance numbers are starting values from Ek B; tuning happens in later phases.
+## Packages
+12 types with contract HP / speed · HOT starts only after pickup, decays on simulation time, frozen while paused,
+fails under 25 % · FROZEN melts faster on steam, fails under 20 % · FIZZY pressure up on impact, down when calm,
+bursts at 100 % · VIP fails under 80 % at delivery, succeeds at 85 % with +75 % · reward bonuses XL +25 %,
+PREMIUM +50 %, HOT +20 %, STANDARD 0 · REINFORCED hazard −30 %, PREMIUM package damage +20 % · MYSTERY resolves to a
+real rule, stays the same after abort/reopen, new attempt only after a real terminal result, never Hot/Frozen/Fizzy/
+VIP on a boss final, reward +40 % once.
 
-## Screenshots (`docs/screenshots/phase03/`, real build)
-Full flow 01–18 (as Phase 02) plus: 05 skill choice with rarity + reroll · 07a reticle without firing ·
-07b FIRE held · 21 Settings control options · 22 left-handed layout with large FIRE · 23 level-up offer with an
-evolution.
+## Multi-drop
+Final customer refuses before the first drop · first drop completes once (XP once), target advances · success only
+after both drops.
+
+## Save
+Legacy save with all 12 chapters cleared: completions/stars/unlocks kept, `legacyFinalClear` true, episode **not**
+marked complete (boss final must be played), migration idempotent; invalid Mystery entries dropped.
+
+## Known limitations / deferred
+- Dynamic route events (Blocked Passage, Spill Accident, Ambush, Express Shortcut, Emergency Station, Bonus Cache) are
+  **not implemented** yet; the existing split segments provide the risky physical shortcut.
+- Packages XL / LIGHTWEIGHT / REINFORCED / PREMIUM / VIP / FROZEN / MYSTERY are implemented and tested but not
+  used in the Coffee table (themes Hot / Fizzy); they appear in later restaurants.
+- Boss balance (1400 HP, 90 s) is a starting value: random-pick builds needed 58–85 s; tune in the balance phase.
+- Boss art is procedural; star goals are still the HTML5 rule (pkg ≥ 70 %, time) until Phase 09.
+- Real-time manual play of every chapter by a person was not done; the sweep is engine-driven.
+
+## Screenshots (`docs/screenshots/phase04/`, real build)
+01 RunPrep C12 (boss, type) · ch4/7/8/12 intros · 02 C4 Hot meter · 03 C8 Fizzy meter · 04 C7 multi-drop ·
+05 boss arena: closed gate, boss bar, boss timer, rain telegraphs · 06 phase 3 sweeping breath · 07 C12 result with
+first boss reward · `flow/` full UI flow.

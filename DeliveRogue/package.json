@@ -1,6 +1,6 @@
 {
   "name": "deliverogue",
-  "version": "0.4.0-phase03",
+  "version": "0.5.0-phase04",
   "private": true,
   "description": "DeliveRogue \u2014 portrait mobile action roguelite (HTML5 Canvas, ES modules).",
   "type": "module",
@@ -10,8 +10,9 @@
     "preview": "vite preview",
     "test": "node --test \"tests/unit/*.test.mjs\"",
     "test:smoke": "node tests/smoke/smoke.mjs",
-    "test:all": "npm run test && npm run build && npm run test:smoke && npm run test:skills",
-    "test:skills": "node tests/smoke/skills_runtime.mjs dist"
+    "test:all": "npm run test && npm run build && npm run test:smoke && npm run test:skills && npm run test:coffee",
+    "test:skills": "node tests/smoke/skills_runtime.mjs dist",
+    "test:coffee": "node tests/smoke/coffee_runtime.mjs dist"
   },
   "devDependencies": {
     "vite": "^5.4.0"

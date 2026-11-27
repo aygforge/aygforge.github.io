@@ -4,11 +4,12 @@ import { Input } from '../core/InputManager.js';
 import { Save } from '../core/SaveManager.js';
 import { T } from '../core/i18n.js';
 import { G, View } from '../core/state.js';
-import { TAU, TILE, VIEW_W, clamp, fmtTime, lerp } from '../core/util.js';
+import { COLS, TAU, TILE, VIEW_W, clamp, fmtTime, lerp } from '../core/util.js';
 import { CHAPTERS } from '../data/chapters.js';
 import { MapBuilder } from '../systems/MapBuilder.js';
 import { RUN_XP_PER_LEVEL } from '../data/runxp.js';
 import { Nav } from '../systems/Nav.js';
+import { PackageRules } from '../systems/PackageRules.js';
 
 /* =========================== Render ===========================
    Canvas renderer. World uses camera transform (world coords),
@@ -96,9 +97,13 @@ export const Render = (() => {
   function drawStations(t) {
     const w = G.world, run = G.run;
     // drop zone glow + label
-    const d = w.drop, pulse = 0.5 + 0.5 * Math.sin(t * 4);
-    ctx.fillStyle = `rgba(95,211,180,${(run.picked ? 0.18 : 0.06) + pulse * 0.12})`; ctx.fillRect(d.x0, d.y0, d.x1 - d.x0, d.y1 - d.y0);
-    txt('TESLİMAT', d.cx, d.cy - 1, 15, '#fff1dc', 'center', 'rgba(20,60,50,.9)', 4);
+    const pulse = 0.5 + 0.5 * Math.sin(t * 4), multi = w.drops.length > 1;
+    for (const d of w.drops) {
+      const act = d === w.drop;
+      ctx.fillStyle = d.done ? 'rgba(120,120,120,.12)' : `rgba(95,211,180,${(run.picked && act ? 0.18 : 0.06) + (act ? pulse * 0.12 : 0)})`; ctx.fillRect(d.x0, d.y0, d.x1 - d.x0, d.y1 - d.y0);
+      txt(d.done ? '✓' : multi ? `${T('deliveryWord')} ${d.idx + 1}/${w.drops.length}` : T('deliveryWord'), d.cx, d.cy - 1, d.done ? 18 : multi ? 11 : 15, d.done ? '#9fe8c9' : '#fff1dc', 'center', 'rgba(20,60,50,.9)', 4);
+    }
+    drawGates(t); drawBossFx(t);
     // pickup
     const pk = w.pickup;
     if (!run.picked) { ctx.strokeStyle = `rgba(255,209,102,${0.5 + pulse * 0.5})`; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.ellipse(pk.x, pk.y + 6, 24 + pulse * 4, 10 + pulse * 2, 0, 0, TAU); ctx.stroke(); }
@@ -110,8 +115,44 @@ export const Render = (() => {
     const cp = w.checkpoint;
     if (cp) list.push({ y: cp.y - 30, draw: () => Art.draw(ctx, Art.checkSign(), cp.x + 64, cp.y - 8) });
     for (const c of G.carts) list.push({ y: c.y, draw: () => Art.draw(ctx, Art.cart(), c.x, c.y + 6) });
-    const d = w.drop, cx = d.x1 - 16, cy = d.y0 + 16, happy = run.ended && run.success;
+    for (const md of w.drops) if (!md.final) { const mx = md.x1 - 14, my = md.y0 + 14, hp2 = md.done; list.push({ y: my, draw: () => Art.draw(ctx, Art.customer(Math.floor(G.t * (hp2 ? 8 : 2.5)) % 2, hp2), mx, my - (hp2 ? Math.abs(Math.sin(G.t * 9)) * 4 : 0)) }); }
+    const d = w.drops[w.drops.length - 1], cx = d.x1 - 16, cy = d.y0 + 16, happy = run.ended && run.success;
     list.push({ y: cy, draw: () => { Art.draw(ctx, Art.customer(Math.floor(G.t * (happy ? 8 : 2.5)) % 2, happy), cx, cy - (happy ? Math.abs(Math.sin(G.t * 9)) * 6 : 0)); if (happy && Math.floor(G.t * 3) % 2) txt('♥', cx + 9, cy - 34, 12, '#ff6b8a', 'center', null); } });
+  }
+  /** Arena gates: closed = glowing bars (solid), open = faint frame. */
+  function drawGates(t) {
+    const w = G.world; if (!w.arena) return;
+    for (const [list, kind] of [[w.gates.entry, 'entry'], [w.gates.exit, 'exit']]) {
+      if (!list.length) continue;
+      const closed = w.block[list[0]], r = Math.floor(list[0] / COLS), c0 = list[0] % COLS, c1 = list[list.length - 1] % COLS;
+      const x0 = c0 * TILE, x1 = (c1 + 1) * TILE, y = r * TILE;
+      if (closed) {
+        ctx.fillStyle = kind === 'exit' ? 'rgba(120,40,30,.85)' : 'rgba(60,40,30,.9)'; ctx.fillRect(x0, y + 4, x1 - x0, TILE - 8);
+        ctx.strokeStyle = `rgba(255,${kind === 'exit' ? 90 : 150},60,${0.6 + 0.3 * Math.sin(t * 6)})`; ctx.lineWidth = 3;
+        for (let x = x0 + 6; x < x1; x += 12) { ctx.beginPath(); ctx.moveTo(x, y + 2); ctx.lineTo(x, y + TILE - 2); ctx.stroke(); }
+      } else { ctx.strokeStyle = 'rgba(95,211,180,.35)'; ctx.lineWidth = 2; ctx.setLineDash([6, 6]); ctx.strokeRect(x0, y + 4, x1 - x0, TILE - 8); ctx.setLineDash([]); }
+    }
+  }
+  /** Boss telegraphs: breath cones / sweep, steam circles, caffeine-rain shadows (warn -> active). */
+  function drawBossFx(t) {
+    const B = G.run.boss; if (!B || !B.atk) return;
+    const k = B.atk, e = B.e, warnK = k.stage === 'warn' ? Math.min(1, k.t / k.warn) : 1;
+    if (k.base === 'breath' || k.base === 'sweep') {
+      const ox = e.x, oy = e.y - 20, a = k.a, hw = k.half;
+      const draw = (aa, alpha, fill) => { ctx.beginPath(); ctx.moveTo(ox, oy); ctx.arc(ox, oy, k.range, aa - hw, aa + hw); ctx.closePath(); ctx.fillStyle = fill.replace('A', alpha); ctx.fill(); };
+      if (k.stage === 'warn') { if (k.base === 'sweep') { ctx.beginPath(); ctx.moveTo(ox, oy); ctx.arc(ox, oy, k.range, a - B.def.attacks.sweep.arc - hw, a + B.def.attacks.sweep.arc + hw); ctx.closePath(); ctx.fillStyle = `rgba(255,140,60,${0.08 + warnK * 0.12})`; ctx.fill(); }
+        draw(a, 0.12 + warnK * 0.25, 'rgba(229,83,61,A)'); ctx.strokeStyle = 'rgba(255,90,60,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(ox, oy); ctx.arc(ox, oy, k.range * warnK, a - hw, a + hw); ctx.closePath(); ctx.stroke(); }
+      else if (k.stage === 'active') draw(a, 0.45, 'rgba(255,230,200,A)');
+    } else if (k.base === 'steam' || k.base === 'rain') {
+      for (const m of k.marks) {
+        if (k.stage === 'warn') {
+          ctx.fillStyle = k.base === 'steam' ? `rgba(255,255,255,${0.1 + warnK * 0.25})` : `rgba(60,30,15,${0.15 + warnK * 0.35})`;
+          ctx.beginPath(); ctx.arc(m.x, m.y, m.r * (k.base === 'rain' ? 0.4 + warnK * 0.6 : 1), 0, TAU); ctx.fill();
+          ctx.strokeStyle = k.base === 'steam' ? 'rgba(255,90,60,.85)' : 'rgba(255,170,80,.85)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(m.x, m.y, m.r, 0, TAU); ctx.stroke();
+          if (k.base === 'rain') { ctx.fillStyle = '#7a4a28'; ctx.beginPath(); ctx.arc(m.x, m.y - (1 - warnK) * 160, 5, 0, TAU); ctx.fill(); }
+        }
+      }
+    } else if (k.base === 'summon' && k.stage === 'warn') { ctx.strokeStyle = `rgba(255,250,242,${0.4 + 0.4 * Math.sin(t * 20)})`; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(e.x, e.y - 30, 56, 0, TAU); ctx.stroke(); }
   }
   function drawCheckGate(t) {
     const cp = G.world.checkpoint; if (!cp || cp.used) return;
@@ -151,6 +192,7 @@ export const Render = (() => {
     if (e.ai === 'bruiser') return s === 'windup' ? 'w' : s === 'recover' ? 'x' : 'n';
     if (e.ai === 'knight') return (s === 'aim' || s === 'windup') ? 'w' : s === 'charge' ? 'c' : 'n';
     if (e.ai === 'jugger') return (s === 'windup' || s === 'slam') ? 'w' : 'n';
+    if (e.ai === 'boss') { const B = G.run.boss; return B && B.phase === 2 ? 'p3' : B && B.phase === 1 ? 'p2' : 'n'; }
     if (e.ai === 'caster' || e.ai === 'imp' || e.ai === 'runner') return (s === 'windup' || s === 'charge3') ? 'w' : 'n';
     return 'n';
   }
@@ -171,6 +213,8 @@ export const Render = (() => {
     if (e.state === 'alert') txt('!', x, y - e.d.h - 6, 16, '#ff5a3c');
     if (e.state === 'stunned') for (let i = 0; i < 3; i++) { const a = t * 5 + i * TAU / 3; txt('✦', x + Math.cos(a) * 12, y - e.d.h - 2 + Math.sin(a) * 4, 9, '#ffd166', 'center', null); }
     if (e.state === 'charge3') { ctx.strokeStyle = `rgba(255,150,60,${0.5 + 0.4 * Math.sin(t * 30)})`; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x + 7 * (e.face < 0 ? -1 : 1), y - e.d.h + 2, 8, 0, TAU); ctx.stroke(); }
+    if (e.boss) { if (e.invuln > 0 && G.run.boss.state === 'fight') { ctx.strokeStyle = `rgba(191,233,255,${0.5 + 0.3 * Math.sin(t * 20)})`; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(x, y - 40, 50, 0, TAU); ctx.stroke(); } return; }
+    if (e.helper) { ctx.strokeStyle = 'rgba(255,154,60,.7)'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(x, y - e.d.h * 0.4, e.half + 4, 0, TAU); ctx.stroke(); }
     // health bar
     if (e.d.elite || (e.hp < e.maxHp && e.state !== 'dormant')) {
       const bw = e.d.elite ? 40 : 20, bx = x - bw / 2, by = y - e.d.h - (e.d.elite ? 12 : 6);
@@ -322,21 +366,40 @@ export const Render = (() => {
     ctx.fillStyle = '#f2a541'; ctx.beginPath(); ctx.arc(26, 24, 13, 0, TAU); ctx.fill(); ctx.strokeStyle = '#fff1dc'; ctx.lineWidth = 1.5; ctx.stroke();
     txt('B' + ch.n, 26, 24.5, 11, '#2a160b', 'center', null);
     ctx.font = font(9); let nm = ch.name; while (ctx.measureText(nm).width > 78 && nm.length > 3) nm = nm.slice(0, -2) + '…';
-    txt(nm, 44, 18, 9, '#e9d3b4', 'left', null); txt(T('pkgShort_' + ch.pkg), 44, 30, 8.5, run.pkg.color, 'left', null);
+    txt(nm, 44, 18, 9, '#e9d3b4', 'left', null); txt(T('pkgShort_' + run.pkg.id) + (run.pkg.shownAs ? '→' + T('pkgShort_' + run.pkg.ruleId) : ''), 44, 30, 8.5, run.pkg.color, 'left', null);
     // timer
     const rem = run.timer - run.time, frac = rem / run.timer, urgent = run.picked && frac < 0.25;
     const tx = 182, sc = urgent ? 1 + 0.08 * Math.sin(t * 10) : 1;
     ctx.save(); ctx.translate(tx, 24); ctx.scale(sc, sc);
     if (!run.picked) { txt('⏱ ' + fmtTime(run.timer), 0, -2, 16, '#b59a7c'); txt(T('timerWaits'), 0, 11, 7.5, '#5fd3b4', 'center', null); }
+    else if (run.boss && (run.boss.state === 'intro' || run.boss.state === 'fight')) { txt('🐉 ' + fmtTime(Math.ceil(run.boss.time)), 0, -2, 17, run.boss.time < 20 ? '#ff6b5a' : '#ff9a3c'); txt(T('bossTimer'), 0, 11, 7.5, '#ffb38a', 'center', null); }
     else txt((urgent ? '! ' : '⏱ ') + fmtTime(Math.ceil(rem)), 0, 1, urgent ? 19 : 17, urgent ? '#ff6b5a' : (run.time <= ch.fast ? '#fff1dc' : '#ffd166'));
     ctx.restore();
     if (run.picked) { const fx = 182 - 30, fw = 60; ctx.fillStyle = 'rgba(0,0,0,.4)'; ctx.fillRect(fx, 34, fw, 2); ctx.fillStyle = run.time <= ch.fast ? '#ffd166' : '#6b5040'; ctx.fillRect(fx, 34, fw * clamp(1 - run.time / ch.fast, 0, 1), 2); }
     // bars
     heart(16, 41, 11, '#e5533d');
     bar(25, 40, 128, 15, p.hp / p.maxHp, '#ff8a73', '#c43d2a', `${T('hp')} ${Math.ceil(p.hp)}/${p.maxHp}`, p.flash > 0);
-    Art.draw(ctx, Art.pkgIcon(ch.pkg, 16), 168, 47.5);
+    Art.draw(ctx, Art.pkgIcon(run.pkg.id, 16), 168, 47.5);
     if (run.picked) bar(177, 40, 124, 15, p.pkgHp / p.pkgMax, '#ffd38a', run.pkg.color, `${T('pkgHp')} ${Math.ceil(p.pkgHp)}/${p.pkgMax}`, p.pkgFlash > 0);
     else bar(177, 40, 124, 15, 0, '#888', '#666', T('waitOrder'), false);
+    // boss bar (arena only) + special package meter + deliveries
+    const B = run.boss;
+    if (B && (B.state === 'intro' || B.state === 'fight')) {
+      const bx = 20, by = 124, bw = View.w - 40;
+      rrect(bx - 6, by - 14, bw + 12, 30, 9); ctx.fillStyle = 'rgba(20,10,5,.85)'; ctx.fill();
+      txt(B.e.d.name.toUpperCase() + ' · ' + T('bossPhase', B.phase + 1), View.w / 2, by - 5, 9, '#ffd166');
+      bar(bx, by + 1, bw, 11, Math.max(0, B.e.hp / B.e.maxHp), '#ff9a6a', '#c43d2a', '', B.e.flash > 0);
+      [0.7, 0.3].forEach(f => { ctx.fillStyle = '#fff1dc'; ctx.fillRect(bx + bw * f - 1, by + 1, 2, 11); });
+    }
+    const mt = PackageRules.meter(run);
+    if (mt && mt.v != null && run.picked) {
+      const mx = 12, my = (B && B.state !== 'idle' && B.state !== 'dead') ? 160 : 106; // under the top HUD, clear of the controls
+      rrect(mx - 4, my - 13, 92, 26, 8); ctx.fillStyle = 'rgba(20,10,5,.8)'; ctx.fill();
+      txt(T(mt.key), mx + 42, my - 5, 8, '#fff1dc');
+      bar(mx, my + 1, 84, 9, mt.v, mt.c1, mt.c2, '', mt.rising ? mt.v > 0.75 : mt.v < mt.fail + 0.1);
+      ctx.fillStyle = '#ff5a3c'; ctx.fillRect(mx + 84 * mt.fail - 1, my, 2, 11);
+    } else if (mt && mt.key === 'meter_vip' && run.picked) txt(T('meter_vip') + ' ' + Math.round(p.pkgHp / p.pkgMax * 100) + '%', 14, 106, 9, p.pkgHp / p.pkgMax >= 0.8 ? '#b78cff' : '#ff6b5a', 'left');
+    if (G.world.drops.length > 1 && run.picked) txt(`📦 ${run.stats.drops}/${G.world.drops.length}`, View.w - 12, 112 + (B && B.state !== 'idle' && B.state !== 'dead' ? 30 : 0), 11, '#5fd3b4', 'right');
     // Run XP / run level
     ctx.fillStyle = '#38c6f4'; ctx.beginPath(); ctx.arc(22, 69, 9, 0, TAU); ctx.fill(); ctx.strokeStyle = '#fff1dc'; ctx.lineWidth = 1.3; ctx.stroke();
     txt(String(run.level), 22, 69.5, 9.5, '#fff', 'center', '#14203a', 2.5);

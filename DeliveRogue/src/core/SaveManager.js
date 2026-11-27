@@ -2,6 +2,7 @@
 // Legacy v1 schema + key kept so existing HTML5 saves load unchanged. Debug builds (?debug=1) use a
 // separate namespace. A/B slots, ledger and migrations arrive in Phase 05 (Save System 2.0).
 import { StorageAdapter } from '../platform/StorageAdapter.js';
+import { MYSTERY_POOL } from '../data/packages.js';
 import { clamp, hashStr } from './util.js';
 import { CHAPTERS } from '../data/chapters.js';
 import { COSMETICS } from '../data/cosmetics.js';
@@ -20,11 +21,12 @@ export const Save = (() => {
       garage: { motor: 0, helmet: 0, jacket: 0, pos: 0 },
       unlocked: 1, stars: Array(NCH).fill(0), bestTime: Array(NCH).fill(0), completed: Array(NCH).fill(false),
       episodes: { coffee: false },
-      stats: { deliveries: 0, failures: 0, kills: 0, eliteKills: 0, pkg70: 0, fragileDone: 0, heavyDone: 0, threeStarRuns: 0, runs: 0, mastery: 0 },
+      stats: { deliveries: 0, failures: 0, kills: 0, eliteKills: 0, pkg70: 0, fragileDone: 0, heavyDone: 0, threeStarRuns: 0, runs: 0, mastery: 0, bossKills: 0 },
       book, quests: { claimed: {} }, milestones: { unlocked: {}, claimed: {} }, mastery: {},
       cosmetics: { owned: ['classic'], selected: 'classic' },
       settings: { master: true, music: true, sfx: true, shake: true, vibe: true, reducedMotion: false, lowGfx: false, leftHanded: false, joySize: 1, fireSize: 1, ctrlOpacity: 1 },
       tutorial: {}, settled: [], runCounter: 0,
+      bossClears: { COF: false }, legacyFinalClear: false, mysteries: {}, mysteryAttempts: 0,
     };
   }
   const num = (v, d, lo = -Infinity, hi = Infinity) => (typeof v === 'number' && isFinite(v)) ? clamp(v, lo, hi) : d;
@@ -42,7 +44,14 @@ export const Save = (() => {
       d.completed[i] = bool(Array.isArray(r.completed) ? r.completed[i] : false, false);
       if (d.completed[i] && i + 2 > d.unlocked) d.unlocked = Math.min(NCH, i + 2);
     }
-    d.episodes.coffee = bool(obj(r.episodes).coffee, false) || d.completed[NCH - 1];
+    // Phase 04: episode completion requires the mandatory boss + delivery. A legacy HTML5 C12 clear (no boss flag)
+    // is kept as a legacy record; the new final must be replayed — no boss victory is invented from old data.
+    const bc = obj(r.bossClears); d.bossClears.COF = bool(bc.COF, false);
+    const legacyDone = bool(obj(r.episodes).coffee, false) || d.completed[NCH - 1];
+    d.legacyFinalClear = bool(r.legacyFinalClear, false) || (!d.bossClears.COF && legacyDone && !('bossClears' in r));
+    d.episodes.coffee = d.bossClears.COF;
+    const my = obj(r.mysteries); for (const k in my) { const m = obj(my[k]); if (/^campaign:[A-Z]{3}:C\d\d$/.test(k) && MYSTERY_POOL.includes(m.rule)) d.mysteries[k] = { rule: m.rule, attempt: Math.floor(num(m.attempt, 1, 1, 1e9)) }; }
+    d.mysteryAttempts = Math.floor(num(r.mysteryAttempts, 0, 0, 1e9));
     const st = obj(r.stats); for (const k in d.stats) d.stats[k] = Math.floor(num(st[k], 0, 0, 1e9));
     const bk = obj(r.book); ENEMY_ORDER.forEach(id => { const e = obj(bk[id]); d.book[id] = { seen: bool(e.seen, false), enc: Math.floor(num(e.enc, 0, 0, 1e9)), def: Math.floor(num(e.def, 0, 0, 1e9)) }; });
     const q = obj(obj(r.quests).claimed); QUESTS.forEach(x => { if (q[x.id] === true) d.quests.claimed[x.id] = true; });

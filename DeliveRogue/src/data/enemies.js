@@ -29,8 +29,11 @@ export const ENEMY_DB = {
   COF_E_SteamJugger: { id: 'COF_E_SteamJugger', short: 'SJ', name: 'Steam Jugger', role: 'Elite', arch: 'Tank', ai: 'jugger',
     hp: [240, 250, 260, 280], speed: 26, half: 14, act: 220, leash: 320, dmg: 12, range: 34, windup: 0.8, cd: 3.4, w: 46, h: 46, elite: true,
     desc: 'Zırhlı buhar kazanı canavarı. İşaretli bölgelere buhar püskürtür — buhar hem seni hem paketi yakar. Uyarı halkalarından uzak dur.' },
+  COF_B_LatteArtDragon: { id: 'COF_B_LatteArtDragon', short: 'LD', name: 'Latte Art Dragon', role: 'Boss', arch: 'Boss', ai: 'boss', boss: true,
+    hp: [1400, 1400, 1400, 1400], speed: 34, half: 24, act: 9999, leash: 1e9, dmg: 0, range: 0, windup: 0, cd: 1, w: 84, h: 78,
+    desc: 'Coffee District\'in son bekçisi. Kahve nefesini yelpaze gibi püskürtür, buhar patlamaları ve kafein yağmuru yağdırır. Can %70 ve %30\'a inince öfkelenir; ikinci evrede şeker perileri çağırır.' },
 };
-export const ENEMY_ORDER = ['COF_N_BeanBandit', 'COF_N_SugarSprite', 'COF_N_LatteImp', 'COF_N_BaristaGoblin', 'COF_N_DripCultist', 'COF_N_CreamDrifter', 'COF_N_MugMimic', 'COF_E_GrinderKnight', 'COF_E_SteamJugger'];
+export const ENEMY_ORDER = ['COF_N_BeanBandit', 'COF_N_SugarSprite', 'COF_N_LatteImp', 'COF_N_BaristaGoblin', 'COF_N_DripCultist', 'COF_N_CreamDrifter', 'COF_N_MugMimic', 'COF_E_GrinderKnight', 'COF_E_SteamJugger', 'COF_B_LatteArtDragon'];
 export const ENEMY_SHORT = {}; for (const k in ENEMY_DB) ENEMY_SHORT[ENEMY_DB[k].short] = k;
 /** Chapter in which each enemy is introduced (placement validation). */
-export const ENEMY_INTRO = { BB: 1, SS: 2, LI: 3, BG: 4, DC: 5, CD: 6, GK: 7, MM: 8, SJ: 10 };
+export const ENEMY_INTRO = { BB: 1, SS: 2, LI: 3, BG: 4, DC: 5, CD: 6, GK: 7, MM: 8, SJ: 10, LD: 12 };

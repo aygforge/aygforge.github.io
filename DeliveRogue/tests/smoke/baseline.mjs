@@ -17,18 +17,22 @@ pg.on('pageerror', e => errs.push(e.message));
 await pg.goto(`http://localhost:${srv.address().port}/?debug=1`); await pg.evaluate(() => localStorage.clear()); await pg.reload(); await pg.waitForTimeout(600);
 // modular build (Phase 02+): wait until Boot has loaded the save and MainMenu is active
 await pg.waitForFunction(() => !window.__DR.Scenes || (window.__DR.UI.current === 'MainMenu' && !window.__DR.Scenes.transitioning), null, { timeout: 8000 });
-const out = await pg.evaluate(() => {
+const geometryOnly = process.argv.includes('--geometry');
+const out = await pg.evaluate(geometryOnly => {
   const D = window.__DR, res = [];
+  // Phase 04+: compare canonical layouts (route variants off). Packages/timers changed on purpose in Phase 04.
+  if (D.Data && D.Data.CONFIG) D.Data.CONFIG.routeVariants = false;
   for (let n = 1; n <= 12; n++) {
     D.Save.data.unlocked = 12; D.Save.data.runCounter = 100 + n;
     D.Game.start(n);
     const w = D.G.world, p = D.G.player;
     res.push({ ch: n, rows: w.rows, pathLen: w.pathLen, jets: w.jets.length, grates: w.grates.length, carts: w.carts.length, heals: w.heals.length,
       checkpoint: !!w.checkpoint, timer: D.G.run.ch.timer, pkg: D.G.run.ch.pkg, pkgHp: p.pkgHp, hp: p.hp,
-      enemies: D.G.enemies.map(e => e.id + '@' + Math.round(e.x) + ',' + Math.round(e.y) + ':' + e.hp).join(' ') });
+      enemies: D.G.enemies.filter(e => !e.boss).map(e => e.id + '@' + Math.round(e.x) + ',' + Math.round(e.y) + ':' + e.hp).join(' ') });
+    if (geometryOnly) { const x = res[res.length - 1]; delete x.timer; delete x.pkg; delete x.pkgHp; delete x.hp; }
     D.Game.quit(); D.G.run = null;
   }
   return res;
-});
+}, geometryOnly);
 console.log(JSON.stringify({ errors: errs, chapters: out }, null, 1));
 await b.close(); srv.close();

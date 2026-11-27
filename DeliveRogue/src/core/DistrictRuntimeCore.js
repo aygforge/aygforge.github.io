@@ -6,6 +6,8 @@
 // Phase 03: manual fire + auto aim (fire only from real fire input; nearest attackable target in range + LOS,
 // stable idx tie-break), hybrid Run XP (unique route segments, checkpoint, kills, one risky bonus) with queued
 // level-up picks, 60 skills + 20 evolutions, hard caps and a proc budget. Skill offers use `run.srng`.
+// Phase 04: 12-package rules (PackageRules), multi-drop routes (sequential drop zones), seeded route variants,
+// mandatory boss arena on finals (BossArena: gates, separate boss timer, 3 phases), Mystery rule per attempt.
 import { TT } from './Art.js';
 import { Audio } from './AudioManager.js';
 import { Input } from './InputManager.js';
@@ -16,7 +18,11 @@ import { COLS, RNG, TAU, TILE, clamp, dist, dist2, hashStr, lerp } from './util.
 import { ACTIVE_CAP, CHAPTERS } from '../data/chapters.js';
 import { ENEMY_DB, ENEMY_SHORT } from '../data/enemies.js';
 import { GARAGE } from '../data/garage.js';
-import { PACKAGES } from '../data/packages.js';
+import { pkgOf } from '../data/packages.js';
+import { CONFIG } from '../data/config.js';
+import { PackageRules, resolveMystery } from '../systems/PackageRules.js';
+import { BossArena } from '../systems/BossArena.js';
+import { chapterKey } from '../data/ids.js';
 import { PLAYER_BASE } from '../data/player.js';
 import { Haptic } from '../platform/Haptics.js';
 import { Fx } from '../systems/Fx.js';
@@ -41,19 +47,29 @@ export const Game = (() => {
   function clearHints() { hintQ.length = 0; hintT = 0; const el = document.getElementById('hint'); if (el) el.classList.remove('show'); }
 
   /* ---------- run setup ---------- */
-  function start(n) {
+  /** Mystery rule for this chapter attempt: fixed in the save until a real terminal result (no free reroll). */
+  function mysteryFor(ch) {
+    const s = Save.data, key = chapterKey('campaign', 'COF', ch.n);
+    s.mysteries = s.mysteries || {};
+    if (!s.mysteries[key]) { s.mysteries[key] = { attempt: (s.mysteryAttempts = (s.mysteryAttempts || 0) + 1), rule: null }; s.mysteries[key].rule = resolveMystery(key, s.mysteries[key].attempt, ch); Save.write(); }
+    return s.mysteries[key].rule;
+  }
+  /** opts (debug/tests/modes): { pkg: package id override, mysteryRule, variants: false|array } */
+  function start(n, opts = {}) {
     const ch = CHAPTERS[n - 1], s = Save.data;
     s.runCounter++; s.stats.runs++; Save.write();
     const seed = (hashStr(ch.id) ^ Math.imul(s.runCounter, 2654435761)) >>> 0;
-    const world = MapBuilder.build(ch);
+    const pkgId = opts.pkg || ch.pkg, shown = pkgOf(pkgId);
+    const mRule = shown.rule === 'mystery' ? (opts.mysteryRule || mysteryFor(ch)) : null;
+    const world = opts.variants === false ? MapBuilder.build(ch) : MapBuilder.build(ch, Array.isArray(opts.variants) ? { variants: opts.variants } : { seed });
     G.world = world;
     const run = G.run = {
-      id: Date.now().toString(36) + '_' + s.runCounter, ch, n, pkg: PACKAGES[ch.pkg], rng: RNG(seed), crng: RNG((seed ^ 0x9E3779B9) >>> 0), srng: RNG((seed ^ 0x85EBCA6B) >>> 0), seed, state: 'intro', paused: false,
+      id: Date.now().toString(36) + '_' + s.runCounter, ch, n, pkg: PackageRules.effective(pkgId, mRule), mysteryRule: mRule, dropIdx: 0, configVersion: CONFIG.version, rng: RNG(seed), crng: RNG((seed ^ 0x9E3779B9) >>> 0), srng: RNG((seed ^ 0x85EBCA6B) >>> 0), seed, state: 'intro', paused: false,
       time: 0, timer: ch.timer, picked: false, ended: false, success: false, reason: null, endT: 0, skills: [], evos: [], mods: SkillMgr.compute([], []),
       picksLeft: ch.picks, pickIdx: 0, pickTotal: ch.picks, pickKind: 'start', offer: [], rerolls: 1, pendingPicks: 0, settled: null, seenTypes: {},
-      xp: 0, level: 1, xpPlan: xpPlan(ch, world), segSeen: {}, riskyXp: false, xpLog: { route: 0, cp: 0, combat: 0, risky: 0 },
+      xp: 0, level: 1, xpPlan: xpPlan(ch, world), segSeen: {}, riskyXp: false, xpLog: { route: 0, cp: 0, combat: 0, risky: 0, drop: 0 },
       shots: 0, procT: 0, procN: 0, thunderCd: 0, turboT: 0, turboCd: 0, cpBoostT: 0, guardCd: 0,
-      stats: { kills: 0, eliteKills: 0, steamHits: 0, playerDmg: 0, pkgDmg: 0, impacts: 0, risky: false, healUsed: false, minDist: world.pathLen, time: 0, pkgPct: 1 },
+      stats: { kills: 0, eliteKills: 0, steamHits: 0, playerDmg: 0, pkgDmg: 0, impacts: 0, risky: false, healUsed: false, minDist: world.pathLen, time: 0, pkgPct: 1, drops: 0, dropsTotal: world.drops.length, bossKill: false },
     };
     const st = world.start;
     G.player = { x: st.x, y: st.y, half: 7, vx: 0, vy: 0, kbx: 0, kby: 0, hp: 100, maxHp: 100, pkgHp: run.pkg.hp, pkgMax: run.pkg.hp,
@@ -62,6 +78,7 @@ export const Game = (() => {
     recalc(); G.player.hp = G.player.maxHp;
     // enemies
     G.enemies = []; spawnEnemies(world, run);
+    PackageRules.init(run); BossArena.setup(run, world);
     // hazards
     const per = ch.steam.idle + ch.steam.warn + ch.steam.active + 0.35;
     G.jets = world.jets.map(j => Object.assign({}, j, { t: run.rng.range(0, per), per, ph: 'idle', cyc: 0, hit: false }));
@@ -113,6 +130,14 @@ export const Game = (() => {
     v *= run.mods.xpMul; run.xp += v; run.xpLog[src] += v;
     while (run.xp >= RUN_XP_PER_LEVEL - 1e-6) { run.xp = Math.max(0, run.xp - RUN_XP_PER_LEVEL); run.level++; run.pendingPicks++; const p = G.player; Fx.text(p.x, p.y - 44, T('runLevelUp', run.level), '#7fe1ff', 12, 1.3); Fx.ring(p.x, p.y - 10, '#7fe1ff', 44); Audio.play('checkpoint'); }
   }
+  /** Boss helper (unique id, active immediately, no rewards). */
+  function spawnHelper(sh, x, y, uid) {
+    const d = ENEMY_DB[ENEMY_SHORT[sh]], hp = d.hp[G.run.ch.tier];
+    const e = { idx: G.enemies.length, uid, helper: true, id: d.id, d, sh, ai: d.ai, x, y, half: d.half, hp, maxHp: hp, home: { x, y }, active: true, state: 'chase',
+      t: 0, cd: 0.6, ccd: 2, mcd: 1, dirx: 0, diry: 1, face: 1, flash: 0, slowT: 0, burn: null, poison: null, dotT: 0, vuln: 0, dead: false, deadT: 0, anim: 0, shots: 0, stuck: 0, wob: 0, lx: 0, ly: 0, jz: 0, steamCyc: -1, seen: true };
+    if (Nav.blocked(e.x, e.y, e.half, true)) Nav.unstick(e, true);
+    G.enemies.push(e); Fx.ring(x, y - 6, '#fffaf2', 24);
+  }
   /** Recompute derived player stats from Garage levels + run skills (never stacks twice). */
   function recalc() {
     const p = G.player, g = Save.data.garage, m = G.run.mods, pk = G.run.pkg;
@@ -148,7 +173,7 @@ export const Game = (() => {
       if (run.mods.guardian && !p.shield && run.guardCd <= 0 && p.hp > 0 && p.hp < p.maxHp * 0.35) { p.shield = true; run.guardCd = 12; Fx.ring(p.x, p.y - 8, '#9fd8ff', 40); }
     }
     if (o.pkg > 0 && p.pkgInv <= 0) {
-      let pv = o.pkg * run.pkg.hazardMul * run.mods.pkgMul;
+      let pv = o.pkg * run.pkg.hazardMul * run.mods.pkgMul * (run.pkg.pkgDmgMul || 1);
       if (o.steam) pv *= run.mods.steamPkgMul;
       if (o.impact && run.mods.balance) pv *= 0.5;
       if (o.impact) pv *= run.mods.impactPkgMul;
@@ -157,13 +182,15 @@ export const Game = (() => {
       Fx.text(p.x + 8, p.y - 34, '-' + pv, '#ffb347', 10, 0.9, 'pkg'); Audio.play('pkg'); Fx.burst(p.x, p.y - 14, '#d9a36a', 6, 60, 2);
       if (run.n <= 3) showHint('tut_pkg');
     }
-    if (did && o.steam) run.stats.steamHits++;
+    if (did && o.steam) { run.stats.steamHits++; PackageRules.event(run, 'steam'); }
+    if (did && o.impact) PackageRules.event(run, 'impact'); else if (did && o.kf) PackageRules.event(run, 'knock');
     return did;
   }
   function healPlayer(v) { const p = G.player; const h = Math.min(p.maxHp - p.hp, v); if (h > 0) { p.hp += h; Fx.text(p.x, p.y - 26, '+' + Math.round(h), '#5fd3b4', 11); } }
 
   function hitEnemy(e, dmg, o = {}) {
     if (e.dead) return;
+    if (e.boss && (e.invuln > 0 || !G.run.boss || G.run.boss.state !== 'fight')) { if (!o.dot && !o.proc) Fx.text(e.x, e.y - e.d.h * 0.8, T('immune'), '#bfe9ff', 9, 0.5); return; }
     const p = G.player, run = G.run, m = run.mods; let crit = false;
     if (o.canCrit && run.crng.next() < p.critC) { dmg *= p.critM; crit = true; }
     if (e.vuln > 0) dmg *= 1.5;
@@ -191,8 +218,8 @@ export const Game = (() => {
         for (const t of nearest(e.x, e.y, 85, e)) { if (n >= 2) break; if (!Nav.los(e.x, e.y, t.x, t.y)) continue; Fx.bolt(e.x, e.y - 8, t.x, t.y - 8); hitEnemy(t, base * 0.45 * m.chainMul, { proc: true }); n++; }
         if (n) Audio.play('zap');
       } else if (el === 'frozen') { const keep = e.slowT > 0 && e.slowMul < m.slowMul; e.slowT = Math.max(e.slowT, 1.6 * m.slowDur * (boss ? 0.5 : 1)); if (!keep) e.slowMul = m.slowMul; }
-      else if (el === 'burn') { e.burn = { t: 2, dps: base * 0.8 / 2 * (crit && m.critBurn ? 2 : 1) }; }
-      else if (el === 'toxic') { e.poison = { t: m.poisonDur, dps: base * 1.2 / 4 }; }
+      else if (el === 'burn') { e.burn = { t: 2, dps: base * 0.8 / 2 * (crit && m.critBurn ? 2 : 1) * (boss ? 0.5 : 1) }; }
+      else if (el === 'toxic') { e.poison = { t: m.poisonDur, dps: base * 1.2 / 4 * (boss ? 0.5 : 1) }; }
       if (o.pierce && m.pierceFreeze) { e.slowT = 2.4 * m.slowDur * (boss ? 0.5 : 1); e.slowMul = boss ? 0.55 : 0.3; }
       if (m.thunder && run.thunderCd <= 0 && run.crng.next() < m.thunder.ch && proc()) {
         run.thunderCd = m.thunder.cd; Fx.bolt(e.x + 6, e.y - 90, e.x, e.y - 8); Fx.ring(e.x, e.y - 6, '#ffe14d', m.thunder.r); Audio.play('zap');
@@ -207,6 +234,8 @@ export const Game = (() => {
   function nearest(x, y, r, except) { const out = []; for (const t of G.enemies) if (!t.dead && t !== except && t.state !== 'dormant' && dist2(x, y, t.x, t.y) < r * r) out.push(t); out.sort((a, b) => dist2(x, y, a.x, a.y) - dist2(x, y, b.x, b.y)); return out; }
   function killEnemy(e) {
     e.dead = true; e.deadT = 0.35; e.hp = 0; const run = G.run;
+    if (e.helper) { Fx.burst(e.x, e.y - e.d.h * 0.4, '#fffaf2', 10, 80, 2); Audio.play('kill'); if (G.player.target === e) G.player.target = null; return; } // boss helpers: no XP / coins / stats
+    if (e.boss) { const bk = Save.data.book[e.id]; if (bk) bk.def++; run.stats.kills++; Fx.burst(e.x, e.y - 40, '#fff1dc', 40, 180, 3.5); Fx.ring(e.x, e.y - 30, '#ffd166', 110, 1); Audio.play('win'); if (G.player.target === e) G.player.target = null; BossArena.onDeath(run); return; }
     run.stats.kills++; if (e.d.elite) run.stats.eliteKills++;
     const bk = Save.data.book[e.id]; if (bk) bk.def++;
     const col = { BB: '#6b3b1f', SS: '#fffaf2', LI: '#e9cfa6', BG: '#6fae4c', DC: '#5a3524', MM: '#f1ebdf', CD: '#fffaf0', GK: '#9aa3ad', SJ: '#c27a3a' }[e.sh];
@@ -264,7 +293,7 @@ export const Game = (() => {
     const hit = Nav.move(p, mvx * dt, mvy * dt, false, true);
     // impact: sliding / knocked into a solid at speed shakes the package
     p.impactCd -= dt;
-    const thr = p.speed * (run.pkg.id === 'FRAGILE_ORDER' ? 0.55 : 0.7) * (m.balance ? 1.3 : 1);
+    const thr = p.speed * (run.pkg.ruleId === 'FRAGILE_ORDER' ? 0.55 : 0.7) * (m.balance ? 1.3 : 1);
     if ((hit.hx && Math.abs(mvx) > thr) || (hit.hy && Math.abs(mvy) > thr)) {
       if ((p.onSpill || Math.hypot(p.kbx, p.kby) > 60) && p.impactCd <= 0 && run.picked) {
         p.impactCd = 0.9; run.stats.impacts++;
@@ -404,6 +433,7 @@ export const Game = (() => {
         if (e.dotT <= 0) { e.dotT = 0.5; let v = 0; if (e.burn) { v += e.burn.dps * 0.5 * run.mods.dotMul; e.burn.t -= 0.5; if (e.burn.t <= 0) e.burn = null; Fx.part({ x: e.x, y: e.y - 10, vy: -30, life: 0.4, max: 0.4, size: 2.5, color: '#ff7b3a' }); } if (e.poison) { v += e.poison.dps * 0.5; e.poison.t -= 0.5; if (e.poison.t <= 0) e.poison = null; Fx.part({ x: e.x, y: e.y - 10, vy: -20, life: 0.5, max: 0.5, size: 2.5, color: '#7ddc4a' }); } if (v > 0) hitEnemy(e, v, { noAggro: true, dot: true, proc: true }); if (e.dead) continue;
           if (run.mods.wildfire && e.burn && (e.wfT = (e.wfT || 0) - 0.5) <= 0) { e.wfT = 1; if (G.enemies.filter(q => q.burn && !q.dead).length < CAPS.maxBurning) { const t = nearest(e.x, e.y, 50, e).find(q => !q.burn); if (t) { t.burn = { t: 2, dps: e.burn.dps }; Fx.bolt(e.x, e.y - 6, t.x, t.y - 6); } } } }
       }
+      if (e.ai === 'boss') { BossArena.tickBoss(e, dt); continue; }
       const dP = dist(e.x, e.y, p.x, p.y);
       if (!e.active) {
         if (e.state === 'dormant') {
@@ -655,6 +685,9 @@ export const Game = (() => {
       showHint('tut_go');
       if (run.n === 5) showHint('tut_heavy');
       (run.ch.tut || []).forEach(showHint);
+      const rh = { hot: 'tut_hot', frozen: 'tut_frozen', fizzy: 'tut_fizzy', vip: 'tut_vip' }[run.pkg.rule]; if (rh) showHint(rh);
+      if (run.pkg.shownAs === 'MYSTERY_ORDER') showHint('tut_mystery');
+      if (G.world.drops.length > 1) showHint('tut_multidrop');
     }
     for (const h of w.heals) {
       if (h.y > G.cam.y && h.y < G.cam.y + View.h && run.picked) showHint('tut_heal');
@@ -685,6 +718,15 @@ export const Game = (() => {
     }
   }
 
+  /** Intermediate multi-drop delivery: real hand-over, XP once, next customer becomes the active target. */
+  function completeDrop(run, d) {
+    const w = G.world, p = G.player; if (d.done) return;
+    d.done = true; run.stats.drops++; run.dropIdx++;
+    const next = w.drops[run.dropIdx]; w.drop = next; w.dropField = next.field;
+    addXp(run.xpPlan.drop, 'drop'); Audio.play('pickup'); Fx.ring(p.x, p.y - 10, '#5fd3b4', 46); Fx.burst(d.cx, d.cy, '#5fd3b4', 14, 90, 2.2);
+    Fx.text(p.x, p.y - 36, T('dropDone', run.stats.drops, run.stats.dropsTotal), '#5fd3b4', 11, 1.4);
+    Bus.emit('DROP_COMPLETED', { idx: d.idx, of: run.stats.dropsTotal });
+  }
   /* ---------- end of run (terminal state entered exactly once) ---------- */
   function endRun(success, reason) {
     const run = G.run; if (!run || run.ended) return;
@@ -711,7 +753,7 @@ export const Game = (() => {
       return;
     }
     if (run.state !== 'play') return;
-    if (run.picked) run.time += dt;
+    if (run.picked && !BossArena.inArena(run)) run.time += dt; // the delivery timer pauses inside the boss arena
     run.procT -= dt; if (run.procT <= 0) { run.procT = CAPS.procWindow; run.procN = 0; }
     run.thunderCd -= dt; run.guardCd -= dt;
     G.navT -= dt;
@@ -727,10 +769,22 @@ export const Game = (() => {
     // so reaching the dropoff on the same frame HP/package hits zero is a failure.
     if (run.state !== 'play') return;
     const p = G.player;
+    const ruleFail = PackageRules.update(run, p, dt, { nearSteam: run.picked && PackageRules.nearSteam(G, p) });
+    const bossFail = BossArena.update(run, dt);
     if (p.hp <= 0) endRun(false, 'hp');
     else if (p.pkgHp <= 0) endRun(false, 'pkg');
+    else if (ruleFail) endRun(false, ruleFail);
+    else if (bossFail) endRun(false, bossFail);
     else if (run.picked && run.time >= run.timer) { run.time = run.timer; endRun(false, 'time'); }
-    else if (run.picked) { const d = G.world.drop; if (p.x > d.x0 && p.x < d.x1 && p.y > d.y0 && p.y < d.y1) endRun(true, null); }
+    else if (run.picked) {
+      const d = G.world.drop;
+      if (p.x > d.x0 && p.x < d.x1 && p.y > d.y0 && p.y < d.y1) {
+        const vf = PackageRules.deliveryCheck(run, p);
+        if (vf) endRun(false, vf);
+        else if (!d.final) completeDrop(run, d);
+        else if (!run.boss || run.boss.state === 'dead') { run.stats.drops = run.stats.dropsTotal; endRun(true, null); }
+      }
+    }
     // queued level-up choices open at the next safe frame (never on the delivery / failure frame)
     if (run.state === 'play' && run.pendingPicks > 0) openLevelPick();
   }
@@ -766,5 +820,6 @@ export const Game = (() => {
   function reroll() { const r = G.run; if (!r || r.state !== 'pick' || r.rerolls <= 0) return false; r.rerolls--; newOffer(r); Bus.emit('pick', { kind: r.pickKind, reroll: true }); return true; }
   function pause(v) { const r = G.run; if (!r || r.ended || r.state !== 'play') return false; r.paused = v; Input.reset(); return true; }
   function quit() { const r = G.run; if (!r) return; if (!r.ended) { r.ended = true; r.success = false; r.reason = 'quit'; r.state = 'done'; } clearHints(); G.run = null; }
-  return { start, update, recalc, beginPicks, choose, reroll, pause, quit, endRun, hurtPlayer, remainingFrac, showHint, pickTarget, addXp, CAPS };
+  BossArena.bind({ G, hurtPlayer, spawnHelper, Fx, Audio, Bus, showHint, T, Save, activate });
+  return { start, update, recalc, beginPicks, choose, reroll, pause, quit, endRun, hurtPlayer, remainingFrac, showHint, pickTarget, addXp, CAPS, completeDrop };
 })();

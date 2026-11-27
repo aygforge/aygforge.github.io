@@ -10,7 +10,8 @@ export const Nav = (() => {
   let W = null;
   const isSolidT = t => t >= TT.WALL && t <= TT.VENT;
   function setWorld(w) { W = w; }
-  function tileAt(c, r) { if (c < 0 || c >= COLS || r < 0 || r >= W.rows) return TT.WALL; return W.tile[r * COLS + c]; }
+  /** Dynamic blockers (closed arena gates) are solid for movement, projectiles, LOS and BFS. */
+  function tileAt(c, r) { if (c < 0 || c >= COLS || r < 0 || r >= W.rows) return TT.WALL; const i = r * COLS + c; return W.block && W.block[i] ? TT.WALL : W.tile[i]; }
   function solid(c, r, enemy) { const t = tileAt(c, r); return isSolidT(t) || (enemy && t === TT.SAFE); }
   function blocked(x, y, half, enemy) {
     const c0 = Math.floor((x - half) / TILE), c1 = Math.floor((x + half - 0.001) / TILE);

@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.5.0-phase04 — Coffee District Complete
+- 12-package system (STANDARD, HEAVY, FRAGILE, XL, LIGHTWEIGHT, REINFORCED, PREMIUM, VIP, HOT, FROZEN, FIZZY,
+  MYSTERY) with HP / speed / hazard / impact / package-damage / reward modifiers and special rules (temperature,
+  coldness, pressure, VIP 80 % gate, Mystery rule fixed per attempt). Rules run only after pickup on simulation
+  time; HUD meter only when needed. HEAVY_ORDER (HTML5) aliases HEAVY_PACKAGE; RUSH/FINAL became chapter types.
+- 6 chapter types; Coffee table keeps every HTML5 name, layout, obstacle set, enemy count and timer. Themes:
+  Hot (C4, C9), Fizzy (C8); multi-drop C7 and C11 (one CUSTOMER segment each, sequential real drops, XP once).
+- Mandatory boss final C12: Latte Art Dragon in a fixed arena (entry gate closes, delivery timer pauses, 90 s boss
+  timer, 3 phases at 70 % / 30 %, telegraphed Coffee Breath fan, Steam Burst, Caffeine Rain, phase-3 sweeping
+  breath + serial steam, phase-2 Sugar Sprite helpers with cap 4 and no rewards, single death event, exit opens,
+  delivery). First boss clear +400 coins once; episode completion requires boss + delivery.
+- Seeded A/B/C combat-segment route variants (C4+; canonical, mirrored columns, mirrored rows) with map validation
+  and canonical fallback; same seed + config version = same geometry and spawns.
+- Save: boss clear flags, legacy C12 clear kept as legacy record (no invented boss victory), Mystery attempts.
+- Settlement: package reward bonus, boss first-clear reward, economy skills; Mystery resets only after a real result.
+
 ## 0.4.0-phase03 — Combat & Skill Expansion
 - Manual Fire + Auto Aim: FIRE button (tap = one shot when ready, hold = repeat at attack interval, release
   stops), Space on desktop; aim auto-locks on the nearest live attackable target in range + line of sight

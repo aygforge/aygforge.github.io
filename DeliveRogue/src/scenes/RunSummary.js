@@ -25,7 +25,7 @@ export const RunSummary = {
     const badges = [
       r.epComplete ? `<span class="rs-b gold">${T('epCompleteShort')}</span>` : '',
       r.first ? `<span class="rs-b">${T('firstBonus')} +${r.firstBonus}</span>` : '',
-      r.perfBonus ? `<span class="rs-b">★ +${r.perfBonus}</span>` : '', r.killBonus ? `<span class="rs-b">${T('killBonus')} +${r.killBonus}</span>` : '',
+      r.perfBonus ? `<span class="rs-b">★ +${r.perfBonus}</span>` : '', r.pkgBonus ? `<span class="rs-b">${T('pkgBonus')} +${r.pkgBonus}</span>` : '', r.bossFirst ? `<span class="rs-b gold">🐉 ${T('bossFirstClear')} +${r.bossFirst}</span>` : '', r.skillBonus ? `<span class="rs-b">✦ +${r.skillBonus}</span>` : '', r.killBonus ? `<span class="rs-b">${T('killBonus')} +${r.killBonus}</span>` : '',
       r.unlockedNext ? `<span class="rs-b gold">${T('nextUnlocked')}</span>` : '', r.newBest ? `<span class="rs-b blue">${T('newBest')}</span>` : '',
       r.levelUps ? `<span class="rs-b gold">${T('levelUp', s.level)}</span>` : '',
     ].join('');

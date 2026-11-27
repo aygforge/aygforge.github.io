@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "phase": "03",
+  "phase": "04",
   "note": "Phase 01: all runtime visuals are procedural (core/Art.js, cached offscreen canvases). Real bitmaps referenced by the GDevelop project (DR2(21).json resources) were NOT included in the delivered package; they are listed as missing and keep the procedural fallback. Replace via AssetManager.loadImage(id, url, meta) — gameplay code only calls Art.get(id).",
   "statusLegend": {
     "procedural": "drawn in code, active",
@@ -37,8 +37,8 @@
       "logicalIds": [
         "COF_B_LatteArtDragon"
       ],
-      "status": "missing",
-      "source": "Phase 04"
+      "status": "procedural",
+      "source": "core/Art.js E.LD (latte cup dragon, 3 phase tints)"
     },
     {
       "group": "tiles.coffee",
@@ -72,10 +72,17 @@
       "group": "packages",
       "logicalIds": [
         "STANDARD_ORDER",
-        "HEAVY_ORDER",
+        "HEAVY_PACKAGE",
         "FRAGILE_ORDER",
-        "RUSH_DELIVERY",
-        "FINAL_RUSH"
+        "XL_ORDER",
+        "LIGHTWEIGHT_ORDER",
+        "REINFORCED_ORDER",
+        "PREMIUM_ORDER",
+        "VIP_ORDER",
+        "HOT_ORDER",
+        "FROZEN_ORDER",
+        "FIZZY_ORDER",
+        "MYSTERY_ORDER"
       ],
       "status": "procedural",
       "source": "data/packages.js color+icon"
@@ -178,6 +185,17 @@
       ],
       "status": "placeholder",
       "source": "star badge in skill choice + HUD strip; dedicated icons pending (Phase 13)"
+    },
+    {
+      "group": "arena",
+      "logicalIds": [
+        "arena:gate",
+        "boss:telegraph:breath|sweep|steam|rain|summon",
+        "hud:bossBar",
+        "hud:packageMeter"
+      ],
+      "status": "procedural",
+      "source": "render/Render.js"
     }
   ],
   "originalSkins": [

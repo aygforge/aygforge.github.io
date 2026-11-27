@@ -11,7 +11,7 @@ const COL = { [TT.FLOOR]: '#cfd9e8', [TT.WALL]: '#1c2a44', [TT.COUNTER]: '#7b5a3
 /** Builds (once) the chapter world and returns { world, img, info }. Must not be called during an active run. */
 export function routeData(ch) {
   let d = cache.get(ch.id); if (d) return d;
-  const w = MapBuilder.build(ch);
+  const w = MapBuilder.build(ch); // canonical layout (variants are rolled per run seed)
   const c = document.createElement('canvas'); c.width = COLS * TS * 2; c.height = w.rows * TS * 2;
   const g = c.getContext('2d'); g.scale(2, 2);
   for (let r = 0; r < w.rows; r++) for (let k = 0; k < COLS; k++) { g.fillStyle = COL[w.tile[r * COLS + k]] || '#cfd9e8'; g.fillRect(k * TS, r * TS, TS, TS); }
@@ -22,12 +22,13 @@ export function routeData(ch) {
   w.heals.forEach(q => dot(q.x, q.y, '#ef5350'));
   if (w.checkpoint) dot(w.checkpoint.x, w.checkpoint.y, '#5fd3ff', 3.6);
   dot(w.pickup.x, w.pickup.y, '#f2a541', 3.6);
-  dot(w.drop.cx, w.drop.cy, '#6ee06a', 4.2);
+  w.drops.forEach(d => dot(d.cx, d.cy, d.final ? '#6ee06a' : '#5fd3ff', d.final ? 4.2 : 3.4));
+  if (w.arena) { g.fillStyle = 'rgba(255,90,60,.35)'; g.fillRect(0, w.arena.top / TILE * TS, COLS * TS, (w.arena.bottom - w.arena.top) / TILE * TS); }
   // enemy pressure: segments with enemies get a red edge mark
   w.segs.forEach(s => { if (s.enemies.length) { g.fillStyle = 'rgba(239,83,80,.85)'; g.fillRect(0, s.r0 * TS, 2, (s.r1 - s.r0) * TS); g.fillRect(COLS * TS - 2, s.r0 * TS, 2, (s.r1 - s.r0) * TS); } });
   let spill = 0; for (let i = 0; i < w.tile.length; i++) if (w.tile[i] === TT.SPILL) spill++;
   const info = { rows: w.rows, segs: w.segs.length, combatSegs: w.segs.filter(s => s.enemies.length).length, jets: w.jets.length, grates: w.grates.length, carts: w.carts.length,
-    heals: w.heals.length, checkpoint: !!w.checkpoint, spill, risky: w.flag.some(f => f & 1), pathLen: w.pathLen };
+    heals: w.heals.length, checkpoint: !!w.checkpoint, spill, drops: w.drops.length, arena: !!w.arena, risky: w.flag.some(f => f & 1), pathLen: w.pathLen };
   d = { img: c, info, h: w.rows * TS, startY: w.start.y / TILE * TS, dropY: w.drop.cy / TILE * TS };
   cache.set(ch.id, d); return d;
 }

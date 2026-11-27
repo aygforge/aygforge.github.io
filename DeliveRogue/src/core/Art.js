@@ -272,6 +272,39 @@ export const Art = (() => {
     if (hot) { g.strokeStyle = 'rgba(255,90,40,.9)'; g.lineWidth = 1.2; rr(g, 7, 9 + b, 32, 28, 9); g.stroke(); }
     g.fillStyle = 'rgba(255,255,255,.55)'; ell(g, 17.5, 1 + b - (f % 2), 2.5, 2); g.fill(); ell(g, 28.5, 0 + b - ((f + 1) % 2), 2.5, 2); g.fill();
   };
+  /* Latte Art Dragon (boss, 84×78): latte cup body with foam wings, caramel dragon head, latte-art heart. */
+  E.LD = (g, f, v) => {
+    const fl = [0, 2, 3, 2][f % 4], rage = v === 'p3' ? 2 : v === 'p2' ? 1 : 0;
+    shadow(g, 42, 74, 30, 5);
+    // wings
+    [-1, 1].forEach(sd => {
+      g.save(); g.translate(42 + sd * 18, 34); g.scale(sd, 1);
+      g.beginPath(); g.moveTo(0, 0); g.quadraticCurveTo(18, -26 - fl, 36, -20 - fl); g.lineTo(30, -10); g.lineTo(38, -4 + fl * 0.3); g.lineTo(28, 2); g.lineTo(32, 10); g.quadraticCurveTo(14, 8, 0, 12); g.closePath();
+      fs(g, rage === 2 ? '#e9c8a8' : '#f3e1c4'); g.strokeStyle = 'rgba(160,102,58,.6)'; g.lineWidth = 1.2; g.beginPath(); g.moveTo(4, 2); g.lineTo(30, -16 - fl * 0.6); g.moveTo(4, 6); g.lineTo(28, 2); g.stroke();
+      g.restore();
+    });
+    // tail
+    g.beginPath(); g.moveTo(60, 60); g.quadraticCurveTo(80, 62, 76, 46); g.quadraticCurveTo(74, 40, 80, 38); g.lineWidth = 6; g.strokeStyle = OUT; g.stroke(); g.lineWidth = 3.5; g.strokeStyle = '#d9a066'; g.stroke();
+    // saucer + cup
+    ell(g, 42, 68, 30, 7); fs(g, '#e8e2d6'); ell(g, 42, 67, 22, 4.5); fs(g, '#d6cfc1', null);
+    g.beginPath(); g.moveTo(18, 40); g.lineTo(66, 40); g.quadraticCurveTo(64, 66, 42, 67); g.quadraticCurveTo(20, 66, 18, 40); g.closePath(); fs(g, '#fff6ea');
+    g.beginPath(); g.arc(68, 50, 7, -1.3, 1.3); g.lineWidth = 5; g.strokeStyle = OUT; g.stroke(); g.lineWidth = 3; g.strokeStyle = '#fff6ea'; g.stroke();
+    ell(g, 42, 41, 24, 5.5); fs(g, '#a8693c');
+    g.fillStyle = '#fff1dc'; g.beginPath(); g.moveTo(42, 45); g.bezierCurveTo(34, 40, 36, 35, 41, 38); g.bezierCurveTo(42, 36, 44, 36, 43, 38); g.bezierCurveTo(48, 35, 50, 40, 42, 45); g.fill();
+    g.fillStyle = rage ? '#ffb38a' : '#ffd166'; g.fillRect(22, 52, 40, 3);
+    // neck + head
+    g.beginPath(); g.moveTo(34, 40); g.quadraticCurveTo(30, 26, 38, 18); g.lineTo(48, 18); g.quadraticCurveTo(54, 28, 50, 40); g.closePath(); fs(g, '#d9a066');
+    rr(g, 26, 6 - (f % 2), 34, 20, 9); fs(g, '#d9a066');
+    rr(g, 46, 12 - (f % 2), 18, 11, 5); fs(g, '#c58b52');
+    dot(g, 60, 16 - (f % 2), 1.4, OUT);
+    // horns
+    [[30, 7], [42, 5]].forEach(([x, y]) => { g.beginPath(); g.moveTo(x, y); g.lineTo(x - 5, y - 9); g.lineTo(x + 4, y - 1); g.closePath(); fs(g, '#fff1dc'); });
+    // eyes
+    const eye = rage === 2 ? '#ff4b2b' : rage === 1 ? '#ff9a3c' : '#ffd23f';
+    ell(g, 42, 13 - (f % 2), 4.2, 3.6); fs(g, eye); dot(g, 43, 13 - (f % 2), 1.6, OUT);
+    // steam puffs from nostrils
+    g.fillStyle = 'rgba(255,255,255,.7)'; ell(g, 68, 10 - fl, 3 + fl * 0.4, 2.4); g.fill(); ell(g, 72, 6 - fl, 2.2, 1.8); g.fill();
+  };
   function enemy(short, f, v = 'n') {
     const d = ENEMY_DB[ENEMY_SHORT[short]];
     const pad = 4, w = d.w + pad * 2, h = d.h + pad * 2;

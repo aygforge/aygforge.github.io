@@ -43,7 +43,8 @@ export const FightScene = {
     if (ch.cp) tips.push(T('tut_check'));
     if (ch.n <= 2) tips.push(T('tut_fire'));
     Overlays.open(`<div class="intro"><div class="tagline">COFFEE DISTRICT · ${T('chapter').toUpperCase()} ${ch.n}</div><div class="big" style="margin:4px 0 8px">${esc(ch.name)}</div>
-      <div class="row" style="background:rgba(0,0,0,.28);border-radius:12px;padding:8px"><img src="${Art.url(Art.pkgIcon(ch.pkg, 32))}" width="32" height="32"><div><b style="color:${run.pkg.color}">${T('pkg_' + ch.pkg)}</b><div class="small" style="color:var(--cream2)">${T('pkgd_' + ch.pkg)}</div></div></div>
+      <div class="row" style="background:rgba(0,0,0,.28);border-radius:12px;padding:8px"><img src="${Art.url(Art.pkgIcon(run.pkg.id, 32))}" width="32" height="32"><div><b style="color:${run.pkg.color}">${T('pkg_' + run.pkg.id)}${run.pkg.shownAs ? ' → ' + T('pkg_' + run.pkg.ruleId) : ''}</b><div class="small" style="color:var(--cream2)">${T('pkgd_' + run.pkg.ruleId)}</div></div></div>
+      <div class="small" style="margin-top:6px;color:var(--gold);font-weight:800">${T('chapterType')}: ${T('ctype_' + ch.type)}${ch.boss ? ` · ${T('bossFight')}: ${ENEMY_DB[ch.boss].name}` : ''}${G.world.drops.length > 1 ? ` · ${T('deliveries')}: ${G.world.drops.length}` : ''}</div>
       <div class="kv" style="margin-top:8px"><div><span>${T('timer')}</span><b>${ch.timer} sn</b></div><div><span>${T('fastTarget')}</span><b>${ch.fast} sn</b></div>
       <div><span>${T('enemies')}</span><b>${ch.enemies}</b></div><div><span>${T('skillPicks')}</span><b>${ch.picks} + ${T('runXpShort')}</b></div></div>
       ${intro}${tips.length ? `<div class="tip">💡 ${tips.join('<br>💡 ')}</div>` : ''}

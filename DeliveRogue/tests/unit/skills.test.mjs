@@ -108,7 +108,7 @@ test('rarity class weights ≈ 55/30/12/3 when all classes are available', () =>
 test('Run XP budget: route-only reaches the minimum pick target; full XP stays within target', () => {
   for (const ch of CHAPTERS) {
     const w = MapBuilder.build(ch), plan = xpPlan(ch, w), row = RUN_XP_TABLE.find(r => ch.n >= r.from && ch.n <= r.to);
-    const route = plan.seg * plan.routeSegIdx.size + plan.cp;
+    const route = plan.seg * plan.routeSegIdx.size + plan.cp + plan.drop * (w.drops.length - 1);
     assert.ok(Math.abs(route - row.route) < 1e-6, ch.id + ' route budget');
     const routeOnly = ch.picks + Math.floor((route + 1e-9) / RUN_XP_PER_LEVEL), full = ch.picks + Math.floor((route + row.combat + plan.risky + 1e-9) / RUN_XP_PER_LEVEL);
     assert.ok(routeOnly >= row.target[0], `${ch.id} route-only picks ${routeOnly}`);
