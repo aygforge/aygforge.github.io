@@ -1,0 +1,12 @@
+{
+  "appId": "com.aygforge.kepceustasi",
+  "appName": "Kepçe Ustası",
+  "webDir": "dist",
+  "android": {
+    "backgroundColor": "#2b2530",
+    "allowMixedContent": false
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

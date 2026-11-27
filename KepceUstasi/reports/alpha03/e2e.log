@@ -1,0 +1,26 @@
+PASS A01 portrait layout 360x640 — canvas 360×640 @(0,0) in 360×640, game H=960, scale 0.667, battle h=410
+PASS A22 shuffle button 360x640: shuffles once, never drops the ladle — {"taps":0,"sh":1,"phase":"SWING_WAIT"}
+PASS A21 3 cards + reroll fit on 360x640 — y 58–840 of 960, x 32–508
+PASS A01 portrait layout 390x844 — canvas 390×844 @(0,0) in 390×844, game H=1169, scale 0.722, battle h=511
+PASS A22 shuffle button 390x844: shuffles once, never drops the ladle — {"taps":0,"sh":1,"phase":"SWING_WAIT"}
+PASS A21 3 cards + reroll fit on 390x844 — y 162–945 of 1169, x 32–508
+PASS A01 portrait layout 412x915_20-9 — canvas 412×915 @(0,0) in 412×915, game H=1199, scale 0.763, battle h=526
+PASS A22 shuffle button 412x915_20-9: shuffles once, never drops the ladle — {"taps":0,"sh":1,"phase":"SWING_WAIT"}
+PASS A21 3 cards + reroll fit on 412x915_20-9 — y 177–960 of 1199, x 32–508
+PASS A01 portrait layout 1080x1920 — canvas 1080×1920 @(0,0) in 1080×1920, game H=960, scale 2.000, battle h=410
+PASS A01 portrait layout desktop_1280x720 — canvas 405×720 @(437,0) in 1280×720, game H=960, scale 0.750, battle h=410
+PASS A02 tap spam → one drop / one turn — taps +1, catches 1
+PASS A15 pause spam + background auto-pause + resume — even toggles→running:true, hidden→PAUSED:true, stays paused on return:true, resume:true
+PASS PERF frame rate while swinging (headless Chromium, software GL) — 53.9 fps
+PASS A12 six skill picks in a full run, none after the boss — picks {"spiked_apron":1,"chain_cooking":1,"explosive_oil":1,"cold_oil":1,"thick_apron":1,"stable_rim":1}
+PASS A14 Menemen played to the boss and served — stars 3, attempts 1, tips 108, unlocked 2
+PASS A13 upgrade purchase by click (atomic, persisted) — toughness Sv2, spent 45, tips 63
+PASS A14b Patates Kızartması played to Patates Kral and served (upgrade active) — chapter fries, chef max HP 6, stars 3, attempts 1, tips 202
+PASS SAVE close/reopen keeps tips, upgrades, stars, unlocks — tips 202, stars M3/F3
+PASS A15b wave checkpoint resume after reload: no double kill/wave/reward — wave 3, recipe {"tomato":3,"pepper":1,"egg":0}, result victory 3★, +78 tips once
+PASS A16 offline: reload with network off, menu + a real turn work — service worker cache
+PASS NET no request to any external host (no CDN/ads/analytics) — only localhost
+PASS ERR no page errors / console errors
+
+23/23 e2e checks passed
+exit 0

@@ -1,0 +1,1272 @@
+// GameScene — ÜST: Şef + düşmanlar (savaş), ALT: fiziksel tencere + kepçe.
+// Bu sahne oyun sonucu HESAPLAMAZ: RunController olaylarını oynatır ve token ile "bitti" bildirir.
+import Phaser from 'phaser';
+import { app } from '../game/AppState.js';
+import { computeLayout, fieldToScreen } from '../config/layout.js';
+import { RunController, PHASE } from '../systems/RunController.js';
+import { permStats, applyRunResult, applyStageResult, isStageUnlocked, applyDungeonResult, dungeonFullLeft } from '../systems/Progression.js';
+import { findChapter, stageByLevel, LEVEL_COUNT } from '../data/stages.js';
+import { launchLevel, launchDungeon } from '../game/StageLauncher.js';
+import { living, nextSteps } from '../systems/EnemyDirector.js';
+import { CHAPTERS, ENEMIES, RECIPE_LABELS, ABILITY_BY_ID, ABILITY_CATS, NORMAL_WAVES, FIELD, LADLE } from '../data/content.js';
+import { recipeComplete, STAR2_MAX_HP_LOSS } from '../systems/RecipeTracker.js';
+import { cardInfo } from '../systems/Abilities.js';
+import { audio } from '../platform/AudioService.js';
+import { adService } from '../platform/AdService.js';
+import { t } from '../i18n.js';
+import { consumeAdReward, applyTipBonus, interstitialDue, noteInterstitialShown, noteRunCompleted } from '../systems/Monetization.js';
+import { lifecycle } from '../platform/Lifecycle.js';
+import { text, panel, button, blocker, COLORS } from '../ui/widgets.js';
+
+const CAT_COLORS = { catch: 0x3a7de0, attack: 0xe8582f, defense: 0x4caf3a, pan: 0xf2b11c, control: 0x7fd8f0 };
+const ROMAN = ['', 'I', 'II', 'III'];
+export const UNLOCK_LABELS = {
+  epic_crafting: 'Epic üretim', kazan_tower: 'Kazan Kulesi (DUNGEON)', legendary_crafting: 'Legendary üretim', game_complete: 'Oyun tamamlandı', boss_kitchen_future_eligibility: 'Boss Mutfağı (DUNGEON)', chapter4_pasta_future_eligibility: 'Sebzeli Makarna bölümü',
+  gold_kitchen: 'Altın Mutfak (DUNGEON)',
+  chapter2_fries: 'Patates Kızartması bölümü',
+  materials_depot: 'Malzeme Deposu (DUNGEON)',
+  materials_starter_grant_18: '+18 parça',
+  rare_crafting: 'Rare üretim (EKİPMAN)',
+  alpha04_campaign_complete: 'Kampanya tamamlandı',
+};
+const SOURCE_LABEL = { pan_burst: 'Tava Patlaması', tomato_splash: 'Sos Sıçraması', pan_echo: 'Tava Yankısı', explosive_oil: 'Patlama', piercing_oil: 'Delme', knockback_boss: 'Püskürtme' };
+
+export class GameScene extends Phaser.Scene {
+  constructor() {
+    super('Game');
+  }
+
+  init(data) {
+    this.startData = data || {};
+  }
+
+  get speed() {
+    return app.save.settings.animSpeed || 1;
+  }
+
+  get lowMotion() {
+    return app.save.settings.lowMotion;
+  }
+
+  create() {
+    const { height: H } = this.scale;
+    const L = (this.L = computeLayout(H));
+    this.views = new Map();
+    this.ballSprites = new Map();
+    this.flying = new Set();
+    this.overlay = null;
+    this.pauseOverlay = null;
+    this.rewardApplied = false;
+    this.ended = false;
+
+    const snapshot = this.startData.snapshot || null;
+    const chapterId = snapshot ? snapshot.chapterId : this.startData.chapterId || 'menemen';
+    this.chapter = findChapter(chapterId) || CHAPTERS[0];
+    this.dishKey = this.chapter.dish || (this.chapter.id === 'fries' ? 'dish_fries' : 'dish_menemen');
+    this.tutorial = !app.save.tutorialDone && (this.chapter.id === 'menemen' || this.chapter.level === 1);
+
+    this.buildBattle();
+    this.buildPot();
+    this.buildHud();
+
+    const seed = app.forcedSeed ?? ((Date.now() ^ Math.floor(Math.random() * 0x7fffffff)) >>> 0);
+    this.controller = new RunController({
+      chapterId,
+      perm: permStats(app.save),
+      seed,
+      runId: this.startData.runId || `${Date.now().toString(36)}-${seed.toString(36)}`, // campaign runs get the runId that paid the energy
+      snapshot,
+    });
+    this.controller.on((e) => this.onEvent(e));
+
+    // Tap surface: the whole play area (top + bottom). HUD buttons sit above it.
+    this.tapZone = this.add.zone(0, L.hud, L.W, H - L.hud).setOrigin(0).setInteractive();
+    this.tapZone.setDepth(5);
+    this.tapZone.on('pointerdown', () => this.tryTap());
+    this.input.keyboard?.on('keydown-SPACE', () => this.tryTap());
+    this.input.keyboard?.on('keydown-ESC', () => this.togglePause());
+    this.input.keyboard?.on('keydown-P', () => this.togglePause());
+
+    const offHidden = lifecycle.on('hidden', () => this.pauseGame());
+    const offBack = lifecycle.on('back', () => this.togglePause());
+    this.events.once('shutdown', () => {
+      offHidden();
+      offBack();
+    });
+
+    this.controller.start();
+    if (app.dev) {
+      window.__KEPCE__.scene = this;
+      window.__KEPCE__.controller = this.controller;
+    }
+  }
+
+  // ======================================================== building
+  buildBattle() {
+    const L = this.L;
+    const bg = this.add.image(0, L.battle.top, 'battle_bg').setOrigin(0).setScale(3);
+    if (this.chapter.theme) bg.setTint(this.chapter.theme); // V1: light per-chapter kitchen tint
+    if (bg.displayHeight < L.battle.h) bg.setDisplaySize(L.W, L.battle.h + 4);
+    const chefPos = fieldToScreen(L, FIELD.chefX, 0.52);
+    this.chefPos = chefPos;
+    this.chef = this.add.image(chefPos.x, chefPos.y, 'chef').setScale(4).setDepth(20);
+    this.muzzle = { x: chefPos.x + 50, y: chefPos.y - 8 };
+    this.panPos = { x: chefPos.x - 4, y: L.battle.bottom - 30 };
+    this.pan = this.add.image(this.panPos.x, this.panPos.y, 'pan').setScale(3).setDepth(18);
+    // contact line hint (subtle, not a lane)
+    const cx = fieldToScreen(L, FIELD.contactX, 0).x;
+    const g = this.add.graphics().setDepth(2);
+    g.fillStyle(0xffffff, 0.08);
+    for (let y = L.field.top; y < L.field.bottom; y += 14) g.fillRect(cx, y, 2, 7);
+    this.bannerText = text(this, L.W / 2, (L.battle.top + L.battle.bottom) / 2 - 20, '', 34, COLORS.gold, { strokeThickness: 6 }).setDepth(60).setAlpha(0);
+  }
+
+  buildPot() {
+    const L = this.L;
+    this.add.rectangle(0, L.divider.top, L.W, L.H - L.divider.top, 0x2b2530).setOrigin(0).setDepth(0);
+    // back wall tiles
+    const g = this.add.graphics().setDepth(0);
+    g.fillStyle(0x342d3b, 1);
+    for (let y = L.potArea.top; y < L.stove.top; y += 24) for (let x = (y / 24) % 2 ? 0 : 24; x < L.W; x += 48) g.fillRect(x, y, 24, 24);
+    this.add.image(0, L.divider.top, 'counter').setOrigin(0).setScale(3, 2.9).setDepth(30);
+    this.add.image(0, L.stove.top, 'stove').setOrigin(0).setScale(3, Math.max(1, L.stove.h / 60 + 0.05)).setDepth(3);
+    // flames
+    for (let i = 0; i < 5; i++) {
+      const f = this.add.image(L.pot.x + 110 + i * 56, L.stove.top + 4, 'flame1').setOrigin(0.5, 1).setScale(3).setDepth(4);
+      if (!this.lowMotion) this.time.addEvent({ delay: 140 + i * 17, loop: true, callback: () => f.setTexture(f.texture.key === 'flame1' ? 'flame2' : 'flame1') });
+    }
+    this.potImg = this.add.image(L.pot.x - 30, L.pot.y - 6, 'pot').setOrigin(0).setScale(3).setDepth(6);
+    // rail + ladle graphics
+    this.rail = this.add.graphics().setDepth(9);
+    this.rail.fillStyle(0x1a1d22, 1);
+    this.rail.fillRect(L.pot.x - 10, L.railY - 6, 464, 12);
+    this.rail.fillStyle(0x9aa4ad, 1);
+    this.rail.fillRect(L.pot.x - 8, L.railY - 4, 460, 8);
+    this.rail.fillStyle(0xdfe4ea, 1);
+    this.rail.fillRect(L.pot.x - 8, L.railY - 4, 460, 2);
+    this.ladleG = this.add.graphics().setDepth(12);
+    // bubbles (decor only)
+    if (!this.lowMotion) {
+      this.time.addEvent({
+        delay: 420,
+        loop: true,
+        callback: () => {
+          if (!this.controller || this.controller.paused) return;
+          const b = this.add.image(L.pot.x + 60 + Math.random() * 320, L.pot.y + 214, 'bubble').setScale(2).setDepth(11).setAlpha(0.8);
+          this.tweens.add({ targets: b, y: b.y - 40 - Math.random() * 30, alpha: 0, duration: 900, onComplete: () => b.destroy() });
+        },
+      });
+    }
+  }
+
+  buildHud() {
+    const L = this.L;
+    const g = this.add.graphics().setDepth(40);
+    g.fillStyle(0x1e1a26, 1);
+    g.fillRect(0, 0, L.W, L.hud);
+    g.fillStyle(0x3d3447, 1);
+    g.fillRect(0, L.hud - 4, L.W, 4);
+    this.hudDish = text(this, 12, 18, this.chapter.isStage ? `L${this.chapter.level} · ${this.chapter.name}` : this.chapter.name, 18, COLORS.gold, { ox: 0 }).setDepth(41);
+    this.hudWave = text(this, 12, 40, '', 15, COLORS.cream, { ox: 0 }).setDepth(41);
+    this.hearts = [];
+    this.pauseBtn = button(this, L.W - 34, 28, 52, 44, 'II', () => this.togglePause(), { size: 22, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 });
+    this.pauseBtn.setDepth(45);
+    this.heartsC = this.add.container(0, 0).setDepth(41);
+    // recipe counters row
+    this.recipeC = this.add.container(0, 0).setDepth(25);
+    // pot HUD (in divider strip)
+    this.capText = text(this, 16, L.divider.top + 17, '', 17, COLORS.cream, { ox: 0 }).setDepth(31);
+    this.potText = text(this, L.W - 16, L.divider.top + 17, '', 15, '#e9dcc4', { ox: 1 }).setDepth(31);
+    this.hint = text(this, L.W / 2, L.pot.y + 40, '', 22, COLORS.gold, { strokeThickness: 5 }).setDepth(50).setAlpha(0);
+    this.hintArrow = this.add.graphics().setDepth(13);
+    this.ammoText = text(this, this.chefPos.x, this.chefPos.y - 84, '', 20, COLORS.gold).setDepth(26);
+    // Alpha 0.5A.1: the real pendingAmmo queue, shown as small oil icons right under the chef (+N when long)
+    this.ammoRow = this.add.container(this.chefPos.x, this.chefPos.y + 50).setDepth(26);
+    // offline debug metrics (GDD §15/§20) — only with ?dev=1 / ?test=1, never in the normal player UI
+    if (app.dev) this.debugText = text(this, 8, L.H - 8, '', 12, '#9ef0ff', { ox: 0, oy: 1, strokeThickness: 2 }).setDepth(200);
+  }
+
+  refreshDebug() {
+    if (!this.debugText) return;
+    const r = this.controller.run;
+    const loads = r.stats.loads;
+    const avg = loads.length ? (loads.reduce((a, b) => a + b, 0) / loads.length).toFixed(2) : '-';
+    this.debugText.setText(`seed ${r.seed} · tur ${r.turn} · ort.yük ${avg} · boş ${r.stats.catches.filter((c) => c === 0).length} · hasar ${r.stats.damageDealt} · can kaybı ${r.stats.hpLost} · kaçan ${r.stats.escaped}`);
+  }
+
+  // ======================================================== HUD refresh
+  refreshHud() {
+    const run = this.controller.run;
+    const L = this.L;
+    const nw = this.chapter.waves.length;
+    this.hudWave.setText(run.wave > nw ? 'BOSS · Servis zamanı' : `Dalga ${run.wave}/${nw}`);
+    this.heartsC.removeAll(true);
+    const n = run.chef.maxHp;
+    const x0 = L.W - 74 - n * 24;
+    for (let i = 0; i < n; i++) this.heartsC.add(this.add.image(x0 + i * 24, 20, i < run.chef.hp ? 'heart' : 'heart_empty').setScale(2.2));
+    let sx = x0;
+    for (let i = 0; i < run.chef.shield; i++, sx += 22) this.heartsC.add(this.add.image(sx, 44, 'shield').setScale(1.7));
+    for (let i = 0; i < run.chef.saltCharges; i++, sx += 22) this.heartsC.add(this.add.image(sx, 44, 'salt').setScale(1.2));
+    this.refreshRecipe(run.recipe);
+    this.refreshPotHud();
+  }
+
+  refreshRecipe(recipe) {
+    const L = this.L;
+    this.recipeC.removeAll(true);
+    const entries = Object.entries(this.chapter.recipe);
+    const bg = this.add.graphics();
+    const w = entries.length * 108 + 12;
+    bg.fillStyle(0x1e1a26, 0.72);
+    bg.fillRect(L.W / 2 - w / 2, L.battle.top + 6, w, 40);
+    this.recipeC.add(bg);
+    entries.forEach(([k, need], i) => {
+      const x = L.W / 2 - w / 2 + 30 + i * 108;
+      const have = recipe[k] || 0;
+      this.recipeC.add(this.add.image(x, L.battle.top + 26, k).setScale(k === 'pepper' ? 1.4 : 1.7));
+      this.recipeC.add(text(this, x + 20, L.battle.top + 26, `${Math.min(have, need)}/${need}`, 18, have >= need ? COLORS.gold : COLORS.cream, { ox: 0 }));
+    });
+  }
+
+  refreshPotHud(load) {
+    const c = this.controller;
+    if (!c.ladle?.params) return;
+    const cap = c.ladle.params.capacity;
+    this.capText.setText(`Kepçe yükü: ${load ?? 0}/${cap}`);
+    const counts = c.pot.countByType();
+    this.potText.setText(`Tencere: ${c.pot.count}  (büyük ${counts.big})`);
+  }
+
+  // ======================================================== enemies
+  enemyScale(e) {
+    if (ENEMIES[e.type].boss) return 3.4;
+    return ENEMIES[e.type].scale ? 3 * ENEMIES[e.type].scale : 3;
+  }
+
+  createView(e, fromRight = false) {
+    const L = this.L;
+    const pos = fieldToScreen(L, e.x, e.y);
+    const c = this.add.container(fromRight ? L.W + 60 : pos.x, pos.y).setDepth(15 + e.y * 2);
+    const key = ENEMIES[e.type].sprite || e.type;
+    const spr = this.add.image(0, 0, key).setScale(this.enemyScale(e));
+    const bar = this.add.graphics();
+    const half = spr.displayHeight / 2;
+    const status = this.add.container(0, -half - 26);
+    c.add([spr, bar, status]);
+    // Alpha 0.4C: elites/finals reuse the base sprite (bigger) + a short name tag; no new animation
+    if (ENEMIES[e.type].elite) c.add(text(this, 0, spr.displayHeight / 2 + 12, ENEMIES[e.type].name, 13, ENEMIES[e.type].miniBoss ? '#ff9a8a' : '#ffd84a'));
+    const view = { id: e.id, c, spr, bar, status, half, boss: e.boss, maxHp: e.maxHp, maxShield: e.maxShield, dead: false };
+    this.views.set(e.id, view);
+    this.drawBar(view, e.hp, e.shield);
+    if (!this.lowMotion) view.bob = this.tweens.add({ targets: spr, y: -3, duration: 500 + (e.id % 5) * 60, yoyo: true, repeat: -1, ease: 'Sine.inOut' });
+    return view;
+  }
+
+  drawBar(view, hp, shield) {
+    const w = view.boss ? 96 : 48;
+    const y = -view.half - 12;
+    const g = view.bar;
+    g.clear();
+    g.fillStyle(0x15111a, 1);
+    g.fillRect(-w / 2 - 2, y - 2, w + 4, 10);
+    g.fillStyle(0x4a3a44, 1);
+    g.fillRect(-w / 2, y, w, 6);
+    const frozen = this.controller?.run?.enemies.find((x) => x.id === view.id)?.frozen;
+    g.fillStyle(frozen ? 0x5ab8e8 : 0xe8402e, 1); // frozen enemies show an icy HP bar
+    g.fillRect(-w / 2, y, Math.round((w * hp) / view.maxHp), 6);
+    g.fillStyle(frozen ? 0xbfeaff : 0xff8a7a, 1);
+    g.fillRect(-w / 2, y, Math.round((w * hp) / view.maxHp), 2);
+    const maxSh = Math.max(view.maxShield || 0, shield || 0); // guard pulses can add shield to anyone
+    if (maxSh > 0) {
+      for (let i = 0; i < maxSh; i++) {
+        g.fillStyle(i < shield ? 0x8fc6f0 : 0x3b4148, 1);
+        g.fillRect(-w / 2 + i * 12, y - 9, 10, 5);
+      }
+    }
+    // Alpha 0.5A: onion shell pips (purple) under the shield row
+    const le = this.controller?.run?.enemies.find((x) => x.id === view.id);
+    if (le?.maxShell) {
+      for (let i = 0; i < le.maxShell; i++) {
+        g.fillStyle(i < le.shell ? 0xc98ad8 : 0x3b4148, 1);
+        g.fillRect(w / 2 - (i + 1) * 9, y - 9, 7, 5);
+      }
+    }
+  }
+
+  refreshStatuses() {
+    const run = this.controller.run;
+    for (const e of living(run)) {
+      const v = this.views.get(e.id);
+      if (!v) continue;
+      v.status.removeAll(true);
+      const icons = [];
+      if (nextSteps(e) >= 2 || (e.type === 'potato_king' && e.hasted)) icons.push(this.add.image(0, 0, 'fast').setScale(2.2));
+      if (e.guard) icons.push(this.add.image(0, 0, 'shield').setScale(2));
+      if (e.frozen) icons.push(this.add.image(0, 0, 'oil_cold').setScale(2));
+      if (e.guardWarn) icons.push(text(this, 0, 0, '!', 22, COLORS.gold));
+      icons.forEach((ic, i) => {
+        ic.x = (i - (icons.length - 1) / 2) * 24;
+        v.status.add(ic);
+      });
+    }
+  }
+
+  syncViewsToLogic() {
+    const run = this.controller.run;
+    for (const e of run.enemies) {
+      const v = this.views.get(e.id);
+      if (!v) continue;
+      if (e.dead || e.escaped) {
+        if (!v.dead) this.removeView(v);
+        continue;
+      }
+      const p = fieldToScreen(this.L, e.x, e.y);
+      v.c.x = p.x;
+      v.c.y = p.y;
+      this.drawBar(v, e.hp, e.shield);
+    }
+    this.refreshStatuses();
+  }
+
+  removeView(v) {
+    v.dead = true;
+    v.bob?.stop();
+    v.c.destroy(true);
+    this.views.delete(v.id);
+  }
+
+  // ======================================================== event dispatcher
+  onEvent(e) {
+    switch (e.kind) {
+      case 'runStart':
+        this.refreshHud();
+        break;
+      case 'restored':
+        for (const en of living(e.run)) this.createView(en);
+        this.renderAmmo((e.run.pendingAmmo || []).map((a) => a.oil));
+        this.refreshHud();
+        this.refreshStatuses();
+        this.flash('Kayıttan devam: dalga başı', 1200);
+        break;
+      case 'phase':
+        this.onPhase(e.phase);
+        break;
+      case 'wavePrep':
+        this.playWavePrep(e);
+        break;
+      case 'checkpoint':
+        app.save.activeRun = e.snapshot;
+        app.persist();
+        break;
+      case 'potRefill':
+        if (e.add > 0) this.floatText(this.L.W / 2, this.L.pot.y + 20, `+${e.add} yağ`, '#ffe9a0');
+        this.refreshPotHud();
+        break;
+      case 'swing':
+        this.refreshDebug();
+        this.refreshPotHud(0);
+        this.ammoText.setText('');
+        break;
+      case 'drop':
+        audio.play('drop');
+        break;
+      case 'catch':
+        this.playCatch(e);
+        break;
+      case 'volley':
+        this.playVolley(e);
+        break;
+      case 'enemyAction':
+        this.playEnemyAction(e);
+        break;
+      case 'contact':
+        this.playContact(e);
+        break;
+      case 'waveCleared':
+        if (e.wave === 1 && this.tutorial) {
+          app.save.tutorialDone = true;
+          app.persist();
+        }
+        this.flash(e.wave <= this.chapter.waves.length ? 'Dalga temizlendi!' : '', 900);
+        break;
+      case 'skillChoice':
+        this.showSkillChoice(e);
+        break;
+      case 'shuffle':
+        this.floatText(this.L.W / 2, this.L.pot.y + 20, 'Tencere karıştırıldı!', '#7fb0ff', 18);
+        break;
+      case 'skillPicked':
+        this.closeOverlay();
+        audio.play('skill');
+        this.refreshHud();
+        this.flash(ABILITY_BY_ID[e.id].name, 900);
+        break;
+      case 'result':
+        this.onResult(e);
+        break;
+      default:
+        break;
+    }
+  }
+
+  onPhase(phase) {
+    this.refreshShuffleButton();
+    const swing = phase === PHASE.SWING_WAIT;
+    if (swing && this.tutorial && this.controller.run.turn <= 2) {
+      this.hint.setText('Kepçe topçukların üstündeyken DOKUN!');
+      this.hint.setAlpha(1);
+    } else if (!swing) {
+      this.hint.setAlpha(0);
+    }
+    if (swing) audio.play('swing', { volume: 0.25 });
+  }
+
+  tryTap() {
+    if (this.overlay || this.pauseOverlay) return;
+    if (this.controller.tap()) lifecycle.vibrate(15);
+  }
+
+  // ======================================================== update loop
+  update(time, delta) {
+    if (!this.controller) return;
+    this.controller.update(delta);
+    if (this.controller.run.abilities.pot_shuffle) this.refreshShuffleButton();
+    this.syncBalls();
+    this.drawLadle(time);
+  }
+
+  syncBalls() {
+    const L = this.L;
+    const pot = this.controller.pot;
+    for (const [id, b] of pot.balls) {
+      let s = this.ballSprites.get(id);
+      if (!s) {
+        s = this.add.image(0, 0, `oil_${b.oilType}`).setScale(3).setDepth(10);
+        this.ballSprites.set(id, s);
+      }
+      s.x = L.pot.x + b.position.x;
+      s.y = L.pot.y + b.position.y;
+      s.rotation = b.angle;
+    }
+    for (const [id, s] of this.ballSprites) {
+      if (!pot.balls.has(id) && !this.flying.has(id)) {
+        s.destroy();
+        this.ballSprites.delete(id);
+      }
+    }
+  }
+
+  drawLadle(time) {
+    const L = this.L;
+    const pot = this.controller.pot;
+    const g = this.ladleG;
+    g.clear();
+    const pose = pot.ladlePose;
+    if (!pose) return;
+    const px = L.pot.x + pose.x;
+    const py = L.pot.y + pose.y;
+    // wooden handle from the rail down to the hinge
+    g.fillStyle(0x3b2612, 1);
+    g.fillRect(px - 7, L.railY - 2, 14, py - L.railY - 4);
+    g.fillStyle(0x9c6438, 1);
+    g.fillRect(px - 5, L.railY - 2, 10, py - L.railY - 6);
+    g.fillStyle(0xc08a52, 1);
+    g.fillRect(px - 5, L.railY - 2, 3, py - L.railY - 6);
+    g.fillStyle(0x6b747c, 1);
+    g.fillRect(px - 12, L.railY - 9, 24, 12);
+    // translucent perforated shell of each half (kevgir), drawn as a fan from the hinge
+    for (const side of [-1, 1]) {
+      const parts = pot.ladleParts.filter((p) => p.side === side);
+      const pts = [{ x: px, y: py }, ...parts.map((p) => ({ x: L.pot.x + p.position.x, y: L.pot.y + p.position.y }))];
+      g.fillStyle(0xcfd6dc, 0.22);
+      g.fillPoints(pts, true);
+      g.fillStyle(0x1a1d22, 0.35);
+      for (let i = 2; i < parts.length; i += 2) {
+        const q = parts[i].position;
+        g.fillRect(L.pot.x + (q.x + pose.x) / 2 - 2, L.pot.y + (q.y + pose.y) / 2 - 2, 4, 4);
+      }
+    }
+    // perforated ladle halves (each segment is a real collider)
+    for (const part of pot.ladleParts) {
+      const pts = part.vertices.map((v) => ({ x: L.pot.x + v.x, y: L.pot.y + v.y }));
+      g.fillStyle(0x1a1d22, 1);
+      g.fillPoints(pts.map((p) => ({ x: p.x + (p.x > px ? 1 : -1), y: p.y + 1 })), true);
+      g.fillStyle(0xb9c2cc, 1);
+      g.fillPoints(pts, true);
+    }
+    pot.ladleParts.forEach((part, i) => {
+      if (i % 2) return;
+      g.fillStyle(0x3b4148, 1);
+      g.fillRect(L.pot.x + part.position.x - 2, L.pot.y + part.position.y - 2, 4, 4);
+    });
+    g.fillStyle(0xf2c230, 1);
+    g.fillCircle(px, py, 7);
+    g.fillStyle(0x8a5a10, 1);
+    g.fillCircle(px, py, 3);
+    // subtle tap cue above the ladle while swinging
+    const a = this.hintArrow;
+    a.clear();
+    if (this.controller.phase === PHASE.SWING_WAIT && !this.overlay && !this.pauseOverlay) {
+      const bob = this.lowMotion ? 0 : Math.sin(time / 160) * 3;
+      a.fillStyle(0xffd84a, 0.85);
+      a.fillTriangle(px - 9, L.railY + 14 + bob, px + 9, L.railY + 14 + bob, px, L.railY + 26 + bob);
+    }
+  }
+
+  // ======================================================== presentation: wave
+  playWavePrep(e) {
+    const sp = this.speed;
+    this.refreshHud();
+    if (e.isBoss) {
+      audio.play(ENEMIES[this.chapter.boss]?.chapterBoss || ENEMIES[this.chapter.boss]?.boss && !ENEMIES[this.chapter.boss]?.elite ? 'boss_warn' : 'warn');
+      this.flash(`${this.chapter.finals?.length > 2 ? 'ÜÇLÜ FİNAL' : this.chapter.finals?.length > 1 ? 'ÇİFT FİNAL' : 'FİNAL'}: ${this.chapter.finalName || ENEMIES[this.chapter.boss].name}`, 1100 / sp);
+    } else if (e.wave === 1 && this.chapter.identity) {
+      // short level intro: title, rule label, recipe target (1.6 s, then the run starts)
+      const goal = Object.entries(this.chapter.recipe).map(([k, n]) => `${n} ${RECIPE_LABELS[k]}`).join(' · ');
+      this.flash(`L${this.chapter.level} · ${this.chapter.identity.subtitle}\n${this.chapter.identity.label} · ${this.chapter.waves.length} dalga\nHedef: ${goal}`, 1600 / sp);
+    } else {
+      this.flash(`${t('ui.wave')} ${e.wave}/${this.chapter.waves.length}`, 800 / sp);
+    }
+    for (const en of e.enemies) {
+      const v = this.createView(en, true);
+      const p = fieldToScreen(this.L, en.x, en.y);
+      this.tweens.add({ targets: v.c, x: p.x, duration: 520 / sp, ease: 'Quad.out' });
+    }
+    const introMs = e.wave === 1 && this.chapter.identity && !e.isBoss ? 1600 : 760;
+    this.time.delayedCall((e.isBoss ? 1100 : introMs) / sp, () => {
+      this.refreshStatuses();
+      this.controller.ack(e.token);
+    });
+  }
+
+  // ======================================================== presentation: catch
+  playCatch(e) {
+    const L = this.L;
+    const sp = this.speed;
+    this.refreshPotHud(e.load);
+    if (e.caught.length) audio.play('catch');
+    e.caught.forEach((b, i) => {
+      const s = this.ballSprites.get(b.id);
+      if (!s) return;
+      this.flying.add(b.id);
+      s.setDepth(55);
+      this.tweens.add({
+        targets: s,
+        x: this.muzzle.x - 30 + (i % 4) * 6,
+        y: this.muzzle.y + 10,
+        scale: 2,
+        duration: 380 / sp,
+        delay: i * 40,
+        ease: 'Quad.in',
+        onComplete: () => {
+          s.destroy();
+          this.flying.delete(b.id);
+          this.ballSprites.delete(b.id);
+        },
+      });
+    });
+    const big = e.caught.filter((b) => b.type === 'big').length;
+    const norm = e.caught.length - big;
+    if (e.caught.length === 0) {
+      this.floatText(L.W / 2, L.railY - 26, 'Boş kepçe! Güvence damlası +1', '#ffb35a');
+    } else {
+      this.floatText(L.W / 2, L.railY - 26, `${norm} normal${big ? ` + ${big} büyük` : ''}  (yük ${e.load}/${e.capacity})`, '#fff4dc');
+    }
+    if (e.spilled.length) this.floatText(L.W / 2, L.railY - 2, `Kapasite doldu: ${e.spilled.length} topçuk geri döküldü`, '#ffb35a');
+    this.renderAmmo(e.ammo || []);
+  }
+
+  renderAmmo(list) {
+    const row = this.ammoRow;
+    if (!row) return;
+    row.removeAll(true);
+    const MAX = 6;
+    const shown = list.slice(0, MAX);
+    const extra = list.length - shown.length;
+    const gap = 15;
+    const w = (shown.length - 1) * gap + (extra > 0 ? 26 : 0);
+    shown.forEach((oil, i) => row.add(this.add.image(-w / 2 + i * gap, 0, `oil_${oil}`).setScale(oil === 'big' ? 1.6 : 1.3)));
+    if (extra > 0) row.add(text(this, -w / 2 + (shown.length - 1) * gap + 22, 0, `+${extra}`, 14, COLORS.gold));
+  }
+
+  // ======================================================== presentation: volley
+  playVolley(e) {
+    this.dsShown = false;
+    const sp = this.speed;
+    const shotGap = 150 / sp;
+    const travel = 230 / sp;
+    let t = 0;
+    let lastLand = 0;
+    const ammo = [...(e.ammoBefore || [])];
+    this.renderAmmo(ammo);
+    if (ammo.length && e.ammoBefore.length > 0 && this.controller.lastCatch?.load === 0 && !this.controller.lastCatch.caught.length) {
+      this.flash('Kalan yağ ateşleniyor', 700 / sp); // wave-start volley of leftover ammo
+    }
+    for (const ev of e.events) {
+      if (ev.type === 'shot') {
+        const at = t;
+        this.time.delayedCall(at, () => {
+          if (ev.source === 'pot') {
+            ammo.shift(); // one real ball used per real shot
+            this.renderAmmo(ammo);
+          }
+          this.fireShot(ev, travel);
+        });
+        lastLand = at + travel;
+        t += shotGap;
+      } else if (ev.type === 'kill') {
+        this.time.delayedCall(lastLand + 20, () => this.killView(ev));
+      } else if (ev.type === 'area') {
+        const at = Math.max(t, lastLand + 30);
+        this.time.delayedCall(at, () => this.areaFx(ev, 160 / sp));
+        lastLand = at + 160 / sp;
+        t = at + 60 / sp;
+      } else if (ev.type === 'knockback' || ev.type === 'freeze' || ev.type === 'freezeResisted' || ev.type === 'explosion' || ev.type === 'heal' || ev.type === 'capReached') {
+        this.time.delayedCall(lastLand + 10, () => this.effectFx(ev));
+      } else if (ev.type === 'bonusReady') {
+        this.time.delayedCall(lastLand + 60, () => this.floatText(this.chefPos.x + 40, this.chefPos.y - 90, { chain_cooking: 'Zincir Pişirme: +1 yağ', pan_mastery: 'Tava Ustalığı: +1 yağ', eq_pan: 'Tava (ekipman): +1 yağ' }[ev.source] || '+1 yağ', '#8be07a'));
+      } else if (ev.type === 'split') {
+        this.time.delayedCall(lastLand + 40, () => this.spawnMinionViews(ev, 'Bölündü!'));
+      } else if (ev.type === 'fizzle') {
+        // queue closes safely: no living target
+      }
+    }
+    this.time.delayedCall(Math.max(t, lastLand) + 420 / sp, () => {
+      this.ammoText.setText('');
+      this.renderAmmo(e.ammoAfter || []);
+      this.syncViewsToLogic();
+      this.controller.ack(e.token);
+    });
+  }
+
+  fireShot(ev, travel) {
+    const v = this.views.get(ev.targetId);
+    const start = { x: this.muzzle.x, y: this.muzzle.y };
+    // recoil (transform only)
+    if (!this.lowMotion) this.tweens.add({ targets: this.chef, x: this.chefPos.x - 5, duration: 50, yoyo: true });
+    audio.play('shoot', { detune: ev.oil === 'big' ? -400 : 0 });
+    const proj = this.add.image(start.x, start.y, `oil_${ev.oil}`).setScale(ev.oil === 'big' ? 2.6 : 2.2).setDepth(50);
+    if (ev.isBonus) proj.setTint(0xb8ffb0);
+    if (ev.source === 'double_shot' && !this.dsShown) {
+      // once per volley: name the extra oil so the player connects it to the card
+      this.dsShown = true;
+      this.floatText(this.muzzle.x + 30, this.muzzle.y - 40, 'ÇİFTE YAĞ!', '#b8ffb0', 16);
+    }
+    const end = v ? { x: v.c.x, y: v.c.y } : { x: this.L.W - 40, y: start.y };
+    const ctrl = { x: (start.x + end.x) / 2, y: Math.min(start.y, end.y) - 60 };
+    const o = { t: 0 };
+    this.tweens.add({
+      targets: o,
+      t: 1,
+      duration: travel,
+      onUpdate: () => {
+        const k = o.t;
+        proj.x = (1 - k) * (1 - k) * start.x + 2 * (1 - k) * k * ctrl.x + k * k * end.x;
+        proj.y = (1 - k) * (1 - k) * start.y + 2 * (1 - k) * k * ctrl.y + k * k * end.y;
+      },
+      onComplete: () => {
+        proj.destroy();
+        audio.play('hit');
+        const tv = this.views.get(ev.targetId);
+        if (tv && !tv.dead) {
+          this.drawBar(tv, ev.hp, ev.shield);
+          tv.spr.setTintFill(0xffffff);
+          this.time.delayedCall(70, () => tv.spr.active && tv.spr.clearTint());
+          if (ev.shieldBroken) this.floatText(tv.c.x, tv.c.y - tv.half - 30, 'Kalkan kırıldı!', '#8fc6f0');
+          if (ev.guarded) this.floatText(tv.c.x, tv.c.y - tv.half - 44, 'Savundu -1', '#8fc6f0');
+          if (ev.cracked) this.floatText(tv.c.x, tv.c.y - tv.half - 44, 'Kabuk çatladı! Hızlanacak', '#e8b8f0', 15);
+          if (ev.halfShield) this.floatText(tv.c.x, tv.c.y - tv.half - 56, `Kalkan +${ev.halfShield}`, '#8fc6f0', 15);
+        }
+        const label = ev.shieldDmg && !ev.hpDmg ? `-${ev.shieldDmg} kalkan` : ev.shellDmg && !ev.hpDmg ? `-${ev.shellDmg} kabuk` : `-${ev.damage}`;
+        if (ev.crit) {
+          // critical: bigger number + short flash on the target
+          this.floatText(end.x + 10, end.y - 30, `KRİTİK ${label}`, '#ffef5a', 26);
+          if (tv && !tv.dead) tv.spr.setTintFill(0xffef5a);
+        } else {
+          this.floatText(end.x + 10, end.y - 20, label, ev.bonusParts.length ? '#ffd84a' : '#ffffff', 20);
+        }
+      },
+    });
+  }
+
+  // V1: split / summon minions appear from their source (short scale-in, no new animation set)
+  spawnMinionViews(ev, label) {
+    const sp = this.speed;
+    const src = this.views.get(ev.id);
+    for (const m of ev.minions) {
+      if (this.views.has(m.id)) continue;
+      const mv = this.createView(m);
+      const p = { x: mv.c.x, y: mv.c.y };
+      if (src) mv.c.setPosition(src.c.x, src.c.y);
+      mv.c.setScale(0.2);
+      this.tweens.add({ targets: mv.c, x: p.x, y: p.y, scale: 1, duration: 360 / sp, ease: 'Back.out' });
+    }
+    if (label && ev.minions.length) this.floatText(src ? src.c.x : 300, src ? src.c.y - 40 : 200, label, '#ffd84a', 15);
+  }
+
+  // Short, readable hit effects (no new character animation).
+  effectFx(ev) {
+    const sp = this.speed;
+    const v = ev.id != null ? this.views.get(ev.id) : null;
+    if (ev.type === 'knockback' && v && !v.dead) {
+      // pushed back by the hit (not the enemy's own move)
+      this.tweens.add({ targets: v.c, x: fieldToScreen(this.L, ev.toX, 0).x, duration: 160 / sp, ease: 'Quad.out' });
+      this.floatText(v.c.x, v.c.y - v.half - 30, 'Püskürtme!', '#ffffff', 15);
+    } else if (ev.type === 'freeze' && v && !v.dead) {
+      v.spr.setTint(0x9fdcff);
+      this.floatText(v.c.x, v.c.y - v.half - 30, 'Dondu: sonraki adım yok', '#9fdcff', 14);
+      this.refreshStatuses();
+    } else if (ev.type === 'freezeResisted' && v) {
+      this.floatText(v.c.x, v.c.y - v.half - 30, 'Boss donmaya direndi', '#9fdcff', 13);
+    } else if (ev.type === 'explosion') {
+      const p = fieldToScreen(this.L, ev.x, ev.y);
+      const ring = this.add.circle(p.x, p.y, 10).setStrokeStyle(4, 0xffa81f).setDepth(53);
+      this.tweens.add({ targets: ring, radius: 70, alpha: 0, duration: 260 / sp, onUpdate: () => ring.setRadius(ring.radius), onComplete: () => ring.destroy() });
+      audio.play('sizzle', { volume: 0.5 });
+    } else if (ev.type === 'heal' && ev.amount > 0) {
+      this.floatText(this.chefPos.x, this.chefPos.y - 100, `+${ev.amount} can (Lezzetli Lokma)`, '#8be07a', 16);
+      this.refreshHud();
+    } else if (ev.type === 'capReached' && this.debugText) {
+      this.floatText(this.L.W / 2, this.L.battle.top + 80, `ikincil olay sınırı: ${ev.dropped}`, '#9ef0ff', 12);
+    }
+  }
+
+  areaFx(ev, dur) {
+    const L = this.L;
+    const from = fieldToScreen(L, ev.fromX, ev.fromY);
+    const v = this.views.get(ev.targetId);
+    const to = v ? { x: v.c.x, y: v.c.y } : from;
+    const s = this.add.image(from.x, from.y, 'spark').setScale(3).setDepth(52);
+    audio.play('sizzle', { volume: 0.4 });
+    this.tweens.add({
+      targets: s,
+      x: to.x,
+      y: to.y,
+      duration: dur,
+      onComplete: () => {
+        s.destroy();
+        if (v && !v.dead) {
+          this.drawBar(v, ev.hp, ev.shield);
+          v.spr.setTintFill(0xffd84a);
+          this.time.delayedCall(70, () => v.spr.active && v.spr.clearTint());
+        }
+        this.floatText(to.x, to.y - 24, `-${ev.damage} ${ev.drill ? 'Delip geçti' : SOURCE_LABEL[ev.source] || ''}`, '#ffd84a', 15);
+      },
+    });
+  }
+
+  killView(ev) {
+    const v = this.views.get(ev.id);
+    this.refreshRecipe(ev.recipe);
+    if (!v || v.dead) return;
+    v.dead = true;
+    v.bob?.stop();
+    v.bar.clear();
+    v.status.removeAll(true);
+    const sp = this.speed;
+    const start = { x: v.c.x, y: v.c.y };
+    const end = { x: this.panPos.x + 8, y: this.panPos.y - 6 };
+    const ctrl = { x: (start.x + end.x) / 2, y: Math.min(start.y, end.y) - 120 };
+    const o = { t: 0 };
+    v.c.setDepth(54);
+    this.tweens.add({
+      targets: o,
+      t: 1,
+      duration: 480 / sp,
+      ease: 'Quad.in',
+      onUpdate: () => {
+        const k = o.t;
+        v.c.x = (1 - k) * (1 - k) * start.x + 2 * (1 - k) * k * ctrl.x + k * k * end.x;
+        v.c.y = (1 - k) * (1 - k) * start.y + 2 * (1 - k) * k * ctrl.y + k * k * end.y;
+        v.c.rotation = k * 4;
+        v.c.setScale(1 - k * 0.55);
+      },
+      onComplete: () => {
+        audio.play('sizzle');
+        const s = this.add.image(end.x, end.y - 6, 'spark').setScale(3).setDepth(55);
+        this.tweens.add({ targets: s, alpha: 0, y: s.y - 20, duration: 300, onComplete: () => s.destroy() });
+        if (ev.counted) this.floatText(end.x + 20, end.y - 30, `+1 ${RECIPE_LABELS[ev.recipeKey]}`, '#8be07a', 15);
+        if (this.tutorial && !this.tutKillShown) {
+          this.tutKillShown = true;
+          this.flash('Pişen sebze tavaya düştü → tarif +1', 1600);
+        }
+        this.views.delete(v.id);
+        v.c.destroy(true);
+      },
+    });
+  }
+
+  // ======================================================== presentation: enemy action & contact
+  playEnemyAction(e) {
+    const sp = this.speed;
+    let dur = 360 / sp;
+    for (const ev of e.events) {
+      const v = this.views.get(ev.id);
+      if (ev.type === 'move' && v) {
+        const to = fieldToScreen(this.L, ev.toX, 0).x;
+        this.tweens.add({ targets: v.c, x: to, duration: (ev.steps > 1 ? 380 : 300) / sp, ease: 'Quad.inOut' });
+        if (!this.lowMotion) this.tweens.add({ targets: v.spr, y: -8, duration: 140 / sp, yoyo: true });
+      } else if (ev.type === 'summon') {
+        audio.play('warn');
+        if (v) this.shake(v.c, 6);
+        for (const m of ev.minions) {
+          const mv = this.createView(m);
+          const p = { x: mv.c.x, y: mv.c.y };
+          mv.c.setPosition(v ? v.c.x : p.x, v ? v.c.y : p.y).setScale(0.2);
+          this.tweens.add({ targets: mv.c, x: p.x, y: p.y, scale: 1, duration: 420 / sp, ease: 'Back.out' });
+        }
+        this.floatText(v ? v.c.x : 400, v ? v.c.y - 90 : 200, ev.label || 'İki küçük domates çağırdı!', '#ff8a7a', 16);
+        dur = Math.max(dur, 520 / sp);
+      } else if (ev.type === 'frozenSkip' && v) {
+        v.spr.clearTint();
+        this.floatText(v.c.x, v.c.y - v.half - 40, 'Donmuş: bekliyor', '#9fdcff', 14);
+      } else if (ev.type === 'guardWarn' && v) {
+        this.floatText(v.c.x, v.c.y - v.half - 50, 'Savunmaya hazırlanıyor!', '#ffd84a', 15);
+      } else if (ev.type === 'guardUp' && v) {
+        audio.play('shield');
+        this.floatText(v.c.x, v.c.y - v.half - 50, 'Savunma: sonraki vuruş -1', '#8fc6f0', 15);
+      } else if (ev.type === 'bossPhase' && v) {
+        audio.play('boss_warn');
+        this.shake(v.c, 6);
+        if (ev.label) this.floatText(v.c.x, v.c.y - v.half - 64, ev.label, '#ff8a7a', 16);
+        dur = Math.max(dur, 520 / sp);
+      } else if (ev.type === 'telegraph' && v) {
+        this.floatText(v.c.x, v.c.y - v.half - 50, 'Hamle hazırlıyor: 2 adım!', '#ffd84a', 15);
+      } else if (ev.type === 'stepBuff') {
+        const tv = this.views.get(ev.targetId);
+        if (tv) this.floatText(tv.c.x, tv.c.y - tv.half - 40, '+1 adım', '#ffb35a', 14);
+      } else if (ev.type === 'healAlly') {
+        const tv = this.views.get(ev.targetId);
+        if (tv) this.floatText(tv.c.x, tv.c.y - tv.half - 40, '+1 can', '#8be07a', 14);
+      } else if (ev.type === 'phase' && v) {
+        this.floatText(v.c.x, v.c.y - v.half - 64, 'Koca Mantar 2. FAZ: hızlanıyor!', '#ff8a7a', 16);
+      } else if (ev.type === 'shieldGranted') {
+        // Alpha 0.5A: guard / boss shield pulse — a short shield icon, no new animation
+        const tv = this.views.get(ev.targetId);
+        if (tv && !tv.dead) {
+          audio.play('shield');
+          const ic = this.add.image(tv.c.x, tv.c.y - tv.half - 20, 'shield').setScale(2.2).setDepth(60);
+          this.tweens.add({ targets: ic, y: ic.y - 26, alpha: 0, duration: 700 / sp, onComplete: () => ic.destroy() });
+          this.floatText(tv.c.x, tv.c.y - tv.half - 44, `+${ev.amount} kalkan`, '#8fc6f0', 14);
+        }
+      } else if (ev.type === 'haste' && v) {
+        audio.play('warn');
+        this.shake(v.c, 6);
+        this.floatText(v.c.x, v.c.y - v.half - 50, 'Patates Kral HIZLANDI!', '#ff8a7a', 17);
+      }
+    }
+    this.time.delayedCall(dur + 60, () => {
+      this.syncViewsToLogic();
+      this.controller.ack(e.token);
+    });
+  }
+
+  playContact(e) {
+    const sp = this.speed;
+    let t = 0;
+    for (const ev of e.events) {
+      if (ev.type === 'reflect') {
+        this.time.delayedCall(Math.max(0, t - 200 / sp), () => {
+          const v = this.views.get(ev.id);
+          if (v && !v.dead) {
+            this.drawBar(v, ev.hp, ev.shield);
+            v.spr.setTintFill(0xffffff);
+            this.time.delayedCall(70, () => v.spr.active && v.spr.clearTint());
+            this.floatText(v.c.x, v.c.y - 30, `-${ev.damage} Dikenli Önlük`, '#ffd84a', 15);
+          }
+        });
+        continue;
+      }
+      if (ev.type === 'kill') {
+        this.time.delayedCall(Math.max(0, t - 120 / sp), () => this.killView(ev));
+        continue;
+      }
+      if (ev.type === 'split') {
+        this.time.delayedCall(t, () => this.spawnMinionViews(ev, 'Bölündü!'));
+        continue;
+      }
+      if (ev.type !== 'contact') continue;
+      const v = this.views.get(ev.id);
+      this.time.delayedCall(t, () => {
+        if (v && !v.dead) {
+          this.tweens.add({
+            targets: v.c,
+            x: this.chefPos.x + 46,
+            duration: 140 / sp,
+            yoyo: !ev.escaped,
+            onComplete: () => {
+              if (ev.escaped) {
+                this.tweens.add({ targets: v.c, x: -60, alpha: 0, duration: 260 / sp, onComplete: () => this.removeView(v) });
+              } else if (ev.retreatX != null) {
+                this.tweens.add({ targets: v.c, x: fieldToScreen(this.L, ev.retreatX, 0).x, duration: 300 / sp });
+              }
+            },
+          });
+        }
+        if (ev.hpLoss > 0) {
+          audio.play('hurt');
+          lifecycle.vibrate(60);
+          this.chef.setTintFill(0xff4040);
+          this.time.delayedCall(90, () => this.chef.clearTint());
+          if (!this.lowMotion) this.shake(this.chef, 5);
+          this.floatText(this.chefPos.x, this.chefPos.y - 70, `-${ev.hpLoss} can`, '#ff6a6a', 20);
+        }
+        if (ev.salt || ev.shield) {
+          audio.play('shield');
+          this.floatText(this.chefPos.x, this.chefPos.y - 96, `Kalkan engelledi ${ev.salt + ev.shield}`, '#8fc6f0', 16);
+        }
+        if (ev.escaped) this.floatText(this.chefPos.x + 60, this.chefPos.y + 60, 'Kaçtı (tarife sayılmaz)', '#d8c9b0', 14);
+        this.refreshHud();
+      });
+      t += 380 / sp;
+    }
+    this.time.delayedCall(t + 220 / sp, () => {
+      this.syncViewsToLogic();
+      this.refreshHud();
+      this.controller.ack(e.token);
+    });
+  }
+
+  // ======================================================== helpers
+  flash(msg, dur) {
+    if (!msg) return;
+    this.bannerText.setScale(1).setText(msg);
+    const fit = Math.min(1, (this.L.W - 24) / Math.max(1, this.bannerText.width)); // never wider than the screen
+    this.bannerText.setAlpha(1).setScale(this.lowMotion ? fit : fit * 0.7);
+    this.tweens.killTweensOf(this.bannerText);
+    this.tweens.add({ targets: this.bannerText, scale: fit, duration: 160 });
+    this.tweens.add({ targets: this.bannerText, alpha: 0, delay: dur, duration: 260 });
+  }
+
+  floatText(x, y, msg, color = '#ffffff', size = 17) {
+    const t = text(this, x, y, msg, size, color).setDepth(58);
+    if (t.x + t.width / 2 > this.L.W - 6) t.x = this.L.W - 6 - t.width / 2;
+    if (t.x - t.width / 2 < 6) t.x = 6 + t.width / 2;
+    this.tweens.add({ targets: t, y: y - 34, alpha: 0, delay: 500, duration: 700, onComplete: () => t.destroy() });
+    return t;
+  }
+
+  shake(target, amp) {
+    const x = target.x;
+    this.tweens.add({ targets: target, x: x + amp, duration: 40, yoyo: true, repeat: 2, onComplete: () => (target.x = x) });
+  }
+
+  closeOverlay() {
+    if (this.overlay) {
+      this.overlay.destroy(true);
+      this.overlay = null;
+    }
+  }
+
+  // ======================================================== skill choice
+  showSkillChoice(e) {
+    this.closeOverlay();
+    const L = this.L;
+    const run = this.controller.run;
+    const c = this.add.container(0, 0).setDepth(100);
+    c.add(blocker(this, 0.72));
+    const top = Math.max(24, L.H / 2 - 440);
+    c.add(panel(this, 16, top, L.W - 32, 860));
+    c.add(text(this, L.W / 2, top + 34, `YETENEK SEÇ (${e.choice}/${e.total ?? 6})`, 28, COLORS.gold));
+    c.add(text(this, L.W / 2, top + 66, 'Kartlar sonraki turdan itibaren koşu boyunca geçerli.', 14, '#e9dcc4'));
+    e.offer.forEach((id, i) => {
+      const info = cardInfo(run, id);
+      const y = top + 88 + i * 190;
+      const card = this.add.container(0, 0);
+      const g = this.add.graphics();
+      g.fillStyle(0x15111a, 1);
+      g.fillRect(32, y, L.W - 64, 178);
+      g.fillStyle(0x3d3447, 1);
+      g.fillRect(35, y + 3, L.W - 70, 172);
+      g.fillStyle(CAT_COLORS[info.cat], 1);
+      g.fillRect(35, y + 3, 10, 172);
+      card.add(g);
+      card.add(this.add.image(72, y + 30, `cat_${info.cat}`).setScale(3));
+      card.add(text(this, 98, y + 30, info.name, 23, COLORS.cream, { ox: 0 }));
+      const lvl = info.level ? `Sv ${ROMAN[info.level]} → ${ROMAN[info.nextLevel]}` : `Yeni · Sv ${ROMAN[info.nextLevel]}`;
+      card.add(text(this, L.W - 48, y + 62, `${ABILITY_CATS[info.cat]} · ${lvl} (maks ${ROMAN[info.max]})`, 14, '#d8c9b0', { ox: 1 }));
+      card.add(text(this, 56, y + 78, info.next, 21, '#fff4dc', { ox: 0, oy: 0, wrap: L.W - 104, align: 'left' }));
+      if (info.now) card.add(text(this, 56, y + 150, `Şu an: ${info.now}`, 15, '#b7a9c4', { ox: 0, oy: 0, wrap: L.W - 120, align: 'left' }));
+      const hit = this.add.zone(32, y, L.W - 64, 178).setOrigin(0).setInteractive({ useHandCursor: true });
+      hit.on('pointerup', () => this.controller.chooseSkill(id, e.offerSeq));
+      card.add(hit);
+      c.add(card);
+    });
+    const by = top + 88 + 3 * 190 + 30;
+    c.add(button(this, L.W / 2, by, 330, 52, e.rerollAvailable ? 'YENİDEN SEÇ (ücretsiz)' : 'Ücretsiz yenileme kullanıldı', () => this.controller.rerollSkills(), { size: 18, enabled: e.rerollAvailable, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 }));
+    c.add(button(this, L.W / 2, by + 62, 330, 44, adService.isAvailable() ? 'Reklamla bir kez daha yenile' : 'Reklamla yenile — Android sürümünde', async () => {
+      const res = await adService.show('rewarded_reroll');
+      if (consumeAdReward(app.save, res)) {
+        app.persist();
+        this.controller.grantAdReroll();
+      }
+    }, { size: 15, enabled: adService.isAvailable() && !e.rerollAvailable && !this.controller.run.adRerollUsed }));
+    this.overlay = c;
+    if (this.tutorial && e.choice === 1) c.add(text(this, L.W / 2, by + 104, 'İpucu: Yakalama kartları kepçeyi fiziksel olarak değiştirir.', 13, COLORS.gold, { wrap: 460 }));
+  }
+
+  // Tencereyi Karıştır button: only exists with the card, only usable while the ladle swings, once per wave.
+  refreshShuffleButton() {
+    const c = this.controller;
+    const show = !!c.run.abilities.pot_shuffle && !this.overlay && !this.pauseOverlay;
+    if (!show) {
+      this.shuffleBtn?.setVisible(false);
+      return;
+    }
+    if (!this.shuffleBtn) {
+      const L = this.L;
+      const y = Math.round((L.potArea.top + L.railY) / 2) - 2;
+      this.shuffleBtn = button(this, L.W - 78, y, 136, 40, 'KARIŞTIR', () => {
+        if (this.controller.shufflePot()) {
+          audio.play('swing', { volume: 0.6 });
+          lifecycle.vibrate(20);
+        }
+        this.refreshShuffleButton();
+      }, { size: 17, fill: 0x3a7de0, dark: 0x234f94, light: 0x7fb0ff });
+      this.shuffleBtn.setDepth(46);
+    }
+    this.shuffleBtn.setVisible(true);
+    const en = c.canShuffle();
+    if (en !== this._shuffleEnabled) {
+      this._shuffleEnabled = en;
+      this.shuffleBtn.setEnabled(en);
+    }
+  }
+
+  // ======================================================== pause
+  togglePause() {
+    if (this.pauseOverlay) this.resumeGame();
+    else this.pauseGame();
+  }
+
+  pauseGame() {
+    if (this.pauseOverlay || this.ended || !this.controller) return;
+    if (!this.controller.pause()) return;
+    this.tweens.pauseAll();
+    this.time.paused = true;
+    const L = this.L;
+    const c = this.add.container(0, 0).setDepth(120);
+    c.add(blocker(this, 0.75));
+    const top = L.H / 2 - 330;
+    c.add(panel(this, 40, top, L.W - 80, 660));
+    c.add(text(this, L.W / 2, top + 40, 'DURAKLATILDI', 30, COLORS.gold));
+    const run = this.controller.run;
+    const abil = Object.entries(run.abilities).map(([id, n]) => `${ABILITY_BY_ID[id].name}${n > 1 ? ` x${n}` : ''}`);
+    c.add(text(this, L.W / 2, top + 100, abil.length ? `Yetenekler: ${abil.join(', ')}` : 'Henüz yetenek yok', 15, '#e9dcc4', { wrap: L.W - 140 }));
+    const lp = this.controller.ladle.params;
+    c.add(text(this, L.W / 2, top + 156, `Kepçe: kapasite ${lp.capacity} · ağız %${Math.round((lp.radius / LADLE.radius) * 100)} · salınım ${lp.period.toFixed(2)} sn`, 14, '#d8c9b0', { wrap: L.W - 140 }));
+    c.add(button(this, L.W / 2, top + 230, 300, 64, 'DEVAM', () => this.resumeGame(), { size: 26, fill: COLORS.btnGreen, dark: COLORS.btnGreenDark, light: 0x8be07a }));
+    const sb = button(this, L.W / 2, top + 314, 300, 54, `SES: ${app.save.settings.sound ? 'AÇIK' : 'KAPALI'}`, () => {
+      app.setSetting('sound', !app.save.settings.sound);
+      sb.setLabel(`SES: ${app.save.settings.sound ? 'AÇIK' : 'KAPALI'}`);
+    }, { size: 20 });
+    c.add(sb);
+    c.add(button(this, L.W / 2, top + 392, 300, 54, 'KAYDET VE ÇIK', () => this.saveAndQuit(), { size: 20, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 }));
+    let confirm = false;
+    const ab = button(this, L.W / 2, top + 470, 300, 54, 'SİPARİŞİ BIRAK', () => {
+      if (!confirm) {
+        confirm = true;
+        ab.setLabel('EMİN MİSİN?');
+        return;
+      }
+      this.abandon();
+    }, { size: 20, fill: 0xb5341f, dark: 0x7a1f12, light: 0xe8582f });
+    c.add(ab);
+    c.add(text(this, L.W / 2, top + 540, 'Kaydet ve çık: bu dalganın başından devam edersin.\nBırakırsan tamamlanan dalgalara göre kısmi bahşiş alırsın.', 13, '#d8c9b0', { wrap: L.W - 120 }));
+    this.pauseOverlay = c;
+  }
+
+  resumeGame() {
+    if (!this.pauseOverlay) return;
+    this.pauseOverlay.destroy(true);
+    this.pauseOverlay = null;
+    this.time.paused = false;
+    this.tweens.resumeAll();
+    this.controller.resume();
+  }
+
+  saveAndQuit() {
+    // the last consistent wave checkpoint is already persisted (checkpoint event)
+    this.ended = true;
+    this.scene.start('Menu');
+  }
+
+  abandon() {
+    this.pauseOverlay?.destroy(true);
+    this.pauseOverlay = null;
+    this.time.paused = false;
+    this.tweens.resumeAll();
+    this.controller.resume();
+    this.controller.finish(false);
+  }
+
+  // ======================================================== result
+  // Result -> menu is the ONLY place an interstitial may appear (never in battle / wave / card choice).
+  async toMenu() {
+    if (adService.isAvailable() && interstitialDue(app.save, Date.now())) {
+      await adService.show('interstitial');
+      noteInterstitialShown(app.save, Date.now());
+      app.persist();
+    }
+    this.scene.start('Menu');
+  }
+
+  // V1.0: after a defeat, an optional rewarded "continue with 2 HP" (once per run), before any reward is applied.
+  offerContinue(e) {
+    const L = this.L;
+    const c = this.add.container(0, 0).setDepth(115);
+    c.add(blocker(this, 0.7));
+    c.add(panel(this, 60, L.H / 2 - 120, L.W - 120, 240));
+    c.add(text(this, L.W / 2, L.H / 2 - 70, 'Devam etmek ister misin?', 22, COLORS.gold));
+    const finish = () => {
+      c.destroy(true);
+      this.onResult(e);
+    };
+    c.add(button(this, L.W / 2, L.H / 2, 320, 52, 'Reklamla 2 canla devam', async () => {
+      const res = await adService.show('rewarded_continue');
+      if (consumeAdReward(app.save, res) && this.controller.revive(2)) {
+        app.persist();
+        c.destroy(true);
+        this.ended = false;
+        this.refreshHud();
+      } else finish();
+    }, { size: 17, fill: COLORS.btnGreen, dark: COLORS.btnGreenDark, light: 0x8be07a }));
+    c.add(button(this, L.W / 2, L.H / 2 + 64, 320, 48, 'Bitir', finish, { size: 17, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 }));
+  }
+
+  onResult(e) {
+    if (!e.victory && !this.rewardApplied && !e.run.revived && !this.continueOffered && adService.isAvailable()) {
+      this.continueOffered = true;
+      return this.offerContinue(e);
+    }
+    this.ended = true;
+    this.hint.setAlpha(0);
+    const run = e.run;
+    let out = null;
+    if (!this.rewardApplied) {
+      this.rewardApplied = true;
+      out = this.chapter.isDungeon
+        ? applyDungeonResult(app.save, this.chapter, run, { victory: e.victory })
+        : this.chapter.isStage
+        ? applyStageResult(app.save, this.chapter, run, { victory: e.victory, stars: e.stars })
+        : applyRunResult(app.save, this.chapter, run, { victory: e.victory, stars: e.stars });
+      if (out && !out.duplicate) noteRunCompleted(app.save); // interstitial pacing counter
+      app.persist(); // reward + cleared snapshot in ONE write
+    }
+    const sp = this.speed;
+    if (e.victory) {
+      audio.play('victory');
+      // short serve effect: dish pops onto the counter
+      const dish = this.add.image(this.L.W / 2, this.L.battle.bottom - 80, this.dishKey).setScale(0.5).setDepth(70);
+      this.tweens.add({ targets: dish, scale: 4, y: dish.y - 60, duration: 420 / sp, ease: 'Back.out' });
+      this.flash(t('ui.victory'), 1400);
+    } else {
+      audio.play('defeat');
+      this.flash('Sipariş yandı…', 1400);
+    }
+    this.time.delayedCall(1300 / sp, () => this.showResult(e, out));
+  }
+
+  showResult(e, out) {
+    this.closeOverlay();
+    const L = this.L;
+    const run = e.run;
+    const c = this.add.container(0, 0).setDepth(110);
+    c.add(blocker(this, 0.78));
+    const top = Math.max(30, L.H / 2 - 400);
+    c.add(panel(this, 24, top, L.W - 48, 800));
+    c.add(text(this, L.W / 2, top + 40, e.victory ? 'SİPARİŞ TAMAM!' : 'SİPARİŞ YANDI', 32, e.victory ? COLORS.gold : '#ff8a7a'));
+    c.add(text(this, L.W / 2, top + 78, this.chapter.name, 20, COLORS.cream));
+    c.add(this.add.image(L.W / 2, top + 140, this.dishKey).setScale(3.4).setAlpha(e.victory ? 1 : 0.45));
+    for (let s = 0; s < 3; s++) {
+      const st = this.add.image(L.W / 2 - 56 + s * 56, top + 218, s < e.stars ? 'star' : 'star_empty').setScale(3.4);
+      c.add(st);
+      if (s < e.stars && !this.lowMotion) {
+        st.setScale(0.5);
+        this.tweens.add({ targets: st, scale: 3.4, delay: 200 + s * 220, duration: 260, ease: 'Back.out', onStart: () => audio.play('coin') });
+      }
+    }
+    const recipeLines = Object.entries(this.chapter.recipe)
+      .map(([k, n]) => `${RECIPE_LABELS[k]} ${Math.min(run.recipe[k] || 0, n)}/${n}`)
+      .join('   ');
+    c.add(text(this, L.W / 2, top + 268, recipeLines, 17, recipeComplete(run, this.chapter) ? '#8be07a' : COLORS.cream));
+    const starRules = ['1★ Boss yenildi', `2★ Tam tarif + can kaybı ≤ ${STAR2_MAX_HP_LOSS}`, `3★ Toplam can kaybı ≤ 1 (bu koşu: ${run.stats.hpLost})`];
+    c.add(text(this, L.W / 2, top + 312, this.chapter.isDungeon ? 'Dungeon: tarif ve yıldız gerekmez' : starRules.join('\n'), 14, '#d8c9b0', { lineSpacing: 4 }));
+    let lines;
+    if (out && !out.duplicate && (this.chapter.dungeonId === 'boss_kitchen' || this.chapter.dungeonId === 'tower')) {
+      const r = out.reward;
+      const tw = this.chapter.dungeonId === 'tower';
+      lines = e.victory
+        ? [`${r.full ? (tw ? 'Kilometre taşı ödülü' : 'Haftalık tam ödül') : 'Tekrar ödülü'}: +${r.tips} bahşiş${r.parts ? ` +${r.parts} parça` : ''}${r.seals ? ` +${r.seals} boss mührü` : ''}`,
+          tw ? `Checkpoint: ${app.save.tower?.best || 0}. kat` : `Bu hafta zafer: ${app.save.bossKitchen?.wins || 0} (ilk 3 tam ödül)`, `Boss mührü: ${app.save.bossSeals || 0}`]
+        : [tw ? 'Blok başarısız: checkpoint korunur, ödül yok' : 'Boss Mutfağı başarısız: ödül yok, haftalık hak kullanılmadı'];
+    } else if (out && !out.duplicate && this.chapter.isDungeon) {
+      const r = out.reward;
+      const left = dungeonFullLeft(app.save, this.chapter);
+      lines = e.victory
+        ? [`${r.full ? 'Tam ödül' : 'Tekrar ödülü'}: ${r.tips ? `+${r.tips} bahşiş` : ''}${r.parts ? `+${r.parts} parça` : ''}`, r.firstBonus ? `İlk temizleme bonusu dahil (+${r.firstBonus})` : '', `Bugün kalan tam ödül: ${left}/2 · Parça: ${app.save.currencyParts}`].filter(Boolean)
+        : ['Dungeon başarısız: ödül yok', `Bugün kalan tam ödül: ${left}/2 (kullanılmadı)`];
+    } else if (out && !out.duplicate) {
+      const r = out.reward;
+      lines = e.victory
+        ? [`Temel bahşiş: ${r.base}`, `Kalite bonusu: ${r.quality}`, `İlk servis bonusu: ${r.firstBonus}`]
+        : [`Tamamlanan dalga: ${Math.min(this.chapter.waves.length, run.stats.completedWaves)}/${this.chapter.waves.length}`, `Kısmi bahşiş: ${r.failReward}`];
+      lines.push(`TOPLAM: +${r.total}`);
+      if (out.energyRefund) lines.push(`İlk temizleme enerji iadesi: +${out.energyRefund}`);
+      if (out.unlocked?.length) lines.push(`Açıldı: ${out.unlocked.map((id) => UNLOCK_LABELS[id] || id).join(', ')}`);
+      if (out.unlocked?.includes('game_complete')) lines.push('TEBRİKLER! 120 level tamamlandı — Büyük Şef!');
+    } else {
+      lines = ['Bu koşunun ödülü zaten verildi.'];
+    }
+    c.add(text(this, L.W / 2, top + 418, lines.join('\n'), 18, COLORS.gold, { lineSpacing: 6 }));
+    c.add(this.add.image(L.W / 2 - 100, top + 506, 'coin').setScale(2.2));
+    c.add(text(this, L.W / 2 - 80, top + 506, `Toplam bahşiş: ${app.save.tips}`, 18, COLORS.cream, { ox: 0 }));
+    const runTips = out && !out.duplicate ? out.reward?.total || 0 : 0;
+    const tipBtn = button(this, L.W / 2, top + 560, 380, 44, adService.isAvailable() ? 'Reklamla +%40 bahşiş' : 'Reklamla +%40 bahşiş — Android sürümünde', async () => {
+      const res = await adService.show('rewarded_tip_bonus');
+      const bonus = applyTipBonus(app.save, run.runId, runTips, res); // verified reward only, once per run
+      if (bonus) {
+        app.persist();
+        tipBtn.setLabel(`+${bonus} bahşiş eklendi`);
+      }
+    }, { size: 14, enabled: adService.isAvailable() && runTips > 0 });
+    c.add(tipBtn);
+    // campaign levels go through the launcher (energy debit, one per new runId); legacy chapters as before
+    const replay = () => this.startOrder(this.chapter.isStage ? this.chapter.level : null, this.chapter.id);
+    let next;
+    if (this.chapter.isDungeon) {
+      next = null;
+    } else if (this.chapter.isStage) {
+      const n = this.chapter.level + 1;
+      next = n <= LEVEL_COUNT && isStageUnlocked(app.save, n) ? { name: `L${n} · ${stageByLevel(n).name}`, go: () => this.startOrder(n) } : null;
+    } else {
+      const nc = CHAPTERS.find((ch) => ch.index === this.chapter.index + 1);
+      next = nc && app.save.highestUnlocked >= nc.index ? { name: nc.name, go: () => this.scene.start('Game', { chapterId: nc.id }) } : null;
+    }
+    let y = top + 624;
+    if (e.victory && next) {
+      c.add(button(this, L.W / 2, y, 380, 58, `SONRAKİ: ${next.name.toUpperCase()}`, next.go, { size: 18, fill: COLORS.btnGreen, dark: COLORS.btnGreenDark, light: 0x8be07a }));
+      y += 70;
+      c.add(button(this, L.W / 2 - 98, y, 180, 54, 'TEKRAR', replay, { size: 20 }));
+      c.add(button(this, L.W / 2 + 98, y, 180, 54, 'RESTORAN', () => this.toMenu(), { size: 20, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 }));
+    } else {
+      c.add(button(this, L.W / 2, y, 380, 58, 'TEKRAR OYNA', replay, { size: 22 }));
+      c.add(button(this, L.W / 2, y + 70, 380, 54, 'RESTORANA DÖN', () => this.toMenu(), { size: 20, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 }));
+    }
+    this.overlay = c;
+  }
+
+  // Start a campaign level (energy is charged by the launcher) or replay a legacy chapter.
+  startOrder(level, legacyId) {
+    if (level == null && this.chapter.isDungeon) return this.handleLaunch(launchDungeon(this, this.chapter.dungeonId));
+    if (level == null) return this.scene.start('Game', { chapterId: legacyId });
+    return this.handleLaunch(launchLevel(this, level));
+  }
+
+  handleLaunch(r) {
+    if (!r.ok) {
+      this.floatText(this.L.W / 2, this.L.H / 2, r.reason === 'energy' ? 'Enerji yetersiz — restorana dönülüyor' : 'Level kilitli', '#ff8a7a', 20);
+      this.time.delayedCall(1200, () => this.scene.start('Menu'));
+    }
+  }
+}
