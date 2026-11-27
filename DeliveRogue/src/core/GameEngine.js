@@ -6,6 +6,7 @@ import { Game } from './DistrictRuntimeCore.js';
 import { Input } from './InputManager.js';
 import { Save } from './SaveManager.js';
 import { SceneManager } from './SceneManager.js';
+import { SKILLS, EVOLUTIONS, SKILL_BY_ID } from '../data/skills.js';
 import { Bus, G, View } from './state.js';
 import { VIEW_W, clamp } from './util.js';
 import { CHAPTERS } from '../data/chapters.js';
@@ -72,7 +73,7 @@ export const Main = (() => {
     document.addEventListener('touchmove', e => { if (!e.target.closest('.scroll,.p-scroll')) e.preventDefault(); }, { passive: false });
     document.addEventListener('pointerdown', () => Audio.init(), { once: true });
     last = performance.now(); requestAnimationFrame(loop);
-    if (import.meta.env?.DEV || /[?&]debug=1\b/.test(location.search)) window.__DR = { STEP, Scenes: SceneManager, Bus, Art, G, Game, Save, UI, Main: M, CHAPTERS, MapBuilder, Nav, SkillMgr, Progression, View, Input, ENEMY_DB };
+    if (import.meta.env?.DEV || /[?&]debug=1\b/.test(location.search)) window.__DR = { STEP, Scenes: SceneManager, Bus, Data: { SKILLS, EVOLUTIONS, SKILL_BY_ID }, Art, G, Game, Save, UI, Main: M, CHAPTERS, MapBuilder, Nav, SkillMgr, Progression, View, Input, ENEMY_DB };
   }
   M.init = init; M.resize = () => resize();
   return M;

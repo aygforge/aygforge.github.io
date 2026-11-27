@@ -1,4 +1,5 @@
 // core/Art.js — migrated verbatim from DeliveRogue.html (Phase 01 Core Migration).
+import { drawGlyph } from './SkillGlyphs.js';
 import { COLS, TAU, TILE, VIEW_W } from './util.js';
 import { COSMETICS } from '../data/cosmetics.js';
 import { ENEMY_DB, ENEMY_SHORT } from '../data/enemies.js';
@@ -323,7 +324,7 @@ export const Art = (() => {
   });
 
   /* ---------------------- Icons (UI) ---------------------- */
-  const CATC = { attack: ['#ff8a73', '#a83526'], elemental: ['#b78cff', '#5a3d99'], defense: ['#5aa9e6', '#2a5f8a'], movement: ['#5fd3b4', '#25876c'] };
+  const CATC = { attack: ['#ff8a73', '#a83526'], elemental: ['#b78cff', '#5a3d99'], defense: ['#5aa9e6', '#2a5f8a'], movement: ['#5fd3b4', '#25876c'], economy: ['#ffd166', '#b8860b'] };
   function cardShape(g, x, y, w, h, c1 = '#ffd166', c2 = '#2a5f8a') { rr(g, x, y, w, h, 2); fs(g, c1, OUT, 1.2); g.fillStyle = c2; g.fillRect(x + 1, y + h * 0.3, w - 2, h * 0.18); g.fillStyle = '#fff'; g.fillRect(x + w * 0.15, y + h * 0.65, w * 0.3, h * 0.12); }
   const ICON = {
     double_order: g => { cardShape(g, 10, 16, 20, 14); cardShape(g, 18, 22, 20, 14); },
@@ -354,7 +355,7 @@ export const Art = (() => {
       const [c1, c2] = CATC[sk.cat]; const gr = g.createLinearGradient(0, 0, 0, 48); gr.addColorStop(0, c1); gr.addColorStop(1, c2);
       rr(g, 1, 1, 46, 46, 10); g.fillStyle = gr; g.fill(); g.strokeStyle = 'rgba(0,0,0,.4)'; g.lineWidth = 2; g.stroke();
       g.fillStyle = 'rgba(255,255,255,.15)'; rr(g, 4, 4, 40, 18, 7); g.fill();
-      ICON[id](g);
+      (ICON[id] || (gg => drawGlyph(gg, id)))(g);
     });
   }
   const GICON = {

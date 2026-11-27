@@ -33,7 +33,7 @@ export default {
   s_noVibe: '(bu cihazda yok)', s_pauseInfo: 'Oyun sırasında ❚❚ düğmesi veya ESC ile duraklat / devam et.',
   // game
   paused: 'DURAKLATILDI', resume: 'Devam et', restart: 'Yeniden başlat', quitRun: 'Teslimattan çık', quitQ: 'Bu teslimat iptal edilecek. Ödül yok.',
-  chooseSkill: 'Beceri Seç', skillOf: '{0}/{1}', checkpoint: 'Kahve Molası!', checkpointSub: '+15 HP · Bir beceri daha seç',
+  chooseSkill: 'Beceri Seç', skillOf: '{0}/{1}', checkpoint: 'Kahve Molası!', checkpointSub: '+15 HP · Run XP',
   begin: 'Başla', newEnemy: 'Yeni düşman', elite: 'ELİT', hp: 'HP', pkgHp: 'PAKET', waitOrder: 'Siparişi al!', timerWaits: 'Sipariş alınınca başlar', orderTaken: 'SİPARİŞ ALINDI!',
   delivered: 'TESLİM EDİLDİ!', failed: 'TESLİMAT BAŞARISIZ', m: 'm',
   fail_time: 'Süre doldu!', fail_hp: 'Kurye bayıldı! (HP bitti)', fail_pkg: 'Paket mahvoldu! (Paket HP bitti)', fail_quit: 'Teslimat iptal edildi.',
@@ -46,13 +46,13 @@ export default {
   epComplete: 'COFFEE DISTRICT', epComplete2: 'TAMAMLANDI!', epComplete3: 'Tüm 12 bölüm teslim edildi. Sırada: MegaBoyBurger (yakında).', cont: 'Devam',
   // tutorial
   tut_move: 'Sol alttaki joystick\'in topuzunu sürükleyerek (veya WASD) hareket et.', tut_pickup: 'Parlayan teslim alma tezgâhına git ve siparişi al.',
-  tut_go: 'Yukarı! Ok işareti teslimat noktasını gösterir.', tut_auto: 'POS cihazın yakındaki düşmanlara otomatik ateş eder.',
+  tut_go: 'Yukarı! Ok işareti teslimat noktasını gösterir.', tut_auto: 'Nişan en yakın düşmana otomatik kilitlenir — ateş etmek için sağ alttaki ATEŞ tuşuna dokun ya da basılı tut (masaüstü: Space).',
   tut_pkg: 'Paketini koru: Paket HP biterse teslimat başarısız olur.', tut_time: 'Süre dolmadan teslim et! Düşmanları yenmek zorunlu değil.',
   tut_fragile: 'Kırılgan Sipariş: Buhar paketine daha çok zarar verir. Kırmızı uyarıyı görünce bekle!',
   tut_steam: 'Buhar jetleri kırmızı yanıp söner, sonra püskürür. Zamanlamanı ayarla.',
   tut_heavy: 'Ağır Sipariş: Daha yavaşsın ama paketin daha dayanıklı.',
   tut_spill: 'Kahve dökülmesi kaygandır! Duvara sert çarpmak paketi sarsar.',
-  tut_elite: 'Elit düşman! Yenmek zorunda değilsin — etrafından dolaş.', tut_check: 'Kahve Molası noktasına ulaşınca +15 HP ve yeni beceri kazanırsın.',
+  tut_elite: 'Elit düşman! Yenmek zorunda değilsin — etrafından dolaş.', tut_check: 'Kahve Molası noktası +15 HP ve Run XP verir.',
   tut_split: 'Rota ayrılıyor: Kısa yol tehlikeli, uzun yol daha güvenli.', tut_heal: 'Yeşil termos istasyonu bir kez HP yeniler.',
   tut_mimic: 'Dikkat: Yerdeki şüpheli kupalar canlanabilir!',
   // misc
@@ -94,4 +94,12 @@ export default {
   s_exported: 'Kayıt dosyası indirildi.', s_tutResetQ: 'Eğitim ipuçları yeniden gösterilsin mi?', s_tutResetDone: 'Eğitim ipuçları sıfırlandı.',
   s_importBad: 'Dosya geçerli bir DeliveRogue kaydı değil.', s_importQ: 'Bu kayıt yüklensin mi? Mevcut ilerleme yedeklenip değiştirilecek.', s_imported: 'Kayıt yüklendi.',
   s_saveFail: 'Kayıt yazılamadı — mevcut kaydın korunuyor.', s_importSum: 'Seviye {0} · {1} jeton · {2}/12 bölüm', s_checksumWarn: 'uyarı: sağlama toplamı uyuşmuyor',
+
+  // ---- Phase 03: combat & skills ----
+  fireBtn: 'ATEŞ', fireLocked: 'Siparişi al', tut_fire: 'ATEŞ tuşu (sağ alt): dokun = tek atış, basılı tut = seri atış. Nişan otomatik.',
+  runXp: 'Run XP', runXpShort: 'Run XP', runLevelUp: 'SEVİYE {0}!', levelUpTitle: 'Seviye {0}!', levelUpSub: 'Run XP doldu — bir beceri seç. Süre durdu.',
+  reroll: 'Yeniden seç', evolution: 'EVRİM', cat_economy: 'EKONOMİ', cat_utility: 'DESTEK', pkgRepaired: 'Paket onarıldı',
+  rar_C: 'Yaygın', rar_R: 'Nadir', rar_E: 'Epik', rar_L: 'Efsanevi',
+  s_leftHanded: 'Solak modu (joystick sağda)', s_joySize: 'Joystick boyutu', s_fireSize: 'Ateş tuşu boyutu', s_ctrlOpacity: 'Kontrol opaklığı',
+  sz_S: 'Küçük', sz_M: 'Orta', sz_L: 'Büyük',
 };

@@ -23,7 +23,7 @@ export const Save = (() => {
       stats: { deliveries: 0, failures: 0, kills: 0, eliteKills: 0, pkg70: 0, fragileDone: 0, heavyDone: 0, threeStarRuns: 0, runs: 0, mastery: 0 },
       book, quests: { claimed: {} }, milestones: { unlocked: {}, claimed: {} }, mastery: {},
       cosmetics: { owned: ['classic'], selected: 'classic' },
-      settings: { master: true, music: true, sfx: true, shake: true, vibe: true, reducedMotion: false, lowGfx: false },
+      settings: { master: true, music: true, sfx: true, shake: true, vibe: true, reducedMotion: false, lowGfx: false, leftHanded: false, joySize: 1, fireSize: 1, ctrlOpacity: 1 },
       tutorial: {}, settled: [], runCounter: 0,
     };
   }
@@ -52,7 +52,8 @@ export const Save = (() => {
     const co = obj(r.cosmetics), ids = COSMETICS.map(c => c.id);
     d.cosmetics.owned = Array.from(new Set(['classic'].concat(Array.isArray(co.owned) ? co.owned.filter(x => ids.includes(x)) : [])));
     d.cosmetics.selected = d.cosmetics.owned.includes(co.selected) ? co.selected : 'classic';
-    const se = obj(r.settings); for (const k in d.settings) d.settings[k] = bool(se[k], d.settings[k]);
+    const se = obj(r.settings), RANGE = { joySize: [0.8, 1.3], fireSize: [0.8, 1.3], ctrlOpacity: [0.4, 1] };
+    for (const k in d.settings) d.settings[k] = typeof d.settings[k] === 'number' ? num(se[k], d.settings[k], RANGE[k][0], RANGE[k][1]) : bool(se[k], d.settings[k]);
     const tu = obj(r.tutorial); for (const k in tu) if (tu[k] === true) d.tutorial[k] = true;
     d.settled = Array.isArray(r.settled) ? r.settled.filter(x => typeof x === 'string').slice(-40) : [];
     d.runCounter = Math.floor(num(r.runCounter, 0, 0, 1e12));

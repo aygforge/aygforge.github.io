@@ -34,7 +34,7 @@ test('Coffee baseline table (Ek C) preserved', () => {
     [115, 18, 2, true, 180], [125, 20, 2, true, 200], [130, 22, 2, true, 220], [140, 24, 2, true, 240], [150, 26, 2, true, 260], [160, 30, 2, true, 280]];
   CHAPTERS.forEach((c, i) => assert.deepEqual([c.timer, c.enemies, c.picks, c.cp, c.coins], exp[i], c.id));
   assert.deepEqual(PLAYER_BASE, { hp: 100, dmg: 12, interval: 0.60, speed: 85, invuln: 0.6, range: 172, critChance: 0.05, critMul: 1.5 });
-  assert.equal(SKILLS.length, 20);
+  assert.equal(SKILLS.length, 60); assert.deepEqual(SKILLS.slice(0, 20).map(s => s.id).join(','), 'double_order,rapid_payment,piercing_card,ricochet,critical_receipt,diagonal_delivery,electric_card,frozen_payment,burning_receipt,toxic_payment,reinforced_helmet,emergency_shield,cashback,protective_packaging,heat_resistant_bag,express_courier,emergency_brake,last_minute,shortcut_expert,perfect_balance');
 });
 
 test('map build is deterministic per chapter', () => {

@@ -58,18 +58,21 @@ const coins = () => ev(() => window.__DR.Save.data.coins);
 const barsShown = () => ev(() => ({ top: document.getElementById('topbar').classList.contains('show'), nav: document.getElementById('navbar').classList.contains('show') }));
 const sceneRoots = () => ev(() => document.querySelectorAll('#scenes > .scene').length);
 
-async function autopilot(on) {
-  await ev(on => {
+// fire=true holds the fire input while steering (same state the Space key sets); real input paths are
+// tested separately with pointer / multi-touch / keyboard events.
+async function autopilot(on, fire = false) {
+  await ev(([on, fire]) => {
     const D = window.__DR; clearInterval(window.__ap);
-    if (!on) { D.Input.joy.dx = D.Input.joy.dy = 0; return; }
+    if (!on) { D.Input.joy.dx = D.Input.joy.dy = 0; D.Input.fire.key = false; return; }
     window.__ap = setInterval(() => {
       const r = D.G.run, p = D.G.player; if (!r || !p) return;
       const pk = document.querySelector('#modal [data-a="pickskill"]'); if (pk) pk.click();
       if (r.state !== 'play' || r.paused) return;
+      D.Input.fire.key = fire;
       const f = D.Nav.flowDir(r.picked ? D.G.world.dropField : D.G.world.pickField, p.x, p.y) || { x: 0, y: -1 };
       D.Input.joy.dx = f.x; D.Input.joy.dy = f.y;
     }, 16);
-  }, on);
+  }, [on, fire]);
 }
 async function waitEnd(maxMs) {
   const t0 = Date.now();
@@ -111,6 +114,12 @@ try {
   await tap('#modal [data-a="begin"]');
   check('skill pick overlay', await ev(() => document.querySelectorAll('#modal [data-a="pickskill"]').length >= 1));
   await shot('05_skill_pick');
+  const off0 = await ev(() => window.__DR.G.run.offer.join());
+  await tap('#modal [data-a="reroll"]');
+  const off1 = await ev(() => ({ offer: window.__DR.G.run.offer.join(), rerolls: window.__DR.G.run.rerolls, btn: document.querySelector('#modal [data-a="reroll"]').disabled }));
+  check('free reroll: new engine offer, 0 left, button disabled', off1.offer !== off0 && off1.rerolls === 0 && off1.btn, JSON.stringify({ off0, ...off1 }));
+  const forged = await ev(() => window.__DR.Game.choose('thunder_strike'));
+  check('choice outside the offer is rejected', forged === false);
   await tap('#modal [data-a="pickskill"]');
   let s = await runState(); check('run enters play after pick', s && s.state === 'play');
 
@@ -129,14 +138,66 @@ try {
   await page.keyboard.press('Escape'); await page.waitForTimeout(250);
   check('ESC again resumes', (await ev(() => window.__DR.UI.modalKind)) === null && !(await ev(() => window.__DR.G.run.paused)));
 
+  // ---- Phase 03: Manual Fire + Auto Aim ----
   await autopilot(true);
   await page.waitForFunction(() => window.__DR.G.run.picked, null, { timeout: 15000 }).catch(() => {});
   check('package pickup', (await runState()).picked);
+  await page.waitForFunction(() => !!window.__DR.G.player.target, null, { timeout: 20000, polling: 50 }).catch(() => {});
+  await autopilot(false);
+  const idle0 = await ev(() => ({ shots: window.__DR.G.run.shots, proj: window.__DR.G.proj.length, target: !!window.__DR.G.player.target }));
+  await page.waitForTimeout(1200);
+  const idle1 = await ev(() => ({ shots: window.__DR.G.run.shots, proj: window.__DR.G.proj.length, target: !!window.__DR.G.player.target }));
+  check('no idle fire: target in range, no fire input -> no shots', idle0.target && idle1.shots === idle0.shots && idle1.proj === 0, JSON.stringify({ idle0, idle1 }));
+  await shot('07a_reticle_no_fire');
+  const fc = await ev(() => { const D = window.__DR, c = D.Input.fireCenter(); return { x: c.x, y: c.y, vh: D.View.h }; });
+  const fx = box.x + fc.x / 360 * box.width, fy = box.y + fc.y / fc.vh * box.height;
+  await page.waitForTimeout(700); // cooldown ready
+  let sh0 = await ev(() => window.__DR.G.run.shots);
+  await page.mouse.move(fx, fy); await page.mouse.down(); await page.waitForTimeout(60); await page.mouse.up(); await page.waitForTimeout(200);
+  let sh1 = await ev(() => window.__DR.G.run.shots);
+  check('FIRE tap = exactly one shot', sh1 === sh0 + 1, `${sh0} -> ${sh1}`);
+  await page.waitForTimeout(700);
+  sh0 = await ev(() => window.__DR.G.run.shots);
+  await page.mouse.down(); await page.waitForTimeout(1300); await shot('07b_fire_hold');
+  sh1 = await ev(() => window.__DR.G.run.shots);
+  await page.mouse.up(); await page.waitForTimeout(800);
+  const sh2 = await ev(() => window.__DR.G.run.shots), iv = await ev(() => window.__DR.G.player.interval);
+  check('FIRE hold repeats at attack interval; release stops', sh1 - sh0 >= Math.floor(1.3 / iv) - 1 && sh1 - sh0 <= Math.ceil(1.3 / iv) + 1 && sh2 === sh1, `held +${sh1 - sh0} (interval ${iv.toFixed(2)}), after release +${sh2 - sh1}`);
+  // multi-touch: joystick + fire with independent touch points (CDP)
+  const cdp = await page.context().newCDPSession(page);
+  const jc = await ev(() => { const D = window.__DR, c = D.Input.center(); return { x: c.x, y: c.y, vh: D.View.h }; });
+  const jx = box.x + jc.x / 360 * box.width, jy = box.y + jc.y / jc.vh * box.height;
+  const mp0 = await ev(() => ({ x: window.__DR.G.player.x, y: window.__DR.G.player.y, shots: window.__DR.G.run.shots }));
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: jx, y: jy, id: 1 }] });
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: jx, y: jy - 50, id: 1 }] });
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: jx, y: jy - 50, id: 1 }, { x: fx, y: fy, id: 2 }] });
+  await page.waitForTimeout(900);
+  const mt = await ev(() => ({ joy: window.__DR.Input.joy.active, fire: window.__DR.Input.fire.active }));
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [{ x: jx, y: jy - 50, id: 1 }] });
+  await page.waitForTimeout(100);
+  const mtHalf = await ev(() => ({ joy: window.__DR.Input.joy.active, fire: window.__DR.Input.fire.active }));
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  await page.waitForTimeout(100);
+  const mp1 = await ev(() => ({ x: window.__DR.G.player.x, y: window.__DR.G.player.y, shots: window.__DR.G.run.shots, joy: window.__DR.Input.joy.active, fire: window.__DR.Input.fire.active }));
+  check('multi-touch: move + fire at once, independent release', mt.joy && mt.fire && !mtHalf.joy && mtHalf.fire && !mp1.joy && !mp1.fire && Math.hypot(mp1.x - mp0.x, mp1.y - mp0.y) > 8 && mp1.shots > mp0.shots, JSON.stringify({ mt, mtHalf, moved: Math.hypot(mp1.x - mp0.x, mp1.y - mp0.y).toFixed(1), shots: mp1.shots - mp0.shots }));
+  // keyboard Space + pause clears fire
+  await page.waitForTimeout(600);
+  sh0 = await ev(() => window.__DR.G.run.shots);
+  await page.keyboard.down(' '); await page.waitForTimeout(400);
+  sh1 = await ev(() => window.__DR.G.run.shots);
+  await page.keyboard.press('Escape'); await page.waitForTimeout(400);
+  const sp = await ev(() => ({ shots: window.__DR.G.run.shots, held: window.__DR.Input.fireHeld(), modal: window.__DR.UI.modalKind }));
+  await page.keyboard.up(' '); await page.keyboard.press('Escape'); await page.waitForTimeout(500);
+  const sp2 = await ev(() => window.__DR.G.run.shots);
+  check('Space fires; pause clears fire and freezes shooting', sh1 > sh0 && sp.modal === 'pause' && !sp.held && sp2 === sp.shots, JSON.stringify({ sh0, sh1, sp, sp2 }));
+  await autopilot(true, true);
   await page.waitForTimeout(1200); await shot('07_fight_c1');
   await page.waitForFunction(() => { const D = window.__DR, p = D.G.player; return D.G.enemies.some(e => !e.dead && e.state !== 'dormant' && Math.hypot(e.x - p.x, e.y - p.y) < 110) || D.G.run.ended; }, null, { timeout: 30000, polling: 50 }).catch(() => {});
   await page.waitForTimeout(250); await shot('08_fight_c1_combat');
   s = await waitEnd(90000); await autopilot(false);
   check('C1 delivery success', s && s.success, JSON.stringify(s));
+  const rx = await ev(() => { const r = window.__DR.G.run; return { level: r.level, skills: r.skills.length + r.evos.length, log: r.xpLog, kills: r.stats.kills }; });
+  check('hybrid Run XP: route XP gained, level-up pick taken (>= 2 picks in C1)', rx.log.route > 0 && rx.level >= 2 && rx.skills >= 2, JSON.stringify(rx));
   await toSummary();
   check('RunSummary scene, no hub bars', (await scene()) === 'RunSummary' && !(await barsShown()).nav);
   await page.waitForTimeout(1500); await shot('09_run_summary');

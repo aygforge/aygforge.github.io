@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.4.0-phase03 — Combat & Skill Expansion
+- Manual Fire + Auto Aim: FIRE button (tap = one shot when ready, hold = repeat at attack interval, release
+  stops), Space on desktop; aim auto-locks on the nearest live attackable target in range + line of sight
+  (stable idx tie-break, small hysteresis), reticle on the target; with no target the shot follows the last aim /
+  riding direction. No idle fire. Joystick and FIRE use independent pointerIds (multi-touch); pause, skill
+  choice, blur, background and run end clear both.
+- Settings: joystick size, FIRE size, control opacity, left-handed mode (all real).
+- Hybrid Run XP (table §8): unique route segments + checkpoint share, normal/elite kills, one risky-route bonus;
+  100 XP per run level; level-ups queue picks that open at the next safe frame (timer frozen). The checkpoint
+  keeps its +15 HP heal and now grants XP instead of an extra independent pick.
+- 60 skills (20 preserved + 40 new) and 20 evolutions, all with real runtime effects; rarity weights 55/30/12/3;
+  filters for max rank, prerequisites, one base element, chapter context; evolution takes a slot when eligible;
+  utility fallback when nothing is valid; 1 free reroll per run (+1 Second Choice); offers come from the
+  engine-owned seeded stream `run.srng` and choices outside the offer are rejected.
+- Caps: damage reduction 80 %, interval floor .12 s, crit 100 %, speed ×1.75; proc budget 14 per 0.5 s.
+- Economy skills settle only on success, once, inside the existing settlement guard.
+- HUD: Run XP bar + run level, FIRE button with cooldown ring, bottom skill / evolution strip.
+
 ## 0.3.0-phase02 — Premium Scene Framework
 - 8 independent scene modules (Boot, MainMenu, Garage, MetaHub, RunPrep, FightScene, RunSummary, Settings) with
   enter/update/exit lifecycle and scene-scoped cleanup (`core/SceneManager.js`).

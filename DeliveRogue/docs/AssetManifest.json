@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "phase": "02",
+  "phase": "03",
   "note": "Phase 01: all runtime visuals are procedural (core/Art.js, cached offscreen canvases). Real bitmaps referenced by the GDevelop project (DR2(21).json resources) were NOT included in the delivered package; they are listed as missing and keep the procedural fallback. Replace via AssetManager.loadImage(id, url, meta) — gameplay code only calls Art.get(id).",
   "statusLegend": {
     "procedural": "drawn in code, active",
@@ -151,6 +151,33 @@
       ],
       "status": "procedural",
       "source": "scenes/Boot.js SVG + CSS text logo (no external font)"
+    },
+    {
+      "group": "skillIcons.phase03",
+      "logicalIds": [
+        "skill:<id> (40 new)"
+      ],
+      "status": "procedural",
+      "source": "core/SkillGlyphs.js (drawn via Art.skillIcon cache)"
+    },
+    {
+      "group": "hud.combat",
+      "logicalIds": [
+        "hud:fireButton",
+        "hud:reticle",
+        "hud:runXpBar",
+        "hud:skillStrip"
+      ],
+      "status": "procedural",
+      "source": "render/Render.js"
+    },
+    {
+      "group": "evolutionIcons",
+      "logicalIds": [
+        "evo:<id> (20)"
+      ],
+      "status": "placeholder",
+      "source": "star badge in skill choice + HUD strip; dedicated icons pending (Phase 13)"
     }
   ],
   "originalSkins": [

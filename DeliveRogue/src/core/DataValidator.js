@@ -5,7 +5,7 @@ import { CHAPTERS } from '../data/chapters.js';
 import { ENEMY_DB, ENEMY_SHORT, ENEMY_INTRO, ENEMY_ORDER } from '../data/enemies.js';
 import { ENEMY_CATALOG } from '../data/enemyCatalog.js';
 import { PACKAGES } from '../data/packages.js';
-import { SKILLS } from '../data/skills.js';
+import { SKILLS, SKILL_BY_ID, EVOLUTIONS } from '../data/skills.js';
 import { SEGS } from '../data/segments.js';
 import { GARAGE, GARAGE_ORDER } from '../data/garage.js';
 import { EPISODE_IDS } from '../data/ids.js';
@@ -41,6 +41,10 @@ export function validateData({ maps = false } = {}) {
   if (ENEMY_ORDER.length !== Object.keys(ENEMY_DB).length) err('ENEMY_ORDER incomplete');
   // skills
   const sk = new Set(SKILLS.map(s => s.id)); if (sk.size !== SKILLS.length) err('duplicate skill id'); info.skills = SKILLS.length;
+  if (SKILLS.length !== 60) err('skill count ' + SKILLS.length);
+  SKILLS.forEach(x => { if (x.prereq && !SKILL_BY_ID[x.prereq]) err('skill prereq missing ' + x.id); });
+  if (EVOLUTIONS.length !== 20) err('evolution count ' + EVOLUTIONS.length);
+  EVOLUTIONS.forEach(e => { if (!SKILL_BY_ID[e.a] || !SKILL_BY_ID[e.b]) err('evolution prereq missing ' + e.id); }); info.evolutions = EVOLUTIONS.length;
   // garage
   GARAGE_ORDER.forEach(k => { if (!GARAGE[k]) err('garage missing ' + k); });
   // chapters

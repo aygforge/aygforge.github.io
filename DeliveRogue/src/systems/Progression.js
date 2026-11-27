@@ -1,4 +1,5 @@
 // systems/Progression.js — migrated verbatim from DeliveRogue.html (Phase 01 Core Migration).
+import { RNG } from '../core/util.js';
 import { Save } from '../core/SaveManager.js';
 import { CHAPTERS, MASTERY_CHECK, MASTERY_REWARD, MASTERY_TEXT } from '../data/chapters.js';
 import { COSMETICS } from '../data/cosmetics.js';
@@ -28,7 +29,13 @@ export const Progression = (() => {
       res.firstBonus = res.first ? Math.round(base * 0.5) : 0;
       res.perfBonus = stars === 3 ? Math.round(base * 0.2) : stars === 2 ? Math.round(base * 0.1) : 0;
       res.killBonus = Math.min(st.kills * 2, Math.round(base * 0.1));
-      res.coins = base + res.firstBonus + res.perfBonus + res.killBonus;
+      // Phase 03 economy skills: applied only on successful settlement, once (inside the settled guard).
+      const m = run.mods || {}; let pct = m.coinGold || 0;
+      if (m.lucky && RNG((run.seed ^ 0x51ED270B) >>> 0).next() < 0.25) { pct += 0.2; res.lucky = true; }
+      if (m.bonusContract && st.time <= ch.fast) pct += m.bonusContract;
+      if (m.eliteBounty) pct += Math.min(0.2, 0.05 * (st.eliteKills || 0));
+      res.skillBonus = Math.round(base * Math.min(0.85, pct));
+      res.coins = base + res.firstBonus + res.perfBonus + res.killBonus + res.skillBonus;
       res.xp = 40 + 15 * ch.n; if (res.first) res.xp = Math.round(res.xp * 1.5); if (stars === 3) res.xp += 10;
       s.completed[i] = true; res.prevStars = s.stars[i]; if (stars > s.stars[i]) s.stars[i] = stars;
       if (!s.bestTime[i] || st.time < s.bestTime[i]) { res.newBest = !!s.bestTime[i]; s.bestTime[i] = Math.round(st.time * 10) / 10; }

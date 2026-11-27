@@ -7,6 +7,7 @@ import { G, View } from '../core/state.js';
 import { TAU, TILE, VIEW_W, clamp, fmtTime, lerp } from '../core/util.js';
 import { CHAPTERS } from '../data/chapters.js';
 import { MapBuilder } from '../systems/MapBuilder.js';
+import { RUN_XP_PER_LEVEL } from '../data/runxp.js';
 import { Nav } from '../systems/Nav.js';
 
 /* =========================== Render ===========================
@@ -255,9 +256,9 @@ export const Render = (() => {
     for (const e of G.enemies) if (e.y > top && e.y < bot) list.push({ y: e.y, draw: () => drawEnemy(e, t) });
     list.push({ y: G.player.y, draw: () => drawPlayer(t) }); steamItems(list, t);
     list.sort((a, b) => a.y - b.y); for (const it of list) it.draw();
-    drawProjectiles(t); drawParticles(); drawArrow(t);
+    drawProjectiles(t); drawReticle(t); drawParticles(); drawArrow(t);
     ctx.restore();
-    drawJoystick(); drawHUD(t);
+    ctx.globalAlpha = Input.opacity; drawJoystick(); drawFire(t); ctx.globalAlpha = 1; drawHUD(t);
     if (run.state === 'ending') drawEndBanner(t);
     // low-HP vignette
     const p = G.player; if (p.hp / p.maxHp < 0.3 && run.state === 'play') { const g = ctx.createRadialGradient(View.w / 2, View.h / 2, View.h * 0.3, View.w / 2, View.h / 2, View.h * 0.75); g.addColorStop(0, 'rgba(229,83,61,0)'); g.addColorStop(1, `rgba(229,83,61,${0.22 + 0.1 * Math.sin(t * 6)})`); ctx.fillStyle = g; ctx.fillRect(0, 0, View.w, View.h); }
@@ -278,6 +279,34 @@ export const Render = (() => {
     ctx.strokeStyle = 'rgba(255,241,220,.9)'; ctx.lineWidth = 2; ctx.stroke();
     if (!j.active && (!run.picked || run.time < 5)) txt('SÜRÜKLE', c.x, c.y + R + 16, 9, 'rgba(255,241,220,.7)', 'center', null);
   }
+  /** Auto-aim reticle on the current target (shows what FIRE will hit). */
+  function drawReticle(t) {
+    const p = G.player, e = p.target; if (!e || e.dead || G.run.state !== 'play') return;
+    const x = e.x, y = e.y - e.d.h * 0.35, r = e.half + 9 + Math.sin(t * 8) * 1.5, held = Input.fireHeld();
+    ctx.save(); ctx.translate(x, y); ctx.rotate(t * 1.6);
+    ctx.strokeStyle = held ? '#ff6b3a' : '#ffd166'; ctx.lineWidth = 2.2;
+    for (let i = 0; i < 4; i++) { ctx.beginPath(); ctx.arc(0, 0, r, i * Math.PI / 2 + 0.25, i * Math.PI / 2 + 1.1); ctx.stroke(); }
+    ctx.restore();
+    ctx.fillStyle = held ? '#ff6b3a' : '#ffd166'; ctx.beginPath(); ctx.arc(x, y, 1.8, 0, TAU); ctx.fill();
+  }
+  /** FIRE button (bottom-right, mirrored in left-handed mode) with cooldown ring and pressed state. */
+  function drawFire(t) {
+    const run = G.run, p = G.player; if (run.state !== 'play') return;
+    const c = Input.fireCenter(), R = Input.FR, held = Input.fireHeld(), armed = run.picked;
+    const cd = armed ? clamp(p.fireCd / p.interval, 0, 1) : 1;
+    ctx.fillStyle = 'rgba(0,0,0,.3)'; ctx.beginPath(); ctx.arc(c.x, c.y + 4, R + 4, 0, TAU); ctx.fill();
+    const g = ctx.createRadialGradient(c.x - R * 0.3, c.y - R * 0.4, 2, c.x, c.y, R + 2);
+    g.addColorStop(0, armed ? (held ? '#ffb06a' : '#ffd38a') : '#9aa3ad'); g.addColorStop(1, armed ? (held ? '#d84a1a' : '#f07a2c') : '#5d6570');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(c.x, c.y + (held ? 2 : 0), R, 0, TAU); ctx.fill();
+    ctx.strokeStyle = '#14203a'; ctx.lineWidth = 3; ctx.stroke();
+    if (cd > 0 && armed) { ctx.fillStyle = 'rgba(20,32,58,.45)'; ctx.beginPath(); ctx.moveTo(c.x, c.y); ctx.arc(c.x, c.y, R - 2, -Math.PI / 2, -Math.PI / 2 + TAU * cd); ctx.closePath(); ctx.fill(); }
+    // payment card icon
+    const y0 = c.y + (held ? 2 : 0) - 6;
+    rrect(c.x - 14, y0 - 9, 28, 18, 3.5); ctx.fillStyle = '#5fd3b4'; ctx.fill(); ctx.strokeStyle = '#14203a'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = '#14203a'; ctx.fillRect(c.x - 14, y0 - 4, 28, 4); ctx.fillStyle = '#ffd23f'; ctx.fillRect(c.x - 10, y0 + 3, 7, 4);
+    txt(T('fireBtn'), c.x, c.y + R * 0.55 + (held ? 2 : 0), 8.5, '#fff', 'center', '#14203a', 3);
+    if (!armed && run.time < 1) txt(T('fireLocked'), c.x, c.y - R - 9, 8, 'rgba(255,241,220,.75)', 'center', null);
+  }
   /* -------------------- HUD -------------------- */
   function bar(x, y, w, h, frac, c1, c2, label, flash) {
     rrect(x, y, w, h, h / 2); ctx.fillStyle = 'rgba(0,0,0,.55)'; ctx.fill();
@@ -288,17 +317,17 @@ export const Render = (() => {
   function heart(x, y, s, c) { ctx.fillStyle = c; ctx.beginPath(); ctx.moveTo(x, y + s * 0.35); ctx.bezierCurveTo(x, y - s * 0.1, x - s * 0.6, y - s * 0.1, x - s * 0.6, y + s * 0.25); ctx.bezierCurveTo(x - s * 0.6, y + s * 0.55, x, y + s * 0.75, x, y + s * 0.95); ctx.bezierCurveTo(x, y + s * 0.75, x + s * 0.6, y + s * 0.55, x + s * 0.6, y + s * 0.25); ctx.bezierCurveTo(x + s * 0.6, y - s * 0.1, x, y - s * 0.1, x, y + s * 0.35); ctx.fill(); }
   function drawHUD(t) {
     const run = G.run, p = G.player, ch = run.ch;
-    rrect(6, 6, 302, 60, 14); ctx.fillStyle = 'rgba(27,18,13,.88)'; ctx.fill(); ctx.strokeStyle = '#5a3a26'; ctx.lineWidth = 2; ctx.stroke();
+    rrect(6, 6, 302, 76, 14); ctx.fillStyle = 'rgba(27,18,13,.88)'; ctx.fill(); ctx.strokeStyle = '#5a3a26'; ctx.lineWidth = 2; ctx.stroke();
     // chapter badge
     ctx.fillStyle = '#f2a541'; ctx.beginPath(); ctx.arc(26, 24, 13, 0, TAU); ctx.fill(); ctx.strokeStyle = '#fff1dc'; ctx.lineWidth = 1.5; ctx.stroke();
     txt('B' + ch.n, 26, 24.5, 11, '#2a160b', 'center', null);
     ctx.font = font(9); let nm = ch.name; while (ctx.measureText(nm).width > 78 && nm.length > 3) nm = nm.slice(0, -2) + '…';
     txt(nm, 44, 18, 9, '#e9d3b4', 'left', null); txt(T('pkgShort_' + ch.pkg), 44, 30, 8.5, run.pkg.color, 'left', null);
     // timer
-    const rem = ch.timer - run.time, frac = rem / ch.timer, urgent = run.picked && frac < 0.25;
+    const rem = run.timer - run.time, frac = rem / run.timer, urgent = run.picked && frac < 0.25;
     const tx = 182, sc = urgent ? 1 + 0.08 * Math.sin(t * 10) : 1;
     ctx.save(); ctx.translate(tx, 24); ctx.scale(sc, sc);
-    if (!run.picked) { txt('⏱ ' + fmtTime(ch.timer), 0, -2, 16, '#b59a7c'); txt(T('timerWaits'), 0, 11, 7.5, '#5fd3b4', 'center', null); }
+    if (!run.picked) { txt('⏱ ' + fmtTime(run.timer), 0, -2, 16, '#b59a7c'); txt(T('timerWaits'), 0, 11, 7.5, '#5fd3b4', 'center', null); }
     else txt((urgent ? '! ' : '⏱ ') + fmtTime(Math.ceil(rem)), 0, 1, urgent ? 19 : 17, urgent ? '#ff6b5a' : (run.time <= ch.fast ? '#fff1dc' : '#ffd166'));
     ctx.restore();
     if (run.picked) { const fx = 182 - 30, fw = 60; ctx.fillStyle = 'rgba(0,0,0,.4)'; ctx.fillRect(fx, 34, fw, 2); ctx.fillStyle = run.time <= ch.fast ? '#ffd166' : '#6b5040'; ctx.fillRect(fx, 34, fw * clamp(1 - run.time / ch.fast, 0, 1), 2); }
@@ -308,15 +337,23 @@ export const Render = (() => {
     Art.draw(ctx, Art.pkgIcon(ch.pkg, 16), 168, 47.5);
     if (run.picked) bar(177, 40, 124, 15, p.pkgHp / p.pkgMax, '#ffd38a', run.pkg.color, `${T('pkgHp')} ${Math.ceil(p.pkgHp)}/${p.pkgMax}`, p.pkgFlash > 0);
     else bar(177, 40, 124, 15, 0, '#888', '#666', T('waitOrder'), false);
-    // skills row
-    let sx = 10; const sy = 72; const counts = {};
+    // Run XP / run level
+    ctx.fillStyle = '#38c6f4'; ctx.beginPath(); ctx.arc(22, 69, 9, 0, TAU); ctx.fill(); ctx.strokeStyle = '#fff1dc'; ctx.lineWidth = 1.3; ctx.stroke();
+    txt(String(run.level), 22, 69.5, 9.5, '#fff', 'center', '#14203a', 2.5);
+    bar(35, 63, 266, 12, run.xp / RUN_XP_PER_LEVEL, '#9ff0ff', '#2bb3e8', `${T('runXp')} ${Math.floor(run.xp)}/${RUN_XP_PER_LEVEL}${run.pendingPicks ? ' ▲' : ''}`, false);
+    // skill strip (bottom, between the controls)
+    const owned = Object.keys(run.skills.reduce((a, id) => (a[id] = (a[id] || 0) + 1, a), {})).concat(run.evos);
+    const per = 9, stripW = Math.min(owned.length, per) * 19, sbx = View.w / 2 - stripW / 2, sby = View.h - 34 - Math.floor((owned.length - 1) / per) * 19;
+    let sx = 10; const sy = 88; const counts = {};
     run.skills.forEach(id => counts[id] = (counts[id] || 0) + 1);
-    Object.keys(counts).forEach(id => {
-      ctx.globalAlpha = 0.95; Art.draw(ctx, Art.skillIcon(id), sx + 9, sy + 9, false, false, 18 / 48); ctx.globalAlpha = 1;
-      if (counts[id] > 1) txt('x' + counts[id], sx + 16, sy + 16, 7.5, '#fff');
-      sx += 21;
+    owned.forEach((id, i) => {
+      const x = sbx + (i % per) * 19 + 9, y = sby + Math.floor(i / per) * 19 + 9, evo = run.evos.includes(id);
+      ctx.fillStyle = evo ? 'rgba(183,140,255,.85)' : 'rgba(20,32,58,.75)'; ctx.beginPath(); ctx.arc(x, y, 9.5, 0, TAU); ctx.fill();
+      if (evo) txt('★', x, y + 0.5, 11, '#fff', 'center', '#14203a', 2);
+      else { ctx.globalAlpha = 0.95; Art.draw(ctx, Art.skillIcon(id), x, y, false, false, 16 / 48); ctx.globalAlpha = 1; if (counts[id] > 1) txt('x' + counts[id], x + 7, y + 7, 7, '#fff'); }
     });
-    if (run.mods.shield) { ctx.strokeStyle = p.shield ? '#9fd8ff' : 'rgba(159,216,255,.3)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(sx + 9, sy + 9, 7, 0, TAU); ctx.stroke(); if (!p.shield) { ctx.beginPath(); ctx.moveTo(sx + 9, sy + 9); ctx.arc(sx + 9, sy + 9, 7, -Math.PI / 2, -Math.PI / 2 + TAU * (1 - p.shieldCd / 8)); ctx.fillStyle = 'rgba(159,216,255,.35)'; ctx.fill(); } }
+    sx = 12;
+    if (run.mods.shield) { ctx.strokeStyle = p.shield ? '#9fd8ff' : 'rgba(159,216,255,.3)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(sx + 9, sy + 9, 7, 0, TAU); ctx.stroke(); if (!p.shield) { ctx.beginPath(); ctx.moveTo(sx + 9, sy + 9); ctx.arc(sx + 9, sy + 9, 7, -Math.PI / 2, -Math.PI / 2 + TAU * (1 - p.shieldCd / run.mods.shieldCd)); ctx.fillStyle = 'rgba(159,216,255,.35)'; ctx.fill(); } }
     // distance to target
     const w = G.world, fld = run.picked ? w.dropField : w.pickField, dd = Math.max(0, Nav.fieldAt(fld, p.x, p.y));
     txt((run.picked ? '▲ ' : '◆ ') + Math.round(dd * 2.4) + T('m'), View.w - 12, sy + 9, 11, run.picked ? '#ffd166' : '#5fd3b4', 'right');

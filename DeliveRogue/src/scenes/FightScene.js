@@ -11,7 +11,7 @@ import { T } from '../core/i18n.js';
 import { Bus, G } from '../core/state.js';
 import { esc } from '../core/util.js';
 import { ENEMY_DB, ENEMY_SHORT } from '../data/enemies.js';
-import { SKILL_BY_ID } from '../data/skills.js';
+import { SKILL_BY_ID, EVO_BY_ID, FALLBACK } from '../data/skills.js';
 import { SkillMgr } from '../systems/SkillMgr.js';
 import { Overlays } from '../ui/Overlays.js';
 import { App } from '../ui/App.js';
@@ -41,24 +41,33 @@ export const FightScene = {
     const tips = [];
     if (ch.n === 1) tips.push(T('tut_move'), T('tut_pickup'), T('tut_time'));
     if (ch.cp) tips.push(T('tut_check'));
+    if (ch.n <= 2) tips.push(T('tut_fire'));
     Overlays.open(`<div class="intro"><div class="tagline">COFFEE DISTRICT · ${T('chapter').toUpperCase()} ${ch.n}</div><div class="big" style="margin:4px 0 8px">${esc(ch.name)}</div>
       <div class="row" style="background:rgba(0,0,0,.28);border-radius:12px;padding:8px"><img src="${Art.url(Art.pkgIcon(ch.pkg, 32))}" width="32" height="32"><div><b style="color:${run.pkg.color}">${T('pkg_' + ch.pkg)}</b><div class="small" style="color:var(--cream2)">${T('pkgd_' + ch.pkg)}</div></div></div>
       <div class="kv" style="margin-top:8px"><div><span>${T('timer')}</span><b>${ch.timer} sn</b></div><div><span>${T('fastTarget')}</span><b>${ch.fast} sn</b></div>
-      <div><span>${T('enemies')}</span><b>${ch.enemies}</b></div><div><span>${T('skillPicks')}</span><b>${ch.picks}${ch.cp ? ' + 1' : ''}</b></div></div>
+      <div><span>${T('enemies')}</span><b>${ch.enemies}</b></div><div><span>${T('skillPicks')}</span><b>${ch.picks} + ${T('runXpShort')}</b></div></div>
       ${intro}${tips.length ? `<div class="tip">💡 ${tips.join('<br>💡 ')}</div>` : ''}
       <button class="btn mint wide" style="margin-top:12px" data-a="begin">${T('begin')} ▶</button></div>`, 'intro');
   },
   showSkillPick(info) {
-    const run = G.run; if (!run) return;
-    const opts = SkillMgr.roll(run);
-    const title = info.checkpoint ? `☕ ${T('checkpoint')}` : `${T('chooseSkill')} <span class="muted" style="font-size:14px">${T('skillOf', run.pickIdx + 1, run.pickTotal)}</span>`;
-    const cards = opts.map(id => {
+    const run = G.run; if (!run || run.state !== 'pick') return;
+    const kind = info.kind || run.pickKind;
+    const title = kind === 'level' ? `▲ ${T('levelUpTitle', run.level)}` : `${T('chooseSkill')} <span class="muted" style="font-size:14px">${T('skillOf', run.pickIdx + 1, run.pickTotal)}</span>`;
+    const cards = run.offer.map(id => {
+      const k = SkillMgr.kindOf(id);
+      if (k === 'evo') {
+        const e = EVO_BY_ID[id];
+        return `<button class="skill evo" data-a="pickskill" data-id="${id}"><span class="sk-evo">★</span><div><div class="nm">${e.name}</div>
+          <span class="cat cat-evo">${T('evolution')}</span> <span class="small muted">${SKILL_BY_ID[e.a].name} + ${SKILL_BY_ID[e.b].name}</span><div class="ds">${e.desc}</div></div></button>`;
+      }
+      if (k === 'fallback') return `<button class="skill fb" data-a="pickskill" data-id="${id}"><span class="sk-evo">✚</span><div><div class="nm">${FALLBACK.name}</div><span class="cat cat-utility">${T('cat_utility')}</span><div class="ds">${FALLBACK.desc}</div></div></button>`;
       const s = SKILL_BY_ID[id], have = SkillMgr.count(run.skills, id);
-      return `<button class="skill" data-a="pickskill" data-id="${id}"><img src="${Art.url(Art.skillIcon(id))}"><div><div class="nm">${s.name}</div>
-        <span class="cat cat-${s.cat}">${T('cat_' + s.cat)}</span>${s.max > 1 ? ` <span class="small muted">${T('stack', have + 1, s.max)}</span>` : ''}<div class="ds">${s.desc}</div></div></button>`;
+      return `<button class="skill rar-${s.rarity}" data-a="pickskill" data-id="${id}"><img src="${Art.url(Art.skillIcon(id))}"><div><div class="nm">${s.name}</div>
+        <span class="cat cat-${s.cat}">${T('cat_' + s.cat)}</span> <span class="rar rar-${s.rarity}">${T('rar_' + s.rarity)}</span>${s.max > 1 ? ` <span class="small muted">${T('stack', have + 1, s.max)}</span>` : ''}<div class="ds">${s.desc}</div></div></button>`;
     }).join('');
-    const owned = run.skills.length ? `<div class="small muted" style="text-align:center;margin-top:2px">${run.skills.map(id => SKILL_BY_ID[id].name).join(' · ')}</div>` : '';
-    Overlays.open(`<h2>${title}</h2><div class="sub">${info.checkpoint ? T('checkpointSub') : T('pickSub')}</div>${cards}${owned}`, 'pick');
+    const owned = run.skills.length || run.evos.length ? `<div class="small muted" style="text-align:center;margin-top:2px">${run.skills.map(id => SKILL_BY_ID[id].name).concat(run.evos.map(id => '★ ' + EVO_BY_ID[id].name)).join(' · ')}</div>` : '';
+    const reroll = `<button class="btn alt wide sk-reroll" data-a="reroll" ${run.rerolls > 0 ? '' : 'disabled'}>↻ ${T('reroll')} <span class="small">(${run.rerolls})</span></button>`;
+    Overlays.open(`<h2>${title}</h2><div class="sub">${kind === 'level' ? T('levelUpSub') : T('pickSub')}</div>${cards}${reroll}${owned}`, 'pick');
   },
   showPause() {
     Overlays.open(`<h2>❚❚ ${T('paused')}</h2><button class="btn mint wide" data-a="resume">▶ ${T('resume')}</button>
@@ -74,7 +83,8 @@ export const FightScene = {
     switch (a) {
       case '__back': if (Overlays.kind === 'pause') { Overlays.close(); Game.pause(false); } return true; // intro / pick cannot be dismissed
       case 'begin': Overlays.close(); Game.beginPicks(); break;
-      case 'pickskill': if (Overlays.kind === 'pick') { Overlays.close(); Game.choose(b.dataset.id); } break;
+      case 'pickskill': if (Overlays.kind === 'pick') { Overlays.close(); if (!Game.choose(b.dataset.id)) this.showSkillPick({}); } break;
+      case 'reroll': if (Overlays.kind === 'pick') Game.reroll(); break;
       case 'resume': Overlays.close(); Game.pause(false); break;
       case 'restart': Overlays.confirm(T('restart') + '?', T('restart'), () => { const n = G.run.n; Game.quit(); this.startRun(n, ctx); }, { onCancel: () => this.showPause() }); break;
       case 'quitask': Overlays.confirm(T('quitQ'), T('quitRun'), () => { const run = G.run, n = run ? run.n : ctx.chapter; if (run) Game.quit(); G.run = null; App.go('RunPrep', { chapter: n }); }, { onCancel: () => this.showPause() }); break;

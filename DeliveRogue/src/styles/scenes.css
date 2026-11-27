@@ -440,3 +440,16 @@
 #ui.compact .rp-load{padding:1px 8px}#ui.compact .rp-gear,#ui.compact .rp-skin{width:22px;height:22px}
 #ui.compact .mm-t{font-size:42px}#ui.compact .mm-ep{margin-top:8px}
 #ui.compact .gr-door-ic{width:50px;height:50px}
+/* ---------- Phase 03: settings segments + skill choice ---------- */
+.st-seg{display:flex;gap:4px;flex:none}
+.st-seg button{min-width:46px;height:30px;border-radius:9px;border:2px solid var(--o);background:linear-gradient(#4b5a74,#333f55);color:#fff;font-weight:900;font-size:10.5px}
+.st-seg button.on{background:linear-gradient(#7ff0d4,#2bc4a6);-webkit-text-stroke:2px var(--o);paint-order:stroke fill}
+.skill.rar-R{box-shadow:inset 0 0 0 2px #5aa9e6}
+.skill.rar-E{box-shadow:inset 0 0 0 2px #b78cff}
+.skill.rar-L{box-shadow:inset 0 0 0 2px #ffd23f,0 0 12px rgba(255,210,63,.6)}
+.skill.evo{background:linear-gradient(#7a4be0,#4a2a99)!important;box-shadow:inset 0 0 0 2px #ffd23f,0 0 16px rgba(183,140,255,.8)}
+.skill .sk-evo{flex:none;width:44px;height:44px;border-radius:12px;border:2px solid var(--o);background:linear-gradient(#ffe270,#f5a623);display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;-webkit-text-stroke:2px var(--o)}
+.rar{font-size:9px;font-weight:900;padding:1px 5px;border-radius:6px;border:1.5px solid var(--o)}
+.rar.rar-C{background:#8e99a8}.rar.rar-R{background:#3aa0f0}.rar.rar-E{background:#9b6bff}.rar.rar-L{background:#f5a623}
+.cat-evo{background:#ffd23f;color:#14203a}.cat-economy{background:#f5a623}.cat-utility{background:#8e99a8}
+.sk-reroll{margin-top:6px}
