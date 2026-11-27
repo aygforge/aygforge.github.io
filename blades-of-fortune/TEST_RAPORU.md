@@ -28,7 +28,7 @@ Ardından **her düğümün her seçeneği gerçek çekirdek ve gerçek Event Di
 
 Sonuç: **174/174 düğüm, 498/498 seçenek, 51 savaş — 0 hata, 0 uyarı.**
 
-## Hedefli akış testleri (`tests/sim.mjs`) — 13/13 başarılı
+## Hedefli akış testleri (`tests/sim.mjs`) — 12/12 başarılı
 
 | Test | Sonuç |
 |---|---|
@@ -46,6 +46,16 @@ Sonuç: **174/174 düğüm, 498/498 seçenek, 51 savaş — 0 hata, 0 uyarı.**
 | Kayıt dışa/içe aktarma; bozuk kayıtta `.bak` yedeğinden kurtarma; yabancı kayıt reddi | ✔ |
 
 Oyun süresi: otomatik oyuncu (anında karar, hızlandırmasız) normal bir runu 10–15 dakikada bitiriyor. Okuma ve kasaba alışverişi eklendiğinde gerçek oyuncu için tahmin 20–30 dakika.
+
+## Kadraj testi (`tests/framing.mjs`)
+
+Olay sahnelerinde otomatik kamera kullanılıyor: kamera kahramanı, sahnedeki aktörleri ve konuşma balonlarını üstteki HUD ile alttaki karar, sonuç veya savaş paneli arasındaki güvenli alana sığdırıyor; yakınlaştırma ve kaydırma buna göre ayarlanıyor. Test, 498 seçeneğin tamamında sahne boyunca her 0,1 sn'de kahramanın ve görünür aktörlerin ekranda kalıp kalmadığını ölçüyor.
+
+| | Önce (sabit kadraj) | Sonra |
+|---|---|---|
+| Kadraj dışı kare oranı | %4,07 (490 seçenek etkileniyordu) | **%0,15** |
+
+Kalan kareler, yaklaşma sırasında ekran dışından sahneye yürüyerek giren aktörler ve panelin açıldığı ilk kare.
 
 ## Tarayıcı testleri (Chromium / Playwright)
 

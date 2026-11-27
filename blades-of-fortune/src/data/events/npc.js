@@ -287,7 +287,7 @@ export default [
     out: {
       'catch.win': [par(mv('hs', 10, -120, 1.4), mv('hero', 0, -110, 1.4)), say('dr', 'Kahramanım! Al şunu!'), give('dr', 'hero', 'crate'), heroBack()],
       'catch.lose': [par(run('hs', 40, -40, 0.6), mv('hero', 34, -36, 0.6), fx('dust', 'hero', 14)), heroHurt(1), mv('hs', 10, -120, 1.2), heroBack()],
-      'pull.win': [pose('hero', 'idle'), par(mv('cart', 0, -220, 2.4), mv('hero', 0, -200, 2.4)), coins('dr', 'hero', 7), sfx('coins')],
+      'pull.win': [pose('hero', 'idle'), par(mv('cart', 0, -150, 2.0), mv('hero', 0, -130, 2.0)), coins('dr', 'hero', 7), sfx('coins')],
       'pull.lose': [pose('hero', 'idle'), par(emote('hero', '💧'), heroHurt(1)), heroBack()],
       'buy.win': [say('dr', 'Bereketli satışlar...'), heroBack()],
     },

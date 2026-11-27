@@ -125,6 +125,7 @@ export class UI {
     const anim = [PH.APPROACH, PH.INTRO, PH.ACTION, PH.OUTCOME, PH.EXIT].includes(p) && !this.d.combatOn;
     if (anim && !skip && this.screen === 'game') this.ui.append(h('button', { class: 'btn sm ghost skipBtn', onclick: this.click(() => this.d.skip()) }, 'Atla ⏭'));
     if (!anim && skip) skip.remove();
+    if (p !== PH.DOCKED) this.clearTownUi();
     if (p === PH.DECISION) this.showDecision(EVENTS[this.d.eventId]);
     if (p === PH.SAIL || p === PH.RESUME || p === PH.DOCKING) { this.clearPanels(); this.a.setMusic('road'); }
     if (p === PH.APPROACH) { const ev = EVENTS[this.d.eventId]; this.a.setMusic(ev.cat === 'danger' ? 'danger' : 'road'); }
@@ -146,6 +147,7 @@ export class UI {
     this.setPanel(h('div', { class: 'panel bottomPanel' }, h('div', { class: 'evHead' }, h('h2', {}, ev.t), tag), h('div', { class: 'evText' }, ev.txt), h('div', { class: 'opts' }, cards)));
   }
   showOutcome(res, ev) {
+    const sk = $('.skipBtn', this.ui); if (sk) sk.remove();
     const cur = this.g.host() && this.g.host().current;
     const kind = res.dead ? 'dead' : res.outcome;
     const lines = (res.lines || []).map((l) => h('span', { class: 'chip ' + ({ gold: 'gold', hp: 'bad', bad: 'bad', heal: 'good', xp: '', item: l.rarity ? 'r-' + l.rarity : '', royal: 'royal', chain: 'chain', quest: 'good', perm: 'good', buff: 'good' }[l.kind] || '') }, l.text));
@@ -204,7 +206,7 @@ export class UI {
   frame() {
     const now = performance.now(), S = 1280 / 427;
     const place = (el, wx, wy, dy = 0) => { const s = this.w.toScreen(wx, wy); el.style.left = (s.x * S) + 'px'; el.style.top = (s.y * S + dy) + 'px'; };
-    this.bubbles = this.bubbles.filter((b) => { if (b.dead) return false; if (now > b.until) { b.el.remove(); return false; } const p = this.w.pos(b.at); const e = typeof b.at === 'string' ? this.w.get(b.at) : null; const tall = e && ['troll', 'golem', 'wyvern', 'wraith'].includes(e.kind) ? 26 : e && e.prop ? 14 : 16; place(b.el, p.x, p.y - tall, -6); return true; });
+    this.bubbles = this.bubbles.filter((b) => { if (b.dead) return false; if (now > b.until) { b.el.remove(); return false; } const p = this.w.pos(b.at); const e = typeof b.at === 'string' ? this.w.get(b.at) : null; const tall = e && ['troll', 'golem', 'wyvern', 'wraith'].includes(e.kind) ? 26 : e && e.prop ? 14 : 16; place(b.el, p.x, p.y - tall, -6); const bh = b.el.offsetHeight || 40, bw = b.el.offsetWidth || 120; let tp = parseFloat(b.el.style.top), lf = parseFloat(b.el.style.left); if (tp - bh < 96) b.el.style.top = (96 + bh) + 'px'; if (lf - bw / 2 < 8) b.el.style.left = (8 + bw / 2) + 'px'; if (lf + bw / 2 > 1272) b.el.style.left = (1272 - bw / 2) + 'px'; return true; });
     this.floats = this.floats.filter((f) => { if (now > f.until) { f.el.remove(); return false; } place(f.el, f.x, f.y); return true; });
     if (this.combat) { let i = 0; for (const [eid, el] of this.foeBars) { const e = this.w.get(eid); if (!e) continue; const tall = ['troll', 'golem', 'wyvern', 'wraith', 'champion'].includes(e.kind) ? 44 : 30; place(el, e.x, e.y - tall, -40); const top = parseFloat(el.style.top); if (top < 100 + (i % 2) * 54) el.style.top = (100 + (i % 2) * 54) + 'px'; i++; } }
   }

@@ -33,8 +33,14 @@ export class Director {
   setPhase(p) {
     this.phase = p;
     const enc = [PH.INTRO, PH.DECISION, PH.ACTION, PH.OUTCOME].includes(p) || this.combatOn;
-    this.world.lift = enc ? 52 : (this.world.mode === 'town' ? 40 : 0);
-    this.world.zoom = this.world.mode === 'town' ? 1 : (enc || p === PH.APPROACH || p === PH.EXIT) ? 1.38 : 1;
+    const w = this.world, town = w.mode === 'town', scene = enc || p === PH.APPROACH || p === PH.EXIT;
+    w.lift = town ? 40 : 0;
+    w.autoCam = !town && scene;
+    // alt panel (karar/sonuç/savaş) görünürken güvenli alanın altı yükselir
+    w.safeBottom = this.combatOn ? 186 : (p === PH.INTRO || p === PH.DECISION || p === PH.OUTCOME) ? 158 : 228;
+    if (w.safeBottom !== this._lastBot) { w.camBoost = 0.5; this._lastBot = w.safeBottom; }
+    w.safeTop = 34; w.extraTop = this.combatOn ? 26 : 16;
+    if (!w.autoCam) { w.zoom = 1; w.cam.tx = 0; w.cam.ty = 0; }
     this.hooks.onPhase && this.hooks.onPhase(p);
   }
   reset() { this.steps = []; this.after = null; this.stepDur = -1; this.stepT = 0; }
@@ -114,7 +120,7 @@ export class Director {
       case 'jump': { const e = ent(a.id); if (!e || instant) return 0; e.jumpT = 0; e.jumpDur = a.dur; e.jumpH = a.h; return a.dur; }
       case 'spin': { const e = ent(a.id); if (!e || instant) return 0; e.spinEnd = e.dir; e.spinT = a.dur; return a.dur; }
       case 'scroll': { if (instant) { w.advance(a.dy); return 0; } w.scrollLeft = a.dy; w.scrollRate = a.dy / a.dur; this.hooks.sfx && this.hooks.sfx('steps'); return a.dur; }
-      case 'camera': { if (a.focus) { w.cam.tx = a.focus.x * 0.35; w.cam.ty = (a.focus.y + 40) * 0.3; } else { w.cam.tx = 0; w.cam.ty = 0; } return 0; }
+      case 'camera': { if (w.autoCam) return 0; if (a.focus) { w.cam.tx = a.focus.x * 0.35; w.cam.ty = (a.focus.y + 40) * 0.3; } else { w.cam.tx = 0; w.cam.ty = 0; } return 0; }
       case 'dark': { w.darkTarget = a.v; if (instant) w.darkCur = a.v; else w.darkRate = Math.max(0.05, Math.abs(a.v - w.darkCur) / Math.max(0.1, a.dur)); return 0; }
       case 'banner': if (!instant && this.hooks.banner) { this.hooks.banner(a.text, a.color); sfx('fanfare'); } return instant ? 0 : 1.4;
       case 'timestop': if (!instant) w.timeStop = a.dur; return 0;
@@ -206,7 +212,7 @@ export class Director {
     if (this.inArrival || this.run.phase === 'arrival') { this.inArrival = true; this.world.gate = { type: this.core.town() ? this.core.town().type : 'village', y: -150 }; }
     this.runSteps([...this.scene.setup(), ...this.scene.approach()]); this.flushInstant();
     this.hooks.onEncounter && this.hooks.onEncounter(ev);
-    if (cur.result) { this.lastInfo = { key: cur.result.key, outcome: cur.result.outcome, result: cur.result }; this.setPhase(PH.OUTCOME); this.hooks.showOutcome && this.hooks.showOutcome(cur.result, ev); return; }
+    if (cur.result) { this.lastInfo = { key: cur.result.key, outcome: cur.result.outcome, result: cur.result }; this.outcomeShown = true; this.setPhase(PH.OUTCOME); this.hooks.showOutcome && this.hooks.showOutcome(cur.result, ev); return; }
     if (cur.combat) { this.ensureFoes(cur.combat); this.combatOn = true; this.setPhase(PH.ACTION); this.hooks.showCombat && this.hooks.showCombat(cur.combat); return; }
     this.setPhase(PH.DECISION);
   }
@@ -243,7 +249,8 @@ export class Director {
     if (ai >= 0) outSteps.splice(ai, 1, ...autoSteps); else outSteps.push(...autoSteps);
     if (result.dead) outSteps = [...flatten(this.scene.outcome(info)).filter((s) => Array.isArray(s) || s.type !== 'auto').slice(0, 2), ...this.deathSteps()];
     const steps = [...(withAction ? this.scene.action(info) : []), o('call', { fn: (d) => d.setPhase(PH.OUTCOME) }), ...outSteps, o('sync')];
-    this.runSteps(steps, () => { this.hooks.sfx && this.hooks.sfx(result.dead ? 'death' : result.success ? 'success' : 'fail'); if (this.phase !== PH.OUTCOME) this.setPhase(PH.OUTCOME); this.hooks.showOutcome && this.hooks.showOutcome(result, ev); });
+    this.outcomeShown = false;
+    this.runSteps(steps, () => { this.hooks.sfx && this.hooks.sfx(result.dead ? 'death' : result.success ? 'success' : 'fail'); this.outcomeShown = true; this.setPhase(PH.OUTCOME); this.hooks.showOutcome && this.hooks.showOutcome(result, ev); });
   }
   deathSteps() { return [par(o('pose', { id: 'hero', pose: 'down' }), o('flash', { color: '#8a0a0a', dur: 0.6 }), o('dark', { v: 0.5, dur: 1 }), o('sound', { name: 'death' })), o('wait', { dur: 1.2 })]; }
   autoFx(before, result) {

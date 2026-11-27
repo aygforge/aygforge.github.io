@@ -141,8 +141,9 @@ export class World {
     this.walking = dy > 0.05;
     // kamera
     this.liftCur += (this.lift - this.liftCur) * Math.min(1, dt * 3);
-    this.zoomCur += (this.zoom - this.zoomCur) * Math.min(1, dt * 2.5);
-    this.cam.x += (this.cam.tx - this.cam.x) * Math.min(1, dt * 2.5); this.cam.y += (this.cam.ty - this.cam.y) * Math.min(1, dt * 2.5);
+    this.zoomCur += (this.zoom - this.zoomCur) * Math.min(1, dt * (this.camBoost > 0 ? 12 : 3.5));
+    if (this.autoCam && this.mode !== 'town') this.frameAction();
+    if (this.camBoost > 0) this.camBoost -= dt; const ck = Math.min(1, dt * (this.camBoost > 0 ? 12 : this.autoCam ? 3.5 : 2.5)); this.cam.x += (this.cam.tx - this.cam.x) * ck; this.cam.y += (this.cam.ty - this.cam.y) * ck;
     this.darkCur += Math.sign(this.darkTarget - this.darkCur) * Math.min(Math.abs(this.darkTarget - this.darkCur), dt * this.darkRate);
     // varlıklar: ara geçişler
     for (const e of [this.hero, ...this.entities]) {
@@ -276,6 +277,28 @@ export class World {
       g.addColorStop(0, `rgba(${col},${dk * 0.55})`); g.addColorStop(1, `rgba(${col},${Math.min(0.9, dk * 1.2)})`);
       c.fillStyle = g; c.fillRect(0, 0, W, H);
     }
+  }
+  // Otomatik kamera: kahraman + sahnedeki aktörler + konuşma balonları HUD ile alt panel arasındaki güvenli alana sığar.
+  frameAction() {
+    const TOP = this.safeTop || 34, BOT = this.safeBottom || 226;
+    const big = (k) => (['troll', 'golem', 'wyvern', 'wraith', 'champion', 'king'].includes(k) ? 40 : 0);
+    let minY = this.hero.y - 30, maxY = this.hero.y + 3, minX = this.hero.x - 16, maxX = this.hero.x + 16;
+    for (const e of this.entities) {
+      if (e.flee || e.dead || e.hidden || e.townNpc || (e.alpha != null && e.alpha < 0.08)) continue;
+      if (e.y < -150 || e.y > 140 || Math.abs(e.x) > 190) continue;
+      const tall = e.prop ? (['towerRuin', 'cliff', 'cave', 'stoneDoor', 'vaultDoor', 'mausoleum', 'outpost', 'gatehouse', 'manorRuin', 'mill', 'iceCave', 'waterfall', 'throne', 'bridge', 'stoneBridge', 'flood', 'canyon', 'cliffEdge', 'palisade', 'monasteryFar', 'tunnel'].includes(e.kind) ? 12 : 22) : 30 + big(e.kind);
+      minY = Math.min(minY, e.y - tall); maxY = Math.max(maxY, e.y + 2);
+      if (!e.prop || Math.abs(e.x) < 70) { minX = Math.min(minX, e.x - 12); maxX = Math.max(maxX, e.x + 12); }
+    }
+    minY -= this.extraTop || 14; // balon / düşman çubuğu payı
+    const availH = BOT - TOP, availW = W - 20;
+    let z = Math.min(this.maxZoom || 1.38, availH / Math.max(1, maxY - minY), availW / Math.max(1, maxX - minX));
+    z = Math.max(0.8, z);
+    this.zoom = z;
+    const zc = this.zoomCur, py = HERO_SY - this.liftCur;
+    const midY = (minY + maxY) / 2, midX = (minX + maxX) / 2;
+    this.cam.ty = midY - ((TOP + BOT) / 2 - py) / zc;
+    this.cam.tx = Math.max(-60, Math.min(60, midX));
   }
   // ——— Kasaba sahnesi ———
   setTown(town) { this.mode = 'town'; this.town = town; this.entities = this.entities.filter((e) => e.townNpc); if (!this.entities.length) this.spawnTownNpcs(town); this.hero.x = 0; this.hero.y = 0; this.hero.dir = 'up'; this.hero.pose = 'idle'; this.cam.tx = this.cam.ty = this.cam.x = this.cam.y = 0; this.lift = this.liftCur = 40; this.zoom = this.zoomCur = 1; }
