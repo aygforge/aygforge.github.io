@@ -2,9 +2,10 @@
 
 Portrait mobile action roguelite — HTML5 Canvas, ES modules, Vite. **AYG FORGE**
 
-Current state: **Phase 01 — Core Migration** complete. The working single-file HTML5 build
-(`reference/DeliveRogue.html`) is now a modular project with identical Coffee District gameplay
-(12 chapters). See `docs/MIGRATION.md` for the module map and the short list of intentional changes.
+Current state: **Phase 02 — Premium Scene Framework** complete (on top of Phase 01 Core Migration).
+Coffee District gameplay (12 chapters) is unchanged; the UI is now 8 independent scenes with a persistent
+TopBar / NavigationBar, transitions and a premium cartoon art direction. See `docs/MIGRATION.md` (Phase 01)
+and `docs/SCENES.md` (Phase 02).
 
 ## Commands
 ```bash
@@ -27,12 +28,15 @@ src/core/                  GameEngine (fixed 60 Hz loop), DistrictRuntimeCore (s
                            InputManager, SaveManager, EventBus, AudioManager, Art + AssetManager, rng, i18n, DataValidator
 src/systems/               Nav, MapBuilder, SkillMgr, Fx, Progression
 src/render/Render.js       canvas world + HUD renderer
-src/ui/UI.js               legacy DOM screens (replaced by 8 scenes in Phase 02)
+src/core/SceneManager.js   scene lifecycle, transitions, input lock, back routing
+src/scenes/                Boot, MainMenu, Garage, MetaHub, RunPrep, FightScene, RunSummary, Settings
+src/ui/                    App (composition root), Chrome (TopBar + NavigationBar), Overlays, SceneArt,
+                           RoutePreview, UITheme widgets, icons (inline SVG)
 src/data/                  packages, player, enemies (+ canonical 100-enemy catalog), skills, garage, cosmetics,
                            chapters, episodes, quests, segments, ids
 src/platform/              PlatformAdapter (browser: ads/billing unavailable), StorageAdapter, Haptics
 src/locales/tr.js          TR source strings
-src/styles/main.css
+src/styles/main.css, scenes.css
 tests/unit, tests/smoke    unit + browser tests
 docs/                      AssetManifest.json, MIGRATION.md, screenshots/
 reference/                 legacy HTML5 source backup, enemy catalog JSON, 5 UI reference images

@@ -1,53 +1,55 @@
-# TEST REPORT — Phase 01 Core Migration
+# TEST REPORT — Phase 02 Premium Scene Framework
 
-Environment: Linux container, Node 22.23, Vite 5, Playwright Chromium (headless), mobile emulation
-412×870 @2x with touch. **No physical Android device was used.** FPS / memory were **not measured**.
+Environment: Linux container, Node 22.23, Vite 5, Playwright Chromium (headless). Mobile emulation 412×870 @2x
+with touch; extra viewport checks at 360×640 and 1280×720. **No physical Android device was used.**
+FPS / memory were **not measured**.
 
 ## Commands actually run
 | Command | Result |
 |---|---|
-| `npm install` | OK |
-| `npm run build` | OK — `dist/index.html`, 1 CSS (13.3 kB), 1 JS (166.9 kB / 57.4 kB gzip) |
-| `npm run dev` | OK — dev server served `index.html` + ES modules |
-| `npm test` | **11/11 pass** |
-| `node tests/smoke/smoke.mjs dist --shots docs/screenshots` | **20/20 pass** |
-| `node tests/smoke/smoke.mjs reference/DeliveRogue.html` (legacy baseline) | 20/20 pass (same script) |
-| `baseline.mjs` legacy vs `dist` (12 chapters) | **byte-identical** output |
-| Production `dist/` without `?debug=1` (portrait + 1280×720) | no debug hook, no console errors |
+| `npm run build` | OK — 1 JS (219.5 kB), 1 CSS (48.7 kB), offline, no external requests |
+| `npm test` | **16/16 pass** (11 core from Phase 01 + 5 UI/i18n) |
+| `node tests/smoke/smoke.mjs dist --shots docs/screenshots/phase02` | **41/41 pass** |
+| `baseline.mjs` legacy HTML vs `dist` (12 chapters) | **byte-identical** (gameplay unchanged) |
+| viewport check 360×640 + 1280×720 (MainMenu, RunPrep, Garage, MetaHub) | no horizontal overflow, no errors |
+| production `dist/` without `?debug=1` | no debug hook, no console errors |
 
-## Unit (`tests/unit/core.test.mjs`, real modules)
-PASS data validator (100-enemy catalog, archetype counts 20/19/16/15/10/9/6/5, 7N/2E/1B per district,
-runtime COF enemies match catalog, 12 chapters, enemy counts / intro order, all 12 maps build, pickup
-reachable and 48 px from start, drop reachable, checkpoints reachable) · PASS catalog untouched · PASS Ek C
-Coffee table + PLAYER_BASE preserved · PASS deterministic map build · PASS seeded RNG + separate streams ·
-PASS skill mods recomputed from scratch · PASS save repair (negative/NaN/∞, clamps, unknown fields, hostile
-cosmetics, completed⇒unlock) · PASS settle idempotent, fail = no unlock · PASS legacy garage curve ·
-PASS EventBus (legacy, typed ids, isolated errors) · PASS C1/C01 key alias.
+## Browser smoke — what is exercised (real UI clicks / keys)
+Scene framework: Boot is the first scene → MainMenu · 8 scenes registered · hub bars on MainMenu ·
+MainMenu canvas atmosphere · **4 rapid navbar taps → one target, one scene root** · one root after many
+transitions · hub bars hidden in FightScene and RunSummary, back after quit.
+Flow: Play → RunPrep (route preview canvas, START, C2 locked) → START → FightScene · **C1 world identical to
+the Phase 01 baseline** · intro → skill pick → play · **pointer joystick drag moves courier through the scene
+layer** · **ESC = pause (timer frozen, still FightScene)**, ESC again resumes · pickup · **C1 delivered** ·
+RunSummary shows the real settled coins · forced re-settle pays nothing · Continue → RunPrep with C2 selected.
+Meta: Garage badge from real affordability · upgrade buys exactly one level (−110) · TopBar coins follow the
+wallet · Skin Shop / Trophy Room sub-views · **back closes sub-view first, then hub → MainMenu** · MetaHub collect
+claims every unlocked milestone once · repeat claim pays nothing · milestone chain / board / book sub-views.
+Settings: reduced motion applies + persists and makes transitions instant · **save import needs confirmation,
+edited file flagged by checksum, applied, previous save backed up** · invalid file rejected without changes.
+Failure / lifecycle: C2 start · courier HP 0 → failure summary with reason · failure counted, no unlock ·
+Retry re-enters FightScene **without leaking Bus listeners** · visibility hidden → auto-pause ·
+confirmed quit → RunPrep, run cleared · **0 console/page errors**.
 
-## Browser smoke (`tests/smoke/smoke.mjs`, real UI clicks)
-PASS boot/menu · RunPrep · C1 world (79 rows, 6 enemies) · chapter intro → start skill pick → play ·
-**real pointer joystick drag moves courier** · pause freezes timer · package pickup · **C1 delivered
-(≈31 s, 3★)** · RunSummary · reward settled once (+148 coins, +93 XP, C2 unlocked) · forced re-settle pays
-nothing · save survives reload · Garage · MetaHub · C2 start · **fail path courier HP 0 → failure** ·
-failure counted, no unlock · visibilitychange auto-pause · **0 console/page errors**.
-Steering during the C1 run uses the game's own BFS flow field to set the joystick vector (no teleport,
-no invulnerability); combat is the existing auto-fire.
-
-## Behaviour baseline (legacy HTML vs modular build)
-For all 12 Coffee chapters with the same seed: world rows, path length, jets, grates, carts, heal stations,
-checkpoint, timer, package, courier/package HP and every enemy id/position/HP — identical.
+## Unit (`tests/unit/ui.test.mjs`)
+Every literal `T()` key used by scenes/UI exists in the TR locale · dynamic key families (ranks, modes, settings,
+nav) complete · 8 scene modules follow the contract and exactly 5 are hub scenes · rank bands 1/10/20/35/50/75/100 ·
+no energy / gems / fuel / premium-currency wording in visible text.
 
 ## Not run / limitations
-- Full manual playthrough of C2–C12 not run (map/spawn equivalence + C1 full run + C2 fail run only).
-- Package-HP-0 and timer-0 fail paths not separately exercised in the browser (same `endRun` code path as HP 0).
-- Audio is procedural Web Audio; headless run cannot verify audible output.
-- Physical Android/WebView, FPS and memory: not tested / not measured.
-- Real asset bitmaps (6 original skins etc.) were not in the package → listed as missing in `docs/AssetManifest.json`.
+- Physical Android/WebView, real touch hardware, FPS and memory: not tested / not measured.
+- Audio is procedural; headless runs cannot verify audible output or scene music crossfades (not added yet).
+- Only TR locale exists; text overflow was checked for TR only.
+- Locked by design until later phases (shown with reason, no fake progress): Endless / Time Attack / Daily /
+  Boss Rush / Nightmare modes, restaurants 2–10, Daily / Weekly tasks, Special Events, 4 new garage categories,
+  6 original skins, joystick/fire layout options, extra languages, purchase restore.
+- Full C2–C12 playthroughs not run in this phase (gameplay code unchanged; baseline comparison identical).
 
-## Screenshots (real build, `docs/screenshots/`)
-01 main menu · 02 run prep · 03 chapter intro · 04 skill pick · 05 pause · 06 fight C1 · 07 fight C1 combat ·
-08 run summary · 09 menu after C1 · 10 garage · 11 metahub · 12 run failed · 13 desktop landscape letterbox.
+## Screenshots (`docs/screenshots/phase02/`, real build)
+01 boot · 02 main menu · 03 run prep · 04 chapter intro · 05 skill pick · 06 pause · 07/08 fight C1 ·
+09 run summary · 10 garage · 11 skin shop · 12 trophy room · 13 metahub · 14 milestone chain ·
+15 delivery board · 16 courier book · 17 settings · 18 run failed · 19 small-phone (360×640) and desktop
+(1280×720) variants · 20 production desktop letterbox. Phase 01 shots kept in `docs/screenshots/phase01/`.
 
-## Open blockers for later phases
-None for Phase 01. Phase 02 needs: the 8-scene framework against the 5 UI references (layout only from images);
-real art files if they should replace procedural visuals.
+## Open blockers
+None for Phase 02. Real art (6 skins, scene art) still not supplied — procedural placeholders in the final art direction are used.

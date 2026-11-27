@@ -2,7 +2,7 @@
 // Legacy v1 schema + key kept so existing HTML5 saves load unchanged. Debug builds (?debug=1) use a
 // separate namespace. A/B slots, ledger and migrations arrive in Phase 05 (Save System 2.0).
 import { StorageAdapter } from '../platform/StorageAdapter.js';
-import { clamp } from './util.js';
+import { clamp, hashStr } from './util.js';
 import { CHAPTERS } from '../data/chapters.js';
 import { COSMETICS } from '../data/cosmetics.js';
 import { ENEMY_ORDER } from '../data/enemies.js';
@@ -23,7 +23,7 @@ export const Save = (() => {
       stats: { deliveries: 0, failures: 0, kills: 0, eliteKills: 0, pkg70: 0, fragileDone: 0, heavyDone: 0, threeStarRuns: 0, runs: 0, mastery: 0 },
       book, quests: { claimed: {} }, milestones: { unlocked: {}, claimed: {} }, mastery: {},
       cosmetics: { owned: ['classic'], selected: 'classic' },
-      settings: { master: true, music: true, sfx: true, shake: true, vibe: true },
+      settings: { master: true, music: true, sfx: true, shake: true, vibe: true, reducedMotion: false, lowGfx: false },
       tutorial: {}, settled: [], runCounter: 0,
     };
   }
@@ -58,15 +58,38 @@ export const Save = (() => {
     d.runCounter = Math.floor(num(r.runCounter, 0, 0, 1e12));
     return d;
   }
-  let data = defaults(), storageOk = true;
+  let data = defaults(), storageOk = true, loadStatus = 'new';
+  /** Load + validate. A corrupt (unparseable) save is never silently discarded: the raw text is copied
+   *  to KEY + '_corrupt_backup' before defaults are used. Status: 'new' | 'loaded' | 'recovered' | 'unavailable'. */
   function load() {
-    try { const s = localStorage.getItem(KEY); data = s ? validate(JSON.parse(s)) : defaults(); }
-    catch (e) { data = defaults(); }
+    let raw = null;
+    try { raw = localStorage.getItem(KEY); } catch (e) { data = defaults(); loadStatus = 'unavailable'; return data; }
+    if (!raw) { data = defaults(); loadStatus = 'new'; return data; }
+    try { data = validate(JSON.parse(raw)); loadStatus = 'loaded'; }
+    catch (e) {
+      try { localStorage.setItem(KEY + '_corrupt_backup', raw); } catch (_) {}
+      data = defaults(); loadStatus = 'recovered';
+    }
     return data;
   }
   function write() {
     try { localStorage.setItem(KEY, JSON.stringify(data)); storageOk = true; } catch (e) { storageOk = false; }
+    return storageOk;
   }
   function reset() { data = defaults(); write(); return data; }
-  return { load, write, reset, defaults, validate, get data() { return data; }, get ok() { return storageOk; } };
+  const checksum = obj => hashStr(JSON.stringify(obj)).toString(16);
+  /** Export bundle (JSON-serialisable). Checksum = corruption detection, not security. */
+  function exportBundle() { const d = JSON.parse(JSON.stringify(data)); return { schema: 'deliverogue_save', v: VERSION, exportedAt: new Date().toISOString(), checksum: checksum(d), data: d }; }
+  /** Parse + validate an export bundle WITHOUT applying it. */
+  function inspectBundle(text) {
+    let b; try { b = JSON.parse(text); } catch (e) { return { ok: false, reason: 'parse' }; }
+    if (!b || b.schema !== 'deliverogue_save' || typeof b.data !== 'object') return { ok: false, reason: 'schema' };
+    return { ok: true, checksumOk: checksum(b.data) === b.checksum, data: validate(b.data) };
+  }
+  /** Apply a validated import. The current save is kept under KEY + '_backup' first. */
+  function applyImport(validated) {
+    try { localStorage.setItem(KEY + '_backup', JSON.stringify(data)); } catch (e) {}
+    data = validate(validated); return write();
+  }
+  return { load, write, reset, defaults, validate, exportBundle, inspectBundle, applyImport, get data() { return data; }, get ok() { return storageOk; }, get loadStatus() { return loadStatus; } };
 })();

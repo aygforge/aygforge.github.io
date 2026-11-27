@@ -1,6 +1,6 @@
 {
   "name": "deliverogue",
-  "version": "0.2.0-phase01",
+  "version": "0.3.0-phase02",
   "private": true,
   "description": "DeliveRogue — portrait mobile action roguelite (HTML5 Canvas, ES modules).",
   "type": "module",

@@ -15,6 +15,8 @@ await new Promise(r => srv.on('listening', r));
 const b = await chromium.launch(); const pg = await b.newPage(); const errs = [];
 pg.on('pageerror', e => errs.push(e.message));
 await pg.goto(`http://localhost:${srv.address().port}/?debug=1`); await pg.evaluate(() => localStorage.clear()); await pg.reload(); await pg.waitForTimeout(600);
+// modular build (Phase 02+): wait until Boot has loaded the save and MainMenu is active
+await pg.waitForFunction(() => !window.__DR.Scenes || (window.__DR.UI.current === 'MainMenu' && !window.__DR.Scenes.transitioning), null, { timeout: 8000 });
 const out = await pg.evaluate(() => {
   const D = window.__DR, res = [];
   for (let n = 1; n <= 12; n++) {

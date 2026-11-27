@@ -1,8 +1,8 @@
-// DeliveRogue — modular entry point (Phase 01 Core Migration).
-// Boot order: data validation -> engine init (save load, renderer, input, UI) -> fixed-tick loop.
+// DeliveRogue — modular entry point.
+// Engine init (renderer, input, resize, loop) -> App mounts chrome/overlays and opens the Boot scene,
+// which loads/recovers the save, validates data and warms up assets before MainMenu.
+import './styles/main.css';
+import './styles/scenes.css';
 import { Main } from './core/GameEngine.js';
-import { validateData } from './core/DataValidator.js';
 
-const report = validateData();
-if (report.errors.length) console.error('[DeliveRogue] data validation errors', report.errors);
 Main.init();
