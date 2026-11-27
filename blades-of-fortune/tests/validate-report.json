@@ -1,0 +1,27 @@
+{
+ "standalone": 100,
+ "chains": 20,
+ "stages": 74,
+ "totalNodes": 174,
+ "uniqueChoreographies": 174,
+ "nodesPlayed": 174,
+ "optionsPlayed": 498,
+ "combats": 51,
+ "items": 32,
+ "enemies": 12,
+ "bosses": 10,
+ "categories": {
+  "danger": 20,
+  "npc": 15,
+  "explore": 15,
+  "treasure": 12,
+  "royal": 12,
+  "nature": 10,
+  "mystic": 8,
+  "absurd": 8
+ },
+ "errors": 0,
+ "warnings": 0,
+ "warningList": [],
+ "errorList": []
+}

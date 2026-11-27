@@ -1,0 +1,62 @@
+[
+ {
+  "name": "Yeni oyun ve kasaba hizmetleri",
+  "ok": true,
+  "extra": "stok 4+6"
+ },
+ {
+  "name": "Çanta taşması: eşya silinmez, seçim beklenir",
+  "ok": true,
+  "extra": ""
+ },
+ {
+  "name": "Tam normal run: başkente varış + Kraliyet Sınavı + Macerayı Tamamla (güçlü kahraman)",
+  "ok": true,
+  "extra": "yerleşim 8, olay 31, savaş 7, zincir aşaması 6, oyun süresi ~14 dk (atlama/hızlandırma olmadan)"
+ },
+ {
+  "name": "Normal istatistikli 6 run (gerçekçi denge örneklemi)",
+  "ok": true,
+  "extra": "BAL1:complete/9y/13dk/616xp BAL2:complete/9y/13dk/744xp BAL3:dead/8y/12dk/506xp BAL4:dead/6y/10dk/457xp BAL5:complete/8y/12dk/723xp BAL6:complete/9y/15dk/1014xp"
+ },
+ {
+  "name": "Ölüm: run biter, XP korunur ve yalnızca bir kez aktarılır",
+  "ok": true,
+  "extra": "kalıcı XP 77"
+ },
+ {
+  "name": "Savaş ortasında kaydet/yükle: çift ödül ve sonsuz savaş yok",
+  "ok": true,
+  "extra": "düşman HP (yükleme anı): 12,26"
+ },
+ {
+  "name": "Hikâye zinciri tüm aşamalarıyla tamamlanır (CH01, CH04, CH18) ve ödül tek kez",
+  "ok": true,
+  "extra": "CH01:4/4 CH04:4/4 CH18:4/4"
+ },
+ {
+  "name": "Sonsuz Macera: aşama her 4 yerleşimde artar, koşul atanır, rekor tutulur",
+  "ok": true,
+  "extra": "yerleşim 18, aşama 2, koşul banditInvasion"
+ },
+ {
+  "name": "Determinizm: aynı seed + aynı kararlar = aynı mekanik sonuç",
+  "ok": true,
+  "extra": ""
+ },
+ {
+  "name": "Gönüllü emeklilik: XP aktarılır, başkent ödülü yok",
+  "ok": true,
+  "extra": ""
+ },
+ {
+  "name": "Kalıcı gelişim: sıralı açılır, maliyet düşer, yeni run'a etki eder",
+  "ok": true,
+  "extra": ""
+ },
+ {
+  "name": "Kayıt dışa/içe aktarma ve bozuk kayıt kurtarma",
+  "ok": true,
+  "extra": ""
+ }
+]

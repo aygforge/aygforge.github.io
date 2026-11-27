@@ -1,0 +1,13 @@
+{
+  "name": "blades-of-fortune",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Blades of Fortune — Tides of Fortune motorundan türetilmiş Orta Çağ roguelite RPG (tek dosya HTML5).",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node tests/validate.mjs && node tests/sim.mjs",
+    "test:browser": "node tests/browser.mjs"
+  },
+  "devDependencies": { "esbuild": "^0.24.0" }
+}
