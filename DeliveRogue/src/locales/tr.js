@@ -1,0 +1,61 @@
+// locales/tr.js — Turkish source strings (migrated verbatim from DeliveRogue.html STR.tr).
+// Many UI strings are still inline in ui/UI.js / data; full key extraction is Phase 14 (Localization).
+export default {
+  play: 'OYNA', garage: 'GARAJ', metahub: 'MERKEZ', settings: 'AYARLAR', back: 'Geri', level: 'SEVİYE',
+  subtitle: 'COFFEE DISTRICT · KURYE ROGUELITE', episodeProg: 'Coffee District ilerlemesi', stars: 'Yıldız',
+  runprep: 'Teslimat Planı', chapter: 'Bölüm', chShort: 'B{0}', startDelivery: 'TESLİMATA BAŞLA', locked: 'Kilitli', completed: 'Tamamlandı',
+  unlocked: 'Açık', pkg: 'Paket', enemies: 'Düşman', difficulty: 'Zorluk', timer: 'Süre', best: 'En iyi', none: '—',
+  fastTarget: '3★ hedef süresi', mastery: 'Ustalık görevleri', epLockedFuture: 'Yakında', epNeedCoffee: 'Coffee District\'i tamamla',
+  epContentSoon: 'İçerik yakında eklenecek', epPlayable: 'Oynanabilir', lockedChapter: 'Önceki bölümü tamamlayarak aç.',
+  diff: ['Kolay', 'Kolay', 'Orta', 'Zor', 'Çok Zor', 'Usta'],
+  pkg_STANDARD_ORDER: 'Standart Sipariş', pkg_HEAVY_ORDER: 'Ağır Sipariş', pkg_FRAGILE_ORDER: 'Kırılgan Sipariş',
+  pkg_RUSH_DELIVERY: 'Acele Teslimat', pkg_FINAL_RUSH: 'Final Koşusu',
+  pkgd_STANDARD_ORDER: '100 paket HP. Hız cezası yok.', pkgd_HEAVY_ORDER: '150 paket HP ama hareket hızı -%10.',
+  pkgd_FRAGILE_ORDER: 'Sadece 70 paket HP. Tehlikelerden %50 daha fazla paket hasarı.',
+  pkgd_RUSH_DELIVERY: '100 paket HP. Süre çok dar — hızlı karar ver!', pkgd_FINAL_RUSH: 'Coffee District\'in son siparişi. 100 paket HP, zorlu süre.',
+  pkgShort_STANDARD_ORDER: 'STD', pkgShort_HEAVY_ORDER: 'AĞIR', pkgShort_FRAGILE_ORDER: 'KIRILGAN', pkgShort_RUSH_DELIVERY: 'ACELE', pkgShort_FINAL_RUSH: 'FİNAL',
+  // garage
+  equipment: 'Ekipman', looks: 'Görünüm', statsTab: 'İstatistik', trophies: 'Kupalar', upgrade: 'Yükselt', maxed: 'MAKS',
+  eq_motor: 'Motor', eq_helmet: 'Kask', eq_jacket: 'Mont', eq_pos: 'POS Cihazı',
+  eqd_motor: 'Hareket hızı', eqd_helmet: 'Maksimum HP', eqd_jacket: 'Alınan hasar azaltma', eqd_pos: 'Kart hasarı',
+  now: 'Şimdi', next: 'Sonraki', buy: 'Satın al', select: 'Seç', selected: 'Seçili', needLevel: 'Seviye {0} gerekli', owned: 'Sahipsin',
+  skinNote: 'Görünümler sadece kozmetiktir, istatistikleri değiştirmez.',
+  st_level: 'Kurye seviyesi', st_deliveries: 'Başarılı teslimat', st_failures: 'Başarısız teslimat', st_kills: 'Yenilen düşman',
+  st_elite: 'Yenilen elit', st_stars: 'Toplam yıldız', st_chapters: 'Tamamlanan bölüm', st_speed: 'Hız bonusu', st_hp: 'Maks HP',
+  st_dr: 'Hasar azaltma', st_dmg: 'Kart hasarı', st_runs: 'Toplam deneme', st_mastery: 'Ustalık görevi',
+  // meta
+  board: 'Teslimat Panosu', milestones: 'Kilometre Taşları', bookTab: 'Teslimat Kitabı', claim: 'Al', claimed: 'Alındı', inProgress: 'Devam',
+  unknownEnemy: '??? — Henüz karşılaşılmadı', encounters: 'Karşılaşma', defeats: 'Yenilgi', role: 'Rol', archetype: 'Tip',
+  coffeeInfo: 'Coffee District: Kahve buharı, kaygan dökülmeler ve kafein bağımlısı yaratıklarla dolu ilk teslimat bölgesi. 12 bölüm, 36 yıldız.',
+  // settings
+  s_master: 'Ana ses', s_music: 'Müzik', s_sfx: 'Ses efektleri', s_shake: 'Ekran sarsıntısı', s_vibe: 'Titreşim',
+  s_reset: 'Kaydı sıfırla', s_resetQ: 'Tüm ilerleme silinecek. Emin misin?', s_resetYes: 'Evet, sıfırla', s_cancel: 'Vazgeç', s_resetDone: 'Kayıt sıfırlandı.',
+  s_noVibe: '(bu cihazda yok)', s_pauseInfo: 'Oyun sırasında ❚❚ düğmesi veya ESC ile duraklat / devam et.',
+  // game
+  paused: 'DURAKLATILDI', resume: 'Devam et', restart: 'Yeniden başlat', quitRun: 'Teslimattan çık', quitQ: 'Bu teslimat iptal edilecek. Ödül yok.',
+  chooseSkill: 'Beceri Seç', skillOf: '{0}/{1}', checkpoint: 'Kahve Molası!', checkpointSub: '+15 HP · Bir beceri daha seç',
+  begin: 'Başla', newEnemy: 'Yeni düşman', elite: 'ELİT', hp: 'HP', pkgHp: 'PAKET', waitOrder: 'Siparişi al!', timerWaits: 'Sipariş alınınca başlar', orderTaken: 'SİPARİŞ ALINDI!',
+  delivered: 'TESLİM EDİLDİ!', failed: 'TESLİMAT BAŞARISIZ', m: 'm',
+  fail_time: 'Süre doldu!', fail_hp: 'Kurye bayıldı! (HP bitti)', fail_pkg: 'Paket mahvoldu! (Paket HP bitti)', fail_quit: 'Teslimat iptal edildi.',
+  // summary
+  deliveryComplete: 'TESLİMAT TAMAM', deliveryFailed: 'TESLİMAT BAŞARISIZ', grade: 'Not', time: 'Süre', remHp: 'Kalan HP', remPkg: 'Kalan paket',
+  kills: 'Yenilen', coins: 'Jeton', xp: 'XP', firstBonus: 'İlk tamamlama bonusu', nextUnlocked: 'Sonraki bölüm açıldı!',
+  progressReached: 'Ulaşılan ilerleme', consolation: 'Teselli ödülü', noReward: 'Teselli ödülü için daha fazla ilerle.',
+  retry: 'Tekrar dene', toPrep: 'Plan ekranı', toMenu: 'Ana menü', nextChapter: 'Sonraki bölüm', replay: 'Tekrar oyna', newBest: 'Yeni rekor!',
+  masteryDone: 'Ustalık: {0} (+{1})', questReady: 'Görev hazır: {0}', milestoneGot: 'Kupa kazanıldı: {0}', levelUp: 'Seviye atladın! Seviye {0}',
+  epComplete: 'COFFEE DISTRICT', epComplete2: 'TAMAMLANDI!', epComplete3: 'Tüm 12 bölüm teslim edildi. Sırada: MegaBoyBurger (yakında).', cont: 'Devam',
+  // tutorial
+  tut_move: 'Sol alttaki joystick\'in topuzunu sürükleyerek (veya WASD) hareket et.', tut_pickup: 'Parlayan teslim alma tezgâhına git ve siparişi al.',
+  tut_go: 'Yukarı! Ok işareti teslimat noktasını gösterir.', tut_auto: 'POS cihazın yakındaki düşmanlara otomatik ateş eder.',
+  tut_pkg: 'Paketini koru: Paket HP biterse teslimat başarısız olur.', tut_time: 'Süre dolmadan teslim et! Düşmanları yenmek zorunlu değil.',
+  tut_fragile: 'Kırılgan Sipariş: Buhar paketine daha çok zarar verir. Kırmızı uyarıyı görünce bekle!',
+  tut_steam: 'Buhar jetleri kırmızı yanıp söner, sonra püskürür. Zamanlamanı ayarla.',
+  tut_heavy: 'Ağır Sipariş: Daha yavaşsın ama paketin daha dayanıklı.',
+  tut_spill: 'Kahve dökülmesi kaygandır! Duvara sert çarpmak paketi sarsar.',
+  tut_elite: 'Elit düşman! Yenmek zorunda değilsin — etrafından dolaş.', tut_check: 'Kahve Molası noktasına ulaşınca +15 HP ve yeni beceri kazanırsın.',
+  tut_split: 'Rota ayrılıyor: Kısa yol tehlikeli, uzun yol daha güvenli.', tut_heal: 'Yeşil termos istasyonu bir kez HP yeniler.',
+  tut_mimic: 'Dikkat: Yerdeki şüpheli kupalar canlanabilir!',
+  // misc
+  cat_attack: 'SALDIRI', cat_elemental: 'ELEMENTAL', cat_defense: 'SAVUNMA', cat_movement: 'HAREKET / TESLİMAT',
+  stack: 'Seviye {0}/{1}', yes: 'Evet', no: 'Hayır', soundTap: 'Ses için ekrana dokun',
+};

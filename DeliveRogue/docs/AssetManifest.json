@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "phase": "01",
+  "note": "Phase 01: all runtime visuals are procedural (core/Art.js, cached offscreen canvases). Real bitmaps referenced by the GDevelop project (DR2(21).json resources) were NOT included in the delivered package; they are listed as missing and keep the procedural fallback. Replace via AssetManager.loadImage(id, url, meta) — gameplay code only calls Art.get(id).",
+  "statusLegend": { "procedural": "drawn in code, active", "missing": "real file referenced but not supplied", "real": "bitmap loaded" },
+  "groups": [
+    { "group": "player", "logicalIds": ["courier:<skin>:<dir>:<frame>"], "status": "procedural", "source": "core/Art.js courier()" },
+    { "group": "enemies.COF", "logicalIds": ["COF_N_BeanBandit", "COF_N_LatteImp", "COF_N_SugarSprite", "COF_N_BaristaGoblin", "COF_N_DripCultist", "COF_N_MugMimic", "COF_N_CreamDrifter", "COF_E_GrinderKnight", "COF_E_SteamJugger"], "status": "procedural", "source": "core/Art.js enemy()" },
+    { "group": "boss.COF", "logicalIds": ["COF_B_LatteArtDragon"], "status": "missing", "source": "Phase 04" },
+    { "group": "tiles.coffee", "logicalIds": ["tileset:COF"], "status": "procedural", "source": "core/Art.js renderChunk()" },
+    { "group": "props", "logicalIds": ["cart", "pickup", "healStation", "checkpointSign", "customer"], "status": "procedural", "source": "core/Art.js" },
+    { "group": "skillIcons", "logicalIds": ["skill:<id> (20)"], "status": "procedural", "source": "core/Art.js skillIcon()" },
+    { "group": "packages", "logicalIds": ["STANDARD_ORDER", "HEAVY_ORDER", "FRAGILE_ORDER", "RUSH_DELIVERY", "FINAL_RUSH"], "status": "procedural", "source": "data/packages.js color+icon" }
+  ],
+  "originalSkins": [
+    { "id": "SKIN_DEFAULT", "gameplay": "PlayerYeni3.png", "icon": "PlayerYeni4.png", "status": "missing" },
+    { "id": "SKIN_COFFEE", "gameplay": "batch/b2/Coffee.png", "icon": "Coffee5.png", "status": "missing" },
+    { "id": "SKIN_FARMER", "gameplay": "batch/b2/farmer.png", "icon": "farmer3.png", "status": "missing" },
+    { "id": "SKIN_HAZARDOUS", "gameplay": "batch/b2/Hazardous.png", "icon": "Hazardous3.png", "status": "missing" },
+    { "id": "SKIN_MONSTERTR", "gameplay": "batch/b2/monstertrainer.png", "icon": "monstertrainer3.png", "status": "missing" },
+    { "id": "SKIN_NEON", "gameplay": "batch/b2/Neon.png", "icon": "Neon3.png", "status": "missing" }
+  ],
+  "uiReferences": [
+    { "file": "reference/ui/88175.png", "scene": "MetaHub", "use": "visual layout authority (Phase 02)" },
+    { "file": "reference/ui/88174.png", "scene": "RunPrep", "use": "visual layout authority (Phase 02)" },
+    { "file": "reference/ui/88173.png", "scene": "MetaHub milestone detail", "use": "visual layout authority (Phase 02)" },
+    { "file": "reference/ui/88172.png", "scene": "RunSummary", "use": "visual layout authority (Phase 02)" },
+    { "file": "reference/ui/88176.png", "scene": "Garage", "use": "visual layout authority (Phase 02)" }
+  ],
+  "audio": { "status": "procedural", "source": "core/AudioManager.js (Web Audio synth SFX + cafe loop)", "files": [] }
+}
