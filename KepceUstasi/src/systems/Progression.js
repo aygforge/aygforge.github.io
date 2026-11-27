@@ -1,6 +1,6 @@
 // Progression — bahşiş, kalıcı geliştirmeler, chapter açılımı ve koşu ödülü.
 import { UPGRADES, UPGRADE_BY_ID, MAX_UPGRADE_LEVEL, CHAPTERS, ECONOMY, NORMAL_WAVES } from '../data/content.js';
-import { apronHpBonus, defaultEquipment } from './Equipment.js';
+import { apronHpBonus, defaultEquipment, defaultEquipLevels, weaponBaseBonus, ladleCapacityBonus, V1_POWER } from './Equipment.js';
 
 export function upgradeValue(save, id) {
   const u = UPGRADE_BY_ID[id];
@@ -28,14 +28,16 @@ export function purchaseUpgrade(save, id) {
 export function permStats(save) {
   const tough = upgradeValue(save, 'toughness');
   return {
-    capacity: upgradeValue(save, 'capacity'),
+    capacity: Math.min(15, upgradeValue(save, 'capacity') + ladleCapacityBonus(save.equipLevels)), // V1 enhance, cap 15
     width: upgradeValue(save, 'width'),
-    hp: tough.hp + apronHpBonus(save.equipment), // Alpha 0.4B: Önlük adds max HP
+    hp: tough.hp + apronHpBonus(save.equipment, save.equipLevels), // Önlük rarity + V1 enhance
     shield: tough.shield,
     mastery: upgradeValue(save, 'mastery'),
     pan: upgradeValue(save, 'pan'),
     spice: upgradeValue(save, 'spice'),
     equip: { ...defaultEquipment(), ...(save.equipment || {}) }, // copied into the run (snapshot-safe)
+    equipLevels: { ...defaultEquipLevels(), ...(save.equipLevels || {}) },
+    weaponBase: weaponBaseBonus(save.equipment, save.equipLevels), // V1: real +damage on every real normal oil
   };
 }
 
@@ -119,6 +121,8 @@ export function computeStageReward(stage, { victory, stars, completedWaves, firs
 // unlock events, cleared snapshot) changes in this one object, which the caller persists in a single write.
 export function applyStageResult(save, stage, run, { victory, stars }, now = Date.now()) {
   if (save.claimedRuns.includes(run.runId)) return { duplicate: true, reward: null };
+  recordQuest(save, 'runs', 1, now);
+  recordQuest(save, 'kills', run.stats?.kills || 0, now);
   const st = { ...stageState(save, stage.level) };
   const firstClear = victory && !st.cleared;
   const nw = stage.waves?.length || NORMAL_WAVES;
@@ -158,7 +162,11 @@ export function chefPower(save) {
   const w = ECONOMY04.chefPower.upgradeWeights;
   let p = 100;
   for (const [id, weight] of Object.entries(w)) p += weight * ((save.upgrades[id] || 1) - 1);
-  for (const item of ECONOMY04.equipment.items) p += item.power[save.equipment?.[item.slot] || 'common'] || 0;
+  for (const item of ECONOMY04.equipment.items) {
+    const rar = save.equipment?.[item.slot] || 'common';
+    p += item.power[rar] ?? V1_POWER[rar]?.[item.slot] ?? 0;
+    p += (save.equipLevels?.[item.slot] || 0) * V1_POWER.perEnhance[item.slot];
+  }
   return p;
 }
 
@@ -177,6 +185,8 @@ export function settleGrants(save) {
   save.pendingGrants = [];
   return save;
 }
+
+import { scaledDungeonReward, applyBossKitchenResult, applyTowerResult, recordQuest } from './V1Modes.js';
 
 // UTC-day reset of dungeon full-reward rights.
 export function dungeonDaily(save, now = Date.now()) {
@@ -199,8 +209,22 @@ export function dungeonFullLeft(save, dg, now = Date.now()) {
 // Loss: nothing (energy stays spent, no daily right used).
 export function applyDungeonResult(save, dg, run, { victory }, now = Date.now()) {
   if (save.claimedRuns.includes(run.runId)) return { duplicate: true, reward: null };
+  recordQuest(save, 'runs', 1, now);
+  recordQuest(save, 'kills', run.stats?.kills || 0, now);
+  if (victory) recordQuest(save, 'dungeonWins', 1, now);
+  if (dg.dungeonId === 'boss_kitchen' || dg.dungeonId === 'tower') {
+    // V1.0 modes: weekly boss seals / tower milestones (each once), same single-write result
+    const reward = dg.dungeonId === 'boss_kitchen' ? applyBossKitchenResult(save, run, victory, now) : applyTowerResult(save, dg.towerBlock, victory);
+    if (victory) recordQuest(save, dg.dungeonId === 'boss_kitchen' ? 'bossKitchenWins' : 'towerBlocks', 1, now);
+    save.claimedRuns.push(run.runId);
+    if (save.claimedRuns.length > 50) save.claimedRuns.splice(0, save.claimedRuns.length - 50);
+    save.activeRun = null;
+    save.stats.runs++;
+    if (victory) save.stats.wins++;
+    return { duplicate: false, reward };
+  }
   const d = dungeonDaily(save, now);
-  const def = dg.reward;
+  const def = scaledDungeonReward(save, dg.dungeonId, dg.reward); // V1: grows with the highest cleared level (L1–30 unchanged)
   const reward = { tips: 0, parts: 0, full: false, firstBonus: 0, total: 0 };
   if (victory) {
     reward.full = (d.fullUsed[dg.dungeonId] || 0) < def.fullRewardRunsPerUtcDay;

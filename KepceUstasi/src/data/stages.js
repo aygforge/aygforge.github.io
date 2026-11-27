@@ -10,13 +10,14 @@ import dungeons from './alpha04/alpha04_dungeons.json' with { type: 'json' };
 import identity from './alpha04/alpha04c_level_identity_20.json' with { type: 'json' };
 import omelet from './alpha05/alpha05a_level_21_30.json' with { type: 'json' };
 import { CHAPTERS, ENEMIES } from './content.js';
+import { buildV1Stages } from './v1/v1Adapter.js';
+import { buildBossKitchen, buildTowerBlock } from '../systems/V1Modes.js';
 
 export const CAMPAIGN = campaign;
 export const ECONOMY04 = economy;
 export const IDENTITY = identity;
 export const OMELET = omelet; // Alpha 0.5A: L21–30 Mantarlı Omlet
 const ALL_LEVELS = [...identity.levels, ...omelet.levels];
-export const LEVEL_COUNT = ALL_LEVELS.length;
 export const stageId = (n) => `L${n}`;
 const RUN_COST = 5; // Alpha 0.5A.1: all run entries 5 energy (same value as EnergyService.RUN_ENERGY_COST)
 
@@ -120,7 +121,12 @@ function buildStage(L) {
   };
 }
 
-export const STAGES = ALL_LEVELS.map(buildStage);
+// V1.0: L1–L30 from the 0.4C/0.5A files (unchanged) + L31–L120 from the V1 compact content
+const V1_UNLOCKS = { 35: ['epic_crafting', 'kazan_tower'], 70: ['legendary_crafting'], 120: ['game_complete'] };
+export const STAGES = [...ALL_LEVELS.map(buildStage), ...buildV1Stages()];
+for (const s of STAGES) if (V1_UNLOCKS[s.level]) s.unlocksOnFirstClear = [...s.unlocksOnFirstClear, ...V1_UNLOCKS[s.level]];
+for (const l of [10, 20, 30]) STAGES[l - 1].powerWall = l === 20 ? 'hardwall' : 'softwall';
+export const LEVEL_COUNT = STAGES.length; // 120
 
 // ---------------------------------------------------------------- Alpha 0.4B dungeons (same engine)
 // 4 normal waves + final, a skill pick after each normal wave, no recipe/star requirement. Enemy HP = Alpha03 base
@@ -168,6 +174,20 @@ export function stageByLevel(n) {
 }
 
 // Single lookup used by the engine: campaign stage id ("L7") or legacy chapter id ("menemen").
+// V1.0 modes encode their content in the id so a snapshot restores the same encounter:
+// "D_boss_kitchen:10,20,30" (3 chapter-boss levels) and "T_tower:<block>".
+const DYN = new Map();
 export function findChapter(id) {
-  return BY_ID[id] || BASE_CHAPTER[id] || null;
+  if (BY_ID[id] || BASE_CHAPTER[id]) return BY_ID[id] || BASE_CHAPTER[id];
+  if (typeof id !== 'string') return null;
+  if (DYN.has(id)) return DYN.get(id);
+  let ch = null;
+  const bk = /^D_boss_kitchen:(\d+),(\d+),(\d+)$/.exec(id);
+  const tw = /^T_tower:(\d+)$/.exec(id);
+  if (bk) {
+    const lv = bk.slice(1, 4).map(Number);
+    if (lv.every((l) => l % 10 === 0 && l >= 10 && l <= LEVEL_COUNT)) ch = buildBossKitchen(lv, stageByLevel);
+  } else if (tw) ch = buildTowerBlock(Number(tw[1]));
+  if (ch) DYN.set(id, ch);
+  return ch;
 }

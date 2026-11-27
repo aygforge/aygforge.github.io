@@ -18,6 +18,14 @@ function alpha04Fields(now = Date.now()) {
     unlockEvents: [], // [{ id, level, at }] recorded once (L7 gold_kitchen, L10, L15 depot, L16 rare_crafting, L20)
     pendingGrants: [], // e.g. materials_starter_grant_18 -> paid out by settleGrants (0.4B)
     paidGrants: [],
+    // V1.0 (dataVersion 6): added with defaults, never overwriting stored values
+    equipLevels: { weapon: 0, ladle: 0, apron: 0, pan: 0 },
+    bossSeals: 0,
+    bossKitchen: { week: '', wins: 0, total: 0 },
+    tower: { best: 0, milestones: [] },
+    quests: { day: '', week: '', daily: {}, weekly: {}, claimed: [] },
+    iap: { entitlements: [], tokens: [] },
+    monet: { completedRuns: 0, sinceInterstitial: 0, lastInterstitialAt: 0, adRewardIds: [], tipBonusRuns: [] },
   };
 }
 
@@ -44,7 +52,8 @@ export function migrateToAlpha04(s, now = Date.now()) {
     s.paidGrants.push(id);
   }
   s.pendingGrants = [];
-  s.dataVersion = 5;
+  s.settings.language ||= 'tr';
+  s.dataVersion = 6; // V1.0
   return s;
 }
 
@@ -103,6 +112,8 @@ function merge(s) {
     pendingGrants: s.pendingGrants,
     paidGrants: s.paidGrants,
     dataVersion: s.dataVersion,
+    // V1.0 objects: stored value or (missing) filled by migration
+    equipLevels: s.equipLevels, bossSeals: s.bossSeals, bossKitchen: s.bossKitchen, tower: s.tower, quests: s.quests, iap: s.iap, monet: s.monet,
   };
 }
 

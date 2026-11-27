@@ -1,7 +1,9 @@
-# Kepçe Ustası — Alpha 0.5A.1 (HTML5)
+# Kepçe Ustası — V1.0 (HTML5 + Android)
 
 **Stüdyo:** Ayg Forge · **Çalışma adı:** Kepçe Ustası · **Sürüm:** Alpha 0.3 (Menemen + Patates Kızartması; yakalama hissi ve build dengesi)
 
+> **V1.0:** 120 level / 12 bölüm, 9 yeni boss, Epic/Legendary + güçlendirme, Boss Mutfağı, Kazan Kulesi, günlük/haftalık görevler, TR/EN, Android (Capacitor). Yayın: `README_RELEASE.md`, değişiklikler: `CHANGELOG_V1.md`.
+>
 > **Alpha 0.5A.1:** boss olmayan düşmanlar vurup 1 adım geri çekilir ve tekrar gelir (kaçış yok); yakalanan yağlar görünür `pendingAmmo` kuyruğunda dalgalar arası korunur; her run girişi 5 enerji. Ayrıntı: `CHANGELOG_ALPHA05A1.md`.
 >
 > **Alpha 0.5A:** Mantarlı Omlet, L21–30: Mantar, Koruyucu Mantar (kalkan pulse), Kabuklu Soğan (kabuk + hızlanma), Elit Şapka mini boss, 4 çift final ve Koca Mantar chapter boss. Ayrıntı: `CHANGELOG_ALPHA05A.md`.

@@ -12,7 +12,7 @@ const MIN = 60000;
 const T0 = Date.UTC(2026, 10, 21, 10, 0, 0);
 
 test('adapter: L1–20 from the 0.4C identity JSON (waves, recipes, HP, rewards); bosses 42/54 kept', () => {
-  assert.equal(STAGES.length, 30); // Alpha 0.5A adds L21–30
+  assert.equal(STAGES.length, 120); // Alpha 0.5A adds L21–30, V1.0 L31–120
   for (const L of IDENTITY.levels) {
     const s = stageByLevel(L.level);
     assert.deepEqual(s.waves, L.waves);

@@ -10,7 +10,7 @@
 import { ENEMIES, FIELD, OILS, SECONDARY_EVENT_CAP, AREA_RADIUS, ABILITY_VALUES, CHAPTERS } from '../data/content.js';
 import { findChapter } from '../data/stages.js';
 import { weaponEffect, panEvery } from './Equipment.js';
-import { living, nextSteps, BOSS_FREEZE_EVERY } from './EnemyDirector.js';
+import { living, nextSteps, BOSS_FREEZE_EVERY, summonNear } from './EnemyDirector.js';
 import { addRecipe } from './RecipeTracker.js';
 import { Rng } from '../core/rng.js';
 
@@ -31,6 +31,8 @@ function speedOf(e) {
   if (e.type === 'potato_king' && e.hasted) return 1;
   if (e.frozen) return 0; // a frozen enemy will not move next phase
   if (e.move === 'pepper' || e.altFrom != null) return 2; // 0.5A: cracked onion / Koca Mantar phase 2
+  const mv = e.move || ENEMIES[e.type].move;
+  if (Array.isArray(mv)) return Math.max(...mv) >= 2 ? 2 : 1;
 
   return ENEMIES[e.type].speed;
 }
@@ -42,6 +44,7 @@ export function selectTarget(run) {
   alive.sort(
     (a, b) =>
       (b.frozen ? 0 : threatScore(b)) - (a.frozen ? 0 : threatScore(a)) ||
+      (ENEMIES[b.type].taunt ? 1 : 0) - (ENEMIES[a.type].taunt ? 1 : 0) || // V1 Lavaş: preferred among equal threats
       speedOf(b) - speedOf(a) ||
       a.x - b.x ||
       a.hp + a.shield + (a.shell || 0) - (b.hp + b.shield + (b.shell || 0)) ||
@@ -83,9 +86,10 @@ export function applyDamage(e, amount) {
   let shellDmg = 0;
   let cracked = false;
   if (e.shell > 0 && dmg > 0) {
-    shellDmg = Math.min(e.shell, dmg);
+    const layer = ENEMIES[e.type]?.shellLayer; // V1 Kat Yufka: one layer per hit, the layer absorbs the rest
+    shellDmg = Math.min(e.shell, dmg, layer || Infinity);
     e.shell -= shellDmg;
-    dmg -= shellDmg; // the rest overflows into HP
+    dmg = layer && e.shell > 0 ? 0 : dmg - shellDmg; // otherwise the rest overflows into HP
     if (e.shell === 0) {
       cracked = true;
       if (ENEMIES[e.type]?.crackSpeed && e.altFrom == null) e.altFrom = e.moveOpp;
@@ -133,9 +137,18 @@ export function killEnemy(run, chapter, e, cause, ctx) {
     counted = def.recipe ? addRecipe(run, chapterFor(run, chapter), def.recipe) : false;
   }
   ctx.events.push({ type: 'kill', id: e.id, enemyType: e.type, recipeKey: def.recipe, counted, cause, recipe: { ...run.recipe } });
+  if (def.split && !e.splitDone) {
+    // V1 Spiral: splits ONCE into up to 2 small 2-HP spirals (they never split, recipe value 0)
+    e.splitDone = true;
+    const minions = summonNear(run, e, `${e.type.startsWith('final_') ? 'spiral' : e.type}_mini`, def.split.count, def.split.hp);
+    if (minions.length) ctx.events.push({ type: 'split', id: e.id, minions });
+  }
   if (e.boss) {
     // victory only when EVERY final (boss/elite) of the level is down (Alpha 0.4C dual elites)
-    if (!run.enemies.some((x) => x.boss && !x.dead && !x.escaped)) ctx.victory = true;
+    // (V1 Boss Mutfağı: bosses of the earlier waves never end the run — only the final wave can)
+    const ch = chapterFor(run, chapter);
+    const finalWave = !ch.bossRush || run.wave > ch.waves.length;
+    if (finalWave && !run.enemies.some((x) => x.boss && !x.dead && !x.escaped)) ctx.victory = true;
     return;
   }
   if (!ctx.chains) return; // reflect kills do not start pan chains
@@ -221,6 +234,10 @@ export function resolveVolley(run, chapter, shots) {
     }
     if (shot.oil === 'normal' && real) {
       run.stats.normalShots++;
+      if (run.perm.weaponBase) {
+        dmg += run.perm.weaponBase; // V1 Epic/Legendary weapon + enhancement: real base damage
+        bonusParts.push('eq_base');
+      }
       const wpn = weaponEffect(run.perm.equip); // Yağ Silahı (own counter, stacks with mastery/power_shot)
       if (wpn) {
         run.counters.weaponShot = (run.counters.weaponShot || 0) + 1;
@@ -270,7 +287,22 @@ export function resolveVolley(run, chapter, shots) {
       run.stats.crits = (run.stats.crits || 0) + 1;
       proc(run, 'critical_fry');
     }
+    const tdef = ENEMIES[target.type];
+    let reduced = 0;
+    if (real && tdef.firstHitGuard && !target.firstGuardUsed) {
+      target.firstGuardUsed = true; // V1 Sırlı Domates: the first real direct hit loses 1
+      reduced = Math.min(1, dmg);
+      dmg -= reduced;
+    }
+    if (real && tdef.thirdHitReduce) {
+      target.realHits = (target.realHits || 0) + 1; // V1 Baharat: every 3rd real hit -1 (min 0)
+      if (target.realHits % 3 === 0) {
+        reduced += Math.min(1, dmg);
+        dmg = Math.max(0, dmg - 1);
+      }
+    }
     const r = applyDamage(target, dmg);
+    if (reduced) r.reduced = reduced;
     ctx.hpDamage += r.hpDmg;
     run.stats.shots++;
     run.stats.damageDealt += r.hpDmg + r.shieldDmg + r.shellDmg;
@@ -285,7 +317,8 @@ export function resolveVolley(run, chapter, shots) {
     if (real) {
       // Soğuk Sos: freeze the hit enemy (boss: at most once per 3 of its own actions)
       if (shot.oil === 'cold' && !target.dead) {
-        const okBoss = !target.boss || target.lastFrozenAction == null || target.actionCount - target.lastFrozenAction >= BOSS_FREEZE_EVERY;
+        const every = target.freezeEvery ?? BOSS_FREEZE_EVERY; // V1 Köri Sultanı: 1 before 30 %, 3 after
+        const okBoss = !target.boss || target.lastFrozenAction == null || target.actionCount - target.lastFrozenAction >= every;
         if (okBoss && !target.frozen) {
           target.frozen = true;
           if (target.boss) target.lastFrozenAction = target.actionCount;
@@ -373,7 +406,7 @@ export function resolveVolley(run, chapter, shots) {
       run.pending.mastery += 1;
       events.push({ type: 'bonusReady', source: 'pan_mastery' });
     }
-    const eqEvery = panEvery(run.perm.equip);
+    const eqEvery = panEvery(run.perm.equip, run.perm.equipLevels);
     if (eqEvery && run.counters.eqPanKills >= eqEvery) {
       run.counters.eqPanKills -= eqEvery; // max one per turn
       run.pending.eqPan = (run.pending.eqPan || 0) + 1;

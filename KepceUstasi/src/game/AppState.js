@@ -2,6 +2,7 @@
 import { SaveService } from '../systems/SaveService.js';
 import { audio } from '../platform/AudioService.js';
 import { lifecycle } from '../platform/Lifecycle.js';
+import { setLanguage } from '../i18n.js';
 
 class AppState {
   constructor() {
@@ -14,6 +15,7 @@ class AppState {
       this.persist();
     }
     lifecycle.vibration = this.save.settings.vibration;
+    setLanguage(this.save.settings.language || 'tr');
     const p = new URLSearchParams(location.search);
     this.dev = p.has('dev') || p.has('test');
     this.forcedSeed = p.has('seed') ? Number(p.get('seed')) >>> 0 : null;

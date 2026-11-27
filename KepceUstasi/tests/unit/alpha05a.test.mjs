@@ -20,7 +20,7 @@ const finalsOf = (run, lvl) => {
 const only = (run, keep) => run.enemies.forEach((e) => { if (!keep.includes(e)) e.dead = true; });
 
 test('L21–30 data: 30 levels, JSON waves/recipes/finals, L1–20 untouched, picks only after normal waves', () => {
-  assert.equal(LEVEL_COUNT, 30);
+  assert.equal(LEVEL_COUNT, 120); // V1.0
   assert.deepEqual([stageByLevel(10).boss, stageByLevel(20).boss, stageByLevel(20).balance.bossHp], ['giant_tomato', 'potato_king', 54]);
   const n = [21, 22, 23, 24, 25, 26, 27, 28, 29, 30].map((l) => stageByLevel(l).waves.length);
   assert.deepEqual(n, [3, 4, 4, 5, 5, 3, 4, 5, 5, 6]);
@@ -159,7 +159,7 @@ test('save: L20-cleared old save opens L21; L20 win unlocks L21; L25/L30 flags o
   for (let l = 21; l <= 30; l++) win(l, `w${l}`);
   win(25, 'again');
   assert.deepEqual(s.unlockEvents.map((u) => u.id).filter((id) => id.includes('future')), ['boss_kitchen_future_eligibility', 'chapter4_pasta_future_eligibility']);
-  assert.equal(s.stageProgress.highestUnlocked, 30);
+  assert.equal(s.stageProgress.highestUnlocked, 31); // V1.0: L30 opens L31
   const run = runFor(22);
   run.wave = 1;
   const o = spawnWave(run, stageByLevel(22), new Rng(3)).find((e) => e.type === 'onion');

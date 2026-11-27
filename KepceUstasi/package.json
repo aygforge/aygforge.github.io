@@ -1,8 +1,8 @@
 {
   "name": "kepce-ustasi",
-  "version": "0.5.1-a",
+  "version": "1.0.0",
   "private": true,
-  "description": "Kepçe Ustası Alpha 0.5A.1 — Ayg Forge portrait HTML5 oyunu",
+  "description": "Kepçe Ustası V1.0 — Ayg Forge portrait HTML5 oyunu",
   "type": "module",
   "scripts": {
     "assets": "node tools/gen-assets.mjs",
@@ -15,11 +15,15 @@
     "build:artifact": "vite build -c vite.artifact.config.js && node -e \"require('fs').copyFileSync('tools/artifact-index.html','artifact-dist/index.html')\""
   },
   "dependencies": {
+    "@capacitor/android": "8.6.3",
+    "@capacitor/app": "8.1.2",
+    "@capacitor/core": "8.6.3",
     "@fontsource/pixelify-sans": "5.3.0",
     "matter-js": "0.20.0",
     "phaser": "3.90.0"
   },
   "devDependencies": {
+    "@capacitor/cli": "8.6.3",
     "vite": "6.4.6"
   }
 }

@@ -359,6 +359,30 @@ export class RunController {
     this.emit({ kind: 'result', victory, stars, run: this.run });
   }
 
+  // V1.0 rewarded "continue": once per run, only after a defeat, BEFORE its result is applied (caller's duty).
+  revive(hp = 2) {
+    if (!this.finished || !this.run.result || this.run.result.victory || this.run.revived) return false;
+    this.run.revived = true;
+    this.finished = false;
+    this.run.result = null;
+    this.run.chef.hp = Math.min(this.run.chef.maxHp, hp);
+    this.emit({ kind: 'revived', chef: { ...this.run.chef } });
+    if (living(this.run).length === 0) this.waveCleared();
+    else {
+      this.setPhase(PHASE.WAVE_OR_TURN_END);
+      this.enterPotRefill(false);
+    }
+    return true;
+  }
+
+  // V1.0 rewarded extra reroll: once per run, during a skill choice, after the free reroll was used.
+  grantAdReroll() {
+    if (this.phase !== PHASE.SKILL_CHOICE || this.run.adRerollUsed || !this.run.rerollUsed) return false;
+    this.run.adRerollUsed = true;
+    this.run.rerollUsed = false;
+    return this.rerollSkills();
+  }
+
   // Tencereyi Karıştır: once per wave, only while the ladle swings; does not use the turn.
   canShuffle() {
     return this.phase === PHASE.SWING_WAIT && !!this.run.abilities.pot_shuffle && !this.run.counters.shuffleUsedThisWave && this.inputGuard <= 0;

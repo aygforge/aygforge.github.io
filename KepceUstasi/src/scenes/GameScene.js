@@ -13,12 +13,15 @@ import { recipeComplete, STAR2_MAX_HP_LOSS } from '../systems/RecipeTracker.js';
 import { cardInfo } from '../systems/Abilities.js';
 import { audio } from '../platform/AudioService.js';
 import { adService } from '../platform/AdService.js';
+import { t } from '../i18n.js';
+import { consumeAdReward, applyTipBonus, interstitialDue, noteInterstitialShown, noteRunCompleted } from '../systems/Monetization.js';
 import { lifecycle } from '../platform/Lifecycle.js';
 import { text, panel, button, blocker, COLORS } from '../ui/widgets.js';
 
 const CAT_COLORS = { catch: 0x3a7de0, attack: 0xe8582f, defense: 0x4caf3a, pan: 0xf2b11c, control: 0x7fd8f0 };
 const ROMAN = ['', 'I', 'II', 'III'];
 export const UNLOCK_LABELS = {
+  epic_crafting: 'Epic üretim', kazan_tower: 'Kazan Kulesi (DUNGEON)', legendary_crafting: 'Legendary üretim', game_complete: 'Oyun tamamlandı', boss_kitchen_future_eligibility: 'Boss Mutfağı (DUNGEON)', chapter4_pasta_future_eligibility: 'Sebzeli Makarna bölümü',
   gold_kitchen: 'Altın Mutfak (DUNGEON)',
   chapter2_fries: 'Patates Kızartması bölümü',
   materials_depot: 'Malzeme Deposu (DUNGEON)',
@@ -102,6 +105,7 @@ export class GameScene extends Phaser.Scene {
   buildBattle() {
     const L = this.L;
     const bg = this.add.image(0, L.battle.top, 'battle_bg').setOrigin(0).setScale(3);
+    if (this.chapter.theme) bg.setTint(this.chapter.theme); // V1: light per-chapter kitchen tint
     if (bg.displayHeight < L.battle.h) bg.setDisplaySize(L.W, L.battle.h + 4);
     const chefPos = fieldToScreen(L, FIELD.chefX, 0.52);
     this.chefPos = chefPos;
@@ -514,14 +518,14 @@ export class GameScene extends Phaser.Scene {
     const sp = this.speed;
     this.refreshHud();
     if (e.isBoss) {
-      audio.play('warn');
-      this.flash(`${this.chapter.finals?.length > 1 ? 'ÇİFT FİNAL' : 'FİNAL'}: ${this.chapter.finalName || ENEMIES[this.chapter.boss].name}`, 1100 / sp);
+      audio.play(ENEMIES[this.chapter.boss]?.chapterBoss || ENEMIES[this.chapter.boss]?.boss && !ENEMIES[this.chapter.boss]?.elite ? 'boss_warn' : 'warn');
+      this.flash(`${this.chapter.finals?.length > 2 ? 'ÜÇLÜ FİNAL' : this.chapter.finals?.length > 1 ? 'ÇİFT FİNAL' : 'FİNAL'}: ${this.chapter.finalName || ENEMIES[this.chapter.boss].name}`, 1100 / sp);
     } else if (e.wave === 1 && this.chapter.identity) {
       // short level intro: title, rule label, recipe target (1.6 s, then the run starts)
       const goal = Object.entries(this.chapter.recipe).map(([k, n]) => `${n} ${RECIPE_LABELS[k]}`).join(' · ');
       this.flash(`L${this.chapter.level} · ${this.chapter.identity.subtitle}\n${this.chapter.identity.label} · ${this.chapter.waves.length} dalga\nHedef: ${goal}`, 1600 / sp);
     } else {
-      this.flash(`Dalga ${e.wave}/${this.chapter.waves.length}`, 800 / sp);
+      this.flash(`${t('ui.wave')} ${e.wave}/${this.chapter.waves.length}`, 800 / sp);
     }
     for (const en of e.enemies) {
       const v = this.createView(en, true);
@@ -621,6 +625,8 @@ export class GameScene extends Phaser.Scene {
         this.time.delayedCall(lastLand + 10, () => this.effectFx(ev));
       } else if (ev.type === 'bonusReady') {
         this.time.delayedCall(lastLand + 60, () => this.floatText(this.chefPos.x + 40, this.chefPos.y - 90, { chain_cooking: 'Zincir Pişirme: +1 yağ', pan_mastery: 'Tava Ustalığı: +1 yağ', eq_pan: 'Tava (ekipman): +1 yağ' }[ev.source] || '+1 yağ', '#8be07a'));
+      } else if (ev.type === 'split') {
+        this.time.delayedCall(lastLand + 40, () => this.spawnMinionViews(ev, 'Bölündü!'));
       } else if (ev.type === 'fizzle') {
         // queue closes safely: no living target
       }
@@ -681,6 +687,21 @@ export class GameScene extends Phaser.Scene {
         }
       },
     });
+  }
+
+  // V1: split / summon minions appear from their source (short scale-in, no new animation set)
+  spawnMinionViews(ev, label) {
+    const sp = this.speed;
+    const src = this.views.get(ev.id);
+    for (const m of ev.minions) {
+      if (this.views.has(m.id)) continue;
+      const mv = this.createView(m);
+      const p = { x: mv.c.x, y: mv.c.y };
+      if (src) mv.c.setPosition(src.c.x, src.c.y);
+      mv.c.setScale(0.2);
+      this.tweens.add({ targets: mv.c, x: p.x, y: p.y, scale: 1, duration: 360 / sp, ease: 'Back.out' });
+    }
+    if (label && ev.minions.length) this.floatText(src ? src.c.x : 300, src ? src.c.y - 40 : 200, label, '#ffd84a', 15);
   }
 
   // Short, readable hit effects (no new character animation).
@@ -804,6 +825,19 @@ export class GameScene extends Phaser.Scene {
       } else if (ev.type === 'guardUp' && v) {
         audio.play('shield');
         this.floatText(v.c.x, v.c.y - v.half - 50, 'Savunma: sonraki vuruş -1', '#8fc6f0', 15);
+      } else if (ev.type === 'bossPhase' && v) {
+        audio.play('boss_warn');
+        this.shake(v.c, 6);
+        if (ev.label) this.floatText(v.c.x, v.c.y - v.half - 64, ev.label, '#ff8a7a', 16);
+        dur = Math.max(dur, 520 / sp);
+      } else if (ev.type === 'telegraph' && v) {
+        this.floatText(v.c.x, v.c.y - v.half - 50, 'Hamle hazırlıyor: 2 adım!', '#ffd84a', 15);
+      } else if (ev.type === 'stepBuff') {
+        const tv = this.views.get(ev.targetId);
+        if (tv) this.floatText(tv.c.x, tv.c.y - tv.half - 40, '+1 adım', '#ffb35a', 14);
+      } else if (ev.type === 'healAlly') {
+        const tv = this.views.get(ev.targetId);
+        if (tv) this.floatText(tv.c.x, tv.c.y - tv.half - 40, '+1 can', '#8be07a', 14);
       } else if (ev.type === 'phase' && v) {
         this.floatText(v.c.x, v.c.y - v.half - 64, 'Koca Mantar 2. FAZ: hızlanıyor!', '#ff8a7a', 16);
       } else if (ev.type === 'shieldGranted') {
@@ -845,6 +879,10 @@ export class GameScene extends Phaser.Scene {
       }
       if (ev.type === 'kill') {
         this.time.delayedCall(Math.max(0, t - 120 / sp), () => this.killView(ev));
+        continue;
+      }
+      if (ev.type === 'split') {
+        this.time.delayedCall(t, () => this.spawnMinionViews(ev, 'Bölündü!'));
         continue;
       }
       if (ev.type !== 'contact') continue;
@@ -956,7 +994,13 @@ export class GameScene extends Phaser.Scene {
     });
     const by = top + 88 + 3 * 190 + 30;
     c.add(button(this, L.W / 2, by, 330, 52, e.rerollAvailable ? 'YENİDEN SEÇ (ücretsiz)' : 'Ücretsiz yenileme kullanıldı', () => this.controller.rerollSkills(), { size: 18, enabled: e.rerollAvailable, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 }));
-    c.add(button(this, L.W / 2, by + 62, 330, 44, 'Reklamla yenile — Android sürümünde', () => {}, { size: 15, enabled: adService.isAvailable() }));
+    c.add(button(this, L.W / 2, by + 62, 330, 44, adService.isAvailable() ? 'Reklamla bir kez daha yenile' : 'Reklamla yenile — Android sürümünde', async () => {
+      const res = await adService.show('rewarded_reroll');
+      if (consumeAdReward(app.save, res)) {
+        app.persist();
+        this.controller.grantAdReroll();
+      }
+    }, { size: 15, enabled: adService.isAvailable() && !e.rerollAvailable && !this.controller.run.adRerollUsed }));
     this.overlay = c;
     if (this.tutorial && e.choice === 1) c.add(text(this, L.W / 2, by + 104, 'İpucu: Yakalama kartları kepçeyi fiziksel olarak değiştirir.', 13, COLORS.gold, { wrap: 460 }));
   }
@@ -1057,7 +1101,44 @@ export class GameScene extends Phaser.Scene {
   }
 
   // ======================================================== result
+  // Result -> menu is the ONLY place an interstitial may appear (never in battle / wave / card choice).
+  async toMenu() {
+    if (adService.isAvailable() && interstitialDue(app.save, Date.now())) {
+      await adService.show('interstitial');
+      noteInterstitialShown(app.save, Date.now());
+      app.persist();
+    }
+    this.scene.start('Menu');
+  }
+
+  // V1.0: after a defeat, an optional rewarded "continue with 2 HP" (once per run), before any reward is applied.
+  offerContinue(e) {
+    const L = this.L;
+    const c = this.add.container(0, 0).setDepth(115);
+    c.add(blocker(this, 0.7));
+    c.add(panel(this, 60, L.H / 2 - 120, L.W - 120, 240));
+    c.add(text(this, L.W / 2, L.H / 2 - 70, 'Devam etmek ister misin?', 22, COLORS.gold));
+    const finish = () => {
+      c.destroy(true);
+      this.onResult(e);
+    };
+    c.add(button(this, L.W / 2, L.H / 2, 320, 52, 'Reklamla 2 canla devam', async () => {
+      const res = await adService.show('rewarded_continue');
+      if (consumeAdReward(app.save, res) && this.controller.revive(2)) {
+        app.persist();
+        c.destroy(true);
+        this.ended = false;
+        this.refreshHud();
+      } else finish();
+    }, { size: 17, fill: COLORS.btnGreen, dark: COLORS.btnGreenDark, light: 0x8be07a }));
+    c.add(button(this, L.W / 2, L.H / 2 + 64, 320, 48, 'Bitir', finish, { size: 17, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 }));
+  }
+
   onResult(e) {
+    if (!e.victory && !this.rewardApplied && !e.run.revived && !this.continueOffered && adService.isAvailable()) {
+      this.continueOffered = true;
+      return this.offerContinue(e);
+    }
     this.ended = true;
     this.hint.setAlpha(0);
     const run = e.run;
@@ -1069,6 +1150,7 @@ export class GameScene extends Phaser.Scene {
         : this.chapter.isStage
         ? applyStageResult(app.save, this.chapter, run, { victory: e.victory, stars: e.stars })
         : applyRunResult(app.save, this.chapter, run, { victory: e.victory, stars: e.stars });
+      if (out && !out.duplicate) noteRunCompleted(app.save); // interstitial pacing counter
       app.persist(); // reward + cleared snapshot in ONE write
     }
     const sp = this.speed;
@@ -1077,7 +1159,7 @@ export class GameScene extends Phaser.Scene {
       // short serve effect: dish pops onto the counter
       const dish = this.add.image(this.L.W / 2, this.L.battle.bottom - 80, this.dishKey).setScale(0.5).setDepth(70);
       this.tweens.add({ targets: dish, scale: 4, y: dish.y - 60, duration: 420 / sp, ease: 'Back.out' });
-      this.flash('SERVİS EDİLDİ!', 1400);
+      this.flash(t('ui.victory'), 1400);
     } else {
       audio.play('defeat');
       this.flash('Sipariş yandı…', 1400);
@@ -1111,7 +1193,14 @@ export class GameScene extends Phaser.Scene {
     const starRules = ['1★ Boss yenildi', `2★ Tam tarif + can kaybı ≤ ${STAR2_MAX_HP_LOSS}`, `3★ Toplam can kaybı ≤ 1 (bu koşu: ${run.stats.hpLost})`];
     c.add(text(this, L.W / 2, top + 312, this.chapter.isDungeon ? 'Dungeon: tarif ve yıldız gerekmez' : starRules.join('\n'), 14, '#d8c9b0', { lineSpacing: 4 }));
     let lines;
-    if (out && !out.duplicate && this.chapter.isDungeon) {
+    if (out && !out.duplicate && (this.chapter.dungeonId === 'boss_kitchen' || this.chapter.dungeonId === 'tower')) {
+      const r = out.reward;
+      const tw = this.chapter.dungeonId === 'tower';
+      lines = e.victory
+        ? [`${r.full ? (tw ? 'Kilometre taşı ödülü' : 'Haftalık tam ödül') : 'Tekrar ödülü'}: +${r.tips} bahşiş${r.parts ? ` +${r.parts} parça` : ''}${r.seals ? ` +${r.seals} boss mührü` : ''}`,
+          tw ? `Checkpoint: ${app.save.tower?.best || 0}. kat` : `Bu hafta zafer: ${app.save.bossKitchen?.wins || 0} (ilk 3 tam ödül)`, `Boss mührü: ${app.save.bossSeals || 0}`]
+        : [tw ? 'Blok başarısız: checkpoint korunur, ödül yok' : 'Boss Mutfağı başarısız: ödül yok, haftalık hak kullanılmadı'];
+    } else if (out && !out.duplicate && this.chapter.isDungeon) {
       const r = out.reward;
       const left = dungeonFullLeft(app.save, this.chapter);
       lines = e.victory
@@ -1125,13 +1214,23 @@ export class GameScene extends Phaser.Scene {
       lines.push(`TOPLAM: +${r.total}`);
       if (out.energyRefund) lines.push(`İlk temizleme enerji iadesi: +${out.energyRefund}`);
       if (out.unlocked?.length) lines.push(`Açıldı: ${out.unlocked.map((id) => UNLOCK_LABELS[id] || id).join(', ')}`);
+      if (out.unlocked?.includes('game_complete')) lines.push('TEBRİKLER! 120 level tamamlandı — Büyük Şef!');
     } else {
       lines = ['Bu koşunun ödülü zaten verildi.'];
     }
     c.add(text(this, L.W / 2, top + 418, lines.join('\n'), 18, COLORS.gold, { lineSpacing: 6 }));
     c.add(this.add.image(L.W / 2 - 100, top + 506, 'coin').setScale(2.2));
     c.add(text(this, L.W / 2 - 80, top + 506, `Toplam bahşiş: ${app.save.tips}`, 18, COLORS.cream, { ox: 0 }));
-    c.add(button(this, L.W / 2, top + 560, 380, 44, 'Reklamla +%40 bahşiş — Android sürümünde', () => {}, { size: 14, enabled: adService.isAvailable() }));
+    const runTips = out && !out.duplicate ? out.reward?.total || 0 : 0;
+    const tipBtn = button(this, L.W / 2, top + 560, 380, 44, adService.isAvailable() ? 'Reklamla +%40 bahşiş' : 'Reklamla +%40 bahşiş — Android sürümünde', async () => {
+      const res = await adService.show('rewarded_tip_bonus');
+      const bonus = applyTipBonus(app.save, run.runId, runTips, res); // verified reward only, once per run
+      if (bonus) {
+        app.persist();
+        tipBtn.setLabel(`+${bonus} bahşiş eklendi`);
+      }
+    }, { size: 14, enabled: adService.isAvailable() && runTips > 0 });
+    c.add(tipBtn);
     // campaign levels go through the launcher (energy debit, one per new runId); legacy chapters as before
     const replay = () => this.startOrder(this.chapter.isStage ? this.chapter.level : null, this.chapter.id);
     let next;
@@ -1149,10 +1248,10 @@ export class GameScene extends Phaser.Scene {
       c.add(button(this, L.W / 2, y, 380, 58, `SONRAKİ: ${next.name.toUpperCase()}`, next.go, { size: 18, fill: COLORS.btnGreen, dark: COLORS.btnGreenDark, light: 0x8be07a }));
       y += 70;
       c.add(button(this, L.W / 2 - 98, y, 180, 54, 'TEKRAR', replay, { size: 20 }));
-      c.add(button(this, L.W / 2 + 98, y, 180, 54, 'RESTORAN', () => this.scene.start('Menu'), { size: 20, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 }));
+      c.add(button(this, L.W / 2 + 98, y, 180, 54, 'RESTORAN', () => this.toMenu(), { size: 20, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 }));
     } else {
       c.add(button(this, L.W / 2, y, 380, 58, 'TEKRAR OYNA', replay, { size: 22 }));
-      c.add(button(this, L.W / 2, y + 70, 380, 54, 'RESTORANA DÖN', () => this.scene.start('Menu'), { size: 20, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 }));
+      c.add(button(this, L.W / 2, y + 70, 380, 54, 'RESTORANA DÖN', () => this.toMenu(), { size: 20, fill: COLORS.btnGrey, dark: COLORS.btnGreyDark, light: 0x9a92a6 }));
     }
     this.overlay = c;
   }

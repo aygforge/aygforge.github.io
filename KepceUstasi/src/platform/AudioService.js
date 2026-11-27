@@ -1,5 +1,5 @@
 // AudioService — kısa özgün sesler; aynı anda aşırı gürültüyü engelleyen tekrar/eşzamanlılık limiti.
-export const SFX = ['click', 'swing', 'drop', 'catch', 'shoot', 'hit', 'sizzle', 'hurt', 'shield', 'warn', 'coin', 'skill', 'victory', 'defeat'];
+export const SFX = ['click', 'swing', 'drop', 'catch', 'shoot', 'hit', 'sizzle', 'hurt', 'shield', 'warn', 'coin', 'skill', 'victory', 'defeat', 'boss_warn'];
 
 const MIN_GAP = { shoot: 55, hit: 45, sizzle: 90, click: 30, coin: 60 };
 const MAX_CONCURRENT = 6;

@@ -22,11 +22,15 @@ export function launchLevel(scene, level) {
 }
 
 // Alpha 0.4B dungeons: same engine/scene, same energy rule (10, once per runId), unlocked by the campaign.
-import { dungeonById } from '../data/stages.js';
+import { dungeonById, findChapter } from '../data/stages.js';
+import { bossKitchenPool, towerNextBlock } from '../systems/V1Modes.js';
 import { isDungeonUnlocked } from '../systems/Progression.js';
 
-export function launchDungeon(scene, id) {
-  const dg = dungeonById(id);
+export function launchDungeon(scene, id, block = null) {
+  let dg = dungeonById(id);
+  // V1.0: Boss Mutfağı (pool from beaten chapter bosses) and Kazan Kulesi (5-floor block, checkpoint)
+  if (id === 'boss_kitchen') dg = findChapter(`D_boss_kitchen:${bossKitchenPool(app.save).join(',')}`);
+  if (id === 'tower') dg = findChapter(`T_tower:${Math.max(0, Math.min(towerNextBlock(app.save), block ?? towerNextBlock(app.save)))}`);
   if (!dg || !isDungeonUnlocked(app.save, dg)) return { ok: false, reason: 'locked' };
   const runId = newRunId(dg.id);
   const r = debitForRun(app.save.energy, runId, Date.now(), dg.energyCost);

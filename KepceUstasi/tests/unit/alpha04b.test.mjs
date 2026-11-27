@@ -103,7 +103,7 @@ test('guaranteed 100-part route: L15 +18, depot first clear +10+18, 3 more full 
   win(16);
   assert.equal(craft(s, 'weapon').ok, true);
   assert.deepEqual([s.currencyParts, s.equipment.weapon], [0, 'rare']);
-  assert.equal(craft(s, 'weapon').reason, 'max');
+  assert.equal(craft(s, 'weapon').reason, 'locked', 'V1.0: Rare -> Epic opens after L35');
   assert.equal(craft(s, 'pan').reason, 'funds');
   assert.equal(s.equipment.pan, 'common', 'failed craft changes nothing');
 });
@@ -131,7 +131,7 @@ test('0.4A save: recorded L15 grant paid once on load; equipment/dungeon fields 
   s.tips = 321;
   new SaveService(st).save(s);
   const a = new SaveService(st).load();
-  assert.deepEqual([a.currencyParts, a.paidGrants, a.tips, a.dataVersion], [18, ['materials_starter_grant_18'], 321, 5]);
+  assert.deepEqual([a.currencyParts, a.paidGrants, a.tips, a.dataVersion], [18, ['materials_starter_grant_18'], 321, 6]); // V1.0 data version
   new SaveService(st).save(a);
   assert.equal(new SaveService(st).load().currencyParts, 18, 'not paid twice');
 });

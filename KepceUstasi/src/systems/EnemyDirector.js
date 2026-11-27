@@ -15,7 +15,7 @@ export function scaledHp(chapter, type) {
   const def = ENEMIES[type];
   const b = chapter?.balance;
   if (!b) return def.hp;
-  if (def.boss) return b.bossHp ?? def.hp;
+  if (def.boss) return b.bossHpByType?.[type] ?? b.bossHp ?? def.hp; // V1 Boss Mutfağı: per boss type
   if (b.hp && b.hp[type] != null) return b.hp[type]; // Alpha 0.3: per-type HP (instead of one blanket multiplier)
   return Math.max(1, Math.round(def.hp * (b.hpScale ?? 1)));
 }
@@ -41,7 +41,11 @@ export function stepsFor(e, opp) {
   if (e.type === 'potato_king' && e.hasted) return 1;
   // Alpha 0.5A: cracked onion / Koca Mantar phase 2 alternate 1,2,1,2… from their next move on
   if (e.altFrom != null) return (opp - e.altFrom) % 2 === 1 ? 1 : 2;
-  switch (e.move || def.move) { // e.move: chapter balance override (Alpha 0.3), set at spawn
+  const mv = e.move || def.move;
+  if (Array.isArray(mv)) return mv[(opp - 1) % mv.length]; // V1: data move[] cycle, e.g. [1,2] / [1,1,2]
+  switch (mv) { // e.move: chapter balance override (Alpha 0.3), set at spawn
+    case 'telegraph3': // V1 Acı Noodle Ejderi: every 3rd move is a telegraphed 2-step dash
+      return opp % 3 === 0 ? 2 : 1;
     case 'pepper':
       return opp % 3 === 0 ? 2 : 1;
     case 'odd':
@@ -55,11 +59,11 @@ export function nextSteps(e) {
   return stepsFor(e, e.moveOpp + 1);
 }
 
-function makeEnemy(run, type, x, y) {
+export function makeEnemy(run, type, x, y) {
   const def = ENEMIES[type];
   const hp = scaledHp(chapterOf(run), type);
   const bal = chapterOf(run).balance;
-  const bossShield = def.boss && bal?.bossShield != null ? bal.bossShield : def.shield; // Alpha 0.4 final shield
+  const bossShield = def.boss && bal?.bossShieldByType?.[type] != null ? bal.bossShieldByType[type] : def.boss && bal?.bossShield != null ? bal.bossShield : def.shield; // Alpha 0.4 final shield
   const e = {
     id: run.nextEnemyId++,
     type,
@@ -85,6 +89,9 @@ function makeEnemy(run, type, x, y) {
     altFrom: null, // move index after which the 1,2 pattern starts (shell broken / boss phase 2)
     pulses: 0, // guard / Koca Mantar shield pulses used
     contactState: null, // Alpha 0.5A.1 non-boss contact loop: null | 'retreated' | 'approached' | 'strike'
+    bonusStep: 0, // V1: +1 step granted by an ally (garlic/soy/leek), used on the NEXT enemy move only
+    phasesDone: [], // V1: boss HP thresholds already fired (each once)
+    freezeEvery: def.freezeEvery, // V1 Köri Sultanı: freeze cap changes at 30 %
     frozen: false, // Soğuk Sos: skips its next move once
     lastFrozenAction: null, // bosses: freeze limited to once per BOSS_FREEZE_EVERY actions
   };
@@ -121,7 +128,7 @@ export function spawnWave(run, chapter, rng) {
   if (run.wave > chapter.waves.length) {
     // final wave: one boss/elite, or two elites placed apart vertically (Alpha 0.4C)
     const finals = chapter.finals || [chapter.boss];
-    const ys = finals.length === 1 ? [0.5] : [0.32, 0.68];
+    const ys = finals.length === 1 ? [0.5] : finals.length === 2 ? [0.32, 0.68] : [0.2, 0.5, 0.8]; // V1: triple elites
     finals.forEach((t, i) => spawned.push(makeEnemy(run, t, (chapter.balance?.bossX ?? 0.86) - i * 0.04, ys[i])));
     return spawned;
   }
@@ -147,6 +154,100 @@ export function spawnWave(run, chapter, rng) {
 
 // One enemy action phase. Returns presentation events. Deterministic order (by id).
 export const GUARD_RULE = { every: 3, maxPulses: 2, amount: 2, cap: 3, range: 0.26 };
+
+// Shared summon placement (bosses / split): near the source, small y offsets, capped by the active enemy cap.
+export function summonNear(run, src, type, count, hp = null) {
+  const cap = FIELD.activeEnemyCap - living(run).length;
+  const n = Math.max(0, Math.min(count, cap));
+  const out = [];
+  const offsets = [-0.24, 0.24, 0];
+  for (let i = 0; i < n; i++) {
+    let y = src.y + offsets[i % 3];
+    if (y < 0.12 || y > 0.88) y = src.y - offsets[i % 3] * 1.6;
+    y = Math.max(0.1, Math.min(0.9, y));
+    const m = makeEnemy(run, type, Math.min(0.93, Math.max(FIELD.contactX + FIELD.step, src.x + 0.03)), y);
+    if (hp != null) m.hp = m.maxHp = hp;
+    m.summonedBy = src.id;
+    out.push({ ...m });
+  }
+  return out;
+}
+
+// V1 boss phases: every threshold once, only while the boss is alive and acting (no event after its death).
+function bossPhases(run, e, def, events) {
+  e.phasesDone ||= [];
+  def.phases.forEach((p, i) => {
+    if (e.phasesDone.includes(i) || e.hp > e.maxHp * p.at) return;
+    e.phasesDone.push(i);
+    const ev = { type: 'bossPhase', id: e.id, kind: p.kind, at: p.at };
+    if (p.kind === 'summon') {
+      const minions = summonNear(run, e, p.type, p.count);
+      events.push({ type: 'summon', id: e.id, minions, label: `${def.name}: ${minions.length} yardımcı çağırdı!` });
+    } else if (p.kind === 'shield') {
+      e.shield += p.amount;
+      e.maxShield = Math.max(e.maxShield, e.shield);
+      if (p.speed) e.altFrom = e.moveOpp;
+      ev.label = `${def.name}: +${p.amount} kalkan${p.speed ? ' ve hızlandı' : ''}`;
+    } else if (p.kind === 'shell') {
+      e.shell = (e.shell || 0) + p.amount;
+      e.maxShell = Math.max(e.maxShell || 0, e.shell);
+      ev.label = `${def.name}: +${p.amount} kabuk`;
+    } else if (p.kind === 'speed') {
+      e.altFrom = e.moveOpp;
+      ev.label = `${def.name} HIZLANDI!`;
+    } else if (p.kind === 'breakShieldSpeed') {
+      e.shield = 0;
+      e.altFrom = e.moveOpp;
+      ev.label = `${def.name}: kalkanını kırdı, hızlandı!`;
+    } else if (p.kind === 'buffAllies') {
+      const allies = living(run).filter((o) => o.id !== e.id && !o.boss).sort((a, b) => Math.abs(a.x - e.x) - Math.abs(b.x - e.x) || a.id - b.id).slice(0, 2);
+      for (const t of allies.length ? allies : [e]) {
+        t.shield += p.amount;
+        t.maxShield = Math.max(t.maxShield, t.shield);
+        events.push({ type: 'shieldGranted', id: e.id, targetId: t.id, amount: p.amount, shield: t.shield, boss: true });
+      }
+      ev.label = `${def.name}: baharat kalkanı`;
+    } else if (p.kind === 'freezeCap') {
+      e.freezeEvery = 3; // from now on Soğuk Sos can make it skip at most once per 3 of its actions
+      ev.label = `${def.name}: buz direnci`;
+    }
+    events.push(ev);
+  });
+}
+
+// V1 support pulses for chapter 4–12 enemies (garlic/soy/leek step buff, spinach heal); one event of each kind per phase.
+const SUPPORT_RANGE = 0.26;
+function nearestAlly(run, g, pred) {
+  return living(run)
+    .filter((o) => o.id !== g.id && !o.boss && pred(o) && Math.abs(o.x - g.x) <= SUPPORT_RANGE + 1e-9)
+    .sort((a, b) => Math.abs(a.x - g.x) - Math.abs(b.x - g.x) || a.id - b.id)[0];
+}
+function v1Pulses(run, actors, events) {
+  let stepDone = false;
+  let healDone = false;
+  for (const g of actors) {
+    if (g.dead || g.escaped) continue;
+    const def = ENEMIES[g.type];
+    if (def.stepPulse && g.actionCount % def.stepPulse.every === 0 && (g.stepPulses || 0) < def.stepPulse.max) {
+      g.stepPulses = (g.stepPulses || 0) + 1;
+      if (stepDone) continue;
+      const t = nearestAlly(run, g, (o) => !ENEMIES[o.type].stepPulse && !o.bonusStep);
+      if (!t) continue;
+      t.bonusStep = 1;
+      stepDone = true;
+      events.push({ type: 'stepBuff', id: g.id, targetId: t.id });
+    }
+    if (def.healPulse && g.actionCount % def.healPulse.every === 0 && (g.healPulses || 0) < def.healPulse.max) {
+      g.healPulses = (g.healPulses || 0) + 1;
+      if (healDone) continue;
+      const t = nearestAlly(run, g, (o) => o.hp < o.maxHp);
+      if (!t) continue;
+      t.hp = Math.min(t.maxHp, t.hp + def.healPulse.amount);
+      healDone = true;
+      events.push({ type: 'healAlly', id: g.id, targetId: t.id, hp: t.hp });
+    }
+  }
+}
 
 // Koca Mantar (L30): first time at <= 50 % HP -> once, 2 mushrooms (6 HP, recipe mushroom) + phase 2 (1,2 moves).
 function giantMushroomPhase(run, e, def, events) {
@@ -211,7 +312,16 @@ export function enemyAction(run, rng) {
     if (e.dead || e.escaped) continue;
     const def = ENEMIES[e.type];
     let skipMove = false;
-    if (def.guardPulse) e.actionCount++; // own actions (frozen ones included) drive the 3rd/6th pulse
+    if (def.guardPulse || def.stepPulse || def.healPulse) e.actionCount++; // own actions (frozen ones included) drive pulses
+    if (def.phases?.length) {
+      e.actionCount++;
+      bossPhases(run, e, def, events);
+    }
+    if (def.shieldRefresh && !e.refreshed && e.shield === 0 && (e.maxShield || 0) > 0) {
+      e.refreshed = true; // Havuç: refreshes its OWN broken shield once
+      e.shield = def.shieldRefresh;
+      events.push({ type: 'shieldGranted', id: e.id, targetId: e.id, amount: def.shieldRefresh, shield: e.shield });
+    }
     if (e.type === 'giant_mushroom') {
       e.actionCount++;
       giantMushroomPhase(run, e, def, events);
@@ -256,6 +366,7 @@ export function enemyAction(run, rng) {
     e.moveOpp++;
     if (skipMove) continue;
     // contact loop (frozen enemies never reach here, so a pending approach/strike simply waits)
+    if (e.contactState) e.bonusStep = 0; // the loop's own 1-step rhythm is never sped up
     if (e.contactState === 'retreated') {
       const fromX = e.x;
       e.x = +(e.x - FIELD.step).toFixed(4); // exactly one step back in
@@ -271,7 +382,12 @@ export function enemyAction(run, rng) {
       }
       e.contactState = null; // pushed away (knockback): walk normally again
     }
-    const steps = stepsFor(e, e.moveOpp);
+    let steps = stepsFor(e, e.moveOpp);
+    if (e.bonusStep) {
+      steps += e.bonusStep; // ally buff: one extra step on this move only
+      e.bonusStep = 0;
+    }
+    if (def.telegraph && stepsFor(e, e.moveOpp + 1) >= 2) events.push({ type: 'telegraph', id: e.id });
     if (steps > 0) {
       const fromX = e.x;
       e.x = +(e.x - steps * FIELD.step).toFixed(4); // always to the LEFT
@@ -281,6 +397,7 @@ export function enemyAction(run, rng) {
     }
   }
   supportPulses(run, actors, events);
+  v1Pulses(run, actors, events);
   return events;
 }
 

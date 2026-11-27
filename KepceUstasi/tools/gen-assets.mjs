@@ -194,6 +194,127 @@ function omeletDish() {
   d.save('kitchen/dish_omelet.png');
 }
 
+
+// ---------------------------------------------------------------- V1.0: chapter 4–12 enemies, bosses, dishes
+// One small parametric drawer: every family gets its own silhouette (shape) + palette + detail, not a recolor.
+function vShape(p, shape, cx, cy, w, h, c) {
+  const [base, light, dark] = c;
+  if (shape === 'ball') p.ball(cx, cy, w / 2, h / 2, base, light, dark, '#ffffff');
+  else if (shape === 'tall') p.ball(cx, cy, w / 2.6, h / 2, base, light, dark, '#ffffff');
+  else if (shape === 'long') {
+    p.ball(cx, cy, w / 2, h / 3.2, base, light, dark, '#ffffff');
+  } else if (shape === 'wedge') {
+    for (let y = 0; y < h; y++) {
+      const half = Math.round((y / h) * (w / 2));
+      p.hline(Math.round(cx - half), Math.round(cx + half), Math.round(cy - h / 2 + y), y < 2 ? light : y > h - 3 ? dark : base);
+    }
+  } else if (shape === 'bottle') {
+    p.rect(Math.round(cx - w / 3), Math.round(cy - h / 6), Math.round((w * 2) / 3), Math.round(h * 0.66), base);
+    p.rect(Math.round(cx - w / 3), Math.round(cy - h / 6), 1, Math.round(h * 0.66), light);
+    p.rect(Math.round(cx - w / 8), Math.round(cy - h / 2), Math.round(w / 4), Math.round(h / 3), dark);
+  } else if (shape === 'leaf') {
+    p.ball(cx, cy, w / 2.2, h / 2, base, light, dark);
+    p.vline(Math.round(cx), Math.round(cy - h / 2.4), Math.round(cy + h / 2.4), dark);
+  } else if (shape === 'spiral') {
+    for (let a = 0; a < 18; a++) {
+      const r = 1 + a * (w / 40);
+      p.rect(Math.round(cx + Math.cos(a * 0.9) * r), Math.round(cy + Math.sin(a * 0.9) * r * (h / w)), 2, 2, a % 3 ? base : light);
+    }
+  } else if (shape === 'clove') {
+    p.ball(cx, cy + h / 8, w / 2, h / 2.6, base, light, dark, '#ffffff');
+    p.rect(Math.round(cx - 1), Math.round(cy - h / 2), 2, Math.round(h / 4), dark);
+  } else if (shape === 'layers') {
+    for (let i = 0; i < 4; i++) p.rect(Math.round(cx - w / 2 + i), Math.round(cy - h / 2 + i * (h / 4)), Math.round(w - i * 2), Math.round(h / 4) - 1, i % 2 ? light : base);
+    p.hline(Math.round(cx - w / 2), Math.round(cx + w / 2 - 1), Math.round(cy + h / 2 - 1), dark);
+  }
+}
+function vEnemy(file, w, h, shape, colors, opts = {}) {
+  const p = new Px(w, h);
+  vShape(p, shape, w / 2, h / 2 + 1, w - 3, h - 4, colors);
+  if (opts.leaf) for (let i = -2; i <= 2; i++) p.set(w / 2 + i, 2 + Math.abs(i) * 0.5, opts.leaf);
+  if (opts.crown) {
+    p.rect(Math.round(w / 2 - 4), 0, 9, 2, '#ffd84a');
+    for (const dx of [-4, 0, 4]) p.set(Math.round(w / 2 + dx), 0, '#fff0a0');
+  }
+  if (opts.spots) for (const [dx, dy] of opts.spots) p.set(Math.round(w / 2 + dx), Math.round(h / 2 + dy), opts.spotColor || '#ffffff');
+  const ey = Math.round(h / 2 + (opts.eyeDy ?? 0));
+  eyes(p, Math.round(w / 2 - 3), Math.round(w / 2 + 1), ey, { angry: !!opts.angry });
+  p.hline(Math.round(w / 2 - 1), Math.round(w / 2 + 1), ey + 3, '#3a1a14');
+  if (opts.badge) p.rect(Math.round(w / 2 - 1), h - 4, 3, 2, opts.badge);
+  p.outline(opts.outline || '#24141a');
+  p.save(file);
+}
+function vBoss(file, shape, colors, opts = {}) {
+  const p = new Px(36, 36);
+  vShape(p, shape, 18, 20, 32, 28, colors);
+  p.rect(11, 1, 15, 3, '#ffd84a'); // crown: chapter bosses read as bosses
+  for (const x of [11, 15, 19, 23, 25]) p.set(x, 0, '#fff0a0');
+  if (opts.spots) for (const [dx, dy] of opts.spots) p.rect(18 + dx, 20 + dy, 2, 2, opts.spotColor || '#ffffff');
+  eyes(p, 12, 21, 17, { angry: true });
+  eyes(p, 13, 22, 17, { angry: true });
+  p.rect(13, 24, 10, 2, '#3a1410');
+  for (let x = 14; x < 22; x += 2) p.set(x, 24, '#ffffff');
+  if (opts.extra) opts.extra(p);
+  p.outline('#1a0e12');
+  p.save(file);
+}
+function vDish(file, food, garnish) {
+  const d = new Px(30, 20);
+  d.rect(2, 8, 26, 9, '#3a3f48');
+  d.hline(2, 27, 8, '#6b7380');
+  d.ball(15, 11, 11, 5, food[0], food[1], food[2]);
+  for (const [x, y] of [[8, 10], [14, 9], [20, 11], [11, 12], [18, 13]]) d.rect(x, y, 2, 2, garnish);
+  d.outline('#141418');
+  d.save(file);
+}
+function v1Assets() {
+  const E = (id, ...a) => vEnemy(`enemies/${id}.png`, ...a);
+  E('spiral', 16, 16, 'spiral', ['#f2c45a', '#ffe39a', '#c08a2a']);
+  E('garlic', 15, 17, 'clove', ['#f3ead8', '#ffffff', '#c9b99a'], { eyeDy: 2 });
+  E('broccoli', 17, 17, 'ball', ['#3f9a3a', '#7cd16b', '#25622a'], { spots: [[-3, -3], [2, -4], [4, -1], [-5, 0]], spotColor: '#2e7d32', badge: '#8fc6f0' });
+  E('dough', 17, 15, 'ball', ['#e9d3a3', '#fff0cf', '#bfa06a'], { spots: [[-4, 3], [3, 4]], spotColor: '#cdb07a' });
+  E('olive', 12, 15, 'tall', ['#4d5a2a', '#7a8a3e', '#2f3818'], { spots: [[0, -4]], spotColor: '#d84a3a' });
+  E('cheese', 17, 15, 'wedge', ['#f7c94a', '#ffe58a', '#c99a22'], { spots: [[-2, 3], [3, 5], [0, 6]], spotColor: '#d8a630', eyeDy: 3 });
+  E('noodle', 18, 12, 'long', ['#f0d27a', '#fff0b0', '#c9a24a'], { spots: [[-6, -2], [-2, -2], [2, -2], [6, -2]], spotColor: '#fff6d0' });
+  E('chili', 11, 18, 'tall', ['#e02e22', '#ff6a50', '#9a1a14'], { leaf: '#3a8a2a', angry: true });
+  E('soy', 12, 18, 'bottle', ['#3a2a22', '#6a4a3a', '#1a120e'], { eyeDy: 2, badge: '#ff9a3a' });
+  E('carrot', 11, 18, 'tall', ['#f08a2a', '#ffb060', '#b85a14'], { leaf: '#4caf3a', badge: '#8fc6f0' });
+  E('eggplant', 14, 19, 'tall', ['#5a2a7a', '#8a4ab0', '#38164e'], { leaf: '#4c8a3a', angry: true, badge: '#c0c8d0' });
+  E('leek', 10, 20, 'tall', ['#e8f0d0', '#ffffff', '#9ac07a'], { leaf: '#3a9a3a' });
+  E('glazed_tomato', 16, 16, 'ball', ['#e84a3e', '#ff9a8a', '#a82a20'], { leaf: '#4caf3a', spots: [[-3, -3], [-2, -3]], spotColor: '#ffffff', badge: '#ffd84a' });
+  E('pastry', 18, 14, 'layers', ['#e8b85a', '#ffd88a', '#b0802a'], { eyeDy: 1 });
+  E('spinach', 15, 17, 'leaf', ['#2f8a3a', '#5ac06a', '#1d5a24'], { badge: '#ff8a8a' });
+  E('sesame', 10, 13, 'tall', ['#f4e6c2', '#ffffff', '#c8b488']);
+  E('wrap', 18, 15, 'long', ['#e0b878', '#f8d8a0', '#a8804a'], { spots: [[-4, 1], [3, 2]], spotColor: '#7a3a1a', badge: '#8fc6f0' });
+  E('pickle', 11, 17, 'tall', ['#6a9a2a', '#9ac04a', '#3e5e16'], { spots: [[-2, -3], [2, 0], [-1, 4]], spotColor: '#c8e08a' });
+  E('sauce', 12, 18, 'bottle', ['#c8302a', '#ff6a5a', '#7a1410'], { eyeDy: 2, badge: '#ffffff' });
+  E('rice', 13, 13, 'ball', ['#f7f4ea', '#ffffff', '#cfc8b4'], { spots: [[-3, -2], [2, -3], [3, 2]], spotColor: '#e4ddc8' });
+  E('turmeric', 14, 16, 'clove', ['#e8a01a', '#ffc85a', '#a86a0a'], { badge: '#8fc6f0' });
+  E('spice', 13, 17, 'bottle', ['#a04a1a', '#d87a3a', '#5a2408'], { eyeDy: 2, badge: '#ffd84a' });
+  E('royal_tomato', 17, 17, 'ball', ['#d8303a', '#ff7a7a', '#901a20'], { crown: true });
+  E('royal_mushroom', 17, 17, 'clove', ['#a03aa0', '#d87ad8', '#601a60'], { crown: true, badge: '#8fc6f0' });
+  E('royal_noodle', 19, 13, 'long', ['#f4c84a', '#ffe89a', '#c0902a'], { crown: true, spots: [[-6, 2], [-2, 2], [2, 2], [6, 2]], spotColor: '#fff6d0' });
+  const B = (id, ...a) => vBoss(`bosses/${id}.png`, ...a);
+  B('spaghetti_king', 'ball', ['#f2c45a', '#ffe39a', '#c08a2a'], { spots: [[-10, 2], [-6, 6], [4, 8], [9, 3], [-2, 10]], spotColor: '#d8402f' });
+  B('dough_golem', 'ball', ['#e9d3a3', '#fff0cf', '#bfa06a'], { spots: [[-8, 4], [6, 6], [-2, 9]], spotColor: '#c8302a' });
+  B('spicy_noodle_dragon', 'long', ['#e05a2a', '#ff9a5a', '#9a2a10'], { spots: [[-12, 0], [-6, 2], [6, 2], [12, 0]], spotColor: '#ffd84a' });
+  B('stew_golem', 'bottle', ['#7a5a3a', '#a8805a', '#4a3420'], { spots: [[-6, 4], [4, 6], [-2, 8]], spotColor: '#f08a2a' });
+  B('pan_guardian', 'ball', ['#3a3f48', '#6b7380', '#1e2228'], { spots: [[-6, 6], [5, 6]], spotColor: '#e84a3e' });
+  B('layered_borek', 'layers', ['#e8b85a', '#ffd88a', '#b0802a']);
+  B('giant_wrap', 'long', ['#e0b878', '#f8d8a0', '#a8804a'], { spots: [[-8, 2], [0, 3], [8, 2]], spotColor: '#6a9a2a' });
+  B('curry_sultan', 'ball', ['#e8a01a', '#ffc85a', '#a86a0a'], { spots: [[-8, 6], [6, 7], [0, 10]], spotColor: '#f7f4ea' });
+  B('feast_lord', 'clove', ['#a03aa0', '#d87ad8', '#601a60'], { spots: [[-8, 6], [6, 6]], spotColor: '#ffd84a' });
+  vDish('kitchen/dish_pasta.png', ['#f2c45a', '#ffe39a', '#c08a2a'], '#3f9a3a');
+  vDish('kitchen/dish_pizza.png', ['#e8b060', '#ffd890', '#b07a30'], '#c8302a');
+  vDish('kitchen/dish_noodle.png', ['#f0d27a', '#fff0b0', '#c9a24a'], '#e02e22');
+  vDish('kitchen/dish_stew.png', ['#9a4a2a', '#c87a4a', '#6a2a14'], '#f08a2a');
+  vDish('kitchen/dish_special_pan.png', ['#e84a3e', '#ff9a8a', '#a82a20'], '#c8553d');
+  vDish('kitchen/dish_borek.png', ['#e8b85a', '#ffd88a', '#b0802a'], '#2f8a3a');
+  vDish('kitchen/dish_wrap.png', ['#e0b878', '#f8d8a0', '#a8804a'], '#6a9a2a');
+  vDish('kitchen/dish_curry.png', ['#e8a01a', '#ffc85a', '#a86a0a'], '#f7f4ea');
+  vDish('kitchen/dish_feast.png', ['#d8303a', '#ff7a7a', '#901a20'], '#ffd84a');
+}
+
 // ---------------------------------------------------------------- characters
 function chef() {
   const p = new Px(26, 33);
@@ -751,6 +872,8 @@ function audio() {
   wav('hurt.wav', 0.3, (t) => (sq(110 - t * 120, t) * 0.5 + sine(70, t) * 0.4) * env(t, 0.003, 0.1) * 0.6);
   wav('shield.wav', 0.25, (t) => tri(1200 + 400 * sine(30, t), t) * env(t, 0.002, 0.07) * 0.35);
   wav('warn.wav', 0.4, (t) => sq(220, t) * (Math.floor(t * 10) % 2 ? 0.25 : 0.45) * env(t, 0.01, 0.3) * 0.5);
+  // V1.0: a distinct, lower boss phase / boss arrival alarm (two-tone siren)
+  wav('boss_warn.wav', 0.7, (t) => (sq(t % 0.35 < 0.175 ? 147 : 196, t) * 0.4 + tri(98, t) * 0.3) * env(t, 0.01, 0.5) * 0.55);
   wav('coin.wav', 0.3, (t) => sq(t < 0.07 ? 988 : 1319, t) * env(t, 0.002, 0.12) * 0.3);
   const arp = (notes, step, file, len, wave = sq) =>
     wav(file, len, (t) => {
@@ -796,6 +919,7 @@ mushroomSprite('enemies/mushroom_guard.png', 16, 18, '#4a7fc0', '#7fb0ff', '#2c5
 onion();
 mushroomSprite('bosses/giant_mushroom.png', 34, 36, '#c8553d', '#e8826a', '#8e3424', { angry: true });
 omeletDish();
+v1Assets();
 oils();
 catIcons();
 pan();
