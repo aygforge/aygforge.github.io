@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "phase": "04",
+  "phase": "05",
   "note": "Phase 01: all runtime visuals are procedural (core/Art.js, cached offscreen canvases). Real bitmaps referenced by the GDevelop project (DR2(21).json resources) were NOT included in the delivered package; they are listed as missing and keep the procedural fallback. Replace via AssetManager.loadImage(id, url, meta) — gameplay code only calls Art.get(id).",
   "statusLegend": {
     "procedural": "drawn in code, active",
@@ -196,6 +196,21 @@
       ],
       "status": "procedural",
       "source": "render/Render.js"
+    },
+    {
+      "group": "garageIcons",
+      "logicalIds": [
+        "motor",
+        "helmet",
+        "jacket",
+        "pos",
+        "bag",
+        "tires",
+        "brakes",
+        "battery"
+      ],
+      "status": "procedural",
+      "source": "core/Art.js GICON"
     }
   ],
   "originalSkins": [
@@ -203,37 +218,43 @@
       "id": "SKIN_DEFAULT",
       "gameplay": "PlayerYeni3.png",
       "icon": "PlayerYeni4.png",
-      "status": "missing"
+      "status": "missing",
+      "fallback": "procedural palette (data/cosmetics.js)"
     },
     {
       "id": "SKIN_COFFEE",
       "gameplay": "batch/b2/Coffee.png",
       "icon": "Coffee5.png",
-      "status": "missing"
+      "status": "missing",
+      "fallback": "procedural palette (data/cosmetics.js)"
     },
     {
       "id": "SKIN_FARMER",
       "gameplay": "batch/b2/farmer.png",
       "icon": "farmer3.png",
-      "status": "missing"
+      "status": "missing",
+      "fallback": "procedural palette (data/cosmetics.js)"
     },
     {
       "id": "SKIN_HAZARDOUS",
       "gameplay": "batch/b2/Hazardous.png",
       "icon": "Hazardous3.png",
-      "status": "missing"
+      "status": "missing",
+      "fallback": "procedural palette (data/cosmetics.js)"
     },
     {
       "id": "SKIN_MONSTERTR",
       "gameplay": "batch/b2/monstertrainer.png",
       "icon": "monstertrainer3.png",
-      "status": "missing"
+      "status": "missing",
+      "fallback": "procedural palette (data/cosmetics.js)"
     },
     {
       "id": "SKIN_NEON",
       "gameplay": "batch/b2/Neon.png",
       "icon": "Neon3.png",
-      "status": "missing"
+      "status": "missing",
+      "fallback": "procedural palette (data/cosmetics.js)"
     }
   ],
   "uiReferences": [

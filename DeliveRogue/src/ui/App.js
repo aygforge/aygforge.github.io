@@ -8,6 +8,7 @@ import { Main } from '../core/GameEngine.js';
 import { View, G } from '../core/state.js';
 import { Game } from '../core/DistrictRuntimeCore.js';
 import { Chrome } from './Chrome.js';
+import { T } from '../core/i18n.js';
 import { Overlays } from './Overlays.js';
 import { Boot } from '../scenes/Boot.js';
 import { MainMenu } from '../scenes/MainMenu.js';
@@ -26,6 +27,7 @@ export const App = {
   init() {
     const $ = id => document.getElementById(id), ui = $('ui');
     Overlays.init($('modal'), $('toasts'));
+    Save.onError = () => App.saveFailedToast();
     Chrome.init($('topbar'), $('navbar'), id => { Audio.init(); Audio.play('click'); App.go(id); });
     SceneManager.register(Boot, MainMenu, Garage, MetaHub, RunPrep, FightScene, RunSummary, Settings);
     SceneManager.init($('scenes'), $('xlock'), {
@@ -46,6 +48,8 @@ export const App = {
     return SceneManager.back();
   },
   toast: t => Overlays.toast(t),
+  /** A save write failed: the last valid save is untouched and the change was rolled back. */
+  saveFailedToast() { const now = performance.now(); if (App._sft == null || now - App._sft > 2500) { App._sft = now; Overlays.toast(T('s_saveFail')); } },
   refreshChrome() { if (Chrome.visible) Chrome.refresh(); },
   reduced() { try { return !!Save.data.settings.reducedMotion; } catch (e) { return false; } },
   applyMotion() { document.getElementById('ui').classList.toggle('reduced', App.reduced()); },

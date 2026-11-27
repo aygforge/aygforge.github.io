@@ -1,4 +1,5 @@
 // tests/unit/core.test.mjs — node --test unit checks against the REAL runtime modules (no mock engine).
+import './_storage.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { validateData } from '../../src/core/DataValidator.js';
@@ -60,19 +61,20 @@ test('skill modifiers recompute from scratch (no double stacking)', () => {
 
 test('save validation repairs corrupted / hostile data', () => {
   const d = Save.validate({ coins: -50, level: 'x', xp: Infinity, garage: { motor: 99, pos: 3.7 }, stars: [5, -1, 'a'], completed: [true, true], unknown: { a: 1 },
-    cosmetics: { owned: ['classic', 'hacked'], selected: 'hacked' }, settled: [1, 'r1'], mastery: { C01_0: true, bogus: true } });
+    cosmetics: { owned: ['SKIN_DEFAULT', 'hacked'], selected: 'hacked' }, settled: [1, 'r1'], mastery: { C01_0: true, bogus: true } });
   assert.equal(d.coins, 0); assert.equal(d.level, 1); assert.equal(d.xp, 0);
   assert.equal(d.garage.motor, 20); assert.equal(d.garage.pos, 3);
   assert.deepEqual(d.stars.slice(0, 3), [3, 0, 0]);
   assert.equal(d.unlocked, 3, 'completed chapters imply unlock');
-  assert.deepEqual(d.cosmetics.owned, ['classic']); assert.equal(d.cosmetics.selected, 'classic');
+  assert.deepEqual(d.cosmetics.owned, ['SKIN_DEFAULT']); assert.equal(d.cosmetics.selected, 'SKIN_DEFAULT');
   assert.deepEqual(d.settled, ['r1']); assert.deepEqual(Object.keys(d.mastery), ['C01_0']);
   assert.equal('unknown' in d, false);
-  assert.deepEqual(Save.validate(null), Save.defaults());
+  const dv = Save.validate(null), df = Save.defaults(); assert.deepEqual(Object.assign({}, dv, { legacy: null }), Object.assign({}, df, { legacy: null }));
 });
 
+let seqN = 0;
 function fakeRun(id, n, success, over = {}) {
-  return { id, ch: CHAPTERS[n - 1], n, success, reason: success ? null : 'hp',
+  return { id, seq: ++seqN, ch: CHAPTERS[n - 1], n, success, reason: success ? null : 'hp',
     stats: Object.assign({ kills: 3, eliteKills: 0, pkgPct: 0.95, time: 20, playerDmg: 5, steamHits: 0, healUsed: false, impacts: 0, risky: false }, over), skills: [] };
 }
 
@@ -87,9 +89,9 @@ test('run settle is idempotent and fail gives no unlock', () => {
   assert.equal(Save.data.unlocked, 2); assert.equal(Save.data.stats.failures, 1);
 });
 
-test('garage legacy cost curve kept until Phase 05', () => {
-  assert.equal(GARAGE_ORDER.length, 4);
-  assert.equal(garageCost('motor', 0), 110); assert.equal(garageCost('motor', 1), Math.round(110 * 1.3));
+test('garage: 8 categories on the 1.20 curve', () => {
+  assert.equal(GARAGE_ORDER.length, 8);
+  assert.equal(garageCost('motor', 0), 110); assert.equal(garageCost('motor', 1), Math.round(110 * 1.2)); assert.equal(garageCost('battery', 19), Math.round(150 * Math.pow(1.2, 19)));
 });
 
 test('event bus: legacy API, typed envelopes, isolated listener errors', () => {

@@ -1,4 +1,5 @@
 // tests/unit/coffee.test.mjs — Phase 04 data + map + save rules (real modules).
+import './_storage.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { PACKAGES, MYSTERY_POOL, FINAL_FORBIDDEN, pkgOf, CHAPTER_TYPES } from '../../src/data/packages.js';

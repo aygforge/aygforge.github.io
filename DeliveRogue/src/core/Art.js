@@ -397,6 +397,10 @@ export const Art = (() => {
     jacket: g => { g.beginPath(); g.moveTo(14, 10); g.lineTo(20, 8); g.lineTo(25, 13); g.lineTo(30, 8); g.lineTo(36, 10); g.lineTo(42, 22); g.lineTo(36, 24); g.lineTo(36, 42); g.lineTo(14, 42); g.lineTo(14, 24); g.lineTo(8, 22); g.closePath(); fs(g, '#e2553f'); g.fillStyle = '#fff1dc'; g.fillRect(14, 30, 22, 3); line(g, 25, 13, 25, 42, '#a83526', 1.5); },
     pos: g => { rr(g, 13, 8, 24, 34, 4); fs(g, '#2b2f3a'); rr(g, 16, 11, 18, 11, 2); fs(g, '#7cf5c0', null); for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) { rr(g, 17 + i * 6, 25 + j * 5, 4, 3, 1); fs(g, '#9aa3ad', null); } cardShape(g, 30, 4, 14, 10); },
   };
+  GICON.bag = g => { rr(g, 11, 14, 28, 26, 5); fs(g, '#f08a2c'); rr(g, 17, 8, 16, 8, 3); fs(g, '#b5601a'); g.fillStyle = '#fff1dc'; g.fillRect(11, 24, 28, 3); dot(g, 25, 33, 3, '#fff1dc'); };
+  GICON.tires = g => { dot(g, 25, 25, 17, '#2b2f3a'); dot(g, 25, 25, 9, '#9aa3ad'); dot(g, 25, 25, 4, '#2b2f3a'); for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; g.fillStyle = '#4a4f59'; g.fillRect(25 + Math.cos(a) * 14 - 2, 25 + Math.sin(a) * 14 - 2, 4, 4); } };
+  GICON.brakes = g => { dot(g, 25, 25, 16, '#9aa3ad'); dot(g, 25, 25, 6, '#5d6570'); for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3; dot(g, 25 + Math.cos(a) * 11, 25 + Math.sin(a) * 11, 2, '#5d6570'); } g.beginPath(); g.arc(25, 25, 19, -2.4, -0.7); g.lineWidth = 6; g.strokeStyle = '#e2553f'; g.stroke(); };
+  GICON.battery = g => { rr(g, 10, 14, 30, 24, 4); fs(g, '#3b82c4'); rr(g, 14, 9, 7, 5, 1.5); fs(g, '#2b2f3a'); rr(g, 29, 9, 7, 5, 1.5); fs(g, '#2b2f3a'); g.beginPath(); g.moveTo(27, 17); g.lineTo(19, 27); g.lineTo(25, 27); g.lineTo(22, 35); g.lineTo(31, 24); g.lineTo(25, 24); g.closePath(); fs(g, '#ffd166'); };
   function garageIcon(id) { return sprite('gi_' + id, 50, 50, 25, 25, g => { GICON[id](g); }); }
   function pkgIcon(id, size = 18) {
     const p = PACKAGES[id];

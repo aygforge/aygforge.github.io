@@ -252,7 +252,7 @@ try {
   await page.locator('[data-file]').setInputFiles(tmp); await page.waitForTimeout(400);
   check('import needs confirmation; edited file flagged by checksum', (await ev(() => window.__DR.UI.modalKind)) === 'confirm' && await ev(() => /sağlama/.test(document.querySelector('#modal').textContent)));
   await tap('#modal [data-a="confirm"]');
-  check('import applied + previous save backed up', (await coins()) === 4321 && await ev(() => !!localStorage.getItem('debug__deliverogue_save_backup')));
+  check('import applied + previous save backed up', (await coins()) === 4321 && await ev(() => !!localStorage.getItem('debug__dr2_import_backup')));
   const bad = path.join(os.tmpdir(), 'dr_import_bad.json'); fs.writeFileSync(bad, '{"nope":1}');
   await page.locator('[data-file]').setInputFiles(bad); await page.waitForTimeout(300);
   check('invalid import rejected without changes', (await ev(() => window.__DR.UI.modalKind)) === null && (await coins()) === 4321);

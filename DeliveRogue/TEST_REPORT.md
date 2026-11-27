@@ -1,4 +1,4 @@
-# TEST REPORT — Phase 04 Coffee District Complete
+# TEST REPORT — Phase 05 Garage & Save System
 
 Environment: Linux container, Node 22.23, Vite 5, Playwright Chromium (headless). **No physical Android device.**
 FPS / memory **not measured**.
@@ -7,56 +7,31 @@ FPS / memory **not measured**.
 | Command | Result |
 |---|---|
 | `npm run build` | OK |
-| `npm test` | **33/33 pass** (core, UI, skills/XP, Coffee data/maps/save) |
-| `node tests/smoke/smoke.mjs dist` | **49/49 pass** (UI flow, manual fire, C1 real run, fail path) |
+| `npm test` | **44/44 pass** (incl. 11 new Save 2.0 / garage / ledger / migration tests with an in-memory storage) |
+| `node tests/smoke/garage_save.mjs dist` | **17/17 pass** (real UI + real page reloads) |
+| `node tests/smoke/smoke.mjs dist` | **49/49 pass** |
 | `node tests/smoke/skills_runtime.mjs dist` | **28/28 pass** |
 | `node tests/smoke/coffee_runtime.mjs dist` | **44/44 pass** |
-| `baseline.mjs --geometry` legacy HTML vs `dist` (variants off) | C1–C6, C8–C10 **identical** geometry + spawns; C7 / C11 / C12 changed on purpose (customer segment / boss arena) |
+| `baseline.mjs --geometry` legacy vs `dist` | C1–C6, C8–C10 identical (unchanged) |
 
-## Acceptance (Master Prompt Faz 04)
+## Acceptance (Master Prompt Faz 05)
 | Criterion | Evidence |
 |---|---|
-| All Coffee chapters playable | engine sweep with steering + held fire: **C1–C12 delivered**, C4–C12 on **3 variant seeds each** (30 runs). Delivery times 31–84 s against 60–160 s timers; C12 boss killed in 58–85 s of the 90 s boss timer (random skill picks, no garage). Sweep uses debug invulnerability (traversal check); damage / fail paths are tested separately. |
-| No kill gate on normal chapters | C1–C11 delivered **without firing one card** (0 shots) |
-| Boss gate on the final | exit gate closed until the boss dies; standing in the final drop before that does nothing |
-| Route-only XP sufficient | no-fire runs still gain extra picks on every chapter; unit test: route-only XP reaches the minimum pick target on all 12 chapters (C12 before the arena) |
-| Map validation | every chapter canonical + each combat segment in variants B and C individually + 5 seeded combinations: pickup, each drop in order, checkpoint, arena gates, spawn clearance; failure falls back to canonical with a log |
-| Real success / fail | success after boss + delivery; fails tested: courier HP, package rules (cold / melt / burst / vip), boss timer, delivery timer, plus Phase 02/03 paths |
-
-## Boss (Latte Art Dragon)
-Idle and untargetable before the arena · entry gate closes on entry · immune intro roar · delivery timer frozen, boss
-timer running · phase-1 attacks telegraph warn → active → recover and land · phase 2 at 70 % (immune roar, reset) ·
-helpers spawn with cap ≤ 4, helper kills give no XP and no kill stats · phase 3 at 30 % with its own patterns ·
-death from a real card hit = one BOSS_DEFEATED event, exit opens, helpers removed · delivery timer resumes ·
-boss + delivery = success, +400 first-clear coins once, episode complete · replay gives no second first-clear
-reward · boss timer 0 = failure (`bossTime`).
-
-## Packages
-12 types with contract HP / speed · HOT starts only after pickup, decays on simulation time, frozen while paused,
-fails under 25 % · FROZEN melts faster on steam, fails under 20 % · FIZZY pressure up on impact, down when calm,
-bursts at 100 % · VIP fails under 80 % at delivery, succeeds at 85 % with +75 % · reward bonuses XL +25 %,
-PREMIUM +50 %, HOT +20 %, STANDARD 0 · REINFORCED hazard −30 %, PREMIUM package damage +20 % · MYSTERY resolves to a
-real rule, stays the same after abort/reopen, new attempt only after a real terminal result, never Hot/Frozen/Fizzy/
-VIP on a boss final, reward +40 % once.
-
-## Multi-drop
-Final customer refuses before the first drop · first drop completes once (XP once), target advances · success only
-after both drops.
-
-## Save
-Legacy save with all 12 chapters cleared: completions/stars/unlocks kept, `legacyFinalClear` true, episode **not**
-marked complete (boss final must be played), migration idempotent; invalid Mystery entries dropped.
+| Purchase / equip | UI: each of the 8 categories bought once at the exact price (110/100/120/150/130/110/100/150); unit: all 8 × 20 levels bought with exactly `garageTotalCost()` coins, max level and unaffordable refused. Skin bought (500, equips), re-equip free, 6 skins = 5000 total, no level gate |
+| Stat cap / linear stats | unit: at level 20 speed ×1.15, HP 140, DR 20 %, card damage ×1.5, package HP ×1.4, slip −40 %, impact package damage −40 %, interval .6/1.3 s; caps DR 80 % / interval .12 s / crit 100 % (Phase 03 tests) ; in-run garage change ignored (run snapshot) |
+| Old save preserved | HTML5 v1: level / unlocks / stars / mastery / settings / 4 garage levels kept, 4 new categories at 0, purchased legacy skins (mint 300, golden 700 / barista 350, midnight 450) refunded once, old quest & milestone claims recorded in the ledger (cannot pay again), raw backup written, legacy key kept, second boot does not migrate again. GDevelop DR_SAVE_V1 migrated (level / xp / coins / skins); with both present HTML5 is chosen and GDevelop is recorded, not merged |
+| Save recover | corrupt active slot → previous valid revision (`recovered`, boot message), corrupt data backed up; garbage pointer → best valid slot; crash between slot write and pointer commit → still a valid state |
+| Reload duplicate reward none | C1 completed in the real UI, page reloaded on RunSummary, same run re-settled → wallet and run sequence unchanged; unit: same run sequence rejected after reload even with the id list cleared; one-time keys never pay twice |
+| Save failure | storage throws on write → upgrade rolled back (coins / level unchanged), toast shown, last valid slot untouched, reload loads it |
 
 ## Known limitations / deferred
-- Dynamic route events (Blocked Passage, Spill Accident, Ambush, Express Shortcut, Emergency Station, Bonus Cache) are
-  **not implemented** yet; the existing split segments provide the risky physical shortcut.
-- Packages XL / LIGHTWEIGHT / REINFORCED / PREMIUM / VIP / FROZEN / MYSTERY are implemented and tested but not
-  used in the Coffee table (themes Hot / Fizzy); they appear in later restaurants.
-- Boss balance (1400 HP, 90 s) is a starting value: random-pick builds needed 58–85 s; tune in the balance phase.
-- Boss art is procedural; star goals are still the HTML5 rule (pkg ≥ 70 %, time) until Phase 09.
-- Real-time manual play of every chapter by a person was not done; the sweep is engine-driven.
+- The 6 original skin bitmaps (GDevelop resource paths) were not supplied: skins use procedural palettes; files are
+  listed in `docs/AssetManifest.json` and can be dropped in later without code changes.
+- Checksums detect corruption only; local storage offers no security against deliberate edits (no anti-cheat claim).
+- Endless / Boss Rush chain resume and pending-choice persistence arrive with those modes (Phase 10).
+- Browser storage is per-origin: moving to a new host/origin needs Settings → Export / Import.
 
-## Screenshots (`docs/screenshots/phase04/`, real build)
-01 RunPrep C12 (boss, type) · ch4/7/8/12 intros · 02 C4 Hot meter · 03 C8 Fizzy meter · 04 C7 multi-drop ·
-05 boss arena: closed gate, boss bar, boss timer, rain telegraphs · 06 phase 3 sweeping breath · 07 C12 result with
-first boss reward · `flow/` full UI flow.
+## Screenshots (`docs/screenshots/phase05/`, real build)
+01 Garage with 8 live categories and extended stats · 02 Skin Shop (6 originals, Coffee bought + equipped) ·
+03 save-failure toast · 04 RunSummary before reload · 05 Boot migration notice · 06 Settings save info
+(revision, slot, source, refund) · `flow/` full UI flow.

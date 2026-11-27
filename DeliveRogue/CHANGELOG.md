@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.6.0-phase05 — Garage & Save System
+- Garage 8 × 20 (motor, helmet, jacket, POS, bag, tires, brakes, battery), linear stats only, price
+  round(base × 1.20^level), all available from the start; run-start garage snapshot (no in-run changes).
+  New effects: bag +2 % package HP, tires −2 % slip, brakes −2 % impact package damage, battery +1.5 % attack
+  frequency (interval / frequency). Caps unchanged (DR 80 %, interval .12 s, crit 100 %).
+- 6 original skins (Default 0, Coffee 500, Farmer 750, Hazardous 1000, MonsterTR 1250, Neon 1500 = 5000), visual
+  only, no level gate, re-equip free; GDevelop asset paths recorded, procedural fallback palettes.
+- Save System 2.0: A/B slots + revision + checksum + commit pointer; write inactive slot → verify → commit;
+  recovery to the last valid revision on corrupt slot / pointer; corrupt data backed up; write failures roll back
+  transactions and warn the user (last valid save untouched).
+- Migration: HTML5 v1 (`deliverogue_save`) and GDevelop `DR_SAVE_V1`; HTML5 chosen explicitly if both exist
+  (GDevelop recorded, not merged); raw backups kept, legacy keys never deleted; idempotent. Legacy temporary skins:
+  classic → Default, purchased mint/barista/midnight/golden refunded once at their original price.
+- Reward ledger: unique one-time grant keys (run / quest / milestone / boss / legacy skin) + monotonic settled-run
+  sequence; already-paid legacy claims are recorded so they never pay twice; reload never duplicates a reward.
+- Export v2 bundles; v1 bundles are migrated on import; import keeps a backup of the current save.
+
 ## 0.5.0-phase04 — Coffee District Complete
 - 12-package system (STANDARD, HEAVY, FRAGILE, XL, LIGHTWEIGHT, REINFORCED, PREMIUM, VIP, HOT, FROZEN, FIZZY,
   MYSTERY) with HP / speed / hazard / impact / package-damage / reward modifiers and special rules (temperature,

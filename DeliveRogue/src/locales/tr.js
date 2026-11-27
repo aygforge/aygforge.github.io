@@ -125,4 +125,11 @@ export default {
   meter_hot: 'Sıcaklık', meter_frozen: 'Soğukluk', meter_fizzy: 'Basınç', meter_vip: 'VIP paket',
   bossFight: 'Zorunlu boss', bossArenaTime: 'Arena süresi', mysteryRule: 'Bu denemenin kuralı', bossFirstClear: 'İlk boss zaferi', pkgBonus: 'Paket bonusu',
   legacyFinal: 'Eski kayıt: final eski sürümde bitirilmiş — yeni boss finali yeniden oynanmalı.',
+
+  // ---- Phase 05: garage & save ----
+  st_pkg: 'Paket HP', st_slip: 'Kayma', st_impact: 'Çarpma hasarı', st_rate: 'Atış/sn',
+  eqd_bag: 'Maks. paket HP', eqd_tires: 'Kaygan zeminde kayma', eqd_brakes: 'Çarpmada paket hasarı', eqd_battery: 'Atış sıklığı',
+  boot_migrated: 'Eski kayıt taşındı ({0}). Yedeği saklandı.', src_html5_v1: 'HTML5 sürümü', src_gdevelop_v1: 'GDevelop sürümü',
+  s_saveInfo: 'Kayıt revizyonu {0} · yuva {1}', s_saveSource: 'kaynak: {0}', s_gdevDetected: 'GDevelop kaydı da bulundu (birleştirilmedi, yedeklendi)',
+  s_legacyRefund: 'eski görünümler için {0} jeton iade edildi', skinVisualOnly: 'Görünümler yalnız görseldir; hitbox ve istatistik aynı kalır.',
 };

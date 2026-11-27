@@ -49,9 +49,9 @@ export const Boot = {
       }
       prog();
       if (i >= steps.length && !jobs.length) {
-        stepEl.textContent = report.save === 'recovered' ? T('boot_recovered') : report.save === 'unavailable' ? T('boot_noStorage') : T('boot_ready');
+        stepEl.textContent = report.save === 'recovered' ? T('boot_recovered') : report.save === 'unavailable' ? T('boot_noStorage') : report.save === 'migrated' ? T('boot_migrated', T('src_' + (Save.meta.source || 'html5_v1'))) : T('boot_ready');
         Boot.report = report;
-        const wait = Math.max(0, MIN_LOGO_MS - (performance.now() - t0)) + (report.save === 'recovered' || report.save === 'unavailable' ? 1600 : 0);
+        const wait = Math.max(0, MIN_LOGO_MS - (performance.now() - t0)) + (report.save === 'recovered' || report.save === 'unavailable' || report.save === 'migrated' ? 1600 : 0);
         ctx.timeout(() => params.onDone && params.onDone(report), wait);
         return;
       }

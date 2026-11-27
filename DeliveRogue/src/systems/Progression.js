@@ -1,5 +1,6 @@
 // systems/Progression.js — migrated verbatim from DeliveRogue.html (Phase 01 Core Migration).
 import { RNG } from '../core/util.js';
+import { RewardLedger } from './RewardLedger.js';
 import { CONFIG } from '../data/config.js';
 import { chapterKey } from '../data/ids.js';
 import { Save } from '../core/SaveManager.js';
@@ -17,10 +18,12 @@ export const Progression = (() => {
   function questDone(s, q) { return (s.stats[q.stat] || 0) >= q.target; }
   function settle(run) {
     const s = Save.data, ch = run.ch, i = ch.n - 1, st = run.stats;
-    if (s.settled.includes(run.id)) return run.settled;
+    // duplicate guard: run id list + ledger run-sequence high-water mark (survives reloads)
+    if (s.settled.includes(run.id) || (run.seq != null && !(run.seq > s.ledger.runSeq))) return run.settled;
     const res = { success: run.success, reason: run.reason, n: ch.n, coins: 0, base: 0, xp: 0, stars: 0, grade: 'F', first: false, firstBonus: 0, perfBonus: 0, killBonus: 0,
       unlockedNext: false, newBest: false, mastery: [], levelUps: 0, epComplete: false, milestones: [], quests: [], consolation: 0, level: s.level };
     s.settled.push(run.id); if (s.settled.length > 40) s.settled.splice(0, s.settled.length - 40);
+    RewardLedger.claimRun(run.seq);
     if (run.reason === 'quit') { Save.write(); return res; } // abort: Mystery rule stays fixed (no free reroll)
     if (run.mysteryRule && s.mysteries) delete s.mysteries[chapterKey('campaign', 'COF', ch.n)]; // real terminal result -> new Mystery next attempt
     const qBefore = QUESTS.filter(q => questDone(s, q)).map(q => q.id);
@@ -39,7 +42,7 @@ export const Progression = (() => {
       if (m.eliteBounty) pct += Math.min(0.2, 0.05 * (st.eliteKills || 0));
       res.skillBonus = Math.round(base * Math.min(0.85, pct));
       res.pkgBonus = Math.round(base * ((run.pkg && run.pkg.reward) || 1) - base); // package reward (Mystery: +40 % once)
-      if (ch.boss && st.bossKill && !s.bossClears.COF) { res.bossFirst = CONFIG.bossFirstClearCoins.COF || 0; s.bossClears.COF = true; s.legacyFinalClear = false; }
+      if (ch.boss && st.bossKill && !s.bossClears.COF && !RewardLedger.has('boss:COF')) { res.bossFirst = CONFIG.bossFirstClearCoins.COF || 0; RewardLedger.mark('boss:COF', res.bossFirst); s.bossClears.COF = true; s.legacyFinalClear = false; }
       res.coins = base + res.firstBonus + res.perfBonus + res.killBonus + res.skillBonus + res.pkgBonus + (res.bossFirst || 0);
       res.xp = 40 + 15 * ch.n; if (res.first) res.xp = Math.round(res.xp * 1.5); if (stars === 3) res.xp += 10;
       s.completed[i] = true; res.prevStars = s.stars[i]; if (stars > s.stars[i]) s.stars[i] = stars;
@@ -59,17 +62,30 @@ export const Progression = (() => {
       if (pr >= 0.3 && st.time >= 15) { res.consolation = Math.min(Math.round(base * 0.15 * pr), Math.round(base * 0.15)); res.coins = res.consolation; res.xp = Math.round((20 + 5 * ch.n) * pr * 0.5); }
     }
     s.stats.kills += st.kills; s.stats.eliteKills += st.eliteKills;
-    s.coins += res.coins; res.levelUps = addXp(s, res.xp); res.level = s.level;
+    if (res.coins > 0) RewardLedger.grant('run:' + (run.seq != null ? run.seq : run.id), res.coins);
+    res.levelUps = addXp(s, res.xp); res.level = s.level;
     MILESTONES.forEach(m => { if (!s.milestones.unlocked[m.id] && m.check(s)) { s.milestones.unlocked[m.id] = true; res.milestones.push(m.name); } });
     QUESTS.forEach(q => { if (!qBefore.includes(q.id) && !s.quests.claimed[q.id] && questDone(s, q)) res.quests.push(q.text); });
     Save.write();
     return res;
   }
-  function claimQuest(id) { const s = Save.data, q = QUESTS.find(x => x.id === id); if (!q || s.quests.claimed[id] || !questDone(s, q)) return false; s.quests.claimed[id] = true; s.coins += q.reward; Save.write(); return true; }
-  function claimMilestone(id) { const s = Save.data, m = MILESTONES.find(x => x.id === id); if (!m || !s.milestones.unlocked[id] || s.milestones.claimed[id]) return false; s.milestones.claimed[id] = true; s.coins += m.reward; Save.write(); return true; }
-  function buyUpgrade(id) { const s = Save.data, l = s.garage[id]; if (l >= GARAGE_MAX) return false; const c = garageCost(id, l); if (s.coins < c) return false; s.coins -= c; s.garage[id] = l + 1; Save.write(); return true; }
-  function buySkin(id) { const s = Save.data, c = COSMETICS.find(x => x.id === id); if (!c || s.cosmetics.owned.includes(id) || s.level < c.lvl || s.coins < c.price) return false; s.coins -= c.price; s.cosmetics.owned.push(id); s.cosmetics.selected = id; Save.write(); return true; }
+  // All wallet changes below are transactions: validated, applied, saved — or fully rolled back if the save fails.
+  function claimQuest(id) {
+    return Save.transact(s => { const q = QUESTS.find(x => x.id === id); if (!q || s.quests.claimed[id] || !questDone(s, q)) return false; if (!RewardLedger.grant('quest:' + id, q.reward)) return false; s.quests.claimed[id] = true; });
+  }
+  function claimMilestone(id) {
+    return Save.transact(s => { const m = MILESTONES.find(x => x.id === id); if (!m || !s.milestones.unlocked[id] || s.milestones.claimed[id]) return false; if (!RewardLedger.grant('ms:' + id, m.reward)) return false; s.milestones.claimed[id] = true; });
+  }
+  /** Linear garage upgrade: affordability + max level checked, level and wallet change atomically. */
+  function buyUpgrade(id) {
+    return Save.transact(s => { if (!(id in s.garage)) return false; const l = s.garage[id]; if (l >= GARAGE_MAX) return false; const c = garageCost(id, l); if (s.coins < c) return false; s.coins -= c; s.garage[id] = l + 1; s.stats.upgrades++; });
+  }
+  /** Original skin purchase (no level gate); buying also equips. Re-equipping an owned skin is free (equipSkin). */
+  function buySkin(id) {
+    return Save.transact(s => { const c = COSMETICS.find(x => x.id === id); if (!c || s.cosmetics.owned.includes(id) || s.coins < c.price) return false; s.coins -= c.price; s.cosmetics.owned.push(id); s.cosmetics.selected = id; });
+  }
+  function equipSkin(id) { return Save.transact(s => { if (!s.cosmetics.owned.includes(id)) return false; s.cosmetics.selected = id; }); }
   function claimableCount() { const s = Save.data; return QUESTS.filter(q => !s.quests.claimed[q.id] && questDone(s, q)).length + MILESTONES.filter(m => s.milestones.unlocked[m.id] && !s.milestones.claimed[m.id]).length; }
   function totalStars() { return Save.data.stars.reduce((a, b) => a + b, 0); }
-  return { settle, claimQuest, claimMilestone, buyUpgrade, buySkin, claimableCount, totalStars, questDone };
+  return { settle, claimQuest, claimMilestone, buyUpgrade, buySkin, equipSkin, claimableCount, totalStars, questDone };
 })();

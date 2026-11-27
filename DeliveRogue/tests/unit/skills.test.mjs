@@ -1,4 +1,5 @@
 // tests/unit/skills.test.mjs — Phase 03: 60 skills, 20 evolutions, offers, caps, Run XP budget (real modules).
+import './_storage.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { SKILLS, SKILL_BY_ID, EVOLUTIONS, RARITY, FALLBACK } from '../../src/data/skills.js';

@@ -64,7 +64,7 @@ export const Game = (() => {
     const world = opts.variants === false ? MapBuilder.build(ch) : MapBuilder.build(ch, Array.isArray(opts.variants) ? { variants: opts.variants } : { seed });
     G.world = world;
     const run = G.run = {
-      id: Date.now().toString(36) + '_' + s.runCounter, ch, n, pkg: PackageRules.effective(pkgId, mRule), mysteryRule: mRule, dropIdx: 0, configVersion: CONFIG.version, rng: RNG(seed), crng: RNG((seed ^ 0x9E3779B9) >>> 0), srng: RNG((seed ^ 0x85EBCA6B) >>> 0), seed, state: 'intro', paused: false,
+      id: Date.now().toString(36) + '_' + s.runCounter, ch, n, pkg: PackageRules.effective(pkgId, mRule), mysteryRule: mRule, dropIdx: 0, configVersion: CONFIG.version, seq: s.runCounter, garage: Object.assign({}, s.garage), rng: RNG(seed), crng: RNG((seed ^ 0x9E3779B9) >>> 0), srng: RNG((seed ^ 0x85EBCA6B) >>> 0), seed, state: 'intro', paused: false,
       time: 0, timer: ch.timer, picked: false, ended: false, success: false, reason: null, endT: 0, skills: [], evos: [], mods: SkillMgr.compute([], []),
       picksLeft: ch.picks, pickIdx: 0, pickTotal: ch.picks, pickKind: 'start', offer: [], rerolls: 1, pendingPicks: 0, settled: null, seenTypes: {},
       xp: 0, level: 1, xpPlan: xpPlan(ch, world), segSeen: {}, riskyXp: false, xpLog: { route: 0, cp: 0, combat: 0, risky: 0, drop: 0 },
@@ -75,7 +75,7 @@ export const Game = (() => {
     G.player = { x: st.x, y: st.y, half: 7, vx: 0, vy: 0, kbx: 0, kby: 0, hp: 100, maxHp: 100, pkgHp: run.pkg.hp, pkgMax: run.pkg.hp,
       dir: 1, walkT: 0, moving: false, inv: 0, pkgInv: 0, flash: 0, pkgFlash: 0, fireCd: 0, shootT: 0, target: null, retarget: 0, aimA: -Math.PI / 2, noDmgT: 0, range: PLAYER_BASE.range,
       shield: false, shieldCd: 0, slowed: false, onSpill: false, impactCd: 0, cartCd: 0, shortcut: false, speedNow: 0, stats: {} };
-    recalc(); G.player.hp = G.player.maxHp;
+    recalc(); G.player.hp = G.player.maxHp; G.player.pkgHp = G.player.pkgMax;
     // enemies
     G.enemies = []; spawnEnemies(world, run);
     PackageRules.init(run); BossArena.setup(run, world);
@@ -140,10 +140,14 @@ export const Game = (() => {
   }
   /** Recompute derived player stats from Garage levels + run skills (never stacks twice). */
   function recalc() {
-    const p = G.player, g = Save.data.garage, m = G.run.mods, pk = G.run.pkg;
+    // run-start garage snapshot: no in-run purchase can change stats; skins never change stats
+    const p = G.player, g = G.run.garage || Save.data.garage, m = G.run.mods, pk = G.run.pkg;
     p.maxHp = Math.round(PLAYER_BASE.hp * (1 + GARAGE.helmet.per * g.helmet)) + 25 * m.helmet + m.hpAdd;
     p.dmg = PLAYER_BASE.dmg * (1 + GARAGE.pos.per * g.pos) * m.dmgMul;
-    p.interval = Math.max(CAPS.intervalFloor, PLAYER_BASE.interval / (1 + 0.25 * m.rapid) * m.intervalMul);
+    p.interval = Math.max(CAPS.intervalFloor, PLAYER_BASE.interval / (1 + 0.25 * m.rapid) * m.intervalMul / (1 + GARAGE.battery.per * g.battery));
+    p.pkgMax = Math.round(pk.hp * (1 + GARAGE.bag.per * g.bag));
+    p.slipMul = 1 - GARAGE.tires.per * g.tires;      // tires: less control loss on slick floors
+    p.impactGarage = 1 - GARAGE.brakes.per * g.brakes; // brakes: less impact package damage
     p.range = PLAYER_BASE.range * m.rangeMul;
     const spBase = PLAYER_BASE.speed * (1 + GARAGE.motor.per * g.motor) * pk.speedMul;
     p.speedCap = spBase * CAPS.speedMul;
@@ -176,7 +180,7 @@ export const Game = (() => {
       let pv = o.pkg * run.pkg.hazardMul * run.mods.pkgMul * (run.pkg.pkgDmgMul || 1);
       if (o.steam) pv *= run.mods.steamPkgMul;
       if (o.impact && run.mods.balance) pv *= 0.5;
-      if (o.impact) pv *= run.mods.impactPkgMul;
+      if (o.impact) pv *= run.mods.impactPkgMul * p.impactGarage;
       pv = Math.max(1, Math.round(pv));
       p.pkgHp = Math.max(0, p.pkgHp - pv); p.pkgInv = 0.4; p.pkgFlash = 0.35; run.stats.pkgDmg += pv; did = true;
       Fx.text(p.x + 8, p.y - 34, '-' + pv, '#ffb347', 10, 0.9, 'pkg'); Audio.play('pkg'); Fx.burst(p.x, p.y - 14, '#d9a36a', 6, 60, 2);
@@ -285,7 +289,7 @@ export const Game = (() => {
     const tile = Nav.tileAt(Math.floor(p.x / TILE), Math.floor(p.y / TILE));
     const wasSpill = p.onSpill; p.onSpill = tile === TT.SPILL;
     if (p.onSpill && !wasSpill && run.picked) showHint('tut_spill');
-    let acc = 18; if (p.onSpill) acc = Math.min(18, 1.7 * (m.brake ? 4 : 1) * (m.balance ? 1.6 : 1) / m.slickMul);
+    let acc = 18; if (p.onSpill) acc = Math.min(18, 1.7 * (m.brake ? 4 : 1) * (m.balance ? 1.6 : 1) / (m.slickMul * p.slipMul));
     const k = Math.min(1, acc * dt);
     p.vx += (v.x * spd - p.vx) * k; p.vy += (v.y * spd - p.vy) * k;
     const kd = Math.exp(-9 * dt); p.kbx *= kd; p.kby *= kd;

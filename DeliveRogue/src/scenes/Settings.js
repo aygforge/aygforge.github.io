@@ -45,7 +45,8 @@ export const Settings = {
         ${group('save', T('st_data'), `<div class="st-btns">${btn(T('s_export'), 'data-a="export"', 'blue', 'sm')}${btn(T('s_import'), 'data-a="import"', 'blue', 'sm')}</div>
           <input type="file" accept="application/json,.json" data-file hidden>
           <div class="st-btns">${btn(T('s_tutReset'), 'data-a="tut"', 'steel', 'sm')}${btn(T('s_reset'), 'data-a="reset"', 'red', 'sm')}</div>
-          <small class="st-note">${T('s_dataNote')}</small>`)}
+          <small class="st-note">${T('s_dataNote')}</small>
+          <small class="st-note">${T('s_saveInfo', Save.meta.rev, (Save.meta.slot || '-').toUpperCase())}${Save.meta.source ? ' · ' + T('s_saveSource', T('src_' + Save.meta.source)) : ''}${Save.meta.gdevelopDetected ? ' · ' + T('s_gdevDetected') : ''}${Object.keys(Save.data.legacy.refunded).length ? ' · ' + T('s_legacyRefund', Object.values(Save.data.legacy.refunded).reduce((a, b) => a + b, 0)) : ''}</small>`)}
         ${group('store', T('st_purchases'), `<div class="st-row dis"><span>${T('s_restore')} <small>${PlatformAdapter.billing.available ? '' : T('s_billingNA')}</small></span></div>
           <div class="st-row dis"><span>${T('s_privacy')} <small>${T('s_privacyNote')}</small></span></div>`)}
         <div class="st-foot">${T('s_controlsInfo')}<br>DeliveRogue v0.3 · AYG FORGE</div>

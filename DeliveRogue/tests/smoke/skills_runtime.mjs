@@ -20,7 +20,7 @@ const res = await pg.evaluate(async () => {
   const check = (name, ok, detail = '') => out.checks.push({ name, ok: !!ok, detail });
   /** Fresh deterministic run on chapter n with the given skills/evos applied through the engine. */
   function setup(n, skills = [], evos = [], { hp = 800, spread = 18 } = {}) {
-    D.Save.data.unlocked = 12; D.Save.data.runCounter = 500;
+    D.Save.data.unlocked = 12; D.Save.data.runCounter = 500; D.Save.data.ledger.runSeq = 0; D.Save.data.settled = []; // debug: every setup reuses seq 501 for determinism
     const run = D.Game.start(n); run.state = 'play'; run.picked = true;
     const p = D.G.player; p.inv = 1e9; p.pkgInv = 1e9;
     for (const id of skills) { run.offer = [id]; run.state = 'pick'; run.picksLeft = 1; D.Game.choose(id); }

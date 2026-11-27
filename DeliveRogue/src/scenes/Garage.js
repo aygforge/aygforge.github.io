@@ -2,8 +2,8 @@
 // Left: scrollable equipment column (level, next bonus, price, upgrade). Centre: lit courier platform
 // with the active skin. Right: Trophy Room door (top), real stats (middle), Skin Shop (bottom).
 // Sub-views (Skin Shop, Trophy Room) are full in-scene content with back. No trophy fee / level gate.
-// Phase 02 keeps the 4 legacy upgrades + 5 legacy cosmetics; the 8×20 garage and 6 original skins
-// arrive in Phase 05 (the 4 new categories are shown as clearly locked, never as fake buttons).
+// Phase 05: 8 categories × 20 levels (linear stats, price = base × 1.20^level, all available from the start)
+// and the 6 original skins (visual only; buy once, re-equip free). Purchases are atomic save transactions.
 import { Save } from '../core/SaveManager.js';
 import { Audio } from '../core/AudioManager.js';
 import { Art } from '../core/Art.js';
@@ -19,8 +19,7 @@ import { backdrop } from '../ui/SceneArt.js';
 import { bar, btn, fmtNum } from '../ui/UITheme.js';
 import { App } from '../ui/App.js';
 
-const FUTURE_EQ = [['bag', 'box'], ['tires', 'cart'], ['brakes', 'shield'], ['battery', 'bolt']];
-const EQ_COLOR = { motor: 'orange', helmet: 'blue', jacket: 'gold', pos: 'teal' };
+const EQ_COLOR = { motor: 'orange', helmet: 'blue', jacket: 'gold', pos: 'teal', bag: 'orange', tires: 'steel', brakes: 'blue', battery: 'teal' };
 
 function statsRows(s) {
   const g = s.garage;
@@ -30,6 +29,10 @@ function statsRows(s) {
     ['heart', T('st_hp'), hp, GARAGE.helmet.per * g.helmet / (GARAGE.helmet.per * GARAGE_MAX)],
     ['shield', T('st_dr'), Math.round(GARAGE.jacket.per * g.jacket * 100) + '%', g.jacket / GARAGE_MAX],
     ['card', T('st_dmg'), (PLAYER_BASE.dmg * (1 + GARAGE.pos.per * g.pos)).toFixed(1), g.pos / GARAGE_MAX],
+    ['box', T('st_pkg'), '+' + Math.round(GARAGE.bag.per * g.bag * 100) + '%', g.bag / GARAGE_MAX],
+    ['spill', T('st_slip'), '-' + Math.round(GARAGE.tires.per * g.tires * 100) + '%', g.tires / GARAGE_MAX],
+    ['shield', T('st_impact'), '-' + Math.round(GARAGE.brakes.per * g.brakes * 100) + '%', g.brakes / GARAGE_MAX],
+    ['bolt', T('st_rate'), (1 / (PLAYER_BASE.interval / (1 + GARAGE.battery.per * g.battery))).toFixed(2) + '/s', g.battery / GARAGE_MAX],
   ];
 }
 
@@ -61,7 +64,7 @@ export const Garage = {
         <div class="gr-eq-b">${g.fmt(g.per * l)}${max ? '' : ` <span class="gr-next">→ ${g.fmt(g.per * (l + 1))}</span>`}</div>
         ${max ? `<div class="gr-max">${T('maxed')}</div>` : btn(`${T('upgrade')}<small>${icon('coin')}${fmtNum(cost)}</small>`, `data-a="up" data-id="${id}" ${can ? '' : 'disabled'}`, can ? 'gold' : 'steel', 'sm gr-up')}
       </div>`;
-    }).join('') + FUTURE_EQ.map(([id, ic]) => `<div class="gr-eq p-card p-locked"><div class="gr-eq-top"><span class="gr-eq-svg">${icon(ic)}</span><div><div class="gr-eq-n">${T('eq_' + id)}</div><div class="gr-eq-l">${T('comingSoon')}</div></div></div><div class="p-locknote">${icon('lock')}<span>${T('gar_future')}</span></div></div>`).join('');
+    }).join('');
     const trophies = MILESTONES.filter(m => s.milestones.unlocked[m.id]).length;
     const stats = statsRows(s).map(([ic, l, v, p]) => `<div class="gr-stat"><span class="gr-stat-ic">${icon(ic)}</span><div><div class="gr-stat-l">${l} <b>${v}</b></div>${bar(p, 'blue thin')}</div></div>`).join('');
     return `<div class="gr">
@@ -75,11 +78,10 @@ export const Garage = {
   },
   skins(ctx) {
     const s = Save.data, pv = ctx.preview || s.cosmetics.selected, pc = COSMETICS.find(c => c.id === pv) || COSMETICS[0];
-    const own = s.cosmetics.owned.includes(pc.id), sel = s.cosmetics.selected === pc.id, lvOk = s.level >= pc.lvl;
+    const own = s.cosmetics.owned.includes(pc.id), sel = s.cosmetics.selected === pc.id;
     const action = sel ? btn(T('selected'), 'disabled', 'teal')
       : own ? btn(T('equip'), `data-a="equip" data-id="${pc.id}"`, 'blue')
-        : !lvOk ? btn(T('needLevel', pc.lvl), 'disabled', 'steel')
-          : btn(`${T('buy')} ${icon('coin')}${fmtNum(pc.price)}`, `data-a="buy" data-id="${pc.id}" ${s.coins >= pc.price ? '' : 'disabled'}`, s.coins >= pc.price ? 'gold' : 'steel');
+        : btn(`${T('buy')} ${icon('coin')}${fmtNum(pc.price)}`, `data-a="buy" data-id="${pc.id}" ${s.coins >= pc.price ? '' : 'disabled'}`, s.coins >= pc.price ? 'gold' : 'steel');
     const grid = COSMETICS.map(c => {
       const o = s.cosmetics.owned.includes(c.id), se = s.cosmetics.selected === c.id;
       return `<button class="sk-item p-card ${c.id === pc.id ? 'on' : ''} ${o ? '' : 'notown'}" data-a="preview" data-id="${c.id}"><img alt="" src="${Art.url(Art.courierPortrait(c.id))}"><span class="sk-n">${c.name}</span><span class="sk-s">${se ? T('selected') : o ? T('owned') : `${icon('coin')}${fmtNum(c.price)}`}</span></button>`;
@@ -107,10 +109,10 @@ export const Garage = {
     else if (a === 'close') { Audio.play('click'); ctx.view = 'main'; this.render(ctx); }
     else if (a === 'up') {
       if (Progression.buyUpgrade(b.dataset.id)) { Audio.play('buy'); this.render(ctx); App.refreshChrome(); const c = ctx.root.querySelector(`[data-eq="${b.dataset.id}"]`); if (c) c.classList.add('pop'); }
-      else Audio.play('error');
+      else { Audio.play('error'); if (!Save.ok) App.saveFailedToast(); }
     } else if (a === 'preview') { Audio.play('click'); ctx.preview = b.dataset.id; this.render(ctx); }
-    else if (a === 'buy') { if (Progression.buySkin(b.dataset.id)) { Audio.play('buy'); this.render(ctx); App.refreshChrome(); } else Audio.play('error'); }
-    else if (a === 'equip') { if (s.cosmetics.owned.includes(b.dataset.id)) { s.cosmetics.selected = b.dataset.id; Save.write(); Audio.play('buy'); this.render(ctx); App.refreshChrome(); } }
+    else if (a === 'buy') { if (Progression.buySkin(b.dataset.id)) { Audio.play('buy'); this.render(ctx); App.refreshChrome(); } else { Audio.play('error'); if (!Save.ok) App.saveFailedToast(); } }
+    else if (a === 'equip') { if (Progression.equipSkin(b.dataset.id)) { Audio.play('buy'); this.render(ctx); App.refreshChrome(); } else { Audio.play('error'); App.saveFailedToast(); } }
   },
   back(ctx) { if (ctx.view !== 'main') { ctx.view = 'main'; this.render(ctx); return true; } return false; },
   refresh(ctx) { this.render(ctx); },

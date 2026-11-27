@@ -2,7 +2,7 @@
 
 Portrait mobile action roguelite — HTML5 Canvas, ES modules, Vite. **AYG FORGE**
 
-Current state: **Phase 04 — Coffee District Complete** (on top of Phases 01–03).
+Current state: **Phase 05 — Garage & Save System** (on top of Phases 01–04).
 Coffee District gameplay (12 chapters) is unchanged; the UI is now 8 independent scenes with a persistent
 TopBar / NavigationBar, transitions and a premium cartoon art direction. See `docs/MIGRATION.md` (Phase 01)
 and `docs/SCENES.md` (Phase 02).
@@ -17,6 +17,7 @@ npm test             # unit tests (node --test) against the real runtime modules
 npm run test:smoke   # real-browser smoke test (Playwright + Chromium) against dist/
 npm run test:skills  # engine-driven runtime check of all 60 skills + 20 evolutions (debug build)
 npm run test:coffee  # Coffee C1–C12 playability sweep, boss arena, 12 package rules, Mystery, multi-drop
+npm run test:save    # garage 8×20 + skins via UI, save A/B recovery, migration, storage failure, no duplicate reward
 node tests/smoke/baseline.mjs reference/DeliveRogue.html > a.json && node tests/smoke/baseline.mjs dist > b.json && cmp a.json b.json
 ```
 `npm run test:smoke` needs Playwright + Chromium available (`npm i -D playwright` + `npx playwright install chromium`
